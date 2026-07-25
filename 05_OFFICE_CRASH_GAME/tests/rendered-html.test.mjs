@@ -20,35 +20,43 @@ test("renders the Office Crash game shell", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
-  assert.match(html, /<title>そば屋のオフィスクラッシュ<\/title>/);
-  assert.match(html, /aria-label="そば屋のオフィスクラッシュ ゲーム画面"/);
-  assert.match(html, /オフィスに突入！/);
-  assert.match(html, /MADOGIWA 45 SECOND CHALLENGE/);
+  assert.match(html, /<title>そば屋のオフィスクラッシュ ～無限フロア大整理～<\/title>/);
+  assert.match(html, /aria-label="そば屋のオフィスクラッシュ 無限フロア大整理 ゲーム画面"/);
+  assert.match(html, /立ち飲み処を準備中/);
+  assert.match(html, /MADOGIWA HACK, SMASH &amp; DRAFT/);
   assert.match(html, /MEGA SMASH/);
-  assert.match(html, /COMBO FREEZE/);
-  assert.match(html, /PERFECT \/ MULTI/);
-  assert.match(html, /強化ゲート/);
+  assert.match(html, /永続仕込み/);
+  assert.match(html, /王冠キャップ/);
+  assert.match(html, /LOOT DRAFT/);
+  assert.match(html, /永続記録/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape/);
 });
 
-test("uses Three.js with a fixed camera and keyboard plus touch controls", async () => {
-  const source = await readFile(new URL("../app/OfficeCrashGame.tsx", import.meta.url), "utf8");
+test("uses Three.js with a fixed camera, combat floors, and keyboard plus touch controls", async () => {
+  const source = await readFile(new URL("../app/OfficeCrashRPG.tsx", import.meta.url), "utf8");
   assert.match(source, /new THREE\.WebGLRenderer/);
   assert.match(source, /new THREE\.OrthographicCamera/);
   assert.match(source, /baseCameraPosition = new THREE\.Vector3\(17, 21, 21\)/);
   assert.match(source, /keydown/);
   assert.match(source, /onPointerDown/);
-  assert.match(source, /const INITIAL_TIME = 45/);
-  assert.match(source, /const MEGA_MAX_CHARGES = 2/);
-  assert.match(source, /const COMBO_FREEZE_DURATION = 4/);
-  assert.match(source, /const CLEAR_TIME_BONUS = 300/);
-  assert.match(source, /const PERFECT_DISTANCE = 0\.55/);
-  assert.match(source, /SMASH_FORWARD_OFFSET = 1\.1/);
-  assert.match(source, /makeReinforcedGate/);
-  assert.doesNotMatch(source, /runtime\.time \+=/);
-  assert.doesNotMatch(source, /maxRespawns/);
+  assert.match(source, /makeRewardChoices/);
+  assert.match(source, /runtime\.timer = floorDefinition\.kind === "challenge" \? 45 : null/);
+  assert.match(source, /makeCoreEnemy/);
+  assert.match(source, /pickUpgrade/);
+  assert.match(source, /runtime\.profile\.mastery\.forge/);
   assert.match(source, /new window\.AudioContext/);
-  assert.match(source, /playSound\("metal"\)/);
-  assert.match(source, /Xでスコア共有/);
-  assert.match(source, /navigator\.share/);
+  assert.match(source, /fetch\("\/api\/game\/run"/);
+  assert.match(source, /fetch\("\/api\/game\/mastery"/);
+});
+
+test("stores profiles, run history, mastery, and leaderboard data in D1", async () => {
+  const source = await readFile(new URL("../worker/index.ts", import.meta.url), "utf8");
+  const hosting = await readFile(new URL("../.openai/hosting.json", import.meta.url), "utf8");
+  assert.match(hosting, /"d1": "DB"/);
+  assert.match(source, /CREATE TABLE IF NOT EXISTS players/);
+  assert.match(source, /CREATE TABLE IF NOT EXISTS runs/);
+  assert.match(source, /\/api\/game\/profile/);
+  assert.match(source, /\/api\/game\/run/);
+  assert.match(source, /\/api\/game\/mastery/);
+  assert.match(source, /ORDER BY score DESC/);
 });
