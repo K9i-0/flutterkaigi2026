@@ -188,7 +188,7 @@ export const FLOORS: FloorDefinition[] = [
     kind: "challenge",
     name: "クラッシュタイム",
     kicker: "45 SECOND BONUS",
-    objective: "45秒で好きなだけ備品を片付けろ",
+    objective: "画面内に集まる備品を45秒で好きなだけ片付けろ",
     tint: 0xd9f3ff,
     accent: 0xffcc22,
     enemyCount: 28,

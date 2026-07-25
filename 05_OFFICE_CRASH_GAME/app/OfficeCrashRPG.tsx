@@ -46,6 +46,8 @@ type HudState = {
   rushRemaining: number;
   overtimeLabel: string;
   scoreMultiplier: number;
+  offscreenEnemies: number;
+  incomingAttack: boolean;
 };
 
 type RunSummary = {
@@ -63,6 +65,7 @@ type RunSummary = {
 type GameApi = {
   start: (profile: GameProfile, overtimeRank: OvertimeRank) => void;
   smash: () => void;
+  megaSmash: () => void;
   dash: () => void;
   pause: () => void;
   unlockAudio: () => void;
@@ -75,6 +78,7 @@ type GameApi = {
 
 type EnemyKind = "chair" | "stapler" | "cabinet" | "desk" | "copier" | "gate" | "core";
 type EliteAffix = "rapid" | "barrier" | "volatile" | "regenerator";
+type EnemyAttackKind = "melee" | "pulse";
 
 type Enemy = {
   group: THREE.Group;
@@ -96,6 +100,13 @@ type Enemy = {
   frozenUntil: number;
   nextAttack: number;
   pulseAt: number;
+  attackKind: EnemyAttackKind | null;
+  attackStartedAt: number;
+  attackAt: number;
+  attackOrigin: THREE.Vector3;
+  attackRadius: number;
+  attackWarning: THREE.Group | null;
+  vulnerableUntil: number;
   healthFill?: THREE.Mesh;
 };
 
@@ -121,6 +132,16 @@ type Effect = {
   maxLife: number;
 };
 
+type Hazard = {
+  warning: THREE.Group;
+  position: THREE.Vector3;
+  radius: number;
+  damage: number;
+  startedAt: number;
+  triggerAt: number;
+  color: number;
+};
+
 const EMPTY_HUD: HudState = {
   floor: 1,
   floorName: FLOORS[0].name,
@@ -142,6 +163,8 @@ const EMPTY_HUD: HudState = {
   rushRemaining: 0,
   overtimeLabel: OVERTIME_RANKS[0].label,
   scoreMultiplier: 1,
+  offscreenEnemies: 0,
+  incomingAttack: false,
 };
 
 const MAX_FLOOR = FLOORS.length;
@@ -753,6 +776,7 @@ export default function OfficeCrashRPG() {
     const pickups: Pickup[] = [];
     const debris: Debris[] = [];
     const effects: Effect[] = [];
+    const hazards: Hazard[] = [];
     const stageObjects: THREE.Object3D[] = [];
     const upgradeValues = Object.fromEntries(
       UPGRADES.map((upgrade) => [upgrade.id, 0]),
@@ -911,8 +935,10 @@ export default function OfficeCrashRPG() {
       floorTotal: 0,
       timer: null as number | null,
       lastSmash: -10,
+      lastMega: -10,
       lastBump: -10,
       lastDash: -10,
+      megaLockUntil: 0,
       invulnerableUntil: 0,
       freezeUntil: 0,
       shake: 0,
@@ -927,8 +953,21 @@ export default function OfficeCrashRPG() {
       stageObjects.push(object);
     };
 
+    const removeDisposableObject = (object: THREE.Object3D) => {
+      scene.remove(object);
+      object.traverse((child) => {
+        if (!(child instanceof THREE.Mesh)) return;
+        child.geometry.dispose();
+        const materials = Array.isArray(child.material) ? child.material : [child.material];
+        for (const material of materials) material.dispose();
+      });
+    };
+
     const clearStage = () => {
-      for (const enemy of enemies) scene.remove(enemy.group);
+      for (const enemy of enemies) {
+        scene.remove(enemy.group);
+        if (enemy.attackWarning) removeDisposableObject(enemy.attackWarning);
+      }
       for (const pickup of pickups) scene.remove(pickup.group);
       for (const object of stageObjects) scene.remove(object);
       enemies.length = 0;
@@ -938,6 +977,8 @@ export default function OfficeCrashRPG() {
       debris.length = 0;
       for (const effect of effects) scene.remove(effect.mesh);
       effects.length = 0;
+      for (const hazard of hazards) removeDisposableObject(hazard.warning);
+      hazards.length = 0;
     };
 
     const spawnDebris = (position: THREE.Vector3, color: number, amount: number) => {
@@ -987,6 +1028,78 @@ export default function OfficeCrashRPG() {
       wave.scale.setScalar(size);
       scene.add(wave);
       effects.push({ mesh: wave, life: 0.46, maxLife: 0.46 });
+    };
+
+    const makeDangerZone = (position: THREE.Vector3, radius: number, color: number) => {
+      const group = new THREE.Group();
+      const fill = new THREE.Mesh(
+        new THREE.CircleGeometry(radius, 48),
+        new THREE.MeshBasicMaterial({
+          color,
+          transparent: true,
+          opacity: 0.18,
+          depthWrite: false,
+          side: THREE.DoubleSide,
+        }),
+      );
+      fill.rotation.x = -Math.PI / 2;
+      const ring = new THREE.Mesh(
+        new THREE.RingGeometry(radius * 0.86, radius, 48),
+        new THREE.MeshBasicMaterial({
+          color,
+          transparent: true,
+          opacity: 0.92,
+          depthWrite: false,
+          side: THREE.DoubleSide,
+        }),
+      );
+      ring.rotation.x = -Math.PI / 2;
+      ring.position.y = 0.015;
+      group.add(fill, ring);
+      group.position.copy(position);
+      group.position.y = 0.055;
+      group.userData.fill = fill;
+      group.userData.ring = ring;
+      scene.add(group);
+      return group;
+    };
+
+    const animateDangerZone = (
+      warning: THREE.Group,
+      startedAt: number,
+      triggerAt: number,
+      elapsed: number,
+    ) => {
+      const progress = THREE.MathUtils.clamp(
+        (elapsed - startedAt) / Math.max(0.01, triggerAt - startedAt),
+        0,
+        1,
+      );
+      const pulse = 0.72 + Math.sin(elapsed * (12 + progress * 18)) * 0.18;
+      warning.scale.setScalar(0.92 + progress * 0.08);
+      const fill = warning.userData.fill as THREE.Mesh | undefined;
+      const ring = warning.userData.ring as THREE.Mesh | undefined;
+      if (fill) (fill.material as THREE.MeshBasicMaterial).opacity = 0.12 + progress * 0.2;
+      if (ring) (ring.material as THREE.MeshBasicMaterial).opacity = pulse;
+    };
+
+    const addHazard = (
+      position: THREE.Vector3,
+      radius: number,
+      damage: number,
+      delay: number,
+      color: number,
+    ) => {
+      const warning = makeDangerZone(position, radius, color);
+      hazards.push({
+        warning,
+        position: position.clone().setY(0),
+        radius,
+        damage,
+        startedAt: runtime.elapsed,
+        triggerAt: runtime.elapsed + delay,
+        color,
+      });
     };
 
     const addPickup = (kind: PickupKind, position: THREE.Vector3) => {
@@ -1041,11 +1154,11 @@ export default function OfficeCrashRPG() {
         stapler: { speed: 3.05, damage: 6, radius: 0.52, points: 170, color: 0xf06a31, label: "ホチキスガニ" },
         cabinet: { speed: 1.25, damage: 11, radius: 0.72, points: 260, color: 0x7b8b95, label: "キャビネットゴーレム" },
         desk: { speed: 1.65, damage: 9, radius: 0.95, points: 230, color: 0xb97943, label: "会議机ムカデ" },
-        copier: { speed: boss ? 1.05 : 1.45, damage: boss ? 18 : 10, radius: boss ? 1.45 : 0.82, points: boss ? 6500 : 330, color: boss ? 0xf6b80c : 0xd9e1e5, label: boss ? "金の複合機・零式" : "複合機タンク" },
+        copier: { speed: boss ? 0.9 : 1.45, damage: boss ? 12 : 10, radius: boss ? 1.45 : 0.82, points: boss ? 6500 : 330, color: boss ? 0xf6b80c : 0xd9e1e5, label: boss ? "金の複合機・零式" : "複合機タンク" },
         gate: { speed: 1.1, damage: 14, radius: 1.15, points: 560, color: 0x425864, label: "強化ゲートΩ" },
         core: { speed: 0.92, damage: 22, radius: 1.65, points: 15000, color: 0xff4437, label: "REGULATION CORE" },
       }[kind];
-      const baseFinalHp = (boss ? (kind === "core" ? 125 : 72) : baseHp) * overtime.hpMultiplier;
+      const baseFinalHp = (boss ? (kind === "core" ? 125 : 50) : baseHp) * overtime.hpMultiplier;
       const barrier = affix === "barrier" ? baseFinalHp * 0.5 : 0;
       const hp = baseFinalHp + barrier;
       const health = makeHealthBar(boss ? 3.2 : elite ? 1.65 : 1.1, boss ? floorDefinition.accent : 0x56e07a);
@@ -1088,18 +1201,28 @@ export default function OfficeCrashRPG() {
         barrier,
         lastRegen: runtime.elapsed,
         frozenUntil: 0,
-        nextAttack: runtime.elapsed + 1,
-        pulseAt: runtime.elapsed + 2.8,
+        nextAttack: runtime.elapsed + 0.9 + Math.random() * 0.65,
+        pulseAt: runtime.elapsed + (kind === "core" ? 3.1 : 3.8),
+        attackKind: null,
+        attackStartedAt: 0,
+        attackAt: 0,
+        attackOrigin: new THREE.Vector3(),
+        attackRadius: 0,
+        attackWarning: null,
+        vulnerableUntil: 0,
         healthFill: health.userData.fill as THREE.Mesh,
       });
     };
 
-    const randomSpawnPoints = () => {
+    const randomSpawnPoints = (compact = false) => {
       const points: Array<[number, number]> = [];
-      for (const z of [-11.7, -8.6, -5.3, -2.1, 1.2, 4.4]) {
-        for (const x of [-7.8, -4, 0, 4, 7.8]) {
+      const zPositions = compact ? [-6.8, -4, -1.2, 1.6, 4.4] : [-11.7, -8.6, -5.3, -2.1, 1.2, 4.4];
+      const xPositions = compact ? [-7, -4.2, -1.4, 1.4, 4.2, 7] : [-7.8, -4, 0, 4, 7.8];
+      for (const z of zPositions) {
+        for (const x of xPositions) {
           if (z > 2 && Math.abs(x) < 2) continue;
-          points.push([x + (Math.random() - 0.5) * 0.9, z + (Math.random() - 0.5) * 0.9]);
+          const jitter = compact ? 0.3 : 0.9;
+          points.push([x + (Math.random() - 0.5) * jitter, z + (Math.random() - 0.5) * jitter]);
         }
       }
       return points.sort(() => Math.random() - 0.5);
@@ -1142,6 +1265,11 @@ export default function OfficeCrashRPG() {
       const dashProgress = THREE.MathUtils.clamp((runtime.elapsed - runtime.lastDash) / dashCooldown, 0, 1);
       const overtime = OVERTIME_RANKS[runtime.overtimeRank];
       const rushRemaining = Math.max(0, runtime.rushUntil - runtime.elapsed);
+      const offscreenEnemies = enemies.filter((enemy) => {
+        if (!enemy.alive || enemy.boss) return false;
+        const projected = enemy.group.position.clone().add(new THREE.Vector3(0, 0.8, 0)).project(camera);
+        return projected.x < -0.92 || projected.x > 0.92 || projected.y < -0.88 || projected.y > 0.88;
+      }).length;
       setHud({
         floor: runtime.floor,
         floorName: floorDefinition.name,
@@ -1158,11 +1286,15 @@ export default function OfficeCrashRPG() {
         caps: runtime.runCaps,
         timer: runtime.timer === null ? null : Math.max(0, Math.ceil(runtime.timer)),
         dashReady: dashProgress,
-        bossName: boss?.label ?? "",
+        bossName: boss
+          ? `${boss.label}${runtime.elapsed < boss.vulnerableUntil ? "｜反動中：MEGAチャンス" : ""}`
+          : "",
         pressure: rushRemaining > 0 ? 100 : runtime.pressure,
         rushRemaining,
         overtimeLabel: overtime.label,
         scoreMultiplier: overtime.scoreMultiplier * (rushRemaining > 0 ? 1.5 : 1),
+        offscreenEnemies,
+        incomingAttack: hazards.length > 0 || enemies.some((enemy) => enemy.alive && enemy.attackKind !== null),
       });
     };
 
@@ -1187,12 +1319,13 @@ export default function OfficeCrashRPG() {
       runtime.combo = 0;
       runtime.comboWindow = 0;
       runtime.pendingSmash = null;
+      runtime.megaLockUntil = 0;
       runtime.mega = Math.min(3, runtime.mega + Math.max(0, Math.floor(upgradeValues.happy)));
       runtime.playing = true;
       runtime.paused = false;
       runtime.lastBump = -10;
 
-      const points = randomSpawnPoints();
+      const points = randomSpawnPoints(floorDefinition.kind === "challenge");
       if (floorDefinition.kind === "boss") {
         spawnEnemy("copier", 0, -7.2, { boss: true, elite: true, scale: 1.75 });
       } else if (floorDefinition.kind === "final") {
@@ -1289,6 +1422,10 @@ export default function OfficeCrashRPG() {
     const destroyEnemy = (enemy: Enemy, critical: boolean, chainDepth = 0) => {
       if (!enemy.alive) return;
       enemy.alive = false;
+      if (enemy.attackWarning) {
+        removeDisposableObject(enemy.attackWarning);
+        enemy.attackWarning = null;
+      }
       scene.remove(enemy.group);
       runtime.destroyed += 1;
       runtime.floorKilled += 1;
@@ -1323,10 +1460,8 @@ export default function OfficeCrashRPG() {
       navigator.vibrate?.(enemy.boss ? 45 : 15);
 
       if (enemy.affix === "volatile") {
-        spawnWave(enemy.group.position, 0xff4d3a, 1.45);
-        if (enemy.group.position.distanceTo(player.position) < 3.2) {
-          hurtPlayer(enemy.damage * 0.62, enemy.group.position);
-        }
+        addHazard(enemy.group.position, 3.2, enemy.damage * 0.62, 0.9, 0xff4d3a);
+        notify("余熱注意！ 赤い範囲から離れてください");
       }
 
       if (upgradeValues.yakitori > 0) {
@@ -1385,7 +1520,8 @@ export default function OfficeCrashRPG() {
       if (!enemy.alive) return;
       const chilledVulnerable = runtime.elapsed < enemy.frozenUntil
         && runtime.synergies.some((synergy) => synergy.name === "キンキン速配");
-      const finalAmount = amount * (chilledVulnerable ? 1.5 : 1);
+      const bossOpening = enemy.boss && runtime.elapsed < enemy.vulnerableUntil;
+      const finalAmount = amount * (chilledVulnerable ? 1.5 : 1) * (bossOpening ? 1.65 : 1);
       enemy.hp -= finalAmount;
       enemy.barrier = Math.max(0, enemy.barrier - finalAmount);
       enemy.frozenUntil = Math.max(enemy.frozenUntil, runtime.elapsed + upgradeValues.frost * 0.45);
@@ -1405,7 +1541,7 @@ export default function OfficeCrashRPG() {
 
     const hurtPlayer = (amount: number, source: THREE.Vector3) => {
       if (!runtime.playing || runtime.elapsed < runtime.invulnerableUntil) return;
-      runtime.invulnerableUntil = runtime.elapsed + 0.68;
+      runtime.invulnerableUntil = runtime.elapsed + 0.78;
       const fortified = runtime.hp / runtime.maxHp >= 0.8
         && runtime.synergies.some((synergy) => synergy.name === "立ち飲み不沈艦");
       const finalAmount = amount * (fortified ? 0.65 : 1);
@@ -1425,14 +1561,68 @@ export default function OfficeCrashRPG() {
       if (runtime.hp <= 0) endRun(false);
     };
 
+    const beginEnemyAttack = (enemy: Enemy, kind: EnemyAttackKind) => {
+      if (enemy.attackKind || !enemy.alive) return;
+      const pulse = kind === "pulse";
+      const windup = pulse ? (enemy.kind === "core" ? 1.35 : 1.2) : enemy.boss ? 0.9 : 0.62;
+      const radius = pulse
+        ? (enemy.kind === "core" ? 6 : 4.7)
+        : enemy.radius + (enemy.boss ? 1.35 : 1.05);
+      enemy.attackKind = kind;
+      enemy.attackStartedAt = runtime.elapsed;
+      enemy.attackAt = runtime.elapsed + windup;
+      enemy.attackOrigin.copy(enemy.group.position).setY(0);
+      enemy.attackRadius = radius;
+      enemy.attackWarning = makeDangerZone(
+        enemy.attackOrigin,
+        radius,
+        pulse ? (enemy.kind === "core" ? 0xff4437 : 0xffb51f) : 0xff4a32,
+      );
+      if (pulse) {
+        tone(128, windup * 0.72, "sawtooth", 0.035, 228);
+      }
+    };
+
+    const resolveEnemyAttack = (enemy: Enemy) => {
+      if (!enemy.attackKind) return;
+      const kind = enemy.attackKind;
+      const hit = player.position.distanceTo(enemy.attackOrigin) <= enemy.attackRadius;
+      const dodged = !hit || runtime.elapsed < runtime.invulnerableUntil;
+      const color = kind === "pulse"
+        ? (enemy.kind === "core" ? 0xff4437 : 0xffc21d)
+        : 0xff5b38;
+      spawnWave(enemy.attackOrigin, color, Math.max(0.8, enemy.attackRadius * 0.34));
+      if (hit) {
+        hurtPlayer(enemy.damage * (kind === "pulse" ? 0.62 : 1), enemy.attackOrigin);
+      }
+      if (enemy.attackWarning) {
+        removeDisposableObject(enemy.attackWarning);
+        enemy.attackWarning = null;
+      }
+      enemy.attackKind = null;
+      enemy.nextAttack = runtime.elapsed + (enemy.boss ? 1.65 : 1.2);
+      if (kind === "pulse") {
+        enemy.pulseAt = runtime.elapsed + (enemy.kind === "core" ? 3.7 : 4.5);
+      }
+      if (enemy.boss) {
+        enemy.vulnerableUntil = runtime.elapsed + 1.8;
+        if (dodged) {
+          notify("回避成功！ 反動中にMEGAを叩き込め！");
+          tone(660, 0.12, "square", 0.045, 880);
+        } else {
+          notify("ボスが反動中！ 今ならダメージ ×1.65");
+        }
+      }
+    };
+
     const performSmash = (center: THREE.Vector3, mega: boolean) => {
       playSound("smash");
       const baseDamage = 2 * (1 + runtime.profile.mastery.forge * 0.08 + upgradeValues.heavy * 0.28);
-      const damage = baseDamage * (mega ? 2.15 : 1);
-      const radius = 1.65 * (1 + upgradeValues.wide * 0.16) * (mega ? 1.5 : 1);
+      const damage = baseDamage * (mega ? 3.35 : 1);
+      const radius = 1.65 * (1 + upgradeValues.wide * 0.16) * (mega ? 2.05 : 1);
       const criticalMultiplier = runtime.synergies.some((synergy) => synergy.name === "店主の会心") ? 2.35 : 1.75;
-      spawnWave(center, mega ? 0xffc21d : 0xffffff, mega ? 1.35 : 1);
-      runtime.shake = Math.max(runtime.shake, mega ? 0.42 : 0.24);
+      spawnWave(center, mega ? 0xffc21d : 0xffffff, mega ? 1.8 : 1);
+      runtime.shake = Math.max(runtime.shake, mega ? 0.7 : 0.24);
       let hits = 0;
       let criticals = 0;
       for (const enemy of enemies) {
@@ -1445,7 +1635,13 @@ export default function OfficeCrashRPG() {
           damageEnemy(enemy, damage * (critical ? criticalMultiplier : 1), critical, center);
         }
       }
-      if (hits > 1) {
+      if (mega) {
+        const bonus = Math.round(Math.max(1, hits) * 420 * getComboMultiplier(runtime.combo));
+        runtime.score += bonus;
+        notify(`必殺 MEGA SMASH!! ×${hits} +${formatNumber(bonus)}`);
+        playSound("beer");
+        navigator.vibrate?.(70);
+      } else if (hits > 1) {
         const bonus = Math.round(hits * hits * 45 * getComboMultiplier(runtime.combo));
         runtime.score += bonus;
         notify(`MULTI BREAK ×${hits} +${formatNumber(bonus)}`);
@@ -1459,23 +1655,41 @@ export default function OfficeCrashRPG() {
 
     const smash = () => {
       if (!runtime.playing || runtime.paused) return;
+      if (runtime.elapsed < runtime.megaLockUntil || runtime.pendingSmash) return;
       const rushActive = runtime.elapsed < runtime.rushUntil;
       const cooldown = Math.max(0.16, 0.46 * (1 - upgradeValues.haste * 0.09) * (rushActive ? 0.7 : 1));
       if (runtime.elapsed - runtime.lastSmash < cooldown) return;
       runtime.lastSmash = runtime.elapsed;
-      const mega = runtime.mega > 0;
-      if (mega) runtime.mega -= 1;
       const forward = new THREE.Vector3(0, 0, -1).applyAxisAngle(UP, player.rotation.y);
       const center = player.position.clone().addScaledVector(forward, 1.2);
       center.y = 0;
-      (player.userData.animator as VoxelActionController | undefined)?.triggerSmash(mega);
+      (player.userData.animator as VoxelActionController | undefined)?.triggerSmash(false);
       tone(280, 0.1, "sawtooth", 0.045, 720);
-      runtime.pendingSmash = { at: runtime.elapsed + 0.17, center, mega };
+      runtime.pendingSmash = { at: runtime.elapsed + 0.17, center, mega: false };
+      syncHud();
+    };
+
+    const megaSmash = () => {
+      if (!runtime.playing || runtime.paused || runtime.mega <= 0) return;
+      if (runtime.pendingSmash || runtime.elapsed - runtime.lastMega < 0.9) return;
+      runtime.lastMega = runtime.elapsed;
+      runtime.mega -= 1;
+      runtime.megaLockUntil = runtime.elapsed + 0.48;
+      runtime.invulnerableUntil = runtime.elapsed + 0.64;
+      const forward = new THREE.Vector3(0, 0, -1).applyAxisAngle(UP, player.rotation.y);
+      const center = player.position.clone().addScaledVector(forward, 0.85);
+      center.y = 0;
+      (player.userData.animator as VoxelActionController | undefined)?.triggerSmash(true);
+      spawnWave(player.position, 0xfff064, 0.85);
+      tone(150, 0.42, "sawtooth", 0.05, 620);
+      runtime.pendingSmash = { at: runtime.elapsed + 0.46, center, mega: true };
+      notify("必殺技セット！ 狙って――MEGA SMASH！");
       syncHud();
     };
 
     const dash = () => {
       if (!runtime.playing || runtime.paused) return;
+      if (runtime.elapsed < runtime.megaLockUntil) return;
       const cooldown = Math.max(0.85, 2.15 / (1 + upgradeValues.runner * 0.16));
       if (runtime.elapsed - runtime.lastDash < cooldown) return;
       runtime.lastDash = runtime.elapsed;
@@ -1511,7 +1725,9 @@ export default function OfficeCrashRPG() {
       runtime.maxHp = 100 + profile.mastery.vitality * 10;
       runtime.hp = runtime.maxHp;
       runtime.lastSmash = -10;
+      runtime.lastMega = -10;
       runtime.lastDash = -10;
+      runtime.megaLockUntil = 0;
       runtime.invulnerableUntil = 0;
       for (const key of Object.keys(upgradeValues) as UpgradeId[]) upgradeValues[key] = 0;
       setBuild([]);
@@ -1605,6 +1821,7 @@ export default function OfficeCrashRPG() {
     apiRef.current = {
       start,
       smash,
+      megaSmash,
       dash,
       pause,
       unlockAudio,
@@ -1623,6 +1840,7 @@ export default function OfficeCrashRPG() {
       }
       keys.add(event.key.toLowerCase());
       if (event.key === " ") smash();
+      if (event.key.toLowerCase() === "e") megaSmash();
       if (event.key === "Shift") dash();
       if (event.key.toLowerCase() === "p" || event.key === "Escape") pause();
     };
@@ -1686,7 +1904,7 @@ export default function OfficeCrashRPG() {
             - (keys.has("w") || keys.has("arrowup") ? 1 : 0)
             + joystickRef.current.z,
         );
-        if (move.lengthSq() > 0.02) {
+        if (move.lengthSq() > 0.02 && runtime.elapsed >= runtime.megaLockUntil) {
           walking = true;
           move.normalize();
           const speed = 5.35
@@ -1703,6 +1921,7 @@ export default function OfficeCrashRPG() {
           player.position.y = THREE.MathUtils.lerp(player.position.y, 0, 0.24);
         }
 
+        const aliveMovers = enemies.filter((enemy) => enemy.alive && !enemy.boss && enemy.speed > 0).length;
         for (let i = 0; i < enemies.length; i += 1) {
           const enemy = enemies[i];
           if (!enemy.alive || enemy.speed <= 0) continue;
@@ -1715,18 +1934,37 @@ export default function OfficeCrashRPG() {
           }
           const toPlayer = player.position.clone().sub(enemy.group.position).setY(0);
           const distance = toPlayer.length();
-          const chilled = runtime.elapsed < enemy.frozenUntil ? Math.max(0.25, 1 - upgradeValues.frost * 0.24) : 1;
+          const frozen = runtime.elapsed < enemy.frozenUntil;
+          const chilled = frozen ? Math.max(0.25, 1 - upgradeValues.frost * 0.24) : 1;
+
+          if (enemy.attackKind) {
+            if (frozen) {
+              enemy.attackStartedAt += dt;
+              enemy.attackAt += dt;
+            }
+            if (enemy.attackWarning) {
+              animateDangerZone(enemy.attackWarning, enemy.attackStartedAt, enemy.attackAt, runtime.elapsed);
+            }
+            if (!frozen && runtime.elapsed >= enemy.attackAt) resolveEnemyAttack(enemy);
+            continue;
+          }
+
+          if (enemy.boss && runtime.elapsed >= enemy.pulseAt) {
+            beginEnemyAttack(enemy, "pulse");
+            continue;
+          }
+
           if (distance > enemy.radius + 0.72) {
             toPlayer.normalize();
-            enemy.group.position.addScaledVector(toPlayer, enemy.speed * chilled * dt);
+            const lastCallBoost = aliveMovers <= 3 && distance > 5.8 ? 1.85 : 1;
+            enemy.group.position.addScaledVector(toPlayer, enemy.speed * chilled * lastCallBoost * dt);
             enemy.group.rotation.y = THREE.MathUtils.lerp(
               enemy.group.rotation.y,
               Math.atan2(-toPlayer.x, -toPlayer.z),
               0.12,
             );
           } else if (runtime.elapsed >= enemy.nextAttack) {
-            enemy.nextAttack = runtime.elapsed + (enemy.boss ? 1.35 : 1.05);
-            hurtPlayer(enemy.damage, enemy.group.position);
+            beginEnemyAttack(enemy, "melee");
           }
 
           for (let j = i + 1; j < enemies.length; j += 1) {
@@ -1741,16 +1979,19 @@ export default function OfficeCrashRPG() {
             }
           }
 
-          if (enemy.boss) {
-            enemy.group.rotation.y += dt * 0.35;
-            if (runtime.elapsed >= enemy.pulseAt) {
-              enemy.pulseAt = runtime.elapsed + (enemy.kind === "core" ? 2.65 : 3.2);
-              spawnWave(enemy.group.position, enemy.kind === "core" ? 0xff4437 : 0xffc21d, 1.4);
-              if (distance < (enemy.kind === "core" ? 6.3 : 5.2)) {
-                hurtPlayer(enemy.damage * 0.72, enemy.group.position);
-              }
-            }
+          if (enemy.boss) enemy.group.rotation.y += dt * 0.35;
+        }
+
+        for (let i = hazards.length - 1; i >= 0; i -= 1) {
+          const hazard = hazards[i];
+          animateDangerZone(hazard.warning, hazard.startedAt, hazard.triggerAt, runtime.elapsed);
+          if (runtime.elapsed < hazard.triggerAt) continue;
+          spawnWave(hazard.position, hazard.color, Math.max(0.9, hazard.radius * 0.38));
+          if (player.position.distanceTo(hazard.position) <= hazard.radius) {
+            hurtPlayer(hazard.damage, hazard.position);
           }
+          removeDisposableObject(hazard.warning);
+          hazards.splice(i, 1);
         }
 
         for (const pickup of pickups) {
@@ -1763,7 +2004,7 @@ export default function OfficeCrashRPG() {
             if (pickup.kind === "beer") {
               runtime.mega = Math.min(3, runtime.mega + 1);
               playSound("beer");
-              notify("BEER GET! 次の一撃がMEGA");
+              notify("MEGA STOCK +1｜Eキー / 黄ボタンで必殺技を発動");
             } else if (pickup.kind === "clock") {
               runtime.freezeUntil = runtime.elapsed + 3.5;
               for (const enemy of enemies) enemy.frozenUntil = runtime.freezeUntil;
@@ -1915,6 +2156,12 @@ export default function OfficeCrashRPG() {
         aria-label="そば屋のオフィスクラッシュ 無限フロア大整理 ゲーム画面"
       />
       <div className="rpg-sun" aria-hidden="true" />
+      {status === "playing" && (
+        <div
+          className={`rpg-danger-vignette ${hpRatio <= 35 ? "low-hp" : ""} ${hud.incomingAttack ? "incoming" : ""}`}
+          aria-hidden="true"
+        />
+      )}
 
       {status === "playing" && (
         <>
@@ -1961,6 +2208,8 @@ export default function OfficeCrashRPG() {
           <section className="rpg-objective" aria-live="polite">
             <span>{hud.timer !== null ? `残り ${hud.timer}秒` : hud.bossName || `残り備品 ${hud.enemies}`}</span>
             <strong>{hud.objective}</strong>
+            {hud.offscreenEnemies > 0 && <em>⚠ 画面外 {hud.offscreenEnemies}体・中央へ接近中</em>}
+            {hud.incomingAttack && <em className="attack-alert">赤い予告範囲から離れろ！</em>}
             <div className="rpg-progress"><i style={{ width: `${enemyRatio}%` }} /></div>
           </section>
 
@@ -1982,8 +2231,9 @@ export default function OfficeCrashRPG() {
           </aside>
 
           <div className={`rpg-mega ${hud.mega > 0 ? "ready" : ""}`}>
-            <span>MEGA</span>
+            <span>MEGA STOCK</span>
             <div>{[0, 1, 2].map((slot) => <i className={slot < hud.mega ? "full" : ""} key={slot}>生</i>)}</div>
+            <small>E / 黄ボタンで任意発動</small>
           </div>
 
           <div
@@ -2009,19 +2259,34 @@ export default function OfficeCrashRPG() {
           </div>
 
           <div className="rpg-action-stack">
+            <div className="rpg-sub-actions">
+              <button
+                className="rpg-dash-button"
+                onPointerDown={(event) => {
+                  event.preventDefault();
+                  apiRef.current?.dash();
+                }}
+                aria-label="ダッシュ"
+              >
+                <i style={{ width: `${dashRatio}%` }} />
+                <strong>DASH</strong>
+              </button>
+              <button
+                className={`rpg-mega-button ${hud.mega > 0 ? "ready" : ""}`}
+                disabled={hud.mega <= 0}
+                onPointerDown={(event) => {
+                  event.preventDefault();
+                  apiRef.current?.megaSmash();
+                }}
+                aria-label={`必殺MEGA SMASH 残り${hud.mega}`}
+              >
+                <span>必殺</span>
+                <strong>MEGA</strong>
+                <small>×{hud.mega}</small>
+              </button>
+            </div>
             <button
-              className="rpg-dash-button"
-              onPointerDown={(event) => {
-                event.preventDefault();
-                apiRef.current?.dash();
-              }}
-              aria-label="ダッシュ"
-            >
-              <i style={{ width: `${dashRatio}%` }} />
-              <strong>DASH</strong>
-            </button>
-            <button
-              className={`rpg-smash-button ${hud.mega > 0 ? "mega-ready" : ""}`}
+              className="rpg-smash-button"
               onPointerDown={(event) => {
                 event.preventDefault();
                 apiRef.current?.smash();
@@ -2029,7 +2294,7 @@ export default function OfficeCrashRPG() {
               aria-label="ジョッキスマッシュ"
             >
               <span aria-hidden="true">槌</span>
-              <strong>{hud.mega > 0 ? "MEGA!" : "SMASH!"}</strong>
+              <strong>SMASH!</strong>
             </button>
           </div>
         </>
@@ -2105,7 +2370,7 @@ export default function OfficeCrashRPG() {
                 disabled={profileLoading}
               >
                 <span>{profileLoading ? "立ち飲み処を準備中…" : "備品循環棟へ突入！"}</span>
-                <small>WASD / 矢印・SPACE・SHIFT　スマホ操作対応</small>
+                <small>移動 WASD / 矢印・通常攻撃 SPACE・必殺MEGA E・回避 SHIFT　赤い床予告を避けろ</small>
               </button>
               {profileError && (
                 <button className="profile-retry" onClick={() => void refreshProfile()}>

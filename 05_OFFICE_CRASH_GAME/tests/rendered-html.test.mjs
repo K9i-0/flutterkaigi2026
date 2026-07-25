@@ -58,6 +58,13 @@ test("uses Three.js with a fixed camera, combat floors, and keyboard plus touch 
   assert.match(source, /context\.resume\(\)/);
   assert.match(source, /onPointerDownCapture/);
   assert.match(source, /testSound/);
+  assert.match(source, /megaSmash/);
+  assert.match(source, /type EnemyAttackKind = "melee" \| "pulse"/);
+  assert.match(source, /makeDangerZone/);
+  assert.match(source, /赤い予告範囲から離れろ/);
+  assert.match(source, /lastCallBoost/);
+  assert.match(source, /randomSpawnPoints\(floorDefinition\.kind === "challenge"\)/);
+  assert.match(source, /kind === "core" \? 125 : 50/);
   assert.match(source, /fetch\("\/api\/game\/run"/);
   assert.match(source, /fetch\("\/api\/game\/mastery"/);
 });

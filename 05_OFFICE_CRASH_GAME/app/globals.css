@@ -156,6 +156,28 @@ body {
   mix-blend-mode: screen;
 }
 
+.rpg-danger-vignette {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  border: 0 solid rgba(255, 52, 32, 0);
+  box-shadow: inset 0 0 70px rgba(255, 45, 24, 0);
+  pointer-events: none;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.rpg-danger-vignette.incoming {
+  border-width: 5px;
+  border-color: rgba(255, 88, 44, .28);
+}
+
+.rpg-danger-vignette.low-hp {
+  border-width: 10px;
+  border-color: rgba(255, 45, 24, .6);
+  box-shadow: inset 0 0 85px rgba(255, 32, 18, .34);
+  animation: dangerHeartbeat .72s infinite alternate;
+}
+
 .rpg-hud {
   position: absolute;
   z-index: 4;
@@ -465,6 +487,20 @@ body {
   font-size: clamp(11px, 1.1vw, 15px);
 }
 
+.rpg-objective em {
+  display: block;
+  margin: -2px 0 6px;
+  color: #8fe8ff;
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.rpg-objective em.attack-alert {
+  color: #ffb04d;
+  animation: attackAlert .36s infinite alternate;
+}
+
 .rpg-progress {
   height: 8px;
   border-width: 1px;
@@ -631,6 +667,14 @@ body {
   animation: rpgPowerGlow .55s infinite alternate;
 }
 
+.rpg-mega small {
+  display: block;
+  margin-top: 5px;
+  color: #ffe780;
+  font-size: 7px;
+  font-weight: 900;
+}
+
 .rpg-joystick {
   position: absolute;
   z-index: 5;
@@ -688,6 +732,11 @@ body {
   gap: clamp(8px, 1.2vw, 18px);
 }
 
+.rpg-sub-actions {
+  display: grid;
+  gap: clamp(7px, .9vw, 12px);
+}
+
 .rpg-dash-button {
   position: relative;
   width: clamp(74px, 7.5vw, 104px);
@@ -699,6 +748,46 @@ body {
   box-shadow: 0 7px 0 #102735, 0 12px 22px rgba(0, 0, 0, .25);
   color: #fff;
   cursor: pointer;
+}
+
+.rpg-mega-button {
+  width: clamp(74px, 7.5vw, 104px);
+  aspect-ratio: 1;
+  display: grid;
+  place-content: center;
+  border: 5px solid #87959d;
+  border-radius: 50%;
+  background: #33454f;
+  box-shadow: 0 7px 0 #172a34, 0 12px 22px rgba(0, 0, 0, .25);
+  color: #83939c;
+  line-height: 1;
+  cursor: not-allowed;
+}
+
+.rpg-mega-button span,
+.rpg-mega-button small {
+  font-size: clamp(8px, .8vw, 11px);
+  font-weight: 900;
+}
+
+.rpg-mega-button strong {
+  margin: 3px 0;
+  font-size: clamp(13px, 1.3vw, 19px);
+  font-style: italic;
+}
+
+.rpg-mega-button.ready {
+  border-color: #fff;
+  background: radial-gradient(circle at 35% 25%, #fff56b, #ff9c0d 58%, #d9390d);
+  box-shadow: 0 7px 0 #7b230d, 0 0 28px rgba(255, 196, 35, .85);
+  color: #fff;
+  text-shadow: 0 2px 0 #8a2a0d;
+  cursor: pointer;
+  animation: megaButtonReady .48s infinite alternate;
+}
+
+.rpg-mega-button:disabled {
+  opacity: .64;
 }
 
 .rpg-dash-button i {
@@ -745,7 +834,8 @@ body {
 }
 
 .rpg-smash-button:active,
-.rpg-dash-button:active {
+.rpg-dash-button:active,
+.rpg-mega-button.ready:active {
   transform: translateY(6px) scale(.97);
   box-shadow: 0 2px 0 #76200f;
 }
@@ -1672,6 +1762,21 @@ body {
   to { filter: brightness(1.08) drop-shadow(0 0 13px #ffce38); }
 }
 
+@keyframes megaButtonReady {
+  to { transform: scale(1.045) rotate(2deg); filter: brightness(1.08); }
+}
+
+@keyframes attackAlert {
+  to { color: #fff; transform: scale(1.03); }
+}
+
+@keyframes dangerHeartbeat {
+  to {
+    border-color: rgba(255, 45, 24, .9);
+    box-shadow: inset 0 0 120px rgba(255, 25, 12, .5);
+  }
+}
+
 @media (max-width: 920px) {
   .hub-card {
     grid-template-columns: 1fr;
@@ -1807,7 +1912,8 @@ body {
     gap: 6px;
   }
 
-  .rpg-dash-button {
+  .rpg-dash-button,
+  .rpg-mega-button {
     width: 65px;
     border-width: 4px;
   }
@@ -1896,7 +2002,8 @@ body {
   .rpg-build-rail { top: 92px; transform: scale(.82); transform-origin: right top; }
   .rpg-joystick { width: 128px; bottom: 14px; }
   .rpg-smash-button { width: 135px; }
-  .rpg-dash-button { width: 70px; }
+  .rpg-dash-button,
+  .rpg-mega-button { width: 70px; }
   .rpg-mega { bottom: 158px; }
   .rpg-objective { bottom: 12px; }
 }
