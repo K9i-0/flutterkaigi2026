@@ -115,6 +115,7 @@ type Enemy = {
   attackWarning: THREE.Group | null;
   vulnerableFrom: number;
   vulnerableUntil: number;
+  phase: 1 | 2;
   healthFill?: THREE.Mesh;
 };
 
@@ -158,6 +159,28 @@ type DizzyBoss = {
   group: THREE.Group;
   stars: THREE.Group;
   startedAt: number;
+};
+
+type MegaProjectile = {
+  group: THREE.Group;
+  lane: THREE.Group;
+  origin: THREE.Vector3;
+  direction: THREE.Vector3;
+  distance: number;
+  width: number;
+  damage: number;
+  startedAt: number;
+  duration: number;
+  previousDistance: number;
+  lastTrailAt: number;
+  hitEnemies: Set<Enemy>;
+};
+
+type TimedVisual = {
+  object: THREE.Object3D;
+  life: number;
+  maxLife: number;
+  spin: number;
 };
 
 const EMPTY_HUD: HudState = {
@@ -603,6 +626,7 @@ export default function OfficeCrashRPG() {
   const profileRef = useRef<GameProfile>(EMPTY_PROFILE);
   const submitRunRef = useRef<(summary: RunSummary) => void>(() => {});
   const toastTimer = useRef<number | null>(null);
+  const megaFlashTimer = useRef<number | null>(null);
 
   const [status, setStatus] = useState<GameStatus>("hub");
   const [hud, setHud] = useState<HudState>(EMPTY_HUD);
@@ -611,6 +635,7 @@ export default function OfficeCrashRPG() {
   const [audioReady, setAudioReady] = useState(false);
   const [audioError, setAudioError] = useState(false);
   const [toast, setToast] = useState("");
+  const [megaFlash, setMegaFlash] = useState(false);
   const [joystick, setJoystick] = useState({ x: 0, y: 0 });
   const [rewardChoices, setRewardChoices] = useState<RewardChoice[]>([]);
   const [rerolls, setRerolls] = useState(1);
@@ -796,6 +821,8 @@ export default function OfficeCrashRPG() {
     const effects: Effect[] = [];
     const hazards: Hazard[] = [];
     const dizzyBosses: DizzyBoss[] = [];
+    const megaProjectiles: MegaProjectile[] = [];
+    const timedVisuals: TimedVisual[] = [];
     const stageObjects: THREE.Object3D[] = [];
     const upgradeValues = Object.fromEntries(
       UPGRADES.map((upgrade) => [upgrade.id, 0]),
@@ -961,10 +988,16 @@ export default function OfficeCrashRPG() {
       invulnerableUntil: 0,
       freezeUntil: 0,
       shake: 0,
-      pendingSmash: null as { at: number; center: THREE.Vector3; mega: boolean } | null,
+      pendingSmash: null as { at: number; center: THREE.Vector3 } | null,
+      pendingMega: null as {
+        at: number;
+        origin: THREE.Vector3;
+        direction: THREE.Vector3;
+      } | null,
       profile: EMPTY_PROFILE,
       guestBoss: "yotan" as CharacterBossId,
       lastBossDefeat: "",
+      pendingFloorClear: false,
       selected: [] as RewardChoice[],
       synergies: [] as SynergyDefinition[],
     };
@@ -1000,6 +1033,13 @@ export default function OfficeCrashRPG() {
       effects.length = 0;
       for (const hazard of hazards) removeDisposableObject(hazard.warning);
       hazards.length = 0;
+      for (const projectile of megaProjectiles) {
+        removeDisposableObject(projectile.group);
+        removeDisposableObject(projectile.lane);
+      }
+      megaProjectiles.length = 0;
+      for (const visual of timedVisuals) removeDisposableObject(visual.object);
+      timedVisuals.length = 0;
       dizzyBosses.length = 0;
     };
 
@@ -1050,6 +1090,108 @@ export default function OfficeCrashRPG() {
       wave.scale.setScalar(size);
       scene.add(wave);
       effects.push({ mesh: wave, life: 0.46, maxLife: 0.46 });
+    };
+
+    const addTimedVisual = (object: THREE.Object3D, life: number, spin = 1.8) => {
+      scene.add(object);
+      timedVisuals.push({ object, life, maxLife: life, spin });
+    };
+
+    const makeMegaMugProjectile = () => {
+      const group = new THREE.Group();
+      const amber = new THREE.MeshStandardMaterial({
+        color: 0xffa20d,
+        emissive: 0xff5a00,
+        emissiveIntensity: 1.25,
+        metalness: 0.2,
+        roughness: 0.18,
+        transparent: true,
+        opacity: 0.92,
+      });
+      const white = new THREE.MeshBasicMaterial({ color: 0xfffbd0 });
+      const mug = new THREE.Mesh(new THREE.CylinderGeometry(0.36, 0.32, 0.76, 16), amber);
+      mug.position.y = 0.42;
+      const handle = new THREE.Mesh(new THREE.TorusGeometry(0.27, 0.075, 8, 18, Math.PI * 1.55), amber.clone());
+      handle.position.set(0.38, 0.46, 0);
+      handle.rotation.z = Math.PI / 2;
+      for (let index = 0; index < 5; index += 1) {
+        const foam = new THREE.Mesh(new THREE.SphereGeometry(0.16, 10, 8), white.clone());
+        const angle = index / 5 * Math.PI * 2;
+        foam.position.set(Math.cos(angle) * 0.2, 0.82, Math.sin(angle) * 0.2);
+        group.add(foam);
+      }
+      const aura = new THREE.Mesh(
+        new THREE.TorusGeometry(0.65, 0.08, 10, 28),
+        new THREE.MeshBasicMaterial({
+          color: 0xffee65,
+          transparent: true,
+          opacity: 0.78,
+        }),
+      );
+      aura.rotation.x = Math.PI / 2;
+      aura.position.y = 0.42;
+      aura.name = "MegaMugAura";
+      group.add(mug, handle, aura);
+      const light = new THREE.PointLight(0xffa51f, 5.5, 9);
+      light.position.y = 0.5;
+      group.add(light);
+      group.scale.setScalar(1.35);
+      return group;
+    };
+
+    const makeMegaLane = (
+      origin: THREE.Vector3,
+      direction: THREE.Vector3,
+      distance: number,
+      width: number,
+    ) => {
+      const group = new THREE.Group();
+      const glow = new THREE.Mesh(
+        new THREE.BoxGeometry(width, 0.035, distance),
+        new THREE.MeshBasicMaterial({
+          color: 0xffa30d,
+          transparent: true,
+          opacity: 0.34,
+          depthWrite: false,
+        }),
+      );
+      glow.position.z = distance / 2;
+      const core = new THREE.Mesh(
+        new THREE.BoxGeometry(0.28, 0.055, distance),
+        new THREE.MeshBasicMaterial({
+          color: 0xffffff,
+          transparent: true,
+          opacity: 0.92,
+          depthWrite: false,
+        }),
+      );
+      core.position.set(0, 0.02, distance / 2);
+      group.add(glow, core);
+      group.position.copy(origin).setY(0.07);
+      group.rotation.y = Math.atan2(direction.x, direction.z);
+      scene.add(group);
+      return group;
+    };
+
+    const spawnMegaTrail = (position: THREE.Vector3) => {
+      const group = new THREE.Group();
+      for (let index = 0; index < 5; index += 1) {
+        const bubble = new THREE.Mesh(
+          new THREE.SphereGeometry(0.08 + Math.random() * 0.13, 8, 6),
+          new THREE.MeshBasicMaterial({
+            color: index % 2 === 0 ? 0xffffff : 0xffc21d,
+            transparent: true,
+            opacity: 0.82,
+          }),
+        );
+        bubble.position.copy(position).add(new THREE.Vector3(
+          (Math.random() - 0.5) * 0.75,
+          (Math.random() - 0.5) * 0.55,
+          (Math.random() - 0.5) * 0.75,
+        ));
+        group.add(bubble);
+      }
+      addTimedVisual(group, 0.38);
     };
 
     const makeDangerZone = (position: THREE.Vector3, radius: number, color: number) => {
@@ -1305,6 +1447,7 @@ export default function OfficeCrashRPG() {
         attackWarning: null,
         vulnerableFrom: 0,
         vulnerableUntil: 0,
+        phase: 1,
         healthFill: health.userData.fill as THREE.Mesh,
       });
     };
@@ -1374,6 +1517,7 @@ export default function OfficeCrashRPG() {
         attackWarning: null,
         vulnerableFrom: 0,
         vulnerableUntil: 0,
+        phase: 1,
         healthFill: health.userData.fill as THREE.Mesh,
       });
       group.userData.healthBar = health;
@@ -1452,9 +1596,9 @@ export default function OfficeCrashRPG() {
         timer: runtime.timer === null ? null : Math.max(0, Math.ceil(runtime.timer)),
         dashReady: dashProgress,
         bossName: boss
-          ? `${boss.label}${
+          ? `${boss.label}${boss.phase === 2 ? "｜ENCORE PHASE" : ""}${
             runtime.elapsed >= boss.vulnerableFrom && runtime.elapsed < boss.vulnerableUntil
-              ? "｜反動中：MEGAチャンス"
+              ? "｜反動中：ジョッキレール好機"
               : ""
           }`
           : "",
@@ -1469,6 +1613,7 @@ export default function OfficeCrashRPG() {
 
     const setupFloor = () => {
       clearStage();
+      setMegaFlash(false);
       const floorDefinition = FLOORS[runtime.floor - 1];
       const overtime = OVERTIME_RANKS[runtime.overtimeRank];
       floorMaterial.color.setHex(floorDefinition.tint);
@@ -1488,8 +1633,10 @@ export default function OfficeCrashRPG() {
       runtime.combo = 0;
       runtime.comboWindow = 0;
       runtime.pendingSmash = null;
+      runtime.pendingMega = null;
       runtime.megaLockUntil = 0;
       runtime.lastBossDefeat = "";
+      runtime.pendingFloorClear = false;
       runtime.mega = Math.min(3, runtime.mega + Math.max(0, Math.floor(upgradeValues.happy)));
       runtime.playing = true;
       runtime.paused = false;
@@ -1620,6 +1767,28 @@ export default function OfficeCrashRPG() {
       dizzyBosses.push({ group: enemy.group, stars, startedAt: runtime.elapsed });
     };
 
+    const completeEnemyWave = () => {
+      runtime.pendingFloorClear = false;
+      const floorDefinition = FLOORS[runtime.floor - 1];
+      if (floorDefinition.kind === "challenge" && (runtime.timer ?? 0) > 0) {
+        const points = randomSpawnPoints();
+        const kinds: EquipmentEnemyKind[] = ["chair", "desk", "cabinet", "copier"];
+        const waveSize = runtime.floor === 7 ? 18 : 14;
+        for (let index = 0; index < waveSize; index += 1) {
+          const [x, z] = points[index];
+          spawnEnemy(kinds[index % kinds.length], x, z, {
+            stationary: true,
+            hp: 1,
+            scale: 0.92,
+          });
+        }
+        runtime.floorTotal += waveSize;
+        notify("BONUS WAVE! まだまだ快適です！");
+      } else {
+        finishFloor();
+      }
+    };
+
     const destroyEnemy = (enemy: Enemy, critical: boolean, chainDepth = 0) => {
       if (!enemy.alive) return;
       enemy.alive = false;
@@ -1671,6 +1840,13 @@ export default function OfficeCrashRPG() {
       } else {
         spawnDebris(enemy.group.position, enemy.color, enemy.boss ? 42 : 13);
         playSound(enemy.boss ? "metal" : "break");
+        if (runtime.floor >= 5) {
+          spawnWave(enemy.group.position, enemy.elite ? 0xffd23f : enemy.color, enemy.elite ? 1.25 : 0.72);
+          if (enemy.elite) {
+            spawnWave(enemy.group.position, 0xffffff, 0.82);
+            tone(310, 0.11, "square", 0.028, 620);
+          }
+        }
       }
       navigator.vibrate?.(enemy.boss ? 45 : 15);
 
@@ -1710,23 +1886,10 @@ export default function OfficeCrashRPG() {
 
       syncHud();
       if (enemies.every((candidate) => !candidate.alive)) {
-        const floorDefinition = FLOORS[runtime.floor - 1];
-        if (floorDefinition.kind === "challenge" && (runtime.timer ?? 0) > 0) {
-          const points = randomSpawnPoints();
-          const kinds: EquipmentEnemyKind[] = ["chair", "desk", "cabinet", "copier"];
-          const waveSize = runtime.floor === 7 ? 18 : 14;
-          for (let i = 0; i < waveSize; i += 1) {
-            const [x, z] = points[i];
-            spawnEnemy(kinds[i % kinds.length], x, z, {
-              stationary: true,
-              hp: 1,
-              scale: 0.92,
-            });
-          }
-          runtime.floorTotal += waveSize;
-          notify("BONUS WAVE! まだまだ快適です！");
+        if (megaProjectiles.length > 0) {
+          runtime.pendingFloorClear = true;
         } else {
-          finishFloor();
+          completeEnemyWave();
         }
       }
     };
@@ -1742,6 +1905,36 @@ export default function OfficeCrashRPG() {
       enemy.hp -= finalAmount;
       enemy.barrier = Math.max(0, enemy.barrier - finalAmount);
       enemy.frozenUntil = Math.max(enemy.frozenUntil, runtime.elapsed + upgradeValues.frost * 0.45);
+      if (
+        enemy.characterBoss
+        && enemy.phase === 1
+        && enemy.hp > 0
+        && enemy.hp / enemy.maxHp <= 0.5
+      ) {
+        enemy.phase = 2;
+        for (const hazard of hazards) removeDisposableObject(hazard.warning);
+        hazards.length = 0;
+        enemy.pulseAt = Math.min(enemy.pulseAt, runtime.elapsed + 1.05);
+        const aura = new THREE.Mesh(
+          new THREE.TorusGeometry(enemy.radius * 1.65, 0.12, 10, 38),
+          new THREE.MeshBasicMaterial({
+            color: WINDOW_BOSSES[enemy.characterBoss].color,
+            transparent: true,
+            opacity: 0.88,
+          }),
+        );
+        aura.rotation.x = Math.PI / 2;
+        aura.position.y = 0.18;
+        aura.userData.phaseAura = true;
+        enemy.group.add(aura);
+        enemy.group.userData.phaseAura = aura;
+        spawnWave(enemy.group.position, 0xffffff, 2.25);
+        spawnWave(enemy.group.position, WINDOW_BOSSES[enemy.characterBoss].color, 1.45);
+        runtime.shake = Math.max(runtime.shake, 0.48);
+        tone(220, 0.22, "square", 0.05, 440);
+        tone(440, 0.3, "sawtooth", 0.045, 880, 0.16);
+        notify(`ENCORE PHASE！ ${WINDOW_BOSSES[enemy.characterBoss].displayName}の攻撃が強化！`);
+      }
       const away = enemy.group.position.clone().sub(center).setY(0);
       if (away.lengthSq() > 0.01 && !enemy.boss) {
         away.normalize().multiplyScalar(0.38 + upgradeValues.knockback * 0.4);
@@ -1756,6 +1949,190 @@ export default function OfficeCrashRPG() {
       } else {
         spawnDebris(enemy.group.position.clone().add(new THREE.Vector3(0, 0.8, 0)), enemy.color, 4);
         playSound("metal");
+      }
+    };
+
+    const getMegaTravelDistance = (origin: THREE.Vector3, direction: THREE.Vector3) => {
+      const distances: number[] = [];
+      if (direction.x > 0.001) distances.push((9.75 - origin.x) / direction.x);
+      if (direction.x < -0.001) distances.push((-9.75 - origin.x) / direction.x);
+      if (direction.z > 0.001) distances.push((11.55 - origin.z) / direction.z);
+      if (direction.z < -0.001) distances.push((-13.35 - origin.z) / direction.z);
+      const positive = distances.filter((distance) => distance > 0.2);
+      return THREE.MathUtils.clamp(Math.min(...positive, 22), 0.8, 22);
+    };
+
+    const launchMegaMug = (
+      origin: THREE.Vector3,
+      direction: THREE.Vector3,
+    ) => {
+      const distance = getMegaTravelDistance(origin, direction);
+      const rushActive = runtime.elapsed < runtime.rushUntil;
+      const width = 2.3 * (1 + upgradeValues.wide * 0.13) * (rushActive ? 1.16 : 1);
+      const baseDamage = 2 * (
+        1
+        + runtime.profile.mastery.forge * 0.08
+        + upgradeValues.heavy * 0.28
+      );
+      const group = makeMegaMugProjectile();
+      group.position.copy(origin).setY(0.82);
+      scene.add(group);
+      const lane = makeMegaLane(origin, direction, distance, width);
+      megaProjectiles.push({
+        group,
+        lane,
+        origin: origin.clone().setY(0),
+        direction: direction.clone().setY(0).normalize(),
+        distance,
+        width,
+        damage: baseDamage * 3.15 * (rushActive ? 1.18 : 1),
+        startedAt: runtime.elapsed,
+        duration: 0.4 + distance / 38,
+        previousDistance: 0,
+        lastTrailAt: runtime.elapsed,
+        hitEnemies: new Set(),
+      });
+      noise(0.32, 0.12, 320);
+      tone(190, 0.36, "sawtooth", 0.065, 980);
+      tone(760, 0.18, "square", 0.04, 1320, 0.12);
+      notify("必殺・生ジョッキレール！ 直線上をまとめて貫通！");
+    };
+
+    const spawnMegaImpact = (projectile: MegaProjectile) => {
+      const impact = projectile.origin.clone().addScaledVector(projectile.direction, projectile.distance);
+      const blastRadius = 3.5 * (1 + upgradeValues.wide * 0.12);
+      const burst = new THREE.Group();
+      burst.position.copy(impact);
+      const pillar = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.48, 2.4, 7.2, 28, 1, true),
+        new THREE.MeshBasicMaterial({
+          color: 0xffe552,
+          transparent: true,
+          opacity: 0.8,
+          side: THREE.DoubleSide,
+          depthWrite: false,
+        }),
+      );
+      pillar.position.y = 3.6;
+      burst.add(pillar);
+      for (let index = 0; index < 12; index += 1) {
+        const ray = new THREE.Mesh(
+          new THREE.BoxGeometry(0.16, 0.09, 5.2),
+          new THREE.MeshBasicMaterial({
+            color: index % 2 === 0 ? 0xffffff : 0xff9d0b,
+            transparent: true,
+            opacity: 0.86,
+          }),
+        );
+        ray.position.y = 0.18;
+        ray.rotation.y = index / 12 * Math.PI;
+        burst.add(ray);
+      }
+      const flashLight = new THREE.PointLight(0xffd23f, 14, 20);
+      flashLight.position.y = 2.2;
+      burst.add(flashLight);
+      addTimedVisual(burst, 0.58);
+      spawnWave(impact, 0xffffff, 3.4);
+      spawnWave(impact, 0xffc21d, 2.35);
+      spawnWave(impact, 0xff6b16, 1.35);
+      spawnDebris(impact.clone().setY(0.55), 0xffad17, 32);
+      runtime.shake = Math.max(runtime.shake, 1.2);
+      noise(0.5, 0.19, 75);
+      tone(74, 0.46, "sawtooth", 0.095, 34);
+      tone(392, 0.28, "square", 0.06, 784, 0.08);
+      tone(784, 0.36, "triangle", 0.055, 1568, 0.2);
+      navigator.vibrate?.([35, 35, 90]);
+      setMegaFlash(true);
+      if (megaFlashTimer.current) window.clearTimeout(megaFlashTimer.current);
+      megaFlashTimer.current = window.setTimeout(() => setMegaFlash(false), 180);
+
+      for (const enemy of [...enemies]) {
+        if (!enemy.alive) continue;
+        const distance = Math.max(0, enemy.group.position.distanceTo(impact) - enemy.radius);
+        if (distance <= blastRadius) {
+          projectile.hitEnemies.add(enemy);
+          damageEnemy(enemy, projectile.damage * 0.82, distance <= 0.75, impact);
+        }
+      }
+
+      const hits = projectile.hitEnemies.size;
+      const bonus = Math.round(
+        Math.max(1, hits)
+        * 680
+        * getComboMultiplier(runtime.combo)
+        * OVERTIME_RANKS[runtime.overtimeRank].scoreMultiplier,
+      );
+      runtime.score += bonus;
+      notify(`生ジョッキレール ×${hits}｜着弾大爆発 +${formatNumber(bonus)}`);
+      playSound("beer");
+      syncHud();
+    };
+
+    const updateMegaProjectiles = (dt: number) => {
+      for (let index = megaProjectiles.length - 1; index >= 0; index -= 1) {
+        const projectile = megaProjectiles[index];
+        const progress = THREE.MathUtils.clamp(
+          (runtime.elapsed - projectile.startedAt) / projectile.duration,
+          0,
+          1,
+        );
+        const eased = 1 - Math.pow(1 - progress, 2);
+        const traveled = projectile.distance * eased;
+        projectile.group.position
+          .copy(projectile.origin)
+          .addScaledVector(projectile.direction, traveled);
+        projectile.group.position.y = 0.92 + Math.sin(progress * Math.PI) * 0.7;
+        projectile.group.rotation.x += dt * 12;
+        projectile.group.rotation.y += dt * 18;
+        const aura = projectile.group.getObjectByName("MegaMugAura");
+        if (aura) aura.rotation.z += dt * 9;
+
+        if (runtime.elapsed - projectile.lastTrailAt >= 0.035) {
+          projectile.lastTrailAt = runtime.elapsed;
+          spawnMegaTrail(projectile.group.position);
+        }
+
+        if (runtime.playing) {
+          for (const enemy of [...enemies]) {
+            if (!enemy.alive || projectile.hitEnemies.has(enemy)) continue;
+            const delta = enemy.group.position.clone().sub(projectile.origin).setY(0);
+            const along = delta.dot(projectile.direction);
+            const sideDistance = Math.abs(delta.dot(
+              new THREE.Vector3(-projectile.direction.z, 0, projectile.direction.x),
+            ));
+            if (
+              along >= projectile.previousDistance - enemy.radius
+              && along <= traveled + enemy.radius
+              && sideDistance <= projectile.width / 2 + enemy.radius
+            ) {
+              projectile.hitEnemies.add(enemy);
+              const perfectLine = sideDistance <= 0.38;
+              enemy.frozenUntil = Math.max(enemy.frozenUntil, runtime.elapsed + 0.16);
+              spawnWave(enemy.group.position, perfectLine ? 0xffffff : 0xffc21d, perfectLine ? 1.25 : 0.9);
+              runtime.shake = Math.max(runtime.shake, perfectLine ? 0.52 : 0.34);
+              damageEnemy(
+                enemy,
+                projectile.damage * (perfectLine ? 1.48 : 1),
+                perfectLine,
+                projectile.origin,
+              );
+            }
+          }
+        }
+        projectile.previousDistance = traveled;
+
+        if (progress >= 1) {
+          megaProjectiles.splice(index, 1);
+          removeDisposableObject(projectile.group);
+          timedVisuals.push({
+            object: projectile.lane,
+            life: 0.34,
+            maxLife: 0.34,
+            spin: 0,
+          });
+          spawnMegaImpact(projectile);
+          if (runtime.pendingFloorClear && megaProjectiles.length === 0) completeEnemyWave();
+        }
       }
     };
 
@@ -1792,6 +2169,7 @@ export default function OfficeCrashRPG() {
       direction.normalize();
       const side = new THREE.Vector3(-direction.z, 0, direction.x);
       const bossDamage = enemy.damage;
+      const encore = enemy.phase === 2;
       let lastTriggerDelay = 1.45;
 
       (enemy.group.userData.animator as VoxelActionController | undefined)?.triggerSmash(true);
@@ -1809,7 +2187,12 @@ export default function OfficeCrashRPG() {
         spawnWave(origin, definition.color, 1.4);
         tone(164, 0.42, "sawtooth", 0.05, 440);
         tone(246, 0.38, "square", 0.035, 659, 0.1);
-        lastTriggerDelay = 1.52;
+        if (encore) {
+          addHazard(target.clone().addScaledVector(direction, 3.4), 2.05, bossDamage * 0.64, 1.68, 0xffffff);
+          addHazard(target.clone().addScaledVector(direction, -3.4), 2.05, bossDamage * 0.64, 1.68, 0xffd23f);
+          lastTriggerDelay = 1.68;
+        }
+        if (!encore) lastTriggerDelay = 1.52;
       } else if (id === "tokun") {
         [-2.7, 0, 2.7].forEach((offset, index) => {
           addHazard(
@@ -1823,13 +2206,25 @@ export default function OfficeCrashRPG() {
         spawnWave(origin, definition.color, 1.65);
         tone(392, 0.3, "triangle", 0.045, 523);
         tone(587, 0.34, "sine", 0.04, 784, 0.12);
-        lastTriggerDelay = 1.58;
+        if (encore) {
+          addHazard(target.clone().addScaledVector(direction, 3.5), 1.55, bossDamage * 0.58, 1.7, 0xffef83);
+          addHazard(target.clone().addScaledVector(direction, -3.5), 1.55, bossDamage * 0.58, 1.7, 0xffef83);
+          lastTriggerDelay = 1.7;
+        } else {
+          lastTriggerDelay = 1.58;
+        }
       } else if (id === "fukuchan") {
         addHazard(target, 2.8, bossDamage * 0.62, 1.42, definition.color);
         addHazard(target.clone().addScaledVector(side, 4.2), 1.65, bossDamage * 0.46, 1.62, 0xffffff);
         addHazard(target.clone().addScaledVector(side, -4.2), 1.65, bossDamage * 0.46, 1.62, 0xffffff);
         tone(820, 0.12, "sine", 0.045, 1480);
-        lastTriggerDelay = 1.62;
+        if (encore) {
+          addHazard(target.clone().addScaledVector(direction, 4.1), 2, bossDamage * 0.58, 1.78, 0xffffff);
+          addHazard(target.clone().addScaledVector(direction, -4.1), 2, bossDamage * 0.58, 1.78, definition.color);
+          lastTriggerDelay = 1.78;
+        } else {
+          lastTriggerDelay = 1.62;
+        }
       } else if (id === "yumemin") {
         addHazard(target, 2.45, bossDamage * 0.74, 1.5, definition.color);
         addHazard(
@@ -1840,7 +2235,12 @@ export default function OfficeCrashRPG() {
           0xdff8ff,
         );
         tone(110, 0.18, "square", 0.04, 82);
-        lastTriggerDelay = 1.72;
+        if (encore) {
+          addHazard(target.clone().addScaledVector(side, 3.1), 1.75, bossDamage * 0.58, 1.88, 0xffffff);
+          lastTriggerDelay = 1.88;
+        } else {
+          lastTriggerDelay = 1.72;
+        }
       } else if (id === "takosan") {
         for (let index = 0; index < 6; index += 1) {
           if (index === 1) continue;
@@ -1853,28 +2253,60 @@ export default function OfficeCrashRPG() {
           addHazard(position, 1.5, bossDamage * 0.54, 1.28 + index * 0.06, definition.color);
         }
         tone(145, 0.5, "triangle", 0.04, 92);
-        lastTriggerDelay = 1.58;
+        if (encore) {
+          addHazard(target, 1.65, bossDamage * 0.62, 1.74, 0xffffff);
+          lastTriggerDelay = 1.74;
+        } else {
+          lastTriggerDelay = 1.58;
+        }
       } else if (id === "yametaro") {
         addBeamHazard(origin, direction, 20, 2.3, bossDamage * 0.7, 1.35, definition.color);
+        if (encore) {
+          addBeamHazard(
+            origin,
+            direction.clone().applyAxisAngle(UP, -Math.PI * 0.24),
+            20,
+            1.7,
+            bossDamage * 0.55,
+            1.58,
+            0xffd23f,
+          );
+        }
         tone(280, 0.3, "sawtooth", 0.045, 720);
-        lastTriggerDelay = 1.35;
+        lastTriggerDelay = encore ? 1.58 : 1.35;
       } else {
-        addBeamHazard(origin, direction, 22, 2.15, bossDamage * 0.68, 1.45, definition.color);
-        const crossingDirection = direction.clone().applyAxisAngle(UP, Math.PI * 0.34);
-        addBeamHazard(origin, crossingDirection, 22, 1.55, bossDamage * 0.48, 1.72, 0xff6b3d);
+        if (encore) {
+          [-0.3, 0, 0.3].forEach((angle, index) => {
+            addBeamHazard(
+              origin,
+              direction.clone().applyAxisAngle(UP, Math.PI * angle),
+              22,
+              index === 1 ? 2.35 : 1.45,
+              bossDamage * (index === 1 ? 0.7 : 0.5),
+              1.42 + index * 0.14,
+              index === 1 ? definition.color : 0xff6b3d,
+            );
+          });
+          lastTriggerDelay = 1.7;
+        } else {
+          addBeamHazard(origin, direction, 22, 2.15, bossDamage * 0.68, 1.45, definition.color);
+          const crossingDirection = direction.clone().applyAxisAngle(UP, Math.PI * 0.34);
+          addBeamHazard(origin, crossingDirection, 22, 1.55, bossDamage * 0.48, 1.72, 0xff6b3d);
+          lastTriggerDelay = 1.72;
+        }
         tone(96, 0.62, "sawtooth", 0.055, 420);
         tone(720, 0.2, "square", 0.035, 1180, 0.32);
-        lastTriggerDelay = 1.72;
       }
 
       enemy.vulnerableFrom = runtime.elapsed + lastTriggerDelay;
       enemy.vulnerableUntil = enemy.vulnerableFrom + 1.9;
-      enemy.pulseAt = enemy.vulnerableUntil + (id === "okayaman" ? 1.55 : 2.1);
+      enemy.pulseAt = enemy.vulnerableUntil
+        + (id === "okayaman" ? (encore ? 0.95 : 1.55) : encore ? 1.45 : 2.1);
       enemy.nextAttack = enemy.pulseAt + 0.35;
       notify(
         id === "yumemin" || id === "takosan"
-          ? `${definition.displayName}｜${definition.specialName} — 床予告から退避！`
-          : `${definition.displayName}「${definition.specialName}」— 床予告から退避！`,
+          ? `${encore ? "ENCORE｜" : ""}${definition.displayName}｜${definition.specialName} — 床予告から退避！`
+          : `${encore ? "ENCORE｜" : ""}${definition.displayName}「${definition.specialName}」— 床予告から退避！`,
       );
     };
 
@@ -1925,7 +2357,7 @@ export default function OfficeCrashRPG() {
         enemy.vulnerableFrom = runtime.elapsed;
         enemy.vulnerableUntil = runtime.elapsed + 1.8;
         if (dodged) {
-          notify("回避成功！ 反動中にMEGAを叩き込め！");
+          notify("回避成功！ 反動中に生ジョッキレールを叩き込め！");
           tone(660, 0.12, "square", 0.045, 880);
         } else {
           notify("ボスが反動中！ 今ならダメージ ×1.65");
@@ -1933,14 +2365,14 @@ export default function OfficeCrashRPG() {
       }
     };
 
-    const performSmash = (center: THREE.Vector3, mega: boolean) => {
+    const performSmash = (center: THREE.Vector3) => {
       playSound("smash");
       const baseDamage = 2 * (1 + runtime.profile.mastery.forge * 0.08 + upgradeValues.heavy * 0.28);
-      const damage = baseDamage * (mega ? 3.35 : 1);
-      const radius = 1.65 * (1 + upgradeValues.wide * 0.16) * (mega ? 2.05 : 1);
+      const damage = baseDamage;
+      const radius = 1.65 * (1 + upgradeValues.wide * 0.16);
       const criticalMultiplier = runtime.synergies.some((synergy) => synergy.name === "店主の会心") ? 2.35 : 1.75;
-      spawnWave(center, mega ? 0xffc21d : 0xffffff, mega ? 1.8 : 1);
-      runtime.shake = Math.max(runtime.shake, mega ? 0.7 : 0.24);
+      spawnWave(center, 0xffffff, 1);
+      runtime.shake = Math.max(runtime.shake, 0.24);
       let hits = 0;
       let criticals = 0;
       for (const enemy of enemies) {
@@ -1953,27 +2385,21 @@ export default function OfficeCrashRPG() {
           damageEnemy(enemy, damage * (critical ? criticalMultiplier : 1), critical, center);
         }
       }
-      if (mega) {
-        const bonus = Math.round(Math.max(1, hits) * 420 * getComboMultiplier(runtime.combo));
-        runtime.score += bonus;
-        notify(`必殺 MEGA SMASH!! ×${hits} +${formatNumber(bonus)}`);
-        playSound("beer");
-        navigator.vibrate?.(70);
-      } else if (hits > 1) {
+      if (hits > 1) {
         const bonus = Math.round(hits * hits * 45 * getComboMultiplier(runtime.combo));
         runtime.score += bonus;
         notify(`MULTI BREAK ×${hits} +${formatNumber(bonus)}`);
       } else if (criticals > 0) {
         notify(`PERFECT SMASH! ×${criticalMultiplier.toFixed(2)}`);
       } else if (hits === 0) {
-        notify(mega ? "MEGA SMASH!" : "SMASH!");
+        notify("SMASH!");
       }
       syncHud();
     };
 
     const smash = () => {
       if (!runtime.playing || runtime.paused) return;
-      if (runtime.elapsed < runtime.megaLockUntil || runtime.pendingSmash) return;
+      if (runtime.elapsed < runtime.megaLockUntil || runtime.pendingSmash || runtime.pendingMega) return;
       const rushActive = runtime.elapsed < runtime.rushUntil;
       const cooldown = Math.max(0.16, 0.46 * (1 - upgradeValues.haste * 0.09) * (rushActive ? 0.7 : 1));
       if (runtime.elapsed - runtime.lastSmash < cooldown) return;
@@ -1983,25 +2409,54 @@ export default function OfficeCrashRPG() {
       center.y = 0;
       (player.userData.animator as VoxelActionController | undefined)?.triggerSmash(false);
       tone(280, 0.1, "sawtooth", 0.045, 720);
-      runtime.pendingSmash = { at: runtime.elapsed + 0.17, center, mega: false };
+      runtime.pendingSmash = { at: runtime.elapsed + 0.17, center };
       syncHud();
     };
 
     const megaSmash = () => {
       if (!runtime.playing || runtime.paused || runtime.mega <= 0) return;
-      if (runtime.pendingSmash || runtime.elapsed - runtime.lastMega < 0.9) return;
+      if (
+        runtime.pendingSmash
+        || runtime.pendingMega
+        || megaProjectiles.length > 0
+        || runtime.elapsed - runtime.lastMega < 0.9
+      ) return;
       runtime.lastMega = runtime.elapsed;
       runtime.mega -= 1;
-      runtime.megaLockUntil = runtime.elapsed + 0.48;
-      runtime.invulnerableUntil = runtime.elapsed + 0.64;
+      runtime.megaLockUntil = runtime.elapsed + 0.72;
+      runtime.invulnerableUntil = runtime.elapsed + 0.82;
       const forward = new THREE.Vector3(0, 0, -1).applyAxisAngle(UP, player.rotation.y);
-      const center = player.position.clone().addScaledVector(forward, 0.85);
-      center.y = 0;
+      const origin = player.position.clone().addScaledVector(forward, 0.72).setY(0);
       (player.userData.animator as VoxelActionController | undefined)?.triggerSmash(true);
-      spawnWave(player.position, 0xfff064, 0.85);
-      tone(150, 0.42, "sawtooth", 0.05, 620);
-      runtime.pendingSmash = { at: runtime.elapsed + 0.46, center, mega: true };
-      notify("必殺技セット！ 狙って――MEGA SMASH！");
+      spawnWave(player.position, 0xffffff, 1.55);
+      spawnWave(player.position, 0xffc21d, 0.9);
+      const charge = new THREE.Group();
+      charge.position.copy(player.position);
+      for (let index = 0; index < 3; index += 1) {
+        const ring = new THREE.Mesh(
+          new THREE.TorusGeometry(0.75 + index * 0.36, 0.055, 8, 30),
+          new THREE.MeshBasicMaterial({
+            color: index === 1 ? 0xffffff : 0xffc21d,
+            transparent: true,
+            opacity: 0.82,
+          }),
+        );
+        ring.rotation.x = Math.PI / 2;
+        ring.position.y = 0.4 + index * 0.38;
+        charge.add(ring);
+      }
+      const chargeLight = new THREE.PointLight(0xffc21d, 8, 12);
+      chargeLight.position.y = 1.5;
+      charge.add(chargeLight);
+      addTimedVisual(charge, 0.52);
+      tone(110, 0.48, "sawtooth", 0.055, 880);
+      tone(440, 0.28, "square", 0.04, 1320, 0.18);
+      runtime.pendingMega = {
+        at: runtime.elapsed + 0.48,
+        origin,
+        direction: forward,
+      };
+      notify("必殺技装填！ 向いている方向へジョッキを投げる！");
       syncHud();
     };
 
@@ -2129,6 +2584,7 @@ export default function OfficeCrashRPG() {
       runtime.playing = false;
       runtime.paused = false;
       clearStage();
+      setMegaFlash(false);
       player.position.set(0, 0, 9.7);
       setPaused(false);
       setStatus("hub");
@@ -2203,7 +2659,12 @@ export default function OfficeCrashRPG() {
         if (runtime.pendingSmash && runtime.elapsed >= runtime.pendingSmash.at) {
           const pending = runtime.pendingSmash;
           runtime.pendingSmash = null;
-          performSmash(pending.center, pending.mega);
+          performSmash(pending.center);
+        }
+        if (runtime.pendingMega && runtime.elapsed >= runtime.pendingMega.at) {
+          const pending = runtime.pendingMega;
+          runtime.pendingMega = null;
+          launchMegaMug(pending.origin, pending.direction);
         }
 
         const rushActive = runtime.elapsed < runtime.rushUntil;
@@ -2261,14 +2722,10 @@ export default function OfficeCrashRPG() {
             runtime.elapsed,
             enemy.speed > 0 && distance > enemy.radius + 0.72,
           );
-
-          if (enemy.characterBoss && runtime.elapsed >= enemy.pulseAt) {
-            if (frozen) {
-              enemy.pulseAt += dt;
-            } else {
-              launchCharacterSpecial(enemy);
-            }
-            continue;
+          const phaseAura = enemy.group.userData.phaseAura as THREE.Mesh | undefined;
+          if (phaseAura) {
+            phaseAura.rotation.z += dt * 2.8;
+            phaseAura.scale.setScalar(1 + Math.sin(runtime.elapsed * 7) * 0.08);
           }
 
           if (enemy.attackKind) {
@@ -2280,6 +2737,15 @@ export default function OfficeCrashRPG() {
               animateDangerZone(enemy.attackWarning, enemy.attackStartedAt, enemy.attackAt, runtime.elapsed);
             }
             if (!frozen && runtime.elapsed >= enemy.attackAt) resolveEnemyAttack(enemy);
+            continue;
+          }
+
+          if (enemy.characterBoss && runtime.elapsed >= enemy.pulseAt) {
+            if (frozen) {
+              enemy.pulseAt += dt;
+            } else {
+              launchCharacterSpecial(enemy);
+            }
             continue;
           }
 
@@ -2354,7 +2820,7 @@ export default function OfficeCrashRPG() {
             if (pickup.kind === "beer") {
               runtime.mega = Math.min(3, runtime.mega + 1);
               playSound("beer");
-              notify("MEGA STOCK +1｜Eキー / 黄ボタンで必殺技を発動");
+              notify("MUG RAIL STOCK +1｜Eキー / 黄ボタンで直線必殺技");
             } else if (pickup.kind === "clock") {
               runtime.freezeUntil = runtime.elapsed + 3.5;
               for (const enemy of enemies) enemy.frozenUntil = runtime.freezeUntil;
@@ -2390,6 +2856,7 @@ export default function OfficeCrashRPG() {
       }
 
       if (!runtime.paused) {
+        updateMegaProjectiles(dt);
         (player.userData.animator as VoxelActionController | undefined)?.update(
           dt,
           runtime.elapsed,
@@ -2440,6 +2907,27 @@ export default function OfficeCrashRPG() {
         }
       }
 
+      for (let index = timedVisuals.length - 1; index >= 0; index -= 1) {
+        const visual = timedVisuals[index];
+        visual.life -= dt;
+        const opacity = THREE.MathUtils.clamp(visual.life / visual.maxLife, 0, 1);
+        visual.object.traverse((child) => {
+          if (!(child instanceof THREE.Mesh)) return;
+          const materials = Array.isArray(child.material) ? child.material : [child.material];
+          materials.forEach((material) => {
+            if ("opacity" in material) {
+              material.transparent = true;
+              material.opacity = Math.min(material.opacity, opacity);
+            }
+          });
+        });
+        visual.object.rotation.y += dt * visual.spin;
+        if (visual.life <= 0) {
+          removeDisposableObject(visual.object);
+          timedVisuals.splice(index, 1);
+        }
+      }
+
       if (runtime.shake > 0.002) {
         camera.position.copy(baseCameraPosition).add(new THREE.Vector3(
           (Math.random() - 0.5) * runtime.shake,
@@ -2466,6 +2954,8 @@ export default function OfficeCrashRPG() {
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("keyup", onKeyUp);
       document.removeEventListener("visibilitychange", onVisibilityChange);
+      if (toastTimer.current) window.clearTimeout(toastTimer.current);
+      if (megaFlashTimer.current) window.clearTimeout(megaFlashTimer.current);
       if (audioContext && audioContext.state !== "closed") void audioContext.close();
       renderer.dispose();
       apiRef.current = null;
@@ -2516,6 +3006,7 @@ export default function OfficeCrashRPG() {
         aria-label="そば屋のオフィスクラッシュ 無限フロア大整理 ゲーム画面"
       />
       <div className="rpg-sun" aria-hidden="true" />
+      <div className={`rpg-mega-flash ${megaFlash ? "show" : ""}`} aria-hidden="true" />
       {status === "playing" && (
         <div
           className={`rpg-danger-vignette ${hpRatio <= 35 ? "low-hp" : ""} ${hud.incomingAttack ? "incoming" : ""}`}
@@ -2591,9 +3082,9 @@ export default function OfficeCrashRPG() {
           </aside>
 
           <div className={`rpg-mega ${hud.mega > 0 ? "ready" : ""}`}>
-            <span>MEGA STOCK</span>
+            <span>MUG RAIL STOCK</span>
             <div>{[0, 1, 2].map((slot) => <i className={slot < hud.mega ? "full" : ""} key={slot}>生</i>)}</div>
-            <small>E / 黄ボタンで任意発動</small>
+            <small>向きを決めて E / 黄ボタン</small>
           </div>
 
           <div
@@ -2638,10 +3129,10 @@ export default function OfficeCrashRPG() {
                   event.preventDefault();
                   apiRef.current?.megaSmash();
                 }}
-                aria-label={`必殺MEGA SMASH 残り${hud.mega}`}
+                aria-label={`必殺生ジョッキレール 残り${hud.mega}`}
               >
                 <span>必殺</span>
-                <strong>MEGA</strong>
+                <strong>RAIL</strong>
                 <small>×{hud.mega}</small>
               </button>
             </div>
@@ -2682,7 +3173,7 @@ export default function OfficeCrashRPG() {
               </p>
               <div className="hub-features" aria-label="ゲームの特徴">
                 <span>8 FLOORS</span>
-                <span>MEGA SMASH</span>
+                <span>生ジョッキレール</span>
                 <span>LOOT DRAFT</span>
                 <span>金星特性</span>
                 <span>ビルド共鳴</span>
@@ -2730,7 +3221,7 @@ export default function OfficeCrashRPG() {
                 disabled={profileLoading}
               >
                 <span>{profileLoading ? "立ち飲み処を準備中…" : "備品循環棟へ突入！"}</span>
-                <small>移動 WASD / 矢印・通常攻撃 SPACE・必殺MEGA E・回避 SHIFT　赤い床予告を避けろ</small>
+                <small>移動 WASD / 矢印・通常攻撃 SPACE・ジョッキ投擲 E・回避 SHIFT　向きを合わせて一網打尽！</small>
               </button>
               {profileError && (
                 <button className="profile-retry" onClick={() => void refreshProfile()}>

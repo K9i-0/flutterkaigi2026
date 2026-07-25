@@ -156,6 +156,22 @@ body {
   mix-blend-mode: screen;
 }
 
+.rpg-mega-flash {
+  position: absolute;
+  z-index: 12;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 55%, #fff 0 8%, #fff38a 18%, rgba(255, 137, 0, .72) 36%, transparent 66%),
+    repeating-conic-gradient(from 0deg at 50% 55%, rgba(255, 255, 255, .55) 0 3deg, transparent 3deg 16deg);
+  mix-blend-mode: screen;
+}
+
+.rpg-mega-flash.show {
+  animation: mugRailFlash .18s ease-out both;
+}
+
 .rpg-danger-vignette {
   position: absolute;
   z-index: 3;
@@ -863,7 +879,7 @@ body {
   text-align: center;
   transform: translate(-50%, -15px) scale(.86) rotate(-2deg);
   transition: .18s cubic-bezier(.2, .9, .3, 1.35);
-  white-space: nowrap;
+  white-space: normal;
   pointer-events: none;
 }
 
@@ -1764,6 +1780,12 @@ body {
 
 @keyframes megaButtonReady {
   to { transform: scale(1.045) rotate(2deg); filter: brightness(1.08); }
+}
+
+@keyframes mugRailFlash {
+  0% { opacity: 1; transform: scale(.82); }
+  55% { opacity: .78; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.12); }
 }
 
 @keyframes attackAlert {

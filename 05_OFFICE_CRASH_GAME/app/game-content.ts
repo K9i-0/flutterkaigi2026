@@ -332,7 +332,7 @@ export const UPGRADES: UpgradeDefinition[] = [
     icon: "生",
     slot: "店主札",
     name: "ハッピーアワー",
-    description: "各フロア開始時にMEGA SMASHを補充する。",
+    description: "各フロア開始時に生ジョッキレールを補充する。",
     color: "#ffca22",
     school: "宴会",
   },

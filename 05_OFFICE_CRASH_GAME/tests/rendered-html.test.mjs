@@ -24,7 +24,7 @@ test("renders the Office Crash game shell", async () => {
   assert.match(html, /aria-label="そば屋のオフィスクラッシュ 無限フロア大整理 ゲーム画面"/);
   assert.match(html, /立ち飲み処を準備中/);
   assert.match(html, /MADOGIWA HACK, SMASH &amp; DRAFT/);
-  assert.match(html, /MEGA SMASH/);
+  assert.match(html, /生ジョッキレール/);
   assert.match(html, /永続仕込み/);
   assert.match(html, /王冠キャップ/);
   assert.match(html, /LOOT DRAFT/);
@@ -59,6 +59,10 @@ test("uses Three.js with a fixed camera, combat floors, and keyboard plus touch 
   assert.match(source, /onPointerDownCapture/);
   assert.match(source, /testSound/);
   assert.match(source, /megaSmash/);
+  assert.match(source, /launchMegaMug/);
+  assert.match(source, /spawnMegaImpact/);
+  assert.match(source, /生ジョッキレール/);
+  assert.match(source, /ENCORE PHASE/);
   assert.match(source, /type EnemyAttackKind = "melee" \| "pulse"/);
   assert.match(source, /makeDangerZone/);
   assert.match(source, /赤い予告範囲から離れろ/);
