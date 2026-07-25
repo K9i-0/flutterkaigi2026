@@ -80,6 +80,10 @@ test("uses Three.js with a fixed camera, combat floors, and keyboard plus touch 
   assert.match(source, /spawnQuotaReinforcements/);
   assert.match(source, /overtime\.destructionMultiplier/);
   assert.match(source, /destroyOfficeProp/);
+  assert.match(source, /showDamageNumber/);
+  assert.match(source, /MEGA HIT/);
+  assert.match(source, /WEAK ×/);
+  assert.match(source, /rpg-damage-layer/);
   assert.match(source, /射線予測/);
   assert.match(source, /撃破・回避・生ジョッキで補充/);
   assert.match(source, /kind === "core" \? 125 : 50/);

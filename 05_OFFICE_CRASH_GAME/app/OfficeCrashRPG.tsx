@@ -198,6 +198,8 @@ type TimedVisual = {
   spin: number;
 };
 
+type DamageNumberStyle = "normal" | "mega" | "splash";
+
 const EMPTY_HUD: HudState = {
   floor: 1,
   floorName: FLOORS[0].name,
@@ -684,6 +686,7 @@ function healthColor(ratio: number) {
 export default function OfficeCrashRPG() {
   const hostRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const damageLayerRef = useRef<HTMLDivElement>(null);
   const apiRef = useRef<GameApi | null>(null);
   const joystickRef = useRef({ x: 0, z: 0 });
   const joystickPointer = useRef<number | null>(null);
@@ -926,6 +929,51 @@ export default function OfficeCrashRPG() {
     const upgradeValues = Object.fromEntries(
       UPGRADES.map((upgrade) => [upgrade.id, 0]),
     ) as Record<UpgradeId, number>;
+
+    const showDamageNumber = (
+      amount: number,
+      worldPosition: THREE.Vector3,
+      style: DamageNumberStyle = "normal",
+      critical = false,
+      vulnerabilityMultiplier = 1,
+    ) => {
+      const layer = damageLayerRef.current;
+      if (!layer || amount <= 0) return;
+      const projected = worldPosition.clone().project(camera);
+      if (
+        projected.z < -1.15
+        || projected.z > 1.15
+        || Math.abs(projected.x) > 1.18
+        || Math.abs(projected.y) > 1.18
+      ) return;
+
+      while (layer.childElementCount >= 60) layer.firstElementChild?.remove();
+      const damage = document.createElement("span");
+      damage.className = [
+        "rpg-damage-number",
+        style !== "normal" ? style : "",
+        critical ? "critical" : "",
+      ].filter(Boolean).join(" ");
+      damage.textContent = amount < 10
+        ? amount.toFixed(1)
+        : formatNumber(amount);
+      const labels = [];
+      if (style === "mega") labels.push("MEGA HIT");
+      if (style === "splash") labels.push("泡連鎖");
+      if (critical) labels.push("CRITICAL");
+      if (vulnerabilityMultiplier > 1) labels.push(`WEAK ×${vulnerabilityMultiplier.toFixed(2)}`);
+      if (labels.length > 0) damage.dataset.label = labels.join(" · ");
+      damage.style.left = `${(projected.x * 0.5 + 0.5) * layer.clientWidth}px`;
+      damage.style.top = `${(-projected.y * 0.5 + 0.5) * layer.clientHeight}px`;
+      const drift = Math.round((Math.random() - 0.5) * 52);
+      damage.style.setProperty("--damage-drift-early", `${Math.round(drift * 0.18)}px`);
+      damage.style.setProperty("--damage-drift-mid", `${Math.round(drift * 0.72)}px`);
+      damage.style.setProperty("--damage-drift", `${drift}px`);
+      damage.style.setProperty("--damage-tilt", `${(Math.random() - 0.5) * 9}deg`);
+      layer.append(damage);
+      damage.addEventListener("animationend", () => damage.remove(), { once: true });
+      window.setTimeout(() => damage.remove(), 1200);
+    };
 
     let audioContext: AudioContext | null = null;
     let audioResume: Promise<AudioContext> | null = null;
@@ -2237,6 +2285,11 @@ export default function OfficeCrashRPG() {
           if (!other.alive || other === enemy) continue;
           if (other.group.position.distanceTo(enemy.group.position) < (explosiveFoam ? 4.1 : 2.6)) {
             other.hp -= splashDamage;
+            showDamageNumber(
+              splashDamage,
+              other.group.position.clone().setY(other.boss ? 2.6 : 1.35),
+              "splash",
+            );
             updateEnemyHealth(other);
             if (other.hp <= 0) destroyEnemy(other, false, chainDepth + 1);
           }
@@ -2258,14 +2311,28 @@ export default function OfficeCrashRPG() {
       }
     };
 
-    const damageEnemy = (enemy: Enemy, amount: number, critical: boolean, center: THREE.Vector3) => {
+    const damageEnemy = (
+      enemy: Enemy,
+      amount: number,
+      critical: boolean,
+      center: THREE.Vector3,
+      style: DamageNumberStyle = "normal",
+    ) => {
       if (!enemy.alive) return;
       const chilledVulnerable = runtime.elapsed < enemy.frozenUntil
         && runtime.synergies.some((synergy) => synergy.name === "キンキン速配");
       const bossOpening = enemy.boss
         && runtime.elapsed >= enemy.vulnerableFrom
         && runtime.elapsed < enemy.vulnerableUntil;
-      const finalAmount = amount * (chilledVulnerable ? 1.5 : 1) * (bossOpening ? 1.65 : 1);
+      const vulnerabilityMultiplier = (chilledVulnerable ? 1.5 : 1) * (bossOpening ? 1.65 : 1);
+      const finalAmount = amount * vulnerabilityMultiplier;
+      showDamageNumber(
+        finalAmount,
+        enemy.group.position.clone().setY(enemy.boss ? 2.6 : 1.35),
+        style,
+        critical,
+        vulnerabilityMultiplier,
+      );
       enemy.hp -= finalAmount;
       if (enemy.boss && enemy.hp > 0) {
         gainMegaGauge(Math.min(4.5, finalAmount * (bossOpening ? 0.82 : 0.48)), false);
@@ -2427,7 +2494,7 @@ export default function OfficeCrashRPG() {
         const distance = Math.max(0, enemy.group.position.distanceTo(impact) - enemy.radius);
         if (distance <= blastRadius) {
           projectile.hitEnemies.add(enemy);
-          damageEnemy(enemy, projectile.damage * 0.82 * piercePower, distance <= 0.75, impact);
+          damageEnemy(enemy, projectile.damage * 0.82 * piercePower, distance <= 0.75, impact, "mega");
         }
       }
       const propHits = destroyOfficePropsInRadius(impact, blastRadius, true);
@@ -2498,6 +2565,7 @@ export default function OfficeCrashRPG() {
                 projectile.damage * piercePower * (perfectLine ? 1.48 : 1),
                 perfectLine,
                 projectile.origin,
+                "mega",
               );
             }
           }
@@ -2925,6 +2993,7 @@ export default function OfficeCrashRPG() {
       runtime.lastDash = -10;
       runtime.megaLockUntil = 0;
       runtime.invulnerableUntil = 0;
+      damageLayerRef.current?.replaceChildren();
       for (const key of Object.keys(upgradeValues) as UpgradeId[]) upgradeValues[key] = 0;
       setBuild([]);
       setActiveSynergies([]);
@@ -3401,6 +3470,7 @@ export default function OfficeCrashRPG() {
       document.removeEventListener("visibilitychange", onVisibilityChange);
       if (toastTimer.current) window.clearTimeout(toastTimer.current);
       if (megaFlashTimer.current) window.clearTimeout(megaFlashTimer.current);
+      damageLayerRef.current?.replaceChildren();
       if (audioContext && audioContext.state !== "closed") void audioContext.close();
       renderer.dispose();
       apiRef.current = null;
@@ -3459,6 +3529,7 @@ export default function OfficeCrashRPG() {
           aria-hidden="true"
         />
       )}
+      <div className="rpg-damage-layer" ref={damageLayerRef} aria-hidden="true" />
 
       {status === "playing" && (
         <>
