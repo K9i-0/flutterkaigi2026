@@ -828,6 +828,63 @@ body {
   letter-spacing: .06em;
 }
 
+.audio-check {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 9px;
+  margin: -6px 0 15px;
+  padding: 8px 10px;
+  border: 2px solid #b8cbd4;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, .72);
+}
+
+.audio-check button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 2px solid var(--rpg-ink);
+  border-radius: 999px;
+  padding: 7px 11px;
+  background: var(--rpg-ink);
+  box-shadow: 0 3px 0 #70838d;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.audio-check button:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #70838d;
+}
+
+.audio-check small {
+  color: #647983;
+  font-size: 8px;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.audio-check.ready {
+  border-color: #49c782;
+  background: rgba(221, 255, 235, .82);
+}
+
+.audio-check.ready button {
+  background: #178654;
+}
+
+.audio-check.error {
+  border-color: #ef7b5f;
+  background: rgba(255, 235, 225, .9);
+}
+
+.audio-check.error small {
+  color: #a33d27;
+}
+
 .hub-start {
   width: 100%;
   display: flex;

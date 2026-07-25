@@ -55,6 +55,8 @@ type GameApi = {
   smash: () => void;
   dash: () => void;
   pause: () => void;
+  unlockAudio: () => void;
+  testSound: () => void;
   toggleSound: () => boolean;
   pickUpgrade: (choice: RewardChoice) => void;
   returnHub: () => void;
@@ -545,6 +547,8 @@ export default function OfficeCrashRPG() {
   const [hud, setHud] = useState<HudState>(EMPTY_HUD);
   const [paused, setPaused] = useState(false);
   const [soundOn, setSoundOn] = useState(true);
+  const [audioReady, setAudioReady] = useState(false);
+  const [audioError, setAudioError] = useState(false);
   const [toast, setToast] = useState("");
   const [joystick, setJoystick] = useState({ x: 0, y: 0 });
   const [rewardChoices, setRewardChoices] = useState<RewardChoice[]>([]);
@@ -658,7 +662,7 @@ export default function OfficeCrashRPG() {
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.7));
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.shadowMap.type = THREE.PCFShadowMap;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.setClearColor(0xb9e7fb, 1);
 
@@ -732,11 +736,65 @@ export default function OfficeCrashRPG() {
     ) as Record<UpgradeId, number>;
 
     let audioContext: AudioContext | null = null;
+    let audioResume: Promise<AudioContext> | null = null;
     let soundEnabled = true;
-    const ensureAudio = () => {
-      if (!audioContext) audioContext = new window.AudioContext();
-      if (audioContext.state === "suspended") void audioContext.resume();
+    const ensureAudioContext = () => {
+      if (!audioContext) {
+        const AudioContextConstructor = window.AudioContext
+          ?? (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+        if (!AudioContextConstructor) throw new Error("Web Audio is unavailable");
+        audioContext = new AudioContextConstructor();
+      }
       return audioContext;
+    };
+    const resumeAudio = () => {
+      let context: AudioContext;
+      try {
+        context = ensureAudioContext();
+      } catch {
+        setAudioReady(false);
+        setAudioError(true);
+        return Promise.reject(new Error("Web Audio is unavailable"));
+      }
+      if (context.state === "running") {
+        setAudioReady(true);
+        setAudioError(false);
+        return Promise.resolve(context);
+      }
+      audioResume ??= context.resume()
+        .then(() => {
+          if (context.state !== "running") throw new Error("AudioContext did not start");
+          setAudioReady(true);
+          setAudioError(false);
+          return context;
+        })
+        .catch((error) => {
+          setAudioReady(false);
+          setAudioError(true);
+          throw error;
+        })
+        .finally(() => {
+          audioResume = null;
+        });
+      return audioResume;
+    };
+    const withAudio = (callback: (context: AudioContext) => void) => {
+      if (!soundEnabled) return;
+      let context: AudioContext;
+      try {
+        context = ensureAudioContext();
+      } catch {
+        setAudioReady(false);
+        setAudioError(true);
+        return;
+      }
+      if (context.state === "running") {
+        callback(context);
+        return;
+      }
+      void resumeAudio().then(callback).catch(() => {
+        // The visible sound-test button lets the player retry with a fresh gesture.
+      });
     };
     const tone = (
       frequency: number,
@@ -747,36 +805,38 @@ export default function OfficeCrashRPG() {
       delay = 0,
     ) => {
       if (!soundEnabled) return;
-      const context = ensureAudio();
-      const at = context.currentTime + delay;
-      const oscillator = context.createOscillator();
-      const gain = context.createGain();
-      oscillator.type = type;
-      oscillator.frequency.setValueAtTime(frequency, at);
-      oscillator.frequency.exponentialRampToValueAtTime(Math.max(20, endFrequency), at + duration);
-      gain.gain.setValueAtTime(0.0001, at);
-      gain.gain.exponentialRampToValueAtTime(gainValue, at + 0.012);
-      gain.gain.exponentialRampToValueAtTime(0.0001, at + duration);
-      oscillator.connect(gain).connect(context.destination);
-      oscillator.start(at);
-      oscillator.stop(at + duration + 0.03);
+      withAudio((context) => {
+        const at = context.currentTime + delay;
+        const oscillator = context.createOscillator();
+        const gain = context.createGain();
+        oscillator.type = type;
+        oscillator.frequency.setValueAtTime(frequency, at);
+        oscillator.frequency.exponentialRampToValueAtTime(Math.max(20, endFrequency), at + duration);
+        gain.gain.setValueAtTime(0.0001, at);
+        gain.gain.exponentialRampToValueAtTime(gainValue, at + 0.012);
+        gain.gain.exponentialRampToValueAtTime(0.0001, at + duration);
+        oscillator.connect(gain).connect(context.destination);
+        oscillator.start(at);
+        oscillator.stop(at + duration + 0.03);
+      });
     };
     const noise = (duration: number, gainValue: number, highpass = 120) => {
       if (!soundEnabled) return;
-      const context = ensureAudio();
-      const buffer = context.createBuffer(1, Math.ceil(context.sampleRate * duration), context.sampleRate);
-      const data = buffer.getChannelData(0);
-      for (let i = 0; i < data.length; i += 1) data[i] = (Math.random() * 2 - 1) * (1 - i / data.length);
-      const source = context.createBufferSource();
-      const filter = context.createBiquadFilter();
-      const gain = context.createGain();
-      filter.type = "highpass";
-      filter.frequency.value = highpass;
-      gain.gain.setValueAtTime(gainValue, context.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + duration);
-      source.buffer = buffer;
-      source.connect(filter).connect(gain).connect(context.destination);
-      source.start();
+      withAudio((context) => {
+        const buffer = context.createBuffer(1, Math.ceil(context.sampleRate * duration), context.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < data.length; i += 1) data[i] = (Math.random() * 2 - 1) * (1 - i / data.length);
+        const source = context.createBufferSource();
+        const filter = context.createBiquadFilter();
+        const gain = context.createGain();
+        filter.type = "highpass";
+        filter.frequency.value = highpass;
+        gain.gain.setValueAtTime(gainValue, context.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + duration);
+        source.buffer = buffer;
+        source.connect(filter).connect(gain).connect(context.destination);
+        source.start();
+      });
     };
     const playSound = (kind: "smash" | "break" | "metal" | "beer" | "hurt" | "clear" | "start") => {
       if (kind === "smash") {
@@ -1303,6 +1363,9 @@ export default function OfficeCrashRPG() {
     };
 
     const start = (profile: GameProfile) => {
+      void resumeAudio().catch(() => {
+        notify("音声を開始できません。立ち飲み処の試聴ボタンを押してください");
+      });
       runtime.profile = profile;
       runtime.floor = 1;
       runtime.score = 0;
@@ -1347,8 +1410,35 @@ export default function OfficeCrashRPG() {
     const toggleSound = () => {
       soundEnabled = !soundEnabled;
       setSoundOn(soundEnabled);
-      if (soundEnabled) tone(520, 0.1, "sine", 0.05, 760);
+      if (soundEnabled) {
+        void resumeAudio()
+          .then(() => {
+            tone(520, 0.1, "sine", 0.06, 760);
+            tone(760, 0.14, "triangle", 0.055, 1040, 0.09);
+          })
+          .catch(() => notify("音声を開始できませんでした"));
+      }
       return soundEnabled;
+    };
+
+    const unlockAudio = () => {
+      if (!soundEnabled) return;
+      void resumeAudio().catch(() => {
+        // Keep the retry UI visible without interrupting gameplay.
+      });
+    };
+
+    const testSound = () => {
+      soundEnabled = true;
+      setSoundOn(true);
+      void resumeAudio()
+        .then(() => {
+          tone(392, 0.12, "triangle", 0.085, 523);
+          tone(523, 0.14, "triangle", 0.085, 659, 0.1);
+          tone(659, 0.22, "sine", 0.075, 988, 0.2);
+          notify("♪ 乾杯！この音が聞こえれば準備OKです");
+        })
+        .catch(() => notify("音声を開始できません。端末の消音設定も確認してください"));
     };
 
     const returnHub = () => {
@@ -1362,10 +1452,21 @@ export default function OfficeCrashRPG() {
       setBuild([]);
     };
 
-    apiRef.current = { start, smash, dash, pause, toggleSound, pickUpgrade, returnHub };
+    apiRef.current = {
+      start,
+      smash,
+      dash,
+      pause,
+      unlockAudio,
+      testSound,
+      toggleSound,
+      pickUpgrade,
+      returnHub,
+    };
 
     const keys = new Set<string>();
     const onKeyDown = (event: KeyboardEvent) => {
+      unlockAudio();
       if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " ", "Shift"].includes(event.key)) {
         event.preventDefault();
       }
@@ -1375,8 +1476,12 @@ export default function OfficeCrashRPG() {
       if (event.key.toLowerCase() === "p" || event.key === "Escape") pause();
     };
     const onKeyUp = (event: KeyboardEvent) => keys.delete(event.key.toLowerCase());
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "visible" && soundEnabled && audioContext) unlockAudio();
+    };
     window.addEventListener("keydown", onKeyDown, { passive: false });
     window.addEventListener("keyup", onKeyUp);
+    document.addEventListener("visibilitychange", onVisibilityChange);
 
     const resize = () => {
       const width = host.clientWidth;
@@ -1591,6 +1696,7 @@ export default function OfficeCrashRPG() {
       observer.disconnect();
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("keyup", onKeyUp);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
       if (audioContext && audioContext.state !== "closed") void audioContext.close();
       renderer.dispose();
       apiRef.current = null;
@@ -1629,7 +1735,11 @@ export default function OfficeCrashRPG() {
     : 0;
 
   return (
-    <main className="rpg-shell" ref={hostRef}>
+    <main
+      className="rpg-shell"
+      ref={hostRef}
+      onPointerDownCapture={() => apiRef.current?.unlockAudio()}
+    >
       <canvas
         ref={canvasRef}
         className="rpg-canvas"
@@ -1770,6 +1880,19 @@ export default function OfficeCrashRPG() {
                 <span>MEGA SMASH</span>
                 <span>LOOT DRAFT</span>
                 <span>永続記録</span>
+              </div>
+              <div className={`audio-check ${audioReady ? "ready" : ""} ${audioError ? "error" : ""}`}>
+                <button type="button" onClick={() => apiRef.current?.testSound()}>
+                  <span aria-hidden="true">{audioReady ? "🔊" : "🔈"}</span>
+                  {audioReady ? "効果音をもう一度試す" : "まず効果音を試す"}
+                </button>
+                <small>
+                  {audioError
+                    ? "音が出ない場合は端末の消音設定を解除して、もう一度押してください"
+                    : audioReady
+                      ? "音声準備OK。突入後にスマッシュ音が鳴ります"
+                      : "ブラウザの音声ロックをタップで解除します"}
+                </small>
               </div>
               <button
                 className="hub-start"

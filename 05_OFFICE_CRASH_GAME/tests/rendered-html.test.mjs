@@ -29,6 +29,8 @@ test("renders the Office Crash game shell", async () => {
   assert.match(html, /王冠キャップ/);
   assert.match(html, /LOOT DRAFT/);
   assert.match(html, /永続記録/);
+  assert.match(html, /まず効果音を試す/);
+  assert.match(html, /ブラウザの音声ロックをタップで解除します/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape/);
 });
 
@@ -44,7 +46,10 @@ test("uses Three.js with a fixed camera, combat floors, and keyboard plus touch 
   assert.match(source, /makeCoreEnemy/);
   assert.match(source, /pickUpgrade/);
   assert.match(source, /runtime\.profile\.mastery\.forge/);
-  assert.match(source, /new window\.AudioContext/);
+  assert.match(source, /webkitAudioContext/);
+  assert.match(source, /context\.resume\(\)/);
+  assert.match(source, /onPointerDownCapture/);
+  assert.match(source, /testSound/);
   assert.match(source, /fetch\("\/api\/game\/run"/);
   assert.match(source, /fetch\("\/api\/game\/mastery"/);
 });
