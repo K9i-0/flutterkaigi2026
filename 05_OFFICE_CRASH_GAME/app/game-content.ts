@@ -196,11 +196,11 @@ export const FLOORS: FloorDefinition[] = [
   {
     floor: 4,
     kind: "boss",
-    name: "複合機保管庫",
-    kicker: "BOSS REGULATION",
-    objective: "金の複合機・零式を停止せよ",
+    name: "窓際フェス・第一幕",
+    kicker: "MADOGIWA BOSS SESSION",
+    objective: "本日の窓際族メンバーと平和な模擬戦を楽しめ",
     tint: 0x344752,
-    accent: 0xffbf1f,
+    accent: 0xff4fa6,
     enemyCount: 1,
   },
   {
@@ -236,11 +236,11 @@ export const FLOORS: FloorDefinition[] = [
   {
     floor: 8,
     kind: "final",
-    name: "窓際会議室・中枢",
-    kicker: "FINAL REGULATION",
-    objective: "REGULATION COREを正常化せよ",
+    name: "窓際リモート会議室",
+    kicker: "FINAL MADOGIWA SESSION",
+    objective: "画面越しのおかやまん最終チェックを突破せよ",
     tint: 0x232e3b,
-    accent: 0xff3e32,
+    accent: 0xffd23f,
     enemyCount: 1,
   },
 ];
