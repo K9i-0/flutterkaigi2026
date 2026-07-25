@@ -29,6 +29,9 @@ test("renders the Office Crash game shell", async () => {
   assert.match(html, /王冠キャップ/);
   assert.match(html, /LOOT DRAFT/);
   assert.match(html, /永続記録/);
+  assert.match(html, /残業指令を選ぶ/);
+  assert.match(html, /金星特性/);
+  assert.match(html, /ビルド共鳴/);
   assert.match(html, /まず効果音を試す/);
   assert.match(html, /ブラウザの音声ロックをタップで解除します/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape/);
@@ -42,6 +45,11 @@ test("uses Three.js with a fixed camera, combat floors, and keyboard plus touch 
   assert.match(source, /keydown/);
   assert.match(source, /onPointerDown/);
   assert.match(source, /makeRewardChoices/);
+  assert.match(source, /resolveSynergies/);
+  assert.match(source, /type EliteAffix/);
+  assert.match(source, /runtime\.pressure/);
+  assert.match(source, /rerollReward/);
+  assert.match(source, /OVERTIME_RANKS/);
   assert.match(source, /runtime\.timer = floorDefinition\.kind === "challenge" \? 45 : null/);
   assert.match(source, /makeCoreEnemy/);
   assert.match(source, /pickUpgrade/);
@@ -60,6 +68,8 @@ test("stores profiles, run history, mastery, and leaderboard data in D1", async 
   assert.match(hosting, /"d1": "DB"/);
   assert.match(source, /CREATE TABLE IF NOT EXISTS players/);
   assert.match(source, /CREATE TABLE IF NOT EXISTS runs/);
+  assert.match(source, /overtime_rank/);
+  assert.match(source, /build_name/);
   assert.match(source, /\/api\/game\/profile/);
   assert.match(source, /\/api\/game\/run/);
   assert.match(source, /\/api\/game\/mastery/);

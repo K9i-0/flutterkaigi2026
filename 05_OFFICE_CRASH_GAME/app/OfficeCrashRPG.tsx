@@ -10,14 +10,18 @@ import {
 import {
   EMPTY_PROFILE,
   FLOORS,
+  OVERTIME_RANKS,
   UPGRADES,
   makeRewardChoices,
   masteryCost,
+  resolveSynergies,
   type GameProfile,
   type GameStatus,
   type MasteryKey,
+  type OvertimeRank,
   type RewardChoice,
   type SiteGameData,
+  type SynergyDefinition,
   type UpgradeId,
 } from "./game-content";
 
@@ -38,6 +42,10 @@ type HudState = {
   timer: number | null;
   dashReady: number;
   bossName: string;
+  pressure: number;
+  rushRemaining: number;
+  overtimeLabel: string;
+  scoreMultiplier: number;
 };
 
 type RunSummary = {
@@ -48,10 +56,12 @@ type RunSummary = {
   maxCombo: number;
   capsEarned: number;
   upgrades: string[];
+  overtimeRank: OvertimeRank;
+  buildName: string;
 };
 
 type GameApi = {
-  start: (profile: GameProfile) => void;
+  start: (profile: GameProfile, overtimeRank: OvertimeRank) => void;
   smash: () => void;
   dash: () => void;
   pause: () => void;
@@ -59,10 +69,12 @@ type GameApi = {
   testSound: () => void;
   toggleSound: () => boolean;
   pickUpgrade: (choice: RewardChoice) => void;
+  rerollReward: () => void;
   returnHub: () => void;
 };
 
 type EnemyKind = "chair" | "stapler" | "cabinet" | "desk" | "copier" | "gate" | "core";
+type EliteAffix = "rapid" | "barrier" | "volatile" | "regenerator";
 
 type Enemy = {
   group: THREE.Group;
@@ -77,6 +89,10 @@ type Enemy = {
   color: number;
   alive: boolean;
   boss: boolean;
+  elite: boolean;
+  affix: EliteAffix | null;
+  barrier: number;
+  lastRegen: number;
   frozenUntil: number;
   nextAttack: number;
   pulseAt: number;
@@ -122,6 +138,10 @@ const EMPTY_HUD: HudState = {
   timer: null,
   dashReady: 1,
   bossName: "",
+  pressure: 0,
+  rushRemaining: 0,
+  overtimeLabel: OVERTIME_RANKS[0].label,
+  scoreMultiplier: 1,
 };
 
 const MAX_FLOOR = FLOORS.length;
@@ -552,7 +572,10 @@ export default function OfficeCrashRPG() {
   const [toast, setToast] = useState("");
   const [joystick, setJoystick] = useState({ x: 0, y: 0 });
   const [rewardChoices, setRewardChoices] = useState<RewardChoice[]>([]);
+  const [rerolls, setRerolls] = useState(1);
   const [build, setBuild] = useState<RewardChoice[]>([]);
+  const [activeSynergies, setActiveSynergies] = useState<SynergyDefinition[]>([]);
+  const [overtimeRank, setOvertimeRank] = useState<OvertimeRank>(0);
   const [summary, setSummary] = useState<RunSummary | null>(null);
   const [siteData, setSiteData] = useState<SiteGameData | null>(null);
   const [profileLoading, setProfileLoading] = useState(true);
@@ -880,6 +903,10 @@ export default function OfficeCrashRPG() {
       destroyed: 0,
       mega: 0,
       runCaps: 0,
+      overtimeRank: 0 as OvertimeRank,
+      pressure: 0,
+      rushUntil: 0,
+      rerolls: 1,
       floorKilled: 0,
       floorTotal: 0,
       timer: null as number | null,
@@ -892,6 +919,7 @@ export default function OfficeCrashRPG() {
       pendingSmash: null as { at: number; center: THREE.Vector3; mega: boolean } | null,
       profile: EMPTY_PROFILE,
       selected: [] as RewardChoice[],
+      synergies: [] as SynergyDefinition[],
     };
 
     const stageAdd = (object: THREE.Object3D) => {
@@ -983,8 +1011,25 @@ export default function OfficeCrashRPG() {
       } = {},
     ) => {
       const floorDefinition = FLOORS[runtime.floor - 1];
+      const overtime = OVERTIME_RANKS[runtime.overtimeRank];
       const elite = options.elite ?? false;
       const boss = options.boss ?? false;
+      const affixes: EliteAffix[] = ["rapid", "barrier", "volatile", "regenerator"];
+      const affix = elite && !boss
+        ? affixes[Math.floor(Math.random() * affixes.length)]
+        : null;
+      const affixLabel = {
+        rapid: "快速",
+        barrier: "装甲",
+        volatile: "余熱",
+        regenerator: "再生",
+      } as const;
+      const affixColor = {
+        rapid: 0xffa51f,
+        barrier: 0x45d8ff,
+        volatile: 0xff4d3a,
+        regenerator: 0x56e07a,
+      } as const;
       const group = makeEnemyModel(kind, elite || boss);
       const scale = options.scale ?? (elite ? 1.18 : 1);
       group.scale.setScalar(scale);
@@ -1000,25 +1045,48 @@ export default function OfficeCrashRPG() {
         gate: { speed: 1.1, damage: 14, radius: 1.15, points: 560, color: 0x425864, label: "強化ゲートΩ" },
         core: { speed: 0.92, damage: 22, radius: 1.65, points: 15000, color: 0xff4437, label: "REGULATION CORE" },
       }[kind];
-      const hp = boss ? (kind === "core" ? 125 : 72) : baseHp;
+      const baseFinalHp = (boss ? (kind === "core" ? 125 : 72) : baseHp) * overtime.hpMultiplier;
+      const barrier = affix === "barrier" ? baseFinalHp * 0.5 : 0;
+      const hp = baseFinalHp + barrier;
       const health = makeHealthBar(boss ? 3.2 : elite ? 1.65 : 1.1, boss ? floorDefinition.accent : 0x56e07a);
       health.position.y = kind === "core" ? 3.4 : boss ? 3.25 : kind === "cabinet" || kind === "gate" ? 2.25 : 1.85;
       health.rotation.x = -0.35;
       group.add(health);
+      if (affix) {
+        const aura = new THREE.Mesh(
+          new THREE.TorusGeometry(stats.radius * 1.25, 0.075, 8, 28),
+          new THREE.MeshBasicMaterial({
+            color: affixColor[affix],
+            transparent: true,
+            opacity: 0.86,
+          }),
+        );
+        aura.rotation.x = Math.PI / 2;
+        aura.position.y = 0.12;
+        group.add(aura);
+      }
       scene.add(group);
       enemies.push({
         group,
         kind,
-        label: options.label ?? stats.label,
+        label: `${affix ? `【${affixLabel[affix]}】` : ""}${options.label ?? stats.label}`,
         hp,
         maxHp: hp,
-        speed: options.stationary ? 0 : stats.speed * (1 + runtime.floor * 0.025),
-        damage: options.stationary ? 0 : stats.damage + runtime.floor * 0.9,
+        speed: options.stationary
+          ? 0
+          : stats.speed * (1 + runtime.floor * 0.025) * overtime.speedMultiplier * (affix === "rapid" ? 1.38 : 1),
+        damage: options.stationary
+          ? 0
+          : (stats.damage + runtime.floor * 0.9) * overtime.damageMultiplier,
         radius: stats.radius * scale,
-        points: stats.points,
+        points: Math.round(stats.points * (elite ? 1.6 : 1)),
         color: stats.color,
         alive: true,
         boss,
+        elite,
+        affix,
+        barrier,
+        lastRegen: runtime.elapsed,
         frozenUntil: 0,
         nextAttack: runtime.elapsed + 1,
         pulseAt: runtime.elapsed + 2.8,
@@ -1072,6 +1140,8 @@ export default function OfficeCrashRPG() {
       const boss = enemies.find((enemy) => enemy.alive && enemy.boss);
       const dashCooldown = Math.max(0.85, 2.15 / (1 + upgradeValues.runner * 0.16));
       const dashProgress = THREE.MathUtils.clamp((runtime.elapsed - runtime.lastDash) / dashCooldown, 0, 1);
+      const overtime = OVERTIME_RANKS[runtime.overtimeRank];
+      const rushRemaining = Math.max(0, runtime.rushUntil - runtime.elapsed);
       setHud({
         floor: runtime.floor,
         floorName: floorDefinition.name,
@@ -1089,12 +1159,17 @@ export default function OfficeCrashRPG() {
         timer: runtime.timer === null ? null : Math.max(0, Math.ceil(runtime.timer)),
         dashReady: dashProgress,
         bossName: boss?.label ?? "",
+        pressure: rushRemaining > 0 ? 100 : runtime.pressure,
+        rushRemaining,
+        overtimeLabel: overtime.label,
+        scoreMultiplier: overtime.scoreMultiplier * (rushRemaining > 0 ? 1.5 : 1),
       });
     };
 
     const setupFloor = () => {
       clearStage();
       const floorDefinition = FLOORS[runtime.floor - 1];
+      const overtime = OVERTIME_RANKS[runtime.overtimeRank];
       floorMaterial.color.setHex(floorDefinition.tint);
       accentLight.color.setHex(floorDefinition.accent);
       const darkFloor = runtime.floor === 4 || runtime.floor === 6 || runtime.floor === 8;
@@ -1133,7 +1208,9 @@ export default function OfficeCrashRPG() {
         for (let i = 0; i < floorDefinition.enemyCount; i += 1) {
           const [x, z] = points[i % points.length];
           spawnEnemy(kinds[i % kinds.length], x, z, {
-            elite: floorDefinition.kind === "elite" || (runtime.floor >= 5 && i % 6 === 0),
+            elite: floorDefinition.kind === "elite"
+              || (runtime.floor >= 5 && i % 6 === 0)
+              || (runtime.overtimeRank > 0 && i < overtime.eliteBonus),
             stationary: floorDefinition.kind === "challenge",
             hp: floorDefinition.kind === "challenge" ? 1 : undefined,
             scale: floorDefinition.kind === "challenge" ? 0.92 : undefined,
@@ -1145,7 +1222,7 @@ export default function OfficeCrashRPG() {
       setStatus("playing");
       syncHud();
       playSound("start");
-      notify(`${floorDefinition.floor}F「${floorDefinition.name}」`);
+      notify(`${floorDefinition.floor}F「${floorDefinition.name}」— ${overtime.label}`);
     };
 
     const makeSummary = (victory: boolean): RunSummary => ({
@@ -1156,13 +1233,17 @@ export default function OfficeCrashRPG() {
       maxCombo: runtime.maxCombo,
       capsEarned: runtime.runCaps,
       upgrades: runtime.selected.map((item) => `${item.rarity}｜${item.name}`),
+      overtimeRank: runtime.overtimeRank,
+      buildName: runtime.synergies.map((synergy) => synergy.name).join(" × ") || "単品ジョッキ",
     });
 
     const endRun = (victory: boolean) => {
       if (runtime.submitted) return;
       runtime.playing = false;
       runtime.submitted = true;
-      if (victory) runtime.runCaps += 30;
+      if (victory) {
+        runtime.runCaps += Math.round(30 * OVERTIME_RANKS[runtime.overtimeRank].capsMultiplier);
+      }
       const result = makeSummary(victory);
       setSummary(result);
       setStatus(victory ? "victory" : "gameover");
@@ -1174,26 +1255,35 @@ export default function OfficeCrashRPG() {
     const finishFloor = () => {
       if (!runtime.playing) return;
       runtime.playing = false;
-      const floorBonus = 800 + runtime.floor * 320;
+      const overtime = OVERTIME_RANKS[runtime.overtimeRank];
+      const floorBonus = Math.round((800 + runtime.floor * 320) * overtime.scoreMultiplier);
       runtime.score += floorBonus;
-      runtime.runCaps += 3 + Math.floor(runtime.floor / 2);
+      runtime.runCaps += Math.round((3 + Math.floor(runtime.floor / 2)) * overtime.capsMultiplier);
       if (runtime.floor >= MAX_FLOOR) {
         endRun(true);
         return;
       }
-      const choices = makeRewardChoices(runtime.floor);
+      const choices = makeRewardChoices(runtime.floor, runtime.overtimeRank);
       setRewardChoices(choices);
+      setRerolls(runtime.rerolls);
       syncHud();
       setStatus("reward");
       playSound("clear");
-      notify(`FLOOR CLEAR +${formatNumber(floorBonus)}`);
+      if (choices.some((choice) => choice.greater)) {
+        playSound("beer");
+        notify("★ 金星特性を発見！ 違いの分かる一杯です");
+      } else {
+        notify(`FLOOR CLEAR +${formatNumber(floorBonus)}`);
+      }
     };
 
     const updateEnemyHealth = (enemy: Enemy) => {
       if (!enemy.healthFill) return;
       const ratio = THREE.MathUtils.clamp(enemy.hp / enemy.maxHp, 0, 1);
       enemy.healthFill.scale.x = ratio;
-      (enemy.healthFill.material as THREE.MeshStandardMaterial).color.setHex(healthColor(ratio));
+      (enemy.healthFill.material as THREE.MeshStandardMaterial).color.setHex(
+        enemy.barrier > 0 ? 0x45d8ff : healthColor(ratio),
+      );
     };
 
     const destroyEnemy = (enemy: Enemy, critical: boolean, chainDepth = 0) => {
@@ -1206,11 +1296,38 @@ export default function OfficeCrashRPG() {
       runtime.maxCombo = Math.max(runtime.maxCombo, runtime.combo);
       runtime.comboWindow = 2.1 + upgradeValues.combo * 0.7;
       const multiplier = getComboMultiplier(runtime.combo);
-      runtime.score += Math.round(enemy.points * multiplier * (critical ? 1.25 : 1));
+      const overtime = OVERTIME_RANKS[runtime.overtimeRank];
+      const rushActive = runtime.elapsed < runtime.rushUntil;
+      runtime.score += Math.round(
+        enemy.points
+        * multiplier
+        * (critical ? 1.25 : 1)
+        * overtime.scoreMultiplier
+        * (rushActive ? 1.5 : 1),
+      );
+      const pressureScale = runtime.synergies.some((synergy) => synergy.name === "宴会ランナー") ? 1.5 : 1;
+      runtime.pressure = Math.min(
+        100,
+        runtime.pressure + (enemy.boss ? 35 : enemy.elite ? 18 : 8 + Math.min(8, runtime.combo * 0.18)) * pressureScale,
+      );
+      if (runtime.pressure >= 100 && !rushActive) {
+        runtime.rushUntil = runtime.elapsed + 8;
+        runtime.pressure = 100;
+        runtime.mega = Math.min(3, runtime.mega + 1);
+        playSound("beer");
+        notify("清掃熱 MAX！ 8秒間 RUSH TIME ×1.5");
+      }
       runtime.shake = Math.max(runtime.shake, enemy.boss ? 0.55 : 0.22);
       spawnDebris(enemy.group.position, enemy.color, enemy.boss ? 42 : 13);
       playSound(enemy.boss ? "metal" : "break");
       navigator.vibrate?.(enemy.boss ? 45 : 15);
+
+      if (enemy.affix === "volatile") {
+        spawnWave(enemy.group.position, 0xff4d3a, 1.45);
+        if (enemy.group.position.distanceTo(player.position) < 3.2) {
+          hurtPlayer(enemy.damage * 0.62, enemy.group.position);
+        }
+      }
 
       if (upgradeValues.yakitori > 0) {
         runtime.hp = Math.min(runtime.maxHp, runtime.hp + Math.max(1, Math.round(upgradeValues.yakitori * 2)));
@@ -1227,12 +1344,13 @@ export default function OfficeCrashRPG() {
       }
 
       if (upgradeValues.foam > 0 && chainDepth === 0) {
+        const explosiveFoam = runtime.synergies.some((synergy) => synergy.name === "爆泡ジョッキ");
         const splashDamage = (2 * (1 + runtime.profile.mastery.forge * 0.08 + upgradeValues.heavy * 0.28))
-          * upgradeValues.foam * 0.45;
-        spawnWave(enemy.group.position, 0xfff0a1, 0.8);
+          * upgradeValues.foam * 0.45 * (explosiveFoam ? 1.35 : 1);
+        spawnWave(enemy.group.position, 0xfff0a1, explosiveFoam ? 1.15 : 0.8);
         for (const other of enemies) {
           if (!other.alive || other === enemy) continue;
-          if (other.group.position.distanceTo(enemy.group.position) < 2.6) {
+          if (other.group.position.distanceTo(enemy.group.position) < (explosiveFoam ? 4.1 : 2.6)) {
             other.hp -= splashDamage;
             updateEnemyHealth(other);
             if (other.hp <= 0) destroyEnemy(other, false, chainDepth + 1);
@@ -1265,7 +1383,11 @@ export default function OfficeCrashRPG() {
 
     const damageEnemy = (enemy: Enemy, amount: number, critical: boolean, center: THREE.Vector3) => {
       if (!enemy.alive) return;
-      enemy.hp -= amount;
+      const chilledVulnerable = runtime.elapsed < enemy.frozenUntil
+        && runtime.synergies.some((synergy) => synergy.name === "キンキン速配");
+      const finalAmount = amount * (chilledVulnerable ? 1.5 : 1);
+      enemy.hp -= finalAmount;
+      enemy.barrier = Math.max(0, enemy.barrier - finalAmount);
       enemy.frozenUntil = Math.max(enemy.frozenUntil, runtime.elapsed + upgradeValues.frost * 0.45);
       const away = enemy.group.position.clone().sub(center).setY(0);
       if (away.lengthSq() > 0.01 && !enemy.boss) {
@@ -1284,7 +1406,10 @@ export default function OfficeCrashRPG() {
     const hurtPlayer = (amount: number, source: THREE.Vector3) => {
       if (!runtime.playing || runtime.elapsed < runtime.invulnerableUntil) return;
       runtime.invulnerableUntil = runtime.elapsed + 0.68;
-      runtime.hp = Math.max(0, runtime.hp - amount);
+      const fortified = runtime.hp / runtime.maxHp >= 0.8
+        && runtime.synergies.some((synergy) => synergy.name === "立ち飲み不沈艦");
+      const finalAmount = amount * (fortified ? 0.65 : 1);
+      runtime.hp = Math.max(0, runtime.hp - finalAmount);
       runtime.combo = 0;
       runtime.comboWindow = 0;
       runtime.shake = Math.max(runtime.shake, 0.36);
@@ -1295,7 +1420,7 @@ export default function OfficeCrashRPG() {
       }
       playSound("hurt");
       navigator.vibrate?.(35);
-      notify(`HP -${Math.ceil(amount)}　まだ快適です！`);
+      notify(`HP -${Math.ceil(finalAmount)}${fortified ? "　不沈艦ガード！" : "　まだ快適です！"}`);
       syncHud();
       if (runtime.hp <= 0) endRun(false);
     };
@@ -1305,6 +1430,7 @@ export default function OfficeCrashRPG() {
       const baseDamage = 2 * (1 + runtime.profile.mastery.forge * 0.08 + upgradeValues.heavy * 0.28);
       const damage = baseDamage * (mega ? 2.15 : 1);
       const radius = 1.65 * (1 + upgradeValues.wide * 0.16) * (mega ? 1.5 : 1);
+      const criticalMultiplier = runtime.synergies.some((synergy) => synergy.name === "店主の会心") ? 2.35 : 1.75;
       spawnWave(center, mega ? 0xffc21d : 0xffffff, mega ? 1.35 : 1);
       runtime.shake = Math.max(runtime.shake, mega ? 0.42 : 0.24);
       let hits = 0;
@@ -1316,7 +1442,7 @@ export default function OfficeCrashRPG() {
           hits += 1;
           const critical = distance <= 0.58 || Math.random() < upgradeValues.perfect * 0.1;
           if (critical) criticals += 1;
-          damageEnemy(enemy, damage * (critical ? 1.75 : 1), critical, center);
+          damageEnemy(enemy, damage * (critical ? criticalMultiplier : 1), critical, center);
         }
       }
       if (hits > 1) {
@@ -1324,7 +1450,7 @@ export default function OfficeCrashRPG() {
         runtime.score += bonus;
         notify(`MULTI BREAK ×${hits} +${formatNumber(bonus)}`);
       } else if (criticals > 0) {
-        notify("PERFECT SMASH! ×1.75");
+        notify(`PERFECT SMASH! ×${criticalMultiplier.toFixed(2)}`);
       } else if (hits === 0) {
         notify(mega ? "MEGA SMASH!" : "SMASH!");
       }
@@ -1333,7 +1459,8 @@ export default function OfficeCrashRPG() {
 
     const smash = () => {
       if (!runtime.playing || runtime.paused) return;
-      const cooldown = Math.max(0.2, 0.46 * (1 - upgradeValues.haste * 0.09));
+      const rushActive = runtime.elapsed < runtime.rushUntil;
+      const cooldown = Math.max(0.16, 0.46 * (1 - upgradeValues.haste * 0.09) * (rushActive ? 0.7 : 1));
       if (runtime.elapsed - runtime.lastSmash < cooldown) return;
       runtime.lastSmash = runtime.elapsed;
       const mega = runtime.mega > 0;
@@ -1362,20 +1489,25 @@ export default function OfficeCrashRPG() {
       syncHud();
     };
 
-    const start = (profile: GameProfile) => {
+    const start = (profile: GameProfile, selectedOvertimeRank: OvertimeRank) => {
       void resumeAudio().catch(() => {
         notify("音声を開始できません。立ち飲み処の試聴ボタンを押してください");
       });
       runtime.profile = profile;
+      runtime.overtimeRank = selectedOvertimeRank;
       runtime.floor = 1;
       runtime.score = 0;
       runtime.combo = 0;
       runtime.maxCombo = 0;
       runtime.destroyed = 0;
       runtime.runCaps = 0;
+      runtime.pressure = 0;
+      runtime.rushUntil = 0;
+      runtime.rerolls = 1;
       runtime.mega = 1;
       runtime.submitted = false;
       runtime.selected = [];
+      runtime.synergies = [];
       runtime.maxHp = 100 + profile.mastery.vitality * 10;
       runtime.hp = runtime.maxHp;
       runtime.lastSmash = -10;
@@ -1383,6 +1515,8 @@ export default function OfficeCrashRPG() {
       runtime.invulnerableUntil = 0;
       for (const key of Object.keys(upgradeValues) as UpgradeId[]) upgradeValues[key] = 0;
       setBuild([]);
+      setActiveSynergies([]);
+      setRerolls(1);
       setSummary(null);
       setupFloor();
     };
@@ -1396,9 +1530,24 @@ export default function OfficeCrashRPG() {
         runtime.hp = runtime.maxHp;
       }
       if (choice.id === "happy") runtime.mega = Math.min(3, runtime.mega + Math.max(1, Math.floor(choice.scale)));
+      const previousSynergyCount = runtime.synergies.length;
+      runtime.synergies = resolveSynergies(upgradeValues);
       setBuild([...runtime.selected]);
+      setActiveSynergies([...runtime.synergies]);
+      if (runtime.synergies.length > previousSynergyCount) playSound("beer");
       runtime.floor += 1;
       setupFloor();
+    };
+
+    const rerollReward = () => {
+      if (runtime.playing || runtime.floor >= MAX_FLOOR || runtime.rerolls <= 0) return;
+      runtime.rerolls -= 1;
+      const choices = makeRewardChoices(runtime.floor, runtime.overtimeRank);
+      setRewardChoices(choices);
+      setRerolls(runtime.rerolls);
+      tone(280, 0.1, "square", 0.05, 520);
+      tone(520, 0.15, "triangle", 0.055, 820, 0.08);
+      notify(choices.some((choice) => choice.greater) ? "引き直し成功！ ★ 金星特性です" : "戦利品を入れ替えました");
     };
 
     const pause = () => {
@@ -1450,6 +1599,7 @@ export default function OfficeCrashRPG() {
       setStatus("hub");
       setRewardChoices([]);
       setBuild([]);
+      setActiveSynergies([]);
     };
 
     apiRef.current = {
@@ -1461,6 +1611,7 @@ export default function OfficeCrashRPG() {
       testSound,
       toggleSound,
       pickUpgrade,
+      rerollReward,
       returnHub,
     };
 
@@ -1518,6 +1669,15 @@ export default function OfficeCrashRPG() {
           performSmash(pending.center, pending.mega);
         }
 
+        const rushActive = runtime.elapsed < runtime.rushUntil;
+        if (!rushActive && runtime.rushUntil > 0) {
+          runtime.rushUntil = 0;
+          runtime.pressure = 0;
+          notify("RUSH TIME 終了。次の大整理へ！");
+        } else if (!rushActive) {
+          runtime.pressure = Math.max(0, runtime.pressure - dt * 3.6);
+        }
+
         const move = new THREE.Vector2(
           (keys.has("d") || keys.has("arrowright") ? 1 : 0)
             - (keys.has("a") || keys.has("arrowleft") ? 1 : 0)
@@ -1530,7 +1690,8 @@ export default function OfficeCrashRPG() {
           walking = true;
           move.normalize();
           const speed = 5.35
-            * (1 + runtime.profile.mastery.hustle * 0.04 + upgradeValues.runner * 0.08);
+            * (1 + runtime.profile.mastery.hustle * 0.04 + upgradeValues.runner * 0.08)
+            * (rushActive ? 1.16 : 1);
           player.position.x += move.x * speed * dt;
           player.position.z += move.y * speed * dt;
           player.position.x = THREE.MathUtils.clamp(player.position.x, -9.45, 9.45);
@@ -1545,6 +1706,13 @@ export default function OfficeCrashRPG() {
         for (let i = 0; i < enemies.length; i += 1) {
           const enemy = enemies[i];
           if (!enemy.alive || enemy.speed <= 0) continue;
+          if (enemy.affix === "regenerator"
+            && enemy.hp < enemy.maxHp
+            && runtime.elapsed - enemy.lastRegen >= 0.65) {
+            enemy.lastRegen = runtime.elapsed;
+            enemy.hp = Math.min(enemy.maxHp, enemy.hp + enemy.maxHp * 0.025);
+            updateEnemyHealth(enemy);
+          }
           const toPlayer = player.position.clone().sub(enemy.group.position).setY(0);
           const distance = toPlayer.length();
           const chilled = runtime.elapsed < enemy.frozenUntil ? Math.max(0.25, 1 - upgradeValues.frost * 0.24) : 1;
@@ -1733,6 +1901,7 @@ export default function OfficeCrashRPG() {
   const enemyRatio = hud.totalEnemies > 0
     ? Math.max(0, Math.min(100, (hud.totalEnemies - hud.enemies) / hud.totalEnemies * 100))
     : 0;
+  const pressureRatio = Math.max(0, Math.min(100, hud.pressure));
 
   return (
     <main
@@ -1761,6 +1930,7 @@ export default function OfficeCrashRPG() {
               <b>{hud.floorName}</b>
             </div>
             <div className="rpg-hud-actions">
+              <span className={`rpg-overtime rank-${overtimeRank}`}>{hud.overtimeLabel} ×{hud.scoreMultiplier.toFixed(2)}</span>
               <span className="rpg-cap">王冠 {hud.caps}</span>
               <button onClick={() => apiRef.current?.toggleSound()} aria-label={soundOn ? "効果音をオフ" : "効果音をオン"}>
                 {soundOn ? "音 ON" : "音 OFF"}
@@ -1782,6 +1952,10 @@ export default function OfficeCrashRPG() {
             <div className={`rpg-combo ${hud.combo > 0 ? "active" : ""}`}>
               COMBO {hud.combo} <b>×{hud.multiplier.toFixed(2)}</b>
             </div>
+            <div className={`rpg-pressure ${hud.rushRemaining > 0 ? "rush" : ""}`}>
+              <span>{hud.rushRemaining > 0 ? `RUSH TIME ${hud.rushRemaining.toFixed(1)}s` : "清掃熱"}</span>
+              <div><i style={{ width: `${pressureRatio}%` }} /></div>
+            </div>
           </section>
 
           <section className="rpg-objective" aria-live="polite">
@@ -1793,8 +1967,14 @@ export default function OfficeCrashRPG() {
           <aside className="rpg-build-rail" aria-label="現在のビルド">
             <span>RUN BUILD</span>
             {build.length === 0 && <small>戦利品は階層クリア後に獲得</small>}
+            {activeSynergies.map((synergy) => (
+              <div className="rpg-synergy-chip" key={synergy.name} title={synergy.effect}>
+                <b>{synergy.icon}</b>
+                <span>{synergy.name}</span>
+              </div>
+            ))}
             {build.slice(-6).map((item, index) => (
-              <div className={`rpg-build-chip ${item.rarityClass}`} key={`${item.id}-${index}`} title={item.effect}>
+              <div className={`rpg-build-chip ${item.rarityClass} ${item.greater ? "greater" : ""}`} key={`${item.id}-${index}`} title={item.effect}>
                 <b>{item.icon}</b>
                 <span>{item.name}</span>
               </div>
@@ -1879,8 +2059,33 @@ export default function OfficeCrashRPG() {
                 <span>8 FLOORS</span>
                 <span>MEGA SMASH</span>
                 <span>LOOT DRAFT</span>
+                <span>金星特性</span>
+                <span>ビルド共鳴</span>
+                <span>残業難度</span>
                 <span>永続記録</span>
               </div>
+              <section className="overtime-select" aria-label="残業難度">
+                <div>
+                  <span>RISK × REWARD</span>
+                  <strong>残業指令を選ぶ</strong>
+                </div>
+                <div className="overtime-options">
+                  {OVERTIME_RANKS.map((rank) => (
+                    <button
+                      type="button"
+                      className={overtimeRank === rank.rank ? "active" : ""}
+                      key={rank.rank}
+                      onClick={() => setOvertimeRank(rank.rank)}
+                      title={rank.description}
+                    >
+                      <small>{rank.kicker}</small>
+                      <b>{rank.label}</b>
+                      <em>得点 ×{rank.scoreMultiplier.toFixed(2)}</em>
+                    </button>
+                  ))}
+                </div>
+                <p>{OVERTIME_RANKS[overtimeRank].description}</p>
+              </section>
               <div className={`audio-check ${audioReady ? "ready" : ""} ${audioError ? "error" : ""}`}>
                 <button type="button" onClick={() => apiRef.current?.testSound()}>
                   <span aria-hidden="true">{audioReady ? "🔊" : "🔈"}</span>
@@ -1896,7 +2101,7 @@ export default function OfficeCrashRPG() {
               </div>
               <button
                 className="hub-start"
-                onClick={() => apiRef.current?.start(profile)}
+                onClick={() => apiRef.current?.start(profile, overtimeRank)}
                 disabled={profileLoading}
               >
                 <span>{profileLoading ? "立ち飲み処を準備中…" : "備品循環棟へ突入！"}</span>
@@ -1954,7 +2159,10 @@ export default function OfficeCrashRPG() {
                 <section>
                   <div className="panel-heading"><span>TOP 5</span><strong>スコアボード</strong></div>
                   {(siteData?.leaderboard ?? []).slice(0, 3).map((run, index) => (
-                    <p key={`${run.score}-${index}`}><b>#{index + 1}</b> {formatNumber(run.score)} <small>{run.floorReached}F</small></p>
+                    <p key={`${run.score}-${index}`}>
+                      <b>#{index + 1}</b> {formatNumber(run.score)}
+                      <small>{run.floorReached}F・{OVERTIME_RANKS[Math.max(0, Math.min(3, run.overtimeRank))].label}</small>
+                    </p>
                   ))}
                   {!siteData?.leaderboard.length && <p className="muted">最初の伝説を作ろう</p>}
                 </section>
@@ -1969,15 +2177,16 @@ export default function OfficeCrashRPG() {
           <div className="reward-card">
             <p className="rpg-eyebrow">FLOOR {hud.floor} CLEAR — LOOT DRAFT</p>
             <h2 id="reward-title">戦利品をひとつ選ぶ</h2>
-            <p>大型ジョッキと白い仮面はそのまま。中身とパーツでビルドを変えよう。</p>
+            <p>同系統のパーツを組み合わせると「ビルド共鳴」が発動。金星特性は通常より45%強力です。</p>
             <div className="reward-grid">
               {rewardChoices.map((choice) => (
                 <button
-                  className={`loot-card ${choice.rarityClass}`}
+                  className={`loot-card ${choice.rarityClass} ${choice.greater ? "greater" : ""}`}
                   key={choice.id}
                   onClick={() => apiRef.current?.pickUpgrade(choice)}
                 >
                   <span className="loot-rarity">{choice.rarity}</span>
+                  <span className="loot-school">{choice.school}系統</span>
                   <b className="loot-icon" style={{ color: choice.color }}>{choice.icon}</b>
                   <small>{choice.slot}</small>
                   <strong>{choice.name}</strong>
@@ -1987,6 +2196,20 @@ export default function OfficeCrashRPG() {
                 </button>
               ))}
             </div>
+            <button
+              type="button"
+              className="loot-reroll"
+              onClick={() => apiRef.current?.rerollReward()}
+              disabled={rerolls <= 0}
+            >
+              品書きを全部引き直す <b>{rerolls}/1</b>
+            </button>
+            {activeSynergies.length > 0 && (
+              <div className="reward-synergies">
+                <span>発動中</span>
+                {activeSynergies.map((synergy) => <b key={synergy.name}>{synergy.icon} {synergy.name}</b>)}
+              </div>
+            )}
           </div>
         </section>
       )}
@@ -2001,6 +2224,7 @@ export default function OfficeCrashRPG() {
             <div className="result-score">
               <span>FINAL SCORE</span>
               <strong>{formatNumber(summary.score)}</strong>
+              <small>{OVERTIME_RANKS[summary.overtimeRank].label} ×{OVERTIME_RANKS[summary.overtimeRank].scoreMultiplier.toFixed(2)} ／ {summary.buildName}</small>
             </div>
             <div className="result-grid">
               <div><span>到達</span><strong>{summary.floorReached}F</strong></div>
@@ -2014,7 +2238,7 @@ export default function OfficeCrashRPG() {
               ))}
             </div>
             <div className="result-actions">
-              <button onClick={() => apiRef.current?.start(profileRef.current)}>もう一度突入</button>
+              <button onClick={() => apiRef.current?.start(profileRef.current, overtimeRank)}>もう一度突入</button>
               <button onClick={() => apiRef.current?.returnHub()}>立ち飲み処へ戻る</button>
             </div>
           </div>

@@ -39,6 +39,8 @@ type RunPayload = {
   maxCombo?: unknown;
   capsEarned?: unknown;
   upgrades?: unknown;
+  overtimeRank?: unknown;
+  buildName?: unknown;
 };
 
 const PLAYER_COOKIE = "sobaya_player";
@@ -101,6 +103,8 @@ async function ensureSchema(db: D1Database) {
         max_combo INTEGER NOT NULL,
         caps_earned INTEGER NOT NULL,
         build_json TEXT NOT NULL,
+        overtime_rank INTEGER DEFAULT 0 NOT NULL,
+        build_name TEXT DEFAULT '単品ジョッキ' NOT NULL,
         created_at TEXT NOT NULL,
         FOREIGN KEY (player_id) REFERENCES players(id)
       )`),
@@ -145,10 +149,12 @@ async function profilePayload(db: D1Database, playerId: string) {
   if (!player) throw new Error("profile_unavailable");
   const [recent, leaders, global] = await Promise.all([
     db.prepare(`SELECT victory, floor_reached AS floorReached, score, destroyed,
-      max_combo AS maxCombo, caps_earned AS capsEarned, created_at AS createdAt
+      max_combo AS maxCombo, caps_earned AS capsEarned,
+      overtime_rank AS overtimeRank, build_name AS buildName, created_at AS createdAt
       FROM runs WHERE player_id = ? ORDER BY created_at DESC LIMIT 5`)
       .bind(playerId).all(),
-    db.prepare(`SELECT score, floor_reached AS floorReached, victory
+    db.prepare(`SELECT score, floor_reached AS floorReached, victory,
+      overtime_rank AS overtimeRank, build_name AS buildName
       FROM runs ORDER BY score DESC, floor_reached DESC LIMIT 5`).all(),
     db.prepare(`SELECT COUNT(*) AS runs, COALESCE(SUM(destroyed), 0) AS destroyed,
       COALESCE(SUM(victory), 0) AS clears FROM runs`).first(),
@@ -184,6 +190,10 @@ async function handleGameApi(request: Request, env: Env) {
     const destroyed = safeInt(payload.destroyed, 0, 10_000);
     const maxCombo = safeInt(payload.maxCombo, 0, 10_000);
     const capsEarned = safeInt(payload.capsEarned, 0, 5_000);
+    const overtimeRank = safeInt(payload.overtimeRank, 0, 3);
+    const buildName = typeof payload.buildName === "string"
+      ? payload.buildName.slice(0, 120)
+      : "単品ジョッキ";
     const victory = payload.victory === true;
     const upgrades = Array.isArray(payload.upgrades)
       ? payload.upgrades.slice(0, 30).map((value) => String(value).slice(0, 80))
@@ -192,10 +202,11 @@ async function handleGameApi(request: Request, env: Env) {
     await db.batch([
       db.prepare(`INSERT INTO runs (
         id, player_id, victory, floor_reached, score, destroyed,
-        max_combo, caps_earned, build_json, created_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).bind(
+        max_combo, caps_earned, build_json, overtime_rank, build_name, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).bind(
         crypto.randomUUID(), playerId, victory ? 1 : 0, floorReached, score,
-        destroyed, maxCombo, capsEarned, JSON.stringify(upgrades), now,
+        destroyed, maxCombo, capsEarned, JSON.stringify(upgrades),
+        overtimeRank, buildName, now,
       ),
       db.prepare(`UPDATE players SET
         caps = caps + ?,

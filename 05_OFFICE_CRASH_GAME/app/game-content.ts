@@ -1,6 +1,7 @@
 export type GameStatus = "hub" | "playing" | "reward" | "gameover" | "victory";
 export type FloorKind = "combat" | "elite" | "challenge" | "boss" | "final";
 export type MasteryKey = "forge" | "vitality" | "hustle";
+export type OvertimeRank = 0 | 1 | 2 | 3;
 export type UpgradeId =
   | "heavy"
   | "wide"
@@ -32,13 +33,21 @@ export type RecentRun = {
   destroyed: number;
   maxCombo: number;
   capsEarned: number;
+  overtimeRank: number;
+  buildName: string;
   createdAt: string;
 };
 
 export type SiteGameData = {
   profile: GameProfile;
   recentRuns: RecentRun[];
-  leaderboard: Array<{ score: number; floorReached: number; victory: number | boolean }>;
+  leaderboard: Array<{
+    score: number;
+    floorReached: number;
+    victory: number | boolean;
+    overtimeRank: number;
+    buildName: string;
+  }>;
   globalStats: { runs: number; destroyed: number; clears: number };
 };
 
@@ -49,6 +58,7 @@ export type UpgradeDefinition = {
   name: string;
   description: string;
   color: string;
+  school: string;
 };
 
 export type RewardChoice = UpgradeDefinition & {
@@ -57,6 +67,7 @@ export type RewardChoice = UpgradeDefinition & {
   rarityClass: string;
   scale: number;
   effect: string;
+  greater: boolean;
 };
 
 export type FloorDefinition = {
@@ -70,6 +81,26 @@ export type FloorDefinition = {
   enemyCount: number;
 };
 
+export type OvertimeDefinition = {
+  rank: OvertimeRank;
+  label: string;
+  kicker: string;
+  description: string;
+  scoreMultiplier: number;
+  capsMultiplier: number;
+  hpMultiplier: number;
+  damageMultiplier: number;
+  speedMultiplier: number;
+  eliteBonus: number;
+};
+
+export type SynergyDefinition = {
+  ids: [UpgradeId, UpgradeId];
+  name: string;
+  icon: string;
+  effect: string;
+};
+
 export const EMPTY_PROFILE: GameProfile = {
   caps: 0,
   bestFloor: 0,
@@ -79,6 +110,57 @@ export const EMPTY_PROFILE: GameProfile = {
   clears: 0,
   mastery: { forge: 0, vitality: 0, hustle: 0 },
 };
+
+export const OVERTIME_RANKS: OvertimeDefinition[] = [
+  {
+    rank: 0,
+    label: "定時",
+    kicker: "NORMAL",
+    description: "標準レギュレーション。まずはここから。",
+    scoreMultiplier: 1,
+    capsMultiplier: 1,
+    hpMultiplier: 1,
+    damageMultiplier: 1,
+    speedMultiplier: 1,
+    eliteBonus: 0,
+  },
+  {
+    rank: 1,
+    label: "残業",
+    kicker: "OVERTIME I",
+    description: "備品が少し強化。スコアと王冠が増える。",
+    scoreMultiplier: 1.25,
+    capsMultiplier: 1.2,
+    hpMultiplier: 1.2,
+    damageMultiplier: 1.12,
+    speedMultiplier: 1.06,
+    eliteBonus: 1,
+  },
+  {
+    rank: 2,
+    label: "深夜残業",
+    kicker: "OVERTIME II",
+    description: "強化備品が増加。当たり特性も出やすい。",
+    scoreMultiplier: 1.55,
+    capsMultiplier: 1.45,
+    hpMultiplier: 1.48,
+    damageMultiplier: 1.28,
+    speedMultiplier: 1.12,
+    eliteBonus: 2,
+  },
+  {
+    rank: 3,
+    label: "始発待ち",
+    kicker: "OVERTIME III",
+    description: "最高危険度。最高倍率で伝説を狙う。",
+    scoreMultiplier: 1.95,
+    capsMultiplier: 1.8,
+    hpMultiplier: 1.82,
+    damageMultiplier: 1.48,
+    speedMultiplier: 1.2,
+    eliteBonus: 3,
+  },
+];
 
 export const FLOORS: FloorDefinition[] = [
   {
@@ -171,6 +253,7 @@ export const UPGRADES: UpgradeDefinition[] = [
     name: "重量級ジョッキ底",
     description: "スマッシュの基礎威力を引き上げる。",
     color: "#ff7046",
+    school: "衝撃",
   },
   {
     id: "wide",
@@ -179,6 +262,7 @@ export const UPGRADES: UpgradeDefinition[] = [
     name: "大口径ビアグラス",
     description: "攻撃範囲が広がり、MULTI BREAKを狙いやすくなる。",
     color: "#ffb11f",
+    school: "爆泡",
   },
   {
     id: "haste",
@@ -187,6 +271,7 @@ export const UPGRADES: UpgradeDefinition[] = [
     name: "高速サーブハンドル",
     description: "スマッシュの待ち時間を短縮する。",
     color: "#43c8ff",
+    school: "速配",
   },
   {
     id: "foam",
@@ -195,6 +280,7 @@ export const UPGRADES: UpgradeDefinition[] = [
     name: "はじける泡",
     description: "破壊した備品から泡が弾け、周囲にもダメージ。",
     color: "#ffe46a",
+    school: "爆泡",
   },
   {
     id: "frost",
@@ -203,6 +289,7 @@ export const UPGRADES: UpgradeDefinition[] = [
     name: "キンキン冷却",
     description: "命中した暴走備品を冷やして動きを鈍らせる。",
     color: "#6edfff",
+    school: "冷却",
   },
   {
     id: "yakitori",
@@ -211,6 +298,7 @@ export const UPGRADES: UpgradeDefinition[] = [
     name: "店主の焼き鳥",
     description: "備品を片付けるたびに体力を少し回復する。",
     color: "#e9873c",
+    school: "堅守",
   },
   {
     id: "combo",
@@ -219,6 +307,7 @@ export const UPGRADES: UpgradeDefinition[] = [
     name: "乾杯コンボ",
     description: "コンボ受付時間を延長し、高倍率を維持する。",
     color: "#ff4f77",
+    school: "速配",
   },
   {
     id: "guard",
@@ -227,6 +316,7 @@ export const UPGRADES: UpgradeDefinition[] = [
     name: "冷奴シールド",
     description: "最大体力を増やし、獲得時に全回復する。",
     color: "#f4f4e7",
+    school: "堅守",
   },
   {
     id: "knockback",
@@ -235,6 +325,7 @@ export const UPGRADES: UpgradeDefinition[] = [
     name: "壁ごと片付け",
     description: "衝撃が強くなり、敵を大きく吹き飛ばす。",
     color: "#ad8cff",
+    school: "衝撃",
   },
   {
     id: "happy",
@@ -243,6 +334,7 @@ export const UPGRADES: UpgradeDefinition[] = [
     name: "ハッピーアワー",
     description: "各フロア開始時にMEGA SMASHを補充する。",
     color: "#ffca22",
+    school: "宴会",
   },
   {
     id: "perfect",
@@ -251,6 +343,7 @@ export const UPGRADES: UpgradeDefinition[] = [
     name: "一点集中",
     description: "中心命中以外でもPERFECT判定が発生しやすくなる。",
     color: "#ff5e54",
+    school: "会心",
   },
   {
     id: "runner",
@@ -259,8 +352,46 @@ export const UPGRADES: UpgradeDefinition[] = [
     name: "ついでに全力疾走",
     description: "移動速度とダッシュの回転率が上がる。",
     color: "#63df8e",
+    school: "速配",
   },
 ];
+
+export const SYNERGIES: SynergyDefinition[] = [
+  {
+    ids: ["wide", "foam"],
+    name: "爆泡ジョッキ",
+    icon: "泡",
+    effect: "泡の連鎖範囲と威力が大幅アップ",
+  },
+  {
+    ids: ["frost", "haste"],
+    name: "キンキン速配",
+    icon: "冷",
+    effect: "冷えた備品へのダメージが1.5倍",
+  },
+  {
+    ids: ["heavy", "perfect"],
+    name: "店主の会心",
+    icon: "芯",
+    effect: "PERFECT SMASHの倍率が2.35倍",
+  },
+  {
+    ids: ["guard", "yakitori"],
+    name: "立ち飲み不沈艦",
+    icon: "守",
+    effect: "HP80%以上で受けるダメージを35%軽減",
+  },
+  {
+    ids: ["combo", "runner"],
+    name: "宴会ランナー",
+    icon: "走",
+    effect: "清掃熱の上昇量が1.5倍",
+  },
+];
+
+export function resolveSynergies(values: Partial<Record<UpgradeId, number>>) {
+  return SYNERGIES.filter(({ ids }) => ids.every((id) => (values[id] ?? 0) > 0));
+}
 
 const RARITIES = [
   { name: "生", className: "draft", scale: 1 },
@@ -294,7 +425,7 @@ function rollTier(floor: number) {
   return 0;
 }
 
-export function makeRewardChoices(floor: number): RewardChoice[] {
+export function makeRewardChoices(floor: number, overtimeRank: OvertimeRank = 0): RewardChoice[] {
   const pool = [...UPGRADES];
   const choices: RewardChoice[] = [];
   while (choices.length < 3) {
@@ -302,13 +433,16 @@ export function makeRewardChoices(floor: number): RewardChoice[] {
     const definition = pool.splice(index, 1)[0];
     const tier = rollTier(floor);
     const rarity = RARITIES[tier];
+    const greater = Math.random() < 0.045 + floor * 0.012 + overtimeRank * 0.018;
+    const scale = rarity.scale * (greater ? 1.45 : 1);
     choices.push({
       ...definition,
       tier,
-      rarity: rarity.name,
+      rarity: `${greater ? "金星 " : ""}${rarity.name}`,
       rarityClass: rarity.className,
-      scale: rarity.scale,
-      effect: effectText(definition.id, rarity.scale),
+      scale,
+      effect: `${greater ? "★ " : ""}${effectText(definition.id, scale)}`,
+      greater,
     });
   }
   return choices;

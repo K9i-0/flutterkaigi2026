@@ -25,6 +25,8 @@ export const runs = sqliteTable("runs", {
   maxCombo: integer("max_combo").notNull(),
   capsEarned: integer("caps_earned").notNull(),
   buildJson: text("build_json").notNull(),
+  overtimeRank: integer("overtime_rank").notNull().default(0),
+  buildName: text("build_name").notNull().default("単品ジョッキ"),
   createdAt: text("created_at").notNull(),
 }, (table) => [
   index("runs_player_created_idx").on(table.playerId, table.createdAt),

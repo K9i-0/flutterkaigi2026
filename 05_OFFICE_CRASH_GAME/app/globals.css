@@ -252,7 +252,8 @@ body {
 }
 
 .rpg-hud-actions button,
-.rpg-cap {
+.rpg-cap,
+.rpg-overtime {
   display: grid;
   place-items: center;
   min-height: 44px;
@@ -268,6 +269,19 @@ body {
 .rpg-cap {
   padding: 0 13px;
   background: #ef9e16;
+}
+
+.rpg-overtime {
+  padding: 0 11px;
+  background: #263b49;
+  white-space: nowrap;
+}
+
+.rpg-overtime.rank-1 { background: #2b7b83; }
+.rpg-overtime.rank-2 { background: #7d4ba2; }
+.rpg-overtime.rank-3 {
+  background: #b83c28;
+  animation: overtimePulse .7s infinite alternate;
 }
 
 .rpg-hud-actions button {
@@ -377,6 +391,49 @@ body {
   transform: scale(1);
 }
 
+.rpg-pressure {
+  width: min(250px, 19vw);
+  margin-top: 7px;
+  padding: 5px 8px 7px;
+  border: 3px solid #fff;
+  border-radius: 12px;
+  background: rgba(19, 36, 47, .9);
+  box-shadow: 0 4px 0 var(--rpg-ink);
+  color: #fff;
+  font-size: 8px;
+  font-weight: 900;
+}
+
+.rpg-pressure > span {
+  display: block;
+  margin-bottom: 4px;
+  letter-spacing: .13em;
+}
+
+.rpg-pressure > div {
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #40525e;
+}
+
+.rpg-pressure i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #35c4ff, #ffcf32, #ff552f);
+  transition: width .15s linear;
+}
+
+.rpg-pressure.rush {
+  background: #d8441f;
+  animation: rushPulse .35s infinite alternate;
+}
+
+.rpg-pressure.rush i {
+  background: linear-gradient(90deg, #fff06e, #fff);
+}
+
 .rpg-objective {
   position: absolute;
   z-index: 4;
@@ -484,6 +541,41 @@ body {
 .rpg-build-chip.large b { background: #1577a9; }
 .rpg-build-chip.mega b { background: #8e45b9; }
 .rpg-build-chip.secret b { background: #d66c08; }
+.rpg-build-chip.greater {
+  border-color: #fff06d;
+  box-shadow: 0 3px 0 #b85c09, 0 0 15px rgba(255, 204, 48, .8);
+}
+
+.rpg-synergy-chip {
+  display: grid;
+  grid-template-columns: 29px 1fr;
+  align-items: center;
+  min-height: 39px;
+  overflow: hidden;
+  border: 2px solid #fff06d;
+  border-radius: 10px;
+  background: linear-gradient(100deg, #b3311c, #ec7a1c);
+  box-shadow: 0 3px 0 #75200f, 0 0 14px rgba(255, 186, 40, .55);
+  color: #fff;
+}
+
+.rpg-synergy-chip b {
+  display: grid;
+  place-items: center;
+  align-self: stretch;
+  background: rgba(61, 19, 11, .45);
+  color: #fff06d;
+  font-size: 14px;
+}
+
+.rpg-synergy-chip span {
+  padding: 0 7px;
+  overflow: hidden;
+  font-size: 9px;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
 .rpg-mega {
   position: absolute;
@@ -826,6 +918,93 @@ body {
   font-size: 8px;
   font-weight: 900;
   letter-spacing: .06em;
+}
+
+.overtime-select {
+  margin: -6px 0 15px;
+  padding: 10px;
+  border: 3px solid var(--rpg-ink);
+  border-radius: 15px;
+  background: #fff;
+  box-shadow: 0 4px 0 #b8c8cf;
+}
+
+.overtime-select > div:first-child {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  margin-bottom: 8px;
+}
+
+.overtime-select > div:first-child span {
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #b83c28;
+  color: #fff;
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: .12em;
+}
+
+.overtime-select > div:first-child strong {
+  font-size: 11px;
+}
+
+.overtime-options {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+}
+
+.overtime-options button {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid #b8c8cf;
+  border-radius: 10px;
+  padding: 6px 3px;
+  background: #eff5f7;
+  color: #50636d;
+  cursor: pointer;
+}
+
+.overtime-options button small,
+.overtime-options button b,
+.overtime-options button em {
+  display: block;
+}
+
+.overtime-options button small {
+  font-size: 6px;
+  font-weight: 900;
+  letter-spacing: .04em;
+}
+
+.overtime-options button b {
+  margin: 2px 0;
+  font-size: 9px;
+}
+
+.overtime-options button em {
+  font-size: 7px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.overtime-options button.active {
+  border-color: #fff;
+  background: linear-gradient(145deg, #ff9a22, #d7441e);
+  box-shadow: 0 3px 0 var(--rpg-ink);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.overtime-select > p {
+  margin: 8px 1px 0;
+  color: #687b85;
+  font-size: 8px;
+  font-weight: 800;
 }
 
 .audio-check {
@@ -1188,6 +1367,27 @@ body {
   box-shadow: 0 8px 0 #d5690b, 0 14px 30px rgba(255, 144, 20, .3);
 }
 
+.loot-card.greater {
+  border-color: #ad4b00;
+  box-shadow: 0 8px 0 #ad4b00, 0 0 0 5px #fff06d, 0 17px 36px rgba(255, 161, 18, .45);
+  animation: greaterLoot .7s infinite alternate;
+}
+
+.loot-card.greater::after {
+  content: "★ GREAT AFFIX";
+  position: absolute;
+  top: -13px;
+  right: 10px;
+  padding: 4px 8px;
+  border: 2px solid var(--rpg-ink);
+  border-radius: 999px;
+  background: #fff06d;
+  color: #8f2e08;
+  font-size: 7px;
+  font-weight: 900;
+  transform: rotate(4deg);
+}
+
 .loot-rarity {
   position: absolute;
   top: 11px;
@@ -1197,6 +1397,19 @@ body {
   background: var(--rpg-ink);
   color: #fff;
   font-size: 8px;
+  font-weight: 900;
+}
+
+.loot-school {
+  position: absolute;
+  top: 11px;
+  right: 11px;
+  padding: 3px 7px;
+  border: 1px solid #a9bbc4;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .82);
+  color: #536873;
+  font-size: 7px;
   font-weight: 900;
 }
 
@@ -1253,6 +1466,54 @@ body {
   font-weight: 900;
 }
 
+.loot-reroll {
+  margin-top: 20px;
+  border: 3px solid var(--rpg-ink);
+  border-radius: 999px;
+  padding: 9px 16px;
+  background: #fff;
+  box-shadow: 0 4px 0 var(--rpg-ink);
+  color: var(--rpg-ink);
+  font-size: 10px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.loot-reroll b {
+  margin-left: 6px;
+  color: var(--rpg-orange);
+}
+
+.loot-reroll:disabled {
+  opacity: .42;
+  cursor: not-allowed;
+}
+
+.reward-synergies {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 14px;
+}
+
+.reward-synergies span,
+.reward-synergies b {
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 8px;
+}
+
+.reward-synergies span {
+  background: var(--rpg-ink);
+  color: #fff;
+}
+
+.reward-synergies b {
+  background: #fff0a0;
+  color: #8c310f;
+}
+
 .result-card {
   position: relative;
   width: min(710px, 94vw);
@@ -1290,6 +1551,13 @@ body {
   font-size: clamp(52px, 8vw, 88px);
   line-height: 1;
   letter-spacing: -.07em;
+}
+
+.result-score small {
+  margin-top: 6px;
+  color: #516670;
+  font-size: 9px;
+  font-weight: 900;
 }
 
 .result-grid {
@@ -1392,6 +1660,18 @@ body {
   to { filter: drop-shadow(0 0 22px #ffd43d); transform: rotate(2deg) scale(1.04); }
 }
 
+@keyframes overtimePulse {
+  to { filter: drop-shadow(0 0 11px #ffb22f); }
+}
+
+@keyframes rushPulse {
+  to { transform: scale(1.035); filter: drop-shadow(0 0 12px #ffcb35); }
+}
+
+@keyframes greaterLoot {
+  to { filter: brightness(1.08) drop-shadow(0 0 13px #ffce38); }
+}
+
 @media (max-width: 920px) {
   .hub-card {
     grid-template-columns: 1fr;
@@ -1456,6 +1736,10 @@ body {
     font-size: 9px;
   }
 
+  .rpg-overtime {
+    display: none;
+  }
+
   .rpg-hud-actions button {
     min-width: 38px;
     min-height: 38px;
@@ -1480,6 +1764,10 @@ body {
 
   .rpg-score-row strong {
     font-size: 27px;
+  }
+
+  .rpg-pressure {
+    width: 180px;
   }
 
   .rpg-objective {
@@ -1568,6 +1856,10 @@ body {
 
   .hub-copy blockquote br {
     display: none;
+  }
+
+  .overtime-options {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .hub-stats {
