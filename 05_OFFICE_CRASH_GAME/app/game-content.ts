@@ -17,6 +17,7 @@ export type UpgradeId =
   | "runner";
 
 export type GameProfile = {
+  username: string;
   caps: number;
   bestFloor: number;
   bestScore: number;
@@ -42,6 +43,7 @@ export type SiteGameData = {
   profile: GameProfile;
   recentRuns: RecentRun[];
   leaderboard: Array<{
+    username: string;
     score: number;
     floorReached: number;
     victory: number | boolean;
@@ -102,6 +104,7 @@ export type SynergyDefinition = {
 };
 
 export const EMPTY_PROFILE: GameProfile = {
+  username: "匿名窓際社員",
   caps: 0,
   bestFloor: 0,
   bestScore: 0,
@@ -168,30 +171,30 @@ export const FLOORS: FloorDefinition[] = [
     kind: "combat",
     name: "中央執務フロア",
     kicker: "REGULATION 01",
-    objective: "歩き出した備品をすべて資材へ戻せ",
+    objective: "備品の大行進を崩し、16体を資材へ戻せ",
     tint: 0xe8edf0,
     accent: 0x19b8ff,
-    enemyCount: 7,
+    enemyCount: 16,
   },
   {
     floor: 2,
     kind: "combat",
     name: "会議室迷宮",
     kicker: "REGULATION 02",
-    objective: "机の包囲を破り、出口を確保せよ",
+    objective: "円陣をまとめ、22体を一気に片付けろ",
     tint: 0xe7e2d8,
     accent: 0xffa51f,
-    enemyCount: 10,
+    enemyCount: 22,
   },
   {
     floor: 3,
     kind: "challenge",
     name: "クラッシュタイム",
     kicker: "45 SECOND BONUS",
-    objective: "画面内に集まる備品を45秒で好きなだけ片付けろ",
+    objective: "画面内へ押し寄せる備品を45秒で好きなだけ片付けろ",
     tint: 0xd9f3ff,
     accent: 0xffcc22,
-    enemyCount: 28,
+    enemyCount: 42,
   },
   {
     floor: 4,
@@ -208,30 +211,30 @@ export const FLOORS: FloorDefinition[] = [
     kind: "combat",
     name: "配線サーバーフロア",
     kicker: "REGULATION 05",
-    objective: "暴走備品の増援を押し返せ",
+    objective: "暴走備品の列を生ジョッキレールで貫け",
     tint: 0xd9e9e7,
     accent: 0x54e0b4,
-    enemyCount: 14,
+    enemyCount: 26,
   },
   {
     floor: 6,
     kind: "elite",
     name: "タコ部屋前室",
     kicker: "ELITE REGULATION",
-    objective: "強化ロッカー部隊を突破せよ",
+    objective: "大群を率いる強化ロッカーをまとめて突破せよ",
     tint: 0x4c4b57,
     accent: 0xff704c,
-    enemyCount: 11,
+    enemyCount: 22,
   },
   {
     floor: 7,
     kind: "challenge",
     name: "窓際外周デッキ",
     kicker: "45 SECOND BONUS",
-    objective: "東京タワーを背に連鎖破壊を決めろ",
+    objective: "東京タワーを背に54体の大連鎖を決めろ",
     tint: 0xd9efff,
     accent: 0xff5d45,
-    enemyCount: 36,
+    enemyCount: 54,
   },
   {
     floor: 8,
@@ -402,17 +405,17 @@ const RARITIES = [
 
 function effectText(id: UpgradeId, scale: number) {
   switch (id) {
-    case "heavy": return `攻撃力 +${Math.round(28 * scale)}%`;
-    case "wide": return `攻撃範囲 +${Math.round(16 * scale)}%`;
-    case "haste": return `攻撃間隔 -${Math.round(9 * scale)}%`;
-    case "foam": return `破壊時に周囲へ ${Math.round(45 * scale)}% ダメージ`;
+    case "heavy": return `全攻撃・MEGA威力 +${Math.round(28 * scale)}%`;
+    case "wide": return `通常範囲・MEGA射線 +${Math.round(16 * scale)}%`;
+    case "haste": return `攻撃間隔・MEGA装填 -${Math.round(9 * scale)}%`;
+    case "foam": return `破壊連鎖 ${Math.round(45 * scale)}%・MEGA着弾範囲アップ`;
     case "frost": return `移動速度 -${Math.round(24 * scale)}%`;
     case "yakitori": return `撃破時 HP ${Math.max(1, Math.round(2 * scale))} 回復`;
     case "combo": return `コンボ受付 +${(0.7 * scale).toFixed(1)}秒`;
     case "guard": return `最大HP +${Math.round(18 * scale)}`;
-    case "knockback": return `吹き飛ばし +${Math.round(40 * scale)}%`;
-    case "happy": return `各階 MEGA +${Math.max(1, Math.floor(scale))}`;
-    case "perfect": return `追加PERFECT率 +${Math.round(10 * scale)}%`;
+    case "knockback": return `吹き飛ばし +${Math.round(40 * scale)}%・壁際MEGA強化`;
+    case "happy": return `MEGAゲージ獲得 +${Math.round(18 * scale)}%・階層開始時も補充`;
+    case "perfect": return `追加PERFECT率 +${Math.round(10 * scale)}%・MEGA芯判定拡大`;
     case "runner": return `移動速度 +${Math.round(8 * scale)}%`;
   }
 }

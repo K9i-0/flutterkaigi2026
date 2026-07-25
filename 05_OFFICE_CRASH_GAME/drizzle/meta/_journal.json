@@ -15,6 +15,13 @@
       "when": 1784960932029,
       "tag": "0001_jazzy_talkback",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1784976305653,
+      "tag": "0002_rare_microbe",
+      "breakpoints": true
     }
   ]
 }

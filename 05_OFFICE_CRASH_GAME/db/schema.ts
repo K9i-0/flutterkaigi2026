@@ -2,6 +2,7 @@ import { index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const players = sqliteTable("players", {
   id: text("id").primaryKey(),
+  username: text("username").notNull().default("匿名窓際社員"),
   caps: integer("caps").notNull().default(0),
   bestFloor: integer("best_floor").notNull().default(0),
   bestScore: integer("best_score").notNull().default(0),

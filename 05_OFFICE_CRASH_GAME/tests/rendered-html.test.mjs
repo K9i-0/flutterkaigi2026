@@ -25,7 +25,11 @@ test("renders the Office Crash game shell", async () => {
   assert.match(html, /立ち飲み処を準備中/);
   assert.match(html, /MADOGIWA HACK, SMASH &amp; DRAFT/);
   assert.match(html, /生ジョッキレール/);
+  assert.match(html, /OFFICE RUSH/);
   assert.match(html, /永続仕込み/);
+  assert.match(html, /スコアボード名/);
+  assert.match(html, /匿名窓際社員/);
+  assert.match(html, /名前を保存/);
   assert.match(html, /王冠キャップ/);
   assert.match(html, /LOOT DRAFT/);
   assert.match(html, /永続記録/);
@@ -67,7 +71,14 @@ test("uses Three.js with a fixed camera, combat floors, and keyboard plus touch 
   assert.match(source, /makeDangerZone/);
   assert.match(source, /赤い予告範囲から離れろ/);
   assert.match(source, /lastCallBoost/);
-  assert.match(source, /randomSpawnPoints\(floorDefinition\.kind === "challenge"\)/);
+  assert.match(source, /formationSpawnPoints/);
+  assert.match(source, /MAX_CONCURRENT_MOB_ATTACKS = 4/);
+  assert.match(source, /runtime\.floorKilled >= runtime\.floorQuota/);
+  assert.match(source, /gainMegaGauge/);
+  assert.match(source, /startOfficeRush/);
+  assert.match(source, /destroyOfficeProp/);
+  assert.match(source, /射線予測/);
+  assert.match(source, /撃破・回避・生ジョッキで補充/);
   assert.match(source, /kind === "core" \? 125 : 50/);
   assert.match(source, /fetch\("\/api\/game\/run"/);
   assert.match(source, /fetch\("\/api\/game\/mastery"/);
@@ -84,5 +95,9 @@ test("stores profiles, run history, mastery, and leaderboard data in D1", async 
   assert.match(source, /\/api\/game\/profile/);
   assert.match(source, /\/api\/game\/run/);
   assert.match(source, /\/api\/game\/mastery/);
-  assert.match(source, /ORDER BY score DESC/);
+  assert.match(source, /\/api\/game\/username/);
+  assert.match(source, /匿名窓際社員/);
+  assert.match(source, /INNER JOIN players/);
+  assert.match(source, /best\.player_id = runs\.player_id/);
+  assert.match(source, /ORDER BY runs\.score DESC/);
 });

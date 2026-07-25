@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { type FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { SOBAYA_CHARACTER } from "./characters/sobaya";
 import {
@@ -43,6 +43,8 @@ type HudState = {
   enemies: number;
   totalEnemies: number;
   mega: number;
+  megaGauge: number;
+  megaTargets: number;
   caps: number;
   timer: number | null;
   dashReady: number;
@@ -116,7 +118,19 @@ type Enemy = {
   vulnerableFrom: number;
   vulnerableUntil: number;
   phase: 1 | 2;
+  offscreenSince: number | null;
   healthFill?: THREE.Mesh;
+};
+
+type OfficePropKind = "monitor" | "paper" | "cooler";
+
+type OfficeProp = {
+  group: THREE.Group;
+  kind: OfficePropKind;
+  radius: number;
+  points: number;
+  color: number;
+  destroyed: boolean;
 };
 
 type PickupKind = "beer" | "clock" | "cap" | "yakitori";
@@ -174,6 +188,7 @@ type MegaProjectile = {
   previousDistance: number;
   lastTrailAt: number;
   hitEnemies: Set<Enemy>;
+  hitProps: Set<OfficeProp>;
 };
 
 type TimedVisual = {
@@ -196,6 +211,8 @@ const EMPTY_HUD: HudState = {
   enemies: 0,
   totalEnemies: 0,
   mega: 0,
+  megaGauge: 0,
+  megaTargets: 0,
   caps: 0,
   timer: null,
   dashReady: 1,
@@ -210,6 +227,8 @@ const EMPTY_HUD: HudState = {
 
 const MAX_FLOOR = FLOORS.length;
 const UP = new THREE.Vector3(0, 1, 0);
+const MEGA_MAX_STOCK = 2;
+const MAX_CONCURRENT_MOB_ATTACKS = 4;
 
 function getComboMultiplier(combo: number) {
   if (combo >= 30) return 4;
@@ -517,6 +536,51 @@ function makeEnemyModel(kind: EnemyKind, elite: boolean) {
   return makeCoreEnemy();
 }
 
+function makeOfficeProp(kind: OfficePropKind) {
+  const group = new THREE.Group();
+  if (kind === "monitor") {
+    const screen = roundedBox(1.18, 0.76, 0.13, 0x203440);
+    screen.position.y = 0.94;
+    const glow = roundedBox(0.92, 0.52, 0.04, 0x4edcff);
+    glow.position.set(0, 0.94, 0.09);
+    const stem = roundedBox(0.12, 0.42, 0.12, 0x778994);
+    stem.position.y = 0.38;
+    const base = roundedBox(0.72, 0.09, 0.42, 0x536671);
+    base.position.y = 0.11;
+    group.add(screen, glow, stem, base);
+  } else if (kind === "paper") {
+    for (let index = 0; index < 5; index += 1) {
+      const bundle = roundedBox(0.9 - index * 0.05, 0.16, 0.68, index % 2 ? 0xe4edf1 : 0xffffff);
+      bundle.position.set((index % 2 ? 1 : -1) * 0.07, 0.1 + index * 0.16, 0);
+      bundle.rotation.y = (index - 2) * 0.08;
+      group.add(bundle);
+    }
+  } else {
+    const tank = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.42, 0.46, 1.02, 16),
+      new THREE.MeshStandardMaterial({
+        color: 0x88ddff,
+        transparent: true,
+        opacity: 0.74,
+        roughness: 0.18,
+      }),
+    );
+    tank.position.y = 1.12;
+    const stand = roundedBox(0.86, 0.72, 0.72, 0xf2f7f8);
+    stand.position.y = 0.4;
+    const tap = roundedBox(0.24, 0.18, 0.28, 0x2f89b4);
+    tap.position.set(0, 0.68, 0.46);
+    group.add(tank, stand, tap);
+  }
+  group.traverse((child) => {
+    if (child instanceof THREE.Mesh) {
+      child.castShadow = true;
+      child.receiveShadow = true;
+    }
+  });
+  return group;
+}
+
 function makePickup(kind: PickupKind) {
   const group = new THREE.Group();
   if (kind === "beer") {
@@ -647,6 +711,9 @@ export default function OfficeCrashRPG() {
   const [profileLoading, setProfileLoading] = useState(true);
   const [profileError, setProfileError] = useState(false);
   const [masteryBusy, setMasteryBusy] = useState<MasteryKey | null>(null);
+  const [usernameDraft, setUsernameDraft] = useState(EMPTY_PROFILE.username);
+  const [usernameBusy, setUsernameBusy] = useState(false);
+  const [usernameMessage, setUsernameMessage] = useState("");
 
   const notify = useCallback((message: string) => {
     setToast(message);
@@ -657,6 +724,7 @@ export default function OfficeCrashRPG() {
   const applySiteData = useCallback((data: SiteGameData) => {
     setSiteData(data);
     profileRef.current = data.profile;
+    setUsernameDraft(data.profile.username || EMPTY_PROFILE.username);
     setProfileError(false);
   }, []);
 
@@ -743,6 +811,36 @@ export default function OfficeCrashRPG() {
     }
   };
 
+  const saveUsername = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (usernameBusy) return;
+    setUsernameBusy(true);
+    setUsernameMessage("");
+    try {
+      const response = await fetch("/api/game/username", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ username: usernameDraft }),
+      });
+      const data = await response.json() as SiteGameData & { error?: string; maxLength?: number };
+      if (!response.ok) {
+        setUsernameMessage(
+          data.error === "invalid_username"
+            ? `ユーザーネームは${data.maxLength ?? 20}文字以内で入力してください`
+            : "ユーザーネームを保存できませんでした",
+        );
+        return;
+      }
+      applySiteData(data);
+      setUsernameMessage(`${data.profile.username}としてスコアボードへ参加します`);
+      notify("ユーザーネームを保存しました！");
+    } catch {
+      setUsernameMessage("通信を確認して、もう一度保存してください");
+    } finally {
+      setUsernameBusy(false);
+    }
+  };
+
   useEffect(() => {
     const canvas = canvasRef.current;
     const host = hostRef.current;
@@ -824,6 +922,7 @@ export default function OfficeCrashRPG() {
     const megaProjectiles: MegaProjectile[] = [];
     const timedVisuals: TimedVisual[] = [];
     const stageObjects: THREE.Object3D[] = [];
+    const officeProps: OfficeProp[] = [];
     const upgradeValues = Object.fromEntries(
       UPGRADES.map((upgrade) => [upgrade.id, 0]),
     ) as Record<UpgradeId, number>;
@@ -972,13 +1071,16 @@ export default function OfficeCrashRPG() {
       maxCombo: 0,
       destroyed: 0,
       mega: 0,
+      megaGauge: 0,
       runCaps: 0,
       overtimeRank: 0 as OvertimeRank,
       pressure: 0,
       rushUntil: 0,
+      rushTriggered: false,
       rerolls: 1,
       floorKilled: 0,
       floorTotal: 0,
+      floorQuota: 0,
       timer: null as number | null,
       lastSmash: -10,
       lastMega: -10,
@@ -1027,6 +1129,7 @@ export default function OfficeCrashRPG() {
       enemies.length = 0;
       pickups.length = 0;
       stageObjects.length = 0;
+      officeProps.length = 0;
       for (const piece of debris) scene.remove(piece.mesh);
       debris.length = 0;
       for (const effect of effects) scene.remove(effect.mesh);
@@ -1383,7 +1486,7 @@ export default function OfficeCrashRPG() {
       group.scale.setScalar(scale);
       group.position.set(x, 0, z);
       group.rotation.y = Math.random() * Math.PI * 2;
-      const baseHp = options.hp ?? (2.1 + runtime.floor * 0.75) * (elite ? 1.85 : 1);
+      const baseHp = options.hp ?? (1.55 + runtime.floor * 0.48) * (elite ? 2.05 : 1);
       const stats = {
         chair: { speed: 2.4, damage: 7, radius: 0.62, points: 190, color: 0x2c92da, label: "回転アーロンチュア" },
         stapler: { speed: 3.05, damage: 6, radius: 0.52, points: 170, color: 0xf06a31, label: "ホチキスガニ" },
@@ -1399,7 +1502,7 @@ export default function OfficeCrashRPG() {
       const health = makeHealthBar(boss ? 3.2 : elite ? 1.65 : 1.1, boss ? floorDefinition.accent : 0x56e07a);
       health.position.y = kind === "core" ? 3.4 : boss ? 3.25 : kind === "cabinet" || kind === "gate" ? 2.25 : 1.85;
       health.rotation.x = -0.35;
-      group.add(health);
+      if (elite || boss) group.add(health);
       if (affix) {
         const aura = new THREE.Mesh(
           new THREE.TorusGeometry(stats.radius * 1.25, 0.075, 8, 28),
@@ -1425,7 +1528,7 @@ export default function OfficeCrashRPG() {
           : stats.speed * (1 + runtime.floor * 0.025) * overtime.speedMultiplier * (affix === "rapid" ? 1.38 : 1),
         damage: options.stationary
           ? 0
-          : (stats.damage + runtime.floor * 0.9) * overtime.damageMultiplier,
+          : (stats.damage + runtime.floor * 0.72) * overtime.damageMultiplier * 0.78,
         radius: stats.radius * scale,
         points: Math.round(stats.points * (elite ? 1.6 : 1)),
         color: stats.color,
@@ -1448,6 +1551,7 @@ export default function OfficeCrashRPG() {
         vulnerableFrom: 0,
         vulnerableUntil: 0,
         phase: 1,
+        offscreenSince: null,
         healthFill: health.userData.fill as THREE.Mesh,
       });
     };
@@ -1518,23 +1622,70 @@ export default function OfficeCrashRPG() {
         vulnerableFrom: 0,
         vulnerableUntil: 0,
         phase: 1,
+        offscreenSince: null,
         healthFill: health.userData.fill as THREE.Mesh,
       });
       group.userData.healthBar = health;
     };
 
-    const randomSpawnPoints = (compact = false) => {
+    const formationSpawnPoints = (
+      count: number,
+      formation: "ranks" | "ring" | "cross" | "lanes",
+      compact = false,
+    ) => {
       const points: Array<[number, number]> = [];
-      const zPositions = compact ? [-6.8, -4, -1.2, 1.6, 4.4] : [-11.7, -8.6, -5.3, -2.1, 1.2, 4.4];
-      const xPositions = compact ? [-7, -4.2, -1.4, 1.4, 4.2, 7] : [-7.8, -4, 0, 4, 7.8];
-      for (const z of zPositions) {
-        for (const x of xPositions) {
-          if (z > 2 && Math.abs(x) < 2) continue;
-          const jitter = compact ? 0.3 : 0.9;
-          points.push([x + (Math.random() - 0.5) * jitter, z + (Math.random() - 0.5) * jitter]);
+      if (formation === "ring") {
+        let ring = 0;
+        while (points.length < count) {
+          const radiusX = (compact ? 3.6 : 4.6) + ring * 1.65;
+          const radiusZ = (compact ? 3.1 : 3.9) + ring * 1.35;
+          const members = 10 + ring * 6;
+          for (let index = 0; index < members && points.length < count; index += 1) {
+            const angle = index / members * Math.PI * 2 + ring * 0.22;
+            points.push([
+              THREE.MathUtils.clamp(Math.cos(angle) * radiusX, -8.2, 8.2),
+              THREE.MathUtils.clamp(-2.1 + Math.sin(angle) * radiusZ, -11.2, 5.4),
+            ]);
+          }
+          ring += 1;
+        }
+      } else if (formation === "cross") {
+        let step = 0;
+        while (points.length < count) {
+          const distance = 1.2 + step * 1.18;
+          const candidates: Array<[number, number]> = [
+            [distance, -2.1],
+            [-distance, -2.1],
+            [0, -2.1 + distance],
+            [0, -2.1 - distance],
+            [distance * 0.72, -2.1 + distance * 0.72],
+            [-distance * 0.72, -2.1 - distance * 0.72],
+          ];
+          for (const [x, z] of candidates) {
+            if (points.length >= count) break;
+            points.push([
+              THREE.MathUtils.clamp(x, -8.2, 8.2),
+              THREE.MathUtils.clamp(z, -11.2, 5.3),
+            ]);
+          }
+          step += 1;
+        }
+      } else {
+        const columns = formation === "lanes" ? 5 : 7;
+        const spacingX = formation === "lanes" ? 2.6 : 2.25;
+        const spacingZ = compact ? 1.3 : 1.7;
+        for (let index = 0; index < count; index += 1) {
+          const column = index % columns;
+          const row = Math.floor(index / columns);
+          const x = (column - (columns - 1) / 2) * spacingX;
+          const z = 4.7 - row * spacingZ;
+          points.push([
+            THREE.MathUtils.clamp(x + (Math.random() - 0.5) * 0.22, -8.2, 8.2),
+            THREE.MathUtils.clamp(z + (Math.random() - 0.5) * 0.18, -11.2, 5.3),
+          ]);
         }
       }
-      return points.sort(() => Math.random() - 0.5);
+      return points;
     };
 
     const addDecorations = (accent: number, darkFloor: boolean) => {
@@ -1564,11 +1715,59 @@ export default function OfficeCrashRPG() {
         box.position.set(i % 2 ? -9.6 : 9.5, box.geometry.parameters.height / 2, -11.5 + i * 3.1);
         stageAdd(box);
       }
+      const propKinds: OfficePropKind[] = [
+        "monitor", "paper", "cooler", "monitor", "paper", "monitor",
+        "cooler", "paper", "monitor", "paper", "monitor", "cooler",
+      ];
+      const propPositions: Array<[number, number]> = [
+        [-6.8, -10.4], [6.7, -9.5], [-5.7, -6.9], [5.6, -5.8],
+        [-6.5, -2.6], [6.4, -1.6], [-5.6, 2.1], [5.8, 3.3],
+        [-2.6, -8.3], [2.7, -4.1], [-2.9, 0.3], [3.1, 4.8],
+      ];
+      propKinds.forEach((kind, index) => {
+        const group = makeOfficeProp(kind);
+        const [x, z] = propPositions[index];
+        group.position.set(x, 0, z);
+        group.rotation.y = index % 2 ? -0.18 : 0.18;
+        stageAdd(group);
+        officeProps.push({
+          group,
+          kind,
+          radius: kind === "cooler" ? 0.78 : kind === "monitor" ? 0.7 : 0.58,
+          points: kind === "cooler" ? 420 : kind === "monitor" ? 330 : 250,
+          color: kind === "cooler" ? 0x71dfff : kind === "monitor" ? accent : 0xffffff,
+          destroyed: false,
+        });
+      });
+    };
+
+    const gainMegaGauge = (baseAmount: number, announce = true) => {
+      const amount = baseAmount * (1 + upgradeValues.happy * 0.18);
+      if (runtime.mega >= MEGA_MAX_STOCK) {
+        runtime.megaGauge = Math.min(99, runtime.megaGauge + amount * 0.35);
+        return 0;
+      }
+      runtime.megaGauge += amount;
+      let earned = 0;
+      while (runtime.megaGauge >= 100 && runtime.mega < MEGA_MAX_STOCK) {
+        runtime.megaGauge -= 100;
+        runtime.mega += 1;
+        earned += 1;
+      }
+      if (runtime.mega >= MEGA_MAX_STOCK) runtime.megaGauge = Math.min(99, runtime.megaGauge);
+      if (earned > 0) {
+        playSound("beer");
+        if (announce) notify(`生ジョッキ完成！ MUG RAIL ×${runtime.mega}`);
+      }
+      return earned;
     };
 
     const syncHud = () => {
       const floorDefinition = FLOORS[runtime.floor - 1];
       const alive = enemies.filter((enemy) => enemy.alive).length;
+      const remainingObjective = floorDefinition.kind === "challenge"
+        ? alive
+        : Math.max(0, runtime.floorQuota - runtime.floorKilled);
       const boss = enemies.find((enemy) => enemy.alive && enemy.boss);
       const dashCooldown = Math.max(0.85, 2.15 / (1 + upgradeValues.runner * 0.16));
       const dashProgress = THREE.MathUtils.clamp((runtime.elapsed - runtime.lastDash) / dashCooldown, 0, 1);
@@ -1578,6 +1777,25 @@ export default function OfficeCrashRPG() {
         if (!enemy.alive || enemy.boss) return false;
         const projected = enemy.group.position.clone().add(new THREE.Vector3(0, 0.8, 0)).project(camera);
         return projected.x < -0.92 || projected.x > 0.92 || projected.y < -0.88 || projected.y > 0.88;
+      }).length;
+      const megaDirection = new THREE.Vector3(0, 0, -1).applyAxisAngle(UP, player.rotation.y);
+      const megaOrigin = player.position.clone().addScaledVector(megaDirection, 0.72).setY(0);
+      const megaSide = new THREE.Vector3(-megaDirection.z, 0, megaDirection.x);
+      const megaWidth = 2.55 * (1 + upgradeValues.wide * 0.13);
+      const megaTargets = enemies.filter((enemy) => {
+        if (!enemy.alive) return false;
+        const delta = enemy.group.position.clone().sub(megaOrigin).setY(0);
+        const along = delta.dot(megaDirection);
+        return along >= -enemy.radius
+          && along <= 22 + enemy.radius
+          && Math.abs(delta.dot(megaSide)) <= megaWidth / 2 + enemy.radius;
+      }).length + officeProps.filter((prop) => {
+        if (prop.destroyed) return false;
+        const delta = prop.group.position.clone().sub(megaOrigin).setY(0);
+        const along = delta.dot(megaDirection);
+        return along >= -prop.radius
+          && along <= 22 + prop.radius
+          && Math.abs(delta.dot(megaSide)) <= megaWidth / 2 + prop.radius;
       }).length;
       setHud({
         floor: runtime.floor,
@@ -1589,9 +1807,11 @@ export default function OfficeCrashRPG() {
         score: Math.round(runtime.score),
         combo: runtime.combo,
         multiplier: getComboMultiplier(runtime.combo),
-        enemies: alive,
-        totalEnemies: runtime.floorTotal,
+        enemies: remainingObjective,
+        totalEnemies: runtime.floorQuota,
         mega: runtime.mega,
+        megaGauge: runtime.megaGauge,
+        megaTargets,
         caps: runtime.runCaps,
         timer: runtime.timer === null ? null : Math.max(0, Math.ceil(runtime.timer)),
         dashReady: dashProgress,
@@ -1637,12 +1857,30 @@ export default function OfficeCrashRPG() {
       runtime.megaLockUntil = 0;
       runtime.lastBossDefeat = "";
       runtime.pendingFloorClear = false;
-      runtime.mega = Math.min(3, runtime.mega + Math.max(0, Math.floor(upgradeValues.happy)));
+      runtime.rushTriggered = false;
+      runtime.pressure = 0;
+      runtime.rushUntil = 0;
+      gainMegaGauge(12 + upgradeValues.happy * 10, false);
+      if (floorDefinition.kind === "boss" || floorDefinition.kind === "final") {
+        runtime.mega = Math.max(1, runtime.mega);
+        runtime.megaGauge = Math.max(35, runtime.megaGauge);
+      }
       runtime.playing = true;
       runtime.paused = false;
       runtime.lastBump = -10;
 
-      const points = randomSpawnPoints(floorDefinition.kind === "challenge");
+      const formation = runtime.floor === 2 || runtime.floor === 7
+        ? "ring"
+        : runtime.floor === 3
+          ? "cross"
+          : runtime.floor === 5
+            ? "lanes"
+            : "ranks";
+      const points = formationSpawnPoints(
+        floorDefinition.enemyCount,
+        formation,
+        floorDefinition.kind === "challenge",
+      );
       if (floorDefinition.kind === "boss") {
         spawnCharacterBoss(runtime.guestBoss, 0, -7.2);
       } else if (floorDefinition.kind === "final") {
@@ -1658,7 +1896,7 @@ export default function OfficeCrashRPG() {
         for (let i = 0; i < floorDefinition.enemyCount; i += 1) {
           const [x, z] = points[i % points.length];
           spawnEnemy(kinds[i % kinds.length], x, z, {
-            elite: floorDefinition.kind === "elite"
+            elite: (floorDefinition.kind === "elite" && i % 5 === 0)
               || (runtime.floor >= 5 && i % 6 === 0)
               || (runtime.overtimeRank > 0 && i < overtime.eliteBonus),
             stationary: floorDefinition.kind === "challenge",
@@ -1667,7 +1905,8 @@ export default function OfficeCrashRPG() {
           });
         }
       }
-      runtime.floorTotal = enemies.length;
+      runtime.floorQuota = enemies.length;
+      runtime.floorTotal = runtime.floorQuota;
       setPaused(false);
       setStatus("playing");
       syncHud();
@@ -1743,6 +1982,48 @@ export default function OfficeCrashRPG() {
       );
     };
 
+    const destroyOfficeProp = (prop: OfficeProp, mega = false) => {
+      if (prop.destroyed) return;
+      prop.destroyed = true;
+      prop.group.visible = false;
+      runtime.destroyed += 1;
+      runtime.combo += 1;
+      runtime.maxCombo = Math.max(runtime.maxCombo, runtime.combo);
+      runtime.comboWindow = Math.max(runtime.comboWindow, 2.1 + upgradeValues.combo * 0.7);
+      const rushActive = runtime.elapsed < runtime.rushUntil;
+      runtime.score += Math.round(
+        prop.points
+        * getComboMultiplier(runtime.combo)
+        * OVERTIME_RANKS[runtime.overtimeRank].scoreMultiplier
+        * (rushActive ? 1.5 : 1),
+      );
+      runtime.pressure = Math.min(100, runtime.pressure + (mega ? 4 : 2.5));
+      gainMegaGauge(mega ? 3 : 1.5, false);
+      spawnDebris(
+        prop.group.position.clone().add(new THREE.Vector3(0, 0.55, 0)),
+        prop.color,
+        prop.kind === "paper" ? 20 : mega ? 18 : 11,
+      );
+      spawnWave(prop.group.position, prop.kind === "cooler" ? 0x77e6ff : prop.color, mega ? 1.25 : 0.78);
+      if (prop.kind === "cooler") {
+        tone(520, 0.18, "sine", 0.045, 980);
+      } else {
+        playSound("break");
+      }
+    };
+
+    const destroyOfficePropsInRadius = (center: THREE.Vector3, radius: number, mega = false) => {
+      let destroyed = 0;
+      for (const prop of officeProps) {
+        if (prop.destroyed) continue;
+        if (prop.group.position.distanceTo(center) <= radius + prop.radius) {
+          destroyOfficeProp(prop, mega);
+          destroyed += 1;
+        }
+      }
+      return destroyed;
+    };
+
     const makeDizzyBoss = (enemy: Enemy) => {
       const definition = enemy.characterBoss ? WINDOW_BOSSES[enemy.characterBoss] : null;
       const stars = new THREE.Group();
@@ -1771,9 +2052,13 @@ export default function OfficeCrashRPG() {
       runtime.pendingFloorClear = false;
       const floorDefinition = FLOORS[runtime.floor - 1];
       if (floorDefinition.kind === "challenge" && (runtime.timer ?? 0) > 0) {
-        const points = randomSpawnPoints();
+        const waveSize = runtime.floor === 7 ? 28 : 22;
+        const points = formationSpawnPoints(
+          waveSize,
+          runtime.floor === 7 ? "ring" : "cross",
+          true,
+        );
         const kinds: EquipmentEnemyKind[] = ["chair", "desk", "cabinet", "copier"];
-        const waveSize = runtime.floor === 7 ? 18 : 14;
         for (let index = 0; index < waveSize; index += 1) {
           const [x, z] = points[index];
           spawnEnemy(kinds[index % kinds.length], x, z, {
@@ -1787,6 +2072,35 @@ export default function OfficeCrashRPG() {
       } else {
         finishFloor();
       }
+    };
+
+    const startOfficeRush = () => {
+      if (runtime.rushTriggered) return;
+      const floorDefinition = FLOORS[runtime.floor - 1];
+      if (floorDefinition.kind === "boss" || floorDefinition.kind === "final") return;
+      runtime.rushTriggered = true;
+      runtime.rushUntil = runtime.elapsed + 12;
+      runtime.pressure = 100;
+      runtime.mega = Math.min(MEGA_MAX_STOCK, runtime.mega + 1);
+      const waveSize = floorDefinition.kind === "challenge"
+        ? 12
+        : Math.min(22, 14 + runtime.floor);
+      const points = formationSpawnPoints(waveSize, runtime.floor % 2 === 0 ? "ring" : "lanes", true);
+      const kinds: EquipmentEnemyKind[] = ["chair", "stapler", "desk", "cabinet", "copier"];
+      points.forEach(([x, z], index) => {
+        spawnEnemy(kinds[index % kinds.length], x, z, {
+          stationary: floorDefinition.kind === "challenge",
+          hp: floorDefinition.kind === "challenge" ? 1 : undefined,
+          scale: floorDefinition.kind === "challenge" ? 0.86 : 0.9,
+          elite: runtime.floor >= 5 && index === waveSize - 1,
+          label: index === waveSize - 1 && runtime.floor >= 5 ? "RUSH先導備品" : undefined,
+        });
+        if (index % 4 === 0) spawnWave(new THREE.Vector3(x, 0, z), floorDefinition.accent, 0.65);
+      });
+      playSound("beer");
+      tone(220, 0.18, "square", 0.055, 440);
+      tone(440, 0.24, "square", 0.06, 880, 0.14);
+      notify(`OFFICE RUSH！ 大量増援 ×${waveSize}・MUG RAIL +1`);
     };
 
     const destroyEnemy = (enemy: Enemy, critical: boolean, chainDepth = 0) => {
@@ -1820,18 +2134,15 @@ export default function OfficeCrashRPG() {
         * overtime.scoreMultiplier
         * (rushActive ? 1.5 : 1),
       );
+      gainMegaGauge(
+        (enemy.boss ? 25 : enemy.elite ? 14 : 4) * (rushActive ? 1.75 : 1),
+      );
       const pressureScale = runtime.synergies.some((synergy) => synergy.name === "宴会ランナー") ? 1.5 : 1;
       runtime.pressure = Math.min(
         100,
-        runtime.pressure + (enemy.boss ? 35 : enemy.elite ? 18 : 8 + Math.min(8, runtime.combo * 0.18)) * pressureScale,
+        runtime.pressure + (enemy.boss ? 35 : enemy.elite ? 18 : 7 + Math.min(7, runtime.combo * 0.16)) * pressureScale,
       );
-      if (runtime.pressure >= 100 && !rushActive) {
-        runtime.rushUntil = runtime.elapsed + 8;
-        runtime.pressure = 100;
-        runtime.mega = Math.min(3, runtime.mega + 1);
-        playSound("beer");
-        notify("清掃熱 MAX！ 8秒間 RUSH TIME ×1.5");
-      }
+      if (runtime.pressure >= 100 && !rushActive) startOfficeRush();
       runtime.shake = Math.max(runtime.shake, enemy.boss ? 0.55 : 0.22);
       if (peacefulBoss) {
         spawnWave(enemy.group.position, enemy.color, 1.8);
@@ -1860,10 +2171,10 @@ export default function OfficeCrashRPG() {
       }
       if (!enemy.boss) {
         const roll = Math.random();
-        if (roll < 0.12) addPickup("beer", enemy.group.position);
-        else if (roll < 0.2) addPickup("clock", enemy.group.position);
-        else if (roll < 0.36) addPickup("cap", enemy.group.position);
-        else if (roll < 0.43) addPickup("yakitori", enemy.group.position);
+        if (roll < 0.09) addPickup("beer", enemy.group.position);
+        else if (roll < 0.17) addPickup("clock", enemy.group.position);
+        else if (roll < 0.33) addPickup("cap", enemy.group.position);
+        else if (roll < 0.4) addPickup("yakitori", enemy.group.position);
       } else {
         addPickup("beer", enemy.group.position.clone().add(new THREE.Vector3(-1.2, 0, 0)));
         addPickup("cap", enemy.group.position.clone().add(new THREE.Vector3(1.2, 0, 0)));
@@ -1885,7 +2196,11 @@ export default function OfficeCrashRPG() {
       }
 
       syncHud();
-      if (enemies.every((candidate) => !candidate.alive)) {
+      const floorDefinition = FLOORS[runtime.floor - 1];
+      const objectiveComplete = floorDefinition.kind === "challenge"
+        ? enemies.every((candidate) => !candidate.alive)
+        : runtime.floorKilled >= runtime.floorQuota;
+      if (objectiveComplete) {
         if (megaProjectiles.length > 0) {
           runtime.pendingFloorClear = true;
         } else {
@@ -1903,6 +2218,9 @@ export default function OfficeCrashRPG() {
         && runtime.elapsed < enemy.vulnerableUntil;
       const finalAmount = amount * (chilledVulnerable ? 1.5 : 1) * (bossOpening ? 1.65 : 1);
       enemy.hp -= finalAmount;
+      if (enemy.boss && enemy.hp > 0) {
+        gainMegaGauge(Math.min(4.5, finalAmount * (bossOpening ? 0.82 : 0.48)), false);
+      }
       enemy.barrier = Math.max(0, enemy.barrier - finalAmount);
       enemy.frozenUntil = Math.max(enemy.frozenUntil, runtime.elapsed + upgradeValues.frost * 0.45);
       if (
@@ -1968,7 +2286,7 @@ export default function OfficeCrashRPG() {
     ) => {
       const distance = getMegaTravelDistance(origin, direction);
       const rushActive = runtime.elapsed < runtime.rushUntil;
-      const width = 2.3 * (1 + upgradeValues.wide * 0.13) * (rushActive ? 1.16 : 1);
+      const width = 2.55 * (1 + upgradeValues.wide * 0.13) * (rushActive ? 1.18 : 1);
       const baseDamage = 2 * (
         1
         + runtime.profile.mastery.forge * 0.08
@@ -1991,6 +2309,7 @@ export default function OfficeCrashRPG() {
         previousDistance: 0,
         lastTrailAt: runtime.elapsed,
         hitEnemies: new Set(),
+        hitProps: new Set(),
       });
       noise(0.32, 0.12, 320);
       tone(190, 0.36, "sawtooth", 0.065, 980);
@@ -2000,7 +2319,15 @@ export default function OfficeCrashRPG() {
 
     const spawnMegaImpact = (projectile: MegaProjectile) => {
       const impact = projectile.origin.clone().addScaledVector(projectile.direction, projectile.distance);
-      const blastRadius = 3.5 * (1 + upgradeValues.wide * 0.12);
+      const piercePower = 1 + Math.min(0.72, projectile.hitEnemies.size * 0.045);
+      const blastRadius = 3.7
+        * (
+          1
+          + upgradeValues.wide * 0.12
+          + upgradeValues.foam * 0.055
+          + upgradeValues.knockback * 0.04
+        )
+        * (1 + Math.min(0.32, projectile.hitEnemies.size * 0.018));
       const burst = new THREE.Group();
       burst.position.copy(impact);
       const pillar = new THREE.Mesh(
@@ -2051,11 +2378,12 @@ export default function OfficeCrashRPG() {
         const distance = Math.max(0, enemy.group.position.distanceTo(impact) - enemy.radius);
         if (distance <= blastRadius) {
           projectile.hitEnemies.add(enemy);
-          damageEnemy(enemy, projectile.damage * 0.82, distance <= 0.75, impact);
+          damageEnemy(enemy, projectile.damage * 0.82 * piercePower, distance <= 0.75, impact);
         }
       }
+      const propHits = destroyOfficePropsInRadius(impact, blastRadius, true);
 
-      const hits = projectile.hitEnemies.size;
+      const hits = projectile.hitEnemies.size + projectile.hitProps.size + propHits;
       const bonus = Math.round(
         Math.max(1, hits)
         * 680
@@ -2063,7 +2391,12 @@ export default function OfficeCrashRPG() {
         * OVERTIME_RANKS[runtime.overtimeRank].scoreMultiplier,
       );
       runtime.score += bonus;
-      notify(`生ジョッキレール ×${hits}｜着弾大爆発 +${formatNumber(bonus)}`);
+      if (hits >= 20) gainMegaGauge(30, false);
+      notify(
+        hits >= 20
+          ? `大乾杯 ×${hits}！ ゲージ30%返却 +${formatNumber(bonus)}`
+          : `生ジョッキレール ×${hits}｜着弾大爆発 +${formatNumber(bonus)}`,
+      );
       playSound("beer");
       syncHud();
     };
@@ -2106,18 +2439,40 @@ export default function OfficeCrashRPG() {
               && sideDistance <= projectile.width / 2 + enemy.radius
             ) {
               projectile.hitEnemies.add(enemy);
-              const perfectLine = sideDistance <= 0.38;
+              const perfectLine = sideDistance <= 0.38 + upgradeValues.perfect * 0.075;
+              const piercePower = 1 + Math.min(0.58, projectile.hitEnemies.size * 0.04);
               enemy.frozenUntil = Math.max(enemy.frozenUntil, runtime.elapsed + 0.16);
               spawnWave(enemy.group.position, perfectLine ? 0xffffff : 0xffc21d, perfectLine ? 1.25 : 0.9);
               runtime.shake = Math.max(runtime.shake, perfectLine ? 0.52 : 0.34);
               damageEnemy(
                 enemy,
-                projectile.damage * (perfectLine ? 1.48 : 1),
+                projectile.damage * piercePower * (perfectLine ? 1.48 : 1),
                 perfectLine,
                 projectile.origin,
               );
             }
           }
+          for (const prop of officeProps) {
+            if (prop.destroyed || projectile.hitProps.has(prop)) continue;
+            const delta = prop.group.position.clone().sub(projectile.origin).setY(0);
+            const along = delta.dot(projectile.direction);
+            const sideDistance = Math.abs(delta.dot(
+              new THREE.Vector3(-projectile.direction.z, 0, projectile.direction.x),
+            ));
+            if (
+              along >= projectile.previousDistance - prop.radius
+              && along <= traveled + prop.radius
+              && sideDistance <= projectile.width / 2 + prop.radius
+            ) {
+              projectile.hitProps.add(prop);
+              destroyOfficeProp(prop, true);
+            }
+          }
+          const growth = 1 + Math.min(
+            0.72,
+            (projectile.hitEnemies.size + projectile.hitProps.size) * 0.032,
+          );
+          projectile.group.scale.setScalar(1.35 * growth);
         }
         projectile.previousDistance = traveled;
 
@@ -2312,8 +2667,21 @@ export default function OfficeCrashRPG() {
 
     const beginEnemyAttack = (enemy: Enemy, kind: EnemyAttackKind) => {
       if (enemy.attackKind || !enemy.alive) return;
+      if (!enemy.boss && kind === "melee") {
+        const projected = enemy.group.position.clone().add(new THREE.Vector3(0, 0.8, 0)).project(camera);
+        const offscreen = projected.x < -0.94 || projected.x > 0.94 || projected.y < -0.9 || projected.y > 0.9;
+        const activeMobAttacks = enemies.filter((candidate) => (
+          candidate.alive
+          && !candidate.boss
+          && candidate.attackKind !== null
+        )).length;
+        if (offscreen || activeMobAttacks >= MAX_CONCURRENT_MOB_ATTACKS) {
+          enemy.nextAttack = runtime.elapsed + 0.18 + Math.random() * 0.28;
+          return;
+        }
+      }
       const pulse = kind === "pulse";
-      const windup = pulse ? (enemy.kind === "core" ? 1.35 : 1.2) : enemy.boss ? 0.9 : 0.62;
+      const windup = pulse ? (enemy.kind === "core" ? 1.35 : 1.2) : enemy.boss ? 0.9 : 0.78;
       const radius = pulse
         ? (enemy.kind === "core" ? 6 : 4.7)
         : enemy.radius + (enemy.boss ? 1.35 : 1.05);
@@ -2353,6 +2721,7 @@ export default function OfficeCrashRPG() {
       if (kind === "pulse") {
         enemy.pulseAt = runtime.elapsed + (enemy.kind === "core" ? 3.7 : 4.5);
       }
+      if (dodged) gainMegaGauge(enemy.boss ? 10 : 6, false);
       if (enemy.boss) {
         enemy.vulnerableFrom = runtime.elapsed;
         enemy.vulnerableUntil = runtime.elapsed + 1.8;
@@ -2385,6 +2754,7 @@ export default function OfficeCrashRPG() {
           damageEnemy(enemy, damage * (critical ? criticalMultiplier : 1), critical, center);
         }
       }
+      hits += destroyOfficePropsInRadius(center, radius, false);
       if (hits > 1) {
         const bonus = Math.round(hits * hits * 45 * getComboMultiplier(runtime.combo));
         runtime.score += bonus;
@@ -2423,7 +2793,8 @@ export default function OfficeCrashRPG() {
       ) return;
       runtime.lastMega = runtime.elapsed;
       runtime.mega -= 1;
-      runtime.megaLockUntil = runtime.elapsed + 0.72;
+      const chargeDelay = Math.max(0.26, 0.48 * (1 - upgradeValues.haste * 0.055));
+      runtime.megaLockUntil = runtime.elapsed + chargeDelay + 0.24;
       runtime.invulnerableUntil = runtime.elapsed + 0.82;
       const forward = new THREE.Vector3(0, 0, -1).applyAxisAngle(UP, player.rotation.y);
       const origin = player.position.clone().addScaledVector(forward, 0.72).setY(0);
@@ -2448,11 +2819,11 @@ export default function OfficeCrashRPG() {
       const chargeLight = new THREE.PointLight(0xffc21d, 8, 12);
       chargeLight.position.y = 1.5;
       charge.add(chargeLight);
-      addTimedVisual(charge, 0.52);
+      addTimedVisual(charge, chargeDelay + 0.04);
       tone(110, 0.48, "sawtooth", 0.055, 880);
       tone(440, 0.28, "square", 0.04, 1320, 0.18);
       runtime.pendingMega = {
-        at: runtime.elapsed + 0.48,
+        at: runtime.elapsed + chargeDelay,
         origin,
         direction: forward,
       };
@@ -2491,8 +2862,10 @@ export default function OfficeCrashRPG() {
       runtime.runCaps = 0;
       runtime.pressure = 0;
       runtime.rushUntil = 0;
+      runtime.rushTriggered = false;
       runtime.rerolls = 1;
       runtime.mega = 1;
+      runtime.megaGauge = 0;
       runtime.submitted = false;
       runtime.selected = [];
       runtime.synergies = [];
@@ -2519,7 +2892,7 @@ export default function OfficeCrashRPG() {
         runtime.maxHp += 18 * choice.scale;
         runtime.hp = runtime.maxHp;
       }
-      if (choice.id === "happy") runtime.mega = Math.min(3, runtime.mega + Math.max(1, Math.floor(choice.scale)));
+      if (choice.id === "happy") gainMegaGauge(50 * choice.scale);
       const previousSynergyCount = runtime.synergies.length;
       runtime.synergies = resolveSynergies(upgradeValues);
       setBuild([...runtime.selected]);
@@ -2728,6 +3101,29 @@ export default function OfficeCrashRPG() {
             phaseAura.scale.setScalar(1 + Math.sin(runtime.elapsed * 7) * 0.08);
           }
 
+          if (!enemy.boss) {
+            const projected = enemy.group.position.clone().add(new THREE.Vector3(0, 0.8, 0)).project(camera);
+            const offscreen = projected.x < -0.96 || projected.x > 0.96 || projected.y < -0.92 || projected.y > 0.92;
+            if (offscreen) {
+              enemy.offscreenSince ??= runtime.elapsed;
+              if (
+                enemy.attackKind === null
+                && runtime.elapsed - enemy.offscreenSince > 2.6
+              ) {
+                const angle = i / Math.max(1, aliveMovers) * Math.PI * 2 + runtime.elapsed * 0.08;
+                enemy.group.position.set(
+                  THREE.MathUtils.clamp(player.position.x + Math.cos(angle) * 6.8, -7.6, 7.6),
+                  0,
+                  THREE.MathUtils.clamp(player.position.z + Math.sin(angle) * 5.8 - 1.2, -9.7, 6.2),
+                );
+                enemy.offscreenSince = null;
+                spawnWave(enemy.group.position, 0x70e8ff, 0.58);
+              }
+            } else {
+              enemy.offscreenSince = null;
+            }
+          }
+
           if (enemy.attackKind) {
             if (frozen) {
               enemy.attackStartedAt += dt;
@@ -2818,9 +3214,9 @@ export default function OfficeCrashRPG() {
             pickup.active = false;
             pickup.group.visible = false;
             if (pickup.kind === "beer") {
-              runtime.mega = Math.min(3, runtime.mega + 1);
+              const earned = gainMegaGauge(45);
               playSound("beer");
-              notify("MUG RAIL STOCK +1｜Eキー / 黄ボタンで直線必殺技");
+              if (earned === 0) notify("冷えた生ジョッキ！ MEGAゲージ +45%");
             } else if (pickup.kind === "clock") {
               runtime.freezeUntil = runtime.elapsed + 3.5;
               for (const enemy of enemies) enemy.frozenUntil = runtime.freezeUntil;
@@ -2993,6 +3389,7 @@ export default function OfficeCrashRPG() {
     ? Math.max(0, Math.min(100, (hud.totalEnemies - hud.enemies) / hud.totalEnemies * 100))
     : 0;
   const pressureRatio = Math.max(0, Math.min(100, hud.pressure));
+  const megaGaugeRatio = Math.max(0, Math.min(100, hud.megaGauge));
 
   return (
     <main
@@ -3036,6 +3433,13 @@ export default function OfficeCrashRPG() {
               <button onClick={() => apiRef.current?.pause()} aria-label="一時停止">Ⅱ</button>
             </div>
           </header>
+
+          {hud.rushRemaining > 0 && (
+            <div className="rpg-rush-banner" aria-live="assertive">
+              <span>OFFICE RUSH</span>
+              <strong>大量増援を生ジョッキレールで一掃！</strong>
+            </div>
+          )}
 
           <section className="rpg-vitals" aria-label="プレイヤー情報">
             <div className="rpg-vital-row">
@@ -3082,9 +3486,13 @@ export default function OfficeCrashRPG() {
           </aside>
 
           <div className={`rpg-mega ${hud.mega > 0 ? "ready" : ""}`}>
-            <span>MUG RAIL STOCK</span>
-            <div>{[0, 1, 2].map((slot) => <i className={slot < hud.mega ? "full" : ""} key={slot}>生</i>)}</div>
-            <small>向きを決めて E / 黄ボタン</small>
+            <span>MEGA GAUGE</span>
+            <div className="rpg-mega-stocks">
+              {[0, 1].map((slot) => <i className={slot < hud.mega ? "full" : ""} key={slot}>生</i>)}
+            </div>
+            <div className="rpg-mega-gauge"><i style={{ width: `${megaGaugeRatio}%` }} /></div>
+            <b>射線予測 ×{hud.megaTargets}</b>
+            <small>撃破・回避・生ジョッキで補充</small>
           </div>
 
           <div
@@ -3129,7 +3537,7 @@ export default function OfficeCrashRPG() {
                   event.preventDefault();
                   apiRef.current?.megaSmash();
                 }}
-                aria-label={`必殺生ジョッキレール 残り${hud.mega}`}
+                aria-label={`必殺生ジョッキレール 残り${hud.mega}、ゲージ${Math.round(hud.megaGauge)}パーセント`}
               >
                 <span>必殺</span>
                 <strong>RAIL</strong>
@@ -3169,10 +3577,11 @@ export default function OfficeCrashRPG() {
               </blockquote>
               <p className="hub-lead">
                 タコ部屋の人型の大穴、その先は図面にない備品循環棟だった。
-                ジョッキを強化し、8つのレギュレーションを片付けろ！
+                押し寄せる備品を崩してゲージを溜め、巨大ジョッキで8フロアを一掃しろ！
               </p>
               <div className="hub-features" aria-label="ゲームの特徴">
                 <span>8 FLOORS</span>
+                <span>OFFICE RUSH</span>
                 <span>生ジョッキレール</span>
                 <span>LOOT DRAFT</span>
                 <span>金星特性</span>
@@ -3238,6 +3647,33 @@ export default function OfficeCrashRPG() {
                 <div><span>完全制覇</span><strong>{profile.clears}</strong></div>
               </div>
 
+              <form className="username-panel" onSubmit={(event) => void saveUsername(event)}>
+                <div className="panel-heading">
+                  <span>PLAYER NAME</span>
+                  <strong>スコアボード名</strong>
+                </div>
+                <div className="username-controls">
+                  <input
+                    type="text"
+                    value={usernameDraft}
+                    maxLength={20}
+                    disabled={profileLoading || usernameBusy}
+                    onChange={(event) => {
+                      setUsernameDraft(event.target.value);
+                      setUsernameMessage("");
+                    }}
+                    placeholder="匿名窓際社員"
+                    aria-label="スコアボードに表示するユーザーネーム"
+                  />
+                  <button type="submit" disabled={profileLoading || usernameBusy}>
+                    {usernameBusy ? "保存中…" : "名前を保存"}
+                  </button>
+                </div>
+                <small className={usernameMessage ? "has-message" : ""}>
+                  {usernameMessage || "20文字まで。空欄で保存すると「匿名窓際社員」に戻ります。"}
+                </small>
+              </form>
+
               <section className="mastery-panel">
                 <div className="panel-heading">
                   <span>立ち飲み処</span>
@@ -3274,10 +3710,14 @@ export default function OfficeCrashRPG() {
                 </section>
                 <section>
                   <div className="panel-heading"><span>TOP 5</span><strong>スコアボード</strong></div>
-                  {(siteData?.leaderboard ?? []).slice(0, 3).map((run, index) => (
-                    <p key={`${run.score}-${index}`}>
-                      <b>#{index + 1}</b> {formatNumber(run.score)}
-                      <small>{run.floorReached}F・{OVERTIME_RANKS[Math.max(0, Math.min(3, run.overtimeRank))].label}</small>
+                  {(siteData?.leaderboard ?? []).slice(0, 5).map((run, index) => (
+                    <p className="leader-row" key={`${run.username}-${run.score}-${index}`}>
+                      <b>#{index + 1}</b>
+                      <span>
+                        <strong>{run.username || EMPTY_PROFILE.username}</strong>
+                        <small>{run.floorReached}F・{OVERTIME_RANKS[Math.max(0, Math.min(3, run.overtimeRank))].label}</small>
+                      </span>
+                      <em>{formatNumber(run.score)}</em>
                     </p>
                   ))}
                   {!siteData?.leaderboard.length && <p className="muted">最初の伝説を作ろう</p>}

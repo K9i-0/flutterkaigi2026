@@ -20,6 +20,7 @@ interface ExecutionContext {
 
 type PlayerRow = {
   id: string;
+  username: string;
   caps: number;
   best_floor: number;
   best_score: number;
@@ -44,6 +45,8 @@ type RunPayload = {
 };
 
 const PLAYER_COOKIE = "sobaya_player";
+const DEFAULT_USERNAME = "匿名窓際社員";
+const MAX_USERNAME_LENGTH = 20;
 const MAX_BODY_BYTES = 12_000;
 let schemaReady: Promise<void> | null = null;
 
@@ -57,6 +60,18 @@ function json(data: unknown, init: ResponseInit = {}) {
 function safeInt(value: unknown, min: number, max: number) {
   const number = typeof value === "number" ? value : Number.NaN;
   return Number.isFinite(number) ? Math.max(min, Math.min(max, Math.round(number))) : min;
+}
+
+function normalizeUsername(value: unknown) {
+  if (typeof value !== "string") return null;
+  const normalized = value
+    .normalize("NFKC")
+    .replace(/[\u0000-\u001f\u007f]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!normalized) return DEFAULT_USERNAME;
+  if (Array.from(normalized).length > MAX_USERNAME_LENGTH) return null;
+  return normalized;
 }
 
 function getCookie(request: Request, key: string) {
@@ -81,6 +96,7 @@ async function ensureSchema(db: D1Database) {
     await db.batch([
       db.prepare(`CREATE TABLE IF NOT EXISTS players (
         id TEXT PRIMARY KEY NOT NULL,
+        username TEXT DEFAULT '匿名窓際社員' NOT NULL,
         caps INTEGER DEFAULT 0 NOT NULL,
         best_floor INTEGER DEFAULT 0 NOT NULL,
         best_score INTEGER DEFAULT 0 NOT NULL,
@@ -111,6 +127,12 @@ async function ensureSchema(db: D1Database) {
       db.prepare("CREATE INDEX IF NOT EXISTS runs_player_created_idx ON runs (player_id, created_at)"),
       db.prepare("CREATE INDEX IF NOT EXISTS runs_score_idx ON runs (score)"),
     ]);
+    const playerColumns = await db.prepare("PRAGMA table_info(players)").all<{ name: string }>();
+    if (!playerColumns.results.some((column) => column.name === "username")) {
+      await db.prepare(
+        "ALTER TABLE players ADD COLUMN username TEXT DEFAULT '匿名窓際社員' NOT NULL",
+      ).run();
+    }
   })();
   await schemaReady;
 }
@@ -130,6 +152,7 @@ async function getPlayer(db: D1Database, playerId: string) {
 
 function publicProfile(row: PlayerRow) {
   return {
+    username: row.username || DEFAULT_USERNAME,
     caps: row.caps,
     bestFloor: row.best_floor,
     bestScore: row.best_score,
@@ -153,9 +176,17 @@ async function profilePayload(db: D1Database, playerId: string) {
       overtime_rank AS overtimeRank, build_name AS buildName, created_at AS createdAt
       FROM runs WHERE player_id = ? ORDER BY created_at DESC LIMIT 5`)
       .bind(playerId).all(),
-    db.prepare(`SELECT score, floor_reached AS floorReached, victory,
-      overtime_rank AS overtimeRank, build_name AS buildName
-      FROM runs ORDER BY score DESC, floor_reached DESC LIMIT 5`).all(),
+    db.prepare(`SELECT COALESCE(NULLIF(TRIM(players.username), ''), '匿名窓際社員') AS username,
+      runs.score, runs.floor_reached AS floorReached, runs.victory,
+      runs.overtime_rank AS overtimeRank, runs.build_name AS buildName
+      FROM runs INNER JOIN players ON players.id = runs.player_id
+      WHERE runs.id = (
+        SELECT best.id FROM runs AS best
+        WHERE best.player_id = runs.player_id
+        ORDER BY best.score DESC, best.floor_reached DESC, best.created_at ASC
+        LIMIT 1
+      )
+      ORDER BY runs.score DESC, runs.floor_reached DESC, runs.created_at ASC LIMIT 5`).all(),
     db.prepare(`SELECT COUNT(*) AS runs, COALESCE(SUM(destroyed), 0) AS destroyed,
       COALESCE(SUM(victory), 0) AS clears FROM runs`).first(),
   ]);
@@ -177,6 +208,23 @@ async function handleGameApi(request: Request, env: Env) {
   const cookieHeader = cookieId ? undefined : playerCookie(playerId, requestUrl.protocol === "https:");
 
   if (request.method === "GET" && requestUrl.pathname === "/api/game/profile") {
+    const response = json(await profilePayload(db, playerId));
+    if (cookieHeader) response.headers.set("set-cookie", cookieHeader);
+    return response;
+  }
+
+  if (request.method === "POST" && requestUrl.pathname === "/api/game/username") {
+    const body = await readJsonBody(request) as { username?: unknown };
+    const username = normalizeUsername(body.username);
+    if (!username) {
+      return json(
+        { error: "invalid_username", maxLength: MAX_USERNAME_LENGTH },
+        { status: 400 },
+      );
+    }
+    await getPlayer(db, playerId);
+    await db.prepare("UPDATE players SET username = ?, updated_at = ? WHERE id = ?")
+      .bind(username, new Date().toISOString(), playerId).run();
     const response = json(await profilePayload(db, playerId));
     if (cookieHeader) response.headers.set("set-cookie", cookieHeader);
     return response;
