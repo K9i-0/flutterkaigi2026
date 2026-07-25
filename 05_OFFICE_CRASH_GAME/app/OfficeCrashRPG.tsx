@@ -1801,7 +1801,9 @@ export default function OfficeCrashRPG() {
         floor: runtime.floor,
         floorName: floorDefinition.name,
         kicker: floorDefinition.kicker,
-        objective: floorDefinition.objective,
+        objective: floorDefinition.kind === "combat" || floorDefinition.kind === "elite"
+          ? `${floorDefinition.objective}｜破壊目標 ${runtime.floorQuota}体`
+          : floorDefinition.objective,
         hp: Math.ceil(runtime.hp),
         maxHp: Math.ceil(runtime.maxHp),
         score: Math.round(runtime.score),
@@ -1849,7 +1851,7 @@ export default function OfficeCrashRPG() {
       player.position.set(0, 0, 9.7);
       player.rotation.y = 0;
       runtime.floorKilled = 0;
-      runtime.timer = floorDefinition.kind === "challenge" ? 45 : null;
+      runtime.timer = floorDefinition.kind === "challenge" ? 15 : null;
       runtime.combo = 0;
       runtime.comboWindow = 0;
       runtime.pendingSmash = null;
@@ -1876,8 +1878,15 @@ export default function OfficeCrashRPG() {
           : runtime.floor === 5
             ? "lanes"
             : "ranks";
+      const quotaBasedFloor = floorDefinition.kind === "combat" || floorDefinition.kind === "elite";
+      const requiredEnemyCount = quotaBasedFloor
+        ? Math.ceil(floorDefinition.enemyCount * overtime.destructionMultiplier)
+        : floorDefinition.enemyCount;
+      const initialEnemyCount = quotaBasedFloor
+        ? Math.min(requiredEnemyCount, floorDefinition.enemyCount + runtime.overtimeRank * 8)
+        : floorDefinition.enemyCount;
       const points = formationSpawnPoints(
-        floorDefinition.enemyCount,
+        initialEnemyCount,
         formation,
         floorDefinition.kind === "challenge",
       );
@@ -1893,7 +1902,7 @@ export default function OfficeCrashRPG() {
             : runtime.floor >= 5
               ? ["stapler", "cabinet", "desk", "copier", "chair"]
               : ["chair", "stapler", "desk", "cabinet"];
-        for (let i = 0; i < floorDefinition.enemyCount; i += 1) {
+        for (let i = 0; i < initialEnemyCount; i += 1) {
           const [x, z] = points[i % points.length];
           spawnEnemy(kinds[i % kinds.length], x, z, {
             elite: (floorDefinition.kind === "elite" && i % 5 === 0)
@@ -1905,7 +1914,7 @@ export default function OfficeCrashRPG() {
           });
         }
       }
-      runtime.floorQuota = enemies.length;
+      runtime.floorQuota = quotaBasedFloor ? requiredEnemyCount : enemies.length;
       runtime.floorTotal = runtime.floorQuota;
       setPaused(false);
       setStatus("playing");
@@ -1916,7 +1925,11 @@ export default function OfficeCrashRPG() {
       } else if (floorDefinition.kind === "final") {
         notify(WINDOW_BOSSES.okayaman.introLine);
       } else {
-        notify(`${floorDefinition.floor}F「${floorDefinition.name}」— ${overtime.label}`);
+        notify(
+          quotaBasedFloor
+            ? `${floorDefinition.floor}F「${floorDefinition.name}」— ${overtime.label}｜破壊目標 ${runtime.floorQuota}`
+            : `${floorDefinition.floor}F「${floorDefinition.name}」— 15秒クラッシュ`,
+        );
       }
     };
 
@@ -2103,6 +2116,41 @@ export default function OfficeCrashRPG() {
       notify(`OFFICE RUSH！ 大量増援 ×${waveSize}・MUG RAIL +1`);
     };
 
+    const spawnQuotaReinforcements = () => {
+      const floorDefinition = FLOORS[runtime.floor - 1];
+      if (floorDefinition.kind !== "combat" && floorDefinition.kind !== "elite") return 0;
+      const alive = enemies.filter((candidate) => candidate.alive && !candidate.boss).length;
+      const remainingUnspawned = runtime.floorQuota - runtime.floorKilled - alive;
+      const threshold = 10 + runtime.overtimeRank * 2;
+      if (remainingUnspawned <= 0 || alive > threshold) return 0;
+
+      const overtime = OVERTIME_RANKS[runtime.overtimeRank];
+      const waveSize = Math.min(remainingUnspawned, 10 + runtime.overtimeRank * 4);
+      const points = formationSpawnPoints(
+        waveSize,
+        runtime.floor % 2 === 0 ? "ranks" : "lanes",
+        true,
+      );
+      const kinds: EquipmentEnemyKind[] = runtime.floor === 6
+        ? ["cabinet", "gate", "stapler", "cabinet"]
+        : runtime.floor >= 5
+          ? ["stapler", "cabinet", "desk", "copier", "chair"]
+          : ["chair", "stapler", "desk", "cabinet"];
+      points.forEach(([x, z], index) => {
+        spawnEnemy(kinds[index % kinds.length], x, z, {
+          elite: (floorDefinition.kind === "elite" && index % 5 === 0)
+            || (runtime.floor >= 5 && index % 7 === 0)
+            || index < Math.max(0, overtime.eliteBonus - 1),
+          scale: 0.92,
+          label: index === waveSize - 1 ? "追加ノルマ備品" : undefined,
+        });
+        if (index % 4 === 0) spawnWave(new THREE.Vector3(x, 0, z), floorDefinition.accent, 0.58);
+      });
+      tone(260, 0.13, "square", 0.035, 520);
+      notify(`追加ノルマ ×${waveSize}｜残り ${Math.max(0, runtime.floorQuota - runtime.floorKilled)}`);
+      return waveSize;
+    };
+
     const destroyEnemy = (enemy: Enemy, critical: boolean, chainDepth = 0) => {
       if (!enemy.alive) return;
       enemy.alive = false;
@@ -2195,6 +2243,7 @@ export default function OfficeCrashRPG() {
         }
       }
 
+      spawnQuotaReinforcements();
       syncHud();
       const floorDefinition = FLOORS[runtime.floor - 1];
       const objectiveComplete = floorDefinition.kind === "challenge"
@@ -3605,7 +3654,10 @@ export default function OfficeCrashRPG() {
                     >
                       <small>{rank.kicker}</small>
                       <b>{rank.label}</b>
-                      <em>得点 ×{rank.scoreMultiplier.toFixed(2)}</em>
+                      <em>
+                        得点 ×{rank.scoreMultiplier.toFixed(2)}
+                        <span>破壊数 ×{rank.destructionMultiplier.toFixed(1)}</span>
+                      </em>
                     </button>
                   ))}
                 </div>

@@ -1159,6 +1159,16 @@ body {
   font-weight: 900;
 }
 
+.overtime-options button em span {
+  display: block;
+  margin-top: 2px;
+  color: #b52f20;
+}
+
+.overtime-options button.active em span {
+  color: #fff36a;
+}
+
 .overtime-options button.active {
   border-color: #fff;
   background: linear-gradient(145deg, #ff9a22, #d7441e);

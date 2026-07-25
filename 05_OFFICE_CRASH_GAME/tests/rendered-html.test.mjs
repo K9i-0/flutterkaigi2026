@@ -34,6 +34,7 @@ test("renders the Office Crash game shell", async () => {
   assert.match(html, /LOOT DRAFT/);
   assert.match(html, /永続記録/);
   assert.match(html, /残業指令を選ぶ/);
+  assert.match(html, /破壊数 ×/);
   assert.match(html, /金星特性/);
   assert.match(html, /ビルド共鳴/);
   assert.match(html, /まず効果音を試す/);
@@ -54,7 +55,7 @@ test("uses Three.js with a fixed camera, combat floors, and keyboard plus touch 
   assert.match(source, /runtime\.pressure/);
   assert.match(source, /rerollReward/);
   assert.match(source, /OVERTIME_RANKS/);
-  assert.match(source, /runtime\.timer = floorDefinition\.kind === "challenge" \? 45 : null/);
+  assert.match(source, /runtime\.timer = floorDefinition\.kind === "challenge" \? 15 : null/);
   assert.match(source, /makeCoreEnemy/);
   assert.match(source, /pickUpgrade/);
   assert.match(source, /runtime\.profile\.mastery\.forge/);
@@ -76,6 +77,8 @@ test("uses Three.js with a fixed camera, combat floors, and keyboard plus touch 
   assert.match(source, /runtime\.floorKilled >= runtime\.floorQuota/);
   assert.match(source, /gainMegaGauge/);
   assert.match(source, /startOfficeRush/);
+  assert.match(source, /spawnQuotaReinforcements/);
+  assert.match(source, /overtime\.destructionMultiplier/);
   assert.match(source, /destroyOfficeProp/);
   assert.match(source, /射線予測/);
   assert.match(source, /撃破・回避・生ジョッキで補充/);
