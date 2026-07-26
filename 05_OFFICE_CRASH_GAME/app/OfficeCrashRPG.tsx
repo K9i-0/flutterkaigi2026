@@ -3959,6 +3959,7 @@ export default function OfficeCrashRPG() {
     : 0;
   const pressureRatio = Math.max(0, Math.min(100, hud.pressure));
   const megaGaugeRatio = Math.max(0, Math.min(100, hud.megaGauge));
+  const rushAnnouncement = hud.rushRemaining > 10.5;
 
   return (
     <main
@@ -3993,6 +3994,7 @@ export default function OfficeCrashRPG() {
               <span>{hud.kicker}</span>
               <strong>{hud.floor}F</strong>
               <b>{hud.floorName}</b>
+              <em>{hud.timer !== null ? `${hud.timer}s` : hud.bossName ? "BOSS" : `残${hud.enemies}`}</em>
             </div>
             <div className="rpg-hud-actions">
               <span className={`rpg-overtime rank-${overtimeRank}`}>{hud.overtimeLabel} ×{hud.scoreMultiplier.toFixed(2)}</span>
@@ -4004,7 +4006,7 @@ export default function OfficeCrashRPG() {
             </div>
           </header>
 
-          {hud.rushRemaining > 0 && (
+          {rushAnnouncement && !bossDialogue && (
             <div className="rpg-rush-banner" aria-live="assertive">
               <span>OFFICE RUSH</span>
               <strong>大量増援を生ジョッキレールで一掃！</strong>
@@ -4106,9 +4108,14 @@ export default function OfficeCrashRPG() {
                 }}
                 aria-label={`必殺生ジョッキレール 残り${hud.mega}、ゲージ${Math.round(hud.megaGauge)}パーセント`}
               >
+                <i
+                  className="mobile-mega-fill"
+                  style={{ height: `${megaGaugeRatio}%` }}
+                  aria-hidden="true"
+                />
                 <span>必殺</span>
                 <strong>RAIL</strong>
-                <small>×{hud.mega}</small>
+                <small>{hud.mega > 0 ? `×${hud.mega}` : `${Math.round(hud.megaGauge)}%`}</small>
               </button>
             </div>
             <button
@@ -4126,7 +4133,12 @@ export default function OfficeCrashRPG() {
         </>
       )}
 
-      <div className={`rpg-toast ${toast ? "show" : ""}`} aria-live="assertive">{toast}</div>
+      <div
+        className={`rpg-toast ${toast ? "show" : ""} ${bossDialogue || rushAnnouncement ? "suppressed" : ""}`}
+        aria-live="assertive"
+      >
+        {toast}
+      </div>
       <div
         className={`rpg-boss-dialogue ${bossDialogue ? "show" : ""}`}
         aria-live="polite"

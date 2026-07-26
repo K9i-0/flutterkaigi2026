@@ -90,6 +90,9 @@ test("uses Three.js with a fixed camera, combat floors, and keyboard plus touch 
   assert.match(source, /runtime\.floorKilled >= runtime\.floorQuota/);
   assert.match(source, /gainMegaGauge/);
   assert.match(source, /startOfficeRush/);
+  assert.match(source, /rushAnnouncement = hud\.rushRemaining > 10\.5/);
+  assert.match(source, /mobile-mega-fill/);
+  assert.match(source, /bossDialogue \|\| rushAnnouncement/);
   assert.match(source, /spawnQuotaReinforcements/);
   assert.match(source, /overtime\.destructionMultiplier/);
   assert.match(source, /destroyOfficeProp/);
@@ -120,6 +123,18 @@ test("uses Three.js with a fixed camera, combat floors, and keyboard plus touch 
   assert.match(source, /kind === "core" \? 125 : 50/);
   assert.match(source, /fetch\("\/api\/game\/run"/);
   assert.match(source, /fetch\("\/api\/game\/fixture"/);
+});
+
+test("keeps the portrait mobile HUD in dedicated status, notice, and control lanes", async () => {
+  const css = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
+  assert.match(css, /height: 100dvh/);
+  assert.match(css, /env\(safe-area-inset-top/);
+  assert.match(css, /env\(safe-area-inset-bottom/);
+  assert.match(css, /\.rpg-floor em/);
+  assert.match(css, /\.rpg-mega \{\s*display: none;/);
+  assert.match(css, /\.mobile-mega-fill/);
+  assert.match(css, /\.rpg-toast\.suppressed/);
+  assert.match(css, /bottom: calc\(env\(safe-area-inset-bottom, 0px\) \+ 147px\)/);
 });
 
 test("stores profiles, run history, fixtures, and leaderboard data in D1", async () => {
