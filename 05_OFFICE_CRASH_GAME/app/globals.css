@@ -667,9 +667,9 @@ body {
 
 .rpg-build-chip {
   display: grid;
-  grid-template-columns: 29px 1fr;
+  grid-template-columns: 43px 1fr auto;
   align-items: center;
-  min-height: 37px;
+  min-height: 48px;
   overflow: hidden;
   border: 2px solid #fff;
   border-radius: 10px;
@@ -678,28 +678,52 @@ body {
   color: #fff;
 }
 
-.rpg-build-chip b {
-  display: grid;
-  place-items: center;
-  align-self: stretch;
-  background: #4a5b66;
-  color: var(--rpg-amber);
-  font-size: 14px;
+.rpg-build-chip > img {
+  width: 43px;
+  height: 43px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .45));
 }
 
 .rpg-build-chip span {
-  padding: 0 7px;
+  min-width: 0;
+  padding: 0 5px;
   overflow: hidden;
-  font-size: 9px;
-  font-weight: 900;
+}
+
+.rpg-build-chip span b,
+.rpg-build-chip span small {
+  display: block;
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.rpg-build-chip.large b { background: #1577a9; }
-.rpg-build-chip.mega b { background: #8e45b9; }
-.rpg-build-chip.secret b { background: #d66c08; }
-.rpg-build-chip.greater {
+.rpg-build-chip span b {
+  color: #fff;
+  font-size: 8px;
+  font-weight: 900;
+}
+
+.rpg-build-chip span small {
+  color: #a8c4d1;
+  font-size: 7px;
+}
+
+.rpg-build-chip > em {
+  margin-right: 5px;
+  color: var(--rpg-amber);
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.rpg-build-chip.level-2 {
+  border-color: #6fe8ff;
+  box-shadow: 0 3px 0 #146a8d, 0 0 12px rgba(69, 214, 255, .45);
+}
+
+.rpg-build-chip.level-3 {
   border-color: #fff06d;
   box-shadow: 0 3px 0 #b85c09, 0 0 15px rgba(255, 204, 48, .8);
 }
@@ -1623,6 +1647,103 @@ body {
   cursor: not-allowed;
 }
 
+.fixture-panel > p {
+  margin: -1px 0 9px;
+  color: #687a84;
+  font-size: 8px;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.fixture-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+}
+
+.fixture-card {
+  position: relative;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 54px 1fr;
+  align-items: center;
+  gap: 5px;
+  border: 2px solid #c6d4da;
+  border-radius: 12px;
+  padding: 6px;
+  background: #f5fafb;
+}
+
+.fixture-card.level-1,
+.fixture-card.level-2,
+.fixture-card.level-3 {
+  border-color: #ef9b1d;
+  background: #fff8df;
+}
+
+.fixture-card.level-3 {
+  box-shadow: 0 0 0 2px #fff06d, 0 4px 10px rgba(220, 115, 15, .23);
+}
+
+.fixture-card img {
+  grid-row: span 2;
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+}
+
+.fixture-card span {
+  min-width: 0;
+}
+
+.fixture-card span strong,
+.fixture-card span small {
+  display: block;
+}
+
+.fixture-card span strong {
+  font-size: 8px;
+}
+
+.fixture-card span small {
+  margin-top: 2px;
+  color: #657984;
+  font-size: 7px;
+  line-height: 1.35;
+}
+
+.fixture-card em {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  border-radius: 999px;
+  padding: 2px 4px;
+  background: var(--rpg-ink);
+  color: var(--rpg-amber);
+  font-size: 6px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.fixture-card button {
+  grid-column: 2;
+  border: 2px solid var(--rpg-ink);
+  border-radius: 999px;
+  padding: 4px 6px;
+  background: var(--rpg-amber);
+  box-shadow: 0 2px 0 var(--rpg-ink);
+  color: var(--rpg-ink);
+  font-size: 7px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.fixture-card button:disabled {
+  background: #d9e0e3;
+  color: #788992;
+  cursor: not-allowed;
+}
+
 .hub-live-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1787,6 +1908,17 @@ body {
   transform: rotate(4deg);
 }
 
+.loot-card.level-2 {
+  background: linear-gradient(160deg, #effcff, #cdefff);
+  box-shadow: 0 8px 0 #2484b3, 0 14px 24px rgba(0, 0, 0, .16);
+}
+
+.loot-card.level-3 {
+  border-color: #ad4b00;
+  background: linear-gradient(160deg, #fffbe3, #ffd568);
+  box-shadow: 0 8px 0 #ad4b00, 0 0 0 5px #fff06d, 0 17px 36px rgba(255, 161, 18, .38);
+}
+
 .loot-rarity {
   position: absolute;
   top: 11px;
@@ -1823,6 +1955,19 @@ body {
   background: #fff;
   box-shadow: 0 5px 0 var(--rpg-ink);
   font-size: 36px;
+}
+
+.loot-image {
+  width: min(150px, 42vw);
+  height: 140px;
+  margin: 13px 0 8px;
+  object-fit: contain;
+  filter: drop-shadow(0 7px 4px rgba(32, 42, 47, .28));
+  transition: transform .18s ease;
+}
+
+.loot-card:hover .loot-image {
+  transform: scale(1.07) rotate(2deg);
 }
 
 .loot-card > small {
@@ -1999,6 +2144,9 @@ body {
 }
 
 .result-build span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   padding: 5px 8px;
   border: 2px solid var(--rpg-ink);
   border-radius: 999px;
@@ -2007,9 +2155,13 @@ body {
   font-weight: 900;
 }
 
-.result-build span.large { background: #d9f3ff; }
-.result-build span.mega { background: #ead7ff; }
-.result-build span.secret { background: #ffe28a; }
+.result-build span.level-2 { background: #d9f3ff; }
+.result-build span.level-3 { background: #ffe28a; }
+.result-build img {
+  width: 25px;
+  height: 25px;
+  object-fit: contain;
+}
 
 .result-actions {
   display: flex;
@@ -2335,6 +2487,10 @@ body {
   }
 
   .hub-live-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .fixture-grid {
     grid-template-columns: 1fr;
   }
 

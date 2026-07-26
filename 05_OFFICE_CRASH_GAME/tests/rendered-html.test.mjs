@@ -26,7 +26,7 @@ test("renders the Office Crash game shell", async () => {
   assert.match(html, /MADOGIWA HACK, SMASH &amp; DRAFT/);
   assert.match(html, /生ジョッキレール/);
   assert.match(html, /OFFICE RUSH/);
-  assert.match(html, /永続仕込み/);
+  assert.match(html, /王冠設備/);
   assert.match(html, /スコアボード名/);
   assert.match(html, /匿名窓際社員/);
   assert.match(html, /名前を保存/);
@@ -40,8 +40,10 @@ test("renders the Office Crash game shell", async () => {
   assert.match(html, /助っ人1名が参戦/);
   assert.match(html, /助っ人2名が参戦/);
   assert.match(html, /破壊数 ×/);
-  assert.match(html, /金星特性/);
-  assert.match(html, /ビルド共鳴/);
+  assert.match(html, /6装備 × 3進化/);
+  assert.match(html, /黄金ビールサーバー/);
+  assert.match(html, /まかないショーケース/);
+  assert.match(html, /秘密の非常口/);
   assert.match(html, /まず効果音を試す/);
   assert.match(html, /ブラウザの音声ロックをタップで解除します/);
   assert.match(html, /BOSS VOICE/);
@@ -56,7 +58,7 @@ test("uses Three.js with a fixed camera, combat floors, and keyboard plus touch 
   assert.match(source, /keydown/);
   assert.match(source, /onPointerDown/);
   assert.match(source, /makeRewardChoices/);
-  assert.match(source, /resolveSynergies/);
+  assert.match(source, /updateEquipmentVisuals/);
   assert.match(source, /type EliteAffix/);
   assert.match(source, /runtime\.pressure/);
   assert.match(source, /rerollReward/);
@@ -64,7 +66,12 @@ test("uses Three.js with a fixed camera, combat floors, and keyboard plus touch 
   assert.match(source, /runtime\.timer = floorDefinition\.kind === "challenge" \? 15 : null/);
   assert.match(source, /makeCoreEnemy/);
   assert.match(source, /pickUpgrade/);
-  assert.match(source, /runtime\.profile\.mastery\.forge/);
+  assert.match(source, /upgradeValues\.mug/);
+  assert.match(source, /upgradeValues\.barrel/);
+  assert.match(source, /upgradeValues\.chiller/);
+  assert.match(source, /upgradeValues\.tray/);
+  assert.match(source, /upgradeValues\.lantern/);
+  assert.match(source, /upgradeValues\.sneakers/);
   assert.match(source, /webkitAudioContext/);
   assert.match(source, /context\.resume\(\)/);
   assert.match(source, /onPointerDownCapture/);
@@ -112,10 +119,10 @@ test("uses Three.js with a fixed camera, combat floors, and keyboard plus touch 
   assert.match(source, /撃破・回避・生ジョッキで補充/);
   assert.match(source, /kind === "core" \? 125 : 50/);
   assert.match(source, /fetch\("\/api\/game\/run"/);
-  assert.match(source, /fetch\("\/api\/game\/mastery"/);
+  assert.match(source, /fetch\("\/api\/game\/fixture"/);
 });
 
-test("stores profiles, run history, mastery, and leaderboard data in D1", async () => {
+test("stores profiles, run history, fixtures, and leaderboard data in D1", async () => {
   const source = await readFile(new URL("../worker/index.ts", import.meta.url), "utf8");
   const hosting = await readFile(new URL("../.openai/hosting.json", import.meta.url), "utf8");
   assert.match(hosting, /"d1": "DB"/);
@@ -125,7 +132,11 @@ test("stores profiles, run history, mastery, and leaderboard data in D1", async 
   assert.match(source, /build_name/);
   assert.match(source, /\/api\/game\/profile/);
   assert.match(source, /\/api\/game\/run/);
-  assert.match(source, /\/api\/game\/mastery/);
+  assert.match(source, /\/api\/game\/fixture/);
+  assert.match(source, /mastery_refunded/);
+  assert.match(source, /fixture_server/);
+  assert.match(source, /fixture_showcase/);
+  assert.match(source, /fixture_exit/);
   assert.match(source, /\/api\/game\/username/);
   assert.match(source, /匿名窓際社員/);
   assert.match(source, /INNER JOIN players/);

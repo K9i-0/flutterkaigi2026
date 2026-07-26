@@ -14,20 +14,19 @@ import {
 } from "./characters/voxel-character-kit";
 import {
   EMPTY_PROFILE,
+  FIXTURES,
   FLOORS,
   OVERTIME_RANKS,
   UPGRADES,
+  fixtureCost,
   getOvertimeDefinition,
   makeRewardChoices,
-  masteryCost,
-  resolveSynergies,
+  type FixtureKey,
   type GameProfile,
   type GameStatus,
-  type MasteryKey,
   type OvertimeRank,
   type RewardChoice,
   type SiteGameData,
-  type SynergyDefinition,
   type UpgradeId,
 } from "./game-content";
 
@@ -44,6 +43,7 @@ type HudState = {
   enemies: number;
   totalEnemies: number;
   mega: number;
+  megaMax: number;
   megaGauge: number;
   megaTargets: number;
   caps: number;
@@ -216,6 +216,7 @@ const EMPTY_HUD: HudState = {
   enemies: 0,
   totalEnemies: 0,
   mega: 0,
+  megaMax: 2,
   megaGauge: 0,
   megaTargets: 0,
   caps: 0,
@@ -232,7 +233,6 @@ const EMPTY_HUD: HudState = {
 
 const MAX_FLOOR = FLOORS.length;
 const UP = new THREE.Vector3(0, 1, 0);
-const MEGA_MAX_STOCK = 2;
 const MAX_CONCURRENT_MOB_ATTACKS = 4;
 const BASE_SMASH_DAMAGE = 2;
 const DAMAGE_DISPLAY_MULTIPLIER = 5;
@@ -720,13 +720,12 @@ export default function OfficeCrashRPG() {
   const [rewardChoices, setRewardChoices] = useState<RewardChoice[]>([]);
   const [rerolls, setRerolls] = useState(1);
   const [build, setBuild] = useState<RewardChoice[]>([]);
-  const [activeSynergies, setActiveSynergies] = useState<SynergyDefinition[]>([]);
   const [overtimeRank, setOvertimeRank] = useState<OvertimeRank>(0);
   const [summary, setSummary] = useState<RunSummary | null>(null);
   const [siteData, setSiteData] = useState<SiteGameData | null>(null);
   const [profileLoading, setProfileLoading] = useState(true);
   const [profileError, setProfileError] = useState(false);
-  const [masteryBusy, setMasteryBusy] = useState<MasteryKey | null>(null);
+  const [fixtureBusy, setFixtureBusy] = useState<FixtureKey | null>(null);
   const [usernameDraft, setUsernameDraft] = useState(EMPTY_PROFILE.username);
   const [usernameBusy, setUsernameBusy] = useState(false);
   const [usernameMessage, setUsernameMessage] = useState("");
@@ -748,7 +747,10 @@ export default function OfficeCrashRPG() {
     profileRef.current = data.profile;
     setUsernameDraft(data.profile.username || EMPTY_PROFILE.username);
     setProfileError(false);
-  }, []);
+    if ((data.profile.refundedCaps ?? 0) > 0) {
+      notify(`旧強化分 ${data.profile.refundedCaps} 王冠を払い戻しました`);
+    }
+  }, [notify]);
 
   const refreshProfile = useCallback(async () => {
     setProfileLoading(true);
@@ -810,14 +812,14 @@ export default function OfficeCrashRPG() {
     };
   }, [submitRun]);
 
-  const buyMastery = async (stat: MasteryKey) => {
-    if (masteryBusy) return;
-    setMasteryBusy(stat);
+  const buyFixture = async (fixture: FixtureKey) => {
+    if (fixtureBusy) return;
+    setFixtureBusy(fixture);
     try {
-      const response = await fetch("/api/game/mastery", {
+      const response = await fetch("/api/game/fixture", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ stat }),
+        body: JSON.stringify({ fixture }),
       });
       const data = await response.json() as SiteGameData & { error?: string; cost?: number };
       if (!response.ok) {
@@ -825,11 +827,11 @@ export default function OfficeCrashRPG() {
         return;
       }
       applySiteData(data);
-      notify("立ち飲み処で永続強化しました！");
+      notify("立ち飲み処に新しい設備効果が付きました！");
     } catch {
-      notify("強化を保存できませんでした");
+      notify("設備の改装を保存できませんでした");
     } finally {
-      setMasteryBusy(null);
+      setFixtureBusy(null);
     }
   };
 
@@ -935,6 +937,27 @@ export default function OfficeCrashRPG() {
     player.position.set(0, 0, 9.6);
     scene.add(player);
 
+    const equipmentRack = new THREE.Group();
+    equipmentRack.position.y = 3.75;
+    player.add(equipmentRack);
+    const textureLoader = new THREE.TextureLoader();
+    const equipmentSprites = new Map<UpgradeId, THREE.Sprite>();
+    for (const upgrade of UPGRADES) {
+      const texture = textureLoader.load(upgrade.image);
+      texture.colorSpace = THREE.SRGBColorSpace;
+      const material = new THREE.SpriteMaterial({
+        map: texture,
+        transparent: true,
+        depthTest: false,
+        depthWrite: false,
+      });
+      const sprite = new THREE.Sprite(material);
+      sprite.visible = false;
+      sprite.renderOrder = 30;
+      equipmentRack.add(sprite);
+      equipmentSprites.set(upgrade.id, sprite);
+    }
+
     const enemies: Enemy[] = [];
     const pickups: Pickup[] = [];
     const debris: Debris[] = [];
@@ -948,6 +971,19 @@ export default function OfficeCrashRPG() {
     const upgradeValues = Object.fromEntries(
       UPGRADES.map((upgrade) => [upgrade.id, 0]),
     ) as Record<UpgradeId, number>;
+    const updateEquipmentVisuals = () => {
+      const equipped = UPGRADES.filter((upgrade) => upgradeValues[upgrade.id] > 0);
+      for (const sprite of equipmentSprites.values()) sprite.visible = false;
+      equipped.forEach((upgrade, index) => {
+        const sprite = equipmentSprites.get(upgrade.id);
+        if (!sprite) return;
+        const level = upgradeValues[upgrade.id];
+        sprite.visible = true;
+        sprite.position.set((index - (equipped.length - 1) / 2) * 0.86, Math.sin(index * 1.7) * 0.12, 0);
+        sprite.scale.setScalar(0.72 + level * 0.12);
+        (sprite.material as THREE.SpriteMaterial).opacity = 0.78 + level * 0.07;
+      });
+    };
 
     const showDamageNumber = (
       amount: number,
@@ -990,7 +1026,7 @@ export default function OfficeCrashRPG() {
       damage.style.setProperty("--damage-drift-mid", `${Math.round(drift * 0.72)}px`);
       damage.style.setProperty("--damage-drift", `${drift}px`);
       damage.style.setProperty("--damage-tilt", `${(Math.random() - 0.5) * 9}deg`);
-      layer.append(damage);
+      layer.appendChild(damage);
       damage.addEventListener("animationend", () => damage.remove(), { once: true });
       window.setTimeout(() => damage.remove(), 1200);
     };
@@ -1146,6 +1182,8 @@ export default function OfficeCrashRPG() {
       rushUntil: 0,
       rushTriggered: false,
       rerolls: 1,
+      mealReady: false,
+      trayRescueReady: false,
       floorKilled: 0,
       floorTotal: 0,
       floorQuota: 0,
@@ -1169,7 +1207,6 @@ export default function OfficeCrashRPG() {
       lastBossDefeat: "",
       pendingFloorClear: false,
       selected: [] as RewardChoice[],
-      synergies: [] as SynergyDefinition[],
     };
 
     const stageAdd = (object: THREE.Object3D) => {
@@ -2033,19 +2070,20 @@ export default function OfficeCrashRPG() {
     };
 
     const gainMegaGauge = (baseAmount: number, announce = true) => {
-      const amount = baseAmount * (1 + upgradeValues.happy * 0.18);
-      if (runtime.mega >= MEGA_MAX_STOCK) {
+      const megaMaxStock = runtime.profile.fixtures.server >= 2 ? 3 : 2;
+      const amount = baseAmount * (1 + upgradeValues.lantern * 0.25);
+      if (runtime.mega >= megaMaxStock) {
         runtime.megaGauge = Math.min(99, runtime.megaGauge + amount * 0.35);
         return 0;
       }
       runtime.megaGauge += amount;
       let earned = 0;
-      while (runtime.megaGauge >= 100 && runtime.mega < MEGA_MAX_STOCK) {
+      while (runtime.megaGauge >= 100 && runtime.mega < megaMaxStock) {
         runtime.megaGauge -= 100;
         runtime.mega += 1;
         earned += 1;
       }
-      if (runtime.mega >= MEGA_MAX_STOCK) runtime.megaGauge = Math.min(99, runtime.megaGauge);
+      if (runtime.mega >= megaMaxStock) runtime.megaGauge = Math.min(99, runtime.megaGauge);
       if (earned > 0) {
         playSound("beer");
         if (announce) notify(`生ジョッキ完成！ MUG RAIL ×${runtime.mega}`);
@@ -2061,7 +2099,7 @@ export default function OfficeCrashRPG() {
         : Math.max(0, runtime.floorQuota - runtime.floorKilled);
       const aliveBosses = enemies.filter((enemy) => enemy.alive && enemy.boss);
       const boss = aliveBosses[0];
-      const dashCooldown = Math.max(0.85, 2.15 / (1 + upgradeValues.runner * 0.16));
+      const dashCooldown = Math.max(0.72, 2.15 / (1 + upgradeValues.sneakers * 0.18));
       const dashProgress = THREE.MathUtils.clamp((runtime.elapsed - runtime.lastDash) / dashCooldown, 0, 1);
       const overtime = OVERTIME_RANKS[runtime.overtimeRank];
       const rushRemaining = Math.max(0, runtime.rushUntil - runtime.elapsed);
@@ -2073,7 +2111,7 @@ export default function OfficeCrashRPG() {
       const megaDirection = new THREE.Vector3(0, 0, -1).applyAxisAngle(UP, player.rotation.y);
       const megaOrigin = player.position.clone().addScaledVector(megaDirection, 0.72).setY(0);
       const megaSide = new THREE.Vector3(-megaDirection.z, 0, megaDirection.x);
-      const megaWidth = 2.55 * (1 + upgradeValues.wide * 0.13);
+      const megaWidth = 2.55 * (1 + upgradeValues.barrel * 0.14);
       const megaTargets = enemies.filter((enemy) => {
         if (!enemy.alive) return false;
         const delta = enemy.group.position.clone().sub(megaOrigin).setY(0);
@@ -2104,6 +2142,7 @@ export default function OfficeCrashRPG() {
         enemies: remainingObjective,
         totalEnemies: runtime.floorQuota,
         mega: runtime.mega,
+        megaMax: runtime.profile.fixtures.server >= 2 ? 3 : 2,
         megaGauge: runtime.megaGauge,
         megaTargets,
         caps: runtime.runCaps,
@@ -2159,7 +2198,13 @@ export default function OfficeCrashRPG() {
       runtime.rushTriggered = false;
       runtime.pressure = 0;
       runtime.rushUntil = 0;
-      gainMegaGauge(12 + upgradeValues.happy * 10, false);
+      if (runtime.profile.fixtures.showcase >= 2) runtime.mealReady = true;
+      gainMegaGauge(
+        12
+        + runtime.profile.fixtures.server * 25
+        + upgradeValues.lantern * 10,
+        false,
+      );
       if (floorDefinition.kind === "boss" || floorDefinition.kind === "final") {
         runtime.mega = Math.max(1, runtime.mega);
         runtime.megaGauge = Math.max(35, runtime.megaGauge);
@@ -2251,9 +2296,12 @@ export default function OfficeCrashRPG() {
       destroyed: runtime.destroyed,
       maxCombo: runtime.maxCombo,
       capsEarned: runtime.runCaps,
-      upgrades: runtime.selected.map((item) => `${item.rarity}｜${item.name}`),
+      upgrades: runtime.selected.map((item) => `${item.displayName}｜${item.effect}`),
       overtimeRank: runtime.overtimeRank,
-      buildName: runtime.synergies.map((synergy) => synergy.name).join(" × ") || "単品ジョッキ",
+      buildName: UPGRADES
+        .filter((upgrade) => upgradeValues[upgrade.id] > 0)
+        .map((upgrade) => `${upgrade.name}${upgradeValues[upgrade.id] === 1 ? "" : `・${upgradeValues[upgrade.id] === 2 ? "改" : "極"}`}`)
+        .join(" × ") || "手ぶら店主",
     });
 
     const endRun = (victory: boolean) => {
@@ -2283,18 +2331,13 @@ export default function OfficeCrashRPG() {
         endRun(true);
         return;
       }
-      const choices = makeRewardChoices(runtime.floor, runtime.overtimeRank);
+      const choices = makeRewardChoices(upgradeValues);
       setRewardChoices(choices);
       setRerolls(runtime.rerolls);
       syncHud();
       setStatus("reward");
       playSound("clear");
-      if (choices.some((choice) => choice.greater)) {
-        playSound("beer");
-        notify("★ 金星特性を発見！ 違いの分かる一杯です");
-      } else {
-        notify(runtime.lastBossDefeat || `FLOOR CLEAR +${formatNumber(floorBonus)}`);
-      }
+      notify(runtime.lastBossDefeat || `FLOOR CLEAR +${formatNumber(floorBonus)}`);
     };
 
     const updateEnemyHealth = (enemy: Enemy) => {
@@ -2313,7 +2356,7 @@ export default function OfficeCrashRPG() {
       runtime.destroyed += 1;
       runtime.combo += 1;
       runtime.maxCombo = Math.max(runtime.maxCombo, runtime.combo);
-      runtime.comboWindow = Math.max(runtime.comboWindow, 2.1 + upgradeValues.combo * 0.7);
+      runtime.comboWindow = Math.max(runtime.comboWindow, 2.1 + upgradeValues.lantern * 0.55);
       const rushActive = runtime.elapsed < runtime.rushUntil;
       runtime.score += Math.round(
         prop.points
@@ -2412,7 +2455,7 @@ export default function OfficeCrashRPG() {
       runtime.rushTriggered = true;
       runtime.rushUntil = runtime.elapsed + 12;
       runtime.pressure = 100;
-      runtime.mega = Math.min(MEGA_MAX_STOCK, runtime.mega + 1);
+      runtime.mega = Math.min(runtime.profile.fixtures.server >= 2 ? 3 : 2, runtime.mega + 1);
       const waveSize = floorDefinition.kind === "challenge"
         ? 12
         : Math.min(22, 14 + runtime.floor);
@@ -2490,7 +2533,7 @@ export default function OfficeCrashRPG() {
       runtime.floorKilled += 1;
       runtime.combo += 1;
       runtime.maxCombo = Math.max(runtime.maxCombo, runtime.combo);
-      runtime.comboWindow = 2.1 + upgradeValues.combo * 0.7;
+      runtime.comboWindow = 2.1 + upgradeValues.lantern * 0.55;
       const multiplier = getComboMultiplier(runtime.combo);
       const overtime = OVERTIME_RANKS[runtime.overtimeRank];
       const rushActive = runtime.elapsed < runtime.rushUntil;
@@ -2504,7 +2547,7 @@ export default function OfficeCrashRPG() {
       gainMegaGauge(
         (enemy.boss ? 25 : enemy.elite ? 14 : 4) * (rushActive ? 1.75 : 1),
       );
-      const pressureScale = runtime.synergies.some((synergy) => synergy.name === "宴会ランナー") ? 1.5 : 1;
+      const pressureScale = upgradeValues.lantern >= 2 ? 1.5 : 1;
       runtime.pressure = Math.min(
         100,
         runtime.pressure + (enemy.boss ? 35 : enemy.elite ? 18 : 7 + Math.min(7, runtime.combo * 0.16)) * pressureScale,
@@ -2533,8 +2576,8 @@ export default function OfficeCrashRPG() {
         notify("余熱注意！ 赤い範囲から離れてください");
       }
 
-      if (upgradeValues.yakitori > 0) {
-        runtime.hp = Math.min(runtime.maxHp, runtime.hp + Math.max(1, Math.round(upgradeValues.yakitori * 2)));
+      if (upgradeValues.tray > 0) {
+        runtime.hp = Math.min(runtime.maxHp, runtime.hp + upgradeValues.tray * 3);
       }
       if (!enemy.boss) {
         const roll = Math.random();
@@ -2547,10 +2590,12 @@ export default function OfficeCrashRPG() {
         addPickup("cap", enemy.group.position.clone().add(new THREE.Vector3(1.2, 0, 0)));
       }
 
-      if (upgradeValues.foam > 0 && chainDepth === 0) {
-        const explosiveFoam = runtime.synergies.some((synergy) => synergy.name === "爆泡ジョッキ");
-        const splashDamage = (BASE_SMASH_DAMAGE * (1 + runtime.profile.mastery.forge * 0.08 + upgradeValues.heavy * 0.28))
-          * upgradeValues.foam * 0.45 * (explosiveFoam ? 1.35 : 1);
+      if (upgradeValues.barrel > 0 && chainDepth === 0) {
+        const explosiveFoam = upgradeValues.barrel >= 2;
+        const splashDamage = BASE_SMASH_DAMAGE
+          * (1 + upgradeValues.mug * 0.25)
+          * upgradeValues.barrel * 0.48
+          * (explosiveFoam ? 1.35 : 1);
         spawnWave(enemy.group.position, 0xfff0a1, explosiveFoam ? 1.15 : 0.8);
         for (const other of enemies) {
           if (!other.alive || other === enemy) continue;
@@ -2561,6 +2606,21 @@ export default function OfficeCrashRPG() {
               other.group.position.clone().setY(other.boss ? 2.6 : 1.35),
               "splash",
             );
+            updateEnemyHealth(other);
+            if (other.hp <= 0) destroyEnemy(other, false, chainDepth + 1);
+          }
+        }
+      }
+
+      if (upgradeValues.chiller >= 3 && runtime.elapsed < enemy.frozenUntil && chainDepth === 0) {
+        const shatterDamage = BASE_SMASH_DAMAGE * 1.35;
+        spawnWave(enemy.group.position, 0x7de8ff, 1.3);
+        for (const other of enemies) {
+          if (!other.alive || other === enemy) continue;
+          if (other.group.position.distanceTo(enemy.group.position) < 3.2) {
+            other.frozenUntil = Math.max(other.frozenUntil, runtime.elapsed + 1.1);
+            other.hp -= shatterDamage;
+            showDamageNumber(shatterDamage, other.group.position.clone().setY(1.35), "splash");
             updateEnemyHealth(other);
             if (other.hp <= 0) destroyEnemy(other, false, chainDepth + 1);
           }
@@ -2591,11 +2651,11 @@ export default function OfficeCrashRPG() {
     ) => {
       if (!enemy.alive) return;
       const chilledVulnerable = runtime.elapsed < enemy.frozenUntil
-        && runtime.synergies.some((synergy) => synergy.name === "キンキン速配");
+        && upgradeValues.chiller >= 2;
       const bossOpening = enemy.boss
         && runtime.elapsed >= enemy.vulnerableFrom
         && runtime.elapsed < enemy.vulnerableUntil;
-      const vulnerabilityMultiplier = (chilledVulnerable ? 1.5 : 1) * (bossOpening ? 1.65 : 1);
+      const vulnerabilityMultiplier = (chilledVulnerable ? 1.65 : 1) * (bossOpening ? 1.65 : 1);
       const finalAmount = amount * vulnerabilityMultiplier;
       showDamageNumber(
         finalAmount,
@@ -2609,7 +2669,7 @@ export default function OfficeCrashRPG() {
         gainMegaGauge(Math.min(4.5, finalAmount * (bossOpening ? 0.82 : 0.48)), false);
       }
       enemy.barrier = Math.max(0, enemy.barrier - finalAmount);
-      enemy.frozenUntil = Math.max(enemy.frozenUntil, runtime.elapsed + upgradeValues.frost * 0.45);
+      enemy.frozenUntil = Math.max(enemy.frozenUntil, runtime.elapsed + upgradeValues.chiller * 0.45);
       if (
         enemy.characterBoss
         && enemy.phase === 1
@@ -2645,7 +2705,7 @@ export default function OfficeCrashRPG() {
       }
       const away = enemy.group.position.clone().sub(center).setY(0);
       if (away.lengthSq() > 0.01 && !enemy.boss) {
-        away.normalize().multiplyScalar(0.38 + upgradeValues.knockback * 0.4);
+        away.normalize().multiplyScalar(0.38 + upgradeValues.mug * 0.42);
         enemy.group.position.add(away);
       }
       updateEnemyHealth(enemy);
@@ -2676,11 +2736,10 @@ export default function OfficeCrashRPG() {
     ) => {
       const distance = getMegaTravelDistance(origin, direction);
       const rushActive = runtime.elapsed < runtime.rushUntil;
-      const width = 2.55 * (1 + upgradeValues.wide * 0.13) * (rushActive ? 1.18 : 1);
+      const width = 2.55 * (1 + upgradeValues.barrel * 0.14) * (rushActive ? 1.18 : 1);
       const baseDamage = BASE_SMASH_DAMAGE * (
         1
-        + runtime.profile.mastery.forge * 0.08
-        + upgradeValues.heavy * 0.28
+        + upgradeValues.mug * 0.25
       );
       const group = makeMegaMugProjectile();
       group.position.copy(origin).setY(0.82);
@@ -2713,9 +2772,8 @@ export default function OfficeCrashRPG() {
       const blastRadius = 3.7
         * (
           1
-          + upgradeValues.wide * 0.12
-          + upgradeValues.foam * 0.055
-          + upgradeValues.knockback * 0.04
+          + upgradeValues.barrel * 0.16
+          + upgradeValues.mug * 0.05
         )
         * (1 + Math.min(0.32, projectile.hitEnemies.size * 0.018));
       const burst = new THREE.Group();
@@ -2781,7 +2839,14 @@ export default function OfficeCrashRPG() {
         * OVERTIME_RANKS[runtime.overtimeRank].scoreMultiplier,
       );
       runtime.score += bonus;
-      if (hits >= 20) gainMegaGauge(30, false);
+      if (hits >= 20) {
+        gainMegaGauge(
+          30
+          + (runtime.profile.fixtures.server >= 3 ? 25 : 0)
+          + (upgradeValues.lantern >= 3 ? 25 : 0),
+          false,
+        );
+      }
       notify(
         hits >= 20
           ? `大乾杯 ×${hits}！ ゲージ30%返却 +${formatNumber(bonus)}`
@@ -2829,7 +2894,7 @@ export default function OfficeCrashRPG() {
               && sideDistance <= projectile.width / 2 + enemy.radius
             ) {
               projectile.hitEnemies.add(enemy);
-              const perfectLine = sideDistance <= 0.38 + upgradeValues.perfect * 0.075;
+              const perfectLine = sideDistance <= 0.38 + upgradeValues.mug * 0.08;
               const piercePower = 1 + Math.min(0.58, projectile.hitEnemies.size * 0.04);
               enemy.frozenUntil = Math.max(enemy.frozenUntil, runtime.elapsed + 0.16);
               spawnWave(enemy.group.position, perfectLine ? 0xffffff : 0xffc21d, perfectLine ? 1.25 : 0.9);
@@ -2886,7 +2951,7 @@ export default function OfficeCrashRPG() {
       if (!runtime.playing || runtime.elapsed < runtime.invulnerableUntil) return;
       runtime.invulnerableUntil = runtime.elapsed + 0.78;
       const fortified = runtime.hp / runtime.maxHp >= 0.8
-        && runtime.synergies.some((synergy) => synergy.name === "立ち飲み不沈艦");
+        && upgradeValues.tray >= 2;
       const finalAmount = amount * (fortified ? 0.65 : 1);
       runtime.hp = Math.max(0, runtime.hp - finalAmount);
       runtime.combo = 0;
@@ -2899,7 +2964,29 @@ export default function OfficeCrashRPG() {
       }
       playSound("hurt");
       navigator.vibrate?.(35);
-      notify(`HP -${Math.ceil(finalAmount)}${fortified ? "　不沈艦ガード！" : "　まだ快適です！"}`);
+      if (runtime.hp <= 0 && runtime.trayRescueReady) {
+        runtime.trayRescueReady = false;
+        runtime.hp = runtime.maxHp;
+        runtime.invulnerableUntil = runtime.elapsed + 2.2;
+        spawnWave(player.position, 0xffb13b, 2.6);
+        playSound("beer");
+        notify("焼き鳥お盆・極！ 致命傷を受け流して全快！");
+      } else if (
+        runtime.hp > 0
+        && runtime.hp / runtime.maxHp <= 0.3
+        && runtime.mealReady
+      ) {
+        runtime.mealReady = false;
+        runtime.hp = Math.min(runtime.maxHp, runtime.hp + Math.max(48, runtime.maxHp * 0.55));
+        if (runtime.profile.fixtures.showcase >= 3) {
+          runtime.invulnerableUntil = runtime.elapsed + 2;
+          spawnWave(player.position, 0xffdf61, 2.8);
+        }
+        playSound("beer");
+        notify("まかない到着！ HP回復＋立て直し！");
+      } else {
+        notify(`HP -${Math.ceil(finalAmount)}${fortified ? "　お盆ガード！" : "　まだ快適です！"}`);
+      }
       syncHud();
       if (runtime.hp <= 0) endRun(false);
     };
@@ -3161,7 +3248,15 @@ export default function OfficeCrashRPG() {
           + (enemy.kind === "core" ? 3.7 : 4.5)
           * (enemy.boss ? bossDifficulty.cadenceMultiplier : 1);
       }
-      if (dodged) gainMegaGauge(enemy.boss ? 10 : 6, false);
+      if (dodged) {
+        gainMegaGauge(
+          (enemy.boss ? 10 : 6)
+          + (enemy.boss && runtime.profile.fixtures.exit >= 3 ? 15 : 0)
+          + (enemy.boss && upgradeValues.sneakers >= 3 ? 20 : 0),
+          false,
+        );
+        if (enemy.boss && runtime.profile.fixtures.exit >= 2) runtime.lastDash = -10;
+      }
       if (enemy.boss) {
         enemy.vulnerableFrom = runtime.elapsed;
         enemy.vulnerableUntil = runtime.elapsed + bossDifficulty.openingDuration;
@@ -3177,11 +3272,13 @@ export default function OfficeCrashRPG() {
     const performSmash = (center: THREE.Vector3) => {
       playSound("smash");
       const baseDamage = BASE_SMASH_DAMAGE
-        * (1 + runtime.profile.mastery.forge * 0.08 + upgradeValues.heavy * 0.28);
+        * (1 + upgradeValues.mug * 0.25);
       const damage = baseDamage;
-      const radius = 1.65 * (1 + upgradeValues.wide * 0.16);
-      const criticalMultiplier = runtime.synergies.some((synergy) => synergy.name === "店主の会心") ? 2.35 : 1.75;
-      spawnWave(center, 0xffffff, 1);
+      const radius = 1.65 * (1 + upgradeValues.barrel * 0.14);
+      const criticalMultiplier = upgradeValues.mug >= 2
+        ? (upgradeValues.mug >= 3 ? 2.7 : 2.35)
+        : 1.75;
+      spawnWave(center, upgradeValues.mug >= 3 ? 0xffd23f : 0xffffff, upgradeValues.mug >= 3 ? 1.55 : 1);
       runtime.shake = Math.max(runtime.shake, 0.24);
       let hits = 0;
       let criticals = 0;
@@ -3190,7 +3287,7 @@ export default function OfficeCrashRPG() {
         const distance = Math.max(0, enemy.group.position.distanceTo(center) - enemy.radius);
         if (distance <= radius) {
           hits += 1;
-          const critical = distance <= 0.58 || Math.random() < upgradeValues.perfect * 0.1;
+          const critical = distance <= 0.58 + upgradeValues.mug * 0.07;
           if (critical) criticals += 1;
           damageEnemy(enemy, damage * (critical ? criticalMultiplier : 1), critical, center);
         }
@@ -3212,7 +3309,7 @@ export default function OfficeCrashRPG() {
       if (!runtime.playing || runtime.paused) return;
       if (runtime.elapsed < runtime.megaLockUntil || runtime.pendingSmash || runtime.pendingMega) return;
       const rushActive = runtime.elapsed < runtime.rushUntil;
-      const cooldown = Math.max(0.16, 0.46 * (1 - upgradeValues.haste * 0.09) * (rushActive ? 0.7 : 1));
+      const cooldown = Math.max(0.16, 0.46 * (1 - upgradeValues.chiller * 0.08) * (rushActive ? 0.7 : 1));
       if (runtime.elapsed - runtime.lastSmash < cooldown) return;
       runtime.lastSmash = runtime.elapsed;
       const forward = new THREE.Vector3(0, 0, -1).applyAxisAngle(UP, player.rotation.y);
@@ -3234,7 +3331,7 @@ export default function OfficeCrashRPG() {
       ) return;
       runtime.lastMega = runtime.elapsed;
       runtime.mega -= 1;
-      const chargeDelay = Math.max(0.26, 0.48 * (1 - upgradeValues.haste * 0.055));
+      const chargeDelay = Math.max(0.26, 0.48 * (1 - upgradeValues.chiller * 0.05));
       runtime.megaLockUntil = runtime.elapsed + chargeDelay + 0.24;
       runtime.invulnerableUntil = runtime.elapsed + 0.82;
       const forward = new THREE.Vector3(0, 0, -1).applyAxisAngle(UP, player.rotation.y);
@@ -3275,15 +3372,24 @@ export default function OfficeCrashRPG() {
     const dash = () => {
       if (!runtime.playing || runtime.paused) return;
       if (runtime.elapsed < runtime.megaLockUntil) return;
-      const cooldown = Math.max(0.85, 2.15 / (1 + upgradeValues.runner * 0.16));
+      const cooldown = Math.max(0.72, 2.15 / (1 + upgradeValues.sneakers * 0.18));
       if (runtime.elapsed - runtime.lastDash < cooldown) return;
       runtime.lastDash = runtime.elapsed;
-      runtime.invulnerableUntil = runtime.elapsed + 0.46;
+      runtime.invulnerableUntil = runtime.elapsed
+        + 0.46
+        + (runtime.profile.fixtures.exit >= 1 ? 0.15 : 0);
       const forward = new THREE.Vector3(0, 0, -1).applyAxisAngle(UP, player.rotation.y);
       player.position.addScaledVector(forward, 3.15);
       player.position.x = THREE.MathUtils.clamp(player.position.x, -9.4, 9.4);
       player.position.z = THREE.MathUtils.clamp(player.position.z, -13.1, 11.3);
-      spawnWave(player.position, 0x5de3ff, 0.7);
+      spawnWave(player.position, upgradeValues.sneakers >= 2 ? 0x73ff8c : 0x5de3ff, upgradeValues.sneakers >= 2 ? 1.55 : 0.7);
+      if (upgradeValues.sneakers >= 2) {
+        for (const enemy of enemies) {
+          if (enemy.alive && enemy.group.position.distanceTo(player.position) <= 2.1 + enemy.radius) {
+            damageEnemy(enemy, BASE_SMASH_DAMAGE * 0.85, false, player.position, "splash");
+          }
+        }
+      }
       tone(480, 0.11, "sine", 0.045, 960);
       syncHud();
     };
@@ -3307,10 +3413,11 @@ export default function OfficeCrashRPG() {
       runtime.rerolls = 1;
       runtime.mega = 1;
       runtime.megaGauge = 0;
+      runtime.mealReady = profile.fixtures.showcase > 0;
+      runtime.trayRescueReady = false;
       runtime.submitted = false;
       runtime.selected = [];
-      runtime.synergies = [];
-      runtime.maxHp = 100 + profile.mastery.vitality * 10;
+      runtime.maxHp = 100;
       runtime.hp = runtime.maxHp;
       runtime.lastSmash = -10;
       runtime.lastMega = -10;
@@ -3319,8 +3426,8 @@ export default function OfficeCrashRPG() {
       runtime.invulnerableUntil = 0;
       damageLayerRef.current?.replaceChildren();
       for (const key of Object.keys(upgradeValues) as UpgradeId[]) upgradeValues[key] = 0;
+      updateEquipmentVisuals();
       setBuild([]);
-      setActiveSynergies([]);
       setRerolls(1);
       setSummary(null);
       setupFloor();
@@ -3328,18 +3435,21 @@ export default function OfficeCrashRPG() {
 
     const pickUpgrade = (choice: RewardChoice) => {
       if (runtime.playing || runtime.floor >= MAX_FLOOR) return;
-      upgradeValues[choice.id] += choice.scale;
+      upgradeValues[choice.id] = choice.level;
       runtime.selected.push(choice);
-      if (choice.id === "guard") {
-        runtime.maxHp += 18 * choice.scale;
+      if (choice.id === "tray") {
+        runtime.maxHp += 25;
         runtime.hp = runtime.maxHp;
+        if (choice.level >= 3) runtime.trayRescueReady = true;
       }
-      if (choice.id === "happy") gainMegaGauge(50 * choice.scale);
-      const previousSynergyCount = runtime.synergies.length;
-      runtime.synergies = resolveSynergies(upgradeValues);
-      setBuild([...runtime.selected]);
-      setActiveSynergies([...runtime.synergies]);
-      if (runtime.synergies.length > previousSynergyCount) playSound("beer");
+      if (choice.id === "lantern") gainMegaGauge(50);
+      updateEquipmentVisuals();
+      const currentBuild = UPGRADES.flatMap((upgrade) => {
+        const selected = [...runtime.selected].reverse().find((item) => item.id === upgrade.id);
+        return selected ? [selected] : [];
+      });
+      setBuild(currentBuild);
+      playSound("beer");
       runtime.floor += 1;
       setupFloor();
     };
@@ -3347,12 +3457,12 @@ export default function OfficeCrashRPG() {
     const rerollReward = () => {
       if (runtime.playing || runtime.floor >= MAX_FLOOR || runtime.rerolls <= 0) return;
       runtime.rerolls -= 1;
-      const choices = makeRewardChoices(runtime.floor, runtime.overtimeRank);
+      const choices = makeRewardChoices(upgradeValues);
       setRewardChoices(choices);
       setRerolls(runtime.rerolls);
       tone(280, 0.1, "square", 0.05, 520);
       tone(520, 0.15, "triangle", 0.055, 820, 0.08);
-      notify(choices.some((choice) => choice.greater) ? "引き直し成功！ ★ 金星特性です" : "戦利品を入れ替えました");
+      notify("装備候補を入れ替えました");
     };
 
     const pause = () => {
@@ -3405,7 +3515,6 @@ export default function OfficeCrashRPG() {
       setStatus("hub");
       setRewardChoices([]);
       setBuild([]);
-      setActiveSynergies([]);
     };
 
     apiRef.current = {
@@ -3503,7 +3612,7 @@ export default function OfficeCrashRPG() {
           walking = true;
           move.normalize();
           const speed = 5.35
-            * (1 + runtime.profile.mastery.hustle * 0.04 + upgradeValues.runner * 0.08)
+            * (1 + upgradeValues.sneakers * 0.12)
             * (rushActive ? 1.16 : 1);
           player.position.x += move.x * speed * dt;
           player.position.z += move.y * speed * dt;
@@ -3531,7 +3640,7 @@ export default function OfficeCrashRPG() {
           const toPlayer = player.position.clone().sub(enemy.group.position).setY(0);
           const distance = toPlayer.length();
           const frozen = runtime.elapsed < enemy.frozenUntil;
-          const chilled = frozen ? Math.max(0.25, 1 - upgradeValues.frost * 0.24) : 1;
+          const chilled = frozen ? Math.max(0.25, 1 - upgradeValues.chiller * 0.24) : 1;
           (enemy.group.userData.animator as VoxelActionController | undefined)?.update(
             dt,
             runtime.elapsed,
@@ -3930,18 +4039,13 @@ export default function OfficeCrashRPG() {
           </section>
 
           <aside className="rpg-build-rail" aria-label="現在のビルド">
-            <span>RUN BUILD</span>
+            <span>装備 3枠</span>
             {build.length === 0 && <small>戦利品は階層クリア後に獲得</small>}
-            {activeSynergies.map((synergy) => (
-              <div className="rpg-synergy-chip" key={synergy.name} title={synergy.effect}>
-                <b>{synergy.icon}</b>
-                <span>{synergy.name}</span>
-              </div>
-            ))}
-            {build.slice(-6).map((item, index) => (
-              <div className={`rpg-build-chip ${item.rarityClass} ${item.greater ? "greater" : ""}`} key={`${item.id}-${index}`} title={item.effect}>
-                <b>{item.icon}</b>
-                <span>{item.name}</span>
+            {build.map((item) => (
+              <div className={`rpg-build-chip level-${item.level}`} key={item.id} title={item.effect}>
+                <img src={item.image} alt="" />
+                <span><b>{item.displayName}</b><small>{item.role}</small></span>
+                <em>Lv.{item.level}</em>
               </div>
             ))}
           </aside>
@@ -3949,7 +4053,9 @@ export default function OfficeCrashRPG() {
           <div className={`rpg-mega ${hud.mega > 0 ? "ready" : ""}`}>
             <span>MEGA GAUGE</span>
             <div className="rpg-mega-stocks">
-              {[0, 1].map((slot) => <i className={slot < hud.mega ? "full" : ""} key={slot}>生</i>)}
+              {Array.from({ length: hud.megaMax }, (_, slot) => (
+                <i className={slot < hud.mega ? "full" : ""} key={slot}>生</i>
+              ))}
             </div>
             <div className="rpg-mega-gauge"><i style={{ width: `${megaGaugeRatio}%` }} /></div>
             <b>射線予測 ×{hud.megaTargets}</b>
@@ -4053,8 +4159,8 @@ export default function OfficeCrashRPG() {
                 <span>OFFICE RUSH</span>
                 <span>生ジョッキレール</span>
                 <span>LOOT DRAFT</span>
-                <span>金星特性</span>
-                <span>ビルド共鳴</span>
+                <span>6装備 × 3進化</span>
+                <span>見える装備</span>
                 <span>退社難度</span>
                 <span>永続記録</span>
               </div>
@@ -4146,32 +4252,34 @@ export default function OfficeCrashRPG() {
                 </small>
               </form>
 
-              <section className="mastery-panel">
+              <section className="mastery-panel fixture-panel">
                 <div className="panel-heading">
                   <span>立ち飲み処</span>
-                  <strong>永続仕込み</strong>
+                  <strong>王冠設備</strong>
                 </div>
-                {([
-                  ["forge", "ジョッキ鍛造", "攻撃力 +8% / Lv", "槌"],
-                  ["vitality", "店主の大盛り", "最大HP +10 / Lv", "盛"],
-                  ["hustle", "ついでに足腰", "移動速度 +4% / Lv", "走"],
-                ] as Array<[MasteryKey, string, string, string]>).map(([key, name, effect, icon]) => {
-                  const level = profile.mastery[key];
-                  const cost = masteryCost(level);
+                <p>小さな倍率ではなく、ランの遊び方が変わる設備を3段階で改装。旧強化に使った王冠は自動で全額払い戻されます。</p>
+                <div className="fixture-grid">
+                  {FIXTURES.map((fixture) => {
+                  const level = profile.fixtures[fixture.id];
+                  const cost = fixtureCost(level);
                   return (
-                    <div className="mastery-row" key={key}>
-                      <b>{icon}</b>
-                      <span><strong>{name}</strong><small>{effect}</small></span>
-                      <em>Lv.{level}/5</em>
+                    <div className={`fixture-card level-${level}`} key={fixture.id}>
+                      <img src={fixture.image} alt="" />
+                      <span>
+                        <strong>{fixture.name}</strong>
+                        <small>{level > 0 ? fixture.levels[level - 1] : fixture.description}</small>
+                      </span>
+                      <em>Lv.{level}/3</em>
                       <button
-                        onClick={() => void buyMastery(key)}
-                        disabled={profileLoading || masteryBusy !== null || level >= 5}
+                        onClick={() => void buyFixture(fixture.id)}
+                        disabled={profileLoading || fixtureBusy !== null || level >= 3}
                       >
-                        {level >= 5 ? "MAX" : `${cost} 王冠`}
+                        {level >= 3 ? "MAX" : `${cost} 王冠`}
                       </button>
                     </div>
                   );
-                })}
+                  })}
+                </div>
               </section>
 
               <div className="hub-live-grid">
@@ -4205,22 +4313,22 @@ export default function OfficeCrashRPG() {
           <div className="reward-card">
             <p className="rpg-eyebrow">FLOOR {hud.floor} CLEAR — LOOT DRAFT</p>
             <h2 id="reward-title">戦利品をひとつ選ぶ</h2>
-            <p>同系統のパーツを組み合わせると「ビルド共鳴」が発動。金星特性は通常より45%強力です。</p>
+            <p>装備は最大3種類。同じ品を重ねると「改」から「極」へ進化し、見た目だけでなく攻撃そのものが変わります。</p>
             <div className="reward-grid">
               {rewardChoices.map((choice) => (
                 <button
-                  className={`loot-card ${choice.rarityClass} ${choice.greater ? "greater" : ""}`}
+                  className={`loot-card level-${choice.level}`}
                   key={choice.id}
                   onClick={() => apiRef.current?.pickUpgrade(choice)}
                 >
-                  <span className="loot-rarity">{choice.rarity}</span>
-                  <span className="loot-school">{choice.school}系統</span>
-                  <b className="loot-icon" style={{ color: choice.color }}>{choice.icon}</b>
-                  <small>{choice.slot}</small>
-                  <strong>{choice.name}</strong>
+                  <span className="loot-rarity">Lv.{choice.level}・{choice.evolution}</span>
+                  <span className="loot-school">{choice.role}</span>
+                  <img className="loot-image" src={choice.image} alt="" />
+                  <small>{choice.level === 1 ? "NEW EQUIPMENT" : "EVOLUTION"}</small>
+                  <strong>{choice.displayName}</strong>
                   <p>{choice.description}</p>
                   <em>{choice.effect}</em>
-                  <i>装備して次の階へ</i>
+                  <i>{choice.level === 1 ? "装備して次の階へ" : `${choice.name}を進化`}</i>
                 </button>
               ))}
             </div>
@@ -4232,12 +4340,10 @@ export default function OfficeCrashRPG() {
             >
               品書きを全部引き直す <b>{rerolls}/1</b>
             </button>
-            {activeSynergies.length > 0 && (
-              <div className="reward-synergies">
-                <span>発動中</span>
-                {activeSynergies.map((synergy) => <b key={synergy.name}>{synergy.icon} {synergy.name}</b>)}
-              </div>
-            )}
+            <div className="reward-synergies">
+              <span>ルール</span>
+              <b>3枠埋まった後は所持品の進化だけが出現</b>
+            </div>
           </div>
         </section>
       )}
@@ -4261,8 +4367,10 @@ export default function OfficeCrashRPG() {
               <div><span>獲得王冠</span><strong>+{summary.capsEarned}</strong></div>
             </div>
             <div className="result-build">
-              {build.map((item, index) => (
-                <span className={item.rarityClass} key={`${item.id}-${index}`}>{item.icon} {item.name}</span>
+              {build.map((item) => (
+                <span className={`level-${item.level}`} key={item.id}>
+                  <img src={item.image} alt="" /> {item.displayName}
+                </span>
               ))}
             </div>
             <div className="result-actions">

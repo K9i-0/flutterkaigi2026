@@ -12,6 +12,10 @@ export const players = sqliteTable("players", {
   forge: integer("forge").notNull().default(0),
   vitality: integer("vitality").notNull().default(0),
   hustle: integer("hustle").notNull().default(0),
+  fixtureServer: integer("fixture_server").notNull().default(0),
+  fixtureShowcase: integer("fixture_showcase").notNull().default(0),
+  fixtureExit: integer("fixture_exit").notNull().default(0),
+  masteryRefunded: integer("mastery_refunded").notNull().default(0),
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
 });

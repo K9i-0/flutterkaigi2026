@@ -1,20 +1,14 @@
 export type GameStatus = "hub" | "playing" | "reward" | "gameover" | "victory";
 export type FloorKind = "combat" | "elite" | "challenge" | "boss" | "final";
-export type MasteryKey = "forge" | "vitality" | "hustle";
+export type FixtureKey = "server" | "showcase" | "exit";
 export type OvertimeRank = 0 | 1 | 2;
 export type UpgradeId =
-  | "heavy"
-  | "wide"
-  | "haste"
-  | "foam"
-  | "frost"
-  | "yakitori"
-  | "combo"
-  | "guard"
-  | "knockback"
-  | "happy"
-  | "perfect"
-  | "runner";
+  | "mug"
+  | "barrel"
+  | "chiller"
+  | "tray"
+  | "lantern"
+  | "sneakers";
 
 export type GameProfile = {
   username: string;
@@ -24,7 +18,8 @@ export type GameProfile = {
   totalRuns: number;
   totalDestroyed: number;
   clears: number;
-  mastery: Record<MasteryKey, number>;
+  fixtures: Record<FixtureKey, number>;
+  refundedCaps?: number;
 };
 
 export type RecentRun = {
@@ -56,20 +51,19 @@ export type SiteGameData = {
 export type UpgradeDefinition = {
   id: UpgradeId;
   icon: string;
-  slot: string;
   name: string;
   description: string;
   color: string;
-  school: string;
+  role: string;
+  image: string;
+  effects: [string, string, string];
 };
 
 export type RewardChoice = UpgradeDefinition & {
-  tier: number;
-  rarity: string;
-  rarityClass: string;
-  scale: number;
+  level: 1 | 2 | 3;
+  evolution: "装備" | "改" | "極";
+  displayName: string;
   effect: string;
-  greater: boolean;
 };
 
 export type FloorDefinition = {
@@ -97,11 +91,12 @@ export type OvertimeDefinition = {
   eliteBonus: number;
 };
 
-export type SynergyDefinition = {
-  ids: [UpgradeId, UpgradeId];
+export type FixtureDefinition = {
+  id: FixtureKey;
   name: string;
-  icon: string;
-  effect: string;
+  description: string;
+  image: string;
+  levels: [string, string, string];
 };
 
 export const EMPTY_PROFILE: GameProfile = {
@@ -112,7 +107,7 @@ export const EMPTY_PROFILE: GameProfile = {
   totalRuns: 0,
   totalDestroyed: 0,
   clears: 0,
-  mastery: { forge: 0, vitality: 0, hustle: 0 },
+  fixtures: { server: 0, showcase: 0, exit: 0 },
 };
 
 export const OVERTIME_RANKS: OvertimeDefinition[] = [
@@ -249,207 +244,140 @@ export const FLOORS: FloorDefinition[] = [
 
 export const UPGRADES: UpgradeDefinition[] = [
   {
-    id: "heavy",
-    icon: "槌",
-    slot: "ジョッキ底",
-    name: "重量級ジョッキ底",
-    description: "スマッシュの基礎威力を引き上げる。",
-    color: "#ff7046",
-    school: "衝撃",
+    id: "mug",
+    icon: "杯",
+    name: "金の特大ジョッキ",
+    description: "一撃の重さと吹き飛ばしを伸ばす、正面突破の主役装備。",
+    color: "#ffb21c",
+    role: "高火力・会心",
+    image: "/items/golden-mug.png",
+    effects: [
+      "全攻撃 +25%・吹き飛ばし強化",
+      "PERFECT威力 ×2.35・会心範囲拡大",
+      "PERFECT時に黄金衝撃波が追加発生",
+    ],
   },
   {
-    id: "wide",
+    id: "barrel",
     icon: "波",
-    slot: "ジョッキ本体",
-    name: "大口径ビアグラス",
-    description: "攻撃範囲が広がり、MULTI BREAKを狙いやすくなる。",
-    color: "#ffb11f",
-    school: "爆泡",
+    name: "泡盛ビール樽",
+    description: "泡を連鎖させ、大群をまとめて巻き込む範囲攻撃装備。",
+    color: "#e98b22",
+    role: "範囲・連鎖",
+    image: "/items/foam-barrel.png",
+    effects: [
+      "通常範囲 +14%・撃破時に泡が破裂",
+      "泡の連鎖範囲と威力が大幅アップ",
+      "MEGAの射線と着弾爆発が超大型化",
+    ],
   },
   {
-    id: "haste",
-    icon: "速",
-    slot: "取っ手",
-    name: "高速サーブハンドル",
-    description: "スマッシュの待ち時間を短縮する。",
-    color: "#43c8ff",
-    school: "速配",
-  },
-  {
-    id: "foam",
-    icon: "泡",
-    slot: "ビール",
-    name: "はじける泡",
-    description: "破壊した備品から泡が弾け、周囲にもダメージ。",
-    color: "#ffe46a",
-    school: "爆泡",
-  },
-  {
-    id: "frost",
+    id: "chiller",
     icon: "冷",
-    slot: "ビール",
-    name: "キンキン冷却",
-    description: "命中した暴走備品を冷やして動きを鈍らせる。",
-    color: "#6edfff",
-    school: "冷却",
+    name: "キンキン冷却サーバー",
+    description: "敵を凍らせ、砕ける隙へ高速で畳み掛ける冷却装備。",
+    color: "#4fd8ff",
+    role: "凍結・手数",
+    image: "/items/ice-server.png",
+    effects: [
+      "攻撃間隔 -8%・命中した敵を冷却",
+      "凍結中の敵へダメージ ×1.65",
+      "凍結撃破で周囲へ氷砕きが連鎖",
+    ],
   },
   {
-    id: "yakitori",
+    id: "tray",
     icon: "串",
-    slot: "おつまみ",
-    name: "店主の焼き鳥",
-    description: "備品を片付けるたびに体力を少し回復する。",
-    color: "#e9873c",
-    school: "堅守",
+    name: "焼き鳥お盆シールド",
+    description: "お盆で受け流し、焼き鳥で立て直す粘り強い防御装備。",
+    color: "#d76e2a",
+    role: "防御・回復",
+    image: "/items/yakitori-tray.png",
+    effects: [
+      "最大HP +25・撃破時 HP +3",
+      "HP80%以上で被ダメージ35%軽減",
+      "致命傷を一度だけ防ぎ、焼き鳥で全快",
+    ],
   },
   {
-    id: "combo",
-    icon: "連",
-    slot: "店主札",
-    name: "乾杯コンボ",
-    description: "コンボ受付時間を延長し、高倍率を維持する。",
-    color: "#ff4f77",
-    school: "速配",
-  },
-  {
-    id: "guard",
-    icon: "守",
-    slot: "おつまみ",
-    name: "冷奴シールド",
-    description: "最大体力を増やし、獲得時に全回復する。",
-    color: "#f4f4e7",
-    school: "堅守",
-  },
-  {
-    id: "knockback",
-    icon: "飛",
-    slot: "ジョッキ底",
-    name: "壁ごと片付け",
-    description: "衝撃が強くなり、敵を大きく吹き飛ばす。",
-    color: "#ad8cff",
-    school: "衝撃",
-  },
-  {
-    id: "happy",
+    id: "lantern",
     icon: "生",
-    slot: "店主札",
-    name: "ハッピーアワー",
-    description: "各フロア開始時に生ジョッキレールを補充する。",
-    color: "#ffca22",
-    school: "宴会",
+    name: "ハッピーアワー赤提灯",
+    description: "連続整理を祝祭へ変え、必殺技を気軽に回す宴会装備。",
+    color: "#ff4b2d",
+    role: "MEGA・コンボ",
+    image: "/items/red-lantern.png",
+    effects: [
+      "MEGAゲージ獲得 +25%・即時50%補充",
+      "コンボ受付延長・清掃熱上昇 ×1.5",
+      "大乾杯時のゲージ返却 +25%",
+    ],
   },
   {
-    id: "perfect",
-    icon: "芯",
-    slot: "仮面裏",
-    name: "一点集中",
-    description: "中心命中以外でもPERFECT判定が発生しやすくなる。",
-    color: "#ff5e54",
-    school: "会心",
-  },
-  {
-    id: "runner",
+    id: "sneakers",
     icon: "走",
-    slot: "足腰",
-    name: "ついでに全力疾走",
-    description: "移動速度とダッシュの回転率が上がる。",
+    name: "フライング退社スニーカー",
+    description: "位置取りと回避を攻撃へ変える、最高速の退社装備。",
     color: "#63df8e",
-    school: "速配",
+    role: "移動・回避",
+    image: "/items/escape-sneakers.png",
+    effects: [
+      "移動速度 +12%・ダッシュ再使用短縮",
+      "ダッシュ跡に敵を弾く風の衝撃波",
+      "ボス攻撃の完全回避でMEGA +20%",
+    ],
   },
 ];
 
-export const SYNERGIES: SynergyDefinition[] = [
+export const FIXTURES: FixtureDefinition[] = [
   {
-    ids: ["wide", "foam"],
-    name: "爆泡ジョッキ",
-    icon: "泡",
-    effect: "泡の連鎖範囲と威力が大幅アップ",
+    id: "server",
+    name: "黄金ビールサーバー",
+    description: "ジョッキレールを開幕から回す必殺設備。",
+    image: "/items/fixture-golden-server.png",
+    levels: ["各階開始時 MEGAゲージ +25%", "MEGAストック上限が3杯", "20体以上一掃でゲージ +25%追加返却"],
   },
   {
-    ids: ["frost", "haste"],
-    name: "キンキン速配",
-    icon: "冷",
-    effect: "冷えた備品へのダメージが1.5倍",
+    id: "showcase",
+    name: "まかないショーケース",
+    description: "ピンチを乾杯の好機へ変える回復設備。",
+    image: "/items/fixture-meal-showcase.png",
+    levels: ["ラン中1回、HP30%以下でまかない回復", "各階1回まで再装填", "発動時に2秒無敵＋衝撃波"],
   },
   {
-    ids: ["heavy", "perfect"],
-    name: "店主の会心",
-    icon: "芯",
-    effect: "PERFECT SMASHの倍率が2.35倍",
-  },
-  {
-    ids: ["guard", "yakitori"],
-    name: "立ち飲み不沈艦",
-    icon: "守",
-    effect: "HP80%以上で受けるダメージを35%軽減",
-  },
-  {
-    ids: ["combo", "runner"],
-    name: "宴会ランナー",
-    icon: "走",
-    effect: "清掃熱の上昇量が1.5倍",
+    id: "exit",
+    name: "秘密の非常口",
+    description: "回避成功を次の必殺へ直結させる退社設備。",
+    image: "/items/fixture-secret-exit.png",
+    levels: ["ダッシュ無敵時間 +0.15秒", "ボス攻撃の完全回避でダッシュ即再使用", "完全回避でMEGAゲージ +15%"],
   },
 ];
 
-export function resolveSynergies(values: Partial<Record<UpgradeId, number>>) {
-  return SYNERGIES.filter(({ ids }) => ids.every((id) => (values[id] ?? 0) > 0));
-}
-
-const RARITIES = [
-  { name: "生", className: "draft", scale: 1 },
-  { name: "大生", className: "large", scale: 1.35 },
-  { name: "特大生", className: "mega", scale: 1.75 },
-  { name: "店主秘蔵", className: "secret", scale: 2.3 },
-];
-
-function effectText(id: UpgradeId, scale: number) {
-  switch (id) {
-    case "heavy": return `全攻撃・MEGA威力 +${Math.round(28 * scale)}%`;
-    case "wide": return `通常範囲・MEGA射線 +${Math.round(16 * scale)}%`;
-    case "haste": return `攻撃間隔・MEGA装填 -${Math.round(9 * scale)}%`;
-    case "foam": return `破壊連鎖 ${Math.round(45 * scale)}%・MEGA着弾範囲アップ`;
-    case "frost": return `移動速度 -${Math.round(24 * scale)}%`;
-    case "yakitori": return `撃破時 HP ${Math.max(1, Math.round(2 * scale))} 回復`;
-    case "combo": return `コンボ受付 +${(0.7 * scale).toFixed(1)}秒`;
-    case "guard": return `最大HP +${Math.round(18 * scale)}`;
-    case "knockback": return `吹き飛ばし +${Math.round(40 * scale)}%・壁際MEGA強化`;
-    case "happy": return `MEGAゲージ獲得 +${Math.round(18 * scale)}%・階層開始時も補充`;
-    case "perfect": return `追加PERFECT率 +${Math.round(10 * scale)}%・MEGA芯判定拡大`;
-    case "runner": return `移動速度 +${Math.round(8 * scale)}%`;
-  }
-}
-
-function rollTier(floor: number) {
-  const roll = Math.random() + floor * 0.035;
-  if (roll > 1.18) return 3;
-  if (roll > 0.87) return 2;
-  if (roll > 0.48) return 1;
-  return 0;
-}
-
-export function makeRewardChoices(floor: number, overtimeRank: OvertimeRank = 0): RewardChoice[] {
-  const pool = [...UPGRADES];
+export function makeRewardChoices(
+  values: Partial<Record<UpgradeId, number>>,
+): RewardChoice[] {
+  const owned = UPGRADES.filter((upgrade) => (values[upgrade.id] ?? 0) > 0);
+  const pool = (owned.length >= 3
+    ? owned
+    : UPGRADES
+  ).filter((upgrade) => (values[upgrade.id] ?? 0) < 3);
   const choices: RewardChoice[] = [];
-  while (choices.length < 3) {
+  while (choices.length < 3 && pool.length > 0) {
     const index = Math.floor(Math.random() * pool.length);
     const definition = pool.splice(index, 1)[0];
-    const tier = rollTier(floor);
-    const rarity = RARITIES[tier];
-    const greater = Math.random() < 0.045 + floor * 0.012 + overtimeRank * 0.018;
-    const scale = rarity.scale * (greater ? 1.45 : 1);
+    const level = Math.min(3, (values[definition.id] ?? 0) + 1) as 1 | 2 | 3;
+    const evolution = (["装備", "改", "極"] as const)[level - 1];
     choices.push({
       ...definition,
-      tier,
-      rarity: `${greater ? "金星 " : ""}${rarity.name}`,
-      rarityClass: rarity.className,
-      scale,
-      effect: `${greater ? "★ " : ""}${effectText(definition.id, scale)}`,
-      greater,
+      level,
+      evolution,
+      displayName: level === 1 ? definition.name : `${definition.name}・${evolution}`,
+      effect: definition.effects[level - 1],
     });
   }
   return choices;
 }
 
-export function masteryCost(level: number) {
-  return 20 + level * 20;
+export function fixtureCost(level: number) {
+  return [60, 140, 300][Math.max(0, Math.min(2, level))] ?? 300;
 }

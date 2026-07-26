@@ -30,6 +30,11 @@ type PlayerRow = {
   forge: number;
   vitality: number;
   hustle: number;
+  fixture_server: number;
+  fixture_showcase: number;
+  fixture_exit: number;
+  mastery_refunded: number;
+  refunded_caps?: number;
 };
 
 type RunPayload = {
@@ -106,6 +111,10 @@ async function ensureSchema(db: D1Database) {
         forge INTEGER DEFAULT 0 NOT NULL,
         vitality INTEGER DEFAULT 0 NOT NULL,
         hustle INTEGER DEFAULT 0 NOT NULL,
+        fixture_server INTEGER DEFAULT 0 NOT NULL,
+        fixture_showcase INTEGER DEFAULT 0 NOT NULL,
+        fixture_exit INTEGER DEFAULT 0 NOT NULL,
+        mastery_refunded INTEGER DEFAULT 0 NOT NULL,
         created_at TEXT NOT NULL,
         updated_at TEXT NOT NULL
       )`),
@@ -133,6 +142,28 @@ async function ensureSchema(db: D1Database) {
         "ALTER TABLE players ADD COLUMN username TEXT DEFAULT '匿名窓際社員' NOT NULL",
       ).run();
     }
+    const fixtureColumns = [
+      ["fixture_server", "ALTER TABLE players ADD COLUMN fixture_server INTEGER DEFAULT 0 NOT NULL"],
+      ["fixture_showcase", "ALTER TABLE players ADD COLUMN fixture_showcase INTEGER DEFAULT 0 NOT NULL"],
+      ["fixture_exit", "ALTER TABLE players ADD COLUMN fixture_exit INTEGER DEFAULT 0 NOT NULL"],
+      ["mastery_refunded", "ALTER TABLE players ADD COLUMN mastery_refunded INTEGER DEFAULT 0 NOT NULL"],
+    ] as const;
+    for (const [name, statement] of fixtureColumns) {
+      if (!playerColumns.results.some((column) => column.name === name)) {
+        await db.prepare(statement).run();
+      }
+    }
+    const runColumns = await db.prepare("PRAGMA table_info(runs)").all<{ name: string }>();
+    if (!runColumns.results.some((column) => column.name === "overtime_rank")) {
+      await db.prepare(
+        "ALTER TABLE runs ADD COLUMN overtime_rank INTEGER DEFAULT 0 NOT NULL",
+      ).run();
+    }
+    if (!runColumns.results.some((column) => column.name === "build_name")) {
+      await db.prepare(
+        "ALTER TABLE runs ADD COLUMN build_name TEXT DEFAULT '単品ジョッキ' NOT NULL",
+      ).run();
+    }
   })();
   await schemaReady;
 }
@@ -147,7 +178,18 @@ async function getPlayer(db: D1Database, playerId: string) {
   const now = new Date().toISOString();
   await db.prepare(`INSERT INTO players (id, created_at, updated_at)
     VALUES (?, ?, ?) ON CONFLICT(id) DO NOTHING`).bind(playerId, now, now).run();
-  return db.prepare("SELECT * FROM players WHERE id = ?").bind(playerId).first<PlayerRow>();
+  let player = await db.prepare("SELECT * FROM players WHERE id = ?").bind(playerId).first<PlayerRow>();
+  if (player && player.mastery_refunded === 0) {
+    const refundedCaps = [player.forge, player.vitality, player.hustle]
+      .reduce((total, level) => total + 10 * level * (level + 1), 0);
+    await db.prepare(`UPDATE players SET
+      caps = caps + ?, mastery_refunded = 1, updated_at = ?
+      WHERE id = ? AND mastery_refunded = 0`)
+      .bind(refundedCaps, now, playerId).run();
+    player = await db.prepare("SELECT * FROM players WHERE id = ?").bind(playerId).first<PlayerRow>();
+    if (player) player.refunded_caps = refundedCaps;
+  }
+  return player;
 }
 
 function publicProfile(row: PlayerRow) {
@@ -159,11 +201,12 @@ function publicProfile(row: PlayerRow) {
     totalRuns: row.total_runs,
     totalDestroyed: row.total_destroyed,
     clears: row.clears,
-    mastery: {
-      forge: row.forge,
-      vitality: row.vitality,
-      hustle: row.hustle,
+    fixtures: {
+      server: row.fixture_server,
+      showcase: row.fixture_showcase,
+      exit: row.fixture_exit,
     },
+    refundedCaps: row.refunded_caps ?? 0,
   };
 }
 
@@ -273,21 +316,25 @@ async function handleGameApi(request: Request, env: Env) {
     return response;
   }
 
-  if (request.method === "POST" && requestUrl.pathname === "/api/game/mastery") {
-    const body = await readJsonBody(request) as { stat?: unknown };
-    const stat = body.stat;
-    const columns = { forge: "forge", vitality: "vitality", hustle: "hustle" } as const;
-    if (typeof stat !== "string" || !(stat in columns)) {
-      return json({ error: "invalid_mastery" }, { status: 400 });
+  if (request.method === "POST" && requestUrl.pathname === "/api/game/fixture") {
+    const body = await readJsonBody(request) as { fixture?: unknown };
+    const fixture = body.fixture;
+    const columns = {
+      server: { column: "fixture_server", row: "fixture_server" },
+      showcase: { column: "fixture_showcase", row: "fixture_showcase" },
+      exit: { column: "fixture_exit", row: "fixture_exit" },
+    } as const;
+    if (typeof fixture !== "string" || !(fixture in columns)) {
+      return json({ error: "invalid_fixture" }, { status: 400 });
     }
     const player = await getPlayer(db, playerId);
     if (!player) return json({ error: "profile_unavailable" }, { status: 503 });
-    const key = stat as keyof typeof columns;
-    const level = player[key];
-    const cost = 20 + level * 20;
-    if (level >= 5) return json({ error: "mastery_maxed" }, { status: 409 });
+    const key = fixture as keyof typeof columns;
+    const level = player[columns[key].row];
+    const cost = [60, 140, 300][level] ?? 300;
+    if (level >= 3) return json({ error: "fixture_maxed" }, { status: 409 });
     if (player.caps < cost) return json({ error: "not_enough_caps", cost }, { status: 409 });
-    const column = columns[key];
+    const column = columns[key].column;
     await db.prepare(`UPDATE players SET ${column} = ${column} + 1,
       caps = caps - ?, updated_at = ? WHERE id = ? AND caps >= ?`)
       .bind(cost, new Date().toISOString(), playerId, cost).run();
