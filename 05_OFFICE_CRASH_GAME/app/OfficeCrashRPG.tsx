@@ -78,7 +78,7 @@ type GameApi = {
   pause: () => void;
   unlockAudio: () => void;
   testSound: () => void;
-  toggleSound: () => boolean;
+  toggleSound: (forceStart?: boolean) => boolean;
   pickUpgrade: (choice: RewardChoice) => void;
   rerollReward: () => void;
   returnHub: () => void;
@@ -1033,15 +1033,48 @@ export default function OfficeCrashRPG() {
 
     let audioContext: AudioContext | null = null;
     let audioResume: Promise<AudioContext> | null = null;
+    let detachAudioState: (() => void) | null = null;
+    let audioPrimed = false;
     let soundEnabled = true;
+    type SafariAudioContextState = AudioContextState | "interrupted";
+    const getAudioState = (context: AudioContext) => context.state as SafariAudioContextState;
     const ensureAudioContext = () => {
       if (!audioContext) {
         const AudioContextConstructor = window.AudioContext
           ?? (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
         if (!AudioContextConstructor) throw new Error("Web Audio is unavailable");
-        audioContext = new AudioContextConstructor();
+        const context = new AudioContextConstructor({ latencyHint: "interactive" });
+        const onAudioStateChange = () => {
+          const state = getAudioState(context);
+          if (state === "running") {
+            setAudioReady(true);
+            setAudioError(false);
+          } else {
+            setAudioReady(false);
+            if (state === "suspended" || state === "interrupted") audioPrimed = false;
+          }
+        };
+        context.addEventListener("statechange", onAudioStateChange);
+        detachAudioState = () => context.removeEventListener("statechange", onAudioStateChange);
+        audioContext = context;
       }
       return audioContext;
+    };
+    const primeAudioContext = (context: AudioContext) => {
+      if (audioPrimed && getAudioState(context) === "running") return;
+      try {
+        const buffer = context.createBuffer(1, 1, context.sampleRate);
+        const source = context.createBufferSource();
+        const gain = context.createGain();
+        source.buffer = buffer;
+        gain.gain.setValueAtTime(0.0001, context.currentTime);
+        source.connect(gain).connect(context.destination);
+        source.start(0);
+        source.stop(context.currentTime + 0.01);
+        audioPrimed = true;
+      } catch {
+        audioPrimed = false;
+      }
     };
     const resumeAudio = () => {
       let context: AudioContext;
@@ -1052,14 +1085,14 @@ export default function OfficeCrashRPG() {
         setAudioError(true);
         return Promise.reject(new Error("Web Audio is unavailable"));
       }
-      if (context.state === "running") {
+      if (getAudioState(context) === "running") {
         setAudioReady(true);
         setAudioError(false);
         return Promise.resolve(context);
       }
       audioResume ??= context.resume()
         .then(() => {
-          if (context.state !== "running") throw new Error("AudioContext did not start");
+          if (getAudioState(context) !== "running") throw new Error("AudioContext did not start");
           setAudioReady(true);
           setAudioError(false);
           return context;
@@ -1074,6 +1107,22 @@ export default function OfficeCrashRPG() {
         });
       return audioResume;
     };
+    const activateAudio = () => {
+      let context: AudioContext;
+      try {
+        context = ensureAudioContext();
+        // iOS Safari requires a source to be started synchronously inside the tap.
+        primeAudioContext(context);
+      } catch {
+        setAudioReady(false);
+        setAudioError(true);
+        return Promise.reject(new Error("Web Audio is unavailable"));
+      }
+      return resumeAudio().then((runningContext) => {
+        primeAudioContext(runningContext);
+        return runningContext;
+      });
+    };
     const withAudio = (callback: (context: AudioContext) => void) => {
       if (!soundEnabled) return;
       let context: AudioContext;
@@ -1084,11 +1133,11 @@ export default function OfficeCrashRPG() {
         setAudioError(true);
         return;
       }
-      if (context.state === "running") {
+      if (getAudioState(context) === "running") {
         callback(context);
         return;
       }
-      void resumeAudio().then(callback).catch(() => {
+      void activateAudio().then(callback).catch(() => {
         // The visible sound-test button lets the player retry with a fresh gesture.
       });
     };
@@ -3395,8 +3444,8 @@ export default function OfficeCrashRPG() {
     };
 
     const start = (profile: GameProfile, selectedOvertimeRank: OvertimeRank) => {
-      void resumeAudio().catch(() => {
-        notify("音声を開始できません。立ち飲み処の試聴ボタンを押してください");
+      void activateAudio().catch(() => {
+        notify("音声を開始できません。iPhoneでは音ボタンをもう一度押してください");
       });
       runtime.profile = profile;
       runtime.guestBoss = MID_BOSS_ROTATION[profile.totalRuns % MID_BOSS_ROTATION.length];
@@ -3471,23 +3520,27 @@ export default function OfficeCrashRPG() {
       setPaused(runtime.paused);
     };
 
-    const toggleSound = () => {
-      soundEnabled = !soundEnabled;
-      setSoundOn(soundEnabled);
-      if (soundEnabled) {
-        void resumeAudio()
-          .then(() => {
-            tone(520, 0.1, "sine", 0.06, 760);
-            tone(760, 0.14, "triangle", 0.055, 1040, 0.09);
-          })
-          .catch(() => notify("音声を開始できませんでした"));
+    const toggleSound = (forceStart = false) => {
+      const audioState = audioContext ? getAudioState(audioContext) : "suspended";
+      if (!forceStart && soundEnabled && audioState === "running") {
+        soundEnabled = false;
+        setSoundOn(false);
+        return false;
       }
-      return soundEnabled;
+      soundEnabled = true;
+      setSoundOn(true);
+      void activateAudio()
+        .then(() => {
+          tone(520, 0.1, "sine", 0.06, 760);
+          tone(760, 0.14, "triangle", 0.055, 1040, 0.09);
+        })
+        .catch(() => notify("音声を開始できません。音ボタンをもう一度押してください"));
+      return true;
     };
 
     const unlockAudio = () => {
       if (!soundEnabled) return;
-      void resumeAudio().catch(() => {
+      void activateAudio().catch(() => {
         // Keep the retry UI visible without interrupting gameplay.
       });
     };
@@ -3495,7 +3548,7 @@ export default function OfficeCrashRPG() {
     const testSound = () => {
       soundEnabled = true;
       setSoundOn(true);
-      void resumeAudio()
+      void activateAudio()
         .then(() => {
           tone(392, 0.12, "triangle", 0.085, 523);
           tone(523, 0.14, "triangle", 0.085, 659, 0.1);
@@ -3545,10 +3598,23 @@ export default function OfficeCrashRPG() {
     };
     const onKeyUp = (event: KeyboardEvent) => keys.delete(event.key.toLowerCase());
     const onVisibilityChange = () => {
-      if (document.visibilityState === "visible" && soundEnabled && audioContext) unlockAudio();
+      if (document.visibilityState === "visible" && soundEnabled && audioContext) {
+        audioPrimed = false;
+        void resumeAudio().catch(() => {
+          // iOS may require the next visible tap after returning from the background.
+        });
+      }
+    };
+    const onPageShow = () => {
+      if (!soundEnabled || !audioContext) return;
+      audioPrimed = false;
+      void resumeAudio().catch(() => {
+        // The next pointer or touch gesture will retry an interrupted context.
+      });
     };
     window.addEventListener("keydown", onKeyDown, { passive: false });
     window.addEventListener("keyup", onKeyUp);
+    window.addEventListener("pageshow", onPageShow);
     document.addEventListener("visibilitychange", onVisibilityChange);
 
     const resize = () => {
@@ -3916,12 +3982,14 @@ export default function OfficeCrashRPG() {
       observer.disconnect();
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("keyup", onKeyUp);
+      window.removeEventListener("pageshow", onPageShow);
       document.removeEventListener("visibilitychange", onVisibilityChange);
       if (toastTimer.current) window.clearTimeout(toastTimer.current);
       if (bossDialogueTimer.current) window.clearTimeout(bossDialogueTimer.current);
       if (megaFlashTimer.current) window.clearTimeout(megaFlashTimer.current);
       damageLayerRef.current?.replaceChildren();
-      if (audioContext && audioContext.state !== "closed") void audioContext.close();
+      detachAudioState?.();
+      if (audioContext && getAudioState(audioContext) !== "closed") void audioContext.close();
       renderer.dispose();
       apiRef.current = null;
       scene.traverse((object) => {
@@ -3966,6 +4034,7 @@ export default function OfficeCrashRPG() {
       className="rpg-shell"
       ref={hostRef}
       onPointerDownCapture={() => apiRef.current?.unlockAudio()}
+      onTouchEndCapture={() => apiRef.current?.unlockAudio()}
     >
       <canvas
         ref={canvasRef}
@@ -3999,8 +4068,11 @@ export default function OfficeCrashRPG() {
             <div className="rpg-hud-actions">
               <span className={`rpg-overtime rank-${overtimeRank}`}>{hud.overtimeLabel} ×{hud.scoreMultiplier.toFixed(2)}</span>
               <span className="rpg-cap">王冠 {hud.caps}</span>
-              <button onClick={() => apiRef.current?.toggleSound()} aria-label={soundOn ? "効果音をオフ" : "効果音をオン"}>
-                {soundOn ? "音 ON" : "音 OFF"}
+              <button
+                onClick={() => apiRef.current?.toggleSound(soundOn && !audioReady)}
+                aria-label={soundOn && !audioReady ? "効果音を開始" : soundOn ? "効果音をオフ" : "効果音をオン"}
+              >
+                {soundOn && !audioReady ? "音 開始" : soundOn ? "音 ON" : "音 OFF"}
               </button>
               <button onClick={() => apiRef.current?.pause()} aria-label="一時停止">Ⅱ</button>
             </div>
@@ -4208,10 +4280,10 @@ export default function OfficeCrashRPG() {
                 </button>
                 <small>
                   {audioError
-                    ? "音が出ない場合は端末の消音設定を解除して、もう一度押してください"
+                    ? "iPhoneでは本体の消音を解除し、このボタンをもう一度押してください"
                     : audioReady
                       ? "音声準備OK。突入後にスマッシュ音が鳴ります"
-                      : "ブラウザの音声ロックをタップで解除します"}
+                      : "iPhoneは最初のタップで音声を有効化します"}
                 </small>
               </div>
               <button
