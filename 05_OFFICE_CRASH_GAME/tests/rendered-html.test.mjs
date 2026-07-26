@@ -37,6 +37,8 @@ test("renders the Office Crash game shell", async () => {
   assert.match(html, /残業/);
   assert.match(html, /定時退社/);
   assert.match(html, /フライング退社/);
+  assert.match(html, /助っ人1名が参戦/);
+  assert.match(html, /助っ人2名が参戦/);
   assert.match(html, /破壊数 ×/);
   assert.match(html, /金星特性/);
   assert.match(html, /ビルド共鳴/);
@@ -84,8 +86,16 @@ test("uses Three.js with a fixed camera, combat floors, and keyboard plus touch 
   assert.match(source, /overtime\.destructionMultiplier/);
   assert.match(source, /destroyOfficeProp/);
   assert.match(source, /showDamageNumber/);
-  assert.match(source, /DAMAGE_DISPLAY_MULTIPLIER = 10/);
+  assert.match(source, /BASE_SMASH_DAMAGE = 2/);
+  assert.match(source, /DAMAGE_DISPLAY_MULTIPLIER = 5/);
   assert.match(source, /amount \* DAMAGE_DISPLAY_MULTIPLIER/);
+  assert.match(source, /BOSS_DIFFICULTY_BY_RANK/);
+  assert.match(source, /bossDifficulty\.areaMultiplier/);
+  assert.match(source, /bossDifficulty\.cadenceMultiplier/);
+  assert.match(source, /bossDifficulty\.openingDuration/);
+  assert.match(source, /pickFinalBossGuests\(runtime\.overtimeRank\)/);
+  assert.match(source, /spawnCharacterBoss\("okayaman", 0, -8\.6\)/);
+  assert.match(source, /finalGuests\.forEach/);
   assert.match(source, /MEGA HIT/);
   assert.match(source, /WEAK ×/);
   assert.match(source, /rpg-damage-layer/);

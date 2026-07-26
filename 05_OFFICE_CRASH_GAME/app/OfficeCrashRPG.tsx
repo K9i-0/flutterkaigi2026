@@ -232,7 +232,13 @@ const MAX_FLOOR = FLOORS.length;
 const UP = new THREE.Vector3(0, 1, 0);
 const MEGA_MAX_STOCK = 2;
 const MAX_CONCURRENT_MOB_ATTACKS = 4;
-const DAMAGE_DISPLAY_MULTIPLIER = 10;
+const BASE_SMASH_DAMAGE = 2;
+const DAMAGE_DISPLAY_MULTIPLIER = 5;
+const BOSS_DIFFICULTY_BY_RANK = [
+  { areaMultiplier: 1, cadenceMultiplier: 1, windupMultiplier: 1, openingDuration: 1.9 },
+  { areaMultiplier: 1.14, cadenceMultiplier: 0.78, windupMultiplier: 0.94, openingDuration: 1.7 },
+  { areaMultiplier: 1.28, cadenceMultiplier: 0.6, windupMultiplier: 0.9, openingDuration: 1.55 },
+] as const;
 
 function getComboMultiplier(combo: number) {
   if (combo >= 30) return 4;
@@ -1617,7 +1623,12 @@ export default function OfficeCrashRPG() {
       return fallback;
     };
 
-    const spawnCharacterBoss = (id: CharacterBossId, x: number, z: number) => {
+    const spawnCharacterBoss = (
+      id: CharacterBossId,
+      x: number,
+      z: number,
+      openingDelay = 0,
+    ) => {
       const definition = WINDOW_BOSSES[id];
       const overtime = OVERTIME_RANKS[runtime.overtimeRank];
       const group = new THREE.Group();
@@ -1662,8 +1673,8 @@ export default function OfficeCrashRPG() {
         barrier: 0,
         lastRegen: runtime.elapsed,
         frozenUntil: 0,
-        nextAttack: runtime.elapsed + 1.8,
-        pulseAt: runtime.elapsed + (id === "okayaman" ? 2.6 : 3.1),
+        nextAttack: runtime.elapsed + 1.8 + openingDelay,
+        pulseAt: runtime.elapsed + (id === "okayaman" ? 2.6 : 3.1) + openingDelay,
         attackKind: null,
         attackStartedAt: 0,
         attackAt: 0,
@@ -1677,6 +1688,15 @@ export default function OfficeCrashRPG() {
         healthFill: health.userData.fill as THREE.Mesh,
       });
       group.userData.healthBar = health;
+    };
+
+    const pickFinalBossGuests = (count: number) => {
+      const pool = [...MID_BOSS_ROTATION];
+      for (let index = pool.length - 1; index > 0; index -= 1) {
+        const swapIndex = Math.floor(Math.random() * (index + 1));
+        [pool[index], pool[swapIndex]] = [pool[swapIndex], pool[index]];
+      }
+      return pool.slice(0, Math.max(0, Math.min(count, pool.length)));
     };
 
     const formationSpawnPoints = (
@@ -1819,7 +1839,8 @@ export default function OfficeCrashRPG() {
       const remainingObjective = floorDefinition.kind === "challenge"
         ? alive
         : Math.max(0, runtime.floorQuota - runtime.floorKilled);
-      const boss = enemies.find((enemy) => enemy.alive && enemy.boss);
+      const aliveBosses = enemies.filter((enemy) => enemy.alive && enemy.boss);
+      const boss = aliveBosses[0];
       const dashCooldown = Math.max(0.85, 2.15 / (1 + upgradeValues.runner * 0.16));
       const dashProgress = THREE.MathUtils.clamp((runtime.elapsed - runtime.lastDash) / dashCooldown, 0, 1);
       const overtime = OVERTIME_RANKS[runtime.overtimeRank];
@@ -1869,8 +1890,13 @@ export default function OfficeCrashRPG() {
         timer: runtime.timer === null ? null : Math.max(0, Math.ceil(runtime.timer)),
         dashReady: dashProgress,
         bossName: boss
-          ? `${boss.label}${boss.phase === 2 ? "｜ENCORE PHASE" : ""}${
-            runtime.elapsed >= boss.vulnerableFrom && runtime.elapsed < boss.vulnerableUntil
+          ? `${boss.label}${aliveBosses.length > 1 ? `＋助っ人${aliveBosses.length - 1}名` : ""}${
+            aliveBosses.some((candidate) => candidate.phase === 2) ? "｜ENCORE PHASE" : ""
+          }${
+            aliveBosses.some((candidate) => (
+              runtime.elapsed >= candidate.vulnerableFrom
+              && runtime.elapsed < candidate.vulnerableUntil
+            ))
               ? "｜反動中：ジョッキレール好機"
               : ""
           }`
@@ -1941,10 +1967,19 @@ export default function OfficeCrashRPG() {
         formation,
         floorDefinition.kind === "challenge",
       );
+      let finalGuests: CharacterBossId[] = [];
       if (floorDefinition.kind === "boss") {
         spawnCharacterBoss(runtime.guestBoss, 0, -7.2);
       } else if (floorDefinition.kind === "final") {
-        spawnCharacterBoss("okayaman", 0, -7.4);
+        finalGuests = pickFinalBossGuests(runtime.overtimeRank);
+        spawnCharacterBoss("okayaman", 0, -8.6);
+        const guestPositions = finalGuests.length === 1
+          ? [[Math.random() < 0.5 ? -4.3 : 4.3, -5.4]]
+          : [[-4.3, -5.4], [4.3, -5.4]];
+        finalGuests.forEach((id, index) => {
+          const [x, z] = guestPositions[index];
+          spawnCharacterBoss(id, x, z, 0.9 + index * 0.9);
+        });
       } else {
         const kinds: EquipmentEnemyKind[] = floorDefinition.kind === "challenge"
           ? ["chair", "desk", "cabinet", "copier"]
@@ -1974,7 +2009,11 @@ export default function OfficeCrashRPG() {
       if (floorDefinition.kind === "boss") {
         notify(WINDOW_BOSSES[runtime.guestBoss].introLine);
       } else if (floorDefinition.kind === "final") {
-        notify(WINDOW_BOSSES.okayaman.introLine);
+        notify(
+          finalGuests.length > 0
+            ? `窓際総力戦！ おかやまん＋${finalGuests.map((id) => WINDOW_BOSSES[id].displayName).join("＋")}が参戦`
+            : WINDOW_BOSSES.okayaman.introLine,
+        );
       } else {
         notify(
           quotaBasedFloor
@@ -2281,7 +2320,7 @@ export default function OfficeCrashRPG() {
 
       if (upgradeValues.foam > 0 && chainDepth === 0) {
         const explosiveFoam = runtime.synergies.some((synergy) => synergy.name === "爆泡ジョッキ");
-        const splashDamage = (2 * (1 + runtime.profile.mastery.forge * 0.08 + upgradeValues.heavy * 0.28))
+        const splashDamage = (BASE_SMASH_DAMAGE * (1 + runtime.profile.mastery.forge * 0.08 + upgradeValues.heavy * 0.28))
           * upgradeValues.foam * 0.45 * (explosiveFoam ? 1.35 : 1);
         spawnWave(enemy.group.position, 0xfff0a1, explosiveFoam ? 1.15 : 0.8);
         for (const other of enemies) {
@@ -2351,7 +2390,10 @@ export default function OfficeCrashRPG() {
         enemy.phase = 2;
         for (const hazard of hazards) removeDisposableObject(hazard.warning);
         hazards.length = 0;
-        enemy.pulseAt = Math.min(enemy.pulseAt, runtime.elapsed + 1.05);
+        enemy.pulseAt = Math.min(
+          enemy.pulseAt,
+          runtime.elapsed + 1.05 * BOSS_DIFFICULTY_BY_RANK[runtime.overtimeRank].cadenceMultiplier,
+        );
         const aura = new THREE.Mesh(
           new THREE.TorusGeometry(enemy.radius * 1.65, 0.12, 10, 38),
           new THREE.MeshBasicMaterial({
@@ -2406,7 +2448,7 @@ export default function OfficeCrashRPG() {
       const distance = getMegaTravelDistance(origin, direction);
       const rushActive = runtime.elapsed < runtime.rushUntil;
       const width = 2.55 * (1 + upgradeValues.wide * 0.13) * (rushActive ? 1.18 : 1);
-      const baseDamage = 2 * (
+      const baseDamage = BASE_SMASH_DAMAGE * (
         1
         + runtime.profile.mastery.forge * 0.08
         + upgradeValues.heavy * 0.28
@@ -2644,6 +2686,37 @@ export default function OfficeCrashRPG() {
       direction.normalize();
       const side = new THREE.Vector3(-direction.z, 0, direction.x);
       const bossDamage = enemy.damage;
+      const bossDifficulty = BOSS_DIFFICULTY_BY_RANK[runtime.overtimeRank];
+      const addBossHazard = (
+        position: THREE.Vector3,
+        radius: number,
+        damage: number,
+        delay: number,
+        color: number,
+      ) => addHazard(
+        position,
+        radius * bossDifficulty.areaMultiplier,
+        damage,
+        delay * bossDifficulty.windupMultiplier,
+        color,
+      );
+      const addBossBeamHazard = (
+        position: THREE.Vector3,
+        beamDirection: THREE.Vector3,
+        length: number,
+        width: number,
+        damage: number,
+        delay: number,
+        color: number,
+      ) => addBeamHazard(
+        position,
+        beamDirection,
+        length,
+        width * bossDifficulty.areaMultiplier,
+        damage,
+        delay * bossDifficulty.windupMultiplier,
+        color,
+      );
       const encore = enemy.phase === 2;
       let lastTriggerDelay = 1.45;
 
@@ -2651,7 +2724,7 @@ export default function OfficeCrashRPG() {
 
       if (id === "yotan") {
         [-2.9, 0, 2.9].forEach((offset, index) => {
-          addHazard(
+          addBossHazard(
             target.clone().addScaledVector(side, offset),
             1.55,
             bossDamage * 0.58,
@@ -2663,14 +2736,14 @@ export default function OfficeCrashRPG() {
         tone(164, 0.42, "sawtooth", 0.05, 440);
         tone(246, 0.38, "square", 0.035, 659, 0.1);
         if (encore) {
-          addHazard(target.clone().addScaledVector(direction, 3.4), 2.05, bossDamage * 0.64, 1.68, 0xffffff);
-          addHazard(target.clone().addScaledVector(direction, -3.4), 2.05, bossDamage * 0.64, 1.68, 0xffd23f);
+          addBossHazard(target.clone().addScaledVector(direction, 3.4), 2.05, bossDamage * 0.64, 1.68, 0xffffff);
+          addBossHazard(target.clone().addScaledVector(direction, -3.4), 2.05, bossDamage * 0.64, 1.68, 0xffd23f);
           lastTriggerDelay = 1.68;
         }
         if (!encore) lastTriggerDelay = 1.52;
       } else if (id === "tokun") {
         [-2.7, 0, 2.7].forEach((offset, index) => {
-          addHazard(
+          addBossHazard(
             target.clone().addScaledVector(side, offset).addScaledVector(direction, (index - 1) * 1.3),
             1.45,
             bossDamage * 0.56,
@@ -2682,27 +2755,27 @@ export default function OfficeCrashRPG() {
         tone(392, 0.3, "triangle", 0.045, 523);
         tone(587, 0.34, "sine", 0.04, 784, 0.12);
         if (encore) {
-          addHazard(target.clone().addScaledVector(direction, 3.5), 1.55, bossDamage * 0.58, 1.7, 0xffef83);
-          addHazard(target.clone().addScaledVector(direction, -3.5), 1.55, bossDamage * 0.58, 1.7, 0xffef83);
+          addBossHazard(target.clone().addScaledVector(direction, 3.5), 1.55, bossDamage * 0.58, 1.7, 0xffef83);
+          addBossHazard(target.clone().addScaledVector(direction, -3.5), 1.55, bossDamage * 0.58, 1.7, 0xffef83);
           lastTriggerDelay = 1.7;
         } else {
           lastTriggerDelay = 1.58;
         }
       } else if (id === "fukuchan") {
-        addHazard(target, 2.8, bossDamage * 0.62, 1.42, definition.color);
-        addHazard(target.clone().addScaledVector(side, 4.2), 1.65, bossDamage * 0.46, 1.62, 0xffffff);
-        addHazard(target.clone().addScaledVector(side, -4.2), 1.65, bossDamage * 0.46, 1.62, 0xffffff);
+        addBossHazard(target, 2.8, bossDamage * 0.62, 1.42, definition.color);
+        addBossHazard(target.clone().addScaledVector(side, 4.2), 1.65, bossDamage * 0.46, 1.62, 0xffffff);
+        addBossHazard(target.clone().addScaledVector(side, -4.2), 1.65, bossDamage * 0.46, 1.62, 0xffffff);
         tone(820, 0.12, "sine", 0.045, 1480);
         if (encore) {
-          addHazard(target.clone().addScaledVector(direction, 4.1), 2, bossDamage * 0.58, 1.78, 0xffffff);
-          addHazard(target.clone().addScaledVector(direction, -4.1), 2, bossDamage * 0.58, 1.78, definition.color);
+          addBossHazard(target.clone().addScaledVector(direction, 4.1), 2, bossDamage * 0.58, 1.78, 0xffffff);
+          addBossHazard(target.clone().addScaledVector(direction, -4.1), 2, bossDamage * 0.58, 1.78, definition.color);
           lastTriggerDelay = 1.78;
         } else {
           lastTriggerDelay = 1.62;
         }
       } else if (id === "yumemin") {
-        addHazard(target, 2.45, bossDamage * 0.74, 1.5, definition.color);
-        addHazard(
+        addBossHazard(target, 2.45, bossDamage * 0.74, 1.5, definition.color);
+        addBossHazard(
           target.clone().addScaledVector(direction, 3.6),
           1.65,
           bossDamage * 0.52,
@@ -2711,7 +2784,7 @@ export default function OfficeCrashRPG() {
         );
         tone(110, 0.18, "square", 0.04, 82);
         if (encore) {
-          addHazard(target.clone().addScaledVector(side, 3.1), 1.75, bossDamage * 0.58, 1.88, 0xffffff);
+          addBossHazard(target.clone().addScaledVector(side, 3.1), 1.75, bossDamage * 0.58, 1.88, 0xffffff);
           lastTriggerDelay = 1.88;
         } else {
           lastTriggerDelay = 1.72;
@@ -2725,19 +2798,19 @@ export default function OfficeCrashRPG() {
             0,
             Math.sin(angle) * 3.25,
           ));
-          addHazard(position, 1.5, bossDamage * 0.54, 1.28 + index * 0.06, definition.color);
+          addBossHazard(position, 1.5, bossDamage * 0.54, 1.28 + index * 0.06, definition.color);
         }
         tone(145, 0.5, "triangle", 0.04, 92);
         if (encore) {
-          addHazard(target, 1.65, bossDamage * 0.62, 1.74, 0xffffff);
+          addBossHazard(target, 1.65, bossDamage * 0.62, 1.74, 0xffffff);
           lastTriggerDelay = 1.74;
         } else {
           lastTriggerDelay = 1.58;
         }
       } else if (id === "yametaro") {
-        addBeamHazard(origin, direction, 20, 2.3, bossDamage * 0.7, 1.35, definition.color);
+        addBossBeamHazard(origin, direction, 20, 2.3, bossDamage * 0.7, 1.35, definition.color);
         if (encore) {
-          addBeamHazard(
+          addBossBeamHazard(
             origin,
             direction.clone().applyAxisAngle(UP, -Math.PI * 0.24),
             20,
@@ -2752,7 +2825,7 @@ export default function OfficeCrashRPG() {
       } else {
         if (encore) {
           [-0.3, 0, 0.3].forEach((angle, index) => {
-            addBeamHazard(
+            addBossBeamHazard(
               origin,
               direction.clone().applyAxisAngle(UP, Math.PI * angle),
               22,
@@ -2764,20 +2837,21 @@ export default function OfficeCrashRPG() {
           });
           lastTriggerDelay = 1.7;
         } else {
-          addBeamHazard(origin, direction, 22, 2.15, bossDamage * 0.68, 1.45, definition.color);
+          addBossBeamHazard(origin, direction, 22, 2.15, bossDamage * 0.68, 1.45, definition.color);
           const crossingDirection = direction.clone().applyAxisAngle(UP, Math.PI * 0.34);
-          addBeamHazard(origin, crossingDirection, 22, 1.55, bossDamage * 0.48, 1.72, 0xff6b3d);
+          addBossBeamHazard(origin, crossingDirection, 22, 1.55, bossDamage * 0.48, 1.72, 0xff6b3d);
           lastTriggerDelay = 1.72;
         }
         tone(96, 0.62, "sawtooth", 0.055, 420);
         tone(720, 0.2, "square", 0.035, 1180, 0.32);
       }
 
-      enemy.vulnerableFrom = runtime.elapsed + lastTriggerDelay;
-      enemy.vulnerableUntil = enemy.vulnerableFrom + 1.9;
+      enemy.vulnerableFrom = runtime.elapsed + lastTriggerDelay * bossDifficulty.windupMultiplier;
+      enemy.vulnerableUntil = enemy.vulnerableFrom + bossDifficulty.openingDuration;
       enemy.pulseAt = enemy.vulnerableUntil
-        + (id === "okayaman" ? (encore ? 0.95 : 1.55) : encore ? 1.45 : 2.1);
-      enemy.nextAttack = enemy.pulseAt + 0.35;
+        + (id === "okayaman" ? (encore ? 0.95 : 1.55) : encore ? 1.45 : 2.1)
+        * bossDifficulty.cadenceMultiplier;
+      enemy.nextAttack = enemy.pulseAt + 0.35 * bossDifficulty.cadenceMultiplier;
       notify(
         id === "yumemin" || id === "takosan"
           ? `${encore ? "ENCORE｜" : ""}${definition.displayName}｜${definition.specialName} — 床予告から退避！`
@@ -2801,10 +2875,13 @@ export default function OfficeCrashRPG() {
         }
       }
       const pulse = kind === "pulse";
-      const windup = pulse ? (enemy.kind === "core" ? 1.35 : 1.2) : enemy.boss ? 0.9 : 0.78;
-      const radius = pulse
+      const bossDifficulty = BOSS_DIFFICULTY_BY_RANK[runtime.overtimeRank];
+      const windup = (pulse ? (enemy.kind === "core" ? 1.35 : 1.2) : enemy.boss ? 0.9 : 0.78)
+        * (enemy.boss ? bossDifficulty.windupMultiplier : 1);
+      const radius = (pulse
         ? (enemy.kind === "core" ? 6 : 4.7)
-        : enemy.radius + (enemy.boss ? 1.35 : 1.05);
+        : enemy.radius + (enemy.boss ? 1.35 : 1.05))
+        * (enemy.boss ? bossDifficulty.areaMultiplier : 1);
       enemy.attackKind = kind;
       enemy.attackStartedAt = runtime.elapsed;
       enemy.attackAt = runtime.elapsed + windup;
@@ -2837,14 +2914,18 @@ export default function OfficeCrashRPG() {
         enemy.attackWarning = null;
       }
       enemy.attackKind = null;
-      enemy.nextAttack = runtime.elapsed + (enemy.boss ? 1.65 : 1.2);
+      const bossDifficulty = BOSS_DIFFICULTY_BY_RANK[runtime.overtimeRank];
+      enemy.nextAttack = runtime.elapsed
+        + (enemy.boss ? 1.65 * bossDifficulty.cadenceMultiplier : 1.2);
       if (kind === "pulse") {
-        enemy.pulseAt = runtime.elapsed + (enemy.kind === "core" ? 3.7 : 4.5);
+        enemy.pulseAt = runtime.elapsed
+          + (enemy.kind === "core" ? 3.7 : 4.5)
+          * (enemy.boss ? bossDifficulty.cadenceMultiplier : 1);
       }
       if (dodged) gainMegaGauge(enemy.boss ? 10 : 6, false);
       if (enemy.boss) {
         enemy.vulnerableFrom = runtime.elapsed;
-        enemy.vulnerableUntil = runtime.elapsed + 1.8;
+        enemy.vulnerableUntil = runtime.elapsed + bossDifficulty.openingDuration;
         if (dodged) {
           notify("回避成功！ 反動中に生ジョッキレールを叩き込め！");
           tone(660, 0.12, "square", 0.045, 880);
@@ -2856,7 +2937,8 @@ export default function OfficeCrashRPG() {
 
     const performSmash = (center: THREE.Vector3) => {
       playSound("smash");
-      const baseDamage = 2 * (1 + runtime.profile.mastery.forge * 0.08 + upgradeValues.heavy * 0.28);
+      const baseDamage = BASE_SMASH_DAMAGE
+        * (1 + runtime.profile.mastery.forge * 0.08 + upgradeValues.heavy * 0.28);
       const damage = baseDamage;
       const radius = 1.65 * (1 + upgradeValues.wide * 0.16);
       const criticalMultiplier = runtime.synergies.some((synergy) => synergy.name === "店主の会心") ? 2.35 : 1.75;
