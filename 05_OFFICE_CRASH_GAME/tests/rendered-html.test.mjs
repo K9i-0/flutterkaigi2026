@@ -44,6 +44,7 @@ test("renders the Office Crash game shell", async () => {
   assert.match(html, /ビルド共鳴/);
   assert.match(html, /まず効果音を試す/);
   assert.match(html, /ブラウザの音声ロックをタップで解除します/);
+  assert.match(html, /BOSS VOICE/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape/);
 });
 
@@ -90,6 +91,14 @@ test("uses Three.js with a fixed camera, combat floors, and keyboard plus touch 
   assert.match(source, /DAMAGE_DISPLAY_MULTIPLIER = 5/);
   assert.match(source, /amount \* DAMAGE_DISPLAY_MULTIPLIER/);
   assert.match(source, /BOSS_DIFFICULTY_BY_RANK/);
+  assert.match(source, /BOSS_WARNING_COLOR = 0xff2038/);
+  assert.match(source, /showBossDialogue/);
+  assert.match(source, /spawnBossAttackVisual/);
+  assert.match(source, /hazard\.sourceBoss === "okayaman"/);
+  assert.match(source, /addBossBeamHazard/);
+  assert.match(source, /bossWarning/);
+  assert.match(source, /runtime\.elapsed \+ 3\.2/);
+  assert.match(source, /scene\.remove\(dizzy\.group\)/);
   assert.match(source, /bossDifficulty\.areaMultiplier/);
   assert.match(source, /bossDifficulty\.cadenceMultiplier/);
   assert.match(source, /bossDifficulty\.openingDuration/);

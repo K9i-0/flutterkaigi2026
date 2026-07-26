@@ -168,12 +168,14 @@ type Hazard = {
   startedAt: number;
   triggerAt: number;
   color: number;
+  sourceBoss: CharacterBossId | null;
 };
 
 type DizzyBoss = {
   group: THREE.Group;
   stars: THREE.Group;
   startedAt: number;
+  removeAt: number | null;
 };
 
 type MegaProjectile = {
@@ -234,6 +236,7 @@ const MEGA_MAX_STOCK = 2;
 const MAX_CONCURRENT_MOB_ATTACKS = 4;
 const BASE_SMASH_DAMAGE = 2;
 const DAMAGE_DISPLAY_MULTIPLIER = 5;
+const BOSS_WARNING_COLOR = 0xff2038;
 const BOSS_DIFFICULTY_BY_RANK = [
   { areaMultiplier: 1, cadenceMultiplier: 1, windupMultiplier: 1, openingDuration: 1.9 },
   { areaMultiplier: 1.14, cadenceMultiplier: 0.78, windupMultiplier: 0.94, openingDuration: 1.7 },
@@ -701,6 +704,7 @@ export default function OfficeCrashRPG() {
   const profileRef = useRef<GameProfile>(EMPTY_PROFILE);
   const submitRunRef = useRef<(summary: RunSummary) => void>(() => {});
   const toastTimer = useRef<number | null>(null);
+  const bossDialogueTimer = useRef<number | null>(null);
   const megaFlashTimer = useRef<number | null>(null);
 
   const [status, setStatus] = useState<GameStatus>("hub");
@@ -710,6 +714,7 @@ export default function OfficeCrashRPG() {
   const [audioReady, setAudioReady] = useState(false);
   const [audioError, setAudioError] = useState(false);
   const [toast, setToast] = useState("");
+  const [bossDialogue, setBossDialogue] = useState("");
   const [megaFlash, setMegaFlash] = useState(false);
   const [joystick, setJoystick] = useState({ x: 0, y: 0 });
   const [rewardChoices, setRewardChoices] = useState<RewardChoice[]>([]);
@@ -730,6 +735,12 @@ export default function OfficeCrashRPG() {
     setToast(message);
     if (toastTimer.current) window.clearTimeout(toastTimer.current);
     toastTimer.current = window.setTimeout(() => setToast(""), 1200);
+  }, []);
+
+  const showBossDialogue = useCallback((message: string, duration = 3600) => {
+    setBossDialogue(message);
+    if (bossDialogueTimer.current) window.clearTimeout(bossDialogueTimer.current);
+    bossDialogueTimer.current = window.setTimeout(() => setBossDialogue(""), duration);
   }, []);
 
   const applySiteData = useCallback((data: SiteGameData) => {
@@ -1257,6 +1268,143 @@ export default function OfficeCrashRPG() {
       timedVisuals.push({ object, life, maxLife: life, spin });
     };
 
+    const spawnBossAttackVisual = (hazard: Hazard) => {
+      if (!hazard.sourceBoss) return;
+      const definition = WINDOW_BOSSES[hazard.sourceBoss];
+      const group = new THREE.Group();
+      group.position.copy(hazard.position).setY(0);
+
+      if (hazard.shape === "beam") {
+        group.rotation.y = Math.atan2(hazard.direction.x, hazard.direction.z);
+        const glowMaterial = new THREE.MeshStandardMaterial({
+          color: definition.color,
+          emissive: definition.color,
+          emissiveIntensity: hazard.sourceBoss === "okayaman" ? 3.2 : 2.1,
+          transparent: true,
+          opacity: hazard.sourceBoss === "okayaman" ? 0.42 : 0.3,
+          depthWrite: false,
+          roughness: 0.08,
+        });
+        const glow = new THREE.Mesh(
+          new THREE.BoxGeometry(
+            hazard.width * (hazard.sourceBoss === "okayaman" ? 1.5 : 1.18),
+            hazard.sourceBoss === "okayaman" ? 0.62 : 0.38,
+            hazard.length,
+          ),
+          glowMaterial,
+        );
+        glow.position.set(0, hazard.sourceBoss === "okayaman" ? 1.05 : 0.72, hazard.length / 2);
+        const core = new THREE.Mesh(
+          new THREE.BoxGeometry(
+            Math.max(0.22, hazard.width * (hazard.sourceBoss === "okayaman" ? 0.48 : 0.34)),
+            hazard.sourceBoss === "okayaman" ? 0.38 : 0.24,
+            hazard.length,
+          ),
+          new THREE.MeshBasicMaterial({
+            color: 0xffffff,
+            transparent: true,
+            opacity: 0.96,
+            depthWrite: false,
+          }),
+        );
+        core.position.copy(glow.position);
+        group.add(glow, core);
+
+        const muzzle = new THREE.Mesh(
+          new THREE.TorusGeometry(
+            hazard.width * (hazard.sourceBoss === "okayaman" ? 0.72 : 0.48),
+            hazard.sourceBoss === "okayaman" ? 0.16 : 0.1,
+            10,
+            36,
+          ),
+          new THREE.MeshBasicMaterial({
+            color: hazard.sourceBoss === "okayaman" ? 0xfff3a1 : definition.color,
+            transparent: true,
+            opacity: 0.95,
+            depthWrite: false,
+          }),
+        );
+        muzzle.position.y = glow.position.y;
+        group.add(muzzle);
+
+        if (hazard.sourceBoss === "okayaman") {
+          for (const side of [-1, 1]) {
+            const rail = new THREE.Mesh(
+              new THREE.BoxGeometry(0.11, 0.13, hazard.length),
+              new THREE.MeshBasicMaterial({
+                color: 0xff6b3d,
+                transparent: true,
+                opacity: 0.9,
+                depthWrite: false,
+              }),
+            );
+            rail.position.set(side * hazard.width * 0.62, 1.05, hazard.length / 2);
+            group.add(rail);
+          }
+          tone(82, 0.38, "sawtooth", 0.07, 720);
+          tone(760, 0.22, "square", 0.055, 1480, 0.08);
+          runtime.shake = Math.max(runtime.shake, 0.62);
+        } else {
+          tone(150, 0.24, "sawtooth", 0.045, 880);
+          runtime.shake = Math.max(runtime.shake, 0.36);
+        }
+        addTimedVisual(group, hazard.sourceBoss === "okayaman" ? 0.52 : 0.38, 0);
+        spawnWave(hazard.position, definition.color, hazard.sourceBoss === "okayaman" ? 1.75 : 1.2);
+        return;
+      }
+
+      const radius = Math.max(0.7, hazard.radius);
+      const burstMaterial = new THREE.MeshStandardMaterial({
+        color: definition.color,
+        emissive: definition.color,
+        emissiveIntensity: 2.2,
+        transparent: true,
+        opacity: 0.72,
+        depthWrite: false,
+        roughness: 0.12,
+      });
+      const column = new THREE.Mesh(
+        new THREE.CylinderGeometry(radius * 0.2, radius * 0.48, 3.4, 18, 1, true),
+        burstMaterial,
+      );
+      column.position.y = 1.7;
+      const impactRing = new THREE.Mesh(
+        new THREE.TorusGeometry(radius * 0.74, Math.max(0.08, radius * 0.07), 10, 40),
+        new THREE.MeshBasicMaterial({
+          color: 0xffffff,
+          transparent: true,
+          opacity: 0.9,
+          depthWrite: false,
+        }),
+      );
+      impactRing.rotation.x = Math.PI / 2;
+      impactRing.position.y = 0.16;
+      group.add(column, impactRing);
+      for (let index = 0; index < 10; index += 1) {
+        const angle = index / 10 * Math.PI * 2;
+        const spark = new THREE.Mesh(
+          new THREE.BoxGeometry(0.1, 0.1 + radius * 0.16, 0.1),
+          new THREE.MeshBasicMaterial({
+            color: index % 2 === 0 ? 0xffffff : definition.color,
+            transparent: true,
+            opacity: 0.9,
+          }),
+        );
+        spark.position.set(
+          Math.cos(angle) * radius * 0.78,
+          0.55 + (index % 3) * 0.28,
+          Math.sin(angle) * radius * 0.78,
+        );
+        spark.rotation.z = angle;
+        group.add(spark);
+      }
+      addTimedVisual(group, 0.48, 3.4);
+      spawnWave(hazard.position, definition.color, radius * 0.6);
+      spawnWave(hazard.position, 0xffffff, radius * 0.38);
+      tone(hazard.sourceBoss === "yotan" ? 170 : 240, 0.2, "sawtooth", 0.045, 920);
+      runtime.shake = Math.max(runtime.shake, 0.4);
+    };
+
     const makeMegaMugProjectile = () => {
       const group = new THREE.Group();
       const amber = new THREE.MeshStandardMaterial({
@@ -1354,14 +1502,20 @@ export default function OfficeCrashRPG() {
       addTimedVisual(group, 0.38);
     };
 
-    const makeDangerZone = (position: THREE.Vector3, radius: number, color: number) => {
+    const makeDangerZone = (
+      position: THREE.Vector3,
+      radius: number,
+      color: number,
+      bossWarning = false,
+    ) => {
+      const warningColor = bossWarning ? BOSS_WARNING_COLOR : color;
       const group = new THREE.Group();
       const fill = new THREE.Mesh(
         new THREE.CircleGeometry(radius, 48),
         new THREE.MeshBasicMaterial({
-          color,
+          color: warningColor,
           transparent: true,
-          opacity: 0.18,
+          opacity: bossWarning ? 0.24 : 0.18,
           depthWrite: false,
           side: THREE.DoubleSide,
         }),
@@ -1370,7 +1524,7 @@ export default function OfficeCrashRPG() {
       const ring = new THREE.Mesh(
         new THREE.RingGeometry(radius * 0.86, radius, 48),
         new THREE.MeshBasicMaterial({
-          color,
+          color: warningColor,
           transparent: true,
           opacity: 0.92,
           depthWrite: false,
@@ -1380,6 +1534,39 @@ export default function OfficeCrashRPG() {
       ring.rotation.x = -Math.PI / 2;
       ring.position.y = 0.015;
       group.add(fill, ring);
+      if (bossWarning) {
+        const reticle = new THREE.Group();
+        const reticleMaterial = new THREE.MeshBasicMaterial({
+          color: 0xff3650,
+          transparent: true,
+          opacity: 0.96,
+          depthWrite: false,
+        });
+        const innerRing = new THREE.Mesh(
+          new THREE.RingGeometry(radius * 0.5, radius * 0.6, 32),
+          reticleMaterial,
+        );
+        innerRing.rotation.x = -Math.PI / 2;
+        innerRing.position.y = 0.025;
+        reticle.add(innerRing);
+        for (let index = 0; index < 4; index += 1) {
+          const angle = index / 4 * Math.PI * 2;
+          const marker = new THREE.Mesh(
+            new THREE.BoxGeometry(radius * 0.34, 0.035, Math.max(0.08, radius * 0.07)),
+            reticleMaterial.clone(),
+          );
+          marker.position.set(
+            Math.cos(angle) * radius * 0.73,
+            0.028,
+            Math.sin(angle) * radius * 0.73,
+          );
+          marker.rotation.y = -angle;
+          reticle.add(marker);
+        }
+        group.add(reticle);
+        group.userData.reticle = reticle;
+        group.userData.bossWarning = true;
+      }
       group.position.copy(position);
       group.position.y = 0.055;
       group.userData.fill = fill;
@@ -1394,16 +1581,18 @@ export default function OfficeCrashRPG() {
       length: number,
       width: number,
       color: number,
+      bossWarning = false,
     ) => {
+      const warningColor = bossWarning ? BOSS_WARNING_COLOR : color;
       const group = new THREE.Group();
-      const fill = roundedBox(width, 0.035, length, color);
+      const fill = roundedBox(width, 0.035, length, warningColor);
       const material = fill.material as THREE.MeshStandardMaterial;
       material.transparent = true;
-      material.opacity = 0.2;
+      material.opacity = bossWarning ? 0.27 : 0.2;
       material.depthWrite = false;
       fill.position.z = length / 2;
       const edgeMaterial = new THREE.MeshBasicMaterial({
-        color,
+        color: warningColor,
         transparent: true,
         opacity: 0.95,
         depthWrite: false,
@@ -1413,6 +1602,21 @@ export default function OfficeCrashRPG() {
       leftEdge.position.set(-width / 2, 0.02, length / 2);
       rightEdge.position.set(width / 2, 0.02, length / 2);
       group.add(fill, leftEdge, rightEdge);
+      if (bossWarning) {
+        const core = new THREE.Mesh(
+          new THREE.BoxGeometry(Math.max(0.1, width * 0.08), 0.05, length),
+          new THREE.MeshBasicMaterial({
+            color: 0xffd8dd,
+            transparent: true,
+            opacity: 0.92,
+            depthWrite: false,
+          }),
+        );
+        core.position.set(0, 0.035, length / 2);
+        group.add(core);
+        group.userData.core = core;
+        group.userData.bossWarning = true;
+      }
       group.position.copy(position).setY(0.055);
       group.rotation.y = Math.atan2(direction.x, direction.z);
       group.userData.fill = fill;
@@ -1438,11 +1642,21 @@ export default function OfficeCrashRPG() {
       const fill = warning.userData.fill as THREE.Mesh | undefined;
       const ring = warning.userData.ring as THREE.Mesh | undefined;
       const edges = warning.userData.edges as THREE.Mesh[] | undefined;
+      const reticle = warning.userData.reticle as THREE.Group | undefined;
+      const core = warning.userData.core as THREE.Mesh | undefined;
       if (fill) {
         const material = fill.material as THREE.MeshBasicMaterial | THREE.MeshStandardMaterial;
         material.opacity = 0.12 + progress * 0.24;
       }
       if (ring) (ring.material as THREE.MeshBasicMaterial).opacity = pulse;
+      if (reticle) {
+        reticle.rotation.y = elapsed * (1.8 + progress * 2.4);
+        reticle.scale.setScalar(0.9 + progress * 0.12 + Math.sin(elapsed * 18) * 0.025);
+      }
+      if (core) {
+        (core.material as THREE.MeshBasicMaterial).opacity = 0.55 + progress * 0.4;
+        core.scale.x = 0.7 + progress * 0.65;
+      }
       edges?.forEach((edge) => {
         (edge.material as THREE.MeshBasicMaterial).opacity = pulse;
       });
@@ -1454,8 +1668,10 @@ export default function OfficeCrashRPG() {
       damage: number,
       delay: number,
       color: number,
+      sourceBoss: CharacterBossId | null = null,
+      bossWarning = false,
     ) => {
-      const warning = makeDangerZone(position, radius, color);
+      const warning = makeDangerZone(position, radius, color, bossWarning);
       hazards.push({
         shape: "circle",
         warning,
@@ -1468,6 +1684,7 @@ export default function OfficeCrashRPG() {
         startedAt: runtime.elapsed,
         triggerAt: runtime.elapsed + delay,
         color,
+        sourceBoss,
       });
     };
 
@@ -1479,9 +1696,11 @@ export default function OfficeCrashRPG() {
       damage: number,
       delay: number,
       color: number,
+      sourceBoss: CharacterBossId | null = null,
+      bossWarning = false,
     ) => {
       const normalized = direction.clone().setY(0).normalize();
-      const warning = makeBeamZone(position, normalized, length, width, color);
+      const warning = makeBeamZone(position, normalized, length, width, color, bossWarning);
       hazards.push({
         shape: "beam",
         warning,
@@ -1494,6 +1713,7 @@ export default function OfficeCrashRPG() {
         startedAt: runtime.elapsed,
         triggerAt: runtime.elapsed + delay,
         color,
+        sourceBoss,
       });
     };
 
@@ -2007,12 +2227,13 @@ export default function OfficeCrashRPG() {
       syncHud();
       playSound("start");
       if (floorDefinition.kind === "boss") {
-        notify(WINDOW_BOSSES[runtime.guestBoss].introLine);
+        showBossDialogue(WINDOW_BOSSES[runtime.guestBoss].introLine, 4200);
       } else if (floorDefinition.kind === "final") {
-        notify(
+        showBossDialogue(
           finalGuests.length > 0
-            ? `窓際総力戦！ おかやまん＋${finalGuests.map((id) => WINDOW_BOSSES[id].displayName).join("＋")}が参戦`
+            ? `おかやまん「本日は${finalGuests.map((id) => WINDOW_BOSSES[id].displayName).join("さんと")}さんにも参加いただき、大変心強く思っております」`
             : WINDOW_BOSSES.okayaman.introLine,
+          4600,
         );
       } else {
         notify(
@@ -2148,7 +2369,14 @@ export default function OfficeCrashRPG() {
       enemy.group.add(stars);
       (enemy.group.userData.healthBar as THREE.Group | undefined)?.removeFromParent();
       enemy.group.rotation.z = 0.16;
-      dizzyBosses.push({ group: enemy.group, stars, startedAt: runtime.elapsed });
+      dizzyBosses.push({
+        group: enemy.group,
+        stars,
+        startedAt: runtime.elapsed,
+        removeAt: FLOORS[runtime.floor - 1].kind === "final"
+          ? runtime.elapsed + 3.2
+          : null,
+      });
     };
 
     const completeEnemyWave = () => {
@@ -2254,6 +2482,7 @@ export default function OfficeCrashRPG() {
         hazards.length = 0;
         makeDizzyBoss(enemy);
         runtime.lastBossDefeat = WINDOW_BOSSES[enemy.characterBoss!].defeatLine;
+        showBossDialogue(runtime.lastBossDefeat, 3400);
       } else {
         scene.remove(enemy.group);
       }
@@ -2699,6 +2928,8 @@ export default function OfficeCrashRPG() {
         damage,
         delay * bossDifficulty.windupMultiplier,
         color,
+        id,
+        true,
       );
       const addBossBeamHazard = (
         position: THREE.Vector3,
@@ -2716,6 +2947,8 @@ export default function OfficeCrashRPG() {
         damage,
         delay * bossDifficulty.windupMultiplier,
         color,
+        id,
+        true,
       );
       const encore = enemy.phase === 2;
       let lastTriggerDelay = 1.45;
@@ -2852,10 +3085,11 @@ export default function OfficeCrashRPG() {
         + (id === "okayaman" ? (encore ? 0.95 : 1.55) : encore ? 1.45 : 2.1)
         * bossDifficulty.cadenceMultiplier;
       enemy.nextAttack = enemy.pulseAt + 0.35 * bossDifficulty.cadenceMultiplier;
-      notify(
+      showBossDialogue(
         id === "yumemin" || id === "takosan"
-          ? `${encore ? "ENCORE｜" : ""}${definition.displayName}｜${definition.specialName} — 床予告から退避！`
-          : `${encore ? "ENCORE｜" : ""}${definition.displayName}「${definition.specialName}」— 床予告から退避！`,
+          ? `${encore ? "ENCORE｜" : ""}${definition.displayName}｜${definition.specialName} — 赤い照準から退避`
+          : `${encore ? "ENCORE｜" : ""}${definition.displayName}「${definition.specialName}」— 赤い照準から退避`,
+        2600,
       );
     };
 
@@ -2890,7 +3124,12 @@ export default function OfficeCrashRPG() {
       enemy.attackWarning = makeDangerZone(
         enemy.attackOrigin,
         radius,
-        pulse ? (enemy.kind === "core" ? 0xff4437 : 0xffb51f) : 0xff4a32,
+        enemy.boss
+          ? BOSS_WARNING_COLOR
+          : pulse
+            ? (enemy.kind === "core" ? 0xff4437 : 0xffb51f)
+            : 0xff4a32,
+        enemy.boss,
       );
       if (pulse) {
         tone(128, windup * 0.72, "sawtooth", 0.035, 228);
@@ -3387,6 +3626,7 @@ export default function OfficeCrashRPG() {
           animateDangerZone(hazard.warning, hazard.startedAt, hazard.triggerAt, runtime.elapsed);
           if (runtime.elapsed < hazard.triggerAt) continue;
           let hit = false;
+          if (hazard.sourceBoss) spawnBossAttackVisual(hazard);
           if (hazard.shape === "beam") {
             const delta = player.position.clone().sub(hazard.position).setY(0);
             const forwardDistance = delta.dot(hazard.direction);
@@ -3461,7 +3701,22 @@ export default function OfficeCrashRPG() {
           runtime.elapsed,
           walking && runtime.playing,
         );
-        for (const dizzy of dizzyBosses) {
+        for (let index = dizzyBosses.length - 1; index >= 0; index -= 1) {
+          const dizzy = dizzyBosses[index];
+          if (dizzy.removeAt !== null) {
+            const remaining = dizzy.removeAt - runtime.elapsed;
+            if (remaining <= 0) {
+              spawnWave(dizzy.group.position, 0xffffff, 1.25);
+              spawnWave(dizzy.group.position, 0xffd23f, 0.8);
+              tone(680, 0.16, "sine", 0.04, 1120);
+              scene.remove(dizzy.group);
+              dizzyBosses.splice(index, 1);
+              continue;
+            }
+            if (remaining < 0.65) {
+              dizzy.group.scale.setScalar(Math.max(0.04, remaining / 0.65));
+            }
+          }
           const time = runtime.elapsed - dizzy.startedAt;
           dizzy.stars.rotation.y += dt * 2.8;
           dizzy.stars.position.y += Math.sin(time * 4.2) * dt * 0.12;
@@ -3554,6 +3809,7 @@ export default function OfficeCrashRPG() {
       window.removeEventListener("keyup", onKeyUp);
       document.removeEventListener("visibilitychange", onVisibilityChange);
       if (toastTimer.current) window.clearTimeout(toastTimer.current);
+      if (bossDialogueTimer.current) window.clearTimeout(bossDialogueTimer.current);
       if (megaFlashTimer.current) window.clearTimeout(megaFlashTimer.current);
       damageLayerRef.current?.replaceChildren();
       if (audioContext && audioContext.state !== "closed") void audioContext.close();
@@ -3567,7 +3823,7 @@ export default function OfficeCrashRPG() {
         }
       });
     };
-  }, [notify]);
+  }, [notify, showBossDialogue]);
 
   const updateJoystick = (clientX: number, clientY: number, target: HTMLElement) => {
     const rect = target.getBoundingClientRect();
@@ -3765,6 +4021,14 @@ export default function OfficeCrashRPG() {
       )}
 
       <div className={`rpg-toast ${toast ? "show" : ""}`} aria-live="assertive">{toast}</div>
+      <div
+        className={`rpg-boss-dialogue ${bossDialogue ? "show" : ""}`}
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        <span>BOSS VOICE</span>
+        <strong>{bossDialogue}</strong>
+      </div>
 
       {status === "hub" && (
         <section className="rpg-overlay hub-overlay" aria-labelledby="hub-title">
