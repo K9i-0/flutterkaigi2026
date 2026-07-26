@@ -33,7 +33,10 @@ test("renders the Office Crash game shell", async () => {
   assert.match(html, /王冠キャップ/);
   assert.match(html, /LOOT DRAFT/);
   assert.match(html, /永続記録/);
-  assert.match(html, /残業指令を選ぶ/);
+  assert.match(html, /退社作戦を選ぶ/);
+  assert.match(html, /残業/);
+  assert.match(html, /定時退社/);
+  assert.match(html, /フライング退社/);
   assert.match(html, /破壊数 ×/);
   assert.match(html, /金星特性/);
   assert.match(html, /ビルド共鳴/);
@@ -81,6 +84,8 @@ test("uses Three.js with a fixed camera, combat floors, and keyboard plus touch 
   assert.match(source, /overtime\.destructionMultiplier/);
   assert.match(source, /destroyOfficeProp/);
   assert.match(source, /showDamageNumber/);
+  assert.match(source, /DAMAGE_DISPLAY_MULTIPLIER = 10/);
+  assert.match(source, /amount \* DAMAGE_DISPLAY_MULTIPLIER/);
   assert.match(source, /MEGA HIT/);
   assert.match(source, /WEAK ×/);
   assert.match(source, /rpg-damage-layer/);

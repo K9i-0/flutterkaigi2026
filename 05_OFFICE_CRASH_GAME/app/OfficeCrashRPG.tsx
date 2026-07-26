@@ -17,6 +17,7 @@ import {
   FLOORS,
   OVERTIME_RANKS,
   UPGRADES,
+  getOvertimeDefinition,
   makeRewardChoices,
   masteryCost,
   resolveSynergies,
@@ -231,6 +232,7 @@ const MAX_FLOOR = FLOORS.length;
 const UP = new THREE.Vector3(0, 1, 0);
 const MEGA_MAX_STOCK = 2;
 const MAX_CONCURRENT_MOB_ATTACKS = 4;
+const DAMAGE_DISPLAY_MULTIPLIER = 10;
 
 function getComboMultiplier(combo: number) {
   if (combo >= 30) return 4;
@@ -954,9 +956,10 @@ export default function OfficeCrashRPG() {
         style !== "normal" ? style : "",
         critical ? "critical" : "",
       ].filter(Boolean).join(" ");
-      damage.textContent = amount < 10
-        ? amount.toFixed(1)
-        : formatNumber(amount);
+      const displayedAmount = amount * DAMAGE_DISPLAY_MULTIPLIER;
+      damage.textContent = displayedAmount < 10
+        ? displayedAmount.toFixed(1)
+        : formatNumber(displayedAmount);
       const labels = [];
       if (style === "mega") labels.push("MEGA HIT");
       if (style === "splash") labels.push("泡連鎖");
@@ -3706,13 +3709,13 @@ export default function OfficeCrashRPG() {
                 <span>LOOT DRAFT</span>
                 <span>金星特性</span>
                 <span>ビルド共鳴</span>
-                <span>残業難度</span>
+                <span>退社難度</span>
                 <span>永続記録</span>
               </div>
-              <section className="overtime-select" aria-label="残業難度">
+              <section className="overtime-select" aria-label="退社難度">
                 <div>
                   <span>RISK × REWARD</span>
-                  <strong>残業指令を選ぶ</strong>
+                  <strong>退社作戦を選ぶ</strong>
                 </div>
                 <div className="overtime-options">
                   {OVERTIME_RANKS.map((rank) => (
@@ -3838,7 +3841,7 @@ export default function OfficeCrashRPG() {
                       <b>#{index + 1}</b>
                       <span>
                         <strong>{run.username || EMPTY_PROFILE.username}</strong>
-                        <small>{run.floorReached}F・{OVERTIME_RANKS[Math.max(0, Math.min(3, run.overtimeRank))].label}</small>
+                        <small>{run.floorReached}F・{getOvertimeDefinition(run.overtimeRank).label}</small>
                       </span>
                       <em>{formatNumber(run.score)}</em>
                     </p>

@@ -1,7 +1,7 @@
 export type GameStatus = "hub" | "playing" | "reward" | "gameover" | "victory";
 export type FloorKind = "combat" | "elite" | "challenge" | "boss" | "final";
 export type MasteryKey = "forge" | "vitality" | "hustle";
-export type OvertimeRank = 0 | 1 | 2 | 3;
+export type OvertimeRank = 0 | 1 | 2;
 export type UpgradeId =
   | "heavy"
   | "wide"
@@ -118,9 +118,9 @@ export const EMPTY_PROFILE: GameProfile = {
 export const OVERTIME_RANKS: OvertimeDefinition[] = [
   {
     rank: 0,
-    label: "定時",
-    kicker: "NORMAL",
-    description: "標準レギュレーション。まずはここから。",
+    label: "残業",
+    kicker: "EASY SHIFT",
+    description: "まだ誰にも怪しまれない肩慣らし。標準ノルマで備品を片付ける。",
     scoreMultiplier: 1,
     capsMultiplier: 1,
     hpMultiplier: 1,
@@ -131,24 +131,11 @@ export const OVERTIME_RANKS: OvertimeDefinition[] = [
   },
   {
     rank: 1,
-    label: "残業",
-    kicker: "OVERTIME I",
-    description: "備品が強化され、必要破壊数が1.4倍になる。",
-    scoreMultiplier: 1.25,
-    capsMultiplier: 1.2,
-    hpMultiplier: 1.2,
-    damageMultiplier: 1.12,
-    speedMultiplier: 1.06,
-    destructionMultiplier: 1.4,
-    eliteBonus: 1,
-  },
-  {
-    rank: 2,
-    label: "深夜残業",
-    kicker: "OVERTIME II",
-    description: "強化備品が増え、必要破壊数が2倍になる。",
-    scoreMultiplier: 1.55,
-    capsMultiplier: 1.45,
+    label: "定時退社",
+    kicker: "ON-TIME EXIT",
+    description: "チャイムと同時に堂々退社。必要破壊数2倍、監視備品も強化される。",
+    scoreMultiplier: 1.5,
+    capsMultiplier: 1.4,
     hpMultiplier: 1.48,
     damageMultiplier: 1.28,
     speedMultiplier: 1.12,
@@ -156,10 +143,10 @@ export const OVERTIME_RANKS: OvertimeDefinition[] = [
     eliteBonus: 2,
   },
   {
-    rank: 3,
-    label: "始発待ち",
-    kicker: "OVERTIME III",
-    description: "最高危険度。必要破壊数3倍の大群へ挑む。",
+    rank: 2,
+    label: "フライング退社",
+    kicker: "EARLY ESCAPE",
+    description: "最高難度。定時前にこっそり帰るため、必要破壊数3倍の大群を突破する。",
     scoreMultiplier: 1.95,
     capsMultiplier: 1.8,
     hpMultiplier: 1.82,
@@ -169,6 +156,13 @@ export const OVERTIME_RANKS: OvertimeDefinition[] = [
     eliteBonus: 3,
   },
 ];
+
+export function getOvertimeDefinition(rank: number): OvertimeDefinition {
+  const safeRank = Number.isFinite(rank)
+    ? Math.max(0, Math.min(OVERTIME_RANKS.length - 1, Math.trunc(rank)))
+    : 0;
+  return OVERTIME_RANKS[safeRank] ?? OVERTIME_RANKS[0];
+}
 
 export const FLOORS: FloorDefinition[] = [
   {

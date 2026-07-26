@@ -238,7 +238,7 @@ async function handleGameApi(request: Request, env: Env) {
     const destroyed = safeInt(payload.destroyed, 0, 10_000);
     const maxCombo = safeInt(payload.maxCombo, 0, 10_000);
     const capsEarned = safeInt(payload.capsEarned, 0, 5_000);
-    const overtimeRank = safeInt(payload.overtimeRank, 0, 3);
+    const overtimeRank = safeInt(payload.overtimeRank, 0, 2);
     const buildName = typeof payload.buildName === "string"
       ? payload.buildName.slice(0, 120)
       : "単品ジョッキ";

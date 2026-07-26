@@ -387,8 +387,7 @@ body {
 }
 
 .rpg-overtime.rank-1 { background: #2b7b83; }
-.rpg-overtime.rank-2 { background: #7d4ba2; }
-.rpg-overtime.rank-3 {
+.rpg-overtime.rank-2 {
   background: #b83c28;
   animation: overtimePulse .7s infinite alternate;
 }
@@ -1190,7 +1189,7 @@ body {
 
 .overtime-options {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 5px;
 }
 
@@ -2251,7 +2250,7 @@ body {
   }
 
   .overtime-options {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .hub-stats {
