@@ -70,6 +70,8 @@ type RunSummary = {
   buildName: string;
 };
 
+type HubPanel = "play" | "bar" | "records";
+
 type GameApi = {
   start: (profile: GameProfile, overtimeRank: OvertimeRank) => void;
   smash: () => void;
@@ -257,6 +259,11 @@ function getRank(summary: RunSummary) {
   if (summary.floorReached >= 7) return "レギュレーションブレイカー";
   if (summary.floorReached >= 4) return "窓際セッションの名手";
   return "片付けの途中です！";
+}
+
+function getDailyFeaturedRank(date = new Date()): OvertimeRank {
+  const japanDay = Math.floor((date.getTime() + 9 * 60 * 60 * 1000) / 86_400_000);
+  return (japanDay % OVERTIME_RANKS.length) as OvertimeRank;
 }
 
 function formatNumber(value: number) {
@@ -706,6 +713,7 @@ export default function OfficeCrashRPG() {
   const toastTimer = useRef<number | null>(null);
   const bossDialogueTimer = useRef<number | null>(null);
   const megaFlashTimer = useRef<number | null>(null);
+  const tutorialTimer = useRef<number | null>(null);
 
   const [status, setStatus] = useState<GameStatus>("hub");
   const [hud, setHud] = useState<HudState>(EMPTY_HUD);
@@ -729,6 +737,8 @@ export default function OfficeCrashRPG() {
   const [usernameDraft, setUsernameDraft] = useState(EMPTY_PROFILE.username);
   const [usernameBusy, setUsernameBusy] = useState(false);
   const [usernameMessage, setUsernameMessage] = useState("");
+  const [hubPanel, setHubPanel] = useState<HubPanel>("play");
+  const [tutorialVisible, setTutorialVisible] = useState(false);
 
   const notify = useCallback((message: string) => {
     setToast(message);
@@ -2135,7 +2145,7 @@ export default function OfficeCrashRPG() {
       if (runtime.mega >= megaMaxStock) runtime.megaGauge = Math.min(99, runtime.megaGauge);
       if (earned > 0) {
         playSound("beer");
-        if (announce) notify(`生ジョッキ完成！ MUG RAIL ×${runtime.mega}`);
+        if (announce) notify(`RAIL ×${runtime.mega} READY`);
       }
       return earned;
     };
@@ -2330,11 +2340,7 @@ export default function OfficeCrashRPG() {
           4600,
         );
       } else {
-        notify(
-          quotaBasedFloor
-            ? `${floorDefinition.floor}F「${floorDefinition.name}」— ${overtime.label}｜破壊目標 ${runtime.floorQuota}`
-            : `${floorDefinition.floor}F「${floorDefinition.name}」— 15秒クラッシュ`,
-        );
+        notify(`${floorDefinition.floor}F · ${floorDefinition.name}`);
       }
     };
 
@@ -2375,6 +2381,7 @@ export default function OfficeCrashRPG() {
       const floorBonus = Math.round((800 + runtime.floor * 320) * overtime.scoreMultiplier);
       runtime.score += floorBonus;
       runtime.runCaps += Math.round((3 + Math.floor(runtime.floor / 2)) * overtime.capsMultiplier);
+      if (runtime.overtimeRank === getDailyFeaturedRank()) runtime.runCaps += 1;
       if (runtime.floor >= MAX_FLOOR) {
         if (runtime.lastBossDefeat) notify(runtime.lastBossDefeat);
         endRun(true);
@@ -2491,7 +2498,7 @@ export default function OfficeCrashRPG() {
           });
         }
         runtime.floorTotal += waveSize;
-        notify("BONUS WAVE! まだまだ快適です！");
+        notify("BONUS WAVE");
       } else {
         finishFloor();
       }
@@ -2523,7 +2530,7 @@ export default function OfficeCrashRPG() {
       playSound("beer");
       tone(220, 0.18, "square", 0.055, 440);
       tone(440, 0.24, "square", 0.06, 880, 0.14);
-      notify(`OFFICE RUSH！ 大量増援 ×${waveSize}・MUG RAIL +1`);
+      notify(`OFFICE RUSH ×${waveSize}`);
     };
 
     const spawnQuotaReinforcements = () => {
@@ -2557,7 +2564,7 @@ export default function OfficeCrashRPG() {
         if (index % 4 === 0) spawnWave(new THREE.Vector3(x, 0, z), floorDefinition.accent, 0.58);
       });
       tone(260, 0.13, "square", 0.035, 520);
-      notify(`追加ノルマ ×${waveSize}｜残り ${Math.max(0, runtime.floorQuota - runtime.floorKilled)}`);
+      notify(`WAVE +${waveSize}`);
       return waveSize;
     };
 
@@ -2812,7 +2819,7 @@ export default function OfficeCrashRPG() {
       noise(0.32, 0.12, 320);
       tone(190, 0.36, "sawtooth", 0.065, 980);
       tone(760, 0.18, "square", 0.04, 1320, 0.12);
-      notify("必殺・生ジョッキレール！ 直線上をまとめて貫通！");
+      notify("MUG RAIL!");
     };
 
     const spawnMegaImpact = (projectile: MegaProjectile) => {
@@ -2898,8 +2905,8 @@ export default function OfficeCrashRPG() {
       }
       notify(
         hits >= 20
-          ? `大乾杯 ×${hits}！ ゲージ30%返却 +${formatNumber(bonus)}`
-          : `生ジョッキレール ×${hits}｜着弾大爆発 +${formatNumber(bonus)}`,
+          ? `CHEERS ×${hits} · +${formatNumber(bonus)}`
+          : `RAIL ×${hits} · +${formatNumber(bonus)}`,
       );
       playSound("beer");
       syncHud();
@@ -3019,7 +3026,7 @@ export default function OfficeCrashRPG() {
         runtime.invulnerableUntil = runtime.elapsed + 2.2;
         spawnWave(player.position, 0xffb13b, 2.6);
         playSound("beer");
-        notify("焼き鳥お盆・極！ 致命傷を受け流して全快！");
+        notify("TRAY GUARD · FULL RECOVER");
       } else if (
         runtime.hp > 0
         && runtime.hp / runtime.maxHp <= 0.3
@@ -3032,9 +3039,9 @@ export default function OfficeCrashRPG() {
           spawnWave(player.position, 0xffdf61, 2.8);
         }
         playSound("beer");
-        notify("まかない到着！ HP回復＋立て直し！");
-      } else {
-        notify(`HP -${Math.ceil(finalAmount)}${fortified ? "　お盆ガード！" : "　まだ快適です！"}`);
+        notify("MEAL · RECOVER");
+      } else if (fortified) {
+        notify("TRAY GUARD");
       }
       syncHud();
       if (runtime.hp <= 0) endRun(false);
@@ -3310,10 +3317,10 @@ export default function OfficeCrashRPG() {
         enemy.vulnerableFrom = runtime.elapsed;
         enemy.vulnerableUntil = runtime.elapsed + bossDifficulty.openingDuration;
         if (dodged) {
-          notify("回避成功！ 反動中に生ジョッキレールを叩き込め！");
+          notify("DODGE · WEAK OPEN");
           tone(660, 0.12, "square", 0.045, 880);
         } else {
-          notify("ボスが反動中！ 今ならダメージ ×1.65");
+          notify("WEAK OPEN ×1.65");
         }
       }
     };
@@ -3348,8 +3355,6 @@ export default function OfficeCrashRPG() {
         notify(`MULTI BREAK ×${hits} +${formatNumber(bonus)}`);
       } else if (criticals > 0) {
         notify(`PERFECT SMASH! ×${criticalMultiplier.toFixed(2)}`);
-      } else if (hits === 0) {
-        notify("SMASH!");
       }
       syncHud();
     };
@@ -3414,7 +3419,7 @@ export default function OfficeCrashRPG() {
         origin,
         direction: forward,
       };
-      notify("必殺技装填！ 向いている方向へジョッキを投げる！");
+      notify("RAIL READY");
       syncHud();
     };
 
@@ -3661,7 +3666,6 @@ export default function OfficeCrashRPG() {
         if (!rushActive && runtime.rushUntil > 0) {
           runtime.rushUntil = 0;
           runtime.pressure = 0;
-          notify("RUSH TIME 終了。次の大整理へ！");
         } else if (!rushActive) {
           runtime.pressure = Math.max(0, runtime.pressure - dt * 3.6);
         }
@@ -3834,20 +3838,20 @@ export default function OfficeCrashRPG() {
             if (pickup.kind === "beer") {
               const earned = gainMegaGauge(45);
               playSound("beer");
-              if (earned === 0) notify("冷えた生ジョッキ！ MEGAゲージ +45%");
+              if (earned === 0) notify("RAIL +45%");
             } else if (pickup.kind === "clock") {
               runtime.freezeUntil = runtime.elapsed + 3.5;
               for (const enemy of enemies) enemy.frozenUntil = runtime.freezeUntil;
               tone(760, 0.2, "sine", 0.06, 1280);
-              notify("COMBO FREEZE + 全備品停止 3.5秒");
+              notify("FREEZE 3.5s");
             } else if (pickup.kind === "cap") {
               runtime.runCaps += 2;
               tone(930, 0.16, "triangle", 0.055, 1320);
-              notify("王冠キャップ +2");
+              notify("王冠 +2");
             } else {
               runtime.hp = Math.min(runtime.maxHp, runtime.hp + 18);
               tone(520, 0.18, "sine", 0.05, 880);
-              notify("焼き鳥で HP +18");
+              notify("HP +18");
             }
             syncHud();
           }
@@ -3987,6 +3991,7 @@ export default function OfficeCrashRPG() {
       if (toastTimer.current) window.clearTimeout(toastTimer.current);
       if (bossDialogueTimer.current) window.clearTimeout(bossDialogueTimer.current);
       if (megaFlashTimer.current) window.clearTimeout(megaFlashTimer.current);
+      if (tutorialTimer.current) window.clearTimeout(tutorialTimer.current);
       damageLayerRef.current?.replaceChildren();
       detachAudioState?.();
       if (audioContext && getAudioState(audioContext) !== "closed") void audioContext.close();
@@ -4020,6 +4025,53 @@ export default function OfficeCrashRPG() {
   };
 
   const profile = siteData?.profile ?? EMPTY_PROFILE;
+  const dailyRank = getDailyFeaturedRank();
+  const startFromHub = () => {
+    apiRef.current?.start(profile, overtimeRank);
+    setHubPanel("play");
+    try {
+      const tutorialKey = "office-crash-controls-v2";
+      if (window.localStorage.getItem(tutorialKey)) return;
+      window.localStorage.setItem(tutorialKey, "seen");
+      setTutorialVisible(true);
+      if (tutorialTimer.current) window.clearTimeout(tutorialTimer.current);
+      tutorialTimer.current = window.setTimeout(() => setTutorialVisible(false), 4600);
+    } catch {
+      // Device-local onboarding is optional when storage is unavailable.
+    }
+  };
+  const shareRun = async (run?: RunSummary | null) => {
+    const url = new URL("/", window.location.href).toString();
+    const username = profileRef.current.username || EMPTY_PROFILE.username;
+    const text = run
+      ? `${username}が「そば屋のオフィスクラッシュ」で${formatNumber(run.score)}点・${run.floorReached}F！ この記録、超えられる？`
+      : profileRef.current.bestScore > 0
+        ? `${username}の自己ベストは${formatNumber(profileRef.current.bestScore)}点！ 「そば屋のオフィスクラッシュ」でこの記録を超えられる？`
+        : "備品を壊して、拾って、巨大ジョッキで一掃。そば屋のオフィスクラッシュで勝負しよう！";
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: "そば屋のオフィスクラッシュ",
+          text,
+          url,
+        });
+        notify("共有しました");
+        return;
+      }
+      if (!navigator.clipboard) throw new Error("Clipboard unavailable");
+      await navigator.clipboard.writeText(`${text}\n${url}`);
+      notify("招待リンクをコピー");
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "AbortError") return;
+      try {
+        if (!navigator.clipboard) throw new Error("Clipboard unavailable");
+        await navigator.clipboard.writeText(`${text}\n${url}`);
+        notify("招待リンクをコピー");
+      } catch {
+        notify("共有できませんでした");
+      }
+    }
+  };
   const hpRatio = Math.max(0, Math.min(100, hud.hp / Math.max(1, hud.maxHp) * 100));
   const dashRatio = Math.max(0, Math.min(100, hud.dashReady * 100));
   const enemyRatio = hud.totalEnemies > 0
@@ -4066,13 +4118,11 @@ export default function OfficeCrashRPG() {
               <em>{hud.timer !== null ? `${hud.timer}s` : hud.bossName ? "BOSS" : `残${hud.enemies}`}</em>
             </div>
             <div className="rpg-hud-actions">
-              <span className={`rpg-overtime rank-${overtimeRank}`}>{hud.overtimeLabel} ×{hud.scoreMultiplier.toFixed(2)}</span>
-              <span className="rpg-cap">王冠 {hud.caps}</span>
               <button
                 onClick={() => apiRef.current?.toggleSound(soundOn && !audioReady)}
                 aria-label={soundOn && !audioReady ? "効果音を開始" : soundOn ? "効果音をオフ" : "効果音をオン"}
               >
-                {soundOn && !audioReady ? "音 開始" : soundOn ? "音 ON" : "音 OFF"}
+                {soundOn && !audioReady ? "♪" : soundOn ? "🔊" : "🔇"}
               </button>
               <button onClick={() => apiRef.current?.pause()} aria-label="一時停止">Ⅱ</button>
             </div>
@@ -4081,13 +4131,12 @@ export default function OfficeCrashRPG() {
           {rushAnnouncement && !bossDialogue && (
             <div className="rpg-rush-banner" aria-live="assertive">
               <span>OFFICE RUSH</span>
-              <strong>大量増援を生ジョッキレールで一掃！</strong>
             </div>
           )}
 
           <section className="rpg-vitals" aria-label="プレイヤー情報">
             <div className="rpg-vital-row">
-              <span>店主HP</span>
+              <span>♥</span>
               <div className="rpg-bar"><i style={{ width: `${hpRatio}%` }} /></div>
               <strong>{hud.hp}/{hud.maxHp}</strong>
             </div>
@@ -4099,42 +4148,52 @@ export default function OfficeCrashRPG() {
               COMBO {hud.combo} <b>×{hud.multiplier.toFixed(2)}</b>
             </div>
             <div className={`rpg-pressure ${hud.rushRemaining > 0 ? "rush" : ""}`}>
-              <span>{hud.rushRemaining > 0 ? `RUSH TIME ${hud.rushRemaining.toFixed(1)}s` : "清掃熱"}</span>
+              <span>{hud.rushRemaining > 0 ? `RUSH ${hud.rushRemaining.toFixed(1)}s` : "HEAT"}</span>
               <div><i style={{ width: `${pressureRatio}%` }} /></div>
             </div>
           </section>
 
           <section className="rpg-objective" aria-live="polite">
-            <span>{hud.timer !== null ? `残り ${hud.timer}秒` : hud.bossName || `残り備品 ${hud.enemies}`}</span>
-            <strong>{hud.objective}</strong>
-            {hud.offscreenEnemies > 0 && <em>⚠ 画面外 {hud.offscreenEnemies}体・中央へ接近中</em>}
-            {hud.incomingAttack && <em className="attack-alert">赤い予告範囲から離れろ！</em>}
+            <span>{hud.timer !== null ? `${hud.timer}s` : hud.bossName || `残 ${hud.enemies}`}</span>
+            {hud.offscreenEnemies > 0 && <em>↥ {hud.offscreenEnemies}</em>}
+            {hud.incomingAttack && <em className="attack-alert">DODGE!</em>}
             <div className="rpg-progress"><i style={{ width: `${enemyRatio}%` }} /></div>
           </section>
 
-          <aside className="rpg-build-rail" aria-label="現在のビルド">
-            <span>装備 3枠</span>
-            {build.length === 0 && <small>戦利品は階層クリア後に獲得</small>}
-            {build.map((item) => (
-              <div className={`rpg-build-chip level-${item.level}`} key={item.id} title={item.effect}>
-                <img src={item.image} alt="" />
-                <span><b>{item.displayName}</b><small>{item.role}</small></span>
-                <em>Lv.{item.level}</em>
-              </div>
-            ))}
-          </aside>
+          {build.length > 0 && (
+            <aside className="rpg-build-rail" aria-label="現在のビルド">
+              {build.map((item) => (
+                <div
+                  className={`rpg-build-chip level-${item.level}`}
+                  key={item.id}
+                  title={`${item.displayName} · ${item.effect}`}
+                  aria-label={`${item.displayName} レベル${item.level}、${item.effect}`}
+                >
+                  <img src={item.image} alt="" />
+                  <em>Lv.{item.level}</em>
+                </div>
+              ))}
+            </aside>
+          )}
 
           <div className={`rpg-mega ${hud.mega > 0 ? "ready" : ""}`}>
-            <span>MEGA GAUGE</span>
+            <span>RAIL</span>
             <div className="rpg-mega-stocks">
               {Array.from({ length: hud.megaMax }, (_, slot) => (
                 <i className={slot < hud.mega ? "full" : ""} key={slot}>生</i>
               ))}
             </div>
             <div className="rpg-mega-gauge"><i style={{ width: `${megaGaugeRatio}%` }} /></div>
-            <b>射線予測 ×{hud.megaTargets}</b>
-            <small>撃破・回避・生ジョッキで補充</small>
           </div>
+
+          {tutorialVisible && (
+            <div className="rpg-tutorial" aria-live="polite">
+              <span><kbd>WASD</kbd><b>MOVE</b></span>
+              <span><kbd>SPACE</kbd><b>SMASH</b></span>
+              <span><kbd>SHIFT</kbd><b>DASH</b></span>
+              <span><kbd>E</kbd><b>RAIL</b></span>
+            </div>
+          )}
 
           <div
             className="rpg-joystick"
@@ -4230,163 +4289,205 @@ export default function OfficeCrashRPG() {
                 オフィスクラッシュ
                 <small>無限フロア大整理</small>
               </h1>
+              <p className="hub-tagline">壊して。拾って。一掃。</p>
+              <div className="hub-loop" aria-hidden="true">
+                <span><b>壊</b><small>BREAK</small></span>
+                <i>›</i>
+                <span><b>選</b><small>BUILD</small></span>
+                <i>›</i>
+                <span><b>生</b><small>RAIL</small></span>
+              </div>
               <blockquote>
-                「おかやまん。弊社の備品が自律歩行を始めており、<br />
-                大変驚いております」
+                「弊社の備品が自律歩行を始めており、大変驚いております」
               </blockquote>
-              <p className="hub-lead">
-                タコ部屋の人型の大穴、その先は図面にない備品循環棟だった。
-                押し寄せる備品を崩してゲージを溜め、巨大ジョッキで8フロアを一掃しろ！
-              </p>
-              <div className="hub-features" aria-label="ゲームの特徴">
-                <span>8 FLOORS</span>
-                <span>OFFICE RUSH</span>
-                <span>生ジョッキレール</span>
-                <span>LOOT DRAFT</span>
-                <span>6装備 × 3進化</span>
-                <span>見える装備</span>
-                <span>退社難度</span>
-                <span>永続記録</span>
+              <div className="hub-quick-stats" aria-label="自己記録">
+                <span><small>BEST</small><b>{formatNumber(profile.bestScore)}</b></span>
+                <span><small>TOP FLOOR</small><b>{profile.bestFloor || "—"}F</b></span>
               </div>
-              <section className="overtime-select" aria-label="退社難度">
-                <div>
-                  <span>RISK × REWARD</span>
-                  <strong>退社作戦を選ぶ</strong>
-                </div>
-                <div className="overtime-options">
-                  {OVERTIME_RANKS.map((rank) => (
-                    <button
-                      type="button"
-                      className={overtimeRank === rank.rank ? "active" : ""}
-                      key={rank.rank}
-                      onClick={() => setOvertimeRank(rank.rank)}
-                      title={rank.description}
-                    >
-                      <small>{rank.kicker}</small>
-                      <b>{rank.label}</b>
-                      <em>
-                        得点 ×{rank.scoreMultiplier.toFixed(2)}
-                        <span>破壊数 ×{rank.destructionMultiplier.toFixed(1)}</span>
-                      </em>
-                    </button>
-                  ))}
-                </div>
-                <p>{OVERTIME_RANKS[overtimeRank].description}</p>
-              </section>
-              <div className={`audio-check ${audioReady ? "ready" : ""} ${audioError ? "error" : ""}`}>
-                <button type="button" onClick={() => apiRef.current?.testSound()}>
-                  <span aria-hidden="true">{audioReady ? "🔊" : "🔈"}</span>
-                  {audioReady ? "効果音をもう一度試す" : "まず効果音を試す"}
-                </button>
-                <small>
-                  {audioError
-                    ? "iPhoneでは本体の消音を解除し、このボタンをもう一度押してください"
-                    : audioReady
-                      ? "音声準備OK。突入後にスマッシュ音が鳴ります"
-                      : "iPhoneは最初のタップで音声を有効化します"}
-                </small>
-              </div>
-              <button
-                className="hub-start"
-                onClick={() => apiRef.current?.start(profile, overtimeRank)}
-                disabled={profileLoading}
-              >
-                <span>{profileLoading ? "立ち飲み処を準備中…" : "備品循環棟へ突入！"}</span>
-                <small>移動 WASD / 矢印・通常攻撃 SPACE・ジョッキ投擲 E・回避 SHIFT　向きを合わせて一網打尽！</small>
-              </button>
-              {profileError && (
-                <button className="profile-retry" onClick={() => void refreshProfile()}>
-                  記録サーバーへ再接続
-                </button>
-              )}
             </div>
 
             <div className="hub-data">
-              <div className="hub-stats">
-                <div><span>王冠キャップ</span><strong>{formatNumber(profile.caps)}</strong></div>
-                <div><span>自己ベスト</span><strong>{formatNumber(profile.bestScore)}</strong></div>
-                <div><span>最高到達</span><strong>{profile.bestFloor || "—"}F</strong></div>
-                <div><span>完全制覇</span><strong>{profile.clears}</strong></div>
-              </div>
-
-              <form className="username-panel" onSubmit={(event) => void saveUsername(event)}>
-                <div className="panel-heading">
-                  <span>PLAYER NAME</span>
-                  <strong>スコアボード名</strong>
-                </div>
-                <div className="username-controls">
-                  <input
-                    type="text"
-                    value={usernameDraft}
-                    maxLength={20}
-                    disabled={profileLoading || usernameBusy}
-                    onChange={(event) => {
-                      setUsernameDraft(event.target.value);
-                      setUsernameMessage("");
-                    }}
-                    placeholder="匿名窓際社員"
-                    aria-label="スコアボードに表示するユーザーネーム"
-                  />
-                  <button type="submit" disabled={profileLoading || usernameBusy}>
-                    {usernameBusy ? "保存中…" : "名前を保存"}
+              <nav className="hub-tabs" role="tablist" aria-label="立ち飲み処メニュー">
+                {([
+                  ["play", "出撃"],
+                  ["bar", "設備"],
+                  ["records", "記録"],
+                ] as const).map(([panel, label]) => (
+                  <button
+                    type="button"
+                    role="tab"
+                    id={`hub-tab-${panel}`}
+                    aria-controls={`hub-panel-${panel}`}
+                    aria-selected={hubPanel === panel}
+                    className={hubPanel === panel ? "active" : ""}
+                    onClick={() => setHubPanel(panel)}
+                    key={panel}
+                  >
+                    {label}
                   </button>
-                </div>
-                <small className={usernameMessage ? "has-message" : ""}>
-                  {usernameMessage || "20文字まで。空欄で保存すると「匿名窓際社員」に戻ります。"}
-                </small>
-              </form>
+                ))}
+              </nav>
 
-              <section className="mastery-panel fixture-panel">
-                <div className="panel-heading">
-                  <span>立ち飲み処</span>
-                  <strong>王冠設備</strong>
-                </div>
-                <p>小さな倍率ではなく、ランの遊び方が変わる設備を3段階で改装。旧強化に使った王冠は自動で全額払い戻されます。</p>
-                <div className="fixture-grid">
-                  {FIXTURES.map((fixture) => {
-                  const level = profile.fixtures[fixture.id];
-                  const cost = fixtureCost(level);
-                  return (
-                    <div className={`fixture-card level-${level}`} key={fixture.id}>
-                      <img src={fixture.image} alt="" />
-                      <span>
-                        <strong>{fixture.name}</strong>
-                        <small>{level > 0 ? fixture.levels[level - 1] : fixture.description}</small>
-                      </span>
-                      <em>Lv.{level}/3</em>
+              {hubPanel === "play" && (
+                <section
+                  className="hub-panel hub-play-panel"
+                  id="hub-panel-play"
+                  role="tabpanel"
+                  aria-labelledby="hub-tab-play"
+                >
+                  <div className="panel-heading">
+                    <span>NEXT RUN</span>
+                    <strong>退社作戦</strong>
+                  </div>
+                  <div className="overtime-options">
+                    {OVERTIME_RANKS.map((rank) => (
                       <button
-                        onClick={() => void buyFixture(fixture.id)}
-                        disabled={profileLoading || fixtureBusy !== null || level >= 3}
+                        type="button"
+                        className={`${overtimeRank === rank.rank ? "active" : ""} ${dailyRank === rank.rank ? "daily" : ""}`}
+                        key={rank.rank}
+                        onClick={() => setOvertimeRank(rank.rank)}
+                        title={rank.description}
+                        aria-label={`${rank.label}、得点${rank.scoreMultiplier.toFixed(2)}倍、破壊数${rank.destructionMultiplier.toFixed(1)}倍`}
+                        aria-pressed={overtimeRank === rank.rank}
                       >
-                        {level >= 3 ? "MAX" : `${cost} 王冠`}
+                        <span className="risk-pips" aria-hidden="true">
+                          {Array.from({ length: rank.rank + 1 }, (_, index) => <i key={index} />)}
+                        </span>
+                        <b>{rank.label}</b>
+                        <em>×{rank.scoreMultiplier.toFixed(2)}</em>
+                        {dailyRank === rank.rank && <small>TODAY +1/階</small>}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="active-run-brief" aria-live="polite">
+                    <strong>{OVERTIME_RANKS[overtimeRank].label}</strong>
+                    <span>SCORE ×{OVERTIME_RANKS[overtimeRank].scoreMultiplier.toFixed(2)}</span>
+                    <span>ノルマ ×{OVERTIME_RANKS[overtimeRank].destructionMultiplier.toFixed(1)}</span>
+                  </div>
+                  <button
+                    className="hub-start"
+                    onClick={startFromHub}
+                    disabled={profileLoading}
+                  >
+                    <span>{profileLoading ? "準備中…" : "突入！"}</span>
+                  </button>
+                  {profileError && (
+                    <button className="profile-retry" onClick={() => void refreshProfile()}>
+                      再接続
+                    </button>
+                  )}
+                </section>
+              )}
+
+              {hubPanel === "bar" && (
+                <section
+                  className="hub-panel hub-bar-panel"
+                  id="hub-panel-bar"
+                  role="tabpanel"
+                  aria-labelledby="hub-tab-bar"
+                >
+                  <div className="panel-heading fixture-heading">
+                    <span>立ち飲み処</span>
+                    <strong>王冠設備</strong>
+                    <em>王冠 {formatNumber(profile.caps)}</em>
+                  </div>
+                  <form className="username-panel" onSubmit={(event) => void saveUsername(event)}>
+                    <div className="panel-heading">
+                      <span>PLAYER</span>
+                      <strong>スコアボード名</strong>
+                    </div>
+                    <div className="username-controls">
+                      <input
+                        type="text"
+                        value={usernameDraft}
+                        maxLength={20}
+                        disabled={profileLoading || usernameBusy}
+                        onChange={(event) => {
+                          setUsernameDraft(event.target.value);
+                          setUsernameMessage("");
+                        }}
+                        placeholder="匿名窓際社員"
+                        aria-label="スコアボードに表示するユーザーネーム"
+                      />
+                      <button type="submit" disabled={profileLoading || usernameBusy}>
+                        {usernameBusy ? "保存中…" : "保存"}
                       </button>
                     </div>
-                  );
-                  })}
-                </div>
-              </section>
+                    {usernameMessage && <small className="has-message">{usernameMessage}</small>}
+                  </form>
+                  <div className="fixture-grid">
+                    {FIXTURES.map((fixture) => {
+                    const level = profile.fixtures[fixture.id];
+                    const cost = fixtureCost(level);
+                    return (
+                      <div
+                        className={`fixture-card level-${level}`}
+                        key={fixture.id}
+                        title={level > 0 ? fixture.levels[level - 1] : fixture.description}
+                      >
+                        <img src={fixture.image} alt="" />
+                        <span>
+                          <strong>{fixture.name}</strong>
+                          <small>{level > 0 ? fixture.levels[level - 1] : "未設置"}</small>
+                        </span>
+                        <em>Lv.{level}</em>
+                        <button
+                          onClick={() => void buyFixture(fixture.id)}
+                          disabled={profileLoading || fixtureBusy !== null || level >= 3}
+                          aria-label={`${fixture.name}を${level >= 3 ? "最大強化済み" : `${cost}王冠で強化`}`}
+                        >
+                          {level >= 3 ? "MAX" : `${cost}`}
+                        </button>
+                      </div>
+                    );
+                    })}
+                  </div>
+                  <div className={`audio-check ${audioReady ? "ready" : ""} ${audioError ? "error" : ""}`}>
+                    <button type="button" onClick={() => apiRef.current?.testSound()}>
+                      <span aria-hidden="true">{audioReady ? "🔊" : "🔈"}</span>
+                      {audioReady ? "サウンド OK" : "サウンドテスト"}
+                    </button>
+                    {audioError && <small>消音を解除して再試行</small>}
+                  </div>
+                </section>
+              )}
 
-              <div className="hub-live-grid">
-                <section>
-                  <div className="panel-heading"><span>GLOBAL</span><strong>全店主の記録</strong></div>
-                  <p><b>{formatNumber(Number(siteData?.globalStats.runs ?? 0))}</b> ラン</p>
-                  <p><b>{formatNumber(Number(siteData?.globalStats.destroyed ?? 0))}</b> 備品を整理</p>
+              {hubPanel === "records" && (
+                <section
+                  className="hub-panel hub-records-panel"
+                  id="hub-panel-records"
+                  role="tabpanel"
+                  aria-labelledby="hub-tab-records"
+                >
+                  <div className="hub-stats">
+                    <div><span>BEST</span><strong>{formatNumber(profile.bestScore)}</strong></div>
+                    <div><span>TOP</span><strong>{profile.bestFloor || "—"}F</strong></div>
+                    <div><span>CLEAR</span><strong>{profile.clears}</strong></div>
+                    <div><span>RUN</span><strong>{profile.totalRuns}</strong></div>
+                  </div>
+                  <section className="leaderboard-panel">
+                    <div className="panel-heading"><span>TOP 5</span><strong>スコアボード</strong></div>
+                    {(siteData?.leaderboard ?? []).slice(0, 5).map((run, index) => (
+                      <p className="leader-row" key={`${run.username}-${run.score}-${index}`}>
+                        <b>#{index + 1}</b>
+                        <span>
+                          <strong>{run.username || EMPTY_PROFILE.username}</strong>
+                          <small>{run.floorReached}F・{getOvertimeDefinition(run.overtimeRank).label}</small>
+                        </span>
+                        <em>{formatNumber(run.score)}</em>
+                      </p>
+                    ))}
+                    {!siteData?.leaderboard.length && <p className="muted">最初の伝説を作ろう</p>}
+                  </section>
+                  <div className="hub-global-stats">
+                    <span><b>{formatNumber(Number(siteData?.globalStats.runs ?? 0))}</b> RUNS</span>
+                    <span><b>{formatNumber(Number(siteData?.globalStats.destroyed ?? 0))}</b> BREAKS</span>
+                  </div>
+                  <button className="hub-share" type="button" onClick={() => void shareRun()}>
+                    友達を招待
+                  </button>
                 </section>
-                <section>
-                  <div className="panel-heading"><span>TOP 5</span><strong>スコアボード</strong></div>
-                  {(siteData?.leaderboard ?? []).slice(0, 5).map((run, index) => (
-                    <p className="leader-row" key={`${run.username}-${run.score}-${index}`}>
-                      <b>#{index + 1}</b>
-                      <span>
-                        <strong>{run.username || EMPTY_PROFILE.username}</strong>
-                        <small>{run.floorReached}F・{getOvertimeDefinition(run.overtimeRank).label}</small>
-                      </span>
-                      <em>{formatNumber(run.score)}</em>
-                    </p>
-                  ))}
-                  {!siteData?.leaderboard.length && <p className="muted">最初の伝説を作ろう</p>}
-                </section>
-              </div>
+              )}
             </div>
           </div>
         </section>
@@ -4396,23 +4497,20 @@ export default function OfficeCrashRPG() {
         <section className="rpg-overlay reward-overlay" aria-labelledby="reward-title">
           <div className="reward-card">
             <p className="rpg-eyebrow">FLOOR {hud.floor} CLEAR — LOOT DRAFT</p>
-            <h2 id="reward-title">戦利品をひとつ選ぶ</h2>
-            <p>装備は最大3種類。同じ品を重ねると「改」から「極」へ進化し、見た目だけでなく攻撃そのものが変わります。</p>
+            <h2 id="reward-title">1つ取る</h2>
             <div className="reward-grid">
               {rewardChoices.map((choice) => (
                 <button
                   className={`loot-card level-${choice.level}`}
                   key={choice.id}
                   onClick={() => apiRef.current?.pickUpgrade(choice)}
+                  title={`${choice.description} ${choice.effect}`}
+                  aria-label={`${choice.displayName}、${choice.role}、${choice.description}、${choice.effect}`}
                 >
                   <span className="loot-rarity">Lv.{choice.level}・{choice.evolution}</span>
-                  <span className="loot-school">{choice.role}</span>
                   <img className="loot-image" src={choice.image} alt="" />
-                  <small>{choice.level === 1 ? "NEW EQUIPMENT" : "EVOLUTION"}</small>
                   <strong>{choice.displayName}</strong>
-                  <p>{choice.description}</p>
                   <em>{choice.effect}</em>
-                  <i>{choice.level === 1 ? "装備して次の階へ" : `${choice.name}を進化`}</i>
                 </button>
               ))}
             </div>
@@ -4422,12 +4520,8 @@ export default function OfficeCrashRPG() {
               onClick={() => apiRef.current?.rerollReward()}
               disabled={rerolls <= 0}
             >
-              品書きを全部引き直す <b>{rerolls}/1</b>
+              引き直す <b>{rerolls}</b>
             </button>
-            <div className="reward-synergies">
-              <span>ルール</span>
-              <b>3枠埋まった後は所持品の進化だけが出現</b>
-            </div>
           </div>
         </section>
       )}
@@ -4438,11 +4532,15 @@ export default function OfficeCrashRPG() {
             <span className="result-stamp">{summary.victory ? "REGULATION CLEAR!" : "BONK! 搬送完了"}</span>
             <p className="rpg-eyebrow">{summary.victory ? "ALL 8 FLOORS COMPLETE" : `REACHED FLOOR ${summary.floorReached}`}</p>
             <h2 id="result-title">{getRank(summary)}</h2>
-            <p>{summary.victory ? "備品はすべて資材へ戻りました。最後は立ち飲み処で乾杯です！" : "ゆめみんに起こされました。仕込みを整えて、また行けます！"}</p>
             <div className="result-score">
               <span>FINAL SCORE</span>
               <strong>{formatNumber(summary.score)}</strong>
               <small>{OVERTIME_RANKS[summary.overtimeRank].label} ×{OVERTIME_RANKS[summary.overtimeRank].scoreMultiplier.toFixed(2)} ／ {summary.buildName}</small>
+              <em>
+                {summary.score >= profile.bestScore
+                  ? "NEW BEST"
+                  : `BESTまで ${formatNumber(profile.bestScore - summary.score)}`}
+              </em>
             </div>
             <div className="result-grid">
               <div><span>到達</span><strong>{summary.floorReached}F</strong></div>
@@ -4458,8 +4556,9 @@ export default function OfficeCrashRPG() {
               ))}
             </div>
             <div className="result-actions">
-              <button onClick={() => apiRef.current?.start(profileRef.current, overtimeRank)}>もう一度突入</button>
-              <button onClick={() => apiRef.current?.returnHub()}>立ち飲み処へ戻る</button>
+              <button onClick={() => apiRef.current?.start(profileRef.current, overtimeRank)}>もう一度</button>
+              <button onClick={() => void shareRun(summary)}>記録を共有</button>
+              <button onClick={() => apiRef.current?.returnHub()}>立ち飲み処</button>
             </div>
           </div>
         </section>
