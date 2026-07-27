@@ -6,6 +6,7 @@ import {
 } from "../characters/voxel-character-kit";
 import { DemolitionAudio } from "./audio";
 import { VoxelAssetFactory } from "./assets";
+import { getPlayerFacingYaw, getPlayerForward } from "./orientation";
 import {
   canBreakMaterial,
   getActiveGoal,
@@ -1327,7 +1328,10 @@ export class OfficeDemolitionWorld {
     if (this.moveVector.lengthSq() < 0.0001) return;
     const speed = this.carried ? PLAYER_SPEED * 0.78 : PLAYER_SPEED;
     this.movePlayer(this.moveVector.x * speed * dt, this.moveVector.z * speed * dt);
-    const desiredRotation = Math.atan2(this.moveVector.x, this.moveVector.z);
+    const desiredRotation = getPlayerFacingYaw(
+      this.moveVector.x,
+      this.moveVector.z,
+    );
     this.playerAnchor.rotation.y = this.lerpAngle(
       this.playerAnchor.rotation.y,
       desiredRotation,
@@ -2279,10 +2283,11 @@ export class OfficeDemolitionWorld {
   }
 
   private forward() {
+    const forward = getPlayerForward(this.playerAnchor.rotation.y);
     return new THREE.Vector3(
-      Math.sin(this.playerAnchor.rotation.y),
+      forward.x,
       0,
-      Math.cos(this.playerAnchor.rotation.y),
+      forward.z,
     ).normalize();
   }
 
