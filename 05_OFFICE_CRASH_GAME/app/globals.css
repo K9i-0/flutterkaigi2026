@@ -3564,6 +3564,44 @@ body {
 
   .rpg-vitals {
     top: calc(env(safe-area-inset-top, 0px) + 98px);
+    grid-template-columns:
+      minmax(118px, 1.35fr)
+      minmax(94px, 1fr)
+      minmax(78px, .84fr);
+  }
+
+  .rpg-vital-row,
+  .rpg-score-row,
+  .rpg-combo {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .rpg-vital-row {
+    grid-template-columns: 12px minmax(0, 1fr);
+  }
+
+  .rpg-vital-row .rpg-bar {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .rpg-score-row {
+    width: 100%;
+  }
+
+  .rpg-score-row strong {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    font-size: clamp(15px, 4.8vw, 19px);
+    font-variant-numeric: tabular-nums;
+    text-overflow: clip;
+    white-space: nowrap;
+  }
+
+  .rpg-combo {
+    white-space: nowrap;
   }
 
   .rpg-objective {

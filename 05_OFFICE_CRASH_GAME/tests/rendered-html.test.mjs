@@ -145,6 +145,8 @@ test("keeps the portrait mobile HUD in dedicated status, notice, and control lan
   assert.match(css, /min-width: 145px/);
   assert.match(css, /bottom: calc\(env\(safe-area-inset-bottom, 0px\) \+ 12px\)/);
   assert.match(css, /@media \(pointer: coarse\)/);
+  assert.match(css, /minmax\(118px, 1\.35fr\)/);
+  assert.match(css, /\.rpg-score-row strong \{\s*min-width: 0;\s*max-width: 100%;\s*overflow: hidden;/);
 });
 
 test("stores profiles, run history, fixtures, and leaderboard data in D1", async () => {
