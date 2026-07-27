@@ -30,7 +30,16 @@ test("server-renders the standalone total-demolition game shell", async () => {
   assert.match(html, /KANPAI GAUGE/);
   assert.match(html, /全社リノベーション準備中/);
   assert.match(html, /STRUCTURAL CHECK/);
+  assert.match(html, /property="og:image" content="http:\/\/localhost\/og\.png"/);
+  assert.match(html, /name="twitter:card" content="summary_large_image"/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/);
+});
+
+test("ships a correctly sized bespoke social card", async () => {
+  const card = await readFile(new URL("../public/og.png", import.meta.url));
+  assert.equal(card.subarray(1, 4).toString("ascii"), "PNG");
+  assert.equal(card.readUInt32BE(16), 1536);
+  assert.equal(card.readUInt32BE(20), 1024);
 });
 
 test("implements furniture-to-steel progression and expressive demolition actions", async () => {
