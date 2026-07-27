@@ -6,7 +6,23 @@ import {
 } from "../characters/voxel-character-kit";
 import { DemolitionAudio } from "./audio";
 import { VoxelAssetFactory } from "./assets";
-import { getPlayerFacingYaw, getPlayerForward } from "./orientation";
+import {
+  AZABU_CITY_BREAKABLE_COUNT,
+  AZABU_CITY_LOTS,
+  AZABU_STREET_PROPS,
+  CITY_HALF_X,
+  CITY_HALF_Z,
+  getGiantScale,
+  getGiantStage,
+  isOfficeExteriorWall,
+  OFFICE_HALF_X,
+  OFFICE_HALF_Z,
+} from "./city";
+import {
+  getPlayerFacingYaw,
+  getPlayerForward,
+  getRadarArrow,
+} from "./orientation";
 import {
   canBreakMaterial,
   getActiveGoal,
@@ -50,6 +66,7 @@ type Breakable = {
   supportGroup?: string;
   supportWeight: number;
   chainPower: number;
+  district: "office" | "city";
 };
 
 type BreakableOptions = {
@@ -68,6 +85,7 @@ type BreakableOptions = {
   supportGroup?: string;
   supportWeight?: number;
   chainPower?: number;
+  district?: "office" | "city";
 };
 
 type DebrisPiece = {
@@ -99,6 +117,21 @@ type Effect = {
   grow: number;
 };
 
+type BeerBeamEffect = {
+  group: THREE.Group;
+  materials: THREE.MeshBasicMaterial[];
+  age: number;
+  lifetime: number;
+};
+
+type MugMeteor = {
+  group: THREE.Group;
+  start: THREE.Vector3;
+  target: THREE.Vector3;
+  age: number;
+  duration: number;
+};
+
 type PendingImpact = {
   at: number;
   kind: "smash" | "stomp" | "kanpai";
@@ -112,8 +145,6 @@ export type DemolitionWorldCallbacks = {
   onClear: (result: DemolitionResult) => void;
 };
 
-const WORLD_HALF_X = 27;
-const WORLD_HALF_Z = 19;
 const PLAYER_RADIUS = 0.72;
 const MAX_DEBRIS = 230;
 const SAVE_INTERVAL = 7;
@@ -149,7 +180,7 @@ export class OfficeDemolitionWorld {
   private readonly factory = new VoxelAssetFactory();
   private readonly audio = new DemolitionAudio();
   private readonly scene = new THREE.Scene();
-  private readonly camera = new THREE.PerspectiveCamera(47, 1, 0.1, 160);
+  private readonly camera = new THREE.PerspectiveCamera(47, 1, 0.1, 260);
   private readonly renderer: THREE.WebGLRenderer;
   private readonly clock = new THREE.Clock();
   private readonly playerAnchor = new THREE.Group();
@@ -165,6 +196,8 @@ export class OfficeDemolitionWorld {
   private readonly flying: FlyingObject[] = [];
   private readonly collapses: TimedCollapse[] = [];
   private readonly effects: Effect[] = [];
+  private readonly beerBeams: BeerBeamEffect[] = [];
+  private readonly mugMeteors: MugMeteor[] = [];
   private readonly keys = new Set<string>();
   private readonly controls: DemolitionControls = { ...EMPTY_CONTROLS };
   private readonly rubbleMeshes = new Map<DemolitionMaterial, THREE.InstancedMesh>();
@@ -212,6 +245,18 @@ export class OfficeDemolitionWorld {
   private dashWallBreaks = 0;
   private cascadeBreaks = 0;
   private kanpaiSteelBreaks = 0;
+  private officeBreakableTotal = 0;
+  private cityBreakableTotal = 0;
+  private cityDestroyed = 0;
+  private districtUnlocked = false;
+  private giantScale = 1;
+  private giantScaleTarget = 1;
+  private giantStage = 0;
+  private radarActive = false;
+  private radarArrow = "↑";
+  private radarDistance = 0;
+  private ultimateTimer = 0;
+  private lastBreakAt = 0;
   private initialSave: DemolitionSave;
 
   constructor(
@@ -239,7 +284,7 @@ export class OfficeDemolitionWorld {
     container.appendChild(this.renderer.domElement);
 
     this.scene.background = new THREE.Color(0xa8dcfa);
-    this.scene.fog = new THREE.Fog(0xb8ddec, 42, 96);
+    this.scene.fog = new THREE.Fog(0xb8ddec, 72, 210);
 
     this.fallbackPlayer = this.factory.makeSobayaFallback();
     this.fallbackPlayer.scale.setScalar(0.84);
@@ -282,6 +327,14 @@ export class OfficeDemolitionWorld {
     this.buildBackdrop();
     this.buildRubblePools();
     this.buildOffice();
+    this.officeBreakableTotal = this.breakables.length;
+    this.buildAzabuDistrict();
+    this.cityBreakableTotal = this.breakables.length - this.officeBreakableTotal;
+    if (this.cityBreakableTotal !== AZABU_CITY_BREAKABLE_COUNT) {
+      throw new Error(
+        `Azabu district asset count mismatch: ${this.cityBreakableTotal}`,
+      );
+    }
     this.buildDebrisPool();
     this.applySave(this.initialSave);
     this.loadCharacter();
@@ -301,8 +354,10 @@ export class OfficeDemolitionWorld {
   start() {
     if (this.phase === "cleared") return;
     this.phase = "playing";
-    this.notice = this.destroyed > 0
-      ? `続きから再開。残り ${this.breakables.length - this.destroyed} 件です！`
+    this.notice = this.districtUnlocked
+      ? `麻布十番の解体を再開。残り ${this.breakables.length - this.destroyed} 件です！`
+      : this.destroyed > 0
+        ? `続きから再開。残り ${this.breakables.length - this.destroyed} 件です！`
       : "解体業務、開始です！まずは机と椅子から！";
     this.noticeTone = "good";
     this.noticeUntil = this.elapsed + 3.2;
@@ -350,8 +405,19 @@ export class OfficeDemolitionWorld {
     this.dashWallBreaks = 0;
     this.cascadeBreaks = 0;
     this.kanpaiSteelBreaks = 0;
+    this.cityDestroyed = 0;
+    this.districtUnlocked = false;
+    this.giantScale = 1;
+    this.giantScaleTarget = 1;
+    this.giantStage = 0;
+    this.radarActive = false;
+    this.radarArrow = "↑";
+    this.radarDistance = 0;
+    this.ultimateTimer = 0;
+    this.lastBreakAt = this.elapsed;
     this.playerAnchor.position.set(0, 0, 15);
     this.playerAnchor.rotation.y = 0;
+    this.playerAnchor.scale.setScalar(1);
     for (const item of this.breakables) {
       item.alive = true;
       item.carried = false;
@@ -370,6 +436,10 @@ export class OfficeDemolitionWorld {
       piece.active = false;
       piece.mesh.visible = false;
     }
+    for (const beam of [...this.beerBeams]) this.removeBeerBeam(beam);
+    this.beerBeams.length = 0;
+    for (const meteor of this.mugMeteors) this.scene.remove(meteor.group);
+    this.mugMeteors.length = 0;
     this.phase = "playing";
     this.notice = "新しい解体計画で、最初から開始です！";
     this.noticeTone = "good";
@@ -441,6 +511,8 @@ export class OfficeDemolitionWorld {
       effect.mesh.geometry.dispose();
       (effect.mesh.material as THREE.Material).dispose();
     }
+    for (const beam of [...this.beerBeams]) this.removeBeerBeam(beam);
+    for (const meteor of this.mugMeteors) this.scene.remove(meteor.group);
     this.factory.dispose();
   }
 
@@ -452,12 +524,12 @@ export class OfficeDemolitionWorld {
     sun.position.set(-18, 34, 24);
     sun.castShadow = true;
     sun.shadow.mapSize.set(2048, 2048);
-    sun.shadow.camera.left = -34;
-    sun.shadow.camera.right = 34;
-    sun.shadow.camera.top = 28;
-    sun.shadow.camera.bottom = -28;
+    sun.shadow.camera.left = -105;
+    sun.shadow.camera.right = 105;
+    sun.shadow.camera.top = 90;
+    sun.shadow.camera.bottom = -90;
     sun.shadow.camera.near = 1;
-    sun.shadow.camera.far = 90;
+    sun.shadow.camera.far = 180;
     sun.shadow.bias = -0.00015;
     this.scene.add(sun);
 
@@ -468,16 +540,63 @@ export class OfficeDemolitionWorld {
 
   private buildBackdrop() {
     const ground = new THREE.Mesh(
-      new THREE.PlaneGeometry(120, 100),
-      this.factory.material(0xc8b88e, { roughness: 0.96 }),
+      new THREE.PlaneGeometry(220, 180),
+      this.factory.material(0x4b5961, { roughness: 0.94 }),
     );
     ground.rotation.x = -Math.PI / 2;
     ground.position.y = -0.23;
     ground.receiveShadow = true;
     this.scene.add(ground);
 
+    const officePad = new THREE.Mesh(
+      new THREE.PlaneGeometry(62, 46),
+      this.factory.material(0xc8b88e, { roughness: 0.96 }),
+    );
+    officePad.rotation.x = -Math.PI / 2;
+    officePad.position.y = -0.215;
+    officePad.receiveShadow = true;
+    this.scene.add(officePad);
+
+    const sidewalkMaterial = this.factory.material(0xb9b6ad, { roughness: 0.9 });
+    for (const x of [-84, -60, -36, 36, 60, 84]) {
+      const sidewalk = new THREE.Mesh(
+        new THREE.BoxGeometry(16, 0.18, 150),
+        sidewalkMaterial,
+      );
+      sidewalk.position.set(x, -0.18, 0);
+      sidewalk.receiveShadow = true;
+      this.scene.add(sidewalk);
+    }
+    for (const z of [-66, -44, -24, 24, 44, 66]) {
+      const sidewalk = new THREE.Mesh(
+        new THREE.BoxGeometry(190, 0.19, 12),
+        sidewalkMaterial,
+      );
+      sidewalk.position.set(0, -0.17, z);
+      sidewalk.receiveShadow = true;
+      this.scene.add(sidewalk);
+    }
+    const laneMaterial = this.factory.material(0xf4e5a4, {
+      roughness: 0.8,
+      emissive: 0x8c772f,
+      emissiveIntensity: 0.08,
+    });
+    for (let z = -72; z <= 72; z += 8) {
+      this.scene.add(this.factory.box(
+        [0.16, 0.025, 3.2],
+        0xf4e5a4,
+        [0, -0.105, z],
+        { rounded: false, roughness: 0.8 },
+      ));
+    }
+    for (let x = -88; x <= 88; x += 8) {
+      const marker = new THREE.Mesh(new THREE.BoxGeometry(3.2, 0.025, 0.16), laneMaterial);
+      marker.position.set(x, -0.105, 0);
+      this.scene.add(marker);
+    }
+
     const skyline = new THREE.Group();
-    skyline.position.z = -48;
+    skyline.position.z = -112;
     for (let index = 0; index < 26; index += 1) {
       const x = -55 + index * 4.5;
       const height = 7 + ((index * 13) % 17);
@@ -506,7 +625,7 @@ export class OfficeDemolitionWorld {
     this.scene.add(skyline);
 
     const tower = new THREE.Group();
-    tower.position.set(-18, -0.2, -41);
+    tower.position.set(-34, -0.2, -98);
     const towerMaterial = this.factory.material(0xe94e43, {
       metalness: 0.35,
       roughness: 0.44,
@@ -538,7 +657,7 @@ export class OfficeDemolitionWorld {
         depthWrite: false,
       }),
     );
-    skyGlow.position.set(28, 31, -66);
+    skyGlow.position.set(45, 40, -125);
     this.scene.add(skyGlow);
   }
 
@@ -551,7 +670,7 @@ export class OfficeDemolitionWorld {
           roughness: material === "steel" || material === "metal" ? 0.44 : 0.88,
           metalness: material === "steel" ? 0.62 : material === "metal" ? 0.35 : 0,
         }),
-        600,
+        1_200,
       );
       mesh.count = 0;
       mesh.receiveShadow = true;
@@ -568,6 +687,110 @@ export class OfficeDemolitionWorld {
     this.buildMeetingSuite();
     this.buildArchiveAndServer();
     this.buildWindowLounge();
+  }
+
+  private buildAzabuDistrict() {
+    const floorHeight = 3.25;
+    for (const lot of AZABU_CITY_LOTS) {
+      const supportGroup = `azabu-lot-${lot.id}`;
+      for (let floor = 0; floor < lot.floors; floor += 1) {
+        this.addBreakable({
+          id: `city-${lot.id}-floor-${floor}`,
+          name: `${lot.name} ${floor + 1}階`,
+          group: this.factory.makeCityFloor(
+            lot.width,
+            lot.depth,
+            floorHeight,
+            floor,
+            lot.variant,
+          ),
+          material: "concrete",
+          position: [lot.x, floor * floorHeight, lot.z],
+          hp: 4 + Math.floor(floor / 2),
+          mass: 720 + floor * 95,
+          score: 980 + floor * 130,
+          radius: Math.max(lot.width, lot.depth) * 0.48,
+          grabbable: false,
+          solid: floor === 0,
+          supportGroup,
+          supportWeight: floor === 0 ? 1 : 0,
+          chainPower: 2.15 + floor * 0.08,
+          district: "city",
+        });
+      }
+
+      const sideFacing = lot.id.startsWith("side-");
+      const storefront = this.factory.makeCityStorefront(
+        sideFacing ? lot.depth : lot.width,
+        lot.variant,
+      );
+      let storefrontX = lot.x;
+      let storefrontZ = lot.z;
+      if (sideFacing) {
+        storefront.rotation.y = Math.PI / 2;
+        storefrontX += lot.x < 0
+          ? lot.width / 2 + 0.15
+          : -lot.width / 2 - 0.15;
+      } else {
+        storefrontZ += lot.z < 0
+          ? lot.depth / 2 + 0.15
+          : -lot.depth / 2 - 0.15;
+      }
+      this.addBreakable({
+        id: `city-${lot.id}-storefront`,
+        name: `${lot.name} 店舗ファサード`,
+        group: storefront,
+        material: lot.variant % 3 === 0 ? "metal" : "glass",
+        position: [storefrontX, 0, storefrontZ],
+        hp: 2,
+        mass: 110,
+        score: 260,
+        radius: Math.max(2.2, (sideFacing ? lot.depth : lot.width) * 0.42),
+        grabbable: false,
+        solid: false,
+        supportGroup,
+        supportWeight: 0,
+        chainPower: 1.15,
+        district: "city",
+      });
+
+      this.addBreakable({
+        id: `city-${lot.id}-roof`,
+        name: `${lot.name} 屋上鉄骨`,
+        group: this.factory.makeCityRoof(lot.width, lot.depth, lot.variant),
+        material: "steel",
+        position: [lot.x, lot.floors * floorHeight, lot.z],
+        hp: 5,
+        mass: 880,
+        score: 1_420,
+        radius: Math.max(lot.width, lot.depth) * 0.5,
+        grabbable: false,
+        solid: false,
+        supportGroup,
+        supportWeight: 0,
+        chainPower: 2.5,
+        district: "city",
+      });
+    }
+
+    for (const prop of AZABU_STREET_PROPS) {
+      this.addBreakable({
+        id: `city-prop-${prop.id}`,
+        name: prop.name,
+        group: this.factory.makeStreetProp(prop.kind, prop.variant),
+        material: prop.kind === "tree" ? "wood" : "metal",
+        position: [prop.x, 0, prop.z],
+        rotation: prop.variant % 2 ? Math.PI / 2 : 0,
+        hp: prop.kind === "lamp" ? 2 : 1,
+        mass: prop.kind === "tree" ? 78 : prop.kind === "vending" ? 180 : 95,
+        score: prop.kind === "vending" ? 260 : 150,
+        radius: prop.kind === "tree" ? 1.45 : 0.85,
+        grabbable: prop.kind === "vending" || prop.kind === "sign",
+        solid: prop.kind === "vending" || prop.kind === "tree",
+        chainPower: prop.kind === "tree" ? 0.85 : 0.72,
+        district: "city",
+      });
+    }
   }
 
   private buildSlabs() {
@@ -1074,6 +1297,7 @@ export class OfficeDemolitionWorld {
       supportGroup: options.supportGroup,
       supportWeight: options.supportWeight ?? 0,
       chainPower: options.chainPower ?? 0.6,
+      district: options.district ?? "office",
     };
     item.group.position.set(...options.position);
     item.group.rotation.y += options.rotation ?? 0;
@@ -1131,12 +1355,12 @@ export class OfficeDemolitionWorld {
   }
 
   private makeDustPoints() {
-    const count = 260;
+    const count = 620;
     const positions = new Float32Array(count * 3);
     for (let index = 0; index < count; index += 1) {
-      positions[index * 3] = (Math.random() - 0.5) * 58;
-      positions[index * 3 + 1] = Math.random() * 6.5 + 0.2;
-      positions[index * 3 + 2] = (Math.random() - 0.5) * 42;
+      positions[index * 3] = (Math.random() - 0.5) * 198;
+      positions[index * 3 + 1] = Math.random() * 18 + 0.2;
+      positions[index * 3 + 2] = (Math.random() - 0.5) * 164;
     }
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
@@ -1212,6 +1436,7 @@ export class OfficeDemolitionWorld {
     this.updateDebris(dt);
     this.updateEffects(dt);
     this.updateDust(dt);
+    this.updateGiantScale(dt);
     this.updateCamera(dt);
 
     if (this.phase === "levelup") {
@@ -1229,6 +1454,7 @@ export class OfficeDemolitionWorld {
     this.playSeconds += dt;
     this.lastSave += dt;
     this.dashCooldown = Math.max(0, this.dashCooldown - dt);
+    this.ultimateTimer = Math.max(0, this.ultimateTimer - dt);
 
     if (this.comboTimer > 0) {
       this.comboTimer -= dt;
@@ -1244,6 +1470,7 @@ export class OfficeDemolitionWorld {
     this.updateCarried(dt);
     this.updateFlying(dt);
     this.updatePendingImpact();
+    this.updateUltimateEffects(dt);
     this.updateCollapses();
     this.updateTarget();
     this.actions?.update(dt, this.elapsed, moving);
@@ -1315,18 +1542,22 @@ export class OfficeDemolitionWorld {
 
   private updatePlayer(dt: number) {
     const level = getLevelForXp(this.xp).level;
+    const speedScale = 1 + Math.max(0, this.giantScale - 1) * 0.12;
     if (this.dashTimer > 0) {
       this.dashTimer -= dt;
       const forward = this.forward();
       this.moveVector.copy(forward);
-      this.movePlayer(forward.x * DASH_SPEED * dt, forward.z * DASH_SPEED * dt);
+      this.movePlayer(
+        forward.x * DASH_SPEED * speedScale * dt,
+        forward.z * DASH_SPEED * speedScale * dt,
+      );
       this.damageAlongDash(level);
       this.shake = Math.max(this.shake, 0.08);
       return;
     }
 
     if (this.moveVector.lengthSq() < 0.0001) return;
-    const speed = this.carried ? PLAYER_SPEED * 0.78 : PLAYER_SPEED;
+    const speed = (this.carried ? PLAYER_SPEED * 0.78 : PLAYER_SPEED) * speedScale;
     this.movePlayer(this.moveVector.x * speed * dt, this.moveVector.z * speed * dt);
     const desiredRotation = getPlayerFacingYaw(
       this.moveVector.x,
@@ -1341,19 +1572,32 @@ export class OfficeDemolitionWorld {
 
   private movePlayer(dx: number, dz: number) {
     const current = this.playerAnchor.position;
+    const halfX = this.districtUnlocked ? CITY_HALF_X : OFFICE_HALF_X;
+    const halfZ = this.districtUnlocked ? CITY_HALF_Z : OFFICE_HALF_Z;
+    const boundaryPadding = Math.min(3.4, 0.8 * this.giantScale);
     const next = new THREE.Vector3(
-      THREE.MathUtils.clamp(current.x + dx, -WORLD_HALF_X + 0.8, WORLD_HALF_X - 0.8),
+      THREE.MathUtils.clamp(
+        current.x + dx,
+        -halfX + boundaryPadding,
+        halfX - boundaryPadding,
+      ),
       0,
-      THREE.MathUtils.clamp(current.z + dz, -WORLD_HALF_Z + 0.8, WORLD_HALF_Z - 0.8),
+      THREE.MathUtils.clamp(
+        current.z + dz,
+        -halfZ + boundaryPadding,
+        halfZ - boundaryPadding,
+      ),
     );
     for (const item of this.breakables) {
       if (!item.alive || item.carried || !item.solid || item.material === "slab") continue;
+      if (!this.isItemAccessible(item)) continue;
       if (item.group.position.y > 1.2) continue;
       const distance = Math.hypot(
         next.x - item.group.position.x,
         next.z - item.group.position.z,
       );
-      const minDistance = PLAYER_RADIUS + Math.min(item.radius, 1.35);
+      const minDistance = PLAYER_RADIUS * Math.min(this.giantScale, 3.2)
+        + Math.min(item.radius, 2.3);
       if (distance >= minDistance || distance < 0.0001) continue;
       const normalX = (next.x - item.group.position.x) / distance;
       const normalZ = (next.z - item.group.position.z) / distance;
@@ -1365,14 +1609,19 @@ export class OfficeDemolitionWorld {
 
   private updateCamera(dt: number) {
     const portrait = this.container.clientHeight > this.container.clientWidth * 1.1;
+    const cameraScale = 0.78 + this.giantScale * 0.34;
     const offset = portrait
-      ? new THREE.Vector3(11.5, 18.5, 19.5)
-      : new THREE.Vector3(12.5, 15.3, 18.5);
+      ? new THREE.Vector3(11.5, 18.5, 19.5).multiplyScalar(cameraScale)
+      : new THREE.Vector3(12.5, 15.3, 18.5).multiplyScalar(cameraScale);
     this.desiredCamera.copy(this.playerAnchor.position).add(offset);
     const response = 1 - Math.exp(-dt * 4.8);
     this.camera.position.lerp(this.desiredCamera, response);
     this.cameraLook.lerp(
-      this.playerAnchor.position.clone().add(new THREE.Vector3(0, 1.25, -2.5)),
+      this.playerAnchor.position.clone().add(new THREE.Vector3(
+        0,
+        1.25 * this.giantScale,
+        -2.5 * Math.min(2.4, this.giantScale),
+      )),
       response,
     );
     const shakeStrength = this.shakeEnabled ? this.shake : 0;
@@ -1390,7 +1639,7 @@ export class OfficeDemolitionWorld {
     const positions = this.dustPoints.geometry.getAttribute("position") as THREE.BufferAttribute;
     for (let index = 0; index < positions.count; index += 1) {
       let y = positions.getY(index) + dt * (0.015 + (index % 5) * 0.004);
-      if (y > 7) y = 0.1;
+      if (y > 19) y = 0.1;
       positions.setY(index, y);
     }
     positions.needsUpdate = true;
@@ -1400,15 +1649,18 @@ export class OfficeDemolitionWorld {
     const forward = this.forward();
     const origin = this.playerAnchor.position;
     const level = getLevelForXp(this.xp).level;
+    const reach = 5.5 * Math.min(2.8, this.giantScale);
+    const reachHeight = 5.2 * Math.min(3.5, this.giantScale);
     let best: Breakable | null = null;
     let bestScore = Number.POSITIVE_INFINITY;
     for (const item of this.breakables) {
-      if (!item.alive || item.carried || item.group.position.y > 5) continue;
+      if (!item.alive || item.carried || !this.isItemAccessible(item)) continue;
+      if (item.group.position.y > reachHeight) continue;
       if (item.group.position.y < -0.25 && level < 5) continue;
       const dx = item.group.position.x - origin.x;
       const dz = item.group.position.z - origin.z;
       const distance = Math.hypot(dx, dz) - Math.min(item.radius, 2);
-      if (distance > 5.5) continue;
+      if (distance > reach) continue;
       const dot = (dx * forward.x + dz * forward.z) / Math.max(0.001, Math.hypot(dx, dz));
       if (dot < 0.25) continue;
       const score = distance - dot * 1.8;
@@ -1417,6 +1669,42 @@ export class OfficeDemolitionWorld {
         best = item;
       }
     }
+
+    this.radarActive = false;
+    this.radarDistance = 0;
+    this.radarArrow = "↑";
+    if (!best) {
+      const radarCandidates = this.breakables
+        .filter((item) => (
+          item.alive
+          && !item.carried
+          && this.isItemAccessible(item)
+          && canBreakMaterial(level, item.material)
+          && !(item.group.position.y < -0.25 && level < 5)
+        ))
+        .map((item) => ({
+          item,
+          distance: Math.hypot(
+            item.group.position.x - origin.x,
+            item.group.position.z - origin.z,
+          ),
+        }))
+        .sort((a, b) => a.distance - b.distance);
+      const shouldScan = radarCandidates.length > 0
+        && (radarCandidates.length <= 28 || this.elapsed - this.lastBreakAt >= 10);
+      const nearest = shouldScan ? radarCandidates[0] : undefined;
+      if (nearest) {
+        best = nearest.item;
+        this.radarActive = true;
+        this.radarDistance = nearest.distance;
+        this.radarArrow = getRadarArrow(
+          best.group.position.x - origin.x,
+          best.group.position.z - origin.z,
+          this.playerAnchor.rotation.y,
+        );
+      }
+    }
+
     this.target = best;
     if (!best) {
       this.targetRing.visible = false;
@@ -1428,9 +1716,22 @@ export class OfficeDemolitionWorld {
     (this.targetRing.material as THREE.MeshBasicMaterial).color.setHex(color);
     (this.targetBeacon.material as THREE.MeshBasicMaterial).color.setHex(color);
     this.targetRing.position.set(best.group.position.x, 0.16, best.group.position.z);
-    this.targetRing.scale.setScalar(1 + Math.sin(this.elapsed * 4.5) * 0.08);
+    this.targetRing.scale.setScalar(
+      (this.radarActive ? 2.15 : 1) + Math.sin(this.elapsed * 4.5) * 0.08,
+    );
     this.targetRing.visible = true;
-    this.targetBeacon.position.set(best.group.position.x, 0.8, best.group.position.z);
+    this.targetBeacon.position.set(
+      best.group.position.x,
+      this.radarActive
+        ? Math.max(4, best.group.position.y + 4.8 + Math.sin(this.elapsed * 3) * 0.5)
+        : Math.max(0.8, best.group.position.y + 0.8),
+      best.group.position.z,
+    );
+    this.targetBeacon.scale.set(
+      this.radarActive ? 2.2 : 1,
+      this.radarActive ? 8 : 1,
+      this.radarActive ? 2.2 : 1,
+    );
     this.targetBeacon.visible = true;
   }
 
@@ -1438,8 +1739,11 @@ export class OfficeDemolitionWorld {
     if (this.elapsed - this.lastAttack < 0.42 || this.pendingImpact) return;
     this.lastAttack = this.elapsed;
     const forward = this.forward();
-    const center = this.playerAnchor.position.clone().addScaledVector(forward, 1.42);
-    center.y = 0.5;
+    const center = this.playerAnchor.position.clone().addScaledVector(
+      forward,
+      1.42 * Math.min(3.6, this.giantScale),
+    );
+    center.y = 0.5 * this.giantScale;
     this.pendingImpact = {
       at: this.elapsed + 0.17,
       kind: "smash",
@@ -1456,7 +1760,7 @@ export class OfficeDemolitionWorld {
       return;
     }
     if (this.dashCooldown > 0 || this.dashTimer > 0) return;
-    this.dashTimer = 0.52;
+    this.dashTimer = 0.52 + Math.min(0.22, (this.giantScale - 1) * 0.05);
     this.dashCooldown = 1.05;
     this.audio.swing(true);
     this.notice = "ショルダーダッシュ！壁まで一直線です！";
@@ -1502,6 +1806,7 @@ export class OfficeDemolitionWorld {
     if (this.elapsed - this.lastAttack < 1 || this.pendingImpact) return;
     this.beer = 0;
     this.lastAttack = this.elapsed;
+    this.ultimateTimer = 4.6;
     const center = this.playerAnchor.position.clone();
     center.y = 0;
     this.pendingImpact = {
@@ -1511,7 +1816,7 @@ export class OfficeDemolitionWorld {
     };
     this.actions?.triggerSmash(true);
     this.audio.beer();
-    this.notice = "乾杯クラッシュ！何もかも、ついでに更地です！";
+    this.notice = "超乾杯奥義！ビールビーム、ジョッキメテオ発射！";
     this.noticeTone = "level";
     this.noticeUntil = this.elapsed + 2;
   }
@@ -1531,11 +1836,15 @@ export class OfficeDemolitionWorld {
     let distance = Number.POSITIVE_INFINITY;
     for (const item of this.breakables) {
       if (!item.alive || item.carried || !item.grabbable || item.tier > level) continue;
+      if (!this.isItemAccessible(item)) continue;
       const itemDistance = Math.hypot(
         item.group.position.x - origin.x,
         item.group.position.z - origin.z,
       ) - item.radius;
-      if (itemDistance < distance && itemDistance <= 2.2) {
+      if (
+        itemDistance < distance
+        && itemDistance <= 2.2 * Math.min(2.6, this.giantScale)
+      ) {
         distance = itemDistance;
         best = item;
       }
@@ -1562,12 +1871,13 @@ export class OfficeDemolitionWorld {
     this.carried = null;
     const forward = this.forward();
     item.group.position.copy(this.playerAnchor.position)
-      .addScaledVector(forward, 1.35)
-      .add(new THREE.Vector3(0, 1.35, 0));
+      .addScaledVector(forward, 1.35 * Math.min(2.8, this.giantScale))
+      .add(new THREE.Vector3(0, 1.35 * this.giantScale, 0));
     this.flying.push({
       item,
-      velocity: forward.multiplyScalar(12 + Math.min(5, item.mass / 45))
-        .add(new THREE.Vector3(0, 4.2, 0)),
+      velocity: forward.multiplyScalar(
+        12 + Math.min(5, item.mass / 45) + this.giantScale * 1.6,
+      ).add(new THREE.Vector3(0, 4.2 + this.giantScale * 0.8, 0)),
       spin: new THREE.Vector3(
         (Math.random() - 0.5) * 7,
         (Math.random() - 0.5) * 9,
@@ -1585,8 +1895,8 @@ export class OfficeDemolitionWorld {
     if (!this.carried) return;
     const forward = this.forward();
     const targetPosition = this.playerAnchor.position.clone()
-      .addScaledVector(forward, 1.15)
-      .add(new THREE.Vector3(0, 1.15, 0));
+      .addScaledVector(forward, 1.15 * Math.min(2.8, this.giantScale))
+      .add(new THREE.Vector3(0, 1.15 * this.giantScale, 0));
     this.carried.group.position.lerp(targetPosition, 1 - Math.exp(-dt * 22));
     this.carried.group.rotation.y += dt * 0.7;
   }
@@ -1608,7 +1918,8 @@ export class OfficeDemolitionWorld {
       let collided: Breakable | null = null;
       for (const target of this.breakables) {
         if (!target.alive || target === flying.item || target.carried) continue;
-        if (target.group.position.y > 5.2) continue;
+        if (!this.isItemAccessible(target)) continue;
+        if (target.group.position.y > 5.2 * Math.min(3.5, this.giantScale)) continue;
         const distance = target.group.position.distanceTo(flying.item.group.position)
           - Math.min(target.radius, 2.5)
           - Math.min(flying.item.radius, 1.2);
@@ -1651,40 +1962,252 @@ export class OfficeDemolitionWorld {
     const impact = this.pendingImpact;
     this.pendingImpact = null;
     if (impact.kind === "smash") {
-      this.applyAreaDamage(impact.center, 2.25, 2.15, "smash", 0);
-      this.spawnShockwave(impact.center, 0xffffff, 2.35, 0.34);
-      this.shake = Math.max(this.shake, 0.34);
+      const radius = 2.25 * Math.min(3.4, this.giantScale);
+      this.applyAreaDamage(
+        impact.center,
+        radius,
+        2.15 + this.giantScale * 0.72,
+        "smash",
+        0,
+      );
+      this.spawnShockwave(impact.center, 0xffffff, radius * 1.05, 0.34);
+      this.shake = Math.max(this.shake, 0.34 + this.giantScale * 0.05);
       navigator.vibrate?.(20);
     } else if (impact.kind === "stomp") {
-      this.applyAreaDamage(impact.center, 4.4, 3.15, "stomp", 0);
-      this.spawnShockwave(impact.center, 0xff8468, 4.6, 0.58);
-      this.spawnShockwave(impact.center, 0xffffff, 3.1, 0.4);
-      this.shake = Math.max(this.shake, 0.72);
+      const radius = 4.4 * Math.min(3.8, this.giantScale);
+      this.applyAreaDamage(
+        impact.center,
+        radius,
+        3.15 + this.giantScale * 1.1,
+        "stomp",
+        0,
+      );
+      this.spawnShockwave(impact.center, 0xff8468, radius * 1.05, 0.68);
+      this.spawnShockwave(impact.center, 0xffffff, radius * 0.72, 0.48);
+      this.shake = Math.max(this.shake, 0.72 + this.giantScale * 0.12);
       navigator.vibrate?.([35, 28, 45]);
     } else {
-      this.applyAreaDamage(impact.center, 8.8, 8, "kanpai", 0);
-      this.spawnShockwave(impact.center, 0xffc642, 9.2, 0.9);
-      this.spawnShockwave(impact.center, 0x50e1c2, 6.7, 0.72);
-      this.shake = Math.max(this.shake, 1.15);
+      this.fireBeerBeamAndMeteors();
+      this.spawnShockwave(
+        impact.center,
+        0xffc642,
+        11 * Math.min(2.5, this.giantScale),
+        1.1,
+      );
+      this.spawnShockwave(
+        impact.center,
+        0x50e1c2,
+        7.5 * Math.min(2.5, this.giantScale),
+        0.82,
+      );
+      this.shake = Math.max(this.shake, 1.45 + this.giantScale * 0.12);
       navigator.vibrate?.([50, 35, 80]);
     }
+  }
+
+  private fireBeerBeamAndMeteors() {
+    const direction = this.forward();
+    const origin = this.playerAnchor.position.clone();
+    origin.y = 1.35 * this.giantScale;
+    const beamLength = 58 + this.giantScale * 10;
+    const beamWidth = 2.4 + this.giantScale * 1.25;
+    const beamGroup = new THREE.Group();
+    const outerMaterial = new THREE.MeshBasicMaterial({
+      color: 0xff9f18,
+      transparent: true,
+      opacity: 0.62,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+    const coreMaterial = new THREE.MeshBasicMaterial({
+      color: 0xfff4b0,
+      transparent: true,
+      opacity: 0.92,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+    const outer = new THREE.Mesh(
+      new THREE.CylinderGeometry(beamWidth, beamWidth * 0.72, beamLength, 18, 1, true),
+      outerMaterial,
+    );
+    const core = new THREE.Mesh(
+      new THREE.CylinderGeometry(beamWidth * 0.36, beamWidth * 0.28, beamLength, 14),
+      coreMaterial,
+    );
+    beamGroup.add(outer, core);
+    beamGroup.position.copy(origin).addScaledVector(direction, beamLength / 2);
+    beamGroup.quaternion.setFromUnitVectors(
+      new THREE.Vector3(0, 1, 0),
+      new THREE.Vector3(direction.x, 0, direction.z).normalize(),
+    );
+    beamGroup.scale.set(0.2, 1, 0.2);
+    this.scene.add(beamGroup);
+    this.beerBeams.push({
+      group: beamGroup,
+      materials: [outerMaterial, coreMaterial],
+      age: 0,
+      lifetime: 1.25,
+    });
+
+    const beamTargets = this.breakables
+      .filter((item) => (
+        item.alive
+        && !item.carried
+        && this.isItemAccessible(item)
+        && canBreakMaterial(5, item.material)
+      ))
+      .map((item) => {
+        const dx = item.group.position.x - origin.x;
+        const dz = item.group.position.z - origin.z;
+        const projection = dx * direction.x + dz * direction.z;
+        const perpendicular = Math.abs(dx * direction.z - dz * direction.x);
+        return { item, projection, perpendicular };
+      })
+      .filter(({ item, projection, perpendicular }) => (
+        projection >= -2
+        && projection <= beamLength
+        && perpendicular <= beamWidth + Math.min(4, item.radius * 0.45)
+      ))
+      .sort((a, b) => a.projection - b.projection);
+
+    for (const [index, entry] of beamTargets.entries()) {
+      this.damageItem(
+        entry.item,
+        22 + this.giantScale * 5,
+        "kanpai",
+        2 + Math.min(4, Math.floor(index / 5)),
+      );
+    }
+
+    const remaining = this.breakables
+      .filter((item) => (
+        item.alive
+        && !item.carried
+        && this.isItemAccessible(item)
+        && canBreakMaterial(5, item.material)
+      ))
+      .sort((a, b) => {
+        const distanceA = a.group.position.distanceToSquared(origin);
+        const distanceB = b.group.position.distanceToSquared(origin);
+        return distanceB - distanceA;
+      });
+    const meteorCount = Math.min(
+      remaining.length,
+      remaining.length <= 32 ? remaining.length : 12 + Math.floor(this.giantScale * 4),
+    );
+    const chosen: Breakable[] = [];
+    for (let index = 0; index < meteorCount; index += 1) {
+      const sourceIndex = meteorCount === remaining.length
+        ? index
+        : Math.floor(index * remaining.length / meteorCount);
+      const item = remaining[sourceIndex];
+      if (item && !chosen.includes(item)) chosen.push(item);
+    }
+    chosen.forEach((item, index) => {
+      const target = item.group.position.clone();
+      const start = target.clone().add(new THREE.Vector3(
+        (index % 3 - 1) * 2.2,
+        28 + (index % 6) * 3.2 + this.giantScale * 2,
+        ((index + 1) % 3 - 1) * 2,
+      ));
+      const mug = this.factory.makeMeteorMug(0.9 + this.giantScale * 0.12);
+      mug.position.copy(start);
+      mug.rotation.set(index * 0.31, index * 0.57, -0.45);
+      this.scene.add(mug);
+      this.mugMeteors.push({
+        group: mug,
+        start,
+        target,
+        age: -index * 0.065,
+        duration: 0.72 + index % 4 * 0.08,
+      });
+    });
+
+    this.audio.ultimate();
+    this.notice = `ビールビーム ${beamTargets.length}件直撃！ ジョッキメテオ ${chosen.length}発！`;
+    this.noticeTone = "level";
+    this.noticeUntil = this.elapsed + 3.8;
+  }
+
+  private updateUltimateEffects(dt: number) {
+    for (let index = this.beerBeams.length - 1; index >= 0; index -= 1) {
+      const beam = this.beerBeams[index];
+      if (!beam) continue;
+      beam.age += dt;
+      const ratio = Math.min(1, beam.age / beam.lifetime);
+      const pulse = 0.84 + Math.sin(ratio * Math.PI * 9) * 0.16;
+      beam.group.scale.set(
+        (0.2 + Math.sin(Math.min(1, ratio * 5) * Math.PI / 2) * 0.8) * pulse,
+        1,
+        (0.2 + Math.sin(Math.min(1, ratio * 5) * Math.PI / 2) * 0.8) * pulse,
+      );
+      beam.materials[0]!.opacity = (1 - ratio) * 0.62;
+      beam.materials[1]!.opacity = (1 - ratio) * 0.92;
+      if (ratio >= 1) {
+        this.removeBeerBeam(beam);
+        this.beerBeams.splice(index, 1);
+      }
+    }
+
+    for (let index = this.mugMeteors.length - 1; index >= 0; index -= 1) {
+      const meteor = this.mugMeteors[index];
+      if (!meteor) continue;
+      meteor.age += dt;
+      if (meteor.age < 0) continue;
+      const ratio = Math.min(1, meteor.age / meteor.duration);
+      const fall = ratio * ratio * (3 - 2 * ratio);
+      meteor.group.position.lerpVectors(meteor.start, meteor.target, fall);
+      meteor.group.rotation.x += dt * 6.5;
+      meteor.group.rotation.y += dt * 8.2;
+      meteor.group.rotation.z += dt * 4.5;
+      if (ratio < 1) continue;
+      this.scene.remove(meteor.group);
+      this.mugMeteors.splice(index, 1);
+      const radius = 3.2 + this.giantScale * 1.05;
+      this.applyAreaDamage(
+        meteor.target,
+        radius,
+        18 + this.giantScale * 4,
+        "kanpai",
+        3,
+      );
+      this.spawnShockwave(meteor.target, 0xffb326, radius * 1.2, 0.62);
+      this.spawnShockwave(meteor.target, 0xffffff, radius * 0.72, 0.4);
+      this.spawnDebris(meteor.target, "concrete", 12, 5.5 + this.giantScale);
+      this.audio.meteor();
+      this.shake = Math.max(this.shake, 0.65 + this.giantScale * 0.08);
+    }
+  }
+
+  private removeBeerBeam(beam: BeerBeamEffect) {
+    this.scene.remove(beam.group);
+    beam.group.traverse((object) => {
+      if (object instanceof THREE.Mesh) object.geometry.dispose();
+    });
+    for (const material of beam.materials) material.dispose();
   }
 
   private damageAlongDash(level: DestructionTier) {
     const center = this.playerAnchor.position;
     for (const item of this.breakables) {
       if (!item.alive || item.carried) continue;
+      if (!this.isItemAccessible(item)) continue;
       const distance = Math.hypot(
         item.group.position.x - center.x,
         item.group.position.z - center.z,
       ) - Math.min(item.radius, 1.5);
-      if (distance > 1.05) continue;
+      if (distance > 1.05 * Math.min(3.5, this.giantScale)) continue;
       const lastDash = Number(item.group.userData.lastDashAt ?? -10);
       if (this.elapsed - lastDash < 0.5) continue;
       item.group.userData.lastDashAt = this.elapsed;
       if (item.tier <= level) {
-        this.damageItem(item, 2.8, "dash", 0);
-        this.spawnShockwave(center, 0x47bfff, 1.4, 0.22);
+        this.damageItem(item, 2.8 + this.giantScale * 0.9, "dash", 0);
+        this.spawnShockwave(
+          center,
+          0x47bfff,
+          1.4 * Math.min(3, this.giantScale),
+          0.22,
+        );
       } else {
         this.lockedItem(item);
         this.dashTimer = Math.min(this.dashTimer, 0.08);
@@ -1702,7 +2225,11 @@ export class OfficeDemolitionWorld {
     let hits = 0;
     let locked: Breakable | null = null;
     const targets = this.breakables
-      .filter((item) => item.alive && !item.carried)
+      .filter((item) => (
+        item.alive
+        && !item.carried
+        && this.isItemAccessible(item)
+      ))
       .map((item) => ({
         item,
         distance: Math.hypot(
@@ -1714,7 +2241,10 @@ export class OfficeDemolitionWorld {
       .sort((a, b) => a.distance - b.distance);
 
     for (const { item, distance } of targets) {
-      if (item.group.position.y > 5.2 && source !== "kanpai") continue;
+      if (
+        item.group.position.y > 5.2 * Math.min(3.5, this.giantScale)
+        && source !== "kanpai"
+      ) continue;
       if (!canBreakMaterial(getLevelForXp(this.xp).level, item.material)) {
         locked ??= item;
         continue;
@@ -1738,6 +2268,7 @@ export class OfficeDemolitionWorld {
     chainDepth: number,
   ) {
     if (!item.alive) return false;
+    if (!this.isItemAccessible(item)) return false;
     const level = getLevelForXp(this.xp).level;
     if (!canBreakMaterial(level, item.material)) {
       this.lockedItem(item);
@@ -1770,6 +2301,7 @@ export class OfficeDemolitionWorld {
     forced: boolean,
   ) {
     if (!item.alive) return;
+    if (!this.isItemAccessible(item)) return;
     const levelBefore = getLevelForXp(this.xp).level;
     if (!forced && !canBreakMaterial(levelBefore, item.material)) return;
     const position = item.group.position.clone();
@@ -1779,6 +2311,28 @@ export class OfficeDemolitionWorld {
     item.hp = 0;
     this.destroyedIds.add(item.id);
     this.destroyed += 1;
+    this.lastBreakAt = this.elapsed;
+    let districtJustUnlocked = false;
+    if (
+      !this.districtUnlocked
+      && item.district === "office"
+      && item.material === "plaster"
+      && isOfficeExteriorWall(item.id)
+    ) {
+      this.districtUnlocked = true;
+      districtJustUnlocked = true;
+    }
+    let giantStageIncreased = false;
+    if (item.district === "city") {
+      this.cityDestroyed += 1;
+      this.giantScaleTarget = getGiantScale(
+        this.cityDestroyed,
+        this.cityBreakableTotal,
+      );
+      const nextStage = getGiantStage(this.giantScaleTarget);
+      giantStageIncreased = nextStage > this.giantStage;
+      this.giantStage = Math.max(this.giantStage, nextStage);
+    }
     this.combo += 1;
     this.chain = chainDepth > 0 ? Math.max(this.chain, chainDepth + 1) : 1;
     this.comboTimer = COMBO_WINDOW;
@@ -1823,6 +2377,22 @@ export class OfficeDemolitionWorld {
 
     const levelAfter = getLevelForXp(this.xp).level;
     if (levelAfter > levelBefore) this.handleLevelUp(levelAfter);
+    if (districtJustUnlocked) {
+      this.notice = "外周壁突破！麻布十番・全街区の解体ルートが開きました！";
+      this.noticeTone = "level";
+      this.noticeUntil = this.elapsed + 4.5;
+      this.audio.levelUp(5);
+      this.spawnShockwave(position, 0x47bfff, 13, 1.1);
+      this.spawnShockwave(position, 0xffbf48, 8, 0.82);
+      this.shake = Math.max(this.shake, 1.1);
+      this.requestSave();
+    } else if (giantStageIncreased) {
+      this.notice = `巨大化！そば屋 ${this.giantScaleTarget.toFixed(1)}倍。街が小さく見えてきました！`;
+      this.noticeTone = "level";
+      this.noticeUntil = this.elapsed + 3.6;
+      this.audio.levelUp(5);
+      this.spawnShockwave(this.playerAnchor.position, 0xff5b9e, 8 + this.giantStage * 3, 0.9);
+    }
     if (this.destroyed >= this.breakables.length && !this.clearing) this.beginClear();
   }
 
@@ -1830,7 +2400,12 @@ export class OfficeDemolitionWorld {
     if (chainDepth >= 8 || item.chainPower < 0.55) return;
     const radius = 0.9 + item.chainPower * 1.15;
     const nearby = this.breakables
-      .filter((other) => other.alive && other !== item && !other.carried)
+      .filter((other) => (
+        other.alive
+        && other !== item
+        && !other.carried
+        && this.isItemAccessible(other)
+      ))
       .map((other) => ({
         item: other,
         distance: Math.hypot(
@@ -1857,7 +2432,11 @@ export class OfficeDemolitionWorld {
 
   private evaluateSupports(groupName: string, chainDepth: number) {
     const supports = this.breakables.filter(
-      (item) => item.supportGroup === groupName && item.supportWeight > 0,
+      (item) => (
+        item.supportGroup === groupName
+        && item.supportWeight > 0
+        && this.isItemAccessible(item)
+      ),
     );
     const aliveWeight = supports.reduce(
       (total, item) => total + (item.alive ? item.supportWeight : 0),
@@ -1869,6 +2448,7 @@ export class OfficeDemolitionWorld {
         item.alive
         && item.supportGroup === groupName
         && item.supportWeight === 0
+        && this.isItemAccessible(item)
         && canBreakMaterial(getLevelForXp(this.xp).level, item.material)
       ))
       .sort((a, b) => b.group.position.y - a.group.position.y);
@@ -1892,7 +2472,11 @@ export class OfficeDemolitionWorld {
       if (!collapse || collapse.at > this.elapsed) continue;
       this.collapses.splice(index, 1);
       if (!collapse.item.alive) continue;
-      const power = Math.max(1.2, collapse.item.maxHp * 1.15);
+      const resistance = 0.55 + collapse.item.tier * 0.18;
+      const power = Math.max(
+        1.2,
+        (collapse.item.maxHp + 0.5) * resistance,
+      );
       this.damageItem(collapse.item, power, "stomp", collapse.chainDepth);
     }
   }
@@ -2068,7 +2652,7 @@ export class OfficeDemolitionWorld {
     const quaternion = new THREE.Quaternion();
     const scale = new THREE.Vector3();
     const translation = new THREE.Vector3();
-    for (let index = 0; index < count && current < 600; index += 1) {
+    for (let index = 0; index < count && current < 1_200; index += 1) {
       translation.set(
         position.x + (Math.random() - 0.5) * 1.25,
         0.01 + Math.random() * 0.09,
@@ -2147,7 +2731,7 @@ export class OfficeDemolitionWorld {
     this.clearing = true;
     this.clearTimer = 3.25;
     this.comboTimer = 999;
-    this.notice = "完全更地達成！風通しがよくなりました！快適です！";
+    this.notice = "麻布十番・完全更地達成！街ごと風通しがよくなりました！快適です！";
     this.noticeTone = "level";
     this.noticeUntil = this.elapsed + 10;
     this.audio.clear();
@@ -2181,6 +2765,8 @@ export class OfficeDemolitionWorld {
     this.maxCombo = save.maxCombo;
     this.playSeconds = save.playSeconds;
     this.destroyed = 0;
+    this.cityDestroyed = 0;
+    this.districtUnlocked = false;
     this.destroyedIds.clear();
     this.completedGoals.clear();
     for (const goal of save.completedGoals) this.completedGoals.add(goal);
@@ -2192,8 +2778,24 @@ export class OfficeDemolitionWorld {
       item.group.visible = false;
       this.destroyedIds.add(id);
       this.destroyed += 1;
+      if (item.district === "city") this.cityDestroyed += 1;
+      if (
+        item.district === "office"
+        && item.material === "plaster"
+        && isOfficeExteriorWall(item.id)
+      ) {
+        this.districtUnlocked = true;
+      }
       this.addRubble(item.group.position, item.material, 2 + Math.min(4, item.tier));
     }
+    if (this.cityDestroyed > 0) this.districtUnlocked = true;
+    this.giantScaleTarget = getGiantScale(
+      this.cityDestroyed,
+      this.cityBreakableTotal,
+    );
+    this.giantScale = this.giantScaleTarget;
+    this.giantStage = getGiantStage(this.giantScaleTarget);
+    this.playerAnchor.scale.setScalar(this.giantScale);
     this.initialSave = {
       ...save,
       cleared: save.cleared && this.destroyed === this.breakables.length,
@@ -2265,6 +2867,14 @@ export class OfficeDemolitionWorld {
       goalProgress,
       goalTarget: activeGoal?.target ?? 1,
       goalComplete: activeGoal ? this.completedGoals.has(activeGoal.id) : true,
+      districtUnlocked: this.districtUnlocked,
+      cityDestroyed: this.cityDestroyed,
+      cityTotal: this.cityBreakableTotal,
+      giantScale: this.giantScale,
+      radarActive: this.radarActive,
+      radarArrow: this.radarArrow,
+      radarDistance: this.radarDistance,
+      ultimateActive: this.ultimateTimer > 0,
       notice,
       noticeTone: this.noticeTone,
       saveStatus: this.saveStatus,
@@ -2273,7 +2883,30 @@ export class OfficeDemolitionWorld {
     });
   }
 
+  private updateGiantScale(dt: number) {
+    const response = 1 - Math.exp(-dt * 3.2);
+    this.giantScale = THREE.MathUtils.lerp(
+      this.giantScale,
+      this.giantScaleTarget,
+      response,
+    );
+    if (Math.abs(this.giantScale - this.giantScaleTarget) < 0.001) {
+      this.giantScale = this.giantScaleTarget;
+    }
+    this.playerAnchor.scale.setScalar(this.giantScale);
+  }
+
+  private isItemAccessible(item: Breakable) {
+    return item.district === "office" || this.districtUnlocked;
+  }
+
   private getZone(x: number, z: number) {
+    if (Math.abs(x) > OFFICE_HALF_X || Math.abs(z) > OFFICE_HALF_Z) {
+      if (z < -24) return "麻布十番・北街区";
+      if (z > 24) return "麻布十番商店街";
+      if (x < 0) return "麻布十番・西街区";
+      return "麻布十番・東街区";
+    }
     if (z > 2.4) return "中央執務フロア";
     if (x < -7.8 && z > -10.5) return "会議室スイート";
     if (x > 7.8 && z > -10.5) return "書庫・複合機エリア";

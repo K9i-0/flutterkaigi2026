@@ -27,7 +27,8 @@ test("server-renders the standalone total-demolition game shell", async () => {
   assert.match(html, /aria-label="そば屋のオフィス更地クラッシュ 全破壊3Dゲーム画面"/);
   assert.match(html, /SOFT OFFICE/);
   assert.match(html, /CURRENT AREA/);
-  assert.match(html, /KANPAI GAUGE/);
+  assert.match(html, /ULTIMATE GAUGE/);
+  assert.match(html, /麻布十番/);
   assert.match(html, /全社リノベーション準備中/);
   assert.match(html, /STRUCTURAL CHECK/);
   assert.match(html, /property="og:image" content="http:\/\/localhost\/og\.png"/);
@@ -42,12 +43,14 @@ test("ships a correctly sized bespoke social card", async () => {
   assert.equal(card.readUInt32BE(20), 1024);
 });
 
-test("implements furniture-to-steel progression and expressive demolition actions", async () => {
-  const [world, rules, component, css] = await Promise.all([
+test("implements office-to-city escalation and expressive demolition actions", async () => {
+  const [world, rules, component, css, city, orientation] = await Promise.all([
     read("../app/demolition/world.ts"),
     read("../app/demolition/rules.ts"),
     read("../app/OfficeDemolition.tsx"),
     read("../app/globals.css"),
+    read("../app/demolition/city.ts"),
+    read("../app/demolition/orientation.ts"),
   ]);
 
   for (const stage of [
@@ -79,6 +82,9 @@ test("implements furniture-to-steel progression and expressive demolition action
     "beginKanpai",
     "evaluateSupports",
     "propagateChain",
+    "buildAzabuDistrict",
+    "fireBeerBeamAndMeteors",
+    "updateUltimateEffects",
   ]) {
     assert.match(world, new RegExp(action));
   }
@@ -88,6 +94,10 @@ test("implements furniture-to-steel progression and expressive demolition action
   assert.match(world, /foundation-beam-/);
   assert.match(world, /trackGoalProgress/);
   assert.match(world, /完全更地達成/);
+  assert.match(world, /districtUnlocked/);
+  assert.match(world, /giantScale/);
+  assert.match(world, /radarActive/);
+  assert.match(world, /makeMeteorMug/);
 
   assert.match(rules, /threshold: 700/);
   assert.match(rules, /threshold: 2_600/);
@@ -95,14 +105,26 @@ test("implements furniture-to-steel progression and expressive demolition action
   assert.match(rules, /threshold: 12_500/);
   assert.match(rules, /STEEL & FOUNDATION/);
   assert.match(rules, /DEMOLITION_GOALS/);
+  assert.match(rules, /麻布十番/);
 
   assert.match(component, /START DEMOLITION/);
   assert.match(component, /続きから再開/);
   assert.match(component, /\/api\/demolition\/save/);
   assert.match(component, /navigator\.share/);
   assert.match(component, /mobile-joystick/);
+  assert.match(component, /BEER BEAM/);
+  assert.match(component, /× JOKKI METEOR/);
+  assert.match(component, /REMAINING ASSET RADAR/);
+  assert.match(component, /AZABU-JUBAN RAMPAGE/);
   assert.match(css, /@media \(pointer: coarse\)/);
   assert.match(css, /prefers-reduced-motion/);
+  assert.match(css, /ultimate-banner/);
+  assert.match(css, /district-status/);
+
+  assert.match(city, /AZABU_CITY_BREAKABLE_COUNT/);
+  assert.match(city, /getGiantScale/);
+  assert.match(city, /CITY_HALF_X = 96/);
+  assert.match(orientation, /getRadarArrow/);
 });
 
 test("keeps the canonical Sobaya GLB symlinked and the older game intact", async () => {

@@ -4,7 +4,7 @@ import "./globals.css";
 
 const title = "そば屋のオフィス更地クラッシュ ～全部壊して快適です！～";
 const description =
-  "机、壁、床、柱、鉄骨まで。壊して解体レベルを上げ、広大な3Dオフィスを本当に何もない更地へ戻す全破壊アクションゲーム。";
+  "オフィスの外壁を破り、麻布十番へ進出。街を壊すほど巨大化するそば屋が、ビールビームとジョッキメテオで周辺一帯を更地へ戻す全破壊3Dアクション。";
 
 export async function generateMetadata(): Promise<Metadata> {
   const requestHeaders = await headers();

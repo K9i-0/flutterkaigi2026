@@ -54,3 +54,11 @@ test("faces toward negative Z when walking forward from spawn", async () => {
   assert.ok(Math.abs(forward.x) < 1e-10);
   assert.equal(forward.z, -1);
 });
+
+test("points the cleanup radar relative to Sobaya's facing", async () => {
+  const orientation = await loadOrientation();
+  assert.equal(orientation.getRadarArrow(0, -10, 0), "↑");
+  assert.equal(orientation.getRadarArrow(10, 0, 0), "→");
+  assert.equal(orientation.getRadarArrow(-10, 0, 0), "←");
+  assert.equal(orientation.getRadarArrow(0, 10, 0), "↓");
+});

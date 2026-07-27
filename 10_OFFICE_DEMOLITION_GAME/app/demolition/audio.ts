@@ -26,6 +26,7 @@ export class DemolitionAudio {
   private noiseBuffer: AudioBuffer | null = null;
   private enabled = true;
   private lastImpact = 0;
+  private lastMeteor = 0;
   private ambientTimer = 0;
 
   setEnabled(enabled: boolean) {
@@ -147,6 +148,30 @@ export class DemolitionAudio {
     [330, 440, 554, 660].forEach((frequency, index) => {
       this.tone(frequency, 0.26, "sine", 0.025, now + index * 0.055);
     });
+  }
+
+  ultimate() {
+    const context = this.ensureContext();
+    if (!context || !this.enabled || context.state !== "running") return;
+    const now = context.currentTime;
+    this.noise(1.25, 0.12, 8_500, now);
+    this.sweep(110, 42, 0.85, 0.12, now);
+    this.sweep(280, 2_600, 0.72, 0.075, now + 0.18);
+    [165, 220, 330, 440, 660, 880].forEach((frequency, index) => {
+      this.tone(frequency, 0.66, index % 2 === 0 ? "sawtooth" : "triangle", 0.045, now + index * 0.075);
+    });
+  }
+
+  meteor() {
+    const context = this.ensureContext();
+    if (!context || !this.enabled || context.state !== "running") return;
+    const nowMs = performance.now();
+    if (nowMs - this.lastMeteor < 65) return;
+    this.lastMeteor = nowMs;
+    const now = context.currentTime;
+    this.noise(0.38, 0.16, 1_100, now);
+    this.sweep(105, 38, 0.42, 0.12, now);
+    this.tone(58, 0.48, "sine", 0.14, now);
   }
 
   levelUp(level: number) {

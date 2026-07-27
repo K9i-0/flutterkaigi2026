@@ -70,6 +70,14 @@ export type DemolitionHud = {
   goalProgress: number;
   goalTarget: number;
   goalComplete: boolean;
+  districtUnlocked: boolean;
+  cityDestroyed: number;
+  cityTotal: number;
+  giantScale: number;
+  radarActive: boolean;
+  radarArrow: string;
+  radarDistance: number;
+  ultimateActive: boolean;
   notice: string;
   noticeTone: "normal" | "good" | "locked" | "level";
   saveStatus: "idle" | "saving" | "saved" | "offline";

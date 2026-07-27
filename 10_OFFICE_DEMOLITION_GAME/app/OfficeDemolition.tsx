@@ -63,6 +63,14 @@ const INITIAL_HUD: DemolitionHud = {
   goalProgress: 0,
   goalTarget: 8,
   goalComplete: false,
+  districtUnlocked: false,
+  cityDestroyed: 0,
+  cityTotal: 187,
+  giantScale: 1,
+  radarActive: false,
+  radarArrow: "↑",
+  radarDistance: 0,
+  ultimateActive: false,
   notice: "全社リノベーション業務、準備中です！",
   noticeTone: "normal",
   saveStatus: "idle",
@@ -241,7 +249,8 @@ export default function OfficeDemolition() {
 
   const levelProgress = useMemo(() => getLevelProgress(hud.xp), [hud.xp]);
   const levelDefinition = DEMOLITION_LEVELS[hud.level - 1];
-  const hasProgress = (initialSave?.destroyedIds.length ?? 0) > 0 && !initialSave?.cleared;
+  const savedDestroyed = initialSave?.destroyedIds.length ?? 0;
+  const hasProgress = savedDestroyed > 0 && (hud.total === 0 || savedDestroyed < hud.total);
   const canGrab = hud.level >= 2;
   const canDash = hud.level >= 3;
   const canStomp = hud.level >= 4;
@@ -312,7 +321,7 @@ export default function OfficeDemolition() {
       maxCombo: hud.maxCombo,
       playSeconds: latestSaveRef.current.playSeconds,
     };
-    const text = `そば屋のオフィス更地クラッシュで完全更地！\nSCORE ${completed.score.toLocaleString()} / MAX COMBO ${completed.maxCombo}\n「風通しがよくなりました！快適です！」`;
+    const text = `そば屋のオフィス更地クラッシュで麻布十番まで完全更地！\nSCORE ${completed.score.toLocaleString()} / MAX COMBO ${completed.maxCombo}\n「街ごと風通しがよくなりました！快適です！」`;
     try {
       if (navigator.share) {
         await navigator.share({
@@ -383,6 +392,12 @@ export default function OfficeDemolition() {
             <b>業務目標</b>
             {hud.goalTitle} {Math.min(hud.goalProgress, hud.goalTarget)}/{hud.goalTarget}
           </small>
+          <small className={`district-order ${hud.districtUnlocked ? "unlocked" : ""}`}>
+            <b>{hud.districtUnlocked ? "AZABU-JUBAN OPEN" : "NEXT SCOPE"}</b>
+            {hud.districtUnlocked
+              ? `街区 ${hud.cityDestroyed}/${hud.cityTotal}・巨大化 ${hud.giantScale.toFixed(1)}倍`
+              : "LEVEL 3で外周壁を破壊"}
+          </small>
         </section>
 
         <section className="score-card">
@@ -421,17 +436,40 @@ export default function OfficeDemolition() {
         </div>
       )}
 
+      {hud.ultimateActive && (
+        <div className="ultimate-banner" aria-live="assertive">
+          <span>超乾杯奥義</span>
+          <strong>BEER BEAM</strong>
+          <b>× JOKKI METEOR</b>
+        </div>
+      )}
+
       <div className={`notice-banner ${hud.noticeTone}`} aria-live="polite">
         {hud.notice && <span>{hud.notice}</span>}
       </div>
 
-      <section className={`target-card ${hud.targetTier && hud.targetTier > hud.level ? "locked" : ""}`}>
+      <section className={[
+        "target-card",
+        hud.targetTier && hud.targetTier > hud.level ? "locked" : "",
+        hud.radarActive ? "radar" : "",
+      ].filter(Boolean).join(" ")}>
         {hud.targetName ? (
           <>
-            <span>{hud.material ? MATERIAL_LABEL[hud.material] : "TARGET"}</span>
-            <strong>{hud.targetName}</strong>
+            <span>
+              {hud.radarActive
+                ? "REMAINING ASSET RADAR"
+                : hud.material
+                  ? MATERIAL_LABEL[hud.material]
+                  : "TARGET"}
+            </span>
+            <strong>
+              {hud.radarActive ? `${hud.radarArrow} ` : ""}
+              {hud.targetName}
+            </strong>
             <small>
-              {hud.targetTier && hud.targetTier > hud.level
+              {hud.radarActive
+                ? `最寄りの残存物まで ${Math.max(1, Math.round(hud.radarDistance))}m`
+                : hud.targetTier && hud.targetTier > hud.level
                 ? `LEVEL ${hud.targetTier} で解禁`
                 : hud.carriedName
                   ? `${hud.carriedName}を運搬中`
@@ -440,23 +478,54 @@ export default function OfficeDemolition() {
           </>
         ) : (
           <>
-            <span>FREE DEMOLITION</span>
-            <strong>壊せる物へ近づく</strong>
-            <small>照準リングが対象を案内します</small>
+            <span>{hud.districtUnlocked ? "FREE DEMOLITION" : "OFFICE PHASE"}</span>
+            <strong>
+              {hud.districtUnlocked ? "壊せる物へ近づく" : "外周壁を破って街へ"}
+            </strong>
+            <small>
+              {hud.districtUnlocked
+                ? "終盤は残存物レーダーが自動追跡します"
+                : "LEVEL 3の石膏外周壁が街への出口です"}
+            </small>
           </>
         )}
       </section>
 
-      <section className="beer-gauge" aria-label={`乾杯ゲージ ${Math.floor(hud.beer)}パーセント`}>
+      <section className="beer-gauge" aria-label={`超乾杯ゲージ ${Math.floor(hud.beer)}パーセント`}>
         <div className="beer-glass" aria-hidden="true">
           <i style={{ height: `${hud.beer}%` }} />
           <em />
         </div>
         <div>
-          <span>KANPAI GAUGE</span>
+          <span>ULTIMATE GAUGE</span>
           <strong>{Math.floor(hud.beer)}%</strong>
-          <small>{hud.level < 5 ? "LEVEL 5で使用" : hud.beer >= 99.5 ? "乾杯クラッシュ READY" : "破壊で泡を補充"}</small>
+          <small>
+            {hud.level < 5
+              ? "LEVEL 5で使用"
+              : hud.beer >= 99.5
+                ? "ビーム＋メテオ READY"
+                : "破壊で泡を補充"}
+          </small>
         </div>
+      </section>
+
+      <section className={`district-status ${hud.districtUnlocked ? "unlocked" : ""}`}>
+        <span>{hud.districtUnlocked ? "AZABU-JUBAN RAMPAGE" : "OFFICE BREAKOUT"}</span>
+        <strong>
+          {hud.districtUnlocked
+            ? `そば屋 ${hud.giantScale.toFixed(1)}×`
+            : "外周壁を突破せよ"}
+        </strong>
+        <div>
+          <i style={{
+            width: `${hud.cityTotal ? hud.cityDestroyed / hud.cityTotal * 100 : 0}%`,
+          }} />
+        </div>
+        <small>
+          {hud.districtUnlocked
+            ? `街区破壊 ${hud.cityDestroyed} / ${hud.cityTotal}`
+            : "街へ出ると破壊するほど巨大化"}
+        </small>
       </section>
 
       <section className="desktop-controls" aria-label="キーボード操作">
@@ -465,7 +534,7 @@ export default function OfficeDemolition() {
         <span className={canGrab ? "" : "locked"}><kbd>E</kbd> つかむ／投げる</span>
         <span className={canDash ? "" : "locked"}><kbd>SHIFT</kbd> ダッシュ</span>
         <span className={canStomp ? "" : "locked"}><kbd>Q</kbd> ストンプ</span>
-        <span className={hud.level >= 5 ? "" : "locked"}><kbd>R</kbd> 乾杯</span>
+        <span className={hud.level >= 5 ? "" : "locked"}><kbd>R</kbd> 超乾杯</span>
       </section>
 
       <section className="mobile-controls" aria-label="タッチ操作">
@@ -498,7 +567,7 @@ export default function OfficeDemolition() {
             <span>{canStomp ? "地響き" : "LV.4"}</span>
           </button>
           <button type="button" className={`action-kanpai ${canKanpai ? "ready" : ""}`} onPointerDown={() => trigger("kanpai")}>
-            <b>KANPAI</b>
+            <b>ULTIMATE</b>
             <span>{hud.level < 5 ? "LV.5" : `${Math.floor(hud.beer)}%`}</span>
           </button>
         </div>
@@ -523,11 +592,11 @@ export default function OfficeDemolition() {
               <strong>オフィス更地クラッシュ</strong>
             </h1>
             <p>
-              机も、壁も、鉄骨も。壊してレベルを上げ、広大なオフィスを
-              <b>本当に何もない更地</b>へ戻す、全破壊3Dアクション。
+              机から外周壁を突き破り、麻布十番の街へ。壊すほど巨大化するそば屋で、
+              オフィスも市街地も<b>本当に何もない更地</b>へ戻す全破壊3Dアクション。
             </p>
             <div className="briefing-stats">
-              <div><span>BREAKABLE</span><strong>{hud.total || "200+"}</strong><small>破壊対象</small></div>
+              <div><span>BREAKABLE</span><strong>{hud.total || "491"}</strong><small>オフィス＋街区</small></div>
               <div><span>PERMITS</span><strong>5</strong><small>解体レベル</small></div>
               <div><span>BEST</span><strong>{profile.bestScore.toLocaleString()}</strong><small>自己ベスト</small></div>
             </div>
@@ -583,9 +652,9 @@ export default function OfficeDemolition() {
       {hud.phase === "cleared" && (
         <div className="game-overlay clear-overlay">
           <section className="clear-panel">
-            <span>100% TOTAL DEMOLITION</span>
-            <h2>完全更地</h2>
-            <blockquote>「風通しがよくなりました！快適です！」</blockquote>
+            <span>100% AZABU-JUBAN DEMOLITION</span>
+            <h2>街ごと更地</h2>
+            <blockquote>「麻布十番、風通しがよくなりました！快適です！」</blockquote>
             <div className="clear-stats">
               <div><span>SCORE</span><strong>{hud.score.toLocaleString()}</strong></div>
               <div><span>MAX COMBO</span><strong>{hud.maxCombo}</strong></div>
@@ -622,7 +691,9 @@ export default function OfficeDemolition() {
             <p className="guide-tip">
               家具を投げて別の家具へ当て、柱を抜いて壁や天井を連鎖崩壊させると、
               コンボ・経験値・スコアが大きく伸びます。各レベルの業務目標は任意ですが、
-              達成すると次の解体許可へ早く進めます。
+              達成すると次の解体許可へ早く進めます。LEVEL 3で外周壁を破ると麻布十番へ進出。
+              街を壊して巨大化し、LEVEL 5の超乾杯でビールビームとジョッキメテオを放てます。
+              終盤は残存物レーダーが最後の対象を自動追跡します。
             </p>
           </section>
         </div>

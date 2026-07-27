@@ -12,3 +12,26 @@ export function getPlayerForward(yaw: number) {
     z: -Math.cos(yaw),
   };
 }
+
+export function getRadarArrow(
+  targetX: number,
+  targetZ: number,
+  playerYaw: number,
+) {
+  const targetYaw = getPlayerFacingYaw(targetX, targetZ);
+  let delta = (targetYaw - playerYaw + Math.PI) % (Math.PI * 2) - Math.PI;
+  if (delta < -Math.PI) delta += Math.PI * 2;
+  const index = Math.round(delta / (Math.PI / 4));
+  const arrows: Record<number, string> = {
+    [-4]: "↓",
+    [-3]: "↘",
+    [-2]: "→",
+    [-1]: "↗",
+    0: "↑",
+    1: "↖",
+    2: "←",
+    3: "↙",
+    4: "↓",
+  };
+  return arrows[index] ?? "↑";
+}

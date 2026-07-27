@@ -444,6 +444,216 @@ export class VoxelAssetFactory {
     return group;
   }
 
+  makeCityFloor(
+    width: number,
+    depth: number,
+    height: number,
+    floor: number,
+    variant: number,
+  ) {
+    const group = new THREE.Group();
+    const wallColors = [0xd9d4c9, 0xb7c7ca, 0xd5bfa8, 0xabb8c7, 0xc7c0b7];
+    const wallColor = wallColors[variant % wallColors.length] ?? 0xc8c5bd;
+    const trimColor = variant % 2 === 0 ? 0x596b76 : 0x806b5a;
+    group.add(this.box([width, height, depth], wallColor, [0, height / 2, 0], {
+      castShadow: floor < 2,
+      roughness: 0.82,
+      rounded: false,
+    }));
+    group.add(this.box([width + 0.08, 0.16, depth + 0.08], trimColor, [0, 0.12, 0], {
+      metalness: 0.18,
+      roughness: 0.58,
+      rounded: false,
+    }));
+    const windowColor = variant % 3 === 0 ? 0x63c8df : 0x8fd4df;
+    for (const x of [-width * 0.27, width * 0.27]) {
+      for (const z of [-depth / 2 - 0.045, depth / 2 + 0.045]) {
+        group.add(this.box(
+          [Math.max(1.25, width * 0.34), height * 0.42, 0.08],
+          windowColor,
+          [x, height * 0.58, z],
+          {
+            metalness: 0.1,
+            roughness: 0.22,
+            emissive: 0x3a8aa0,
+            emissiveIntensity: 0.12,
+            rounded: false,
+          },
+        ));
+      }
+    }
+    for (const x of [-width / 2 - 0.045, width / 2 + 0.045]) {
+      group.add(this.box(
+        [0.08, height * 0.38, Math.max(1.3, depth * 0.36)],
+        windowColor,
+        [x, height * 0.58, 0],
+        {
+          metalness: 0.1,
+          roughness: 0.22,
+          emissive: 0x3a8aa0,
+          emissiveIntensity: 0.1,
+          rounded: false,
+        },
+      ));
+    }
+    return group;
+  }
+
+  makeCityStorefront(width: number, variant: number) {
+    const group = new THREE.Group();
+    const accentColors = [0xf06b52, 0x44b9a7, 0xf0ae3e, 0x4f86cf, 0xd95f9b];
+    const accent = accentColors[variant % accentColors.length] ?? PALETTE.coral;
+    group.add(this.box([width * 0.82, 2.35, 0.24], 0x75dcec, [0, 1.18, 0], {
+      transparent: true,
+      opacity: 0.72,
+      roughness: 0.12,
+      metalness: 0.08,
+      castShadow: true,
+      rounded: false,
+    }));
+    group.add(this.box([width * 0.9, 0.46, 0.42], accent, [0, 2.52, -0.04], {
+      emissive: accent,
+      emissiveIntensity: 0.13,
+      castShadow: true,
+      rounded: false,
+    }));
+    for (const x of [-width * 0.4, 0, width * 0.4]) {
+      group.add(this.box([0.11, 2.45, 0.31], 0x354b58, [x, 1.23, 0], {
+        metalness: 0.48,
+        roughness: 0.38,
+        rounded: false,
+      }));
+    }
+    return group;
+  }
+
+  makeCityRoof(width: number, depth: number, variant: number) {
+    const group = new THREE.Group();
+    group.add(this.box([width + 0.35, 0.28, depth + 0.35], 0x394852, [0, 0.14, 0], {
+      metalness: 0.5,
+      roughness: 0.46,
+      castShadow: true,
+      rounded: false,
+    }));
+    const utilityColor = variant % 2 === 0 ? 0x71838d : 0x596873;
+    group.add(this.box([width * 0.34, 1.25, depth * 0.3], utilityColor, [0, 0.8, 0], {
+      metalness: 0.48,
+      roughness: 0.48,
+      castShadow: true,
+      rounded: false,
+    }));
+    for (const x of [-width * 0.38, width * 0.38]) {
+      group.add(this.cylinder(0.1, 2.8, 0x24313a, [x, 1.5, 0], 8, {
+        metalness: 0.68,
+        roughness: 0.34,
+      }));
+    }
+    return group;
+  }
+
+  makeStreetProp(
+    kind: "vending" | "lamp" | "sign" | "tree",
+    variant: number,
+  ) {
+    const group = new THREE.Group();
+    if (kind === "vending") {
+      const color = variant % 2 === 0 ? 0xe9514d : 0x3282c5;
+      group.add(this.box([1.12, 2.15, 0.82], color, [0, 1.08, 0], {
+        metalness: 0.3,
+        roughness: 0.42,
+        castShadow: true,
+      }));
+      group.add(this.box([0.83, 0.88, 0.05], 0xd9f5fa, [0, 1.51, -0.43], {
+        emissive: 0x85dbe8,
+        emissiveIntensity: 0.35,
+        rounded: false,
+      }));
+      for (let row = 0; row < 3; row += 1) {
+        group.add(this.box([0.7, 0.05, 0.055], 0xffffff, [0, 1.25 + row * 0.24, -0.47], {
+          emissive: 0xffffff,
+          emissiveIntensity: 0.26,
+          rounded: false,
+        }));
+      }
+      group.add(this.box([0.45, 0.24, 0.05], 0x20313d, [0, 0.4, -0.44], {
+        rounded: false,
+      }));
+      return group;
+    }
+    if (kind === "lamp") {
+      group.add(this.cylinder(0.11, 3.8, 0x34454f, [0, 1.9, 0], 10, {
+        metalness: 0.62,
+        roughness: 0.34,
+      }));
+      group.add(this.box([0.8, 0.18, 0.18], 0x34454f, [0.27, 3.72, 0], {
+        metalness: 0.62,
+        roughness: 0.34,
+      }));
+      group.add(this.box([0.34, 0.24, 0.34], 0xffe5a0, [0.66, 3.56, 0], {
+        emissive: 0xffc85a,
+        emissiveIntensity: 0.9,
+      }));
+      return group;
+    }
+    if (kind === "tree") {
+      group.add(this.cylinder(0.19, 2.55, 0x755033, [0, 1.28, 0], 9, {
+        roughness: 0.92,
+      }));
+      for (let index = 0; index < 7; index += 1) {
+        const angle = index / 7 * Math.PI * 2;
+        group.add(this.box(
+          [1.05, 0.85, 1.05],
+          index % 2 === 0 ? PALETTE.leaf : PALETTE.leafDark,
+          [Math.sin(angle) * 0.55, 2.7 + index % 3 * 0.32, Math.cos(angle) * 0.55],
+          { castShadow: true },
+        ));
+      }
+      return group;
+    }
+    group.add(this.cylinder(0.1, 2.6, 0x465963, [-0.65, 1.3, 0], 8, {
+      metalness: 0.5,
+      roughness: 0.4,
+    }));
+    group.add(this.cylinder(0.1, 2.6, 0x465963, [0.65, 1.3, 0], 8, {
+      metalness: 0.5,
+      roughness: 0.4,
+    }));
+    const signColor = variant % 2 === 0 ? 0x46bda9 : 0xf07b4e;
+    group.add(this.box([1.75, 1.02, 0.2], signColor, [0, 2.42, 0], {
+      emissive: signColor,
+      emissiveIntensity: 0.16,
+      castShadow: true,
+    }));
+    group.add(this.box([1.35, 0.13, 0.22], 0xffffff, [0, 2.58, -0.12], {
+      emissive: 0xffffff,
+      emissiveIntensity: 0.3,
+      rounded: false,
+    }));
+    return group;
+  }
+
+  makeMeteorMug(scale = 1) {
+    const group = new THREE.Group();
+    group.add(this.box([1.08, 1.4, 0.92], PALETTE.amberLight, [0, 0, 0], {
+      transparent: true,
+      opacity: 0.84,
+      roughness: 0.16,
+      emissive: 0xe88818,
+      emissiveIntensity: 0.28,
+      castShadow: true,
+    }));
+    group.add(this.box([1.12, 0.34, 0.96], 0xffffff, [0, 0.83, 0], {
+      emissive: 0xfff0b3,
+      emissiveIntensity: 0.35,
+      castShadow: true,
+    }));
+    group.add(this.box([0.18, 1.05, 0.18], 0xf3f6ed, [-0.72, 0.05, 0]));
+    group.add(this.box([0.54, 0.18, 0.18], 0xf3f6ed, [-0.52, 0.52, 0]));
+    group.add(this.box([0.54, 0.18, 0.18], 0xf3f6ed, [-0.52, -0.42, 0]));
+    group.scale.setScalar(scale);
+    return group;
+  }
+
   makeSobayaFallback() {
     const root = new THREE.Group();
     root.name = "sobaya-fallback";

@@ -104,7 +104,8 @@ button:focus-visible {
 .mission-card,
 .score-card,
 .target-card,
-.beer-gauge {
+.beer-gauge,
+.district-status {
   border: 1px solid rgba(255, 255, 255, 0.74);
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(240, 251, 250, 0.84));
@@ -269,6 +270,32 @@ button:focus-visible {
   color: var(--mint-dark);
 }
 
+.district-order {
+  display: block;
+  margin-top: 2px;
+  overflow: hidden;
+  color: #7a6a50;
+  font-size: 7px;
+  font-weight: 850;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.district-order b {
+  margin-right: 5px;
+  color: #dc6b36;
+  font-size: 6px;
+  letter-spacing: 0.08em;
+}
+
+.district-order.unlocked {
+  color: #247266;
+}
+
+.district-order.unlocked b {
+  color: var(--mint-dark);
+}
+
 .score-card {
   min-height: 86px;
   padding: 12px 15px 10px;
@@ -421,6 +448,63 @@ button:focus-visible {
   text-shadow: 0 2px 0 var(--ink);
 }
 
+.ultimate-banner {
+  position: absolute;
+  z-index: 25;
+  inset: 26% 0 auto;
+  display: grid;
+  place-items: center;
+  color: white;
+  filter: drop-shadow(0 14px 30px rgba(50, 25, 0, 0.48));
+  pointer-events: none;
+  animation: ultimate-slam 4.6s both;
+}
+
+.ultimate-banner::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: min(920px, 96vw);
+  height: 210px;
+  background:
+    radial-gradient(ellipse, rgba(255, 181, 28, 0.38), transparent 68%),
+    linear-gradient(90deg, transparent, rgba(19, 45, 56, 0.7), transparent);
+}
+
+.ultimate-banner span {
+  padding: 5px 16px;
+  border: 1px solid rgba(255, 245, 195, 0.85);
+  border-radius: 999px;
+  background: rgba(224, 91, 22, 0.9);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.2em;
+}
+
+.ultimate-banner strong {
+  margin-top: 5px;
+  color: #fff5bf;
+  font-size: clamp(54px, 9vw, 118px);
+  line-height: 0.85;
+  font-style: italic;
+  letter-spacing: -0.06em;
+  text-shadow:
+    -4px -4px 0 #61300f,
+    4px -4px 0 #61300f,
+    -4px 4px 0 #61300f,
+    4px 4px 0 #61300f,
+    0 0 34px #ff9f18;
+}
+
+.ultimate-banner b {
+  margin-top: 7px;
+  color: var(--mint);
+  font-size: clamp(20px, 3.4vw, 44px);
+  font-style: italic;
+  letter-spacing: 0.08em;
+  text-shadow: 0 4px 0 #143742;
+}
+
 .notice-banner {
   position: absolute;
   z-index: 12;
@@ -502,6 +586,29 @@ button:focus-visible {
   color: #d64640;
 }
 
+.target-card.radar {
+  border-color: rgba(255, 193, 61, 0.92);
+  background:
+    linear-gradient(135deg, rgba(255, 252, 225, 0.97), rgba(229, 253, 246, 0.92));
+  box-shadow:
+    0 0 0 2px rgba(255, 188, 52, 0.24),
+    0 0 28px rgba(255, 184, 42, 0.38),
+    var(--soft-shadow);
+  animation: radar-pulse 1.15s ease-in-out infinite alternate;
+}
+
+.target-card.radar > span {
+  color: #c96b20;
+}
+
+.target-card.radar > strong {
+  color: #163d48;
+}
+
+.target-card.radar small {
+  color: #c05d22;
+}
+
 .beer-gauge {
   position: absolute;
   z-index: 9;
@@ -562,6 +669,66 @@ button:focus-visible {
   color: #6b6c52;
   font-size: 9px;
   font-weight: 850;
+}
+
+.district-status {
+  position: absolute;
+  z-index: 9;
+  left: 18px;
+  bottom: 20px;
+  width: 210px;
+  min-height: 82px;
+  padding: 12px 14px;
+  border-radius: 20px;
+  pointer-events: none;
+}
+
+.district-status > span {
+  display: block;
+  color: #9a7044;
+  font-size: 8px;
+  font-weight: 950;
+  letter-spacing: 0.14em;
+}
+
+.district-status > strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 15px;
+}
+
+.district-status > div {
+  position: relative;
+  height: 7px;
+  margin-top: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(26, 55, 65, 0.12);
+}
+
+.district-status > div i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--coral), var(--amber), var(--pink));
+  box-shadow: 0 0 18px rgba(255, 104, 78, 0.55);
+  transition: width 260ms ease;
+}
+
+.district-status small {
+  display: block;
+  margin-top: 4px;
+  color: #6c7c80;
+  font-size: 8px;
+  font-weight: 850;
+}
+
+.district-status.unlocked {
+  border-color: rgba(255, 127, 78, 0.65);
+}
+
+.district-status.unlocked > span {
+  color: #d45335;
 }
 
 .desktop-controls {
@@ -1122,6 +1289,17 @@ kbd {
   100% { opacity: 0; transform: scale(0.96); }
 }
 
+@keyframes ultimate-slam {
+  0% { opacity: 0; transform: scale(1.8) rotate(-4deg); }
+  8%, 78% { opacity: 1; transform: scale(1) rotate(-1deg); }
+  100% { opacity: 0; transform: scale(0.86) rotate(2deg); }
+}
+
+@keyframes radar-pulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.025); }
+}
+
 @media (max-width: 980px) {
   .demolition-hud {
     grid-template-columns: minmax(230px, 0.9fr) minmax(190px, 0.7fr) minmax(175px, 0.55fr);
@@ -1177,6 +1355,11 @@ kbd {
   .target-card,
   .beer-gauge {
     right: 10px;
+    width: 190px;
+  }
+
+  .district-status {
+    left: 10px;
     width: 190px;
   }
 
@@ -1270,6 +1453,10 @@ kbd {
     display: none;
   }
 
+  .district-order {
+    display: none;
+  }
+
   .score-card {
     padding: 8px 7px 6px;
   }
@@ -1290,7 +1477,8 @@ kbd {
   }
 
   .permit-rail,
-  .desktop-controls {
+  .desktop-controls,
+  .district-status {
     display: none;
   }
 
@@ -1310,6 +1498,18 @@ kbd {
 
   .combo-burst strong {
     font-size: 54px;
+  }
+
+  .ultimate-banner {
+    inset-block-start: 22%;
+  }
+
+  .ultimate-banner strong {
+    font-size: clamp(42px, 12vw, 72px);
+  }
+
+  .ultimate-banner b {
+    font-size: clamp(16px, 5vw, 28px);
   }
 
   .target-card {
