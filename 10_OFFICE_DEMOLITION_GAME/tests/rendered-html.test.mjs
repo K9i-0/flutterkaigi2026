@@ -76,6 +76,8 @@ test("implements furniture-to-steel progression and expressive demolition action
   assert.match(world, /MAX_DEBRIS = 230/);
   assert.match(world, /InstancedMesh/);
   assert.match(world, /destroyedIds/);
+  assert.match(world, /foundation-beam-/);
+  assert.match(world, /trackGoalProgress/);
   assert.match(world, /完全更地達成/);
 
   assert.match(rules, /threshold: 700/);
@@ -83,6 +85,7 @@ test("implements furniture-to-steel progression and expressive demolition action
   assert.match(rules, /threshold: 6_200/);
   assert.match(rules, /threshold: 12_500/);
   assert.match(rules, /STEEL & FOUNDATION/);
+  assert.match(rules, /DEMOLITION_GOALS/);
 
   assert.match(component, /START DEMOLITION/);
   assert.match(component, /続きから再開/);
@@ -127,5 +130,6 @@ test("persists in-progress destruction and clear records in dedicated D1 tables"
   assert.match(worker, /\/api\/demolition\/save/);
   assert.match(worker, /\/api\/demolition\/clear/);
   assert.match(worker, /destroyed_json/);
+  assert.match(worker, /completed_goals_json/);
   assert.match(worker, /incomplete_demolition/);
 });

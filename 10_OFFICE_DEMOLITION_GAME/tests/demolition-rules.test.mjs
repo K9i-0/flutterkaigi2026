@@ -15,10 +15,10 @@ async function loadRules() {
       target: ts.ScriptTarget.ES2020,
     },
   }).outputText;
-  const module = { exports: {} };
+  const cjsModule = { exports: {} };
   vm.runInNewContext(transpiled, {
-    module,
-    exports: module.exports,
+    module: cjsModule,
+    exports: cjsModule.exports,
     require(specifier) {
       if (specifier === "./types") return {};
       throw new Error(`Unexpected dependency: ${specifier}`);
@@ -30,7 +30,7 @@ async function loadRules() {
     Array,
     Object,
   });
-  return module.exports;
+  return cjsModule.exports;
 }
 
 test("unlocks every demolition tier at its declared threshold", async () => {
@@ -73,10 +73,25 @@ test("normalizes persistent destruction snapshots defensively", async () => {
     playSeconds: 42.5,
     cleared: true,
     destroyedIds: ["desk-1", "desk-1", "", 42, "wall-2"],
+    completedGoals: ["combo-8", "combo-8", "unknown", 42, "throw-3"],
     updatedAt: "2026-07-28T00:00:00.000Z",
   });
   assert.equal(snapshot.version, 1);
   assert.deepEqual(Array.from(snapshot.destroyedIds), ["desk-1", "wall-2"]);
   assert.equal(snapshot.destroyed, 2);
+  assert.deepEqual(Array.from(snapshot.completedGoals), ["combo-8", "throw-3"]);
   assert.equal(snapshot.cleared, true);
+});
+
+test("offers one distinct demolition work order per level", async () => {
+  const rules = await loadRules();
+  assert.equal(rules.DEMOLITION_GOALS.length, 5);
+  assert.deepEqual(
+    Array.from(rules.DEMOLITION_GOALS, (goal) => goal.level),
+    [1, 2, 3, 4, 5],
+  );
+  const active = rules.getActiveGoal(3, new Set(["combo-8", "throw-3"]));
+  assert.equal(active.id, "dash-wall-3");
+  assert.ok(active.bonusXp > 0);
+  assert.ok(active.bonusScore > 0);
 });

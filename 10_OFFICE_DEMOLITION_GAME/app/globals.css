@@ -247,6 +247,28 @@ button:focus-visible {
   margin-top: 5px;
 }
 
+.goal-order {
+  display: block;
+  margin-top: 4px;
+  overflow: hidden;
+  color: #526f7b;
+  font-size: 8px;
+  font-weight: 850;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.goal-order b {
+  margin-right: 5px;
+  color: var(--coral);
+  font-size: 7px;
+  letter-spacing: 0.06em;
+}
+
+.goal-order.complete {
+  color: var(--mint-dark);
+}
+
 .score-card {
   min-height: 86px;
   padding: 12px 15px 10px;
@@ -1237,6 +1259,15 @@ kbd {
 
   .mission-progress i {
     font-size: 8px;
+  }
+
+  .goal-order {
+    margin-top: 2px;
+    font-size: 6px;
+  }
+
+  .goal-order b {
+    display: none;
   }
 
   .score-card {

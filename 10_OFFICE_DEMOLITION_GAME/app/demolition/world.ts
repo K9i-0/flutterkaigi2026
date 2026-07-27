@@ -5,9 +5,10 @@ import {
   type VoxelActionController,
 } from "../characters/voxel-character-kit";
 import { DemolitionAudio } from "./audio";
-import { PALETTE, VoxelAssetFactory } from "./assets";
+import { VoxelAssetFactory } from "./assets";
 import {
   canBreakMaterial,
+  getActiveGoal,
   getBreakScore,
   getBreakXp,
   getLevelForXp,
@@ -18,6 +19,7 @@ import {
 } from "./rules";
 import type {
   DemolitionAction,
+  DemolitionGoalId,
   DemolitionControls,
   DemolitionHud,
   DemolitionMaterial,
@@ -157,6 +159,7 @@ export class OfficeDemolitionWorld {
   private readonly breakables: Breakable[] = [];
   private readonly breakableById = new Map<string, Breakable>();
   private readonly destroyedIds = new Set<string>();
+  private readonly completedGoals = new Set<DemolitionGoalId>();
   private readonly debris: DebrisPiece[] = [];
   private readonly flying: FlyingObject[] = [];
   private readonly collapses: TimedCollapse[] = [];
@@ -204,6 +207,10 @@ export class OfficeDemolitionWorld {
   private target: Breakable | null = null;
   private clearing = false;
   private clearTimer = 0;
+  private throwBreaks = 0;
+  private dashWallBreaks = 0;
+  private cascadeBreaks = 0;
+  private kanpaiSteelBreaks = 0;
   private initialSave: DemolitionSave;
 
   constructor(
@@ -332,11 +339,16 @@ export class OfficeDemolitionWorld {
     this.beer = 0;
     this.playSeconds = 0;
     this.destroyedIds.clear();
+    this.completedGoals.clear();
     this.carried = null;
     this.flying.length = 0;
     this.collapses.length = 0;
     this.clearing = false;
     this.clearTimer = 0;
+    this.throwBreaks = 0;
+    this.dashWallBreaks = 0;
+    this.cascadeBreaks = 0;
+    this.kanpaiSteelBreaks = 0;
     this.playerAnchor.position.set(0, 0, 15);
     this.playerAnchor.rotation.y = 0;
     for (const item of this.breakables) {
@@ -463,15 +475,6 @@ export class OfficeDemolitionWorld {
     ground.receiveShadow = true;
     this.scene.add(ground);
 
-    const apron = new THREE.Mesh(
-      new THREE.PlaneGeometry(64, 46),
-      this.factory.material(0x8798a2, { roughness: 0.88 }),
-    );
-    apron.rotation.x = -Math.PI / 2;
-    apron.position.set(0, -0.2, 0);
-    apron.receiveShadow = true;
-    this.scene.add(apron);
-
     const skyline = new THREE.Group();
     skyline.position.z = -48;
     for (let index = 0; index < 26; index += 1) {
@@ -591,6 +594,28 @@ export class OfficeDemolitionWorld {
   }
 
   private buildStructure() {
+    let foundationIndex = 0;
+    for (const z of [-16.5, 0, 16.5]) {
+      for (const x of [-18, -6, 6, 18]) {
+        this.addBreakable({
+          id: `foundation-beam-${foundationIndex}`,
+          name: "基礎鉄骨",
+          group: this.factory.makeSteelBeam(11.4),
+          material: "steel",
+          position: [x, -0.4, z],
+          hp: 5,
+          mass: 760,
+          score: 1_250,
+          radius: 5.6,
+          grabbable: false,
+          solid: false,
+          supportWeight: 0,
+          chainPower: 2.2,
+        });
+        foundationIndex += 1;
+      }
+    }
+
     let columnIndex = 0;
     for (const x of [-24, -12, 0, 12, 24]) {
       for (const z of [-16.5, 0, 16.5]) {
@@ -712,28 +737,29 @@ export class OfficeDemolitionWorld {
       }
     }
 
-    let ceilingIndex = 0;
-    for (const x of [-21, -14, -7, 0, 7, 14, 21]) {
-      for (const z of [-13, -6.5, 0, 6.5, 13]) {
-        this.addBreakable({
-          id: `ceiling-${ceilingIndex}`,
-          name: "天井パネル",
-          group: this.factory.makeCeilingPanel(5.8, 5.3),
-          material: "plaster",
-          position: [x, 4.24, z],
-          hp: 2,
-          mass: 74,
-          score: 220,
-          radius: 2.7,
-          grabbable: false,
-          solid: false,
-          supportGroup: `frame-${Math.round(x / 12) * 12}`,
-          supportWeight: 0,
-          chainPower: 0.8,
-        });
-        ceilingIndex += 1;
-      }
-    }
+    const ceilingPositions: Array<readonly [number, number]> = [
+      [-21, -14], [-14, -14], [-7, -14], [0, -14], [7, -14], [14, -14], [21, -14],
+      [-21, -7], [-21, 0], [-21, 7], [-21, 14],
+      [-7, -6.5], [7, -6.5],
+    ];
+    ceilingPositions.forEach(([x, z], ceilingIndex) => {
+      this.addBreakable({
+        id: `ceiling-${ceilingIndex}`,
+        name: "天井パネル",
+        group: this.factory.makeCeilingPanel(5.6, 4.8),
+        material: "plaster",
+        position: [x, 4.24, z],
+        hp: 2,
+        mass: 74,
+        score: 220,
+        radius: 2.55,
+        grabbable: false,
+        solid: false,
+        supportGroup: `frame-${Math.round(x / 12) * 12}`,
+        supportWeight: 0,
+        chainPower: 0.8,
+      });
+    });
   }
 
   private buildOpenOffice() {
@@ -1369,10 +1395,12 @@ export class OfficeDemolitionWorld {
   private updateTarget() {
     const forward = this.forward();
     const origin = this.playerAnchor.position;
+    const level = getLevelForXp(this.xp).level;
     let best: Breakable | null = null;
     let bestScore = Number.POSITIVE_INFINITY;
     for (const item of this.breakables) {
       if (!item.alive || item.carried || item.group.position.y > 5) continue;
+      if (item.group.position.y < -0.25 && level < 5) continue;
       const dx = item.group.position.x - origin.x;
       const dz = item.group.position.z - origin.z;
       const distance = Math.hypot(dx, dz) - Math.min(item.radius, 2);
@@ -1391,7 +1419,6 @@ export class OfficeDemolitionWorld {
       this.targetBeacon.visible = false;
       return;
     }
-    const level = getLevelForXp(this.xp).level;
     const unlocked = canBreakMaterial(level, best.material);
     const color = unlocked ? 0x50e1c2 : 0xff6a4d;
     (this.targetRing.material as THREE.MeshBasicMaterial).color.setHex(color);
@@ -1784,6 +1811,7 @@ export class OfficeDemolitionWorld {
     this.noticeTone = chainDepth > 0 ? "level" : "good";
     this.noticeUntil = this.elapsed + 1.45;
 
+    this.trackGoalProgress(item, source, chainDepth);
     if (item.supportWeight > 0 && item.supportGroup) {
       this.evaluateSupports(item.supportGroup, chainDepth + 1);
     }
@@ -1905,6 +1933,47 @@ export class OfficeDemolitionWorld {
     this.notice = `${action}は LEVEL ${level} で解禁です！`;
     this.noticeTone = "locked";
     this.noticeUntil = this.elapsed + 1.8;
+  }
+
+  private trackGoalProgress(
+    item: Breakable,
+    source: DemolitionAction,
+    chainDepth: number,
+  ) {
+    const level = getLevelForXp(this.xp).level;
+    if (source === "throw" && level >= 2) this.throwBreaks += 1;
+    if (source === "dash" && item.material === "plaster" && level >= 3) {
+      this.dashWallBreaks += 1;
+    }
+    if (chainDepth > 0 && level >= 4) this.cascadeBreaks += 1;
+    if (source === "kanpai" && item.material === "steel" && level >= 5) {
+      this.kanpaiSteelBreaks += 1;
+    }
+
+    for (let guard = 0; guard < 5; guard += 1) {
+      const currentLevel = getLevelForXp(this.xp).level;
+      const goal = getActiveGoal(currentLevel, this.completedGoals);
+      if (!goal || this.completedGoals.has(goal.id)) break;
+      const progress = this.getGoalProgress(goal.id);
+      if (progress < goal.target) break;
+      this.completedGoals.add(goal.id);
+      this.xp += goal.bonusXp;
+      this.score += goal.bonusScore;
+      this.beer = Math.min(100, this.beer + 18);
+      this.notice = `業務目標「${goal.title}」達成！ +${goal.bonusScore.toLocaleString()} / XP +${goal.bonusXp}`;
+      this.noticeTone = "level";
+      this.noticeUntil = this.elapsed + 3;
+      this.audio.beer();
+      this.spawnShockwave(this.playerAnchor.position, 0xffbd3d, 3.7, 0.55);
+    }
+  }
+
+  private getGoalProgress(id: DemolitionGoalId) {
+    if (id === "combo-8") return this.maxCombo;
+    if (id === "throw-3") return this.throwBreaks;
+    if (id === "dash-wall-3") return this.dashWallBreaks;
+    if (id === "cascade-6") return this.cascadeBreaks;
+    return this.kanpaiSteelBreaks;
   }
 
   private spawnDebris(
@@ -2109,6 +2178,8 @@ export class OfficeDemolitionWorld {
     this.playSeconds = save.playSeconds;
     this.destroyed = 0;
     this.destroyedIds.clear();
+    this.completedGoals.clear();
+    for (const goal of save.completedGoals) this.completedGoals.add(goal);
     for (const id of save.destroyedIds) {
       const item = this.breakableById.get(id);
       if (!item || !item.alive) continue;
@@ -2124,6 +2195,7 @@ export class OfficeDemolitionWorld {
       cleared: save.cleared && this.destroyed === this.breakables.length,
       destroyed: this.destroyed,
       destroyedIds: [...this.destroyedIds],
+      completedGoals: [...this.completedGoals],
     };
   }
 
@@ -2138,6 +2210,7 @@ export class OfficeDemolitionWorld {
       cleared: this.phase === "cleared"
         || (this.destroyed === this.breakables.length && this.breakables.length > 0),
       destroyedIds: [...this.destroyedIds].sort(),
+      completedGoals: [...this.completedGoals],
       updatedAt: new Date().toISOString(),
     };
   }
@@ -2163,6 +2236,8 @@ export class OfficeDemolitionWorld {
       }
     }
     const notice = this.elapsed <= this.noticeUntil ? this.notice : "";
+    const activeGoal = getActiveGoal(progress.current.level, this.completedGoals);
+    const goalProgress = activeGoal ? this.getGoalProgress(activeGoal.id) : 0;
     this.callbacks.onHud({
       phase: this.phase,
       level: progress.current.level,
@@ -2182,6 +2257,10 @@ export class OfficeDemolitionWorld {
       targetTier: this.target?.tier ?? null,
       beer: this.beer,
       carriedName: this.carried?.name ?? null,
+      goalTitle: activeGoal?.title ?? "全業務目標達成",
+      goalProgress,
+      goalTarget: activeGoal?.target ?? 1,
+      goalComplete: activeGoal ? this.completedGoals.has(activeGoal.id) : true,
       notice,
       noticeTone: this.noticeTone,
       saveStatus: this.saveStatus,

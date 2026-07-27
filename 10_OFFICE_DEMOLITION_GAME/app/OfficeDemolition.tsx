@@ -22,9 +22,9 @@ import type {
   DemolitionResult,
   DemolitionSave,
 } from "./demolition/types";
-import {
+import type {
+  DemolitionWorldCallbacks,
   OfficeDemolitionWorld,
-  type DemolitionWorldCallbacks,
 } from "./demolition/world";
 
 type DemolitionProfile = {
@@ -59,6 +59,10 @@ const INITIAL_HUD: DemolitionHud = {
   targetTier: null,
   beer: 0,
   carriedName: null,
+  goalTitle: "机上整理ラッシュ",
+  goalProgress: 0,
+  goalTarget: 8,
+  goalComplete: false,
   notice: "全社リノベーション業務、準備中です！",
   noticeTone: "normal",
   saveStatus: "idle",
@@ -204,19 +208,24 @@ export default function OfficeDemolition() {
   useEffect(() => {
     const container = viewportRef.current;
     if (!container || !initialSave || worldRef.current) return;
-    const callbacks: DemolitionWorldCallbacks = {
-      onReady: () => setWorldReady(true),
-      onHud: setHud,
-      onSave: persistSave,
-      onClear: (clearResult) => {
-        void submitClear(clearResult);
-      },
-    };
-    const world = new OfficeDemolitionWorld(container, callbacks, initialSave);
-    worldRef.current = world;
-    if (!serverAvailableRef.current) world.setSaveStatus("offline");
+    let cancelled = false;
+    void import("./demolition/world").then(({ OfficeDemolitionWorld: World }) => {
+      if (cancelled || worldRef.current) return;
+      const callbacks: DemolitionWorldCallbacks = {
+        onReady: () => setWorldReady(true),
+        onHud: setHud,
+        onSave: persistSave,
+        onClear: (clearResult) => {
+          void submitClear(clearResult);
+        },
+      };
+      const world = new World(container, callbacks, initialSave);
+      worldRef.current = world;
+      if (!serverAvailableRef.current) world.setSaveStatus("offline");
+    });
     return () => {
-      world.dispose();
+      cancelled = true;
+      worldRef.current?.dispose();
       worldRef.current = null;
     };
   }, [initialSave, persistSave, submitClear]);
@@ -370,6 +379,10 @@ export default function OfficeDemolition() {
           <div className="overall-track">
             <i style={{ width: `${hud.total ? hud.destroyed / hud.total * 100 : 0}%` }} />
           </div>
+          <small className={hud.goalComplete ? "goal-order complete" : "goal-order"}>
+            <b>業務目標</b>
+            {hud.goalTitle} {Math.min(hud.goalProgress, hud.goalTarget)}/{hud.goalTarget}
+          </small>
         </section>
 
         <section className="score-card">
@@ -576,7 +589,7 @@ export default function OfficeDemolition() {
             <div className="clear-stats">
               <div><span>SCORE</span><strong>{hud.score.toLocaleString()}</strong></div>
               <div><span>MAX COMBO</span><strong>{hud.maxCombo}</strong></div>
-              <div><span>TIME</span><strong>{formatPlayTime(result?.playSeconds ?? latestSaveRef.current.playSeconds)}</strong></div>
+              <div><span>TIME</span><strong>{formatPlayTime(result?.playSeconds ?? initialSave?.playSeconds ?? 0)}</strong></div>
             </div>
             <div className="clear-actions">
               <button type="button" className="primary-cta" onClick={() => void shareResult()}>{shareLabel}</button>
@@ -608,7 +621,8 @@ export default function OfficeDemolition() {
             </div>
             <p className="guide-tip">
               家具を投げて別の家具へ当て、柱を抜いて壁や天井を連鎖崩壊させると、
-              コンボ・経験値・スコアが大きく伸びます。
+              コンボ・経験値・スコアが大きく伸びます。各レベルの業務目標は任意ですが、
+              達成すると次の解体許可へ早く進めます。
             </p>
           </section>
         </div>

@@ -34,6 +34,7 @@ type SavePayload = {
   playSeconds?: unknown;
   cleared?: unknown;
   destroyedIds?: unknown;
+  completedGoals?: unknown;
   updatedAt?: unknown;
 };
 
@@ -60,11 +61,19 @@ type SaveRow = {
   play_seconds: number;
   cleared: number;
   destroyed_json: string;
+  completed_goals_json: string;
   updated_at: string;
 };
 
 const PLAYER_COOKIE = "sobaya_demolition_player";
 const MAX_BODY_BYTES = 64_000;
+const DEMOLITION_GOAL_IDS = new Set([
+  "combo-8",
+  "throw-3",
+  "dash-wall-3",
+  "cascade-6",
+  "kanpai-steel-5",
+]);
 let schemaReady: Promise<void> | null = null;
 
 function json(data: unknown, init: ResponseInit = {}) {
@@ -118,6 +127,15 @@ function safeDestroyedIds(value: unknown) {
     .slice(0, 2_000);
 }
 
+function safeCompletedGoals(value: unknown) {
+  if (!Array.isArray(value)) return [];
+  return value
+    .filter((id): id is string => (
+      typeof id === "string" && DEMOLITION_GOAL_IDS.has(id)
+    ))
+    .filter((id, index, all) => all.indexOf(id) === index);
+}
+
 async function readJsonBody(request: Request) {
   const size = Number(request.headers.get("content-length") ?? 0);
   if (size > MAX_BODY_BYTES) throw new Error("payload_too_large");
@@ -144,6 +162,7 @@ async function ensureSchema(db: D1Database) {
         play_seconds REAL DEFAULT 0 NOT NULL,
         cleared INTEGER DEFAULT 0 NOT NULL,
         destroyed_json TEXT DEFAULT '[]' NOT NULL,
+        completed_goals_json TEXT DEFAULT '[]' NOT NULL,
         updated_at TEXT NOT NULL,
         FOREIGN KEY (player_id) REFERENCES demolition_players(id)
       )`),
@@ -164,6 +183,14 @@ async function ensureSchema(db: D1Database) {
         "CREATE INDEX IF NOT EXISTS demolition_runs_score_idx ON demolition_runs (score)",
       ),
     ]);
+    const saveColumns = await db
+      .prepare("PRAGMA table_info(demolition_saves)")
+      .all<{ name: string }>();
+    if (!saveColumns.results.some((column) => column.name === "completed_goals_json")) {
+      await db.prepare(
+        "ALTER TABLE demolition_saves ADD COLUMN completed_goals_json TEXT DEFAULT '[]' NOT NULL",
+      ).run();
+    }
   })();
   await schemaReady;
 }
@@ -190,10 +217,16 @@ function publicProfile(row: PlayerRow | null) {
 function publicSave(row: SaveRow | null) {
   if (!row) return null;
   let destroyedIds: string[] = [];
+  let completedGoals: string[] = [];
   try {
     destroyedIds = safeDestroyedIds(JSON.parse(row.destroyed_json));
   } catch {
     destroyedIds = [];
+  }
+  try {
+    completedGoals = safeCompletedGoals(JSON.parse(row.completed_goals_json));
+  } catch {
+    completedGoals = [];
   }
   return {
     version: 1,
@@ -204,6 +237,7 @@ function publicSave(row: SaveRow | null) {
     playSeconds: row.play_seconds,
     cleared: row.cleared === 1,
     destroyedIds,
+    completedGoals,
     updatedAt: row.updated_at,
   };
 }
@@ -233,6 +267,7 @@ async function handleDemolitionApi(request: Request, env: Env) {
   if (request.method === "POST" && url.pathname === "/api/demolition/save") {
     const payload = await readJsonBody(request) as SavePayload;
     const destroyedIds = safeDestroyedIds(payload.destroyedIds);
+    const completedGoals = safeCompletedGoals(payload.completedGoals);
     const xp = safeInt(payload.xp, 0, 10_000_000);
     const score = safeInt(payload.score, 0, 1_000_000_000);
     const destroyed = Math.max(
@@ -245,8 +280,8 @@ async function handleDemolitionApi(request: Request, env: Env) {
     const updatedAt = safeDate(payload.updatedAt);
     await db.prepare(`INSERT INTO demolition_saves (
       player_id, xp, score, destroyed, max_combo, play_seconds,
-      cleared, destroyed_json, updated_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      cleared, destroyed_json, completed_goals_json, updated_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(player_id) DO UPDATE SET
       xp = excluded.xp,
       score = excluded.score,
@@ -255,7 +290,9 @@ async function handleDemolitionApi(request: Request, env: Env) {
       play_seconds = excluded.play_seconds,
       cleared = excluded.cleared,
       destroyed_json = excluded.destroyed_json,
-      updated_at = excluded.updated_at`)
+      completed_goals_json = excluded.completed_goals_json,
+      updated_at = excluded.updated_at
+    WHERE excluded.updated_at >= demolition_saves.updated_at`)
       .bind(
         playerId,
         xp,
@@ -265,6 +302,7 @@ async function handleDemolitionApi(request: Request, env: Env) {
         playSeconds,
         cleared ? 1 : 0,
         JSON.stringify(destroyedIds),
+        JSON.stringify(completedGoals),
         updatedAt,
       )
       .run();

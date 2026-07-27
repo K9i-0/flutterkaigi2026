@@ -1,5 +1,6 @@
 import type {
   DemolitionMaterial,
+  DemolitionGoalId,
   DemolitionSave,
   DestructionTier,
 } from "./types";
@@ -86,6 +87,73 @@ export const MATERIAL_LABEL: Record<DemolitionMaterial, string> = {
   steel: "構造鉄骨",
 };
 
+export type DemolitionGoalDefinition = {
+  id: DemolitionGoalId;
+  level: DestructionTier;
+  title: string;
+  description: string;
+  target: number;
+  bonusXp: number;
+  bonusScore: number;
+};
+
+export const DEMOLITION_GOALS: readonly DemolitionGoalDefinition[] = [
+  {
+    id: "combo-8",
+    level: 1,
+    title: "机上整理ラッシュ",
+    description: "8コンボをつなぐ",
+    target: 8,
+    bonusXp: 240,
+    bonusScore: 1_000,
+  },
+  {
+    id: "throw-3",
+    level: 2,
+    title: "備品リサイクル便",
+    description: "投げた家具で3件壊す",
+    target: 3,
+    bonusXp: 520,
+    bonusScore: 2_500,
+  },
+  {
+    id: "dash-wall-3",
+    level: 3,
+    title: "会議室ショートカット",
+    description: "ダッシュで壁を3枚貫通",
+    target: 3,
+    bonusXp: 820,
+    bonusScore: 4_000,
+  },
+  {
+    id: "cascade-6",
+    level: 4,
+    title: "支持構造見直し",
+    description: "連鎖崩壊で6部材を壊す",
+    target: 6,
+    bonusXp: 1_250,
+    bonusScore: 7_000,
+  },
+  {
+    id: "kanpai-steel-5",
+    level: 5,
+    title: "最後の乾杯",
+    description: "乾杯クラッシュで鉄骨を5本壊す",
+    target: 5,
+    bonusXp: 2_000,
+    bonusScore: 12_000,
+  },
+] as const;
+
+export function getActiveGoal(
+  level: DestructionTier,
+  completedGoals: ReadonlySet<DemolitionGoalId>,
+) {
+  return DEMOLITION_GOALS.find(
+    (goal) => goal.level <= level && !completedGoals.has(goal.id),
+  ) ?? DEMOLITION_GOALS[Math.min(DEMOLITION_GOALS.length - 1, level - 1)];
+}
+
 export function clampNumber(value: unknown, min: number, max: number, fallback = min) {
   const number = typeof value === "number" ? value : Number.NaN;
   if (!Number.isFinite(number)) return fallback;
@@ -157,6 +225,7 @@ export function createEmptyDemolitionSave(): DemolitionSave {
     playSeconds: 0,
     cleared: false,
     destroyedIds: [],
+    completedGoals: [],
     updatedAt: new Date(0).toISOString(),
   };
 }
@@ -176,6 +245,16 @@ export function normalizeDemolitionSave(value: unknown): DemolitionSave {
     && !Number.isNaN(Date.parse(candidate.updatedAt))
     ? candidate.updatedAt
     : empty.updatedAt;
+  const validGoalIds = new Set<DemolitionGoalId>(
+    DEMOLITION_GOALS.map((goal) => goal.id),
+  );
+  const completedGoals = Array.isArray(candidate.completedGoals)
+    ? candidate.completedGoals
+        .filter((id): id is DemolitionGoalId => (
+          typeof id === "string" && validGoalIds.has(id as DemolitionGoalId)
+        ))
+        .filter((id, index, all) => all.indexOf(id) === index)
+    : [];
   return {
     version: 1,
     xp: Math.round(clampNumber(candidate.xp, 0, 10_000_000)),
@@ -188,6 +267,7 @@ export function normalizeDemolitionSave(value: unknown): DemolitionSave {
     playSeconds: clampNumber(candidate.playSeconds, 0, 10_000_000),
     cleared: candidate.cleared === true,
     destroyedIds: ids,
+    completedGoals,
     updatedAt,
   };
 }

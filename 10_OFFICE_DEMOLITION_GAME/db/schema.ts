@@ -18,6 +18,7 @@ export const demolitionSaves = sqliteTable("demolition_saves", {
   playSeconds: real("play_seconds").notNull().default(0),
   cleared: integer("cleared", { mode: "boolean" }).notNull().default(false),
   destroyedJson: text("destroyed_json").notNull().default("[]"),
+  completedGoalsJson: text("completed_goals_json").notNull().default("[]"),
   updatedAt: text("updated_at").notNull(),
 });
 

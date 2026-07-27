@@ -19,6 +19,13 @@ export type DemolitionAction =
   | "stomp"
   | "kanpai";
 
+export type DemolitionGoalId =
+  | "combo-8"
+  | "throw-3"
+  | "dash-wall-3"
+  | "cascade-6"
+  | "kanpai-steel-5";
+
 export type GamePhase =
   | "loading"
   | "briefing"
@@ -36,6 +43,7 @@ export type DemolitionSave = {
   playSeconds: number;
   cleared: boolean;
   destroyedIds: string[];
+  completedGoals: DemolitionGoalId[];
   updatedAt: string;
 };
 
@@ -58,6 +66,10 @@ export type DemolitionHud = {
   targetTier: DestructionTier | null;
   beer: number;
   carriedName: string | null;
+  goalTitle: string;
+  goalProgress: number;
+  goalTarget: number;
+  goalComplete: boolean;
   notice: string;
   noticeTone: "normal" | "good" | "locked" | "level";
   saveStatus: "idle" | "saving" | "saved" | "offline";
