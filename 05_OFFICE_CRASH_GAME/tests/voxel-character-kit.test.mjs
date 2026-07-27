@@ -40,20 +40,23 @@ test("shares a stable optional-channel rig contract between Blender and Three.js
   assert.match(blender, /build_voxel_rig/);
 });
 
-test("uses canonical symlinked models for every Madogiwa boss", async () => {
-  const bosses = [
+test("uses canonical symlinked GLBs while Yumemin opts into the v3 procedural model", async () => {
+  const glbBosses = [
     "yotan",
     "tokun",
     "fukuchan",
-    "yumemin",
     "takosan",
     "yametaro",
     "okayaman",
   ];
   const bossDefinitions = await read("../app/characters/window-bosses.ts");
   assert.match(bossDefinitions, /assetUrl: `\/models\/\$\{id\}\.glb/);
+  assert.match(bossDefinitions, /makeYumeminV3Model/);
+  assert.match(bossDefinitions, /assetVersion = "yumemin-v3"/);
+  assert.match(bossDefinitions, /outlines: false/);
+  assert.match(bossDefinitions, /model\.position\.y = 1\.38/);
 
-  for (const boss of bosses) {
+  for (const boss of glbBosses) {
     assert.match(bossDefinitions, new RegExp(`makeModel\\("${boss}"`));
     const modelUrl = new URL(`../public/models/${boss}.glb`, import.meta.url);
     assert.equal((await lstat(modelUrl)).isSymbolicLink(), true);
@@ -62,6 +65,13 @@ test("uses canonical symlinked models for every Madogiwa boss", async () => {
       `../../../04_GAME_ASSETS/voxel/models/${boss}.glb`,
     );
   }
+
+  const yumeminFactory = await read(
+    "../../04_GAME_ASSETS/threejs/yumemin-img2threejs/src/createYumeminModel.ts",
+  );
+  assert.match(yumeminFactory, /perfectly spherical blue body/);
+  assert.match(yumeminFactory, /no drawn outline geometry/);
+  assert.match(yumeminFactory, /white conforming wrap cloth/);
 });
 
 test("keeps character boss defeats peaceful and attacks readable", async () => {

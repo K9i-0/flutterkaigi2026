@@ -1,8 +1,14 @@
+import * as THREE from "three";
 import {
   STANDARD_BIPED_MOTION,
   STANDARD_VOXEL_RIG_NODES,
+  type VoxelActionController,
   type VoxelCharacterDefinition,
 } from "./voxel-character-kit";
+import {
+  createYumeminModel,
+  type YumeminRuntime,
+} from "../../../04_GAME_ASSETS/threejs/yumemin-img2threejs/src/createYumeminModel";
 
 export type CharacterBossId =
   | "yotan"
@@ -53,6 +59,57 @@ const makeModel = (
   motion: {
     ...STANDARD_BIPED_MOTION,
     ...motion,
+  },
+});
+
+const makeYumeminV3Model = (): VoxelCharacterDefinition => ({
+  id: "yumemin-v3",
+  modelName: "yumemin-v3-boss-model",
+  scale: 1.12,
+  // The v3 factory faces +Z. This cancels the shared boss container's PI turn.
+  rotationY: Math.PI,
+  rig: {
+    primaryArm: ["mallet-assembly__pivot"],
+    locomotionExtras: ["trunk-pivot"],
+  },
+  motion: {
+    ...STANDARD_BIPED_MOTION,
+    smashDuration: 0.52,
+    windupAngle: 1.15,
+    impactAngle: -1.7,
+  },
+  modelFactory: () => {
+    const model = createYumeminModel({
+      castShadow: true,
+      receiveShadow: true,
+      includeMallet: true,
+      outlines: false,
+    });
+    model.position.y = 1.38;
+    model.userData.assetVersion = "yumemin-v3";
+    return model;
+  },
+  actionFactory: (model): VoxelActionController | undefined => {
+    const sculptRuntime = model.userData.sculptRuntime as YumeminRuntime | undefined;
+    if (!sculptRuntime) return undefined;
+    const bonkDuration = 0.52;
+    let bonkElapsed = bonkDuration + 1;
+    sculptRuntime.setMalletVisible(false);
+    return {
+      triggerSmash: () => {
+        bonkElapsed = 0;
+        sculptRuntime.setMalletVisible(true);
+      },
+      update: (dt, elapsed) => {
+        bonkElapsed += dt;
+        const active = bonkElapsed < bonkDuration;
+        sculptRuntime.tick(
+          elapsed,
+          active ? THREE.MathUtils.clamp(bonkElapsed / bonkDuration, 0, 1) : 1,
+        );
+        if (!active) sculptRuntime.setMalletVisible(false);
+      },
+    };
   },
 });
 
@@ -131,11 +188,7 @@ export const WINDOW_BOSSES: Record<CharacterBossId, CharacterBossDefinition> = {
     radius: 0.96,
     points: 6500,
     healthY: 3.35,
-    model: makeModel("yumemin", 1.58, {
-      smashDuration: 0.52,
-      windupAngle: 1.15,
-      impactAngle: -1.7,
-    }),
+    model: makeYumeminV3Model(),
   },
   takosan: {
     id: "takosan",

@@ -30,12 +30,14 @@ export type VoxelMotionProfile = {
 
 export type VoxelCharacterDefinition = {
   id: string;
-  assetUrl: string;
+  assetUrl?: string;
   modelName: string;
   scale: number;
   rotationY: number;
   rig: VoxelRigNodeMap;
   motion: VoxelMotionProfile;
+  modelFactory?: () => THREE.Group;
+  actionFactory?: (model: THREE.Group) => VoxelActionController | undefined;
 };
 
 export type VoxelActionController = {
@@ -219,32 +221,50 @@ export function loadVoxelCharacter({
   onReady,
   onError,
 }: LoadVoxelCharacterOptions) {
+  const prepareModel = (model: THREE.Group, animations: readonly THREE.AnimationClip[] = []) => {
+    model.name = definition.modelName;
+    model.scale.setScalar(definition.scale);
+    model.rotation.y = definition.rotationY;
+    model.traverse((object) => {
+      if (object instanceof THREE.Mesh) {
+        object.castShadow = true;
+        object.receiveShadow = true;
+      }
+    });
+    parent.add(model);
+
+    let mixer: THREE.AnimationMixer | undefined;
+    if (animations.length > 0) {
+      mixer = new THREE.AnimationMixer(model);
+      mixer.clipAction(animations[0]).play();
+    }
+
+    onReady?.({
+      model,
+      mixer,
+      actions: definition.actionFactory?.(model)
+        ?? createVoxelActionController(model, definition.rig, definition.motion),
+    });
+  };
+
+  if (definition.modelFactory) {
+    try {
+      prepareModel(definition.modelFactory());
+    } catch (error) {
+      onError?.(error);
+    }
+    return;
+  }
+
+  if (!definition.assetUrl) {
+    onError?.(new Error(`No model source configured for ${definition.id}`));
+    return;
+  }
+
   new GLTFLoader().load(
     definition.assetUrl,
     (gltf) => {
-      const model = gltf.scene;
-      model.name = definition.modelName;
-      model.scale.setScalar(definition.scale);
-      model.rotation.y = definition.rotationY;
-      model.traverse((object) => {
-        if (object instanceof THREE.Mesh) {
-          object.castShadow = true;
-          object.receiveShadow = true;
-        }
-      });
-      parent.add(model);
-
-      let mixer: THREE.AnimationMixer | undefined;
-      if (gltf.animations.length > 0) {
-        mixer = new THREE.AnimationMixer(model);
-        mixer.clipAction(gltf.animations[0]).play();
-      }
-
-      onReady?.({
-        model,
-        mixer,
-        actions: createVoxelActionController(model, definition.rig, definition.motion),
-      });
+      prepareModel(gltf.scene, gltf.animations);
     },
     undefined,
     onError,
