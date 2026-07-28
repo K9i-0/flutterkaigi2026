@@ -1,0 +1,69 @@
+{
+  "games": [
+    {
+      "id": "office-crash",
+      "title": "そば屋クラッシュ",
+      "subtitle": "45秒スコアアタック",
+      "description": "ビール片手にオフィスを駆け抜け、備品を豪快にクラッシュ。コンボをつないでハイスコアを目指そう。",
+      "sourceDir": "05_OFFICE_CRASH_GAME",
+      "buildScript": "build:pages",
+      "distDir": "dist-pages",
+      "outputDir": "games/office-crash",
+      "image": "games/office-crash/og-voxel.png",
+      "accent": "orange",
+      "controls": "PC・スマホ対応"
+    },
+    {
+      "id": "soba-escape",
+      "title": "そば屋の定時ダッシュ",
+      "subtitle": "バレずに脱出",
+      "description": "巡回する仲間たちの視界を読み、机やパーテーションの死角を縫って定時のオフィスから脱出しよう。",
+      "sourceDir": "07_SOBA_ESCAPE_GAME",
+      "buildScript": "build",
+      "distDir": "dist",
+      "outputDir": "games/soba-escape",
+      "image": "games/soba-escape/og.png",
+      "accent": "green",
+      "controls": "PC・スマホ対応"
+    },
+    {
+      "id": "soba-romance",
+      "title": "そば屋は心のヤバイやつ",
+      "subtitle": "ドキドキ好感度ADV",
+      "description": "遅刻ダッシュの曲がり角でぶつかった、白い仮面のそば屋さん。7つの選択で好感度ゲージを満タンにして両想いを目指す、窓際族ラブコメ・ノベルゲーム。",
+      "sourceDir": "08_ROMANCE_NOVEL_GAME",
+      "buildScript": "build",
+      "distDir": "dist",
+      "outputDir": "games/soba-romance",
+      "image": "games/soba-romance/og.svg",
+      "accent": "pink",
+      "controls": "PC・スマホ対応"
+    },
+    {
+      "id": "madogiwa-battle",
+      "title": "窓際族バトル",
+      "subtitle": "オンライン1対1コマンドバトル",
+      "description": "部屋コードを交換して、離れた相手とターン制コマンドバトル。8人の窓際族から1体を選び、固有スキルを駆使して立ち飲み処の決闘を制そう。",
+      "sourceDir": "09_VOXEL_BATTLE_GAME",
+      "buildScript": "build",
+      "distDir": "dist",
+      "outputDir": "games/madogiwa-battle",
+      "image": "games/madogiwa-battle/og.svg",
+      "accent": "orange",
+      "controls": "PC・スマホ対応"
+    },
+    {
+      "id": "gyun-gyun-quest",
+      "title": "ギュンギュン・クエスト",
+      "subtitle": "魔王そば屋と最高の一杯",
+      "description": "福ちゃん王にもらった500円で最高の一杯を選び、平原と洞窟を越えて魔王そば屋へ届ける、ファミコンRPG風2Dアドベンチャー。",
+      "sourceDir": "10_GYUN_GYUN_QUEST_GAME",
+      "buildScript": "build",
+      "distDir": "dist",
+      "outputDir": "games/gyun-gyun-quest",
+      "image": "games/gyun-gyun-quest/og.svg",
+      "accent": "blue",
+      "controls": "PC・スマホ対応"
+    }
+  ]
+}
