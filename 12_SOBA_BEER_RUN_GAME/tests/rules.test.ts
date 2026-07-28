@@ -49,8 +49,9 @@ test("beer tiers accelerate the runner and collisions apply a two-second slowdow
   assert.equal(beerSpeedMultiplier(0), 1);
   assert.equal(beerSpeedMultiplier(9), 1);
   assert.equal(beerSpeedMultiplier(10), 1.08);
-  assert.equal(beerSpeedMultiplier(50), 1.4);
-  assert.equal(beerSpeedMultiplier(999), 1.4);
+  assert.equal(beerSpeedMultiplier(30), 1.24);
+  assert.equal(beerSpeedMultiplier(40), 1.32);
+  assert.equal(beerSpeedMultiplier(999), 1.32);
   assert.equal(runSpeed(0, false, false, false), BASE_SPEED);
   assert.equal(
     runSpeed(0, true, false, false),

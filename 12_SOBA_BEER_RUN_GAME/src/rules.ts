@@ -1,10 +1,10 @@
 import type { CourseCell, CourseRow, Rank } from "./types.js";
 
 export const LANE_X = [-2.35, 0, 2.35] as const;
-export const BASE_SPEED = 9.2;
+export const BASE_SPEED = 10.4;
 export const BEERS_PER_SPEED_UP = 10;
 export const SPEED_STEP = 0.08;
-export const MAX_BEER_SPEED_MULTIPLIER = 1.4;
+export const MAX_BEER_SPEED_MULTIPLIER = 1.32;
 export const COLLISION_SPEED_MULTIPLIER = 0.72;
 export const COLLISION_DURATION = 2;
 export const SUPPORT_SPEED_MULTIPLIER = 1.18;
