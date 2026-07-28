@@ -45,6 +45,12 @@ test("renders the Office Crash game shell", async () => {
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape/);
 });
 
+test("keeps the static GitHub Pages entry outside the vinext route tree", async () => {
+  const pagesConfig = await readFile(new URL("../vite.pages.config.ts", import.meta.url), "utf8");
+  assert.match(pagesConfig, /root: path\.resolve\(__dirname, "github-pages"\)/);
+  await assert.rejects(readFile(new URL("../pages/main.tsx", import.meta.url), "utf8"));
+});
+
 test("uses Three.js with a fixed camera, combat floors, and keyboard plus touch controls", async () => {
   const source = await readFile(new URL("../app/OfficeCrashRPG.tsx", import.meta.url), "utf8");
   assert.match(source, /new THREE\.WebGLRenderer/);
