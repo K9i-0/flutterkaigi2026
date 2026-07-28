@@ -2,14 +2,15 @@ import * as THREE from "three";
 import { RunnerAudio } from "./audio.js";
 import { playCutscene } from "./cutscene.js";
 import {
-  BASE_SPEED,
   BEERS_PER_SPEED_UP,
   COLLISION_DURATION,
   FINAL_RUSH_START,
   FINISH_DISTANCE,
   LANE_X,
   MAX_BEER_SPEED_MULTIPLIER,
+  STAGE_DEFINITIONS,
   WANTED_ZONE_START,
+  baseSpeedForStage,
   beerSpeedMultiplier,
   buildCourse,
   formatTime,
@@ -18,6 +19,7 @@ import {
   rankFor,
   rankLabel,
   runSpeed,
+  stageDefinition,
 } from "./rules.js";
 import type {
   CourseCell,
@@ -25,6 +27,7 @@ import type {
   Lane,
   Phase,
   RunResult,
+  StageId,
   SupportKind,
 } from "./types.js";
 import {
@@ -43,6 +46,7 @@ interface TrackEntity {
   nearMissChecked: boolean;
   routeId?: number;
   role?: CourseRole;
+  motionPhase: number;
 }
 
 interface SupportEvent {
@@ -62,10 +66,15 @@ interface RecordBook {
   bestNoHitTime: number | null;
 }
 
-const RECORDS_KEY = "sobaya-beer-run.records.v2";
+const RECORDS_KEY = "sobaya-beer-run.records.v3";
+const LEGACY_RECORDS_KEY = "sobaya-beer-run.records.v2";
 const LEGACY_BEST_SCORE_KEY = "sobaya-beer-run.best.v1";
 const CAMERA_TARGET = new THREE.Vector3();
 const TEMP_COLOR = new THREE.Color();
+
+function isObstacleKind(kind: TrackEntity["kind"]): boolean {
+  return kind === "crate" || kind === "barrel" || kind === "movingBarrel";
+}
 
 export class BeerRunnerGame {
   private readonly root: HTMLElement;
@@ -97,6 +106,7 @@ export class BeerRunnerGame {
   private playerCharacter?: LoadedVoxelCharacter;
   private entities: TrackEntity[] = [];
   private phase: Phase = "title";
+  private stageId: StageId = 1;
   private elapsed = 0;
   private distance = 0;
   private targetLaneIndex = 1;
@@ -132,6 +142,7 @@ export class BeerRunnerGame {
   private readonly routeText: HTMLElement;
   private readonly chainText: HTMLElement;
   private readonly speedText: HTMLElement;
+  private readonly stageHudText: HTMLElement;
   private readonly progressBar: HTMLElement;
   private readonly announcer: HTMLElement;
   private readonly floatText: HTMLElement;
@@ -142,8 +153,11 @@ export class BeerRunnerGame {
   private readonly resultServed: HTMLElement;
   private readonly resultStats: HTMLElement;
   private readonly resultBest: HTMLElement;
+  private readonly resultStageText: HTMLElement;
   private readonly okayamanQuote: HTMLElement;
   private readonly loadingText: HTMLElement;
+  private readonly startLabel: HTMLElement;
+  private readonly retryLabel: HTMLElement;
 
   constructor(root: HTMLElement) {
     this.root = root;
@@ -162,6 +176,7 @@ export class BeerRunnerGame {
     this.routeText = this.required("[data-routes]");
     this.chainText = this.required("[data-chain]");
     this.speedText = this.required("[data-speed]");
+    this.stageHudText = this.required("[data-stage-hud]");
     this.progressBar = this.required("[data-progress-bar]");
     this.announcer = this.required(".announcer");
     this.floatText = this.required(".pickup-float");
@@ -172,8 +187,11 @@ export class BeerRunnerGame {
     this.resultServed = this.required("[data-result-served]");
     this.resultStats = this.required("[data-result-stats]");
     this.resultBest = this.required("[data-result-best]");
+    this.resultStageText = this.required("[data-result-stage]");
     this.okayamanQuote = this.required("[data-okayaman-quote]");
     this.loadingText = this.required("[data-loading]");
+    this.startLabel = this.required("[data-start-label]");
+    this.retryLabel = this.required("[data-retry-label]");
 
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
@@ -196,6 +214,7 @@ export class BeerRunnerGame {
     this.createPlayerPlaceholder();
     this.loadCharacters();
     this.bindEvents();
+    this.selectStage(1);
     this.resize();
     this.updateHud();
     this.animate();
@@ -208,6 +227,21 @@ export class BeerRunnerGame {
   }
 
   private createInterface(): string {
+    const stageCards = STAGE_DEFINITIONS.map((stage) => `
+      <button
+        class="stage-card${stage.id === 1 ? " is-selected" : ""}"
+        type="button"
+        data-stage-select="${stage.id}"
+        aria-pressed="${stage.id === 1 ? "true" : "false"}"
+      >
+        <span class="stage-number">${stage.numberLabel}</span>
+        <b>${stage.name}</b>
+        <span class="stage-difficulty">${stage.difficulty}</span>
+        <small>${stage.description}</small>
+        <i data-stage-best="${stage.id}">BEST --:--.--</i>
+      </button>
+    `).join("");
+
     return `
       <main class="game-shell">
         <section class="game-viewport" aria-label="そば屋のビールダッシュ">
@@ -229,6 +263,7 @@ export class BeerRunnerGame {
             <button class="pause-button" type="button" aria-label="一時停止">Ⅱ</button>
             <div class="run-progress" aria-hidden="true"><i data-progress-bar></i></div>
             <div class="speed-pill" data-speed>速度 ×1.00</div>
+            <div class="stage-pill" data-stage-hud>STAGE 1</div>
             <div class="chain-pill" data-chain>BEER STREAK 0</div>
           </div>
 
@@ -259,8 +294,11 @@ export class BeerRunnerGame {
                 <span>正解レーンで連続GET</span>
                 <span>458mタイムアタック</span>
               </div>
+              <div class="stage-select" aria-label="ステージ選択">
+                ${stageCards}
+              </div>
               <button class="primary-button" type="button" data-start>
-                <span>開店準備をはじめる</span>
+                <span data-start-label>STAGE 1を走る</span>
                 <b>RUN!</b>
               </button>
               <p class="loading-note" data-loading>正典ボクセルを搬入中…</p>
@@ -295,7 +333,7 @@ export class BeerRunnerGame {
               </div>
 
               <div class="result-panel">
-                <p class="eyebrow">本日の営業結果</p>
+                <p class="eyebrow" data-result-stage>STAGE 1・本日の営業結果</p>
                 <div class="rank-lockup">
                   <strong data-result-rank>S</strong>
                   <div>
@@ -311,7 +349,9 @@ export class BeerRunnerGame {
                 <p class="result-stats" data-result-stats></p>
                 <p class="new-best" data-result-best></p>
                 <div class="result-actions">
-                  <button class="primary-button" type="button" data-retry>もう一杯！</button>
+                  <button class="primary-button" type="button" data-retry>
+                    <span data-retry-label>STAGE 1をもう一杯！</span>
+                  </button>
                   <button class="text-button" type="button" data-result-home>タイトルへ</button>
                 </div>
               </div>
@@ -623,6 +663,13 @@ export class BeerRunnerGame {
     this.required<HTMLButtonElement>("[data-result-home]").addEventListener("click", () => this.showTitle());
     this.required<HTMLButtonElement>(".pause-button").addEventListener("click", () => this.pause());
 
+    this.root.querySelectorAll<HTMLButtonElement>("[data-stage-select]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const stageId = Number(button.dataset.stageSelect) as StageId;
+        if (stageId === 1 || stageId === 2 || stageId === 3) this.selectStage(stageId);
+      });
+    });
+
     this.root.querySelectorAll<HTMLButtonElement>("[data-move]").forEach((button) => {
       button.addEventListener("pointerdown", (event) => {
         event.preventDefault();
@@ -665,6 +712,24 @@ export class BeerRunnerGame {
     document.addEventListener("visibilitychange", () => {
       if (document.hidden && this.phase === "playing") this.pause();
     });
+  }
+
+  private selectStage(stageId: StageId): void {
+    this.stageId = stageId;
+    const stage = stageDefinition(stageId);
+    this.root.dataset.stage = String(stageId);
+    this.stageHudText.textContent = `${stage.numberLabel} ${stage.name}`;
+    this.startLabel.textContent = `${stage.numberLabel}を走る`;
+    this.retryLabel.textContent = `${stage.numberLabel}をもう一杯！`;
+    this.root.querySelectorAll<HTMLButtonElement>("[data-stage-select]").forEach((button) => {
+      const selected = Number(button.dataset.stageSelect) === stageId;
+      button.classList.toggle("is-selected", selected);
+      button.setAttribute("aria-pressed", String(selected));
+    });
+    this.renderer.setClearColor(stage.skyColor);
+    this.scene.background = new THREE.Color(stage.skyColor);
+    this.scene.fog = new THREE.Fog(stage.skyColor, 32, stage.fogFar);
+    this.refreshStageRecords();
   }
 
   private async startFromTitle(): Promise<void> {
@@ -716,13 +781,14 @@ export class BeerRunnerGame {
     this.resultOverlay.classList.remove("is-visible");
     this.hud.classList.add("is-visible");
     this.audio.setPlaying(true);
-    this.showAnnouncement("正解レーンを見抜け！", "gold");
+    const stage = stageDefinition(this.stageId);
+    this.showAnnouncement(`${stage.numberLabel} ${stage.mechanic}`, "gold");
   }
 
   private createCourse(seed: number): void {
     this.courseGroup.clear();
     this.entities = [];
-    const rows = buildCourse(seed);
+    const rows = buildCourse(seed, this.stageId);
     for (const row of rows) {
       row.cells.forEach((cell, laneIndex) => {
         if (!cell) return;
@@ -753,6 +819,7 @@ export class BeerRunnerGame {
           nearMissChecked: false,
           routeId: row.routeId,
           role: row.role,
+          motionPhase: row.distance * 0.173 + laneIndex * 1.7,
         });
       });
     }
@@ -791,6 +858,7 @@ export class BeerRunnerGame {
     this.distance = 0;
     this.player.position.set(0, 0, 0);
     this.player.rotation.set(0, 0, 0);
+    this.refreshStageRecords();
   }
 
   private animate = (): void => {
@@ -823,6 +891,7 @@ export class BeerRunnerGame {
       this.hitTime > 0,
       this.supportBoostTime > 0,
       this.nearMissBoostTime > 0,
+      this.stageId,
     );
     this.topSpeed = Math.max(this.topSpeed, speed);
     this.distance = Math.min(FINISH_DISTANCE, this.distance + speed * dt);
@@ -838,8 +907,9 @@ export class BeerRunnerGame {
       dt,
     );
     this.player.position.y = Math.abs(Math.sin(this.elapsed * 10.5)) * 0.055;
+    const stageBaseSpeed = baseSpeedForStage(this.stageId);
     const speedProgress = THREE.MathUtils.clamp(
-      (speed / BASE_SPEED - 1) / (MAX_BEER_SPEED_MULTIPLIER - 1),
+      (speed / stageBaseSpeed - 1) / (MAX_BEER_SPEED_MULTIPLIER - 1),
       0,
       1,
     );
@@ -902,6 +972,10 @@ export class BeerRunnerGame {
             dt,
           );
         }
+      } else if (entity.kind === "movingBarrel") {
+        entity.object.position.x = Math.sin(this.elapsed * 1.7 + entity.motionPhase) * 2.28;
+        entity.object.rotation.x += dt * 2.6;
+        entity.object.rotation.z += dt * 0.8;
       } else if (entity.kind === "barrel") {
         entity.object.rotation.x += dt * 1.4;
       }
@@ -1017,7 +1091,7 @@ export class BeerRunnerGame {
         this.showAnnouncement("やめたろうWANTED！ 金ビールは3杯分", "red");
         break;
       case "takosan":
-        this.magnetTime = 5;
+        this.magnetTime = this.stageId === 1 ? 5 : this.stageId === 2 ? 3 : 1.5;
         this.showAnnouncement("たこさん！ 全レーンのビールを回収", "gold");
         break;
     }
@@ -1027,7 +1101,7 @@ export class BeerRunnerGame {
     const obstacles = this.entities.filter(
       (entity) =>
         !entity.consumed
-        && (entity.kind === "crate" || entity.kind === "barrel")
+        && isObstacleKind(entity.kind)
         && entity.distance > this.distance + 3
         && entity.distance < this.distance + 34,
     );
@@ -1058,8 +1132,8 @@ export class BeerRunnerGame {
     this.root.classList.remove("is-final-rush");
     this.hud.classList.remove("is-visible");
 
-    const rank = rankFor(this.served);
-    const records = this.readRecords();
+    const rank = rankFor(this.served, this.stageId);
+    const records = this.readRecords(this.stageId);
     const newBestTime = records.bestTime === null || this.elapsed < records.bestTime;
     const newBestServed = this.served > records.bestServed;
     const newNoHitTime = this.hits === 0
@@ -1069,8 +1143,11 @@ export class BeerRunnerGame {
       bestServed: newBestServed ? this.served : records.bestServed,
       bestNoHitTime: newNoHitTime ? this.elapsed : records.bestNoHitTime,
     };
-    if (newBestTime || newBestServed || newNoHitTime) this.writeRecords(nextRecords);
+    if (newBestTime || newBestServed || newNoHitTime) {
+      this.writeRecords(this.stageId, nextRecords);
+    }
     const result: RunResult = {
+      stageId: this.stageId,
       served: this.served,
       finishTime: this.elapsed,
       bestChain: this.bestChain,
@@ -1089,6 +1166,8 @@ export class BeerRunnerGame {
   }
 
   private showResult(result: RunResult): void {
+    const stage = stageDefinition(result.stageId);
+    this.resultStageText.textContent = `${stage.numberLabel} ${stage.name}・本日の営業結果`;
     this.resultRank.textContent = result.rank;
     this.resultLabel.textContent = rankLabel(result.rank);
     this.resultTime.textContent = formatTime(result.finishTime);
@@ -1123,13 +1202,15 @@ export class BeerRunnerGame {
       this.hitTime > 0,
       this.supportBoostTime > 0,
       this.nearMissBoostTime > 0,
+      this.stageId,
     );
     this.timerText.textContent = formatTime(this.elapsed);
     this.servedText.textContent = String(this.served);
     this.routeText.textContent = String(this.perfectRoutes);
     this.chainText.textContent = `BEER STREAK ${this.chain}`;
     this.chainText.classList.toggle("is-hot", this.chain >= 8);
-    this.speedText.textContent = `速度 ×${(currentSpeed / BASE_SPEED).toFixed(2)}`;
+    this.speedText.textContent =
+      `速度 ×${(currentSpeed / baseSpeedForStage(this.stageId)).toFixed(2)}`;
     this.speedText.classList.toggle("is-penalty", this.hitTime > 0);
     this.progressBar.style.transform = `scaleX(${this.distance / FINISH_DISTANCE})`;
   }
@@ -1189,11 +1270,13 @@ export class BeerRunnerGame {
         this.hitTime > 0,
         this.supportBoostTime > 0,
         this.nearMissBoostTime > 0,
+        this.stageId,
       )
-      : BASE_SPEED;
+      : baseSpeedForStage(this.stageId);
+    const stageBaseSpeed = baseSpeedForStage(this.stageId);
     const speedProgress = this.phase === "playing"
       ? THREE.MathUtils.clamp(
-        (currentSpeed / BASE_SPEED - 1) / (MAX_BEER_SPEED_MULTIPLIER - 1),
+        (currentSpeed / stageBaseSpeed - 1) / (MAX_BEER_SPEED_MULTIPLIER - 1),
         0,
         1,
       )
@@ -1344,35 +1427,62 @@ export class BeerRunnerGame {
     context.roundRect(x, y, width, height, radius);
   }
 
-  private readRecords(): RecordBook {
+  private normalizeRecord(value: Partial<RecordBook> | undefined): RecordBook {
+    return {
+      bestTime: typeof value?.bestTime === "number" ? value.bestTime : null,
+      bestServed: typeof value?.bestServed === "number" ? value.bestServed : 0,
+      bestNoHitTime: typeof value?.bestNoHitTime === "number" ? value.bestNoHitTime : null,
+    };
+  }
+
+  private readRecords(stageId: StageId): RecordBook {
     try {
       const stored = localStorage.getItem(RECORDS_KEY);
       if (stored) {
-        const parsed = JSON.parse(stored) as Partial<RecordBook>;
+        const parsed = JSON.parse(stored) as Record<string, Partial<RecordBook>>;
+        const stageRecord = parsed[String(stageId)];
+        if (stageRecord) return this.normalizeRecord(stageRecord);
+      }
+      if (stageId === 1) {
+        const legacyRecords = localStorage.getItem(LEGACY_RECORDS_KEY);
+        if (legacyRecords) {
+          return this.normalizeRecord(JSON.parse(legacyRecords) as Partial<RecordBook>);
+        }
+        const legacyScore = Number(localStorage.getItem(LEGACY_BEST_SCORE_KEY) ?? 0);
         return {
-          bestTime: typeof parsed.bestTime === "number" ? parsed.bestTime : null,
-          bestServed: typeof parsed.bestServed === "number" ? parsed.bestServed : 0,
-          bestNoHitTime: typeof parsed.bestNoHitTime === "number"
-            ? parsed.bestNoHitTime
-            : null,
+          bestTime: null,
+          bestServed: Number.isFinite(legacyScore) ? legacyScore : 0,
+          bestNoHitTime: null,
         };
       }
-      const legacyScore = Number(localStorage.getItem(LEGACY_BEST_SCORE_KEY) ?? 0);
-      return {
-        bestTime: null,
-        bestServed: Number.isFinite(legacyScore) ? legacyScore : 0,
-        bestNoHitTime: null,
-      };
+      return this.normalizeRecord(undefined);
     } catch {
-      return { bestTime: null, bestServed: 0, bestNoHitTime: null };
+      return this.normalizeRecord(undefined);
     }
   }
 
-  private writeRecords(records: RecordBook): void {
+  private writeRecords(stageId: StageId, records: RecordBook): void {
     try {
-      localStorage.setItem(RECORDS_KEY, JSON.stringify(records));
+      const stored = localStorage.getItem(RECORDS_KEY);
+      const collection = stored
+        ? JSON.parse(stored) as Record<string, Partial<RecordBook>>
+        : {};
+      collection[String(stageId)] = records;
+      localStorage.setItem(RECORDS_KEY, JSON.stringify(collection));
+      this.refreshStageRecords();
     } catch {
       // Private browsing may reject storage; the current run still completes normally.
     }
+  }
+
+  private refreshStageRecords(): void {
+    this.root.querySelectorAll<HTMLElement>("[data-stage-best]").forEach((element) => {
+      const stageId = Number(element.dataset.stageBest) as StageId;
+      if (stageId !== 1 && stageId !== 2 && stageId !== 3) return;
+      const records = this.readRecords(stageId);
+      element.textContent = records.bestTime === null
+        ? "BEST --:--.--"
+        : `BEST ${formatTime(records.bestTime)}`;
+    });
   }
 }

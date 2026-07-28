@@ -1,10 +1,19 @@
 export type Lane = -1 | 0 | 1;
-export type CourseCell = "beer" | "goldBeer" | "crate" | "barrel" | null;
+export type StageId = 1 | 2 | 3;
+export type CourseCell =
+  | "beer"
+  | "goldBeer"
+  | "crate"
+  | "barrel"
+  | "movingBarrel"
+  | null;
 export type CourseRole =
   | "tutorial"
   | "hint"
   | "gate"
   | "stream"
+  | "bendStream"
+  | "movingHazard"
   | "wantedGate"
   | "wantedStream"
   | "rush";
@@ -28,6 +37,7 @@ export interface CourseRow {
 }
 
 export interface RunResult {
+  stageId: StageId;
   served: number;
   finishTime: number;
   bestChain: number;
