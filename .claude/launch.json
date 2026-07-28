@@ -30,6 +30,12 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev", "--prefix", "10_GYUN_GYUN_QUEST_GAME"],
       "port": 5190
+    },
+    {
+      "name": "madogiwa-ice-regulation",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "11_MADOGIWA_ICE_PUZZLE_GAME"],
+      "port": 5195
     }
   ]
 }

@@ -64,6 +64,19 @@
       "image": "games/gyun-gyun-quest/og.svg",
       "accent": "blue",
       "controls": "PC・スマホ対応"
+    },
+    {
+      "id": "madogiwa-ice-regulation",
+      "title": "窓際族０",
+      "subtitle": "止まれない氷上パズル",
+      "description": "やめたろうのバグで氷漬けになったオフィスを一直線に滑り、重要資料とビールを全部回収して赤提灯の出口を目指そう。",
+      "sourceDir": "11_MADOGIWA_ICE_PUZZLE_GAME",
+      "buildScript": "build",
+      "distDir": "dist",
+      "outputDir": "games/madogiwa-ice-regulation",
+      "image": "games/madogiwa-ice-regulation/og.svg",
+      "accent": "blue",
+      "controls": "PC・スマホ対応"
     }
   ]
 }

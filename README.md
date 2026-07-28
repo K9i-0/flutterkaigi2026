@@ -33,6 +33,7 @@
 - **[窓際族バトル 〜立ち飲み処の決闘〜](09_VOXEL_BATTLE_GAME/README.md)** (`09_VOXEL_BATTLE_GAME/`): 部屋コードを交換して離れた相手と対戦する、オンライン1対1のターン制コマンドバトル。8体から1体を選び、固有スキルで決闘。ゲーム本体はGitHub Pages配信のまま、対戦同期にFirebase Realtime Databaseを利用する（同じPCの2タブで遊べるローカル対戦モードも搭載）。Vite + TypeScript + Three.js製。セットアップは[ゲームのREADME](09_VOXEL_BATTLE_GAME/README.md)を参照。
 - **[ギュンギュン・クエスト 〜魔王そば屋と最高の一杯〜](10_GYUN_GYUN_QUEST_GAME/README.md)** (`10_GYUN_GYUN_QUEST_GAME/`): 福ちゃん王にもらった500円で最高の一杯を選び、城下町・平原・洞窟を旅して魔王そば屋へ届けるファミコンRPG風2Dアドベンチャー。オープニングムービーと3種類のエンディングを収録。Vite + TypeScript製。
 - **[そば屋のオフィス更地クラッシュ ～全部壊して快適です！～](10_OFFICE_DEMOLITION_GAME/README.md)** (`10_OFFICE_DEMOLITION_GAME/`): オフィスの外壁を破って麻布十番へ進出し、街を壊すほど最大5.2倍まで巨大化。ビールビーム、ジョッキメテオ、残存レーダーを駆使して合計491件を更地にする独立型3Dアクション。旧オフィスクラッシュとは別作品。
+- **[窓際族０](11_MADOGIWA_ICE_PUZZLE_GAME/README.md)** (`11_MADOGIWA_ICE_PUZZLE_GAME/`): やめたろうの冷却プログラムのバグで氷漬けになったオフィスを、上下左右の固定4方向で一直線に滑る2.5Dパズル。重要資料とビールの回収順を考え、全5ステージから脱出する。Vite + TypeScript + Three.js製。
 
 ## IPの原典
 - 世界観: [01_WORLD/WORLD_BIBLE.md](01_WORLD/WORLD_BIBLE.md)
