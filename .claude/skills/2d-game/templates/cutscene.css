@@ -1,0 +1,33 @@
+/* カットシーン動画プレイヤー（cutscene.ts と対で使う） */
+.cutscene {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cutscene-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* 16:9動画を縦画面ではレターボックス表示 */
+}
+
+.cutscene-hint {
+  position: absolute;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 14px;
+  padding: 6px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+
+.cutscene-hint:empty {
+  display: none;
+}
