@@ -7,10 +7,12 @@ on:
       - ".github/workflows/deploy-games-pages.yml"
       - "GAMES_PORTAL/**"
       - "04_GAME_ASSETS/voxel/models/**"
+      - "04_GAME_ASSETS/videos/**"
       - "05_OFFICE_CRASH_GAME/**"
       - "07_SOBA_ESCAPE_GAME/**"
       - "08_ROMANCE_NOVEL_GAME/**"
       - "09_VOXEL_BATTLE_GAME/**"
+      - "10_GYUN_GYUN_QUEST_GAME/**"
   workflow_dispatch:
 
 permissions:
@@ -37,6 +39,7 @@ jobs:
             07_SOBA_ESCAPE_GAME/package-lock.json
             08_ROMANCE_NOVEL_GAME/package-lock.json
             09_VOXEL_BATTLE_GAME/package-lock.json
+            10_GYUN_GYUN_QUEST_GAME/package-lock.json
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
