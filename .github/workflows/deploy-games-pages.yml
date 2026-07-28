@@ -14,6 +14,7 @@ on:
       - "09_VOXEL_BATTLE_GAME/**"
       - "10_GYUN_GYUN_QUEST_GAME/**"
       - "11_MADOGIWA_ICE_PUZZLE_GAME/**"
+      - "12_SOBA_BEER_RUN_GAME/**"
   workflow_dispatch:
 
 permissions:
@@ -42,6 +43,7 @@ jobs:
             09_VOXEL_BATTLE_GAME/package-lock.json
             10_GYUN_GYUN_QUEST_GAME/package-lock.json
             11_MADOGIWA_ICE_PUZZLE_GAME/package-lock.json
+            12_SOBA_BEER_RUN_GAME/package-lock.json
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5

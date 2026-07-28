@@ -36,6 +36,12 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev", "--prefix", "11_MADOGIWA_ICE_PUZZLE_GAME"],
       "port": 5195
+    },
+    {
+      "name": "sobaya-beer-run",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "12_SOBA_BEER_RUN_GAME"],
+      "port": 5200
     }
   ]
 }
