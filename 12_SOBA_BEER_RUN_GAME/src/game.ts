@@ -2,16 +2,29 @@ import * as THREE from "three";
 import { RunnerAudio } from "./audio.js";
 import { playCutscene } from "./cutscene.js";
 import {
+  BASE_SPEED,
+  BEERS_PER_SPEED_UP,
+  COLLISION_DURATION,
+  FEVER_DURATION,
   FINAL_RUSH_START,
   FINISH_DISTANCE,
   LANE_X,
-  RUN_DURATION,
+  WANTED_ZONE_START,
+  beerSpeedMultiplier,
   buildCourse,
+  formatTime,
+  hasFinished,
   rankFor,
   rankLabel,
-  speedAt,
+  runSpeed,
 } from "./rules.js";
-import type { CourseCell, Lane, Phase, RunResult } from "./types.js";
+import type {
+  CourseCell,
+  Lane,
+  Phase,
+  RunResult,
+  SupportKind,
+} from "./types.js";
 import {
   loadVoxelCharacter,
   runnerDefinition,
@@ -25,6 +38,13 @@ interface TrackEntity {
   lane: Lane;
   baseY: number;
   consumed: boolean;
+  nearMissChecked: boolean;
+}
+
+interface SupportEvent {
+  kind: SupportKind;
+  distance: number;
+  triggered: boolean;
 }
 
 interface Burst {
@@ -32,7 +52,14 @@ interface Burst {
   age: number;
 }
 
-const BEST_SCORE_KEY = "sobaya-beer-run.best.v1";
+interface RecordBook {
+  bestTime: number | null;
+  bestServed: number;
+  bestNoHitTime: number | null;
+}
+
+const RECORDS_KEY = "sobaya-beer-run.records.v2";
+const LEGACY_BEST_SCORE_KEY = "sobaya-beer-run.best.v1";
 const CAMERA_TARGET = new THREE.Vector3();
 const TEMP_COLOR = new THREE.Color();
 
@@ -51,8 +78,18 @@ export class BeerRunnerGame {
   private readonly cameos: LoadedVoxelCharacter[] = [];
   private readonly bursts: Burst[] = [];
   private readonly beerTemplate = this.createBeerMug();
+  private readonly goldBeerTemplate = this.createBeerMug(true);
   private readonly crateTemplate = this.createCrate();
   private readonly barrelTemplate = this.createBarrel();
+  private readonly supportEvents: SupportEvent[] = [
+    { kind: "tokun", distance: 66, triggered: false },
+    { kind: "yotan", distance: 132, triggered: false },
+    { kind: "fukuchan", distance: 198, triggered: false },
+    { kind: "okayaman", distance: 242, triggered: false },
+    { kind: "yumemin", distance: 276, triggered: false },
+    { kind: "yametaro", distance: WANTED_ZONE_START - 4, triggered: false },
+    { kind: "takosan", distance: 397, triggered: false },
+  ];
 
   private playerCharacter?: LoadedVoxelCharacter;
   private entities: TrackEntity[] = [];
@@ -62,15 +99,25 @@ export class BeerRunnerGame {
   private targetLaneIndex = 1;
   private carry = 0;
   private served = 0;
+  private collectedBeers = 0;
   private chain = 0;
   private bestChain = 0;
   private juggleCount = 0;
   private hits = 0;
+  private nearMisses = 0;
+  private supportCount = 0;
+  private topSpeed = 0;
   private feverTime = 0;
   private hitTime = 0;
+  private supportBoostTime = 0;
+  private nearMissBoostTime = 0;
+  private magnetTime = 0;
+  private shieldReady = false;
+  private lastSpeedTier = 0;
   private finalRushAnnounced = false;
   private pointerStart?: { x: number; y: number };
   private lastFrameTime = performance.now();
+  private broadcastTimer?: number;
 
   private readonly hud: HTMLElement;
   private readonly titleOverlay: HTMLElement;
@@ -80,12 +127,16 @@ export class BeerRunnerGame {
   private readonly servedText: HTMLElement;
   private readonly mugText: HTMLElement;
   private readonly chainText: HTMLElement;
+  private readonly speedText: HTMLElement;
   private readonly feverBar: HTMLElement;
+  private readonly feverButton: HTMLButtonElement;
   private readonly progressBar: HTMLElement;
   private readonly announcer: HTMLElement;
   private readonly floatText: HTMLElement;
+  private readonly okayamanBroadcast: HTMLElement;
   private readonly resultRank: HTMLElement;
   private readonly resultLabel: HTMLElement;
+  private readonly resultTime: HTMLElement;
   private readonly resultServed: HTMLElement;
   private readonly resultStats: HTMLElement;
   private readonly resultBest: HTMLElement;
@@ -108,12 +159,16 @@ export class BeerRunnerGame {
     this.servedText = this.required("[data-served]");
     this.mugText = this.required("[data-mugs]");
     this.chainText = this.required("[data-chain]");
+    this.speedText = this.required("[data-speed]");
     this.feverBar = this.required("[data-fever-bar]");
+    this.feverButton = this.required<HTMLButtonElement>("[data-fever-trigger]");
     this.progressBar = this.required("[data-progress-bar]");
     this.announcer = this.required(".announcer");
     this.floatText = this.required(".pickup-float");
+    this.okayamanBroadcast = this.required(".okayaman-broadcast");
     this.resultRank = this.required("[data-result-rank]");
     this.resultLabel = this.required("[data-result-label]");
+    this.resultTime = this.required("[data-result-time]");
     this.resultServed = this.required("[data-result-served]");
     this.resultStats = this.required("[data-result-stats]");
     this.resultBest = this.required("[data-result-best]");
@@ -161,8 +216,8 @@ export class BeerRunnerGame {
 
           <div class="hud" aria-live="polite">
             <div class="hud-card hud-timer">
-              <span class="hud-kicker">のこり</span>
-              <strong data-timer>45.0</strong><span>秒</span>
+              <span class="hud-kicker">GOAL TIME</span>
+              <strong data-timer>00:00.00</strong>
             </div>
             <div class="hud-card hud-served">
               <span class="hud-kicker">本日の提供</span>
@@ -177,14 +232,25 @@ export class BeerRunnerGame {
             <div class="fever-meter" aria-label="ジョッキtoジョッキ残り時間">
               <span>JUG TO JUG</span><i data-fever-bar></i>
             </div>
+            <div class="speed-pill" data-speed>速度 ×1.00</div>
             <div class="chain-pill" data-chain>CHAIN 0</div>
           </div>
 
           <div class="announcer" role="status"></div>
           <div class="pickup-float" aria-hidden="true">+1</div>
+          <aside class="okayaman-broadcast" aria-live="polite">
+            <div class="broadcast-photo">
+              <img src="images/okayaman.jpg" alt="実写のおかやまん" />
+              <span>LIVE</span>
+            </div>
+            <p>おかやまん。タイムアタックのレギュレーションに大変驚いております。</p>
+          </aside>
 
           <div class="lane-controls" aria-label="移動ボタン">
             <button type="button" data-move="-1" aria-label="左のレーンへ">‹</button>
+            <button class="fever-button" type="button" data-fever-trigger aria-label="ジョッキtoジョッキを発動" disabled>
+              <span>F</span><b>FEVER</b>
+            </button>
             <button type="button" data-move="1" aria-label="右のレーンへ">›</button>
           </div>
 
@@ -196,8 +262,9 @@ export class BeerRunnerGame {
               <p class="title-sub">ジョッキtoジョッキで、本日開店！</p>
               <div class="title-rule">
                 <span>← → で移動</span>
-                <span>6杯でフィーバー</span>
-                <span>45秒一本勝負</span>
+                <span>6杯ためてFでフィーバー</span>
+                <span>458mタイムアタック</span>
+                <span>10杯ごとにスピードUP</span>
               </div>
               <button class="primary-button" type="button" data-start>
                 <span>開店準備をはじめる</span>
@@ -242,6 +309,10 @@ export class BeerRunnerGame {
                     <span>RANK</span>
                     <b data-result-label>大変驚いております</b>
                   </div>
+                </div>
+                <div class="result-time">
+                  <span>GOAL TIME</span>
+                  <strong data-result-time>00:00.00</strong>
                 </div>
                 <div class="result-score"><strong data-result-served>0</strong><span>杯 提供！</span></div>
                 <p class="result-stats" data-result-stats></p>
@@ -354,7 +425,56 @@ export class BeerRunnerGame {
     }
 
     this.createTokyoTower();
+    this.createDistrictMarkers();
+    this.createOkayamanRoadMonitor();
     this.createFinishArea();
+  }
+
+  private createDistrictMarkers(): void {
+    const districts = [
+      { distance: 32, label: "赤坂オフィス街", color: "#bdeeff", side: -1 },
+      { distance: 142, label: "窓際BBQ通り", color: "#fff0a6", side: 1 },
+      { distance: 252, label: "レギュレーション区", color: "#a8f4dc", side: -1 },
+      { distance: WANTED_ZONE_START, label: "WANTED BONUS ROUTE", color: "#ffcf55", side: 1 },
+      { distance: FINAL_RUSH_START, label: "立ち飲み処前", color: "#ffb098", side: -1 },
+    ] as const;
+
+    for (const district of districts) {
+      const marker = new THREE.Group();
+      marker.position.set(district.side * 6.15, 0, -district.distance);
+      const post = new THREE.Mesh(
+        new THREE.BoxGeometry(0.22, 3.4, 0.22),
+        new THREE.MeshStandardMaterial({ color: 0x566979, roughness: 0.8 }),
+      );
+      post.position.y = 1.7;
+      marker.add(post);
+      const label = this.createTextSprite(district.label, district.color, "rgba(8,26,42,.9)");
+      label.position.set(0, 3.35, 0);
+      label.scale.set(3.2, 0.8, 1);
+      marker.add(label);
+      this.world.add(marker);
+    }
+  }
+
+  private createOkayamanRoadMonitor(): void {
+    // おかやまんのNG変更要素: 穏やかな笑顔とスクリーン越しの実写出演を維持する。
+    const monitor = new THREE.Group();
+    monitor.position.set(-6.2, 2.5, -242);
+    monitor.rotation.y = Math.PI / 2;
+    const frame = new THREE.Mesh(
+      new THREE.BoxGeometry(4.7, 3.5, 0.28),
+      new THREE.MeshStandardMaterial({ color: 0x162b3d, metalness: 0.45, roughness: 0.35 }),
+    );
+    monitor.add(frame);
+    const texture = new THREE.TextureLoader().load("images/okayaman.jpg");
+    texture.colorSpace = THREE.SRGBColorSpace;
+    const screen = new THREE.Mesh(
+      new THREE.PlaneGeometry(4.15, 2.95),
+      new THREE.MeshBasicMaterial({ map: texture }),
+    );
+    screen.position.z = 0.15;
+    monitor.add(screen);
+    this.world.add(monitor);
   }
 
   private createTokyoTower(): void {
@@ -477,9 +597,17 @@ export class BeerRunnerGame {
       },
     });
 
-    this.loadCameo("models/tokun.glb", 1.05, -5.5, -7, Math.PI / 2, "ALOHA!");
-    this.loadCameo("models/fukuchan.glb", 1.05, 5.7, -210, -Math.PI / 2, "ギュンギュン！");
-    this.loadCameo("models/takosan.glb", 0.96, 5.7, -FINISH_DISTANCE + 2, -Math.PI / 2, "……乾杯");
+    // とーくん: アロハ・帽子・ウクレレ、よーたん: ギター・金髪・ロック服を維持。
+    this.loadCameo("models/tokun.glb", 1.05, -5.5, -66, Math.PI / 2, "ALOHA BOOST!");
+    this.loadCameo("models/yotan.glb", 1.05, 5.7, -132, -Math.PI / 2, "ROCK CLEAR!");
+    // 福ちゃん: おしゃれ服・ギュンギュンポーズを維持。
+    this.loadCameo("models/fukuchan.glb", 1.05, -5.7, -198, Math.PI / 2, "ギュンギュン GUARD!");
+    // ゆめみん: 青い体・点目・自由に動く鼻・木槌を維持。
+    this.loadCameo("models/yumemin.glb", 1.08, 5.5, -276, -Math.PI / 2, "BONK!");
+    // やめたろう: 紫色ワイシャツ・丸メガネを含む正典デザインを維持。
+    this.loadCameo("models/yametaro.glb", 1.02, -5.7, -314, Math.PI / 2, "WANTED 2億!");
+    // たこさん: 黒ローブ・白い顔・触手・人間の腕2本を維持。
+    this.loadCameo("models/takosan.glb", 0.96, 5.7, -397, -Math.PI / 2, "全レーン乾杯");
   }
 
   private loadCameo(
@@ -515,6 +643,11 @@ export class BeerRunnerGame {
     this.required<HTMLButtonElement>("[data-quit]").addEventListener("click", () => this.showTitle());
     this.required<HTMLButtonElement>("[data-result-home]").addEventListener("click", () => this.showTitle());
     this.required<HTMLButtonElement>(".pause-button").addEventListener("click", () => this.pause());
+    this.feverButton.addEventListener("pointerdown", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      this.activateFever();
+    });
 
     this.root.querySelectorAll<HTMLButtonElement>("[data-move]").forEach((button) => {
       button.addEventListener("pointerdown", (event) => {
@@ -535,6 +668,9 @@ export class BeerRunnerGame {
         event.preventDefault();
         if (this.phase === "playing") this.pause();
         else if (this.phase === "paused") this.resume();
+      } else if (event.key.toLowerCase() === "f" || event.code === "Space") {
+        event.preventDefault();
+        this.activateFever();
       }
     });
 
@@ -577,13 +713,28 @@ export class BeerRunnerGame {
     this.targetLaneIndex = 1;
     this.carry = 0;
     this.served = 0;
+    this.collectedBeers = 0;
     this.chain = 0;
     this.bestChain = 0;
     this.juggleCount = 0;
     this.hits = 0;
+    this.nearMisses = 0;
+    this.supportCount = 0;
+    this.topSpeed = 0;
     this.feverTime = 0;
     this.hitTime = 0;
+    this.supportBoostTime = 0;
+    this.nearMissBoostTime = 0;
+    this.magnetTime = 0;
+    this.shieldReady = false;
+    this.lastSpeedTier = 0;
     this.finalRushAnnounced = false;
+    this.supportEvents.forEach((event) => {
+      event.triggered = false;
+    });
+    this.okayamanBroadcast.classList.remove("is-visible");
+    if (this.broadcastTimer !== undefined) window.clearTimeout(this.broadcastTimer);
+    this.root.classList.remove("is-final-rush", "is-slowed", "has-shield");
     this.player.position.set(0, 0, 0);
     this.player.rotation.set(0, 0, 0);
     this.camera.position.set(0, 4.8, 8.8);
@@ -608,11 +759,17 @@ export class BeerRunnerGame {
         const lane = (laneIndex - 1) as Lane;
         const template = cell === "beer"
           ? this.beerTemplate
-          : cell === "crate"
-            ? this.crateTemplate
-            : this.barrelTemplate;
+          : cell === "goldBeer"
+            ? this.goldBeerTemplate
+            : cell === "crate"
+              ? this.crateTemplate
+              : this.barrelTemplate;
         const object = template.clone(true);
-        const baseY = cell === "beer" ? 1.05 : cell === "crate" ? 0.66 : 0.62;
+        const baseY = cell === "beer" || cell === "goldBeer"
+          ? 1.05
+          : cell === "crate"
+            ? 0.66
+            : 0.62;
         object.position.set(LANE_X[laneIndex], baseY, -row.distance);
         object.visible = true;
         this.courseGroup.add(object);
@@ -623,6 +780,7 @@ export class BeerRunnerGame {
           lane,
           baseY,
           consumed: false,
+          nearMissChecked: false,
         });
       });
     }
@@ -656,6 +814,8 @@ export class BeerRunnerGame {
     this.pauseOverlay.classList.remove("is-visible");
     this.resultOverlay.classList.remove("is-visible");
     this.titleOverlay.classList.add("is-visible");
+    this.okayamanBroadcast.classList.remove("is-visible");
+    this.root.classList.remove("is-final-rush", "is-slowed", "has-shield");
     this.distance = 0;
     this.player.position.set(0, 0, 0);
     this.player.rotation.set(0, 0, 0);
@@ -677,13 +837,28 @@ export class BeerRunnerGame {
   };
 
   private updateRun(dt: number): void {
-    this.elapsed = Math.min(RUN_DURATION, this.elapsed + dt);
+    const previousDistance = this.distance;
+    this.elapsed += dt;
     this.audio.update(dt);
     this.feverTime = Math.max(0, this.feverTime - dt);
     this.hitTime = Math.max(0, this.hitTime - dt);
+    this.supportBoostTime = Math.max(0, this.supportBoostTime - dt);
+    this.nearMissBoostTime = Math.max(0, this.nearMissBoostTime - dt);
+    this.magnetTime = Math.max(0, this.magnetTime - dt);
+    this.root.classList.toggle("is-slowed", this.hitTime > 0);
 
-    const penalty = this.hitTime > 0 ? 0.42 : 1;
-    this.distance += speedAt(this.elapsed) * penalty * dt;
+    const speed = runSpeed(
+      this.collectedBeers,
+      this.hitTime > 0,
+      this.supportBoostTime > 0,
+      this.nearMissBoostTime > 0,
+    );
+    this.topSpeed = Math.max(this.topSpeed, speed);
+    this.distance = Math.min(FINISH_DISTANCE, this.distance + speed * dt);
+    if (this.distance >= FINISH_DISTANCE && speed > 0) {
+      const finishSlice = (FINISH_DISTANCE - previousDistance) / speed;
+      this.elapsed -= Math.max(0, dt - finishSlice);
+    }
     this.player.position.z = -this.distance;
     this.player.position.x = THREE.MathUtils.damp(
       this.player.position.x,
@@ -704,6 +879,7 @@ export class BeerRunnerGame {
     });
 
     this.updateEntities(dt);
+    this.updateSupportEvents();
 
     if (!this.finalRushAnnounced && this.distance >= FINAL_RUSH_START) {
       this.finalRushAnnounced = true;
@@ -712,7 +888,7 @@ export class BeerRunnerGame {
     }
 
     this.updateHud();
-    if (this.elapsed >= RUN_DURATION) this.finishRun();
+    if (hasFinished(this.distance)) this.finishRun();
   }
 
   private updateIdle(dt: number, visualTime: number): void {
@@ -731,10 +907,12 @@ export class BeerRunnerGame {
       const delta = entity.distance - this.distance;
       if (delta < -3.5) continue;
 
-      if (entity.kind === "beer") {
+      const isBeer = entity.kind === "beer" || entity.kind === "goldBeer";
+      if (isBeer) {
         entity.object.rotation.y += dt * 2.8;
         entity.object.position.y = entity.baseY + Math.sin(this.elapsed * 5 + entity.distance) * 0.13;
-        if (this.feverTime > 0 && delta > -0.8 && delta < 9) {
+        const magnetRange = this.magnetTime > 0 ? 13 : 9;
+        if ((this.feverTime > 0 || this.magnetTime > 0) && delta > -0.8 && delta < magnetRange) {
           entity.object.position.x = THREE.MathUtils.damp(
             entity.object.position.x,
             this.player.position.x,
@@ -746,48 +924,159 @@ export class BeerRunnerGame {
         entity.object.rotation.x += dt * 1.4;
       }
 
-      if (Math.abs(delta) > 0.82) continue;
       const laneDistance = Math.abs(entity.object.position.x - this.player.position.x);
-      if (laneDistance > (entity.kind === "beer" ? 0.88 : 0.82)) continue;
+      if (Math.abs(delta) <= 0.82 && laneDistance <= (isBeer ? 0.88 : 0.82)) {
+        entity.consumed = true;
+        entity.object.visible = false;
+        if (isBeer) this.collectBeer(entity.kind === "goldBeer" ? "goldBeer" : "beer");
+        else this.hitObstacle();
+        continue;
+      }
 
-      entity.consumed = true;
-      entity.object.visible = false;
-      if (entity.kind === "beer") this.collectBeer();
-      else this.hitObstacle();
+      if (
+        !isBeer
+        && !entity.nearMissChecked
+        && delta < -0.9
+      ) {
+        entity.nearMissChecked = true;
+        if (laneDistance > 0.82 && laneDistance < 1.68) this.registerNearMiss();
+      }
     }
   }
 
-  private collectBeer(): void {
+  private collectBeer(kind: "beer" | "goldBeer"): void {
+    const beerValue = kind === "goldBeer" ? 3 : 1;
     const multiplier = this.feverTime > 0 ? 2 : 1;
-    this.served += multiplier;
-    this.chain += 1;
+    const previousCarry = this.carry;
+    const previousTier = Math.floor(this.collectedBeers / BEERS_PER_SPEED_UP);
+    this.served += beerValue * multiplier;
+    this.collectedBeers += beerValue;
+    this.chain += beerValue;
     this.bestChain = Math.max(this.bestChain, this.chain);
     this.audio.collect(this.chain);
-    this.showPickup(multiplier);
+    this.showPickup(beerValue * multiplier, kind === "goldBeer");
 
     if (this.feverTime <= 0) {
-      this.carry += 1;
-      if (this.carry >= 6) {
-        this.carry = 0;
-        this.juggleCount += 1;
-        this.feverTime = 3;
-        this.audio.juggle();
-        this.createJuggleBurst();
-        this.showAnnouncement("ジョッキtoジョッキ！", "gold");
-      }
+      this.carry = Math.min(6, this.carry + beerValue);
+    }
+
+    const currentTier = Math.floor(this.collectedBeers / BEERS_PER_SPEED_UP);
+    if (currentTier > previousTier && currentTier > this.lastSpeedTier) {
+      this.lastSpeedTier = currentTier;
+      this.showAnnouncement(
+        `SPEED UP！ ×${beerSpeedMultiplier(this.collectedBeers).toFixed(2)}`,
+        "gold",
+      );
+    } else if (previousCarry < 6 && this.carry >= 6) {
+      this.showAnnouncement("準備OK！ Fでジョッキtoジョッキ！", "gold");
     }
     this.updateCarryRack();
   }
 
+  private activateFever(): void {
+    if (this.phase !== "playing" || this.carry < 6 || this.feverTime > 0) return;
+    this.carry = 0;
+    this.juggleCount += 1;
+    this.feverTime = FEVER_DURATION;
+    this.audio.juggle();
+    this.createJuggleBurst();
+    this.updateCarryRack();
+    this.updateHud();
+    this.showAnnouncement("ジョッキtoジョッキ！ いまだ！", "gold");
+  }
+
   private hitObstacle(): void {
     if (this.hitTime > 0) return;
-    this.hitTime = 0.78;
+    if (this.shieldReady) {
+      this.shieldReady = false;
+      this.root.classList.remove("has-shield");
+      this.createJuggleBurst();
+      this.showAnnouncement("福ちゃんGUARD！ ギュンギュン！", "blue");
+      return;
+    }
+    this.hitTime = COLLISION_DURATION;
     this.hits += 1;
     this.chain = 0;
     this.carry = Math.max(0, this.carry - 1);
     this.audio.hit();
     this.updateCarryRack();
-    this.showAnnouncement("セーフ！ まだ快適です！", "blue");
+    this.showAnnouncement("接触！ 2秒スピードダウン", "blue");
+  }
+
+  private registerNearMiss(): void {
+    this.nearMisses += 1;
+    this.nearMissBoostTime = Math.max(this.nearMissBoostTime, 1.25);
+    this.showAnnouncement("ギリギリ快適！ ニアミス加速", "blue");
+  }
+
+  private updateSupportEvents(): void {
+    for (const event of this.supportEvents) {
+      if (event.triggered || this.distance < event.distance) continue;
+      event.triggered = true;
+      this.supportCount += 1;
+      this.triggerSupport(event.kind);
+    }
+  }
+
+  private triggerSupport(kind: SupportKind): void {
+    switch (kind) {
+      case "tokun":
+        this.supportBoostTime = Math.max(this.supportBoostTime, 3);
+        this.showAnnouncement("とーくんのALOHA BOOST！", "gold");
+        break;
+      case "yotan":
+        this.clearNextObstacleRow();
+        this.showAnnouncement("よーたんROCK！ 障害物を破壊", "red");
+        break;
+      case "fukuchan":
+        this.shieldReady = true;
+        this.root.classList.add("has-shield");
+        this.showAnnouncement("福ちゃんのギュンギュンGUARD！", "blue");
+        break;
+      case "okayaman":
+        this.showOkayamanBroadcast();
+        break;
+      case "yumemin":
+        this.hitTime = 0;
+        this.nearMissBoostTime = Math.max(this.nearMissBoostTime, 2.5);
+        this.root.classList.remove("is-slowed");
+        this.showAnnouncement("ゆめみんBONK！ 減速解除", "blue");
+        break;
+      case "yametaro":
+        this.showAnnouncement("やめたろうWANTED！ 金ビールは3杯分", "red");
+        break;
+      case "takosan":
+        this.magnetTime = 5;
+        this.showAnnouncement("たこさん！ 全レーンのビールを回収", "gold");
+        break;
+    }
+  }
+
+  private clearNextObstacleRow(): void {
+    const obstacles = this.entities.filter(
+      (entity) =>
+        !entity.consumed
+        && (entity.kind === "crate" || entity.kind === "barrel")
+        && entity.distance > this.distance + 3
+        && entity.distance < this.distance + 34,
+    );
+    if (obstacles.length === 0) return;
+    const targetDistance = Math.min(...obstacles.map((entity) => entity.distance));
+    obstacles
+      .filter((entity) => Math.abs(entity.distance - targetDistance) < 0.25)
+      .forEach((entity) => {
+        entity.consumed = true;
+        entity.object.visible = false;
+      });
+  }
+
+  private showOkayamanBroadcast(): void {
+    this.okayamanBroadcast.classList.add("is-visible");
+    this.showAnnouncement("窓際王からレギュレーション通信！", "blue");
+    if (this.broadcastTimer !== undefined) window.clearTimeout(this.broadcastTimer);
+    this.broadcastTimer = window.setTimeout(() => {
+      this.okayamanBroadcast.classList.remove("is-visible");
+    }, 3300);
   }
 
   private finishRun(): void {
@@ -799,16 +1088,30 @@ export class BeerRunnerGame {
     this.hud.classList.remove("is-visible");
 
     const rank = rankFor(this.served);
-    const previousBest = this.readBest();
-    const newBest = this.served > previousBest;
-    if (newBest) this.writeBest(this.served);
+    const records = this.readRecords();
+    const newBestTime = records.bestTime === null || this.elapsed < records.bestTime;
+    const newBestServed = this.served > records.bestServed;
+    const newNoHitTime = this.hits === 0
+      && (records.bestNoHitTime === null || this.elapsed < records.bestNoHitTime);
+    const nextRecords: RecordBook = {
+      bestTime: newBestTime ? this.elapsed : records.bestTime,
+      bestServed: newBestServed ? this.served : records.bestServed,
+      bestNoHitTime: newNoHitTime ? this.elapsed : records.bestNoHitTime,
+    };
+    if (newBestTime || newBestServed || newNoHitTime) this.writeRecords(nextRecords);
     const result: RunResult = {
       served: this.served,
+      finishTime: this.elapsed,
       bestChain: this.bestChain,
       juggleCount: this.juggleCount,
       hits: this.hits,
+      nearMisses: this.nearMisses,
+      topSpeed: this.topSpeed,
+      supportCount: this.supportCount,
       rank,
-      newBest,
+      newBestTime,
+      newBestServed,
+      newNoHitTime,
     };
     this.showResult(result);
   }
@@ -816,32 +1119,53 @@ export class BeerRunnerGame {
   private showResult(result: RunResult): void {
     this.resultRank.textContent = result.rank;
     this.resultLabel.textContent = rankLabel(result.rank);
+    this.resultTime.textContent = formatTime(result.finishTime);
     this.resultServed.textContent = String(result.served);
     this.resultStats.textContent =
-      `最大チェイン ${result.bestChain} ／ ジョッキtoジョッキ ${result.juggleCount}回 ／ 接触 ${result.hits}回`;
-    this.resultBest.textContent = result.newBest ? "NEW BEST! 本日の記録を更新しました！" : "";
+      `最高速度 ${(result.topSpeed * 3.6).toFixed(1)}km/h ／ 最大チェイン ${result.bestChain}\n`
+      + `フィーバー ${result.juggleCount}回 ／ ニアミス ${result.nearMisses}回 ／ 接触 ${result.hits}回`;
+    const newRecords = [
+      result.newBestTime ? "最速タイム" : "",
+      result.newBestServed ? "最多ビール" : "",
+      result.newNoHitTime ? "ノーヒット" : "",
+    ].filter(Boolean);
+    this.resultBest.textContent = newRecords.length > 0
+      ? `NEW RECORD! ${newRecords.join("・")}を更新！`
+      : "";
 
     const detail = result.rank === "S"
-      ? `提供${result.served}杯。これは弊社のレギュレーションを超える大繁盛です。`
+      ? `${formatTime(result.finishTime)}で提供${result.served}杯。レギュレーションを超える大繁盛です。`
       : result.rank === "A"
-        ? `提供${result.served}杯。立ち飲み処が大繁盛で、大変驚いております。`
+        ? `${formatTime(result.finishTime)}で提供${result.served}杯。立ち飲み処が大繁盛です。`
         : result.rank === "B"
-          ? `提供${result.served}杯。常連のみなさんが笑顔で、大変驚いております。`
-          : `提供${result.served}杯。もう一杯いけそうで、大変驚いております。`;
-    this.okayamanQuote.textContent = `おかやまん。${detail}`;
+          ? `${formatTime(result.finishTime)}で提供${result.served}杯。常連のみなさんが笑顔です。`
+          : `${formatTime(result.finishTime)}で提供${result.served}杯。もう一杯いけそうです。`;
+    this.okayamanQuote.textContent = `おかやまん。${detail} 大変驚いております。`;
     this.resultOverlay.classList.add("is-visible");
   }
 
   private updateHud(): void {
-    const remaining = Math.max(0, RUN_DURATION - this.elapsed);
-    this.timerText.textContent = remaining.toFixed(1);
+    const currentSpeed = runSpeed(
+      this.collectedBeers,
+      this.hitTime > 0,
+      this.supportBoostTime > 0,
+      this.nearMissBoostTime > 0,
+    );
+    this.timerText.textContent = formatTime(this.elapsed);
     this.servedText.textContent = String(this.served);
-    this.mugText.textContent = `${this.carry}/6`;
+    this.mugText.textContent = this.carry >= 6 ? "READY!" : `${this.carry}/6`;
     this.chainText.textContent = `CHAIN ${this.chain}`;
     this.chainText.classList.toggle("is-hot", this.chain >= 8);
-    this.feverBar.style.transform = `scaleX(${this.feverTime / 3})`;
-    this.feverBar.parentElement?.classList.toggle("is-active", this.feverTime > 0);
-    this.progressBar.style.transform = `scaleX(${this.elapsed / RUN_DURATION})`;
+    this.speedText.textContent = `速度 ×${(currentSpeed / BASE_SPEED).toFixed(2)}`;
+    this.speedText.classList.toggle("is-penalty", this.hitTime > 0);
+    this.feverBar.style.transform = `scaleX(${this.feverTime / FEVER_DURATION})`;
+    this.feverBar.parentElement?.classList.toggle(
+      "is-active",
+      this.feverTime > 0 || this.carry >= 6,
+    );
+    this.feverButton.disabled = this.carry < 6 || this.feverTime > 0;
+    this.feverButton.classList.toggle("is-ready", this.carry >= 6 && this.feverTime <= 0);
+    this.progressBar.style.transform = `scaleX(${this.distance / FINISH_DISTANCE})`;
   }
 
   private updateCarryRack(): void {
@@ -850,8 +1174,9 @@ export class BeerRunnerGame {
     });
   }
 
-  private showPickup(value: number): void {
-    this.floatText.textContent = `+${value}`;
+  private showPickup(value: number, isGold = false): void {
+    this.floatText.textContent = isGold ? `金ビール +${value}` : `+${value}`;
+    this.floatText.classList.toggle("is-gold", isGold);
     this.floatText.classList.remove("is-showing");
     void this.floatText.offsetWidth;
     this.floatText.classList.add("is-showing");
@@ -925,14 +1250,14 @@ export class BeerRunnerGame {
     this.camera.updateProjectionMatrix();
   }
 
-  private createBeerMug(): THREE.Group {
+  private createBeerMug(isGold = false): THREE.Group {
     const group = new THREE.Group();
     const glass = new THREE.MeshStandardMaterial({
-      color: 0xf7ae22,
-      emissive: 0x8c4300,
-      emissiveIntensity: 0.34,
+      color: isGold ? 0xffd52f : 0xf7ae22,
+      emissive: isGold ? 0xe45f00 : 0x8c4300,
+      emissiveIntensity: isGold ? 0.7 : 0.34,
       roughness: 0.28,
-      metalness: 0.05,
+      metalness: isGold ? 0.24 : 0.05,
     });
     const foam = new THREE.MeshStandardMaterial({
       color: 0xfff9de,
@@ -948,6 +1273,16 @@ export class BeerRunnerGame {
     handle.position.set(0.34, 0.02, 0);
     handle.rotation.y = Math.PI / 2;
     group.add(body, top, handle);
+    if (isGold) {
+      const halo = new THREE.Mesh(
+        new THREE.TorusGeometry(0.58, 0.055, 8, 22),
+        new THREE.MeshBasicMaterial({ color: 0xffef75 }),
+      );
+      halo.rotation.x = Math.PI / 2;
+      halo.position.y = 0.08;
+      group.add(halo);
+      group.scale.setScalar(1.08);
+    }
     return group;
   }
 
@@ -1021,17 +1356,33 @@ export class BeerRunnerGame {
     context.roundRect(x, y, width, height, radius);
   }
 
-  private readBest(): number {
+  private readRecords(): RecordBook {
     try {
-      return Number(localStorage.getItem(BEST_SCORE_KEY) ?? 0);
+      const stored = localStorage.getItem(RECORDS_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored) as Partial<RecordBook>;
+        return {
+          bestTime: typeof parsed.bestTime === "number" ? parsed.bestTime : null,
+          bestServed: typeof parsed.bestServed === "number" ? parsed.bestServed : 0,
+          bestNoHitTime: typeof parsed.bestNoHitTime === "number"
+            ? parsed.bestNoHitTime
+            : null,
+        };
+      }
+      const legacyScore = Number(localStorage.getItem(LEGACY_BEST_SCORE_KEY) ?? 0);
+      return {
+        bestTime: null,
+        bestServed: Number.isFinite(legacyScore) ? legacyScore : 0,
+        bestNoHitTime: null,
+      };
     } catch {
-      return 0;
+      return { bestTime: null, bestServed: 0, bestNoHitTime: null };
     }
   }
 
-  private writeBest(score: number): void {
+  private writeRecords(records: RecordBook): void {
     try {
-      localStorage.setItem(BEST_SCORE_KEY, String(score));
+      localStorage.setItem(RECORDS_KEY, JSON.stringify(records));
     } catch {
       // Private browsing may reject storage; the current run still completes normally.
     }

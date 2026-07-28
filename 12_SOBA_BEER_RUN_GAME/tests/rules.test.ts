@@ -1,11 +1,17 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  BASE_SPEED,
+  COLLISION_SPEED_MULTIPLIER,
   FINAL_RUSH_START,
-  RUN_DURATION,
+  WANTED_ZONE_END,
+  WANTED_ZONE_START,
+  beerSpeedMultiplier,
   buildCourse,
+  formatTime,
+  hasFinished,
   rankFor,
-  speedAt,
+  runSpeed,
 } from "../src/rules.js";
 
 test("course generation is deterministic and always leaves a safe lane", () => {
@@ -28,8 +34,39 @@ test("final rush contains beer and no obstacles", () => {
   }
 });
 
-test("speed and rank thresholds match the design contract", () => {
-  assert.ok(speedAt(0) < speedAt(RUN_DURATION));
+test("wanted zone contains risky gold beer routes and still leaves a safe lane", () => {
+  const wantedRows = buildCourse(42).filter(
+    (row) => row.distance >= WANTED_ZONE_START && row.distance <= WANTED_ZONE_END,
+  );
+  assert.ok(wantedRows.length >= 8);
+  assert.ok(wantedRows.every((row) => row.cells.includes("goldBeer")));
+  assert.ok(wantedRows.every(
+    (row) => row.cells.filter((cell) => cell === "crate" || cell === "barrel").length < 3,
+  ));
+});
+
+test("beer tiers accelerate the runner and collisions apply a two-second slowdown", () => {
+  assert.equal(beerSpeedMultiplier(0), 1);
+  assert.equal(beerSpeedMultiplier(9), 1);
+  assert.equal(beerSpeedMultiplier(10), 1.08);
+  assert.equal(beerSpeedMultiplier(50), 1.4);
+  assert.equal(beerSpeedMultiplier(999), 1.4);
+  assert.equal(runSpeed(0, false, false, false), BASE_SPEED);
+  assert.equal(
+    runSpeed(0, true, false, false),
+    BASE_SPEED * COLLISION_SPEED_MULTIPLIER,
+  );
+});
+
+test("goal and time formatting use fixed-distance time attack rules", () => {
+  assert.equal(hasFinished(457.99), false);
+  assert.equal(hasFinished(458), true);
+  assert.equal(formatTime(0), "00:00.00");
+  assert.equal(formatTime(39.456), "00:39.46");
+  assert.equal(formatTime(65.2), "01:05.20");
+});
+
+test("rank thresholds match the serving design contract", () => {
   assert.equal(rankFor(31), "C");
   assert.equal(rankFor(32), "B");
   assert.equal(rankFor(52), "A");

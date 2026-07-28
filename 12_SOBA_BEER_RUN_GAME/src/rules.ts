@@ -1,11 +1,19 @@
 import type { CourseCell, CourseRow, Rank } from "./types.js";
 
-export const RUN_DURATION = 45;
 export const LANE_X = [-2.35, 0, 2.35] as const;
-export const START_SPEED = 8.2;
-export const END_SPEED = 12;
+export const BASE_SPEED = 9.2;
+export const BEERS_PER_SPEED_UP = 10;
+export const SPEED_STEP = 0.08;
+export const MAX_BEER_SPEED_MULTIPLIER = 1.4;
+export const COLLISION_SPEED_MULTIPLIER = 0.72;
+export const COLLISION_DURATION = 2;
+export const SUPPORT_SPEED_MULTIPLIER = 1.18;
+export const NEAR_MISS_SPEED_MULTIPLIER = 1.1;
+export const FEVER_DURATION = 4;
 export const FINAL_RUSH_START = 408;
 export const FINISH_DISTANCE = 458;
+export const WANTED_ZONE_START = 318;
+export const WANTED_ZONE_END = 365;
 
 const REGULAR_PATTERNS: ReadonlyArray<
   ReadonlyArray<readonly [CourseCell, CourseCell, CourseCell]>
@@ -49,7 +57,7 @@ function mulberry32(seed: number) {
 }
 
 export function buildCourse(seed: number): CourseRow[] {
-  const rows: CourseRow[] = [
+  let rows: CourseRow[] = [
     { distance: 14, cells: [null, "beer", null] },
     { distance: 21, cells: ["beer", null, null] },
     { distance: 28, cells: [null, null, "beer"] },
@@ -67,6 +75,25 @@ export function buildCourse(seed: number): CourseRow[] {
     distance += 1.7 + random() * 1.8;
   }
 
+  rows = rows.filter(
+    (row) => row.distance < WANTED_ZONE_START - 7 || row.distance > WANTED_ZONE_END + 5,
+  );
+
+  const wantedPatterns: ReadonlyArray<readonly [CourseCell, CourseCell, CourseCell]> = [
+    ["goldBeer", "crate", "beer"],
+    ["crate", "beer", "goldBeer"],
+    ["goldBeer", "barrel", null],
+    ["beer", "crate", "goldBeer"],
+    ["barrel", "goldBeer", "beer"],
+    ["goldBeer", null, "crate"],
+    ["crate", "beer", "goldBeer"],
+    ["goldBeer", "barrel", "beer"],
+    [null, "goldBeer", "crate"],
+  ];
+  wantedPatterns.forEach((cells, index) => {
+    rows.push({ distance: WANTED_ZONE_START + index * 5.2, cells });
+  });
+
   for (let rushDistance = FINAL_RUSH_START; rushDistance <= FINISH_DISTANCE - 5; rushDistance += 4.2) {
     rows.push({
       distance: rushDistance,
@@ -74,12 +101,36 @@ export function buildCourse(seed: number): CourseRow[] {
     });
   }
 
-  return rows;
+  return rows.sort((a, b) => a.distance - b.distance);
 }
 
-export function speedAt(elapsed: number): number {
-  const progress = Math.min(1, Math.max(0, elapsed / RUN_DURATION));
-  return START_SPEED + (END_SPEED - START_SPEED) * progress;
+export function beerSpeedMultiplier(collectedBeers: number): number {
+  const tiers = Math.floor(Math.max(0, collectedBeers) / BEERS_PER_SPEED_UP);
+  return Math.min(MAX_BEER_SPEED_MULTIPLIER, 1 + tiers * SPEED_STEP);
+}
+
+export function runSpeed(
+  collectedBeers: number,
+  isSlowed: boolean,
+  hasSupportBoost: boolean,
+  hasNearMissBoost: boolean,
+): number {
+  const beerMultiplier = beerSpeedMultiplier(collectedBeers);
+  const slowdown = isSlowed ? COLLISION_SPEED_MULTIPLIER : 1;
+  const support = hasSupportBoost ? SUPPORT_SPEED_MULTIPLIER : 1;
+  const nearMiss = hasNearMissBoost ? NEAR_MISS_SPEED_MULTIPLIER : 1;
+  return BASE_SPEED * beerMultiplier * slowdown * support * nearMiss;
+}
+
+export function hasFinished(distance: number): boolean {
+  return distance >= FINISH_DISTANCE;
+}
+
+export function formatTime(seconds: number): string {
+  const safeSeconds = Math.max(0, seconds);
+  const minutes = Math.floor(safeSeconds / 60);
+  const remainder = safeSeconds - minutes * 60;
+  return `${String(minutes).padStart(2, "0")}:${remainder.toFixed(2).padStart(5, "0")}`;
 }
 
 export function rankFor(served: number): Rank {
