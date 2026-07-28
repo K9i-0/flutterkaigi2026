@@ -5,21 +5,23 @@ import {
   BASE_SPEED,
   BEERS_PER_SPEED_UP,
   COLLISION_DURATION,
-  FEVER_DURATION,
   FINAL_RUSH_START,
   FINISH_DISTANCE,
   LANE_X,
+  MAX_BEER_SPEED_MULTIPLIER,
   WANTED_ZONE_START,
   beerSpeedMultiplier,
   buildCourse,
   formatTime,
   hasFinished,
+  isRouteGate,
   rankFor,
   rankLabel,
   runSpeed,
 } from "./rules.js";
 import type {
   CourseCell,
+  CourseRole,
   Lane,
   Phase,
   RunResult,
@@ -39,6 +41,8 @@ interface TrackEntity {
   baseY: number;
   consumed: boolean;
   nearMissChecked: boolean;
+  routeId?: number;
+  role?: CourseRole;
 }
 
 interface SupportEvent {
@@ -74,7 +78,6 @@ export class BeerRunnerGame {
   private readonly courseGroup = new THREE.Group();
   private readonly player = new THREE.Group();
   private readonly playerPlaceholder = new THREE.Group();
-  private readonly carryMugs: THREE.Object3D[] = [];
   private readonly cameos: LoadedVoxelCharacter[] = [];
   private readonly bursts: Burst[] = [];
   private readonly beerTemplate = this.createBeerMug();
@@ -97,17 +100,17 @@ export class BeerRunnerGame {
   private elapsed = 0;
   private distance = 0;
   private targetLaneIndex = 1;
-  private carry = 0;
   private served = 0;
   private collectedBeers = 0;
   private chain = 0;
   private bestChain = 0;
-  private juggleCount = 0;
+  private perfectRoutes = 0;
+  private routeStreak = 0;
+  private bestRouteStreak = 0;
   private hits = 0;
   private nearMisses = 0;
   private supportCount = 0;
   private topSpeed = 0;
-  private feverTime = 0;
   private hitTime = 0;
   private supportBoostTime = 0;
   private nearMissBoostTime = 0;
@@ -117,6 +120,7 @@ export class BeerRunnerGame {
   private finalRushAnnounced = false;
   private pointerStart?: { x: number; y: number };
   private lastFrameTime = performance.now();
+  private baseCameraFov = 56;
   private broadcastTimer?: number;
 
   private readonly hud: HTMLElement;
@@ -125,11 +129,9 @@ export class BeerRunnerGame {
   private readonly resultOverlay: HTMLElement;
   private readonly timerText: HTMLElement;
   private readonly servedText: HTMLElement;
-  private readonly mugText: HTMLElement;
+  private readonly routeText: HTMLElement;
   private readonly chainText: HTMLElement;
   private readonly speedText: HTMLElement;
-  private readonly feverBar: HTMLElement;
-  private readonly feverButton: HTMLButtonElement;
   private readonly progressBar: HTMLElement;
   private readonly announcer: HTMLElement;
   private readonly floatText: HTMLElement;
@@ -157,11 +159,9 @@ export class BeerRunnerGame {
     this.resultOverlay = this.required(".result-screen");
     this.timerText = this.required("[data-timer]");
     this.servedText = this.required("[data-served]");
-    this.mugText = this.required("[data-mugs]");
+    this.routeText = this.required("[data-routes]");
     this.chainText = this.required("[data-chain]");
     this.speedText = this.required("[data-speed]");
-    this.feverBar = this.required("[data-fever-bar]");
-    this.feverButton = this.required<HTMLButtonElement>("[data-fever-trigger]");
     this.progressBar = this.required("[data-progress-bar]");
     this.announcer = this.required(".announcer");
     this.floatText = this.required(".pickup-float");
@@ -194,7 +194,6 @@ export class BeerRunnerGame {
     this.createLighting();
     this.createCity();
     this.createPlayerPlaceholder();
-    this.createCarryRack();
     this.loadCharacters();
     this.bindEvents();
     this.resize();
@@ -223,17 +222,14 @@ export class BeerRunnerGame {
               <span class="hud-kicker">本日の提供</span>
               <strong data-served>0</strong><span>杯</span>
             </div>
-            <div class="hud-card hud-mugs">
-              <span class="hud-kicker">ジョッキ</span>
-              <strong data-mugs>0/6</strong>
+            <div class="hud-card hud-routes">
+              <span class="hud-kicker">正解ルート</span>
+              <strong data-routes>0</strong><span>本</span>
             </div>
             <button class="pause-button" type="button" aria-label="一時停止">Ⅱ</button>
             <div class="run-progress" aria-hidden="true"><i data-progress-bar></i></div>
-            <div class="fever-meter" aria-label="ジョッキtoジョッキ残り時間">
-              <span>JUG TO JUG</span><i data-fever-bar></i>
-            </div>
             <div class="speed-pill" data-speed>速度 ×1.00</div>
-            <div class="chain-pill" data-chain>CHAIN 0</div>
+            <div class="chain-pill" data-chain>BEER STREAK 0</div>
           </div>
 
           <div class="announcer" role="status"></div>
@@ -248,9 +244,6 @@ export class BeerRunnerGame {
 
           <div class="lane-controls" aria-label="移動ボタン">
             <button type="button" data-move="-1" aria-label="左のレーンへ">‹</button>
-            <button class="fever-button" type="button" data-fever-trigger aria-label="ジョッキtoジョッキを発動" disabled>
-              <span>F</span><b>FEVER</b>
-            </button>
             <button type="button" data-move="1" aria-label="右のレーンへ">›</button>
           </div>
 
@@ -259,12 +252,12 @@ export class BeerRunnerGame {
             <div class="title-copy">
               <p class="eyebrow">MADOGIWA 3-LANE RUNNER</p>
               <h1><span>そば屋の</span>ビールダッシュ</h1>
-              <p class="title-sub">ジョッキtoジョッキで、本日開店！</p>
+              <p class="title-sub">正解レーンを見抜いて、一気に乾杯！</p>
               <div class="title-rule">
-                <span>← → で移動</span>
-                <span>6杯ためてFでフィーバー</span>
+                <span>操作は ← → だけ</span>
+                <span>ビールの予告列を読む</span>
+                <span>正解レーンで連続GET</span>
                 <span>458mタイムアタック</span>
-                <span>10杯ごとにスピードUP</span>
               </div>
               <button class="primary-button" type="button" data-start>
                 <span>開店準備をはじめる</span>
@@ -568,20 +561,6 @@ export class BeerRunnerGame {
     this.player.add(this.playerPlaceholder);
   }
 
-  private createCarryRack(): void {
-    for (let index = 0; index < 6; index += 1) {
-      const mug = this.beerTemplate.clone(true);
-      mug.scale.setScalar(0.3);
-      const column = index % 3;
-      const row = Math.floor(index / 3);
-      mug.position.set((column - 1) * 0.62, 1.15 + row * 0.55, 0.72);
-      mug.rotation.y = Math.PI;
-      mug.visible = false;
-      this.player.add(mug);
-      this.carryMugs.push(mug);
-    }
-  }
-
   private loadCharacters(): void {
     loadVoxelCharacter({
       definition: runnerDefinition("models/sobaya.glb", 1.18, Math.PI),
@@ -643,11 +622,6 @@ export class BeerRunnerGame {
     this.required<HTMLButtonElement>("[data-quit]").addEventListener("click", () => this.showTitle());
     this.required<HTMLButtonElement>("[data-result-home]").addEventListener("click", () => this.showTitle());
     this.required<HTMLButtonElement>(".pause-button").addEventListener("click", () => this.pause());
-    this.feverButton.addEventListener("pointerdown", (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      this.activateFever();
-    });
 
     this.root.querySelectorAll<HTMLButtonElement>("[data-move]").forEach((button) => {
       button.addEventListener("pointerdown", (event) => {
@@ -668,9 +642,6 @@ export class BeerRunnerGame {
         event.preventDefault();
         if (this.phase === "playing") this.pause();
         else if (this.phase === "paused") this.resume();
-      } else if (event.key.toLowerCase() === "f" || event.code === "Space") {
-        event.preventDefault();
-        this.activateFever();
       }
     });
 
@@ -711,17 +682,17 @@ export class BeerRunnerGame {
     this.elapsed = 0;
     this.distance = 0;
     this.targetLaneIndex = 1;
-    this.carry = 0;
     this.served = 0;
     this.collectedBeers = 0;
     this.chain = 0;
     this.bestChain = 0;
-    this.juggleCount = 0;
+    this.perfectRoutes = 0;
+    this.routeStreak = 0;
+    this.bestRouteStreak = 0;
     this.hits = 0;
     this.nearMisses = 0;
     this.supportCount = 0;
     this.topSpeed = 0;
-    this.feverTime = 0;
     this.hitTime = 0;
     this.supportBoostTime = 0;
     this.nearMissBoostTime = 0;
@@ -739,14 +710,13 @@ export class BeerRunnerGame {
     this.player.rotation.set(0, 0, 0);
     this.camera.position.set(0, 4.8, 8.8);
     this.createCourse(Date.now() & 0xfffffff);
-    this.updateCarryRack();
     this.updateHud();
     this.titleOverlay.classList.remove("is-visible");
     this.pauseOverlay.classList.remove("is-visible");
     this.resultOverlay.classList.remove("is-visible");
     this.hud.classList.add("is-visible");
     this.audio.setPlaying(true);
-    this.showAnnouncement("開店準備、スタート！", "gold");
+    this.showAnnouncement("正解レーンを見抜け！", "gold");
   }
 
   private createCourse(seed: number): void {
@@ -781,6 +751,8 @@ export class BeerRunnerGame {
           baseY,
           consumed: false,
           nearMissChecked: false,
+          routeId: row.routeId,
+          role: row.role,
         });
       });
     }
@@ -840,7 +812,6 @@ export class BeerRunnerGame {
     const previousDistance = this.distance;
     this.elapsed += dt;
     this.audio.update(dt);
-    this.feverTime = Math.max(0, this.feverTime - dt);
     this.hitTime = Math.max(0, this.hitTime - dt);
     this.supportBoostTime = Math.max(0, this.supportBoostTime - dt);
     this.nearMissBoostTime = Math.max(0, this.nearMissBoostTime - dt);
@@ -867,6 +838,17 @@ export class BeerRunnerGame {
       dt,
     );
     this.player.position.y = Math.abs(Math.sin(this.elapsed * 10.5)) * 0.055;
+    const speedProgress = THREE.MathUtils.clamp(
+      (speed / BASE_SPEED - 1) / (MAX_BEER_SPEED_MULTIPLIER - 1),
+      0,
+      1,
+    );
+    this.player.rotation.x = THREE.MathUtils.damp(
+      this.player.rotation.x,
+      -0.07 - speedProgress * 0.06,
+      8,
+      dt,
+    );
     this.player.rotation.z = this.hitTime > 0
       ? Math.sin(this.hitTime * 38) * this.hitTime * 0.46
       : THREE.MathUtils.damp(this.player.rotation.z, 0, 14, dt);
@@ -899,6 +881,7 @@ export class BeerRunnerGame {
       cameo.actions?.update(dt, visualTime, false);
     });
     this.player.position.y = Math.sin(visualTime * 2.1) * 0.025;
+    this.player.rotation.x = THREE.MathUtils.damp(this.player.rotation.x, 0, 6, dt);
   }
 
   private updateEntities(dt: number): void {
@@ -911,8 +894,7 @@ export class BeerRunnerGame {
       if (isBeer) {
         entity.object.rotation.y += dt * 2.8;
         entity.object.position.y = entity.baseY + Math.sin(this.elapsed * 5 + entity.distance) * 0.13;
-        const magnetRange = this.magnetTime > 0 ? 13 : 9;
-        if ((this.feverTime > 0 || this.magnetTime > 0) && delta > -0.8 && delta < magnetRange) {
+        if (this.magnetTime > 0 && delta > -0.8 && delta < 13) {
           entity.object.position.x = THREE.MathUtils.damp(
             entity.object.position.x,
             this.player.position.x,
@@ -928,7 +910,7 @@ export class BeerRunnerGame {
       if (Math.abs(delta) <= 0.82 && laneDistance <= (isBeer ? 0.88 : 0.82)) {
         entity.consumed = true;
         entity.object.visible = false;
-        if (isBeer) this.collectBeer(entity.kind === "goldBeer" ? "goldBeer" : "beer");
+        if (isBeer) this.collectBeer(entity);
         else this.hitObstacle();
         continue;
       }
@@ -944,62 +926,51 @@ export class BeerRunnerGame {
     }
   }
 
-  private collectBeer(kind: "beer" | "goldBeer"): void {
-    const beerValue = kind === "goldBeer" ? 3 : 1;
-    const multiplier = this.feverTime > 0 ? 2 : 1;
-    const previousCarry = this.carry;
+  private collectBeer(entity: TrackEntity): void {
+    const beerValue = entity.kind === "goldBeer" ? 3 : 1;
     const previousTier = Math.floor(this.collectedBeers / BEERS_PER_SPEED_UP);
-    this.served += beerValue * multiplier;
+    this.served += beerValue;
     this.collectedBeers += beerValue;
     this.chain += beerValue;
     this.bestChain = Math.max(this.bestChain, this.chain);
     this.audio.collect(this.chain);
-    this.showPickup(beerValue * multiplier, kind === "goldBeer");
+    this.showPickup(beerValue, entity.kind === "goldBeer");
 
-    if (this.feverTime <= 0) {
-      this.carry = Math.min(6, this.carry + beerValue);
+    const clearedRoute = isRouteGate(entity.role);
+    if (clearedRoute) {
+      this.perfectRoutes += 1;
+      this.routeStreak += 1;
+      this.bestRouteStreak = Math.max(this.bestRouteStreak, this.routeStreak);
+      this.audio.routeClear();
+      this.createGoldBurst();
     }
 
     const currentTier = Math.floor(this.collectedBeers / BEERS_PER_SPEED_UP);
-    if (currentTier > previousTier && currentTier > this.lastSpeedTier) {
+    if (clearedRoute) {
+      this.showAnnouncement(`正解ルート！ ${this.routeStreak}連続`, "gold");
+    } else if (currentTier > previousTier && currentTier > this.lastSpeedTier) {
       this.lastSpeedTier = currentTier;
       this.showAnnouncement(
         `SPEED UP！ ×${beerSpeedMultiplier(this.collectedBeers).toFixed(2)}`,
         "gold",
       );
-    } else if (previousCarry < 6 && this.carry >= 6) {
-      this.showAnnouncement("準備OK！ Fでジョッキtoジョッキ！", "gold");
     }
-    this.updateCarryRack();
-  }
-
-  private activateFever(): void {
-    if (this.phase !== "playing" || this.carry < 6 || this.feverTime > 0) return;
-    this.carry = 0;
-    this.juggleCount += 1;
-    this.feverTime = FEVER_DURATION;
-    this.audio.juggle();
-    this.createJuggleBurst();
-    this.updateCarryRack();
-    this.updateHud();
-    this.showAnnouncement("ジョッキtoジョッキ！ いまだ！", "gold");
   }
 
   private hitObstacle(): void {
+    this.chain = 0;
+    this.routeStreak = 0;
     if (this.hitTime > 0) return;
     if (this.shieldReady) {
       this.shieldReady = false;
       this.root.classList.remove("has-shield");
-      this.createJuggleBurst();
+      this.createGoldBurst();
       this.showAnnouncement("福ちゃんGUARD！ ギュンギュン！", "blue");
       return;
     }
     this.hitTime = COLLISION_DURATION;
     this.hits += 1;
-    this.chain = 0;
-    this.carry = Math.max(0, this.carry - 1);
     this.audio.hit();
-    this.updateCarryRack();
     this.showAnnouncement("接触！ 2秒スピードダウン", "blue");
   }
 
@@ -1103,7 +1074,8 @@ export class BeerRunnerGame {
       served: this.served,
       finishTime: this.elapsed,
       bestChain: this.bestChain,
-      juggleCount: this.juggleCount,
+      perfectRoutes: this.perfectRoutes,
+      bestRouteStreak: this.bestRouteStreak,
       hits: this.hits,
       nearMisses: this.nearMisses,
       topSpeed: this.topSpeed,
@@ -1122,8 +1094,9 @@ export class BeerRunnerGame {
     this.resultTime.textContent = formatTime(result.finishTime);
     this.resultServed.textContent = String(result.served);
     this.resultStats.textContent =
-      `最高速度 ${(result.topSpeed * 3.6).toFixed(1)}km/h ／ 最大チェイン ${result.bestChain}\n`
-      + `フィーバー ${result.juggleCount}回 ／ ニアミス ${result.nearMisses}回 ／ 接触 ${result.hits}回`;
+      `最高速度 ${(result.topSpeed * 3.6).toFixed(1)}km/h ／ ビール連続 ${result.bestChain}杯\n`
+      + `正解ルート ${result.perfectRoutes}本（最大${result.bestRouteStreak}連続）`
+      + ` ／ ニアミス ${result.nearMisses}回 ／ 接触 ${result.hits}回`;
     const newRecords = [
       result.newBestTime ? "最速タイム" : "",
       result.newBestServed ? "最多ビール" : "",
@@ -1153,25 +1126,12 @@ export class BeerRunnerGame {
     );
     this.timerText.textContent = formatTime(this.elapsed);
     this.servedText.textContent = String(this.served);
-    this.mugText.textContent = this.carry >= 6 ? "READY!" : `${this.carry}/6`;
-    this.chainText.textContent = `CHAIN ${this.chain}`;
+    this.routeText.textContent = String(this.perfectRoutes);
+    this.chainText.textContent = `BEER STREAK ${this.chain}`;
     this.chainText.classList.toggle("is-hot", this.chain >= 8);
     this.speedText.textContent = `速度 ×${(currentSpeed / BASE_SPEED).toFixed(2)}`;
     this.speedText.classList.toggle("is-penalty", this.hitTime > 0);
-    this.feverBar.style.transform = `scaleX(${this.feverTime / FEVER_DURATION})`;
-    this.feverBar.parentElement?.classList.toggle(
-      "is-active",
-      this.feverTime > 0 || this.carry >= 6,
-    );
-    this.feverButton.disabled = this.carry < 6 || this.feverTime > 0;
-    this.feverButton.classList.toggle("is-ready", this.carry >= 6 && this.feverTime <= 0);
     this.progressBar.style.transform = `scaleX(${this.distance / FINISH_DISTANCE})`;
-  }
-
-  private updateCarryRack(): void {
-    this.carryMugs.forEach((mug, index) => {
-      mug.visible = index < this.carry;
-    });
   }
 
   private showPickup(value: number, isGold = false): void {
@@ -1190,7 +1150,7 @@ export class BeerRunnerGame {
     this.announcer.classList.add("is-showing");
   }
 
-  private createJuggleBurst(): void {
+  private createGoldBurst(): void {
     const material = new THREE.MeshBasicMaterial({
       color: 0xffd447,
       transparent: true,
@@ -1223,21 +1183,48 @@ export class BeerRunnerGame {
   private updateCamera(dt: number): void {
     const playerZ = this.phase === "title" ? 0 : this.player.position.z;
     const desiredX = this.player.position.x * 0.23;
+    const currentSpeed = this.phase === "playing"
+      ? runSpeed(
+        this.collectedBeers,
+        this.hitTime > 0,
+        this.supportBoostTime > 0,
+        this.nearMissBoostTime > 0,
+      )
+      : BASE_SPEED;
+    const speedProgress = this.phase === "playing"
+      ? THREE.MathUtils.clamp(
+        (currentSpeed / BASE_SPEED - 1) / (MAX_BEER_SPEED_MULTIPLIER - 1),
+        0,
+        1,
+      )
+      : 0;
+    const runningLift = this.phase === "playing" ? Math.sin(this.elapsed * 21) * 0.018 : 0;
     this.camera.position.x = THREE.MathUtils.damp(this.camera.position.x, desiredX, 5, dt);
     this.camera.position.y = THREE.MathUtils.damp(
       this.camera.position.y,
-      this.phase === "title" ? 4.45 : 4.8,
+      this.phase === "title" ? 4.45 : 4.8 + runningLift,
       5,
       dt,
     );
     this.camera.position.z = THREE.MathUtils.damp(
       this.camera.position.z,
-      playerZ + (this.phase === "title" ? 9.8 : 8.8),
+      playerZ + (this.phase === "title" ? 9.8 : 8.8 + speedProgress * 0.35),
       10,
       dt,
     );
-    CAMERA_TARGET.set(this.player.position.x * 0.38, 1.45, playerZ - 10.5);
+    CAMERA_TARGET.set(
+      this.player.position.x * 0.38,
+      1.45,
+      playerZ - 10.5 - speedProgress * 1.4,
+    );
     this.camera.lookAt(CAMERA_TARGET);
+    const targetFov = this.baseCameraFov
+      + (this.phase === "playing" ? 2.2 + speedProgress * 4.8 : 0);
+    const nextFov = THREE.MathUtils.damp(this.camera.fov, targetFov, 5, dt);
+    if (Math.abs(nextFov - this.camera.fov) > 0.001) {
+      this.camera.fov = nextFov;
+      this.camera.updateProjectionMatrix();
+    }
   }
 
   private resize(): void {
@@ -1246,7 +1233,8 @@ export class BeerRunnerGame {
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
     this.renderer.setSize(bounds.width, bounds.height, false);
     this.camera.aspect = bounds.width / bounds.height;
-    this.camera.fov = bounds.width < 600 ? 66 : 56;
+    this.baseCameraFov = bounds.width < 600 ? 66 : 56;
+    this.camera.fov = this.baseCameraFov;
     this.camera.updateProjectionMatrix();
   }
 

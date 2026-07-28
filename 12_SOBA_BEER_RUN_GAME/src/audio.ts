@@ -34,7 +34,7 @@ export class RunnerAudio {
     this.tone(scale[Math.min(scale.length - 1, chain % scale.length)], 0.08, "sine", 0.2);
   }
 
-  juggle(): void {
+  routeClear(): void {
     [523.25, 659.25, 783.99, 1046.5].forEach((frequency, index) => {
       this.tone(frequency, 0.18, "triangle", 0.19, index * 0.07);
     });

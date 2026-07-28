@@ -141,7 +141,7 @@ canvas {
   font-size: clamp(1.08rem, 2.7vw, 1.7rem);
 }
 
-.hud-mugs strong {
+.hud-routes strong {
   color: #fff1ad;
 }
 
@@ -175,49 +175,6 @@ canvas {
   box-shadow: 0 0 12px #ffd35c;
   transform: scaleX(0);
   transform-origin: left;
-}
-
-.fever-meter {
-  position: absolute;
-  top: 84px;
-  left: 50%;
-  width: min(300px, 52vw);
-  height: 25px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 231, 150, 0.28);
-  border-radius: 999px;
-  background: rgba(8, 28, 42, 0.68);
-  opacity: 0.38;
-  transform: translateX(-50%);
-  transition: opacity 160ms ease, filter 160ms ease;
-}
-
-.fever-meter span {
-  position: absolute;
-  z-index: 2;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  color: #fff8db;
-  font-size: 0.62rem;
-  font-weight: 950;
-  letter-spacing: 0.18em;
-  text-shadow: 0 1px 4px #6b3700;
-}
-
-.fever-meter i {
-  display: block;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, #ef8b12, #ffe361);
-  box-shadow: 0 0 18px #ffd85e;
-  transform: scaleX(0);
-  transform-origin: left;
-}
-
-.fever-meter.is-active {
-  opacity: 1;
-  filter: saturate(1.2);
 }
 
 .speed-pill,
@@ -416,47 +373,6 @@ canvas {
 .lane-controls button:active {
   background: rgba(250, 178, 39, 0.8);
   transform: translateY(2px) scale(0.97);
-}
-
-.lane-controls .fever-button {
-  width: clamp(60px, 13vw, 82px);
-  height: clamp(60px, 13vw, 82px);
-  display: grid;
-  place-content: center;
-  gap: 1px;
-  padding: 0;
-  border-color: rgba(255, 220, 80, 0.32);
-  border-radius: 50%;
-  color: #a9bdc4;
-  font-size: 1rem;
-  line-height: 1;
-  opacity: 0.6;
-  transform: translateY(7px);
-}
-
-.lane-controls .fever-button span {
-  font-size: 1.2rem;
-  font-weight: 1000;
-}
-
-.lane-controls .fever-button b {
-  font-size: 0.48rem;
-  letter-spacing: 0.1em;
-}
-
-.lane-controls .fever-button.is-ready {
-  border-color: #fff0a0;
-  background: linear-gradient(145deg, #ffd844, #ef7715);
-  box-shadow:
-    0 0 0 6px rgba(255, 213, 63, 0.15),
-    0 0 28px rgba(255, 201, 40, 0.7);
-  color: #172938;
-  opacity: 1;
-  animation: fever-ready 520ms ease-in-out infinite alternate;
-}
-
-.lane-controls .fever-button:disabled {
-  cursor: default;
 }
 
 .screen {
@@ -990,15 +906,6 @@ canvas {
   }
 }
 
-@keyframes fever-ready {
-  from {
-    transform: translateY(7px) scale(0.96);
-  }
-  to {
-    transform: translateY(7px) scale(1.05);
-  }
-}
-
 @media (max-width: 720px) {
   .hud {
     grid-template-columns: auto 1fr auto;
@@ -1032,7 +939,7 @@ canvas {
     min-width: 112px;
   }
 
-  .hud-mugs {
+  .hud-routes {
     display: none;
   }
 
@@ -1044,11 +951,6 @@ canvas {
 
   .run-progress {
     top: 61px;
-  }
-
-  .fever-meter {
-    top: 73px;
-    width: 54vw;
   }
 
   .chain-pill {
@@ -1196,7 +1098,7 @@ canvas {
     right: 32px;
     bottom: 26px;
     left: auto;
-    width: 290px;
+    width: 190px;
   }
 
   .lane-controls button {

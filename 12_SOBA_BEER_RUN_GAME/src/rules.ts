@@ -1,49 +1,23 @@
-import type { CourseCell, CourseRow, Rank } from "./types.js";
+import type { CourseCell, CourseRole, CourseRow, Lane, Rank } from "./types.js";
 
 export const LANE_X = [-2.35, 0, 2.35] as const;
-export const BASE_SPEED = 10.4;
+export const BASE_SPEED = 11.8;
 export const BEERS_PER_SPEED_UP = 10;
 export const SPEED_STEP = 0.08;
-export const MAX_BEER_SPEED_MULTIPLIER = 1.32;
+export const MAX_BEER_SPEED_MULTIPLIER = 1.28;
 export const COLLISION_SPEED_MULTIPLIER = 0.72;
 export const COLLISION_DURATION = 2;
 export const SUPPORT_SPEED_MULTIPLIER = 1.18;
 export const NEAR_MISS_SPEED_MULTIPLIER = 1.1;
-export const FEVER_DURATION = 4;
 export const FINAL_RUSH_START = 408;
 export const FINISH_DISTANCE = 458;
 export const WANTED_ZONE_START = 318;
 export const WANTED_ZONE_END = 365;
+export const ROUTE_REWARD_SPACING = 2.25;
+export const ROUTE_GATE_DISTANCES = [50, 88, 126, 164, 202, 240, 278, 318, 374] as const;
 
-const REGULAR_PATTERNS: ReadonlyArray<
-  ReadonlyArray<readonly [CourseCell, CourseCell, CourseCell]>
-> = [
-  [
-    ["beer", "beer", "crate"],
-    ["crate", "beer", "beer"],
-    ["beer", null, "beer"],
-  ],
-  [
-    ["beer", "barrel", "beer"],
-    ["beer", "crate", null],
-    [null, "beer", "beer"],
-  ],
-  [
-    ["crate", "beer", "crate"],
-    ["beer", "beer", null],
-    ["beer", null, "beer"],
-  ],
-  [
-    ["beer", "crate", "beer"],
-    ["barrel", "beer", null],
-    ["beer", "beer", "crate"],
-  ],
-  [
-    ["beer", "beer", "beer"],
-    ["crate", null, "beer"],
-    ["beer", "crate", "beer"],
-  ],
-] as const;
+const HINT_OFFSETS = [-13, -9, -5] as const;
+const REGULAR_REWARD_COUNT = 8;
 
 function mulberry32(seed: number) {
   let value = seed >>> 0;
@@ -56,52 +30,109 @@ function mulberry32(seed: number) {
   };
 }
 
-export function buildCourse(seed: number): CourseRow[] {
-  let rows: CourseRow[] = [
-    { distance: 14, cells: [null, "beer", null] },
-    { distance: 21, cells: ["beer", null, null] },
-    { distance: 28, cells: [null, null, "beer"] },
-    { distance: 35, cells: ["beer", "beer", "beer"] },
-  ];
-  const random = mulberry32(seed);
-  let distance = 45;
+function laneCells(lane: Lane, cell: Exclude<CourseCell, null>): [CourseCell, CourseCell, CourseCell] {
+  const cells: [CourseCell, CourseCell, CourseCell] = [null, null, null];
+  cells[lane + 1] = cell;
+  return cells;
+}
 
-  while (distance < FINAL_RUSH_START - 10) {
-    const pattern = REGULAR_PATTERNS[Math.floor(random() * REGULAR_PATTERNS.length)];
-    for (const cells of pattern) {
-      rows.push({ distance, cells });
-      distance += 5.2 + random() * 1.1;
-    }
-    distance += 1.7 + random() * 1.8;
+function gateCells(
+  lane: Lane,
+  reward: "beer" | "goldBeer",
+  variant: number,
+): [CourseCell, CourseCell, CourseCell] {
+  const cells: [CourseCell, CourseCell, CourseCell] = ["crate", "barrel", "crate"];
+  cells[lane + 1] = reward;
+  const otherLane = (lane + 2 + (variant % 2)) % 3;
+  if (otherLane !== lane + 1) cells[otherLane] = variant % 2 === 0 ? "barrel" : "crate";
+  return cells;
+}
+
+function addRoute(
+  rows: CourseRow[],
+  routeId: number,
+  gateDistance: number,
+  safeLane: Lane,
+  role: "gate" | "wantedGate",
+): void {
+  const hintCell = role === "wantedGate" ? "goldBeer" : "beer";
+  for (const offset of HINT_OFFSETS) {
+    rows.push({
+      distance: gateDistance + offset,
+      cells: laneCells(safeLane, hintCell),
+      routeId,
+      safeLane,
+      role: "hint",
+    });
   }
 
-  rows = rows.filter(
-    (row) => row.distance < WANTED_ZONE_START - 7 || row.distance > WANTED_ZONE_END + 5,
-  );
-
-  const wantedPatterns: ReadonlyArray<readonly [CourseCell, CourseCell, CourseCell]> = [
-    ["goldBeer", "crate", "beer"],
-    ["crate", "beer", "goldBeer"],
-    ["goldBeer", "barrel", null],
-    ["beer", "crate", "goldBeer"],
-    ["barrel", "goldBeer", "beer"],
-    ["goldBeer", null, "crate"],
-    ["crate", "beer", "goldBeer"],
-    ["goldBeer", "barrel", "beer"],
-    [null, "goldBeer", "crate"],
-  ];
-  wantedPatterns.forEach((cells, index) => {
-    rows.push({ distance: WANTED_ZONE_START + index * 5.2, cells });
+  rows.push({
+    distance: gateDistance,
+    cells: gateCells(safeLane, hintCell, routeId),
+    routeId,
+    safeLane,
+    role,
   });
 
-  for (let rushDistance = FINAL_RUSH_START; rushDistance <= FINISH_DISTANCE - 5; rushDistance += 4.2) {
+  if (role === "wantedGate") {
+    for (let index = 1; index <= 12; index += 1) {
+      const reward = index % 3 === 0 ? "goldBeer" : "beer";
+      rows.push({
+        distance: gateDistance + index * 3,
+        cells: laneCells(safeLane, reward),
+        routeId,
+        safeLane,
+        role: "wantedStream",
+      });
+    }
+    return;
+  }
+
+  for (let index = 1; index <= REGULAR_REWARD_COUNT; index += 1) {
+    rows.push({
+      distance: gateDistance + index * ROUTE_REWARD_SPACING,
+      cells: laneCells(safeLane, "beer"),
+      routeId,
+      safeLane,
+      role: "stream",
+    });
+  }
+}
+
+export function buildCourse(seed: number): CourseRow[] {
+  const rows: CourseRow[] = [
+    { distance: 14, cells: [null, "beer", null], role: "tutorial" },
+    { distance: 20, cells: [null, "beer", null], role: "tutorial" },
+    { distance: 26, cells: ["beer", "beer", "beer"], role: "tutorial" },
+  ];
+  const random = mulberry32(seed);
+  let previousLane: Lane = 0;
+
+  ROUTE_GATE_DISTANCES.forEach((gateDistance, routeId) => {
+    let lane = (Math.floor(random() * 3) - 1) as Lane;
+    if (routeId === 0 && lane === previousLane) lane = 1;
+    const isWanted = gateDistance === WANTED_ZONE_START;
+    addRoute(rows, routeId, gateDistance, lane, isWanted ? "wantedGate" : "gate");
+    previousLane = lane;
+  });
+
+  for (
+    let rushDistance = FINAL_RUSH_START;
+    rushDistance <= FINISH_DISTANCE - 3;
+    rushDistance += 2.2
+  ) {
     rows.push({
       distance: rushDistance,
-      cells: rushDistance % 8.4 < 2 ? ["beer", "beer", "beer"] : ["beer", null, "beer"],
+      cells: ["beer", "beer", "beer"],
+      role: "rush",
     });
   }
 
   return rows.sort((a, b) => a.distance - b.distance);
+}
+
+export function isRouteGate(role: CourseRole | undefined): boolean {
+  return role === "gate" || role === "wantedGate";
 }
 
 export function beerSpeedMultiplier(collectedBeers: number): number {
