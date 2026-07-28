@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#10182f"/>
+  <path d="M0 460L1200 360V630H0Z" fill="#315b37"/>
+  <circle cx="980" cy="120" r="72" fill="#f7cf63"/>
+  <g transform="translate(170 125)">
+    <path d="M50 260Q15 210 42 135Q58 52 150 48Q242 52 258 135Q285 210 250 260Z" fill="#181a25" stroke="#7c82a0" stroke-width="10"/>
+    <ellipse cx="150" cy="130" rx="68" ry="54" fill="#f0f0e8"/>
+    <circle cx="126" cy="130" r="10"/><circle cx="174" cy="130" r="10"/>
+    <path d="M70 250Q30 305 18 350M105 258Q85 330 80 370M195 258Q215 330 220 370M230 250Q270 305 282 350" stroke="#20222e" stroke-width="28" fill="none" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(700 120)">
+    <path d="M80 300V142Q80 50 220 50Q360 50 360 142V300Z" fill="#f2f2f2"/>
+    <ellipse cx="220" cy="120" rx="80" ry="92" fill="#fff" stroke="#ccc" stroke-width="6"/>
+    <circle cx="190" cy="118" r="18"/><circle cx="250" cy="118" r="18"/>
+    <path d="M173 70V155M267 70V155" stroke="#d62f35" stroke-width="16"/>
+    <circle cx="220" cy="75" r="8" fill="#333"/>
+    <rect x="330" y="178" width="92" height="120" rx="12" fill="#efb932" stroke="#fff4b0" stroke-width="10"/>
+  </g>
+  <text x="600" y="500" text-anchor="middle" font-family="sans-serif" font-weight="900" font-size="86" fill="#fff" stroke="#23244a" stroke-width="12" paint-order="stroke">ギュンギュン・クエスト</text>
+  <text x="600" y="565" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="34" fill="#f7cf63">魔王そば屋と 最高の一杯</text>
+</svg>
