@@ -149,6 +149,7 @@ test("combines Rapier rigid bodies with Koota lifecycle systems and kinetic comb
   assert.equal(typeof manifest.dependencies["@dimforge/rapier3d"], "string");
   assert.equal(typeof manifest.dependencies.koota, "string");
   assert.equal(typeof manifest.devDependencies["vite-plugin-wasm"], "string");
+  assert.equal(manifest.scripts.postbuild, "node scripts/prune-sites-server-assets.mjs");
   assert.match(physics, /new RAPIER\.World/);
   assert.match(physics, /const FIXED_STEP = 1 \/ 60/);
   assert.match(physics, /createWorld\(\)/);
