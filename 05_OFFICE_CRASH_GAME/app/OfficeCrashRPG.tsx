@@ -29,6 +29,10 @@ import {
   type SiteGameData,
   type UpgradeId,
 } from "./game-content";
+import {
+  OfficePhysicsRuntime,
+  type OfficePhysicsStats,
+} from "./game-physics";
 
 type HudState = {
   floor: number;
@@ -56,6 +60,10 @@ type HudState = {
   scoreMultiplier: number;
   offscreenEnemies: number;
   incomingAttack: boolean;
+  physicsOnline: boolean;
+  physicsBodies: number;
+  physicsMoving: number;
+  kineticChain: number;
 };
 
 type RunSummary = {
@@ -203,7 +211,7 @@ type TimedVisual = {
   spin: number;
 };
 
-type DamageNumberStyle = "normal" | "mega" | "splash";
+type DamageNumberStyle = "normal" | "mega" | "splash" | "kinetic";
 
 const EMPTY_HUD: HudState = {
   floor: 1,
@@ -231,6 +239,10 @@ const EMPTY_HUD: HudState = {
   scoreMultiplier: 1,
   offscreenEnemies: 0,
   incomingAttack: false,
+  physicsOnline: false,
+  physicsBodies: 0,
+  physicsMoving: 0,
+  kineticChain: 0,
 };
 
 const MAX_FLOOR = FLOORS.length;
@@ -978,6 +990,12 @@ export default function OfficeCrashRPG() {
     const timedVisuals: TimedVisual[] = [];
     const stageObjects: THREE.Object3D[] = [];
     const officeProps: OfficeProp[] = [];
+    let physicsRuntime: OfficePhysicsRuntime | null = null;
+    let physicsDisposed = false;
+    let physicsTheme = {
+      accent: FLOORS[0].accent,
+      darkFloor: false,
+    };
     const upgradeValues = Object.fromEntries(
       UPGRADES.map((upgrade) => [upgrade.id, 0]),
     ) as Record<UpgradeId, number>;
@@ -1026,6 +1044,7 @@ export default function OfficeCrashRPG() {
       const labels = [];
       if (style === "mega") labels.push("MEGA HIT");
       if (style === "splash") labels.push("泡連鎖");
+      if (style === "kinetic") labels.push("PHYSICS HIT");
       if (critical) labels.push("CRITICAL");
       if (vulnerabilityMultiplier > 1) labels.push(`WEAK ×${vulnerabilityMultiplier.toFixed(2)}`);
       if (labels.length > 0) damage.dataset.label = labels.join(" · ");
@@ -1240,6 +1259,9 @@ export default function OfficeCrashRPG() {
       pressure: 0,
       rushUntil: 0,
       rushTriggered: false,
+      kineticChain: 0,
+      kineticChainUntil: 0,
+      lastKineticToast: -10,
       rerolls: 1,
       mealReady: false,
       trayRescueReady: false,
@@ -1268,6 +1290,22 @@ export default function OfficeCrashRPG() {
       selected: [] as RewardChoice[],
     };
 
+    void OfficePhysicsRuntime.create(scene)
+      .then((created) => {
+        if (physicsDisposed) {
+          created.dispose();
+          return;
+        }
+        physicsRuntime = created;
+        if (runtime.playing) {
+          created.spawnPlayground(physicsTheme.accent, physicsTheme.darkFloor);
+        }
+        notify("RAPIER × KOOTA ONLINE");
+      })
+      .catch(() => {
+        notify("物理演算を軽量モードで開始");
+      });
+
     const stageAdd = (object: THREE.Object3D) => {
       scene.add(object);
       stageObjects.push(object);
@@ -1284,6 +1322,7 @@ export default function OfficeCrashRPG() {
     };
 
     const clearStage = () => {
+      physicsRuntime?.clear();
       for (const enemy of enemies) {
         scene.remove(enemy.group);
         if (enemy.attackWarning) removeDisposableObject(enemy.attackWarning);
@@ -1311,6 +1350,13 @@ export default function OfficeCrashRPG() {
     };
 
     const spawnDebris = (position: THREE.Vector3, color: number, amount: number) => {
+      if (physicsRuntime) {
+        physicsRuntime.spawnDebrisBurst(position, color, amount, {
+          force: amount >= 30 ? 12 : amount >= 18 ? 9 : 6.5,
+          mega: amount >= 30,
+        });
+        return;
+      }
       for (let i = 0; i < amount; i += 1) {
         const size = 0.1 + Math.random() * 0.26;
         const piece = new THREE.Mesh(
@@ -2076,6 +2122,7 @@ export default function OfficeCrashRPG() {
     };
 
     const addDecorations = (accent: number, darkFloor: boolean) => {
+      physicsTheme = { accent, darkFloor };
       const railMaterial = new THREE.MeshStandardMaterial({
         color: accent,
         emissive: accent,
@@ -2126,6 +2173,7 @@ export default function OfficeCrashRPG() {
           destroyed: false,
         });
       });
+      physicsRuntime?.spawnPlayground(accent, darkFloor);
     };
 
     const gainMegaGauge = (baseAmount: number, announce = true) => {
@@ -2151,6 +2199,11 @@ export default function OfficeCrashRPG() {
     };
 
     const syncHud = () => {
+      const physicsStats: OfficePhysicsStats = physicsRuntime?.getStats() ?? {
+        bodies: debris.length,
+        moving: debris.length,
+        sleeping: 0,
+      };
       const floorDefinition = FLOORS[runtime.floor - 1];
       const alive = enemies.filter((enemy) => enemy.alive).length;
       const remainingObjective = floorDefinition.kind === "challenge"
@@ -2225,6 +2278,10 @@ export default function OfficeCrashRPG() {
         scoreMultiplier: overtime.scoreMultiplier * (rushRemaining > 0 ? 1.5 : 1),
         offscreenEnemies,
         incomingAttack: hazards.length > 0 || enemies.some((enemy) => enemy.alive && enemy.attackKind !== null),
+        physicsOnline: physicsRuntime !== null,
+        physicsBodies: physicsStats.bodies,
+        physicsMoving: physicsStats.moving,
+        kineticChain: runtime.kineticChain,
       });
     };
 
@@ -2239,6 +2296,7 @@ export default function OfficeCrashRPG() {
       scene.background = new THREE.Color(darkFloor ? 0x7790a0 : 0xb9e7fb);
       scene.fog = new THREE.Fog(darkFloor ? 0x7790a0 : 0xb9e7fb, 27, 48);
       renderer.setClearColor(darkFloor ? 0x7790a0 : 0xb9e7fb, 1);
+      physicsTheme = { accent: floorDefinition.accent, darkFloor };
       const sign = makeFloorSign(floorDefinition.name, floorDefinition.kicker, floorDefinition.accent);
       stageAdd(sign);
       addDecorations(floorDefinition.accent, darkFloor);
@@ -2249,6 +2307,8 @@ export default function OfficeCrashRPG() {
       runtime.timer = floorDefinition.kind === "challenge" ? 15 : null;
       runtime.combo = 0;
       runtime.comboWindow = 0;
+      runtime.kineticChain = 0;
+      runtime.kineticChainUntil = 0;
       runtime.pendingSmash = null;
       runtime.pendingMega = null;
       runtime.megaLockUntil = 0;
@@ -2422,11 +2482,17 @@ export default function OfficeCrashRPG() {
       );
       runtime.pressure = Math.min(100, runtime.pressure + (mega ? 4 : 2.5));
       gainMegaGauge(mega ? 3 : 1.5, false);
-      spawnDebris(
-        prop.group.position.clone().add(new THREE.Vector3(0, 0.55, 0)),
-        prop.color,
-        prop.kind === "paper" ? 20 : mega ? 18 : 11,
-      );
+      const debrisOrigin = prop.group.position.clone().add(new THREE.Vector3(0, 0.55, 0));
+      if (physicsRuntime) {
+        physicsRuntime.spawnBrokenProp(prop.kind, prop.group.position, prop.color, mega);
+        physicsRuntime.blast(prop.group.position, mega ? 4.8 : 2.8, mega ? 11 : 6.4);
+      } else {
+        spawnDebris(
+          debrisOrigin,
+          prop.color,
+          prop.kind === "paper" ? 20 : mega ? 18 : 11,
+        );
+      }
       spawnWave(prop.group.position, prop.kind === "cooler" ? 0x77e6ff : prop.color, mega ? 1.25 : 0.78);
       if (prop.kind === "cooler") {
         tone(520, 0.18, "sine", 0.045, 980);
@@ -2616,6 +2682,11 @@ export default function OfficeCrashRPG() {
         tone(760, 0.22, "sine", 0.045, 980, 0.16);
       } else {
         spawnDebris(enemy.group.position, enemy.color, enemy.boss ? 42 : 13);
+        physicsRuntime?.blast(
+          enemy.group.position,
+          enemy.boss ? 6.2 : 3.4,
+          enemy.boss ? 16 : enemy.elite ? 9 : 6.8,
+        );
         playSound(enemy.boss ? "metal" : "break");
         if (runtime.floor >= 5) {
           spawnWave(enemy.group.position, enemy.elite ? 0xffd23f : enemy.color, enemy.elite ? 1.25 : 0.72);
@@ -2776,6 +2847,51 @@ export default function OfficeCrashRPG() {
       }
     };
 
+    const resolveKineticImpacts = () => {
+      if (!physicsRuntime) return;
+      for (const impact of physicsRuntime.collectKineticImpacts(runtime.elapsed)) {
+        const impactOnFloor = impact.position.clone().setY(0);
+        let target: Enemy | null = null;
+        let nearest = Number.POSITIVE_INFINITY;
+        for (const enemy of enemies) {
+          if (!enemy.alive) continue;
+          const distance = enemy.group.position.distanceTo(impactOnFloor);
+          if (
+            distance <= impact.radius + enemy.radius + 0.48
+            && distance < nearest
+          ) {
+            target = enemy;
+            nearest = distance;
+          }
+        }
+        if (!target) continue;
+
+        impact.consume();
+        const speedDamage = THREE.MathUtils.clamp((impact.speed - 2.8) * 0.34, 0.7, 4.2);
+        const bossScale = target.boss ? 0.52 : 1;
+        const damage = speedDamage * impact.damageScale * bossScale;
+        damageEnemy(target, damage, impact.speed >= 10.5, impactOnFloor, "kinetic");
+        runtime.kineticChain += 1;
+        runtime.kineticChainUntil = runtime.elapsed + 1.35;
+        runtime.score += Math.round(
+          90
+          * runtime.kineticChain
+          * OVERTIME_RANKS[runtime.overtimeRank].scoreMultiplier,
+        );
+        runtime.pressure = Math.min(100, runtime.pressure + 2.5);
+        spawnWave(impactOnFloor, impact.kind === "rolling-chair" ? 0x62f4ff : 0xffffff, 0.62);
+        tone(360 + Math.min(420, runtime.kineticChain * 34), 0.08, "square", 0.025, 720);
+
+        if (
+          (runtime.kineticChain === 3 || runtime.kineticChain === 6 || runtime.kineticChain === 10)
+          && runtime.elapsed - runtime.lastKineticToast > 0.8
+        ) {
+          runtime.lastKineticToast = runtime.elapsed;
+          notify(`PHYSICS CHAIN ×${runtime.kineticChain}`);
+        }
+      }
+    };
+
     const getMegaTravelDistance = (origin: THREE.Vector3, direction: THREE.Vector3) => {
       const distances: number[] = [];
       if (direction.x > 0.001) distances.push((9.75 - origin.x) / direction.x);
@@ -2867,6 +2983,7 @@ export default function OfficeCrashRPG() {
       spawnWave(impact, 0xffc21d, 2.35);
       spawnWave(impact, 0xff6b16, 1.35);
       spawnDebris(impact.clone().setY(0.55), 0xffad17, 32);
+      physicsRuntime?.blast(impact, blastRadius + 2.8, 22 + projectile.hitEnemies.size * 0.35, 0.72);
       runtime.shake = Math.max(runtime.shake, 1.2);
       noise(0.5, 0.19, 75);
       tone(74, 0.46, "sawtooth", 0.095, 34);
@@ -3335,6 +3452,11 @@ export default function OfficeCrashRPG() {
         ? (upgradeValues.mug >= 3 ? 2.7 : 2.35)
         : 1.75;
       spawnWave(center, upgradeValues.mug >= 3 ? 0xffd23f : 0xffffff, upgradeValues.mug >= 3 ? 1.55 : 1);
+      physicsRuntime?.blast(
+        center,
+        radius + 2.25,
+        7 + upgradeValues.mug * 1.25 + upgradeValues.barrel * 0.75,
+      );
       runtime.shake = Math.max(runtime.shake, 0.24);
       let hits = 0;
       let criticals = 0;
@@ -3437,6 +3559,12 @@ export default function OfficeCrashRPG() {
       player.position.x = THREE.MathUtils.clamp(player.position.x, -9.4, 9.4);
       player.position.z = THREE.MathUtils.clamp(player.position.z, -13.1, 11.3);
       spawnWave(player.position, upgradeValues.sneakers >= 2 ? 0x73ff8c : 0x5de3ff, upgradeValues.sneakers >= 2 ? 1.55 : 0.7);
+      physicsRuntime?.blast(
+        player.position,
+        upgradeValues.sneakers >= 2 ? 3.4 : 2.2,
+        upgradeValues.sneakers >= 2 ? 9.2 : 5.6,
+        0.22,
+      );
       if (upgradeValues.sneakers >= 2) {
         for (const enemy of enemies) {
           if (enemy.alive && enemy.group.position.distanceTo(player.position) <= 2.1 + enemy.radius) {
@@ -3464,6 +3592,9 @@ export default function OfficeCrashRPG() {
       runtime.pressure = 0;
       runtime.rushUntil = 0;
       runtime.rushTriggered = false;
+      runtime.kineticChain = 0;
+      runtime.kineticChainUntil = 0;
+      runtime.lastKineticToast = -10;
       runtime.rerolls = 1;
       runtime.mega = 1;
       runtime.megaGauge = 0;
@@ -3647,10 +3778,14 @@ export default function OfficeCrashRPG() {
       if (!runtime.paused) {
         runtime.elapsed += dt;
         (player.userData.mixer as THREE.AnimationMixer | undefined)?.update(dt);
+        physicsRuntime?.step(dt);
       }
       let walking = false;
 
       if (runtime.playing && !runtime.paused) {
+        if (runtime.kineticChain > 0 && runtime.elapsed > runtime.kineticChainUntil) {
+          runtime.kineticChain = 0;
+        }
         if (runtime.pendingSmash && runtime.elapsed >= runtime.pendingSmash.at) {
           const pending = runtime.pendingSmash;
           runtime.pendingSmash = null;
@@ -3691,6 +3826,11 @@ export default function OfficeCrashRPG() {
           const rotation = Math.atan2(-move.x, -move.y);
           player.rotation.y = THREE.MathUtils.lerp(player.rotation.y, rotation, 0.24);
           player.position.y = Math.sin(runtime.elapsed * 14) * 0.035;
+          physicsRuntime?.pushFromPlayer(
+            player.position,
+            new THREE.Vector3(move.x, 0, move.y),
+            0.42 + speed * dt * 0.55,
+          );
         } else {
           player.position.y = THREE.MathUtils.lerp(player.position.y, 0, 0.24);
         }
@@ -3799,6 +3939,8 @@ export default function OfficeCrashRPG() {
           }
 
         }
+
+        resolveKineticImpacts();
 
         for (let i = hazards.length - 1; i >= 0; i -= 1) {
           const hazard = hazards[i];
@@ -3995,6 +4137,9 @@ export default function OfficeCrashRPG() {
       damageLayerRef.current?.replaceChildren();
       detachAudioState?.();
       if (audioContext && getAudioState(audioContext) !== "closed") void audioContext.close();
+      physicsDisposed = true;
+      physicsRuntime?.dispose();
+      physicsRuntime = null;
       renderer.dispose();
       apiRef.current = null;
       scene.traverse((object) => {
@@ -4160,6 +4305,18 @@ export default function OfficeCrashRPG() {
             <div className="rpg-progress"><i style={{ width: `${enemyRatio}%` }} /></div>
           </section>
 
+          <aside
+            className={`rpg-physics-status ${hud.physicsOnline ? "online" : ""} ${
+              hud.kineticChain > 0 ? "chaining" : ""
+            }`}
+            aria-live="polite"
+          >
+            <span>RAPIER × KOOTA</span>
+            <strong>{hud.physicsOnline ? `${hud.physicsMoving} MOVING` : "WARMING UP"}</strong>
+            <small>{hud.physicsBodies} BODIES</small>
+            {hud.kineticChain > 0 && <em>PHYSICS CHAIN ×{hud.kineticChain}</em>}
+          </aside>
+
           {build.length > 0 && (
             <aside className="rpg-build-rail" aria-label="現在のビルド">
               {build.map((item) => (
@@ -4297,6 +4454,10 @@ export default function OfficeCrashRPG() {
                 <i>›</i>
                 <span><b>生</b><small>RAIL</small></span>
               </div>
+              <p className="hub-physics-note">
+                <b>NEW PHYSICS</b>
+                備品を吹き飛ばし、敵へぶつけて連鎖スコア
+              </p>
               <blockquote>
                 「弊社の備品が自律歩行を始めており、大変驚いております」
               </blockquote>

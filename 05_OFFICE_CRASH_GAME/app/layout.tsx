@@ -4,7 +4,7 @@ import "./globals.css";
 
 const title = "そば屋のオフィスクラッシュ ～無限フロア大整理～";
 const description =
-  "大型ビールジョッキを強化し、暴走オフィス備品を片付ける3Dアクションハクスラ。8フロア、戦利品ビルド、ボス、永続記録に対応。";
+  "大型ビールジョッキで物理備品を吹き飛ばし、衝突連鎖で暴走オフィスを片付ける3Dアクションハクスラ。8フロア、戦利品ビルド、ボス、永続記録に対応。";
 
 export async function generateMetadata(): Promise<Metadata> {
   const requestHeaders = await headers();
@@ -21,13 +21,13 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       type: "website",
       locale: "ja_JP",
-      images: [{ url: "/og.png", width: 1536, height: 1024, alt: title }],
+      images: [{ url: "/og-physics.png", width: 1536, height: 1024, alt: title }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: ["/og.png"],
+      images: ["/og-physics.png"],
     },
   };
 }

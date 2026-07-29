@@ -268,6 +268,16 @@ body {
   filter: drop-shadow(0 4px 0 #e5a61c) drop-shadow(0 7px 6px rgba(0, 0, 0, .25));
 }
 
+.rpg-damage-number.kinetic {
+  color: #9affff;
+  font-size: clamp(24px, 2.7vw, 45px);
+  -webkit-text-stroke-color: #123858;
+  filter:
+    drop-shadow(0 5px 0 #1689ae)
+    drop-shadow(0 0 14px rgba(100, 246, 255, .9))
+    drop-shadow(0 10px 8px rgba(0, 0, 0, .3));
+}
+
 .rpg-hud {
   position: absolute;
   z-index: 4;
@@ -628,6 +638,69 @@ body {
 .rpg-objective em.attack-alert {
   color: #ffb04d;
   animation: attackAlert .36s infinite alternate;
+}
+
+.rpg-physics-status {
+  position: absolute;
+  z-index: 4;
+  top: clamp(200px, 27vh, 286px);
+  left: clamp(14px, 2vw, 32px);
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 1px 9px;
+  min-width: 142px;
+  padding: 7px 10px;
+  border: 2px solid rgba(255, 255, 255, .72);
+  border-radius: 11px;
+  background: rgba(18, 37, 49, .76);
+  box-shadow: 0 4px 0 rgba(10, 30, 42, .72);
+  color: #aec2cb;
+  font-family: "Arial Black", "Hiragino Kaku Gothic StdN", sans-serif;
+  line-height: 1.1;
+  pointer-events: none;
+}
+
+.rpg-physics-status > span {
+  grid-column: 1 / -1;
+  color: #91a7b1;
+  font-size: 7px;
+  letter-spacing: .12em;
+}
+
+.rpg-physics-status > strong {
+  color: #d6e4e8;
+  font-size: 11px;
+}
+
+.rpg-physics-status > small {
+  align-self: end;
+  color: #91a7b1;
+  font-size: 7px;
+  text-align: right;
+}
+
+.rpg-physics-status.online {
+  border-color: #8ff8ff;
+  background: linear-gradient(145deg, rgba(15, 48, 61, .92), rgba(14, 71, 82, .82));
+  box-shadow: 0 4px 0 #123b4b, 0 0 18px rgba(79, 239, 255, .25);
+}
+
+.rpg-physics-status.online > span,
+.rpg-physics-status.online > strong {
+  color: #9affff;
+}
+
+.rpg-physics-status > em {
+  grid-column: 1 / -1;
+  margin-top: 3px;
+  color: #fff55f;
+  font-size: 8px;
+  font-style: normal;
+  letter-spacing: .05em;
+}
+
+.rpg-physics-status.chaining {
+  animation: rpgPowerGlow .38s infinite alternate;
 }
 
 .rpg-progress {
@@ -2750,6 +2823,31 @@ body {
   letter-spacing: -.04em;
 }
 
+.hub-physics-note {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 14px 0 -5px;
+  color: #294a59;
+  font-size: 9px;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.hub-physics-note b {
+  flex: 0 0 auto;
+  padding: 4px 7px;
+  border: 2px solid var(--rpg-ink);
+  border-radius: 999px;
+  background: #8ff8ff;
+  box-shadow: 0 2px 0 var(--rpg-ink);
+  color: #0d3444;
+  font-size: 7px;
+  letter-spacing: .08em;
+}
+
 .hub-loop {
   position: relative;
   z-index: 1;
@@ -3416,6 +3514,19 @@ body {
 @media (max-width: 720px) {
   .rpg-overlay {
     padding: 10px;
+  }
+
+  .rpg-physics-status {
+    top: calc(env(safe-area-inset-top, 0px) + 170px);
+    left: 8px;
+    min-width: 112px;
+    padding: 5px 7px;
+    transform: scale(.88);
+    transform-origin: left top;
+  }
+
+  .rpg-physics-status > small {
+    display: none;
   }
 
   .hub-card {

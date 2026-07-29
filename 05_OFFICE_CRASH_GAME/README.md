@@ -37,6 +37,9 @@
 - 赤い床の円・ビーム予告を見て、位置取りとダッシュで避ける敵・ボス攻撃。おかやまんは予告後に実体のある大型ビームを発射
 - 画面外の敵を自動で中央へ戻す再配置と、画面外の敵を知らせる索敵表示
 - モニター、書類、給水機もコンボへ組み込めるオフィス破壊
+- Rapierの固定タイムステップ物理で、積み上げた書類箱、回転椅子、ゴミ箱、破片が跳ね、転がり、壁へ衝突
+- KootaのECSで物理オブジェクトの生成・寿命・描画同期・上限管理を一括処理
+- スマッシュやダッシュで飛ばした備品が敵へ当たる「PHYSICS HIT」と、連続衝突で伸びる「PHYSICS CHAIN」
 - PERFECT SMASH、MULTI BREAK、COMBO FREEZE、HPと回復アイテム
 - PCとスマートフォンの両方に対応
 
@@ -68,7 +71,11 @@ npm run dev
 npm test
 ```
 
-Three.js、React、vinext、Cloudflare D1、Drizzleで構成されています。
+Three.js、Rapier、Koota、React、vinext、Cloudflare D1、Drizzleで構成されています。
+
+描画はThree.js、剛体シミュレーションはRapier、動的な物理オブジェクトの
+ライフサイクル管理はKootaへ分担しています。ゲーム本体の既存ロジックを保ったまま、
+物理演算とECSを「吹き飛ぶオフィス備品」という遊びへ直結させた構成です。
 
 ## 正典3Dモデル
 

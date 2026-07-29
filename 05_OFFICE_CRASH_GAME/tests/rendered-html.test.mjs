@@ -139,6 +139,28 @@ test("uses Three.js with a fixed camera, combat floors, and keyboard plus touch 
   assert.match(source, /fetch\("\/api\/game\/fixture"/);
 });
 
+test("combines Rapier rigid bodies with Koota lifecycle systems and kinetic combat", async () => {
+  const game = await readFile(new URL("../app/OfficeCrashRPG.tsx", import.meta.url), "utf8");
+  const physics = await readFile(new URL("../app/game-physics.ts", import.meta.url), "utf8");
+  const manifest = JSON.parse(
+    await readFile(new URL("../package.json", import.meta.url), "utf8"),
+  );
+
+  assert.equal(typeof manifest.dependencies["@dimforge/rapier3d-compat"], "string");
+  assert.equal(typeof manifest.dependencies.koota, "string");
+  assert.match(physics, /new RAPIER\.World/);
+  assert.match(physics, /const FIXED_STEP = 1 \/ 60/);
+  assert.match(physics, /createWorld\(\)/);
+  assert.match(physics, /const PhysicsNode = trait/);
+  assert.match(physics, /spawnPlayground/);
+  assert.match(physics, /collectKineticImpacts/);
+  assert.match(physics, /MAX_DYNAMIC_BODIES = 150/);
+  assert.match(game, /physicsRuntime\?\.blast/);
+  assert.match(game, /resolveKineticImpacts/);
+  assert.match(game, /PHYSICS CHAIN/);
+  assert.match(game, /RAPIER × KOOTA/);
+});
+
 test("keeps the portrait mobile HUD in dedicated status, notice, and control lanes", async () => {
   const css = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
   assert.match(css, /height: 100dvh/);
