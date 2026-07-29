@@ -250,6 +250,8 @@ const UP = new THREE.Vector3(0, 1, 0);
 const MAX_CONCURRENT_MOB_ATTACKS = 4;
 const BASE_SMASH_DAMAGE = 2;
 const DAMAGE_DISPLAY_MULTIPLIER = 5;
+const KINETIC_SWEEP_INTERVAL = 1 / 30;
+const MAX_KINETIC_HITS_PER_SWEEP = 3;
 const BOSS_WARNING_COLOR = 0xff2038;
 const BOSS_DIFFICULTY_BY_RANK = [
   { areaMultiplier: 1, cadenceMultiplier: 1, windupMultiplier: 1, openingDuration: 1.9 },
@@ -1262,6 +1264,7 @@ export default function OfficeCrashRPG() {
       kineticChain: 0,
       kineticChainUntil: 0,
       lastKineticToast: -10,
+      lastKineticSweep: -10,
       rerolls: 1,
       mealReady: false,
       trayRescueReady: false,
@@ -2312,6 +2315,7 @@ export default function OfficeCrashRPG() {
       runtime.comboWindow = 0;
       runtime.kineticChain = 0;
       runtime.kineticChainUntil = 0;
+      runtime.lastKineticSweep = -10;
       runtime.pendingSmash = null;
       runtime.pendingMega = null;
       runtime.megaLockUntil = 0;
@@ -2844,7 +2848,7 @@ export default function OfficeCrashRPG() {
       } else if (enemy.characterBoss) {
         spawnWave(enemy.group.position, enemy.color, 0.62);
         tone(240, 0.07, "square", 0.025, 360);
-      } else {
+      } else if (style !== "kinetic") {
         spawnDebris(enemy.group.position.clone().add(new THREE.Vector3(0, 0.8, 0)), enemy.color, 4);
         playSound("metal");
       }
@@ -2852,6 +2856,9 @@ export default function OfficeCrashRPG() {
 
     const resolveKineticImpacts = () => {
       if (!physicsRuntime) return;
+      if (runtime.elapsed - runtime.lastKineticSweep < KINETIC_SWEEP_INTERVAL) return;
+      runtime.lastKineticSweep = runtime.elapsed;
+      let resolvedHits = 0;
       for (const impact of physicsRuntime.collectKineticImpacts(runtime.elapsed)) {
         const impactOnFloor = impact.position.clone().setY(0);
         let target: Enemy | null = null;
@@ -2883,7 +2890,9 @@ export default function OfficeCrashRPG() {
         );
         runtime.pressure = Math.min(100, runtime.pressure + 2.5);
         spawnWave(impactOnFloor, impact.kind === "rolling-chair" ? 0x62f4ff : 0xffffff, 0.62);
-        tone(360 + Math.min(420, runtime.kineticChain * 34), 0.08, "square", 0.025, 720);
+        if (resolvedHits === 0) {
+          tone(360 + Math.min(420, runtime.kineticChain * 34), 0.08, "square", 0.025, 720);
+        }
 
         if (
           (runtime.kineticChain === 3 || runtime.kineticChain === 6 || runtime.kineticChain === 10)
@@ -2892,6 +2901,8 @@ export default function OfficeCrashRPG() {
           runtime.lastKineticToast = runtime.elapsed;
           notify(`PHYSICS CHAIN ×${runtime.kineticChain}`);
         }
+        resolvedHits += 1;
+        if (resolvedHits >= MAX_KINETIC_HITS_PER_SWEEP) break;
       }
     };
 
@@ -3598,6 +3609,7 @@ export default function OfficeCrashRPG() {
       runtime.kineticChain = 0;
       runtime.kineticChainUntil = 0;
       runtime.lastKineticToast = -10;
+      runtime.lastKineticSweep = -10;
       runtime.rerolls = 1;
       runtime.mega = 1;
       runtime.megaGauge = 0;

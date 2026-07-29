@@ -161,6 +161,9 @@ test("combines Rapier rigid bodies with Koota lifecycle systems and kinetic comb
   assert.match(game, /!import\.meta\.env\.SSR/);
   assert.match(game, /import\("\.\/game-physics"\)/);
   assert.match(game, /resolveKineticImpacts/);
+  assert.match(game, /MAX_KINETIC_HITS_PER_SWEEP = 3/);
+  assert.match(game, /KINETIC_SWEEP_INTERVAL = 1 \/ 30/);
+  assert.match(game, /style !== "kinetic"/);
   assert.match(game, /PHYSICS CHAIN/);
   assert.match(game, /RAPIER × KOOTA/);
 });
