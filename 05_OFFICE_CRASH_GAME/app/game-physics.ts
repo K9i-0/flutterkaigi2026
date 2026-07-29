@@ -1,4 +1,4 @@
-import RAPIER from "@dimforge/rapier3d-compat";
+import RAPIER from "@dimforge/rapier3d";
 import { createWorld, trait, type Entity } from "koota";
 import * as THREE from "three";
 
@@ -227,7 +227,6 @@ export class OfficePhysicsRuntime {
   }
 
   static async create(scene: THREE.Scene) {
-    await RAPIER.init();
     return new OfficePhysicsRuntime(scene);
   }
 

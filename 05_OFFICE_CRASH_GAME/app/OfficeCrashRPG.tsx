@@ -29,9 +29,9 @@ import {
   type SiteGameData,
   type UpgradeId,
 } from "./game-content";
-import {
+import type {
   OfficePhysicsRuntime,
-  type OfficePhysicsStats,
+  OfficePhysicsStats,
 } from "./game-physics";
 
 type HudState = {
@@ -1290,7 +1290,8 @@ export default function OfficeCrashRPG() {
       selected: [] as RewardChoice[],
     };
 
-    void OfficePhysicsRuntime.create(scene)
+    void import("./game-physics")
+      .then(({ OfficePhysicsRuntime: PhysicsRuntime }) => PhysicsRuntime.create(scene))
       .then((created) => {
         if (physicsDisposed) {
           created.dispose();

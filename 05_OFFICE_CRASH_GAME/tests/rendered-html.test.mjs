@@ -146,8 +146,9 @@ test("combines Rapier rigid bodies with Koota lifecycle systems and kinetic comb
     await readFile(new URL("../package.json", import.meta.url), "utf8"),
   );
 
-  assert.equal(typeof manifest.dependencies["@dimforge/rapier3d-compat"], "string");
+  assert.equal(typeof manifest.dependencies["@dimforge/rapier3d"], "string");
   assert.equal(typeof manifest.dependencies.koota, "string");
+  assert.equal(typeof manifest.devDependencies["vite-plugin-wasm"], "string");
   assert.match(physics, /new RAPIER\.World/);
   assert.match(physics, /const FIXED_STEP = 1 \/ 60/);
   assert.match(physics, /createWorld\(\)/);
@@ -156,6 +157,7 @@ test("combines Rapier rigid bodies with Koota lifecycle systems and kinetic comb
   assert.match(physics, /collectKineticImpacts/);
   assert.match(physics, /MAX_DYNAMIC_BODIES = 150/);
   assert.match(game, /physicsRuntime\?\.blast/);
+  assert.match(game, /import\("\.\/game-physics"\)/);
   assert.match(game, /resolveKineticImpacts/);
   assert.match(game, /PHYSICS CHAIN/);
   assert.match(game, /RAPIER × KOOTA/);
