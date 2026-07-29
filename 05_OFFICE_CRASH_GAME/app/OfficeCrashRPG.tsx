@@ -1290,22 +1290,24 @@ export default function OfficeCrashRPG() {
       selected: [] as RewardChoice[],
     };
 
-    void import("./game-physics")
-      .then(({ OfficePhysicsRuntime: PhysicsRuntime }) => PhysicsRuntime.create(scene))
-      .then((created) => {
-        if (physicsDisposed) {
-          created.dispose();
-          return;
-        }
-        physicsRuntime = created;
-        if (runtime.playing) {
-          created.spawnPlayground(physicsTheme.accent, physicsTheme.darkFloor);
-        }
-        notify("RAPIER × KOOTA ONLINE");
-      })
-      .catch(() => {
-        notify("物理演算を軽量モードで開始");
-      });
+    if (!import.meta.env.SSR) {
+      void import("./game-physics")
+        .then(({ OfficePhysicsRuntime: PhysicsRuntime }) => PhysicsRuntime.create(scene))
+        .then((created) => {
+          if (physicsDisposed) {
+            created.dispose();
+            return;
+          }
+          physicsRuntime = created;
+          if (runtime.playing) {
+            created.spawnPlayground(physicsTheme.accent, physicsTheme.darkFloor);
+          }
+          notify("RAPIER × KOOTA ONLINE");
+        })
+        .catch(() => {
+          notify("物理演算を軽量モードで開始");
+        });
+    }
 
     const stageAdd = (object: THREE.Object3D) => {
       scene.add(object);
