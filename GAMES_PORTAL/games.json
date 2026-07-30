@@ -90,6 +90,32 @@
       "image": "games/sobaya-beer-run/og.svg",
       "accent": "orange",
       "controls": "PC・スマホ対応"
+    },
+    {
+      "id": "sobaya-company-breaker",
+      "title": "そば屋の会社ブレイカー",
+      "subtitle": "3D物理で更地！",
+      "description": "大型ビールジョッキを投擲。独立した3D剛体で組まれた柱や壁を砕き、10投以内に無人のモックオフィスを連鎖崩壊させよう。",
+      "sourceDir": "13_COMPANY_BREAKER_GAME",
+      "buildScript": "build",
+      "distDir": "dist",
+      "outputDir": "games/sobaya-company-breaker",
+      "image": "games/sobaya-company-breaker/og.png",
+      "accent": "orange",
+      "controls": "PC・スマホ対応"
+    },
+    {
+      "id": "madogiwa-grid",
+      "title": "MADOGIWA GRID",
+      "subtitle": "3×5タクティカルカードバトル",
+      "description": "窓際族8人のカードで陣地を広げ、3列の多数決を奪い合う。固有能力と配置を読み、AIとの短期決戦を制そう。",
+      "sourceDir": "14_MADOGIWA_CARD_GAME",
+      "buildScript": "build",
+      "distDir": "build/web",
+      "outputDir": "games/madogiwa-grid",
+      "image": "games/madogiwa-grid/og.svg",
+      "accent": "blue",
+      "controls": "PC・スマホ対応"
     }
   ]
 }
