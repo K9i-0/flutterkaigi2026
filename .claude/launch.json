@@ -42,6 +42,18 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev", "--prefix", "12_SOBA_BEER_RUN_GAME"],
       "port": 5200
+    },
+    {
+      "name": "sobaya-company-breaker",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "13_COMPANY_BREAKER_GAME"],
+      "port": 5205
+    },
+    {
+      "name": "madogiwa-grid",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "14_MADOGIWA_CARD_GAME"],
+      "port": 5210
     }
   ]
 }
