@@ -1,142 +1,167 @@
 ---
 name: seedance
-description: 窓際族物語のストーリー（あらすじ）からSeedance用の台本・動画生成プロンプト・Codex参考画像を作成するワークフロー。ユーザーからストーリーを渡されたとき、台本やSeedanceプロンプトの作成・修正を頼まれたとき、クリップの参考画像（キーフレーム）生成を頼まれたときに必ず使用する。
+description: 窓際族物語のストーリーから、Seedance向けのキャラクターシート、アクション/VFXシート、秒単位のマスタービデオプロンプト、正確な日本語音声指示を制作・改修する。ユーザーからあらすじを渡されたとき、Seedance台本や動画プロンプトの作成・修正、キャラクターシートや参考画像の生成、セリフ尺や発音の改善を頼まれたときに必ず使用する。
 ---
 
-# Seedance 動画制作ワークフロー
+# Seedance 動画制作
 
-ユーザーからストーリー（あらすじ）を渡されたら、以下の4ステップを一連の流れとして実行する。
+`03_SCRIPTS/08_giant_sobaya_enjo_anken/`で成功した、**キャラクターシートによる外見固定**と**単一の秒刻みマスタープロンプト**を標準方式にする。開始・終了キーフレームは必要な作品だけで使い、クリップごとの生成を必須にしない。
 
-1. このラン専用の出力ディレクトリを作成する
-2. 台本＋Seedanceプロンプト（英語）の作成（各クリップに開始状態と終了状態を明記する）
-3. Codexによる各クリップのキーフレーム生成（**開始フレーム＋終了フレームの2枚**を作る）
-4. Seedanceへの入力対応表（どの画像を開始/終了/参照として渡すか）を`script.md`に明記する
+## 基準例
 
-### 精度の要（この方式にする理由）
+制作前に次を確認する。
 
-動画生成は**CapCutに統合されたSeedance 2.0**を使う。CapCutは**開始フレームだけでなく「開始＋終了フレーム（Frame A / Frame B）」入力に対応**しており、両端を固定して間を補間させることで、単一フレーム/text-to-videoで起きる**キャラのブレ（identity drift）・ちらつき・構図ズレを減らせる**。さらに**参照画像を多数**渡してキャラの同一性を固定できる。本スキルはこの両方を最大限使う設計にする。中間キーフレーム入力は存在しないため、**細かい動きの制御はクリップを短く割る**ことで代替する。
+- `03_SCRIPTS/08_giant_sobaya_enjo_anken/script.md`
+- 同ディレクトリの `character_giant_sobaya_sheet.png`
+- 同ディレクトリの `character_yametaro_liveaction_sheet.png`
+- 同ディレクトリの `character_yametaro_enjo_anken_sheet.png`
 
-## 前提となる参照ファイル
+基準例の物語上の結末や旧安全制約はテンプレート化しない。現在の `01_WORLD/WORLD_BIBLE.md` と `02_CHARACTERS/*.md`を優先する。
 
-- 世界観: `01_WORLD/WORLD_BIBLE.md`
-- キャラクター設定: `02_CHARACTERS/*.md`（各キャラのNG変更＝デザイン上変えてはいけない要素に注意）
+## ワークフロー
+
+1. 世界観、正史年表、登場キャラクター設定、基準例を読む。
+2. ラン専用ディレクトリを作る。
+3. 正確なセリフを確定し、必要発話時間を先に計算する。
+4. キャラクターシートと、必要ならアクション/VFXシートを生成する。
+5. セリフ尺を起点に可変長のシーン構成を作り、`script.md`へ単一のマスタープロンプトを書く。
+6. 画像、時間配分、正史、キャラ、小道具、発音を監査する。
+
+## 参照する原典
+
+- 世界観と表現方針: `01_WORLD/WORLD_BIBLE.md`
+- 正史: `01_WORLD/STORY_TIMELINE.md`
+- キャラクター設定と元画像: `02_CHARACTERS/*.md`
 - 過去の制作物: `03_SCRIPTS/`
 
-## 0. 出力ディレクトリ（毎回、新しい同一ディレクトリにまとめる）
+キャラクター設定のNG変更を守る。正史を夢オチや後付けで無効化しない。ジャンル、感情、結末をコメディや乾杯に固定しない。
 
-**プロンプト（台本ファイル）と参考画像は、毎回そのラン専用の新しい1つのディレクトリにまとめて出力する。** 従来のように台本を`03_SCRIPTS/`直下、画像を共有の`ref_images/`に分散させない。
+## 出力ディレクトリ
 
-- ディレクトリ: `03_SCRIPTS/<NN>_<slug>/`
-  - `<NN>` は既存の連番の次の番号（`03_SCRIPTS/`直下・サブディレクトリの最大番号 + 1、ゼロ埋め2桁）。
-  - `<slug>` は内容が分かる英語の短い識別子（小文字・アンダースコア区切り。例: `yametaro_43degrees`）。
-- そのディレクトリの中に、台本兼プロンプトファイル `script.md` と、全クリップの参考画像 `*.png` を **すべて同じ階層に** 置く。画像用のサブディレクトリは作らない。
-- 台本内から画像を参照するときは、同じディレクトリ内の相対パス（例: `clip1_01_ref.png`）で書く。
-- 既存の`03_SCRIPTS/`直下の古い成果物は移動・改変しない。この新ルールは新規ランから適用する。
+毎回 `03_SCRIPTS/<NN>_<slug>/` を新設し、成果物を同じ階層に置く。
 
-## 1. 台本作成（deliverableはすべて英語）
+- `<NN>`: 既存番号の最大値 + 1（2桁ゼロ埋め）
+- `<slug>`: 小文字の英語をアンダースコアで結ぶ
+- 必須: `script.md`、主要な登場形態ごとの `character_<name>_sheet.png`
+- 任意: `character_<name>_<action>_sheet.png`、`clip1_start.png`、`clip1_end.png`
 
-`WORLD_BIBLE.md`のStory Formula（変なことを始める→巻き込まれる→少し騒ぎになる→最後は笑顔）と各キャラのNG変更を守りつつ、尺に応じてクリップ分割した台本＋Seedanceプロンプトを `03_SCRIPTS/<NN>_<slug>/script.md` に作成する。
+既存成果物はユーザーから修正を頼まれた場合を除いて変更しない。
 
-`WORLD_BIBLE.md`の禁止事項（ブラック企業描写、いじめ、パワハラ、鬱展開、グロ描写）を厳守する。
+## キャラクターシート
 
-### クリップ分割とキーフレーム設計（重要）
+画像生成時は`imagegen`スキルを使用する。`02_CHARACTERS/<name>.md`の「画像ファイル」と設定を入力し、1枚の16:9シートで外見を固定する。シートは構図参照ではなく、identity/design referenceとして使う。
 
-各クリップは**開始状態（first frame）と終了状態（last frame）を明確に区別して書く**。台本の各クリップに、次の2つを必ず記述する:
+### Identity sheetの必須要素
 
-- **First frame**: そのクリップ冒頭の静止画で写っている内容（構図・キャラの位置・表情）。
-- **Last frame**: そのクリップ終端の静止画。ここまでにどう動いた結果になるか。
-- **Prop states**: そのクリップで状態が変わる小道具（グラス・瓶・食器・箱など）ごとに、First frame時点とLast frame時点の状態（中身の量、開栓/未開栓、手に持つ/置いてある、蓋の有無 等）を1行ずつ明記する。
+- 左側の大きな全身ヒーローポーズ
+- FRONT / SIDE / BACK の直立ターンアラウンド
+- 顔または仮面のクローズアップ
+- 表情差分。仮面キャラは変更可能な目・姿勢などだけを示す
+- 衣装、履物、眼鏡、武器、楽器、容器など識別に重要なディテール
+- 色パレット
+- 巨大化など通常と異なる形態では身長・比較対象・小道具の縮尺
 
-さらに**つなぎ目を消すため、クリップNの Last frame と クリップN+1の First frame は同一の絵にする**（後述のとおり同じ画像ファイルを共有する）。小道具の状態も同様に引き継ぐ（クリップNのLast frameの状態 ＝ クリップN+1のFirst frameの状態。クリップをまたいで勝手に満杯に戻る/空になる等を起こさない）。
+背景は明るい無地、照明と画角は比較しやすく統一する。複数キャラクターや別衣装を同じidentity sheetへ混ぜない。正面・側面・背面で髪型、体格、衣装、必須小道具を一致させる。
 
-### 物理整合性ルール（小道具の状態遷移・重要）
+### Action / VFX sheetを追加する条件
 
-状態の指定がないと、生成モデルは典型絵に寄る（例:「beer glass」→満杯のグラス、「holding a beer bottle」→ラッパ飲み）。その結果「満杯のグラスにさらに注ぐ」「ラッパ飲みした瓶からグラスに注ぐ」のような非常識な動画になる。これを防ぐため:
+独自の必殺技、変身、複雑な武器操作、文字を形成するVFXなど、文章だけでは形がぶれやすい場合に追加する。
 
-- **動作は必ず「前状態→動作→後状態」の形で書く。** 裸の動作だけ（"pours beer into a glass"）を書かない。両端の状態を英語で明示する: "lifts the bottle and pours beer into the EMPTY glass; by the end the glass is full with a foam head and the bottle is visibly emptier"。
-- **デフォルトで典型絵になりやすい状態は、望む状態を大文字で強調して指定する**: "an EMPTY glass", "a FULL unopened bottle", "holds the bottle upright by the neck, NOT drinking from it"。
-- **起きてほしくない動作は否定形でプロンプトに明記する**: "no one drinks directly from the bottle", "does not pour into an already-full glass"。開始/終了フレームの画像生成プロンプトとSeedanceのMotion promptの両方に入れる。
-- **論理チェック**: 台本を書き終えたら各クリップのProp statesを通しで読み、状態遷移が物理的・社会常識的に成立しているか確認する（満杯のグラスに注がない、口をつけた容器から他人のグラスに注がない、空の容器から注がない等）。
+- FINISHの大きな完成像
+- READY / IGNITION / RELEASEなど3段階以上の動作
+- 手、足、武器の向きが分かるクローズアップ
+- VFXの形、色、発生源、軌道、消失状態
+- 画面に出す正確な文字や記号
 
-Seedanceの1クリップは4〜15秒。**動きが複雑・カメラワークが多いクリップは短く割る**（中間キーフレーム入力が無いため、割ること自体が中間制御になる）。1本のプロンプトに詰め込みすぎない。
+生成後は画像を実寸で開き、顔、前後の髪、手、衣装、NG変更、小道具、文字を目視確認する。不一致があればプロンプトで変更箇所だけを明示して再生成する。
 
-### 言語ルール（重要）
+## セリフ時間を先に確保する
 
-**`script.md` は全文を英語で書く。** Seedanceに渡すプロンプト（コードブロック）だけでなく、見出し・尺やアスペクト比の説明・「画面内容」「カメラ」「音」「生成メモ」などの人間向け解説も含めて、すべて英語で記述する。
+均等なシーン分割を禁止する。セリフを決めてから、その発話に必要な長さに合わせてシーンを割り当てる。
 
-例外として英語以外を使ってよいのは次のみ:
+1. 各セリフについて、正確な日本語、かな読み、話し方を確定する。
+2. 次のスクリプトでモーラ数と推奨シーン秒数を計算する。
 
-- **キャラクターのセリフ（発話内容）**: 実際に日本語で発話される台詞は日本語のまま `"..."` で引用して埋め込む（例: `shouting "島流し一択やろ！"`）。ナレーションや画面内の指定文字（温度計の「43℃」など）も同様に、実際に表示・発話される言語のまま引用する。
-- **発音・読みを指定したい場合など、非英語でしか正確に表現できない理由があるとき**: その語のみ元言語で書き、必要なら英語で補足する。
-
-理由: 日本語の説明文はSeedanceでの再現精度が落ちること、および成果物を言語横断で扱いやすくするため。
-
-## 2. Codexによるキーフレーム生成（開始＋終了の2枚）
-
-Seedance用プロンプトを作成したら、`codex` CLIの画像生成ツールで各クリップの**開始フレームと終了フレームの2枚**を生成し、**ステップ0で作成したラン専用ディレクトリに保存する**。これがSeedanceの First-Last-Frame 入力にそのまま渡る本番アセットになる。
-
-### 枚数とファイル名
-
-- **1クリップにつき開始フレーム1枚＋終了フレーム1枚の計2枚**を生成する（従来の「loose3枚」は廃止）。
-- ファイル名は役割が分かる形にする: `clipN_start.png` / `clipN_end.png`（Nはクリップ番号）。
-- 保存先は必ずラン専用ディレクトリ `03_SCRIPTS/<NN>_<slug>/` 内。台本ファイルと同じ階層に置く。
-
-### 生成順序（整合性を壊さないため必須）
-
-キーフレーム同士が食い違うとSeedanceの補間がモーフィング崩壊を起こすため、**必ず前の絵を種にして次の絵を作る**（ゼロから独立生成しない）。
-
-1. **クリップ1の開始フレーム**を、登場キャラ全員の参照画像を`-i`で渡して生成する。
-2. **クリップ1の終了フレーム**は、たった今作った**クリップ1の開始フレームを`-i`に加えて**「同じ絵のまま、状態だけ終了状態に変える」形で img2img 生成する（キャラ参照画像も引き続き渡す）。
-3. **クリップ2の開始フレーム = クリップ1の終了フレーム**。原則ここは**新規生成せず同じ画像ファイルをコピー/参照して共有する**（つなぎ目消し）。カメラや場所が切り替わって共有できない場合のみ、クリップ1終了フレームを種に新規生成する。
-4. 以降のクリップも 開始→終了 の順で、前フレームを種にチェーンしていく。
-
-### キャラクター参照画像（同一性の固定）
-
-- **そのクリップに登場するキャラクター全員の参照画像を`-i`で渡す**。各キャラの画像ファイルは`02_CHARACTERS/<キャラ名>.md`内の「画像ファイル：」に記載（`02_CHARACTERS/`配下に実体あり）。
-- プロンプト文中で「Image N: <キャラ名> reference — keep face/design and NG-change elements consistent」のように役割を明記し、NG変更対象（そば屋の仮面/たこさんの触手/とーくんのウクレレ等）を維持させる。
-
-### コマンド例（クリップ1・そば屋/とーくん/よーたん/福ちゃん/無職やめたろう登場）
-
-開始フレーム:
-```
-codex exec -s workspace-write --enable image_generation \
-  -i 02_CHARACTERS/Sobaya.jpg -i 02_CHARACTERS/Tokun.jpg -i 02_CHARACTERS/Yotan.jpg -i 02_CHARACTERS/Fukuchan.jpg -i 02_CHARACTERS/Yametaro.jpg \
-  "Use your image generation tool to create the FIRST-FRAME still of a video shot. Input images Image 1..5 are character references (Sobaya: keep face/mask/build; Tokun: keep aloha/hat/ukulele; Yotan: keep blond/guitar/rock outfit; Fukuchan: keep stylish outfit; Yametaro: keep design) — keep every face/design and NG-change element consistent. Prompt: <English scene description of the clip's START state, excluding dialogue and camera-work notation>. Comedic slice-of-life anime-illustration style, single still frame, no text overlay. Save as 03_SCRIPTS/<NN>_<slug>/clip1_start.png."
+```bash
+python3 .claude/skills/seedance/scripts/check_dialogue_timing.py \
+  --text 'すまんやで、そば屋さん。こうするしかないんや' \
+  --reading 'すまんやで、そばやさん。こうするしかないんや' \
+  --style normal \
+  --window 6.0
 ```
 
-終了フレーム（開始フレームを種にする）:
-```
-codex exec -s workspace-write --enable image_generation \
-  -i 03_SCRIPTS/<NN>_<slug>/clip1_start.png \
-  -i 02_CHARACTERS/Sobaya.jpg -i 02_CHARACTERS/Tokun.jpg -i 02_CHARACTERS/Yotan.jpg -i 02_CHARACTERS/Fukuchan.jpg -i 02_CHARACTERS/Yametaro.jpg \
-  "Use your image generation tool to create the LAST-FRAME still of the same shot. Image 1 is this clip's start frame — keep the same characters, art style, framing, lighting and location, change ONLY what the motion changes. Images 2..6 are character references — keep every face/design and NG-change element consistent. Prompt: <English scene description of the clip's END state>. Single still frame, no text overlay. Save as 03_SCRIPTS/<NN>_<slug>/clip1_end.png."
-```
+この台詞は基準例では8秒から12秒までの実質4秒しかなく、推奨6.0秒に足りない。キャラクターシートとプロンプト構造は基準にするが、この時間配分は再現しない。
 
-### ポイント
+漢字を含む場合は `--reading` へ実際の読みをかなで渡す。
 
-- `--enable image_generation` と、プロンプト内での明示的な "Use your image generation tool" を必ず両方指定する（省くとPythonの簡易描画にフォールバックすることがある）。
-- 終了フレーム生成では**開始フレームを必ず`-i`の先頭に入れ**、「framing/lighting/locationは維持、動きが変える部分だけ変更」と指示する。これが崩壊防止の肝。
-- クリップ間で同じ絵を共有できるときは**再生成せずファイルを使い回す**（生成ゆらぎを持ち込まない）。
-- 画像生成プロンプトには台本のProp states（グラスの中身の量、瓶の持ち方等）をそのまま含める。**生成後は各画像をReadで開き、小道具の状態が台本のProp statesと一致しているか目視確認する**（例: 開始フレームのグラスが空であるべきなのに満杯で描かれていないか、瓶に口をつけていないか）。ズレていたら再生成する。キーフレームが間違っているとSeedanceは間違った状態間を忠実に補間してしまう。
-- 保存先は必ず `03_SCRIPTS/<NN>_<slug>/` 配下。
-- ユーザーからストーリーを渡された際は、台本・Seedanceプロンプト作成に続けて、このルール（クリップごとに開始＋終了の2枚、前フレームを種にチェーン、キャラ参照を必ず添付、つなぎ目は共有）に沿ってキーフレームも生成する。
-
-## 3. CapCut（Seedance 2.0）への入力対応表
-
-動画生成は**CapCutに統合されたSeedance 2.0**で行う。CapCutは**開始フレーム（Frame A）と終了フレーム（Frame B）のデュアル参照**に対応し、参照画像も多数渡せる。`script.md`の各クリップに、**CapCutの各スロットへ何を渡すか**の対応表を必ず書く（ユーザーがそのまま設定できるようにするため）。
-
-各クリップの記載例（英語で書く）:
-
-```
-### CapCut inputs (Clip 1)
-- Start frame (Frame A): clip1_start.png
-- End frame (Frame B):   clip1_end.png
-- Reference images (identity lock): Sobaya.jpg, Tokun.jpg, Yotan.jpg, Fukuchan.jpg, Yametaro.jpg
-- Motion prompt: <the clip's Seedance prompt — describe the motion BETWEEN the two frames as explicit state transitions (e.g. "pours beer into the EMPTY glass until it is full; no one drinks from the bottle"); dialogue kept in original language>
-- Duration: 5s / Aspect: 16:9
+```bash
+python3 .claude/skills/seedance/scripts/check_dialogue_timing.py \
+  --text '秘技・炎上案拳' \
+  --reading 'ひぎ・えんじょうあんけん' \
+  --style shout \
+  --window 4.0
 ```
 
-- **開始/終了フレームは必ず両方セット**する。片方だけだと単一フレームからの外挿になりブレやすい。
-- 参照画像は**必要な枚数だけ渡してよい**（CapCut/Seedance 2.0は多数の参照画像を受け付ける）。登場キャラ全員分＋必要なら小道具・環境の参照を足して同一性を固める。プロンプト側で「これらは identity/design reference であって構図ではない」と役割を明記する。
-- クリップをまたぐつなぎ目は、**前クリップの Frame B と次クリップの Frame A を同一画像**にすることで消す（ステップ2のチェーンで担保）。
-- **（上級）動きの誘導を強めたいクリップ**では、`04_GAME_ASSETS/voxel`の該当キャラGLBをThree.jsで動かして書き出した短い動画（webm/mp4、合計15秒以内）を**モーション参照として追加で渡す**（Seedance 2.0は動画参照に対応）。構図とキャラはキーフレームで固定したまま、動きだけ正確になぞらせられる。
+話速の基準は、通常4.5モーラ/秒、低くゆっくり3.5、技名など明瞭な叫び4.0、明示的な早口5.5とする。各セリフには発話時間に加えて、前後それぞれ最低0.4秒の無音・表情・口の静止時間を確保する。
+
+- `--window`には、発話前0.4秒から発話後0.4秒までカメラと口元を安定させる**会話ビート全体の長さ**を渡す。実際の発話区間は、その内側に別途指定する。
+- `--window`が失敗したシーンは、そのまま採用しない。
+- セリフ開始をシーン後半まで遅らせる場合、シーン全体ではなく**安定した会話ビートの開始から終了まで**で再検証する。
+- 発話中は安定したショットを保ち、大きなカメラ遷移、複雑な格闘、別人の発話を重ねない。
+- 尺が足りなければ、シーンまたは総尺を延ばす。上限がある場合は、動作、カット、台詞の順で整理し、意味を保って台詞を短くする。
+- 「残り時間で急いで話す」「台詞を圧縮する」「言い換える」「反復する」指示は禁止する。
+
+## `script.md`の構成
+
+説明、見出し、映像プロンプトは英語で書く。実際に発話・表示する日本語だけを引用符内に保持する。
+
+1. `# <Title> — <Duration> Seedance Master Prompt`
+2. `## Reference Inputs`
+3. `## First Frame`
+4. `## Last Frame`
+5. `## Prop and State Continuity`
+6. `## Japanese Dialogue and Pronunciation Lock`
+7. `## Dialogue Timing Audit`
+8. `## Seedance Motion Prompt`
+9. `## CapCut / Seedance Input Mapping`
+10. `## Canon and Physical Audit`
+
+### Reference Inputs
+
+画像ごとにファイル名、固定する特徴、用途を明記する。必ず `identity/design reference, not a composition reference` または `action/VFX reference, not a composition reference` と役割を分ける。
+
+### Pronunciation Lock
+
+各セリフに、話者、正確な日本語、かな読み、Hepburn、英語話者向け音写、IPA、声と感情を記載する。発音情報は無音の指示であり、発話、字幕、画面表示を禁止する。台詞の追加、翻訳、言い換え、反復、重なりも禁止する。
+
+### Dialogue Timing Audit
+
+表に `Speaker / Exact line / Mora / Delivery rate / Minimum speech / Assigned speech interval / Required beat / Assigned beat` を記載する。発話区間は`Minimum speech`以上、会話ビートは`Required beat`以上にする。
+
+### Master Motion Prompt
+
+映像全体を1つのコードブロックにまとめ、`[0.0-5.5s]`のような可変長ブロックで総尺を隙間・重複なく埋める。各ブロックに次を順番に書く。
+
+- その区間の主目的を1つ
+- レンズ、構図、安定したカメラ移動
+- 前状態 → 動作 → 後状態
+- セリフの正確な開始・終了時刻
+- 区間終了時の画面状態と次の接続点
+
+1区間へ複数の大技、長台詞、複雑なカメラを詰め込まない。会話区間は口元と表情を優先し、アクション区間と分ける。末尾に全体のstyle、character lock、VFX language、palette、lighting、camera rules、negative constraints、model、duration、resolution、aspect ratioをまとめる。
+
+設定が未指定なら、最後に検証できた基準としてSeedance 2.5、最大30秒の単一プロンプト、480p、16:9を使う。ユーザー指定や利用可能なモデル設定があればそちらを優先する。
+
+## 入力画像の扱い
+
+キャラクターシートを必須のidentity/design referenceとして渡す。Action / VFX sheetは該当動作の参照として追加する。開始・終了フレームは、構図や変化の両端を固定する必要がある場合だけ生成して入力表へ追加する。未生成ファイルを「入力する」と書かず、`optional / not generated`と明示する。
+
+## 最終監査
+
+- 全区間の時刻が総尺を過不足なく埋めている
+- 全セリフが時間検証を通り、発話中の複雑な同時動作がない
+- 発話内容、読み、Hepburn、音写、IPAが一致している
+- キャラクターシートと動画プロンプトの顔、衣装、体格、NG変更が一致している
+- 小道具が前状態 → 動作 → 後状態で連続し、勝手に補充、消失、破損しない
+- 正史と現在の`WORLD_BIBLE.md`に整合する
+- 入力対応表に実在するファイルだけが記載されている
