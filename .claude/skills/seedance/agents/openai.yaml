@@ -1,4 +1,4 @@
 interface:
-  display_name: "Seedance テンプレート動画制作"
-  short_description: "基本キャラとCUT絵コンテを再利用するSeedance動画設計・生成後監査"
-  default_prompt: "$seedance を使って、基本キャラクターシートとCUT絵コンテテンプレートを起点に、日本語のSeedance制作キットを作成してください。"
+  display_name: "Seedance 動画制作"
+  short_description: "厳守モードのSeedance動画資料・クレイ絵コンテ・本番用重要アセットを制作する"
+  default_prompt: "窓際族物語の設定に従い、用途別参照画像、クレイ絵コンテ、本番用の重要小道具・ロゴ、秒刻み台本、正確な日本語音声指示を作成・監査してください。"
