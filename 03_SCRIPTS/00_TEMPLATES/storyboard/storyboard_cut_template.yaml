@@ -1,0 +1,44 @@
+project: <episode_title>
+total_duration_seconds: 30.0
+aspect_ratio: 16:9
+cut_id_format: CUT-01
+
+cuts:
+  - id: CUT-01
+    time:
+      in: 0.0
+      out: 0.0
+      duration: 0.0
+    panel_art: storyboard_panels/CUT-01.png
+    purpose: <このCUTで達成することを1つ>
+    camera:
+      shot_size: <WS/MS/CU/ECU>
+      angle: <eye-level/low/high/overhead>
+      lens: <wide/normal/telephoto>
+      movement: <fixed/pan/tilt/dolly/handheld>
+      action_axis: <画面左右とカメラ側>
+    action:
+      before: <開始位置、向き、距離、前状態>
+      anticipation: <予備動作>
+      contact: <接触部位、対象、力の方向。接触がなければ none>
+      reaction: <反動、二次動作>
+      after: <CUT終了時の人物、小道具、背景状態>
+    audio:
+      dialogue: <話者「正確なセリフ」または none>
+      dialogue_time: <0.0-0.0 または none>
+      sfx: <効果音>
+      music: <音楽の変化>
+    continuity:
+      carried_in: <前CUTから残る状態>
+      new_damage: <このCUTで新しく壊れる物>
+      carried_out: <次CUTへ必ず残す状態>
+    generation_freedom:
+      may_interpolate: <中間動作、布、煙、細かな破片など>
+      must_not_change: <外見、位置、接触、因果、終了状態など>
+
+validation:
+  - CUT IDが絵コンテ画像とscript.mdで完全一致する
+  - inからoutまで隙間と重複がない
+  - durationがout-inと一致する
+  - 各CUTのafterが次CUTのbeforeまたはcarried_inへ接続する
+  - 必須セリフの全文、話者、発話区間がscript.mdと一致する

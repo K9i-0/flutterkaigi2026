@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1672" height="941" viewBox="0 0 1672 941">
+  <defs><style>
+    .bg{fill:#0f1217}.card{fill:#f7f4ec;stroke:#f7f4ec;stroke-width:3}.frame{fill:#293039;stroke:#dfe5e8;stroke-width:3;stroke-dasharray:11 8}.white{fill:#fff}.ink{fill:#17191d}.muted{fill:#aab3ba}.orange{fill:#ff7a3c}.red{fill:#f24555}.cyan{fill:#3ec3db}.title{font:700 38px 'Arial','Hiragino Sans',sans-serif}.h2{font:700 27px 'Arial','Hiragino Sans',sans-serif}.label{font:700 18px 'Arial','Hiragino Sans',sans-serif}.body{font:500 17px 'Arial','Hiragino Sans',sans-serif}.small{font:500 14px 'Arial','Hiragino Sans',sans-serif}.mono{font:700 19px 'Menlo','Arial',monospace}.arrow{stroke:#ff7a3c;stroke-width:8;fill:none;marker-end:url(#head)}
+  </style><marker id="head" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#ff7a3c"/></marker></defs>
+  <rect class="bg" width="1672" height="941"/>
+  <text class="title white" x="32" y="54">ACTION CUT — START / CONTACT / END</text>
+  <text class="mono cyan" x="1170" y="35">CUT-__</text><text class="body white" x="1170" y="64">TIME __.__ → __.__ / DUR ____s</text>
+
+  <g transform="translate(30 92)"><rect class="card" width="500" height="470" rx="8"/><rect class="ink" width="500" height="50" rx="8"/><text class="h2 white" x="18" y="34">A — START</text><rect class="frame" x="16" y="66" width="468" height="300" rx="4"/><text class="h2 muted" x="124" y="205">簡易な開始ポーズ</text><text class="small muted" x="95" y="234">人物位置・向き・距離・カメラ側</text><text class="label ink" x="18" y="398">STATE IN</text><text class="body ink" x="118" y="398">前CUTから残る状態</text><text class="label cyan" x="18" y="432">CAMERA</text><text class="body ink" x="118" y="432">shot / angle / lens</text><text class="small ink" x="18" y="458">予備動作の直前。まだ接触・破壊していない。</text></g>
+  <path class="arrow" d="M540 320 L572 320"/>
+  <g transform="translate(586 92)"><rect class="card" width="500" height="470" rx="8"/><rect class="red" width="500" height="50" rx="8"/><text class="h2 white" x="18" y="34">B — CONTACT</text><rect class="frame" x="16" y="66" width="468" height="300" rx="4"/><circle cx="250" cy="216" r="34" fill="none" stroke="#f24555" stroke-width="8"/><text class="h2 muted" x="108" y="151">接触フレーム</text><text class="small muted" x="84" y="276">接触部位・対象・力の方向を明示</text><text class="label red" x="18" y="398">CONTACT</text><text class="body ink" x="129" y="398">誰の何が、何へ当たるか</text><text class="label orange" x="18" y="432">FORCE</text><text class="body ink" x="129" y="432">方向 / 強さ / 同時SFX</text><text class="small ink" x="18" y="458">この瞬間にだけ新しい損傷が発生する。</text></g>
+  <path class="arrow" d="M1096 320 L1128 320"/>
+  <g transform="translate(1142 92)"><rect class="card" width="500" height="470" rx="8"/><rect class="cyan" width="500" height="50" rx="8"/><text class="h2 white" x="18" y="34">C — END</text><rect class="frame" x="16" y="66" width="468" height="300" rx="4"/><text class="h2 muted" x="130" y="205">反動と終了ポーズ</text><text class="small muted" x="91" y="234">破片・煙・小道具を含むCUT末状態</text><text class="label cyan" x="18" y="398">STATE OUT</text><text class="body ink" x="133" y="398">次CUTへ必ず残す状態</text><text class="label ink" x="18" y="432">REACTION</text><text class="body ink" x="133" y="432">反動 / 着地 / 視線</text><text class="small ink" x="18" y="458">別背景ではなくA→Bの因果で生じた同一空間。</text></g>
+
+  <rect x="30" y="588" width="1612" height="321" rx="8" fill="#f7f4ec"/>
+  <text class="label orange" x="54" y="626">PURPOSE</text><text class="body ink" x="168" y="626">このCUTで達成することを1つ：</text><line x1="448" y1="630" x2="1610" y2="630" stroke="#93999d" stroke-width="2"/>
+  <text class="label cyan" x="54" y="672">CAMERA / AXIS</text><text class="body ink" x="224" y="672">画面左・右、アクション軸、カメラ側、移動：</text><line x1="610" y1="676" x2="1610" y2="676" stroke="#93999d" stroke-width="2"/>
+  <text class="label red" x="54" y="718">SCRIPT / AUDIO</text><text class="body ink" x="228" y="718">話者「正確なセリフ」0.0〜0.0秒 / SFX：</text><line x1="616" y1="722" x2="1610" y2="722" stroke="#93999d" stroke-width="2"/>
+  <text class="label ink" x="54" y="764">CONTINUITY</text><text class="body ink" x="196" y="764">carried in → new damage → carried out：</text><line x1="518" y1="768" x2="1610" y2="768" stroke="#93999d" stroke-width="2"/>
+  <text class="label ink" x="54" y="810">SEEDANCE MAY INTERPOLATE</text><text class="body ink" x="343" y="810">中間姿勢、布、煙、二次破片、指定を壊さない微細なカメラ運動</text>
+  <text class="label red" x="54" y="856">MUST NOT CHANGE</text><text class="body ink" x="274" y="856">人物同一性、左右、接触点、力の方向、因果、STATE OUT</text>
+  <text class="small ink" x="54" y="890">Prompt link: script.md の【CUT-__｜TIME｜DUR】とCUT ID・時刻・Action・State OUTを完全一致させる。</text>
+</svg>

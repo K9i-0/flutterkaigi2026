@@ -1,0 +1,65 @@
+version: 1
+purpose: Seedance制作で再利用する正本テンプレート
+
+policy:
+  basic_character_sheet: 03_SCRIPTS/00_TEMPLATES/characters/character_<name>_basic_sheet.png を再利用する
+  media_basic_variant: 実写化など媒体だけを変えた汎用形は character_<name>_<medium>_basic_sheet.png としてテンプレートに置き、エピソード固有の衣装・能力・背景を混ぜない
+  episode_character_sheet: 巨大化、変身、専用装備、ロボット化、負傷、特定モニターなど、その回だけの形態は 03_SCRIPTS/<NN>_<slug>/ に実ファイルで置く
+  episode_usage: 基本形を使う場合は、出演者分だけをエピソードフォルダから相対シンボリックリンクで参照する
+  override: 同一人物に基本形とエピソード限定形がある場合、該当カットではエピソード限定形を優先する
+  immutability: 過去エピソード内の画像をテンプレートとして直接更新しない
+
+directories:
+  characters: 各メンバーの通常時の外見・身体構造・必須小道具を固定する基本シート
+  storyboard: CUT番号、時刻、アクション、連続状態を台本と結ぶ絵コンテひな形
+  prompt: エピソード用 script.md のひな形
+
+character_sheets:
+  sobaya:
+    file: characters/character_sobaya_basic_sheet.png
+    canon: 02_CHARACTERS/01_Sobaya.md
+  takosan:
+    file: characters/character_takosan_basic_sheet.png
+    canon: 02_CHARACTERS/02_Takosan.md
+  tokun:
+    file: characters/character_tokun_basic_sheet.png
+    canon: 02_CHARACTERS/03_Tokun.md
+  yotan:
+    file: characters/character_yotan_basic_sheet.png
+    canon: 02_CHARACTERS/04_Yotan.md
+  fukuchan:
+    file: characters/character_fukuchan_basic_sheet.png
+    canon: 02_CHARACTERS/05_Fukuchan.md
+  yametaro:
+    file: characters/character_yametaro_basic_sheet.png
+    canon: 02_CHARACTERS/06_Yametaro.md
+    media_variants:
+      liveaction:
+        file: characters/character_yametaro_liveaction_basic_sheet.png
+        prompt: characters/source_prompts/character_yametaro_liveaction_basic_sheet.md
+        use_for: 実写映像での通常時。オフィスカジュアルの葉柄シャツで、武闘家・炎上案拳の要素は含まない
+  okayaman:
+    file: characters/character_okayaman_basic_sheet.png
+    prompt: characters/source_prompts/character_okayaman_basic_sheet.md
+    canon: 02_CHARACTERS/07_Okayaman.md
+    invariant: 常に画面越しで、現地へ実体として登場しない
+  yumemin:
+    file: characters/character_yumemin_basic_sheet.png
+    prompt: characters/source_prompts/character_yumemin_basic_sheet.md
+    canon: 02_CHARACTERS/08_Yumemin.md
+
+storyboard_templates:
+  overview_4cut:
+    editable: storyboard/storyboard_4cut_template.svg
+    preview: storyboard/storyboard_4cut_template.png
+    use_for: 4つのCUTを一覧し、秒数、構図、Action、音声、CUT末状態を結ぶ
+  action_3state:
+    editable: storyboard/storyboard_action_3state_template.svg
+    preview: storyboard/storyboard_action_3state_template.png
+    use_for: 1つの複雑なCUTをSTART、CONTACT、ENDの3状態で固定する
+  cut_data:
+    file: storyboard/storyboard_cut_template.yaml
+    use_for: 台本と絵コンテで共有するCUT IDと状態データ
+
+prompt_template:
+  file: prompt/seedance_script_template.md

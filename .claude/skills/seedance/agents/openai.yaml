@@ -1,4 +1,4 @@
 interface:
-  display_name: "Seedance 動画制作"
-  short_description: "日本語の厳守型Seedanceプロンプトと設定シートを制作"
-  default_prompt: "$seedance を使って、物語から日本語の厳守型Seedance制作キットを作成してください。"
+  display_name: "Seedance テンプレート動画制作"
+  short_description: "基本キャラとCUT絵コンテを再利用するSeedance動画設計・生成後監査"
+  default_prompt: "$seedance を使って、基本キャラクターシートとCUT絵コンテテンプレートを起点に、日本語のSeedance制作キットを作成してください。"
