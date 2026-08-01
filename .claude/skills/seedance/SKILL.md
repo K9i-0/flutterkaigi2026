@@ -31,7 +31,7 @@ description: 窓際族物語の基本キャラクターシート、imagegenで�
 2. 次回入力する資料だけを置くラン専用ディレクトリを作り、`seedance_script_template.md`を`script.md`として複製する。
 3. 発声を通常セリフ、アクション掛け声、群衆音声、効果音へ分類し、必要時間と生成リスクを確認する。
 4. セリフ尺を確保してから、前状態、予備動作、接触、反動、後状態を持つアクションビート表を作る。
-5. 出演者の通常形は`00_TEMPLATES/characters/`から使う。巨大化、変身、専用装備など通常形と異なる形態だけ、基本シートをidentity sourceにしてエピソード限定シートを生成する。
+5. 出演者の通常形は`00_TEMPLATES/characters/`の正本からラン専用ディレクトリへ実ファイルとしてコピーして使う。シンボリックリンクは作らない。巨大化、変身、専用装備など通常形と異なる形態だけ、基本シートをidentity sourceにしてエピソード限定シートを生成する。
 6. アクションまたは構図指定がある場合は`imagegen`スキルを使い、原則1 CUTにつき1枚のBlenderクレイレンダー風16:9絵コンテ画像を生成する。人物と風景を無地の簡略立体へ落とし、複雑な接触だけSTART / CONTACT / ENDの3コマにする。
 7. 画面内で読ませる重要小道具、ロゴ、看板、端末画面、地図、紋章などを抽出し、`imagegen`で本番使用できる高精細画像を個別生成する。クレイ絵コンテへ文字や意匠の責任を持たせない。
 8. 各入力画像の拘束対象と、Seedanceが補間してよい範囲を定義する。
@@ -56,7 +56,7 @@ description: 窓際族物語の基本キャラクターシート、imagegenで�
 
 - `<NN>`: 既存番号の最大値 + 1（2桁ゼロ埋め）
 - `<slug>`: 小文字の英語をアンダースコアで結ぶ
-- 必須: `script.md`。通常形は出演者分だけ`character_<name>_basic_sheet.png`、媒体別の通常形は`character_<name>_<medium>_basic_sheet.png`という相対シンボリックリンクでテンプレートを参照する。エピソード限定形は`character_<name>_<form>_sheet.png`という実ファイルを置く
+- 必須: `script.md`。通常形は出演者分だけ、`00_TEMPLATES/characters/`の正本を`character_<name>_basic_sheet.png`、媒体別の通常形を`character_<name>_<medium>_basic_sheet.png`という同名の実ファイルとしてエピソードフォルダへコピーする。画像生成AIへ直接アップロードできるよう、シンボリックリンクは作らない。エピソード限定形は`character_<name>_<form>_sheet.png`という実ファイルを置く
 - アクションまたは構図指定がある場合は必須: `storyboard_cut_<NN>_sheet.png`。原則1 CUTにつき1枚を`imagegen`で生成する。複雑な接触は`storyboard_cut_<NN>_action_sheet.png`、人物間の位置や破壊連続性が重要なら`blocking_<sequence>_sheet.png`へ分けてもよい
 - 画面内で判読・識別させる重要グラフィックがある場合は必須: `prop_<name>_production.png`、`logo_<name>_master.png`、`screen_<name>_production.png`など、1ファイル1アセットの本番用画像
 - 任意: `character_<name>_<action>_sheet.png`、`environment_<location>_sheet.png`、`vfx_<effect>_sheet.png`、`clip1_start.png`、`clip1_end.png`
@@ -69,14 +69,14 @@ description: 窓際族物語の基本キャラクターシート、imagegenで�
 
 ### 基本キャラクターシート
 
-通常時の外見、体格、身体構造、衣装、必須小道具は`00_TEMPLATES/characters/character_<name>_basic_sheet.png`を正本にする。新規エピソードで通常形を入力する場合は、出演者分だけ次の形式で相対シンボリックリンクを作り、画像を複製しない。
+通常時の外見、体格、身体構造、衣装、必須小道具は`00_TEMPLATES/characters/character_<name>_basic_sheet.png`を正本にする。新規エピソードで通常形を入力する場合は、出演者分だけ次の形式で実ファイルをコピーする。エピソードフォルダ内のコピーは、その生成ランでアップロードする入力画像のスナップショットとして扱う。
 
 ```bash
-ln -s ../00_TEMPLATES/characters/character_<name>_basic_sheet.png \
+cp 03_SCRIPTS/00_TEMPLATES/characters/character_<name>_basic_sheet.png \
   03_SCRIPTS/<NN>_<slug>/character_<name>_basic_sheet.png
 ```
 
-基本シートを過去エピソードから取り直さない。原典の恒久的な変更、または基本シート自体の誤りをユーザーが明示した場合だけ、`02_CHARACTERS/<name>.md`と元画像を基にテンプレート版を更新する。
+基本シートを過去エピソードから取り直さない。必ず`00_TEMPLATES/characters/`の正本からコピーし、コピー後に通常ファイルでありシンボリックリンクではないことを確認する。テンプレート正本が後から更新されても、既存エピソードの入力スナップショットは自動更新しない。既存エピソードへ新しい正本を反映する場合は、ユーザーが更新を求めた対象だけを明示的に再コピーする。原典の恒久的な変更、または基本シート自体の誤りをユーザーが明示した場合だけ、`02_CHARACTERS/<name>.md`と元画像を基にテンプレート版を更新する。
 
 実写化、3D化など、媒体の表現だけを変えた汎用版は`character_<name>_<medium>_basic_sheet.png`としてテンプレートへ置いてよい。原典の識別要素を保ち、エピソード固有の変身、能力、戦闘衣装、負傷、環境、VFXは混ぜない。同じCUTへデフォルメ基本版と実写基本版を同時入力せず、動画の媒体に合う1種類だけを選ぶ。媒体間の変身そのものを描く場合だけ、適用CUTを分けて併用する。
 
@@ -149,6 +149,8 @@ ln -s ../00_TEMPLATES/characters/character_<name>_basic_sheet.png \
 - 手、足、武器、触手などの接触部位と対象
 - 無傷 → 接触 → 破損 → 残存する瓦礫という累積状態
 - コマ終了時の人物、小道具、背景状態と次コマへの接続
+
+激しい格闘、武器操作、衝撃波、大きなカメラ移動は、クレイレンダー上に用途別の矢印を直接加える。色と形の使い分け、1コマの上限、カメラ矢印を人物から離す規則は references/storyboard_workflow.md の「アクション矢印の文法」に従う。矢印は動きの拘束用図解であり、完成映像には一切コピーさせない。
 
 絵コンテは構図、動作順、位置、接触、因果関係、累積状態の厳守画像として扱う。Seedanceには画像間の身体運動、二次的な破片、布や煙の動き、指定を壊さない範囲の微細なカメラ運動だけを補間させる。完成画の顔、衣装、材質、背景美術はキャラクター・環境シートを正本とし、絵コンテの無地クレイ材質、代理形状、簡略背景を映像へコピーさせない。
 
@@ -346,7 +348,7 @@ python3 .claude/skills/seedance/scripts/check_dialogue_timing.py \
 - 小道具が前状態 → 動作 → 後状態で連続し、勝手に補充、消失、破損しない
 - 正史と現在の`WORLD_BIBLE.md`に整合する
 - 入力対応表に実在するファイルだけが記載されている
-- 通常形は`00_TEMPLATES/characters/`の基本シートを使い、エピソード限定形はエピソードフォルダの実ファイルになっている
+- 通常形は`00_TEMPLATES/characters/`の正本からエピソードフォルダへコピーした実ファイルで、シンボリックリンクではない。エピソード限定形もエピソードフォルダの実ファイルになっている
 - 絵コンテのCUT ID、Time、Duration、Action、State OUTが`storyboard_cut_template.yaml`と`script.md`で一致している
 - 絵コンテ画像が`imagegen`で生成され、SVG、HTML、Canvas、図形描画スクリプトによる作画ではない
 - 動画プレビズが理由なく標準入力へ追加されていない

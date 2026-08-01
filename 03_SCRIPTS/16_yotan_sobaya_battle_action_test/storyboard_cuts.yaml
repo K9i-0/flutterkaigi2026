@@ -1,0 +1,314 @@
+project: よーたん対そば屋・バトルアクション検証
+total_duration_seconds: 30.0
+aspect_ratio: 16:9
+cut_id_format: CUT-01
+action_axis:
+  yotan: 画面左を基準に右向き
+  sobaya: 画面右を基準に左向き
+  camera_side: 2人を結ぶ軸の客席側。CUT-01〜CUT-08で越えない
+motion_overlay_legend:
+  cyan_solid: 人物の重心移動
+  orange_arc: 攻撃部位または武器の軌道
+  red_burst_or_rings: 接触点からの力、床振動、スピーカー音圧
+  blue_dashed_with_gray_camera: カメラ移動
+  limit: 1コマは主軌道1本＋補助1本を原則、最大3本。矢印は完成映像へ出さない
+
+cuts:
+  - id: CUT-01
+    time: {in: 0.0, out: 3.0, duration: 3.0}
+    panel_art: storyboard_cut_01_sheet.png
+    purpose: 対峙、武器、アクション軸、スピーカー位置を一度で提示する
+    camera:
+      shot_size: WS
+      angle: low
+      lens: 24mm-wide
+      movement: 右前景のジョッキから左のギターへ高速ドリーし、2人ワイドで停止
+      action_axis: よーたん左、そば屋右、カメラは客席側
+    motion_overlays:
+      body_path: none
+      attack_path: none
+      impact_origin: none
+      camera_path: 青破線。右前景ジョッキから左後景ギターを経て中央ワイドへ
+      overlay_limit: 1本。人物と武器を横切らない
+    action:
+      before: よーたんは左、そば屋は右、距離5m。周囲に固定スピーカー4基
+      anticipation: よーたんはギターネックを両手で握りボディを下げる。そば屋は右手の大型ジョッキを腰へ引く
+      contact: none
+      reaction: 互いに一歩踏み込む
+      after: 距離4m。床と全小道具は無傷
+    audio:
+      dialogue: none
+      dialogue_time: none
+      sfx: 革靴の踏み込み、ジョッキの低い風切り予兆、アンプのフィードバック
+      music: 低いロックリフ開始
+    continuity:
+      carried_in: 無傷のライブ兼立ち飲みフロア
+      new_damage: none
+      carried_out: 4基のスピーカー、ギター、ジョッキ、床は無傷
+    generation_freedom:
+      may_interpolate: 上着の揺れ、微細な埃、ドリーの加減速
+      must_not_change: 左右、距離、武器の持ち方、スピーカー4基
+      must_not_render: 矢印、カメラ代理、クレイ材質
+
+  - id: CUT-02
+    time: {in: 3.0, out: 6.5, duration: 3.5}
+    panel_art: storyboard_cut_02_action_sheet.png
+    purpose: そば屋のジョッキ横薙ぎと、よーたんの低い回避を明瞭に見せる
+    camera:
+      shot_size: two-shot MS
+      angle: waist-low
+      lens: 28mm
+      movement: 左へ高速並走、接触予定時刻の前後0.2秒だけ安定
+      action_axis: 同じ客席側、左右交換なし
+    motion_overlays:
+      body_path: シアン。よーたんの腰が左下へ沈む
+      attack_path: オレンジ弧。右のジョッキが右腰後方から左の頭部高さへ横薙ぎ
+      impact_origin: none
+      camera_path: 青破線は外周下端に短く置く
+      overlay_limit: 3本
+    action:
+      before: 距離4m、そば屋右、よーたん左
+      anticipation: そば屋が右肩と腰を大きく右へ捻る
+      contact: ジョッキはよーたんの金髪の上を紙一重で通過し、人体へ接触しない
+      reaction: よーたんは膝を深く折って左下へダック
+      after: そば屋は右で左向き、振り抜き姿勢。よーたんは左の低姿勢
+    audio:
+      dialogue: none
+      dialogue_time: none
+      sfx: 重い風切り、よーたんの短い息、靴底の摩擦
+      music: リフ継続
+    continuity:
+      carried_in: 全小道具と床は無傷
+      new_damage: none
+      carried_out: ジョッキとギターは無傷、スピーカー4基も固定
+    generation_freedom:
+      may_interpolate: 服と髪の二次動作
+      must_not_change: 横薙ぎ方向、非接触、左右
+      must_not_render: 矢印、カメラ代理、クレイ材質
+
+  - id: CUT-03
+    time: {in: 6.5, out: 10.5, duration: 4.0}
+    panel_art: storyboard_cut_03_action_sheet.png
+    purpose: よーたんがギターボディでそば屋の脇腹へ反撃する
+    camera:
+      shot_size: MS to CU
+      angle: eye-low
+      lens: 35mm
+      movement: 右へスナップパンし、接触点へ短くプッシュインして反動で引く
+      action_axis: 同じ客席側
+    motion_overlays:
+      body_path: シアン。よーたんの重心が左下から右前へ
+      attack_path: オレンジ弧。ネックを両手で保持し、ギターボディが左下から右上の脇腹へ
+      impact_origin: 赤バースト。そば屋の左脇腹
+      camera_path: none
+      overlay_limit: 3本
+    action:
+      before: よーたん左の低姿勢、そば屋右の振り抜き姿勢
+      anticipation: よーたんがギターネックを両手で引き、ボディを左下へ溜める
+      contact: 強化ギターボディの側面がそば屋の左脇腹へ一度だけ接触
+      reaction: そば屋は右へ1.5m滑り、上体を左へ向けたまま踏みとどまる
+      after: よーたん左で振り抜き、そば屋右。武器は無傷
+    audio:
+      dialogue: none
+      dialogue_time: none
+      sfx: 金属補強ギターの低い打撃音、靴の滑走
+      music: 接触だけ一拍ブレイク
+    continuity:
+      carried_in: 無傷の床、固定スピーカー4基
+      new_damage: 床に浅い靴跡
+      carried_out: 靴跡だけ残る。ギター、ジョッキ、スピーカーは無傷
+    generation_freedom:
+      may_interpolate: 衣服、髪、微細な粉塵
+      must_not_change: ネックを持つ両手、ボディ接触、接触は1回、左右
+      must_not_render: 矢印、カメラ代理、接触バースト、クレイ材質
+
+  - id: CUT-04
+    time: {in: 10.5, out: 14.0, duration: 3.5}
+    panel_art: storyboard_cut_04_action_sheet.png
+    purpose: そば屋がジョッキを床へ叩きつけ、放射状の振動攻撃を起こす
+    camera:
+      shot_size: high WS to overhead
+      angle: crane-high
+      lens: 24mm
+      movement: 急上昇クレーン後、床接触の前後0.2秒だけ真上で安定
+      action_axis: 真上でもよーたん左、そば屋右を維持
+    motion_overlays:
+      body_path: シアン。よーたんが左後方へ跳ぶ
+      attack_path: オレンジ弧。ジョッキがそば屋の右肩上から足元の床へ
+      impact_origin: 赤同心円。ジョッキ底と床の接触点から全方向
+      camera_path: 青破線は外周。低位置から真上へ
+      overlay_limit: 3本＋赤同心円
+    action:
+      before: そば屋右、よーたん左、距離3.5m
+      anticipation: そば屋がジョッキを頭上へ上げて腰を落とす
+      contact: ジョッキ底を床へ一度だけ垂直に叩きつける
+      reaction: 床面の振動波が同心円状に広がり、よーたんは左後方へ跳んで回避
+      after: 接触点から放射状の浅い亀裂。ジョッキはそば屋の右手に残る
+    audio:
+      dialogue: none
+      dialogue_time: none
+      sfx: 重い床衝撃、低周波の振動、スピーカー筐体の共振
+      music: 低周波に合わせ一瞬沈む
+    continuity:
+      carried_in: CUT-03の靴跡
+      new_damage: 床中央右寄りに放射状の浅い亀裂
+      carried_out: 靴跡と亀裂が残る。固定スピーカー4基は倒れない
+    generation_freedom:
+      may_interpolate: 小さな床粉塵、ジャケット裾
+      must_not_change: 垂直接触、同心円の発生源、よーたんの回避方向
+      must_not_render: 矢印、カメラ代理、赤同心円、クレイ材質
+
+  - id: CUT-05
+    time: {in: 14.0, out: 18.0, duration: 4.0}
+    panel_art: storyboard_cut_05_action_sheet.png
+    purpose: よーたんの空中回転ギター打撃を、そば屋がジョッキで受け流す
+    camera:
+      shot_size: full-body two-shot
+      angle: low
+      lens: 21mm
+      movement: よーたんの跳躍に合わせ半円オービット。ただし軸の客席側120度以内
+      action_axis: 左右交換なし、軸越えなし
+    motion_overlays:
+      body_path: シアン弧。よーたんが左床面から中央上空を通って左寄りへ着地
+      attack_path: オレンジ弧。ギターボディが頭上後方からそば屋の肩へ
+      impact_origin: 赤短矢印。ジョッキ側面で右外へ受け流す
+      camera_path: 青破線は外周に短い半円
+      overlay_limit: 3本＋接触バースト
+    action:
+      before: よーたん左後方、そば屋右。床亀裂が残る
+      anticipation: よーたんが亀裂の手前を蹴って跳び、ネックを軸にギターを頭上へ回す
+      contact: ギターボディとジョッキ側面が中央上部で一度だけ接触
+      reaction: そば屋がジョッキを右へ傾け、ギターを右外へ受け流す
+      after: よーたんは左寄りに片膝着地、そば屋は右で半歩下がる。両武器無傷
+    audio:
+      dialogue: none
+      dialogue_time: none
+      sfx: 空中風切り、硬い衝突、ジョッキの短い共鳴
+      music: 高速ドラムフィル
+    continuity:
+      carried_in: 靴跡、床亀裂、固定スピーカー4基
+      new_damage: none
+      carried_out: 既存の床状態を保持。武器とスピーカーは無傷
+    generation_freedom:
+      may_interpolate: 空中姿勢、髪とジャケットの回転遅れ
+      must_not_change: ギターボディ対ジョッキ側面の接触、受け流し方向、左右
+      must_not_render: 矢印、カメラ代理、接触バースト、クレイ材質
+
+  - id: CUT-06
+    time: {in: 18.0, out: 22.5, duration: 4.5}
+    panel_art: storyboard_cut_06_action_sheet.png
+    purpose: よーたんの演奏をトリガーに、周囲4基のスピーカーから爆音圧攻撃を出す
+    camera:
+      shot_size: low MS to WS
+      angle: dutch-low then level
+      lens: 28mm
+      movement: ギターのストラムへ高速寄り、直後にワイドへ急速後退
+      action_axis: 同じ客席側
+    motion_overlays:
+      body_path: シアン。そば屋が右後方へ2m押し戻される
+      attack_path: オレンジ短弧。よーたんの右手が弦を一度だけ強くストラム
+      impact_origin: 赤同心円。4基の各スピーカー面から中央右のそば屋へ収束
+      camera_path: 青破線は外周で寄り→引き
+      overlay_limit: 3本。音圧線は4発生源を明瞭にする
+    action:
+      before: よーたん左の片膝、そば屋右、床亀裂
+      anticipation: よーたんが立ち、ギターを通常演奏位置へ戻して右手を上げる
+      contact: 弦を一度だけ強く鳴らした直後、周囲4基のスピーカー前面から音圧が発生
+      reaction: 透明な空気歪みがそば屋へ集中し、そば屋は正面を向いたまま右後方へ2m滑る
+      after: よーたん左で演奏姿勢、そば屋右で踏みとどまる。スピーカーは固定
+    audio:
+      dialogue: none
+      dialogue_time: none
+      sfx: 一発の強烈なパワーコード、4方向からの爆音、床を滑る靴
+      music: パワーコードと同期
+    continuity:
+      carried_in: 靴跡、亀裂、4基の固定スピーカー
+      new_damage: そば屋の滑走跡が追加
+      carried_out: 全床跡が残り、4基のスピーカーは壊れず移動しない
+    generation_freedom:
+      may_interpolate: 空気の屈折、粉塵、衣服のはためき
+      must_not_change: 音圧の発生源はスピーカー、ストラム後に発生、そば屋の押し戻し方向
+      must_not_render: 矢印、カメラ代理、赤同心円、クレイ材質
+
+  - id: CUT-07
+    time: {in: 22.5, out: 26.5, duration: 4.0}
+    panel_art: storyboard_cut_07_action_sheet.png
+    purpose: そば屋が音圧を突破し、ジョッキ縦振りをよーたんのギターが防ぐ
+    camera:
+      shot_size: tracking two-shot
+      angle: chest-low
+      lens: 32mm
+      movement: そば屋と並走し、接触前後0.2秒は安定
+      action_axis: 同じ客席側、左右交換なし
+    motion_overlays:
+      body_path: シアン。そば屋が右から中央へ直進
+      attack_path: オレンジ弧。ジョッキが右肩後方から中央左下へ斜め振り下ろし
+      impact_origin: 赤バースト。ジョッキ底とギターボディ補強縁の接触点
+      camera_path: none
+      overlay_limit: 3本
+    action:
+      before: そば屋右端、よーたん左、音圧の余韻
+      anticipation: そば屋が前傾で3歩突進し、ジョッキを右肩後方へ引く
+      contact: よーたんがネックを両手で持ち、強化ボディの補強縁でジョッキ底を一度だけ受ける
+      reaction: 両者の腕が沈み、床粉塵が外へ弾ける
+      after: 中央で武器が噛み合い、よーたん左、そば屋右
+    audio:
+      dialogue: none
+      dialogue_time: none
+      sfx: 重い足音3回、硬い衝突、短い低音
+      music: テンポを維持
+    continuity:
+      carried_in: 靴跡、亀裂、滑走跡、固定スピーカー
+      new_damage: 接触直下の亀裂が少しだけ伸びる
+      carried_out: 全損傷が残る。両武器無傷
+    generation_freedom:
+      may_interpolate: 突進中の粉塵、ジャケット
+      must_not_change: 直進、斜め振り下ろし、ギター補強縁で防ぐ、左右
+      must_not_render: 矢印、接触バースト、クレイ材質
+
+  - id: CUT-08
+    time: {in: 26.5, out: 30.0, duration: 3.5}
+    panel_art: storyboard_cut_08_action_sheet.png
+    purpose: 噛み合った武器から同時反発し、両者が構え直すクライマックス
+    camera:
+      shot_size: CU contact to heroic WS
+      angle: low
+      lens: 24mm
+      movement: 接触点の周囲を客席側90度だけ高速オービットし、衝撃で急後退してワイド停止
+      action_axis: 軸を越えず、最終もよーたん左、そば屋右
+    motion_overlays:
+      body_path: シアン二方向。よーたんは左、そば屋は右へ反発
+      attack_path: none
+      impact_origin: 赤バースト。噛み合った武器の中央接触点
+      camera_path: 青破線。客席側90度オービット後に後退
+      overlay_limit: 3本＋接触バースト
+    action:
+      before: 中央でジョッキ底とギター補強縁が噛み合う
+      anticipation: 両者が一瞬押し合い、足元の亀裂が増える
+      contact: 同じ接触点から圧力が一度だけ破裂
+      reaction: よーたんは左へ、そば屋は右へ各2m滑って分離
+      after: よーたん左でギターを構え、そば屋右でジョッキを構える。戦闘続行可能な静止
+    audio:
+      dialogue: none
+      dialogue_time: none
+      sfx: 圧縮された低音、衝撃破裂、両者の滑走
+      music: 最後の一打で止め、アンプの余韻
+    continuity:
+      carried_in: 全床損傷、固定スピーカー、無傷の武器
+      new_damage: 中央亀裂が少し拡大
+      carried_out: 全損傷と全小道具を保持。人物は倒れず、決着はつかない
+    generation_freedom:
+      may_interpolate: 粉塵、空気歪み、急後退時の微細なカメラ振動
+      must_not_change: 反発方向、左右、武器無傷、スピーカー固定、未決着
+      must_not_render: 矢印、カメラ代理、接触バースト、クレイ材質
+
+validation:
+  - CUT ID、時刻、Duration、Action、State OUTがscript.mdと一致する
+  - 0.0〜30.0秒を隙間と重複なく埋める
+  - よーたん左、そば屋右を維持し、カメラはアクション軸を越えない
+  - すべての打撃に予備動作、接触または明確な回避、反動、後状態がある
+  - ギター打撃はボディを使い、よーたんはネックを保持する
+  - 爆音圧はストラム後、周囲4基のスピーカーからだけ発生する
+  - 床の靴跡、亀裂、滑走跡はCUT間で累積し消えない
+  - 矢印は規定色と形を守り、輪郭・武器・接触点を隠さない
+  - 矢印、カメラ代理、接触バースト、クレイ材質を完成映像へコピーしない

@@ -5,9 +5,10 @@ policy:
   basic_character_sheet: 03_SCRIPTS/00_TEMPLATES/characters/character_<name>_basic_sheet.png を再利用する
   media_basic_variant: 実写化など媒体だけを変えた汎用形は character_<name>_<medium>_basic_sheet.png としてテンプレートに置き、エピソード固有の衣装・能力・背景を混ぜない
   episode_character_sheet: 巨大化、変身、専用装備、ロボット化、負傷、特定モニターなど、その回だけの形態は 03_SCRIPTS/<NN>_<slug>/ に実ファイルで置く
-  episode_usage: 基本形を使う場合は、出演者分だけをエピソードフォルダから相対シンボリックリンクで参照する
+  episode_usage: 基本形を使う場合は、出演者分だけをテンプレート正本からエピソードフォルダへ同名の実ファイルとしてコピーする。画像生成AIへ直接アップロードできるようシンボリックリンクは使わない
+  episode_snapshot: エピソードフォルダ内のコピーは生成ランの入力スナップショット。テンプレート更新を既存エピソードへ自動反映せず、必要な場合だけ明示的に再コピーする
   override: 同一人物に基本形とエピソード限定形がある場合、該当カットではエピソード限定形を優先する
-  immutability: 過去エピソード内の画像をテンプレートとして直接更新しない
+  immutability: 過去エピソード内のコピー画像をテンプレートとして直接更新しない
   key_asset: 読ませる小道具・ロゴ・看板・画面は、クレイ絵コンテと分離してimagegenで本番画質の1ファイル1アセットを作る
 
 directories:
@@ -58,6 +59,7 @@ storyboard_templates:
     use_for: 原則1 CUTにつき1枚のBlenderクレイレンダー風16:9絵コンテをエピソードごとに新規生成する
     naming: storyboard_cut_<NN>_sheet.png
     complex_action: 複雑な接触だけSTART、CONTACT、ENDの3コマを1枚にする
+    action_overlays: 激しい動作ではシアン＝身体移動、オレンジ＝攻撃軌道、赤＝接触・衝撃、青破線＝カメラ移動を使い分け、完成映像へはコピーしない
 
 key_asset_generation:
   tool: imagegen

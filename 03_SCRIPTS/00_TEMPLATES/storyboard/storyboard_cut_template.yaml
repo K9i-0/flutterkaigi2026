@@ -17,6 +17,12 @@ cuts:
       lens: <wide/normal/telephoto>
       movement: <fixed/pan/tilt/dolly/handheld>
       action_axis: <画面左右とカメラ側>
+    motion_overlays:
+      body_path: <シアン実線の開始点→終点。不要なら none>
+      attack_path: <オレンジ弧の開始点→接触点。不要なら none>
+      impact_origin: <赤バーストの発生源と拡散方向。不要なら none>
+      camera_path: <青破線の開始カメラ位置→終了位置。不要なら none>
+      overlay_limit: <主軌道1本＋補助1本を原則、最大3本。身体・武器・接触点を隠さない>
     action:
       before: <開始位置、向き、距離、前状態>
       anticipation: <予備動作>
@@ -35,10 +41,13 @@ cuts:
     generation_freedom:
       may_interpolate: <中間動作、布、煙、細かな破片など>
       must_not_change: <外見、位置、接触、因果、終了状態など>
+      must_not_render: <絵コンテの矢印、カメラ代理、接触バースト、クレイ材質を完成映像に出さない>
 
 validation:
   - CUT IDが絵コンテ画像とscript.mdで完全一致する
   - inからoutまで隙間と重複がない
   - durationがout-inと一致する
   - 各CUTのafterが次CUTのbeforeまたはcarried_inへ接続する
+  - 矢印は用途別の色と形を守り、1コマ最大3本で輪郭や接触点を隠さない
+  - 参照画像表で矢印とカメラ代理を完成映像へコピーしないと明記する
   - 必須セリフの全文、話者、発話区間がscript.mdと一致する
