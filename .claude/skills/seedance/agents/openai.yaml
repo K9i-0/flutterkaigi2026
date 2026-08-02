@@ -1,4 +1,4 @@
 interface:
   display_name: "Seedance 動画制作"
-  short_description: "厳守モードのSeedance動画資料・クレイ絵コンテ・本番用重要アセットを制作する"
-  default_prompt: "窓際族物語の設定に従い、用途別参照画像、クレイ絵コンテ、本番用の重要小道具・ロゴ、秒刻み台本、正確な日本語音声指示を作成・監査してください。"
+  short_description: "詳細アクション記述と厳守モードのSeedance動画資料を制作する"
+  default_prompt: "$seedanceを使い、窓際族物語の設定に従ってシーン地理、秒区間ごとの詳細アクション、用途別参照画像、正確な日本語音声を作成・監査してください。"

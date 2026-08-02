@@ -1,4 +1,4 @@
-version: 1
+version: 2
 purpose: Seedance制作で再利用する正本テンプレート
 
 policy:
@@ -7,13 +7,13 @@ policy:
   episode_character_sheet: 巨大化、変身、専用装備、ロボット化、負傷、特定モニターなど、その回だけの形態は 03_SCRIPTS/<NN>_<slug>/ に実ファイルで置く
   episode_usage: 基本形を使う場合は、出演者分だけをテンプレート正本からエピソードフォルダへ同名の実ファイルとしてコピーする。画像生成AIへ直接アップロードできるようシンボリックリンクは使わない
   episode_snapshot: エピソードフォルダ内のコピーは生成ランの入力スナップショット。テンプレート更新を既存エピソードへ自動反映せず、必要な場合だけ明示的に再コピーする
-  override: 同一人物に基本形とエピソード限定形がある場合、該当カットではエピソード限定形を優先する
+  override: 同一人物に基本形とエピソード限定形がある場合、該当秒区間ではエピソード限定形を優先する
   immutability: 過去エピソード内のコピー画像をテンプレートとして直接更新しない
-  key_asset: 読ませる小道具・ロゴ・看板・画面は、クレイ絵コンテと分離してimagegenで本番画質の1ファイル1アセットを作る
+  action_description: 格闘、追跡、破壊、複雑なカメラは絵コンテ画像を使わず、script.mdのシーン地理と秒区間ごとの詳細テキストを正本にする
+  key_asset: 読ませる小道具・ロゴ・看板・画面は、imagegenで本番画質の1ファイル1アセットを作る
 
 directories:
   characters: 各メンバーの通常時の外見・身体構造・必須小道具を固定する基本シート
-  storyboard: CUT番号、時刻、アクション、連続状態を台本と結ぶCUTデータひな形。絵コンテ画像はimagegenでエピソードごとに新規生成する
   prompt: エピソード用 script.md のひな形
 
 character_sheets:
@@ -50,16 +50,13 @@ character_sheets:
     prompt: characters/source_prompts/character_yumemin_basic_sheet.md
     canon: 02_CHARACTERS/08_Yumemin.md
 
-storyboard_templates:
-  cut_data:
-    file: storyboard/storyboard_cut_template.yaml
-    use_for: 台本と絵コンテで共有するCUT IDと状態データ
-  image_generation:
-    tool: imagegen
-    use_for: 原則1 CUTにつき1枚のBlenderクレイレンダー風16:9絵コンテをエピソードごとに新規生成する
-    naming: storyboard_cut_<NN>_sheet.png
-    complex_action: 複雑な接触だけSTART、CONTACT、ENDの3コマを1枚にする
-    action_overlays: 激しい動作ではシアン＝身体移動、オレンジ＝攻撃軌道、赤＝接触・衝撃、青破線＝カメラ移動を使い分け、完成映像へはコピーしない
+action_prompt:
+  source_of_truth: prompt/seedance_script_template.md
+  use_for: シーン地理、人物配置、動作原則、秒区間ごとの攻防、カメラ、接触物理、状態連続性
+  required_for: 格闘、追跡、破壊、複雑な武器操作、激しいカメラ
+  per_contact: 起点、経路、接触点、防御、受力、結果を文章で明記する
+  continuity: 各秒区間の入口状態と出口状態を接続し、位置、向き、慣性、傷、破壊、小道具をリセットしない
+  forbidden_inputs: アクション絵コンテ、クレイプレビズ、矢印図、ブロッキング画像、旧失敗動画
 
 key_asset_generation:
   tool: imagegen
