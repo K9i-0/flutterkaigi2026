@@ -14,7 +14,24 @@ policy:
 
 directories:
   characters: 各メンバーの通常時の外見・身体構造・必須小道具を固定する基本シート
+  environments: 再利用可能な環境の建築、固定設備、家具、小道具、材質、照明、地理を固定する本番用正本
   prompt: エピソード用 script.md のひな形
+
+media_styles:
+  toy_diorama_3d:
+    name_ja: 窓際トイジオラマ3D
+    name_en: Madogiwa Toy Diorama 3D
+    visual_definition: 丸く柔らかいトイフィギュア造形、マットな樹脂・布の手触り、わずかな手作り感、暖色の映画的照明による高品質スタイライズド3D
+    style_reference: ../21_takosan_php_prompt_pun/clip1_start.png
+
+environment_assets:
+  window_side_area_toy_diorama_3d:
+    file: environments/environment_window_side_area_toy_diorama_3d_production.png
+    prompt: environments/source_prompts/environment_window_side_area_toy_diorama_3d_production.md
+    source_frame: ../21_takosan_php_prompt_pun/clip1_start.png
+    media_style: toy_diorama_3d
+    use_for: 21準拠の窓際族エリア。段ボール机、ノートPC、椅子、窓と東京タワー、暖簾、提灯、ソファ、棚、植物、暖色の午後光を含む無人の環境正本
+    excluded: たこさん、やめ太郎、および人物由来の影
 
 character_sheets:
   sobaya:
@@ -23,6 +40,13 @@ character_sheets:
   takosan:
     file: characters/character_takosan_basic_sheet.png
     canon: 02_CHARACTERS/02_Takosan.md
+    media_variants:
+      toy_diorama_3d:
+        file: characters/character_takosan_toy_diorama_3d_basic_sheet.png
+        prompt: characters/source_prompts/character_takosan_toy_diorama_3d_basic_sheet.md
+        identity_canon: ../21_takosan_php_prompt_pun/clip1_start.png
+        precedence: この媒体バリアントでは21の完成フレームを最上位正典とし、02_CHARACTERS/Takosan.pngと旧基本シートの造形を適用しない
+        use_for: 窓際トイジオラマ3D映像での通常形。21準拠の丸くコンパクトな比率、無地寄りの大きなフード、少数の太いローブ模様、裾直下へ重なる細めで自然にテーパーした触手を固定する。触手と吸盤は光沢・湿潤感を禁止し、マットな布製ぬいぐるみ／柔らかい粘土トイ質感にする
   tokun:
     file: characters/character_tokun_basic_sheet.png
     canon: 02_CHARACTERS/03_Tokun.md
@@ -40,6 +64,10 @@ character_sheets:
         file: characters/character_yametaro_liveaction_basic_sheet.png
         prompt: characters/source_prompts/character_yametaro_liveaction_basic_sheet.md
         use_for: 実写映像での通常時。オフィスカジュアルの葉柄シャツで、武闘家・炎上案拳の要素は含まない
+      toy_diorama_3d:
+        file: characters/character_yametaro_toy_diorama_3d_basic_sheet.png
+        prompt: characters/source_prompts/character_yametaro_toy_diorama_3d_basic_sheet.md
+        use_for: 窓際トイジオラマ3D映像での通常形。大きな黒髪、三角形の生え際、丸メガネ、ピンクの丸頬、薄紫の葉柄シャツを固定する
   okayaman:
     file: characters/character_okayaman_basic_sheet.png
     prompt: characters/source_prompts/character_okayaman_basic_sheet.md
@@ -49,6 +77,12 @@ character_sheets:
     file: characters/character_yumemin_basic_sheet.png
     prompt: characters/source_prompts/character_yumemin_basic_sheet.md
     canon: 02_CHARACTERS/08_Yumemin.md
+    media_variants:
+      toy_diorama_3d:
+        file: characters/character_yumemin_toy_diorama_3d_basic_sheet.png
+        prompt: characters/source_prompts/character_yumemin_toy_diorama_3d_basic_sheet.md
+        material_reference: ../21_takosan_php_prompt_pun/clip1_start.png
+        use_for: 窓際トイジオラマ3D映像での通常形。脚・腕・口なし、青い球形の体、白い後部、可動鼻、別小道具の木槌を固定し、21準拠のマットな微細素材感と暖色トイ照明を適用する
 
 action_prompt:
   source_of_truth: prompt/seedance_script_template.md
