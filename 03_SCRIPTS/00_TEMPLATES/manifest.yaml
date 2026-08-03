@@ -82,7 +82,8 @@ character_sheets:
         file: characters/character_yumemin_toy_diorama_3d_basic_sheet.png
         prompt: characters/source_prompts/character_yumemin_toy_diorama_3d_basic_sheet.md
         material_reference: ../21_takosan_php_prompt_pun/clip1_start.png
-        use_for: 窓際トイジオラマ3D映像での通常形。脚・腕・口なし、青い球形の体、白い後部、可動鼻、別小道具の木槌を固定し、21準拠のマットな微細素材感と暖色トイ照明を適用する
+        adopted_design: Candidate A — ぷくもち幼体型
+        use_for: 窓際トイジオラマ3D映像での通常形。少し縦につぶれたふっくらしたもち型、低めでやや離れた黒い点目、小さく丸みのある耳、短く柔らかく上向きに反る鼻を固定する。脚・腕・口なし、青い体、白い後部、可動鼻、別小道具の木槌を維持し、21準拠のマットな微細素材感と暖色トイ照明を適用する
 
 action_prompt:
   source_of_truth: prompt/seedance_script_template.md
