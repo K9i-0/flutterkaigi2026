@@ -7,6 +7,33 @@
 - `screen_morning_clock_production.png`：同上。
 - `character_sobaya_basic_sheet.png`：過去回からではなく、`03_SCRIPTS/00_TEMPLATES/characters/`の通常形正本から実ファイルとしてコピー。
 
+## scene_01_studio_start_male_production.png
+
+- 生成方式：組み込みImageGen。
+- 用途：男性アナウンサー版`script_male_anchor.md`の0.0秒へ直接使う本番開始フレーム。
+- 編集対象：女性版`scene_01_studio_start_production.png`。25から再利用したスタジオ、机、海景、照明、固定画角、「ゆめテレ」ロゴを維持し、アナウンサーだけを男性へ変更。
+
+```text
+Use case: precise-object-edit
+Asset type: alternate Seedance production start frame for scene 1 of a fictional Japanese local morning-news broadcast, 16:9 landscape.
+Input image: the supplied studio image is the edit target and exact environment/composition reference.
+Primary request: replace only the female anchor at center with one realistic Japanese male news anchor. Preserve the complete studio set, ocean-window background, desk, papers, camera position, crop, cool blue-white morning lighting, and the existing upper-right fictional “ゆめテレ” logo exactly as shown.
+Subject: one Japanese male local-news anchor, approximately 43–48 years old, believable as a working regional broadcaster rather than an actor or fashion model. Average build, ordinary slightly long face, subtle natural facial asymmetry, visible pores and mild uneven skin texture, faint under-eye circles, light nasolabial folds, modest practical short black hair with a slightly receding hairline and a few gray strands near the temples, natural eyebrows, normal-sized eyes, clean-shaven or extremely faint beard shadow. Calm serious neutral expression, mouth closed, looking directly into the broadcast camera.
+Wardrobe: conservative dark navy business suit, plain white dress shirt, subdued medium-blue tie, small black lapel microphone. No pattern, no badge, no branding.
+Pose: seated centrally in the exact same anchor position, upright but natural posture, both hands resting separately on the papers at the desk, physically plausible hands and fingers.
+Style/medium: photorealistic live-action Japanese local television frame, natural ENG/broadcast camera realism, normal lens, realistic skin and fabric texture. It must feel like a genuine frame from an ordinary morning news program.
+Constraints: exactly one male anchor; preserve all background geometry, desk placement, papers, ocean view, lighting and “ゆめテレ” logo; no other people; no new on-screen text; no watermark.
+Avoid: handsome celebrity face, idol face, model face, beauty retouching, airbrushed or porcelain skin, oversized eyes, perfectly symmetrical face, waxy AI skin, glamour makeup, dramatic cinematic lighting, smiling, exaggerated old age, caricature, duplicated hands, extra fingers, deformed fingers, changed logo, pseudo-text, real broadcaster resemblance or identifiable public figure.
+```
+
+### 男性版の原寸監査
+
+- 1672×941、RGB、16:9相当。
+- 人物は40代半ばの日本人男性1人。自然な目元、肌理、額のしわ、生え際、こめかみの白髪、顔の左右差を確認。
+- 紺スーツ、白シャツ、青いネクタイ、ピンマイク、机上の原稿、左右の手を確認。
+- 25のスタジオ構図、海景、青白い照明、右上の「ゆめテレ」ロゴを維持。
+- モデル顔、アイドル顔、陶器肌、余計な人物・文字、手指の破綻がないことを確認。
+
 ## scene_02_proxy_office_start_production.png
 
 - 生成方式：組み込みImageGen。
