@@ -1,0 +1,43 @@
+{
+  "character": "Sobaya",
+  "model_type": "Live2D chest-up VTuber source",
+  "canonical_reference": "reference/sobaya_original.jpg",
+  "canvas_policy": "Keep every generated source at its original full canvas size and preserve alignment.",
+  "required_invariants": [
+    "rigid white mask",
+    "two circular black eye openings",
+    "one centered black forehead circle",
+    "two red vertical mask markings",
+    "one short horizontal mouth slot",
+    "short spiky black hair",
+    "gray skin",
+    "plain white short-sleeve T-shirt",
+    "one large clear beer mug"
+  ],
+  "layers_back_to_front": [
+    {
+      "name": "BodyPlate",
+      "file": "source/sobaya_body_plate.png",
+      "movement": "body sway and breath"
+    },
+    {
+      "name": "HeadUnit",
+      "file": "parts/sobaya_head_unit.png",
+      "movement": "head XYZ"
+    },
+    {
+      "name": "MugHand",
+      "file": "parts/sobaya_mug_hand.png",
+      "movement": "small rigid bounce"
+    }
+  ],
+  "cubism_psd": "cubism/sobaya_live2d_source.psd",
+  "rig_spec": "RIG_SPEC.md",
+  "psd_requirements": {
+    "color_mode": "RGB",
+    "bits_per_channel": 8,
+    "compression": "RLE",
+    "canvas": "1254x1254"
+  },
+  "status": "aligned 8-bit layered PSD ready for Cubism 5.3.03 import; cmo3 rig pending"
+}
