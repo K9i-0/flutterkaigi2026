@@ -1,0 +1,29 @@
+{
+  "id": "sobaya-web-rig-v1",
+  "displayName": "そば屋",
+  "canvas": { "width": 1254, "height": 1254 },
+  "viewport": { "fit": 0.96, "verticalOffset": 0.02 },
+  "layers": [
+    { "id": "body", "asset": "body", "parent": "root", "pivot": [627, 810], "zIndex": 100 },
+    { "id": "head", "asset": "head", "parent": "root", "pivot": [627, 455], "zIndex": 200 },
+    { "id": "eyeLidL", "asset": "eyeLidL", "parent": "head", "pivot": [556, 287], "zIndex": 240 },
+    { "id": "eyeLidR", "asset": "eyeLidR", "parent": "head", "pivot": [700, 287], "zIndex": 241 },
+    { "id": "mouth", "asset": "mouth", "parent": "mouth", "pivot": [628, 412], "zIndex": 250 },
+    { "id": "mug", "asset": "mug", "parent": "root", "pivot": [548, 1015], "zIndex": 300 }
+  ],
+  "motion": {
+    "headYawPixels": 28,
+    "headPitchPixels": 17,
+    "headRollDegrees": 10,
+    "bodySwayPixels": 15,
+    "bodyRollDegrees": 2.5,
+    "mouthOpenScale": 1.35,
+    "mugBouncePixels": 9,
+    "breathingScale": 0.008,
+    "smoothingHalfLifeMs": 85,
+    "cheersLiftPixels": 205,
+    "cheersCenterPixels": 72,
+    "cheersScale": 0.16,
+    "cheersTiltDegrees": -8
+  }
+}

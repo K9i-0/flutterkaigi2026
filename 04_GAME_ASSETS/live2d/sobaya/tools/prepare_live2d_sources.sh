@@ -51,9 +51,31 @@ magick -size "$canvas" canvas:none \
   -geometry -71+209 -composite \
   "${asset_dir}/parts/sobaya_mug_hand.png"
 
+# Rigid-mask tracking effects. These are deterministic overlays rather than
+# regenerated face art, so the canonical mask geometry remains unchanged.
+magick -size "$canvas" canvas:none \
+  -fill '#f1f1f1' -stroke '#c7c7c7' -strokewidth 3 \
+  -draw 'ellipse 556,287 47,47 0,360' \
+  -fill '#282828' -stroke none \
+  -draw 'roundrectangle 526,284 586,290 3,3' \
+  "${asset_dir}/parts/sobaya_eye_lid_l.png"
+
+magick -size "$canvas" canvas:none \
+  -fill '#f1f1f1' -stroke '#c7c7c7' -strokewidth 3 \
+  -draw 'ellipse 700,287 47,47 0,360' \
+  -fill '#282828' -stroke none \
+  -draw 'roundrectangle 670,284 730,290 3,3' \
+  "${asset_dir}/parts/sobaya_eye_lid_r.png"
+
+magick -size "$canvas" canvas:none \
+  -fill '#080808' -stroke '#555555' -strokewidth 2 \
+  -draw 'roundrectangle 587,399 669,425 13,13' \
+  "${asset_dir}/parts/sobaya_mouth_slot.png"
+
 magick -size "$canvas" canvas:none \
   "${asset_dir}/source/sobaya_body_plate.png" -composite \
   "${asset_dir}/parts/sobaya_head_unit.png" -composite \
+  "${asset_dir}/parts/sobaya_mouth_slot.png" -composite \
   "${asset_dir}/parts/sobaya_mug_hand.png" -composite \
   "${asset_dir}/preview/sobaya_live2d_composite.png"
 
@@ -61,6 +83,9 @@ magick \
   \( "${asset_dir}/preview/sobaya_live2d_composite.png" -depth 8 -set label CompositePreview \) \
   \( "${asset_dir}/source/sobaya_body_plate.png" -depth 8 -set label BodyPlate \) \
   \( "${asset_dir}/parts/sobaya_head_unit.png" -depth 8 -set label HeadUnit \) \
+  \( "${asset_dir}/parts/sobaya_eye_lid_l.png" -depth 8 -set label EyeLidL \) \
+  \( "${asset_dir}/parts/sobaya_eye_lid_r.png" -depth 8 -set label EyeLidR \) \
+  \( "${asset_dir}/parts/sobaya_mouth_slot.png" -depth 8 -set label MouthSlot \) \
   \( "${asset_dir}/parts/sobaya_mug_hand.png" -depth 8 -set label MugHand \) \
   -depth 8 -compress RLE \
   "${asset_dir}/cubism/sobaya_live2d_source.psd"
@@ -78,5 +103,8 @@ magick identify \
   "${asset_dir}/source/sobaya_live2d_master.png" \
   "${asset_dir}/source/sobaya_body_plate.png" \
   "${asset_dir}/parts/sobaya_head_unit.png" \
+  "${asset_dir}/parts/sobaya_eye_lid_l.png" \
+  "${asset_dir}/parts/sobaya_eye_lid_r.png" \
+  "${asset_dir}/parts/sobaya_mouth_slot.png" \
   "${asset_dir}/parts/sobaya_mug_hand.png" \
   "${asset_dir}/cubism/sobaya_live2d_source.psd"

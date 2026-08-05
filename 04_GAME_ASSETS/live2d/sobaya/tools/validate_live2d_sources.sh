@@ -10,6 +10,9 @@ png_files=(
   "${asset_dir}/source/sobaya_live2d_master.png"
   "${asset_dir}/source/sobaya_body_plate.png"
   "${asset_dir}/parts/sobaya_head_unit.png"
+  "${asset_dir}/parts/sobaya_eye_lid_l.png"
+  "${asset_dir}/parts/sobaya_eye_lid_r.png"
+  "${asset_dir}/parts/sobaya_mouth_slot.png"
   "${asset_dir}/parts/sobaya_mug_hand.png"
   "${asset_dir}/preview/sobaya_live2d_composite.png"
 )
@@ -50,8 +53,8 @@ if [[ "$psd_colorspace" != "sRGB" && "$psd_colorspace" != "RGB" ]]; then
   exit 1
 fi
 
-expected_labels=(BodyPlate HeadUnit MugHand)
-for layer_number in 1 2 3; do
+expected_labels=(BodyPlate HeadUnit EyeLidL EyeLidR MouthSlot MugHand)
+for layer_number in 1 2 3 4 5 6; do
   actual_label="$(magick identify -format '%[label]' "${psd_path}[${layer_number}]")"
   expected_label="${expected_labels[$layer_number]}"
   if [[ "$actual_label" != "$expected_label" ]]; then
@@ -61,13 +64,12 @@ for layer_number in 1 2 3; do
 done
 
 scene_count="$(magick identify -format '%s\n' "$psd_path" | wc -l | tr -d ' ')"
-if [[ "$scene_count" != "4" ]]; then
-  print -u2 "Expected one PSD composite and three layers; got $scene_count scenes"
+if [[ "$scene_count" != "7" ]]; then
+  print -u2 "Expected one PSD composite and six layers; got $scene_count scenes"
   exit 1
 fi
 
 print "Live2D source validation passed"
 print "  canvas: ${expected_geometry}"
-print "  PSD: RGB, 8-bit, 3 Cubism layers"
+print "  PSD: RGB, 8-bit, 6 Cubism layers"
 print "  layers: ${expected_labels[*]}"
-

@@ -2,6 +2,13 @@
 
 そば屋の胸上VTuberモデルをLive2D Cubismで制作するための正典素材置き場。
 
+## 現行ランタイム
+
+実際に動かす正規実装は `15_SOBA_VTUBER_WEB/` のMediaPipe＋PixiJS版へ移行した。
+このフォルダの透過PNG 6枚を直接参照し、Webカメラ追跡、瞬き、口、頭、身体、ジョッキの動きをブラウザで処理する。
+
+Cubism用PSDとリグ仕様は比較・将来利用のため残すが、ユーザーから再開指示がない限り `.cmo3` 制作は進めない。
+
 ## 原典と優先順位
 
 1. `reference/sobaya_original.jpg` — ユーザー提供の最優先ビジュアル原典
@@ -18,8 +25,9 @@
 
 - `BodyPlate`：胸・肩・腕・白Tシャツ
 - `HeadUnit`：髪、耳、頭、首、剛体の白い仮面
+- `EyeLidL` / `EyeLidR`：仮面色の眼窩シャッター
+- `MouthSlot`：音量連動で縦へ広がる黒い口スロット
 - `MugHand`：キャラクター右手、大型ガラスジョッキ、ビール、泡
-- `MaskEffects`：将来追加する瞬き相当・口スロット内の音量反応
 
 初版は仮面を剛体として扱う。人間の唇・眉・顔面変形は追加しない。
 
@@ -51,7 +59,7 @@ Imagegenのクロマキー原版は、緑成分の優勢度からソフトアル
 
 1. Cubism Editorの「ファイル」→「ファイルを開く…」を選ぶ。
 2. `cubism/sobaya_live2d_source.psd` を開く。
-3. パーツ一覧に `BodyPlate`、`HeadUnit`、`MugHand` の3件があることを確認する。
+3. パーツ一覧に `BodyPlate`、`HeadUnit`、`EyeLidL`、`EyeLidR`、`MouthSlot`、`MugHand` の6件があることを確認する。
 4. 自動メッシュ生成後、BodyPlateを親、HeadUnitとMugHandを前面パーツとしてデフォーマを作成する。
 5. `cubism/sobaya_live2d.cmo3` として同じフォルダへ保存する。
 

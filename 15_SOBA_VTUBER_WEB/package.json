@@ -1,0 +1,26 @@
+{
+  "name": "sobaya-vtuber-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "prepare:assets": "node scripts/prepare-mediapipe-assets.mjs",
+    "dev": "npm run prepare:assets && vite",
+    "build": "npm run prepare:assets && tsc --noEmit && vite build",
+    "build:sites": "npm run prepare:assets && node scripts/clean-sites-build.mjs && tsc --noEmit && vite build --config vite.sites.config.ts && node scripts/prepare-sites-build.mjs",
+    "test": "tsc -p tsconfig.test.json && node --test .test-dist/tests/*.test.js",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@mediapipe/tasks-vision": "^0.10.22-rc.20250304",
+    "pixi.js": "^8.18.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.1",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.5"
+  }
+}

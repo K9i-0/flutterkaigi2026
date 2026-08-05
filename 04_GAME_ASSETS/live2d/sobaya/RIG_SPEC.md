@@ -11,6 +11,9 @@ Cubism Editor 5.3.03で `cubism/sobaya_live2d_source.psd` を読み込んだ後�
 | --- | ---: | --- |
 | `BodyPlate` | 100 | 胸、肩、腕、白Tシャツ |
 | `HeadUnit` | 200 | 首、頭、耳、髪、仮面を一体で扱う |
+| `EyeLidL` | 240 | 左眼窩を閉じる仮面色のシャッター |
+| `EyeLidR` | 241 | 右眼窩を閉じる仮面色のシャッター |
+| `MouthSlot` | 250 | 音量連動で縦へ広げる黒い口スロット |
 | `MugHand` | 300 | 右手とビールジョッキを一体で扱う |
 
 ## デフォーマ階層
@@ -21,7 +24,10 @@ Root
    ├─ BodyPlate
    ├─ HeadPosition (Rotation Deformer)
    │  └─ HeadWarp (Warp Deformer)
-   │     └─ HeadUnit
+   │     ├─ HeadUnit
+   │     ├─ EyeLidL
+   │     ├─ EyeLidR
+   │     └─ MouthSlot
    └─ MugPosition (Rotation Deformer)
       └─ MugWarp (Warp Deformer)
          └─ MugHand
@@ -41,13 +47,16 @@ Root
 | `ParamBodyAngleX` | -6 / 0 / 6 | `BodySway` | 肩を左右へ最大10 px |
 | `ParamBreath` | 0 / 0 / 1 | `BodySway` | 胸郭を上へ最大4 px、横へ最大0.8% |
 | `ParamMugBounce` | -1 / 0 / 1 | `MugPosition` | 上下 ±7 px、回転 ∓1.5° |
+| `ParamEyeLOpen` | 0 / 1 / 1 | `EyeLidL` | 0で不透明度100%、0.5で35%、1で0% |
+| `ParamEyeROpen` | 0 / 1 / 1 | `EyeLidR` | 0で不透明度100%、0.5で35%、1で0% |
+| `ParamMouthOpenY` | 0 / 0 / 1 | `MouthSlot` | 中心固定で縦寸法を1.0倍から2.1倍へ拡大 |
 
-初版では `ParamEyeLOpen`、`ParamEyeROpen`、`ParamMouthOpenY` は未実装。
-仮面の黒い眼窩と口スロットを独立素材に分ける第2版で追加する。
+眼窩そのものは `HeadUnit` に残し、閉眼時だけ仮面色のシャッターを前面表示する。
+口は元の短いスロットを残し、発話時だけ `MouthSlot` を縦へ広げる。
 
 ## メッシュ
 
-1. 3アートメッシュすべてに「自動生成・標準」を適用する。
+1. 6アートメッシュすべてに「自動生成・標準」を適用する。
 2. `HeadUnit` は髪先と耳周辺に頂点を追加する。
 3. `MugHand` はジョッキ外周、取っ手、指の隙間に頂点を追加する。
 4. 透明余白へ大きくはみ出した三角形は削除する。
@@ -57,4 +66,3 @@ Root
 - 編集モデル: `cubism/sobaya_live2d.cmo3`
 - 書き出し先: `cubism/runtime/`
 - 推奨モデル名: `sobaya_live2d`
-

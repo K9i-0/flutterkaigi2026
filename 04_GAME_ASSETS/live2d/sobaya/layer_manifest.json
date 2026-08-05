@@ -26,6 +26,21 @@
       "movement": "head XYZ"
     },
     {
+      "name": "EyeLidL",
+      "file": "parts/sobaya_eye_lid_l.png",
+      "movement": "blink shutter opacity"
+    },
+    {
+      "name": "EyeLidR",
+      "file": "parts/sobaya_eye_lid_r.png",
+      "movement": "blink shutter opacity"
+    },
+    {
+      "name": "MouthSlot",
+      "file": "parts/sobaya_mouth_slot.png",
+      "movement": "microphone-linked vertical opening"
+    },
+    {
       "name": "MugHand",
       "file": "parts/sobaya_mug_hand.png",
       "movement": "small rigid bounce"
