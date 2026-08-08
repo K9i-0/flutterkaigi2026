@@ -1,4 +1,4 @@
 interface:
   display_name: "Seedance 動画制作"
-  short_description: "高密度アクションと完成VFXルックを使うSeedance動画資料を制作する"
-  default_prompt: "$seedanceを使い、窓際族物語の設定に従ってシーン地理、推薦速度に基づく秒区間ごとの詳細アクション、見せ場の完成VFXルックを含む用途別参照画像、正確な日本語音声を作成・監査してください。"
+  short_description: "公式2.5仕様で動画生成・編集・延長プロンプトを制作する"
+  default_prompt: "$seedanceを使い、公式Seedance 2.5仕様と窓際族物語の設定に従って、参照素材を個別マッピングした日本語動画プロンプトを作成・監査してください。"
