@@ -1,4 +1,4 @@
 interface:
   display_name: "映画ポスター制作"
-  short_description: "映画ポスターの2:3比率・SNS安全域・文字品質を統一"
-  default_prompt: "Use $create-movie-poster to create a production-ready movie poster with the shared aspect ratio and SNS-safe layout."
+  short_description: "初回3案と実写メンバーの正典顔を守る映画ポスター制作"
+  default_prompt: "Use $create-movie-poster to create three independent poster concepts while preserving the exact canonical faces of any live-action members."
