@@ -38,6 +38,7 @@ character_sheets:
   sobaya:
     file: characters/character_sobaya_basic_sheet.png
     canon: 02_CHARACTERS/01_Sobaya.md
+    invariant: 露出する顔、首、耳、腕、手の肌は全てニュートラルなグレー系で統一する。肌色や褐色へ変更しない
   takosan:
     file: characters/character_takosan_basic_sheet.png
     canon: 02_CHARACTERS/02_Takosan.md

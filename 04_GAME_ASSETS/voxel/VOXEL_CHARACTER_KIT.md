@@ -11,6 +11,13 @@ Three.jsのアクションAPIを共通化します。太い人型のそば屋、
 - `app/characters/voxel-character-kit.ts`: GLB読込と歩行・スマッシュ
 - `app/characters/sobaya.ts`: そば屋固有のサイズ・向き・モーション調整値
 
+## そば屋の固定デザイン
+
+- 露出する顔、首、耳、腕、手の肌は全てニュートラルなグレー系で統一する。
+- 肌色、褐色、青、緑など別の肌色へ変更しない。
+- 白い仮面、白い半袖Tシャツ、大型ビールジョッキを維持する。
+- `tools/build_sobaya_voxel_model.py`の`SobayaVoxel_Skin`と`SobayaVoxel_SkinLight`がグレー肌の正本マテリアルである。
+
 ## GLBの共通ノード
 
 | ノード | 用途 | 必須 |
