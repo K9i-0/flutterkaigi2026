@@ -1,8 +1,9 @@
-version: 4
+version: 5
 purpose: Seedance制作で再利用する正本テンプレート
 
 policy:
   basic_character_sheet: 03_SCRIPTS/00_TEMPLATES/characters/character_<name>_basic_sheet.png を再利用する
+  liveaction_identity_sheet: 実写人物は横3パネルを基本にする。左は正面の首なし全身、中央は自然な後頭部と首を含む背面全身、右は上下2分割した大きな3/4顔アップ（口を閉じた無表情／正典の歯を見せた自然な笑顔）。正面に顔・頭・首・首栓を描かず、背面に頬・鼻・横顔を出さない。文字、詳細図、色見本、追加ポーズを省き、顔アップへ画素を集中する
   media_basic_variant: 実写化など媒体だけを変えた汎用形は character_<name>_<medium>_basic_sheet.png としてテンプレートに置き、エピソード固有の衣装・能力・背景を混ぜない
   episode_character_sheet: 巨大化、変身、専用装備、ロボット化、負傷、特定モニターなど、その回だけの形態は 03_SCRIPTS/<NN>_<slug>/ に実ファイルで置く
   episode_usage: 基本形を使う場合は、出演者分だけをテンプレート正本からエピソードフォルダへ同名の実ファイルとしてコピーする。画像生成AIへ直接アップロードできるようシンボリックリンクは使わない
@@ -53,12 +54,19 @@ character_sheets:
   tokun:
     file: characters/character_tokun_basic_sheet.png
     canon: 02_CHARACTERS/03_Tokun.md
+    face_identity_canon: 02_CHARACTERS/Tokun.jpg
+    sheet_layout: 正面の首なし全身／帽子と自然な後頭部を含む背面全身／無表情と笑顔の大きな3/4顔アップ
+    invariant: ウクレレはストラップを付けず、正面で両手に持つ。背面にはウクレレ、楽器、ストラップを描かず、背中のアロハ柄を遮らない
   yotan:
     file: characters/character_yotan_basic_sheet.png
     canon: 02_CHARACTERS/04_Yotan.md
+    face_identity_canon: 02_CHARACTERS/Yotan.jpg
+    sheet_layout: 正面の首なし全身／自然な金髪後頭部を含む背面全身／無表情と笑顔の大きな3/4顔アップ
   fukuchan:
     file: characters/character_fukuchan_basic_sheet.png
     canon: 02_CHARACTERS/05_Fukuchan.md
+    face_identity_canon: 02_CHARACTERS/Fukuchan.jpg
+    sheet_layout: 正面の首なし全身／自然な黒髪後頭部を含む背面全身／無表情と笑顔の大きな3/4顔アップ
   yametaro:
     file: characters/character_yametaro_basic_sheet.png
     canon: 02_CHARACTERS/06_Yametaro.md
