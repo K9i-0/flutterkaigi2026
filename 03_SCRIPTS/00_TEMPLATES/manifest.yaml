@@ -13,6 +13,8 @@ policy:
   default_generation: モデル、解像度、尺の明示指定がなければSeedance 2.0・480p・15秒を選ぶ。Seedance 2.5、別解像度、別尺、Long Video、編集、延長、始終端、複数キーフレームはユーザーが明示指定した場合だけ使う。15秒を超える内容は既定の15秒クリップへ分割する
   official_seedance_2_5: ユーザーがSeedance 2.5を明示指定した場合だけ、.claude/skills/seedance/references/official_seedance_2_5_guide.md の素材上限、専用記法、Long Video、編集、延長、キーフレーム規則に従う
   action_description: 格闘、追跡、破壊、複雑なカメラはscript.mdのシーン地理と秒区間ごとの詳細テキストを正本にする。始終端・複数キーフレーム等はユーザーが明示指定した場合だけ使う
+  pacing_overlap: 会話、コメディ、登場、受け渡し、交換などはペースモードを選び、音声・主動作・副動作・カメラの4レーンへ分ける。完全直列にするのはハード依存だけとし、ソフト依存と並行可能イベントを同じ時間窓へ重ねる
+  cross_clip_design: 複数クリップをまたぐ固有の蓋、装備、傷、変形、小道具は共通の本番用参照画像を使い、各クリップで同じ素材番号と役割を維持する。普段は隠す意匠は中遠景で強調せず、指定した寄り画で初めて判読させる
   key_asset: 読ませる小道具・ロゴ・看板・画面は、imagegenで本番画質の1ファイル1アセットを作る
 
 directories:
@@ -104,6 +106,14 @@ action_prompt:
   continuity: 各秒区間の入口状態と出口状態を接続し、位置、向き、慣性、傷、破壊、小道具をリセットしない
   default_excluded_inputs: アクション絵コンテ、クレイプレビズ、矢印図、ブロッキング画像、旧失敗動画
   conditional_keyframes: 始終端・複数キーフレーム、グリッド絵コンテ、クレイ／ブロックアウトはSeedance 2.5対応機能だが、ユーザーが明示指定した場合だけ使う
+
+pacing_prompt:
+  source_of_truth: prompt/seedance_script_template.md
+  workflow: .claude/skills/seedance/references/pacing_overlap_workflow.md
+  required_for: 会話、コメディ、リアクション、登場、受け渡し、交換、組み立て、調理、および間延び・待ち・テンポに関するFB対応
+  lanes: 音声、主動作、副動作、カメラ
+  dependencies: ハード依存、ソフト依存、並行可能、演出上の待ち
+  duration_basis: 全イベントの直列合計ではなく、ハード依存だけをつないだクリティカルパスで判断する
 
 key_asset_generation:
   tool: imagegen
