@@ -14,6 +14,7 @@ policy:
   official_seedance_2_5: ユーザーがSeedance 2.5を明示指定した場合だけ、.claude/skills/seedance/references/official_seedance_2_5_guide.md の素材上限、専用記法、Long Video、編集、延長、キーフレーム規則に従う
   action_description: 格闘、追跡、破壊、複雑なカメラはscript.mdのシーン地理と秒区間ごとの詳細テキストを正本にする。始終端・複数キーフレーム等はユーザーが明示指定した場合だけ使う
   pacing_overlap: 会話、コメディ、登場、受け渡し、交換などはペースモードを選び、音声・主動作・副動作・カメラの4レーンへ分ける。完全直列にするのはハード依存だけとし、ソフト依存と並行可能イベントを同じ時間窓へ重ねる
+  voice_consistency: 02_CHARACTERS/VOICE_CAST.mdの正典話者は、固定モデル・参照WAV・既定seedからIrodori-TTSボイスサンプルを生成し、@AudioとしてSeedanceへ添付する。生成クリップの埋め込み音声を最終音声の正本にし、サンプルWAVをタイムラインへ重ねない
   deliverable_split: 制作設計と監査はscript.md、Seedanceへ貼り付ける本文はプレーンテキストのprompt.txtへ分離する。複数生成はprompt_clip_<id>.txtとして1回の生成につき1ファイルを作り、script.mdへプロンプト全文を重複掲載しない
   cross_clip_design: 複数クリップをまたぐ固有の蓋、装備、傷、変形、小道具は共通の本番用参照画像を使い、各クリップで同じ素材番号と役割を維持する。普段は隠す意匠は中遠景で強調せず、指定した寄り画で初めて判読させる
   key_asset: 読ませる小道具・ロゴ・看板・画面は、imagegenで本番画質の1ファイル1アセットを作る
