@@ -9,4 +9,5 @@
 やめたろうを「やめさん」と呼ぶ。語りは一人称SNS投稿風。
 NG変更: グレーの肌、仮面、ビールジョッキ。
 画像ファイル：Sobaya.jpg
+声ファイル：Sobaya_voice.wav（Irodori-TTSの正典参照音声。既定seedと必須後処理は`VOICE_CAST.md`を参照）
 ボクセルモデル：`04_GAME_ASSETS/voxel/models/sobaya.glb`（二足リグ＋ジョッキ用ハンドソケット。再生成は`04_GAME_ASSETS/voxel/tools/build_sobaya_voxel_model.py`）

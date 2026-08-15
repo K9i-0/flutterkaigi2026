@@ -5,4 +5,18 @@ node_modules/
 dist/
 .test-dist/
 .vite/
+.local/
 15_SOBA_VTUBER_WEB/public/mediapipe/
+
+# Local-only source media and generation outputs
+scratch/voice_extract/
+02_CHARACTERS/voice_generated/
+02_CHARACTERS/voice_quotes/*.[wW][aA][vV]
+02_CHARACTERS/voice_references/test_samples/
+03_SCRIPTS/**/voice_candidates/**/*.[wW][aA][vV]
+03_SCRIPTS/**/*.[mM][pP]4
+03_SCRIPTS/**/*.[mM][oO][vV]
+03_SCRIPTS/**/*.[wW][eE][bB][mM]
+03_SCRIPTS/**/*.[mM][kK][vV]
+03_SCRIPTS/**/*.[aA][vV][iI]
+03_SCRIPTS/**/*.[mM]4[vV]
