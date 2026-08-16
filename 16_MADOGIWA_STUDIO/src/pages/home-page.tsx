@@ -1,66 +1,65 @@
-import { ArrowUpRight, Film, Search, Sparkles, Users } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { ArrowRight, ArrowUpRight, BookOpen, Film, Gamepad2, Images, Play, Sparkles } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { api, type EpisodeSummary, type Member } from "@/lib/api";
-import { cn, formatDate } from "@/lib/utils";
+import { api, type EpisodeSummary } from "@/lib/api";
+import { articles, characters, comicEpisodes, galleryItems } from "@/lib/site-content";
 
 export function HomePage() {
   const [episodes, setEpisodes] = useState<EpisodeSummary[]>([]);
-  const [members, setMembers] = useState<Member[]>([]);
-  const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
-  const [query, setQuery] = useState("");
-  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Promise.all([api.listEpisodes(), api.listMembers()])
-      .then(([episodeResult, memberResult]) => {
-        setEpisodes(episodeResult.episodes);
-        setMembers(memberResult.members);
-      })
-      .catch((reason: unknown) => setError(reason instanceof Error ? reason.message : "読み込みに失敗しました"))
-      .finally(() => setLoading(false));
+    api.listEpisodes().then((result) => setEpisodes(result.episodes)).catch(() => setEpisodes([])).finally(() => setLoading(false));
   }, []);
 
-  const filtered = useMemo(() => {
-    const needle = query.trim().toLowerCase();
-    return episodes.filter((episode) => {
-      const haystack = `${episode.studio_id} ${episode.title} ${episode.summary} ${episode.members.map((member) => member.name).join(" ")}`.toLowerCase();
-      const matchesText = !needle || haystack.includes(needle);
-      const matchesMembers = selectedMembers.every((id) => episode.members.some((member) => member.id === id));
-      return matchesText && matchesMembers;
-    });
-  }, [episodes, query, selectedMembers]);
+  const featured = episodes.find((episode) => episode.primary_video_id) ?? episodes[0];
 
-  function toggleMember(id: string) {
-    setSelectedMembers((current) => current.includes(id) ? current.filter((item) => item !== id) : [...current, id]);
-  }
-
-  return <div className="space-y-10">
-    <section className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
-      <div className="max-w-3xl space-y-5">
-        <Badge className="border-amber-300/15 bg-amber-300/8 text-amber-200"><Sparkles className="mr-2 size-3" />Seedance production archive</Badge>
-        <h1 className="text-balance text-4xl font-semibold leading-[1.08] tracking-[-0.04em] sm:text-6xl">すべての物語を、<br /><span className="text-stone-500">再生成できる形で。</span></h1>
-        <p className="max-w-2xl text-sm leading-7 text-stone-400 sm:text-base">エピソードごとに、v1・v2の生成履歴、入力素材、採用プロンプト、生成動画をまとめて保管します。</p>
+  return <>
+    <section className="official-hero">
+      <div className="hero-media">
+        <img src="/site/hero-shibuya-wide.webp" alt="渋谷の中心に現れた巨大なそば屋" fetchPriority="high" />
       </div>
-      <div className="grid grid-cols-2 gap-3"><Metric label="Episodes" value={episodes.length} /><Metric label="Generations" value={episodes.reduce((sum, item) => sum + item.generation_count, 0)} /></div>
+      <div className="hero-shade" />
+      <div className="hero-copy">
+        <div className="hero-kicker"><span /> MADOGIWA MONOGATARI</div>
+        <h1>働かない。<br />でも、物語は<br /><em>動き出す。</em></h1>
+        <p>窓際から宇宙まで。AI映像、漫画、ゲームへと広がり続ける<br className="hidden sm:block" />“働かない人たち”の壮大でささやかな物語。</p>
+        <div className="hero-actions">
+          {featured ? <Link className="gold-button" to={`/episodes/${featured.slug}`}><Play fill="currentColor" /> 最新話を見る</Link> : <a className="gold-button" href="#movie"><Play fill="currentColor" /> 映像を見る</a>}
+          <a className="ghost-button" href="#comic">原作漫画へ <ArrowRight /></a>
+        </div>
+      </div>
+      <a className="hero-scroll" href="#contents"><span /> SCROLL</a>
     </section>
 
-    <section className="space-y-4">
-      <div className="relative max-w-lg"><Search className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-stone-600" /><Input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Studio ID、タイトル、メンバーで検索" className="h-12 rounded-full pl-11" /></div>
-      <div className="flex flex-wrap items-center gap-2"><span className="mr-1 flex items-center gap-1.5 text-xs text-stone-600"><Users className="size-3.5" />メンバー</span>{members.map((member) => <button key={member.id} onClick={() => toggleMember(member.id)} className={cn("rounded-full border px-3 py-1.5 text-xs transition", selectedMembers.includes(member.id) ? "border-amber-300/35 bg-amber-300/10 text-amber-200" : "border-white/8 bg-white/[0.025] text-stone-500 hover:border-white/15 hover:text-stone-300")}>{member.name}</button>)}{selectedMembers.length ? <button onClick={() => setSelectedMembers([])} className="px-2 text-xs text-stone-600 hover:text-stone-300">解除</button> : null}</div>
-    </section>
+    <div id="contents" className="official-content">
+      <Section id="movie" eyebrow="LATEST MOVIES" title="窓際から始まる、映像物語。" icon={<Film />} intro="新しいエピソードと、生成を重ねて進化していく物語。">
+        {loading ? <div className="loading-line">MOVIES LOADING...</div> : episodes.length ? <div className="movie-grid">{episodes.slice(0, 4).map((episode, index) => <Link key={episode.id} to={`/episodes/${episode.slug}`} className={index === 0 ? "movie-card movie-card-featured" : "movie-card"}><div className="movie-visual">{episode.primary_video_id ? <video src={`/media/${episode.primary_video_id}`} muted preload="metadata" /> : <img src="/site/hero-shibuya-wide.webp" alt="" />}<div className="movie-number">{String(index + 1).padStart(2, "0")}</div><span className="play-circle"><Play fill="currentColor" /></span></div><div className="movie-meta"><span>{episode.studio_id}</span><h3>{episode.title}</h3><p>{episode.summary || "窓際族たちの新しい物語。"}</p><small>{episode.generation_count} GENERATION{episode.generation_count === 1 ? "" : "S"}</small></div></Link>)}</div> : <div className="empty-feature">次の映像を準備しています。</div>}
+      </Section>
 
-    {error ? <div className="rounded-2xl border border-red-400/20 bg-red-400/8 p-4 text-sm text-red-200">{error}</div> : null}
-    {loading ? <div className="py-20 text-center text-sm text-stone-600">Archiveを読み込んでいます…</div> : null}
-    {!loading && !error ? <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">{filtered.map((episode) => <Link key={episode.id} to={`/episodes/${episode.slug}`} className="group block"><Card className="h-full overflow-hidden transition duration-300 hover:-translate-y-1 hover:border-amber-300/20 hover:bg-stone-900"><div className="relative aspect-video overflow-hidden border-b border-white/6 bg-[linear-gradient(135deg,#292524,#0c0a09)]">{episode.primary_video_id ? <video src={`/media/${episode.primary_video_id}`} muted preload="metadata" className="h-full w-full object-cover opacity-75 transition duration-500 group-hover:scale-[1.02] group-hover:opacity-100" /> : <div className="grid h-full place-items-center text-stone-700"><Film className="size-9" /></div>}<div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-stone-950/80 to-transparent" /><div className="absolute bottom-4 left-4 font-mono text-xs text-stone-300">{episode.studio_id}</div><div className="absolute bottom-4 right-4 rounded-full bg-black/50 px-2 py-1 font-mono text-[10px] text-stone-400">{episode.generation_count} version{episode.generation_count === 1 ? "" : "s"}</div></div><div className="space-y-4 p-5"><div className="flex items-start justify-between gap-4"><h2 className="text-lg font-medium tracking-tight text-stone-100">{episode.title}</h2><ArrowUpRight className="mt-1 size-4 shrink-0 text-stone-600 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-amber-300" /></div><p className="line-clamp-2 min-h-10 text-sm leading-6 text-stone-500">{episode.summary || "概要はまだ登録されていません。"}</p><div className="flex flex-wrap gap-1.5">{episode.members.map((member) => <span key={member.id} className="rounded-full bg-white/5 px-2 py-1 text-[10px] text-stone-500">{member.name}</span>)}</div><div className="flex items-center justify-between border-t border-white/6 pt-4 text-[11px] text-stone-600"><span>{episode.input_count} inputs · {episode.video_count} videos</span><span>{formatDate(episode.updated_at)}</span></div></div></Card></Link>)}</section> : null}
-    {!loading && !error && filtered.length === 0 ? <div className="rounded-3xl border border-dashed border-white/10 py-24 text-center text-sm text-stone-600">一致するエピソードはありません。</div> : null}
-  </div>;
+      <Section id="character" eyebrow="CHARACTER" title="窓際に集う、仲間たち。" icon={<Sparkles />} intro="働き方も、姿かたちも、ちょっと変わった登場人物。">
+        <div className="character-strip">{characters.map((character, index) => <article className="character-card" key={character.name}><img src={character.image} alt={character.name} loading="lazy" /><div><span>0{index + 1}</span><small>{character.role}</small><h3>{character.name}</h3><p>{character.copy}</p></div></article>)}</div>
+      </Section>
+
+      <Section id="comic" eyebrow="ORIGINAL COMIC" title="すべては、14話の漫画から。" icon={<BookOpen />} intro="入社初日、そこに自分の席はなかった。窓際族物語の原点を一気に読む。">
+        <div className="comic-grid">{comicEpisodes.map((episode) => <article key={episode.number} className="comic-card"><img src={episode.image} alt={`第${episode.number}話 ${episode.title}`} loading="lazy" /><div><span>第{String(episode.number).padStart(2, "0")}話</span><h3>{episode.title}</h3></div></article>)}</div>
+      </Section>
+
+      <Section id="gallery" eyebrow="GALLERY" title="物語から生まれた、もうひとつの景色。" icon={<Images />} intro="原作の外側へ広がるキービジュアル、世界観アート、特別作品。">
+        <div className="gallery-grid">{galleryItems.map((item, index) => <figure key={item.title} className={index === 0 ? "gallery-item gallery-wide" : "gallery-item"}><img src={item.image} alt={item.title} loading="lazy" /><figcaption><span>{item.kind}</span><b>{item.title}</b></figcaption></figure>)}</div>
+      </Section>
+
+      <Section id="game" eyebrow="GAME" title="遊べる窓際、営業中。" icon={<Gamepad2 />} intro="ドット絵、カード、レース。窓際族の世界へ、プレイヤーとして飛び込もう。">
+        <a className="game-banner" href="https://sobaya-0141.github.io/Seedance_Madogiwa/" target="_blank" rel="noreferrer"><img src="/site/game/arcade.webp" alt="窓際族物語ゲームセンター" loading="lazy" /><div><span>NOW PLAYING</span><h3>MADOGIWA<br />GAME CENTER</h3><p>ブラウザですぐ遊べる、窓際族物語のゲームコレクション。</p><b>ゲームセンターへ <ArrowUpRight /></b></div></a>
+      </Section>
+
+      <Section id="article" eyebrow="ARTICLE" title="物語の、その裏側へ。" icon={<BookOpen />} intro="作品を支える映像、音声、Web技術の制作ノート。">
+        <div className="article-grid">{articles.map((article, index) => <article key={article.title}><span>{article.label} · 0{index + 1}</span><h3>{article.title}</h3><p>{article.copy}</p><small>COMING SOON</small></article>)}</div>
+      </Section>
+    </div>
+  </>;
 }
 
-function Metric({ label, value }: { label: string; value: number }) {
-  return <div className="min-w-28 rounded-2xl border border-white/7 bg-white/[0.025] px-5 py-4"><div className="text-2xl font-semibold tabular-nums">{String(value).padStart(2, "0")}</div><div className="mt-1 text-[10px] uppercase tracking-[0.2em] text-stone-600">{label}</div></div>;
+function Section({ id, eyebrow, title, intro, icon, children }: { id: string; eyebrow: string; title: string; intro: string; icon: React.ReactNode; children: React.ReactNode }) {
+  return <section id={id} className="official-section"><header className="section-heading"><div className="section-icon">{icon}</div><div><span>{eyebrow}</span><h2>{title}</h2><p>{intro}</p></div></header>{children}</section>;
 }
