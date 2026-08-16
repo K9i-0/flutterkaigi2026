@@ -134,7 +134,6 @@ function ComicCarousel() {
               aria-label={`第${episode.number}話 ${episode.title}`}
             >
               <span className="comic-cover"><img src={episode.image} alt="" loading={index === 0 ? "eager" : "lazy"} /></span>
-              <span className="comic-card-meta"><small>第{String(episode.number).padStart(2, "0")}話</small><strong>{episode.title}</strong></span>
             </button>
           </article>;
         })}
