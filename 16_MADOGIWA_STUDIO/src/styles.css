@@ -64,7 +64,7 @@ button, summary, a { -webkit-tap-highlight-color: transparent; }
 .hero-media img,.hero-media video { object-fit: cover; filter: saturate(.72) contrast(1.08); }
 .hero-media img { object-position: center top; }
 .hero-media video { object-position: center; }
-.hero-shade { background: linear-gradient(90deg,rgba(5,5,4,.97) 0%,rgba(5,5,4,.78) 31%,rgba(5,5,4,.19) 64%,rgba(5,5,4,.58) 100%),linear-gradient(0deg,#080807 0%,transparent 35%,rgba(0,0,0,.3) 100%); }
+.hero-shade { background: linear-gradient(90deg,rgba(5,5,4,.97) 0%,rgba(5,5,4,.78) 31%,rgba(5,5,4,.19) 64%,rgba(5,5,4,.58) 100%),linear-gradient(0deg,#080807 0%,transparent 35%,rgba(0,0,0,.3) 100%); pointer-events: none; }
 .hero-copy { position: relative; z-index: 2; width: min(620px,88vw); padding: clamp(160px,22vh,230px) 0 100px clamp(24px,8vw,140px); }
 .hero-kicker { display: flex; align-items: center; gap: 13px; margin-bottom: 28px; color: #d5ad42; font-family: var(--font-mono); font-size: 9px; letter-spacing: .34em; }
 .hero-kicker span { width: 44px; height: 1px; background: #d5ad42; }

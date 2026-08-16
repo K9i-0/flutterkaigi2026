@@ -22,9 +22,7 @@ export function HomePage() {
   }), [episodes]);
   return <>
     <section className="official-hero">
-      <div className="hero-media">
-        <img src="/site/hero-shibuya-wide.webp" alt="渋谷の中心に現れた巨大なそば屋" fetchPriority="high" />
-      </div>
+      <ZoomableImage src="/site/hero-shibuya-wide.webp" alt="渋谷の中心に現れた巨大なそば屋" caption="窓際族物語 キービジュアル" fetchPriority="high" buttonClassName="hero-media" />
       <div className="hero-shade" />
       <div className="hero-copy">
         <div className="hero-kicker"><span /> MADOGIWAZOKU MONOGATARI</div>
