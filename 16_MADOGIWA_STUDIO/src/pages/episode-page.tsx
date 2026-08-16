@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { ZoomableImage } from "@/components/image-lightbox";
 import { api, type Generation, type InputAsset } from "@/lib/api";
 import { cn, formatBytes, formatDate } from "@/lib/utils";
 
@@ -54,7 +55,7 @@ function InputAssetsSection({ assets }: { assets: InputAsset[] }) {
 function InputAssetCard({ asset }: { asset: InputAsset }) {
   const url = `/inputs/${asset.id}`;
   const icon = asset.kind === "image" ? <ImageIcon className="size-4 text-sky-300" /> : asset.kind === "audio" ? <Music2 className="size-4 text-violet-300" /> : <FileText className="size-4 text-stone-400" />;
-  return <Card className="overflow-hidden">{asset.kind === "image" ? <a href={url} target="_blank" rel="noreferrer"><img src={url} alt={asset.label} loading="lazy" className="aspect-video w-full bg-black/30 object-contain" /></a> : null}{asset.kind === "audio" ? <div className="border-b border-white/6 bg-gradient-to-br from-violet-400/[0.08] to-transparent p-5"><audio src={url} controls preload="metadata" className="h-10 w-full" /></div> : null}<CardContent className="pt-5"><div className="flex items-start justify-between gap-3"><div className="flex min-w-0 items-start gap-3">{icon}<div className="min-w-0"><div className="truncate text-sm font-medium">{asset.label}</div><div className="mt-1 text-[10px] text-stone-600">{asset.reference_label || asset.kind} · {formatBytes(asset.size_bytes)}</div></div></div>{asset.kind === "document" || asset.kind === "other" ? <Button variant="ghost" size="icon" asChild><a href={url}><Download className="size-4" /></a></Button> : null}</div>{asset.notes ? <p className="mt-3 text-xs leading-5 text-stone-500">{asset.notes}</p> : null}<div className="mt-3 truncate font-mono text-[10px] text-stone-700">{asset.filename}</div></CardContent></Card>;
+  return <Card className="overflow-hidden">{asset.kind === "image" ? <ZoomableImage src={url} alt={asset.label} caption={asset.notes || asset.reference_label || undefined} loading="lazy" buttonClassName="episode-input-image-trigger" className="aspect-video w-full bg-black/30 object-contain" /> : null}{asset.kind === "audio" ? <div className="border-b border-white/6 bg-gradient-to-br from-violet-400/[0.08] to-transparent p-5"><audio src={url} controls preload="metadata" className="h-10 w-full" /></div> : null}<CardContent className="pt-5"><div className="flex items-start justify-between gap-3"><div className="flex min-w-0 items-start gap-3">{icon}<div className="min-w-0"><div className="truncate text-sm font-medium">{asset.label}</div><div className="mt-1 text-[10px] text-stone-600">{asset.reference_label || asset.kind} · {formatBytes(asset.size_bytes)}</div></div></div>{asset.kind === "document" || asset.kind === "other" ? <Button variant="ghost" size="icon" asChild><a href={url}><Download className="size-4" /></a></Button> : null}</div>{asset.notes ? <p className="mt-3 text-xs leading-5 text-stone-500">{asset.notes}</p> : null}<div className="mt-3 truncate font-mono text-[10px] text-stone-700">{asset.filename}</div></CardContent></Card>;
 }
 
 function PromptBlock({ body }: { body: string }) {

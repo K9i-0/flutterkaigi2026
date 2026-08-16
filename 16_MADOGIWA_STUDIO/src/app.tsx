@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Toaster } from "sonner";
 import { Layout } from "@/components/layout";
+import { ImageLightboxProvider } from "@/components/image-lightbox";
 import { AdminPage } from "@/pages/admin-page";
 import { EpisodePage } from "@/pages/episode-page";
 import { HomePage } from "@/pages/home-page";
@@ -21,5 +22,5 @@ const router = createBrowserRouter([
 ]);
 
 export function App() {
-  return <><RouterProvider router={router} /><Toaster theme="dark" richColors position="bottom-right" /></>;
+  return <ImageLightboxProvider><RouterProvider router={router} /><Toaster theme="dark" richColors position="bottom-right" /></ImageLightboxProvider>;
 }

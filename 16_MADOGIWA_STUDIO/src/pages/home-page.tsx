@@ -1,7 +1,8 @@
-import { ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, Film, Gamepad2, Images, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, Film, Gamepad2, Images, Maximize2, Sparkles } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { MovieCard } from "@/components/movie-card";
+import { useImageLightbox, ZoomableImage } from "@/components/image-lightbox";
 import { api, type EpisodeSummary } from "@/lib/api";
 import { articles, characters, comicEpisodes, galleryItems } from "@/lib/site-content";
 
@@ -40,7 +41,7 @@ export function HomePage() {
       </Section>
 
       <Section id="character" eyebrow="CHARACTER" title="窓際に集う、仲間たち。" icon={<Sparkles />} intro="働き方も、姿かたちも、ちょっと変わった登場人物。">
-        <div className="character-strip">{characters.map((character, index) => <article className="character-card" key={character.name}><img src={character.image} alt={character.name} loading="lazy" /><div><span>0{index + 1}</span><small>{character.role}</small><h3>{character.name}</h3><p>{character.copy}</p></div></article>)}</div>
+        <div className="character-strip">{characters.map((character, index) => <article className="character-card" key={character.name}><ZoomableImage src={character.image} alt={character.name} caption={character.copy} loading="lazy" buttonClassName="character-image-trigger" /><div><span>0{index + 1}</span><small>{character.role}</small><h3>{character.name}</h3><p>{character.copy}</p></div></article>)}</div>
       </Section>
 
       <Section id="comic" eyebrow="ORIGINAL COMIC" title="すべては、14話の漫画から。" icon={<BookOpen />} intro="入社初日、そこに自分の席はなかった。窓際族物語の原点を一気に読む。">
@@ -48,7 +49,7 @@ export function HomePage() {
       </Section>
 
       <Section id="gallery" eyebrow="GALLERY" title="物語から生まれた、もうひとつの景色。" icon={<Images />} intro="原作の外側へ広がるキービジュアル、世界観アート、特別作品。">
-        <div className="gallery-grid">{galleryItems.map((item, index) => <figure key={item.title} className={index === 0 ? "gallery-item gallery-wide" : "gallery-item"}><img src={item.image} alt={item.title} loading="lazy" /><figcaption><span>{item.kind}</span><b>{item.title}</b></figcaption></figure>)}</div>
+        <div className="gallery-grid">{galleryItems.map((item, index) => <figure key={item.title} className={index === 0 ? "gallery-item gallery-wide" : "gallery-item"}><ZoomableImage src={item.image} alt={item.title} caption={item.kind} loading="lazy" buttonClassName="gallery-image-trigger" /><figcaption><span>{item.kind}</span><b>{item.title}</b></figcaption></figure>)}</div>
       </Section>
 
       <Section id="game" eyebrow="GAME" title="遊べる窓際、営業中。" icon={<Gamepad2 />} intro="ドット絵、カード、レース。窓際族の世界へ、プレイヤーとして飛び込もう。">
@@ -67,6 +68,7 @@ function Section({ id, eyebrow, title, intro, icon, children }: { id: string; ey
 }
 
 function ComicCarousel() {
+  const { openImage } = useImageLightbox();
   const [selectedComic, setSelectedComic] = useState(1);
   const carouselRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<Array<HTMLElement | null>>([]);
@@ -152,11 +154,18 @@ function ComicCarousel() {
           >
             <button
               type="button"
-              onClick={() => selectComic(index)}
+              onClick={(event) => {
+                selectComic(index);
+                openImage({
+                  src: episode.image,
+                  alt: `第${episode.number}話 ${episode.title}`,
+                  caption: episode.description,
+                }, event.currentTarget);
+              }}
               aria-pressed={selected}
               aria-label={`第${episode.number}話 ${episode.title}`}
             >
-              <span className="comic-cover"><img src={episode.image} alt="" loading={index === 0 ? "eager" : "lazy"} /></span>
+              <span className="comic-cover"><img src={episode.image} alt="" loading={index === 0 ? "eager" : "lazy"} /><span className="zoomable-image-cue" aria-hidden="true"><Maximize2 /></span></span>
             </button>
           </article>;
         })}
