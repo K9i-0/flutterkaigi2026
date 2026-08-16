@@ -72,12 +72,11 @@ button, summary, a { -webkit-tap-highlight-color: transparent; }
 .section-heading p { margin: 0; color: #7f7a70; font-size: 13px; line-height: 1.9; }
 .loading-line,.empty-feature { padding: 70px; border: 1px solid rgba(255,255,255,.08); color: #8e846f; text-align: center; font-family: var(--font-mono); font-size: 10px; letter-spacing: .25em; }
 
-.movie-filters { display: flex; align-items: center; justify-content: space-between; margin: -24px 0 22px; }
-.movie-filters>div { display: flex; gap: 7px; }
-.movie-filters button { display: inline-flex; min-height: 36px; align-items: center; gap: 6px; padding: 0 15px; border: 1px solid rgba(255,255,255,.1); border-radius: 999px; background: #0d0c0a; color: #77726a; cursor: pointer; font-size: 10px; transition: .2s; }
-.movie-filters button svg { width: 12px; }
-.movie-filters button.active { border-color: rgba(218,170,47,.45); background: rgba(218,170,47,.1); color: #e4b840; }
-.movie-filters>span { color: #5f5a52; font-family: var(--font-mono); font-size: 8px; letter-spacing: .2em; }
+.movie-section-link { display: flex; align-items: center; justify-content: space-between; margin: -24px 0 22px; }
+.movie-section-link>span,.archive-count { color: #5f5a52; font-family: var(--font-mono); font-size: 8px; letter-spacing: .2em; }
+.movie-section-link>a,.archive-back { display: inline-flex; align-items: center; gap: 9px; color: #d4a837; font-family: var(--font-mono); font-size: 9px; letter-spacing: .12em; text-decoration: none; }
+.movie-section-link>a svg,.archive-back svg { width: 14px; transition: transform .2s; }
+.movie-section-link>a:hover svg { transform: translateX(4px); }
 .movie-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
 .movie-card { min-width: 0; border: 1px solid rgba(255,255,255,.1); background: #100f0d; color: white; text-decoration: none; transition: border-color .25s,transform .25s; }
 .movie-card-featured { grid-column: span 2; }
@@ -171,6 +170,16 @@ button, summary, a { -webkit-tap-highlight-color: transparent; }
 .official-footer>a { display: inline-flex; align-items: center; gap: 6px; color: #4f4b44; font-family: var(--font-mono); font-size: 7px; letter-spacing: .2em; text-decoration: none; }
 .official-footer>small { font-size: 8px; letter-spacing: .15em; }
 .official-inner { max-width: 1280px; min-height: 75vh; margin: 0 auto; padding: 140px 25px 80px; }
+.movies-archive { min-height: 70vh; }
+.archive-back { margin-bottom: 55px; color: #777166; }
+.archive-back:hover { color: #d4a837; }
+.archive-back:hover svg { transform: translateX(-4px); }
+.archive-heading { display: grid; grid-template-columns: 46px minmax(0,1fr); gap: 23px; align-items: start; max-width: 820px; }
+.archive-heading>div:last-child>span { color: #c99c2f; font-family: var(--font-mono); font-size: 9px; letter-spacing: .32em; }
+.archive-heading h1 { margin: 10px 0 13px; font-family: "Noto Serif JP",YuMincho,serif; font-size: clamp(34px,5vw,62px); letter-spacing: -.045em; }
+.archive-heading p { margin: 0; color: #817b71; font-size: 13px; line-height: 1.9; }
+.archive-count { margin: 62px 0 20px; padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,.08); }
+.movie-archive-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
 
 @media (max-width: 980px) {
   .official-nav { display: none; } .mobile-menu { display: block; }
@@ -178,6 +187,7 @@ button, summary, a { -webkit-tap-highlight-color: transparent; }
   .character-strip { grid-template-columns: repeat(2,1fr); }
   .comic-carousel-layout { --comic-card-width: clamp(220px,38vw,300px); }
   .comic-detail { grid-template-columns: 105px minmax(0,1fr); } .comic-controls { grid-column: 2; justify-self: start; }
+  .movie-archive-grid { grid-template-columns: repeat(2,1fr); }
   .gallery-grid { grid-template-columns: repeat(2,1fr); }
   .article-grid { grid-template-columns: 1fr; } .article-grid article { border-right: 0; }
 }
@@ -201,7 +211,9 @@ button, summary, a { -webkit-tap-highlight-color: transparent; }
   .comic-detail-copy p { grid-column: 1/-1; font-size: 11px; }
   .comic-controls { grid-column: 1/-1; justify-self: stretch; } .comic-controls>div { max-width: none; }
   .comic-scroll-hint { margin-top: 14px; padding-inline: 22px; }
-  .movie-filters { align-items: flex-end; margin-top: -12px; } .movie-filters>span { display: none; }
+  .movie-section-link { align-items: flex-end; margin-top: -12px; }
+  .archive-heading { grid-template-columns: 36px minmax(0,1fr); gap: 15px; } .archive-count { margin-top: 42px; }
+  .movie-archive-grid { grid-template-columns: 1fr; }
   .gallery-grid { display: grid; grid-template-columns: 1fr; grid-auto-rows: 260px; } .gallery-wide { grid-column: auto; grid-row: auto; }
   .game-banner>div { padding: 60px 30px; } .article-grid article { padding: 28px 8px; }
 }

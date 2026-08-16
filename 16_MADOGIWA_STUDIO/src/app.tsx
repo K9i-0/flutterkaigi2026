@@ -4,6 +4,7 @@ import { Layout } from "@/components/layout";
 import { AdminPage } from "@/pages/admin-page";
 import { EpisodePage } from "@/pages/episode-page";
 import { HomePage } from "@/pages/home-page";
+import { MoviesPage } from "@/pages/movies-page";
 import { NotFoundPage } from "@/pages/not-found-page";
 
 const router = createBrowserRouter([
@@ -11,6 +12,7 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { path: "/", element: <HomePage /> },
+      { path: "/movies", element: <MoviesPage /> },
       { path: "/episodes/:slug", element: <EpisodePage /> },
       { path: "/admin", element: <AdminPage /> },
       { path: "*", element: <NotFoundPage /> },
