@@ -1,6 +1,5 @@
-import { ArrowLeft, Check, Film, Star, Users } from "lucide-react";
+import { Check, Film, Star, Users } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
 import { MovieCard } from "@/components/movie-card";
 import { api, type EpisodeSummary } from "@/lib/api";
 import { characters } from "@/lib/site-content";
@@ -33,14 +32,13 @@ export function MoviesPage() {
   }
 
   return <div className="movies-archive">
-    <Link to="/#movie" className="archive-back"><ArrowLeft /> 公式サイトへ戻る</Link>
     <header className="archive-heading">
       <div className="section-icon"><Film /></div>
-      <div><span>MOVIE ARCHIVE</span><h1>すべての映像物語。</h1><p>窓際族物語から生まれた動画を、新しい作品からまとめて楽しめます。</p></div>
+      <div><span>MOVIE ARCHIVE</span><h1>すべての映像物語。</h1></div>
     </header>
     <section className="movie-filters" aria-label="動画の絞り込み">
       <div className="movie-filter-heading">
-        <div><Users /><span>CHARACTERS</span><small>登場メンバーで絞り込む</small></div>
+        <div><Users /><span>CHARACTERS</span></div>
         <button type="button" className="featured-only-toggle" role="switch" aria-checked={featuredOnly} onClick={() => setFeaturedOnly((current) => !current)}>
           <Star fill={featuredOnly ? "currentColor" : "none"} />
           <span>イチオシのみ</span>

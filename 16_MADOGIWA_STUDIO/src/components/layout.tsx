@@ -28,7 +28,7 @@ export function Layout() {
           <nav>{[["CHARACTER", "#character"], ["COMIC", "#comic"], ["GALLERY", "#gallery"], ["MOVIE", "#movie"], ["GAME", "#game"], ["ARTICLE", "#article"]].map(([label, href]) => <a key={label} href={`/${href}`}>{label}</a>)}</nav>
         </details>
       </header>
-      <main className={pathname === "/" ? "" : "official-inner"}><Outlet /></main>
+      <main className={pathname === "/" ? "" : cn("official-inner", pathname === "/movies" && "official-inner-movies")}><Outlet /></main>
       <footer className="official-footer">
         <div className="official-logo"><img src="/site/sobaya-icon.jpg" alt="" /><span><b>窓際族物語</b><small>MADOGIWAZOKU MONOGATARI</small></span></div>
         <p>働かない。でも、物語は動き出す。</p>
