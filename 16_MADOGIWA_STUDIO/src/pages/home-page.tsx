@@ -42,7 +42,7 @@ export function HomePage() {
     <div id="contents" className="official-content">
       <Section id="movie" eyebrow="FEATURED MOVIES" title="最新のイチオシ動画。" icon={<Film />} intro="窓際族物語から、いま見てほしい映像を新しい順に。">
         <div className="movie-section-link"><span>{prioritizedEpisodes.length} PICKS</span><Link to="/movies">動画一覧を見る <ArrowRight /></Link></div>
-        {loading ? <div className="loading-line">MOVIES LOADING...</div> : prioritizedEpisodes.length ? <div className="movie-grid">{prioritizedEpisodes.slice(0, 4).map((episode, index) => <MovieCard key={episode.id} episode={episode} index={index} featuredLayout={index === 0} />)}</div> : <div className="empty-feature">イチオシ動画を準備しています。</div>}
+        {loading ? <div className="loading-line">MOVIES LOADING...</div> : prioritizedEpisodes.length ? <div className="movie-grid">{prioritizedEpisodes.slice(0, 4).map((episode, index) => <MovieCard key={episode.id} episode={episode} index={index} featuredLayout={index === 0} inlinePlayback />)}</div> : <div className="empty-feature">イチオシ動画を準備しています。</div>}
       </Section>
 
       <Section id="character" eyebrow="CHARACTER" title="窓際に集う、仲間たち。" icon={<Sparkles />} intro="働き方も、姿かたちも、ちょっと変わった登場人物。">
