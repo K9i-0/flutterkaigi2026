@@ -1,12 +1,12 @@
 export const characters = [
-  { name: "そば屋", role: "窓際族 / 立ち飲み処 店主", image: "/site/characters/sobaya.webp", copy: "見た目は怖いが、穏やかでマイペース。今日も窓際でビールを注ぐ。" },
-  { name: "無職やめ太郎", role: "逃走中", image: "/site/characters/yametaro.webp", copy: "紫のシャツと眼鏡が目印。窓際から始まる騒動の中心人物。" },
-  { name: "タコさん", role: "謎の宇宙人", image: "/site/characters/takosan.webp", copy: "フードと触手を持つ謎の存在。タコ部屋からやってきた。" },
-  { name: "福ちゃん", role: "窓際族", image: "/site/characters/fukuchan.webp", copy: "いつでも自然体。窓際の日常を明るくするムードメーカー。" },
-  { name: "とーくん", role: "社長", image: "/site/characters/tokun.webp", copy: "アロハとウクレレがトレードマークの陽気な社長。" },
-  { name: "よーたん", role: "CTO", image: "/site/characters/yotan.webp", copy: "金髪ロックな技術責任者。ギターと新技術を愛している。" },
-  { name: "窓際王おかやまん", role: "窓際王", image: "/site/characters/okayaman.webp", copy: "すべての窓際族を静かに見守る、伝説の王。" },
-  { name: "ゆめみん", role: "夢の案内役", image: "/site/characters/yumemin.webp", copy: "空を飛ぶ青いバク。大きなハンマーを携え、夢を渡り歩く。" },
+  { id: "sobaya", name: "そば屋", role: "窓際族 / 立ち飲み処 店主", image: "/site/characters/sobaya.webp", copy: "見た目は怖いが、穏やかでマイペース。今日も窓際でビールを注ぐ。" },
+  { id: "yametaro", name: "無職やめ太郎", role: "逃走中", image: "/site/characters/yametaro.webp", copy: "紫のシャツと眼鏡が目印。窓際から始まる騒動の中心人物。" },
+  { id: "takosan", name: "タコさん", role: "謎の宇宙人", image: "/site/characters/takosan.webp", copy: "フードと触手を持つ謎の存在。タコ部屋からやってきた。" },
+  { id: "fukuchan", name: "福ちゃん", role: "窓際族", image: "/site/characters/fukuchan.webp", copy: "いつでも自然体。窓際の日常を明るくするムードメーカー。" },
+  { id: "tokun", name: "とーくん", role: "社長", image: "/site/characters/tokun.webp", copy: "アロハとウクレレがトレードマークの陽気な社長。" },
+  { id: "yotan", name: "よーたん", role: "CTO", image: "/site/characters/yotan.webp", copy: "金髪ロックな技術責任者。ギターと新技術を愛している。" },
+  { id: "okayaman", name: "窓際王おかやまん", role: "窓際王", image: "/site/characters/okayaman.webp", copy: "すべての窓際族を静かに見守る、伝説の王。" },
+  { id: "yumemin", name: "ゆめみん", role: "夢の案内役", image: "/site/characters/yumemin.webp", copy: "空を飛ぶ青いバク。大きなハンマーを携え、夢を渡り歩く。" },
 ] as const;
 
 export const comicEpisodes = [
