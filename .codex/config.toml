@@ -36,3 +36,31 @@ enabled_tools = [
   "get_widget_tree",
   "get_runtime_errors",
 ]
+
+[mcp_servers.cloudflare]
+url = "https://mcp.cloudflare.com/mcp"
+auth = "oauth"
+default_tools_approval_mode = "writes"
+
+[mcp_servers.cloudflare-docs]
+url = "https://docs.mcp.cloudflare.com/mcp"
+
+[mcp_servers.cloudflare-bindings]
+url = "https://bindings.mcp.cloudflare.com/mcp"
+auth = "oauth"
+default_tools_approval_mode = "writes"
+
+[mcp_servers.cloudflare-builds]
+url = "https://builds.mcp.cloudflare.com/mcp"
+auth = "oauth"
+default_tools_approval_mode = "writes"
+
+[mcp_servers.cloudflare-observability]
+url = "https://observability.mcp.cloudflare.com/mcp"
+auth = "oauth"
+default_tools_approval_mode = "writes"
+
+[mcp_servers.madogiwa-studio]
+url = "https://madogiwa-studio.madogiwa-studio.workers.dev/mcp"
+auth = "oauth"
+default_tools_approval_mode = "writes"
