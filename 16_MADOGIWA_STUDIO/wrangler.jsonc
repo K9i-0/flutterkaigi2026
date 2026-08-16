@@ -1,0 +1,44 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "madogiwa-studio",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-08-16",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "./dist/client",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*", "/admin-api/*", "/media/*", "/inputs/*", "/mcp", "/mcp/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "madogiwa-studio",
+      "database_id": "b662524a-1ac8-486c-a6c8-f701addc01c8"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "madogiwa-studio-media"
+    }
+  ],
+  "vars": {
+    "POLICY_AUD": "60f32d3fabef3ff2ca39f103c11faea5413182e9a4b21de0c48c91c7627ed715",
+    "TEAM_DOMAIN": "https://twilight-cell-c08f.cloudflareaccess.com"
+  },
+  "access": {
+    "dev": {
+      "aud": "madogiwa-studio-local",
+      "identity": {
+        "email": "local@madogiwa.studio",
+        "name": "Local developer"
+      }
+    }
+  },
+  "observability": {
+    "enabled": true,
+    "logs": { "head_sampling_rate": 1 },
+    "traces": { "enabled": true, "head_sampling_rate": 0.05 }
+  }
+}

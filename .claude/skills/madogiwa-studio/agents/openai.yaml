@@ -1,0 +1,15 @@
+interface:
+  display_name: "Madogiwa Studio"
+  short_description: "動画・プロンプト・入力素材をRemote MCP経由で管理"
+  default_prompt: "Use $madogiwa-studio to register this episode, its prompt, inputs, and generated video in Madogiwa Studio."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "madogiwa-studio"
+      description: "Madogiwa Studio episode, prompt, input asset, and video management"
+      transport: "streamable_http"
+      url: "https://madogiwa-studio.madogiwa-studio.workers.dev/mcp"
+
+policy:
+  allow_implicit_invocation: true
