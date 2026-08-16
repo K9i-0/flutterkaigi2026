@@ -53,12 +53,6 @@ button, summary, a { -webkit-tap-highlight-color: transparent; }
 .hero-copy h1 { margin: 0; font-family: "Noto Serif JP",YuMincho,"Yu Mincho",serif; font-size: clamp(48px,5.7vw,86px); font-weight: 600; line-height: 1.12; letter-spacing: -.05em; text-shadow: 0 2px 25px #000; }
 .hero-copy h1 em { color: #e3b43a; font-style: normal; }
 .hero-copy p { margin: 28px 0 0; color: #c4bfb3; font-size: 13px; line-height: 2; }
-.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
-.gold-button,.ghost-button { display: inline-flex; min-height: 50px; align-items: center; justify-content: center; gap: 10px; padding: 0 25px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-decoration: none; transition: transform .2s,background .2s; }
-.gold-button { background: #dda91c; color: #090806; box-shadow: 0 10px 40px rgba(221,169,28,.17); }
-.ghost-button { border: 1px solid rgba(255,255,255,.3); color: white; backdrop-filter: blur(8px); }
-.gold-button:hover,.ghost-button:hover { transform: translateY(-2px); }
-.gold-button svg,.ghost-button svg { width: 14px; }
 .hero-scroll { position: absolute; z-index: 3; right: clamp(24px,4vw,64px); bottom: 38px; display: flex; align-items: center; gap: 13px; color: #9a9282; font-family: var(--font-mono); font-size: 8px; letter-spacing: .3em; text-decoration: none; writing-mode: vertical-rl; }
 .hero-scroll span { width: 1px; height: 45px; background: #b78e25; }
 
@@ -112,7 +106,7 @@ button, summary, a { -webkit-tap-highlight-color: transparent; }
 
 .comic-carousel-layout { --comic-card-width: clamp(230px,24vw,330px); }
 .comic-carousel-frame { position: relative; overflow: hidden; border-block: 1px solid rgba(255,255,255,.07); }
-.comic-carousel { display: flex; gap: clamp(10px,1.7vw,24px); overflow-x: auto; padding: 42px calc((100% - var(--comic-card-width))/2); scroll-behavior: smooth; scroll-padding-inline: calc((100% - var(--comic-card-width))/2); scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-inline: contain; }
+.comic-carousel { position: relative; display: flex; gap: clamp(10px,1.7vw,24px); overflow-x: auto; padding: 42px calc((100% - var(--comic-card-width))/2); scroll-behavior: smooth; scroll-padding-inline: calc((100% - var(--comic-card-width))/2); scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-inline: contain; }
 .comic-carousel::-webkit-scrollbar { display: none; }
 .comic-card { flex: 0 0 var(--comic-card-width); scroll-snap-align: center; opacity: .38; transform: scale(.82); transform-origin: center; transition: opacity .35s ease,transform .35s cubic-bezier(.2,.75,.25,1); }
 .comic-card>button { display: block; width: 100%; padding: 0; border: 0; background: transparent; color: inherit; cursor: pointer; text-align: left; }
@@ -201,7 +195,7 @@ button, summary, a { -webkit-tap-highlight-color: transparent; }
   .official-hero { min-height: 760px; } .hero-media,.hero-shade { top: 68px; height: calc(100% - 68px); } .hero-media img { object-position: center top; } .hero-media video { object-position: center; }
   .hero-shade { background: linear-gradient(90deg,rgba(5,5,4,.9),rgba(5,5,4,.3)),linear-gradient(0deg,#080807 2%,transparent 58%,rgba(0,0,0,.4)); }
   .hero-copy { padding-top: 155px; padding-left: 24px; } .hero-copy p { max-width: 310px; }
-  .hero-actions { display: grid; width: 230px; } .hero-scroll { display: none; }
+  .hero-scroll { display: none; }
   .official-section { padding-top: 80px; padding-bottom: 80px; }
   .section-heading { grid-template-columns: 36px minmax(0,1fr); gap: 15px; } .section-icon { width: 36px; height: 36px; }
   .movie-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; } .movie-card,.movie-card-featured { min-width: 84vw; scroll-snap-align: start; }

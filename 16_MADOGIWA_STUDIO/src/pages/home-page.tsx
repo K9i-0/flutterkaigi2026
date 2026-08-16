@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, Film, Gamepad2, Images, Play, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, Film, Gamepad2, Images, Sparkles } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { MovieCard } from "@/components/movie-card";
@@ -19,8 +19,6 @@ export function HomePage() {
     const rightDate = right.has_featured_video ? right.featured_video_created_at : right.updated_at;
     return String(rightDate ?? "").localeCompare(String(leftDate ?? ""));
   }), [episodes]);
-  const featured = prioritizedEpisodes.find((episode) => episode.primary_video_id) ?? prioritizedEpisodes[0];
-
   return <>
     <section className="official-hero">
       <div className="hero-media">
@@ -31,10 +29,6 @@ export function HomePage() {
         <div className="hero-kicker"><span /> MADOGIWAZOKU MONOGATARI</div>
         <h1>働かない。<br />でも、物語は<br /><em>動き出す。</em></h1>
         <p>窓際から宇宙まで。AI映像、漫画、ゲームへと広がり続ける<br className="hidden sm:block" />“働かない人たち”の壮大でささやかな物語。</p>
-        <div className="hero-actions">
-          {featured ? <Link className="gold-button" to={`/episodes/${featured.slug}`}><Play fill="currentColor" /> 最新話を見る</Link> : <a className="gold-button" href="#movie"><Play fill="currentColor" /> 映像を見る</a>}
-          <a className="ghost-button" href="#comic">原作漫画へ <ArrowRight /></a>
-        </div>
       </div>
       <a className="hero-scroll" href="#contents"><span /> SCROLL</a>
     </section>
@@ -75,18 +69,37 @@ function Section({ id, eyebrow, title, intro, icon, children }: { id: string; ey
 function ComicCarousel() {
   const [selectedComic, setSelectedComic] = useState(1);
   const carouselRef = useRef<HTMLDivElement>(null);
-  const cardRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const cardRefs = useRef<Array<HTMLElement | null>>([]);
   const scrollFrame = useRef<number | null>(null);
+  const programmaticScroll = useRef(false);
+  const scrollStopTimer = useRef<number | null>(null);
   const selectedEpisode = comicEpisodes[selectedComic - 1] ?? comicEpisodes[0];
 
   useEffect(() => () => {
     if (scrollFrame.current !== null) cancelAnimationFrame(scrollFrame.current);
+    if (scrollStopTimer.current !== null) window.clearTimeout(scrollStopTimer.current);
   }, []);
 
   function selectComic(index: number, behavior: ScrollBehavior = "smooth") {
     const boundedIndex = Math.max(0, Math.min(comicEpisodes.length - 1, index));
     setSelectedComic(comicEpisodes[boundedIndex].number);
-    cardRefs.current[boundedIndex]?.scrollIntoView({ behavior, block: "nearest", inline: "center" });
+    const carousel = carouselRef.current;
+    const card = cardRefs.current[boundedIndex];
+    if (!carousel || !card) return;
+
+    const centeredLeft = card.offsetLeft + card.offsetWidth / 2 - carousel.clientWidth / 2;
+    if (scrollStopTimer.current !== null) window.clearTimeout(scrollStopTimer.current);
+    programmaticScroll.current = behavior === "smooth";
+    carousel.scrollTo({ left: Math.max(0, centeredLeft), behavior });
+
+    if (behavior === "smooth") {
+      scrollStopTimer.current = window.setTimeout(() => {
+        programmaticScroll.current = false;
+        updateCenteredComic();
+      }, 600);
+    } else {
+      programmaticScroll.current = false;
+    }
   }
 
   function updateCenteredComic() {
@@ -109,6 +122,14 @@ function ComicCarousel() {
   }
 
   function handleScroll() {
+    if (programmaticScroll.current) {
+      if (scrollStopTimer.current !== null) window.clearTimeout(scrollStopTimer.current);
+      scrollStopTimer.current = window.setTimeout(() => {
+        programmaticScroll.current = false;
+        updateCenteredComic();
+      }, 120);
+      return;
+    }
     if (scrollFrame.current !== null) cancelAnimationFrame(scrollFrame.current);
     scrollFrame.current = requestAnimationFrame(updateCenteredComic);
   }
@@ -124,9 +145,12 @@ function ComicCarousel() {
       >
         {comicEpisodes.map((episode, index) => {
           const selected = selectedComic === episode.number;
-          return <article key={episode.number} className={`comic-card${selected ? " comic-card-selected" : ""}`}>
+          return <article
+            key={episode.number}
+            ref={(element) => { cardRefs.current[index] = element; }}
+            className={`comic-card${selected ? " comic-card-selected" : ""}`}
+          >
             <button
-              ref={(element) => { cardRefs.current[index] = element; }}
               type="button"
               onClick={() => selectComic(index)}
               aria-pressed={selected}
