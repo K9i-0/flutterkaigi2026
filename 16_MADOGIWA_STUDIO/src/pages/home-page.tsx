@@ -56,7 +56,7 @@ export function HomePage() {
       </Section>
 
       <Section id="article" eyebrow="ARTICLE" title="物語の、その裏側へ。" icon={<BookOpen />} intro="作品を支える映像、音声、Web技術の制作ノート。">
-        <div className="article-grid">{articles.map((article, index) => <article key={article.title}><span>{article.label} · 0{index + 1}</span><h3>{article.title}</h3><p>{article.copy}</p><small>COMING SOON</small></article>)}</div>
+        <div className="article-grid">{articles.map((article, index) => <a key={article.url} href={article.url} target="_blank" rel="noreferrer"><span>{article.label} · 0{index + 1}</span><h3>{article.title}</h3><p>{article.copy}</p><small>{article.source} · {article.action} <ArrowUpRight /></small></a>)}</div>
       </Section>
     </div>
   </>;

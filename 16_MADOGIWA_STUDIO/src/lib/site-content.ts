@@ -38,7 +38,36 @@ export const galleryItems = [
 ] as const;
 
 export const articles = [
-  { label: "MAKING", title: "AI映像でつくる『窓際族物語』", copy: "Seedanceと制作アーカイブで、物語を育て続けるための舞台裏。" },
-  { label: "VOICE", title: "キャラクターの声を保つ", copy: "Irodori-TTSと参照音声を使った、エピソードをまたぐ声づくり。" },
-  { label: "TECHNOLOGY", title: "Cloudflareで育てる作品世界", copy: "動画・素材・プロンプトをひとつにつなぐMadogiwa Studioの設計。" },
+  {
+    label: "ORIGINAL",
+    source: "NOTE",
+    title: "窓際族物語",
+    copy: "そば屋の入社と、窓際から始まった物語。全14話の原作漫画をnoteで読む。",
+    url: "https://note.com/sobaya/n/nb138c222aea0",
+    action: "原作を読む",
+  },
+  {
+    label: "CHARACTER",
+    source: "NOTE",
+    title: "窓際族物語〜登場人物紹介〜",
+    copy: "そば屋、無職やめ太郎、とーくん、福ちゃん、よーたん。物語を彩る窓際社員たちの人物紹介。",
+    url: "https://note.com/sobaya/n/n9b1ba408a198",
+    action: "記事を読む",
+  },
+  {
+    label: "MAKING",
+    source: "ZENN",
+    title: "高性能なPCが無くても格安で窓際動画を作る",
+    copy: "クラウドサービスを活用し、高性能なPCに頼らず窓際動画を低コストで制作する実践的な方法。",
+    url: "https://zenn.dev/yumemi_inc/articles/8dfa5814286ad6",
+    action: "記事を読む",
+  },
+  {
+    label: "SLIDES",
+    source: "GOOGLE SLIDES",
+    title: "窓際族物語の作り方",
+    copy: "「大企業の中でスタートアップするって実際どうなの会」で紹介した、窓際族物語の制作スライド。",
+    url: "https://docs.google.com/presentation/d/1Uo4ZKENR104i6vHdstXbLlBIpv3jFyLY_fyOdujchec/edit?usp=sharing",
+    action: "スライドを見る",
+  },
 ] as const;
