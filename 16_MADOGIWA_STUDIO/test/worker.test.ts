@@ -82,18 +82,29 @@ describe("Madogiwa Studio Worker", () => {
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ filename: "test.mp4", label: "Range test", contentType: "video/mp4", featured: true }),
     });
-    const ticket = await ticketResponse.json<{ videoId: string; uploadUrl: string }>();
+    const ticket = await ticketResponse.json<{ videoId: string; uploadUrl: string; posterUploadUrl: string }>();
+    const posterBytes = new Uint8Array([255, 216, 255, 224, 0, 16, 74, 70, 73, 70, 255, 217]);
+    expect((await SELF.fetch(ticket.posterUploadUrl, {
+      method: "PUT",
+      headers: { "content-type": "image/jpeg", "content-length": String(posterBytes.byteLength) },
+      body: posterBytes,
+    })).status).toBe(201);
     const bytes = new Uint8Array(256).map((_, index) => index);
     expect((await SELF.fetch(ticket.uploadUrl, { method: "PUT", headers: { "content-type": "video/mp4", "content-length": "256" }, body: bytes })).status).toBe(201);
     const mediaResponse = await SELF.fetch(`http://localhost/media/${ticket.videoId}`, { headers: { range: "bytes=10-19" } });
     expect(mediaResponse.status).toBe(206);
     expect(mediaResponse.headers.get("content-range")).toBe("bytes 10-19/256");
+    const posterResponse = await SELF.fetch(`http://localhost/posters/${ticket.videoId}`);
+    expect(posterResponse.status).toBe(200);
+    expect(posterResponse.headers.get("content-type")).toBe("image/jpeg");
+    expect(posterResponse.headers.get("cache-control")).toContain("immutable");
     const featuredList = await (await SELF.fetch("http://localhost/api/episodes?featured=true")).json<{
-      episodes: Array<{ slug: string; primary_video_id: string | null; has_featured_video: number }>;
+      episodes: Array<{ slug: string; primary_video_id: string | null; primary_video_poster_url: string | null; has_featured_video: number }>;
     }>();
     expect(featuredList.episodes).toContainEqual(expect.objectContaining({
       slug: "sobaya-beer-battery",
       primary_video_id: ticket.videoId,
+      primary_video_poster_url: `/posters/${ticket.videoId}`,
       has_featured_video: 1,
     }));
     const clearResponse = await adminFetch(`http://localhost/admin-api/videos/${ticket.videoId}`, {

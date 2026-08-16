@@ -10,3 +10,12 @@ export async function serveVideo(request: Request, env: Env, videoId: string): P
 
   return serveR2Object(request, env.MEDIA, video.r2_key);
 }
+
+export async function serveVideoPoster(request: Request, env: Env, videoId: string): Promise<Response> {
+  const video = await getVideo(env.DB, videoId);
+  if (!video || !video.poster_r2_key || video.status === "archived" || video.status === "upload_pending") {
+    throw new HttpError(404, "動画サムネイルが見つかりません");
+  }
+
+  return serveR2Object(request, env.MEDIA, video.poster_r2_key, undefined, "public, max-age=604800, immutable");
+}

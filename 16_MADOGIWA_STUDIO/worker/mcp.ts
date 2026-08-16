@@ -32,7 +32,7 @@ function toolResult(value: unknown) {
 }
 
 function createServer(env: Env, actor: string, origin: string): McpServer {
-  const server = new McpServer({ name: "Madogiwa Studio", version: "0.2.0" });
+  const server = new McpServer({ name: "Madogiwa Studio", version: "0.3.0" });
 
   server.registerTool("list_members", { description: "登録可能な正典メンバー一覧を取得する", inputSchema: {} }, async () =>
     toolResult(await listMembers(env.DB)),
@@ -95,7 +95,7 @@ function createServer(env: Env, actor: string, origin: string): McpServer {
   server.registerTool(
     "create_video_upload",
     {
-      description: "指定した生成バージョンへ動画を登録する一回限りのアップロードURLを発行する",
+      description: "指定した生成バージョンへ動画を登録する、動画本体とサムネイル画像それぞれの一回限りアップロードURLを発行する",
       inputSchema: { generationId: z.string().uuid(), ...uploadSchema.shape },
     },
     async ({ generationId, filename, label, contentType, featured }) =>

@@ -7,7 +7,7 @@
 - React + Vite + shadcn/ui互換コンポーネント: 一覧、詳細、管理画面
 - Cloudflare Workers: JSON API、入力アセット／動画配信、Remote MCP
 - D1: Studio ID、登場メンバー、生成バージョン、使用モデル、プロンプト履歴、入力アセット、動画メタデータ、アップロードチケット
-- R2: Seedance入力画像・参照音声・資料・生成動画の実体
+- R2: Seedance入力画像・参照音声・資料・生成動画・動画サムネイルの実体
 - Cloudflare Access: 管理画面、管理API、Remote MCPの認証
 
 公開ページと読み取り用`/api`はログイン不要です。`/admin`、`/admin-api`、`/mcp`はCloudflare Accessを要求します。
@@ -46,7 +46,9 @@ Workerの起動プロファイル、本番アップロードを行わないdeplo
 ## 動画登録
 
 管理画面で対象の生成バージョンを選んでアップロードできます。CLI/Codexからは、Remote MCPの
-`create_video_upload`で一回限りのURLを発行してから、そのURLへPUTします。
+`create_video_upload`で動画本体とサムネイル画像の一回限りURLを発行してから、それぞれへPUTします。
+管理画面は動画の先頭付近からJPEGサムネイルを自動生成します。専用の`poster`画像を使うため、
+iOS Safariでも再生前の動画カードを安定して表示できます。
 ローカルAPIを使う場合は次の補助コマンドも利用できます。
 
 ```bash
@@ -57,7 +59,7 @@ npm run upload:video -- \
   "Final video"
 ```
 
-アップロードURLは1時間有効・一回限りです。トークンのハッシュだけをD1へ保存し、
+各アップロードURLは1時間有効・一回限りです。トークンのハッシュだけをD1へ保存し、
 動画本体はWorkerでバッファせずR2へストリーミングします。
 
 ## 入力アセット

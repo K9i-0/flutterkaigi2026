@@ -5,6 +5,7 @@ export async function serveR2Object(
   bucket: R2Bucket,
   key: string,
   contentDisposition?: string,
+  cacheControl = "public, max-age=3600",
 ): Promise<Response> {
   const rangeHeader = request.headers.get("range");
   const object = await bucket.get(key, rangeHeader ? { range: request.headers } : undefined);
@@ -14,7 +15,7 @@ export async function serveR2Object(
   object.writeHttpMetadata(headers);
   headers.set("etag", object.httpEtag);
   headers.set("accept-ranges", "bytes");
-  headers.set("cache-control", "public, max-age=3600");
+  headers.set("cache-control", cacheControl);
   if (contentDisposition) headers.set("content-disposition", contentDisposition);
 
   const range = object.range;

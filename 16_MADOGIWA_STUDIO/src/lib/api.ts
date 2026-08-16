@@ -23,6 +23,7 @@ export type EpisodeSummary = Episode & {
   video_count: number;
   input_count: number;
   primary_video_id: string | null;
+  primary_video_poster_url: string | null;
   has_featured_video: number;
   featured_video_created_at: string | null;
   prompt_label: string | null;
@@ -45,6 +46,7 @@ export type Video = {
   id: string;
   episode_id: string;
   generation_id: string;
+  poster_r2_key: string | null;
   filename: string;
   label: string;
   content_type: string;
@@ -143,7 +145,7 @@ export const api = {
   upsertPrompt: (generationId: string, input: { label: string; body: string }) =>
     request<PromptVersion>(`/admin-api/generations/${generationId}/prompts`, jsonInit("POST", input)),
   createUpload: (generationId: string, input: { filename: string; label: string; contentType: string; featured: boolean }) =>
-    request<{ videoId: string; uploadUrl: string; expiresAt: string }>(
+    request<{ videoId: string; uploadUrl: string; posterUploadUrl: string; expiresAt: string }>(
       `/admin-api/generations/${generationId}/uploads`,
       jsonInit("POST", input),
     ),
@@ -175,6 +177,18 @@ export const api = {
       throw new Error(body.error ?? "動画のアップロードに失敗しました");
     }
     return response.json() as Promise<{ videoId: string; mediaUrl: string; size: number }>;
+  },
+  uploadPoster: async (uploadUrl: string, file: File) => {
+    const response = await fetch(uploadUrl, {
+      method: "PUT",
+      headers: { "content-type": file.type || "image/jpeg" },
+      body: file,
+    });
+    if (!response.ok) {
+      const body = (await response.json().catch(() => ({}))) as ApiErrorBody;
+      throw new Error(body.error ?? "動画サムネイルのアップロードに失敗しました");
+    }
+    return response.json() as Promise<{ videoId: string; posterUrl: string; size: number }>;
   },
   uploadInputFile: async (uploadUrl: string, file: File) => {
     const response = await fetch(uploadUrl, {

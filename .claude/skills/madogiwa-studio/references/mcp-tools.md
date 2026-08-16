@@ -40,7 +40,7 @@ The skill's `agents/openai.yaml` also declares this Remote MCP dependency for cl
 - `create_generation({ episodeId, label?, modelName?, notes? })`: append the next version. Never pass a version number.
 - `update_generation({ generationId, label?, modelName?, notes? })`: update generation metadata.
 - `upsert_prompt({ generationId, label?, body })`: add a new current prompt revision and retain history.
-- `create_video_upload({ generationId, filename, label?, contentType?, featured? })`: create a video row and return `{ videoId, uploadUrl, expiresAt }`. Use `featured: true` for an official-site pick-up video.
+- `create_video_upload({ generationId, filename, label?, contentType?, featured? })`: create a video row and return `{ videoId, uploadUrl, posterUploadUrl, expiresAt }`. Put the video into `uploadUrl` and a JPEG/PNG/WebP poster (5MB or less) into `posterUploadUrl`. Use `featured: true` for an official-site pick-up video.
 - `create_input_upload({ generationId, filename, label, kind, referenceLabel?, groupLabel?, notes?, contentType?, displayOrder? })`: create an input row and return `{ assetId, uploadUrl, expiresAt }`. Kind is `image`, `audio`, `document`, or `other`.
 - `set_video_status({ videoId, status })`: set `upload_pending`, `ready`, `published`, or `archived`.
 - `set_video_featured({ videoId, featured })`: enable or disable official-site pick-up priority for an existing video.
@@ -59,6 +59,21 @@ curl --fail-with-body --silent --show-error \
   '<one-time-upload-url>'
 ```
 
+Generate and upload a poster before uploading the video:
+
+```sh
+ffmpeg -hide_banner -loglevel error -y \
+  -ss 0.5 -i path/to/video.mp4 -frames:v 1 \
+  -vf scale=1280:1280:force_original_aspect_ratio=decrease \
+  -q:v 3 path/to/poster.jpg
+
+curl --fail-with-body --silent --show-error \
+  --request PUT \
+  --header 'Content-Type: image/jpeg' \
+  --data-binary @path/to/poster.jpg \
+  '<one-time-poster-upload-url>'
+```
+
 Typical MIME types:
 
 - MP4: `video/mp4`
@@ -69,4 +84,4 @@ Typical MIME types:
 - Plain prompt or notes: `text/plain; charset=utf-8`
 - PDF: `application/pdf`
 
-After PUT, verify with `get_episode`: status must be `ready` and `size_bytes` must be nonnull. Public media URLs are `/media/<videoId>` and `/inputs/<assetId>`.
+After both PUTs, verify with `get_episode`: status must be `ready`, and `size_bytes` and `poster_r2_key` must be nonnull. Public media URLs are `/media/<videoId>`, `/posters/<videoId>`, and `/inputs/<assetId>`.

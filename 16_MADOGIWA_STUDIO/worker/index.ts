@@ -1,7 +1,7 @@
 import { requireAdmin } from "./auth";
 import { handleApi } from "./api";
 import { errorResponse, HttpError } from "./http";
-import { serveVideo } from "./media";
+import { serveVideo, serveVideoPoster } from "./media";
 import { handleMcp } from "./mcp";
 import { serveInputAsset } from "./input-assets";
 
@@ -22,6 +22,12 @@ export default {
         const videoId = url.pathname.slice("/media/".length);
         if (!videoId) throw new HttpError(404, "動画が見つかりません");
         return await serveVideo(request, env, videoId);
+      }
+
+      if (url.pathname.startsWith("/posters/")) {
+        const videoId = url.pathname.slice("/posters/".length);
+        if (!videoId) throw new HttpError(404, "動画サムネイルが見つかりません");
+        return await serveVideoPoster(request, env, videoId);
       }
 
       if (url.pathname.startsWith("/inputs/")) {

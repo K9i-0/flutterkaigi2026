@@ -53,6 +53,7 @@ export type VideoRow = {
   episode_id: string;
   generation_id: string;
   r2_key: string;
+  poster_r2_key: string | null;
   filename: string;
   label: string;
   content_type: string;
@@ -97,6 +98,7 @@ export type EpisodeSummary = EpisodeRow & {
   video_count: number;
   input_count: number;
   primary_video_id: string | null;
+  primary_video_poster_url: string | null;
   has_featured_video: number;
   featured_video_created_at: string | null;
   prompt_label: string | null;

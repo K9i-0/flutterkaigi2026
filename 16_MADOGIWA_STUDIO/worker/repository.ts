@@ -44,7 +44,9 @@ export type CreateInputAssetInput = {
   uploadedBy: string;
 };
 
-type EpisodeSummaryBase = Omit<EpisodeSummary, "members">;
+type EpisodeSummaryBase = Omit<EpisodeSummary, "members" | "primary_video_poster_url"> & {
+  primary_video_poster_r2_key: string | null;
+};
 type EpisodeMemberJoin = MemberRow & { episode_id: string };
 
 function createStudioId(): string {
@@ -71,6 +73,9 @@ export async function listEpisodes(db: D1Database, options?: { featuredOnly?: bo
           (SELECT v.id FROM videos v JOIN generations g ON g.id = v.generation_id
             WHERE g.episode_id = e.id AND v.status NOT IN ('archived', 'upload_pending')
             ORDER BY v.is_featured DESC, v.created_at DESC, g.version DESC, v.is_primary DESC LIMIT 1) AS primary_video_id,
+          (SELECT v.poster_r2_key FROM videos v JOIN generations g ON g.id = v.generation_id
+            WHERE g.episode_id = e.id AND v.status NOT IN ('archived', 'upload_pending')
+            ORDER BY v.is_featured DESC, v.created_at DESC, g.version DESC, v.is_primary DESC LIMIT 1) AS primary_video_poster_r2_key,
           EXISTS(SELECT 1 FROM videos v JOIN generations g ON g.id = v.generation_id
             WHERE g.episode_id = e.id AND v.is_featured = 1
               AND v.status NOT IN ('archived', 'upload_pending')) AS has_featured_video,
@@ -91,10 +96,15 @@ export async function listEpisodes(db: D1Database, options?: { featuredOnly?: bo
       )
       .all<EpisodeMemberJoin>(),
   ]);
-  const episodes = episodeResult.results.map((episode) => ({
-    ...episode,
-    members: memberResult.results.filter((member) => member.episode_id === episode.id),
-  }));
+  const episodes = episodeResult.results.map((row) => {
+    const { primary_video_poster_r2_key, ...episode } = row;
+    return {
+      ...episode,
+      primary_video_poster_url:
+        episode.primary_video_id && primary_video_poster_r2_key ? `/posters/${episode.primary_video_id}` : null,
+      members: memberResult.results.filter((member) => member.episode_id === episode.id),
+    };
+  });
   return options?.featuredOnly ? episodes.filter((episode) => episode.has_featured_video === 1) : episodes;
 }
 

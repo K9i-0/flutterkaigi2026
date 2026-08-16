@@ -32,6 +32,7 @@ export function MovieCard({ episode, index, featuredLayout = false, inlinePlayba
     {episode.primary_video_id ? <video
       ref={inlinePlayback ? videoRef : undefined}
       src={`/media/${episode.primary_video_id}`}
+      poster={episode.primary_video_poster_url ?? undefined}
       muted={!inlinePlayback}
       controls={inlinePlayback && started}
       preload="metadata"

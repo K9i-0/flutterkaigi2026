@@ -26,7 +26,7 @@ import {
   videoStatusSchema,
   videoFeaturedSchema,
 } from "./schemas";
-import { consumeUpload, createUpload } from "./uploads";
+import { consumePosterUpload, consumeUpload, createUpload } from "./uploads";
 
 function pathSegments(pathname: string): string[] {
   return pathname.split("/").filter(Boolean);
@@ -148,6 +148,9 @@ export async function handleApi(request: Request, env: Env, ctx: ExecutionContex
 
   if (request.method === "PUT" && segments.length === 3 && segments[1] === "uploads") {
     return consumeUpload(request, env, segments[2]);
+  }
+  if (request.method === "PUT" && segments.length === 3 && segments[1] === "poster-uploads") {
+    return consumePosterUpload(request, env, segments[2]);
   }
   if (request.method === "PUT" && segments.length === 3 && segments[1] === "input-uploads") {
     return consumeInputUpload(request, env, segments[2]);

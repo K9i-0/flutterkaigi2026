@@ -31,15 +31,16 @@ Madogiwa Studioを制作物の共有台帳として扱い、Remote MCPでメタ�
 3. 使用モデル、ラベル、メモは`update_generation`で補う。モデル名は固定候補に限定しない。
 4. 実際に生成へ渡した本文を`upsert_prompt`で登録する。プロンプト変更は履歴として新しいrevisionを作る。
 5. 入力画像・参照音声・資料はそれぞれ`create_input_upload`でチケットを発行し、返されたURLへファイルをPUTする。
-6. 生成動画は`create_video_upload`でチケットを発行し、返されたURLへ動画をPUTする。公式サイトで優先したい採用動画は`featured: true`を指定する。
-7. `get_episode`を再実行し、各ファイルが`ready`、サイズが非null、プロンプトとモデルが意図どおりか確認する。
+6. 生成動画から0.5秒付近のJPEGサムネイルを作る。`create_video_upload`でチケットを発行し、`posterUploadUrl`へJPEG、`uploadUrl`へ動画をPUTする。公式サイトで優先したい採用動画は`featured: true`を指定する。
+7. `get_episode`を再実行し、各ファイルが`ready`、動画の`poster_r2_key`とサイズが非null、プロンプトとモデルが意図どおりか確認する。
 8. 必要なら公開詳細ページ`https://madogiwa-studio.madogiwa-studio.workers.dev/episodes/<slug>`で表示・再生を確認する。
 
 ## アップロード規則
 
-- アップロードURLは1時間・一回限りのBearer相当情報として扱い、応答やログへ出さない。
+- 動画とサムネイルの各アップロードURLは1時間・一回限りのBearer相当情報として扱い、応答やログへ出さない。
 - URL発行とPUTを同じ作業内で連続して行う。PUTでは実ファイルに合う`Content-Type`を指定する。
 - MCPはメタデータとチケットを作り、バイナリPUTはWorkerの専用URLへ直接送る。これは正常な設計である。
+- サムネイルはJPEG、PNG、WebPのいずれか、5MB以下にする。通常は`ffmpeg -ss 0.5 -i <video> -frames:v 1 -vf scale=1280:1280:force_original_aspect_ratio=decrease -q:v 3 <poster.jpg>`で生成する。
 - PUT失敗時は作成済み`videoId`を`archived`にしてから新しいチケットを発行する。使用済みURLを再試行しない。
 - 動画を`published`へ変更するのはユーザーが公開採用を明示した場合だけにする。通常の登録完了は`ready`のままにする。
 - イチオシは公開状態とは別の優先表示フラグである。登録後の変更は`set_video_featured`を使い、依頼がなければ既存のイチオシを勝手に解除しない。
