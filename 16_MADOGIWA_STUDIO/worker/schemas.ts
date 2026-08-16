@@ -36,6 +36,7 @@ export const uploadSchema = z.object({
   filename: z.string().trim().min(1).max(255),
   label: z.string().trim().min(1).max(120).default("Generated video"),
   contentType: z.string().trim().regex(/^video\//, "動画のContent-Typeを指定してください").default("video/mp4"),
+  featured: z.boolean().default(false),
 });
 
 export const inputUploadSchema = z.object({
@@ -50,3 +51,4 @@ export const inputUploadSchema = z.object({
 });
 
 export const videoStatusSchema = z.object({ status: z.enum(videoStatuses) });
+export const videoFeaturedSchema = z.object({ featured: z.boolean() });

@@ -8,6 +8,7 @@ import {
   listEpisodes,
   listMembers,
   setVideoStatus,
+  setVideoFeatured,
   updateEpisode,
   updateEpisodeMembers,
   updateGeneration,
@@ -23,6 +24,7 @@ import {
   updateGenerationSchema,
   uploadSchema,
   videoStatusSchema,
+  videoFeaturedSchema,
 } from "./schemas";
 import { consumeUpload, createUpload } from "./uploads";
 
@@ -44,7 +46,10 @@ export async function handleApi(request: Request, env: Env, ctx: ExecutionContex
     return json({ members: await listMembers(env.DB) }, { headers: { "cache-control": "no-store" } });
   }
   if (request.method === "GET" && routePath === "/api/episodes") {
-    return json({ episodes: await listEpisodes(env.DB) }, { headers: { "cache-control": "no-store" } });
+    return json(
+      { episodes: await listEpisodes(env.DB, { featuredOnly: url.searchParams.get("featured") === "true" }) },
+      { headers: { "cache-control": "no-store" } },
+    );
   }
   if (request.method === "GET" && segments.length === 3 && segments[1] === "episodes") {
     const detail = await getEpisodeBySlug(env.DB, decodeURIComponent(segments[2]));
@@ -110,6 +115,7 @@ export async function handleApi(request: Request, env: Env, ctx: ExecutionContex
         filename: input.filename,
         label: input.label,
         contentType: input.contentType,
+        featured: input.featured,
         uploadedBy: admin!.email,
       }),
       { status: 201 },
@@ -147,7 +153,12 @@ export async function handleApi(request: Request, env: Env, ctx: ExecutionContex
     return consumeInputUpload(request, env, segments[2]);
   }
   if (isAdminApi && request.method === "PATCH" && segments.length === 3 && segments[1] === "videos") {
-    const input = videoStatusSchema.parse(await readJson(request));
+    const body = await readJson(request);
+    if ("featured" in (body as Record<string, unknown>)) {
+      const input = videoFeaturedSchema.parse(body);
+      return json(await setVideoFeatured(env.DB, segments[2], input.featured));
+    }
+    const input = videoStatusSchema.parse(body);
     return json(await setVideoStatus(env.DB, segments[2], input.status));
   }
 

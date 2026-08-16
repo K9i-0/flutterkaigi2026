@@ -33,16 +33,17 @@ The skill's `agents/openai.yaml` also declares this Remote MCP dependency for cl
 ## Tools
 
 - `list_members({})`: return canonical member IDs and display names.
-- `list_episodes({})`: return episode summaries, Studio IDs, counts, members, and primary video IDs.
+- `list_episodes({ featuredOnly? })`: return episode summaries, Studio IDs, counts, members, primary video IDs, and featured-video flags. Set `featuredOnly: true` to filter.
 - `get_episode({ slug })`: return one episode with generations, prompt history, input assets, and videos.
 - `create_episode({ slug, title, summary?, status?, memberIds? })`: create an episode and its automatic v1. Status is `draft`, `generated`, `published`, or `archived`.
 - `set_episode_members({ episodeId, memberIds })`: replace the member set.
 - `create_generation({ episodeId, label?, modelName?, notes? })`: append the next version. Never pass a version number.
 - `update_generation({ generationId, label?, modelName?, notes? })`: update generation metadata.
 - `upsert_prompt({ generationId, label?, body })`: add a new current prompt revision and retain history.
-- `create_video_upload({ generationId, filename, label?, contentType? })`: create a video row and return `{ videoId, uploadUrl, expiresAt }`.
+- `create_video_upload({ generationId, filename, label?, contentType?, featured? })`: create a video row and return `{ videoId, uploadUrl, expiresAt }`. Use `featured: true` for an official-site pick-up video.
 - `create_input_upload({ generationId, filename, label, kind, referenceLabel?, groupLabel?, notes?, contentType?, displayOrder? })`: create an input row and return `{ assetId, uploadUrl, expiresAt }`. Kind is `image`, `audio`, `document`, or `other`.
 - `set_video_status({ videoId, status })`: set `upload_pending`, `ready`, `published`, or `archived`.
+- `set_video_featured({ videoId, featured })`: enable or disable official-site pick-up priority for an existing video.
 
 IDs accepted by mutation tools are UUIDs returned by earlier tools. `studio_id` is user-facing and is not a mutation ID.
 

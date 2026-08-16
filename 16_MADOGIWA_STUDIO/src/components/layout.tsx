@@ -18,7 +18,7 @@ export function Layout() {
       <header className="official-header">
         <Link to="/" className="official-logo" aria-label="窓際族物語 ホーム">
           <img src="/site/sobaya-icon.jpg" alt="" />
-          <span><b>窓際族物語</b><small>MADOGIWA MONOGATARI</small></span>
+          <span><b>窓際族物語</b><small>MADOGIWAZOKU MONOGATARI</small></span>
         </Link>
         <nav className="official-nav" aria-label="作品メニュー">
           {[["CHARACTER", "#character"], ["COMIC", "#comic"], ["GALLERY", "#gallery"], ["MOVIE", "#movie"], ["GAME", "#game"], ["ARTICLE", "#article"]].map(([label, href]) => <a key={label} href={`/${href}`}>{label}</a>)}
@@ -30,10 +30,10 @@ export function Layout() {
       </header>
       <main className={pathname === "/" ? "" : "official-inner"}><Outlet /></main>
       <footer className="official-footer">
-        <div className="official-logo"><img src="/site/sobaya-icon.jpg" alt="" /><span><b>窓際族物語</b><small>MADOGIWA MONOGATARI</small></span></div>
+        <div className="official-logo"><img src="/site/sobaya-icon.jpg" alt="" /><span><b>窓際族物語</b><small>MADOGIWAZOKU MONOGATARI</small></span></div>
         <p>働かない。でも、物語は動き出す。</p>
         <Link to="/admin" reloadDocument aria-label="管理画面"><LockKeyhole className="size-3.5" /> MANAGE</Link>
-        <small>© MADOGIWA MONOGATARI · Powered by Cloudflare</small>
+        <small>© MADOGIWAZOKU MONOGATARI · Powered by Cloudflare</small>
       </footer>
     </div>
   );

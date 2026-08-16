@@ -75,12 +75,12 @@ describe("Madogiwa Studio Worker", () => {
     expect(detail.generations.find((item) => item.version === 2)?.model_name).toBe("Seedance 2.5");
   });
 
-  it("streams an uploaded generation video with byte ranges", async () => {
+  it("streams an uploaded featured video and supports featured filtering", async () => {
     const detail = await (await SELF.fetch("http://localhost/api/episodes/sobaya-beer-battery")).json<{ generations: Array<{ id: string }> }>();
     const ticketResponse = await adminFetch(`http://localhost/admin-api/generations/${detail.generations[0].id}/uploads`, {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ filename: "test.mp4", label: "Range test", contentType: "video/mp4" }),
+      body: JSON.stringify({ filename: "test.mp4", label: "Range test", contentType: "video/mp4", featured: true }),
     });
     const ticket = await ticketResponse.json<{ videoId: string; uploadUrl: string }>();
     const bytes = new Uint8Array(256).map((_, index) => index);
@@ -88,6 +88,21 @@ describe("Madogiwa Studio Worker", () => {
     const mediaResponse = await SELF.fetch(`http://localhost/media/${ticket.videoId}`, { headers: { range: "bytes=10-19" } });
     expect(mediaResponse.status).toBe(206);
     expect(mediaResponse.headers.get("content-range")).toBe("bytes 10-19/256");
+    const featuredList = await (await SELF.fetch("http://localhost/api/episodes?featured=true")).json<{
+      episodes: Array<{ slug: string; primary_video_id: string | null; has_featured_video: number }>;
+    }>();
+    expect(featuredList.episodes).toContainEqual(expect.objectContaining({
+      slug: "sobaya-beer-battery",
+      primary_video_id: ticket.videoId,
+      has_featured_video: 1,
+    }));
+    const clearResponse = await adminFetch(`http://localhost/admin-api/videos/${ticket.videoId}`, {
+      method: "PATCH",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ featured: false }),
+    });
+    expect(clearResponse.status).toBe(200);
+    expect((await clearResponse.json<{ is_featured: number }>()).is_featured).toBe(0);
   });
 
   it("registers input assets inside a generation", async () => {
@@ -118,6 +133,7 @@ describe("Madogiwa Studio Worker", () => {
     expect(body).toContain("update_generation");
     expect(body).toContain("set_episode_members");
     expect(body).toContain("create_input_upload");
+    expect(body).toContain("set_video_featured");
   });
 
   it("does not trust spoofed Access headers or unverified JWTs", async () => {

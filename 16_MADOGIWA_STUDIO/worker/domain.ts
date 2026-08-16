@@ -59,6 +59,7 @@ export type VideoRow = {
   size_bytes: number | null;
   status: VideoStatus;
   is_primary: number;
+  is_featured: number;
   uploaded_by: string | null;
   created_at: string;
   updated_at: string;
@@ -96,6 +97,8 @@ export type EpisodeSummary = EpisodeRow & {
   video_count: number;
   input_count: number;
   primary_video_id: string | null;
+  has_featured_video: number;
+  featured_video_created_at: string | null;
   prompt_label: string | null;
   members: MemberRow[];
 };

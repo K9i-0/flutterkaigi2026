@@ -23,6 +23,8 @@ export type EpisodeSummary = Episode & {
   video_count: number;
   input_count: number;
   primary_video_id: string | null;
+  has_featured_video: number;
+  featured_video_created_at: string | null;
   prompt_label: string | null;
   members: Member[];
 };
@@ -49,6 +51,7 @@ export type Video = {
   size_bytes: number | null;
   status: VideoStatus;
   is_primary: number;
+  is_featured: number;
   uploaded_by: string | null;
   created_at: string;
   updated_at: string;
@@ -124,7 +127,7 @@ function jsonInit(method: string, body: unknown): RequestInit {
 
 export const api = {
   listMembers: () => request<{ members: Member[] }>("/api/members"),
-  listEpisodes: () => request<{ episodes: EpisodeSummary[] }>("/api/episodes"),
+  listEpisodes: (featuredOnly = false) => request<{ episodes: EpisodeSummary[] }>(`/api/episodes${featuredOnly ? "?featured=true" : ""}`),
   getEpisode: (slug: string) => request<EpisodeDetail>(`/api/episodes/${encodeURIComponent(slug)}`),
   getSession: () => request<{ admin: { email: string; source: "access" } | null }>("/admin-api/session"),
   createEpisode: (input: { slug: string; title: string; summary: string; memberIds: string[] }) =>
@@ -139,7 +142,7 @@ export const api = {
     request<Generation>(`/admin-api/generations/${generationId}`, jsonInit("PATCH", input)),
   upsertPrompt: (generationId: string, input: { label: string; body: string }) =>
     request<PromptVersion>(`/admin-api/generations/${generationId}/prompts`, jsonInit("POST", input)),
-  createUpload: (generationId: string, input: { filename: string; label: string; contentType: string }) =>
+  createUpload: (generationId: string, input: { filename: string; label: string; contentType: string; featured: boolean }) =>
     request<{ videoId: string; uploadUrl: string; expiresAt: string }>(
       `/admin-api/generations/${generationId}/uploads`,
       jsonInit("POST", input),
@@ -185,4 +188,6 @@ export const api = {
     }
     return response.json() as Promise<{ assetId: string; assetUrl: string; size: number }>;
   },
+  setVideoFeatured: (videoId: string, featured: boolean) =>
+    request<Video>(`/admin-api/videos/${videoId}`, jsonInit("PATCH", { featured })),
 };

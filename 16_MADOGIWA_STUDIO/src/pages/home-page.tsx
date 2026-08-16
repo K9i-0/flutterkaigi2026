@@ -1,5 +1,5 @@
-import { ArrowRight, ArrowUpRight, BookOpen, Film, Gamepad2, Images, Play, Sparkles } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ArrowRight, ArrowUpRight, BookOpen, ChevronDown, Film, Gamepad2, Images, Play, Sparkles, Star } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { api, type EpisodeSummary } from "@/lib/api";
 import { articles, characters, comicEpisodes, galleryItems } from "@/lib/site-content";
@@ -7,12 +7,21 @@ import { articles, characters, comicEpisodes, galleryItems } from "@/lib/site-co
 export function HomePage() {
   const [episodes, setEpisodes] = useState<EpisodeSummary[]>([]);
   const [loading, setLoading] = useState(true);
+  const [movieFilter, setMovieFilter] = useState<"all" | "featured">("all");
+  const [selectedComic, setSelectedComic] = useState<number | null>(null);
 
   useEffect(() => {
     api.listEpisodes().then((result) => setEpisodes(result.episodes)).catch(() => setEpisodes([])).finally(() => setLoading(false));
   }, []);
 
-  const featured = episodes.find((episode) => episode.primary_video_id) ?? episodes[0];
+  const prioritizedEpisodes = useMemo(() => [...episodes].sort((left, right) => {
+    if (left.has_featured_video !== right.has_featured_video) return right.has_featured_video - left.has_featured_video;
+    const leftDate = left.has_featured_video ? left.featured_video_created_at : left.updated_at;
+    const rightDate = right.has_featured_video ? right.featured_video_created_at : right.updated_at;
+    return String(rightDate ?? "").localeCompare(String(leftDate ?? ""));
+  }), [episodes]);
+  const visibleEpisodes = movieFilter === "featured" ? prioritizedEpisodes.filter((episode) => episode.has_featured_video === 1) : prioritizedEpisodes;
+  const featured = prioritizedEpisodes.find((episode) => episode.primary_video_id) ?? prioritizedEpisodes[0];
 
   return <>
     <section className="official-hero">
@@ -21,7 +30,7 @@ export function HomePage() {
       </div>
       <div className="hero-shade" />
       <div className="hero-copy">
-        <div className="hero-kicker"><span /> MADOGIWA MONOGATARI</div>
+        <div className="hero-kicker"><span /> MADOGIWAZOKU MONOGATARI</div>
         <h1>働かない。<br />でも、物語は<br /><em>動き出す。</em></h1>
         <p>窓際から宇宙まで。AI映像、漫画、ゲームへと広がり続ける<br className="hidden sm:block" />“働かない人たち”の壮大でささやかな物語。</p>
         <div className="hero-actions">
@@ -34,7 +43,8 @@ export function HomePage() {
 
     <div id="contents" className="official-content">
       <Section id="movie" eyebrow="LATEST MOVIES" title="窓際から始まる、映像物語。" icon={<Film />} intro="新しいエピソードと、生成を重ねて進化していく物語。">
-        {loading ? <div className="loading-line">MOVIES LOADING...</div> : episodes.length ? <div className="movie-grid">{episodes.slice(0, 4).map((episode, index) => <Link key={episode.id} to={`/episodes/${episode.slug}`} className={index === 0 ? "movie-card movie-card-featured" : "movie-card"}><div className="movie-visual">{episode.primary_video_id ? <video src={`/media/${episode.primary_video_id}`} muted preload="metadata" /> : <img src="/site/hero-shibuya-wide.webp" alt="" />}<div className="movie-number">{String(index + 1).padStart(2, "0")}</div><span className="play-circle"><Play fill="currentColor" /></span></div><div className="movie-meta"><span>{episode.studio_id}</span><h3>{episode.title}</h3><p>{episode.summary || "窓際族たちの新しい物語。"}</p><small>{episode.generation_count} GENERATION{episode.generation_count === 1 ? "" : "S"}</small></div></Link>)}</div> : <div className="empty-feature">次の映像を準備しています。</div>}
+        <div className="movie-filters" aria-label="動画の絞り込み"><div><button className={movieFilter === "all" ? "active" : ""} onClick={() => setMovieFilter("all")}>すべて</button><button className={movieFilter === "featured" ? "active" : ""} onClick={() => setMovieFilter("featured")}><Star /> イチオシ</button></div><span>{visibleEpisodes.length} EPISODES</span></div>
+        {loading ? <div className="loading-line">MOVIES LOADING...</div> : visibleEpisodes.length ? <div className="movie-grid">{visibleEpisodes.slice(0, 4).map((episode, index) => <Link key={episode.id} to={`/episodes/${episode.slug}`} className={index === 0 ? "movie-card movie-card-featured" : "movie-card"}><div className="movie-visual">{episode.primary_video_id ? <video src={`/media/${episode.primary_video_id}`} muted preload="metadata" /> : <img src="/site/hero-shibuya-wide.webp" alt="" />}<div className="movie-number">{String(index + 1).padStart(2, "0")}</div>{episode.has_featured_video ? <span className="featured-ribbon"><Star fill="currentColor" /> PICK UP</span> : null}<span className="play-circle"><Play fill="currentColor" /></span></div><div className="movie-meta"><span>{episode.studio_id}</span><h3>{episode.title}</h3><p>{episode.summary || "窓際族たちの新しい物語。"}</p><small>{episode.generation_count} GENERATION{episode.generation_count === 1 ? "" : "S"}</small></div></Link>)}</div> : <div className="empty-feature">{movieFilter === "featured" ? "イチオシ動画はまだ登録されていません。" : "次の映像を準備しています。"}</div>}
       </Section>
 
       <Section id="character" eyebrow="CHARACTER" title="窓際に集う、仲間たち。" icon={<Sparkles />} intro="働き方も、姿かたちも、ちょっと変わった登場人物。">
@@ -42,7 +52,7 @@ export function HomePage() {
       </Section>
 
       <Section id="comic" eyebrow="ORIGINAL COMIC" title="すべては、14話の漫画から。" icon={<BookOpen />} intro="入社初日、そこに自分の席はなかった。窓際族物語の原点を一気に読む。">
-        <div className="comic-grid">{comicEpisodes.map((episode) => <article key={episode.number} className="comic-card"><img src={episode.image} alt={`第${episode.number}話 ${episode.title}`} loading="lazy" /><div><span>第{String(episode.number).padStart(2, "0")}話</span><h3>{episode.title}</h3></div></article>)}</div>
+        <div className="comic-grid">{comicEpisodes.map((episode) => { const selected = selectedComic === episode.number; return <article key={episode.number} className={`comic-card${selected ? " comic-card-selected" : ""}`}><button type="button" onClick={() => setSelectedComic(selected ? null : episode.number)} aria-expanded={selected}><img src={episode.image} alt={`第${episode.number}話 ${episode.title}`} loading="lazy" /><div><span>第{String(episode.number).padStart(2, "0")}話</span><h3>{episode.title}</h3><ChevronDown /></div></button>{selected ? <div className="comic-description"><span>STORY</span><p>{episode.description}</p></div> : null}</article>; })}</div>
       </Section>
 
       <Section id="gallery" eyebrow="GALLERY" title="物語から生まれた、もうひとつの景色。" icon={<Images />} intro="原作の外側へ広がるキービジュアル、世界観アート、特別作品。">

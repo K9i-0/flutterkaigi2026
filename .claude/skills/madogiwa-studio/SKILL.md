@@ -31,7 +31,7 @@ Madogiwa Studioを制作物の共有台帳として扱い、Remote MCPでメタ�
 3. 使用モデル、ラベル、メモは`update_generation`で補う。モデル名は固定候補に限定しない。
 4. 実際に生成へ渡した本文を`upsert_prompt`で登録する。プロンプト変更は履歴として新しいrevisionを作る。
 5. 入力画像・参照音声・資料はそれぞれ`create_input_upload`でチケットを発行し、返されたURLへファイルをPUTする。
-6. 生成動画は`create_video_upload`でチケットを発行し、返されたURLへ動画をPUTする。
+6. 生成動画は`create_video_upload`でチケットを発行し、返されたURLへ動画をPUTする。公式サイトで優先したい採用動画は`featured: true`を指定する。
 7. `get_episode`を再実行し、各ファイルが`ready`、サイズが非null、プロンプトとモデルが意図どおりか確認する。
 8. 必要なら公開詳細ページ`https://madogiwa-studio.madogiwa-studio.workers.dev/episodes/<slug>`で表示・再生を確認する。
 
@@ -42,6 +42,7 @@ Madogiwa Studioを制作物の共有台帳として扱い、Remote MCPでメタ�
 - MCPはメタデータとチケットを作り、バイナリPUTはWorkerの専用URLへ直接送る。これは正常な設計である。
 - PUT失敗時は作成済み`videoId`を`archived`にしてから新しいチケットを発行する。使用済みURLを再試行しない。
 - 動画を`published`へ変更するのはユーザーが公開採用を明示した場合だけにする。通常の登録完了は`ready`のままにする。
+- イチオシは公開状態とは別の優先表示フラグである。登録後の変更は`set_video_featured`を使い、依頼がなければ既存のイチオシを勝手に解除しない。
 
 ## 完了報告
 

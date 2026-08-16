@@ -28,6 +28,7 @@ export type CreateVideoInput = {
   label: string;
   contentType: string;
   uploadedBy: string;
+  featured?: boolean;
 };
 
 export type CreateInputAssetInput = {
@@ -57,7 +58,7 @@ export async function listMembers(db: D1Database): Promise<MemberRow[]> {
   return (await db.prepare("SELECT * FROM members ORDER BY sort_order, name").all<MemberRow>()).results;
 }
 
-export async function listEpisodes(db: D1Database): Promise<EpisodeSummary[]> {
+export async function listEpisodes(db: D1Database, options?: { featuredOnly?: boolean }): Promise<EpisodeSummary[]> {
   const [episodeResult, memberResult] = await Promise.all([
     db
       .prepare(
@@ -69,7 +70,13 @@ export async function listEpisodes(db: D1Database): Promise<EpisodeSummary[]> {
             WHERE g.episode_id = e.id AND a.status != 'archived') AS input_count,
           (SELECT v.id FROM videos v JOIN generations g ON g.id = v.generation_id
             WHERE g.episode_id = e.id AND v.status NOT IN ('archived', 'upload_pending')
-            ORDER BY g.version DESC, v.is_primary DESC, v.created_at DESC LIMIT 1) AS primary_video_id,
+            ORDER BY v.is_featured DESC, v.created_at DESC, g.version DESC, v.is_primary DESC LIMIT 1) AS primary_video_id,
+          EXISTS(SELECT 1 FROM videos v JOIN generations g ON g.id = v.generation_id
+            WHERE g.episode_id = e.id AND v.is_featured = 1
+              AND v.status NOT IN ('archived', 'upload_pending')) AS has_featured_video,
+          (SELECT MAX(v.created_at) FROM videos v JOIN generations g ON g.id = v.generation_id
+            WHERE g.episode_id = e.id AND v.is_featured = 1
+              AND v.status NOT IN ('archived', 'upload_pending')) AS featured_video_created_at,
           (SELECT p.label FROM prompt_versions p JOIN generations g ON g.id = p.generation_id
             WHERE g.episode_id = e.id AND p.is_current = 1
             ORDER BY g.version DESC LIMIT 1) AS prompt_label
@@ -84,10 +91,11 @@ export async function listEpisodes(db: D1Database): Promise<EpisodeSummary[]> {
       )
       .all<EpisodeMemberJoin>(),
   ]);
-  return episodeResult.results.map((episode) => ({
+  const episodes = episodeResult.results.map((episode) => ({
     ...episode,
     members: memberResult.results.filter((member) => member.episode_id === episode.id),
   }));
+  return options?.featuredOnly ? episodes.filter((episode) => episode.has_featured_video === 1) : episodes;
 }
 
 export async function getEpisodeBySlug(db: D1Database, slug: string): Promise<EpisodeDetail | null> {
@@ -299,8 +307,8 @@ export async function createVideo(db: D1Database, input: CreateVideoInput): Prom
   await db
     .prepare(
       `INSERT INTO videos
-       (id, episode_id, generation_id, r2_key, filename, label, content_type, status, is_primary, uploaded_by)
-       VALUES (?, ?, ?, ?, ?, ?, ?, 'upload_pending', ?, ?)`,
+       (id, episode_id, generation_id, r2_key, filename, label, content_type, status, is_primary, is_featured, uploaded_by)
+       VALUES (?, ?, ?, ?, ?, ?, ?, 'upload_pending', ?, ?, ?)`,
     )
     .bind(
       id,
@@ -311,6 +319,7 @@ export async function createVideo(db: D1Database, input: CreateVideoInput): Prom
       input.label,
       input.contentType,
       (existingCount?.count ?? 0) === 0 ? 1 : 0,
+      input.featured ? 1 : 0,
       input.uploadedBy,
     )
     .run();
@@ -365,6 +374,16 @@ export async function setVideoStatus(db: D1Database, id: string, status: VideoSt
   await db
     .prepare("UPDATE videos SET status = ?, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = ?")
     .bind(status, id)
+    .run();
+  const video = await getVideo(db, id);
+  if (!video) throw new HttpError(404, "動画が見つかりません");
+  return video;
+}
+
+export async function setVideoFeatured(db: D1Database, id: string, featured: boolean): Promise<VideoRow> {
+  await db
+    .prepare("UPDATE videos SET is_featured = ?, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = ?")
+    .bind(featured ? 1 : 0, id)
     .run();
   const video = await getVideo(db, id);
   if (!video) throw new HttpError(404, "動画が見つかりません");

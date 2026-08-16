@@ -9,6 +9,7 @@ import {
   listEpisodes,
   listMembers,
   setVideoStatus,
+  setVideoFeatured,
   updateEpisodeMembers,
   updateGeneration,
   upsertPrompt,
@@ -22,6 +23,7 @@ import {
   updateGenerationSchema,
   uploadSchema,
   videoStatusSchema,
+  videoFeaturedSchema,
 } from "./schemas";
 import { createUpload } from "./uploads";
 
@@ -37,8 +39,11 @@ function createServer(env: Env, actor: string, origin: string): McpServer {
   );
   server.registerTool(
     "list_episodes",
-    { description: "エピソード一覧、Studio ID、登場メンバー、生成バージョン数を取得する", inputSchema: {} },
-    async () => toolResult(await listEpisodes(env.DB)),
+    {
+      description: "エピソード一覧、Studio ID、登場メンバー、生成バージョン数を取得する。イチオシ動画があるものだけにも絞り込める",
+      inputSchema: { featuredOnly: z.boolean().optional().default(false) },
+    },
+    async ({ featuredOnly }) => toolResult(await listEpisodes(env.DB, { featuredOnly })),
   );
   server.registerTool(
     "get_episode",
@@ -93,8 +98,16 @@ function createServer(env: Env, actor: string, origin: string): McpServer {
       description: "指定した生成バージョンへ動画を登録する一回限りのアップロードURLを発行する",
       inputSchema: { generationId: z.string().uuid(), ...uploadSchema.shape },
     },
-    async ({ generationId, filename, label, contentType }) =>
-      toolResult(await createUpload(env, origin, { generationId, filename, label, contentType, uploadedBy: actor })),
+    async ({ generationId, filename, label, contentType, featured }) =>
+      toolResult(await createUpload(env, origin, { generationId, filename, label, contentType, featured, uploadedBy: actor })),
+  );
+  server.registerTool(
+    "set_video_featured",
+    {
+      description: "登録済み動画のイチオシ設定を変更する",
+      inputSchema: { videoId: z.string().uuid(), ...videoFeaturedSchema.shape },
+    },
+    async ({ videoId, featured }) => toolResult(await setVideoFeatured(env.DB, videoId, featured)),
   );
   server.registerTool(
     "create_input_upload",
