@@ -1,5 +1,5 @@
-import { ArrowRight, ArrowUpRight, BookOpen, ChevronDown, Film, Gamepad2, Images, Play, Sparkles, Star } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, Film, Gamepad2, Images, Play, Sparkles, Star } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { api, type EpisodeSummary } from "@/lib/api";
 import { articles, characters, comicEpisodes, galleryItems } from "@/lib/site-content";
@@ -8,7 +8,6 @@ export function HomePage() {
   const [episodes, setEpisodes] = useState<EpisodeSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [movieFilter, setMovieFilter] = useState<"all" | "featured">("all");
-  const [selectedComic, setSelectedComic] = useState<number | null>(null);
 
   useEffect(() => {
     api.listEpisodes().then((result) => setEpisodes(result.episodes)).catch(() => setEpisodes([])).finally(() => setLoading(false));
@@ -52,7 +51,7 @@ export function HomePage() {
       </Section>
 
       <Section id="comic" eyebrow="ORIGINAL COMIC" title="すべては、14話の漫画から。" icon={<BookOpen />} intro="入社初日、そこに自分の席はなかった。窓際族物語の原点を一気に読む。">
-        <div className="comic-grid">{comicEpisodes.map((episode) => { const selected = selectedComic === episode.number; return <article key={episode.number} className={`comic-card${selected ? " comic-card-selected" : ""}`}><button type="button" onClick={() => setSelectedComic(selected ? null : episode.number)} aria-expanded={selected}><img src={episode.image} alt={`第${episode.number}話 ${episode.title}`} loading="lazy" /><div><span>第{String(episode.number).padStart(2, "0")}話</span><h3>{episode.title}</h3><ChevronDown /></div></button>{selected ? <div className="comic-description"><span>STORY</span><p>{episode.description}</p></div> : null}</article>; })}</div>
+        <ComicCarousel />
       </Section>
 
       <Section id="gallery" eyebrow="GALLERY" title="物語から生まれた、もうひとつの景色。" icon={<Images />} intro="原作の外側へ広がるキービジュアル、世界観アート、特別作品。">
@@ -72,4 +71,85 @@ export function HomePage() {
 
 function Section({ id, eyebrow, title, intro, icon, children }: { id: string; eyebrow: string; title: string; intro: string; icon: React.ReactNode; children: React.ReactNode }) {
   return <section id={id} className="official-section"><header className="section-heading"><div className="section-icon">{icon}</div><div><span>{eyebrow}</span><h2>{title}</h2><p>{intro}</p></div></header>{children}</section>;
+}
+
+function ComicCarousel() {
+  const [selectedComic, setSelectedComic] = useState(1);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const scrollFrame = useRef<number | null>(null);
+  const selectedEpisode = comicEpisodes[selectedComic - 1] ?? comicEpisodes[0];
+
+  useEffect(() => () => {
+    if (scrollFrame.current !== null) cancelAnimationFrame(scrollFrame.current);
+  }, []);
+
+  function selectComic(index: number, behavior: ScrollBehavior = "smooth") {
+    const boundedIndex = Math.max(0, Math.min(comicEpisodes.length - 1, index));
+    setSelectedComic(comicEpisodes[boundedIndex].number);
+    cardRefs.current[boundedIndex]?.scrollIntoView({ behavior, block: "nearest", inline: "center" });
+  }
+
+  function updateCenteredComic() {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+    const carouselBox = carousel.getBoundingClientRect();
+    const center = carouselBox.left + carouselBox.width / 2;
+    let closestIndex = 0;
+    let closestDistance = Number.POSITIVE_INFINITY;
+    cardRefs.current.forEach((card, index) => {
+      if (!card) return;
+      const box = card.getBoundingClientRect();
+      const distance = Math.abs(box.left + box.width / 2 - center);
+      if (distance < closestDistance) {
+        closestIndex = index;
+        closestDistance = distance;
+      }
+    });
+    setSelectedComic(comicEpisodes[closestIndex].number);
+  }
+
+  function handleScroll() {
+    if (scrollFrame.current !== null) cancelAnimationFrame(scrollFrame.current);
+    scrollFrame.current = requestAnimationFrame(updateCenteredComic);
+  }
+
+  return <div className="comic-carousel-layout">
+    <div className="comic-carousel-frame">
+      <div className="comic-edge comic-edge-left" />
+      <div
+        ref={carouselRef}
+        className="comic-carousel"
+        onScroll={handleScroll}
+        aria-label="原作漫画 全14話"
+      >
+        {comicEpisodes.map((episode, index) => {
+          const selected = selectedComic === episode.number;
+          return <article key={episode.number} className={`comic-card${selected ? " comic-card-selected" : ""}`}>
+            <button
+              ref={(element) => { cardRefs.current[index] = element; }}
+              type="button"
+              onClick={() => selectComic(index)}
+              aria-pressed={selected}
+              aria-label={`第${episode.number}話 ${episode.title}`}
+            >
+              <span className="comic-cover"><img src={episode.image} alt="" loading={index === 0 ? "eager" : "lazy"} /></span>
+              <span className="comic-card-meta"><small>第{String(episode.number).padStart(2, "0")}話</small><strong>{episode.title}</strong></span>
+            </button>
+          </article>;
+        })}
+      </div>
+      <div className="comic-edge comic-edge-right" />
+    </div>
+    <div className="comic-detail" aria-live="polite">
+      <div className="comic-detail-index"><span>ORIGINAL STORY</span><b>{String(selectedEpisode.number).padStart(2, "0")}<small> / {comicEpisodes.length}</small></b></div>
+      <div className="comic-detail-copy"><span>第{String(selectedEpisode.number).padStart(2, "0")}話</span><h3>{selectedEpisode.title}</h3><p>{selectedEpisode.description}</p></div>
+      <nav className="comic-controls" aria-label="漫画の話数を移動">
+        <button type="button" onClick={() => selectComic(selectedComic - 2)} disabled={selectedComic === 1} aria-label="前の話"><ArrowLeft /></button>
+        <div>{comicEpisodes.map((episode) => <button key={episode.number} type="button" className={episode.number === selectedComic ? "active" : ""} onClick={() => selectComic(episode.number - 1)} aria-label={`第${episode.number}話へ`} />)}</div>
+        <button type="button" onClick={() => selectComic(selectedComic)} disabled={selectedComic === comicEpisodes.length} aria-label="次の話"><ArrowRight /></button>
+      </nav>
+    </div>
+    <p className="comic-scroll-hint"><span /> 横にスクロールして続きを読む</p>
+  </div>;
 }
