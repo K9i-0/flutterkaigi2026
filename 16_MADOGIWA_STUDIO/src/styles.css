@@ -82,14 +82,15 @@ button, summary, a { -webkit-tap-highlight-color: transparent; }
 .movie-card:hover .movie-visual video,.movie-card:hover .movie-visual img { transform: scale(1.025); filter: brightness(1) saturate(.9); }
 .movie-card:hover .movie-visual-inline video[controls] { transform: none; }
 .movie-number { position: absolute; top: 15px; left: 17px; color: rgba(255,255,255,.72); font-family: var(--font-mono); font-size: 9px; letter-spacing: .2em; }
-.featured-ribbon { position: absolute; top: 13px; right: 14px; display: inline-flex; align-items: center; gap: 5px; padding: 6px 9px; border: 1px solid rgba(235,188,63,.58); background: rgba(8,7,5,.72); color: #edc24d; font-family: var(--font-mono); font-size: 7px; letter-spacing: .14em; backdrop-filter: blur(8px); }
+.featured-ribbon { display: inline-flex; flex: none; align-items: center; gap: 5px; padding: 6px 9px; border: 1px solid rgba(235,188,63,.58); background: rgba(218,170,47,.06); color: #edc24d; font-family: var(--font-mono); font-size: 7px; letter-spacing: .14em; }
 .featured-ribbon svg { width: 10px; height: 10px; }
 .movie-play-button { position: absolute; inset: 0; width: 100%; padding: 0; border: 0; background: transparent; color: white; cursor: pointer; }
 .movie-play-button:focus-visible { outline: 2px solid #e2b537; outline-offset: -4px; }
 .play-circle { position: absolute; top: 50%; left: 50%; display: grid; width: 54px; height: 54px; place-items: center; border: 1px solid rgba(255,255,255,.7); border-radius: 50%; background: rgba(0,0,0,.28); color: white; transform: translate(-50%,-50%); backdrop-filter: blur(6px); }
 .play-circle svg { width: 16px; }
 .movie-meta { display: block; padding: 20px; color: white; text-decoration: none; }
-.movie-meta>span,.movie-meta small { color: #a98736; font-family: var(--font-mono); font-size: 8px; letter-spacing: .18em; }
+.movie-meta-topline { display: flex; min-height: 25px; align-items: center; justify-content: space-between; gap: 12px; }
+.movie-meta-topline>span:first-child,.movie-meta small { color: #a98736; font-family: var(--font-mono); font-size: 8px; letter-spacing: .18em; }
 .movie-meta h3 { margin: 9px 0 8px; font-size: 18px; }
 .movie-meta p { min-height: 42px; margin: 0 0 17px; color: #858078; font-size: 11px; line-height: 1.8; }
 .movie-meta small { color: #5f5a52; }

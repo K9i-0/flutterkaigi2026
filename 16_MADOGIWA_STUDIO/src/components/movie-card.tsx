@@ -41,7 +41,6 @@ export function MovieCard({ episode, index, featuredLayout = false, inlinePlayba
       onEnded={inlinePlayback ? () => setStarted(false) : undefined}
     /> : <img src="/site/hero-shibuya-wide.webp" alt="" />}
     <div className="movie-number">{String(index + 1).padStart(2, "0")}</div>
-    {episode.has_featured_video ? <span className="featured-ribbon"><Star fill="currentColor" /> PICK UP</span> : null}
   </>;
 
   return <article className={className}>
@@ -55,7 +54,10 @@ export function MovieCard({ episode, index, featuredLayout = false, inlinePlayba
       <span className="play-circle"><Play fill="currentColor" /></span>
     </Link>}
     <Link to={detailPath} className="movie-meta">
-      <span>{episode.studio_id}</span>
+      <div className="movie-meta-topline">
+        <span>{episode.studio_id}</span>
+        {episode.has_featured_video ? <span className="featured-ribbon"><Star fill="currentColor" /> PICK UP</span> : null}
+      </div>
       <h3>{episode.title}</h3>
       <p>{episode.summary || "窓際族たちの新しい物語。"}</p>
       <small>{episode.generation_count} GENERATION{episode.generation_count === 1 ? "" : "S"}</small>
