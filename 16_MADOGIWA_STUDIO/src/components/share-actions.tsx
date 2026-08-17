@@ -2,8 +2,11 @@ import { Check, Link2, Share2 } from "lucide-react";
 import { useState } from "react";
 import { absoluteUrl } from "@/lib/public-data";
 
-export function ShareActions({ title, text, path }: { title: string; text: string; path: string }) {
+const SHARE_HASHTAG = "#窓際族物語";
+
+export function ShareActions({ title, path }: { title: string; path: string }) {
   const [copied, setCopied] = useState(false);
+  const shareText = `${title} ${SHARE_HASHTAG}`;
 
   function shareUrl(): string {
     return new URL(path, window.location.origin).toString();
@@ -12,7 +15,7 @@ export function ShareActions({ title, text, path }: { title: string; text: strin
   async function share() {
     const url = shareUrl();
     if (navigator.share) {
-      await navigator.share({ title, text, url });
+      await navigator.share({ text: shareText, url });
       return;
     }
     await navigator.clipboard.writeText(url);
@@ -27,7 +30,7 @@ export function ShareActions({ title, text, path }: { title: string; text: strin
   }
 
   const canonicalUrl = absoluteUrl(path);
-  const xUrl = `https://twitter.com/intent/tweet?${new URLSearchParams({ text: `${title}｜窓際族物語`, url: canonicalUrl }).toString()}`;
+  const xUrl = `https://twitter.com/intent/tweet?${new URLSearchParams({ text: shareText, url: canonicalUrl }).toString()}`;
   const lineUrl = `https://social-plugins.line.me/lineit/share?${new URLSearchParams({ url: canonicalUrl }).toString()}`;
 
   return <div className="share-actions" aria-label="作品を共有">

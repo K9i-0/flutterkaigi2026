@@ -14,7 +14,7 @@ export function CharacterPage({ character, episodes }: { character: Character; e
       <div className="character-detail-image"><img src={character.image} alt={character.name} /></div>
       <div className="character-detail-copy">
         <span>{character.role}</span><h1>{character.name}</h1><p>{character.copy}</p>
-        <ShareActions title={character.name} text={character.copy} path={`/characters/${character.id}`} />
+        <ShareActions title={character.name} path={`/characters/${character.id}`} />
       </div>
     </header>
     {episodes.length ? <section className="character-episodes">

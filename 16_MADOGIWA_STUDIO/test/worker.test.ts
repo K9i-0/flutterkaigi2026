@@ -150,6 +150,11 @@ describe("Madogiwa Studio Worker", () => {
     expect(episodeHtml).toContain("このデモデータは管理画面の表示確認用です");
     expect(episodeHtml).toContain("Character");
     expect(episodeHtml.indexOf("<video")).toBeLessThan(episodeHtml.indexOf("<h1"));
+    const expectedXQuery = new URLSearchParams({
+      text: "そば屋ビールバッテリー #窓際族物語",
+      url: "https://madogiwa-studio.madogiwa-studio.workers.dev/episodes/sobaya-beer-battery",
+    }).toString().replaceAll("&", "&amp;");
+    expect(episodeHtml).toContain(`https://twitter.com/intent/tweet?${expectedXQuery}`);
 
     expect((await adminFetch("http://localhost/admin-api/episodes/sobaya-beer-battery", {
       method: "PATCH",

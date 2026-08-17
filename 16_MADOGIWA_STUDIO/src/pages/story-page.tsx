@@ -8,7 +8,7 @@ export function StoryPage() {
     <header className="story-header">
       <div className="section-icon"><BookOpen /></div>
       <div><span>ORIGINAL STORY</span><h1>原作ストーリー</h1><p>窓際の席から、物語は始まった。入社初日からBONKまでを辿る全14話。</p>
-        <ShareActions title="原作ストーリー" text="窓際族物語の原点となる全14話。" path="/story" />
+        <ShareActions title="原作ストーリー" path="/story" />
       </div>
     </header>
     <div className="story-grid">{comicEpisodes.map((episode) => <article key={episode.number}>

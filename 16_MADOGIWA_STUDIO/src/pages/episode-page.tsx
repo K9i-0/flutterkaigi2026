@@ -52,7 +52,7 @@ export function EpisodePage({ detail }: { detail: PublicEpisodeDetail }) {
           <span><Users />{members.length} CAST</span>
           {primaryProduction ? <span><Sparkles />v{primaryProduction.version}{primaryProduction.model_name ? ` · ${primaryProduction.model_name}` : ""}</span> : null}
         </div>
-        <ShareActions title={episode.title} text={episode.summary || "窓際族たちの新しい物語。"} path={pagePath} />
+        <ShareActions title={episode.title} path={pagePath} />
       </div>
     </header>
 

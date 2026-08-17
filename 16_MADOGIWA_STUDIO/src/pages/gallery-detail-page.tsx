@@ -9,7 +9,7 @@ export function GalleryDetailPage({ item, related }: { item: GalleryItem; relate
   return <div className="gallery-detail-page">
     <Link to="/gallery" className="archive-back"><ArrowLeft /> GALLERY</Link>
     <header className="gallery-detail-header">
-      <div><span>{item.kind}</span><h1>{item.title}</h1><ShareActions title={item.title} text={`窓際族物語 ${item.kind}`} path={`/gallery/${item.slug}`} /></div>
+      <div><span>{item.kind}</span><h1>{item.title}</h1><ShareActions title={item.title} path={`/gallery/${item.slug}`} /></div>
     </header>
     <ZoomableImage src={item.image_url} alt={item.title} caption={item.title} className="gallery-detail-image" buttonClassName="gallery-detail-image-trigger" />
     {related.length ? <section className="gallery-related-section">
