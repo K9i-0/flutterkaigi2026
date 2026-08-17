@@ -1,13 +1,13 @@
 # MADOGIWA STUDIO
 
-「窓際族物語」の動画制作物を、エピソードと生成バージョン単位で閲覧・管理するCloudflare Workersアプリです。
+「窓際族物語」の公式サイトコンテンツと動画制作物を、管理画面とRemote MCPから共有管理するCloudflare Workersアプリです。
 
 ## 構成
 
 - React + Vite + shadcn/ui互換コンポーネント: 一覧、詳細、管理画面
 - Cloudflare Workers: JSON API、入力アセット／動画配信、Remote MCP
-- D1: Studio ID、登場メンバー、生成バージョン、使用モデル、プロンプト履歴、入力アセット、動画メタデータ、アップロードチケット
-- R2: Seedance入力画像・参照音声・資料・生成動画・動画サムネイルの実体
+- D1: ギャラリー、記事、Studio ID、登場メンバー、生成バージョン、使用モデル、プロンプト履歴、入力アセット、動画メタデータ、アップロードチケット
+- R2: ギャラリー画像、Seedance入力画像・参照音声・資料・生成動画・動画サムネイルの実体
 - Cloudflare Access: 管理画面、管理API、Remote MCPの認証
 
 公開ページと読み取り用`/api`はログイン不要です。`/admin`、`/admin-api`、`/mcp`はCloudflare Accessを要求します。
@@ -69,6 +69,17 @@ npm run upload:video -- \
 表示順を付けられます。公開詳細ページでは画像をプレビューし、音声をその場で再生できます。
 CodexからはMCPの`create_input_upload`で同じ登録を行います。
 
+## ギャラリーと記事
+
+公式トップページのギャラリーと記事はD1を正本とし、管理画面の`Gallery`、`Articles`から追加・編集・
+並べ替え・公開・非公開・アーカイブできます。ギャラリー画像はJPEG、PNG、WebP・10MB以下に限定し、
+一回限りURLを使ってR2へ直接アップロードします。既存4件のギャラリー画像は静的パスを維持したまま
+D1へ初期登録され、管理画面またはMCPで差し替えた時点からR2配信へ切り替わります。
+
+漫画とキャラクターは引き続き`src/lib/site-content.ts`と`public/site/`の静的アセットを正本とします。
+Cloudflare Accessを通過した管理メンバーは全管理機能を利用でき、メンバーの追加・削除はCloudflare Access側で行います。
+物理削除APIは設けず、公開取り下げは`draft`または`archived`で行います。
+
 ## Remote MCP
 
 Streamable HTTPのエンドポイントは`/mcp`です。
@@ -84,6 +95,16 @@ Streamable HTTPのエンドポイントは`/mcp`です。
 - `create_video_upload`
 - `create_input_upload`
 - `set_video_status`
+- `set_video_featured`
+- `list_gallery_items`
+- `create_gallery_item`
+- `update_gallery_item`
+- `create_gallery_image_upload`
+- `reorder_gallery_items`
+- `list_articles`
+- `create_article`
+- `update_article`
+- `reorder_articles`
 
 新規MCPサーバー向けの現行推奨に合わせ、`createMcpHandler`によるステートレス構成です。
 

@@ -110,3 +110,44 @@ export type EpisodeDetail = {
   members: MemberRow[];
   generations: GenerationDetail[];
 };
+
+export const editorialContentStatuses = ["draft", "published", "archived"] as const;
+export type EditorialContentStatus = (typeof editorialContentStatuses)[number];
+
+export type GalleryItemRow = {
+  id: string;
+  slug: string;
+  title: string;
+  kind: string;
+  legacy_image_path: string;
+  image_r2_key: string | null;
+  image_content_type: string | null;
+  image_size_bytes: number | null;
+  display_order: number;
+  status: EditorialContentStatus;
+  created_by: string | null;
+  updated_by: string | null;
+  created_at: string;
+  updated_at: string;
+  archived_at: string | null;
+};
+
+export type GalleryItem = GalleryItemRow & { image_url: string };
+
+export type ArticleRow = {
+  id: string;
+  slug: string;
+  label: string;
+  source: string;
+  title: string;
+  copy: string;
+  url: string;
+  action: string;
+  display_order: number;
+  status: EditorialContentStatus;
+  created_by: string | null;
+  updated_by: string | null;
+  created_at: string;
+  updated_at: string;
+  archived_at: string | null;
+};

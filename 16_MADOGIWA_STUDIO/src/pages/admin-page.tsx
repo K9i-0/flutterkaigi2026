@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { AdminAuthenticationRequiredError, api, type EpisodeDetail, type EpisodeStatus, type EpisodeSummary, type Generation, type InputAssetKind, type Member } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import { createVideoPoster } from "@/lib/video-poster";
+import { EditorialAdmin } from "@/pages/editorial-admin";
 
 const COMMON_MODELS = ["Seedance 2.0", "Seedance 2.5", "MiniMax H3"];
 
@@ -19,6 +20,8 @@ export function AdminPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const selectedSlug = searchParams.get("episode");
+  const requestedSection = searchParams.get("section");
+  const section: "episodes" | "gallery" | "articles" = requestedSection === "gallery" || requestedSection === "articles" ? requestedSection : "episodes";
   const [session, setSession] = useState<{ email: string; source: "access" } | null | undefined>(undefined);
   const [episodes, setEpisodes] = useState<EpisodeSummary[]>([]);
   const [members, setMembers] = useState<Member[]>([]);
@@ -58,7 +61,8 @@ export function AdminPage() {
 
   return <div className="space-y-8"><datalist id="madogiwa-model-suggestions">{COMMON_MODELS.map((model) => <option key={model} value={model} />)}</datalist>
     <section className="flex flex-wrap items-end justify-between gap-5"><div><Badge className="border-emerald-400/20 bg-emerald-400/8 text-emerald-300"><CheckCircle2 className="mr-2 size-3" />Authenticated</Badge><h1 className="mt-5 text-3xl font-semibold tracking-[-0.035em] sm:text-5xl">Production desk</h1><p className="mt-3 text-sm text-stone-500">{session.email}</p></div><div className="flex items-center gap-2"><Badge>Cloudflare Access</Badge><Button variant="ghost" size="sm" asChild><a href="/cdn-cgi/access/logout"><LogOut className="size-3.5" />ログアウト</a></Button></div></section>
-    <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]"><aside className="space-y-3"><Button className="w-full" onClick={() => void navigate("/admin")}><Plus className="size-4" />新規エピソード</Button><div className="space-y-1 rounded-2xl border border-white/7 bg-white/[0.02] p-2">{episodes.map((episode) => <button key={episode.id} onClick={() => void navigate(`/admin?episode=${episode.slug}`)} className={cn("flex w-full items-center justify-between gap-3 rounded-xl px-3 py-3 text-left transition", selectedSlug === episode.slug ? "bg-white/10" : "hover:bg-white/5")}><div className="min-w-0"><div className="truncate text-sm text-stone-200">{episode.title}</div><div className="mt-1 font-mono text-[10px] text-stone-600">{episode.studio_id} · {episode.generation_count} versions</div></div><StatusBadge status={episode.status} /></button>)}</div><McpHint /></aside><div>{detail ? <EpisodeEditor key={detail.episode.id} detail={detail} members={members} onSaved={refreshDetail} /> : <CreateEpisode members={members} onCreated={async (slug) => { await refreshList(); await navigate(`/admin?episode=${slug}`); }} />}</div></div>
+    <nav className="flex flex-wrap gap-2 rounded-2xl border border-white/7 bg-white/[0.02] p-2" aria-label="管理対象"><Button type="button" variant={section === "episodes" ? "secondary" : "ghost"} onClick={() => void navigate("/admin")}>Episodes</Button><Button type="button" variant={section === "gallery" ? "secondary" : "ghost"} onClick={() => void navigate("/admin?section=gallery")}>Gallery</Button><Button type="button" variant={section === "articles" ? "secondary" : "ghost"} onClick={() => void navigate("/admin?section=articles")}>Articles</Button></nav>
+    {section === "episodes" ? <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]"><aside className="space-y-3"><Button className="w-full" onClick={() => void navigate("/admin")}><Plus className="size-4" />新規エピソード</Button><div className="space-y-1 rounded-2xl border border-white/7 bg-white/[0.02] p-2">{episodes.map((episode) => <button key={episode.id} onClick={() => void navigate(`/admin?episode=${episode.slug}`)} className={cn("flex w-full items-center justify-between gap-3 rounded-xl px-3 py-3 text-left transition", selectedSlug === episode.slug ? "bg-white/10" : "hover:bg-white/5")}><div className="min-w-0"><div className="truncate text-sm text-stone-200">{episode.title}</div><div className="mt-1 font-mono text-[10px] text-stone-600">{episode.studio_id} · {episode.generation_count} versions</div></div><StatusBadge status={episode.status} /></button>)}</div><McpHint /></aside><div>{detail ? <EpisodeEditor key={detail.episode.id} detail={detail} members={members} onSaved={refreshDetail} /> : <CreateEpisode members={members} onCreated={async (slug) => { await refreshList(); await navigate(`/admin?episode=${slug}`); }} />}</div></div> : <EditorialAdmin section={section} />}
   </div>;
 }
 
@@ -123,5 +127,5 @@ function InputAssetsForm({ generation, onSaved }: { generation: Generation; onSa
 }
 
 function UploadPicker({ file, label, accept, onFile }: { file: File | null; label: string; accept?: string; onFile: (file: File | null) => void }) { return <label className="grid cursor-pointer place-items-center rounded-3xl border border-dashed border-white/12 bg-black/10 px-6 py-10 text-center transition hover:border-amber-300/30"><input type="file" accept={accept} className="sr-only" onChange={(event) => onFile(event.target.files?.[0] ?? null)} /><span className="grid size-12 place-items-center rounded-2xl bg-white/5 text-stone-400"><CloudUpload className="size-5" /></span><span className="mt-4 text-sm text-stone-300">{file ? file.name : label}</span></label>; }
-function McpHint() { return <div className="rounded-2xl border border-violet-400/10 bg-violet-400/[0.04] p-4"><div className="flex items-center gap-2 text-xs font-medium text-violet-300"><Bot className="size-4" />Codex / MCP</div><p className="mt-2 text-[11px] leading-5 text-stone-600">エピソード、生成バージョン、入力、動画をRemote MCPから登録できます。</p></div>; }
+function McpHint() { return <div className="rounded-2xl border border-violet-400/10 bg-violet-400/[0.04] p-4"><div className="flex items-center gap-2 text-xs font-medium text-violet-300"><Bot className="size-4" />Codex / MCP</div><p className="mt-2 text-[11px] leading-5 text-stone-600">エピソード、生成バージョン、入力、動画、ギャラリー、記事をRemote MCPから登録できます。</p></div>; }
 function Field({ label, className, children }: { label: string; className?: string; children: React.ReactNode }) { return <div className={cn("space-y-2", className)}><Label>{label}</Label>{children}</div>; }

@@ -4,6 +4,7 @@ import { errorResponse, HttpError } from "./http";
 import { serveVideo, serveVideoPoster } from "./media";
 import { handleMcp } from "./mcp";
 import { serveInputAsset } from "./input-assets";
+import { serveGalleryImage } from "./gallery-images";
 
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
@@ -34,6 +35,12 @@ export default {
         const assetId = url.pathname.slice("/inputs/".length);
         if (!assetId) throw new HttpError(404, "入力アセットが見つかりません");
         return await serveInputAsset(request, env, assetId);
+      }
+
+      if (url.pathname.startsWith("/gallery-images/")) {
+        const galleryItemId = url.pathname.slice("/gallery-images/".length);
+        if (!galleryItemId) throw new HttpError(404, "ギャラリー画像が見つかりません");
+        return await serveGalleryImage(request, env, galleryItemId);
       }
 
       return await env.ASSETS.fetch(request);

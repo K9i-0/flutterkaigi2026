@@ -2,6 +2,7 @@ export type EpisodeStatus = "draft" | "generated" | "published" | "archived";
 export type VideoStatus = "upload_pending" | "ready" | "published" | "archived";
 export type InputAssetKind = "image" | "audio" | "document" | "other";
 export type InputAssetStatus = "upload_pending" | "ready" | "archived";
+export type EditorialContentStatus = "draft" | "published" | "archived";
 
 export type Member = { id: string; slug: string; name: string; sort_order: number };
 
@@ -95,6 +96,43 @@ export type Generation = {
 };
 
 export type EpisodeDetail = { episode: Episode; members: Member[]; generations: Generation[] };
+
+export type GalleryItem = {
+  id: string;
+  slug: string;
+  title: string;
+  kind: string;
+  legacy_image_path: string;
+  image_r2_key: string | null;
+  image_content_type: string | null;
+  image_size_bytes: number | null;
+  image_url: string;
+  display_order: number;
+  status: EditorialContentStatus;
+  created_by: string | null;
+  updated_by: string | null;
+  created_at: string;
+  updated_at: string;
+  archived_at: string | null;
+};
+
+export type Article = {
+  id: string;
+  slug: string;
+  label: string;
+  source: string;
+  title: string;
+  copy: string;
+  url: string;
+  action: string;
+  display_order: number;
+  status: EditorialContentStatus;
+  created_by: string | null;
+  updated_by: string | null;
+  created_at: string;
+  updated_at: string;
+  archived_at: string | null;
+};
 type ApiErrorBody = { error?: string };
 
 export class AdminAuthenticationRequiredError extends Error {
@@ -128,6 +166,50 @@ function jsonInit(method: string, body: unknown): RequestInit {
 }
 
 export const api = {
+  listGalleryItems: () => request<{ galleryItems: GalleryItem[] }>("/api/gallery-items"),
+  listArticles: () => request<{ articles: Article[] }>("/api/articles"),
+  listAdminGalleryItems: () => request<{ galleryItems: GalleryItem[] }>("/admin-api/gallery-items"),
+  listAdminArticles: () => request<{ articles: Article[] }>("/admin-api/articles"),
+  createGalleryItem: (input: { slug: string; title: string; kind: string; displayOrder: number; status: EditorialContentStatus }) =>
+    request<GalleryItem>("/admin-api/gallery-items", jsonInit("POST", input)),
+  updateGalleryItem: (
+    galleryItemId: string,
+    input: Partial<{ slug: string; title: string; kind: string; displayOrder: number; status: EditorialContentStatus }>,
+  ) => request<GalleryItem>(`/admin-api/gallery-items/${galleryItemId}`, jsonInit("PATCH", input)),
+  reorderGalleryItems: (itemIds: string[]) =>
+    request<{ galleryItems: GalleryItem[] }>("/admin-api/gallery-items/reorder", jsonInit("PUT", { itemIds })),
+  createGalleryImageUpload: (galleryItemId: string, input: { filename: string; contentType: string }) =>
+    request<{ galleryItemId: string; uploadUrl: string; expiresAt: string }>(
+      `/admin-api/gallery-items/${galleryItemId}/image-upload`,
+      jsonInit("POST", input),
+    ),
+  createArticle: (input: {
+    slug: string;
+    label: string;
+    source: string;
+    title: string;
+    copy: string;
+    url: string;
+    action: string;
+    displayOrder: number;
+    status: EditorialContentStatus;
+  }) => request<Article>("/admin-api/articles", jsonInit("POST", input)),
+  updateArticle: (
+    articleId: string,
+    input: Partial<{
+      slug: string;
+      label: string;
+      source: string;
+      title: string;
+      copy: string;
+      url: string;
+      action: string;
+      displayOrder: number;
+      status: EditorialContentStatus;
+    }>,
+  ) => request<Article>(`/admin-api/articles/${articleId}`, jsonInit("PATCH", input)),
+  reorderArticles: (itemIds: string[]) =>
+    request<{ articles: Article[] }>("/admin-api/articles/reorder", jsonInit("PUT", { itemIds })),
   listMembers: () => request<{ members: Member[] }>("/api/members"),
   listEpisodes: (featuredOnly = false) => request<{ episodes: EpisodeSummary[] }>(`/api/episodes${featuredOnly ? "?featured=true" : ""}`),
   getEpisode: (slug: string) => request<EpisodeDetail>(`/api/episodes/${encodeURIComponent(slug)}`),
@@ -201,6 +283,18 @@ export const api = {
       throw new Error(body.error ?? "入力アセットのアップロードに失敗しました");
     }
     return response.json() as Promise<{ assetId: string; assetUrl: string; size: number }>;
+  },
+  uploadGalleryImage: async (uploadUrl: string, file: File) => {
+    const response = await fetch(uploadUrl, {
+      method: "PUT",
+      headers: { "content-type": file.type },
+      body: file,
+    });
+    if (!response.ok) {
+      const body = (await response.json().catch(() => ({}))) as ApiErrorBody;
+      throw new Error(body.error ?? "ギャラリー画像のアップロードに失敗しました");
+    }
+    return response.json() as Promise<{ galleryItemId: string; imageUrl: string; size: number }>;
   },
   setVideoFeatured: (videoId: string, featured: boolean) =>
     request<Video>(`/admin-api/videos/${videoId}`, jsonInit("PATCH", { featured })),

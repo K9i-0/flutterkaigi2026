@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { episodeStatuses, inputAssetKinds, videoStatuses } from "./domain";
+import { editorialContentStatuses, episodeStatuses, inputAssetKinds, videoStatuses } from "./domain";
 
 const slugSchema = z
   .string()
@@ -52,3 +52,36 @@ export const inputUploadSchema = z.object({
 
 export const videoStatusSchema = z.object({ status: z.enum(videoStatuses) });
 export const videoFeaturedSchema = z.object({ featured: z.boolean() });
+
+export const galleryItemSchema = z.object({
+  slug: slugSchema,
+  title: z.string().trim().min(1).max(160),
+  kind: z.string().trim().min(1).max(80),
+  displayOrder: z.number().int().min(0).max(10_000).default(0),
+  status: z.enum(editorialContentStatuses).default("draft"),
+});
+
+export const updateGalleryItemSchema = galleryItemSchema.partial();
+
+export const galleryImageUploadSchema = z.object({
+  filename: z.string().trim().min(1).max(255),
+  contentType: z.string().trim().regex(/^image\/(?:jpeg|png|webp)$/, "JPEG、PNG、WebP画像を指定してください"),
+});
+
+export const articleSchema = z.object({
+  slug: slugSchema,
+  label: z.string().trim().min(1).max(80),
+  source: z.string().trim().min(1).max(80),
+  title: z.string().trim().min(1).max(200),
+  copy: z.string().trim().max(1000).default(""),
+  url: z.url().max(2000),
+  action: z.string().trim().min(1).max(80),
+  displayOrder: z.number().int().min(0).max(10_000).default(0),
+  status: z.enum(editorialContentStatuses).default("draft"),
+});
+
+export const updateArticleSchema = articleSchema.partial();
+
+export const reorderContentSchema = z.object({
+  itemIds: z.array(z.string().uuid()).max(200),
+});

@@ -2,6 +2,17 @@ import { requireAdmin } from "./auth";
 import { HttpError, json, readJson } from "./http";
 import { consumeInputUpload, createInputUpload } from "./input-assets";
 import {
+  createArticle,
+  createGalleryItem,
+  listArticles,
+  listGalleryItems,
+  reorderArticles,
+  reorderGalleryItems,
+  updateArticle,
+  updateGalleryItem,
+} from "./content-repository";
+import { consumeGalleryImageUpload, createGalleryImageUpload } from "./gallery-images";
+import {
   createEpisode,
   createGeneration,
   getEpisodeBySlug,
@@ -15,12 +26,18 @@ import {
   upsertPrompt,
 } from "./repository";
 import {
+  articleSchema,
   createEpisodeSchema,
+  galleryImageUploadSchema,
+  galleryItemSchema,
   generationSchema,
   inputUploadSchema,
   memberIdsSchema,
   promptSchema,
+  reorderContentSchema,
+  updateArticleSchema,
   updateEpisodeSchema,
+  updateGalleryItemSchema,
   updateGenerationSchema,
   uploadSchema,
   videoStatusSchema,
@@ -42,6 +59,28 @@ export async function handleApi(request: Request, env: Env, ctx: ExecutionContex
   if (isAdminApi && request.method === "GET" && routePath === "/api/session") {
     return json({ admin });
   }
+  if (request.method === "GET" && routePath === "/api/gallery-items") {
+    return json(
+      {
+        galleryItems: await listGalleryItems(
+          env.DB,
+          isAdminApi ? { includeArchived: true } : { publishedOnly: true },
+        ),
+      },
+      { headers: { "cache-control": "no-store" } },
+    );
+  }
+  if (request.method === "GET" && routePath === "/api/articles") {
+    return json(
+      {
+        articles: await listArticles(
+          env.DB,
+          isAdminApi ? { includeArchived: true } : { publishedOnly: true },
+        ),
+      },
+      { headers: { "cache-control": "no-store" } },
+    );
+  }
   if (request.method === "GET" && routePath === "/api/members") {
     return json({ members: await listMembers(env.DB) }, { headers: { "cache-control": "no-store" } });
   }
@@ -57,6 +96,48 @@ export async function handleApi(request: Request, env: Env, ctx: ExecutionContex
     return json(detail, { headers: { "cache-control": "no-store" } });
   }
 
+  if (isAdminApi && request.method === "POST" && routePath === "/api/gallery-items") {
+    const input = galleryItemSchema.parse(await readJson(request));
+    return json(await createGalleryItem(env.DB, input, admin!.email), { status: 201 });
+  }
+  if (isAdminApi && request.method === "PATCH" && segments.length === 3 && segments[1] === "gallery-items") {
+    const input = updateGalleryItemSchema.parse(await readJson(request));
+    return json(await updateGalleryItem(env.DB, segments[2], input, admin!.email));
+  }
+  if (isAdminApi && request.method === "PUT" && routePath === "/api/gallery-items/reorder") {
+    const input = reorderContentSchema.parse(await readJson(request));
+    return json({ galleryItems: await reorderGalleryItems(env.DB, input.itemIds, admin!.email) });
+  }
+  if (
+    isAdminApi &&
+    request.method === "POST" &&
+    segments.length === 4 &&
+    segments[1] === "gallery-items" &&
+    segments[3] === "image-upload"
+  ) {
+    const input = galleryImageUploadSchema.parse(await readJson(request));
+    return json(
+      await createGalleryImageUpload(env, url.origin, {
+        galleryItemId: segments[2],
+        filename: input.filename,
+        contentType: input.contentType,
+        uploadedBy: admin!.email,
+      }),
+      { status: 201 },
+    );
+  }
+  if (isAdminApi && request.method === "POST" && routePath === "/api/articles") {
+    const input = articleSchema.parse(await readJson(request));
+    return json(await createArticle(env.DB, input, admin!.email), { status: 201 });
+  }
+  if (isAdminApi && request.method === "PATCH" && segments.length === 3 && segments[1] === "articles") {
+    const input = updateArticleSchema.parse(await readJson(request));
+    return json(await updateArticle(env.DB, segments[2], input, admin!.email));
+  }
+  if (isAdminApi && request.method === "PUT" && routePath === "/api/articles/reorder") {
+    const input = reorderContentSchema.parse(await readJson(request));
+    return json({ articles: await reorderArticles(env.DB, input.itemIds, admin!.email) });
+  }
   if (isAdminApi && request.method === "POST" && routePath === "/api/episodes") {
     const input = createEpisodeSchema.parse(await readJson(request));
     return json(await createEpisode(env.DB, input, admin!.email), { status: 201 });
@@ -154,6 +235,9 @@ export async function handleApi(request: Request, env: Env, ctx: ExecutionContex
   }
   if (request.method === "PUT" && segments.length === 3 && segments[1] === "input-uploads") {
     return consumeInputUpload(request, env, segments[2]);
+  }
+  if (request.method === "PUT" && segments.length === 3 && segments[1] === "gallery-image-uploads") {
+    return consumeGalleryImageUpload(request, env, segments[2]);
   }
   if (isAdminApi && request.method === "PATCH" && segments.length === 3 && segments[1] === "videos") {
     const body = await readJson(request);

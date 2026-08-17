@@ -3,15 +3,19 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { MovieCard } from "@/components/movie-card";
 import { useImageLightbox, ZoomableImage } from "@/components/image-lightbox";
-import { api, type EpisodeSummary } from "@/lib/api";
-import { articles, characters, comicEpisodes, galleryItems } from "@/lib/site-content";
+import { api, type Article, type EpisodeSummary, type GalleryItem } from "@/lib/api";
+import { characters, comicEpisodes } from "@/lib/site-content";
 
 export function HomePage() {
   const [episodes, setEpisodes] = useState<EpisodeSummary[]>([]);
+  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
+  const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     api.listEpisodes(true).then((result) => setEpisodes(result.episodes)).catch(() => setEpisodes([])).finally(() => setLoading(false));
+    api.listGalleryItems().then((result) => setGalleryItems(result.galleryItems)).catch(() => setGalleryItems([]));
+    api.listArticles().then((result) => setArticles(result.articles)).catch(() => setArticles([]));
   }, []);
 
   const prioritizedEpisodes = useMemo(() => [...episodes].sort((left, right) => {
@@ -47,7 +51,7 @@ export function HomePage() {
       </Section>
 
       <Section id="gallery" eyebrow="GALLERY" title="物語から生まれた、もうひとつの景色。" icon={<Images />} intro="原作の外側へ広がるキービジュアル、世界観アート、特別作品。">
-        <div className="gallery-grid">{galleryItems.map((item, index) => <figure key={item.title} className={index === 0 ? "gallery-item gallery-wide" : "gallery-item"}><ZoomableImage src={item.image} alt={item.title} caption={item.kind} loading="lazy" buttonClassName="gallery-image-trigger" /><figcaption><span>{item.kind}</span><b>{item.title}</b></figcaption></figure>)}</div>
+        <div className="gallery-grid">{galleryItems.map((item, index) => <figure key={item.id} className={index === 0 ? "gallery-item gallery-wide" : "gallery-item"}><ZoomableImage src={item.image_url} alt={item.title} caption={item.kind} loading="lazy" buttonClassName="gallery-image-trigger" /><figcaption><span>{item.kind}</span><b>{item.title}</b></figcaption></figure>)}</div>
       </Section>
 
       <Section id="game" eyebrow="GAME" title="遊べる窓際、営業中。" icon={<Gamepad2 />} intro="ドット絵、カード、レース。窓際族の世界へ、プレイヤーとして飛び込もう。">
@@ -55,7 +59,7 @@ export function HomePage() {
       </Section>
 
       <Section id="article" eyebrow="ARTICLE" title="物語の、その裏側へ。" icon={<BookOpen />} intro="作品を支える映像、音声、Web技術の制作ノート。">
-        <div className="article-grid">{articles.map((article, index) => <a key={article.url} href={article.url} target="_blank" rel="noreferrer"><span>{article.label} · 0{index + 1}</span><h3>{article.title}</h3><p>{article.copy}</p><small>{article.source} · {article.action} <ArrowUpRight /></small></a>)}</div>
+        <div className="article-grid">{articles.map((article, index) => <a key={article.id} href={article.url} target="_blank" rel="noreferrer"><span>{article.label} · {String(index + 1).padStart(2, "0")}</span><h3>{article.title}</h3><p>{article.copy}</p><small>{article.source} · {article.action} <ArrowUpRight /></small></a>)}</div>
       </Section>
     </div>
   </>;

@@ -131,6 +131,115 @@ describe("Madogiwa Studio Worker", () => {
     expect(assetResponse.headers.get("content-type")).toBe("image/png");
   });
 
+  it("manages published gallery items and streams replacement images from R2", async () => {
+    const initial = await (await SELF.fetch("http://localhost/api/gallery-items")).json<{
+      galleryItems: Array<{ title: string; image_url: string }>;
+    }>();
+    expect(initial.galleryItems).toContainEqual(expect.objectContaining({
+      title: "規制チーム、出動。",
+      image_url: "/site/gallery/regulation-team.webp",
+    }));
+
+    const slug = `gallery-${crypto.randomUUID()}`;
+    const createResponse = await adminFetch("http://localhost/admin-api/gallery-items", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ slug, title: "新しい景色", kind: "WORLD ART", displayOrder: 99, status: "draft" }),
+    });
+    expect(createResponse.status).toBe(201);
+    const item = await createResponse.json<{ id: string; status: string }>();
+    expect(item.status).toBe("draft");
+
+    const ticketResponse = await adminFetch(`http://localhost/admin-api/gallery-items/${item.id}/image-upload`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ filename: "world.webp", contentType: "image/webp" }),
+    });
+    expect(ticketResponse.status).toBe(201);
+    const ticket = await ticketResponse.json<{ uploadUrl: string }>();
+    const bytes = new Uint8Array([82, 73, 70, 70, 8, 0, 0, 0, 87, 69, 66, 80]);
+    const uploadInit = {
+      method: "PUT",
+      headers: { "content-type": "image/webp", "content-length": String(bytes.byteLength) },
+      body: bytes,
+    } satisfies RequestInit;
+    expect((await SELF.fetch(ticket.uploadUrl, uploadInit)).status).toBe(201);
+    expect((await SELF.fetch(ticket.uploadUrl, uploadInit)).status).toBe(410);
+
+    const publishResponse = await adminFetch(`http://localhost/admin-api/gallery-items/${item.id}`, {
+      method: "PATCH",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ status: "published", title: "R2から届く景色" }),
+    });
+    expect(publishResponse.status).toBe(200);
+    const published = await publishResponse.json<{ image_url: string; updated_by: string | null }>();
+    expect(published.image_url).toContain(`/gallery-images/${item.id}`);
+    expect(published.updated_by).toBe("test@madogiwa.studio");
+
+    const imageResponse = await SELF.fetch(`http://localhost/gallery-images/${item.id}`);
+    expect(imageResponse.status).toBe(200);
+    expect(imageResponse.headers.get("content-type")).toBe("image/webp");
+    expect(imageResponse.headers.get("cache-control")).toContain("immutable");
+
+    const publicList = await (await SELF.fetch("http://localhost/api/gallery-items")).json<{
+      galleryItems: Array<{ id: string; status: string }>;
+    }>();
+    expect(publicList.galleryItems).toContainEqual(expect.objectContaining({ id: item.id, status: "published" }));
+  });
+
+  it("manages article publishing, ordering, and archiving without physical deletion", async () => {
+    const slug = `article-${crypto.randomUUID()}`;
+    const createResponse = await adminFetch("http://localhost/admin-api/articles", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        slug,
+        label: "MAKING",
+        source: "NOTE",
+        title: "制作ノート",
+        copy: "新しい制作記事です。",
+        url: "https://example.com/making",
+        action: "記事を読む",
+        displayOrder: 99,
+        status: "draft",
+      }),
+    });
+    expect(createResponse.status).toBe(201);
+    const article = await createResponse.json<{ id: string }>();
+
+    expect((await adminFetch(`http://localhost/admin-api/articles/${article.id}`, {
+      method: "PATCH",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ status: "published" }),
+    })).status).toBe(200);
+    const publicList = await (await SELF.fetch("http://localhost/api/articles")).json<{
+      articles: Array<{ id: string }>;
+    }>();
+    expect(publicList.articles).toContainEqual(expect.objectContaining({ id: article.id }));
+
+    const adminList = await (await adminFetch("http://localhost/admin-api/articles")).json<{
+      articles: Array<{ id: string }>;
+    }>();
+    const reorderedIds = [article.id, ...adminList.articles.filter((item) => item.id !== article.id).map((item) => item.id)];
+    const reorderResponse = await adminFetch("http://localhost/admin-api/articles/reorder", {
+      method: "PUT",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ itemIds: reorderedIds }),
+    });
+    expect(reorderResponse.status).toBe(200);
+    expect((await reorderResponse.json<{ articles: Array<{ id: string }> }>()).articles[0].id).toBe(article.id);
+
+    expect((await adminFetch(`http://localhost/admin-api/articles/${article.id}`, {
+      method: "PATCH",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ status: "archived" }),
+    })).status).toBe(200);
+    const archivedList = await (await adminFetch("http://localhost/admin-api/articles")).json<{
+      articles: Array<{ id: string; status: string; archived_at: string | null }>;
+    }>();
+    expect(archivedList.articles).toContainEqual(expect.objectContaining({ id: article.id, status: "archived", archived_at: expect.any(String) }));
+  });
+
   it("serves generation and member MCP tools", async () => {
     const request = new Request("http://localhost/mcp", {
       method: "POST",
@@ -145,6 +254,11 @@ describe("Madogiwa Studio Worker", () => {
     expect(body).toContain("set_episode_members");
     expect(body).toContain("create_input_upload");
     expect(body).toContain("set_video_featured");
+    expect(body).toContain("list_gallery_items");
+    expect(body).toContain("create_gallery_image_upload");
+    expect(body).toContain("reorder_gallery_items");
+    expect(body).toContain("list_articles");
+    expect(body).toContain("update_article");
   });
 
   it("does not trust spoofed Access headers or unverified JWTs", async () => {
