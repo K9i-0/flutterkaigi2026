@@ -38,9 +38,9 @@
 - **[そば屋の会社ブレイカー ～3D物理解体～](13_COMPANY_BREAKER_GAME/README.md)** (`13_COMPANY_BREAKER_GAME/`): 大型ビールジョッキを投げ、約120〜230個の独立剛体で組まれた無人のモックオフィスを10投以内に連鎖崩壊させる3D物理解体アクション。Vite + TypeScript + Three.js + Rapier製。
 - **[MADOGIWA GRID](14_MADOGIWA_CARD_GAME/README.md)** (`14_MADOGIWA_CARD_GAME/`): 窓際族8人のカードで3×5盤面を奪い合う、短時間の1対1タクティカルカードゲーム。固有能力、3段階AI、Flame製のカード移動・ホログラム・固有エフェクト、決定的シナリオハーネスを収録。Flutter + Flame製。
 
-## IPの原典
+## 制作資料
 - 世界観: [01_WORLD/WORLD_BIBLE.md](01_WORLD/WORLD_BIBLE.md)
-- 正史エピソード年表: [01_WORLD/STORY_TIMELINE.md](01_WORLD/STORY_TIMELINE.md)
+- 過去エピソード台帳（ネタ参照用・非正史）: [01_WORLD/STORY_TIMELINE.md](01_WORLD/STORY_TIMELINE.md)
 - キャラクター設定: [02_CHARACTERS/](02_CHARACTERS/)
 - 台本・生成済みプロンプト: [03_SCRIPTS/](03_SCRIPTS/)
 - ゲーム用アセット（共用ボクセル）: [04_GAME_ASSETS/voxel/](04_GAME_ASSETS/voxel/)
