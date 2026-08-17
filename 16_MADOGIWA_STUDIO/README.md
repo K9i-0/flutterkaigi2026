@@ -1,6 +1,6 @@
 # MADOGIWA STUDIO
 
-「窓際族物語」の公式サイトコンテンツと動画制作物を、管理画面とRemote MCPから共有管理するCloudflare Workersアプリです。
+「窓際族物語」の公式サイトをTanStack StartでEdge SSRし、コンテンツと動画制作物を管理画面とRemote MCPから共有管理するCloudflare Workersアプリです。
 
 ## 構成
 
@@ -16,7 +16,40 @@ Access JWTについて署名・issuer・AUDをJWKSで検証してから
 identityを採用します。`wrangler.jsonc`の`TEAM_DOMAIN`と`POLICY_AUD`はAccessアプリの値です。ローカル開発では
 `access.dev`がテスト用identityを注入し、本番用の認証バイパスは設けません。
 
+## リクエストフロー
+
+```text
+ブラウザ / SNSクローラー
+  -> Cloudflare Worker
+     -> TanStack Startのroute loader / server function
+        -> D1から公開メタデータを取得
+     <- canonical・OGP・X Cardを含むSSR HTML
+
+動画プレイヤー
+  -> WorkerでD1の公開状態を確認
+  -> R2からHTTP Range対応で動画・サムネイルをストリーミング
+
+管理画面 / Remote MCP
+  -> Cloudflare Accessで認証
+  -> D1へメタデータ、R2へバイナリを保存
+```
+
+公開UIのloaderは、同じWorker内のserver functionからrepositoryを直接呼びます。公開用`/api`を
+HTTP経由で呼び直さないため、SSR時に余分な内部ネットワーク往復を発生させません。`/api`は外部クライアント向けの
+読み取り口として残しています。
+
+主なコード境界は次のとおりです。
+
+- `src/routes/`: ファイルベースルート、loader、headメタデータ
+- `src/pages/`、`src/components/`: 公開UIと管理UI
+- `src/server/*.functions.ts`: TanStack Startのserver function境界
+- `src/server/*.server.ts`: Workers Bindingを使うサーバー専用データ取得
+- `worker/`: API、Access認証、MCP、R2ストリーミング、D1 repository
+- `migrations/`: D1スキーマと初期データ
+
 ## 開発
+
+Node.js 24を使用します。
 
 ```bash
 npm install
@@ -54,7 +87,20 @@ Workerの起動プロファイル、本番アップロードを行わないdeplo
 - `/story`: 原作14話を一続きで読めるページ
 - `/sitemap.xml`、`/robots.txt`: 公開済みデータからWorker上で生成
 
-各詳細ページはcanonical URL、Open Graph、Twitter CardをSSR時に出力します。エピソードページはファーストビューに動画を配置し、`VideoObject`のJSON-LDも出力します。エピソードは作成時から公開され、非表示にする場合だけ`archived`へ変更します。公開動画と同じ生成バージョンの現行プロンプトと`ready`入力素材を制作情報として掲載します。プロンプト履歴、未完成素材、動画のない生成バージョン、登録者情報は公開しません。
+ホームを含む全公開ページは、ルートごとのcanonical URLと、共通の`socialMeta`で生成したOpen Graph・X CardをSSR時に出力します。
+エピソードやギャラリーなどの動的ページでは、D1から取得したタイトル・説明と、R2または静的アセットの画像をURLごとに
+初期HTMLへ埋め込むため、SNSクローラーはJavaScriptを実行せず固有のカードを取得できます。このメタデータは
+Workersランタイム上のSSR統合テストで公開ルートを横断検証します。
+
+エピソードページはファーストビューに動画を配置し、`VideoObject`のJSON-LDも出力します。エピソードは作成時から公開され、非表示にする場合だけ`archived`へ変更します。公開動画と同じ生成バージョンの現行プロンプトと`ready`入力素材を制作情報として掲載します。プロンプト履歴、未完成素材、動画のない生成バージョン、登録者情報は公開しません。
+
+## この構成を選ぶ理由
+
+- CSRだけに依存せず、検索エンジンとSNSクローラーへページ固有のHTMLを返せる
+- TanStack Startの型付きルート、loader、server functionを公開UIと管理画面で共有できる
+- Workers BindingでD1とR2へ直接接続し、常時起動するNode.jsサーバーを管理しなくてよい
+- 動画をWorkerメモリへ全量展開せず、R2からRangeレスポンスとして返せる
+- R2は外向き転送料が無料。ただし動画再生ではRangeごとにWorkerリクエストとR2読み取り操作が発生する
 
 ## 動画登録
 
@@ -139,7 +185,7 @@ D1の未適用マイグレーション、本番Workerのデプロイ、公開API
 
 D1マイグレーションはデプロイより先に適用されるため、通常はテーブル・カラム・インデックスを追加する
 後方互換な変更にします。rename・drop・意味変更は、先に新旧両方へ対応するコードをデプロイし、
-データ移行後の別PRで古い構造を削除する二段階変更にします。
+データ移行後の別コミット・別デプロイで古い構造を削除する二段階変更にします。
 
 GitHubの`madogiwa-studio-production` Environmentへ次のSecretsを登録します。
 
