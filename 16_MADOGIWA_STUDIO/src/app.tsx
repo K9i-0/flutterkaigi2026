@@ -4,6 +4,7 @@ import { Layout } from "@/components/layout";
 import { ImageLightboxProvider } from "@/components/image-lightbox";
 import { AdminPage } from "@/pages/admin-page";
 import { EpisodePage } from "@/pages/episode-page";
+import { GalleryPage } from "@/pages/gallery-page";
 import { HomePage } from "@/pages/home-page";
 import { MoviesPage } from "@/pages/movies-page";
 import { NotFoundPage } from "@/pages/not-found-page";
@@ -13,6 +14,7 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { path: "/", element: <HomePage /> },
+      { path: "/gallery", element: <GalleryPage /> },
       { path: "/movies", element: <MoviesPage /> },
       { path: "/episodes/:slug", element: <EpisodePage /> },
       { path: "/admin", element: <AdminPage /> },

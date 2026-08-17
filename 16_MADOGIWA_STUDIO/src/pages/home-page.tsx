@@ -1,20 +1,24 @@
 import { ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, Film, Gamepad2, Images, Maximize2, Sparkles } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { GalleryCard } from "@/components/gallery-card";
 import { MovieCard } from "@/components/movie-card";
 import { useImageLightbox, ZoomableImage } from "@/components/image-lightbox";
 import { api, type Article, type EpisodeSummary, type GalleryItem } from "@/lib/api";
 import { characters, comicEpisodes } from "@/lib/site-content";
+
+const HOME_GALLERY_LIMIT = 6;
 
 export function HomePage() {
   const [episodes, setEpisodes] = useState<EpisodeSummary[]>([]);
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
+  const [galleryLoading, setGalleryLoading] = useState(true);
 
   useEffect(() => {
     api.listEpisodes(true).then((result) => setEpisodes(result.episodes)).catch(() => setEpisodes([])).finally(() => setLoading(false));
-    api.listGalleryItems().then((result) => setGalleryItems(result.galleryItems)).catch(() => setGalleryItems([]));
+    api.listGalleryItems().then((result) => setGalleryItems(result.galleryItems)).catch(() => setGalleryItems([])).finally(() => setGalleryLoading(false));
     api.listArticles().then((result) => setArticles(result.articles)).catch(() => setArticles([]));
   }, []);
 
@@ -51,7 +55,12 @@ export function HomePage() {
       </Section>
 
       <Section id="gallery" eyebrow="GALLERY" title="物語から生まれた、もうひとつの景色。" icon={<Images />} intro="原作の外側へ広がるキービジュアル、世界観アート、特別作品。">
-        <div className="gallery-grid">{galleryItems.map((item, index) => <figure key={item.id} className={index === 0 ? "gallery-item gallery-wide" : "gallery-item"}><ZoomableImage src={item.image_url} alt={item.title} caption={item.kind} loading="lazy" buttonClassName="gallery-image-trigger" /><figcaption><span>{item.kind}</span><b>{item.title}</b></figcaption></figure>)}</div>
+        <div className="movie-section-link"><span>{galleryItems.length} WORKS</span><Link to="/gallery">ギャラリー一覧を見る <ArrowRight /></Link></div>
+        {galleryLoading
+          ? <div className="loading-line">GALLERY LOADING...</div>
+          : galleryItems.length
+            ? <div className="gallery-grid">{galleryItems.slice(0, HOME_GALLERY_LIMIT).map((item, index) => <GalleryCard key={item.id} item={item} featured={index === 0} />)}</div>
+            : <div className="empty-feature">ギャラリー作品を準備しています。</div>}
       </Section>
 
       <Section id="game" eyebrow="GAME" title="遊べる窓際、営業中。" icon={<Gamepad2 />} intro="ドット絵、カード、レース。窓際族の世界へ、プレイヤーとして飛び込もう。">
