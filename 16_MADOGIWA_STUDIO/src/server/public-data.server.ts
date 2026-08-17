@@ -1,6 +1,6 @@
 import { env } from "cloudflare:workers";
 import type { EpisodeSummary } from "@/lib/api";
-import type { CharacterData, HomeData, PublicEpisodeDetail, PublicVideo } from "@/lib/public-data";
+import type { CharacterData, HomeData, PublicEpisodeDetail, PublicProduction, PublicVideo } from "@/lib/public-data";
 import { listArticles, listGalleryItems } from "../../worker/content-repository";
 import { getEpisodeBySlug, listEpisodes } from "../../worker/repository";
 
@@ -31,10 +31,38 @@ export async function loadPublicEpisode(slug: string): Promise<PublicEpisodeDeta
     .sort((left, right) => right.is_featured - left.is_featured || right.created_at.localeCompare(left.created_at))
     .map((video) => ({
       id: video.id,
+      generation_id: video.generation_id,
       label: video.label,
       created_at: video.created_at,
       is_featured: video.is_featured,
       poster_url: video.poster_r2_key ? `/posters/${video.id}` : null,
+    }));
+
+  const publicGenerationIds = new Set(videos.map((video) => video.generation_id));
+  const productions: PublicProduction[] = detail.generations
+    .filter((generation) => publicGenerationIds.has(generation.id))
+    .map((generation) => ({
+      generation_id: generation.id,
+      version: generation.version,
+      label: generation.label,
+      model_name: generation.model_name,
+      prompt: generation.prompt
+        ? { label: generation.prompt.label, body: generation.prompt.body, version: generation.prompt.version }
+        : null,
+      inputs: generation.inputAssets
+        .filter((asset) => asset.status === "ready")
+        .map((asset) => ({
+          id: asset.id,
+          filename: asset.filename,
+          label: asset.label,
+          kind: asset.kind,
+          reference_label: asset.reference_label,
+          group_label: asset.group_label,
+          notes: asset.notes,
+          content_type: asset.content_type,
+          display_order: asset.display_order,
+          url: `/inputs/${asset.id}`,
+        })),
     }));
 
   const memberIds = new Set(detail.members.map((member) => member.id));
@@ -47,7 +75,7 @@ export async function loadPublicEpisode(slug: string): Promise<PublicEpisodeDeta
     })
     .slice(0, 3);
 
-  return { episode: detail.episode, members: detail.members, videos, related };
+  return { episode: detail.episode, members: detail.members, videos, productions, related };
 }
 
 export async function loadPublicGallery() {

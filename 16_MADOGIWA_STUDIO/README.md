@@ -10,7 +10,7 @@
 - R2: ギャラリー画像、Seedance入力画像・参照音声・資料・生成動画・動画サムネイルの実体
 - Cloudflare Access: 管理画面、管理API、Remote MCPの認証
 
-公開ページと公開済みコンテンツの読み取り用`/api`はログイン不要です。`/admin`、`/admin-api`、`/mcp`、制作入力素材の`/inputs`はCloudflare Accessを要求します。
+公開ページと公開済みコンテンツの読み取り用`/api`はログイン不要です。`/admin`、`/admin-api`、`/mcp`はCloudflare Accessを要求します。`/inputs`は公開エピソードで採用された生成バージョンの`ready`素材だけ公開され、非公開エピソードではAccessを要求します。
 Workerは`ctx.access`の検証済みidentityを優先し、利用できない場合もヘッダーまたは`CF_Authorization` Cookieの
 Access JWTについて署名・issuer・AUDをJWKSで検証してから
 identityを採用します。`wrangler.jsonc`の`TEAM_DOMAIN`と`POLICY_AUD`はAccessアプリの値です。ローカル開発では
@@ -54,7 +54,7 @@ Workerの起動プロファイル、本番アップロードを行わないdeplo
 - `/story`: 原作14話を一続きで読めるページ
 - `/sitemap.xml`、`/robots.txt`: 公開済みデータからWorker上で生成
 
-各詳細ページはcanonical URL、Open Graph、Twitter CardをSSR時に出力します。エピソードページは`VideoObject`のJSON-LDも出力します。エピソードは作成時から公開され、非表示にする場合だけ`archived`へ変更します。生成履歴、プロンプト、入力素材は公開レスポンスへ含めません。
+各詳細ページはcanonical URL、Open Graph、Twitter CardをSSR時に出力します。エピソードページはファーストビューに動画を配置し、`VideoObject`のJSON-LDも出力します。エピソードは作成時から公開され、非表示にする場合だけ`archived`へ変更します。公開動画と同じ生成バージョンの現行プロンプトと`ready`入力素材を制作情報として掲載します。プロンプト履歴、未完成素材、動画のない生成バージョン、登録者情報は公開しません。
 
 ## 動画登録
 
@@ -79,7 +79,7 @@ npm run upload:video -- \
 
 管理画面の`inputs`タブから、生成時に渡す画像、参照音声、資料、その他ファイルを登録できます。
 各ファイルには`@Image 1`や`@Audio 1`などの参照名、`Clip A`などのグループ、用途メモ、
-表示順を付けられます。入力素材は制作情報として管理画面でのみ画像プレビュー・音声再生できます。
+表示順を付けられます。公開動画に採用された生成バージョンの入力素材は、公開詳細ページでも画像プレビュー・音声再生・資料リンクとして表示されます。
 CodexからはMCPの`create_input_upload`で同じ登録を行います。
 
 ## ギャラリーと記事

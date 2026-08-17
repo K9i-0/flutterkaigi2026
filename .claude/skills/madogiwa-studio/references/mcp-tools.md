@@ -93,6 +93,6 @@ Typical MIME types:
 - Plain prompt or notes: `text/plain; charset=utf-8`
 - PDF: `application/pdf`
 
-After both PUTs, verify with `get_episode`: status must be `ready`, and `size_bytes` and `poster_r2_key` must be nonnull. Public media URLs are `/media/<videoId>`, `/posters/<videoId>`, and `/inputs/<assetId>`.
+After both PUTs, verify with `get_episode`: status must be `ready`, and `size_bytes` and `poster_r2_key` must be nonnull. Public media URLs are `/media/<videoId>`, `/posters/<videoId>`, and `/inputs/<assetId>`. For a published episode, the current prompt and ready inputs belonging to a generation with a public video appear on the public episode page; prompt history and generations without public videos remain private.
 
 Uploaded gallery images are served from `/gallery-images/<galleryItemId>`; use the `image_url` returned by list and mutation tools.

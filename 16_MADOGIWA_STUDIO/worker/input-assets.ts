@@ -1,6 +1,7 @@
 import { HttpError, json } from "./http";
 import { createInputAsset, getInputAsset, type CreateInputAssetInput } from "./repository";
 import { serveR2Object } from "./r2-response";
+import { requireAdmin } from "./auth";
 
 type InputUploadTicketRow = {
   id: string;
@@ -95,7 +96,21 @@ export async function consumeInputUpload(request: Request, env: Env, ticketId: s
   return json({ assetId: asset.id, assetUrl: `/inputs/${asset.id}`, size: object.size }, { status: 201 });
 }
 
-export async function serveInputAsset(request: Request, env: Env, assetId: string): Promise<Response> {
+async function requireInputAccess(request: Request, env: Env, ctx: ExecutionContext, assetId: string): Promise<void> {
+  const episode = await env.DB.prepare(
+    `SELECT episodes.status,
+      EXISTS(SELECT 1 FROM videos
+        WHERE videos.generation_id = input_assets.generation_id
+          AND videos.status NOT IN ('archived', 'upload_pending')) AS has_public_video
+     FROM input_assets JOIN episodes ON episodes.id = input_assets.episode_id
+     WHERE input_assets.id = ?`,
+  ).bind(assetId).first<{ status: string; has_public_video: number }>();
+  if (!episode) throw new HttpError(404, "入力アセットが見つかりません");
+  if (episode.status !== "published" || episode.has_public_video !== 1) await requireAdmin(request, env, ctx);
+}
+
+export async function serveInputAsset(request: Request, env: Env, ctx: ExecutionContext, assetId: string): Promise<Response> {
+  await requireInputAccess(request, env, ctx, assetId);
   const asset = await getInputAsset(env.DB, assetId);
   if (!asset || asset.status !== "ready") throw new HttpError(404, "入力アセットが見つかりません");
   const safeFilename = asset.filename.replaceAll('"', "");

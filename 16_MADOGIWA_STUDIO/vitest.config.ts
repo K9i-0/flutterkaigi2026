@@ -18,4 +18,7 @@ export default defineConfig({
   test: {
     setupFiles: ["./test/apply-migrations.ts"],
   },
+  resolve: {
+    alias: { "@": path.resolve(import.meta.dirname, "./src") },
+  },
 });

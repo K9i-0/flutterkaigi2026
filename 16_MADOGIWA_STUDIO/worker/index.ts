@@ -33,10 +33,9 @@ export default {
       }
 
       if (url.pathname.startsWith("/inputs/")) {
-        await requireAdmin(request, env, ctx);
         const assetId = url.pathname.slice("/inputs/".length);
         if (!assetId) throw new HttpError(404, "入力アセットが見つかりません");
-        return await serveInputAsset(request, env, assetId);
+        return await serveInputAsset(request, env, ctx, assetId);
       }
 
       if (url.pathname.startsWith("/gallery-images/")) {

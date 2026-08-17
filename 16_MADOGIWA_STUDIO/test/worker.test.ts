@@ -140,15 +140,40 @@ describe("Madogiwa Studio Worker", () => {
     const ticket = await ticketResponse.json<{ assetId: string; uploadUrl: string }>();
     const bytes = new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]);
     expect((await SELF.fetch(ticket.uploadUrl, { method: "PUT", headers: { "content-type": "image/png", "content-length": "8" }, body: bytes })).status).toBe(201);
-    expect((await SELF.fetch(`http://localhost/inputs/${ticket.assetId}`)).status).toBe(401);
-    const assetResponse = await adminFetch(`http://localhost/inputs/${ticket.assetId}`);
+    const assetResponse = await SELF.fetch(`http://localhost/inputs/${ticket.assetId}`);
     expect(assetResponse.status).toBe(200);
     expect(assetResponse.headers.get("content-type")).toBe("image/png");
+    const episodePage = await SELF.fetch("http://localhost/episodes/sobaya-beer-battery");
+    const episodeHtml = await episodePage.text();
+    expect(episodePage.status).toBe(200);
+    expect(episodeHtml).toContain("PROMPT &amp; INPUTS");
+    expect(episodeHtml).toContain("このデモデータは管理画面の表示確認用です");
+    expect(episodeHtml).toContain("Character");
+    expect(episodeHtml.indexOf("<video")).toBeLessThan(episodeHtml.indexOf("<h1"));
+
+    expect((await adminFetch("http://localhost/admin-api/episodes/sobaya-beer-battery", {
+      method: "PATCH",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ status: "archived" }),
+    })).status).toBe(200);
+    expect((await SELF.fetch(`http://localhost/inputs/${ticket.assetId}`)).status).toBe(401);
+    expect((await adminFetch(`http://localhost/inputs/${ticket.assetId}`)).status).toBe(200);
+    expect((await adminFetch("http://localhost/admin-api/episodes/sobaya-beer-battery", {
+      method: "PATCH",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ status: "published" }),
+    })).status).toBe(200);
   });
 
-  it("publishes episodes without exposing production detail through the public API", async () => {
-    const publicList = await (await SELF.fetch("http://localhost/api/episodes")).json<{ episodes: Array<{ slug: string }> }>();
-    expect(publicList.episodes.some((episode) => episode.slug === "sobaya-beer-battery")).toBe(true);
+  it("publishes the episode page without exposing production data through the list or private detail API", async () => {
+    const publicList = await (await SELF.fetch("http://localhost/api/episodes")).json<{
+      episodes: Array<{ slug: string; input_count: number; prompt_label: string | null }>;
+    }>();
+    expect(publicList.episodes).toContainEqual(expect.objectContaining({
+      slug: "sobaya-beer-battery",
+      input_count: 0,
+      prompt_label: null,
+    }));
     expect((await SELF.fetch("http://localhost/api/episodes/sobaya-beer-battery")).status).toBe(404);
   });
 
