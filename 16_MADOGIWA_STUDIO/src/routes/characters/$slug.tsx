@@ -1,5 +1,5 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { absoluteUrl } from "@/lib/public-data";
+import { absoluteUrl, socialMeta } from "@/lib/public-data";
 import { characters } from "@/lib/site-content";
 import { CharacterPage } from "@/pages/character-page";
 import { getCharacterData } from "@/server/public-data.functions";
@@ -10,17 +10,15 @@ export const Route = createFileRoute("/characters/$slug")({
     if (!character) throw notFound();
     return { character, ...(await getCharacterData({ data: character.id })) };
   },
-  head: ({ loaderData }) => loaderData ? {
-    meta: [
-      { title: `${loaderData.character.name}｜窓際族物語` }, { name: "description", content: loaderData.character.copy },
-      { property: "og:title", content: `${loaderData.character.name}｜窓際族物語` },
-      { property: "og:description", content: loaderData.character.copy },
-      { property: "og:image", content: absoluteUrl(loaderData.character.image) },
-      { property: "og:url", content: absoluteUrl(`/characters/${loaderData.character.id}`) },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [{ rel: "canonical", href: absoluteUrl(`/characters/${loaderData.character.id}`) }],
-  } : {},
+  head: ({ loaderData }) => {
+    if (!loaderData) return {};
+    const title = `${loaderData.character.name}｜窓際族物語`;
+    const path = `/characters/${loaderData.character.id}`;
+    return {
+      meta: socialMeta({ title, description: loaderData.character.copy, path, image: loaderData.character.image }),
+      links: [{ rel: "canonical", href: absoluteUrl(path) }],
+    };
+  },
   component: CharacterRoute,
 });
 

@@ -1,5 +1,5 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { absoluteUrl, episodePoster } from "@/lib/public-data";
+import { absoluteUrl, episodePoster, socialMeta } from "@/lib/public-data";
 import { EpisodePage } from "@/pages/episode-page";
 import { getPublicEpisode } from "@/server/public-data.functions";
 
@@ -13,18 +13,10 @@ export const Route = createFileRoute("/episodes/$slug")({
     if (!loaderData) return {};
     const title = `${loaderData.episode.title}｜窓際族物語`;
     const description = loaderData.episode.summary || "窓際族たちの新しい物語。";
-    const url = absoluteUrl(`/episodes/${loaderData.episode.slug}`);
-    const image = absoluteUrl(episodePoster(loaderData));
+    const path = `/episodes/${loaderData.episode.slug}`;
     return {
-      meta: [
-        { title }, { name: "description", content: description },
-        { property: "og:type", content: "video.episode" }, { property: "og:title", content: title },
-        { property: "og:description", content: description }, { property: "og:url", content: url },
-        { property: "og:image", content: image }, { name: "twitter:card", content: "summary_large_image" },
-        { name: "twitter:title", content: title }, { name: "twitter:description", content: description },
-        { name: "twitter:image", content: image },
-      ],
-      links: [{ rel: "canonical", href: url }],
+      meta: socialMeta({ title, description, path, image: episodePoster(loaderData), type: "video.episode" }),
+      links: [{ rel: "canonical", href: absoluteUrl(path) }],
     };
   },
   component: EpisodeRoute,

@@ -18,6 +18,28 @@ function adminFetch(input: string, init?: RequestInit): Promise<Response> {
   return worker.fetch(new Request(input, init), env, accessContext());
 }
 
+function metaContent(html: string, attribute: "name" | "property", key: string): string | null {
+  return html.match(new RegExp(`<meta ${attribute}="${key}" content="([^"]+)"\\s*/>`))?.[1] ?? null;
+}
+
+function expectSocialMeta(
+  html: string,
+  expected: { title: string; description: string; url: string },
+): void {
+  const image = metaContent(html, "property", "og:image");
+  const imageAlt = metaContent(html, "property", "og:image:alt");
+  expect(metaContent(html, "property", "og:title")).toBe(expected.title);
+  expect(metaContent(html, "property", "og:description")).toBe(expected.description);
+  expect(metaContent(html, "property", "og:url")).toBe(expected.url);
+  expect(image).toMatch(/^https:\/\//);
+  expect(metaContent(html, "name", "twitter:card")).toBe("summary_large_image");
+  expect(metaContent(html, "name", "twitter:title")).toBe(expected.title);
+  expect(metaContent(html, "name", "twitter:description")).toBe(expected.description);
+  expect(metaContent(html, "name", "twitter:image")).toBe(image);
+  expect(imageAlt).not.toBeNull();
+  expect(metaContent(html, "name", "twitter:image:alt")).toBe(imageAlt);
+}
+
 describe("Madogiwa Studio Worker", () => {
   it("lists episodes with Studio IDs, generations, and members", async () => {
     const response = await adminFetch("http://localhost/admin-api/episodes");
@@ -181,6 +203,53 @@ describe("Madogiwa Studio Worker", () => {
     }));
     expect((await SELF.fetch("http://localhost/api/episodes/sobaya-beer-battery")).status).toBe(404);
   });
+
+  it("serves consistent Open Graph and X metadata on every public page", async () => {
+    const origin = "https://madogiwa-studio.madogiwa-studio.workers.dev";
+    const pages = [
+      {
+        path: "/",
+        title: "窓際族物語｜公式サイト",
+        description: "働かない。でも、物語は動き出す。漫画、映像、ゲームへと広がる『窓際族物語』公式サイト。",
+      },
+      {
+        path: "/story",
+        title: "原作ストーリー｜窓際族物語",
+        description: "入社初日からBONKまで。窓際族物語の原点となる全14話。",
+      },
+      {
+        path: "/episodes",
+        title: "エピソード｜窓際族物語",
+        description: "窓際族物語の公開エピソードと映像作品一覧。",
+      },
+      {
+        path: "/episodes/sobaya-beer-battery",
+        title: "そば屋ビールバッテリー｜窓際族物語",
+        description: "極度乾燥ビールをめぐる、オフィスでの短編エピソード。",
+      },
+      {
+        path: "/gallery",
+        title: "ギャラリー｜窓際族物語",
+        description: "窓際族物語から生まれたキービジュアル、世界観アート、特別作品。",
+      },
+      {
+        path: "/gallery/regulation-team",
+        title: "規制チーム、出動。｜窓際族物語",
+        description: "KEY VISUAL「規制チーム、出動。」",
+      },
+      {
+        path: "/characters/sobaya",
+        title: "そば屋｜窓際族物語",
+        description: "見た目は怖いが、穏やかでマイペース。今日も窓際でビールを注ぐ。",
+      },
+    ];
+
+    for (const page of pages) {
+      const response = await SELF.fetch(`http://localhost${page.path}`);
+      expect(response.status, page.path).toBe(200);
+      expectSocialMeta(await response.text(), { ...page, url: `${origin}${page.path === "/" ? "/" : page.path}` });
+    }
+  }, 15_000);
 
   it("manages published gallery items and streams replacement images from R2", async () => {
     const initial = await (await SELF.fetch("http://localhost/api/gallery-items")).json<{

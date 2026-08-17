@@ -1,9 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { getPublicEpisodes } from "@/server/public-data.functions";
 import { EpisodesPage } from "@/pages/movies-page";
-import { absoluteUrl } from "@/lib/public-data";
+import { absoluteUrl, socialMeta } from "@/lib/public-data";
 
 type EpisodeSearch = { featured?: boolean; members?: string };
+const title = "エピソード｜窓際族物語";
+const description = "窓際族物語の公開エピソードと映像作品一覧。";
 
 export const Route = createFileRoute("/episodes/")({
   validateSearch: (search: Record<string, unknown>): EpisodeSearch => ({
@@ -12,7 +14,7 @@ export const Route = createFileRoute("/episodes/")({
   }),
   loader: () => getPublicEpisodes(),
   head: () => ({
-    meta: [{ title: "エピソード｜窓際族物語" }, { name: "description", content: "窓際族物語の公開エピソードと映像作品一覧。" }, { property: "og:url", content: absoluteUrl("/episodes") }],
+    meta: socialMeta({ title, description, path: "/episodes" }),
     links: [{ rel: "canonical", href: absoluteUrl("/episodes") }],
   }),
   component: EpisodesRoute,
