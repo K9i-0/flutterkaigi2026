@@ -45,7 +45,11 @@ async function hashesMatch(actual: string, expected: string): Promise<boolean> {
     crypto.subtle.digest("SHA-256", encoder.encode(actual)),
     crypto.subtle.digest("SHA-256", encoder.encode(expected)),
   ]);
-  return crypto.subtle.timingSafeEqual(actualDigest, expectedDigest);
+  const actualBytes = new Uint8Array(actualDigest);
+  const expectedBytes = new Uint8Array(expectedDigest);
+  let difference = actualBytes.length ^ expectedBytes.length;
+  for (let index = 0; index < actualBytes.length; index += 1) difference |= actualBytes[index] ^ (expectedBytes[index] ?? 0);
+  return difference === 0;
 }
 
 export async function createUpload(

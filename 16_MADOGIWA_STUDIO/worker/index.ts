@@ -1,3 +1,4 @@
+import startHandler from "@tanstack/react-start/server-entry";
 import { requireAdmin } from "./auth";
 import { handleApi } from "./api";
 import { errorResponse, HttpError } from "./http";
@@ -22,16 +23,17 @@ export default {
       if (url.pathname.startsWith("/media/")) {
         const videoId = url.pathname.slice("/media/".length);
         if (!videoId) throw new HttpError(404, "動画が見つかりません");
-        return await serveVideo(request, env, videoId);
+        return await serveVideo(request, env, ctx, videoId);
       }
 
       if (url.pathname.startsWith("/posters/")) {
         const videoId = url.pathname.slice("/posters/".length);
         if (!videoId) throw new HttpError(404, "動画サムネイルが見つかりません");
-        return await serveVideoPoster(request, env, videoId);
+        return await serveVideoPoster(request, env, ctx, videoId);
       }
 
       if (url.pathname.startsWith("/inputs/")) {
+        await requireAdmin(request, env, ctx);
         const assetId = url.pathname.slice("/inputs/".length);
         if (!assetId) throw new HttpError(404, "入力アセットが見つかりません");
         return await serveInputAsset(request, env, assetId);
@@ -43,7 +45,7 @@ export default {
         return await serveGalleryImage(request, env, galleryItemId);
       }
 
-      return await env.ASSETS.fetch(request);
+      return await startHandler.fetch(request);
     } catch (error) {
       return errorResponse(error, url.pathname);
     }

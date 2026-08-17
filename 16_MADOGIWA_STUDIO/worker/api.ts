@@ -81,16 +81,17 @@ export async function handleApi(request: Request, env: Env, ctx: ExecutionContex
       { headers: { "cache-control": "no-store" } },
     );
   }
-  if (request.method === "GET" && routePath === "/api/members") {
+  if (isAdminApi && request.method === "GET" && routePath === "/api/members") {
     return json({ members: await listMembers(env.DB) }, { headers: { "cache-control": "no-store" } });
   }
   if (request.method === "GET" && routePath === "/api/episodes") {
+    const episodes = await listEpisodes(env.DB, { featuredOnly: url.searchParams.get("featured") === "true" });
     return json(
-      { episodes: await listEpisodes(env.DB, { featuredOnly: url.searchParams.get("featured") === "true" }) },
+      { episodes: isAdminApi ? episodes : episodes.filter((episode) => episode.status === "published").map((episode) => ({ ...episode, input_count: 0, prompt_label: null })) },
       { headers: { "cache-control": "no-store" } },
     );
   }
-  if (request.method === "GET" && segments.length === 3 && segments[1] === "episodes") {
+  if (isAdminApi && request.method === "GET" && segments.length === 3 && segments[1] === "episodes") {
     const detail = await getEpisodeBySlug(env.DB, decodeURIComponent(segments[2]));
     if (!detail) throw new HttpError(404, "エピソードが見つかりません");
     return json(detail, { headers: { "cache-control": "no-store" } });

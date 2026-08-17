@@ -20,7 +20,7 @@ function adminFetch(input: string, init?: RequestInit): Promise<Response> {
 
 describe("Madogiwa Studio Worker", () => {
   it("lists episodes with Studio IDs, generations, and members", async () => {
-    const response = await SELF.fetch("http://localhost/api/episodes");
+    const response = await adminFetch("http://localhost/admin-api/episodes");
     expect(response.status).toBe(200);
     const body = await response.json<{ episodes: Array<{ slug: string; studio_id: string; generation_count: number; members: Array<{ id: string }> }> }>();
     expect(body.episodes).toContainEqual(expect.objectContaining({
@@ -66,7 +66,7 @@ describe("Madogiwa Studio Worker", () => {
     });
     expect(promptResponse.status).toBe(201);
 
-    const detail = await (await SELF.fetch(`http://localhost/api/episodes/${slug}`)).json<{
+    const detail = await (await adminFetch(`http://localhost/admin-api/episodes/${slug}`)).json<{
       members: Array<{ id: string }>;
       generations: Array<{ version: number; model_name: string | null; prompt: { body: string } | null }>;
     }>();
@@ -76,7 +76,7 @@ describe("Madogiwa Studio Worker", () => {
   });
 
   it("streams an uploaded featured video and supports featured filtering", async () => {
-    const detail = await (await SELF.fetch("http://localhost/api/episodes/sobaya-beer-battery")).json<{ generations: Array<{ id: string }> }>();
+    const detail = await (await adminFetch("http://localhost/admin-api/episodes/sobaya-beer-battery")).json<{ generations: Array<{ id: string }> }>();
     const ticketResponse = await adminFetch(`http://localhost/admin-api/generations/${detail.generations[0].id}/uploads`, {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -91,14 +91,26 @@ describe("Madogiwa Studio Worker", () => {
     })).status).toBe(201);
     const bytes = new Uint8Array(256).map((_, index) => index);
     expect((await SELF.fetch(ticket.uploadUrl, { method: "PUT", headers: { "content-type": "video/mp4", "content-length": "256" }, body: bytes })).status).toBe(201);
-    const mediaResponse = await SELF.fetch(`http://localhost/media/${ticket.videoId}`, { headers: { range: "bytes=10-19" } });
+    expect((await SELF.fetch(`http://localhost/media/${ticket.videoId}`)).status).toBe(401);
+    const mediaResponse = await adminFetch(`http://localhost/media/${ticket.videoId}`, { headers: { range: "bytes=10-19" } });
     expect(mediaResponse.status).toBe(206);
     expect(mediaResponse.headers.get("content-range")).toBe("bytes 10-19/256");
-    const posterResponse = await SELF.fetch(`http://localhost/posters/${ticket.videoId}`);
+    const posterResponse = await adminFetch(`http://localhost/posters/${ticket.videoId}`);
     expect(posterResponse.status).toBe(200);
     expect(posterResponse.headers.get("content-type")).toBe("image/jpeg");
     expect(posterResponse.headers.get("cache-control")).toContain("immutable");
-    const featuredList = await (await SELF.fetch("http://localhost/api/episodes?featured=true")).json<{
+    expect((await adminFetch("http://localhost/admin-api/episodes/sobaya-beer-battery", {
+      method: "PATCH",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ status: "published" }),
+    })).status).toBe(200);
+    expect((await SELF.fetch(`http://localhost/media/${ticket.videoId}`, { headers: { range: "bytes=0-9" } })).status).toBe(206);
+    expect((await adminFetch("http://localhost/admin-api/episodes/sobaya-beer-battery", {
+      method: "PATCH",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ status: "draft" }),
+    })).status).toBe(200);
+    const featuredList = await (await adminFetch("http://localhost/admin-api/episodes?featured=true")).json<{
       episodes: Array<{ slug: string; primary_video_id: string | null; primary_video_poster_url: string | null; has_featured_video: number }>;
     }>();
     expect(featuredList.episodes).toContainEqual(expect.objectContaining({
@@ -117,7 +129,7 @@ describe("Madogiwa Studio Worker", () => {
   });
 
   it("registers input assets inside a generation", async () => {
-    const detail = await (await SELF.fetch("http://localhost/api/episodes/sobaya-beer-battery")).json<{ generations: Array<{ id: string }> }>();
+    const detail = await (await adminFetch("http://localhost/admin-api/episodes/sobaya-beer-battery")).json<{ generations: Array<{ id: string }> }>();
     const ticketResponse = await adminFetch(`http://localhost/admin-api/generations/${detail.generations[0].id}/input-uploads`, {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -126,9 +138,16 @@ describe("Madogiwa Studio Worker", () => {
     const ticket = await ticketResponse.json<{ assetId: string; uploadUrl: string }>();
     const bytes = new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]);
     expect((await SELF.fetch(ticket.uploadUrl, { method: "PUT", headers: { "content-type": "image/png", "content-length": "8" }, body: bytes })).status).toBe(201);
-    const assetResponse = await SELF.fetch(`http://localhost/inputs/${ticket.assetId}`);
+    expect((await SELF.fetch(`http://localhost/inputs/${ticket.assetId}`)).status).toBe(401);
+    const assetResponse = await adminFetch(`http://localhost/inputs/${ticket.assetId}`);
     expect(assetResponse.status).toBe(200);
     expect(assetResponse.headers.get("content-type")).toBe("image/png");
+  });
+
+  it("does not expose draft episodes or production detail through the public API", async () => {
+    const publicList = await (await SELF.fetch("http://localhost/api/episodes")).json<{ episodes: Array<{ slug: string }> }>();
+    expect(publicList.episodes.some((episode) => episode.slug === "sobaya-beer-battery")).toBe(false);
+    expect((await SELF.fetch("http://localhost/api/episodes/sobaya-beer-battery")).status).toBe(404);
   });
 
   it("manages published gallery items and streams replacement images from R2", async () => {

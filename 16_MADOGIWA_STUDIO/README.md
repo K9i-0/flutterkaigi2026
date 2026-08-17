@@ -4,13 +4,13 @@
 
 ## 構成
 
-- React + Vite + shadcn/ui互換コンポーネント: 一覧、詳細、管理画面
-- Cloudflare Workers: JSON API、入力アセット／動画配信、Remote MCP
+- TanStack Start + React + Vite: 公開ページのSSR、型付きルーティング、サーバー関数、管理画面
+- Cloudflare Workers: TanStack Start、JSON API、入力アセット／動画配信、Remote MCPを単一Workerで配信
 - D1: ギャラリー、記事、Studio ID、登場メンバー、生成バージョン、使用モデル、プロンプト履歴、入力アセット、動画メタデータ、アップロードチケット
 - R2: ギャラリー画像、Seedance入力画像・参照音声・資料・生成動画・動画サムネイルの実体
 - Cloudflare Access: 管理画面、管理API、Remote MCPの認証
 
-公開ページと読み取り用`/api`はログイン不要です。`/admin`、`/admin-api`、`/mcp`はCloudflare Accessを要求します。
+公開ページと公開済みコンテンツの読み取り用`/api`はログイン不要です。`/admin`、`/admin-api`、`/mcp`、制作入力素材の`/inputs`はCloudflare Accessを要求します。
 Workerは`ctx.access`の検証済みidentityを優先し、利用できない場合もヘッダーまたは`CF_Authorization` Cookieの
 Access JWTについて署名・issuer・AUDをJWKSで検証してから
 identityを採用します。`wrangler.jsonc`の`TEAM_DOMAIN`と`POLICY_AUD`はAccessアプリの値です。ローカル開発では
@@ -43,6 +43,19 @@ Workerの起動プロファイル、本番アップロードを行わないdeplo
 - 登場メンバーは任意登録で、公開一覧から複数メンバーを指定して絞り込めます
 - 使用モデルは生成バージョンごとの任意項目です。`Seedance 2.0`、`Seedance 2.5`、`MiniMax H3`を候補表示しつつ、任意名を登録できます
 
+## 公開サイト
+
+公開側は「エピソード」を作品と共有の単位にしています。動画はエピソード内の再生コンテンツとして扱い、同じ作品の別バージョンを独立したページへ分散させません。
+
+- `/episodes`: 公開済みエピソードの一覧。イチオシ・登場人物をURL検索条件で絞り込み可能
+- `/episodes/:slug`: SSRされた作品ページ。動画、キャスト、関連作品、Web Share／X／LINE／URLコピーを提供
+- `/characters/:slug`: キャラクター単位の共有ページと出演エピソード
+- `/gallery/:slug`: ギャラリー作品単位の共有ページ
+- `/story`: 原作14話を一続きで読めるページ
+- `/sitemap.xml`、`/robots.txt`: 公開済みデータからWorker上で生成
+
+各詳細ページはcanonical URL、Open Graph、Twitter CardをSSR時に出力します。エピソードページは`VideoObject`のJSON-LDも出力します。下書きエピソード、生成履歴、プロンプト、入力素材は公開レスポンスへ含めません。
+
 ## 動画登録
 
 管理画面で対象の生成バージョンを選んでアップロードできます。CLI/Codexからは、Remote MCPの
@@ -66,7 +79,7 @@ npm run upload:video -- \
 
 管理画面の`inputs`タブから、生成時に渡す画像、参照音声、資料、その他ファイルを登録できます。
 各ファイルには`@Image 1`や`@Audio 1`などの参照名、`Clip A`などのグループ、用途メモ、
-表示順を付けられます。公開詳細ページでは画像をプレビューし、音声をその場で再生できます。
+表示順を付けられます。入力素材は制作情報として管理画面でのみ画像プレビュー・音声再生できます。
 CodexからはMCPの`create_input_upload`で同じ登録を行います。
 
 ## ギャラリーと記事

@@ -1,6 +1,6 @@
 import { Play, Star } from "lucide-react";
 import { useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 import type { EpisodeSummary } from "@/lib/api";
 
 type MovieCardProps = {
@@ -13,7 +13,6 @@ type MovieCardProps = {
 export function MovieCard({ episode, index, featuredLayout = false, inlinePlayback = false }: MovieCardProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [started, setStarted] = useState(false);
-  const detailPath = `/episodes/${episode.slug}`;
   const className = featuredLayout ? "movie-card movie-card-featured" : "movie-card";
 
   async function startPlayback() {
@@ -49,18 +48,18 @@ export function MovieCard({ episode, index, featuredLayout = false, inlinePlayba
       {!started ? <button type="button" className="movie-play-button" onClick={startPlayback} aria-label={`${episode.title}を再生`}>
         <span className="play-circle"><Play fill="currentColor" /></span>
       </button> : null}
-    </div> : <Link to={detailPath} className="movie-visual movie-visual-link" aria-label={`${episode.title}の詳細を見る`}>
+    </div> : <Link to="/episodes/$slug" params={{ slug: episode.slug }} className="movie-visual movie-visual-link" aria-label={`${episode.title}の詳細を見る`}>
       {visual}
       <span className="play-circle"><Play fill="currentColor" /></span>
     </Link>}
-    <Link to={detailPath} className="movie-meta">
+    <Link to="/episodes/$slug" params={{ slug: episode.slug }} className="movie-meta">
       <div className="movie-meta-topline">
         <span>{episode.studio_id}</span>
         {episode.has_featured_video ? <span className="featured-ribbon"><Star fill="currentColor" /> PICK UP</span> : null}
       </div>
       <h3>{episode.title}</h3>
       <p>{episode.summary || "窓際族たちの新しい物語。"}</p>
-      <small>{episode.generation_count} GENERATION{episode.generation_count === 1 ? "" : "S"}</small>
+      <small>{episode.members.map((member) => member.name).join(" · ") || "MADOGIWA STORY"}</small>
     </Link>
   </article>;
 }

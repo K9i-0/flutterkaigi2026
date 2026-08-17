@@ -1,27 +1,15 @@
 import { ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, Film, Gamepad2, Images, Maximize2, Sparkles } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import { GalleryCard } from "@/components/gallery-card";
 import { MovieCard } from "@/components/movie-card";
 import { useImageLightbox, ZoomableImage } from "@/components/image-lightbox";
-import { api, type Article, type EpisodeSummary, type GalleryItem } from "@/lib/api";
+import type { Article, EpisodeSummary, GalleryItem } from "@/lib/api";
 import { characters, comicEpisodes } from "@/lib/site-content";
 
 const HOME_GALLERY_LIMIT = 6;
 
-export function HomePage() {
-  const [episodes, setEpisodes] = useState<EpisodeSummary[]>([]);
-  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [galleryLoading, setGalleryLoading] = useState(true);
-
-  useEffect(() => {
-    api.listEpisodes(true).then((result) => setEpisodes(result.episodes)).catch(() => setEpisodes([])).finally(() => setLoading(false));
-    api.listGalleryItems().then((result) => setGalleryItems(result.galleryItems)).catch(() => setGalleryItems([])).finally(() => setGalleryLoading(false));
-    api.listArticles().then((result) => setArticles(result.articles)).catch(() => setArticles([]));
-  }, []);
-
+export function HomePage({ episodes, galleryItems, articles }: { episodes: EpisodeSummary[]; galleryItems: GalleryItem[]; articles: Article[] }) {
   const prioritizedEpisodes = useMemo(() => [...episodes].sort((left, right) => {
     if (left.has_featured_video !== right.has_featured_video) return right.has_featured_video - left.has_featured_video;
     const leftDate = left.has_featured_video ? left.featured_video_created_at : left.updated_at;
@@ -42,23 +30,21 @@ export function HomePage() {
 
     <div id="contents" className="official-content">
       <Section id="movie" eyebrow="FEATURED MOVIES" title="最新のイチオシ動画。" icon={<Film />} intro="窓際族物語から、いま見てほしい映像を新しい順に。">
-        <div className="movie-section-link"><span>{prioritizedEpisodes.length} PICKS</span><Link to="/movies">動画一覧を見る <ArrowRight /></Link></div>
-        {loading ? <div className="loading-line">MOVIES LOADING...</div> : prioritizedEpisodes.length ? <div className="movie-grid">{prioritizedEpisodes.slice(0, 4).map((episode, index) => <MovieCard key={episode.id} episode={episode} index={index} featuredLayout={index === 0} inlinePlayback />)}</div> : <div className="empty-feature">イチオシ動画を準備しています。</div>}
+        <div className="movie-section-link"><span>{prioritizedEpisodes.length} STORIES</span><Link to="/episodes">エピソード一覧を見る <ArrowRight /></Link></div>
+        {prioritizedEpisodes.length ? <div className="movie-grid">{prioritizedEpisodes.slice(0, 4).map((episode, index) => <MovieCard key={episode.id} episode={episode} index={index} featuredLayout={index === 0} inlinePlayback />)}</div> : <div className="empty-feature">公開エピソードを準備しています。</div>}
       </Section>
 
       <Section id="character" eyebrow="CHARACTER" title="窓際に集う、仲間たち。" icon={<Sparkles />} intro="働き方も、姿かたちも、ちょっと変わった登場人物。">
-        <div className="character-strip">{characters.map((character, index) => <article className="character-card" key={character.name}><ZoomableImage src={character.image} alt={character.name} caption={character.copy} loading="lazy" buttonClassName="character-image-trigger" /><div><span>0{index + 1}</span><small>{character.role}</small><h3>{character.name}</h3><p>{character.copy}</p></div></article>)}</div>
+        <div className="character-strip">{characters.map((character, index) => <Link to="/characters/$slug" params={{ slug: character.id }} className="character-card" key={character.name}><img src={character.image} alt={character.name} loading="lazy" /><div><span>0{index + 1}</span><small>{character.role}</small><h3>{character.name}</h3><p>{character.copy}</p></div></Link>)}</div>
       </Section>
 
       <Section id="comic" eyebrow="ORIGINAL COMIC" title="すべては、14話の漫画から。" icon={<BookOpen />} intro="入社初日、そこに自分の席はなかった。窓際族物語の原点を一気に読む。">
-        <ComicCarousel />
+        <ComicCarousel /><div className="movie-section-link story-link"><span>14 CHAPTERS</span><Link to="/story">原作ストーリーを読む <ArrowRight /></Link></div>
       </Section>
 
       <Section id="gallery" eyebrow="GALLERY" title="物語から生まれた、もうひとつの景色。" icon={<Images />} intro="原作の外側へ広がるキービジュアル、世界観アート、特別作品。">
         <div className="movie-section-link"><span>{galleryItems.length} WORKS</span><Link to="/gallery">ギャラリー一覧を見る <ArrowRight /></Link></div>
-        {galleryLoading
-          ? <div className="loading-line">GALLERY LOADING...</div>
-          : galleryItems.length
+        {galleryItems.length
             ? <div className="gallery-grid">{galleryItems.slice(0, HOME_GALLERY_LIMIT).map((item, index) => <GalleryCard key={item.id} item={item} featured={index === 0} />)}</div>
             : <div className="empty-feature">ギャラリー作品を準備しています。</div>}
       </Section>

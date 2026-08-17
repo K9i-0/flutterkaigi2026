@@ -2,14 +2,8 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "madogiwa-studio",
   "main": "worker/index.ts",
-  "compatibility_date": "2026-08-16",
+  "compatibility_date": "2026-08-17",
   "compatibility_flags": ["nodejs_compat"],
-  "assets": {
-    "binding": "ASSETS",
-    "directory": "./dist/client",
-    "not_found_handling": "single-page-application",
-    "run_worker_first": ["/api/*", "/admin-api/*", "/media/*", "/posters/*", "/inputs/*", "/gallery-images/*", "/mcp", "/mcp/*"]
-  },
   "d1_databases": [
     {
       "binding": "DB",

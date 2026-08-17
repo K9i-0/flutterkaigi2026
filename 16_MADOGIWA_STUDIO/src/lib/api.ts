@@ -210,9 +210,9 @@ export const api = {
   ) => request<Article>(`/admin-api/articles/${articleId}`, jsonInit("PATCH", input)),
   reorderArticles: (itemIds: string[]) =>
     request<{ articles: Article[] }>("/admin-api/articles/reorder", jsonInit("PUT", { itemIds })),
-  listMembers: () => request<{ members: Member[] }>("/api/members"),
-  listEpisodes: (featuredOnly = false) => request<{ episodes: EpisodeSummary[] }>(`/api/episodes${featuredOnly ? "?featured=true" : ""}`),
-  getEpisode: (slug: string) => request<EpisodeDetail>(`/api/episodes/${encodeURIComponent(slug)}`),
+  listMembers: () => request<{ members: Member[] }>("/admin-api/members"),
+  listEpisodes: (featuredOnly = false) => request<{ episodes: EpisodeSummary[] }>(`/admin-api/episodes${featuredOnly ? "?featured=true" : ""}`),
+  getEpisode: (slug: string) => request<EpisodeDetail>(`/admin-api/episodes/${encodeURIComponent(slug)}`),
   getSession: () => request<{ admin: { email: string; source: "access" } | null }>("/admin-api/session"),
   createEpisode: (input: { slug: string; title: string; summary: string; memberIds: string[] }) =>
     request<Episode>("/admin-api/episodes", jsonInit("POST", input)),

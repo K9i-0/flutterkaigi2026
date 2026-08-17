@@ -1,6 +1,6 @@
 import { Bot, CheckCircle2, CloudUpload, FileVideo2, ImageIcon, KeyRound, Layers3, LogOut, Music2, Paperclip, Plus, Save, Star } from "lucide-react";
 import { FormEvent, useEffect, useMemo, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { StatusBadge } from "@/components/status-badge";
 import { Badge } from "@/components/ui/badge";
@@ -17,10 +17,10 @@ import { EditorialAdmin } from "@/pages/editorial-admin";
 const COMMON_MODELS = ["Seedance 2.0", "Seedance 2.5", "MiniMax H3"];
 
 export function AdminPage() {
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const selectedSlug = searchParams.get("episode");
-  const requestedSection = searchParams.get("section");
+  const search = useSearch({ from: "/admin" });
+  const navigate = useNavigate({ from: "/admin" });
+  const selectedSlug = search.episode;
+  const requestedSection = search.section;
   const section: "episodes" | "gallery" | "articles" = requestedSection === "gallery" || requestedSection === "articles" ? requestedSection : "episodes";
   const [session, setSession] = useState<{ email: string; source: "access" } | null | undefined>(undefined);
   const [episodes, setEpisodes] = useState<EpisodeSummary[]>([]);
@@ -61,8 +61,8 @@ export function AdminPage() {
 
   return <div className="space-y-8"><datalist id="madogiwa-model-suggestions">{COMMON_MODELS.map((model) => <option key={model} value={model} />)}</datalist>
     <section className="flex flex-wrap items-end justify-between gap-5"><div><Badge className="border-emerald-400/20 bg-emerald-400/8 text-emerald-300"><CheckCircle2 className="mr-2 size-3" />Authenticated</Badge><h1 className="mt-5 text-3xl font-semibold tracking-[-0.035em] sm:text-5xl">Production desk</h1><p className="mt-3 text-sm text-stone-500">{session.email}</p></div><div className="flex items-center gap-2"><Badge>Cloudflare Access</Badge><Button variant="ghost" size="sm" asChild><a href="/cdn-cgi/access/logout"><LogOut className="size-3.5" />ログアウト</a></Button></div></section>
-    <nav className="flex flex-wrap gap-2 rounded-2xl border border-white/7 bg-white/[0.02] p-2" aria-label="管理対象"><Button type="button" variant={section === "episodes" ? "secondary" : "ghost"} onClick={() => void navigate("/admin")}>Episodes</Button><Button type="button" variant={section === "gallery" ? "secondary" : "ghost"} onClick={() => void navigate("/admin?section=gallery")}>Gallery</Button><Button type="button" variant={section === "articles" ? "secondary" : "ghost"} onClick={() => void navigate("/admin?section=articles")}>Articles</Button></nav>
-    {section === "episodes" ? <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]"><aside className="space-y-3"><Button className="w-full" onClick={() => void navigate("/admin")}><Plus className="size-4" />新規エピソード</Button><div className="space-y-1 rounded-2xl border border-white/7 bg-white/[0.02] p-2">{episodes.map((episode) => <button key={episode.id} onClick={() => void navigate(`/admin?episode=${episode.slug}`)} className={cn("flex w-full items-center justify-between gap-3 rounded-xl px-3 py-3 text-left transition", selectedSlug === episode.slug ? "bg-white/10" : "hover:bg-white/5")}><div className="min-w-0"><div className="truncate text-sm text-stone-200">{episode.title}</div><div className="mt-1 font-mono text-[10px] text-stone-600">{episode.studio_id} · {episode.generation_count} versions</div></div><StatusBadge status={episode.status} /></button>)}</div><McpHint /></aside><div>{detail ? <EpisodeEditor key={detail.episode.id} detail={detail} members={members} onSaved={refreshDetail} /> : <CreateEpisode members={members} onCreated={async (slug) => { await refreshList(); await navigate(`/admin?episode=${slug}`); }} />}</div></div> : <EditorialAdmin section={section} />}
+    <nav className="flex flex-wrap gap-2 rounded-2xl border border-white/7 bg-white/[0.02] p-2" aria-label="管理対象"><Button type="button" variant={section === "episodes" ? "secondary" : "ghost"} onClick={() => void navigate({ to: "/admin", search: {} })}>Episodes</Button><Button type="button" variant={section === "gallery" ? "secondary" : "ghost"} onClick={() => void navigate({ to: "/admin", search: { section: "gallery" } })}>Gallery</Button><Button type="button" variant={section === "articles" ? "secondary" : "ghost"} onClick={() => void navigate({ to: "/admin", search: { section: "articles" } })}>Articles</Button></nav>
+    {section === "episodes" ? <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]"><aside className="space-y-3"><Button className="w-full" onClick={() => void navigate({ to: "/admin", search: {} })}><Plus className="size-4" />新規エピソード</Button><div className="space-y-1 rounded-2xl border border-white/7 bg-white/[0.02] p-2">{episodes.map((episode) => <button key={episode.id} onClick={() => void navigate({ to: "/admin", search: { episode: episode.slug } })} className={cn("flex w-full items-center justify-between gap-3 rounded-xl px-3 py-3 text-left transition", selectedSlug === episode.slug ? "bg-white/10" : "hover:bg-white/5")}><div className="min-w-0"><div className="truncate text-sm text-stone-200">{episode.title}</div><div className="mt-1 font-mono text-[10px] text-stone-600">{episode.studio_id} · {episode.generation_count} versions</div></div><StatusBadge status={episode.status} /></button>)}</div><McpHint /></aside><div>{detail ? <EpisodeEditor key={detail.episode.id} detail={detail} members={members} onSaved={refreshDetail} /> : <CreateEpisode members={members} onCreated={async (slug) => { await refreshList(); await navigate({ to: "/admin", search: { episode: slug } }); }} />}</div></div> : <EditorialAdmin section={section} />}
   </div>;
 }
 
