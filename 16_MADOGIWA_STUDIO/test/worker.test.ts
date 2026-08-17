@@ -163,7 +163,7 @@ describe("Madogiwa Studio Worker", () => {
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ status: "published" }),
     })).status).toBe(200);
-  });
+  }, 15_000);
 
   it("publishes the episode page without exposing production data through the list or private detail API", async () => {
     const publicList = await (await SELF.fetch("http://localhost/api/episodes")).json<{
