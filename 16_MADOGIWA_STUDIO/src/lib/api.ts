@@ -1,4 +1,4 @@
-export type EpisodeStatus = "draft" | "generated" | "published" | "archived";
+export type EpisodeStatus = "published" | "archived";
 export type VideoStatus = "upload_pending" | "ready" | "published" | "archived";
 export type InputAssetKind = "image" | "audio" | "document" | "other";
 export type InputAssetStatus = "upload_pending" | "ready" | "archived";

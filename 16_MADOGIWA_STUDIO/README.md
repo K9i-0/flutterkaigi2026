@@ -54,7 +54,7 @@ Workerの起動プロファイル、本番アップロードを行わないdeplo
 - `/story`: 原作14話を一続きで読めるページ
 - `/sitemap.xml`、`/robots.txt`: 公開済みデータからWorker上で生成
 
-各詳細ページはcanonical URL、Open Graph、Twitter CardをSSR時に出力します。エピソードページは`VideoObject`のJSON-LDも出力します。下書きエピソード、生成履歴、プロンプト、入力素材は公開レスポンスへ含めません。
+各詳細ページはcanonical URL、Open Graph、Twitter CardをSSR時に出力します。エピソードページは`VideoObject`のJSON-LDも出力します。エピソードは作成時から公開され、非表示にする場合だけ`archived`へ変更します。生成履歴、プロンプト、入力素材は公開レスポンスへ含めません。
 
 ## 動画登録
 
@@ -91,7 +91,7 @@ D1へ初期登録され、管理画面またはMCPで差し替えた時点から
 
 漫画とキャラクターは引き続き`src/lib/site-content.ts`と`public/site/`の静的アセットを正本とします。
 Cloudflare Accessを通過した管理メンバーは全管理機能を利用でき、メンバーの追加・削除はCloudflare Access側で行います。
-物理削除APIは設けず、公開取り下げは`draft`または`archived`で行います。
+物理削除APIは設けず、エピソードの公開取り下げは`archived`で行います。ギャラリーと記事は素材準備のため`draft`を引き続き利用します。
 
 ## Remote MCP
 

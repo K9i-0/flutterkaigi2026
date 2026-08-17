@@ -1,4 +1,4 @@
-export const episodeStatuses = ["draft", "generated", "published", "archived"] as const;
+export const episodeStatuses = ["published", "archived"] as const;
 export type EpisodeStatus = (typeof episodeStatuses)[number];
 
 export const videoStatuses = ["upload_pending", "ready", "published", "archived"] as const;

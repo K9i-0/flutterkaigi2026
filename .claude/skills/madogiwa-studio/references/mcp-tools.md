@@ -35,7 +35,7 @@ The skill's `agents/openai.yaml` also declares this Remote MCP dependency for cl
 - `list_members({})`: return canonical member IDs and display names.
 - `list_episodes({ featuredOnly? })`: return episode summaries, Studio IDs, counts, members, primary video IDs, and featured-video flags. Set `featuredOnly: true` to filter.
 - `get_episode({ slug })`: return one episode with generations, prompt history, input assets, and videos.
-- `create_episode({ slug, title, summary?, status?, memberIds? })`: create an episode and its automatic v1. Status is `draft`, `generated`, `published`, or `archived`.
+- `create_episode({ slug, title, summary?, status?, memberIds? })`: create a published episode and its automatic v1. Status is `published` or `archived`; omit it for the normal published state.
 - `set_episode_members({ episodeId, memberIds })`: replace the member set.
 - `create_generation({ episodeId, label?, modelName?, notes? })`: append the next version. Never pass a version number.
 - `update_generation({ generationId, label?, modelName?, notes? })`: update generation metadata.

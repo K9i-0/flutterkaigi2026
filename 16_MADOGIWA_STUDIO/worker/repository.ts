@@ -154,10 +154,10 @@ export async function createEpisode(db: D1Database, input: CreateEpisodeInput, a
     await db.batch([
       db
         .prepare(
-          `INSERT INTO episodes (id, studio_id, slug, title, summary, status)
-           VALUES (?, ?, ?, ?, ?, ?)`,
+          `INSERT INTO episodes (id, studio_id, slug, title, summary, status, published_at)
+           VALUES (?, ?, ?, ?, ?, ?, CASE WHEN ? = 'published' THEN strftime('%Y-%m-%dT%H:%M:%fZ', 'now') END)`,
         )
-        .bind(id, studioId, input.slug, input.title, input.summary ?? "", input.status ?? "draft"),
+        .bind(id, studioId, input.slug, input.title, input.summary ?? "", input.status ?? "published", input.status ?? "published"),
       db
         .prepare(
           `INSERT INTO generations (id, episode_id, version, label, created_by)

@@ -39,8 +39,10 @@ describe("Madogiwa Studio Worker", () => {
       body: JSON.stringify({ slug, title: "テスト", summary: "versions", memberIds: ["sobaya", "yametaro"] }),
     });
     expect(createResponse.status).toBe(201);
-    const episode = await createResponse.json<{ id: string; studio_id: string }>();
+    const episode = await createResponse.json<{ id: string; studio_id: string; status: string; published_at: string | null }>();
     expect(episode.studio_id).toMatch(/^MS-[2-9A-HJ-NP-Z]{8}$/);
+    expect(episode.status).toBe("published");
+    expect(episode.published_at).not.toBeNull();
 
     const generationResponse = await adminFetch(`http://localhost/admin-api/episodes/${episode.id}/generations`, {
       method: "POST",
@@ -91,8 +93,7 @@ describe("Madogiwa Studio Worker", () => {
     })).status).toBe(201);
     const bytes = new Uint8Array(256).map((_, index) => index);
     expect((await SELF.fetch(ticket.uploadUrl, { method: "PUT", headers: { "content-type": "video/mp4", "content-length": "256" }, body: bytes })).status).toBe(201);
-    expect((await SELF.fetch(`http://localhost/media/${ticket.videoId}`)).status).toBe(401);
-    const mediaResponse = await adminFetch(`http://localhost/media/${ticket.videoId}`, { headers: { range: "bytes=10-19" } });
+    const mediaResponse = await SELF.fetch(`http://localhost/media/${ticket.videoId}`, { headers: { range: "bytes=10-19" } });
     expect(mediaResponse.status).toBe(206);
     expect(mediaResponse.headers.get("content-range")).toBe("bytes 10-19/256");
     const posterResponse = await adminFetch(`http://localhost/posters/${ticket.videoId}`);
@@ -102,13 +103,14 @@ describe("Madogiwa Studio Worker", () => {
     expect((await adminFetch("http://localhost/admin-api/episodes/sobaya-beer-battery", {
       method: "PATCH",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ status: "published" }),
+      body: JSON.stringify({ status: "archived" }),
     })).status).toBe(200);
-    expect((await SELF.fetch(`http://localhost/media/${ticket.videoId}`, { headers: { range: "bytes=0-9" } })).status).toBe(206);
+    expect((await SELF.fetch(`http://localhost/media/${ticket.videoId}`)).status).toBe(401);
+    expect((await adminFetch(`http://localhost/media/${ticket.videoId}`)).status).toBe(200);
     expect((await adminFetch("http://localhost/admin-api/episodes/sobaya-beer-battery", {
       method: "PATCH",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ status: "draft" }),
+      body: JSON.stringify({ status: "published" }),
     })).status).toBe(200);
     const featuredList = await (await adminFetch("http://localhost/admin-api/episodes?featured=true")).json<{
       episodes: Array<{ slug: string; primary_video_id: string | null; primary_video_poster_url: string | null; has_featured_video: number }>;
@@ -144,9 +146,9 @@ describe("Madogiwa Studio Worker", () => {
     expect(assetResponse.headers.get("content-type")).toBe("image/png");
   });
 
-  it("does not expose draft episodes or production detail through the public API", async () => {
+  it("publishes episodes without exposing production detail through the public API", async () => {
     const publicList = await (await SELF.fetch("http://localhost/api/episodes")).json<{ episodes: Array<{ slug: string }> }>();
-    expect(publicList.episodes.some((episode) => episode.slug === "sobaya-beer-battery")).toBe(false);
+    expect(publicList.episodes.some((episode) => episode.slug === "sobaya-beer-battery")).toBe(true);
     expect((await SELF.fetch("http://localhost/api/episodes/sobaya-beer-battery")).status).toBe(404);
   });
 
