@@ -1,7 +1,8 @@
-version: 6
+version: 7
 purpose: Seedance制作で再利用する正本テンプレート
 
 policy:
+  creative_control: 人物同一性だけをハード条件とする。衣装、小道具、表情、ポーズ、性格、口調、役割、能力、ジャンル、結末、過去作との整合性、夢オチ、復活、再登場、パロディ・オマージュの参照度はユーザー指定に従い、基本シートや過去作から制約を追加しない
   basic_character_sheet: 03_SCRIPTS/00_TEMPLATES/characters/character_<name>_basic_sheet.png を再利用する
   liveaction_identity_sheet: 実写人物は横3パネルを基本にする。左は正面の首なし全身、中央は自然な後頭部と首を含む背面全身、右は上下2分割した大きな3/4顔アップ（口を閉じた無表情／正典の歯を見せた自然な笑顔）。正面に顔・頭・首・首栓を描かず、背面に頬・鼻・横顔を出さない。文字、詳細図、色見本、追加ポーズを省き、顔アップへ画素を集中する
   media_basic_variant: 実写化など媒体だけを変えた汎用形は character_<name>_<medium>_basic_sheet.png としてテンプレートに置き、エピソード固有の衣装・能力・背景を混ぜない
@@ -20,7 +21,7 @@ policy:
   key_asset: 読ませる小道具・ロゴ・看板・画面は、imagegenで本番画質の1ファイル1アセットを作る
 
 directories:
-  characters: 各メンバーの通常時の外見・身体構造・必須小道具を固定する基本シート
+  characters: 各メンバーの人物同一性と通常形の参考を示す基本シート。人物同一性以外はユーザー指定で変更できる
   environments: 再利用可能な環境の建築、固定設備、家具、小道具、材質、照明、地理を固定する本番用正本
   prompt: エピソード用の制作設計書script.mdと、全選択してそのままSeedanceへ貼り付けるprompt.txtのひな形
 
@@ -60,7 +61,7 @@ character_sheets:
     canon: 02_CHARACTERS/03_Tokun.md
     face_identity_canon: 02_CHARACTERS/Tokun.jpg
     sheet_layout: 正面の首なし全身／帽子と自然な後頭部を含む背面全身／無表情と笑顔の大きな3/4顔アップ
-    invariant: ウクレレはストラップを付けず、正面で両手に持つ。背面にはウクレレ、楽器、ストラップを描かず、背中のアロハ柄を遮らない
+    default_presentation: 通常形シートではウクレレをストラップなしで正面の両手に持たせ、背面には楽器やストラップを描かない。エピソードではユーザー指定に従い変更できる
   yotan:
     file: characters/character_yotan_basic_sheet.png
     canon: 02_CHARACTERS/04_Yotan.md
@@ -87,7 +88,7 @@ character_sheets:
     file: characters/character_okayaman_basic_sheet.png
     prompt: characters/source_prompts/character_okayaman_basic_sheet.md
     canon: 02_CHARACTERS/07_Okayaman.md
-    invariant: 常に画面越しで、現地へ実体として登場しない
+    default_presentation: 通常形シートは画面越しのリモート出演。エピソードではユーザー指定により現地出演、別形態、別役割へ変更できる
   yumemin:
     file: characters/character_yumemin_basic_sheet.png
     prompt: characters/source_prompts/character_yumemin_basic_sheet.md
