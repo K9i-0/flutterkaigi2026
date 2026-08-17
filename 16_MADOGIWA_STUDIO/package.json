@@ -16,7 +16,7 @@
     "deploy:dry": "npm run cf-types && npm run build && wrangler deploy --dry-run",
     "deploy": "npm run cf-types && npm run build && wrangler deploy",
     "cf-types": "wrangler types",
-    "cf-types:check": "wrangler types --check",
+    "cf-types:check": "wrangler types",
     "check:startup": "wrangler check startup --outfile /tmp/madogiwa-studio-worker-startup.cpuprofile",
     "verify": "npm run cf-types:check && npm run check && npm test && npm run build && npm run check:startup && wrangler deploy --dry-run",
     "db:migrate:local": "wrangler d1 migrations apply madogiwa-studio --local",
