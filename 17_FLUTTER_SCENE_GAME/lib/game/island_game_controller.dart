@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 
 import '../world/island_world.dart';
 
-enum IslandTool { gather, floor, wall, roof }
+enum IslandTool { gather, floor, wall, roof, torch }
 
 enum IslandResource { tree, rock }
 
@@ -15,6 +15,7 @@ enum IslandActionKind {
   floorPlaced,
   wallPlaced,
   roofPlaced,
+  torchPlaced,
 }
 
 @immutable
@@ -55,6 +56,7 @@ class IslandGameController extends ChangeNotifier {
 
   final Map<GridCell, IslandResource> resources = {};
   final Map<GridCell, BuildLevel> structures = {};
+  final Set<GridCell> torches = {};
 
   IslandTool tool = IslandTool.gather;
   GridCell? selectedCell;
@@ -111,6 +113,9 @@ class IslandGameController extends ChangeNotifier {
       const GridCell(2, -3): IslandResource.rock,
     });
     structures.clear();
+    torches
+      ..clear()
+      ..add(const GridCell(2, 2));
     tool = IslandTool.gather;
     selectedCell = null;
     wood = 0;
@@ -129,6 +134,7 @@ class IslandGameController extends ChangeNotifier {
       IslandTool.floor => '好きな地面へ床ブロックを置こう（木材1）',
       IslandTool.wall => '床の上に壁を4つ積もう（木材1・石材1）',
       IslandTool.roof => '4つの壁ができたら屋根を載せよう（木材2）',
+      IslandTool.torch => '地面をタップして松明を置こう（木材1）',
     };
     notifyListeners();
   }
@@ -207,6 +213,19 @@ class IslandGameController extends ChangeNotifier {
           message = '生活拠点が完成！ 島流しもメリットです！';
           notifyListeners();
           return IslandActionResult(IslandActionKind.roofPlaced, cell);
+        }
+        break;
+      case IslandTool.torch:
+        if (torches.contains(cell)) {
+          message = 'このマスには松明がある';
+        } else if (wood < 1) {
+          message = '松明には木材1が必要';
+        } else {
+          wood--;
+          torches.add(cell);
+          message = '松明を設置。夜の探索範囲が広がった';
+          notifyListeners();
+          return IslandActionResult(IslandActionKind.torchPlaced, cell);
         }
         break;
     }

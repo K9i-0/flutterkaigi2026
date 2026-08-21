@@ -29,6 +29,12 @@ void registerIslandMarionetteExtensions() {
         'exploredCells': scene.exploredCellCount,
         'jumping': scene.isJumping,
         'jumpOffset': scene.jumpOffset,
+        'timeOfDay': scene.timeOfDay,
+        'clock': scene.clockLabel,
+        'phase': scene.phaseLabel,
+        'visualOptions': scene.visualOptions,
+        'torches': scene.torchCount,
+        'activeTorchLights': scene.activeTorchLightCount,
         'reunitedCount': scene.reunitedCount,
         'reunitedMembers': scene.reunitedMemberNames,
         'heldDirections': IslandAutomationState.heldDirections.toList(),
@@ -50,6 +56,68 @@ void registerIslandMarionetteExtensions() {
               'memberReunited': scene.isMemberReunited(landmark.memberId),
             },
         ],
+      });
+    },
+  );
+
+  registerMarionetteExtension(
+    name: 'madogiwa.setVisualOption',
+    description:
+        'Toggle a visual debug option. Params: option and enabled. '
+        'Inspect madogiwa.inspectIsland for available option names.',
+    callback: (params) async {
+      final scene = IslandAutomationState.scene;
+      final option = params['option'];
+      final enabled = switch (params['enabled']?.toLowerCase()) {
+        'true' || '1' || 'on' => true,
+        'false' || '0' || 'off' => false,
+        _ => null,
+      };
+      if (scene == null || option == null || enabled == null) {
+        return MarionetteExtensionResult.invalidParams(
+          'Required: option and enabled=true/false.',
+        );
+      }
+      if (!scene.setVisualOption(option, enabled)) {
+        return MarionetteExtensionResult.invalidParams(
+          'Unknown visual option: $option.',
+        );
+      }
+      return MarionetteExtensionResult.success({
+        'option': option,
+        'enabled': enabled,
+      });
+    },
+  );
+
+  registerMarionetteExtension(
+    name: 'madogiwa.setTimeOfDay',
+    description:
+        'Set visual test time. Params: preset=morning/day/evening/night or '
+        'time=0.0..1.0.',
+    callback: (params) async {
+      final scene = IslandAutomationState.scene;
+      if (scene == null) {
+        return MarionetteExtensionResult.error(1, 'Island is not ready.');
+      }
+      final presetTime = switch (params['preset']) {
+        'morning' => 0.27,
+        'day' => 0.5,
+        'evening' => 0.73,
+        'night' => 0.88,
+        _ => null,
+      };
+      final time = presetTime ?? double.tryParse(params['time'] ?? '');
+      if (time == null) {
+        return MarionetteExtensionResult.invalidParams(
+          'Provide preset or numeric time.',
+        );
+      }
+      scene.setTimeOfDay(time);
+      return MarionetteExtensionResult.success({
+        'timeOfDay': scene.timeOfDay,
+        'clock': scene.clockLabel,
+        'phase': scene.phaseLabel,
       });
     },
   );
@@ -143,7 +211,7 @@ void registerIslandMarionetteExtensions() {
 
   registerMarionetteExtension(
     name: 'madogiwa.selectTool',
-    description: 'Select gather, floor, wall, or roof.',
+    description: 'Select gather, floor, wall, roof, or torch.',
     callback: (params) async {
       final controller = IslandAutomationState.controller;
       final toolName = params['tool'];

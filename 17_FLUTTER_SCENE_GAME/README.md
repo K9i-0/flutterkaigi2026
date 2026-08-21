@@ -11,6 +11,7 @@ Flutter Sceneを、窓際族物語の正典ボクセル素材で実ゲームへ�
 - 歩いた周囲だけ地形が開く簡易マップと、3つの固有ランドマーク
 - 7マス以内の木・岩を直接タップして採取（遠距離・狙い外れは理由を表示）
 - 好きな地面へ「床 → 壁 → 屋根」の順でブロックを設置
+- 木材1個で松明を設置。開始キャンプにも検証用の松明を1本配置
 - 床4枚、壁4枚、屋根を完成させると生活拠点が完成
 - 再会したメンバーはそば屋の後ろから一緒に探索
 - 1本指ドラッグでカメラ旋回、ピンチでズーム、左右ボタンでも旋回
@@ -34,8 +35,31 @@ Flutter Sceneを、窓際族物語の正典ボクセル素材で実ゲームへ�
 - プレイヤー追従カメラ、カメラ相対8方向移動、段差・海岸衝突
 - 高低差1.25マスまでの放物線ジャンプと、それを超える崖の移動阻止
 - 正典GLBの共通リグを使った脚・腕・触手の手続き歩行モーション
-- Directional Light、影、Bloom、AO、fog
+- `PhysicalSkySource`による10分周期の昼夜、太陽・月光・露出・色調の連動
+- 3 cascades / 56マス / 1024pxの動的な太陽・月の影と接地影
+- 松明のemissive材質、ちらつくPoint Light、加算合成の火の粉
+- ランドマーク固有光、朝夕限定God Rays、時間連動fog
+- 海面の微動・時間帯別PBRマテリアル・低解像度SSR
+- ACES tone mapping、Bloom、GTAO、color grading、vignette
 - Flutter WidgetのHUD、長押し方向パッド、ツール選択、3Dシーンへのオーバーレイ
+
+## ビジュアル・デバッグ設定
+
+HUD右上のスライダーアイコンから、時刻プリセット／時刻スライダーと次の機能を
+個別にON/OFFできます。描画負荷と見た目を同じ地点で比較するための設定です。
+
+- 昼夜サイクル
+- 時間連動の環境光
+- 太陽・月の影
+- 接地影
+- 松明ライト
+- 松明の火の粉
+- ランドマーク固有光
+- 朝夕の光芒
+- 時間連動fog
+- 海面反射・微動
+
+パネル下部の「ビジュアル設定を初期化」で、時刻と全機能を既定値へ戻せます。
 
 ## ワールド構成
 
@@ -87,11 +111,13 @@ mise exec flutter@3.47.1 -- dart pub global activate marionette_mcp
 
 ネイティブdebugビルドは`MarionetteBinding`を初期化し、次の専用extensionを登録します。
 
-- `madogiwa.inspectIsland`: 座標、チャンク、探索、再会、資源、建築状態を取得
+- `madogiwa.inspectIsland`: 座標、チャンク、探索、再会、資源、建築、時刻、描画設定を取得
+- `madogiwa.setVisualOption`: 各描画機能を名前指定でON/OFF
+- `madogiwa.setTimeOfDay`: morning/day/evening/nightまたは0.0〜1.0で時刻を指定
 - `madogiwa.keyInput`: W/A/S/D・矢印キー相当のdown/up/tap入力
 - `madogiwa.releaseKeys`: 押下状態をすべて解除
 - `madogiwa.openScenario`: camp/radio/office/shrineへ検証用移動
-- `madogiwa.selectTool`: 採取・床・壁・屋根を選択
+- `madogiwa.selectTool`: 採取・床・壁・屋根・松明を選択
 - `madogiwa.resetIsland`: 島を初期状態へ戻す
 
 開始、カメラ、ツール、リセットの各ボタンにも安定した`ValueKey`を設定しているため、

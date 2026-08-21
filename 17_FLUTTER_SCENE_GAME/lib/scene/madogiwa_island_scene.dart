@@ -8,6 +8,7 @@ import 'package:vector_math/vector_math.dart' as vm;
 
 import '../game/island_game_controller.dart';
 import '../game/movement_math.dart';
+import '../game/visual_math.dart';
 import '../world/chunk_mesh_builder.dart';
 import '../world/island_world.dart';
 
@@ -59,11 +60,14 @@ class MadogiwaIslandScene extends ChangeNotifier {
   final Node _terrainRoot = Node(name: 'TerrainChunks');
   final Node _resourceRoot = Node(name: 'VisibleResources');
   final Node _structureRoot = Node(name: 'PlayerStructures');
+  final Node _torchRoot = Node(name: 'Torches');
   final Node _partyRoot = Node(name: 'MadogiwaCrew');
   final Map<ChunkCoordinate, Node> _chunkNodes = {};
   final Map<ChunkCoordinate, int> _chunkQuadCounts = {};
   final Map<GridCell, Node> _resourceNodes = {};
   final Map<String, Node> _landmarkNodes = {};
+  final Map<GridCell, _TorchVisual> _torches = {};
+  final List<_LandmarkGlow> _landmarkGlows = [];
   final List<Node> _resourceAnimatedParts = [];
   final List<_Worker> _workers = [];
   final Uint8List _explored = Uint8List(
@@ -76,6 +80,10 @@ class MadogiwaIslandScene extends ChangeNotifier {
     ..metallicFactor = 0.02;
 
   late final Node _selection;
+  late final Node _oceanNode;
+  late final PhysicallyBasedMaterial _waterMaterial;
+  late final PhysicalSkySource _sky;
+  late final SunLight _sunLight;
   late PerspectiveCamera _activeCamera;
   Node? _playerRoot;
   bool _loaded = false;
@@ -98,6 +106,18 @@ class MadogiwaIslandScene extends ChangeNotifier {
   double _jumpStartSurfaceY = 0;
   double _jumpLandingSurfaceY = 0;
 
+  bool dayNightCycleEnabled = true;
+  bool dynamicLightingEnabled = true;
+  bool shadowsEnabled = true;
+  bool contactShadowsEnabled = true;
+  bool torchLightsEnabled = true;
+  bool torchParticlesEnabled = true;
+  bool landmarkLightsEnabled = true;
+  bool godRaysEnabled = true;
+  bool dynamicFogEnabled = true;
+  bool waterEffectsEnabled = true;
+  double timeOfDay = 0.34;
+
   int characterMeshCount = 0;
   List<String> characterNames = const [];
   Duration loadDuration = Duration.zero;
@@ -114,6 +134,11 @@ class MadogiwaIslandScene extends ChangeNotifier {
   int get reunitedCount =>
       _workers.where((worker) => !worker.isPlayer && worker.reunited).length;
   int get exploredCellCount => _exploredCellCount;
+  String get clockLabel => clockLabelForTime(timeOfDay);
+  String get phaseLabel => phaseLabelForTime(timeOfDay);
+  int get torchCount => _torches.length;
+  int get activeTorchLightCount =>
+      _torches.values.where((torch) => torch.light.intensity > 0).length;
   bool get isJumping => _isJumping;
   double get jumpOffset =>
       _isJumping ? jumpArcOffset(_jumpElapsed / _jumpDuration) : 0;
@@ -143,7 +168,35 @@ class MadogiwaIslandScene extends ChangeNotifier {
   }
 
   void _configureRenderer() {
+    _sky = PhysicalSkySource(
+      sunDirection: vm.Vector3(0.35, 0.75, 0.25),
+      turbidity: 7.5,
+      groundColor: vm.Vector3(0.08, 0.13, 0.11),
+      energy: 1.0,
+    );
+    _sunLight = SunLight(
+      _sky,
+      castsShadow: true,
+      cacheStaticShadows: false,
+      shadowSoftness: 0.1,
+      shadowMaxDistance: 56,
+      shadowCascadeCount: 3,
+      shadowMapResolution: 1024,
+      shadowAmbientStrength: 0.3,
+      contactShadows: true,
+      contactShadowDistance: 0.26,
+      shadowCasterFaces: ShadowCasterFaces.back,
+    );
     scene.environmentSettings = EnvironmentSettings(
+      skybox: Skybox(_sky),
+      skyEnvironment: SkyEnvironment(
+        _sky,
+        refresh: SkyEnvironmentRefresh.interval,
+        interval: const Duration(seconds: 3),
+        faceResolution: 64,
+        equirectWidth: 256,
+      ),
+      sunLight: _sunLight,
       toneMapping: ToneMappingMode.aces,
       exposure: 1.04,
       bloomEnabled: true,
@@ -153,6 +206,8 @@ class MadogiwaIslandScene extends ChangeNotifier {
       ambientOcclusionEnabled: true,
       ambientOcclusionMethod: AmbientOcclusionMethod.groundTruth,
       ambientOcclusionIntensity: 0.92,
+      ambientOcclusionRadius: 0.38,
+      ambientOcclusionMultiBounce: 0.18,
       vignetteEnabled: true,
       vignetteIntensity: 0.16,
       colorGradingEnabled: true,
@@ -161,38 +216,45 @@ class MadogiwaIslandScene extends ChangeNotifier {
       fogEnabled: true,
       fogDensity: 0.025,
       fogColor: vm.Vector3(0.2, 0.5, 0.64),
-    );
-    scene.directionalLight = DirectionalLight(
-      direction: vm.Vector3(-0.55, -1, -0.35),
-      color: vm.Vector3(1, 0.91, 0.72),
-      intensity: 3.6,
-      castsShadow: true,
-      shadowSoftness: 0.11,
-      shadowMapResolution: 1024,
+      fogSkyColorInfluence: 0.45,
+      fogHeight: 1.2,
+      fogHeightFalloff: 0.08,
+      screenSpaceReflectionsEnabled: true,
+      screenSpaceReflectionsIntensity: 0.38,
+      screenSpaceReflectionsMaxDistance: 18,
+      screenSpaceReflectionsMaxSteps: 32,
+      screenSpaceReflectionsResolutionScale: 0.5,
     );
     scene.add(_stage);
-    _stage.addAll([_terrainRoot, _resourceRoot, _structureRoot, _partyRoot]);
+    _stage.addAll([
+      _terrainRoot,
+      _resourceRoot,
+      _structureRoot,
+      _torchRoot,
+      _partyRoot,
+    ]);
+    _updateVisualEnvironment(0);
   }
 
   void _buildWorldFrame() {
-    final water = _pbr(0.025, 0.34, 0.58, roughness: 0.12, metallic: 0.28);
-    _stage.add(
-      Node(
-          name: 'Ocean256',
-          mesh: Mesh(
-            CuboidGeometry(
-              vm.Vector3(
-                IslandWorld.worldSize + 18,
-                0.5,
-                IslandWorld.worldSize + 18,
+    _waterMaterial = _pbr(0.025, 0.34, 0.58, roughness: 0.1, metallic: 0.34);
+    _oceanNode =
+        Node(
+            name: 'Ocean256',
+            mesh: Mesh(
+              CuboidGeometry(
+                vm.Vector3(
+                  IslandWorld.worldSize + 18,
+                  0.5,
+                  IslandWorld.worldSize + 18,
+                ),
               ),
+              _waterMaterial,
             ),
-            water,
-          ),
-        )
-        ..position = vm.Vector3(0, 0.28, 0)
-        ..raycastable = false,
-    );
+          )
+          ..position = vm.Vector3(0, 0.28, 0)
+          ..raycastable = false;
+    _stage.add(_oceanNode);
 
     final zoneMaterial = _unlit(0.18, 1.5, 1.1);
     for (final cell in IslandGameController.buildZone) {
@@ -224,7 +286,98 @@ class MadogiwaIslandScene extends ChangeNotifier {
           ..raycastable = false;
     _stage.add(_selection);
     _buildLandmarks();
+    _rebuildTorches();
     _revealAroundPlayer(force: true);
+  }
+
+  void _rebuildTorches() {
+    _torchRoot.removeAll();
+    _torches.clear();
+    for (final cell in controller.torches) {
+      _addTorch(cell);
+    }
+  }
+
+  void _addTorch(GridCell cell) {
+    final timber = _pbr(0.34, 0.14, 0.045, roughness: 0.82);
+    final ember = PhysicallyBasedMaterial()
+      ..baseColorFactor = vm.Vector4(1.0, 0.2, 0.025, 1)
+      ..emissiveFactor = vm.Vector4(4.8, 1.0, 0.08, 1)
+      ..roughnessFactor = 0.5
+      ..metallicFactor = 0.0;
+    final light = PointLight(
+      color: vm.Vector3(1.0, 0.28, 0.055),
+      intensity: 24,
+      range: 8.5,
+      falloffExponent: 1.8,
+    );
+    final lightComponent = PointLightComponent(light);
+    final lightNode = Node(name: 'TorchLight_${cell.x}_${cell.z}')
+      ..position = vm.Vector3(0, 0.88, 0)
+      ..addComponent(lightComponent);
+    final particleComponent = _buildTorchParticles(cell.hashCode);
+    final particleNode = Node(name: 'TorchSparks_${cell.x}_${cell.z}')
+      ..position = vm.Vector3(0, 1.02, 0)
+      ..addComponent(particleComponent);
+    final root = Node(name: 'Torch_${cell.x}_${cell.z}')
+      ..position = vm.Vector3(
+        cell.x.toDouble(),
+        IslandWorld.surfaceY(cell.x, cell.z),
+        cell.z.toDouble(),
+      )
+      ..raycastable = false
+      ..addAll([
+        Node(mesh: Mesh(CuboidGeometry(vm.Vector3(0.14, 0.72, 0.14)), timber))
+          ..position = vm.Vector3(0, 0.36, 0),
+        Node(mesh: Mesh(CuboidGeometry(vm.Vector3(0.28, 0.28, 0.28)), ember))
+          ..position = vm.Vector3(0, 0.84, 0),
+        lightNode,
+        particleNode,
+      ]);
+    _torchRoot.add(root);
+    _torches[cell] = _TorchVisual(
+      cell: cell,
+      root: root,
+      ember: ember,
+      light: light,
+      lightComponent: lightComponent,
+      particleNode: particleNode,
+      particleComponent: particleComponent,
+    );
+  }
+
+  ParticleEmitterComponent _buildTorchParticles(int seed) {
+    final system = ParticleSystem(
+      maxParticles: 6,
+      shape: const ConeEmitterShape(angle: 0.34, radius: 0.06),
+      spawner: Spawner(rate: 4),
+      lifetime: const UniformFloat(0.3, 0.62),
+      startSpeed: const UniformFloat(0.25, 0.62),
+      startSize: const UniformFloat(0.045, 0.105),
+      startColor: UniformColor(
+        vm.Vector4(2.8, 0.7, 0.08, 0.9),
+        vm.Vector4(1.8, 0.18, 0.025, 0.75),
+      ),
+      gravity: vm.Vector3(0, 0.18, 0),
+      modules: [
+        SizeOverLifeModule(CurveFloat(ParticleCurve.linear(from: 1, to: 0.12))),
+        ColorOverLifeModule(
+          GradientColor(
+            ColorGradient([
+              ColorStop(0, vm.Vector4(2.6, 0.72, 0.08, 0.9)),
+              ColorStop(1, vm.Vector4(0.8, 0.04, 0.01, 0)),
+            ]),
+          ),
+        ),
+      ],
+      seed: seed,
+      prewarm: 0.4,
+    );
+    final material = SpriteMaterial()
+      ..blendMode = SpriteBlendMode.additive
+      ..tint = vm.Vector4(1, 0.8, 0.45, 1)
+      ..softDepthFade = 0.12;
+    return ParticleEmitterComponent(system: system, material: material);
   }
 
   void _buildLandmarks() {
@@ -251,7 +404,31 @@ class MadogiwaIslandScene extends ChangeNotifier {
         ..raycastable = false;
       _stage.add(root);
       _landmarkNodes[landmark.id] = root;
+      _addLandmarkGlow(root, landmark.id);
     }
+  }
+
+  void _addLandmarkGlow(Node root, String id) {
+    final spec = switch (id) {
+      'radio_tower' => (vm.Vector3(1.0, 0.08, 0.04), 28.0, 14.0, 6.05),
+      'office_wreck' => (vm.Vector3(0.25, 0.7, 1.0), 16.0, 9.0, 2.15),
+      'octopus_shrine' => (vm.Vector3(0.85, 0.12, 1.0), 24.0, 12.0, 4.05),
+      _ => (vm.Vector3(1, 1, 1), 0.0, 1.0, 1.0),
+    };
+    final light = PointLight(
+      color: spec.$1,
+      intensity: spec.$2,
+      range: spec.$3,
+      falloffExponent: 1.8,
+    );
+    final component = PointLightComponent(light);
+    final lightNode = Node(name: '${id}_Light')
+      ..position = vm.Vector3(0, spec.$4, 0)
+      ..addComponent(component);
+    root.add(lightNode);
+    _landmarkGlows.add(
+      _LandmarkGlow(id: id, root: root, light: light, component: component),
+    );
   }
 
   Node _buildRadioTower() {
@@ -578,6 +755,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
       });
     }
     _structureRoot.removeAll();
+    _rebuildTorches();
     _selection.visible = false;
     _rebuildVisibleResources(_desiredChunks());
     _playerPosition = vm.Vector3(0, IslandWorld.surfaceY(0, 3), 3);
@@ -624,6 +802,237 @@ class MadogiwaIslandScene extends ChangeNotifier {
 
   void setCameraDistance(double distance) {
     _distance = distance.clamp(8.5, 22.0);
+  }
+
+  Map<String, bool> get visualOptions => {
+    'dayNightCycle': dayNightCycleEnabled,
+    'dynamicLighting': dynamicLightingEnabled,
+    'shadows': shadowsEnabled,
+    'contactShadows': contactShadowsEnabled,
+    'torchLights': torchLightsEnabled,
+    'torchParticles': torchParticlesEnabled,
+    'landmarkLights': landmarkLightsEnabled,
+    'godRays': godRaysEnabled,
+    'dynamicFog': dynamicFogEnabled,
+    'waterEffects': waterEffectsEnabled,
+  };
+
+  bool setVisualOption(String option, bool enabled) {
+    switch (option) {
+      case 'dayNightCycle':
+        dayNightCycleEnabled = enabled;
+      case 'dynamicLighting':
+        dynamicLightingEnabled = enabled;
+      case 'shadows':
+        shadowsEnabled = enabled;
+      case 'contactShadows':
+        contactShadowsEnabled = enabled;
+      case 'torchLights':
+        torchLightsEnabled = enabled;
+      case 'torchParticles':
+        torchParticlesEnabled = enabled;
+      case 'landmarkLights':
+        landmarkLightsEnabled = enabled;
+      case 'godRays':
+        godRaysEnabled = enabled;
+      case 'dynamicFog':
+        dynamicFogEnabled = enabled;
+      case 'waterEffects':
+        waterEffectsEnabled = enabled;
+      default:
+        return false;
+    }
+    _updateVisualEnvironment(0);
+    notifyListeners();
+    return true;
+  }
+
+  void setTimeOfDay(double value) {
+    timeOfDay = normalizedTime(value);
+    _updateVisualEnvironment(0);
+    notifyListeners();
+  }
+
+  void resetVisualSettings() {
+    dayNightCycleEnabled = true;
+    dynamicLightingEnabled = true;
+    shadowsEnabled = true;
+    contactShadowsEnabled = true;
+    torchLightsEnabled = true;
+    torchParticlesEnabled = true;
+    landmarkLightsEnabled = true;
+    godRaysEnabled = true;
+    dynamicFogEnabled = true;
+    waterEffectsEnabled = true;
+    timeOfDay = 0.34;
+    _updateVisualEnvironment(0);
+    notifyListeners();
+  }
+
+  void _updateVisualEnvironment(double dt) {
+    if (dayNightCycleEnabled && dt > 0) {
+      timeOfDay = normalizedTime(timeOfDay + dt / 600);
+    }
+    final lightingTime = dynamicLightingEnabled ? timeOfDay : 0.5;
+    final elevation = sunElevationForTime(lightingTime);
+    final daylight = daylightForTime(lightingTime);
+    // Keep the physically based sky from clipping pale voxel materials at noon.
+    // A low sun gets more intensity because its grazing angle contributes less
+    // irradiance to horizontal terrain while still producing long shadows.
+    final lightLevel = math.min(daylight, 0.84);
+    final sunHeight = math.max(0.0, elevation);
+    final directLight = daylight * (0.72 + (1 - sunHeight) * 1.75);
+    final twilight = twilightForTime(lightingTime);
+    final azimuth = lightingTime * math.pi * 2;
+    _sky.sunDirection
+      ..setValues(
+        math.cos(azimuth) * math.cos(elevation * 0.5),
+        elevation,
+        math.sin(azimuth) * math.cos(elevation * 0.5),
+      )
+      ..normalize();
+    _sky
+      ..energy = 0.14 + lightLevel * 0.58
+      ..turbidity = 6.8 + twilight * 4.2
+      ..groundColor.setValues(
+        0.025 + daylight * 0.08,
+        0.04 + daylight * 0.1,
+        0.075 + daylight * 0.06,
+      );
+
+    final sunColor = _sunLight.color ??= vm.Vector3.zero();
+    if (daylight < 0.08) {
+      sunColor.setValues(0.24, 0.34, 0.62);
+    } else {
+      sunColor.setValues(1.0, 0.58 + daylight * 0.36, 0.34 + daylight * 0.58);
+    }
+    _sunLight
+      ..intensity = 0.18 + directLight
+      ..castsShadow = shadowsEnabled
+      ..contactShadows = contactShadowsEnabled
+      ..shadowSoftness = 0.2 - daylight * 0.1
+      ..shadowAmbientStrength = 0.28 + (1 - daylight) * 0.12;
+
+    scene
+      ..exposure = 0.54 + lightLevel * 0.24
+      ..environmentIntensity = 0.2 + lightLevel * 0.44;
+    scene.postProcess.colorGrading
+      ..enabled = true
+      ..brightness = 0.9 + daylight * 0.1
+      ..contrast = 1.12 - daylight * 0.06
+      ..saturation = 0.84 + daylight * 0.26
+      ..temperature = twilight * 0.16 - (1 - daylight) * 0.08;
+    scene.postProcess.bloom
+      ..enabled = true
+      ..threshold = 0.62 + daylight * 0.3
+      ..intensity = 0.38 - daylight * 0.17
+      ..scatter = 0.7;
+    scene.fog
+      ..enabled = dynamicFogEnabled
+      ..density = 0.018 + (1 - daylight) * 0.018 + twilight * 0.008
+      ..skyColorInfluence = 0.62
+      ..height = 1.15
+      ..heightFalloff = 0.075
+      ..sunInScatter = twilight * daylight * 0.72
+      ..sunInScatterExponent = 12
+      ..color.setValues(
+        0.055 + daylight * 0.19 + twilight * 0.12,
+        0.08 + daylight * 0.4 + twilight * 0.08,
+        0.17 + daylight * 0.48 + twilight * 0.05,
+      );
+    scene.godRays
+      ..enabled =
+          godRaysEnabled && shadowsEnabled && twilight > 0.18 && daylight > 0.08
+      ..intensity = twilight * 0.34
+      ..density = 0.28
+      ..anisotropy = 0.72
+      ..stepCount = 14
+      ..maxDistance = 58
+      ..jitter = 1
+      ..color.setValues(1.0, 0.58 + daylight * 0.28, 0.32 + daylight * 0.42);
+    scene.screenSpaceReflections
+      ..enabled = waterEffectsEnabled
+      ..intensity = 0.32 + daylight * 0.14;
+
+    if (_loaded || _torches.isNotEmpty) {
+      _updateLocalLights(daylight);
+      _updateWater(daylight, twilight);
+    }
+  }
+
+  void _updateWater(double daylight, double twilight) {
+    if (!waterEffectsEnabled) {
+      _oceanNode.position = vm.Vector3(0, 0.28, 0);
+      _waterMaterial
+        ..baseColorFactor = vm.Vector4(0.025, 0.34, 0.58, 1)
+        ..roughnessFactor = 0.16
+        ..metallicFactor = 0.22;
+      return;
+    }
+    _oceanNode.position = vm.Vector3(
+      0,
+      0.28 + math.sin(_elapsed * 0.55) * 0.025,
+      0,
+    );
+    _waterMaterial
+      ..baseColorFactor = vm.Vector4(
+        0.012 + daylight * 0.02,
+        0.06 + daylight * 0.3 + twilight * 0.05,
+        0.16 + daylight * 0.48,
+        1,
+      )
+      ..roughnessFactor = 0.075 + (1 - daylight) * 0.08
+      ..metallicFactor = 0.32 + daylight * 0.14;
+  }
+
+  void _updateLocalLights(double daylight) {
+    final visibleChunks = _desiredChunks();
+    final sortedTorches = _torches.values.toList()
+      ..sort(
+        (a, b) => a
+            .distanceSquaredTo(_playerPosition)
+            .compareTo(b.distanceSquaredTo(_playerPosition)),
+      );
+    for (var index = 0; index < sortedTorches.length; index++) {
+      final torch = sortedTorches[index];
+      final chunk = ChunkCoordinate(
+        IslandWorld.chunkForCoordinate(torch.cell.x.toDouble()),
+        IslandWorld.chunkForCoordinate(torch.cell.z.toDouble()),
+      );
+      final visible = visibleChunks.contains(chunk);
+      final active = visible && torchLightsEnabled && index < 8;
+      final flicker =
+          0.95 +
+          math.sin(_elapsed * 8.7 + torch.cell.hashCode) * 0.035 +
+          math.sin(_elapsed * 14.3 + torch.cell.x) * 0.02;
+      torch.root.visible = visible;
+      torch.lightComponent.enabled = active;
+      torch.light.intensity = active ? (8 + (1 - daylight) * 20) * flicker : 0;
+      torch.ember.emissiveFactor = vm.Vector4(
+        (2.6 + (1 - daylight) * 3.2) * flicker,
+        (0.52 + (1 - daylight) * 0.7) * flicker,
+        0.08,
+        1,
+      );
+      torch.particleNode.visible =
+          visible && torchParticlesEnabled && index < 8;
+      torch.particleComponent.enabled = torch.particleNode.visible;
+    }
+
+    for (var index = 0; index < _landmarkGlows.length; index++) {
+      final glow = _landmarkGlows[index];
+      final active = landmarkLightsEnabled && glow.root.visible;
+      final pulse = switch (glow.id) {
+        'radio_tower' =>
+          math.pow(math.max(0.0, math.sin(_elapsed * 2.7)), 8).toDouble(),
+        'office_wreck' => 0.78 + math.sin(_elapsed * 19) * 0.08,
+        _ => 0.82 + math.sin(_elapsed * 2.2) * 0.18,
+      };
+      glow.component.enabled = active;
+      glow.light.intensity = active
+          ? glow.baseIntensity * (0.38 + (1 - daylight) * 0.78) * pulse
+          : 0;
+    }
   }
 
   /// Moves the player to a deterministic debug location for MCP scenarios.
@@ -798,6 +1207,9 @@ class MadogiwaIslandScene extends ChangeNotifier {
       case IslandActionKind.roofPlaced:
         _addRoof();
         break;
+      case IslandActionKind.torchPlaced:
+        _addTorch(result.cell);
+        break;
       case IslandActionKind.none:
         return;
     }
@@ -880,6 +1292,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
     if (!_loaded) return;
     final dt = deltaSeconds.clamp(0.0, 0.05);
     _elapsed += dt;
+    _updateVisualEnvironment(dt);
     _hudAccumulator += dt;
     _updatePlayer(dt);
     _revealAroundPlayer();
@@ -1135,6 +1548,47 @@ class _Worker {
   final bool isPlayer;
   final _VoxelWalkRig walkRig;
   bool reunited;
+}
+
+class _TorchVisual {
+  const _TorchVisual({
+    required this.cell,
+    required this.root,
+    required this.ember,
+    required this.light,
+    required this.lightComponent,
+    required this.particleNode,
+    required this.particleComponent,
+  });
+
+  final GridCell cell;
+  final Node root;
+  final PhysicallyBasedMaterial ember;
+  final PointLight light;
+  final PointLightComponent lightComponent;
+  final Node particleNode;
+  final ParticleEmitterComponent particleComponent;
+
+  double distanceSquaredTo(vm.Vector3 position) {
+    final dx = cell.x - position.x;
+    final dz = cell.z - position.z;
+    return dx * dx + dz * dz;
+  }
+}
+
+class _LandmarkGlow {
+  _LandmarkGlow({
+    required this.id,
+    required this.root,
+    required this.light,
+    required this.component,
+  }) : baseIntensity = light.intensity;
+
+  final String id;
+  final Node root;
+  final PointLight light;
+  final PointLightComponent component;
+  final double baseIntensity;
 }
 
 class _PartySpec {

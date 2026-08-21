@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_scene/scene.dart';
+import 'package:flutter_scene/scene.dart' hide Material;
 import 'package:marionette_flutter/marionette_flutter.dart';
 
 import 'automation/automation_state.dart';
@@ -56,6 +56,7 @@ class _IslandPageState extends State<IslandPage> {
   final Set<_MoveDirection> _touchDirections = {};
   bool _ready = false;
   bool _showIntro = true;
+  bool _showVisualSettings = false;
   Object? _error;
   Offset? _gestureStart;
   Offset? _gestureLatest;
@@ -223,6 +224,7 @@ class _IslandPageState extends State<IslandPage> {
                   controller: _controller,
                   scene: _islandScene,
                   onReset: _reset,
+                  onSettings: () => setState(() => _showVisualSettings = true),
                 ),
               ),
             ),
@@ -258,6 +260,11 @@ class _IslandPageState extends State<IslandPage> {
                 },
               ),
             if (_controller.homeComplete) _CompleteOverlay(onReset: _reset),
+            if (_showVisualSettings)
+              _VisualSettingsOverlay(
+                scene: _islandScene,
+                onClose: () => setState(() => _showVisualSettings = false),
+              ),
           ],
         ),
       ),
@@ -433,16 +440,263 @@ class _OceanBackdrop extends StatelessWidget {
   }
 }
 
+class _VisualSettingsOverlay extends StatelessWidget {
+  const _VisualSettingsOverlay({required this.scene, required this.onClose});
+
+  final MadogiwaIslandScene scene;
+  final VoidCallback onClose;
+
+  @override
+  Widget build(BuildContext context) {
+    return ColoredBox(
+      color: const Color(0xaa001015),
+      child: SafeArea(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 590, maxHeight: 560),
+            child: Material(
+              color: const Color(0xff09242b),
+              elevation: 24,
+              borderRadius: BorderRadius.circular(24),
+              clipBehavior: Clip.antiAlias,
+              child: ListenableBuilder(
+                listenable: scene,
+                builder: (context, _) {
+                  final options = scene.visualOptions;
+                  return Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 14, 10, 8),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.auto_awesome_rounded,
+                              color: Color(0xffffc26b),
+                            ),
+                            const SizedBox(width: 9),
+                            const Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'ビジュアル・デバッグ',
+                                    style: TextStyle(
+                                      fontSize: 19,
+                                      fontWeight: FontWeight.w900,
+                                    ),
+                                  ),
+                                  Text(
+                                    '負荷比較用に各機能を個別切り替え',
+                                    style: TextStyle(
+                                      color: Color(0xff8fb4bc),
+                                      fontSize: 10,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            IconButton(
+                              key: const ValueKey('visual_settings_close'),
+                              tooltip: '閉じる',
+                              onPressed: onClose,
+                              icon: const Icon(Icons.close_rounded),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Divider(height: 1),
+                      Expanded(
+                        child: ListView(
+                          padding: const EdgeInsets.fromLTRB(12, 8, 12, 18),
+                          children: [
+                            _TimeDebugger(scene: scene),
+                            const SizedBox(height: 6),
+                            _VisualSwitch(
+                              option: 'dayNightCycle',
+                              label: '昼夜サイクル',
+                              description: '実時間10分でゲーム内24時間',
+                              value: options['dayNightCycle']!,
+                              scene: scene,
+                            ),
+                            _VisualSwitch(
+                              option: 'dynamicLighting',
+                              label: '時間連動の環境光',
+                              description: '空・太陽・月光・露出・色調を連動',
+                              value: options['dynamicLighting']!,
+                              scene: scene,
+                            ),
+                            _VisualSwitch(
+                              option: 'shadows',
+                              label: '太陽・月の影',
+                              description: '3 cascades / 56マス / 1024px',
+                              value: options['shadows']!,
+                              scene: scene,
+                            ),
+                            _VisualSwitch(
+                              option: 'contactShadows',
+                              label: '接地影',
+                              description: '足元やボクセル境界の短距離影',
+                              value: options['contactShadows']!,
+                              scene: scene,
+                            ),
+                            _VisualSwitch(
+                              option: 'torchLights',
+                              label: '松明ライト',
+                              description: '近い8本まで暖色Point Light',
+                              value: options['torchLights']!,
+                              scene: scene,
+                            ),
+                            _VisualSwitch(
+                              option: 'torchParticles',
+                              label: '松明の火の粉',
+                              description: '各6枚までの加算合成パーティクル',
+                              value: options['torchParticles']!,
+                              scene: scene,
+                            ),
+                            _VisualSwitch(
+                              option: 'landmarkLights',
+                              label: 'ランドマーク固有光',
+                              description: '無線塔・会議室・タコ石の門',
+                              value: options['landmarkLights']!,
+                              scene: scene,
+                            ),
+                            _VisualSwitch(
+                              option: 'godRays',
+                              label: '朝夕の光芒',
+                              description: '14 stepsの限定的なGod Rays',
+                              value: options['godRays']!,
+                              scene: scene,
+                            ),
+                            _VisualSwitch(
+                              option: 'dynamicFog',
+                              label: '時間連動fog',
+                              description: '色・密度・太陽散乱を変化',
+                              value: options['dynamicFog']!,
+                              scene: scene,
+                            ),
+                            _VisualSwitch(
+                              option: 'waterEffects',
+                              label: '海面反射・微動',
+                              description: '低解像度SSRと時間帯別マテリアル',
+                              value: options['waterEffects']!,
+                              scene: scene,
+                            ),
+                            const SizedBox(height: 8),
+                            OutlinedButton.icon(
+                              key: const ValueKey('visual_settings_reset'),
+                              onPressed: scene.resetVisualSettings,
+                              icon: const Icon(Icons.restart_alt_rounded),
+                              label: const Text('ビジュアル設定を初期化'),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TimeDebugger extends StatelessWidget {
+  const _TimeDebugger({required this.scene});
+
+  final MadogiwaIslandScene scene;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: const Color(0xff102f37),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                const Icon(Icons.schedule_rounded, size: 18),
+                const SizedBox(width: 7),
+                Text(
+                  '${scene.phaseLabel} ${scene.clockLabel}',
+                  style: const TextStyle(fontWeight: FontWeight.w900),
+                ),
+                const Spacer(),
+                for (final preset in const [
+                  ('朝', 0.27),
+                  ('昼', 0.5),
+                  ('夕', 0.73),
+                  ('夜', 0.88),
+                ])
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4),
+                    child: ActionChip(
+                      key: ValueKey('time_${preset.$1}'),
+                      label: Text(preset.$1),
+                      onPressed: () => scene.setTimeOfDay(preset.$2),
+                    ),
+                  ),
+              ],
+            ),
+            Slider(
+              key: const ValueKey('time_slider'),
+              value: scene.timeOfDay,
+              onChanged: scene.setTimeOfDay,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _VisualSwitch extends StatelessWidget {
+  const _VisualSwitch({
+    required this.option,
+    required this.label,
+    required this.description,
+    required this.value,
+    required this.scene,
+  });
+
+  final String option;
+  final String label;
+  final String description;
+  final bool value;
+  final MadogiwaIslandScene scene;
+
+  @override
+  Widget build(BuildContext context) {
+    return SwitchListTile.adaptive(
+      key: ValueKey('visual_$option'),
+      dense: true,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+      title: Text(label, style: const TextStyle(fontWeight: FontWeight.w800)),
+      subtitle: Text(description, style: const TextStyle(fontSize: 10)),
+      value: value,
+      onChanged: (enabled) => scene.setVisualOption(option, enabled),
+    );
+  }
+}
+
 class _IslandHud extends StatelessWidget {
   const _IslandHud({
     required this.controller,
     required this.scene,
     required this.onReset,
+    required this.onSettings,
   });
 
   final IslandGameController controller;
   final MadogiwaIslandScene scene;
   final VoidCallback onReset;
+  final VoidCallback onSettings;
 
   @override
   Widget build(BuildContext context) {
@@ -455,6 +709,8 @@ class _IslandHud extends StatelessWidget {
             children: [
               const Expanded(child: _TitleCard()),
               const SizedBox(width: 8),
+              _ClockChip(scene: scene),
+              const SizedBox(width: 6),
               _ResourceChip(
                 icon: Icons.forest,
                 value: controller.wood,
@@ -465,6 +721,13 @@ class _IslandHud extends StatelessWidget {
                 icon: Icons.landscape,
                 value: controller.stone,
                 color: const Color(0xffc3d0d2),
+              ),
+              const SizedBox(width: 6),
+              _CameraButton(
+                key: const ValueKey('visual_settings'),
+                tooltip: 'ビジュアル設定',
+                icon: Icons.tune_rounded,
+                onPressed: onSettings,
               ),
             ],
           ),
@@ -693,6 +956,40 @@ class _ResourceChip extends StatelessWidget {
   }
 }
 
+class _ClockChip extends StatelessWidget {
+  const _ClockChip({required this.scene});
+
+  final MadogiwaIslandScene scene;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: const Color(0xdd091d24),
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 9),
+        child: Column(
+          children: [
+            Icon(
+              scene.phaseLabel == '夜'
+                  ? Icons.dark_mode_rounded
+                  : Icons.light_mode_rounded,
+              color: const Color(0xffffc36b),
+              size: 16,
+            ),
+            Text(
+              scene.clockLabel,
+              style: const TextStyle(fontSize: 9, fontWeight: FontWeight.w900),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _MessageCard extends StatelessWidget {
   const _MessageCard({required this.message});
 
@@ -862,6 +1159,13 @@ class _ToolBar extends StatelessWidget {
               icon: Icons.roofing_rounded,
               selected: controller.tool == IslandTool.roof,
               onPressed: () => scene.selectTool(IslandTool.roof),
+            ),
+            _ToolButton(
+              key: const ValueKey('tool_torch'),
+              label: '松明',
+              icon: Icons.local_fire_department_rounded,
+              selected: controller.tool == IslandTool.torch,
+              onPressed: () => scene.selectTool(IslandTool.torch),
             ),
           ],
         ),
