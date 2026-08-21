@@ -131,6 +131,69 @@ void main() {
       expect(controller.torches, contains(const GridCell(2, 2)));
       expect(controller.torches, contains(const GridCell(5, 5)));
     });
+
+    test('coal and iron require a stone pickaxe', () {
+      const coalCell = GridCell(10, 10);
+      final controller = IslandGameController();
+      controller.resources[coalCell] = IslandResource.coal;
+
+      expect(controller.actOn(coalCell).changed, isFalse);
+      expect(controller.resources[coalCell], IslandResource.coal);
+
+      controller.grantDebugResources();
+      controller.craftedRecipes.add(CraftRecipe.workbench);
+      expect(controller.craft(CraftRecipe.stonePickaxe), isTrue);
+      expect(controller.actOn(coalCell).kind, IslandActionKind.coalHarvested);
+      expect(controller.coal, greaterThan(99));
+    });
+
+    test('campaign advances from beach construction to both endings', () {
+      final controller = IslandGameController()..grantDebugResources();
+
+      controller.selectTool(IslandTool.floor);
+      for (final cell in IslandGameController.buildZone) {
+        controller.actOn(cell);
+      }
+      controller.selectTool(IslandTool.wall);
+      for (final cell in IslandGameController.buildZone) {
+        controller.actOn(cell);
+      }
+      controller.selectTool(IslandTool.roof);
+      controller.actOn(IslandGameController.buildZone.first);
+      expect(controller.chapter, GameChapter.beach);
+
+      expect(controller.craft(CraftRecipe.campfire), isTrue);
+      expect(controller.craft(CraftRecipe.workbench), isTrue);
+      expect(controller.chapter, GameChapter.forest);
+      expect(controller.explorationLimit, 38);
+
+      expect(controller.craft(CraftRecipe.stoneAxe), isTrue);
+      expect(controller.craft(CraftRecipe.stonePickaxe), isTrue);
+      expect(controller.craft(CraftRecipe.bridgeKit), isTrue);
+      controller.reuniteMember('yametaro', 'やめ太郎');
+      expect(controller.completeLandmark('radio_tower'), isTrue);
+      expect(controller.chapter, GameChapter.quarry);
+
+      controller.reuniteMember('yumemin', 'ゆめみん');
+      expect(controller.craft(CraftRecipe.ironPickaxe), isTrue);
+      expect(controller.craft(CraftRecipe.forge), isTrue);
+      expect(controller.completeLandmark('office_wreck'), isTrue);
+      expect(controller.chapter, GameChapter.marsh);
+
+      expect(controller.craft(CraftRecipe.fogGear), isTrue);
+      controller.reuniteMember('takosan', 'タコさん');
+      expect(controller.completeLandmark('octopus_shrine'), isTrue);
+      expect(controller.chapter, GameChapter.summit);
+      expect(controller.completeLandmark('summit_relay'), isTrue);
+      expect(controller.endingAvailable, isTrue);
+
+      controller.chooseEnding(EndingChoice.rescue);
+      expect(controller.endingChoice, EndingChoice.rescue);
+      controller.chooseEnding(EndingChoice.stay);
+      expect(controller.campaignComplete, isTrue);
+      expect(controller.chapter, GameChapter.complete);
+      expect(controller.chapterObjective, contains('発展'));
+    });
   });
 
   group('256x256 chunk world', () {
@@ -183,6 +246,25 @@ void main() {
         ),
         isFalse,
       );
+    });
+
+    test('campaign trails remain jumpable from camp to every landmark', () {
+      const destinations = [(-38, -30), (64, -48), (55, 76), (-30, 107)];
+      for (final destination in destinations) {
+        var previousHeight = 0;
+        for (var step = 1; step <= 160; step++) {
+          final t = step / 160;
+          final x = (destination.$1 * t).round();
+          final z = (destination.$2 * t).round();
+          final height = IslandWorld.surfaceHeight(x, z);
+          expect(
+            (height - previousHeight).abs(),
+            lessThanOrEqualTo(1),
+            reason: 'trail to $destination failed at $x,$z',
+          );
+          previousHeight = height;
+        }
+      }
     });
 
     test('one chunk is batched into an indexed vertex-colored mesh', () {

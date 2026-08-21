@@ -32,7 +32,6 @@ class MadogiwaIslandScene extends ChangeNotifier {
 
   static const _interactionReach = 7.25;
   static const _jumpDuration = 0.52;
-  static const explorationRadius = 10;
   static const landmarks = <IslandLandmark>[
     IslandLandmark(
       id: 'radio_tower',
@@ -43,14 +42,20 @@ class MadogiwaIslandScene extends ChangeNotifier {
     IslandLandmark(
       id: 'office_wreck',
       label: '漂着した会議室',
-      cell: GridCell(42, -38),
+      cell: GridCell(64, -48),
       memberId: 'yumemin',
     ),
     IslandLandmark(
       id: 'octopus_shrine',
       label: 'タコ石の門',
-      cell: GridCell(30, 53),
+      cell: GridCell(55, 76),
       memberId: 'takosan',
+    ),
+    IslandLandmark(
+      id: 'summit_relay',
+      label: '山頂の社内遺跡',
+      cell: GridCell(-30, 107),
+      memberId: 'all',
     ),
   ];
 
@@ -102,6 +107,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
   int _lastExploredZ = 1 << 30;
   int _exploredCellCount = 0;
   bool _isJumping = false;
+  bool _signalBoundaryBlocked = false;
   double _jumpElapsed = 0;
   double _jumpStartSurfaceY = 0;
   double _jumpLandingSurfaceY = 0;
@@ -133,6 +139,10 @@ class MadogiwaIslandScene extends ChangeNotifier {
   double get cameraDistance => _distance;
   int get reunitedCount =>
       _workers.where((worker) => !worker.isPlayer && worker.reunited).length;
+  int get explorationRadius =>
+      10 +
+      controller.signalLevel * 2 +
+      (controller.reunitedMembers.contains('yametaro') ? 4 : 0);
   int get exploredCellCount => _exploredCellCount;
   String get clockLabel => clockLabelForTime(timeOfDay);
   String get phaseLabel => phaseLabelForTime(timeOfDay);
@@ -147,6 +157,15 @@ class MadogiwaIslandScene extends ChangeNotifier {
       .map((worker) => worker.displayName)
       .toList(growable: false);
 
+  IslandLandmark? get nearbyLandmark {
+    for (final landmark in landmarks) {
+      final dx = landmark.cell.x - _playerPosition.x;
+      final dz = landmark.cell.z - _playerPosition.z;
+      if (dx * dx + dz * dz <= 49) return landmark;
+    }
+    return null;
+  }
+
   bool isExplored(int x, int z) {
     if (!IslandWorld.containsCell(x, z)) return false;
     return _explored[_explorationIndex(x, z)] != 0;
@@ -154,6 +173,9 @@ class MadogiwaIslandScene extends ChangeNotifier {
 
   bool isMemberReunited(String memberId) =>
       _workers.any((worker) => worker.id == memberId && worker.reunited);
+
+  bool isLandmarkComplete(String id) =>
+      controller.completedLandmarks.contains(id);
 
   Future<void> load() async {
     final stopwatch = Stopwatch()..start();
@@ -391,6 +413,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
         'radio_tower' => _buildRadioTower(),
         'office_wreck' => _buildOfficeWreck(),
         'octopus_shrine' => _buildOctopusShrine(),
+        'summit_relay' => _buildSummitRelay(),
         _ => Node(name: landmark.label),
       };
       root
@@ -413,6 +436,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
       'radio_tower' => (vm.Vector3(1.0, 0.08, 0.04), 28.0, 14.0, 6.05),
       'office_wreck' => (vm.Vector3(0.25, 0.7, 1.0), 16.0, 9.0, 2.15),
       'octopus_shrine' => (vm.Vector3(0.85, 0.12, 1.0), 24.0, 12.0, 4.05),
+      'summit_relay' => (vm.Vector3(0.2, 1.0, 0.65), 32.0, 16.0, 5.4),
       _ => (vm.Vector3(1, 1, 1), 0.0, 1.0, 1.0),
     };
     final light = PointLight(
@@ -502,6 +526,29 @@ class MadogiwaIslandScene extends ChangeNotifier {
             vm.Vector3(0, 0, 1),
             (index - 1.5) * 0.18,
           ),
+    ]);
+    return root;
+  }
+
+  Node _buildSummitRelay() {
+    final concrete = _pbr(0.23, 0.27, 0.29, roughness: 0.9, metallic: 0.18);
+    final metal = _pbr(0.12, 0.16, 0.18, roughness: 0.42, metallic: 0.82);
+    final screen = _unlit(0.15, 2.4, 1.2);
+    final root = Node();
+    root.addAll([
+      Node(mesh: Mesh(CuboidGeometry(vm.Vector3(6.4, 0.42, 5.4)), concrete))
+        ..position = vm.Vector3(0, 0.21, 0),
+      for (final x in [-2.6, 2.6])
+        Node(mesh: Mesh(CuboidGeometry(vm.Vector3(0.26, 5.2, 0.26)), metal))
+          ..position = vm.Vector3(x, 2.8, 0),
+      Node(mesh: Mesh(CuboidGeometry(vm.Vector3(5.6, 0.24, 0.24)), metal))
+        ..position = vm.Vector3(0, 5.25, 0),
+      Node(mesh: Mesh(CuboidGeometry(vm.Vector3(2.2, 1.45, 0.35)), metal))
+        ..position = vm.Vector3(0, 1.55, -0.6),
+      Node(mesh: Mesh(CuboidGeometry(vm.Vector3(1.72, 0.92, 0.06)), screen))
+        ..position = vm.Vector3(0, 1.62, -0.81),
+      Node(mesh: Mesh(CuboidGeometry(vm.Vector3(0.3, 0.3, 0.3)), screen))
+        ..position = vm.Vector3(0, 5.42, 0),
     ]);
     return root;
   }
@@ -607,6 +654,30 @@ class MadogiwaIslandScene extends ChangeNotifier {
       final node = switch (entry.value) {
         IslandResource.tree => _buildTree(entry.key),
         IslandResource.rock => _buildRock(entry.key),
+        IslandResource.berry => _buildPlant(
+          entry.key,
+          name: 'Berry',
+          leafColor: (0.16, 0.48, 0.18),
+          fruitColor: (0.85, 0.08, 0.12),
+        ),
+        IslandResource.coal => _buildOre(
+          entry.key,
+          name: 'Coal',
+          oreColor: (0.055, 0.065, 0.075),
+          metallic: 0.18,
+        ),
+        IslandResource.iron => _buildOre(
+          entry.key,
+          name: 'Iron',
+          oreColor: (0.72, 0.32, 0.16),
+          metallic: 0.62,
+        ),
+        IslandResource.herb => _buildPlant(
+          entry.key,
+          name: 'Herb',
+          leafColor: (0.16, 0.72, 0.48),
+          fruitColor: (0.72, 0.9, 0.35),
+        ),
       };
       node.position = vm.Vector3(
         entry.key.x.toDouble(),
@@ -662,6 +733,55 @@ class MadogiwaIslandScene extends ChangeNotifier {
     return root;
   }
 
+  Node _buildOre(
+    GridCell cell, {
+    required String name,
+    required (double, double, double) oreColor,
+    required double metallic,
+  }) {
+    final stone = _pbr(0.27, 0.31, 0.33, roughness: 0.84, metallic: 0.1);
+    final ore = _pbr(
+      oreColor.$1,
+      oreColor.$2,
+      oreColor.$3,
+      roughness: 0.48,
+      metallic: metallic,
+    );
+    final root = Node(name: '${name}_${cell.x}_${cell.z}');
+    root.addAll([
+      Node(mesh: Mesh(CuboidGeometry(vm.Vector3(0.82, 0.68, 0.76)), stone))
+        ..position = vm.Vector3(0, 0.34, 0),
+      for (final offset in const [
+        (-0.22, 0.51, -0.39),
+        (0.24, 0.3, -0.4),
+        (0.35, 0.6, 0.02),
+      ])
+        Node(mesh: Mesh(CuboidGeometry(vm.Vector3(0.19, 0.19, 0.08)), ore))
+          ..position = vm.Vector3(offset.$1, offset.$2, offset.$3),
+    ]);
+    return root;
+  }
+
+  Node _buildPlant(
+    GridCell cell, {
+    required String name,
+    required (double, double, double) leafColor,
+    required (double, double, double) fruitColor,
+  }) {
+    final leaf = _pbr(leafColor.$1, leafColor.$2, leafColor.$3, roughness: 0.9);
+    final fruit = _unlit(fruitColor.$1, fruitColor.$2, fruitColor.$3);
+    final root = Node(name: '${name}_${cell.x}_${cell.z}');
+    root.addAll([
+      for (final x in [-0.28, 0.0, 0.28])
+        Node(mesh: Mesh(CuboidGeometry(vm.Vector3(0.24, 0.66, 0.24)), leaf))
+          ..position = vm.Vector3(x, 0.33, x.abs() * 0.35),
+      for (final offset in const [(-0.24, 0.58), (0.05, 0.72), (0.3, 0.52)])
+        Node(mesh: Mesh(CuboidGeometry(vm.Vector3(0.16, 0.16, 0.16)), fruit))
+          ..position = vm.Vector3(offset.$1, offset.$2, -0.12),
+    ]);
+    return root;
+  }
+
   Future<void> _loadParty() async {
     const specs = [
       _PartySpec(
@@ -680,13 +800,13 @@ class MadogiwaIslandScene extends ChangeNotifier {
       _PartySpec(
         id: 'yumemin',
         name: 'ゆめみん',
-        cell: GridCell(42, -34),
+        cell: GridCell(64, -44),
         followOffset: (1.35, 1.35),
       ),
       _PartySpec(
         id: 'takosan',
         name: 'タコさん',
-        cell: GridCell(30, 49),
+        cell: GridCell(55, 72),
         followOffset: (0.0, 2.35),
       ),
     ];
@@ -759,6 +879,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
     _selection.visible = false;
     _rebuildVisibleResources(_desiredChunks());
     _playerPosition = vm.Vector3(0, IslandWorld.surfaceY(0, 3), 3);
+    _signalBoundaryBlocked = false;
     _cancelJump();
     _playerChunk = const ChunkCoordinate(0, 0);
     _explored.fillRange(0, _explored.length, 0);
@@ -784,6 +905,200 @@ class MadogiwaIslandScene extends ChangeNotifier {
   }
 
   void selectTool(IslandTool tool) => controller.selectTool(tool);
+
+  bool craftRecipe(CraftRecipe recipe) {
+    final crafted = controller.craft(recipe);
+    if (!crafted) return false;
+    _addCraftVisual(recipe);
+    _revealAroundPlayer(force: true);
+    notifyListeners();
+    return true;
+  }
+
+  bool performNearbyObjective() {
+    final landmark = nearbyLandmark;
+    if (landmark == null) {
+      controller.showMessage('中継設備の近くまで移動しよう');
+      return false;
+    }
+    final completed = controller.completeLandmark(landmark.id);
+    if (!completed) return false;
+    _addActivatedRelay(landmark);
+    _revealAroundPlayer(force: true);
+    notifyListeners();
+    return true;
+  }
+
+  void chooseEnding(EndingChoice choice) => controller.chooseEnding(choice);
+
+  bool automationAdvanceChapter() {
+    controller.grantDebugResources();
+    switch (controller.chapter) {
+      case GameChapter.beach:
+        controller.selectTool(IslandTool.floor);
+        for (final cell in IslandGameController.buildZone) {
+          _apply(controller.actOn(cell));
+        }
+        controller.selectTool(IslandTool.wall);
+        for (final cell in IslandGameController.buildZone) {
+          _apply(controller.actOn(cell));
+        }
+        controller.selectTool(IslandTool.roof);
+        _apply(controller.actOn(IslandGameController.buildZone.first));
+        craftRecipe(CraftRecipe.campfire);
+        craftRecipe(CraftRecipe.workbench);
+      case GameChapter.forest:
+        craftRecipe(CraftRecipe.stoneAxe);
+        craftRecipe(CraftRecipe.stonePickaxe);
+        craftRecipe(CraftRecipe.bridgeKit);
+        _automationReunite('yametaro');
+        if (!controller.completeLandmark('radio_tower')) return false;
+        _addActivatedRelay(landmarks.first);
+      case GameChapter.quarry:
+        _automationReunite('yumemin');
+        craftRecipe(CraftRecipe.ironPickaxe);
+        craftRecipe(CraftRecipe.forge);
+        if (!controller.completeLandmark('office_wreck')) return false;
+        _addActivatedRelay(landmarks[1]);
+      case GameChapter.marsh:
+        craftRecipe(CraftRecipe.fogGear);
+        _automationReunite('takosan');
+        if (!controller.completeLandmark('octopus_shrine')) return false;
+        _addActivatedRelay(landmarks[2]);
+      case GameChapter.summit:
+        if (!controller.completeLandmark('summit_relay')) return false;
+        _addActivatedRelay(landmarks[3]);
+      case GameChapter.complete:
+        return false;
+    }
+    _revealAroundPlayer(force: true);
+    notifyListeners();
+    return true;
+  }
+
+  void _automationReunite(String id) {
+    final worker = _workers.firstWhere((worker) => worker.id == id);
+    worker
+      ..reunited = true
+      ..root.visible = true;
+    controller.reuniteMember(worker.id, worker.displayName);
+  }
+
+  void _addCraftVisual(CraftRecipe recipe) {
+    switch (recipe) {
+      case CraftRecipe.campfire:
+        final cell = const GridCell(4, 1);
+        _structureRoot.add(
+          Node(name: 'Campfire')
+            ..position = vm.Vector3(
+              cell.x.toDouble(),
+              IslandWorld.surfaceY(cell.x, cell.z),
+              cell.z.toDouble(),
+            )
+            ..addAll([
+              for (final angle in [0.0, math.pi / 2])
+                Node(
+                    mesh: Mesh(
+                      CuboidGeometry(vm.Vector3(0.72, 0.16, 0.16)),
+                      _pbr(0.32, 0.12, 0.03, roughness: 0.88),
+                    ),
+                  )
+                  ..position = vm.Vector3(0, 0.09, 0)
+                  ..rotation = vm.Quaternion.axisAngle(
+                    vm.Vector3(0, 1, 0),
+                    angle,
+                  ),
+              Node(
+                mesh: Mesh(
+                  CuboidGeometry(vm.Vector3(0.34, 0.48, 0.34)),
+                  _unlit(2.8, 0.48, 0.05),
+                ),
+              )..position = vm.Vector3(0, 0.42, 0),
+            ]),
+        );
+      case CraftRecipe.workbench:
+        final cell = const GridCell(-4, 1);
+        _structureRoot.add(
+          Node(
+              name: 'Workbench',
+              mesh: Mesh(
+                CuboidGeometry(vm.Vector3(1.1, 0.86, 0.8)),
+                _pbr(0.5, 0.25, 0.07, roughness: 0.76),
+              ),
+            )
+            ..position = vm.Vector3(
+              cell.x.toDouble(),
+              IslandWorld.surfaceY(cell.x, cell.z) + 0.43,
+              cell.z.toDouble(),
+            ),
+        );
+      case CraftRecipe.bridgeKit:
+        for (var index = 0; index < 9; index++) {
+          final cell = GridCell(-22 - index, -16 - index ~/ 2);
+          _structureRoot.add(
+            Node(
+                name: 'Bridge_$index',
+                mesh: Mesh(
+                  CuboidGeometry(vm.Vector3(1.05, 0.22, 1.05)),
+                  _pbr(0.55, 0.29, 0.08, roughness: 0.8),
+                ),
+              )
+              ..position = vm.Vector3(
+                cell.x.toDouble(),
+                IslandWorld.surfaceY(cell.x, cell.z) + 0.16,
+                cell.z.toDouble(),
+              ),
+          );
+        }
+      case CraftRecipe.forge:
+        final cell = const GridCell(5, -2);
+        _structureRoot.add(
+          Node(name: 'Forge')
+            ..position = vm.Vector3(
+              cell.x.toDouble(),
+              IslandWorld.surfaceY(cell.x, cell.z),
+              cell.z.toDouble(),
+            )
+            ..addAll([
+              Node(
+                mesh: Mesh(
+                  CuboidGeometry(vm.Vector3(1.2, 1.25, 1.0)),
+                  _pbr(0.22, 0.24, 0.25, roughness: 0.82, metallic: 0.35),
+                ),
+              )..position = vm.Vector3(0, 0.62, 0),
+              Node(
+                mesh: Mesh(
+                  CuboidGeometry(vm.Vector3(0.62, 0.42, 0.08)),
+                  _unlit(2.4, 0.3, 0.035),
+                ),
+              )..position = vm.Vector3(0, 0.48, -0.54),
+            ]),
+        );
+      case CraftRecipe.stoneAxe:
+      case CraftRecipe.stonePickaxe:
+      case CraftRecipe.ironPickaxe:
+      case CraftRecipe.fogGear:
+        break;
+    }
+  }
+
+  void _addActivatedRelay(IslandLandmark landmark) {
+    final surface = IslandWorld.surfaceY(landmark.cell.x, landmark.cell.z);
+    _structureRoot.add(
+      Node(
+          name: 'Activated_${landmark.id}',
+          mesh: Mesh(
+            CuboidGeometry(vm.Vector3(0.48, 2.6, 0.48)),
+            _unlit(0.18, 2.8, 1.25),
+          ),
+        )
+        ..position = vm.Vector3(
+          landmark.cell.x.toDouble(),
+          surface + 1.3,
+          landmark.cell.z.toDouble(),
+        ),
+    );
+  }
 
   void setMoveInput({required double right, required double forward}) {
     _moveRight = right.clamp(-1.0, 1.0);
@@ -929,7 +1244,11 @@ class MadogiwaIslandScene extends ChangeNotifier {
       ..scatter = 0.7;
     scene.fog
       ..enabled = dynamicFogEnabled
-      ..density = 0.018 + (1 - daylight) * 0.018 + twilight * 0.008
+      ..density =
+          0.018 +
+          (1 - daylight) * 0.018 +
+          twilight * 0.008 +
+          (controller.chapter == GameChapter.marsh ? 0.014 : 0)
       ..skyColorInfluence = 0.62
       ..height = 1.15
       ..heightFalloff = 0.075
@@ -1066,6 +1385,16 @@ class MadogiwaIslandScene extends ChangeNotifier {
       IslandWorld.chunkForCoordinate(_playerPosition.x),
       IslandWorld.chunkForCoordinate(_playerPosition.z),
     );
+    for (final worker in _workers.where((worker) => !worker.isPlayer)) {
+      final dx = worker.home.x - _playerPosition.x;
+      final dz = worker.home.z - _playerPosition.z;
+      if (dx * dx + dz * dz <= 64) {
+        worker
+          ..reunited = true
+          ..root.visible = true;
+        controller.reuniteMember(worker.id, worker.displayName);
+      }
+    }
     _revealAroundPlayer(force: true);
     await _refreshVisibleChunks(force: true);
     notifyListeners();
@@ -1079,7 +1408,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
         ? _findResourceTarget(ray)
         : null;
     if (controller.tool == IslandTool.gather && cell == null) {
-      controller.showMessage('近くの木か岩を直接タップしよう（届く範囲は7マス）');
+      controller.showMessage('近くの木・岩・鉱石・植物を直接タップしよう（7マス以内）');
       return;
     }
     for (var distance = 0.2; distance <= 70; distance += 0.16) {
@@ -1127,7 +1456,13 @@ class MadogiwaIslandScene extends ChangeNotifier {
       final center = vm.Vector3(
         cell.x.toDouble(),
         IslandWorld.surfaceY(cell.x, cell.z) +
-            (entry.value == IslandResource.tree ? 1.1 : 0.38),
+            switch (entry.value) {
+              IslandResource.tree => 1.1,
+              IslandResource.rock ||
+              IslandResource.coal ||
+              IslandResource.iron => 0.38,
+              IslandResource.berry || IslandResource.herb => 0.48,
+            },
         cell.z.toDouble(),
       );
       final fromOrigin = center - ray.origin;
@@ -1135,7 +1470,11 @@ class MadogiwaIslandScene extends ChangeNotifier {
       if (depth <= 0) continue;
       final closestPoint = ray.origin + direction.scaled(depth);
       final distance = (center - closestPoint).length;
-      final hitRadius = entry.value == IslandResource.tree ? 1.25 : 0.78;
+      final hitRadius = switch (entry.value) {
+        IslandResource.tree => 1.25,
+        IslandResource.berry || IslandResource.herb => 0.72,
+        _ => 0.78,
+      };
       if (distance <= hitRadius && distance < bestDistance) {
         target = cell;
         bestDistance = distance;
@@ -1195,6 +1534,10 @@ class MadogiwaIslandScene extends ChangeNotifier {
     switch (result.kind) {
       case IslandActionKind.treeHarvested:
       case IslandActionKind.rockHarvested:
+      case IslandActionKind.berryHarvested:
+      case IslandActionKind.coalHarvested:
+      case IslandActionKind.ironHarvested:
+      case IslandActionKind.herbHarvested:
         final node = _resourceNodes.remove(result.cell);
         if (node != null) _resourceRoot.remove(node);
         break;
@@ -1317,15 +1660,25 @@ class MadogiwaIslandScene extends ChangeNotifier {
           worker
             ..reunited = true
             ..root.visible = true;
-          controller.showMessage('${worker.displayName}と再会！ これから一緒に行動する');
+          controller.reuniteMember(worker.id, worker.displayName);
+          _revealAroundPlayer(force: true);
         }
       }
       final destination = worker.reunited
-          ? vm.Vector3(
-              _playerPosition.x + worker.followOffset.$1,
-              _playerPosition.y,
-              _playerPosition.z + worker.followOffset.$2,
-            )
+          ? controller.companionMode(worker.id) == CompanionMode.follow
+                ? vm.Vector3(
+                    _playerPosition.x + worker.followOffset.$1,
+                    _playerPosition.y,
+                    _playerPosition.z + worker.followOffset.$2,
+                  )
+                : vm.Vector3(
+                    worker.followOffset.$1 * 1.8,
+                    IslandWorld.surfaceY(
+                      (worker.followOffset.$1 * 1.8).round(),
+                      (worker.followOffset.$2 * 1.8).round(),
+                    ),
+                    worker.followOffset.$2 * 1.8,
+                  )
           : worker.home;
       final position = worker.root.position;
       final previousX = position.x;
@@ -1394,22 +1747,37 @@ class MadogiwaIslandScene extends ChangeNotifier {
         nextX.round(),
         _playerPosition.z.round(),
       );
-      if (canTraverseHeight(
-        currentHeight: currentHeight.toDouble(),
-        targetHeight: xHeight.toDouble(),
-      )) {
+      final xInsideSignal =
+          math.sqrt(nextX * nextX + _playerPosition.z * _playerPosition.z) <=
+          controller.explorationLimit;
+      if (xInsideSignal &&
+          canTraverseHeight(
+            currentHeight: currentHeight.toDouble(),
+            targetHeight: xHeight.toDouble(),
+          )) {
         _playerPosition.x = nextX;
       }
       final zHeight = IslandWorld.surfaceHeight(
         _playerPosition.x.round(),
         nextZ.round(),
       );
-      if (canTraverseHeight(
-        currentHeight: currentHeight.toDouble(),
-        targetHeight: zHeight.toDouble(),
-      )) {
+      final zInsideSignal =
+          math.sqrt(_playerPosition.x * _playerPosition.x + nextZ * nextZ) <=
+          controller.explorationLimit;
+      if (zInsideSignal &&
+          canTraverseHeight(
+            currentHeight: currentHeight.toDouble(),
+            targetHeight: zHeight.toDouble(),
+          )) {
         _playerPosition.z = nextZ;
       }
+      final blockedBySignal = !xInsideSignal || !zInsideSignal;
+      if (blockedBySignal && !_signalBoundaryBlocked) {
+        controller.showMessage(
+          '圏外の霧が濃すぎる。現在の探索半径は${controller.explorationLimit.round()}マス',
+        );
+      }
+      _signalBoundaryBlocked = blockedBySignal;
       _playerPosition.y = IslandWorld.surfaceY(
         _playerPosition.x.round(),
         _playerPosition.z.round(),

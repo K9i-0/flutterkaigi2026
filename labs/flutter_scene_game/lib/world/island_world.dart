@@ -28,6 +28,9 @@ class IslandWorld {
     final distance = math.sqrt((x * x + z * z).toDouble());
     if (distance > islandRadius) return -3;
     if (distance < 9) return 0;
+    if (isCampaignTrail(x, z)) {
+      return ((distance - 9) / 18).floor().clamp(0, 6);
+    }
 
     final broad =
         math.sin(x * 0.061) * 1.45 +
@@ -50,15 +53,54 @@ class IslandWorld {
     return surfaceHeight(x, z) <= 1 || distance > islandRadius - 13;
   }
 
-  /// Returns 1 for tree, 2 for rock, and 0 for no procedural resource.
+  /// Returns 1 tree, 2 rock, 3 berry, 4 coal, 5 iron, 6 herb.
   static int resourceCode(int x, int z) {
-    if (!isLand(x, z) || x.abs() < 7 && z.abs() < 7) return 0;
+    if (!isLand(x, z) || x.abs() < 7 && z.abs() < 7 || isCampaignTrail(x, z)) {
+      return 0;
+    }
     final slope = _maxNeighborHeightDelta(x, z);
     if (slope > 1) return 0;
     final roll = _hash(x, z, 2718).abs();
+    final distance = math.sqrt((x * x + z * z).toDouble());
+    if (distance > 70 && roll % 173 == 0) return 6;
+    if (distance > 55 && roll % 197 == 0) return 5;
+    if (distance > 32 && roll % 211 == 0) return 4;
+    if (roll % 181 == 0) return 3;
     if (!isSand(x, z) && roll % 97 == 0) return 1;
     if (roll % 241 == 0) return 2;
     return 0;
+  }
+
+  /// Concentric campaign biomes used by exploration and the minimap.
+  static int biomeCode(int x, int z) {
+    final distance = math.sqrt((x * x + z * z).toDouble());
+    if (distance < 26 || isSand(x, z)) return 0;
+    if (distance < 64) return 1;
+    if (distance < 86) return 2;
+    if (distance < 104) return 3;
+    return 4;
+  }
+
+  /// Guarantees a narrow, jumpable route from camp to every campaign site.
+  static bool isCampaignTrail(int x, int z) {
+    const destinations = [
+      (-38.0, -30.0),
+      (64.0, -48.0),
+      (55.0, 76.0),
+      (-30.0, 107.0),
+    ];
+    for (final destination in destinations) {
+      final lengthSquared =
+          destination.$1 * destination.$1 + destination.$2 * destination.$2;
+      final t = ((x * destination.$1 + z * destination.$2) / lengthSquared)
+          .clamp(0.0, 1.0);
+      final closestX = destination.$1 * t;
+      final closestZ = destination.$2 * t;
+      final dx = x - closestX;
+      final dz = z - closestZ;
+      if (dx * dx + dz * dz <= 2.1 * 2.1) return true;
+    }
+    return false;
   }
 
   static int _maxNeighborHeightDelta(int x, int z) {

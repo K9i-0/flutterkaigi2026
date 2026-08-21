@@ -13,8 +13,8 @@ void registerIslandMarionetteExtensions() {
   registerMarionetteExtension(
     name: 'madogiwa.inspectIsland',
     description:
-        'Inspect player, chunk, exploration, reunion, resource, build, and '
-        'landmark state in the active island game.',
+        'Inspect campaign, player, chunk, exploration, reunion, inventory, '
+        'crafting, build, visual, landmark, and ending state.',
     callback: (_) async {
       final controller = IslandAutomationState.controller;
       final scene = IslandAutomationState.scene;
@@ -37,10 +37,27 @@ void registerIslandMarionetteExtensions() {
         'activeTorchLights': scene.activeTorchLightCount,
         'reunitedCount': scene.reunitedCount,
         'reunitedMembers': scene.reunitedMemberNames,
+        'companionModes': {
+          for (final member in controller.reunitedMembers)
+            member: controller.companionMode(member).name,
+        },
         'heldDirections': IslandAutomationState.heldDirections.toList(),
         'tool': controller.tool.name,
-        'wood': controller.wood,
-        'stone': controller.stone,
+        'chapter': controller.chapter.name,
+        'chapterLabel': controller.chapter.label,
+        'objective': controller.chapterObjective,
+        'signalLevel': controller.signalLevel,
+        'explorationLimit': controller.explorationLimit,
+        'inventory': {
+          for (final item in IslandItem.values)
+            item.name: controller.itemCount(item),
+        },
+        'craftedRecipes': controller.craftedRecipes
+            .map((recipe) => recipe.name)
+            .toList(),
+        'completedLandmarks': controller.completedLandmarks.toList(),
+        'endingAvailable': controller.endingAvailable,
+        'ending': controller.endingChoice.name,
         'remainingResources': controller.resources.length,
         'structures': controller.structures.length,
         'homeComplete': controller.homeComplete,
@@ -54,6 +71,7 @@ void registerIslandMarionetteExtensions() {
               'z': landmark.cell.z,
               'discovered': scene.isExplored(landmark.cell.x, landmark.cell.z),
               'memberReunited': scene.isMemberReunited(landmark.memberId),
+              'completed': scene.isLandmarkComplete(landmark.id),
             },
         ],
       });
@@ -177,7 +195,7 @@ void registerIslandMarionetteExtensions() {
     name: 'madogiwa.openScenario',
     description:
         'Teleport to a deterministic visual test location. '
-        'Available ids: camp, radio, office, shrine.',
+        'Available ids: camp, radio, office, shrine, summit.',
     callback: (params) async {
       final id = params['id'];
       final scene = IslandAutomationState.scene;
@@ -189,8 +207,9 @@ void registerIslandMarionetteExtensions() {
       final target = switch (id) {
         'camp' => (0, 3),
         'radio' => (-38, -35),
-        'office' => (42, -42),
-        'shrine' => (30, 57),
+        'office' => (64, -52),
+        'shrine' => (55, 80),
+        'summit' => (-30, 111),
         _ => null,
       };
       if (target == null) {
@@ -228,6 +247,104 @@ void registerIslandMarionetteExtensions() {
       }
       controller.selectTool(tool);
       return MarionetteExtensionResult.success({'tool': tool.name});
+    },
+  );
+
+  registerMarionetteExtension(
+    name: 'madogiwa.grantResources',
+    description: 'Grant debug campaign resources. Optional amount, default 99.',
+    callback: (params) async {
+      final controller = IslandAutomationState.controller;
+      if (controller == null) {
+        return MarionetteExtensionResult.error(1, 'Island is not ready.');
+      }
+      final amount = int.tryParse(params['amount'] ?? '') ?? 99;
+      controller.grantDebugResources(amount.clamp(1, 999));
+      return MarionetteExtensionResult.success({'amount': amount});
+    },
+  );
+
+  registerMarionetteExtension(
+    name: 'madogiwa.craftRecipe',
+    description: 'Craft a campaign recipe. Param: recipe.',
+    callback: (params) async {
+      final scene = IslandAutomationState.scene;
+      final recipeName = params['recipe'];
+      if (scene == null || recipeName == null) {
+        return MarionetteExtensionResult.invalidParams('Missing recipe.');
+      }
+      final recipe = CraftRecipe.values
+          .where((item) => item.name == recipeName)
+          .firstOrNull;
+      if (recipe == null) {
+        return MarionetteExtensionResult.invalidParams(
+          'Unknown recipe: $recipeName.',
+        );
+      }
+      final crafted = scene.craftRecipe(recipe);
+      return MarionetteExtensionResult.success({
+        'recipe': recipe.name,
+        'crafted': crafted,
+      });
+    },
+  );
+
+  registerMarionetteExtension(
+    name: 'madogiwa.performObjective',
+    description: 'Activate the campaign landmark near the player.',
+    callback: (_) async {
+      final scene = IslandAutomationState.scene;
+      if (scene == null) {
+        return MarionetteExtensionResult.error(1, 'Island is not ready.');
+      }
+      final landmark = scene.nearbyLandmark;
+      final completed = scene.performNearbyObjective();
+      return MarionetteExtensionResult.success({
+        'landmark': landmark?.id,
+        'completed': completed,
+      });
+    },
+  );
+
+  registerMarionetteExtension(
+    name: 'madogiwa.chooseEnding',
+    description: 'Choose rescue or stay after completing the summit relay.',
+    callback: (params) async {
+      final controller = IslandAutomationState.controller;
+      final choice = switch (params['choice']) {
+        'rescue' => EndingChoice.rescue,
+        'stay' => EndingChoice.stay,
+        _ => null,
+      };
+      if (controller == null || choice == null) {
+        return MarionetteExtensionResult.invalidParams(
+          'Required: choice=rescue/stay.',
+        );
+      }
+      controller.chooseEnding(choice);
+      return MarionetteExtensionResult.success({
+        'ending': controller.endingChoice.name,
+      });
+    },
+  );
+
+  registerMarionetteExtension(
+    name: 'madogiwa.advanceCampaign',
+    description: 'Complete the current chapter with deterministic debug state.',
+    callback: (_) async {
+      final scene = IslandAutomationState.scene;
+      final controller = IslandAutomationState.controller;
+      if (scene == null || controller == null) {
+        return MarionetteExtensionResult.error(1, 'Island is not ready.');
+      }
+      final from = controller.chapter.name;
+      final advanced = scene.automationAdvanceChapter();
+      return MarionetteExtensionResult.success({
+        'from': from,
+        'to': controller.chapter.name,
+        'advanced': advanced,
+        'endingAvailable': controller.endingAvailable,
+      });
     },
   );
 
