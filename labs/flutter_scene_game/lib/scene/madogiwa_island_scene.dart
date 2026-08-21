@@ -7,11 +7,50 @@ import 'package:flutter_scene/scene.dart';
 import 'package:vector_math/vector_math.dart' as vm;
 
 import '../game/island_game_controller.dart';
+import '../game/movement_math.dart';
 import '../world/chunk_mesh_builder.dart';
 import '../world/island_world.dart';
 
+@immutable
+class IslandLandmark {
+  const IslandLandmark({
+    required this.id,
+    required this.label,
+    required this.cell,
+    required this.memberId,
+  });
+
+  final String id;
+  final String label;
+  final GridCell cell;
+  final String memberId;
+}
+
 class MadogiwaIslandScene extends ChangeNotifier {
   MadogiwaIslandScene({required this.controller});
+
+  static const _interactionReach = 7.25;
+  static const explorationRadius = 10;
+  static const landmarks = <IslandLandmark>[
+    IslandLandmark(
+      id: 'radio_tower',
+      label: '壊れた無線塔',
+      cell: GridCell(-38, -30),
+      memberId: 'yametaro',
+    ),
+    IslandLandmark(
+      id: 'office_wreck',
+      label: '漂着した会議室',
+      cell: GridCell(42, -38),
+      memberId: 'yumemin',
+    ),
+    IslandLandmark(
+      id: 'octopus_shrine',
+      label: 'タコ石の門',
+      cell: GridCell(30, 53),
+      memberId: 'takosan',
+    ),
+  ];
 
   final IslandGameController controller;
   final Scene scene = Scene();
@@ -23,8 +62,12 @@ class MadogiwaIslandScene extends ChangeNotifier {
   final Map<ChunkCoordinate, Node> _chunkNodes = {};
   final Map<ChunkCoordinate, int> _chunkQuadCounts = {};
   final Map<GridCell, Node> _resourceNodes = {};
+  final Map<String, Node> _landmarkNodes = {};
   final List<Node> _resourceAnimatedParts = [];
   final List<_Worker> _workers = [];
+  final Uint8List _explored = Uint8List(
+    IslandWorld.worldSize * IslandWorld.worldSize,
+  );
   final PhysicallyBasedMaterial _terrainMaterial = PhysicallyBasedMaterial()
     ..baseColorFactor = vm.Vector4(1, 1, 1, 1)
     ..vertexColorWeight = 1
@@ -46,6 +89,9 @@ class MadogiwaIslandScene extends ChangeNotifier {
   double _hudAccumulator = 0;
   vm.Vector3 _playerPosition = vm.Vector3(0, IslandWorld.surfaceY(0, 3), 3);
   ChunkCoordinate _playerChunk = const ChunkCoordinate(0, 0);
+  int _lastExploredX = 1 << 30;
+  int _lastExploredZ = 1 << 30;
+  int _exploredCellCount = 0;
 
   int characterMeshCount = 0;
   List<String> characterNames = const [];
@@ -60,6 +106,21 @@ class MadogiwaIslandScene extends ChangeNotifier {
   int get playerChunkX => _playerChunk.x;
   int get playerChunkZ => _playerChunk.z;
   double get cameraDistance => _distance;
+  int get reunitedCount =>
+      _workers.where((worker) => !worker.isPlayer && worker.reunited).length;
+  int get exploredCellCount => _exploredCellCount;
+  List<String> get reunitedMemberNames => _workers
+      .where((worker) => !worker.isPlayer && worker.reunited)
+      .map((worker) => worker.displayName)
+      .toList(growable: false);
+
+  bool isExplored(int x, int z) {
+    if (!IslandWorld.containsCell(x, z)) return false;
+    return _explored[_explorationIndex(x, z)] != 0;
+  }
+
+  bool isMemberReunited(String memberId) =>
+      _workers.any((worker) => worker.id == memberId && worker.reunited);
 
   Future<void> load() async {
     final stopwatch = Stopwatch()..start();
@@ -154,6 +215,110 @@ class MadogiwaIslandScene extends ChangeNotifier {
           ..visible = false
           ..raycastable = false;
     _stage.add(_selection);
+    _buildLandmarks();
+    _revealAroundPlayer(force: true);
+  }
+
+  void _buildLandmarks() {
+    for (final landmark in landmarks) {
+      controller.resources.removeWhere((cell, _) {
+        final dx = cell.x - landmark.cell.x;
+        final dz = cell.z - landmark.cell.z;
+        return dx * dx + dz * dz <= 9;
+      });
+      final root = switch (landmark.id) {
+        'radio_tower' => _buildRadioTower(),
+        'office_wreck' => _buildOfficeWreck(),
+        'octopus_shrine' => _buildOctopusShrine(),
+        _ => Node(name: landmark.label),
+      };
+      root
+        ..name = landmark.label
+        ..position = vm.Vector3(
+          landmark.cell.x.toDouble(),
+          IslandWorld.surfaceY(landmark.cell.x, landmark.cell.z),
+          landmark.cell.z.toDouble(),
+        )
+        ..visible = false
+        ..raycastable = false;
+      _stage.add(root);
+      _landmarkNodes[landmark.id] = root;
+    }
+  }
+
+  Node _buildRadioTower() {
+    final rust = _pbr(0.46, 0.16, 0.07, roughness: 0.72, metallic: 0.55);
+    final signal = _unlit(2.8, 0.35, 0.08);
+    final root = Node();
+    for (final x in [-0.72, 0.72]) {
+      root.add(
+        Node(mesh: Mesh(CuboidGeometry(vm.Vector3(0.18, 5.8, 0.18)), rust))
+          ..position = vm.Vector3(x, 2.9, 0),
+      );
+    }
+    for (var level = 0; level < 5; level++) {
+      root.add(
+        Node(mesh: Mesh(CuboidGeometry(vm.Vector3(1.7, 0.13, 0.16)), rust))
+          ..position = vm.Vector3(0, 0.7 + level * 1.1, 0)
+          ..rotation = vm.Quaternion.axisAngle(
+            vm.Vector3(0, 0, 1),
+            level.isEven ? 0.45 : -0.45,
+          ),
+      );
+    }
+    root.addAll([
+      Node(mesh: Mesh(CuboidGeometry(vm.Vector3(2.3, 0.13, 0.13)), rust))
+        ..position = vm.Vector3(0, 5.5, 0),
+      Node(mesh: Mesh(CuboidGeometry(vm.Vector3(0.32, 0.32, 0.32)), signal))
+        ..position = vm.Vector3(0, 6.05, 0),
+    ]);
+    return root;
+  }
+
+  Node _buildOfficeWreck() {
+    final wall = _pbr(0.18, 0.46, 0.55, roughness: 0.8, metallic: 0.18);
+    final frame = _pbr(0.09, 0.12, 0.14, roughness: 0.55, metallic: 0.72);
+    final paper = _unlit(1.3, 1.2, 0.82);
+    final root = Node()
+      ..rotation = vm.Quaternion.axisAngle(vm.Vector3(0, 1, 0), -0.28);
+    root.addAll([
+      Node(mesh: Mesh(CuboidGeometry(vm.Vector3(5.2, 0.28, 3.2)), wall))
+        ..position = vm.Vector3(0, 0.14, 0),
+      Node(mesh: Mesh(CuboidGeometry(vm.Vector3(5.2, 2.2, 0.2)), wall))
+        ..position = vm.Vector3(0, 1.1, 1.5),
+      for (final x in [-2.4, 2.4])
+        Node(mesh: Mesh(CuboidGeometry(vm.Vector3(0.18, 2.6, 3.2)), frame))
+          ..position = vm.Vector3(x, 1.3, 0),
+      Node(mesh: Mesh(CuboidGeometry(vm.Vector3(1.9, 0.2, 0.9)), frame))
+        ..position = vm.Vector3(0.3, 0.92, 0),
+      for (final spec in const [(-0.4, 1.05, -0.1), (0.35, 1.06, 0.2)])
+        Node(mesh: Mesh(CuboidGeometry(vm.Vector3(0.7, 0.04, 0.48)), paper))
+          ..position = vm.Vector3(spec.$1, spec.$2, spec.$3),
+    ]);
+    return root;
+  }
+
+  Node _buildOctopusShrine() {
+    final stone = _pbr(0.31, 0.24, 0.48, roughness: 0.86, metallic: 0.12);
+    final glow = _unlit(1.8, 0.3, 2.4);
+    final root = Node();
+    root.addAll([
+      for (final x in [-1.45, 1.45])
+        Node(mesh: Mesh(CuboidGeometry(vm.Vector3(0.9, 4.2, 0.9)), stone))
+          ..position = vm.Vector3(x, 2.1, 0),
+      Node(mesh: Mesh(CuboidGeometry(vm.Vector3(3.8, 0.9, 0.9)), stone))
+        ..position = vm.Vector3(0, 4.0, 0),
+      Node(mesh: Mesh(CuboidGeometry(vm.Vector3(0.45, 0.45, 0.45)), glow))
+        ..position = vm.Vector3(0, 4.05, -0.5),
+      for (var index = 0; index < 4; index++)
+        Node(mesh: Mesh(CuboidGeometry(vm.Vector3(0.35, 1.15, 0.35)), stone))
+          ..position = vm.Vector3(-0.75 + index * 0.5, 0.58, -0.75)
+          ..rotation = vm.Quaternion.axisAngle(
+            vm.Vector3(0, 0, 1),
+            (index - 1.5) * 0.18,
+          ),
+    ]);
+    return root;
   }
 
   Set<ChunkCoordinate> _desiredChunks() {
@@ -233,6 +398,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
         _chunkQuadCounts[payload.coordinate] = payload.quadCount;
       }
       _rebuildVisibleResources(desired);
+      _updateLandmarkVisibility();
       notifyListeners();
     } finally {
       _chunkRefreshRunning = false;
@@ -313,13 +479,34 @@ class MadogiwaIslandScene extends ChangeNotifier {
 
   Future<void> _loadParty() async {
     const specs = [
-      ('sobaya', 'そば屋', 0.0, 3.0),
-      ('yametaro', 'やめ太郎', 2.2, 2.5),
-      ('yumemin', 'ゆめみん', -2.2, 0.8),
-      ('takosan', 'タコさん', 2.25, 0.7),
+      _PartySpec(
+        id: 'sobaya',
+        name: 'そば屋',
+        cell: GridCell(0, 3),
+        followOffset: (0.0, 0.0),
+        isPlayer: true,
+      ),
+      _PartySpec(
+        id: 'yametaro',
+        name: 'やめ太郎',
+        cell: GridCell(-38, -27),
+        followOffset: (-1.35, 1.35),
+      ),
+      _PartySpec(
+        id: 'yumemin',
+        name: 'ゆめみん',
+        cell: GridCell(42, -34),
+        followOffset: (1.35, 1.35),
+      ),
+      _PartySpec(
+        id: 'takosan',
+        name: 'タコさん',
+        cell: GridCell(30, 49),
+        followOffset: (0.0, 2.35),
+      ),
     ];
     final loaded = await Future.wait(
-      specs.map((spec) => Node.fromGlbAsset('assets/models/${spec.$1}.glb')),
+      specs.map((spec) => Node.fromGlbAsset('assets/models/${spec.id}.glb')),
     );
     var totalMeshes = 0;
     for (var index = 0; index < loaded.length; index++) {
@@ -336,12 +523,13 @@ class MadogiwaIslandScene extends ChangeNotifier {
         ..position = vm.Vector3(0, -floorY * scale, 0)
         ..rotation = vm.Quaternion.axisAngle(vm.Vector3(0, 1, 0), math.pi);
       final home = vm.Vector3(
-        spec.$3,
-        IslandWorld.surfaceY(spec.$3.round(), spec.$4.round()),
-        spec.$4,
+        spec.cell.x.toDouble(),
+        IslandWorld.surfaceY(spec.cell.x, spec.cell.z),
+        spec.cell.z.toDouble(),
       );
-      final root = Node(name: spec.$2)
+      final root = Node(name: spec.name)
         ..position = vm.Vector3.copy(home)
+        ..visible = spec.isPlayer
         ..add(model);
       final idle = model.findAnimationByName('Idle');
       if (idle != null) {
@@ -351,32 +539,58 @@ class MadogiwaIslandScene extends ChangeNotifier {
       }
       totalMeshes += model.meshNodes.length;
       _partyRoot.add(root);
-      _workers.add(_Worker(root: root, home: home, isPlayer: index == 0));
-      if (index == 0) {
+      _workers.add(
+        _Worker(
+          id: spec.id,
+          displayName: spec.name,
+          root: root,
+          home: home,
+          followOffset: spec.followOffset,
+          isPlayer: spec.isPlayer,
+          reunited: spec.isPlayer,
+          walkRig: _VoxelWalkRig.fromModel(model),
+        ),
+      );
+      if (spec.isPlayer) {
         _playerRoot = root;
         _playerPosition = vm.Vector3.copy(home);
       }
     }
     characterMeshCount = totalMeshes;
-    characterNames = specs.map((spec) => spec.$2).toList(growable: false);
+    characterNames = specs.map((spec) => spec.name).toList(growable: false);
   }
 
   void reset() {
     controller.reset();
+    for (final landmark in landmarks) {
+      controller.resources.removeWhere((cell, _) {
+        final dx = cell.x - landmark.cell.x;
+        final dz = cell.z - landmark.cell.z;
+        return dx * dx + dz * dz <= 9;
+      });
+    }
     _structureRoot.removeAll();
     _selection.visible = false;
     _rebuildVisibleResources(_desiredChunks());
     _playerPosition = vm.Vector3(0, IslandWorld.surfaceY(0, 3), 3);
     _playerChunk = const ChunkCoordinate(0, 0);
+    _explored.fillRange(0, _explored.length, 0);
+    _exploredCellCount = 0;
+    _lastExploredX = 1 << 30;
+    _lastExploredZ = 1 << 30;
+    _revealAroundPlayer(force: true);
     for (final worker in _workers) {
       if (worker.isPlayer) {
+        worker
+          ..reunited = true
+          ..root.visible = true;
         worker.root.position = vm.Vector3.copy(_playerPosition);
         continue;
       }
-      worker
-        ..goal = vm.Vector3.copy(worker.home)
-        ..actionTime = 0;
-      worker.root.position = vm.Vector3.copy(worker.home);
+      worker.reunited = false;
+      worker.root
+        ..position = vm.Vector3.copy(worker.home)
+        ..visible = false;
     }
     unawaited(_refreshVisibleChunks(force: true));
     notifyListeners();
@@ -403,11 +617,54 @@ class MadogiwaIslandScene extends ChangeNotifier {
     _distance = distance.clamp(8.5, 22.0);
   }
 
+  /// Moves the player to a deterministic debug location for MCP scenarios.
+  Future<GridCell?> automationTeleport(int requestedX, int requestedZ) async {
+    if (!_loaded) return null;
+    GridCell? destination;
+    for (var radius = 0; radius <= 8 && destination == null; radius++) {
+      for (var dz = -radius; dz <= radius && destination == null; dz++) {
+        for (var dx = -radius; dx <= radius; dx++) {
+          if (radius > 0 && dx.abs() != radius && dz.abs() != radius) continue;
+          final x = requestedX + dx;
+          final z = requestedZ + dz;
+          if (IslandWorld.containsCell(x, z) && IslandWorld.isLand(x, z)) {
+            destination = GridCell(x, z);
+            break;
+          }
+        }
+      }
+    }
+    if (destination == null) return null;
+
+    stopMoving();
+    _playerPosition = vm.Vector3(
+      destination.x.toDouble(),
+      IslandWorld.surfaceY(destination.x, destination.z),
+      destination.z.toDouble(),
+    );
+    _playerRoot?.position = vm.Vector3.copy(_playerPosition);
+    _playerChunk = ChunkCoordinate(
+      IslandWorld.chunkForCoordinate(_playerPosition.x),
+      IslandWorld.chunkForCoordinate(_playerPosition.z),
+    );
+    _revealAroundPlayer(force: true);
+    await _refreshVisibleChunks(force: true);
+    notifyListeners();
+    return destination;
+  }
+
   void handleTap(Offset position, Size viewSize) {
     if (!_loaded || viewSize.isEmpty) return;
     final ray = _activeCamera.screenPointToRay(position, viewSize);
-    GridCell? cell;
+    GridCell? cell = controller.tool == IslandTool.gather
+        ? _findResourceTarget(ray)
+        : null;
+    if (controller.tool == IslandTool.gather && cell == null) {
+      controller.showMessage('近くの木か岩を直接タップしよう（届く範囲は7マス）');
+      return;
+    }
     for (var distance = 0.2; distance <= 70; distance += 0.16) {
+      if (cell != null) break;
       final x = ray.origin.x + ray.direction.x * distance;
       final y = ray.origin.y + ray.direction.y * distance;
       final z = ray.origin.z + ray.direction.z * distance;
@@ -422,6 +679,10 @@ class MadogiwaIslandScene extends ChangeNotifier {
       }
     }
     if (cell == null) return;
+    if (_horizontalDistanceToPlayer(cell) > _interactionReach) {
+      controller.showMessage('遠すぎて届かない。対象の近くまで移動しよう');
+      return;
+    }
 
     _selection
       ..visible = true
@@ -432,6 +693,83 @@ class MadogiwaIslandScene extends ChangeNotifier {
       );
     final result = controller.actOn(cell);
     if (result.changed) _apply(result);
+  }
+
+  GridCell? _findResourceTarget(vm.Ray ray) {
+    final direction = ray.direction.normalized();
+    GridCell? target;
+    var bestDistance = double.infinity;
+    for (final entry in controller.resources.entries) {
+      final cell = entry.key;
+      if (!_resourceNodes.containsKey(cell) ||
+          _horizontalDistanceToPlayer(cell) > _interactionReach) {
+        continue;
+      }
+      final center = vm.Vector3(
+        cell.x.toDouble(),
+        IslandWorld.surfaceY(cell.x, cell.z) +
+            (entry.value == IslandResource.tree ? 1.1 : 0.38),
+        cell.z.toDouble(),
+      );
+      final fromOrigin = center - ray.origin;
+      final depth = fromOrigin.dot(direction);
+      if (depth <= 0) continue;
+      final closestPoint = ray.origin + direction.scaled(depth);
+      final distance = (center - closestPoint).length;
+      final hitRadius = entry.value == IslandResource.tree ? 1.25 : 0.78;
+      if (distance <= hitRadius && distance < bestDistance) {
+        target = cell;
+        bestDistance = distance;
+      }
+    }
+    return target;
+  }
+
+  double _horizontalDistanceToPlayer(GridCell cell) {
+    final dx = cell.x - _playerPosition.x;
+    final dz = cell.z - _playerPosition.z;
+    return math.sqrt(dx * dx + dz * dz);
+  }
+
+  int _explorationIndex(int x, int z) =>
+      (z + IslandWorld.worldHalfSize) * IslandWorld.worldSize +
+      x +
+      IslandWorld.worldHalfSize;
+
+  void _revealAroundPlayer({bool force = false}) {
+    final centerX = _playerPosition.x.round();
+    final centerZ = _playerPosition.z.round();
+    if (!force && centerX == _lastExploredX && centerZ == _lastExploredZ) {
+      return;
+    }
+    _lastExploredX = centerX;
+    _lastExploredZ = centerZ;
+    for (var dz = -explorationRadius; dz <= explorationRadius; dz++) {
+      for (var dx = -explorationRadius; dx <= explorationRadius; dx++) {
+        if (dx * dx + dz * dz > explorationRadius * explorationRadius) {
+          continue;
+        }
+        final x = centerX + dx;
+        final z = centerZ + dz;
+        if (IslandWorld.containsCell(x, z)) {
+          final index = _explorationIndex(x, z);
+          if (_explored[index] == 0) {
+            _explored[index] = 1;
+            _exploredCellCount++;
+          }
+        }
+      }
+    }
+  }
+
+  void _updateLandmarkVisibility() {
+    for (final landmark in landmarks) {
+      final chunk = ChunkCoordinate(
+        IslandWorld.chunkForCoordinate(landmark.cell.x.toDouble()),
+        IslandWorld.chunkForCoordinate(landmark.cell.z.toDouble()),
+      );
+      _landmarkNodes[landmark.id]?.visible = _chunkNodes.containsKey(chunk);
+    }
   }
 
   void _apply(IslandActionResult result) {
@@ -453,7 +791,6 @@ class MadogiwaIslandScene extends ChangeNotifier {
       case IslandActionKind.none:
         return;
     }
-    _sendWorker(result);
   }
 
   void _addFloor(GridCell cell) {
@@ -529,32 +866,13 @@ class MadogiwaIslandScene extends ChangeNotifier {
     }
   }
 
-  void _sendWorker(IslandActionResult result) {
-    if (_workers.length < 4) return;
-    final index = switch (result.kind) {
-      IslandActionKind.treeHarvested => 1,
-      IslandActionKind.rockHarvested => 3,
-      IslandActionKind.floorPlaced => 2,
-      IslandActionKind.wallPlaced => 1,
-      IslandActionKind.roofPlaced => 2,
-      IslandActionKind.none => 1,
-    };
-    final worker = _workers[index];
-    worker
-      ..goal = vm.Vector3(
-        result.cell.x + 0.62,
-        IslandWorld.surfaceY(result.cell.x, result.cell.z),
-        result.cell.z + 0.62,
-      )
-      ..actionTime = 2;
-  }
-
   void tick(double deltaSeconds) {
     if (!_loaded) return;
     final dt = deltaSeconds.clamp(0.0, 0.05);
     _elapsed += dt;
     _hudAccumulator += dt;
     _updatePlayer(dt);
+    _revealAroundPlayer();
     _selection.scale = vm.Vector3.all(1 + math.sin(_elapsed * 4) * 0.05);
     for (var index = 0; index < _resourceAnimatedParts.length; index++) {
       _resourceAnimatedParts[index].rotation = vm.Quaternion.axisAngle(
@@ -565,18 +883,49 @@ class MadogiwaIslandScene extends ChangeNotifier {
     for (var index = 0; index < _workers.length; index++) {
       final worker = _workers[index];
       if (worker.isPlayer) continue;
-      var destination = worker.home;
-      if (worker.actionTime > 0) {
-        worker.actionTime = math.max(0, worker.actionTime - dt);
-        destination = worker.actionTime > 0.75 ? worker.goal : worker.home;
+      final dxToPlayer = worker.root.position.x - _playerPosition.x;
+      final dzToPlayer = worker.root.position.z - _playerPosition.z;
+      final distanceToPlayer = math.sqrt(
+        dxToPlayer * dxToPlayer + dzToPlayer * dzToPlayer,
+      );
+      if (!worker.reunited) {
+        worker.root.visible = distanceToPlayer <= 9;
+        if (distanceToPlayer <= 2.6) {
+          worker
+            ..reunited = true
+            ..root.visible = true;
+          controller.showMessage('${worker.displayName}と再会！ これから一緒に行動する');
+        }
       }
+      final destination = worker.reunited
+          ? vm.Vector3(
+              _playerPosition.x + worker.followOffset.$1,
+              _playerPosition.y,
+              _playerPosition.z + worker.followOffset.$2,
+            )
+          : worker.home;
       final position = worker.root.position;
+      final previousX = position.x;
+      final previousZ = position.z;
       position.x += (destination.x - position.x) * math.min(1, dt * 4.5);
       position.z += (destination.z - position.z) * math.min(1, dt * 4.5);
+      final movedX = position.x - previousX;
+      final movedZ = position.z - previousZ;
+      final moving = movedX * movedX + movedZ * movedZ > 0.000001;
       position.y =
           IslandWorld.surfaceY(position.x.round(), position.z.round()) +
-          math.sin(_elapsed * 2.2 + index) * 0.018;
-      worker.root.position = position;
+          (moving
+              ? worker.walkRig.stepBob(_elapsed)
+              : math.sin(_elapsed * 2.2 + index) * 0.018);
+      worker.root
+        ..position = position
+        ..rotation = moving
+            ? vm.Quaternion.axisAngle(
+                vm.Vector3(0, 1, 0),
+                characterFacingYaw(movedX, movedZ),
+              )
+            : worker.root.rotation;
+      worker.walkRig.update(dt: dt, elapsed: _elapsed, moving: moving);
     }
     if (_hudAccumulator >= 0.15) {
       _hudAccumulator = 0;
@@ -587,18 +936,22 @@ class MadogiwaIslandScene extends ChangeNotifier {
   void _updatePlayer(double dt) {
     final player = _playerRoot;
     if (player == null) return;
+    final playerWorker = _workers.firstWhere((worker) => worker.isPlayer);
     final inputLength = math.sqrt(
       _moveRight * _moveRight + _moveForward * _moveForward,
     );
     if (inputLength > 0.01) {
+      final previousX = _playerPosition.x;
+      final previousZ = _playerPosition.z;
       final rightInput = _moveRight / math.max(1, inputLength);
       final forwardInput = _moveForward / math.max(1, inputLength);
-      final rightX = math.cos(_yaw);
-      final rightZ = -math.sin(_yaw);
-      final forwardX = -math.sin(_yaw);
-      final forwardZ = -math.cos(_yaw);
-      final dx = (rightX * rightInput + forwardX * forwardInput) * dt * 4.4;
-      final dz = (rightZ * rightInput + forwardZ * forwardInput) * dt * 4.4;
+      final movement = cameraRelativeMovement(
+        yaw: _yaw,
+        right: rightInput,
+        forward: forwardInput,
+      );
+      final dx = movement.$1 * dt * 4.4;
+      final dz = movement.$2 * dt * 4.4;
       final nextX = (_playerPosition.x + dx).clamp(
         -IslandWorld.worldHalfSize + 1.0,
         IslandWorld.worldHalfSize - 2.0,
@@ -629,12 +982,22 @@ class MadogiwaIslandScene extends ChangeNotifier {
         _playerPosition.x.round(),
         _playerPosition.z.round(),
       );
-      player
-        ..position = vm.Vector3.copy(_playerPosition)
-        ..rotation = vm.Quaternion.axisAngle(
+      final movedX = _playerPosition.x - previousX;
+      final movedZ = _playerPosition.z - previousZ;
+      final moving = movedX * movedX + movedZ * movedZ > 0.000001;
+      player.position = vm.Vector3(
+        _playerPosition.x,
+        _playerPosition.y +
+            (moving ? playerWorker.walkRig.stepBob(_elapsed) : 0),
+        _playerPosition.z,
+      );
+      if (moving) {
+        player.rotation = vm.Quaternion.axisAngle(
           vm.Vector3(0, 1, 0),
-          math.atan2(dx, dz),
+          characterFacingYaw(movedX, movedZ),
         );
+      }
+      playerWorker.walkRig.update(dt: dt, elapsed: _elapsed, moving: moving);
 
       final nextChunk = ChunkCoordinate(
         IslandWorld.chunkForCoordinate(_playerPosition.x),
@@ -648,6 +1011,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
       final position = player.position;
       position.y = _playerPosition.y + math.sin(_elapsed * 2.2) * 0.018;
       player.position = position;
+      playerWorker.walkRig.update(dt: dt, elapsed: _elapsed, moving: false);
     }
   }
 
@@ -696,12 +1060,118 @@ class MadogiwaIslandScene extends ChangeNotifier {
 }
 
 class _Worker {
-  _Worker({required this.root, required this.home, required this.isPlayer})
-    : goal = vm.Vector3.copy(home);
+  _Worker({
+    required this.id,
+    required this.displayName,
+    required this.root,
+    required this.home,
+    required this.followOffset,
+    required this.isPlayer,
+    required this.reunited,
+    required this.walkRig,
+  });
 
+  final String id;
+  final String displayName;
   final Node root;
   final vm.Vector3 home;
+  final (double, double) followOffset;
   final bool isPlayer;
-  vm.Vector3 goal;
-  double actionTime = 0;
+  final _VoxelWalkRig walkRig;
+  bool reunited;
+}
+
+class _PartySpec {
+  const _PartySpec({
+    required this.id,
+    required this.name,
+    required this.cell,
+    required this.followOffset,
+    this.isPlayer = false,
+  });
+
+  final String id;
+  final String name;
+  final GridCell cell;
+  final (double, double) followOffset;
+  final bool isPlayer;
+}
+
+class _VoxelWalkRig {
+  _VoxelWalkRig({
+    required this.primaryArm,
+    required this.secondaryArm,
+    required this.leftLeg,
+    required this.rightLeg,
+    required this.locomotion,
+  }) : _baseRotations = {
+         for (final node in [
+           primaryArm,
+           secondaryArm,
+           leftLeg,
+           rightLeg,
+           ...locomotion,
+         ].whereType<Node>())
+           node: node.rotation,
+       };
+
+  factory _VoxelWalkRig.fromModel(Node model) {
+    final locomotion = model.meshNodes
+        .map((node) => _findAncestorWithPrefix(node, 'VoxelRig_Locomotion_'))
+        .whereType<Node>()
+        .toSet()
+        .toList(growable: false);
+    return _VoxelWalkRig(
+      primaryArm: model.getChildByName('VoxelRig_ArmPrimary'),
+      secondaryArm: model.getChildByName('VoxelRig_ArmSecondary'),
+      leftLeg: model.getChildByName('VoxelRig_LegLeft'),
+      rightLeg: model.getChildByName('VoxelRig_LegRight'),
+      locomotion: locomotion,
+    );
+  }
+
+  final Node? primaryArm;
+  final Node? secondaryArm;
+  final Node? leftLeg;
+  final Node? rightLeg;
+  final List<Node> locomotion;
+  final Map<Node, vm.Quaternion> _baseRotations;
+  double _motionWeight = 0;
+
+  static Node? _findAncestorWithPrefix(Node node, String prefix) {
+    Node? current = node;
+    while (current != null) {
+      if (current.name.startsWith(prefix)) return current;
+      current = current.parent;
+    }
+    return null;
+  }
+
+  double stepBob(double elapsed) =>
+      math.sin(elapsed * 10.5).abs() * 0.045 * _motionWeight;
+
+  void update({
+    required double dt,
+    required double elapsed,
+    required bool moving,
+  }) {
+    final response = 1 - math.exp(-dt * 20);
+    _motionWeight += ((moving ? 1.0 : 0.0) - _motionWeight) * response;
+    final stride = math.sin(elapsed * 10.5) * 0.5 * _motionWeight;
+    _setRotation(leftLeg, vm.Vector3(1, 0, 0), stride);
+    _setRotation(rightLeg, vm.Vector3(1, 0, 0), -stride);
+    _setRotation(primaryArm, vm.Vector3(1, 0, 0), stride * 0.18);
+    _setRotation(secondaryArm, vm.Vector3(1, 0, 0), -stride * 0.46);
+    for (var index = 0; index < locomotion.length; index++) {
+      final wave = math.sin(elapsed * 9 + index * 0.9) * 0.3 * _motionWeight;
+      _setRotation(locomotion[index], vm.Vector3(0, 0, 1), wave);
+    }
+  }
+
+  void _setRotation(Node? node, vm.Vector3 axis, double angle) {
+    if (node == null) return;
+    final base = _baseRotations[node];
+    if (base == null) return;
+    node.rotation = base * vm.Quaternion.axisAngle(axis, angle);
+  }
 }

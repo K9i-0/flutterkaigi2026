@@ -6,12 +6,13 @@ Flutter Sceneを、窓際族物語の正典ボクセル素材で実ゲームへ�
 
 ## ゲーム内容
 
-- そば屋、やめ太郎、ゆめみん、タコさんの4人が無人島へ異動
+- そば屋を操作し、島の別々の場所に隠れたやめ太郎、ゆめみん、タコさんと再会
 - 256×256マスの島をWASD／矢印キー／画面方向パッドで自由に探索
-- 島の木をタップして木材、岩をタップして石材を採取
+- 歩いた周囲だけ地形が開く簡易マップと、3つの固有ランドマーク
+- 7マス以内の木・岩を直接タップして採取（遠距離・狙い外れは理由を表示）
 - 好きな地面へ「床 → 壁 → 屋根」の順でブロックを設置
 - 床4枚、壁4枚、屋根を完成させると生活拠点が完成
-- 採取・建築を担当したメンバーが対象ブロックまでリアルタイムで移動
+- 再会したメンバーはそば屋の後ろから一緒に探索
 - 1本指ドラッグでカメラ旋回、ピンチでズーム、左右ボタンでも旋回
 
 開始地点にはチュートリアル分の木5本・岩2個があり、島全域にも決定論的に資源が
@@ -31,6 +32,7 @@ Flutter Sceneを、窓際族物語の正典ボクセル素材で実ゲームへ�
 - `PerspectiveCamera.screenPointToRay`による3Dグリッド選択
 - ゲーム進行に応じたNodeの追加・削除・移動
 - プレイヤー追従カメラ、カメラ相対8方向移動、段差・海岸衝突
+- 正典GLBの共通リグを使った脚・腕・触手の手続き歩行モーション
 - Directional Light、影、Bloom、AO、fog
 - Flutter WidgetのHUD、長押し方向パッド、ツール選択、3Dシーンへのオーバーレイ
 
@@ -69,6 +71,31 @@ cd 17_FLUTTER_SCENE_GAME
 mise exec -- flutter pub get
 mise exec -- flutter run --enable-flutter-gpu
 ```
+
+## Dart MCP / Marionette MCP
+
+ルートの`.mcp.json`と`.codex/config.toml`は、どちらのMCPも必ず
+Flutter 3.47.1のDartを経由して起動します。Marionetteのグローバル実行ファイルが
+別バージョンのDartで作られていても、Kernel snapshotの互換エラーを避けられます。
+
+初回だけMarionette MCP bridgeをFlutter 3.47.1で有効化します。
+
+```bash
+mise exec flutter@3.47.1 -- dart pub global activate marionette_mcp
+```
+
+ネイティブdebugビルドは`MarionetteBinding`を初期化し、次の専用extensionを登録します。
+
+- `madogiwa.inspectIsland`: 座標、チャンク、探索、再会、資源、建築状態を取得
+- `madogiwa.keyInput`: W/A/S/D・矢印キー相当のdown/up/tap入力
+- `madogiwa.releaseKeys`: 押下状態をすべて解除
+- `madogiwa.openScenario`: camp/radio/office/shrineへ検証用移動
+- `madogiwa.selectTool`: 採取・床・壁・屋根を選択
+- `madogiwa.resetIsland`: 島を初期状態へ戻す
+
+開始、カメラ、ツール、リセットの各ボタンにも安定した`ValueKey`を設定しているため、
+通常のMarionette tapと専用extensionを使い分けられます。releaseとwebでは通常の
+`WidgetsFlutterBinding`を使い、デバッグ用extensionは登録しません。
 
 ## 検証コマンド
 
