@@ -1,5 +1,18 @@
 import 'dart:math' as math;
 
+const double maxJumpClimb = 1.25;
+const double jumpArcHeight = 1.25;
+
+bool canTraverseHeight({
+  required double currentHeight,
+  required double targetHeight,
+}) => targetHeight >= 0 && (targetHeight - currentHeight).abs() <= maxJumpClimb;
+
+double jumpArcOffset(double progress) {
+  final t = progress.clamp(0.0, 1.0);
+  return 4 * jumpArcHeight * t * (1 - t);
+}
+
 /// Canonical voxel characters face local -Z after their model correction.
 double characterFacingYaw(double moveX, double moveZ) =>
     math.atan2(-moveX, -moveZ);

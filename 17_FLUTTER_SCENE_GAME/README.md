@@ -32,6 +32,7 @@ Flutter Sceneを、窓際族物語の正典ボクセル素材で実ゲームへ�
 - `PerspectiveCamera.screenPointToRay`による3Dグリッド選択
 - ゲーム進行に応じたNodeの追加・削除・移動
 - プレイヤー追従カメラ、カメラ相対8方向移動、段差・海岸衝突
+- 高低差1.25マスまでの放物線ジャンプと、それを超える崖の移動阻止
 - 正典GLBの共通リグを使った脚・腕・触手の手続き歩行モーション
 - Directional Light、影、Bloom、AO、fog
 - Flutter WidgetのHUD、長押し方向パッド、ツール選択、3Dシーンへのオーバーレイ

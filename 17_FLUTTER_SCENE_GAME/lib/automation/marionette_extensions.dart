@@ -27,6 +27,8 @@ void registerIslandMarionetteExtensions() {
         'activeChunks': scene.activeChunkCount,
         'terrainQuads': scene.terrainQuadCount,
         'exploredCells': scene.exploredCellCount,
+        'jumping': scene.isJumping,
+        'jumpOffset': scene.jumpOffset,
         'reunitedCount': scene.reunitedCount,
         'reunitedMembers': scene.reunitedMemberNames,
         'heldDirections': IslandAutomationState.heldDirections.toList(),
