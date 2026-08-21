@@ -1,9 +1,31 @@
+import 'dart:math' as math;
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:madogiwa_island_craft/game/island_game_controller.dart';
+import 'package:madogiwa_island_craft/game/movement_math.dart';
 import 'package:madogiwa_island_craft/world/chunk_mesh_builder.dart';
 import 'package:madogiwa_island_craft/world/island_world.dart';
 
 void main() {
+  group('character movement direction', () {
+    test('canonical -Z facing follows every cardinal movement direction', () {
+      expect(characterFacingYaw(0, -1), closeTo(0, 0.000001));
+      expect(characterFacingYaw(-1, 0), closeTo(math.pi / 2, 0.000001));
+      expect(characterFacingYaw(0, 1).abs(), closeTo(math.pi, 0.000001));
+      expect(characterFacingYaw(1, 0), closeTo(-math.pi / 2, 0.000001));
+    });
+
+    test('screen arrows follow flutter_scene camera handedness', () {
+      final left = cameraRelativeMovement(yaw: 0, right: -1, forward: 0);
+      final right = cameraRelativeMovement(yaw: 0, right: 1, forward: 0);
+      final forward = cameraRelativeMovement(yaw: 0, right: 0, forward: 1);
+
+      expect(left, (1.0, 0.0));
+      expect(right, (-1.0, 0.0));
+      expect(forward, (0.0, -1.0));
+    });
+  });
+
   group('IslandGameController', () {
     test('tree and rock harvesting adds canonical build resources', () {
       final controller = IslandGameController();

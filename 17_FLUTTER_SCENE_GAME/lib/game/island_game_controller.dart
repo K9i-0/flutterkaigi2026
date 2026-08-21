@@ -63,7 +63,7 @@ class IslandGameController extends ChangeNotifier {
   int food = 3;
   int day = 1;
   bool roofComplete = false;
-  String message = '木と岩をタップして、家の材料を集めよう';
+  String message = '周囲を探索し、木と岩を集めながら3人を捜そう';
 
   int get floorsBuilt =>
       structures.values.where((level) => level != BuildLevel.ground).length;
@@ -118,7 +118,7 @@ class IslandGameController extends ChangeNotifier {
     food = 3;
     day = 1;
     roofComplete = false;
-    message = '木と岩をタップして、家の材料を集めよう';
+    message = '周囲を探索し、木と岩を集めながら3人を捜そう';
     notifyListeners();
   }
 
@@ -130,6 +130,11 @@ class IslandGameController extends ChangeNotifier {
       IslandTool.wall => '床の上に壁を4つ積もう（木材1・石材1）',
       IslandTool.roof => '4つの壁ができたら屋根を載せよう（木材2）',
     };
+    notifyListeners();
+  }
+
+  void showMessage(String next) {
+    message = next;
     notifyListeners();
   }
 
@@ -145,12 +150,12 @@ class IslandGameController extends ChangeNotifier {
       resources.remove(cell);
       if (resource == IslandResource.tree) {
         wood += 2;
-        message = '木材を2個入手。そば屋が黙々と運んだ';
+        message = '木材を2個入手';
         notifyListeners();
         return IslandActionResult(IslandActionKind.treeHarvested, cell);
       }
       stone += 2;
-      message = '石材を2個入手。タコさんの触手が便利';
+      message = '石材を2個入手';
       notifyListeners();
       return IslandActionResult(IslandActionKind.rockHarvested, cell);
     }

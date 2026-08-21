@@ -1,12 +1,22 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_scene/scene.dart';
+import 'package:marionette_flutter/marionette_flutter.dart';
 
+import 'automation/automation_state.dart';
+import 'automation/marionette_extensions.dart';
 import 'game/island_game_controller.dart';
 import 'scene/madogiwa_island_scene.dart';
+import 'world/island_world.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
+  if (kDebugMode && !kIsWeb) {
+    MarionetteBinding.ensureInitialized();
+    registerIslandMarionetteExtensions();
+  } else {
+    WidgetsFlutterBinding.ensureInitialized();
+  }
   runApp(const MadogiwaIslandCraftApp());
 }
 
@@ -57,6 +67,7 @@ class _IslandPageState extends State<IslandPage> {
     super.initState();
     _controller = IslandGameController();
     _islandScene = MadogiwaIslandScene(controller: _controller);
+    IslandAutomationState.attach(controller: _controller, scene: _islandScene);
     _islandScene
         .load()
         .then((_) {
@@ -69,6 +80,7 @@ class _IslandPageState extends State<IslandPage> {
 
   @override
   void dispose() {
+    IslandAutomationState.detach(_islandScene);
     _gameFocus.dispose();
     _islandScene.dispose();
     _controller.dispose();
@@ -216,6 +228,21 @@ class _IslandPageState extends State<IslandPage> {
             ),
             SafeArea(
               child: Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 112, 14, 0),
+                  child: IgnorePointer(
+                    child: ListenableBuilder(
+                      listenable: _islandScene,
+                      builder: (context, _) =>
+                          _IslandMiniMap(scene: _islandScene),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SafeArea(
+              child: Align(
                 alignment: Alignment.bottomLeft,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(18, 0, 0, 68),
@@ -236,6 +263,157 @@ class _IslandPageState extends State<IslandPage> {
       ),
     );
   }
+}
+
+class _IslandMiniMap extends StatelessWidget {
+  const _IslandMiniMap({required this.scene});
+
+  final MadogiwaIslandScene scene;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: const Color(0xe6091d24),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0x776ff0c0)),
+        boxShadow: const [BoxShadow(color: Color(0x66000000), blurRadius: 14)],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(9, 8, 9, 9),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.map_rounded,
+                  size: 14,
+                  color: Color(0xff72efbc),
+                ),
+                const SizedBox(width: 5),
+                const Text(
+                  '探索マップ',
+                  style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900),
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  '再会 ${scene.reunitedCount}/3',
+                  style: const TextStyle(
+                    color: Color(0xffffc36b),
+                    fontSize: 9,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 6),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: CustomPaint(
+                size: const Size.square(146),
+                painter: _IslandMapPainter(scene),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _IslandMapPainter extends CustomPainter {
+  const _IslandMapPainter(this.scene);
+
+  final MadogiwaIslandScene scene;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    canvas.drawRect(
+      Offset.zero & size,
+      Paint()..color = const Color(0xff061216),
+    );
+    final scale = size.width / IslandWorld.worldSize;
+    final sand = Paint()
+      ..color = const Color(0xffc8aa6d)
+      ..isAntiAlias = false;
+    final grass = Paint()
+      ..color = const Color(0xff3f8d55)
+      ..isAntiAlias = false;
+    final ocean = Paint()
+      ..color = const Color(0xff17445c)
+      ..isAntiAlias = false;
+    for (
+      var z = -IslandWorld.worldHalfSize;
+      z < IslandWorld.worldHalfSize;
+      z++
+    ) {
+      for (
+        var x = -IslandWorld.worldHalfSize;
+        x < IslandWorld.worldHalfSize;
+        x++
+      ) {
+        if (!scene.isExplored(x, z)) continue;
+        final paint = !IslandWorld.isLand(x, z)
+            ? ocean
+            : IslandWorld.isSand(x, z)
+            ? sand
+            : grass;
+        canvas.drawRect(
+          Rect.fromLTWH(
+            (x + IslandWorld.worldHalfSize) * scale,
+            (z + IslandWorld.worldHalfSize) * scale,
+            scale + 0.2,
+            scale + 0.2,
+          ),
+          paint,
+        );
+      }
+    }
+
+    for (final landmark in MadogiwaIslandScene.landmarks) {
+      if (!scene.isExplored(landmark.cell.x, landmark.cell.z)) continue;
+      final center = Offset(
+        (landmark.cell.x + IslandWorld.worldHalfSize + 0.5) * scale,
+        (landmark.cell.z + IslandWorld.worldHalfSize + 0.5) * scale,
+      );
+      canvas.drawCircle(
+        center,
+        3.2,
+        Paint()
+          ..color = scene.isMemberReunited(landmark.memberId)
+              ? const Color(0xff72efbc)
+              : const Color(0xffff8b5f),
+      );
+      canvas.drawCircle(
+        center,
+        4.6,
+        Paint()
+          ..color = Colors.white
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1,
+      );
+    }
+
+    final player = Offset(
+      (scene.playerX + IslandWorld.worldHalfSize + 0.5) * scale,
+      (scene.playerZ + IslandWorld.worldHalfSize + 0.5) * scale,
+    );
+    canvas.drawCircle(player, 4.5, Paint()..color = const Color(0xffffdf61));
+    canvas.drawCircle(
+      player,
+      5.8,
+      Paint()
+        ..color = const Color(0xff092027)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.5,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant _IslandMapPainter oldDelegate) => true;
 }
 
 class _OceanBackdrop extends StatelessWidget {
@@ -296,6 +474,7 @@ class _IslandHud extends StatelessWidget {
               Expanded(child: _MessageCard(message: controller.message)),
               const SizedBox(width: 8),
               _CameraButton(
+                key: const ValueKey('camera_left'),
                 tooltip: 'カメラを左へ回転',
                 icon: Icons.rotate_left,
                 onPressed: () =>
@@ -303,6 +482,7 @@ class _IslandHud extends StatelessWidget {
               ),
               const SizedBox(width: 5),
               _CameraButton(
+                key: const ValueKey('camera_right'),
                 tooltip: 'カメラを右へ回転',
                 icon: Icons.rotate_right,
                 onPressed: () =>
@@ -540,6 +720,7 @@ class _MessageCard extends StatelessWidget {
 
 class _CameraButton extends StatelessWidget {
   const _CameraButton({
+    super.key,
     required this.tooltip,
     required this.icon,
     required this.onPressed,
@@ -655,24 +836,28 @@ class _ToolBar extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             _ToolButton(
+              key: const ValueKey('tool_gather'),
               label: '採取',
               icon: Icons.hardware,
               selected: controller.tool == IslandTool.gather,
               onPressed: () => scene.selectTool(IslandTool.gather),
             ),
             _ToolButton(
+              key: const ValueKey('tool_floor'),
               label: '床',
               icon: Icons.grid_view_rounded,
               selected: controller.tool == IslandTool.floor,
               onPressed: () => scene.selectTool(IslandTool.floor),
             ),
             _ToolButton(
+              key: const ValueKey('tool_wall'),
               label: '壁',
               icon: Icons.view_week_rounded,
               selected: controller.tool == IslandTool.wall,
               onPressed: () => scene.selectTool(IslandTool.wall),
             ),
             _ToolButton(
+              key: const ValueKey('tool_roof'),
               label: '屋根',
               icon: Icons.roofing_rounded,
               selected: controller.tool == IslandTool.roof,
@@ -687,6 +872,7 @@ class _ToolBar extends StatelessWidget {
 
 class _ToolButton extends StatelessWidget {
   const _ToolButton({
+    super.key,
     required this.label,
     required this.icon,
     required this.selected,
@@ -750,12 +936,13 @@ class _IntroOverlay extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   const Text(
-                    'そば屋、やめ太郎、ゆめみん、タコさんは\n無人島へ異動になった。\n木と石を集め、まずは4マスの家を建てよう。',
+                    '無人島へ異動させられた4人は離れ離れ。\nそば屋を操作して地図を開拓し、\nランドマークに隠れた3人と再会しよう。',
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Color(0xffbad0d3), height: 1.55),
                   ),
                   const SizedBox(height: 18),
                   FilledButton.icon(
+                    key: const ValueKey('intro_start'),
                     onPressed: onStart,
                     icon: const Icon(Icons.handyman_rounded),
                     label: const Text('生活基盤をつくる'),
@@ -812,7 +999,11 @@ class _CompleteOverlay extends StatelessWidget {
                     style: TextStyle(color: Color(0xffc0d1d4), height: 1.5),
                   ),
                   const SizedBox(height: 18),
-                  FilledButton(onPressed: onReset, child: const Text('島をリセット')),
+                  FilledButton(
+                    key: const ValueKey('island_reset'),
+                    onPressed: onReset,
+                    child: const Text('島をリセット'),
+                  ),
                 ],
               ),
             ),

@@ -2,13 +2,22 @@
   "mcpServers": {
     "marionette": {
       "type": "stdio",
-      "command": "marionette_mcp",
-      "args": []
+      "command": "mise",
+      "args": [
+        "exec",
+        "flutter@3.47.1",
+        "--",
+        "dart",
+        "pub",
+        "global",
+        "run",
+        "marionette_mcp:marionette_mcp"
+      ]
     },
     "dart-mcp": {
       "type": "stdio",
-      "command": "dart",
-      "args": ["mcp-server"],
+      "command": "mise",
+      "args": ["exec", "flutter@3.47.1", "--", "dart", "mcp-server"],
       "env": {}
     },
     "cloudflare": {
