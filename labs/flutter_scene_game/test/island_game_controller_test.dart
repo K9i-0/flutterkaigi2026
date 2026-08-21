@@ -3,10 +3,22 @@ import 'dart:math' as math;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:madogiwa_island_craft/game/island_game_controller.dart';
 import 'package:madogiwa_island_craft/game/movement_math.dart';
+import 'package:madogiwa_island_craft/game/visual_math.dart';
 import 'package:madogiwa_island_craft/world/chunk_mesh_builder.dart';
 import 'package:madogiwa_island_craft/world/island_world.dart';
 
 void main() {
+  group('day and night visuals', () {
+    test('sun and phase helpers identify noon, twilight, and midnight', () {
+      expect(daylightForTime(0.5), closeTo(1, 0.000001));
+      expect(daylightForTime(0), closeTo(0, 0.000001));
+      expect(twilightForTime(0.25), closeTo(1, 0.000001));
+      expect(phaseLabelForTime(0.5), '昼');
+      expect(phaseLabelForTime(0.88), '夜');
+      expect(clockLabelForTime(0.5), '12:00');
+    });
+  });
+
   group('character movement direction', () {
     test('jump traversal allows 1.25 blocks but rejects higher cliffs', () {
       expect(canTraverseHeight(currentHeight: 0, targetHeight: 1.25), isTrue);
@@ -105,6 +117,19 @@ void main() {
 
       expect(result.kind, IslandActionKind.floorPlaced);
       expect(controller.floorsBuilt, 1);
+    });
+
+    test('one wood places a torch while the camp torch remains free', () {
+      final controller = IslandGameController()
+        ..actOn(const GridCell(-3, -1))
+        ..selectTool(IslandTool.torch);
+
+      final result = controller.actOn(const GridCell(5, 5));
+
+      expect(result.kind, IslandActionKind.torchPlaced);
+      expect(controller.wood, 1);
+      expect(controller.torches, contains(const GridCell(2, 2)));
+      expect(controller.torches, contains(const GridCell(5, 5)));
     });
   });
 
