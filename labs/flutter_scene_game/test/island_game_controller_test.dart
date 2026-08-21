@@ -8,6 +8,19 @@ import 'package:madogiwa_island_craft/world/island_world.dart';
 
 void main() {
   group('character movement direction', () {
+    test('jump traversal allows 1.25 blocks but rejects higher cliffs', () {
+      expect(canTraverseHeight(currentHeight: 0, targetHeight: 1.25), isTrue);
+      expect(canTraverseHeight(currentHeight: 0, targetHeight: 1.251), isFalse);
+      expect(canTraverseHeight(currentHeight: 2, targetHeight: 0.75), isTrue);
+      expect(canTraverseHeight(currentHeight: 0, targetHeight: -0.01), isFalse);
+    });
+
+    test('jump arc reaches 1.25 blocks at its apex', () {
+      expect(jumpArcOffset(0), 0);
+      expect(jumpArcOffset(0.5), jumpArcHeight);
+      expect(jumpArcOffset(1), 0);
+    });
+
     test('canonical -Z facing follows every cardinal movement direction', () {
       expect(characterFacingYaw(0, -1), closeTo(0, 0.000001));
       expect(characterFacingYaw(-1, 0), closeTo(math.pi / 2, 0.000001));
@@ -114,6 +127,37 @@ void main() {
       expect(IslandWorld.surfaceHeight(127, 127), -3);
       expect(IslandWorld.surfaceHeight(-128, -128), -3);
       expect(IslandWorld.surfaceHeight(128, 0), -3);
+    });
+
+    test('generated cliffs higher than the jump limit are impassable', () {
+      (int from, int to)? cliff;
+      for (
+        var z = -IslandWorld.worldHalfSize;
+        z < IslandWorld.worldHalfSize && cliff == null;
+        z++
+      ) {
+        for (
+          var x = -IslandWorld.worldHalfSize;
+          x < IslandWorld.worldHalfSize - 1;
+          x++
+        ) {
+          final from = IslandWorld.surfaceHeight(x, z);
+          final to = IslandWorld.surfaceHeight(x + 1, z);
+          if (from >= 0 && to - from > maxJumpClimb) {
+            cliff = (from, to);
+            break;
+          }
+        }
+      }
+
+      expect(cliff, isNotNull);
+      expect(
+        canTraverseHeight(
+          currentHeight: cliff!.$1.toDouble(),
+          targetHeight: cliff.$2.toDouble(),
+        ),
+        isFalse,
+      );
     });
 
     test('one chunk is batched into an indexed vertex-colored mesh', () {

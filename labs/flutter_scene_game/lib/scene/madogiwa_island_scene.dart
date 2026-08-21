@@ -30,6 +30,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
   MadogiwaIslandScene({required this.controller});
 
   static const _interactionReach = 7.25;
+  static const _jumpDuration = 0.52;
   static const explorationRadius = 10;
   static const landmarks = <IslandLandmark>[
     IslandLandmark(
@@ -92,6 +93,10 @@ class MadogiwaIslandScene extends ChangeNotifier {
   int _lastExploredX = 1 << 30;
   int _lastExploredZ = 1 << 30;
   int _exploredCellCount = 0;
+  bool _isJumping = false;
+  double _jumpElapsed = 0;
+  double _jumpStartSurfaceY = 0;
+  double _jumpLandingSurfaceY = 0;
 
   int characterMeshCount = 0;
   List<String> characterNames = const [];
@@ -109,6 +114,9 @@ class MadogiwaIslandScene extends ChangeNotifier {
   int get reunitedCount =>
       _workers.where((worker) => !worker.isPlayer && worker.reunited).length;
   int get exploredCellCount => _exploredCellCount;
+  bool get isJumping => _isJumping;
+  double get jumpOffset =>
+      _isJumping ? jumpArcOffset(_jumpElapsed / _jumpDuration) : 0;
   List<String> get reunitedMemberNames => _workers
       .where((worker) => !worker.isPlayer && worker.reunited)
       .map((worker) => worker.displayName)
@@ -573,6 +581,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
     _selection.visible = false;
     _rebuildVisibleResources(_desiredChunks());
     _playerPosition = vm.Vector3(0, IslandWorld.surfaceY(0, 3), 3);
+    _cancelJump();
     _playerChunk = const ChunkCoordinate(0, 0);
     _explored.fillRange(0, _explored.length, 0);
     _exploredCellCount = 0;
@@ -637,6 +646,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
     if (destination == null) return null;
 
     stopMoving();
+    _cancelJump();
     _playerPosition = vm.Vector3(
       destination.x.toDouble(),
       IslandWorld.surfaceY(destination.x, destination.z),
@@ -937,12 +947,15 @@ class MadogiwaIslandScene extends ChangeNotifier {
     final player = _playerRoot;
     if (player == null) return;
     final playerWorker = _workers.firstWhere((worker) => worker.isPlayer);
+    _advanceJump(dt);
     final inputLength = math.sqrt(
       _moveRight * _moveRight + _moveForward * _moveForward,
     );
+    var moving = false;
     if (inputLength > 0.01) {
       final previousX = _playerPosition.x;
       final previousZ = _playerPosition.z;
+      final previousSurfaceY = _playerPosition.y;
       final rightInput = _moveRight / math.max(1, inputLength);
       final forwardInput = _moveForward / math.max(1, inputLength);
       final movement = cameraRelativeMovement(
@@ -968,14 +981,20 @@ class MadogiwaIslandScene extends ChangeNotifier {
         nextX.round(),
         _playerPosition.z.round(),
       );
-      if (xHeight >= 0 && (xHeight - currentHeight).abs() <= 1) {
+      if (canTraverseHeight(
+        currentHeight: currentHeight.toDouble(),
+        targetHeight: xHeight.toDouble(),
+      )) {
         _playerPosition.x = nextX;
       }
       final zHeight = IslandWorld.surfaceHeight(
         _playerPosition.x.round(),
         nextZ.round(),
       );
-      if (zHeight >= 0 && (zHeight - currentHeight).abs() <= 1) {
+      if (canTraverseHeight(
+        currentHeight: currentHeight.toDouble(),
+        targetHeight: zHeight.toDouble(),
+      )) {
         _playerPosition.z = nextZ;
       }
       _playerPosition.y = IslandWorld.surfaceY(
@@ -984,21 +1003,21 @@ class MadogiwaIslandScene extends ChangeNotifier {
       );
       final movedX = _playerPosition.x - previousX;
       final movedZ = _playerPosition.z - previousZ;
-      final moving = movedX * movedX + movedZ * movedZ > 0.000001;
-      player.position = vm.Vector3(
-        _playerPosition.x,
-        _playerPosition.y +
-            (moving ? playerWorker.walkRig.stepBob(_elapsed) : 0),
-        _playerPosition.z,
-      );
+      moving = movedX * movedX + movedZ * movedZ > 0.000001;
+      if (_playerPosition.y > previousSurfaceY && !_isJumping) {
+        _startJump(
+          fromSurfaceY: previousSurfaceY,
+          toSurfaceY: _playerPosition.y,
+        );
+      } else if (_isJumping) {
+        _jumpLandingSurfaceY = _playerPosition.y;
+      }
       if (moving) {
         player.rotation = vm.Quaternion.axisAngle(
           vm.Vector3(0, 1, 0),
           characterFacingYaw(movedX, movedZ),
         );
       }
-      playerWorker.walkRig.update(dt: dt, elapsed: _elapsed, moving: moving);
-
       final nextChunk = ChunkCoordinate(
         IslandWorld.chunkForCoordinate(_playerPosition.x),
         IslandWorld.chunkForCoordinate(_playerPosition.z),
@@ -1007,12 +1026,49 @@ class MadogiwaIslandScene extends ChangeNotifier {
         _playerChunk = nextChunk;
         unawaited(_refreshVisibleChunks());
       }
-    } else {
-      final position = player.position;
-      position.y = _playerPosition.y + math.sin(_elapsed * 2.2) * 0.018;
-      player.position = position;
-      playerWorker.walkRig.update(dt: dt, elapsed: _elapsed, moving: false);
     }
+    final jumping = _isJumping;
+    final renderedSurfaceY = jumping
+        ? _jumpStartSurfaceY +
+              (_jumpLandingSurfaceY - _jumpStartSurfaceY) *
+                  (_jumpElapsed / _jumpDuration).clamp(0.0, 1.0) +
+              jumpOffset
+        : _playerPosition.y;
+    player.position = vm.Vector3(
+      _playerPosition.x,
+      renderedSurfaceY +
+          (jumping
+              ? 0
+              : moving
+              ? playerWorker.walkRig.stepBob(_elapsed)
+              : math.sin(_elapsed * 2.2) * 0.018),
+      _playerPosition.z,
+    );
+    playerWorker.walkRig.update(
+      dt: dt,
+      elapsed: _elapsed,
+      moving: moving || jumping,
+    );
+  }
+
+  void _startJump({required double fromSurfaceY, required double toSurfaceY}) {
+    _isJumping = true;
+    _jumpElapsed = 0;
+    _jumpStartSurfaceY = fromSurfaceY;
+    _jumpLandingSurfaceY = toSurfaceY;
+  }
+
+  void _advanceJump(double dt) {
+    if (!_isJumping) return;
+    _jumpElapsed += dt;
+    if (_jumpElapsed >= _jumpDuration) _cancelJump();
+  }
+
+  void _cancelJump() {
+    _isJumping = false;
+    _jumpElapsed = 0;
+    _jumpStartSurfaceY = _playerPosition.y;
+    _jumpLandingSurfaceY = _playerPosition.y;
   }
 
   PerspectiveCamera camera(Duration elapsed) {
