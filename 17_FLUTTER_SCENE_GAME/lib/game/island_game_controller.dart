@@ -1,10 +1,13 @@
 import 'package:flutter/foundation.dart';
 
 import '../world/island_world.dart';
+import 'island_progression.dart';
+
+export 'island_progression.dart';
 
 enum IslandTool { gather, floor, wall, roof, torch }
 
-enum IslandResource { tree, rock }
+enum IslandResource { tree, rock, berry, coal, iron, herb }
 
 enum BuildLevel { ground, floor, wall }
 
@@ -16,6 +19,10 @@ enum IslandActionKind {
   wallPlaced,
   roofPlaced,
   torchPlaced,
+  berryHarvested,
+  coalHarvested,
+  ironHarvested,
+  herbHarvested,
 }
 
 @immutable
@@ -57,14 +64,23 @@ class IslandGameController extends ChangeNotifier {
   final Map<GridCell, IslandResource> resources = {};
   final Map<GridCell, BuildLevel> structures = {};
   final Set<GridCell> torches = {};
+  final Set<CraftRecipe> craftedRecipes = {};
+  final Set<String> reunitedMembers = {};
+  final Map<String, CompanionMode> companionModes = {};
+  final Set<String> completedLandmarks = {};
 
   IslandTool tool = IslandTool.gather;
   GridCell? selectedCell;
   int wood = 0;
   int stone = 0;
   int food = 3;
+  int coal = 0;
+  int iron = 0;
+  int herb = 0;
   int day = 1;
   bool roofComplete = false;
+  GameChapter chapter = GameChapter.beach;
+  EndingChoice endingChoice = EndingChoice.none;
   String message = '周囲を探索し、木と岩を集めながら3人を捜そう';
 
   int get floorsBuilt =>
@@ -78,6 +94,65 @@ class IslandGameController extends ChangeNotifier {
       .map((entry) => entry.key);
 
   bool get homeComplete => roofComplete;
+
+  int get signalLevel => chapter.signalLevel;
+
+  bool get campaignComplete => endingChoice != EndingChoice.none;
+
+  bool get endingAvailable => completedLandmarks.contains('summit_relay');
+
+  double get explorationLimit => switch (chapter) {
+    GameChapter.beach => 24,
+    GameChapter.forest => hasRecipe(CraftRecipe.bridgeKit) ? 64 : 38,
+    GameChapter.quarry => hasRecipe(CraftRecipe.ironPickaxe) ? 86 : 70,
+    GameChapter.marsh => hasRecipe(CraftRecipe.fogGear) ? 104 : 90,
+    GameChapter.summit || GameChapter.complete => 120,
+  };
+
+  int itemCount(IslandItem item) => switch (item) {
+    IslandItem.wood => wood,
+    IslandItem.stone => stone,
+    IslandItem.food => food,
+    IslandItem.coal => coal,
+    IslandItem.iron => iron,
+    IslandItem.herb => herb,
+  };
+
+  bool hasRecipe(CraftRecipe recipe) => craftedRecipes.contains(recipe);
+
+  String get chapterObjective {
+    switch (chapter) {
+      case GameChapter.beach:
+        if (!homeComplete) return '床4・壁4・屋根を建てて小屋を完成させる';
+        if (!hasRecipe(CraftRecipe.campfire)) return '焚き火をクラフトする';
+        if (!hasRecipe(CraftRecipe.workbench)) return '作業台をクラフトする';
+        return '密林へ向かう';
+      case GameChapter.forest:
+        if (!hasRecipe(CraftRecipe.stoneAxe)) return '作業台で石の斧を作る';
+        if (!hasRecipe(CraftRecipe.stonePickaxe)) return '石のツルハシを作る';
+        if (!hasRecipe(CraftRecipe.bridgeKit)) return '木材8で橋梁キットを作る';
+        if (!reunitedMembers.contains('yametaro')) return '壊れた無線塔でやめ太郎を捜す';
+        return '無線塔を調べて修復する（石材4・石炭2）';
+      case GameChapter.quarry:
+        if (!hasRecipe(CraftRecipe.ironPickaxe)) return '鉄4で鉄のツルハシを作る';
+        if (!reunitedMembers.contains('yumemin')) return '漂着した会議室でゆめみんを捜す';
+        if (!hasRecipe(CraftRecipe.forge)) return 'ゆめみんと簡易炉を作る';
+        return '漂着した会議室の中継器を起動する';
+      case GameChapter.marsh:
+        if (!hasRecipe(CraftRecipe.fogGear)) return '薬草6・石炭2で霧防護具を作る';
+        if (!reunitedMembers.contains('takosan')) return 'タコ石の門でタコさんを捜す';
+        return 'タコ石の門を修復する（鉄6・石炭4）';
+      case GameChapter.summit:
+        return '山頂の社内遺跡で最終通信機を完成させる';
+      case GameChapter.complete:
+        return endingChoice == EndingChoice.stay
+            ? '島を新しい窓際族エリアとして発展させる'
+            : '救助船の到着を待つ';
+    }
+  }
+
+  String get progressLabel =>
+      '通信 Lv.$signalLevel/4 · 再会 ${reunitedMembers.length}/3';
 
   void reset() {
     resources.clear();
@@ -98,6 +173,18 @@ class IslandGameController extends ChangeNotifier {
           case 2:
             resources[GridCell(x, z)] = IslandResource.rock;
             break;
+          case 3:
+            resources[GridCell(x, z)] = IslandResource.berry;
+            break;
+          case 4:
+            resources[GridCell(x, z)] = IslandResource.coal;
+            break;
+          case 5:
+            resources[GridCell(x, z)] = IslandResource.iron;
+            break;
+          case 6:
+            resources[GridCell(x, z)] = IslandResource.herb;
+            break;
           default:
             break;
         }
@@ -109,20 +196,34 @@ class IslandGameController extends ChangeNotifier {
       const GridCell(-3, 2): IslandResource.tree,
       const GridCell(3, 2): IslandResource.tree,
       const GridCell(0, -3): IslandResource.tree,
+      const GridCell(-4, 4): IslandResource.tree,
+      const GridCell(4, 4): IslandResource.tree,
+      const GridCell(0, 5): IslandResource.tree,
       const GridCell(-2, -3): IslandResource.rock,
       const GridCell(2, -3): IslandResource.rock,
+      const GridCell(5, 0): IslandResource.rock,
+      const GridCell(-5, 0): IslandResource.berry,
     });
     structures.clear();
     torches
       ..clear()
       ..add(const GridCell(2, 2));
+    craftedRecipes.clear();
+    reunitedMembers.clear();
+    companionModes.clear();
+    completedLandmarks.clear();
     tool = IslandTool.gather;
     selectedCell = null;
     wood = 0;
     stone = 0;
     food = 3;
+    coal = 0;
+    iron = 0;
+    herb = 0;
     day = 1;
     roofComplete = false;
+    chapter = GameChapter.beach;
+    endingChoice = EndingChoice.none;
     message = '周囲を探索し、木と岩を集めながら3人を捜そう';
     notifyListeners();
   }
@@ -155,15 +256,55 @@ class IslandGameController extends ChangeNotifier {
       }
       resources.remove(cell);
       if (resource == IslandResource.tree) {
-        wood += 2;
-        message = '木材を2個入手';
+        final amount = hasRecipe(CraftRecipe.stoneAxe) ? 4 : 2;
+        wood += amount;
+        message = '木材を$amount個入手';
         notifyListeners();
         return IslandActionResult(IslandActionKind.treeHarvested, cell);
       }
-      stone += 2;
-      message = '石材を2個入手';
+      if (resource == IslandResource.rock) {
+        final amount = hasRecipe(CraftRecipe.stonePickaxe) ? 3 : 2;
+        stone += amount;
+        message = '石材を$amount個入手';
+        notifyListeners();
+        return IslandActionResult(IslandActionKind.rockHarvested, cell);
+      }
+      if (resource == IslandResource.berry) {
+        food += 2;
+        message = '食料を2個入手';
+        notifyListeners();
+        return IslandActionResult(IslandActionKind.berryHarvested, cell);
+      }
+      if (resource == IslandResource.coal) {
+        if (!hasRecipe(CraftRecipe.stonePickaxe)) {
+          resources[cell] = resource;
+          message = '石炭には石のツルハシが必要';
+          notifyListeners();
+          return IslandActionResult(IslandActionKind.none, cell);
+        }
+        final amount = hasRecipe(CraftRecipe.ironPickaxe) ? 3 : 2;
+        coal += amount;
+        message = '石炭を$amount個入手';
+        notifyListeners();
+        return IslandActionResult(IslandActionKind.coalHarvested, cell);
+      }
+      if (resource == IslandResource.iron) {
+        if (!hasRecipe(CraftRecipe.stonePickaxe)) {
+          resources[cell] = resource;
+          message = '鉄鉱石には石のツルハシが必要';
+          notifyListeners();
+          return IslandActionResult(IslandActionKind.none, cell);
+        }
+        final amount = hasRecipe(CraftRecipe.ironPickaxe) ? 3 : 1;
+        iron += amount;
+        message = '鉄を$amount個入手';
+        notifyListeners();
+        return IslandActionResult(IslandActionKind.ironHarvested, cell);
+      }
+      herb += 2;
+      message = '薬草を2個入手';
       notifyListeners();
-      return IslandActionResult(IslandActionKind.rockHarvested, cell);
+      return IslandActionResult(IslandActionKind.herbHarvested, cell);
     }
 
     final level = structures[cell] ?? BuildLevel.ground;
@@ -210,7 +351,8 @@ class IslandGameController extends ChangeNotifier {
         } else {
           wood -= 2;
           roofComplete = true;
-          message = '生活拠点が完成！ 島流しもメリットです！';
+          message = '小屋が完成！ 次は焚き火と作業台を用意しよう';
+          _updateChapter();
           notifyListeners();
           return IslandActionResult(IslandActionKind.roofPlaced, cell);
         }
@@ -231,5 +373,203 @@ class IslandGameController extends ChangeNotifier {
     }
     notifyListeners();
     return IslandActionResult(IslandActionKind.none, cell);
+  }
+
+  bool canCraft(CraftRecipe recipe) {
+    if (hasRecipe(recipe)) return false;
+    if (recipe == CraftRecipe.workbench && !homeComplete) return false;
+    if (recipe != CraftRecipe.campfire &&
+        recipe != CraftRecipe.workbench &&
+        !hasRecipe(CraftRecipe.workbench)) {
+      return false;
+    }
+    if ((recipe == CraftRecipe.ironPickaxe ||
+            recipe == CraftRecipe.forge ||
+            recipe == CraftRecipe.fogGear) &&
+        !reunitedMembers.contains('yumemin')) {
+      return false;
+    }
+    if (recipe == CraftRecipe.fogGear && !hasRecipe(CraftRecipe.forge)) {
+      return false;
+    }
+    return recipe.cost.entries.every(
+      (entry) => itemCount(entry.key) >= entry.value,
+    );
+  }
+
+  bool craft(CraftRecipe recipe) {
+    if (hasRecipe(recipe)) {
+      message = '${recipe.label}は作成済み';
+      notifyListeners();
+      return false;
+    }
+    if (!canCraft(recipe)) {
+      final missing = recipe.cost.entries
+          .where((entry) => itemCount(entry.key) < entry.value)
+          .map((entry) => '${entry.key.label}${entry.value}')
+          .join('・');
+      message = missing.isEmpty ? '${recipe.label}はまだ作れない' : '$missingが必要';
+      notifyListeners();
+      return false;
+    }
+    for (final entry in recipe.cost.entries) {
+      _changeItem(entry.key, -entry.value);
+    }
+    craftedRecipes.add(recipe);
+    message = '${recipe.label}をクラフトした';
+    _updateChapter();
+    notifyListeners();
+    return true;
+  }
+
+  bool reuniteMember(String memberId, String displayName) {
+    if (!reunitedMembers.add(memberId)) return false;
+    companionModes[memberId] = CompanionMode.follow;
+    message = '$displayNameと再会！ 固有能力と新レシピが使えるようになった';
+    notifyListeners();
+    return true;
+  }
+
+  CompanionMode companionMode(String memberId) =>
+      companionModes[memberId] ?? CompanionMode.camp;
+
+  void toggleCompanionMode(String memberId) {
+    if (!reunitedMembers.contains(memberId)) return;
+    final next = companionMode(memberId) == CompanionMode.follow
+        ? CompanionMode.camp
+        : CompanionMode.follow;
+    companionModes[memberId] = next;
+    message = next == CompanionMode.follow ? '仲間が探索へ同行する' : '仲間を拠点の設備担当に配置した';
+    notifyListeners();
+  }
+
+  bool completeLandmark(String id) {
+    if (completedLandmarks.contains(id)) {
+      message = 'この設備は起動済み';
+      notifyListeners();
+      return false;
+    }
+    switch (id) {
+      case 'radio_tower':
+        if (chapter != GameChapter.forest ||
+            !reunitedMembers.contains('yametaro') ||
+            !hasRecipe(CraftRecipe.bridgeKit) ||
+            !_spend({IslandItem.stone: 4, IslandItem.coal: 2})) {
+          message = 'やめ太郎・橋梁キット・石材4・石炭2が必要';
+          notifyListeners();
+          return false;
+        }
+        chapter = GameChapter.quarry;
+        break;
+      case 'office_wreck':
+        if (chapter != GameChapter.quarry ||
+            !reunitedMembers.contains('yumemin') ||
+            !hasRecipe(CraftRecipe.ironPickaxe) ||
+            !hasRecipe(CraftRecipe.forge)) {
+          message = 'ゆめみん・鉄のツルハシ・簡易炉が必要';
+          notifyListeners();
+          return false;
+        }
+        chapter = GameChapter.marsh;
+        break;
+      case 'octopus_shrine':
+        if (chapter != GameChapter.marsh ||
+            !reunitedMembers.contains('takosan') ||
+            !hasRecipe(CraftRecipe.fogGear) ||
+            !_spend({IslandItem.iron: 6, IslandItem.coal: 4})) {
+          message = 'タコさん・霧防護具・鉄6・石炭4が必要';
+          notifyListeners();
+          return false;
+        }
+        chapter = GameChapter.summit;
+        break;
+      case 'summit_relay':
+        if (chapter != GameChapter.summit ||
+            reunitedMembers.length < 3 ||
+            !_spend({
+              IslandItem.iron: 8,
+              IslandItem.coal: 6,
+              IslandItem.stone: 10,
+            })) {
+          message = '全員の力と鉄8・石炭6・石材10が必要';
+          notifyListeners();
+          return false;
+        }
+        break;
+      default:
+        message = 'ここには修復できる設備がない';
+        notifyListeners();
+        return false;
+    }
+    completedLandmarks.add(id);
+    message = id == 'summit_relay'
+        ? '最終通信機が完成。会社へ救助信号を送るか決めよう'
+        : '中継設備を起動！ 圏外の霧が後退した';
+    notifyListeners();
+    return true;
+  }
+
+  void chooseEnding(EndingChoice choice) {
+    if (!endingAvailable || choice == EndingChoice.none) return;
+    endingChoice = choice;
+    chapter = GameChapter.complete;
+    message = choice == EndingChoice.stay
+        ? '救助を断り、島を新しい窓際族エリアにした'
+        : '救助信号を送信。全員で会社へ帰還する';
+    notifyListeners();
+  }
+
+  void grantDebugResources([int amount = 99]) {
+    wood += amount;
+    stone += amount;
+    food += amount;
+    coal += amount;
+    iron += amount;
+    herb += amount;
+    message = 'デバッグ資源を追加';
+    notifyListeners();
+  }
+
+  void _updateChapter() {
+    if (chapter == GameChapter.beach &&
+        homeComplete &&
+        hasRecipe(CraftRecipe.campfire) &&
+        hasRecipe(CraftRecipe.workbench)) {
+      chapter = GameChapter.forest;
+      message = '生活基盤完成。通信Lv.1、密林の圏外霧が後退した';
+    }
+  }
+
+  bool _spend(Map<IslandItem, int> cost) {
+    if (!cost.entries.every((entry) => itemCount(entry.key) >= entry.value)) {
+      return false;
+    }
+    for (final entry in cost.entries) {
+      _changeItem(entry.key, -entry.value);
+    }
+    return true;
+  }
+
+  void _changeItem(IslandItem item, int delta) {
+    switch (item) {
+      case IslandItem.wood:
+        wood += delta;
+        break;
+      case IslandItem.stone:
+        stone += delta;
+        break;
+      case IslandItem.food:
+        food += delta;
+        break;
+      case IslandItem.coal:
+        coal += delta;
+        break;
+      case IslandItem.iron:
+        iron += delta;
+        break;
+      case IslandItem.herb:
+        herb += delta;
+        break;
+    }
   }
 }

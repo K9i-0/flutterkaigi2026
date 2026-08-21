@@ -57,6 +57,7 @@ class _IslandPageState extends State<IslandPage> {
   bool _ready = false;
   bool _showIntro = true;
   bool _showVisualSettings = false;
+  bool _showCrafting = false;
   Object? _error;
   Offset? _gestureStart;
   Offset? _gestureLatest;
@@ -177,7 +178,9 @@ class _IslandPageState extends State<IslandPage> {
   void _endViewGesture(Size viewSize) {
     if (!_gestureMoved &&
         !_showIntro &&
-        !_controller.homeComplete &&
+        !_controller.campaignComplete &&
+        !_showCrafting &&
+        !_showVisualSettings &&
         _gestureLatest != null) {
       _islandScene.handleTap(_gestureLatest!, viewSize);
     }
@@ -225,6 +228,8 @@ class _IslandPageState extends State<IslandPage> {
                   scene: _islandScene,
                   onReset: _reset,
                   onSettings: () => setState(() => _showVisualSettings = true),
+                  onCrafting: () => setState(() => _showCrafting = true),
+                  onObjective: _islandScene.performNearbyObjective,
                 ),
               ),
             ),
@@ -259,7 +264,33 @@ class _IslandPageState extends State<IslandPage> {
                   _gameFocus.requestFocus();
                 },
               ),
-            if (_controller.homeComplete) _CompleteOverlay(onReset: _reset),
+            ListenableBuilder(
+              listenable: _controller,
+              builder: (context, _) {
+                if (_controller.endingAvailable &&
+                    !_controller.campaignComplete) {
+                  return _EndingDecisionOverlay(
+                    onChoose: _islandScene.chooseEnding,
+                  );
+                }
+                if (_controller.campaignComplete) {
+                  return _CompleteOverlay(
+                    controller: _controller,
+                    onReset: _reset,
+                  );
+                }
+                return const SizedBox.shrink();
+              },
+            ),
+            if (_showCrafting)
+              _CraftingOverlay(
+                controller: _controller,
+                scene: _islandScene,
+                onClose: () {
+                  setState(() => _showCrafting = false);
+                  _gameFocus.requestFocus();
+                },
+              ),
             if (_showVisualSettings)
               _VisualSettingsOverlay(
                 scene: _islandScene,
@@ -307,7 +338,7 @@ class _IslandMiniMap extends StatelessWidget {
                 ),
                 const SizedBox(width: 10),
                 Text(
-                  '再会 ${scene.reunitedCount}/3',
+                  '通信 ${scene.controller.signalLevel}/4 · 再会 ${scene.reunitedCount}/3',
                   style: const TextStyle(
                     color: Color(0xffffc36b),
                     fontSize: 9,
@@ -349,6 +380,15 @@ class _IslandMapPainter extends CustomPainter {
     final grass = Paint()
       ..color = const Color(0xff3f8d55)
       ..isAntiAlias = false;
+    final quarry = Paint()
+      ..color = const Color(0xff687779)
+      ..isAntiAlias = false;
+    final marsh = Paint()
+      ..color = const Color(0xff356a5a)
+      ..isAntiAlias = false;
+    final summit = Paint()
+      ..color = const Color(0xff8a7b69)
+      ..isAntiAlias = false;
     final ocean = Paint()
       ..color = const Color(0xff17445c)
       ..isAntiAlias = false;
@@ -365,9 +405,13 @@ class _IslandMapPainter extends CustomPainter {
         if (!scene.isExplored(x, z)) continue;
         final paint = !IslandWorld.isLand(x, z)
             ? ocean
-            : IslandWorld.isSand(x, z)
-            ? sand
-            : grass;
+            : switch (IslandWorld.biomeCode(x, z)) {
+                0 => sand,
+                1 => grass,
+                2 => quarry,
+                3 => marsh,
+                _ => summit,
+              };
         canvas.drawRect(
           Rect.fromLTWH(
             (x + IslandWorld.worldHalfSize) * scale,
@@ -390,7 +434,10 @@ class _IslandMapPainter extends CustomPainter {
         center,
         3.2,
         Paint()
-          ..color = scene.isMemberReunited(landmark.memberId)
+          ..color =
+              (landmark.memberId == 'all'
+                  ? scene.isLandmarkComplete(landmark.id)
+                  : scene.isMemberReunited(landmark.memberId))
               ? const Color(0xff72efbc)
               : const Color(0xffff8b5f),
       );
@@ -407,6 +454,14 @@ class _IslandMapPainter extends CustomPainter {
     final player = Offset(
       (scene.playerX + IslandWorld.worldHalfSize + 0.5) * scale,
       (scene.playerZ + IslandWorld.worldHalfSize + 0.5) * scale,
+    );
+    canvas.drawCircle(
+      const Offset(128.5, 128.5) * scale,
+      scene.controller.explorationLimit * scale,
+      Paint()
+        ..color = const Color(0xaa72efbc)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.2,
     );
     canvas.drawCircle(player, 4.5, Paint()..color = const Color(0xffffdf61));
     canvas.drawCircle(
@@ -691,12 +746,16 @@ class _IslandHud extends StatelessWidget {
     required this.scene,
     required this.onReset,
     required this.onSettings,
+    required this.onCrafting,
+    required this.onObjective,
   });
 
   final IslandGameController controller;
   final MadogiwaIslandScene scene;
   final VoidCallback onReset;
   final VoidCallback onSettings;
+  final VoidCallback onCrafting;
+  final VoidCallback onObjective;
 
   @override
   Widget build(BuildContext context) {
@@ -707,7 +766,7 @@ class _IslandHud extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Expanded(child: _TitleCard()),
+              Expanded(child: _TitleCard(controller: controller)),
               const SizedBox(width: 8),
               _ClockChip(scene: scene),
               const SizedBox(width: 6),
@@ -724,6 +783,13 @@ class _IslandHud extends StatelessWidget {
               ),
               const SizedBox(width: 6),
               _CameraButton(
+                key: const ValueKey('crafting_open'),
+                tooltip: 'インベントリとクラフト',
+                icon: Icons.inventory_2_rounded,
+                onPressed: onCrafting,
+              ),
+              const SizedBox(width: 5),
+              _CameraButton(
                 key: const ValueKey('visual_settings'),
                 tooltip: 'ビジュアル設定',
                 icon: Icons.tune_rounded,
@@ -735,6 +801,15 @@ class _IslandHud extends StatelessWidget {
           Row(
             children: [
               Expanded(child: _MessageCard(message: controller.message)),
+              if (scene.nearbyLandmark case final landmark?) ...[
+                const SizedBox(width: 8),
+                FilledButton.icon(
+                  key: const ValueKey('objective_action'),
+                  onPressed: onObjective,
+                  icon: const Icon(Icons.settings_input_antenna_rounded),
+                  label: Text('${landmark.label}を調べる'),
+                ),
+              ],
               const SizedBox(width: 8),
               _CameraButton(
                 key: const ValueKey('camera_left'),
@@ -754,7 +829,7 @@ class _IslandHud extends StatelessWidget {
             ],
           ),
           const Spacer(),
-          _BuildProgress(controller: controller),
+          _QuestProgress(controller: controller),
           const SizedBox(height: 8),
           _ToolBar(controller: controller, scene: scene),
           const SizedBox(height: 8),
@@ -885,7 +960,9 @@ class _HoldDirectionButton extends StatelessWidget {
 }
 
 class _TitleCard extends StatelessWidget {
-  const _TitleCard();
+  const _TitleCard({required this.controller});
+
+  final IslandGameController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -895,12 +972,12 @@ class _TitleCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
         border: Border.all(color: const Color(0x556ff0c0)),
       ),
-      child: const Padding(
-        padding: EdgeInsets.fromLTRB(12, 8, 12, 9),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(12, 8, 12, 9),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               '窓際族・無人島クラフト',
               style: TextStyle(
                 fontSize: 21,
@@ -909,8 +986,8 @@ class _TitleCard extends StatelessWidget {
               ),
             ),
             Text(
-              'DAY 1 · 生活基盤を確保せよ',
-              style: TextStyle(
+              '通信 Lv.${controller.signalLevel} · ${controller.chapter.label}',
+              style: const TextStyle(
                 color: Color(0xff72efbc),
                 fontSize: 9,
                 fontWeight: FontWeight.w900,
@@ -1038,8 +1115,8 @@ class _CameraButton extends StatelessWidget {
   }
 }
 
-class _BuildProgress extends StatelessWidget {
-  const _BuildProgress({required this.controller});
+class _QuestProgress extends StatelessWidget {
+  const _QuestProgress({required this.controller});
 
   final IslandGameController controller;
 
@@ -1052,59 +1129,24 @@ class _BuildProgress extends StatelessWidget {
         border: Border.all(color: const Color(0x556ff0c0)),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
-        child: Row(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _ProgressPart(label: '床', value: '${controller.floorsBuilt}/4'),
-            const _ProgressDivider(),
-            _ProgressPart(label: '壁', value: '${controller.wallsBuilt}/4'),
-            const _ProgressDivider(),
-            _ProgressPart(
-              label: '屋根',
-              value: controller.roofComplete ? '完成' : '未設置',
+            Text(
+              controller.chapterObjective,
+              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w900),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              '${controller.progressLabel} · 探索半径 ${controller.explorationLimit.round()}マス',
+              style: const TextStyle(color: Color(0xff9cb8bd), fontSize: 9),
             ),
           ],
         ),
       ),
     );
   }
-}
-
-class _ProgressPart extends StatelessWidget {
-  const _ProgressPart({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text.rich(
-      TextSpan(
-        text: '$label ',
-        style: const TextStyle(color: Color(0xff9cb8bd), fontSize: 10),
-        children: [
-          TextSpan(
-            text: value,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w900,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ProgressDivider extends StatelessWidget {
-  const _ProgressDivider();
-
-  @override
-  Widget build(BuildContext context) => const Padding(
-    padding: EdgeInsets.symmetric(horizontal: 10),
-    child: Text('›', style: TextStyle(color: Color(0xff59d8aa))),
-  );
 }
 
 class _ToolBar extends StatelessWidget {
@@ -1209,6 +1251,211 @@ class _ToolButton extends StatelessWidget {
   }
 }
 
+class _CraftingOverlay extends StatelessWidget {
+  const _CraftingOverlay({
+    required this.controller,
+    required this.scene,
+    required this.onClose,
+  });
+
+  final IslandGameController controller;
+  final MadogiwaIslandScene scene;
+  final VoidCallback onClose;
+
+  @override
+  Widget build(BuildContext context) {
+    return ColoredBox(
+      color: const Color(0x9900141b),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 690, maxHeight: 560),
+          child: Material(
+            color: const Color(0xff08242b),
+            borderRadius: BorderRadius.circular(26),
+            clipBehavior: Clip.antiAlias,
+            child: ListenableBuilder(
+              listenable: controller,
+              builder: (context, _) => Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(22, 14, 12, 12),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.inventory_2_rounded,
+                          color: Color(0xff72efbc),
+                        ),
+                        const SizedBox(width: 10),
+                        const Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'インベントリ・クラフト',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                              Text(
+                                '設備と道具が探索範囲を広げる',
+                                style: TextStyle(
+                                  color: Color(0xff9cb8bd),
+                                  fontSize: 10,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        IconButton(
+                          key: const ValueKey('crafting_close'),
+                          onPressed: onClose,
+                          icon: const Icon(Icons.close_rounded),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Divider(height: 1),
+                  Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        for (final item in IslandItem.values)
+                          Chip(
+                            avatar: Icon(_itemIcon(item), size: 16),
+                            label: Text(
+                              '${item.label} ${controller.itemCount(item)}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  if (controller.reunitedMembers.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(14, 0, 14, 10),
+                      child: Row(
+                        children: [
+                          const Text(
+                            '仲間配置',
+                            style: TextStyle(fontWeight: FontWeight.w900),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Wrap(
+                              spacing: 7,
+                              children: [
+                                for (final id in controller.reunitedMembers)
+                                  ActionChip(
+                                    key: ValueKey('companion_$id'),
+                                    avatar: Icon(
+                                      controller.companionMode(id) ==
+                                              CompanionMode.follow
+                                          ? Icons.directions_walk_rounded
+                                          : Icons.home_work_rounded,
+                                      size: 16,
+                                    ),
+                                    label: Text(
+                                      '${_memberName(id)}: '
+                                      '${controller.companionMode(id) == CompanionMode.follow ? '同行' : '拠点'}',
+                                    ),
+                                    onPressed: () =>
+                                        controller.toggleCompanionMode(id),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  Expanded(
+                    child: ListView.builder(
+                      padding: const EdgeInsets.fromLTRB(14, 0, 14, 18),
+                      itemCount: CraftRecipe.values.length,
+                      itemBuilder: (context, index) {
+                        final recipe = CraftRecipe.values[index];
+                        final owned = controller.hasRecipe(recipe);
+                        final canCraft = controller.canCraft(recipe);
+                        final cost = recipe.cost.entries
+                            .map((entry) => '${entry.key.label}${entry.value}')
+                            .join('・');
+                        return Card(
+                          color: const Color(0xff10343b),
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: owned
+                                  ? const Color(0xff275b4b)
+                                  : const Color(0xff183f47),
+                              child: Icon(
+                                owned
+                                    ? Icons.check_rounded
+                                    : _recipeIcon(recipe),
+                                color: owned
+                                    ? const Color(0xff72efbc)
+                                    : Colors.white,
+                              ),
+                            ),
+                            title: Text(
+                              recipe.label,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                            subtitle: Text('${recipe.description}\n必要: $cost'),
+                            isThreeLine: true,
+                            trailing: FilledButton(
+                              key: ValueKey('craft_${recipe.name}'),
+                              onPressed: canCraft
+                                  ? () => scene.craftRecipe(recipe)
+                                  : null,
+                              child: Text(owned ? '作成済み' : '作る'),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  static IconData _itemIcon(IslandItem item) => switch (item) {
+    IslandItem.wood => Icons.forest_rounded,
+    IslandItem.stone => Icons.landscape_rounded,
+    IslandItem.food => Icons.restaurant_rounded,
+    IslandItem.coal => Icons.circle,
+    IslandItem.iron => Icons.hexagon_rounded,
+    IslandItem.herb => Icons.eco_rounded,
+  };
+
+  static IconData _recipeIcon(CraftRecipe recipe) => switch (recipe) {
+    CraftRecipe.campfire => Icons.local_fire_department_rounded,
+    CraftRecipe.workbench => Icons.carpenter_rounded,
+    CraftRecipe.stoneAxe => Icons.hardware_rounded,
+    CraftRecipe.stonePickaxe ||
+    CraftRecipe.ironPickaxe => Icons.construction_rounded,
+    CraftRecipe.bridgeKit => Icons.view_stream_rounded,
+    CraftRecipe.forge => Icons.whatshot_rounded,
+    CraftRecipe.fogGear => Icons.masks_rounded,
+  };
+
+  static String _memberName(String id) => switch (id) {
+    'yametaro' => 'やめ太郎',
+    'yumemin' => 'ゆめみん',
+    'takosan' => 'タコさん',
+    _ => id,
+  };
+}
+
 class _IntroOverlay extends StatelessWidget {
   const _IntroOverlay({required this.onStart});
 
@@ -1240,7 +1487,7 @@ class _IntroOverlay extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   const Text(
-                    '無人島へ異動させられた4人は離れ離れ。\nそば屋を操作して地図を開拓し、\nランドマークに隠れた3人と再会しよう。',
+                    '無人島へ異動させられた4人は離れ離れ。\n拠点と通信設備をクラフトして圏外の霧を払い、\n3人と再会して山頂の通信機を完成させよう。',
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Color(0xffbad0d3), height: 1.55),
                   ),
@@ -1249,7 +1496,7 @@ class _IntroOverlay extends StatelessWidget {
                     key: const ValueKey('intro_start'),
                     onPressed: onStart,
                     icon: const Icon(Icons.handyman_rounded),
-                    label: const Text('生活基盤をつくる'),
+                    label: const Text('島流し生活を始める'),
                     style: FilledButton.styleFrom(
                       backgroundColor: const Color(0xff62dda8),
                       foregroundColor: const Color(0xff062018),
@@ -1267,8 +1514,77 @@ class _IntroOverlay extends StatelessWidget {
   }
 }
 
+class _EndingDecisionOverlay extends StatelessWidget {
+  const _EndingDecisionOverlay({required this.onChoose});
+
+  final ValueChanged<EndingChoice> onChoose;
+
+  @override
+  Widget build(BuildContext context) {
+    return ColoredBox(
+      color: const Color(0xaa00141b),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 520),
+          child: Card(
+            color: const Color(0xf2071b21),
+            child: Padding(
+              padding: const EdgeInsets.all(26),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.settings_input_antenna_rounded,
+                    size: 48,
+                    color: Color(0xff72efbc),
+                  ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    '最終通信機、完成',
+                    style: TextStyle(fontSize: 27, fontWeight: FontWeight.w900),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    '会社へ救助信号を送るか、\nこの島を新しい窓際族エリアにするか。',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Color(0xffc0d1d4), height: 1.5),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          key: const ValueKey('ending_rescue'),
+                          onPressed: () => onChoose(EndingChoice.rescue),
+                          icon: const Icon(Icons.directions_boat_rounded),
+                          label: const Text('会社へ帰る'),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: FilledButton.icon(
+                          key: const ValueKey('ending_stay'),
+                          onPressed: () => onChoose(EndingChoice.stay),
+                          icon: const Icon(Icons.home_work_rounded),
+                          label: const Text('島に残る'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _CompleteOverlay extends StatelessWidget {
-  const _CompleteOverlay({required this.onReset});
+  const _CompleteOverlay({required this.controller, required this.onReset});
+
+  final IslandGameController controller;
 
   final VoidCallback onReset;
 
@@ -1290,15 +1606,25 @@ class _CompleteOverlay extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text('🏠', style: TextStyle(fontSize: 42)),
-                  const SizedBox(height: 8),
-                  const Text(
-                    '生活拠点、完成！',
-                    style: TextStyle(fontSize: 27, fontWeight: FontWeight.w900),
+                  Text(
+                    controller.endingChoice == EndingChoice.stay ? '🏝️' : '🚢',
+                    style: const TextStyle(fontSize: 42),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    '「島流しもメリットです！」\n窓際族の無人島生活は、ここから始まる。',
+                  Text(
+                    controller.endingChoice == EndingChoice.stay
+                        ? '窓際族自治区、誕生！'
+                        : '島流し任務、完了！',
+                    style: const TextStyle(
+                      fontSize: 27,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    controller.endingChoice == EndingChoice.stay
+                        ? '救助を丁重に断り、\n島全体を最高の窓際族エリアにした。'
+                        : '全員で救助船へ乗り込み、\n無人島で得たクラフト技術を会社へ持ち帰った。',
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Color(0xffc0d1d4), height: 1.5),
                   ),
