@@ -37,6 +37,7 @@
 - **[そば屋のビールダッシュ ～ジョッキtoジョッキで本日開店！～](12_SOBA_BEER_RUN_GAME/README.md)** (`12_SOBA_BEER_RUN_GAME/`): そば屋を左右に動かして3レーンのビールを集め、6杯ごとのフィーバーで提供数を伸ばす45秒ランナー。ゴール後は実写のおかやまんが大型スクリーン越しにランク判定。Vite + TypeScript + Three.js製。
 - **[そば屋の会社ブレイカー ～3D物理解体～](13_COMPANY_BREAKER_GAME/README.md)** (`13_COMPANY_BREAKER_GAME/`): 大型ビールジョッキを投げ、約120〜230個の独立剛体で組まれた無人のモックオフィスを10投以内に連鎖崩壊させる3D物理解体アクション。Vite + TypeScript + Three.js + Rapier製。
 - **[MADOGIWA GRID](14_MADOGIWA_CARD_GAME/README.md)** (`14_MADOGIWA_CARD_GAME/`): 窓際族8人のカードで3×5盤面を奪い合う、短時間の1対1タクティカルカードゲーム。固有能力、3段階AI、Flame製のカード移動・ホログラム・固有エフェクト、決定的シナリオハーネスを収録。Flutter + Flame製。
+- **[窓際族・無人島クラフト](17_FLUTTER_SCENE_GAME/README.md)** (`17_FLUTTER_SCENE_GAME/`): 島流しになったそば屋、やめ太郎、ゆめみん、タコさんが256×256マスの島を探索し、採取・建築で生活拠点を作るMinecraft風3Dクラフト。16×16チャンク、動的メッシュ、自由移動をFlutter 3.47 stable + Flutter Sceneで検証。
 
 ## 制作資料
 - 世界観: [01_WORLD/WORLD_BIBLE.md](01_WORLD/WORLD_BIBLE.md)
