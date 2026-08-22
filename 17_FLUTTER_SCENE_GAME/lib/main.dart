@@ -250,6 +250,23 @@ class _IslandPageState extends State<IslandPage> {
             ),
             SafeArea(
               child: Align(
+                alignment: Alignment.bottomRight,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 14, 16),
+                  child: IgnorePointer(
+                    child: ListenableBuilder(
+                      listenable: _islandScene,
+                      builder: (context, _) =>
+                          _islandScene.performanceHudEnabled
+                          ? _PerformanceHud(scene: _islandScene)
+                          : const SizedBox.shrink(),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SafeArea(
+              child: Align(
                 alignment: Alignment.bottomLeft,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(18, 0, 0, 68),
@@ -590,6 +607,13 @@ class _VisualSettingsOverlay extends StatelessWidget {
                               scene: scene,
                             ),
                             _VisualSwitch(
+                              option: 'performanceHud',
+                              label: 'パフォーマンスHUD',
+                              description: 'FPS・フレーム時間・描画規模を表示',
+                              value: options['performanceHud']!,
+                              scene: scene,
+                            ),
+                            _VisualSwitch(
                               option: 'shadows',
                               label: '太陽・月の影',
                               description: '3 cascades / 56マス / 1024px',
@@ -841,18 +865,95 @@ class _IslandHud extends StatelessWidget {
           _QuestProgress(controller: controller),
           const SizedBox(height: 8),
           _ToolBar(controller: controller, scene: scene),
-          const SizedBox(height: 8),
+        ],
+      ),
+    );
+  }
+}
+
+class _PerformanceHud extends StatelessWidget {
+  const _PerformanceHud({required this.scene});
+
+  final MadogiwaIslandScene scene;
+
+  @override
+  Widget build(BuildContext context) {
+    final fps = scene.framesPerSecond;
+    final fpsColor = fps <= 0
+        ? const Color(0xff8ca8ae)
+        : fps >= 55
+        ? const Color(0xff72efbc)
+        : fps >= 30
+        ? const Color(0xffffcf67)
+        : const Color(0xffff6b61);
+    return Container(
+      key: const ValueKey('performance_hud'),
+      width: 220,
+      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+      decoration: BoxDecoration(
+        color: const Color(0xe6082027),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: fpsColor.withValues(alpha: 0.62)),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x55000000),
+            blurRadius: 12,
+            offset: Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.speed_rounded, size: 17, color: fpsColor),
+              const SizedBox(width: 6),
+              const Text(
+                'PERFORMANCE',
+                style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900),
+              ),
+              const Spacer(),
+              Text(
+                '${fps.toStringAsFixed(0)} FPS',
+                key: const ValueKey('performance_fps'),
+                style: TextStyle(
+                  color: fpsColor,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
           Text(
-            'POS ${scene.playerX},${scene.playerZ} · '
-            'CHUNK ${scene.playerChunkX},${scene.playerChunkZ} · '
-            '${scene.activeChunkCount}/256 ACTIVE · '
-            '${scene.terrainQuadCount} QUADS · '
-            '${scene.characterMeshCount} CHARACTER MESHES · '
-            '${scene.loadDuration.inMilliseconds}ms',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.58),
+            '${scene.averageFrameTimeMs.toStringAsFixed(1)} ms AVG  ·  '
+            '${scene.p95FrameTimeMs.toStringAsFixed(1)} ms P95',
+            style: const TextStyle(
+              color: Color(0xffbdd2d6),
+              fontSize: 10,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          Text(
+            '${scene.onePercentLowFps.toStringAsFixed(0)} FPS 1% LOW',
+            style: const TextStyle(
+              color: Color(0xff8fb0b7),
               fontSize: 9,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const Divider(height: 12, color: Color(0x3372efbc)),
+          Text(
+            '${scene.activeChunkCount}/256 CHUNKS  ·  '
+            '${scene.terrainQuadCount} QUADS\n'
+            '${scene.characterMeshCount} MESHES  ·  '
+            'LOAD ${scene.loadDuration.inMilliseconds} ms',
+            style: const TextStyle(
+              color: Color(0xff8fb0b7),
+              fontSize: 9,
+              height: 1.45,
               fontWeight: FontWeight.w700,
             ),
           ),

@@ -33,6 +33,12 @@ void registerIslandMarionetteExtensions() {
         'clock': scene.clockLabel,
         'phase': scene.phaseLabel,
         'visualOptions': scene.visualOptions,
+        'performance': {
+          'fps': scene.framesPerSecond,
+          'averageFrameTimeMs': scene.averageFrameTimeMs,
+          'p95FrameTimeMs': scene.p95FrameTimeMs,
+          'onePercentLowFps': scene.onePercentLowFps,
+        },
         'torches': scene.torchCount,
         'activeTorchLights': scene.activeTorchLightCount,
         'reunitedCount': scene.reunitedCount,

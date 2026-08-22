@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_scene/scene.dart';
 import 'package:vector_math/vector_math.dart' as vm;
 
+import '../game/frame_performance_tracker.dart';
 import '../game/island_game_controller.dart';
 import '../game/movement_math.dart';
 import '../game/visual_math.dart';
@@ -76,6 +77,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
   final List<_LandmarkGlow> _landmarkGlows = [];
   final List<Node> _resourceAnimatedParts = [];
   final List<_Worker> _workers = [];
+  final FramePerformanceTracker _performance = FramePerformanceTracker();
   final Uint8List _explored = Uint8List(
     IslandWorld.worldSize * IslandWorld.worldSize,
   );
@@ -127,6 +129,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
   bool dynamicFogEnabled = true;
   bool waterEffectsEnabled = true;
   bool signalBoundaryEnabled = true;
+  bool performanceHudEnabled = true;
   double timeOfDay = 0.34;
 
   int characterMeshCount = 0;
@@ -155,6 +158,10 @@ class MadogiwaIslandScene extends ChangeNotifier {
   int get activeTorchLightCount =>
       _torches.values.where((torch) => torch.light.intensity > 0).length;
   double get signalBoundaryRadius => _signalBoundaryRadius;
+  double get framesPerSecond => _performance.framesPerSecond;
+  double get averageFrameTimeMs => _performance.averageFrameTimeMs;
+  double get p95FrameTimeMs => _performance.p95FrameTimeMs;
+  double get onePercentLowFps => _performance.onePercentLowFps;
   bool get isJumping => _isJumping;
   double get jumpOffset =>
       _isJumping ? jumpArcOffset(_jumpElapsed / _jumpDuration) : 0;
@@ -1200,6 +1207,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
     'dynamicFog': dynamicFogEnabled,
     'waterEffects': waterEffectsEnabled,
     'signalBoundary': signalBoundaryEnabled,
+    'performanceHud': performanceHudEnabled,
   };
 
   bool setVisualOption(String option, bool enabled) {
@@ -1226,6 +1234,8 @@ class MadogiwaIslandScene extends ChangeNotifier {
         waterEffectsEnabled = enabled;
       case 'signalBoundary':
         signalBoundaryEnabled = enabled;
+      case 'performanceHud':
+        performanceHudEnabled = enabled;
       default:
         return false;
     }
@@ -1252,6 +1262,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
     dynamicFogEnabled = true;
     waterEffectsEnabled = true;
     signalBoundaryEnabled = true;
+    performanceHudEnabled = true;
     timeOfDay = 0.34;
     _updateVisualEnvironment(0);
     notifyListeners();
@@ -1706,6 +1717,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
 
   void tick(double deltaSeconds) {
     if (!_loaded) return;
+    _performance.recordFrame(deltaSeconds);
     final dt = deltaSeconds.clamp(0.0, 0.05);
     _elapsed += dt;
     _updateVisualEnvironment(dt);
