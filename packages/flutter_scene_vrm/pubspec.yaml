@@ -1,0 +1,22 @@
+name: flutter_scene_vrm
+description: VRM 1.0 runtime integration layer for a flutter_scene fork.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.10.0
+  flutter: ">=3.47.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_scene:
+    git:
+      url: https://github.com/K9i-0/flutter_scene.git
+      ref: 8d340138f80d1fb5d09d163f62ab836be9379e2e
+      path: packages/flutter_scene
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
