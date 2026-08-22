@@ -29,6 +29,7 @@ class MobileFaceCameraTracker extends FaceCameraTracker {
   int _processedFrames = 0;
   int _droppedFrames = 0;
   final Stopwatch _fpsWatch = Stopwatch();
+  bool _previewEnabled = false;
 
   @override
   FaceCameraState state = FaceCameraState.idle;
@@ -41,6 +42,8 @@ class MobileFaceCameraTracker extends FaceCameraTracker {
   bool get isSupportedPlatform => Platform.isAndroid || Platform.isIOS;
   @override
   CameraController? get cameraController => _controller;
+  @override
+  bool get previewEnabled => _previewEnabled;
   @override
   int get processedFrames => _processedFrames;
   @override
@@ -96,6 +99,12 @@ class MobileFaceCameraTracker extends FaceCameraTracker {
   Future<void> stop() async {
     await _disposeCamera();
     state = FaceCameraState.idle;
+    notifyListeners();
+  }
+
+  @override
+  Future<void> setPreviewEnabled(bool enabled) async {
+    _previewEnabled = enabled;
     notifyListeners();
   }
 

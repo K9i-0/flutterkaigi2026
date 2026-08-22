@@ -21,6 +21,7 @@ void registerVrmLabMarionetteExtensions() {
       }
       final document = lab.document;
       final frame = lab.trackingFrame;
+      final body = lab.upperBodyFrame;
       const toDegrees = 180 / math.pi;
       return MarionetteExtensionResult.success({
         'model': {
@@ -54,6 +55,30 @@ void registerVrmLabMarionetteExtensions() {
           'blinkRight': frame.blinkRight,
           'mouthOpen': frame.mouthOpen,
           'confidence': frame.confidence,
+          'upperBody': {
+            'yawDegrees': body.yawRadians * toDegrees,
+            'pitchDegrees': body.pitchRadians * toDegrees,
+            'rollDegrees': body.rollRadians * toDegrees,
+            'yawConfidence': body.yawConfidence,
+            'pitchConfidence': body.pitchConfidence,
+            'rollConfidence': body.rollConfidence,
+          },
+          'arms': {
+            'leftShoulderDegrees':
+                lab.armFrame.leftShoulderRollRadians * toDegrees,
+            'rightShoulderDegrees':
+                lab.armFrame.rightShoulderRollRadians * toDegrees,
+            'leftElbowDegrees': lab.armFrame.leftElbowRollRadians * toDegrees,
+            'rightElbowDegrees': lab.armFrame.rightElbowRollRadians * toDegrees,
+            'leftConfidence': lab.armFrame.leftConfidence,
+            'rightConfidence': lab.armFrame.rightConfidence,
+            'leftElbowConfidence': lab.armFrame.leftElbowConfidence,
+            'rightElbowConfidence': lab.armFrame.rightElbowConfidence,
+            'appliedDegrees': {
+              for (final entry in lab.trackedArms.entries)
+                entry.key: entry.value.rollRadians * toDegrees,
+            },
+          },
         },
         'camera': {
           'state': lab.faceCamera.state.name,
@@ -73,12 +98,33 @@ void registerVrmLabMarionetteExtensions() {
           'hasPreviewFrame':
               lab.faceCamera.previewJpeg != null ||
               lab.faceCamera.cameraController?.value.isInitialized == true,
+          'previewVisible': lab.faceCamera.previewEnabled,
           'hasFaceOverlay': lab.faceCamera.faceOverlay != null,
           'landmarkRegions':
               lab.faceCamera.faceOverlay?.landmarks.keys.toList() ?? const [],
+          'bodyJointNames':
+              lab.faceCamera.faceOverlay?.bodyJoints.keys.toList() ?? const [],
           'error': lab.faceCamera.errorMessage,
         },
         'expressions': lab.avatar!.expressionWeights,
+      });
+    },
+  );
+
+  registerMarionetteExtension(
+    name: 'madogiwa.setCameraPreview',
+    description: 'Show or hide the raw camera image. The tracking outlines remain visible.',
+    callback: (params) async {
+      final lab = VrmLabAutomationState.controller;
+      final visible = _parseBool(params['visible']);
+      if (lab == null || !lab.ready || visible == null) {
+        return MarionetteExtensionResult.invalidParams(
+          'VRM lab must be ready and visible=true/false is required.',
+        );
+      }
+      await lab.setCameraPreviewVisible(visible);
+      return MarionetteExtensionResult.success({
+        'visible': lab.faceCamera.previewEnabled,
       });
     },
   );
@@ -200,7 +246,7 @@ void registerVrmLabMarionetteExtensions() {
     description:
         'Inject one deterministic normalized face frame through the same VRM '
         'driver. Optional yaw/pitch/roll degrees, leftEyeOpen/rightEyeOpen, '
-        'mouthOpen, and confidence.',
+        'mouthOpen, confidence, and bodyYaw/bodyPitch/bodyRoll values.',
     callback: (params) async {
       final lab = VrmLabAutomationState.controller;
       if (lab == null || !lab.ready) {
@@ -223,6 +269,13 @@ void registerVrmLabMarionetteExtensions() {
         'blinkRight': frame.blinkRight,
         'mouthOpen': frame.mouthOpen,
         'confidence': frame.confidence,
+        'bodyYawRadians': lab.upperBodyFrame.yawRadians,
+        'bodyPitchRadians': lab.upperBodyFrame.pitchRadians,
+        'bodyRollRadians': lab.upperBodyFrame.rollRadians,
+        'leftShoulderRadians': lab.armFrame.leftShoulderRollRadians,
+        'rightShoulderRadians': lab.armFrame.rightShoulderRollRadians,
+        'leftElbowRadians': lab.armFrame.leftElbowRollRadians,
+        'rightElbowRadians': lab.armFrame.rightElbowRollRadians,
       });
     },
   );
@@ -300,7 +353,43 @@ FaceTrackingSignal? _faceSignal(Map<String, String> params) {
   final rightEye = value('rightEyeOpen', 1);
   final mouth = value('mouthOpen', 0);
   final confidence = value('confidence', 1);
-  if ([yaw, pitch, roll, leftEye, rightEye, mouth, confidence].contains(null)) {
+  final bodyYaw = value('bodyYaw', 0);
+  final bodyPitch = value('bodyPitch', 0);
+  final bodyRoll = value('bodyRoll', 0);
+  final bodyYawConfidence = value('bodyYawConfidence', 0);
+  final bodyPitchConfidence = value('bodyPitchConfidence', 0);
+  final bodyRollConfidence = value('bodyRollConfidence', 0);
+  final leftShoulder = value('leftShoulder', -35);
+  final rightShoulder = value('rightShoulder', 35);
+  final leftElbow = value('leftElbow', 0);
+  final rightElbow = value('rightElbow', 0);
+  final leftArmConfidence = value('leftArmConfidence', 0);
+  final rightArmConfidence = value('rightArmConfidence', 0);
+  final leftElbowConfidence = value('leftElbowConfidence', 0);
+  final rightElbowConfidence = value('rightElbowConfidence', 0);
+  if ([
+    yaw,
+    pitch,
+    roll,
+    leftEye,
+    rightEye,
+    mouth,
+    confidence,
+    bodyYaw,
+    bodyPitch,
+    bodyRoll,
+    bodyYawConfidence,
+    bodyPitchConfidence,
+    bodyRollConfidence,
+    leftShoulder,
+    rightShoulder,
+    leftElbow,
+    rightElbow,
+    leftArmConfidence,
+    rightArmConfidence,
+    leftElbowConfidence,
+    rightElbowConfidence,
+  ].contains(null)) {
     return null;
   }
   return FaceTrackingSignal(
@@ -311,5 +400,19 @@ FaceTrackingSignal? _faceSignal(Map<String, String> params) {
     rightEyeOpen: rightEye!,
     mouthOpen: mouth!,
     confidence: confidence!,
+    bodyYawDegrees: bodyYaw!,
+    bodyPitchDegrees: bodyPitch!,
+    bodyRollDegrees: bodyRoll!,
+    bodyYawConfidence: bodyYawConfidence!,
+    bodyPitchConfidence: bodyPitchConfidence!,
+    bodyRollConfidence: bodyRollConfidence!,
+    leftShoulderDegrees: leftShoulder!,
+    rightShoulderDegrees: rightShoulder!,
+    leftElbowDegrees: leftElbow!,
+    rightElbowDegrees: rightElbow!,
+    leftArmConfidence: leftArmConfidence!,
+    rightArmConfidence: rightArmConfidence!,
+    leftElbowConfidence: leftElbowConfidence!,
+    rightElbowConfidence: rightElbowConfidence!,
   );
 }

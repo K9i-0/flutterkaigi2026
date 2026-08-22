@@ -35,6 +35,92 @@ class VrmFaceTrackingFrame {
   );
 }
 
+/// Camera-independent torso pose that can be supplied by an upper-body
+/// detector. Confidence is per axis because a cropped 2D view can estimate
+/// shoulder roll much more reliably than forward pitch.
+class VrmUpperBodyTrackingFrame {
+  const VrmUpperBodyTrackingFrame({
+    required this.yawRadians,
+    required this.pitchRadians,
+    required this.rollRadians,
+    required this.yawConfidence,
+    required this.pitchConfidence,
+    required this.rollConfidence,
+  });
+
+  const VrmUpperBodyTrackingFrame.none()
+    : yawRadians = 0,
+      pitchRadians = 0,
+      rollRadians = 0,
+      yawConfidence = 0,
+      pitchConfidence = 0,
+      rollConfidence = 0;
+
+  final double yawRadians;
+  final double pitchRadians;
+  final double rollRadians;
+  final double yawConfidence;
+  final double pitchConfidence;
+  final double rollConfidence;
+
+  VrmUpperBodyTrackingFrame clamped() => VrmUpperBodyTrackingFrame(
+    yawRadians: yawRadians.clamp(-math.pi / 4, math.pi / 4),
+    pitchRadians: pitchRadians.clamp(-math.pi / 6, math.pi / 6),
+    rollRadians: rollRadians.clamp(-math.pi / 4, math.pi / 4),
+    yawConfidence: yawConfidence.clamp(0.0, 1.0),
+    pitchConfidence: pitchConfidence.clamp(0.0, 1.0),
+    rollConfidence: rollConfidence.clamp(0.0, 1.0),
+  );
+}
+
+/// In-plane arm rotations derived from shoulder/elbow/wrist landmarks.
+/// Shoulder rotations are applied to the complete shoulder subtree so VRM
+/// helper bones beneath it remain aligned.
+class VrmArmTrackingFrame {
+  const VrmArmTrackingFrame({
+    required this.leftShoulderRollRadians,
+    required this.rightShoulderRollRadians,
+    required this.leftElbowRollRadians,
+    required this.rightElbowRollRadians,
+    required this.leftConfidence,
+    required this.rightConfidence,
+    required this.leftElbowConfidence,
+    required this.rightElbowConfidence,
+  });
+
+  final double leftShoulderRollRadians;
+  final double rightShoulderRollRadians;
+  final double leftElbowRollRadians;
+  final double rightElbowRollRadians;
+  final double leftConfidence;
+  final double rightConfidence;
+  final double leftElbowConfidence;
+  final double rightElbowConfidence;
+
+  VrmArmTrackingFrame clamped() => VrmArmTrackingFrame(
+    leftShoulderRollRadians: leftShoulderRollRadians.clamp(
+      -110 * math.pi / 180,
+      110 * math.pi / 180,
+    ),
+    rightShoulderRollRadians: rightShoulderRollRadians.clamp(
+      -110 * math.pi / 180,
+      110 * math.pi / 180,
+    ),
+    leftElbowRollRadians: leftElbowRollRadians.clamp(
+      -140 * math.pi / 180,
+      140 * math.pi / 180,
+    ),
+    rightElbowRollRadians: rightElbowRollRadians.clamp(
+      -140 * math.pi / 180,
+      140 * math.pi / 180,
+    ),
+    leftConfidence: leftConfidence.clamp(0.0, 1.0),
+    rightConfidence: rightConfidence.clamp(0.0, 1.0),
+    leftElbowConfidence: leftElbowConfidence.clamp(0.0, 1.0),
+    rightElbowConfidence: rightElbowConfidence.clamp(0.0, 1.0),
+  );
+}
+
 /// Controls how face rotation is distributed through the upper body.
 enum VrmBodyFollowMode { headOnly, natural, anime }
 
@@ -90,6 +176,12 @@ const _headOnlyWeights = <String, _BoneFollowWeight>{
   'head': _BoneFollowWeight(0.75, 0.75, 0.75),
 };
 
+const _detectedBodyWeights = <String, _BoneFollowWeight>{
+  'spine': _BoneFollowWeight(0.20, 0.15, 0.20),
+  'chest': _BoneFollowWeight(0.35, 0.35, 0.35),
+  'upperChest': _BoneFollowWeight(0.45, 0.50, 0.45),
+};
+
 /// Computes local humanoid-bone rotations without depending on a renderer.
 ///
 /// [bodyIntensity] affects spine/chest bones only. The body uses a dead zone
@@ -97,6 +189,7 @@ const _headOnlyWeights = <String, _BoneFollowWeight>{
 /// avatar's whole torso twitch.
 Map<String, VrmTrackedBoneRotation> computeVrmUpperBodyRotations(
   VrmFaceTrackingFrame input, {
+  VrmUpperBodyTrackingFrame? upperBody,
   VrmBodyFollowMode mode = VrmBodyFollowMode.natural,
   double bodyIntensity = 1,
   double bodyDeadZoneRadians = 4 * math.pi / 180,
@@ -113,6 +206,9 @@ Map<String, VrmTrackedBoneRotation> computeVrmUpperBodyRotations(
   final weights = mode == VrmBodyFollowMode.headOnly
       ? _headOnlyWeights
       : _naturalWeights;
+  final detected = mode == VrmBodyFollowMode.headOnly
+      ? null
+      : upperBody?.clamped();
 
   return {
     for (final entry in weights.entries)
@@ -122,15 +218,35 @@ Map<String, VrmTrackedBoneRotation> computeVrmUpperBodyRotations(
         final torsoRollDirection = isTorso && mode == VrmBodyFollowMode.anime
             ? -1.0
             : 1.0;
+        final detectedWeight = _detectedBodyWeights[entry.key];
+        final faceYaw = (isTorso ? bodyYaw : yaw) * entry.value.yaw;
+        final facePitch = (isTorso ? bodyPitch : pitch) * entry.value.pitch;
+        final faceRoll = (isTorso ? bodyRoll : roll) * entry.value.roll;
+        final resolvedYaw = isTorso && detected != null
+            ? _mix(
+                faceYaw,
+                detected.yawRadians * detectedWeight!.yaw,
+                detected.yawConfidence,
+              )
+            : faceYaw;
+        final resolvedPitch = isTorso && detected != null
+            ? _mix(
+                facePitch,
+                detected.pitchRadians * detectedWeight!.pitch,
+                detected.pitchConfidence,
+              )
+            : facePitch;
+        final resolvedRoll = isTorso && detected != null
+            ? _mix(
+                faceRoll,
+                detected.rollRadians * detectedWeight!.roll,
+                detected.rollConfidence,
+              )
+            : faceRoll;
         return VrmTrackedBoneRotation(
-          yawRadians: (isTorso ? bodyYaw : yaw) * entry.value.yaw * torsoScale,
-          pitchRadians:
-              (isTorso ? bodyPitch : pitch) * entry.value.pitch * torsoScale,
-          rollRadians:
-              (isTorso ? bodyRoll : roll) *
-              entry.value.roll *
-              torsoScale *
-              torsoRollDirection,
+          yawRadians: resolvedYaw * torsoScale,
+          pitchRadians: resolvedPitch * torsoScale,
+          rollRadians: resolvedRoll * torsoScale * torsoRollDirection,
         );
       }(),
   };
@@ -142,6 +258,38 @@ double _removeDeadZone(double value, double deadZone) {
   final magnitude = value.abs();
   if (magnitude <= deadZone) return 0;
   return (magnitude - deadZone) * value.sign;
+}
+
+double _mix(double from, double to, double amount) =>
+    from + (to - from) * amount;
+
+/// Converts semantic arm angles into local humanoid-bone rotations.
+Map<String, VrmTrackedBoneRotation> computeVrmArmRotations(
+  VrmArmTrackingFrame input,
+) {
+  final frame = input.clamped();
+  return {
+    'leftShoulder': VrmTrackedBoneRotation(
+      yawRadians: 0,
+      pitchRadians: 0,
+      rollRadians: frame.leftShoulderRollRadians,
+    ),
+    'rightShoulder': VrmTrackedBoneRotation(
+      yawRadians: 0,
+      pitchRadians: 0,
+      rollRadians: frame.rightShoulderRollRadians,
+    ),
+    'leftLowerArm': VrmTrackedBoneRotation(
+      yawRadians: 0,
+      pitchRadians: 0,
+      rollRadians: frame.leftElbowRollRadians,
+    ),
+    'rightLowerArm': VrmTrackedBoneRotation(
+      yawRadians: 0,
+      pitchRadians: 0,
+      rollRadians: frame.rightElbowRollRadians,
+    ),
+  };
 }
 
 /// Maps normalized tracking values onto VRM humanoid bones and expressions.
@@ -156,12 +304,17 @@ class VrmFaceTrackingDriver {
   VrmBodyFollowMode bodyFollowMode;
   double bodyFollowIntensity;
   final Map<String, VrmTrackedBoneRotation> _smoothedTorso = {};
+  final Map<String, VrmTrackedBoneRotation> _smoothedArms = {};
 
   Map<String, VrmTrackedBoneRotation> get smoothedTorso =>
       Map.unmodifiable(_smoothedTorso);
+  Map<String, VrmTrackedBoneRotation> get smoothedArms =>
+      Map.unmodifiable(_smoothedArms);
 
   void apply(
     VrmFaceTrackingFrame input, {
+    VrmUpperBodyTrackingFrame? upperBody,
+    VrmArmTrackingFrame? arms,
     double deltaSeconds = 1 / 60,
     bool smoothBody = true,
   }) {
@@ -169,6 +322,7 @@ class VrmFaceTrackingDriver {
     final confidence = frame.confidence;
     final targetRotations = computeVrmUpperBodyRotations(
       frame,
+      upperBody: upperBody,
       mode: bodyFollowMode,
       bodyIntensity: bodyFollowIntensity,
     );
@@ -192,6 +346,26 @@ class VrmFaceTrackingDriver {
         ),
       );
     }
+    if (arms != null) {
+      final armAlpha = smoothBody
+          ? 1 - math.exp(-7 * deltaSeconds.clamp(0.0, 0.1))
+          : 1.0;
+      for (final entry in computeVrmArmRotations(arms).entries) {
+        final previous = _smoothedArms[entry.key];
+        final rotation = previous == null
+            ? entry.value
+            : previous.lerp(entry.value, armAlpha);
+        _smoothedArms[entry.key] = rotation;
+        avatar.setHumanBoneRotation(
+          entry.key,
+          Quaternion.euler(
+            rotation.yawRadians,
+            rotation.pitchRadians,
+            rotation.rollRadians,
+          ),
+        );
+      }
+    }
 
     final expressions = <String, double>{};
     if (avatar.document.expressions.containsKey('blinkLeft') &&
@@ -210,11 +384,20 @@ class VrmFaceTrackingDriver {
 
   void reset() {
     _smoothedTorso.clear();
+    _smoothedArms.clear();
     for (final bone in _torsoBones) {
       avatar.resetHumanBoneRotation(bone);
     }
     avatar.resetHumanBoneRotation('neck');
     avatar.resetHumanBoneRotation('head');
+    for (final bone in const [
+      'leftShoulder',
+      'rightShoulder',
+      'leftLowerArm',
+      'rightLowerArm',
+    ]) {
+      avatar.resetHumanBoneRotation(bone);
+    }
     final expressions = <String, double>{};
     for (final expression in const ['blinkLeft', 'blinkRight', 'blink', 'aa']) {
       if (avatar.document.expressions.containsKey(expression)) {

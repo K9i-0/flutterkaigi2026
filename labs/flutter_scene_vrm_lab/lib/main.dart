@@ -184,6 +184,11 @@ class VrmLabController extends ChangeNotifier {
   VrmDocument get document => avatar!.document;
   Map<String, VrmTrackedBoneRotation> get trackedTorso =>
       _trackingDriver?.smoothedTorso ?? const {};
+  VrmUpperBodyTrackingFrame get upperBodyFrame =>
+      trackingPipeline.upperBodyFiltered;
+  VrmArmTrackingFrame get armFrame => trackingPipeline.armsFiltered;
+  Map<String, VrmTrackedBoneRotation> get trackedArms =>
+      _trackingDriver?.smoothedArms ?? const {};
   String get trackingSource {
     if (!trackingEnabled) return 'idle';
     if (automationEnabled) return 'mcp';
@@ -245,12 +250,22 @@ class VrmLabController extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> setCameraPreviewVisible(bool visible) async {
+    await faceCamera.setPreviewEnabled(visible);
+    notifyListeners();
+  }
+
   void setBodyFollowMode(VrmBodyFollowMode value) {
     bodyFollowMode = value;
     final driver = _trackingDriver;
     if (driver != null) {
       driver.bodyFollowMode = value;
-      driver.apply(trackingFrame, smoothBody: false);
+      driver.apply(
+        trackingFrame,
+        upperBody: upperBodyFrame,
+        arms: armFrame,
+        smoothBody: false,
+      );
     }
     notifyListeners();
   }
@@ -269,7 +284,12 @@ class VrmLabController extends ChangeNotifier {
     final driver = _trackingDriver;
     if (driver != null) {
       driver.bodyFollowIntensity = bodyFollowIntensity;
-      driver.apply(trackingFrame, smoothBody: false);
+      driver.apply(
+        trackingFrame,
+        upperBody: upperBodyFrame,
+        arms: armFrame,
+        smoothBody: false,
+      );
     }
     notifyListeners();
   }
@@ -372,7 +392,12 @@ class VrmLabController extends ChangeNotifier {
       deltaSeconds: 1 / 60,
       smooth: false,
     );
-    _trackingDriver?.apply(trackingFrame, smoothBody: false);
+    _trackingDriver?.apply(
+      trackingFrame,
+      upperBody: upperBodyFrame,
+      arms: armFrame,
+      smoothBody: false,
+    );
     notifyListeners();
   }
 
@@ -408,7 +433,12 @@ class VrmLabController extends ChangeNotifier {
   void _applyTrackingSignal(FaceTrackingSignal signal, double delta) {
     if (!trackingEnabled) return;
     trackingFrame = trackingPipeline.ingest(signal, deltaSeconds: delta);
-    _trackingDriver?.apply(trackingFrame, deltaSeconds: delta);
+    _trackingDriver?.apply(
+      trackingFrame,
+      upperBody: upperBodyFrame,
+      arms: armFrame,
+      deltaSeconds: delta,
+    );
     notifyListeners();
   }
 
@@ -456,7 +486,8 @@ class VrmLabController extends ChangeNotifier {
     }
     if (trackingEnabled &&
         !automationEnabled &&
-        faceCamera.state == FaceCameraState.noFace) {
+        faceCamera.state == FaceCameraState.noFace &&
+        faceCamera.faceOverlay?.bodyJoints.isEmpty != false) {
       _applyTrackingSignal(
         const FaceTrackingSignal(
           yawDegrees: 0,
@@ -610,6 +641,8 @@ class _TrackingPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final frame = lab.trackingFrame;
+    final body = lab.upperBodyFrame;
+    final arms = lab.armFrame;
     final radiansToDegrees = 180 / math.pi;
     final compact = MediaQuery.sizeOf(context).width < 720;
     return Card(
@@ -745,6 +778,27 @@ class _TrackingPanel extends StatelessWidget {
                 'Mouth ${frame.mouthOpen.toStringAsFixed(2)}',
                 style: const TextStyle(fontSize: 11),
               ),
+              if (body.yawConfidence > 0 ||
+                  body.pitchConfidence > 0 ||
+                  body.rollConfidence > 0)
+                Text(
+                  'Body Y ${(body.yawRadians * radiansToDegrees).toStringAsFixed(1)}°  '
+                  'P ${(body.pitchRadians * radiansToDegrees).toStringAsFixed(1)}°  '
+                  'R ${(body.rollRadians * radiansToDegrees).toStringAsFixed(1)}°',
+                  style: const TextStyle(
+                    fontSize: 10,
+                    color: Color(0xffffca68),
+                  ),
+                ),
+              if (arms.leftConfidence > 0 || arms.rightConfidence > 0)
+                Text(
+                  'Arms L ${(arms.leftConfidence * 100).round()}%  '
+                  'R ${(arms.rightConfidence * 100).round()}%',
+                  style: const TextStyle(
+                    fontSize: 10,
+                    color: Color(0xffffca68),
+                  ),
+                ),
               if (lab.faceCamera.detectorFps > 0)
                 Text(
                   'Detector ${lab.faceCamera.detectorFps.toStringAsFixed(1)} fps · '
@@ -792,15 +846,6 @@ class _TrackingPanel extends StatelessWidget {
       ),
     );
   }
-
-  static String _cameraStateLabel(FaceCameraState state) => switch (state) {
-    FaceCameraState.idle => 'カメラ停止中',
-    FaceCameraState.starting => 'カメラを起動中…',
-    FaceCameraState.running => '顔を追跡中',
-    FaceCameraState.noFace => '顔を検出できません',
-    FaceCameraState.unsupported => 'このOSでは未対応',
-    FaceCameraState.error => 'カメラエラー',
-  };
 }
 
 class _CameraTrackingHud extends StatelessWidget {
@@ -814,9 +859,11 @@ class _CameraTrackingHud extends StatelessWidget {
     final camera = tracker.cameraController;
     final bytes = tracker.previewJpeg;
     Widget preview;
-    if (camera != null && camera.value.isInitialized) {
+    if (tracker.previewEnabled &&
+        camera != null &&
+        camera.value.isInitialized) {
       preview = CameraPreview(camera);
-    } else if (bytes != null) {
+    } else if (tracker.previewEnabled && bytes != null) {
       preview = Image.memory(
         bytes,
         fit: BoxFit.cover,
@@ -824,14 +871,12 @@ class _CameraTrackingHud extends StatelessWidget {
         filterQuality: FilterQuality.low,
       );
     } else {
-      preview = ColoredBox(
-        color: const Color(0xff090e18),
-        child: Center(
-          child: Text(
-            lab.automationEnabled
-                ? 'MCP INPUT'
-                : _TrackingPanel._cameraStateLabel(tracker.state),
-            style: const TextStyle(color: Colors.white60, fontSize: 12),
+      preview = DecoratedBox(
+        decoration: const BoxDecoration(
+          color: Color(0xff090e18),
+          gradient: RadialGradient(
+            colors: [Color(0xff142335), Color(0xff070b12)],
+            radius: 0.9,
           ),
         ),
       );
@@ -847,10 +892,20 @@ class _CameraTrackingHud extends StatelessWidget {
         ),
       ],
     );
-    if ((camera != null && camera.value.isInitialized || bytes != null) &&
-        tracker.previewMirrored) {
+    if (tracker.previewMirrored) {
       previewStack = Transform.flip(flipX: true, child: previewStack);
     }
+
+    final overlay = tracker.faceOverlay;
+    final hasFace = overlay?.faceBounds != null;
+    final hasBody = overlay?.bodyJoints.isNotEmpty == true;
+    final lockLabel = hasFace && hasBody
+        ? 'FACE + BODY'
+        : hasFace
+        ? 'FACE LOCK'
+        : hasBody
+        ? 'BODY LOCK'
+        : 'SEARCHING';
 
     return Card(
       key: const ValueKey('camera-tracking-hud'),
@@ -867,11 +922,11 @@ class _CameraTrackingHud extends StatelessWidget {
               child: Row(
                 children: [
                   Icon(
-                    tracker.faceOverlay == null
+                    !hasFace && !hasBody
                         ? Icons.center_focus_weak
                         : Icons.center_focus_strong,
                     size: 17,
-                    color: tracker.faceOverlay == null
+                    color: !hasFace && !hasBody
                         ? Colors.white54
                         : const Color(0xff5ee3bd),
                   ),
@@ -886,13 +941,33 @@ class _CameraTrackingHud extends StatelessWidget {
                   ),
                   const Spacer(),
                   Text(
-                    tracker.faceOverlay == null ? 'SEARCHING' : 'FACE LOCK',
+                    lockLabel,
                     style: TextStyle(
                       fontSize: 9,
-                      color: tracker.faceOverlay == null
+                      color: !hasFace && !hasBody
                           ? Colors.white54
                           : const Color(0xff5ee3bd),
                     ),
+                  ),
+                  const SizedBox(width: 4),
+                  IconButton(
+                    key: const ValueKey('camera-preview-toggle'),
+                    tooltip: tracker.previewEnabled ? 'カメラ映像を隠す' : 'カメラ映像を表示',
+                    onPressed: () => unawaited(
+                      lab.setCameraPreviewVisible(!tracker.previewEnabled),
+                    ),
+                    icon: Icon(
+                      tracker.previewEnabled
+                          ? Icons.videocam_outlined
+                          : Icons.videocam_off_outlined,
+                      size: 17,
+                    ),
+                    visualDensity: VisualDensity.compact,
+                    constraints: const BoxConstraints.tightFor(
+                      width: 28,
+                      height: 28,
+                    ),
+                    padding: EdgeInsets.zero,
                   ),
                 ],
               ),
@@ -925,16 +1000,20 @@ class _FaceLandmarkPainter extends CustomPainter {
       ..color = const Color(0xff63f4d3)
       ..strokeWidth = 1.35
       ..style = PaintingStyle.stroke;
-    final bounds = Rect.fromLTWH(
-      data.faceBounds.left * size.width,
-      data.faceBounds.top * size.height,
-      data.faceBounds.width * size.width,
-      data.faceBounds.height * size.height,
-    );
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(bounds, const Radius.circular(5)),
-      line..color = const Color(0xcc5ee3bd),
-    );
+    final normalizedBounds = data.faceBounds;
+    Rect? bounds;
+    if (normalizedBounds != null) {
+      bounds = Rect.fromLTWH(
+        normalizedBounds.left * size.width,
+        normalizedBounds.top * size.height,
+        normalizedBounds.width * size.width,
+        normalizedBounds.height * size.height,
+      );
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(bounds, const Radius.circular(5)),
+        line..color = const Color(0xcc5ee3bd),
+      );
+    }
 
     for (final entry in data.landmarks.entries) {
       if (entry.value.length < 2) continue;
@@ -953,20 +1032,61 @@ class _FaceLandmarkPainter extends CustomPainter {
       canvas.drawPath(path, line..color = const Color(0xff63f4d3));
     }
 
-    final center = bounds.center;
-    final reticle = Paint()
-      ..color = const Color(0xddffca68)
-      ..strokeWidth = 1;
-    canvas.drawLine(
-      Offset(center.dx - 7, center.dy),
-      Offset(center.dx + 7, center.dy),
-      reticle,
-    );
-    canvas.drawLine(
-      Offset(center.dx, center.dy - 7),
-      Offset(center.dx, center.dy + 7),
-      reticle,
-    );
+    _paintBody(canvas, size, data.bodyJoints);
+
+    if (bounds != null) {
+      final center = bounds.center;
+      final reticle = Paint()
+        ..color = const Color(0xddffca68)
+        ..strokeWidth = 1;
+      canvas.drawLine(
+        Offset(center.dx - 7, center.dy),
+        Offset(center.dx + 7, center.dy),
+        reticle,
+      );
+      canvas.drawLine(
+        Offset(center.dx, center.dy - 7),
+        Offset(center.dx, center.dy + 7),
+        reticle,
+      );
+    }
+  }
+
+  void _paintBody(Canvas canvas, Size size, Map<String, Offset> joints) {
+    Offset? point(String name) {
+      final value = joints[name];
+      return value == null
+          ? null
+          : Offset(value.dx * size.width, value.dy * size.height);
+    }
+
+    final bodyLine = Paint()
+      ..color = const Color(0xffffca68)
+      ..strokeWidth = 2
+      ..strokeCap = StrokeCap.round;
+    const connections = [
+      ('leftWrist', 'leftElbow'),
+      ('leftElbow', 'leftShoulder'),
+      ('leftShoulder', 'neck'),
+      ('neck', 'rightShoulder'),
+      ('rightShoulder', 'rightElbow'),
+      ('rightElbow', 'rightWrist'),
+      ('leftShoulder', 'leftHip'),
+      ('rightShoulder', 'rightHip'),
+      ('leftHip', 'rightHip'),
+    ];
+    for (final connection in connections) {
+      final from = point(connection.$1);
+      final to = point(connection.$2);
+      if (from != null && to != null) canvas.drawLine(from, to, bodyLine);
+    }
+    for (final joint in joints.values) {
+      canvas.drawCircle(
+        Offset(joint.dx * size.width, joint.dy * size.height),
+        2.7,
+        bodyLine,
+      );
+    }
   }
 
   @override

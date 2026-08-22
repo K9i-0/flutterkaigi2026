@@ -71,4 +71,64 @@ void main() {
     expect(frame.blinkRight, closeTo(0.3, 0.0001));
     expect(frame.mouthOpen, 0.65);
   });
+
+  test('maps cropped shoulder tracking independently from the face', () {
+    final pipeline = FaceTrackingPipeline();
+    pipeline.ingest(
+      const FaceTrackingSignal(
+        yawDegrees: 0,
+        pitchDegrees: 0,
+        rollDegrees: 0,
+        leftEyeOpen: 1,
+        rightEyeOpen: 1,
+        mouthOpen: 0,
+        bodyYawDegrees: 12,
+        bodyRollDegrees: -18,
+        bodyYawConfidence: 0.6,
+        bodyRollConfidence: 0.9,
+      ),
+      deltaSeconds: 1 / 60,
+      smooth: false,
+    );
+
+    final body = pipeline.upperBodyFiltered;
+    expect(body.yawRadians, closeTo(-12 * math.pi / 180, 0.0001));
+    expect(body.rollRadians, closeTo(18 * math.pi / 180, 0.0001));
+    expect(body.yawConfidence, 0.6);
+    expect(body.pitchConfidence, 0);
+    expect(body.rollConfidence, 0.9);
+  });
+
+  test('maps visible arms and falls back to the presenter pose', () {
+    final pipeline = FaceTrackingPipeline();
+    pipeline.ingest(
+      const FaceTrackingSignal(
+        yawDegrees: 0,
+        pitchDegrees: 0,
+        rollDegrees: 0,
+        leftEyeOpen: 1,
+        rightEyeOpen: 1,
+        mouthOpen: 0,
+        leftShoulderDegrees: -70,
+        rightShoulderDegrees: 20,
+        leftElbowDegrees: -45,
+        rightElbowDegrees: 30,
+        leftArmConfidence: 1,
+        rightArmConfidence: 0.5,
+        leftElbowConfidence: 1,
+        rightElbowConfidence: 0.5,
+      ),
+      deltaSeconds: 1 / 60,
+      smooth: false,
+    );
+
+    final arms = pipeline.armsFiltered;
+    expect(arms.leftShoulderRollRadians, closeTo(-70 * math.pi / 180, 0.0001));
+    expect(
+      arms.rightShoulderRollRadians,
+      closeTo(27.5 * math.pi / 180, 0.0001),
+    );
+    expect(arms.leftElbowRollRadians, closeTo(-45 * math.pi / 180, 0.0001));
+    expect(arms.rightElbowRollRadians, closeTo(15 * math.pi / 180, 0.0001));
+  });
 }

@@ -22,10 +22,15 @@ class FaceCameraDevice {
 
 @immutable
 class FaceCameraOverlay {
-  const FaceCameraOverlay({required this.faceBounds, required this.landmarks});
+  const FaceCameraOverlay({
+    required this.faceBounds,
+    required this.landmarks,
+    this.bodyJoints = const {},
+  });
 
-  final Rect faceBounds;
+  final Rect? faceBounds;
   final Map<String, List<Offset>> landmarks;
+  final Map<String, Offset> bodyJoints;
 }
 
 abstract class FaceCameraTracker extends ChangeNotifier {
@@ -42,6 +47,7 @@ abstract class FaceCameraTracker extends ChangeNotifier {
   CameraController? get cameraController => null;
   Uint8List? get previewJpeg => null;
   FaceCameraOverlay? get faceOverlay => null;
+  bool get previewEnabled => false;
   bool get previewMirrored => false;
   List<FaceCameraDevice> get availableDevices => const [];
   String? get selectedDeviceId => null;
@@ -51,4 +57,5 @@ abstract class FaceCameraTracker extends ChangeNotifier {
   Future<void> stop();
   Future<void> refreshDevices() async {}
   Future<void> selectDevice(String deviceId) async {}
+  Future<void> setPreviewEnabled(bool enabled) async {}
 }
