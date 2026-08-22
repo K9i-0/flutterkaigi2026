@@ -9,9 +9,12 @@ The VRM-specific half of the validation architecture:
 
 Current validation scope is VRM 1.0 loading, metadata/humanoid discovery, CPU
 expression morphs, and an engine-independent `VrmFaceTrackingFrame` /
-`VrmFaceTrackingDriver`. The driver maps normalized head pose to the VRM neck
-and head rest rotations and maps eye/mouth values to VRM expressions. Camera or
-detector packages deliberately stay in the app layer.
+`VrmFaceTrackingDriver`. The driver maps normalized head pose across the VRM
+`spine` / `chest` / `upperChest` / `neck` / `head` rest rotations and maps
+eye/mouth values to VRM expressions. Natural, anime-style counter-roll, and
+legacy head-only profiles are available. Torso motion has a dead zone and a
+slower response than the neck/head. Camera or detector packages deliberately
+stay in the app layer.
 
 MToon, SpringBone, node constraints, look-at, expression override semantics,
 GPU/per-instance morph weights, and audio lip-sync remain next-stage work.

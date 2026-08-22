@@ -37,6 +37,16 @@ void registerVrmLabMarionetteExtensions() {
           'enabled': lab.trackingEnabled,
           'source': lab.trackingSource,
           'framing': lab.avatarFraming.name,
+          'bodyFollowMode': lab.bodyFollowMode.name,
+          'bodyFollowIntensity': lab.bodyFollowIntensity,
+          'torsoDegrees': {
+            for (final entry in lab.trackedTorso.entries)
+              entry.key: {
+                'yaw': entry.value.yawRadians * toDegrees,
+                'pitch': entry.value.pitchRadians * toDegrees,
+                'roll': entry.value.rollRadians * toDegrees,
+              },
+          },
           'yawDegrees': frame.yawRadians * toDegrees,
           'pitchDegrees': frame.pitchRadians * toDegrees,
           'rollDegrees': frame.rollRadians * toDegrees,
@@ -63,6 +73,35 @@ void registerVrmLabMarionetteExtensions() {
           'error': lab.faceCamera.errorMessage,
         },
         'expressions': lab.avatar!.expressionWeights,
+      });
+    },
+  );
+
+  registerMarionetteExtension(
+    name: 'madogiwa.setBodyFollow',
+    description:
+        'Set upper body follow. Required mode=headOnly/natural/anime; '
+        'optional intensity=0..1.5.',
+    callback: (params) async {
+      final lab = VrmLabAutomationState.controller;
+      final mode = params['mode'];
+      final intensity = params['intensity'] == null
+          ? null
+          : double.tryParse(params['intensity']!);
+      if (lab == null ||
+          !lab.ready ||
+          !const ['headOnly', 'natural', 'anime'].contains(mode) ||
+          (params['intensity'] != null && intensity == null) ||
+          (intensity != null && (intensity < 0 || intensity > 1.5))) {
+        return MarionetteExtensionResult.invalidParams(
+          'mode=headOnly/natural/anime and numeric intensity=0..1.5 are required.',
+        );
+      }
+      lab.setBodyFollowModeByName(mode);
+      if (intensity != null) lab.setBodyFollowIntensity(intensity);
+      return MarionetteExtensionResult.success({
+        'mode': lab.bodyFollowMode.name,
+        'intensity': lab.bodyFollowIntensity,
       });
     },
   );

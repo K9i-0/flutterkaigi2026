@@ -12,7 +12,10 @@ Flutter UI + Camera / Vision・ML Kit / Marionette MCP
 
 - 公式VRM 1.0モデルの実行時ロードと描画
 - VRM表情、口パク`aa`、まばたき
-- Humanoidの`head` / `neck`回転
+- Humanoidの`spine` / `chest` / `upperChest` / `neck` / `head`回転
+- 顔角度から生成するNatural / Anime / 頭のみの上半身追従
+- 胴体だけに適用する4°デッドゾーンと遅い平滑化
+- Tポーズを緩和する配信用の待機腕姿勢
 - 顔入力の正面補正、指数平滑化、向きと値の制限
 - macOSの実カメラ → Apple Vision顔検出 → VRM駆動経路
 - iOS / Androidの前面カメラ → ML Kit顔検出 → VRM駆動経路
@@ -52,6 +55,7 @@ macOSでは追跡パネルの「使用カメラ」から入力を選択できる
 - `madogiwa.resetVrm`: 追跡、頭、首、表情を初期化
 - `madogiwa.setAvatarFraming`: `fullBody` / `bustUp`の画角を切り替え
 - `madogiwa.selectCamera`: カメラ一覧を取得し、`deviceId`で使用カメラを切り替え
+- `madogiwa.setBodyFollow`: `headOnly` / `natural` / `anime`と追従強度を設定
 
 `madogiwa.injectFace`の例:
 
@@ -69,7 +73,8 @@ macOSでは追跡パネルの「使用カメラ」から入力を選択できる
 通常のMarionette操作用に`face-tracking-toggle`、`face-tracking-calibrate`、
 `avatar-framing`、`vrm-emotion`、`vrm-mouth`、`vrm-auto-blink`の`ValueKey`も
 設定している。macOSのカメラ選択には`face-camera-device`、再検出には
-`face-camera-refresh`を使用する。
+`face-camera-refresh`、上半身調整には`body-follow-mode`と
+`body-follow-intensity`を使用する。
 
 ## プラットフォーム注意点
 

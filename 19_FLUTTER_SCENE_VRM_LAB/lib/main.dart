@@ -155,6 +155,8 @@ class VrmLabController extends ChangeNotifier {
   bool simulationEnabled = false;
   bool automationEnabled = false;
   AvatarFraming avatarFraming = AvatarFraming.fullBody;
+  VrmBodyFollowMode bodyFollowMode = VrmBodyFollowMode.natural;
+  double bodyFollowIntensity = 1;
   String emotion = 'neutral';
   double mouth = 0;
   VrmFaceTrackingFrame trackingFrame = const VrmFaceTrackingFrame(
@@ -171,6 +173,8 @@ class VrmLabController extends ChangeNotifier {
   bool _resumeTracking = false;
 
   VrmDocument get document => avatar!.document;
+  Map<String, VrmTrackedBoneRotation> get trackedTorso =>
+      _trackingDriver?.smoothedTorso ?? const {};
   String get trackingSource {
     if (!trackingEnabled) return 'idle';
     if (automationEnabled) return 'mcp';
@@ -182,7 +186,12 @@ class VrmLabController extends ChangeNotifier {
     await Scene.initializeStaticResources();
     final data = await rootBundle.load('assets/models/validation-avatar.vrm');
     avatar = await VrmAvatar.fromBytes(data.buffer.asUint8List());
-    _trackingDriver = VrmFaceTrackingDriver(avatar!);
+    _trackingDriver = VrmFaceTrackingDriver(
+      avatar!,
+      bodyFollowMode: bodyFollowMode,
+      bodyFollowIntensity: bodyFollowIntensity,
+    );
+    _applyIdleArmPose();
     final avatarStage = Node(name: 'AvatarStage')
       ..rotation = vm.Quaternion.axisAngle(vm.Vector3(0, 1, 0), math.pi);
     avatarStage.add(avatar!.root);
@@ -225,6 +234,48 @@ class VrmLabController extends ChangeNotifier {
       if (!cameraIsActive) await faceCamera.start();
     }
     notifyListeners();
+  }
+
+  void setBodyFollowMode(VrmBodyFollowMode value) {
+    bodyFollowMode = value;
+    final driver = _trackingDriver;
+    if (driver != null) {
+      driver.bodyFollowMode = value;
+      driver.apply(trackingFrame, smoothBody: false);
+    }
+    notifyListeners();
+  }
+
+  bool setBodyFollowModeByName(String? name) {
+    final matches = VrmBodyFollowMode.values.where(
+      (value) => value.name == name,
+    );
+    if (matches.isEmpty) return false;
+    setBodyFollowMode(matches.first);
+    return true;
+  }
+
+  void setBodyFollowIntensity(double value) {
+    bodyFollowIntensity = value.clamp(0.0, 1.5);
+    final driver = _trackingDriver;
+    if (driver != null) {
+      driver.bodyFollowIntensity = bodyFollowIntensity;
+      driver.apply(trackingFrame, smoothBody: false);
+    }
+    notifyListeners();
+  }
+
+  void _applyIdleArmPose() {
+    const degreesToRadians = math.pi / 180;
+    // This sample has no idle animation, so relax the authored T-pose arms.
+    avatar!.setHumanBoneRotation(
+      'leftUpperArm',
+      vm.Quaternion.euler(0, 0, -58 * degreesToRadians),
+    );
+    avatar!.setHumanBoneRotation(
+      'rightUpperArm',
+      vm.Quaternion.euler(0, 0, 58 * degreesToRadians),
+    );
   }
 
   void setEmotion(String value) {
@@ -280,6 +331,7 @@ class VrmLabController extends ChangeNotifier {
     automationEnabled = false;
     await faceCamera.stop();
     _trackingDriver?.reset();
+    _applyIdleArmPose();
     trackingFrame = const VrmFaceTrackingFrame(
       yawRadians: 0,
       pitchRadians: 0,
@@ -310,7 +362,7 @@ class VrmLabController extends ChangeNotifier {
       deltaSeconds: 1 / 60,
       smooth: false,
     );
-    _trackingDriver?.apply(trackingFrame);
+    _trackingDriver?.apply(trackingFrame, smoothBody: false);
     notifyListeners();
   }
 
@@ -322,6 +374,7 @@ class VrmLabController extends ChangeNotifier {
   void resetAvatar() {
     trackingPipeline.reset();
     _trackingDriver?.reset();
+    _applyIdleArmPose();
     trackingFrame = trackingPipeline.filtered;
     mouth = 0;
     emotion = 'neutral';
@@ -345,7 +398,7 @@ class VrmLabController extends ChangeNotifier {
   void _applyTrackingSignal(FaceTrackingSignal signal, double delta) {
     if (!trackingEnabled) return;
     trackingFrame = trackingPipeline.ingest(signal, deltaSeconds: delta);
-    _trackingDriver?.apply(trackingFrame);
+    _trackingDriver?.apply(trackingFrame, deltaSeconds: delta);
     notifyListeners();
   }
 
@@ -648,6 +701,55 @@ class _TrackingPanel extends StatelessWidget {
                 ),
               ],
               const SizedBox(height: 8),
+              const Text(
+                '上半身追従',
+                style: TextStyle(fontSize: 11, color: Colors.white70),
+              ),
+              const SizedBox(height: 4),
+              SegmentedButton<VrmBodyFollowMode>(
+                key: const ValueKey('body-follow-mode'),
+                segments: const [
+                  ButtonSegment(
+                    value: VrmBodyFollowMode.headOnly,
+                    label: Text('頭のみ'),
+                  ),
+                  ButtonSegment(
+                    value: VrmBodyFollowMode.natural,
+                    label: Text('自然'),
+                  ),
+                  ButtonSegment(
+                    value: VrmBodyFollowMode.anime,
+                    label: Text('アニメ'),
+                  ),
+                ],
+                selected: {lab.bodyFollowMode},
+                onSelectionChanged: (values) =>
+                    lab.setBodyFollowMode(values.first),
+                showSelectedIcon: false,
+                style: const ButtonStyle(
+                  visualDensity: VisualDensity.compact,
+                  padding: WidgetStatePropertyAll(
+                    EdgeInsets.symmetric(horizontal: 8),
+                  ),
+                ),
+              ),
+              Row(
+                children: [
+                  Text(
+                    '強さ ${(lab.bodyFollowIntensity * 100).round()}%',
+                    style: const TextStyle(fontSize: 10),
+                  ),
+                  Expanded(
+                    child: Slider(
+                      key: const ValueKey('body-follow-intensity'),
+                      value: lab.bodyFollowIntensity,
+                      min: 0,
+                      max: 1.5,
+                      onChanged: lab.setBodyFollowIntensity,
+                    ),
+                  ),
+                ],
+              ),
               Text(
                 'Yaw ${(frame.yawRadians * radiansToDegrees).toStringAsFixed(1)}°  '
                 'Pitch ${(frame.pitchRadians * radiansToDegrees).toStringAsFixed(1)}°  '
