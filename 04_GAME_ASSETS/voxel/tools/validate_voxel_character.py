@@ -17,13 +17,14 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 if SCRIPT_DIR not in sys.path:
     sys.path.insert(0, SCRIPT_DIR)
 
-from voxel_character_kit import RIG_NODES, RIG_SCHEMA  # noqa: E402
+from voxel_character_kit import RIG_NODES, RIG_SCHEMA, setup_preview  # noqa: E402
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", required=True)
     parser.add_argument("--rig-type", choices=("biped", "tentacled", "custom"), default="custom")
+    parser.add_argument("--preview")
     script_args = sys.argv[sys.argv.index("--") + 1 :] if "--" in sys.argv else []
     return parser.parse_args(script_args)
 
@@ -55,6 +56,17 @@ def main() -> None:
     schemas = [obj.get("voxel_rig_schema") for obj in bpy.context.scene.objects]
     if RIG_SCHEMA not in schemas:
         raise RuntimeError(f"Missing rig schema metadata: {RIG_SCHEMA}")
+
+    if args.preview:
+        preview_path = os.path.abspath(args.preview)
+        os.makedirs(os.path.dirname(preview_path), exist_ok=True)
+        setup_preview(
+            preview_path,
+            target=(0.0, 0.0, 1.2),
+            camera_location=(0.0, -5.0, 2.15),
+            accent=(0.48, 0.70, 1.0),
+        )
+        print("VOXEL_CHARACTER_PREVIEW", preview_path)
 
     print("VOXEL_CHARACTER_VALID", os.path.abspath(args.input))
     print("VOXEL_RIG_TYPE", args.rig_type)
