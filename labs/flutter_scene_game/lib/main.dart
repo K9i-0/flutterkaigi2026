@@ -455,14 +455,16 @@ class _IslandMapPainter extends CustomPainter {
       (scene.playerX + IslandWorld.worldHalfSize + 0.5) * scale,
       (scene.playerZ + IslandWorld.worldHalfSize + 0.5) * scale,
     );
-    canvas.drawCircle(
-      const Offset(128.5, 128.5) * scale,
-      scene.controller.explorationLimit * scale,
-      Paint()
-        ..color = const Color(0xaa72efbc)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 1.2,
-    );
+    if (scene.signalBoundaryEnabled) {
+      canvas.drawCircle(
+        const Offset(128.5, 128.5) * scale,
+        scene.controller.explorationLimit * scale,
+        Paint()
+          ..color = const Color(0xffff4b45)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.7,
+      );
+    }
     canvas.drawCircle(player, 4.5, Paint()..color = const Color(0xffffdf61));
     canvas.drawCircle(
       player,
@@ -578,6 +580,13 @@ class _VisualSettingsOverlay extends StatelessWidget {
                               label: '時間連動の環境光',
                               description: '空・太陽・月光・露出・色調を連動',
                               value: options['dynamicLighting']!,
+                              scene: scene,
+                            ),
+                            _VisualSwitch(
+                              option: 'signalBoundary',
+                              label: '探索限界リング',
+                              description: '進入可能範囲を示す赤い発光境界',
+                              value: options['signalBoundary']!,
                               scene: scene,
                             ),
                             _VisualSwitch(

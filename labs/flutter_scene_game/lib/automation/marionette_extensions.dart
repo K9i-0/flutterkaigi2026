@@ -48,6 +48,7 @@ void registerIslandMarionetteExtensions() {
         'objective': controller.chapterObjective,
         'signalLevel': controller.signalLevel,
         'explorationLimit': controller.explorationLimit,
+        'signalBoundaryRadius': scene.signalBoundaryRadius,
         'inventory': {
           for (final item in IslandItem.values)
             item.name: controller.itemCount(item),
