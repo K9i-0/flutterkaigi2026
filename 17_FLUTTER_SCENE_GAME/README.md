@@ -52,7 +52,9 @@ Flutter Sceneを、窓際族物語の正典ボクセル素材で実ゲームへ�
 - Dart isolateで地形メッシュを生成し、UI／描画isolateの停止を抑制
 - vertex color付きPBRブロック地形、海、木、岩、家のランタイム生成
 - 鉱石・植物・焚き火・作業台・橋・炉・通信ビーコンのランタイム生成
-- `PerspectiveCamera.screenPointToRay`による3Dグリッド選択
+- `PerspectiveCamera.screenPointToRay`と各ボクセル天面の厳密な交差判定による3Dグリッド選択
+- 常設の採取／建設モード切替、地面タップ起点の建設メニュー、床・壁・屋根・松明の即時設置
+- 2×2マスの陸地・傾斜・資源・既存建築を検査する小屋一括建築（木材10・石材4）
 - ゲーム進行に応じたNodeの追加・削除・移動
 - プレイヤー追従カメラ、カメラ相対8方向移動、段差・海岸衝突
 - 高低差1.25マスまでの放物線ジャンプと、それを超える崖の移動阻止
@@ -171,7 +173,8 @@ mise exec flutter@3.47.1 -- dart pub global activate marionette_mcp
 - `madogiwa.keyInput`: W/A/S/D・矢印キー相当のdown/up/tap入力
 - `madogiwa.releaseKeys`: 押下状態をすべて解除
 - `madogiwa.openScenario`: camp/radio/office/shrine/summitへ検証用移動
-- `madogiwa.selectTool`: 採取・床・壁・屋根・松明を選択
+- `madogiwa.selectTool`: gather/buildモードまたは従来の配置ツールを選択
+- `madogiwa.buildAt`: 座標とfloor/wall/roof/torch/houseを指定して建設
 - `madogiwa.grantResources`: キャンペーン検証用資源を追加
 - `madogiwa.craftRecipe`: レシピ名指定でクラフト
 - `madogiwa.performObjective`: 現在地付近の通信設備を起動

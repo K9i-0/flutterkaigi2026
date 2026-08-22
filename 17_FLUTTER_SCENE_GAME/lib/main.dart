@@ -65,6 +65,7 @@ class _IslandPageState extends State<IslandPage> {
   );
   bool _showGameMenu = false;
   bool _showCrafting = false;
+  bool _showBuildMenu = false;
   bool _miniMapExpanded = false;
   Object? _error;
   Offset? _gestureStart;
@@ -166,6 +167,21 @@ class _IslandPageState extends State<IslandPage> {
     if (changed) HapticFeedback.mediumImpact();
   }
 
+  void _selectInteractionMode(IslandTool tool) {
+    _gameFocus.requestFocus();
+    _islandScene.selectTool(tool);
+    setState(() => _showBuildMenu = false);
+    HapticFeedback.selectionClick();
+  }
+
+  void _placeSelectedBlueprint(BuildBlueprint blueprint) {
+    final changed = _islandScene.buildAtSelected(blueprint);
+    if (!changed) return;
+    HapticFeedback.mediumImpact();
+    setState(() => _showBuildMenu = false);
+    _gameFocus.requestFocus();
+  }
+
   void _startViewGesture(ScaleStartDetails details) {
     _gameFocus.requestFocus();
     _gestureStart = details.localFocalPoint;
@@ -200,9 +216,14 @@ class _IslandPageState extends State<IslandPage> {
         !_showIntro &&
         !_controller.campaignComplete &&
         !_showCrafting &&
+        !_showBuildMenu &&
         !_showGameMenu &&
         _gestureLatest != null) {
-      _islandScene.handleTap(_gestureLatest!, viewSize);
+      final buildTarget = _islandScene.handleTap(_gestureLatest!, viewSize);
+      if (buildTarget != null && _controller.tool == IslandTool.build) {
+        HapticFeedback.selectionClick();
+        setState(() => _showBuildMenu = true);
+      }
     }
     _gestureStart = null;
     _gestureLatest = null;
@@ -340,10 +361,30 @@ class _IslandPageState extends State<IslandPage> {
                       _islandScene.hudRevision,
                     ]),
                     builder: (context, _) => RepaintBoundary(
-                      child: _ContextActionButton(
-                        label: _islandScene.contextActionLabel,
-                        compact: compactControls,
-                        onPressed: _performContextAction,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          if (_controller.tool == IslandTool.build) ...[
+                            const _BuildTapHint(),
+                            const SizedBox(height: 8),
+                          ],
+                          _InteractionModeSwitch(
+                            mode: _controller.tool == IslandTool.gather
+                                ? IslandTool.gather
+                                : IslandTool.build,
+                            compact: compactControls,
+                            onChanged: _selectInteractionMode,
+                          ),
+                          if (_controller.tool == IslandTool.gather) ...[
+                            const SizedBox(height: 9),
+                            _ContextActionButton(
+                              label: _islandScene.contextActionLabel,
+                              compact: compactControls,
+                              onPressed: _performContextAction,
+                            ),
+                          ],
+                        ],
                       ),
                     ),
                   ),
@@ -383,6 +424,15 @@ class _IslandPageState extends State<IslandPage> {
                 scene: _islandScene,
                 onClose: () {
                   setState(() => _showCrafting = false);
+                  _gameFocus.requestFocus();
+                },
+              ),
+            if (_showBuildMenu)
+              _BuildMenuOverlay(
+                controller: _controller,
+                onBuild: _placeSelectedBlueprint,
+                onClose: () {
+                  setState(() => _showBuildMenu = false);
                   _gameFocus.requestFocus();
                 },
               ),
@@ -1411,66 +1461,72 @@ class _ContextActionButton extends StatelessWidget {
   }
 }
 
-class _ToolBar extends StatelessWidget {
-  const _ToolBar({required this.controller, required this.scene});
-
-  final IslandGameController controller;
-  final MadogiwaIslandScene scene;
+class _BuildTapHint extends StatelessWidget {
+  const _BuildTapHint();
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
+    return Container(
+      key: const ValueKey('build_tap_hint'),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: const Color(0xe6091d24),
-        borderRadius: BorderRadius.circular(19),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x66000000),
-            blurRadius: 18,
-            offset: Offset(0, 8),
+        color: const Color(0xe60a252b),
+        borderRadius: BorderRadius.circular(13),
+        border: Border.all(color: const Color(0xaa72efbc)),
+      ),
+      child: const Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.touch_app_rounded, size: 17, color: Color(0xff72efbc)),
+          SizedBox(width: 6),
+          Text(
+            '地面をタップして建設',
+            style: TextStyle(fontSize: 11, fontWeight: FontWeight.w900),
           ),
         ],
       ),
+    );
+  }
+}
+
+class _InteractionModeSwitch extends StatelessWidget {
+  const _InteractionModeSwitch({
+    required this.mode,
+    required this.compact,
+    required this.onChanged,
+  });
+
+  final IslandTool mode;
+  final bool compact;
+  final ValueChanged<IslandTool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: const Color(0xee091d24),
+      borderRadius: BorderRadius.circular(17),
+      elevation: 8,
       child: Padding(
-        padding: const EdgeInsets.all(7),
-        child: Wrap(
-          alignment: WrapAlignment.center,
-          runSpacing: 6,
+        padding: const EdgeInsets.all(5),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            _ToolButton(
-              key: const ValueKey('tool_gather'),
+            _ModeButton(
+              key: const ValueKey('mode_gather'),
               label: '採取',
-              icon: Icons.hardware,
-              selected: controller.tool == IslandTool.gather,
-              onPressed: () => scene.selectTool(IslandTool.gather),
+              icon: Icons.hardware_rounded,
+              compact: compact,
+              selected: mode == IslandTool.gather,
+              onPressed: () => onChanged(IslandTool.gather),
             ),
-            _ToolButton(
-              key: const ValueKey('tool_floor'),
-              label: '床',
-              icon: Icons.grid_view_rounded,
-              selected: controller.tool == IslandTool.floor,
-              onPressed: () => scene.selectTool(IslandTool.floor),
-            ),
-            _ToolButton(
-              key: const ValueKey('tool_wall'),
-              label: '壁',
-              icon: Icons.view_week_rounded,
-              selected: controller.tool == IslandTool.wall,
-              onPressed: () => scene.selectTool(IslandTool.wall),
-            ),
-            _ToolButton(
-              key: const ValueKey('tool_roof'),
-              label: '屋根',
-              icon: Icons.roofing_rounded,
-              selected: controller.tool == IslandTool.roof,
-              onPressed: () => scene.selectTool(IslandTool.roof),
-            ),
-            _ToolButton(
-              key: const ValueKey('tool_torch'),
-              label: '松明',
-              icon: Icons.local_fire_department_rounded,
-              selected: controller.tool == IslandTool.torch,
-              onPressed: () => scene.selectTool(IslandTool.torch),
+            const SizedBox(width: 4),
+            _ModeButton(
+              key: const ValueKey('mode_build'),
+              label: '建設',
+              icon: Icons.home_work_rounded,
+              compact: compact,
+              selected: mode == IslandTool.build,
+              onPressed: () => onChanged(IslandTool.build),
             ),
           ],
         ),
@@ -1479,40 +1535,273 @@ class _ToolBar extends StatelessWidget {
   }
 }
 
-class _ToolButton extends StatelessWidget {
-  const _ToolButton({
+class _ModeButton extends StatelessWidget {
+  const _ModeButton({
     super.key,
     required this.label,
     required this.icon,
+    required this.compact,
     required this.selected,
     required this.onPressed,
   });
 
   final String label;
   final IconData icon;
+  final bool compact;
   final bool selected;
   final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 3),
-      child: FilledButton.tonalIcon(
-        onPressed: onPressed,
-        icon: Icon(icon, size: 17),
-        label: Text(label),
-        style: FilledButton.styleFrom(
-          backgroundColor: selected
-              ? const Color(0xff62dda8)
-              : const Color(0xff17343a),
-          foregroundColor: selected ? const Color(0xff062018) : Colors.white,
-          padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 11),
-          textStyle: const TextStyle(fontSize: 11, fontWeight: FontWeight.w900),
+    return Semantics(
+      selected: selected,
+      button: true,
+      label: '$labelモード',
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(12),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 160),
+          constraints: BoxConstraints(minHeight: compact ? 44 : 50),
+          padding: EdgeInsets.symmetric(
+            horizontal: compact ? 11 : 15,
+            vertical: 8,
+          ),
+          decoration: BoxDecoration(
+            color: selected ? const Color(0xff62dda8) : Colors.transparent,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                icon,
+                size: 19,
+                color: selected ? const Color(0xff062018) : Colors.white,
+              ),
+              const SizedBox(width: 6),
+              Text(
+                label,
+                style: TextStyle(
+                  color: selected ? const Color(0xff062018) : Colors.white,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
+
+class _BuildMenuOverlay extends StatelessWidget {
+  const _BuildMenuOverlay({
+    required this.controller,
+    required this.onBuild,
+    required this.onClose,
+  });
+
+  final IslandGameController controller;
+  final ValueChanged<BuildBlueprint> onBuild;
+  final VoidCallback onClose;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        GestureDetector(
+          key: const ValueKey('build_menu_barrier'),
+          behavior: HitTestBehavior.opaque,
+          onTap: onClose,
+          child: const ColoredBox(color: Color(0x66001015)),
+        ),
+        SafeArea(
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 660, maxHeight: 440),
+              child: Material(
+                key: const ValueKey('build_menu'),
+                color: const Color(0xff08242b),
+                elevation: 18,
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(26),
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: ListenableBuilder(
+                  listenable: controller,
+                  builder: (context, _) => SingleChildScrollView(
+                    padding: const EdgeInsets.fromLTRB(16, 14, 16, 20),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          children: [
+                            const CircleAvatar(
+                              backgroundColor: Color(0xff17433e),
+                              child: Icon(
+                                Icons.home_work_rounded,
+                                color: Color(0xff72efbc),
+                              ),
+                            ),
+                            const SizedBox(width: 11),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'ここに何を作る？',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w900,
+                                    ),
+                                  ),
+                                  Text(
+                                    controller.selectedCell == null
+                                        ? '建設位置を選択してください'
+                                        : '選択マス ${controller.selectedCell!.x}, '
+                                              '${controller.selectedCell!.z}  ·  '
+                                              '木材 ${controller.wood}  石材 ${controller.stone}',
+                                    style: const TextStyle(
+                                      color: Color(0xff9cb8bd),
+                                      fontSize: 10,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            IconButton(
+                              key: const ValueKey('build_menu_close'),
+                              tooltip: '閉じる',
+                              onPressed: onClose,
+                              icon: const Icon(Icons.close_rounded),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        LayoutBuilder(
+                          builder: (context, constraints) {
+                            final cardWidth = (constraints.maxWidth - 10) / 2;
+                            return Wrap(
+                              spacing: 10,
+                              runSpacing: 10,
+                              children: [
+                                for (final blueprint in BuildBlueprint.values)
+                                  SizedBox(
+                                    width: blueprint == BuildBlueprint.house
+                                        ? constraints.maxWidth
+                                        : cardWidth,
+                                    child: _BlueprintCard(
+                                      blueprint: blueprint,
+                                      controller: controller,
+                                      onPressed: () => onBuild(blueprint),
+                                    ),
+                                  ),
+                              ],
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _BlueprintCard extends StatelessWidget {
+  const _BlueprintCard({
+    required this.blueprint,
+    required this.controller,
+    required this.onPressed,
+  });
+
+  final BuildBlueprint blueprint;
+  final IslandGameController controller;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final cell = controller.selectedCell;
+    final failure = cell == null
+        ? '位置未選択'
+        : controller.buildFailureReason(blueprint, cell);
+    final available = failure == null;
+    final cost = blueprint.cost.entries
+        .map((entry) => '${entry.key.label}${entry.value}')
+        .join('・');
+    final highlight = blueprint == BuildBlueprint.house;
+    return Material(
+      key: ValueKey('build_${blueprint.name}'),
+      color: highlight ? const Color(0xff16473f) : const Color(0xff10343b),
+      borderRadius: BorderRadius.circular(15),
+      child: InkWell(
+        onTap: available ? onPressed : null,
+        borderRadius: BorderRadius.circular(15),
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            children: [
+              CircleAvatar(
+                backgroundColor: available
+                    ? const Color(0xff275b4b)
+                    : const Color(0xff25383b),
+                child: Icon(
+                  _blueprintIcon(blueprint),
+                  color: available
+                      ? const Color(0xff72efbc)
+                      : const Color(0xff758b8e),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      blueprint.label,
+                      style: const TextStyle(fontWeight: FontWeight.w900),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      available ? '${blueprint.description} · $cost' : failure,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: available
+                            ? const Color(0xffb5c9cc)
+                            : const Color(0xffffa58a),
+                        fontSize: 9,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (available)
+                const Icon(Icons.add_circle_rounded, color: Color(0xffffc561)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+IconData _blueprintIcon(BuildBlueprint blueprint) => switch (blueprint) {
+  BuildBlueprint.floor => Icons.grid_view_rounded,
+  BuildBlueprint.wall => Icons.view_week_rounded,
+  BuildBlueprint.roof => Icons.roofing_rounded,
+  BuildBlueprint.torch => Icons.local_fire_department_rounded,
+  BuildBlueprint.house => Icons.cottage_rounded,
+};
 
 class _CraftingOverlay extends StatelessWidget {
   const _CraftingOverlay({
@@ -1597,20 +1886,6 @@ class _CraftingOverlay extends StatelessWidget {
                           ),
                       ],
                     ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(14, 0, 14, 7),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        '使用する道具・建築パーツ',
-                        style: TextStyle(fontWeight: FontWeight.w900),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-                    child: _ToolBar(controller: controller, scene: scene),
                   ),
                   if (controller.reunitedMembers.isNotEmpty)
                     Padding(
