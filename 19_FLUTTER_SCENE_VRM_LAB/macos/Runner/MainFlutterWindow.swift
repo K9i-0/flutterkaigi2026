@@ -43,6 +43,7 @@ final class MacOSFaceTrackingPlugin: NSObject,
   private var startedAt = 0.0
   private var processedFrames = 0
   private var droppedFrames = 0
+  private var previewEnabled = false
 
   static func register(messenger: FlutterBinaryMessenger) -> MacOSFaceTrackingPlugin {
     let plugin = MacOSFaceTrackingPlugin()
@@ -63,6 +64,12 @@ final class MacOSFaceTrackingPlugin: NSObject,
         plugin.stop(result: result)
       case "listDevices":
         result(plugin.videoDevices().map(plugin.deviceMap))
+      case "setPreviewEnabled":
+        let arguments = call.arguments as? [String: Any]
+        plugin.setPreviewEnabled(
+          arguments?["enabled"] as? Bool ?? false,
+          result: result
+        )
       default:
         result(FlutterMethodNotImplemented)
       }
@@ -247,6 +254,17 @@ final class MacOSFaceTrackingPlugin: NSObject,
     }
   }
 
+  private func setPreviewEnabled(
+    _ enabled: Bool,
+    result: @escaping FlutterResult
+  ) {
+    captureQueue.async { [weak self] in
+      self?.previewEnabled = enabled
+      self?.lastPreviewTime = 0
+      DispatchQueue.main.async { result(nil) }
+    }
+  }
+
   func captureOutput(
     _ output: AVCaptureOutput,
     didOutput sampleBuffer: CMSampleBuffer,
@@ -264,24 +282,31 @@ final class MacOSFaceTrackingPlugin: NSObject,
     }
     emitPreview(pixelBuffer, now: now)
 
-    let request = VNDetectFaceLandmarksRequest()
-    request.revision = VNDetectFaceLandmarksRequestRevision3
+    let faceRequest = VNDetectFaceLandmarksRequest()
+    faceRequest.revision = VNDetectFaceLandmarksRequestRevision3
+    let bodyRequest = VNDetectHumanBodyPoseRequest()
     let handler = VNImageRequestHandler(
       cvPixelBuffer: pixelBuffer,
       orientation: .up,
       options: [:]
     )
     do {
-      try handler.perform([request])
+      try handler.perform([faceRequest, bodyRequest])
       processedFrames += 1
-      guard let face = request.results?.max(by: {
+      let face = faceRequest.results?.max(by: {
         $0.boundingBox.width * $0.boundingBox.height
           < $1.boundingBox.width * $1.boundingBox.height
-      }) else {
-        emit(stats(type: "noFace", now: now))
+      })
+      let body = upperBodyEvent(bodyRequest.results, matching: face)
+      guard let face else {
+        var event = stats(type: "noFace", now: now)
+        mergeBody(body, into: &event)
+        emit(event)
         return
       }
-      emit(faceEvent(face, now: now))
+      var event = faceEvent(face, now: now)
+      mergeBody(body, into: &event)
+      emit(event)
     } catch {
       emit(["type": "error", "message": error.localizedDescription])
     }
@@ -315,7 +340,9 @@ final class MacOSFaceTrackingPlugin: NSObject,
   }
 
   private func emitPreview(_ pixelBuffer: CVPixelBuffer, now: Double) {
-    guard lastPreviewTime == 0 || now - lastPreviewTime >= 1.0 / 8.0 else {
+    guard previewEnabled,
+      lastPreviewTime == 0 || now - lastPreviewTime >= 1.0 / 8.0
+    else {
       return
     }
     lastPreviewTime = now
@@ -334,6 +361,215 @@ final class MacOSFaceTrackingPlugin: NSObject,
       "type": "preview",
       "imageBytes": FlutterStandardTypedData(bytes: data),
     ])
+  }
+
+  private func upperBodyEvent(
+    _ observations: [VNHumanBodyPoseObservation]?,
+    matching face: VNFaceObservation?
+  ) -> [String: Any]? {
+    guard let observations else { return nil }
+    var best: [String: Any]?
+    var bestScore: Float = 0
+    for observation in observations {
+      guard
+        let leftShoulder = recognizedPoint(.leftShoulder, in: observation),
+        let rightShoulder = recognizedPoint(.rightShoulder, in: observation)
+      else {
+        continue
+      }
+      let shoulderConfidence = min(
+        leftShoulder.confidence,
+        rightShoulder.confidence
+      )
+      let shoulderWidth = leftShoulder.location.x - rightShoulder.location.x
+      guard abs(shoulderWidth) > 0.08 else { continue }
+
+      let neck = recognizedPoint(.neck, in: observation)
+      if let face, let neck {
+        let faceAnchor = CGPoint(x: face.boundingBox.midX, y: face.boundingBox.minY)
+        let distance = hypot(
+          neck.location.x - faceAnchor.x,
+          neck.location.y - faceAnchor.y
+        )
+        if distance > max(face.boundingBox.width * 1.4, 0.16) {
+          continue
+        }
+      }
+      let shoulderMidX = (leftShoulder.location.x + rightShoulder.location.x) * 0.5
+      var shoulderRollRadians = atan2(
+        leftShoulder.location.y - rightShoulder.location.y,
+        shoulderWidth
+      )
+      if shoulderRollRadians > CGFloat.pi / 2 {
+        shoulderRollRadians -= CGFloat.pi
+      } else if shoulderRollRadians < -CGFloat.pi / 2 {
+        shoulderRollRadians += CGFloat.pi
+      }
+      let shoulderRoll = shoulderRollRadians * 180 / CGFloat.pi
+      var bodyYaw = 0.0
+      var yawConfidence = 0.0
+      if let neck {
+        bodyYaw = clamp(
+          Double((neck.location.x - shoulderMidX) / abs(shoulderWidth)) * 90,
+          minimum: -25,
+          maximum: 25
+        )
+        yawConfidence = Double(min(shoulderConfidence, neck.confidence)) * 0.65
+      }
+
+      let leftElbow = recognizedPoint(.leftElbow, in: observation)
+      let rightElbow = recognizedPoint(.rightElbow, in: observation)
+      let leftWrist = recognizedPoint(.leftWrist, in: observation)
+      let rightWrist = recognizedPoint(.rightWrist, in: observation)
+      var leftShoulderDegrees = -35.0
+      var rightShoulderDegrees = 35.0
+      var leftElbowDegrees = 0.0
+      var rightElbowDegrees = 0.0
+      var leftArmConfidence = 0.0
+      var rightArmConfidence = 0.0
+      var leftElbowConfidence = 0.0
+      var rightElbowConfidence = 0.0
+      if let leftElbow {
+        let upper = CGPoint(
+          x: leftElbow.location.x - leftShoulder.location.x,
+          y: leftElbow.location.y - leftShoulder.location.y
+        )
+        leftShoulderDegrees = clamp(
+          Double(atan2(upper.y, upper.x) * 180 / CGFloat.pi),
+          minimum: -110,
+          maximum: 110
+        )
+        leftArmConfidence = Double(
+          min(shoulderConfidence, leftElbow.confidence)
+        )
+        if let leftWrist {
+          let lower = CGPoint(
+            x: leftWrist.location.x - leftElbow.location.x,
+            y: leftWrist.location.y - leftElbow.location.y
+          )
+          leftElbowDegrees = signedAngleDegrees(from: upper, to: lower)
+          leftElbowConfidence = Double(
+            min(
+              shoulderConfidence,
+              min(leftElbow.confidence, leftWrist.confidence)
+            )
+          )
+        }
+      }
+      if let rightElbow {
+        let upper = CGPoint(
+          x: rightElbow.location.x - rightShoulder.location.x,
+          y: rightElbow.location.y - rightShoulder.location.y
+        )
+        rightShoulderDegrees = clamp(
+          Double(atan2(-upper.y, -upper.x) * 180 / CGFloat.pi),
+          minimum: -110,
+          maximum: 110
+        )
+        rightArmConfidence = Double(
+          min(shoulderConfidence, rightElbow.confidence)
+        )
+        if let rightWrist {
+          let lower = CGPoint(
+            x: rightWrist.location.x - rightElbow.location.x,
+            y: rightWrist.location.y - rightElbow.location.y
+          )
+          rightElbowDegrees = signedAngleDegrees(from: upper, to: lower)
+          rightElbowConfidence = Double(
+            min(
+              shoulderConfidence,
+              min(rightElbow.confidence, rightWrist.confidence)
+            )
+          )
+        }
+      }
+
+      let jointNames: [(String, VNHumanBodyPoseObservation.JointName)] = [
+        ("neck", .neck),
+        ("leftShoulder", .leftShoulder),
+        ("rightShoulder", .rightShoulder),
+        ("leftElbow", .leftElbow),
+        ("rightElbow", .rightElbow),
+        ("leftWrist", .leftWrist),
+        ("rightWrist", .rightWrist),
+        ("leftHip", .leftHip),
+        ("rightHip", .rightHip),
+      ]
+      var joints: [String: Any] = [:]
+      for (name, jointName) in jointNames {
+        guard let point = recognizedPoint(jointName, in: observation) else {
+          continue
+        }
+        joints[name] = [
+          Double(point.location.x),
+          Double(1 - point.location.y),
+        ]
+      }
+
+      let score =
+        shoulderConfidence + (neck?.confidence ?? 0) + Float(abs(shoulderWidth))
+      if score > bestScore {
+        bestScore = score
+        best = [
+          "bodyYawDegrees": bodyYaw,
+          "bodyPitchDegrees": 0.0,
+          "bodyRollDegrees": Double(shoulderRoll),
+          "bodyYawConfidence": yawConfidence,
+          "bodyPitchConfidence": 0.0,
+          "bodyRollConfidence": Double(shoulderConfidence),
+          "leftShoulderDegrees": leftShoulderDegrees,
+          "rightShoulderDegrees": rightShoulderDegrees,
+          "leftElbowDegrees": leftElbowDegrees,
+          "rightElbowDegrees": rightElbowDegrees,
+          "leftArmConfidence": leftArmConfidence,
+          "rightArmConfidence": rightArmConfidence,
+          "leftElbowConfidence": leftElbowConfidence,
+          "rightElbowConfidence": rightElbowConfidence,
+          "bodyJoints": joints,
+        ]
+      }
+    }
+    return best
+  }
+
+  private func recognizedPoint(
+    _ name: VNHumanBodyPoseObservation.JointName,
+    in observation: VNHumanBodyPoseObservation
+  ) -> VNRecognizedPoint? {
+    guard let point = try? observation.recognizedPoint(name),
+      point.confidence >= 0.15
+    else {
+      return nil
+    }
+    return point
+  }
+
+  private func mergeBody(
+    _ body: [String: Any]?,
+    into event: inout [String: Any]
+  ) {
+    guard let body else { return }
+    for (key, value) in body {
+      event[key] = value
+    }
+  }
+
+  private func clamp(
+    _ value: Double,
+    minimum: Double,
+    maximum: Double
+  ) -> Double {
+    min(max(value, minimum), maximum)
+  }
+
+  private func signedAngleDegrees(from: CGPoint, to: CGPoint) -> Double {
+    let cross = from.x * to.y - from.y * to.x
+    let dot = from.x * to.x + from.y * to.y
+    return clamp(
+      Double(atan2(cross, dot) * 180 / CGFloat.pi),
+      minimum: -140,
+      maximum: 140
+    )
   }
 
   private func landmarkMap(_ face: VNFaceObservation) -> [String: Any] {

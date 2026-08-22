@@ -3,9 +3,9 @@
 ## Result
 
 The two-layer architecture is feasible. An official VRM 1.0 human model loads
-and renders through Flutter alone. Camera-independent face values now drive the
-avatar's upper body, head, neck, eyes, and mouth through the same reusable VRM
-layer.
+and renders through Flutter alone. Camera-independent face, cropped upper-body,
+and arm values now drive the avatar's torso, shoulders, elbows, head, neck,
+eyes, and mouth through the same reusable VRM layer.
 
 ```text
 Flutter UI / camera / future streaming features
@@ -22,9 +22,9 @@ camera image
   -> macOS: AVFoundation + on-device Apple Vision
   -> iOS / Android: camera plugin + on-device ML Kit
   -> camera-independent FaceTrackingSignal
-  -> calibration + exponential smoothing + clamping
+  -> calibration + per-part confidence + exponential smoothing + clamping
   -> VrmFaceTrackingDriver
-  -> neck/head humanoid rotations + blinkLeft/blinkRight + aa
+  -> torso/head/shoulder/elbow humanoid rotations + blinkLeft/blinkRight + aa
 ```
 
 The fork boundary remains justified: stock `flutter_scene 0.22.2` did not
@@ -61,17 +61,19 @@ symlink.
 | Body follow tuning | Pass; Natural / Anime counter-roll / legacy head-only modes and 0–150% intensity |
 | Torso stabilization | Pass; 4° dead zone and slower exponential response |
 | Shoulder-safe idle pose | Pass; rotates each complete shoulder subtree so Aim/Roll helpers stay aligned |
+| Cropped upper-body tracking | Pass; neck and shoulders drive torso without requiring visible hips or legs |
+| Arm tracking | Pass; shoulder-to-elbow drives each upper arm, while visible wrists add independent elbow flexion |
 | Blink and mouth tracking drive | Pass |
 | Camera-independent tracking pipeline | Pass; unit tested |
 | macOS real-camera integration | Pass; Apple Vision face/landmark events at about 10 fps on the development Mac |
 | macOS camera selection | Pass; live-switched between HD Pro Webcam C920 and the built-in MacBook Air camera |
-| macOS tracking HUD | Pass; mirrored preview plus Vision face bounds and landmark polylines |
+| macOS tracking HUD | Pass; outline-only by default, with face and upper-body polylines plus optional mirrored preview |
 | macOS continuous tracking simulation | Pass; optional deterministic fallback through the same VRM driver |
 | Full-body / bust-up framing | Pass; UI and MCP switching visually verified |
 | Android camera integration build | Pass; debug APK |
 | iOS camera integration build | Pass; simulator debug app |
 | Marionette MCP custom extensions | Pass; discovered and called live |
-| Deterministic MCP face injection | Pass; pose, one-eye blink, mouth visually verified |
+| Deterministic MCP tracking injection | Pass; face, torso, shoulders, and elbows verified against applied bone angles |
 | MToon declaration detection | Pass; glTF/PBR fallback rendering only |
 | SpringBone / Constraint detection | Pass; simulation not applied |
 
@@ -85,17 +87,26 @@ mode distributed the calibrated result through all five upper-body bones;
 head-only mode returned every torso rotation to zero; Anime mode reversed only
 the torso roll. The MCP inspection exposes the applied torso angles by bone.
 
+The arm check injected left/right shoulder angles `-78°` / `18°` and elbow
+angles `-55°` / `42°`. `madogiwa.inspectVrm` returned the same values on the
+left/right shoulder and lower-arm bone subtrees. A live C920 bust-up check also
+detected neck, both shoulders, and both elbows while the hips and wrists were
+outside the frame, so torso and upper-arm tracking remained active.
+
 ## Camera implementation boundary
 
 - `camera 0.12.0+2` supplies the front-camera image stream.
 - `google_mlkit_face_detection 0.15.1` supplies Euler angles, eye-open
   probabilities, and lip contours on iOS/Android.
-- On macOS, AVFoundation supplies 640x480 camera frames and Apple Vision
-  supplies face landmarks plus yaw, pitch, and roll. Analysis is throttled to
-  15 fps and late frames are discarded.
-- The lower-right debug HUD receives an 8 fps, 50%-quality JPEG preview and
-  overlays Vision's normalized face contour, eyebrows, eyes, nose, and lips.
-  Preview transport is local to the Flutter method channel and is never saved.
+- On macOS, AVFoundation supplies 640x480 camera frames. Apple Vision supplies
+  face landmarks plus yaw/pitch/roll and a body-pose request supplies neck,
+  shoulders, elbows, optional wrists, and optional hips. Analysis is throttled
+  to 15 fps and late frames are discarded.
+- The lower-right debug HUD draws normalized face landmarks in green and the
+  upper-body skeleton in amber. Raw preview is off by default; no JPEG is
+  encoded or transported while hidden. When explicitly enabled, an 8 fps,
+  50%-quality mirrored JPEG stays local to the Flutter method channel and is
+  never saved.
 - AVFoundation device discovery exposes external, built-in, and Continuity
   cameras. External cameras are preferred initially; the UI can refresh and
   switch devices while tracking is active.
@@ -104,7 +115,15 @@ the torso roll. The MCP inspection exposes the applied torso angles by bone.
 - A busy-frame gate prevents overlapping detector calls. Detector FPS, dropped
   frames, preview readiness, overlay readiness, and landmark region names are
   exposed in the UI and MCP.
-- When a face is lost, pose and facial values return smoothly to neutral.
+- Torso tracking only needs neck and shoulders. Each upper arm only needs its
+  shoulder and elbow; a missing wrist disables that elbow's flexion without
+  disabling its upper arm. When observations disappear, values return smoothly
+  to the presenter A-pose.
+- A minimum shoulder width and face-proximity check avoid locking onto small
+  background people. Shoulder roll is normalized consistently for front-facing
+  mirrored input.
+- When a face is lost, facial values return smoothly to neutral while any valid
+  body observation can continue driving the torso and arms.
 - Lifecycle pausing/resuming applies only to actual camera tracking. MCP and
   simulation modes do not accidentally open the camera.
 - The app neither uploads nor persists camera frames.
@@ -128,6 +147,7 @@ lab. Debug native builds register:
 - `madogiwa.setAvatarFraming`
 - `madogiwa.selectCamera`
 - `madogiwa.setBodyFollow`
+- `madogiwa.setCameraPreview`
 
 On the development Mac, Marionette reported live HD Pro Webcam C920 processing
 at about 10–11 fps and transitioned between face/no-face states. It also
@@ -141,7 +161,8 @@ screenshots.
 1. **Physical-device camera acceptance:** sustained tests on representative
    iPhones and Android devices, plus longer macOS runs. Integration builds do
    not prove mobile camera orientation, permission recovery, thermal behavior,
-   or detector quality across hardware.
+   or detector quality across hardware. The current cropped-body/arm detector
+   is macOS-only; iOS and Android still need a native pose-detector adapter.
 2. **Richer facial capture:** ML Kit provides head Euler angles and coarse
    eye/smile data, not ARKit-class blendshapes or phoneme visemes. ARKit or
    MediaPipe should plug in behind `FaceTrackingSignal`.
@@ -154,9 +175,10 @@ screenshots.
    and multi-avatar benchmarks.
 6. **Tracking robustness:** persisted calibration, lost-face/reacquisition
    tuning, device rotation, backgrounding, and interruption tests.
-7. **VTuber product features:** audio capture/lip-sync, full-body and hand
+7. **VTuber product features:** audio capture/lip-sync, lower-body and hand
    tracking, recording/streaming, virtual backgrounds, chat overlays, and
-   privacy UX are outside this validation.
+   production privacy UX are outside this validation. Monocular 2D pose also
+   cannot reliably recover arm depth or forearm twist when limbs overlap.
 8. **Format coverage:** VRM 0.x, VRMA animation, model permission presentation,
    and production-avatar QA.
 
