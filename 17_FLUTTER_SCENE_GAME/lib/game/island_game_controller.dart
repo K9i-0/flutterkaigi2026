@@ -138,6 +138,12 @@ class IslandGameController extends ChangeNotifier {
 
   bool get endingAvailable => completedLandmarks.contains('summit_relay');
 
+  bool get autoGatherUnlocked => reunitedMembers.contains('yametaro');
+
+  bool get doubleJumpUnlocked => reunitedMembers.contains('yumemin');
+
+  bool get nightVisionUnlocked => reunitedMembers.contains('takosan');
+
   double get explorationLimit => switch (chapter) {
     GameChapter.beach => 24,
     GameChapter.forest => hasRecipe(CraftRecipe.bridgeKit) ? 64 : 38,
@@ -191,8 +197,85 @@ class IslandGameController extends ChangeNotifier {
     }
   }
 
+  String get chapterObjectiveProgress {
+    switch (chapter) {
+      case GameChapter.beach:
+        if (!homeComplete) {
+          final floorsRemaining = (4 - floorsBuilt).clamp(0, 4);
+          final wallsRemaining = (4 - wallsBuilt).clamp(0, 4);
+          final woodNeeded = floorsRemaining + wallsRemaining + 2;
+          final remaining = _remainingLabel({
+            IslandItem.wood: woodNeeded,
+            IslandItem.stone: wallsRemaining,
+          });
+          return '床 ${floorsBuilt.clamp(0, 4)}/4・壁 '
+              '${wallsBuilt.clamp(0, 4)}/4・屋根 0/1・$remaining';
+        }
+        if (!hasRecipe(CraftRecipe.campfire)) {
+          return _remainingLabel(CraftRecipe.campfire.cost);
+        }
+        if (!hasRecipe(CraftRecipe.workbench)) {
+          return _remainingLabel(CraftRecipe.workbench.cost);
+        }
+        return '密林側の探索限界が開放されました';
+      case GameChapter.forest:
+        if (!hasRecipe(CraftRecipe.stoneAxe)) {
+          return _remainingLabel(CraftRecipe.stoneAxe.cost);
+        }
+        if (!hasRecipe(CraftRecipe.stonePickaxe)) {
+          return _remainingLabel(CraftRecipe.stonePickaxe.cost);
+        }
+        if (!hasRecipe(CraftRecipe.bridgeKit)) {
+          return _remainingLabel(CraftRecipe.bridgeKit.cost);
+        }
+        if (!reunitedMembers.contains('yametaro')) {
+          return 'ミニマップの橙色マーカーへ向かう';
+        }
+        return _remainingLabel(const {IslandItem.stone: 4, IslandItem.coal: 2});
+      case GameChapter.quarry:
+        if (!reunitedMembers.contains('yumemin')) {
+          return 'ミニマップの橙色マーカーへ向かう';
+        }
+        if (!hasRecipe(CraftRecipe.ironPickaxe)) {
+          return _remainingLabel(CraftRecipe.ironPickaxe.cost);
+        }
+        if (!hasRecipe(CraftRecipe.forge)) {
+          return _remainingLabel(CraftRecipe.forge.cost);
+        }
+        return '必要設備は揃っています・会議室へ向かう';
+      case GameChapter.marsh:
+        if (!hasRecipe(CraftRecipe.fogGear)) {
+          return _remainingLabel(CraftRecipe.fogGear.cost);
+        }
+        if (!reunitedMembers.contains('takosan')) {
+          return 'ミニマップの橙色マーカーへ向かう';
+        }
+        return _remainingLabel(const {IslandItem.iron: 6, IslandItem.coal: 4});
+      case GameChapter.summit:
+        if (endingAvailable) return '最終決断を選択する';
+        return _remainingLabel(const {
+          IslandItem.iron: 8,
+          IslandItem.coal: 6,
+          IslandItem.stone: 10,
+        });
+      case GameChapter.complete:
+        return '全目標達成';
+    }
+  }
+
   String get progressLabel =>
       '通信 Lv.$signalLevel/4 · 再会 ${reunitedMembers.length}/3';
+
+  String _remainingLabel(Map<IslandItem, int> cost) {
+    final remaining = cost.entries
+        .where((entry) => itemCount(entry.key) < entry.value)
+        .map(
+          (entry) =>
+              '${entry.key.label} あと${entry.value - itemCount(entry.key)}',
+        )
+        .join('・');
+    return remaining.isEmpty ? '必要素材は揃っています' : remaining;
+  }
 
   void reset() {
     resources.clear();
@@ -293,6 +376,23 @@ class IslandGameController extends ChangeNotifier {
   }
 
   IslandActionResult actOn(GridCell cell) => _actOn(cell, tool);
+
+  bool canAutoHarvest(IslandResource resource) => switch (resource) {
+    IslandResource.coal ||
+    IslandResource.iron => hasRecipe(CraftRecipe.stonePickaxe),
+    _ => true,
+  };
+
+  IslandActionResult autoHarvestAt(GridCell cell) {
+    final resource = resources[cell];
+    if (resource == null || !canAutoHarvest(resource)) {
+      return IslandActionResult(IslandActionKind.none, cell);
+    }
+    final previousSelection = selectedCell;
+    final result = _actOn(cell, IslandTool.gather);
+    selectedCell = previousSelection;
+    return result;
+  }
 
   IslandActionResult buildAt(BuildBlueprint blueprint, GridCell cell) {
     selectedCell = cell;

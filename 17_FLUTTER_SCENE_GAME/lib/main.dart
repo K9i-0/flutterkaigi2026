@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart';
@@ -64,9 +65,14 @@ class _IslandPageState extends State<IslandPage> {
     defaultValue: false,
   );
   bool _showGameMenu = false;
-  bool _showCrafting = false;
   bool _showBuildMenu = false;
+  int _menuInitialTab = 0;
   bool _miniMapExpanded = false;
+  String? _lastObjective;
+  _ObjectiveAchievement? _achievement;
+  Timer? _achievementTimer;
+  int _achievementSequence = 0;
+  bool _suppressAchievement = false;
   Object? _error;
   Offset? _gestureStart;
   Offset? _gestureLatest;
@@ -77,6 +83,8 @@ class _IslandPageState extends State<IslandPage> {
   void initState() {
     super.initState();
     _controller = IslandGameController();
+    _lastObjective = _controller.chapterObjective;
+    _controller.addListener(_handleProgressChange);
     _islandScene = MadogiwaIslandScene(controller: _controller);
     SchedulerBinding.instance.addTimingsCallback(_recordFrameTimings);
     IslandAutomationState.attach(controller: _controller, scene: _islandScene);
@@ -93,6 +101,8 @@ class _IslandPageState extends State<IslandPage> {
   @override
   void dispose() {
     IslandAutomationState.detach(_islandScene);
+    _achievementTimer?.cancel();
+    _controller.removeListener(_handleProgressChange);
     SchedulerBinding.instance.removeTimingsCallback(_recordFrameTimings);
     _gameFocus.dispose();
     _islandScene.dispose();
@@ -111,8 +121,49 @@ class _IslandPageState extends State<IslandPage> {
   }
 
   void _reset() {
+    _suppressAchievement = true;
+    _achievementTimer?.cancel();
     _islandScene.reset();
-    setState(() => _showIntro = false);
+    _lastObjective = _controller.chapterObjective;
+    setState(() {
+      _showIntro = false;
+      _showGameMenu = false;
+      _achievement = null;
+    });
+    _suppressAchievement = false;
+  }
+
+  void _handleProgressChange() {
+    final nextObjective = _controller.chapterObjective;
+    final completedObjective = _lastObjective;
+    _lastObjective = nextObjective;
+    if (!mounted ||
+        _suppressAchievement ||
+        completedObjective == null ||
+        completedObjective == nextObjective ||
+        _controller.endingAvailable ||
+        _controller.campaignComplete) {
+      return;
+    }
+    _achievementTimer?.cancel();
+    setState(() {
+      _achievementSequence++;
+      _achievement = _ObjectiveAchievement(
+        id: _achievementSequence,
+        completed: completedObjective,
+        next: nextObjective,
+      );
+    });
+    _achievementTimer = Timer(const Duration(milliseconds: 3800), () {
+      if (mounted) setState(() => _achievement = null);
+    });
+  }
+
+  void _openGameMenu(int initialTab) {
+    setState(() {
+      _menuInitialTab = initialTab;
+      _showGameMenu = true;
+    });
   }
 
   void _handleKeyEvent(KeyEvent event) {
@@ -215,7 +266,6 @@ class _IslandPageState extends State<IslandPage> {
     if (!_gestureMoved &&
         !_showIntro &&
         !_controller.campaignComplete &&
-        !_showCrafting &&
         !_showBuildMenu &&
         !_showGameMenu &&
         _gestureLatest != null) {
@@ -276,8 +326,30 @@ class _IslandPageState extends State<IslandPage> {
                   padding: const EdgeInsets.all(8),
                   child: RepaintBoundary(
                     child: _MinimalHud(
-                      onCrafting: () => setState(() => _showCrafting = true),
-                      onMenu: () => setState(() => _showGameMenu = true),
+                      onCrafting: () => _openGameMenu(1),
+                      onMenu: () => _openGameMenu(0),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SafeArea(
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(
+                    compactControls ? 8 : 150,
+                    compactControls ? 58 : 8,
+                    compactControls ? 100 : 120,
+                    0,
+                  ),
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 460),
+                    child: ListenableBuilder(
+                      listenable: _controller,
+                      builder: (context, _) => RepaintBoundary(
+                        child: _ObjectiveHud(controller: _controller),
+                      ),
                     ),
                   ),
                 ),
@@ -400,6 +472,11 @@ class _IslandPageState extends State<IslandPage> {
                   },
                 ),
               ),
+            if (_achievement case final achievement?)
+              _ObjectiveAchievementOverlay(
+                key: ValueKey(achievement.id),
+                achievement: achievement,
+              ),
             ListenableBuilder(
               listenable: _controller,
               builder: (context, _) {
@@ -418,15 +495,6 @@ class _IslandPageState extends State<IslandPage> {
                 return const SizedBox.shrink();
               },
             ),
-            if (_showCrafting)
-              _CraftingOverlay(
-                controller: _controller,
-                scene: _islandScene,
-                onClose: () {
-                  setState(() => _showCrafting = false);
-                  _gameFocus.requestFocus();
-                },
-              ),
             if (_showBuildMenu)
               _BuildMenuOverlay(
                 controller: _controller,
@@ -440,10 +508,7 @@ class _IslandPageState extends State<IslandPage> {
               _GameMenuOverlay(
                 controller: _controller,
                 scene: _islandScene,
-                onOpenInventory: () => setState(() {
-                  _showGameMenu = false;
-                  _showCrafting = true;
-                }),
+                initialTab: _menuInitialTab,
                 onReset: _reset,
                 onClose: () {
                   setState(() => _showGameMenu = false);
@@ -465,6 +530,182 @@ class _IslandMiniMap extends StatefulWidget {
 
   @override
   State<_IslandMiniMap> createState() => _IslandMiniMapState();
+}
+
+class _ObjectiveHud extends StatelessWidget {
+  const _ObjectiveHud({required this.controller});
+
+  final IslandGameController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      key: const ValueKey('objective_hud'),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+      decoration: BoxDecoration(
+        color: const Color(0xe6091d24),
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(color: const Color(0x8872efbc)),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x55000000),
+            blurRadius: 12,
+            offset: Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.flag_rounded, size: 20, color: Color(0xffffc561)),
+          const SizedBox(width: 9),
+          Flexible(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  controller.chapterObjective,
+                  key: const ValueKey('objective_hud_title'),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w900,
+                    height: 1.15,
+                  ),
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  controller.chapterObjectiveProgress,
+                  key: const ValueKey('objective_hud_progress'),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: Color(0xff72efbc),
+                    fontSize: 9,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ObjectiveAchievement {
+  const _ObjectiveAchievement({
+    required this.id,
+    required this.completed,
+    required this.next,
+  });
+
+  final int id;
+  final String completed;
+  final String next;
+}
+
+class _ObjectiveAchievementOverlay extends StatelessWidget {
+  const _ObjectiveAchievementOverlay({super.key, required this.achievement});
+
+  final _ObjectiveAchievement achievement;
+
+  @override
+  Widget build(BuildContext context) {
+    return IgnorePointer(
+      child: SafeArea(
+        child: Align(
+          alignment: const Alignment(0, -0.55),
+          child: TweenAnimationBuilder<double>(
+            tween: Tween(begin: 0, end: 1),
+            duration: const Duration(milliseconds: 480),
+            curve: Curves.easeOutBack,
+            builder: (context, value, child) => Opacity(
+              opacity: value.clamp(0, 1),
+              child: Transform.translate(
+                offset: Offset(0, (1 - value) * -28),
+                child: Transform.scale(
+                  scale: 0.82 + value * 0.18,
+                  child: child,
+                ),
+              ),
+            ),
+            child: Container(
+              key: const ValueKey('objective_achievement'),
+              constraints: const BoxConstraints(maxWidth: 430),
+              margin: const EdgeInsets.symmetric(horizontal: 24),
+              padding: const EdgeInsets.fromLTRB(18, 14, 18, 13),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xff1b654f), Color(0xff123b42)],
+                ),
+                borderRadius: BorderRadius.circular(22),
+                border: Border.all(color: const Color(0xffffd36a), width: 2),
+                boxShadow: const [
+                  BoxShadow(color: Color(0x9972efbc), blurRadius: 28),
+                  BoxShadow(
+                    color: Color(0x99000000),
+                    blurRadius: 18,
+                    offset: Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.auto_awesome,
+                        size: 17,
+                        color: Color(0xffffd36a),
+                      ),
+                      SizedBox(width: 7),
+                      Text(
+                        '目標達成！',
+                        style: TextStyle(
+                          color: Color(0xffffe19a),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 1.2,
+                        ),
+                      ),
+                      SizedBox(width: 7),
+                      Icon(
+                        Icons.auto_awesome,
+                        size: 17,
+                        color: Color(0xffffd36a),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    achievement.completed,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontWeight: FontWeight.w800),
+                  ),
+                  const SizedBox(height: 7),
+                  Text(
+                    'NEXT  ${achievement.next}',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Color(0xff8ff4cb),
+                      fontSize: 10,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class _IslandMiniMapState extends State<_IslandMiniMap> {
@@ -581,6 +822,8 @@ class _IslandMiniMapState extends State<_IslandMiniMap> {
                       scene.controller.completedLandmarks.length,
                       scene.reunitedCount,
                       scene.signalBoundaryEnabled,
+                      (scene.playerFacingX * 100).round(),
+                      (scene.playerFacingZ * 100).round(),
                     ),
                   ),
                 ),
@@ -668,15 +911,28 @@ class _IslandMapPainter extends CustomPainter {
           ..strokeWidth = 1.7,
       );
     }
-    canvas.drawCircle(player, 4.5, Paint()..color = const Color(0xffffdf61));
-    canvas.drawCircle(
-      player,
-      5.8,
+    final facing = Offset(scene.playerFacingX, scene.playerFacingZ);
+    final side = Offset(-facing.dy, facing.dx);
+    final markerPath = Path()
+      ..moveTo(player.dx + facing.dx * 7.2, player.dy + facing.dy * 7.2)
+      ..lineTo(
+        player.dx - facing.dx * 4.2 + side.dx * 4.5,
+        player.dy - facing.dy * 4.2 + side.dy * 4.5,
+      )
+      ..lineTo(
+        player.dx - facing.dx * 4.2 - side.dx * 4.5,
+        player.dy - facing.dy * 4.2 - side.dy * 4.5,
+      )
+      ..close();
+    canvas.drawPath(
+      markerPath,
       Paint()
         ..color = const Color(0xff092027)
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 1.5,
+        ..strokeWidth = 3.4
+        ..strokeJoin = StrokeJoin.round,
     );
+    canvas.drawPath(markerPath, Paint()..color = const Color(0xffffdf61));
   }
 
   @override
@@ -708,199 +964,127 @@ class _GameMenuOverlay extends StatelessWidget {
   const _GameMenuOverlay({
     required this.controller,
     required this.scene,
-    required this.onOpenInventory,
+    required this.initialTab,
     required this.onReset,
     required this.onClose,
   });
 
   final IslandGameController controller;
   final MadogiwaIslandScene scene;
-  final VoidCallback onOpenInventory;
+  final int initialTab;
   final VoidCallback onReset;
   final VoidCallback onClose;
 
   @override
   Widget build(BuildContext context) {
-    return ColoredBox(
-      color: const Color(0xaa001015),
-      child: SafeArea(
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 590, maxHeight: 560),
-            child: Material(
-              color: const Color(0xff09242b),
-              elevation: 24,
-              borderRadius: BorderRadius.circular(24),
-              clipBehavior: Clip.antiAlias,
-              child: ListenableBuilder(
-                listenable: Listenable.merge([controller, scene]),
-                builder: (context, _) {
-                  final options = scene.visualOptions;
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 14, 10, 8),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.menu_rounded,
-                              color: Color(0xffffc26b),
-                            ),
-                            const SizedBox(width: 9),
-                            const Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'ゲームメニュー',
-                                    style: TextStyle(
-                                      fontSize: 19,
-                                      fontWeight: FontWeight.w900,
-                                    ),
+    return DefaultTabController(
+      length: 3,
+      initialIndex: initialTab,
+      child: ColoredBox(
+        color: const Color(0xaa001015),
+        child: SafeArea(
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 690, maxHeight: 620),
+              child: Material(
+                color: const Color(0xff09242b),
+                elevation: 24,
+                borderRadius: BorderRadius.circular(24),
+                clipBehavior: Clip.antiAlias,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 13, 10, 7),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.backpack_rounded,
+                            color: Color(0xffffc26b),
+                          ),
+                          const SizedBox(width: 9),
+                          const Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '島流し手帳',
+                                  style: TextStyle(
+                                    fontSize: 19,
+                                    fontWeight: FontWeight.w900,
                                   ),
-                                  Text(
-                                    '目標・所持品・進行状況・設定',
-                                    style: TextStyle(
-                                      color: Color(0xff8fb4bc),
-                                      fontSize: 10,
-                                    ),
+                                ),
+                                Text(
+                                  '冒険・持ち物・設定をひとつに集約',
+                                  style: TextStyle(
+                                    color: Color(0xff8fb4bc),
+                                    fontSize: 10,
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                            IconButton(
-                              key: const ValueKey('game_menu_close'),
-                              tooltip: '閉じる',
-                              onPressed: onClose,
-                              icon: const Icon(Icons.close_rounded),
-                            ),
-                          ],
-                        ),
+                          ),
+                          IconButton(
+                            key: const ValueKey('game_menu_close'),
+                            tooltip: '閉じる',
+                            onPressed: onClose,
+                            icon: const Icon(Icons.close_rounded),
+                          ),
+                        ],
                       ),
-                      const Divider(height: 1),
-                      Expanded(
-                        child: ListView(
-                          padding: const EdgeInsets.fromLTRB(12, 8, 12, 18),
+                    ),
+                    const TabBar(
+                      indicatorColor: Color(0xff72efbc),
+                      labelColor: Color(0xff9af4d0),
+                      tabs: [
+                        Tab(
+                          key: ValueKey('menu_tab_adventure'),
+                          icon: Icon(Icons.flag_rounded),
+                          text: '冒険',
+                        ),
+                        Tab(
+                          key: ValueKey('menu_tab_inventory'),
+                          icon: Icon(Icons.inventory_2_rounded),
+                          text: '持ち物',
+                        ),
+                        Tab(
+                          key: ValueKey('menu_tab_settings'),
+                          icon: Icon(Icons.tune_rounded),
+                          text: '設定',
+                        ),
+                      ],
+                    ),
+                    const Divider(height: 1),
+                    Expanded(
+                      child: ListenableBuilder(
+                        listenable: Listenable.merge([controller, scene]),
+                        builder: (context, _) => TabBarView(
                           children: [
-                            _MenuStatus(
+                            ListView(
+                              key: const PageStorageKey('adventure_tab'),
+                              padding: const EdgeInsets.fromLTRB(
+                                14,
+                                14,
+                                14,
+                                20,
+                              ),
+                              children: [
+                                _MenuStatus(
+                                  controller: controller,
+                                  scene: scene,
+                                ),
+                              ],
+                            ),
+                            _InventoryCraftingTab(
                               controller: controller,
                               scene: scene,
-                              onOpenInventory: onOpenInventory,
                             ),
-                            const SizedBox(height: 12),
-                            const _MenuSectionTitle(
-                              icon: Icons.tune_rounded,
-                              label: '画質・デバッグ設定',
-                            ),
-                            const SizedBox(height: 8),
-                            _QualitySelector(scene: scene),
-                            const SizedBox(height: 8),
-                            _TimeDebugger(scene: scene),
-                            const SizedBox(height: 6),
-                            _VisualSwitch(
-                              option: 'dayNightCycle',
-                              label: '昼夜サイクル',
-                              description: '約12分周期。夕方は16〜21時をゆっくり進行',
-                              value: options['dayNightCycle']!,
-                              scene: scene,
-                            ),
-                            _VisualSwitch(
-                              option: 'dynamicLighting',
-                              label: '時間連動の環境光',
-                              description: '空・太陽・月光・露出・色調を連動',
-                              value: options['dynamicLighting']!,
-                              scene: scene,
-                            ),
-                            _VisualSwitch(
-                              option: 'signalBoundary',
-                              label: '探索限界リング',
-                              description: '進入可能範囲を示す赤い発光境界',
-                              value: options['signalBoundary']!,
-                              scene: scene,
-                            ),
-                            _VisualSwitch(
-                              option: 'performanceHud',
-                              label: 'パフォーマンスHUD',
-                              description: 'FPS・フレーム時間・描画規模を表示',
-                              value: options['performanceHud']!,
-                              scene: scene,
-                            ),
-                            _VisualSwitch(
-                              option: 'shadows',
-                              label: '太陽・月の影',
-                              description: scene.shadowProfileLabel,
-                              value: options['shadows']!,
-                              scene: scene,
-                            ),
-                            _VisualSwitch(
-                              option: 'contactShadows',
-                              label: '接地影',
-                              description: '足元やボクセル境界の短距離影',
-                              value: options['contactShadows']!,
-                              scene: scene,
-                            ),
-                            _VisualSwitch(
-                              option: 'torchLights',
-                              label: '松明ライト',
-                              description: scene.torchProfileLabel,
-                              value: options['torchLights']!,
-                              scene: scene,
-                            ),
-                            _VisualSwitch(
-                              option: 'torchParticles',
-                              label: '松明の火の粉',
-                              description: scene.particleProfileLabel,
-                              value: options['torchParticles']!,
-                              scene: scene,
-                            ),
-                            _VisualSwitch(
-                              option: 'landmarkLights',
-                              label: 'ランドマーク固有光',
-                              description: '無線塔・会議室・タコ石の門',
-                              value: options['landmarkLights']!,
-                              scene: scene,
-                            ),
-                            _VisualSwitch(
-                              option: 'godRays',
-                              label: '朝夕の光芒',
-                              description: scene.godRaysProfileLabel,
-                              value: options['godRays']!,
-                              scene: scene,
-                            ),
-                            _VisualSwitch(
-                              option: 'dynamicFog',
-                              label: '時間連動fog',
-                              description: '色・密度・太陽散乱を変化',
-                              value: options['dynamicFog']!,
-                              scene: scene,
-                            ),
-                            _VisualSwitch(
-                              option: 'waterEffects',
-                              label: '海面反射・微動',
-                              description: scene.reflectionsProfileLabel,
-                              value: options['waterEffects']!,
-                              scene: scene,
-                            ),
-                            const SizedBox(height: 8),
-                            OutlinedButton.icon(
-                              key: const ValueKey('visual_settings_reset'),
-                              onPressed: scene.resetVisualSettings,
-                              icon: const Icon(Icons.restart_alt_rounded),
-                              label: const Text('ビジュアル設定を初期化'),
-                            ),
-                            const SizedBox(height: 8),
-                            OutlinedButton.icon(
-                              key: const ValueKey('game_reset'),
-                              onPressed: onReset,
-                              icon: const Icon(Icons.replay_rounded),
-                              label: const Text('ゲームを最初からやり直す'),
-                            ),
+                            _SettingsTab(scene: scene, onReset: onReset),
                           ],
                         ),
                       ),
-                    ],
-                  );
-                },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -910,16 +1094,256 @@ class _GameMenuOverlay extends StatelessWidget {
   }
 }
 
-class _MenuStatus extends StatelessWidget {
-  const _MenuStatus({
+class _InventoryCraftingTab extends StatelessWidget {
+  const _InventoryCraftingTab({required this.controller, required this.scene});
+
+  final IslandGameController controller;
+  final MadogiwaIslandScene scene;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      key: const PageStorageKey('inventory_tab'),
+      padding: const EdgeInsets.fromLTRB(14, 14, 14, 20),
+      children: [
+        const _MenuSectionTitle(icon: Icons.inventory_2_rounded, label: '所持資材'),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 7,
+          runSpacing: 7,
+          children: [
+            for (final item in IslandItem.values)
+              Chip(
+                avatar: Icon(_MenuStatus._menuItemIcon(item), size: 16),
+                label: Text(
+                  '${item.label} ${controller.itemCount(item)}',
+                  style: const TextStyle(fontWeight: FontWeight.w800),
+                ),
+              ),
+          ],
+        ),
+        if (controller.reunitedMembers.isNotEmpty) ...[
+          const SizedBox(height: 12),
+          DecoratedBox(
+            decoration: BoxDecoration(
+              color: const Color(0xff102f37),
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              child: Row(
+                children: [
+                  const Icon(Icons.groups_rounded, color: Color(0xffffc561)),
+                  const SizedBox(width: 9),
+                  Expanded(
+                    child: Text(
+                      '隊列: そば屋 → '
+                      '${controller.reunitedMembers.map(_CraftingOverlay._memberName).join(' → ')}',
+                      style: const TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+        const SizedBox(height: 16),
+        const _MenuSectionTitle(icon: Icons.handyman_rounded, label: 'クラフト'),
+        const SizedBox(height: 8),
+        for (final recipe in CraftRecipe.values)
+          _RecipeCard(controller: controller, scene: scene, recipe: recipe),
+      ],
+    );
+  }
+}
+
+class _RecipeCard extends StatelessWidget {
+  const _RecipeCard({
     required this.controller,
     required this.scene,
-    required this.onOpenInventory,
+    required this.recipe,
   });
 
   final IslandGameController controller;
   final MadogiwaIslandScene scene;
-  final VoidCallback onOpenInventory;
+  final CraftRecipe recipe;
+
+  @override
+  Widget build(BuildContext context) {
+    final owned = controller.hasRecipe(recipe);
+    final canCraft = controller.canCraft(recipe);
+    final failure = controller.craftFailureReason(recipe);
+    final currentObjective = controller.chapterObjective.contains(recipe.label);
+    final cost = recipe.cost.entries
+        .map((entry) => '${entry.key.label}${entry.value}')
+        .join('・');
+    return Card(
+      color: currentObjective
+          ? const Color(0xff185044)
+          : const Color(0xff10343b),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14),
+        side: currentObjective
+            ? const BorderSide(color: Color(0xff72efbc))
+            : BorderSide.none,
+      ),
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: owned
+              ? const Color(0xff275b4b)
+              : const Color(0xff183f47),
+          child: Icon(
+            owned ? Icons.check_rounded : _CraftingOverlay._recipeIcon(recipe),
+            color: owned ? const Color(0xff72efbc) : Colors.white,
+          ),
+        ),
+        title: Text(
+          recipe.label,
+          style: const TextStyle(fontWeight: FontWeight.w900),
+        ),
+        subtitle: Text(
+          '${recipe.description}\n必要: $cost'
+          '${!owned && failure != null ? ' · $failure' : ''}',
+        ),
+        isThreeLine: true,
+        trailing: FilledButton(
+          key: ValueKey('craft_${recipe.name}'),
+          onPressed: canCraft ? () => scene.craftRecipe(recipe) : null,
+          child: Text(owned ? '作成済み' : '作る'),
+        ),
+      ),
+    );
+  }
+}
+
+class _SettingsTab extends StatelessWidget {
+  const _SettingsTab({required this.scene, required this.onReset});
+
+  final MadogiwaIslandScene scene;
+  final VoidCallback onReset;
+
+  @override
+  Widget build(BuildContext context) {
+    final options = scene.visualOptions;
+    return ListView(
+      key: const PageStorageKey('settings_tab'),
+      padding: const EdgeInsets.fromLTRB(14, 14, 14, 20),
+      children: [
+        _QualitySelector(scene: scene),
+        const SizedBox(height: 8),
+        _TimeDebugger(scene: scene),
+        const SizedBox(height: 6),
+        _VisualSwitch(
+          option: 'dayNightCycle',
+          label: '昼夜サイクル',
+          description: '約12分周期。夕方は16〜21時をゆっくり進行',
+          value: options['dayNightCycle']!,
+          scene: scene,
+        ),
+        _VisualSwitch(
+          option: 'dynamicLighting',
+          label: '時間連動の環境光',
+          description: '空・太陽・月光・露出・色調を連動',
+          value: options['dynamicLighting']!,
+          scene: scene,
+        ),
+        _VisualSwitch(
+          option: 'signalBoundary',
+          label: '探索限界リング',
+          description: '進入可能範囲を示す赤い発光境界',
+          value: options['signalBoundary']!,
+          scene: scene,
+        ),
+        _VisualSwitch(
+          option: 'performanceHud',
+          label: 'パフォーマンスHUD',
+          description: 'FPS・フレーム時間・描画規模を表示',
+          value: options['performanceHud']!,
+          scene: scene,
+        ),
+        _VisualSwitch(
+          option: 'shadows',
+          label: '太陽・月の影',
+          description: scene.shadowProfileLabel,
+          value: options['shadows']!,
+          scene: scene,
+        ),
+        _VisualSwitch(
+          option: 'contactShadows',
+          label: '接地影',
+          description: '足元やボクセル境界の短距離影',
+          value: options['contactShadows']!,
+          scene: scene,
+        ),
+        _VisualSwitch(
+          option: 'torchLights',
+          label: '松明ライト',
+          description: scene.torchProfileLabel,
+          value: options['torchLights']!,
+          scene: scene,
+        ),
+        _VisualSwitch(
+          option: 'torchParticles',
+          label: '松明の火の粉',
+          description: scene.particleProfileLabel,
+          value: options['torchParticles']!,
+          scene: scene,
+        ),
+        _VisualSwitch(
+          option: 'landmarkLights',
+          label: 'ランドマーク固有光',
+          description: '無線塔・会議室・タコ石の門',
+          value: options['landmarkLights']!,
+          scene: scene,
+        ),
+        _VisualSwitch(
+          option: 'godRays',
+          label: '朝夕の光芒',
+          description: scene.godRaysProfileLabel,
+          value: options['godRays']!,
+          scene: scene,
+        ),
+        _VisualSwitch(
+          option: 'dynamicFog',
+          label: '時間連動fog',
+          description: '色・密度・太陽散乱を変化',
+          value: options['dynamicFog']!,
+          scene: scene,
+        ),
+        _VisualSwitch(
+          option: 'waterEffects',
+          label: '海面反射・微動',
+          description: scene.reflectionsProfileLabel,
+          value: options['waterEffects']!,
+          scene: scene,
+        ),
+        const SizedBox(height: 8),
+        OutlinedButton.icon(
+          key: const ValueKey('visual_settings_reset'),
+          onPressed: scene.resetVisualSettings,
+          icon: const Icon(Icons.restart_alt_rounded),
+          label: const Text('ビジュアル設定を初期化'),
+        ),
+        const SizedBox(height: 8),
+        OutlinedButton.icon(
+          key: const ValueKey('game_reset'),
+          onPressed: onReset,
+          icon: const Icon(Icons.replay_rounded),
+          label: const Text('ゲームを最初からやり直す'),
+        ),
+      ],
+    );
+  }
+}
+
+class _MenuStatus extends StatelessWidget {
+  const _MenuStatus({required this.controller, required this.scene});
+
+  final IslandGameController controller;
+  final MadogiwaIslandScene scene;
 
   @override
   Widget build(BuildContext context) {
@@ -943,6 +1367,15 @@ class _MenuStatus extends StatelessWidget {
                   controller.chapterObjective,
                   style: const TextStyle(
                     fontSize: 15,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  controller.chapterObjectiveProgress,
+                  style: const TextStyle(
+                    color: Color(0xffffd071),
+                    fontSize: 12,
                     fontWeight: FontWeight.w900,
                   ),
                 ),
@@ -978,31 +1411,27 @@ class _MenuStatus extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12),
-        const _MenuSectionTitle(
-          icon: Icons.inventory_2_rounded,
-          label: '資材・インベントリ',
-        ),
+        const _MenuSectionTitle(icon: Icons.groups_rounded, label: '勇者パーティー効果'),
         const SizedBox(height: 8),
-        Wrap(
-          spacing: 7,
-          runSpacing: 7,
-          children: [
-            for (final item in IslandItem.values)
-              Chip(
-                avatar: Icon(_menuItemIcon(item), size: 16),
-                label: Text(
-                  '${item.label} ${controller.itemCount(item)}',
-                  style: const TextStyle(fontWeight: FontWeight.w800),
-                ),
-              ),
-          ],
+        _PartyAbilityTile(
+          unlocked: controller.autoGatherUnlocked,
+          member: 'やめ太郎',
+          icon: Icons.auto_awesome_motion_rounded,
+          label: '5マス以内の資源を自動収集',
         ),
-        const SizedBox(height: 8),
-        FilledButton.tonalIcon(
-          key: const ValueKey('menu_inventory_open'),
-          onPressed: onOpenInventory,
-          icon: const Icon(Icons.handyman_rounded),
-          label: const Text('インベントリ・クラフトを開く'),
+        const SizedBox(height: 6),
+        _PartyAbilityTile(
+          unlocked: controller.doubleJumpUnlocked,
+          member: 'ゆめみん',
+          icon: Icons.keyboard_double_arrow_up_rounded,
+          label: 'ジャンプ高と越えられる段差が2倍',
+        ),
+        const SizedBox(height: 6),
+        _PartyAbilityTile(
+          unlocked: controller.nightVisionUnlocked,
+          member: 'タコさん',
+          icon: Icons.light_mode_rounded,
+          label: '夜間の世界全体を月明かりで見やすくする',
         ),
         const SizedBox(height: 12),
         DecoratedBox(
@@ -1038,6 +1467,68 @@ class _MenuStatus extends StatelessWidget {
     IslandItem.iron => Icons.hexagon_rounded,
     IslandItem.herb => Icons.eco_rounded,
   };
+}
+
+class _PartyAbilityTile extends StatelessWidget {
+  const _PartyAbilityTile({
+    required this.unlocked,
+    required this.member,
+    required this.icon,
+    required this.label,
+  });
+
+  final bool unlocked;
+  final String member;
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        color: unlocked ? const Color(0xff16473f) : const Color(0xff102f37),
+        borderRadius: BorderRadius.circular(13),
+        border: unlocked ? Border.all(color: const Color(0x6672efbc)) : null,
+      ),
+      child: Row(
+        children: [
+          Icon(
+            unlocked ? icon : Icons.lock_outline_rounded,
+            color: unlocked ? const Color(0xff72efbc) : const Color(0xff738b90),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '$member ${unlocked ? '加入済み' : '未加入'}',
+                  style: TextStyle(
+                    color: unlocked ? Colors.white : const Color(0xff82999e),
+                    fontSize: 10,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                Text(
+                  label,
+                  style: TextStyle(
+                    color: unlocked
+                        ? const Color(0xffbcd5d0)
+                        : const Color(0xff6f858a),
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (unlocked)
+            const Icon(Icons.check_circle_rounded, color: Color(0xffffc561)),
+        ],
+      ),
+    );
+  }
 }
 
 class _MenuSectionTitle extends StatelessWidget {
@@ -2202,48 +2693,76 @@ class _CompleteOverlay extends StatelessWidget {
     return ColoredBox(
       color: const Color(0x7700141b),
       child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 380),
-          child: Card(
-            color: const Color(0xf2071b21),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(26),
-              side: const BorderSide(color: Color(0xffffb65f)),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    controller.endingChoice == EndingChoice.stay ? '🏝️' : '🚢',
-                    style: const TextStyle(fontSize: 42),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    controller.endingChoice == EndingChoice.stay
-                        ? '窓際族自治区、誕生！'
-                        : '島流し任務、完了！',
-                    style: const TextStyle(
-                      fontSize: 27,
-                      fontWeight: FontWeight.w900,
+        child: TweenAnimationBuilder<double>(
+          tween: Tween(begin: 0, end: 1),
+          duration: const Duration(milliseconds: 850),
+          curve: Curves.elasticOut,
+          builder: (context, value, child) => Opacity(
+            opacity: value.clamp(0, 1),
+            child: Transform.scale(scale: 0.65 + value * 0.35, child: child),
+          ),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 400),
+            child: Card(
+              color: const Color(0xf2071b21),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(26),
+                side: const BorderSide(color: Color(0xffffd36a), width: 2),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Icon(Icons.auto_awesome, color: Color(0xffffd36a)),
+                        Text(
+                          'GAME CLEAR',
+                          style: TextStyle(
+                            color: Color(0xff72efbc),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 2.4,
+                          ),
+                        ),
+                        Icon(Icons.auto_awesome, color: Color(0xffffd36a)),
+                      ],
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    controller.endingChoice == EndingChoice.stay
-                        ? '救助を丁重に断り、\n島全体を最高の窓際族エリアにした。'
-                        : '全員で救助船へ乗り込み、\n無人島で得たクラフト技術を会社へ持ち帰った。',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Color(0xffc0d1d4), height: 1.5),
-                  ),
-                  const SizedBox(height: 18),
-                  FilledButton(
-                    key: const ValueKey('island_reset'),
-                    onPressed: onReset,
-                    child: const Text('島をリセット'),
-                  ),
-                ],
+                    const SizedBox(height: 8),
+                    Text(
+                      controller.endingChoice == EndingChoice.stay
+                          ? '🏝️'
+                          : '🚢',
+                      style: const TextStyle(fontSize: 42),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      controller.endingChoice == EndingChoice.stay
+                          ? '窓際族自治区、誕生！'
+                          : '島流し任務、完了！',
+                      style: const TextStyle(
+                        fontSize: 27,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      controller.endingChoice == EndingChoice.stay
+                          ? '救助を丁重に断り、\n島全体を最高の窓際族エリアにした。'
+                          : '全員で救助船へ乗り込み、\n無人島で得たクラフト技術を会社へ持ち帰った。',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Color(0xffc0d1d4), height: 1.5),
+                    ),
+                    const SizedBox(height: 18),
+                    FilledButton(
+                      key: const ValueKey('island_reset'),
+                      onPressed: onReset,
+                      child: const Text('島をリセット'),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

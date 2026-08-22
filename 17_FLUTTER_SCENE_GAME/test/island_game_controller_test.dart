@@ -51,6 +51,26 @@ void main() {
       expect(jumpArcOffset(1), 0);
     });
 
+    test('party jump boost doubles climb and arc height', () {
+      expect(
+        canTraverseHeight(
+          currentHeight: 0,
+          targetHeight: 2.5,
+          maxClimb: maxJumpClimb * 2,
+        ),
+        isTrue,
+      );
+      expect(
+        canTraverseHeight(
+          currentHeight: 0,
+          targetHeight: 2.501,
+          maxClimb: maxJumpClimb * 2,
+        ),
+        isFalse,
+      );
+      expect(jumpArcOffset(0.5, height: jumpArcHeight * 2), jumpArcHeight * 2);
+    });
+
     test('canonical -Z facing follows every cardinal movement direction', () {
       expect(characterFacingYaw(0, -1), closeTo(0, 0.000001));
       expect(characterFacingYaw(-1, 0), closeTo(math.pi / 2, 0.000001));
@@ -103,6 +123,58 @@ void main() {
   });
 
   group('IslandGameController', () {
+    test('objective HUD progress reports construction and missing items', () {
+      final controller = IslandGameController();
+
+      expect(controller.chapterObjectiveProgress, contains('床 0/4'));
+      controller
+        ..grantDebugResources(11)
+        ..buildAt(BuildBlueprint.house, const GridCell(-1, 0));
+      expect(controller.chapterObjective, contains('焚き火'));
+      expect(controller.chapterObjectiveProgress, contains('必要素材は揃って'));
+
+      controller.wood = 0;
+      expect(controller.chapterObjectiveProgress, contains('木材 あと1'));
+    });
+
+    test('reunion order unlocks the three party abilities', () {
+      final controller = IslandGameController();
+
+      expect(controller.autoGatherUnlocked, isFalse);
+      expect(controller.doubleJumpUnlocked, isFalse);
+      expect(controller.nightVisionUnlocked, isFalse);
+
+      controller
+        ..reuniteMember('yumemin', 'ゆめみん')
+        ..reuniteMember('yametaro', 'やめ太郎')
+        ..reuniteMember('takosan', 'タコさん');
+
+      expect(controller.reunitedMembers.toList(), [
+        'yumemin',
+        'yametaro',
+        'takosan',
+      ]);
+      expect(controller.autoGatherUnlocked, isTrue);
+      expect(controller.doubleJumpUnlocked, isTrue);
+      expect(controller.nightVisionUnlocked, isTrue);
+    });
+
+    test(
+      'auto gather collects harvestable resources without changing mode',
+      () {
+        final controller = IslandGameController()
+          ..selectTool(IslandTool.build)
+          ..selectBuildTarget(const GridCell(0, 0));
+
+        final result = controller.autoHarvestAt(const GridCell(-3, -1));
+
+        expect(result.kind, IslandActionKind.treeHarvested);
+        expect(controller.wood, 2);
+        expect(controller.tool, IslandTool.build);
+        expect(controller.selectedCell, const GridCell(0, 0));
+      },
+    );
+
     test('tree and rock harvesting adds canonical build resources', () {
       final controller = IslandGameController();
 

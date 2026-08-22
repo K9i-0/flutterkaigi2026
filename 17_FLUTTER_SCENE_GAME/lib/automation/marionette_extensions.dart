@@ -52,6 +52,12 @@ void registerIslandMarionetteExtensions() {
         'activeTorchLights': scene.activeTorchLightCount,
         'reunitedCount': scene.reunitedCount,
         'reunitedMembers': scene.reunitedMemberNames,
+        'partyOrder': controller.reunitedMembers.toList(),
+        'partyAbilities': {
+          'autoGather': controller.autoGatherUnlocked,
+          'doubleJump': controller.doubleJumpUnlocked,
+          'nightVision': controller.nightVisionUnlocked,
+        },
         'companionModes': {
           for (final member in controller.reunitedMembers)
             member: controller.companionMode(member).name,
@@ -67,6 +73,7 @@ void registerIslandMarionetteExtensions() {
         'chapter': controller.chapter.name,
         'chapterLabel': controller.chapter.label,
         'objective': controller.chapterObjective,
+        'objectiveProgress': controller.chapterObjectiveProgress,
         'signalLevel': controller.signalLevel,
         'explorationLimit': controller.explorationLimit,
         'signalBoundaryRadius': scene.signalBoundaryRadius,
