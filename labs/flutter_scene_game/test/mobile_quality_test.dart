@@ -13,11 +13,26 @@ void main() {
     );
     expect(MobileQualityProfile.performance.screenSpaceReflections, isFalse);
     expect(MobileQualityProfile.quality.screenSpaceReflections, isTrue);
+    expect(MobileQualityProfile.adaptiveWorld.renderScale, 1);
+    expect(MobileQualityProfile.adaptiveVisual.renderScale, 0.88);
     expect(MobileQualityProfile.adaptiveVisual.bloom, isTrue);
     expect(MobileQualityProfile.adaptivePerformance.bloom, isFalse);
-    expect(MobileQualityProfile.adaptiveVisual.ambientOcclusion, isTrue);
+    expect(MobileQualityProfile.adaptiveWorld.ambientOcclusion, isTrue);
+    expect(MobileQualityProfile.adaptiveVisual.ambientOcclusion, isFalse);
     expect(MobileQualityProfile.adaptivePerformance.ambientOcclusion, isFalse);
     expect(MobileQualityProfile.adaptivePerformance.contactShadows, isFalse);
+    expect(
+      MobileQualityProfile.adaptiveEmergency.renderScale,
+      lessThan(MobileQualityProfile.adaptivePerformance.renderScale),
+    );
+    expect(
+      MobileQualityProfile.adaptiveWorld.usesFullResourceDetail(100),
+      isTrue,
+    );
+    expect(
+      MobileQualityProfile.adaptiveWorld.usesFullResourceDetail(100.1),
+      isFalse,
+    );
   });
 
   test('auto quality drops quickly and raises only after healthy windows', () {
@@ -27,7 +42,8 @@ void main() {
       auto.update(deltaSeconds: 1, framesPerSecond: 38, p95FrameTimeMs: 27),
       isTrue,
     );
-    expect(auto.renderScale, 0.67);
+    expect(auto.pressureLevel, 1);
+    expect(auto.renderScale, 1);
 
     expect(
       auto.update(deltaSeconds: 1, framesPerSecond: 60, p95FrameTimeMs: 16),
@@ -37,20 +53,52 @@ void main() {
       auto.update(deltaSeconds: 1, framesPerSecond: 60, p95FrameTimeMs: 16),
       isTrue,
     );
-    expect(auto.renderScale, 0.82);
+    expect(auto.pressureLevel, 0);
+    expect(auto.renderScale, 1);
   });
 
-  test('auto quality escalates to a visual-preserving mobile fallback', () {
+  test('auto quality lowers resolution only after world and effect LOD', () {
     final auto = AutoQualityController(evaluationIntervalSeconds: 1);
 
-    for (var window = 0; window < 3; window++) {
+    for (var window = 0; window < 2; window++) {
       expect(
-        auto.update(deltaSeconds: 1, framesPerSecond: 30, p95FrameTimeMs: 34),
+        auto.update(deltaSeconds: 1, framesPerSecond: 50, p95FrameTimeMs: 24),
         isTrue,
       );
     }
+    expect(auto.pressureLevel, 2);
+    expect(auto.renderScale, 0.88);
 
+    expect(
+      auto.update(deltaSeconds: 1, framesPerSecond: 50, p95FrameTimeMs: 24),
+      isTrue,
+    );
     expect(auto.pressureLevel, 3);
+    expect(auto.renderScale, 0.72);
+
+    expect(
+      auto.update(deltaSeconds: 1, framesPerSecond: 50, p95FrameTimeMs: 24),
+      isTrue,
+    );
+    expect(auto.pressureLevel, 4);
+    expect(auto.renderScale, 0.58);
+  });
+
+  test('severe frame pressure skips a fidelity tier', () {
+    final auto = AutoQualityController(evaluationIntervalSeconds: 1);
+
+    expect(
+      auto.update(deltaSeconds: 1, framesPerSecond: 30, p95FrameTimeMs: 34),
+      isTrue,
+    );
+    expect(auto.pressureLevel, 2);
+    expect(auto.renderScale, 0.88);
+
+    expect(
+      auto.update(deltaSeconds: 1, framesPerSecond: 30, p95FrameTimeMs: 34),
+      isTrue,
+    );
+    expect(auto.pressureLevel, 4);
     expect(auto.renderScale, 0.58);
   });
 }
