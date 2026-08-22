@@ -1868,6 +1868,49 @@ class _CraftingOverlay extends StatelessWidget {
                     ),
                   ),
                   const Divider(height: 1),
+                  Container(
+                    key: const ValueKey('crafting_objective'),
+                    margin: const EdgeInsets.fromLTRB(14, 12, 14, 0),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xff123b3b),
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(color: const Color(0x8872efbc)),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.flag_rounded,
+                          color: Color(0xffffc561),
+                        ),
+                        const SizedBox(width: 9),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                '次にすること',
+                                style: TextStyle(
+                                  color: Color(0xff9cb8bd),
+                                  fontSize: 9,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                              Text(
+                                controller.chapterObjective,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(12),
                     child: Wrap(
@@ -1932,11 +1975,22 @@ class _CraftingOverlay extends StatelessWidget {
                         final recipe = CraftRecipe.values[index];
                         final owned = controller.hasRecipe(recipe);
                         final canCraft = controller.canCraft(recipe);
+                        final failure = controller.craftFailureReason(recipe);
+                        final currentObjective = controller.chapterObjective
+                            .contains(recipe.label);
                         final cost = recipe.cost.entries
                             .map((entry) => '${entry.key.label}${entry.value}')
                             .join('・');
                         return Card(
-                          color: const Color(0xff10343b),
+                          color: currentObjective
+                              ? const Color(0xff185044)
+                              : const Color(0xff10343b),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                            side: currentObjective
+                                ? const BorderSide(color: Color(0xff72efbc))
+                                : BorderSide.none,
+                          ),
                           child: ListTile(
                             leading: CircleAvatar(
                               backgroundColor: owned
@@ -1957,7 +2011,10 @@ class _CraftingOverlay extends StatelessWidget {
                                 fontWeight: FontWeight.w900,
                               ),
                             ),
-                            subtitle: Text('${recipe.description}\n必要: $cost'),
+                            subtitle: Text(
+                              '${recipe.description}\n必要: $cost'
+                              '${!owned && failure != null ? ' · $failure' : ''}',
+                            ),
                             isThreeLine: true,
                             trailing: FilledButton(
                               key: ValueKey('craft_${recipe.name}'),
