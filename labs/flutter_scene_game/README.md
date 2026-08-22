@@ -43,7 +43,7 @@ Flutter Sceneを、窓際族物語の正典ボクセル素材で実ゲームへ�
 
 - Flutter `3.47.1 stable` + Dart `3.13.1`
 - Flutter Scene `0.22.2`
-- 正典GLB 4体の同時ロード（合計152 meshes）
+- 正典GLBから生成したモバイルGLB 4体の同時ロード（152→22 mesh nodes）
 - GLBのPBRマテリアル、ノード階層、`Idle`アニメーション
 - 256×256マス、16×16チャンクの決定論的なプロシージャル島生成
 - 画質に応じ、現在地周辺3×3または5×5チャンクだけを動的ロード／アンロード
@@ -63,16 +63,22 @@ Flutter Sceneを、窓際族物語の正典ボクセル素材で実ゲームへ�
 - ランドマーク固有光、朝夕限定God Rays、時間連動fog
 - 海面の微動・時間帯別PBRマテリアル・低解像度SSR
 - ACES tone mapping、Bloom、half-resolution AO、color grading、vignette
-- Flutter WidgetのHUD、アナログスティック、状況アクション、ツール選択
+- 常設情報を絞ったFlutter WidgetのHUD、アナログスティック、状況アクション
 - `Scene.renderScale`による0.58〜1.0xの描画解像度制御とAutoの5秒ヒステリシス
-- iPhoneの横画面固定、44px以上の主要タッチ領域、操作時の触覚フィードバック
+- 縦横両対応のレスポンシブUI、44px以上の主要タッチ領域、操作時の触覚フィードバック
+- 端末の実ピクセル数から0.62〜2.4MPの描画予算を算出し、縦横回転時も負荷を一定化
+- Androidでは高リフレッシュ端末も60Hzに寄せ、余剰描画と発熱を抑制
 
-## ビジュアル・デバッグ設定
+## ゲームメニューとビジュアル・デバッグ設定
 
-HUD右上のスライダーアイコンから、画質プリセット、時刻プリセット／時刻スライダーと次の機能を
-個別にON/OFFできます。描画負荷と見た目を同じ地点で比較するための設定です。
+通常画面は移動・状況アクション・ミニマップ・インベントリ・メニュー・簡易FPSだけを表示します。
+右上のメニューから現在の目標、資材、通信／再会状況、詳細パフォーマンスと設定を確認できます。
+建築パーツの選択とクラフトはインベントリ内へまとめています。
 
-- Auto: Balancedを基準にFPS/P95を5秒ごとに評価し、0.58〜0.82xへ自動調整
+ゲームメニューでは、画質プリセット、時刻プリセット／時刻スライダーと次の機能を個別に
+ON/OFFできます。描画負荷と見た目を同じ地点で比較するための設定です。
+
+- Auto: FPS/P95を5秒ごとに評価する4段階制御。影・遠方範囲を順次軽量化し、最終段だけAO/Bloomをemissive材質と接地影へ置換
 - Performance: 0.62x、3×3チャンク、1 cascade、AO/SSR/Bloom/God Raysなし
 - Balanced: 0.75x、5×5地形＋3×3資源、2 cascades、half-resolution AO
 - Quality: 1.0x、5×5地形・資源、3 cascades、SSR/Bloom/God Raysあり
@@ -88,12 +94,12 @@ HUD右上のスライダーアイコンから、画質プリセット、時刻�
 - 時間連動fog
 - 海面反射・微動
 - 探索限界リング
-- FPS・平均/P95フレーム時間・描画規模を示すパフォーマンスHUD
+- FPS・平均フレーム時間だけを示す簡易パフォーマンスHUD
 
 パネル下部の「ビジュアル設定を初期化」で、時刻と全機能を既定値へ戻せます。
 パフォーマンスHUDは`SceneView.onTick`を120フレーム分ローリング計測し、0.4秒ごとに
-FPS・平均/P95フレーム時間・1% Low FPSを更新します。Flutterの`FrameTiming`から
-build/raster平均とraster P95も別々に表示します。最終的な性能比較はdebug固有の
+FPS・平均フレーム時間を更新します。P95、チャンク数、画質と実効render scaleはゲーム
+メニュー内に表示し、Flutterの`FrameTiming`からbuild/raster値も内部計測します。最終的な性能比較はdebug固有の
 オーバーヘッドを避けるため、profileビルドでも確認してください。
 
 ## ワールド構成
@@ -121,6 +127,17 @@ assets/models -> ../../04_GAME_ASSETS/voxel/models
 ```
 
 GLBをこのプロジェクトへコピー・編集せず、変更時は`04_GAME_ASSETS/voxel/tools/`から再生成します。
+ゲームでは`models/mobile/`の派生GLBを使い、剛体歩行リグのピボット単位でメッシュを
+結合しています。外見、画像・透過・発光材質、歩行リグを維持し、単色材質だけを
+頂点カラー付き共通PBRへ統合してノード巡回とdraw callを削減します。
+
+Flutter Scene内部の120フレーム集計を取る場合は次のように起動します。
+
+```bash
+flutter run --profile \
+  --dart-define=FLUTTER_SCENE_PROFILE=true \
+  --dart-define=MADOGIWA_SKIP_INTRO=true
+```
 
 ## 実行
 
@@ -162,7 +179,7 @@ mise exec flutter@3.47.1 -- dart pub global activate marionette_mcp
 - `madogiwa.chooseEnding`: rescue/stayのエンディングを選択
 - `madogiwa.resetIsland`: 島を初期状態へ戻す
 
-開始、カメラ、ツール、リセットの各ボタンにも安定した`ValueKey`を設定しているため、
+開始、インベントリ、メニュー、ツール、リセットの各ボタンにも安定した`ValueKey`を設定しているため、
 通常のMarionette tapと専用extensionを使い分けられます。releaseとwebでは通常の
 `WidgetsFlutterBinding`を使い、デバッグ用extensionは登録しません。
 

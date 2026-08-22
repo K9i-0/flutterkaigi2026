@@ -13,6 +13,11 @@ void main() {
     );
     expect(MobileQualityProfile.performance.screenSpaceReflections, isFalse);
     expect(MobileQualityProfile.quality.screenSpaceReflections, isTrue);
+    expect(MobileQualityProfile.adaptiveVisual.bloom, isTrue);
+    expect(MobileQualityProfile.adaptivePerformance.bloom, isFalse);
+    expect(MobileQualityProfile.adaptiveVisual.ambientOcclusion, isTrue);
+    expect(MobileQualityProfile.adaptivePerformance.ambientOcclusion, isFalse);
+    expect(MobileQualityProfile.adaptivePerformance.contactShadows, isFalse);
   });
 
   test('auto quality drops quickly and raises only after healthy windows', () {
@@ -33,5 +38,19 @@ void main() {
       isTrue,
     );
     expect(auto.renderScale, 0.82);
+  });
+
+  test('auto quality escalates to a visual-preserving mobile fallback', () {
+    final auto = AutoQualityController(evaluationIntervalSeconds: 1);
+
+    for (var window = 0; window < 3; window++) {
+      expect(
+        auto.update(deltaSeconds: 1, framesPerSecond: 30, p95FrameTimeMs: 34),
+        isTrue,
+      );
+    }
+
+    expect(auto.pressureLevel, 3);
+    expect(auto.renderScale, 0.58);
   });
 }

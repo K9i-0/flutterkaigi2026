@@ -59,8 +59,11 @@ class _IslandPageState extends State<IslandPage> {
   final Set<LogicalKeyboardKey> _pressedKeys = {};
   Offset _joystickInput = Offset.zero;
   bool _ready = false;
-  bool _showIntro = true;
-  bool _showVisualSettings = false;
+  bool _showIntro = !const bool.fromEnvironment(
+    'MADOGIWA_SKIP_INTRO',
+    defaultValue: false,
+  );
+  bool _showGameMenu = false;
   bool _showCrafting = false;
   bool _miniMapExpanded = false;
   Object? _error;
@@ -197,7 +200,7 @@ class _IslandPageState extends State<IslandPage> {
         !_showIntro &&
         !_controller.campaignComplete &&
         !_showCrafting &&
-        !_showVisualSettings &&
+        !_showGameMenu &&
         _gestureLatest != null) {
       _islandScene.handleTap(_gestureLatest!, viewSize);
     }
@@ -209,6 +212,10 @@ class _IslandPageState extends State<IslandPage> {
   Widget build(BuildContext context) {
     if (_error case final error?) return _ErrorScreen(error: error);
     if (!_ready) return const _LoadingScreen();
+    final viewSize = MediaQuery.sizeOf(context);
+    final portraitLayout = viewSize.width < 600;
+    final shortLandscape = viewSize.width >= 600 && viewSize.height < 500;
+    final compactControls = portraitLayout || shortLandscape;
 
     return Scaffold(
       body: KeyboardListener(
@@ -222,6 +229,10 @@ class _IslandPageState extends State<IslandPage> {
             LayoutBuilder(
               builder: (context, constraints) {
                 final viewSize = constraints.biggest;
+                _islandScene.setViewportMetrics(
+                  viewSize,
+                  MediaQuery.devicePixelRatioOf(context),
+                );
                 return GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onScaleStart: _startViewGesture,
@@ -238,18 +249,16 @@ class _IslandPageState extends State<IslandPage> {
               },
             ),
             SafeArea(
-              child: ListenableBuilder(
-                listenable: Listenable.merge([
-                  _controller,
-                  _islandScene.hudRevision,
-                ]),
-                builder: (context, _) => _IslandHud(
-                  controller: _controller,
-                  scene: _islandScene,
-                  onReset: _reset,
-                  onSettings: () => setState(() => _showVisualSettings = true),
-                  onCrafting: () => setState(() => _showCrafting = true),
-                  onObjective: _islandScene.performNearbyObjective,
+              child: Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: RepaintBoundary(
+                    child: _MinimalHud(
+                      onCrafting: () => setState(() => _showCrafting = true),
+                      onMenu: () => setState(() => _showGameMenu = true),
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -257,7 +266,7 @@ class _IslandPageState extends State<IslandPage> {
               child: Align(
                 alignment: Alignment.topRight,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 112, 14, 0),
+                  padding: EdgeInsets.fromLTRB(0, 60, 8, 0),
                   child: ListenableBuilder(
                     listenable: Listenable.merge([
                       _islandScene.mapRevision,
@@ -278,9 +287,9 @@ class _IslandPageState extends State<IslandPage> {
             ),
             SafeArea(
               child: Align(
-                alignment: Alignment.centerRight,
+                alignment: Alignment.topLeft,
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 14),
+                  padding: const EdgeInsets.all(8),
                   child: IgnorePointer(
                     child: ListenableBuilder(
                       listenable: Listenable.merge([
@@ -300,8 +309,18 @@ class _IslandPageState extends State<IslandPage> {
               child: Align(
                 alignment: Alignment.bottomLeft,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(18, 0, 0, 68),
-                  child: _AnalogJoystick(onChanged: _setJoystickInput),
+                  padding: EdgeInsets.fromLTRB(
+                    compactControls ? 10 : 18,
+                    0,
+                    0,
+                    12,
+                  ),
+                  child: RepaintBoundary(
+                    child: _AnalogJoystick(
+                      compact: compactControls,
+                      onChanged: _setJoystickInput,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -309,26 +328,36 @@ class _IslandPageState extends State<IslandPage> {
               child: Align(
                 alignment: Alignment.bottomRight,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 20, 76),
+                  padding: EdgeInsets.fromLTRB(
+                    0,
+                    0,
+                    compactControls ? 12 : 20,
+                    12,
+                  ),
                   child: ListenableBuilder(
                     listenable: Listenable.merge([
                       _controller,
                       _islandScene.hudRevision,
                     ]),
-                    builder: (context, _) => _ContextActionButton(
-                      label: _islandScene.contextActionLabel,
-                      onPressed: _performContextAction,
+                    builder: (context, _) => RepaintBoundary(
+                      child: _ContextActionButton(
+                        label: _islandScene.contextActionLabel,
+                        compact: compactControls,
+                        onPressed: _performContextAction,
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
             if (_showIntro)
-              _IntroOverlay(
-                onStart: () {
-                  setState(() => _showIntro = false);
-                  _gameFocus.requestFocus();
-                },
+              RepaintBoundary(
+                child: _IntroOverlay(
+                  onStart: () {
+                    setState(() => _showIntro = false);
+                    _gameFocus.requestFocus();
+                  },
+                ),
               ),
             ListenableBuilder(
               listenable: _controller,
@@ -357,10 +386,19 @@ class _IslandPageState extends State<IslandPage> {
                   _gameFocus.requestFocus();
                 },
               ),
-            if (_showVisualSettings)
-              _VisualSettingsOverlay(
+            if (_showGameMenu)
+              _GameMenuOverlay(
+                controller: _controller,
                 scene: _islandScene,
-                onClose: () => setState(() => _showVisualSettings = false),
+                onOpenInventory: () => setState(() {
+                  _showGameMenu = false;
+                  _showCrafting = true;
+                }),
+                onReset: _reset,
+                onClose: () {
+                  setState(() => _showGameMenu = false);
+                  _gameFocus.requestFocus();
+                },
               ),
           ],
         ),
@@ -616,10 +654,19 @@ class _OceanBackdrop extends StatelessWidget {
   }
 }
 
-class _VisualSettingsOverlay extends StatelessWidget {
-  const _VisualSettingsOverlay({required this.scene, required this.onClose});
+class _GameMenuOverlay extends StatelessWidget {
+  const _GameMenuOverlay({
+    required this.controller,
+    required this.scene,
+    required this.onOpenInventory,
+    required this.onReset,
+    required this.onClose,
+  });
 
+  final IslandGameController controller;
   final MadogiwaIslandScene scene;
+  final VoidCallback onOpenInventory;
+  final VoidCallback onReset;
   final VoidCallback onClose;
 
   @override
@@ -636,7 +683,7 @@ class _VisualSettingsOverlay extends StatelessWidget {
               borderRadius: BorderRadius.circular(24),
               clipBehavior: Clip.antiAlias,
               child: ListenableBuilder(
-                listenable: scene,
+                listenable: Listenable.merge([controller, scene]),
                 builder: (context, _) {
                   final options = scene.visualOptions;
                   return Column(
@@ -646,7 +693,7 @@ class _VisualSettingsOverlay extends StatelessWidget {
                         child: Row(
                           children: [
                             const Icon(
-                              Icons.auto_awesome_rounded,
+                              Icons.menu_rounded,
                               color: Color(0xffffc26b),
                             ),
                             const SizedBox(width: 9),
@@ -655,14 +702,14 @@ class _VisualSettingsOverlay extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'ビジュアル・デバッグ',
+                                    'ゲームメニュー',
                                     style: TextStyle(
                                       fontSize: 19,
                                       fontWeight: FontWeight.w900,
                                     ),
                                   ),
                                   Text(
-                                    '負荷比較用に各機能を個別切り替え',
+                                    '目標・所持品・進行状況・設定',
                                     style: TextStyle(
                                       color: Color(0xff8fb4bc),
                                       fontSize: 10,
@@ -672,7 +719,7 @@ class _VisualSettingsOverlay extends StatelessWidget {
                               ),
                             ),
                             IconButton(
-                              key: const ValueKey('visual_settings_close'),
+                              key: const ValueKey('game_menu_close'),
                               tooltip: '閉じる',
                               onPressed: onClose,
                               icon: const Icon(Icons.close_rounded),
@@ -685,6 +732,17 @@ class _VisualSettingsOverlay extends StatelessWidget {
                         child: ListView(
                           padding: const EdgeInsets.fromLTRB(12, 8, 12, 18),
                           children: [
+                            _MenuStatus(
+                              controller: controller,
+                              scene: scene,
+                              onOpenInventory: onOpenInventory,
+                            ),
+                            const SizedBox(height: 12),
+                            const _MenuSectionTitle(
+                              icon: Icons.tune_rounded,
+                              label: '画質・デバッグ設定',
+                            ),
+                            const SizedBox(height: 8),
                             _QualitySelector(scene: scene),
                             const SizedBox(height: 8),
                             _TimeDebugger(scene: scene),
@@ -780,6 +838,13 @@ class _VisualSettingsOverlay extends StatelessWidget {
                               icon: const Icon(Icons.restart_alt_rounded),
                               label: const Text('ビジュアル設定を初期化'),
                             ),
+                            const SizedBox(height: 8),
+                            OutlinedButton.icon(
+                              key: const ValueKey('game_reset'),
+                              onPressed: onReset,
+                              icon: const Icon(Icons.replay_rounded),
+                              label: const Text('ゲームを最初からやり直す'),
+                            ),
                           ],
                         ),
                       ),
@@ -791,6 +856,154 @@ class _VisualSettingsOverlay extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _MenuStatus extends StatelessWidget {
+  const _MenuStatus({
+    required this.controller,
+    required this.scene,
+    required this.onOpenInventory,
+  });
+
+  final IslandGameController controller;
+  final MadogiwaIslandScene scene;
+  final VoidCallback onOpenInventory;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const _MenuSectionTitle(icon: Icons.flag_rounded, label: '現在の目標'),
+        const SizedBox(height: 8),
+        DecoratedBox(
+          decoration: BoxDecoration(
+            color: const Color(0xff102f37),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: const Color(0x5572efbc)),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  controller.chapterObjective,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  '${controller.progressLabel} · 探索半径 '
+                  '${controller.explorationLimit.round()}マス',
+                  style: const TextStyle(
+                    color: Color(0xff72efbc),
+                    fontSize: 11,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                const SizedBox(height: 7),
+                Text(
+                  controller.message,
+                  style: const TextStyle(
+                    color: Color(0xffb8cdd1),
+                    fontSize: 11,
+                  ),
+                ),
+                if (scene.nearbyLandmark case final landmark?) ...[
+                  const SizedBox(height: 10),
+                  FilledButton.icon(
+                    key: const ValueKey('objective_action'),
+                    onPressed: scene.performNearbyObjective,
+                    icon: const Icon(Icons.settings_input_antenna_rounded),
+                    label: Text('${landmark.label}を調べる'),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 12),
+        const _MenuSectionTitle(
+          icon: Icons.inventory_2_rounded,
+          label: '資材・インベントリ',
+        ),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 7,
+          runSpacing: 7,
+          children: [
+            for (final item in IslandItem.values)
+              Chip(
+                avatar: Icon(_menuItemIcon(item), size: 16),
+                label: Text(
+                  '${item.label} ${controller.itemCount(item)}',
+                  style: const TextStyle(fontWeight: FontWeight.w800),
+                ),
+              ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        FilledButton.tonalIcon(
+          key: const ValueKey('menu_inventory_open'),
+          onPressed: onOpenInventory,
+          icon: const Icon(Icons.handyman_rounded),
+          label: const Text('インベントリ・クラフトを開く'),
+        ),
+        const SizedBox(height: 12),
+        DecoratedBox(
+          decoration: BoxDecoration(
+            color: const Color(0xff102f37),
+            borderRadius: BorderRadius.circular(14),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+            child: Text(
+              '${scene.framesPerSecond.toStringAsFixed(0)} FPS · '
+              'AVG ${scene.averageFrameTimeMs.toStringAsFixed(1)} ms · '
+              'P95 ${scene.p95FrameTimeMs.toStringAsFixed(1)} ms · '
+              '${scene.activeChunkCount}/256 chunks · '
+              '${scene.graphicsQualityLabel} ${scene.renderScale.toStringAsFixed(2)}x',
+              style: const TextStyle(
+                color: Color(0xff9cb8bd),
+                fontSize: 10,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  static IconData _menuItemIcon(IslandItem item) => switch (item) {
+    IslandItem.wood => Icons.forest_rounded,
+    IslandItem.stone => Icons.landscape_rounded,
+    IslandItem.food => Icons.restaurant_rounded,
+    IslandItem.coal => Icons.circle,
+    IslandItem.iron => Icons.hexagon_rounded,
+    IslandItem.herb => Icons.eco_rounded,
+  };
+}
+
+class _MenuSectionTitle extends StatelessWidget {
+  const _MenuSectionTitle({required this.icon, required this.label});
+
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(icon, size: 18, color: const Color(0xffffc26b)),
+        const SizedBox(width: 7),
+        Text(label, style: const TextStyle(fontWeight: FontWeight.w900)),
+      ],
     );
   }
 }
@@ -839,7 +1052,15 @@ class _QualitySelector extends StatelessWidget {
                 showSelectedIcon: false,
                 segments: [
                   for (final quality in GraphicsQuality.values)
-                    ButtonSegment(value: quality, label: Text(quality.label)),
+                    ButtonSegment(
+                      value: quality,
+                      label: Text(switch (quality) {
+                        GraphicsQuality.auto => '自動',
+                        GraphicsQuality.performance => '軽量',
+                        GraphicsQuality.balanced => '標準',
+                        GraphicsQuality.quality => '高画質',
+                      }),
+                    ),
                 ],
                 selected: {scene.graphicsQuality},
                 onSelectionChanged: (selection) {
@@ -942,99 +1163,40 @@ class _VisualSwitch extends StatelessWidget {
   }
 }
 
-class _IslandHud extends StatelessWidget {
-  const _IslandHud({
-    required this.controller,
-    required this.scene,
-    required this.onReset,
-    required this.onSettings,
-    required this.onCrafting,
-    required this.onObjective,
-  });
+class _MinimalHud extends StatelessWidget {
+  const _MinimalHud({required this.onCrafting, required this.onMenu});
 
-  final IslandGameController controller;
-  final MadogiwaIslandScene scene;
-  final VoidCallback onReset;
-  final VoidCallback onSettings;
   final VoidCallback onCrafting;
-  final VoidCallback onObjective;
+  final VoidCallback onMenu;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(14, 10, 14, 14),
-      child: Column(
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(child: _TitleCard(controller: controller)),
-              const SizedBox(width: 8),
-              _ClockChip(scene: scene),
-              const SizedBox(width: 6),
-              _ResourceChip(
-                icon: Icons.forest,
-                value: controller.wood,
-                color: const Color(0xff9ee078),
-              ),
-              const SizedBox(width: 6),
-              _ResourceChip(
-                icon: Icons.landscape,
-                value: controller.stone,
-                color: const Color(0xffc3d0d2),
-              ),
-              const SizedBox(width: 6),
-              _CameraButton(
-                key: const ValueKey('crafting_open'),
-                tooltip: 'インベントリとクラフト',
-                icon: Icons.inventory_2_rounded,
-                onPressed: onCrafting,
-              ),
-              const SizedBox(width: 5),
-              _CameraButton(
-                key: const ValueKey('visual_settings'),
-                tooltip: 'ビジュアル設定',
-                icon: Icons.tune_rounded,
-                onPressed: onSettings,
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              Expanded(child: _MessageCard(message: controller.message)),
-              if (scene.nearbyLandmark case final landmark?) ...[
-                const SizedBox(width: 8),
-                FilledButton.icon(
-                  key: const ValueKey('objective_action'),
-                  onPressed: onObjective,
-                  icon: const Icon(Icons.settings_input_antenna_rounded),
-                  label: Text('${landmark.label}を調べる'),
-                ),
-              ],
-              const SizedBox(width: 8),
-              _CameraButton(
-                key: const ValueKey('camera_left'),
-                tooltip: 'カメラを左へ回転',
-                icon: Icons.rotate_left,
-                onPressed: () =>
-                    scene.orbitCamera(deltaYaw: -0.28, deltaPitch: 0),
-              ),
-              const SizedBox(width: 5),
-              _CameraButton(
-                key: const ValueKey('camera_right'),
-                tooltip: 'カメラを右へ回転',
-                icon: Icons.rotate_right,
-                onPressed: () =>
-                    scene.orbitCamera(deltaYaw: 0.28, deltaPitch: 0),
-              ),
-            ],
-          ),
-          const Spacer(),
-          _QuestProgress(controller: controller),
-          const SizedBox(height: 8),
-          _ToolBar(controller: controller, scene: scene),
-        ],
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: const Color(0xcc091d24),
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: const [BoxShadow(color: Color(0x44000000), blurRadius: 12)],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(4),
+        child: Wrap(
+          alignment: WrapAlignment.center,
+          runSpacing: 6,
+          children: [
+            IconButton(
+              key: const ValueKey('crafting_open'),
+              tooltip: 'インベントリとクラフト',
+              onPressed: onCrafting,
+              icon: const Icon(Icons.inventory_2_rounded),
+            ),
+            IconButton(
+              key: const ValueKey('game_menu_open'),
+              tooltip: 'ゲームメニュー',
+              onPressed: onMenu,
+              icon: const Icon(Icons.menu_rounded),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -1057,8 +1219,7 @@ class _PerformanceHud extends StatelessWidget {
         : const Color(0xffff6b61);
     return Container(
       key: const ValueKey('performance_hud'),
-      width: 220,
-      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
       decoration: BoxDecoration(
         color: const Color(0xe6082027),
         borderRadius: BorderRadius.circular(14),
@@ -1071,70 +1232,26 @@ class _PerformanceHud extends StatelessWidget {
           ),
         ],
       ),
-      child: Column(
+      child: Row(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Icon(Icons.speed_rounded, size: 17, color: fpsColor),
-              const SizedBox(width: 6),
-              const Text(
-                'PERFORMANCE',
-                style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900),
-              ),
-              const Spacer(),
-              Text(
-                '${fps.toStringAsFixed(0)} FPS',
-                key: const ValueKey('performance_fps'),
-                style: TextStyle(
-                  color: fpsColor,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 4),
+          Icon(Icons.speed_rounded, size: 16, color: fpsColor),
+          const SizedBox(width: 6),
           Text(
-            '${scene.averageFrameTimeMs.toStringAsFixed(1)} ms AVG  ·  '
-            '${scene.p95FrameTimeMs.toStringAsFixed(1)} ms P95',
-            style: const TextStyle(
-              color: Color(0xffbdd2d6),
-              fontSize: 10,
-              fontWeight: FontWeight.w700,
+            '${fps.toStringAsFixed(0)} FPS',
+            key: const ValueKey('performance_fps'),
+            style: TextStyle(
+              color: fpsColor,
+              fontSize: 14,
+              fontWeight: FontWeight.w900,
             ),
           ),
+          const SizedBox(width: 7),
           Text(
-            '${scene.onePercentLowFps.toStringAsFixed(0)} FPS 1% LOW',
+            '${scene.averageFrameTimeMs.toStringAsFixed(1)} ms',
             style: const TextStyle(
               color: Color(0xff8fb0b7),
               fontSize: 9,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          Text(
-            'BUILD ${scene.averageBuildTimeMs.toStringAsFixed(1)} ms  ·  '
-            'RASTER ${scene.averageRasterTimeMs.toStringAsFixed(1)} ms '
-            '(P95 ${scene.p95RasterTimeMs.toStringAsFixed(1)})',
-            style: const TextStyle(
-              color: Color(0xff8fb0b7),
-              fontSize: 9,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          const Divider(height: 12, color: Color(0x3372efbc)),
-          Text(
-            '${scene.activeChunkCount}/256 CHUNKS  ·  '
-            '${scene.terrainQuadCount} QUADS\n'
-            '${scene.characterMeshCount} MESHES  ·  '
-            'LOAD ${scene.loadDuration.inMilliseconds} ms\n'
-            '${scene.graphicsQualityLabel.toUpperCase()}  ·  '
-            'RENDER ${scene.renderScale.toStringAsFixed(2)}x',
-            style: const TextStyle(
-              color: Color(0xff8fb0b7),
-              fontSize: 9,
-              height: 1.45,
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -1145,8 +1262,9 @@ class _PerformanceHud extends StatelessWidget {
 }
 
 class _AnalogJoystick extends StatefulWidget {
-  const _AnalogJoystick({required this.onChanged});
+  const _AnalogJoystick({required this.compact, required this.onChanged});
 
+  final bool compact;
   final ValueChanged<Offset> onChanged;
 
   @override
@@ -1154,12 +1272,12 @@ class _AnalogJoystick extends StatefulWidget {
 }
 
 class _AnalogJoystickState extends State<_AnalogJoystick> {
-  static const _size = 132.0;
-  static const _travel = 42.0;
+  double get _size => widget.compact ? 108 : 132;
+  double get _travel => widget.compact ? 34 : 42;
   Offset _knob = Offset.zero;
 
   void _update(Offset localPosition) {
-    final raw = localPosition - const Offset(_size / 2, _size / 2);
+    final raw = localPosition - Offset(_size / 2, _size / 2);
     final distance = raw.distance;
     final clamped = distance > _travel ? raw / distance * _travel : raw;
     final normalized = clamped / _travel;
@@ -1202,16 +1320,16 @@ class _AnalogJoystickState extends State<_AnalogJoystick> {
           child: Stack(
             alignment: Alignment.center,
             children: [
-              const Icon(
+              Icon(
                 Icons.control_camera_rounded,
-                color: Color(0x5572efbc),
-                size: 64,
+                color: const Color(0x5572efbc),
+                size: widget.compact ? 50 : 64,
               ),
               Transform.translate(
                 offset: _knob,
                 child: Container(
-                  width: 54,
-                  height: 54,
+                  width: widget.compact ? 46 : 54,
+                  height: widget.compact ? 46 : 54,
                   decoration: BoxDecoration(
                     color: const Color(0xee1b4b52),
                     shape: BoxShape.circle,
@@ -1232,9 +1350,14 @@ class _AnalogJoystickState extends State<_AnalogJoystick> {
 }
 
 class _ContextActionButton extends StatelessWidget {
-  const _ContextActionButton({required this.label, required this.onPressed});
+  const _ContextActionButton({
+    required this.label,
+    required this.compact,
+    required this.onPressed,
+  });
 
   final String label;
+  final bool compact;
   final VoidCallback onPressed;
 
   @override
@@ -1245,17 +1368,27 @@ class _ContextActionButton extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          FloatingActionButton.large(
-            key: const ValueKey('context_action'),
-            heroTag: 'context_action',
-            onPressed: onPressed,
-            backgroundColor: const Color(0xeeffc561),
-            foregroundColor: const Color(0xff152227),
-            child: const Icon(Icons.handyman_rounded, size: 32),
-          ),
+          if (compact)
+            FloatingActionButton(
+              key: const ValueKey('context_action'),
+              heroTag: 'context_action',
+              onPressed: onPressed,
+              backgroundColor: const Color(0xeeffc561),
+              foregroundColor: const Color(0xff152227),
+              child: const Icon(Icons.handyman_rounded, size: 26),
+            )
+          else
+            FloatingActionButton.large(
+              key: const ValueKey('context_action'),
+              heroTag: 'context_action',
+              onPressed: onPressed,
+              backgroundColor: const Color(0xeeffc561),
+              foregroundColor: const Color(0xff152227),
+              child: const Icon(Icons.handyman_rounded, size: 32),
+            ),
           const SizedBox(height: 5),
           Container(
-            constraints: const BoxConstraints(maxWidth: 120),
+            constraints: BoxConstraints(maxWidth: compact ? 88 : 120),
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
               color: const Color(0xdd082027),
@@ -1269,196 +1402,6 @@ class _ContextActionButton extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _TitleCard extends StatelessWidget {
-  const _TitleCard({required this.controller});
-
-  final IslandGameController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: const Color(0xcc092027),
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: const Color(0x556ff0c0)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(12, 8, 12, 9),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              '窓際族・無人島クラフト',
-              style: TextStyle(
-                fontSize: 21,
-                fontWeight: FontWeight.w900,
-                letterSpacing: -0.6,
-              ),
-            ),
-            Text(
-              '通信 Lv.${controller.signalLevel} · ${controller.chapter.label}',
-              style: const TextStyle(
-                color: Color(0xff72efbc),
-                fontSize: 9,
-                fontWeight: FontWeight.w900,
-                letterSpacing: 1,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ResourceChip extends StatelessWidget {
-  const _ResourceChip({
-    required this.icon,
-    required this.value,
-    required this.color,
-  });
-
-  final IconData icon;
-  final int value;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: const Color(0xdd091d24),
-        borderRadius: BorderRadius.circular(14),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 11),
-        child: Column(
-          children: [
-            Icon(icon, color: color, size: 18),
-            const SizedBox(height: 2),
-            Text('$value', style: const TextStyle(fontWeight: FontWeight.w900)),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ClockChip extends StatelessWidget {
-  const _ClockChip({required this.scene});
-
-  final MadogiwaIslandScene scene;
-
-  @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: const Color(0xdd091d24),
-        borderRadius: BorderRadius.circular(14),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 9),
-        child: Column(
-          children: [
-            Icon(
-              scene.phaseLabel == '夜'
-                  ? Icons.dark_mode_rounded
-                  : Icons.light_mode_rounded,
-              color: const Color(0xffffc36b),
-              size: 16,
-            ),
-            Text(
-              scene.clockLabel,
-              style: const TextStyle(fontSize: 9, fontWeight: FontWeight.w900),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _MessageCard extends StatelessWidget {
-  const _MessageCard({required this.message});
-
-  final String message;
-
-  @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: const Color(0xbb092027),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
-        child: Text(
-          message,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w700),
-        ),
-      ),
-    );
-  }
-}
-
-class _CameraButton extends StatelessWidget {
-  const _CameraButton({
-    super.key,
-    required this.tooltip,
-    required this.icon,
-    required this.onPressed,
-  });
-
-  final String tooltip;
-  final IconData icon;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton.filledTonal(
-      tooltip: tooltip,
-      onPressed: onPressed,
-      icon: Icon(icon),
-      style: IconButton.styleFrom(backgroundColor: const Color(0xcc17343a)),
-    );
-  }
-}
-
-class _QuestProgress extends StatelessWidget {
-  const _QuestProgress({required this.controller});
-
-  final IslandGameController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: const Color(0xdd091d24),
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: const Color(0x556ff0c0)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              controller.chapterObjective,
-              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w900),
-            ),
-            const SizedBox(height: 2),
-            Text(
-              '${controller.progressLabel} · 探索半径 ${controller.explorationLimit.round()}マス',
-              style: const TextStyle(color: Color(0xff9cb8bd), fontSize: 9),
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -1486,8 +1429,9 @@ class _ToolBar extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.all(7),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
+        child: Wrap(
+          alignment: WrapAlignment.center,
+          runSpacing: 6,
           children: [
             _ToolButton(
               key: const ValueKey('tool_gather'),
@@ -1649,6 +1593,20 @@ class _CraftingOverlay extends StatelessWidget {
                           ),
                       ],
                     ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(14, 0, 14, 7),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        '使用する道具・建築パーツ',
+                        style: TextStyle(fontWeight: FontWeight.w900),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                    child: _ToolBar(controller: controller, scene: scene),
                   ),
                   if (controller.reunitedMembers.isNotEmpty)
                     Padding(
