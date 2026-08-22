@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:camera/camera.dart';
@@ -12,8 +13,12 @@ import 'package:vector_math/vector_math.dart' as vm;
 
 import 'automation/automation_state.dart';
 import 'automation/marionette_extensions.dart';
+import 'tracking/face_camera_tracker.dart';
 import 'tracking/face_tracking_signal.dart';
+import 'tracking/macos_vision_face_tracker.dart';
 import 'tracking/mobile_face_camera_tracker.dart';
+
+enum AvatarFraming { fullBody, bustUp }
 
 void main() {
   if (kDebugMode && !kIsWeb) {
@@ -131,13 +136,17 @@ class _VrmLabPageState extends State<VrmLabPage> with WidgetsBindingObserver {
 
 class VrmLabController extends ChangeNotifier {
   VrmLabController() {
-    faceCamera = MobileFaceCameraTracker(onSignal: _onCameraSignal)
-      ..addListener(_onFaceCameraChanged);
+    faceCamera =
+        (Platform.isMacOS
+              ? MacOsVisionFaceTracker(onSignal: _onCameraSignal)
+              : MobileFaceCameraTracker(onSignal: _onCameraSignal))
+          ..addListener(_onFaceCameraChanged);
+    unawaited(faceCamera.refreshDevices());
   }
 
   final Scene scene = Scene();
   final FaceTrackingPipeline trackingPipeline = FaceTrackingPipeline();
-  late final MobileFaceCameraTracker faceCamera;
+  late final FaceCameraTracker faceCamera;
   VrmAvatar? avatar;
   VrmFaceTrackingDriver? _trackingDriver;
   bool ready = false;
@@ -145,6 +154,7 @@ class VrmLabController extends ChangeNotifier {
   bool trackingEnabled = false;
   bool simulationEnabled = false;
   bool automationEnabled = false;
+  AvatarFraming avatarFraming = AvatarFraming.fullBody;
   String emotion = 'neutral';
   double mouth = 0;
   VrmFaceTrackingFrame trackingFrame = const VrmFaceTrackingFrame(
@@ -182,13 +192,40 @@ class VrmLabController extends ChangeNotifier {
     notifyListeners();
   }
 
-  PerspectiveCamera camera(Duration elapsed) => PerspectiveCamera(
-    fovRadiansY: 34 * math.pi / 180,
-    position: vm.Vector3(0, 1.32, 3.15),
-    target: vm.Vector3(0, 1.12, 0),
-    fovNear: 0.05,
-    fovFar: 20,
-  );
+  PerspectiveCamera camera(Duration elapsed) {
+    final bustUp = avatarFraming == AvatarFraming.bustUp;
+    return PerspectiveCamera(
+      fovRadiansY: (bustUp ? 30 : 34) * math.pi / 180,
+      position: bustUp ? vm.Vector3(0, 1.36, 1.55) : vm.Vector3(0, 1.32, 3.15),
+      target: bustUp ? vm.Vector3(0, 1.36, 0) : vm.Vector3(0, 1.12, 0),
+      fovNear: 0.05,
+      fovFar: 20,
+    );
+  }
+
+  void setAvatarFraming(AvatarFraming value) {
+    avatarFraming = value;
+    notifyListeners();
+  }
+
+  bool setAvatarFramingByName(String? name) {
+    final matches = AvatarFraming.values.where((value) => value.name == name);
+    if (matches.isEmpty) return false;
+    setAvatarFraming(matches.first);
+    return true;
+  }
+
+  Future<void> selectCameraDevice(String deviceId) async {
+    await faceCamera.selectDevice(deviceId);
+    if (trackingEnabled && !simulationEnabled && !automationEnabled) {
+      final cameraIsActive =
+          faceCamera.state == FaceCameraState.starting ||
+          faceCamera.state == FaceCameraState.running ||
+          faceCamera.state == FaceCameraState.noFace;
+      if (!cameraIsActive) await faceCamera.start();
+    }
+    notifyListeners();
+  }
 
   void setEmotion(String value) {
     avatar!.setExpression(emotion, 0);
@@ -210,10 +247,15 @@ class VrmLabController extends ChangeNotifier {
   }
 
   Future<void> startTracking({bool forceSimulation = false}) async {
+    final cameraIsActive =
+        faceCamera.state == FaceCameraState.starting ||
+        faceCamera.state == FaceCameraState.running ||
+        faceCamera.state == FaceCameraState.noFace;
+    final useSimulation = forceSimulation || !faceCamera.isSupportedPlatform;
     if (trackingEnabled &&
         !automationEnabled &&
-        simulationEnabled ==
-            (forceSimulation || !MobileFaceCameraTracker.isSupportedPlatform)) {
+        simulationEnabled == useSimulation &&
+        (useSimulation || cameraIsActive)) {
       return;
     }
     if (trackingEnabled) await faceCamera.stop();
@@ -223,7 +265,7 @@ class VrmLabController extends ChangeNotifier {
     }
     trackingEnabled = true;
     automationEnabled = false;
-    if (MobileFaceCameraTracker.isSupportedPlatform && !forceSimulation) {
+    if (faceCamera.isSupportedPlatform && !forceSimulation) {
       simulationEnabled = false;
       await faceCamera.start();
     } else {
@@ -312,7 +354,12 @@ class VrmLabController extends ChangeNotifier {
   }
 
   Future<void> handleLifecycle(AppLifecycleState state) async {
-    if (!MobileFaceCameraTracker.isSupportedPlatform) return;
+    // A desktop VTuber window must keep capturing when another app has focus.
+    // Mobile platforms still release the camera while backgrounded.
+    if ((!Platform.isIOS && !Platform.isAndroid) ||
+        !faceCamera.isSupportedPlatform) {
+      return;
+    }
     final usingCamera =
         trackingEnabled && !simulationEnabled && !automationEnabled;
     if (state == AppLifecycleState.inactive ||
@@ -426,6 +473,26 @@ class _ControlPanel extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 14),
+              SegmentedButton<AvatarFraming>(
+                key: const ValueKey('avatar-framing'),
+                segments: const [
+                  ButtonSegment(
+                    value: AvatarFraming.fullBody,
+                    icon: Icon(Icons.accessibility_new),
+                    label: Text('全身'),
+                  ),
+                  ButtonSegment(
+                    value: AvatarFraming.bustUp,
+                    icon: Icon(Icons.portrait),
+                    label: Text('バストアップ'),
+                  ),
+                ],
+                selected: {lab.avatarFraming},
+                onSelectionChanged: (values) =>
+                    lab.setAvatarFraming(values.first),
+                showSelectedIcon: false,
+              ),
+              const SizedBox(height: 8),
               SegmentedButton<String>(
                 key: const ValueKey('vrm-emotion'),
                 segments: const [
@@ -526,13 +593,60 @@ class _TrackingPanel extends StatelessWidget {
                   child: Text(
                     lab.automationEnabled
                         ? 'MCP: deterministic input'
-                        : MobileFaceCameraTracker.isSupportedPlatform
+                        : lab.faceCamera.isSupportedPlatform
                         ? _cameraStateLabel(lab.faceCamera.state)
-                        : 'macOS: 同一入力のSimulation',
+                        : 'このOSでは同一入力のSimulation',
                     textAlign: TextAlign.center,
                     style: const TextStyle(fontSize: 12),
                   ),
                 ),
+              if (lab.faceCamera.availableDevices.isNotEmpty) ...[
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Expanded(
+                      child: InputDecorator(
+                        decoration: const InputDecoration(
+                          labelText: '使用カメラ',
+                          isDense: true,
+                          border: OutlineInputBorder(),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            key: const ValueKey('face-camera-device'),
+                            value: lab.faceCamera.selectedDeviceId,
+                            isExpanded: true,
+                            isDense: true,
+                            items: [
+                              for (final device
+                                  in lab.faceCamera.availableDevices)
+                                DropdownMenuItem(
+                                  value: device.id,
+                                  child: Text(
+                                    device.name,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                            ],
+                            onChanged: (deviceId) {
+                              if (deviceId != null) {
+                                unawaited(lab.selectCameraDevice(deviceId));
+                              }
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      key: const ValueKey('face-camera-refresh'),
+                      tooltip: '接続カメラを再検出',
+                      onPressed: () =>
+                          unawaited(lab.faceCamera.refreshDevices()),
+                      icon: const Icon(Icons.refresh),
+                    ),
+                  ],
+                ),
+              ],
               const SizedBox(height: 8),
               Text(
                 'Yaw ${(frame.yawRadians * radiansToDegrees).toStringAsFixed(1)}°  '
