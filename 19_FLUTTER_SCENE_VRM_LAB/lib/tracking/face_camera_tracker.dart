@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 
@@ -18,6 +20,14 @@ class FaceCameraDevice {
   final bool isExternal;
 }
 
+@immutable
+class FaceCameraOverlay {
+  const FaceCameraOverlay({required this.faceBounds, required this.landmarks});
+
+  final Rect faceBounds;
+  final Map<String, List<Offset>> landmarks;
+}
+
 abstract class FaceCameraTracker extends ChangeNotifier {
   FaceCameraTracker({required this.onSignal});
 
@@ -30,6 +40,9 @@ abstract class FaceCameraTracker extends ChangeNotifier {
   int get processedFrames;
   int get droppedFrames;
   CameraController? get cameraController => null;
+  Uint8List? get previewJpeg => null;
+  FaceCameraOverlay? get faceOverlay => null;
+  bool get previewMirrored => false;
   List<FaceCameraDevice> get availableDevices => const [];
   String? get selectedDeviceId => null;
   String? get selectedDeviceName => null;

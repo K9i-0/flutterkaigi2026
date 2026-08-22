@@ -20,6 +20,8 @@ class MacOsVisionFaceTracker extends FaceCameraTracker {
   int _droppedFrames = 0;
   List<FaceCameraDevice> _availableDevices = const [];
   String? _selectedDeviceId;
+  Uint8List? _previewJpeg;
+  FaceCameraOverlay? _faceOverlay;
 
   @override
   bool get isSupportedPlatform => Platform.isMacOS;
@@ -33,6 +35,12 @@ class MacOsVisionFaceTracker extends FaceCameraTracker {
   int get processedFrames => _processedFrames;
   @override
   int get droppedFrames => _droppedFrames;
+  @override
+  Uint8List? get previewJpeg => _previewJpeg;
+  @override
+  FaceCameraOverlay? get faceOverlay => _faceOverlay;
+  @override
+  bool get previewMirrored => true;
   @override
   List<FaceCameraDevice> get availableDevices => _availableDevices;
   @override
@@ -136,6 +144,7 @@ class MacOsVisionFaceTracker extends FaceCameraTracker {
     if (eventDeviceId is String) _selectedDeviceId = eventDeviceId;
     if (type == 'face') {
       state = FaceCameraState.running;
+      _faceOverlay = _overlay(values);
       _processedFrames = _integer(values['processedFrames']);
       _droppedFrames = _integer(values['droppedFrames']);
       detectorFps = _number(values['fps']);
@@ -152,11 +161,15 @@ class MacOsVisionFaceTracker extends FaceCameraTracker {
       );
     } else if (type == 'noFace') {
       state = FaceCameraState.noFace;
+      _faceOverlay = null;
       _processedFrames = _integer(values['processedFrames']);
       _droppedFrames = _integer(values['droppedFrames']);
       detectorFps = _number(values['fps']);
     } else if (type == 'running') {
       state = FaceCameraState.running;
+    } else if (type == 'preview') {
+      final bytes = values['imageBytes'];
+      if (bytes is Uint8List) _previewJpeg = bytes;
     } else if (type == 'error') {
       state = FaceCameraState.error;
       errorMessage = '${values['message'] ?? 'Vision tracking failed.'}';
@@ -176,6 +189,32 @@ class MacOsVisionFaceTracker extends FaceCameraTracker {
 
   static int _integer(Object? value) => value is num ? value.toInt() : 0;
 
+  static FaceCameraOverlay? _overlay(Map<Object?, Object?> values) {
+    final rawBounds = values['faceBounds'];
+    final rawLandmarks = values['landmarks'];
+    if (rawBounds is! List || rawBounds.length != 4 || rawLandmarks is! Map) {
+      return null;
+    }
+    final bounds = rawBounds.map(_number).toList(growable: false);
+    final landmarks = <String, List<Offset>>{};
+    for (final entry in rawLandmarks.entries) {
+      if (entry.key is! String || entry.value is! List) continue;
+      final points = <Offset>[];
+      for (final rawPoint in entry.value! as List) {
+        if (rawPoint is List && rawPoint.length == 2) {
+          points.add(Offset(_number(rawPoint[0]), _number(rawPoint[1])));
+        }
+      }
+      if (points.isNotEmpty) {
+        landmarks[entry.key! as String] = List.unmodifiable(points);
+      }
+    }
+    return FaceCameraOverlay(
+      faceBounds: Rect.fromLTWH(bounds[0], bounds[1], bounds[2], bounds[3]),
+      landmarks: Map.unmodifiable(landmarks),
+    );
+  }
+
   @override
   Future<void> stop() async {
     if (isSupportedPlatform) {
@@ -187,6 +226,8 @@ class MacOsVisionFaceTracker extends FaceCameraTracker {
     }
     await _subscription?.cancel();
     _subscription = null;
+    _previewJpeg = null;
+    _faceOverlay = null;
     state = FaceCameraState.idle;
     notifyListeners();
   }

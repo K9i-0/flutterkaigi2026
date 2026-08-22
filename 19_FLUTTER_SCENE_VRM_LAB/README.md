@@ -15,9 +15,10 @@ Flutter UI + Camera / Vision・ML Kit / Marionette MCP
 - Humanoidの`spine` / `chest` / `upperChest` / `neck` / `head`回転
 - 顔角度から生成するNatural / Anime / 頭のみの上半身追従
 - 胴体だけに適用する4°デッドゾーンと遅い平滑化
-- Tポーズを緩和する配信用の待機腕姿勢
+- 肩のAim/Roll補助ボーンを崩さない、肩サブツリー単位の待機腕姿勢
 - 顔入力の正面補正、指数平滑化、向きと値の制限
 - macOSの実カメラ → Apple Vision顔検出 → VRM駆動経路
+- 右下の実カメラHUDとVision顔枠・輪郭・眉・目・鼻・口の重畳表示
 - iOS / Androidの前面カメラ → ML Kit顔検出 → VRM駆動経路
 - 全身 / バストアップの表示モード切り替え
 - Dart MCPでの起動・接続とMarionette MCPによる決定論的な顔入力
@@ -40,7 +41,8 @@ iOS / Androidでも同じ操作で前面カメラを使用する。「表示」�
 
 macOSでは追跡パネルの「使用カメラ」から入力を選択できる。起動時は外付けカメラを
 優先し、再検出ボタンで後から接続したカメラも列挙し直せる。ウィンドウが非アクティブに
-なっても、配信・会話用途の追跡を継続する。
+なっても、配信・会話用途の追跡を継続する。追跡中は右下の`CAMERA TRACKING` HUDへ
+ミラー映像を表示し、顔を検出するとVisionが認識した各ランドマークを緑の線で重ねる。
 
 ## Dart MCP / Marionette MCP
 
@@ -74,7 +76,8 @@ macOSでは追跡パネルの「使用カメラ」から入力を選択できる
 `avatar-framing`、`vrm-emotion`、`vrm-mouth`、`vrm-auto-blink`の`ValueKey`も
 設定している。macOSのカメラ選択には`face-camera-device`、再検出には
 `face-camera-refresh`、上半身調整には`body-follow-mode`と
-`body-follow-intensity`を使用する。
+`body-follow-intensity`を使用する。HUDと輪郭レイヤーは`camera-tracking-hud`、
+`face-landmark-overlay`で特定できる。
 
 ## プラットフォーム注意点
 

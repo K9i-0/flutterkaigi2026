@@ -115,6 +115,15 @@ class _VrmLabPageState extends State<VrmLabPage> with WidgetsBindingObserver {
                 child: _TrackingPanel(lab: _lab),
               ),
             ),
+            SafeArea(
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 12, 12, 42),
+                  child: _CameraTrackingHud(lab: _lab),
+                ),
+              ),
+            ),
             const SafeArea(
               child: Align(
                 alignment: Alignment.bottomCenter,
@@ -191,7 +200,7 @@ class VrmLabController extends ChangeNotifier {
       bodyFollowMode: bodyFollowMode,
       bodyFollowIntensity: bodyFollowIntensity,
     );
-    _applyIdleArmPose();
+    _applyShoulderSafeIdlePose();
     final avatarStage = Node(name: 'AvatarStage')
       ..rotation = vm.Quaternion.axisAngle(vm.Vector3(0, 1, 0), math.pi);
     avatarStage.add(avatar!.root);
@@ -265,16 +274,17 @@ class VrmLabController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _applyIdleArmPose() {
-    const degreesToRadians = math.pi / 180;
-    // This sample has no idle animation, so relax the authored T-pose arms.
+  void _applyShoulderSafeIdlePose() {
+    const angle = 35 * math.pi / 180;
+    // This validation avatar uses aim/roll helper bones under each shoulder.
+    // Rotate the complete shoulder subtree so those helpers stay aligned.
     avatar!.setHumanBoneRotation(
-      'leftUpperArm',
-      vm.Quaternion.euler(0, 0, -58 * degreesToRadians),
+      'leftShoulder',
+      vm.Quaternion.euler(0, 0, -angle),
     );
     avatar!.setHumanBoneRotation(
-      'rightUpperArm',
-      vm.Quaternion.euler(0, 0, 58 * degreesToRadians),
+      'rightShoulder',
+      vm.Quaternion.euler(0, 0, angle),
     );
   }
 
@@ -331,7 +341,7 @@ class VrmLabController extends ChangeNotifier {
     automationEnabled = false;
     await faceCamera.stop();
     _trackingDriver?.reset();
-    _applyIdleArmPose();
+    _applyShoulderSafeIdlePose();
     trackingFrame = const VrmFaceTrackingFrame(
       yawRadians: 0,
       pitchRadians: 0,
@@ -374,7 +384,7 @@ class VrmLabController extends ChangeNotifier {
   void resetAvatar() {
     trackingPipeline.reset();
     _trackingDriver?.reset();
-    _applyIdleArmPose();
+    _applyShoulderSafeIdlePose();
     trackingFrame = trackingPipeline.filtered;
     mouth = 0;
     emotion = 'neutral';
@@ -599,7 +609,6 @@ class _TrackingPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final camera = lab.faceCamera.cameraController;
     final frame = lab.trackingFrame;
     final radiansToDegrees = 180 / math.pi;
     final compact = MediaQuery.sizeOf(context).width < 720;
@@ -627,32 +636,6 @@ class _TrackingPanel extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 8),
-              if (camera != null && camera.value.isInitialized)
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: AspectRatio(
-                    aspectRatio: camera.value.aspectRatio,
-                    child: CameraPreview(camera),
-                  ),
-                )
-              else
-                Container(
-                  height: 72,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.black26,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    lab.automationEnabled
-                        ? 'MCP: deterministic input'
-                        : lab.faceCamera.isSupportedPlatform
-                        ? _cameraStateLabel(lab.faceCamera.state)
-                        : 'このOSでは同一入力のSimulation',
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 12),
-                  ),
-                ),
               if (lab.faceCamera.availableDevices.isNotEmpty) ...[
                 const SizedBox(height: 8),
                 Row(
@@ -818,6 +801,177 @@ class _TrackingPanel extends StatelessWidget {
     FaceCameraState.unsupported => 'このOSでは未対応',
     FaceCameraState.error => 'カメラエラー',
   };
+}
+
+class _CameraTrackingHud extends StatelessWidget {
+  const _CameraTrackingHud({required this.lab});
+
+  final VrmLabController lab;
+
+  @override
+  Widget build(BuildContext context) {
+    final tracker = lab.faceCamera;
+    final camera = tracker.cameraController;
+    final bytes = tracker.previewJpeg;
+    Widget preview;
+    if (camera != null && camera.value.isInitialized) {
+      preview = CameraPreview(camera);
+    } else if (bytes != null) {
+      preview = Image.memory(
+        bytes,
+        fit: BoxFit.cover,
+        gaplessPlayback: true,
+        filterQuality: FilterQuality.low,
+      );
+    } else {
+      preview = ColoredBox(
+        color: const Color(0xff090e18),
+        child: Center(
+          child: Text(
+            lab.automationEnabled
+                ? 'MCP INPUT'
+                : _TrackingPanel._cameraStateLabel(tracker.state),
+            style: const TextStyle(color: Colors.white60, fontSize: 12),
+          ),
+        ),
+      );
+    }
+
+    Widget previewStack = Stack(
+      fit: StackFit.expand,
+      children: [
+        preview,
+        CustomPaint(
+          key: const ValueKey('face-landmark-overlay'),
+          painter: _FaceLandmarkPainter(tracker.faceOverlay),
+        ),
+      ],
+    );
+    if ((camera != null && camera.value.isInitialized || bytes != null) &&
+        tracker.previewMirrored) {
+      previewStack = Transform.flip(flipX: true, child: previewStack);
+    }
+
+    return Card(
+      key: const ValueKey('camera-tracking-hud'),
+      margin: EdgeInsets.zero,
+      clipBehavior: Clip.antiAlias,
+      color: const Color(0xee192435),
+      child: SizedBox(
+        width: 300,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+              child: Row(
+                children: [
+                  Icon(
+                    tracker.faceOverlay == null
+                        ? Icons.center_focus_weak
+                        : Icons.center_focus_strong,
+                    size: 17,
+                    color: tracker.faceOverlay == null
+                        ? Colors.white54
+                        : const Color(0xff5ee3bd),
+                  ),
+                  const SizedBox(width: 7),
+                  const Text(
+                    'CAMERA TRACKING',
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.8,
+                    ),
+                  ),
+                  const Spacer(),
+                  Text(
+                    tracker.faceOverlay == null ? 'SEARCHING' : 'FACE LOCK',
+                    style: TextStyle(
+                      fontSize: 9,
+                      color: tracker.faceOverlay == null
+                          ? Colors.white54
+                          : const Color(0xff5ee3bd),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            AspectRatio(aspectRatio: 4 / 3, child: previewStack),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _FaceLandmarkPainter extends CustomPainter {
+  const _FaceLandmarkPainter(this.overlay);
+
+  final FaceCameraOverlay? overlay;
+
+  static const _closedRegions = {
+    'leftEye',
+    'rightEye',
+    'outerLips',
+    'innerLips',
+  };
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final data = overlay;
+    if (data == null) return;
+    final line = Paint()
+      ..color = const Color(0xff63f4d3)
+      ..strokeWidth = 1.35
+      ..style = PaintingStyle.stroke;
+    final bounds = Rect.fromLTWH(
+      data.faceBounds.left * size.width,
+      data.faceBounds.top * size.height,
+      data.faceBounds.width * size.width,
+      data.faceBounds.height * size.height,
+    );
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(bounds, const Radius.circular(5)),
+      line..color = const Color(0xcc5ee3bd),
+    );
+
+    for (final entry in data.landmarks.entries) {
+      if (entry.value.length < 2) continue;
+      final path = Path();
+      for (var index = 0; index < entry.value.length; index++) {
+        final point = entry.value[index];
+        final x = point.dx * size.width;
+        final y = point.dy * size.height;
+        if (index == 0) {
+          path.moveTo(x, y);
+        } else {
+          path.lineTo(x, y);
+        }
+      }
+      if (_closedRegions.contains(entry.key)) path.close();
+      canvas.drawPath(path, line..color = const Color(0xff63f4d3));
+    }
+
+    final center = bounds.center;
+    final reticle = Paint()
+      ..color = const Color(0xddffca68)
+      ..strokeWidth = 1;
+    canvas.drawLine(
+      Offset(center.dx - 7, center.dy),
+      Offset(center.dx + 7, center.dy),
+      reticle,
+    );
+    canvas.drawLine(
+      Offset(center.dx, center.dy - 7),
+      Offset(center.dx, center.dy + 7),
+      reticle,
+    );
+  }
+
+  @override
+  bool shouldRepaint(_FaceLandmarkPainter oldDelegate) =>
+      oldDelegate.overlay != overlay;
 }
 
 class _TrackingDot extends StatelessWidget {

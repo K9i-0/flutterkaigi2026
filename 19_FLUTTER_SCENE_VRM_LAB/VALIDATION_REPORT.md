@@ -60,11 +60,12 @@ symlink.
 | Upper-body humanoid drive | Pass; axis-specific distribution through spine, chest, upperChest, neck, and head |
 | Body follow tuning | Pass; Natural / Anime counter-roll / legacy head-only modes and 0–150% intensity |
 | Torso stabilization | Pass; 4° dead zone and slower exponential response |
-| Presenter idle arm pose | Pass; validation model no longer presents in a T-pose |
+| Shoulder-safe idle pose | Pass; rotates each complete shoulder subtree so Aim/Roll helpers stay aligned |
 | Blink and mouth tracking drive | Pass |
 | Camera-independent tracking pipeline | Pass; unit tested |
 | macOS real-camera integration | Pass; Apple Vision face/landmark events at about 10 fps on the development Mac |
 | macOS camera selection | Pass; live-switched between HD Pro Webcam C920 and the built-in MacBook Air camera |
+| macOS tracking HUD | Pass; mirrored preview plus Vision face bounds and landmark polylines |
 | macOS continuous tracking simulation | Pass; optional deterministic fallback through the same VRM driver |
 | Full-body / bust-up framing | Pass; UI and MCP switching visually verified |
 | Android camera integration build | Pass; debug APK |
@@ -92,13 +93,17 @@ the torso roll. The MCP inspection exposes the applied torso angles by bone.
 - On macOS, AVFoundation supplies 640x480 camera frames and Apple Vision
   supplies face landmarks plus yaw, pitch, and roll. Analysis is throttled to
   15 fps and late frames are discarded.
+- The lower-right debug HUD receives an 8 fps, 50%-quality JPEG preview and
+  overlays Vision's normalized face contour, eyebrows, eyes, nose, and lips.
+  Preview transport is local to the Flutter method channel and is never saved.
 - AVFoundation device discovery exposes external, built-in, and Continuity
   cameras. External cameras are preferred initially; the UI can refresh and
   switch devices while tracking is active.
 - Head yaw and roll are mirrored for front-camera UX. Mouth opening is derived
   from the normalized upper/lower lip contour gap.
-- A busy-frame gate prevents overlapping detector calls. Detector FPS and
-  dropped frames are exposed in the UI and MCP.
+- A busy-frame gate prevents overlapping detector calls. Detector FPS, dropped
+  frames, preview readiness, overlay readiness, and landmark region names are
+  exposed in the UI and MCP.
 - When a face is lost, pose and facial values return smoothly to neutral.
 - Lifecycle pausing/resuming applies only to actual camera tracking. MCP and
   simulation modes do not accidentally open the camera.
@@ -142,8 +147,9 @@ screenshots.
    MediaPipe should plug in behind `FaceTrackingSignal`.
 3. **Eye gaze and expression semantics:** VRM LookAt, eye bones, expression
    override rules, material color binds, and UV transform binds.
-4. **Avatar physics and shading:** MToon, SpringBone, and node constraints are
-   parsed/detected only.
+4. **Avatar physics and shading:** MToon, SpringBone, and general node
+   constraints are parsed/detected only. The sample's idle pose avoids its
+   missing Aim/Roll runtime by rotating complete shoulder subtrees.
 5. **Render scaling:** continuous morph blending needs per-instance GPU weights
    and multi-avatar benchmarks.
 6. **Tracking robustness:** persisted calibration, lost-face/reacquisition
