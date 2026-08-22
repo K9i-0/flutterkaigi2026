@@ -26,3 +26,4 @@ flutter:
     - flutter_scene_generated/
     # Relative symlink to canonical GLBs. Never copy or edit them here.
     - assets/models/
+    - assets/models/mobile/

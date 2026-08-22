@@ -29,6 +29,7 @@ class MobileQualityProfile {
     required this.resourceChunkRadius,
     required this.skyBakeInterval,
     required this.lightingUpdatesPerSecond,
+    required this.effectsUpdatesPerSecond,
   });
 
   final double renderScale;
@@ -49,6 +50,7 @@ class MobileQualityProfile {
   final int resourceChunkRadius;
   final Duration skyBakeInterval;
   final double lightingUpdatesPerSecond;
+  final double effectsUpdatesPerSecond;
 
   static const performance = MobileQualityProfile(
     renderScale: 0.62,
@@ -69,6 +71,7 @@ class MobileQualityProfile {
     resourceChunkRadius: 1,
     skyBakeInterval: Duration(seconds: 30),
     lightingUpdatesPerSecond: 1,
+    effectsUpdatesPerSecond: 15,
   );
 
   static const balanced = MobileQualityProfile(
@@ -89,7 +92,8 @@ class MobileQualityProfile {
     terrainChunkRadius: 2,
     resourceChunkRadius: 1,
     skyBakeInterval: Duration(seconds: 15),
-    lightingUpdatesPerSecond: 2,
+    lightingUpdatesPerSecond: 0.5,
+    effectsUpdatesPerSecond: 30,
   );
 
   static const quality = MobileQualityProfile(
@@ -110,7 +114,58 @@ class MobileQualityProfile {
     terrainChunkRadius: 2,
     resourceChunkRadius: 2,
     skyBakeInterval: Duration(seconds: 5),
-    lightingUpdatesPerSecond: 4,
+    lightingUpdatesPerSecond: 2,
+    effectsUpdatesPerSecond: 60,
+  );
+
+  /// Keeps the characteristic AO, bloom and contact shadows while reducing
+  /// the expensive shadow work that dominates sustained mobile rendering.
+  static const adaptiveVisual = MobileQualityProfile(
+    renderScale: 0.58,
+    shadowCascades: 1,
+    shadowResolution: 512,
+    shadowDistance: 36,
+    contactShadows: true,
+    ambientOcclusion: true,
+    ambientOcclusionSamples: 8,
+    screenSpaceReflections: false,
+    ssrResolutionScale: 0.3,
+    ssrSteps: 16,
+    bloom: true,
+    godRays: false,
+    maxTorchLights: 4,
+    maxTorchParticles: 4,
+    terrainChunkRadius: 2,
+    resourceChunkRadius: 1,
+    skyBakeInterval: Duration(seconds: 20),
+    lightingUpdatesPerSecond: 0.5,
+    effectsUpdatesPerSecond: 24,
+  );
+
+  /// Last automatic fallback: keep PBR lighting, world shadows, emissive
+  /// highlights and fog, but remove the depth-driven AO/contact-shadow chain
+  /// and the bloom mip chain. Both are fullscreen multi-pass effects; proxy
+  /// shadows and emissive materials keep the important visual cues.
+  static const adaptivePerformance = MobileQualityProfile(
+    renderScale: 0.58,
+    shadowCascades: 1,
+    shadowResolution: 384,
+    shadowDistance: 28,
+    contactShadows: false,
+    ambientOcclusion: false,
+    ambientOcclusionSamples: 6,
+    screenSpaceReflections: false,
+    ssrResolutionScale: 0.25,
+    ssrSteps: 12,
+    bloom: false,
+    godRays: false,
+    maxTorchLights: 3,
+    maxTorchParticles: 3,
+    terrainChunkRadius: 1,
+    resourceChunkRadius: 1,
+    skyBakeInterval: Duration(seconds: 30),
+    lightingUpdatesPerSecond: 0.25,
+    effectsUpdatesPerSecond: 20,
   );
 
   static MobileQualityProfile forQuality(GraphicsQuality quality) =>
@@ -139,6 +194,7 @@ class MobileQualityProfile {
     resourceChunkRadius: resourceChunkRadius,
     skyBakeInterval: skyBakeInterval,
     lightingUpdatesPerSecond: lightingUpdatesPerSecond,
+    effectsUpdatesPerSecond: effectsUpdatesPerSecond,
   );
 }
 
@@ -150,6 +206,7 @@ class AutoQualityController {
   double _elapsed = 0;
   int _healthyWindows = 0;
   double renderScale = MobileQualityProfile.balanced.renderScale;
+  int pressureLevel = 0;
 
   bool update({
     required double deltaSeconds,
@@ -162,19 +219,33 @@ class AutoQualityController {
     }
     _elapsed = 0;
 
-    if (framesPerSecond < 50 || p95FrameTimeMs > 21) {
+    if (framesPerSecond < 57 || p95FrameTimeMs > 18.5) {
       _healthyWindows = 0;
-      final next = renderScale > 0.7 ? 0.67 : 0.58;
-      if (next == renderScale) return false;
+      final nextLevel = (pressureLevel + 1).clamp(0, 3);
+      final next = switch (nextLevel) {
+        0 => MobileQualityProfile.balanced.renderScale,
+        1 => 0.67,
+        2 || 3 => 0.58,
+        _ => 0.58,
+      };
+      if (next == renderScale && nextLevel == pressureLevel) return false;
+      pressureLevel = nextLevel;
       renderScale = next;
       return true;
     }
-    if (framesPerSecond >= 57 && p95FrameTimeMs <= 18) {
+    if (framesPerSecond >= 59 && p95FrameTimeMs <= 17.2) {
       _healthyWindows++;
       if (_healthyWindows < 2) return false;
       _healthyWindows = 0;
-      final next = renderScale < 0.65 ? 0.67 : 0.82;
-      if (next == renderScale) return false;
+      final nextLevel = (pressureLevel - 1).clamp(0, 3);
+      final next = switch (nextLevel) {
+        0 => 0.82,
+        1 => 0.67,
+        2 || 3 => 0.58,
+        _ => 0.58,
+      };
+      if (next == renderScale && nextLevel == pressureLevel) return false;
+      pressureLevel = nextLevel;
       renderScale = next;
       return true;
     }
@@ -185,6 +256,7 @@ class AutoQualityController {
   void reset() {
     _elapsed = 0;
     _healthyWindows = 0;
+    pressureLevel = 0;
     renderScale = MobileQualityProfile.balanced.renderScale;
   }
 }

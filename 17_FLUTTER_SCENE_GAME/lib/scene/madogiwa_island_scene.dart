@@ -76,7 +76,6 @@ class MadogiwaIslandScene extends ChangeNotifier {
   final Map<String, Node> _landmarkNodes = {};
   final Map<GridCell, _TorchVisual> _torches = {};
   final List<_LandmarkGlow> _landmarkGlows = [];
-  final List<Node> _resourceAnimatedParts = [];
   final List<_Worker> _workers = [];
   final FramePerformanceTracker _performance = FramePerformanceTracker();
   final ValueNotifier<int> mapRevision = ValueNotifier(0);
@@ -94,6 +93,9 @@ class MadogiwaIslandScene extends ChangeNotifier {
     ..metallicFactor = 0.02;
   final UnlitMaterial _signalBoundaryMaterial = UnlitMaterial()
     ..baseColorFactor = vm.Vector4(2.5, 0.035, 0.02, 1);
+  final UnlitMaterial _characterShadowMaterial = UnlitMaterial()
+    ..baseColorFactor = vm.Vector4(0.015, 0.025, 0.028, 0.24)
+    ..alphaMode = AlphaMode.blend;
 
   late final Node _selection;
   late final Node _oceanNode;
@@ -112,8 +114,11 @@ class MadogiwaIslandScene extends ChangeNotifier {
   double _distance = 14.2;
   double _moveRight = 0;
   double _moveForward = 0;
+  double _nativeViewportPixels = 0;
+  bool _portraitViewport = false;
   double _hudAccumulator = 0;
   double _lightingAccumulator = 0;
+  double _effectsAccumulator = 0;
   vm.Vector3 _playerPosition = vm.Vector3(0, IslandWorld.surfaceY(0, 3), 3);
   ChunkCoordinate _playerChunk = const ChunkCoordinate(0, 0);
   int _lastExploredX = 1 << 30;
@@ -182,7 +187,13 @@ class MadogiwaIslandScene extends ChangeNotifier {
   double get averageRasterTimeMs => _performance.averageRasterTimeMs;
   double get p95RasterTimeMs => _performance.p95RasterTimeMs;
   double get renderScale => scene.renderScale;
-  String get graphicsQualityLabel => graphicsQuality.label;
+  double get nativeViewportMegapixels => _nativeViewportPixels / 1000000;
+  double get renderedViewportMegapixels =>
+      nativeViewportMegapixels * scene.renderScale * scene.renderScale;
+  bool get portraitViewport => _portraitViewport;
+  String get graphicsQualityLabel => graphicsQuality == GraphicsQuality.auto
+      ? 'Auto L${_autoQuality.pressureLevel}'
+      : graphicsQuality.label;
   String get shadowProfileLabel =>
       '${_qualityProfile.shadowCascades} cascades / '
       '${_qualityProfile.shadowDistance.toStringAsFixed(0)}マス / '
@@ -540,7 +551,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
     final material = SpriteMaterial()
       ..blendMode = SpriteBlendMode.additive
       ..tint = vm.Vector4(1, 0.8, 0.45, 1)
-      ..softDepthFade = 0.12;
+      ..softDepthFade = _qualityProfile.ambientOcclusion ? 0.12 : 0;
     return ParticleEmitterComponent(system: system, material: material);
   }
 
@@ -786,7 +797,6 @@ class MadogiwaIslandScene extends ChangeNotifier {
   void _rebuildVisibleResources(Set<ChunkCoordinate> visibleChunks) {
     _resourceRoot.removeAll();
     _resourceNodes.clear();
-    _resourceAnimatedParts.clear();
     InstancedMesh batch(Geometry geometry, Material material) => InstancedMesh(
       geometry: geometry,
       material: material,
@@ -959,7 +969,9 @@ class MadogiwaIslandScene extends ChangeNotifier {
       ),
     ];
     final loaded = await Future.wait(
-      specs.map((spec) => Node.fromGlbAsset('assets/models/${spec.id}.glb')),
+      specs.map(
+        (spec) => Node.fromGlbAsset('assets/models/mobile/${spec.id}.glb'),
+      ),
     );
     var totalMeshes = 0;
     for (var index = 0; index < loaded.length; index++) {
@@ -984,6 +996,18 @@ class MadogiwaIslandScene extends ChangeNotifier {
         ..position = vm.Vector3.copy(home)
         ..visible = spec.isPlayer
         ..add(model);
+      final shadowProxy =
+          Node(
+              name: '${spec.name}_MobileShadow',
+              mesh: Mesh(
+                DiscGeometry(radius: 0.48, segments: 14),
+                _characterShadowMaterial,
+              ),
+            )
+            ..position = vm.Vector3(home.x, home.y + 0.025, home.z)
+            ..visible = false
+            ..castsShadows = false
+            ..raycastable = false;
       final idle = model.findAnimationByName('Idle');
       if (idle != null) {
         model.createAnimationClip(idle)
@@ -991,7 +1015,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
           ..play();
       }
       totalMeshes += model.meshNodes.length;
-      _partyRoot.add(root);
+      _partyRoot.addAll([root, shadowProxy]);
       _workers.add(
         _Worker(
           id: spec.id,
@@ -1002,6 +1026,8 @@ class MadogiwaIslandScene extends ChangeNotifier {
           isPlayer: spec.isPlayer,
           reunited: spec.isPlayer,
           walkRig: _VoxelWalkRig.fromModel(model),
+          meshNodes: model.meshNodes.toList(growable: false),
+          shadowProxy: shadowProxy,
         ),
       );
       if (spec.isPlayer) {
@@ -1011,6 +1037,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
     }
     characterMeshCount = totalMeshes;
     characterNames = specs.map((spec) => spec.name).toList(growable: false);
+    _applyCharacterShadowQuality();
   }
 
   void reset() {
@@ -1050,6 +1077,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
         ..position = vm.Vector3.copy(worker.home)
         ..visible = false;
     }
+    _applyCharacterShadowQuality();
     unawaited(_refreshVisibleChunks(force: true));
     notifyListeners();
   }
@@ -1317,6 +1345,41 @@ class MadogiwaIslandScene extends ChangeNotifier {
     _distance = distance.clamp(8.5, 22.0);
   }
 
+  void setViewportMetrics(Size logicalSize, double devicePixelRatio) {
+    if (logicalSize.isEmpty || devicePixelRatio <= 0) return;
+    final nativePixels =
+        logicalSize.width *
+        logicalSize.height *
+        devicePixelRatio *
+        devicePixelRatio;
+    final portrait = logicalSize.height > logicalSize.width;
+    if ((_nativeViewportPixels - nativePixels).abs() < 1 &&
+        _portraitViewport == portrait) {
+      return;
+    }
+    _nativeViewportPixels = nativePixels;
+    _portraitViewport = portrait;
+    scene.renderScale = _effectiveRenderScale(_qualityProfile);
+  }
+
+  double _effectiveRenderScale(MobileQualityProfile profile) {
+    if (_nativeViewportPixels <= 0) return profile.renderScale;
+    final pixelBudget = switch (graphicsQuality) {
+      GraphicsQuality.performance => 850000.0,
+      GraphicsQuality.balanced => 1500000.0,
+      GraphicsQuality.quality => 2400000.0,
+      GraphicsQuality.auto => switch (_autoQuality.pressureLevel) {
+        0 => 1500000.0,
+        1 => 1250000.0,
+        2 => 1000000.0,
+        _ => 620000.0,
+      },
+    };
+    final orientationBudget = pixelBudget * (_portraitViewport ? 0.94 : 1);
+    final pixelScale = math.sqrt(orientationBudget / _nativeViewportPixels);
+    return math.min(profile.renderScale, pixelScale.clamp(0.42, 1.0));
+  }
+
   Map<String, bool> get visualOptions => {
     'dayNightCycle': dayNightCycleEnabled,
     'dynamicLighting': dynamicLightingEnabled,
@@ -1343,17 +1406,25 @@ class MadogiwaIslandScene extends ChangeNotifier {
   void _applyQualityProfile({bool refreshChunks = true}) {
     final previousRadius = _qualityProfile.terrainChunkRadius;
     final profile = graphicsQuality == GraphicsQuality.auto
-        ? MobileQualityProfile.balanced.withRenderScale(
-            _autoQuality.renderScale,
-          )
+        ? switch (_autoQuality.pressureLevel) {
+            0 || 1 => MobileQualityProfile.balanced.withRenderScale(
+              _autoQuality.renderScale,
+            ),
+            2 => MobileQualityProfile.adaptiveVisual.withRenderScale(
+              _autoQuality.renderScale,
+            ),
+            _ => MobileQualityProfile.adaptivePerformance.withRenderScale(
+              _autoQuality.renderScale,
+            ),
+          }
         : MobileQualityProfile.forQuality(graphicsQuality);
     _qualityProfile = profile;
     scene
-      ..renderScale = profile.renderScale
-      ..filterQuality = profile.renderScale < 0.7
+      ..renderScale = _effectiveRenderScale(profile)
+      ..filterQuality = scene.renderScale < 0.7
           ? FilterQuality.low
           : FilterQuality.medium
-      ..antiAliasingMode = profile.renderScale < 0.65
+      ..antiAliasingMode = scene.renderScale < 0.65
           ? AntiAliasingMode.fxaa
           : AntiAliasingMode.auto;
     _sunLight
@@ -1371,6 +1442,15 @@ class MadogiwaIslandScene extends ChangeNotifier {
       ..enabled = profile.screenSpaceReflections && waterEffectsEnabled
       ..resolutionScale = profile.ssrResolutionScale
       ..maxSteps = profile.ssrSteps;
+    // A non-zero soft-particle fade requests a depth prepass for every visible
+    // mesh. Keep it with AO (where the prepass already exists), but do not pay
+    // that whole-scene cost solely for a handful of tiny torch sparks.
+    for (final torch in _torches.values) {
+      torch.particleComponent.material.softDepthFade = profile.ambientOcclusion
+          ? 0.12
+          : 0;
+    }
+    _applyCharacterShadowQuality();
     _skyEnvironment
       ..refresh = SkyEnvironmentRefresh.interval
       ..interval = profile.skyBakeInterval;
@@ -1383,6 +1463,21 @@ class MadogiwaIslandScene extends ChangeNotifier {
       );
     }
     performanceRevision.value++;
+  }
+
+  bool get _usesCharacterShadowProxy =>
+      graphicsQuality == GraphicsQuality.performance ||
+      (graphicsQuality == GraphicsQuality.auto &&
+          _autoQuality.pressureLevel >= 2);
+
+  void _applyCharacterShadowQuality() {
+    final proxy = _usesCharacterShadowProxy;
+    for (final worker in _workers) {
+      for (final node in worker.meshNodes) {
+        node.castsShadows = !proxy;
+      }
+      worker.shadowProxy.visible = proxy && worker.root.visible;
+    }
   }
 
   void recordFlutterFrame({
@@ -1493,69 +1588,79 @@ class MadogiwaIslandScene extends ChangeNotifier {
         );
     }
 
-    final sunColor = _sunLight.color ??= vm.Vector3.zero();
-    if (daylight < 0.08) {
-      sunColor.setValues(0.24, 0.34, 0.62);
-    } else {
-      sunColor.setValues(1.0, 0.58 + daylight * 0.36, 0.34 + daylight * 0.58);
+    if (updateLighting) {
+      final sunColor = _sunLight.color ??= vm.Vector3.zero();
+      if (daylight < 0.08) {
+        sunColor.setValues(0.24, 0.34, 0.62);
+      } else {
+        sunColor.setValues(1.0, 0.58 + daylight * 0.36, 0.34 + daylight * 0.58);
+      }
+      _sunLight
+        ..intensity = 0.18 + directLight
+        ..castsShadow = shadowsEnabled
+        ..contactShadows =
+            contactShadowsEnabled && _qualityProfile.contactShadows
+        ..shadowSoftness = 0.2 - daylight * 0.1
+        ..shadowAmbientStrength = 0.28 + (1 - daylight) * 0.12;
+
+      scene
+        ..exposure = 0.54 + lightLevel * 0.24
+        ..environmentIntensity = 0.2 + lightLevel * 0.44;
+      scene.postProcess.colorGrading
+        ..enabled = true
+        ..brightness = 0.9 + daylight * 0.1
+        ..contrast = 1.12 - daylight * 0.06
+        ..saturation = 0.84 + daylight * 0.26
+        ..temperature = twilight * 0.16 - (1 - daylight) * 0.08;
+      scene.postProcess.bloom
+        ..enabled = _qualityProfile.bloom
+        ..threshold = 0.62 + daylight * 0.3
+        ..intensity = 0.38 - daylight * 0.17
+        ..scatter = 0.7;
+      scene.fog
+        ..enabled = dynamicFogEnabled
+        ..density =
+            0.018 +
+            (1 - daylight) * 0.018 +
+            twilight * 0.008 +
+            (_qualityProfile.terrainChunkRadius == 1 ? 0.008 : 0) +
+            (controller.chapter == GameChapter.marsh ? 0.014 : 0)
+        ..skyColorInfluence = 0.62
+        ..height = 1.15
+        ..heightFalloff = 0.075
+        ..sunInScatter = twilight * daylight * 0.72
+        ..sunInScatterExponent = 12
+        ..color.setValues(
+          0.055 + daylight * 0.19 + twilight * 0.12,
+          0.08 + daylight * 0.4 + twilight * 0.08,
+          0.17 + daylight * 0.48 + twilight * 0.05,
+        );
+      scene.godRays
+        ..enabled =
+            _qualityProfile.godRays &&
+            godRaysEnabled &&
+            shadowsEnabled &&
+            twilight > 0.18 &&
+            daylight > 0.08
+        ..intensity = twilight * 0.34
+        ..density = 0.28
+        ..anisotropy = 0.72
+        ..stepCount = 14
+        ..maxDistance = 58
+        ..jitter = 1
+        ..color.setValues(1.0, 0.58 + daylight * 0.28, 0.32 + daylight * 0.42);
+      scene.screenSpaceReflections
+        ..enabled =
+            _qualityProfile.screenSpaceReflections && waterEffectsEnabled
+        ..intensity = 0.32 + daylight * 0.14;
     }
-    _sunLight
-      ..intensity = 0.18 + directLight
-      ..castsShadow = shadowsEnabled
-      ..contactShadows = contactShadowsEnabled && _qualityProfile.contactShadows
-      ..shadowSoftness = 0.2 - daylight * 0.1
-      ..shadowAmbientStrength = 0.28 + (1 - daylight) * 0.12;
 
-    scene
-      ..exposure = 0.54 + lightLevel * 0.24
-      ..environmentIntensity = 0.2 + lightLevel * 0.44;
-    scene.postProcess.colorGrading
-      ..enabled = true
-      ..brightness = 0.9 + daylight * 0.1
-      ..contrast = 1.12 - daylight * 0.06
-      ..saturation = 0.84 + daylight * 0.26
-      ..temperature = twilight * 0.16 - (1 - daylight) * 0.08;
-    scene.postProcess.bloom
-      ..enabled = _qualityProfile.bloom
-      ..threshold = 0.62 + daylight * 0.3
-      ..intensity = 0.38 - daylight * 0.17
-      ..scatter = 0.7;
-    scene.fog
-      ..enabled = dynamicFogEnabled
-      ..density =
-          0.018 +
-          (1 - daylight) * 0.018 +
-          twilight * 0.008 +
-          (controller.chapter == GameChapter.marsh ? 0.014 : 0)
-      ..skyColorInfluence = 0.62
-      ..height = 1.15
-      ..heightFalloff = 0.075
-      ..sunInScatter = twilight * daylight * 0.72
-      ..sunInScatterExponent = 12
-      ..color.setValues(
-        0.055 + daylight * 0.19 + twilight * 0.12,
-        0.08 + daylight * 0.4 + twilight * 0.08,
-        0.17 + daylight * 0.48 + twilight * 0.05,
-      );
-    scene.godRays
-      ..enabled =
-          _qualityProfile.godRays &&
-          godRaysEnabled &&
-          shadowsEnabled &&
-          twilight > 0.18 &&
-          daylight > 0.08
-      ..intensity = twilight * 0.34
-      ..density = 0.28
-      ..anisotropy = 0.72
-      ..stepCount = 14
-      ..maxDistance = 58
-      ..jitter = 1
-      ..color.setValues(1.0, 0.58 + daylight * 0.28, 0.32 + daylight * 0.42);
-    scene.screenSpaceReflections
-      ..enabled = _qualityProfile.screenSpaceReflections && waterEffectsEnabled
-      ..intensity = 0.32 + daylight * 0.14;
-
-    if (_loaded || _torches.isNotEmpty) {
+    _effectsAccumulator += dt;
+    final effectsInterval = 1 / _qualityProfile.effectsUpdatesPerSecond;
+    final updateEffects =
+        forceLighting || dt == 0 || _effectsAccumulator >= effectsInterval;
+    if (updateEffects) _effectsAccumulator = 0;
+    if ((_loaded || _torches.isNotEmpty) && updateEffects) {
       _updateLocalLights(daylight);
       _updateWater(daylight, twilight);
     }
@@ -1942,7 +2047,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
           framesPerSecond: framesPerSecond,
           p95FrameTimeMs: p95FrameTimeMs,
         )) {
-      _applyQualityProfile(refreshChunks: false);
+      _applyQualityProfile();
     }
     _updateVisualEnvironment(dt);
     _updateSignalBoundary();
@@ -1950,12 +2055,6 @@ class MadogiwaIslandScene extends ChangeNotifier {
     _updatePlayer(dt);
     _revealAroundPlayer();
     _selection.scale = vm.Vector3.all(1 + math.sin(_elapsed * 4) * 0.05);
-    for (var index = 0; index < _resourceAnimatedParts.length; index++) {
-      _resourceAnimatedParts[index].rotation = vm.Quaternion.axisAngle(
-        vm.Vector3(0, 0, 1),
-        math.sin(_elapsed * 1.4 + index) * 0.025,
-      );
-    }
     for (var index = 0; index < _workers.length; index++) {
       final worker = _workers[index];
       if (worker.isPlayer) continue;
@@ -1966,6 +2065,9 @@ class MadogiwaIslandScene extends ChangeNotifier {
       );
       if (!worker.reunited) {
         worker.root.visible = distanceToPlayer <= 9;
+        worker.shadowProxy.visible =
+            _usesCharacterShadowProxy && worker.root.visible;
+        if (distanceToPlayer > 9) continue;
         if (distanceToPlayer <= 2.6) {
           worker
             ..reunited = true
@@ -2011,6 +2113,13 @@ class MadogiwaIslandScene extends ChangeNotifier {
                 characterFacingYaw(movedX, movedZ),
               )
             : worker.root.rotation;
+      worker.shadowProxy
+        ..visible = _usesCharacterShadowProxy && worker.root.visible
+        ..position = vm.Vector3(
+          position.x,
+          IslandWorld.surfaceY(position.x.round(), position.z.round()) + 0.025,
+          position.z,
+        );
       worker.walkRig.update(dt: dt, elapsed: _elapsed, moving: moving);
     }
     if (_hudAccumulator >= 1) {
@@ -2135,6 +2244,13 @@ class MadogiwaIslandScene extends ChangeNotifier {
               : math.sin(_elapsed * 2.2) * 0.018),
       _playerPosition.z,
     );
+    playerWorker.shadowProxy
+      ..visible = _usesCharacterShadowProxy && player.visible
+      ..position = vm.Vector3(
+        _playerPosition.x,
+        _playerPosition.y + 0.025,
+        _playerPosition.z,
+      );
     playerWorker.walkRig.update(
       dt: dt,
       elapsed: _elapsed,
@@ -2180,7 +2296,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
           ),
       target: target,
       fovNear: 0.1,
-      fovFar: 90,
+      fovFar: 46 + _qualityProfile.terrainChunkRadius * 16,
     );
     return _activeCamera;
   }
@@ -2219,6 +2335,8 @@ class _Worker {
     required this.isPlayer,
     required this.reunited,
     required this.walkRig,
+    required this.meshNodes,
+    required this.shadowProxy,
   });
 
   final String id;
@@ -2228,6 +2346,8 @@ class _Worker {
   final (double, double) followOffset;
   final bool isPlayer;
   final _VoxelWalkRig walkRig;
+  final List<Node> meshNodes;
+  final Node shadowProxy;
   bool reunited;
 }
 
