@@ -28,4 +28,14 @@ void main() {
     expect(tracker.p95FrameTimeMs, closeTo(40, 0.01));
     expect(tracker.onePercentLowFps, closeTo(20, 0.01));
   });
+
+  test('records Flutter build and raster timings independently', () {
+    final tracker = FramePerformanceTracker();
+    tracker.recordFlutterFrame(buildTimeMs: 3, rasterTimeMs: 8);
+    tracker.recordFlutterFrame(buildTimeMs: 5, rasterTimeMs: 12);
+
+    expect(tracker.averageBuildTimeMs, 4);
+    expect(tracker.averageRasterTimeMs, 10);
+    expect(tracker.p95RasterTimeMs, 12);
+  });
 }

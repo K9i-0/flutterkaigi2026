@@ -1,0 +1,190 @@
+enum GraphicsQuality { auto, performance, balanced, quality }
+
+extension GraphicsQualityLabel on GraphicsQuality {
+  String get label => switch (this) {
+    GraphicsQuality.auto => 'Auto',
+    GraphicsQuality.performance => 'Performance',
+    GraphicsQuality.balanced => 'Balanced',
+    GraphicsQuality.quality => 'Quality',
+  };
+}
+
+class MobileQualityProfile {
+  const MobileQualityProfile({
+    required this.renderScale,
+    required this.shadowCascades,
+    required this.shadowResolution,
+    required this.shadowDistance,
+    required this.contactShadows,
+    required this.ambientOcclusion,
+    required this.ambientOcclusionSamples,
+    required this.screenSpaceReflections,
+    required this.ssrResolutionScale,
+    required this.ssrSteps,
+    required this.bloom,
+    required this.godRays,
+    required this.maxTorchLights,
+    required this.maxTorchParticles,
+    required this.terrainChunkRadius,
+    required this.resourceChunkRadius,
+    required this.skyBakeInterval,
+    required this.lightingUpdatesPerSecond,
+  });
+
+  final double renderScale;
+  final int shadowCascades;
+  final int shadowResolution;
+  final double shadowDistance;
+  final bool contactShadows;
+  final bool ambientOcclusion;
+  final int ambientOcclusionSamples;
+  final bool screenSpaceReflections;
+  final double ssrResolutionScale;
+  final int ssrSteps;
+  final bool bloom;
+  final bool godRays;
+  final int maxTorchLights;
+  final int maxTorchParticles;
+  final int terrainChunkRadius;
+  final int resourceChunkRadius;
+  final Duration skyBakeInterval;
+  final double lightingUpdatesPerSecond;
+
+  static const performance = MobileQualityProfile(
+    renderScale: 0.62,
+    shadowCascades: 1,
+    shadowResolution: 384,
+    shadowDistance: 28,
+    contactShadows: false,
+    ambientOcclusion: false,
+    ambientOcclusionSamples: 4,
+    screenSpaceReflections: false,
+    ssrResolutionScale: 0.25,
+    ssrSteps: 12,
+    bloom: false,
+    godRays: false,
+    maxTorchLights: 2,
+    maxTorchParticles: 0,
+    terrainChunkRadius: 1,
+    resourceChunkRadius: 1,
+    skyBakeInterval: Duration(seconds: 30),
+    lightingUpdatesPerSecond: 1,
+  );
+
+  static const balanced = MobileQualityProfile(
+    renderScale: 0.75,
+    shadowCascades: 2,
+    shadowResolution: 512,
+    shadowDistance: 36,
+    contactShadows: true,
+    ambientOcclusion: true,
+    ambientOcclusionSamples: 8,
+    screenSpaceReflections: false,
+    ssrResolutionScale: 0.35,
+    ssrSteps: 20,
+    bloom: true,
+    godRays: false,
+    maxTorchLights: 4,
+    maxTorchParticles: 4,
+    terrainChunkRadius: 2,
+    resourceChunkRadius: 1,
+    skyBakeInterval: Duration(seconds: 15),
+    lightingUpdatesPerSecond: 2,
+  );
+
+  static const quality = MobileQualityProfile(
+    renderScale: 1,
+    shadowCascades: 3,
+    shadowResolution: 1024,
+    shadowDistance: 56,
+    contactShadows: true,
+    ambientOcclusion: true,
+    ambientOcclusionSamples: 16,
+    screenSpaceReflections: true,
+    ssrResolutionScale: 0.5,
+    ssrSteps: 32,
+    bloom: true,
+    godRays: true,
+    maxTorchLights: 8,
+    maxTorchParticles: 8,
+    terrainChunkRadius: 2,
+    resourceChunkRadius: 2,
+    skyBakeInterval: Duration(seconds: 5),
+    lightingUpdatesPerSecond: 4,
+  );
+
+  static MobileQualityProfile forQuality(GraphicsQuality quality) =>
+      switch (quality) {
+        GraphicsQuality.performance => performance,
+        GraphicsQuality.quality => MobileQualityProfile.quality,
+        GraphicsQuality.auto || GraphicsQuality.balanced => balanced,
+      };
+
+  MobileQualityProfile withRenderScale(double scale) => MobileQualityProfile(
+    renderScale: scale,
+    shadowCascades: shadowCascades,
+    shadowResolution: shadowResolution,
+    shadowDistance: shadowDistance,
+    contactShadows: contactShadows,
+    ambientOcclusion: ambientOcclusion,
+    ambientOcclusionSamples: ambientOcclusionSamples,
+    screenSpaceReflections: screenSpaceReflections,
+    ssrResolutionScale: ssrResolutionScale,
+    ssrSteps: ssrSteps,
+    bloom: bloom,
+    godRays: godRays,
+    maxTorchLights: maxTorchLights,
+    maxTorchParticles: maxTorchParticles,
+    terrainChunkRadius: terrainChunkRadius,
+    resourceChunkRadius: resourceChunkRadius,
+    skyBakeInterval: skyBakeInterval,
+    lightingUpdatesPerSecond: lightingUpdatesPerSecond,
+  );
+}
+
+/// Slow hysteresis prevents render-target reallocations from oscillating.
+class AutoQualityController {
+  AutoQualityController({this.evaluationIntervalSeconds = 5});
+
+  final double evaluationIntervalSeconds;
+  double _elapsed = 0;
+  int _healthyWindows = 0;
+  double renderScale = MobileQualityProfile.balanced.renderScale;
+
+  bool update({
+    required double deltaSeconds,
+    required double framesPerSecond,
+    required double p95FrameTimeMs,
+  }) {
+    _elapsed += deltaSeconds;
+    if (_elapsed < evaluationIntervalSeconds || framesPerSecond <= 0) {
+      return false;
+    }
+    _elapsed = 0;
+
+    if (framesPerSecond < 50 || p95FrameTimeMs > 21) {
+      _healthyWindows = 0;
+      final next = renderScale > 0.7 ? 0.67 : 0.58;
+      if (next == renderScale) return false;
+      renderScale = next;
+      return true;
+    }
+    if (framesPerSecond >= 57 && p95FrameTimeMs <= 18) {
+      _healthyWindows++;
+      if (_healthyWindows < 2) return false;
+      _healthyWindows = 0;
+      final next = renderScale < 0.65 ? 0.67 : 0.82;
+      if (next == renderScale) return false;
+      renderScale = next;
+      return true;
+    }
+    _healthyWindows = 0;
+    return false;
+  }
+
+  void reset() {
+    _elapsed = 0;
+    _healthyWindows = 0;
+    renderScale = MobileQualityProfile.balanced.renderScale;
+  }
+}

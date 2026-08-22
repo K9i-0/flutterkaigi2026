@@ -1,5 +1,8 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_scene/scene.dart' hide Material;
 import 'package:marionette_flutter/marionette_flutter.dart';
@@ -7,6 +10,7 @@ import 'package:marionette_flutter/marionette_flutter.dart';
 import 'automation/automation_state.dart';
 import 'automation/marionette_extensions.dart';
 import 'game/island_game_controller.dart';
+import 'game/mobile_quality.dart';
 import 'scene/madogiwa_island_scene.dart';
 import 'world/island_world.dart';
 
@@ -53,11 +57,12 @@ class _IslandPageState extends State<IslandPage> {
   late final MadogiwaIslandScene _islandScene;
   final FocusNode _gameFocus = FocusNode(debugLabel: 'Island game input');
   final Set<LogicalKeyboardKey> _pressedKeys = {};
-  final Set<_MoveDirection> _touchDirections = {};
+  Offset _joystickInput = Offset.zero;
   bool _ready = false;
   bool _showIntro = true;
   bool _showVisualSettings = false;
   bool _showCrafting = false;
+  bool _miniMapExpanded = false;
   Object? _error;
   Offset? _gestureStart;
   Offset? _gestureLatest;
@@ -69,6 +74,7 @@ class _IslandPageState extends State<IslandPage> {
     super.initState();
     _controller = IslandGameController();
     _islandScene = MadogiwaIslandScene(controller: _controller);
+    SchedulerBinding.instance.addTimingsCallback(_recordFrameTimings);
     IslandAutomationState.attach(controller: _controller, scene: _islandScene);
     _islandScene
         .load()
@@ -83,10 +89,21 @@ class _IslandPageState extends State<IslandPage> {
   @override
   void dispose() {
     IslandAutomationState.detach(_islandScene);
+    SchedulerBinding.instance.removeTimingsCallback(_recordFrameTimings);
     _gameFocus.dispose();
     _islandScene.dispose();
     _controller.dispose();
     super.dispose();
+  }
+
+  void _recordFrameTimings(List<FrameTiming> timings) {
+    if (!mounted) return;
+    for (final timing in timings) {
+      _islandScene.recordFlutterFrame(
+        buildTimeMs: timing.buildDuration.inMicroseconds / 1000,
+        rasterTimeMs: timing.rasterDuration.inMicroseconds / 1000,
+      );
+    }
   }
 
   void _reset() {
@@ -114,36 +131,36 @@ class _IslandPageState extends State<IslandPage> {
     _applyMovementInput();
   }
 
-  void _setTouchDirection(_MoveDirection direction, bool active) {
-    if (active) {
-      _touchDirections.add(direction);
-    } else {
-      _touchDirections.remove(direction);
-    }
+  void _setJoystickInput(Offset input) {
+    _joystickInput = input;
     _applyMovementInput();
   }
 
   void _applyMovementInput() {
     final left =
         _pressedKeys.contains(LogicalKeyboardKey.keyA) ||
-        _pressedKeys.contains(LogicalKeyboardKey.arrowLeft) ||
-        _touchDirections.contains(_MoveDirection.left);
+        _pressedKeys.contains(LogicalKeyboardKey.arrowLeft);
     final right =
         _pressedKeys.contains(LogicalKeyboardKey.keyD) ||
-        _pressedKeys.contains(LogicalKeyboardKey.arrowRight) ||
-        _touchDirections.contains(_MoveDirection.right);
+        _pressedKeys.contains(LogicalKeyboardKey.arrowRight);
     final forward =
         _pressedKeys.contains(LogicalKeyboardKey.keyW) ||
-        _pressedKeys.contains(LogicalKeyboardKey.arrowUp) ||
-        _touchDirections.contains(_MoveDirection.forward);
+        _pressedKeys.contains(LogicalKeyboardKey.arrowUp);
     final backward =
         _pressedKeys.contains(LogicalKeyboardKey.keyS) ||
-        _pressedKeys.contains(LogicalKeyboardKey.arrowDown) ||
-        _touchDirections.contains(_MoveDirection.backward);
+        _pressedKeys.contains(LogicalKeyboardKey.arrowDown);
+    final keyboardRight = (right ? 1.0 : 0) - (left ? 1.0 : 0);
+    final keyboardForward = (forward ? 1.0 : 0) - (backward ? 1.0 : 0);
     _islandScene.setMoveInput(
-      right: (right ? 1 : 0) - (left ? 1 : 0),
-      forward: (forward ? 1 : 0) - (backward ? 1 : 0),
+      right: (keyboardRight + _joystickInput.dx).clamp(-1.0, 1.0),
+      forward: (keyboardForward - _joystickInput.dy).clamp(-1.0, 1.0),
     );
+  }
+
+  void _performContextAction() {
+    _gameFocus.requestFocus();
+    final changed = _islandScene.performContextAction();
+    if (changed) HapticFeedback.mediumImpact();
   }
 
   void _startViewGesture(ScaleStartDetails details) {
@@ -222,7 +239,10 @@ class _IslandPageState extends State<IslandPage> {
             ),
             SafeArea(
               child: ListenableBuilder(
-                listenable: Listenable.merge([_controller, _islandScene]),
+                listenable: Listenable.merge([
+                  _controller,
+                  _islandScene.hudRevision,
+                ]),
                 builder: (context, _) => _IslandHud(
                   controller: _controller,
                   scene: _islandScene,
@@ -238,11 +258,19 @@ class _IslandPageState extends State<IslandPage> {
                 alignment: Alignment.topRight,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(0, 112, 14, 0),
-                  child: IgnorePointer(
-                    child: ListenableBuilder(
-                      listenable: _islandScene,
-                      builder: (context, _) =>
-                          _IslandMiniMap(scene: _islandScene),
+                  child: ListenableBuilder(
+                    listenable: Listenable.merge([
+                      _islandScene.mapRevision,
+                      _controller,
+                    ]),
+                    builder: (context, _) => GestureDetector(
+                      key: const ValueKey('mini_map_toggle'),
+                      onTap: () =>
+                          setState(() => _miniMapExpanded = !_miniMapExpanded),
+                      child: _IslandMiniMap(
+                        scene: _islandScene,
+                        expanded: _miniMapExpanded,
+                      ),
                     ),
                   ),
                 ),
@@ -250,12 +278,15 @@ class _IslandPageState extends State<IslandPage> {
             ),
             SafeArea(
               child: Align(
-                alignment: Alignment.bottomRight,
+                alignment: Alignment.centerRight,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 14, 16),
+                  padding: const EdgeInsets.only(right: 14),
                   child: IgnorePointer(
                     child: ListenableBuilder(
-                      listenable: _islandScene,
+                      listenable: Listenable.merge([
+                        _islandScene.performanceRevision,
+                        _islandScene,
+                      ]),
                       builder: (context, _) =>
                           _islandScene.performanceHudEnabled
                           ? _PerformanceHud(scene: _islandScene)
@@ -270,7 +301,25 @@ class _IslandPageState extends State<IslandPage> {
                 alignment: Alignment.bottomLeft,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(18, 0, 0, 68),
-                  child: _MovementPad(onChanged: _setTouchDirection),
+                  child: _AnalogJoystick(onChanged: _setJoystickInput),
+                ),
+              ),
+            ),
+            SafeArea(
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 20, 76),
+                  child: ListenableBuilder(
+                    listenable: Listenable.merge([
+                      _controller,
+                      _islandScene.hudRevision,
+                    ]),
+                    builder: (context, _) => _ContextActionButton(
+                      label: _islandScene.contextActionLabel,
+                      onPressed: _performContextAction,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -320,13 +369,77 @@ class _IslandPageState extends State<IslandPage> {
   }
 }
 
-class _IslandMiniMap extends StatelessWidget {
-  const _IslandMiniMap({required this.scene});
+class _IslandMiniMap extends StatefulWidget {
+  const _IslandMiniMap({required this.scene, required this.expanded});
 
   final MadogiwaIslandScene scene;
+  final bool expanded;
+
+  @override
+  State<_IslandMiniMap> createState() => _IslandMiniMapState();
+}
+
+class _IslandMiniMapState extends State<_IslandMiniMap> {
+  ui.Image? _terrainImage;
+  int _paintedCells = 0;
+
+  MadogiwaIslandScene get scene => widget.scene;
+
+  void _updateTerrainCache() {
+    final historyLength = scene.explorationHistoryLength;
+    if (_paintedCells > historyLength) {
+      _terrainImage?.dispose();
+      _terrainImage = null;
+      _paintedCells = 0;
+    }
+    if (_paintedCells == historyLength) return;
+
+    final recorder = ui.PictureRecorder();
+    final canvas = Canvas(recorder);
+    if (_terrainImage case final previous?) {
+      canvas.drawImage(previous, Offset.zero, Paint());
+    }
+    final paint = Paint()..isAntiAlias = false;
+    for (var position = _paintedCells; position < historyLength; position++) {
+      final index = scene.explorationIndexAt(position);
+      final mapX = index % IslandWorld.worldSize;
+      final mapZ = index ~/ IslandWorld.worldSize;
+      final x = mapX - IslandWorld.worldHalfSize;
+      final z = mapZ - IslandWorld.worldHalfSize;
+      paint.color = !IslandWorld.isLand(x, z)
+          ? const Color(0xff17445c)
+          : switch (IslandWorld.biomeCode(x, z)) {
+              0 => const Color(0xffc8aa6d),
+              1 => const Color(0xff3f8d55),
+              2 => const Color(0xff687779),
+              3 => const Color(0xff356a5a),
+              _ => const Color(0xff8a7b69),
+            };
+      canvas.drawRect(
+        Rect.fromLTWH(mapX.toDouble(), mapZ.toDouble(), 1, 1),
+        paint,
+      );
+    }
+    final picture = recorder.endRecording();
+    final next = picture.toImageSync(
+      IslandWorld.worldSize,
+      IslandWorld.worldSize,
+    );
+    picture.dispose();
+    _terrainImage?.dispose();
+    _terrainImage = next;
+    _paintedCells = historyLength;
+  }
+
+  @override
+  void dispose() {
+    _terrainImage?.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    _updateTerrainCache();
     return DecoratedBox(
       decoration: BoxDecoration(
         color: const Color(0xe6091d24),
@@ -335,41 +448,54 @@ class _IslandMiniMap extends StatelessWidget {
         boxShadow: const [BoxShadow(color: Color(0x66000000), blurRadius: 14)],
       ),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(9, 8, 9, 9),
+        padding: EdgeInsets.fromLTRB(8, widget.expanded ? 8 : 7, 8, 8),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(
-                  Icons.map_rounded,
-                  size: 14,
-                  color: Color(0xff72efbc),
-                ),
-                const SizedBox(width: 5),
-                const Text(
-                  '探索マップ',
-                  style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900),
-                ),
-                const SizedBox(width: 10),
-                Text(
-                  '通信 ${scene.controller.signalLevel}/4 · 再会 ${scene.reunitedCount}/3',
-                  style: const TextStyle(
-                    color: Color(0xffffc36b),
-                    fontSize: 9,
-                    fontWeight: FontWeight.w900,
+            if (widget.expanded)
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.map_rounded,
+                    size: 14,
+                    color: Color(0xff72efbc),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 6),
+                  const SizedBox(width: 5),
+                  const Text(
+                    '探索マップ',
+                    style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900),
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                    '通信 ${scene.controller.signalLevel}/4 · 再会 ${scene.reunitedCount}/3',
+                    style: const TextStyle(
+                      color: Color(0xffffc36b),
+                      fontSize: 9,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                ],
+              ),
+            if (widget.expanded) const SizedBox(height: 6),
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: CustomPaint(
-                size: const Size.square(146),
-                painter: _IslandMapPainter(scene),
+              child: RepaintBoundary(
+                child: CustomPaint(
+                  size: Size.square(widget.expanded ? 146 : 76),
+                  painter: _IslandMapPainter(
+                    scene,
+                    _terrainImage,
+                    scene.mapRevision.value,
+                    Object.hash(
+                      scene.controller.signalLevel,
+                      scene.controller.completedLandmarks.length,
+                      scene.reunitedCount,
+                      scene.signalBoundaryEnabled,
+                    ),
+                  ),
+                ),
               ),
             ),
           ],
@@ -380,9 +506,17 @@ class _IslandMiniMap extends StatelessWidget {
 }
 
 class _IslandMapPainter extends CustomPainter {
-  const _IslandMapPainter(this.scene);
+  const _IslandMapPainter(
+    this.scene,
+    this.terrainImage,
+    this.revision,
+    this.stateRevision,
+  );
 
   final MadogiwaIslandScene scene;
+  final ui.Image? terrainImage;
+  final int revision;
+  final int stateRevision;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -391,54 +525,18 @@ class _IslandMapPainter extends CustomPainter {
       Paint()..color = const Color(0xff061216),
     );
     final scale = size.width / IslandWorld.worldSize;
-    final sand = Paint()
-      ..color = const Color(0xffc8aa6d)
-      ..isAntiAlias = false;
-    final grass = Paint()
-      ..color = const Color(0xff3f8d55)
-      ..isAntiAlias = false;
-    final quarry = Paint()
-      ..color = const Color(0xff687779)
-      ..isAntiAlias = false;
-    final marsh = Paint()
-      ..color = const Color(0xff356a5a)
-      ..isAntiAlias = false;
-    final summit = Paint()
-      ..color = const Color(0xff8a7b69)
-      ..isAntiAlias = false;
-    final ocean = Paint()
-      ..color = const Color(0xff17445c)
-      ..isAntiAlias = false;
-    for (
-      var z = -IslandWorld.worldHalfSize;
-      z < IslandWorld.worldHalfSize;
-      z++
-    ) {
-      for (
-        var x = -IslandWorld.worldHalfSize;
-        x < IslandWorld.worldHalfSize;
-        x++
-      ) {
-        if (!scene.isExplored(x, z)) continue;
-        final paint = !IslandWorld.isLand(x, z)
-            ? ocean
-            : switch (IslandWorld.biomeCode(x, z)) {
-                0 => sand,
-                1 => grass,
-                2 => quarry,
-                3 => marsh,
-                _ => summit,
-              };
-        canvas.drawRect(
-          Rect.fromLTWH(
-            (x + IslandWorld.worldHalfSize) * scale,
-            (z + IslandWorld.worldHalfSize) * scale,
-            scale + 0.2,
-            scale + 0.2,
-          ),
-          paint,
-        );
-      }
+    if (terrainImage case final terrain?) {
+      canvas.drawImageRect(
+        terrain,
+        Rect.fromLTWH(
+          0,
+          0,
+          IslandWorld.worldSize.toDouble(),
+          IslandWorld.worldSize.toDouble(),
+        ),
+        Offset.zero & size,
+        Paint()..filterQuality = FilterQuality.none,
+      );
     }
 
     for (final landmark in MadogiwaIslandScene.landmarks) {
@@ -494,7 +592,11 @@ class _IslandMapPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _IslandMapPainter oldDelegate) => true;
+  bool shouldRepaint(covariant _IslandMapPainter oldDelegate) =>
+      revision != oldDelegate.revision ||
+      stateRevision != oldDelegate.stateRevision ||
+      scene.playerX != oldDelegate.scene.playerX ||
+      scene.playerZ != oldDelegate.scene.playerZ;
 }
 
 class _OceanBackdrop extends StatelessWidget {
@@ -583,6 +685,8 @@ class _VisualSettingsOverlay extends StatelessWidget {
                         child: ListView(
                           padding: const EdgeInsets.fromLTRB(12, 8, 12, 18),
                           children: [
+                            _QualitySelector(scene: scene),
+                            const SizedBox(height: 8),
                             _TimeDebugger(scene: scene),
                             const SizedBox(height: 6),
                             _VisualSwitch(
@@ -616,7 +720,7 @@ class _VisualSettingsOverlay extends StatelessWidget {
                             _VisualSwitch(
                               option: 'shadows',
                               label: '太陽・月の影',
-                              description: '3 cascades / 56マス / 1024px',
+                              description: scene.shadowProfileLabel,
                               value: options['shadows']!,
                               scene: scene,
                             ),
@@ -630,14 +734,14 @@ class _VisualSettingsOverlay extends StatelessWidget {
                             _VisualSwitch(
                               option: 'torchLights',
                               label: '松明ライト',
-                              description: '近い8本まで暖色Point Light',
+                              description: scene.torchProfileLabel,
                               value: options['torchLights']!,
                               scene: scene,
                             ),
                             _VisualSwitch(
                               option: 'torchParticles',
                               label: '松明の火の粉',
-                              description: '各6枚までの加算合成パーティクル',
+                              description: scene.particleProfileLabel,
                               value: options['torchParticles']!,
                               scene: scene,
                             ),
@@ -651,7 +755,7 @@ class _VisualSettingsOverlay extends StatelessWidget {
                             _VisualSwitch(
                               option: 'godRays',
                               label: '朝夕の光芒',
-                              description: '14 stepsの限定的なGod Rays',
+                              description: scene.godRaysProfileLabel,
                               value: options['godRays']!,
                               scene: scene,
                             ),
@@ -665,7 +769,7 @@ class _VisualSettingsOverlay extends StatelessWidget {
                             _VisualSwitch(
                               option: 'waterEffects',
                               label: '海面反射・微動',
-                              description: '低解像度SSRと時間帯別マテリアル',
+                              description: scene.reflectionsProfileLabel,
                               value: options['waterEffects']!,
                               scene: scene,
                             ),
@@ -685,6 +789,71 @@ class _VisualSettingsOverlay extends StatelessWidget {
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _QualitySelector extends StatelessWidget {
+  const _QualitySelector({required this.scene});
+
+  final MadogiwaIslandScene scene;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: const Color(0xff102f37),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(Icons.tune_rounded, size: 18),
+                const SizedBox(width: 7),
+                const Text(
+                  '画質プリセット',
+                  style: TextStyle(fontWeight: FontWeight.w900),
+                ),
+                const Spacer(),
+                Text(
+                  '実効 ${scene.renderScale.toStringAsFixed(2)}x',
+                  style: const TextStyle(
+                    color: Color(0xff72efbc),
+                    fontSize: 11,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            SizedBox(
+              width: double.infinity,
+              child: SegmentedButton<GraphicsQuality>(
+                key: const ValueKey('graphics_quality'),
+                showSelectedIcon: false,
+                segments: [
+                  for (final quality in GraphicsQuality.values)
+                    ButtonSegment(value: quality, label: Text(quality.label)),
+                ],
+                selected: {scene.graphicsQuality},
+                onSelectionChanged: (selection) {
+                  scene.setGraphicsQuality(selection.single);
+                  HapticFeedback.selectionClick();
+                },
+              ),
+            ),
+            const SizedBox(height: 6),
+            const Text(
+              'Autoは5秒単位でGPU負荷を判定し、解像度を段階調整します。',
+              style: TextStyle(color: Color(0xff8fb4bc), fontSize: 10),
+            ),
+          ],
         ),
       ),
     );
@@ -944,12 +1113,24 @@ class _PerformanceHud extends StatelessWidget {
               fontWeight: FontWeight.w700,
             ),
           ),
+          Text(
+            'BUILD ${scene.averageBuildTimeMs.toStringAsFixed(1)} ms  ·  '
+            'RASTER ${scene.averageRasterTimeMs.toStringAsFixed(1)} ms '
+            '(P95 ${scene.p95RasterTimeMs.toStringAsFixed(1)})',
+            style: const TextStyle(
+              color: Color(0xff8fb0b7),
+              fontSize: 9,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
           const Divider(height: 12, color: Color(0x3372efbc)),
           Text(
             '${scene.activeChunkCount}/256 CHUNKS  ·  '
             '${scene.terrainQuadCount} QUADS\n'
             '${scene.characterMeshCount} MESHES  ·  '
-            'LOAD ${scene.loadDuration.inMilliseconds} ms',
+            'LOAD ${scene.loadDuration.inMilliseconds} ms\n'
+            '${scene.graphicsQualityLabel.toUpperCase()}  ·  '
+            'RENDER ${scene.renderScale.toStringAsFixed(2)}x',
             style: const TextStyle(
               color: Color(0xff8fb0b7),
               fontSize: 9,
@@ -963,107 +1144,131 @@ class _PerformanceHud extends StatelessWidget {
   }
 }
 
-enum _MoveDirection { forward, left, right, backward }
+class _AnalogJoystick extends StatefulWidget {
+  const _AnalogJoystick({required this.onChanged});
 
-class _MovementPad extends StatelessWidget {
-  const _MovementPad({required this.onChanged});
+  final ValueChanged<Offset> onChanged;
 
-  final void Function(_MoveDirection direction, bool active) onChanged;
+  @override
+  State<_AnalogJoystick> createState() => _AnalogJoystickState();
+}
+
+class _AnalogJoystickState extends State<_AnalogJoystick> {
+  static const _size = 132.0;
+  static const _travel = 42.0;
+  Offset _knob = Offset.zero;
+
+  void _update(Offset localPosition) {
+    final raw = localPosition - const Offset(_size / 2, _size / 2);
+    final distance = raw.distance;
+    final clamped = distance > _travel ? raw / distance * _travel : raw;
+    final normalized = clamped / _travel;
+    setState(() => _knob = clamped);
+    widget.onChanged(normalized.distance < 0.08 ? Offset.zero : normalized);
+  }
+
+  void _release() {
+    if (_knob == Offset.zero) return;
+    setState(() => _knob = Offset.zero);
+    widget.onChanged(Offset.zero);
+    HapticFeedback.selectionClick();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: 'プレイヤー移動パッド',
-      child: SizedBox(
-        width: 142,
-        height: 142,
-        child: Stack(
-          children: [
-            Align(
-              alignment: Alignment.topCenter,
-              child: _HoldDirectionButton(
-                icon: Icons.keyboard_arrow_up_rounded,
-                tooltip: '前進（W）',
-                onChanged: (active) =>
-                    onChanged(_MoveDirection.forward, active),
+      label: 'アナログ移動スティック',
+      child: GestureDetector(
+        key: const ValueKey('analog_joystick'),
+        behavior: HitTestBehavior.opaque,
+        onPanStart: (details) {
+          HapticFeedback.selectionClick();
+          _update(details.localPosition);
+        },
+        onPanUpdate: (details) => _update(details.localPosition),
+        onPanEnd: (_) => _release(),
+        onPanCancel: _release,
+        child: Container(
+          width: _size,
+          height: _size,
+          decoration: BoxDecoration(
+            color: const Color(0x9911272d),
+            shape: BoxShape.circle,
+            border: Border.all(color: const Color(0x8872efbc), width: 2),
+            boxShadow: const [
+              BoxShadow(color: Color(0x66000000), blurRadius: 14),
+            ],
+          ),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              const Icon(
+                Icons.control_camera_rounded,
+                color: Color(0x5572efbc),
+                size: 64,
               ),
-            ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: _HoldDirectionButton(
-                icon: Icons.keyboard_arrow_left_rounded,
-                tooltip: '左へ移動（A）',
-                onChanged: (active) => onChanged(_MoveDirection.left, active),
-              ),
-            ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: _HoldDirectionButton(
-                icon: Icons.keyboard_arrow_right_rounded,
-                tooltip: '右へ移動（D）',
-                onChanged: (active) => onChanged(_MoveDirection.right, active),
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: _HoldDirectionButton(
-                icon: Icons.keyboard_arrow_down_rounded,
-                tooltip: '後退（S）',
-                onChanged: (active) =>
-                    onChanged(_MoveDirection.backward, active),
-              ),
-            ),
-            Center(
-              child: Container(
-                width: 34,
-                height: 34,
-                decoration: BoxDecoration(
-                  color: const Color(0xcc0d2a31),
-                  shape: BoxShape.circle,
-                  border: Border.all(color: const Color(0x6672efbc)),
+              Transform.translate(
+                offset: _knob,
+                child: Container(
+                  width: 54,
+                  height: 54,
+                  decoration: BoxDecoration(
+                    color: const Color(0xee1b4b52),
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: const Color(0xff8affd1),
+                      width: 2,
+                    ),
+                  ),
+                  child: const Icon(Icons.directions_run_rounded),
                 ),
-                child: const Icon(Icons.explore_rounded, size: 17),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-class _HoldDirectionButton extends StatelessWidget {
-  const _HoldDirectionButton({
-    required this.icon,
-    required this.tooltip,
-    required this.onChanged,
-  });
+class _ContextActionButton extends StatelessWidget {
+  const _ContextActionButton({required this.label, required this.onPressed});
 
-  final IconData icon;
-  final String tooltip;
-  final ValueChanged<bool> onChanged;
+  final String label;
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return Tooltip(
-      message: tooltip,
-      child: GestureDetector(
-        onTapDown: (_) => onChanged(true),
-        onTapUp: (_) => onChanged(false),
-        onTapCancel: () => onChanged(false),
-        child: Container(
-          width: 48,
-          height: 48,
-          decoration: BoxDecoration(
-            color: const Color(0xe617343a),
-            borderRadius: BorderRadius.circular(15),
-            border: Border.all(color: const Color(0x6672efbc)),
-            boxShadow: const [
-              BoxShadow(color: Color(0x55000000), blurRadius: 8),
-            ],
+    return Semantics(
+      button: true,
+      label: label,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FloatingActionButton.large(
+            key: const ValueKey('context_action'),
+            heroTag: 'context_action',
+            onPressed: onPressed,
+            backgroundColor: const Color(0xeeffc561),
+            foregroundColor: const Color(0xff152227),
+            child: const Icon(Icons.handyman_rounded, size: 32),
           ),
-          child: Icon(icon, size: 31),
-        ),
+          const SizedBox(height: 5),
+          Container(
+            constraints: const BoxConstraints(maxWidth: 120),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: const Color(0xdd082027),
+              borderRadius: BorderRadius.circular(9),
+            ),
+            child: Text(
+              label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w900),
+            ),
+          ),
+        ],
       ),
     );
   }

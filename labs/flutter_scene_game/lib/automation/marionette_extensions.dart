@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:marionette_flutter/marionette_flutter.dart';
 
 import '../game/island_game_controller.dart';
+import '../game/mobile_quality.dart';
 import '../scene/madogiwa_island_scene.dart';
 import 'automation_state.dart';
 
@@ -38,6 +39,11 @@ void registerIslandMarionetteExtensions() {
           'averageFrameTimeMs': scene.averageFrameTimeMs,
           'p95FrameTimeMs': scene.p95FrameTimeMs,
           'onePercentLowFps': scene.onePercentLowFps,
+          'averageBuildTimeMs': scene.averageBuildTimeMs,
+          'averageRasterTimeMs': scene.averageRasterTimeMs,
+          'p95RasterTimeMs': scene.p95RasterTimeMs,
+          'quality': scene.graphicsQuality.name,
+          'renderScale': scene.renderScale,
         },
         'torches': scene.torchCount,
         'activeTorchLights': scene.activeTorchLightCount,
@@ -81,6 +87,28 @@ void registerIslandMarionetteExtensions() {
               'completed': scene.isLandmarkComplete(landmark.id),
             },
         ],
+      });
+    },
+  );
+
+  registerMarionetteExtension(
+    name: 'madogiwa.setGraphicsQuality',
+    description: 'Set auto, performance, balanced, or quality rendering.',
+    callback: (params) async {
+      final scene = IslandAutomationState.scene;
+      final qualityName = params['quality'];
+      final quality = GraphicsQuality.values
+          .where((value) => value.name == qualityName)
+          .firstOrNull;
+      if (scene == null || quality == null) {
+        return MarionetteExtensionResult.invalidParams(
+          'Required quality=auto/performance/balanced/quality.',
+        );
+      }
+      scene.setGraphicsQuality(quality);
+      return MarionetteExtensionResult.success({
+        'quality': quality.name,
+        'renderScale': scene.renderScale,
       });
     },
   );
@@ -309,6 +337,22 @@ void registerIslandMarionetteExtensions() {
       return MarionetteExtensionResult.success({
         'landmark': landmark?.id,
         'completed': completed,
+      });
+    },
+  );
+
+  registerMarionetteExtension(
+    name: 'madogiwa.performContextAction',
+    description: 'Run the same context action as the mobile action button.',
+    callback: (_) async {
+      final scene = IslandAutomationState.scene;
+      if (scene == null) {
+        return MarionetteExtensionResult.error(1, 'Island is not ready.');
+      }
+      final changed = scene.performContextAction();
+      return MarionetteExtensionResult.success({
+        'changed': changed,
+        'label': scene.contextActionLabel,
       });
     },
   );
