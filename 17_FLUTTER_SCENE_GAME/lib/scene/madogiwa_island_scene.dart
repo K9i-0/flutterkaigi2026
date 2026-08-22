@@ -67,6 +67,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
   final Node _structureRoot = Node(name: 'PlayerStructures');
   final Node _torchRoot = Node(name: 'Torches');
   final Node _partyRoot = Node(name: 'MadogiwaCrew');
+  final Node _signalBoundaryRoot = Node(name: 'SignalBoundary');
   final Map<ChunkCoordinate, Node> _chunkNodes = {};
   final Map<ChunkCoordinate, int> _chunkQuadCounts = {};
   final Map<GridCell, Node> _resourceNodes = {};
@@ -83,6 +84,8 @@ class MadogiwaIslandScene extends ChangeNotifier {
     ..vertexColorWeight = 1
     ..roughnessFactor = 0.9
     ..metallicFactor = 0.02;
+  final UnlitMaterial _signalBoundaryMaterial = UnlitMaterial()
+    ..baseColorFactor = vm.Vector4(2.5, 0.035, 0.02, 1);
 
   late final Node _selection;
   late final Node _oceanNode;
@@ -108,6 +111,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
   int _exploredCellCount = 0;
   bool _isJumping = false;
   bool _signalBoundaryBlocked = false;
+  double _signalBoundaryRadius = -1;
   double _jumpElapsed = 0;
   double _jumpStartSurfaceY = 0;
   double _jumpLandingSurfaceY = 0;
@@ -122,6 +126,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
   bool godRaysEnabled = true;
   bool dynamicFogEnabled = true;
   bool waterEffectsEnabled = true;
+  bool signalBoundaryEnabled = true;
   double timeOfDay = 0.34;
 
   int characterMeshCount = 0;
@@ -149,6 +154,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
   int get torchCount => _torches.length;
   int get activeTorchLightCount =>
       _torches.values.where((torch) => torch.light.intensity > 0).length;
+  double get signalBoundaryRadius => _signalBoundaryRadius;
   bool get isJumping => _isJumping;
   double get jumpOffset =>
       _isJumping ? jumpArcOffset(_jumpElapsed / _jumpDuration) : 0;
@@ -254,6 +260,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
       _structureRoot,
       _torchRoot,
       _partyRoot,
+      _signalBoundaryRoot,
     ]);
     _updateVisualEnvironment(0);
   }
@@ -309,7 +316,68 @@ class MadogiwaIslandScene extends ChangeNotifier {
     _stage.add(_selection);
     _buildLandmarks();
     _rebuildTorches();
+    _rebuildSignalBoundary();
     _revealAroundPlayer(force: true);
+  }
+
+  void _rebuildSignalBoundary() {
+    _signalBoundaryRoot.removeAll();
+    final radius = controller.explorationLimit;
+    const segmentCount = 256;
+    final segmentLength = 2 * math.pi * radius / segmentCount * 0.78;
+
+    for (var index = 0; index < segmentCount; index++) {
+      final angle = index * 2 * math.pi / segmentCount;
+      final x = math.cos(angle) * radius;
+      final z = math.sin(angle) * radius;
+      final surface = math.max(
+        IslandWorld.surfaceY(x.round(), z.round()),
+        0.82,
+      );
+      final marker = Node(name: 'SignalBoundarySegment_$index')
+        ..position = vm.Vector3(x, surface + 0.1, z)
+        ..rotation = vm.Quaternion.axisAngle(
+          vm.Vector3(0, 1, 0),
+          -angle - math.pi / 2,
+        )
+        ..raycastable = false
+        ..add(
+          Node(
+            mesh: Mesh(
+              CuboidGeometry(vm.Vector3(segmentLength, 0.12, 0.16)),
+              _signalBoundaryMaterial,
+            ),
+          ),
+        );
+      if (index % 8 == 0) {
+        marker.add(
+          Node(
+            mesh: Mesh(
+              CuboidGeometry(vm.Vector3(0.14, 1.35, 0.14)),
+              _signalBoundaryMaterial,
+            ),
+          )..position = vm.Vector3(0, 0.68, 0),
+        );
+      }
+      _signalBoundaryRoot.add(marker);
+    }
+    _signalBoundaryRadius = radius;
+    _signalBoundaryRoot.visible = signalBoundaryEnabled;
+  }
+
+  void _updateSignalBoundary() {
+    if ((_signalBoundaryRadius - controller.explorationLimit).abs() > 0.01) {
+      _rebuildSignalBoundary();
+    }
+    _signalBoundaryRoot.visible = signalBoundaryEnabled;
+    if (!signalBoundaryEnabled) return;
+    final pulse = 2.35 + math.sin(_elapsed * 3.4) * 0.55;
+    _signalBoundaryMaterial.baseColorFactor = vm.Vector4(
+      pulse,
+      0.025 + pulse * 0.008,
+      0.018,
+      1,
+    );
   }
 
   void _rebuildTorches() {
@@ -880,6 +948,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
     _rebuildVisibleResources(_desiredChunks());
     _playerPosition = vm.Vector3(0, IslandWorld.surfaceY(0, 3), 3);
     _signalBoundaryBlocked = false;
+    _rebuildSignalBoundary();
     _cancelJump();
     _playerChunk = const ChunkCoordinate(0, 0);
     _explored.fillRange(0, _explored.length, 0);
@@ -1130,6 +1199,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
     'godRays': godRaysEnabled,
     'dynamicFog': dynamicFogEnabled,
     'waterEffects': waterEffectsEnabled,
+    'signalBoundary': signalBoundaryEnabled,
   };
 
   bool setVisualOption(String option, bool enabled) {
@@ -1154,6 +1224,8 @@ class MadogiwaIslandScene extends ChangeNotifier {
         dynamicFogEnabled = enabled;
       case 'waterEffects':
         waterEffectsEnabled = enabled;
+      case 'signalBoundary':
+        signalBoundaryEnabled = enabled;
       default:
         return false;
     }
@@ -1179,6 +1251,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
     godRaysEnabled = true;
     dynamicFogEnabled = true;
     waterEffectsEnabled = true;
+    signalBoundaryEnabled = true;
     timeOfDay = 0.34;
     _updateVisualEnvironment(0);
     notifyListeners();
@@ -1636,6 +1709,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
     final dt = deltaSeconds.clamp(0.0, 0.05);
     _elapsed += dt;
     _updateVisualEnvironment(dt);
+    _updateSignalBoundary();
     _hudAccumulator += dt;
     _updatePlayer(dt);
     _revealAroundPlayer();
