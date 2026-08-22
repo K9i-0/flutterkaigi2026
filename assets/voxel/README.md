@@ -11,7 +11,7 @@
 - `tools/` … Blender Python ビルドスクリプトと共通キット
   - `voxel_character_kit.py` … ボックス生成・材質・共通リグ（rig contract v1）
   - `build_<キャラ>_voxel_model.py` … キャラ固有の形状・色・テクスチャパネル
-  - `validate_voxel_character.py` … GLBのリグ検証
+  - `validate_voxel_character.py` … GLBのリグ検証と任意の正面プレビュー生成
 - `VOXEL_CHARACTER_KIT.md` … リグ契約（`VoxelRig_*` ノード）とキャラ追加手順
 
 ## モデル一覧
@@ -57,11 +57,22 @@ blender --background --python tools/validate_voxel_character.py -- \
 単色材質を頂点カラー付き共通PBRへ統合するため、外見と手続き歩行を維持したまま
 Flutter Sceneのノード巡回とdraw callを削減できます。
 
+顔・仮面・衣装など人物同一性に関わる画像材質は統合対象外です。生成時に埋め込み画像が
+欠落した場合、または画像材質へ乗算される頂点カラーが白以外になった場合は失敗させ、
+テクスチャの消失や顔の黒化を防ぎます。正典画像は変更せず、モバイル版への埋め込み時のみ
+既定で最大256pxへ縮小して、GPUメモリと配布サイズを抑えます。
+
 ```bash
 blender --background \
   --python tools/optimize_voxel_model_for_mobile.py -- \
   --input models/sobaya.glb \
   --output models/mobile/sobaya.glb
+
+blender --background \
+  --python tools/validate_voxel_character.py -- \
+  --input models/mobile/sobaya.glb \
+  --rig-type biped \
+  --preview /tmp/sobaya-mobile.png
 ```
 
 ## ゲームからの参照方法
