@@ -44,6 +44,9 @@ void registerIslandMarionetteExtensions() {
           'p95RasterTimeMs': scene.p95RasterTimeMs,
           'quality': scene.graphicsQuality.name,
           'renderScale': scene.renderScale,
+          'characterAtNativeResolution': scene.characterAtNativeResolution,
+          'adaptiveDetail': scene.adaptiveDetailLabel,
+          'resourceLod': scene.resourceLodLabel,
         },
         'torches': scene.torchCount,
         'activeTorchLights': scene.activeTorchLightCount,
@@ -109,6 +112,8 @@ void registerIslandMarionetteExtensions() {
       return MarionetteExtensionResult.success({
         'quality': quality.name,
         'renderScale': scene.renderScale,
+        'characterAtNativeResolution': scene.characterAtNativeResolution,
+        'adaptiveDetail': scene.adaptiveDetailLabel,
       });
     },
   );

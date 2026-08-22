@@ -48,7 +48,7 @@ Flutter Sceneを、窓際族物語の正典ボクセル素材で実ゲームへ�
 - 256×256マス、16×16チャンクの決定論的なプロシージャル島生成
 - 画質に応じ、現在地周辺3×3または5×5チャンクだけを動的ロード／アンロード
 - 1ブロック1Nodeではなく、露出面をチャンク単位のindexed meshへ結合
-- 木・岩・鉱石・植物を形状別InstancedMeshへ統合し、探索境界も288 Nodeから2 batchへ統合
+- 木・岩・鉱石・植物を形状別InstancedMeshへ統合し、距離LODで遠景の構成パーツ数を削減。探索境界も288 Nodeから2 batchへ統合
 - Dart isolateで地形メッシュを生成し、UI／描画isolateの停止を抑制
 - vertex color付きPBRブロック地形、海、木、岩、家のランタイム生成
 - 鉱石・植物・焚き火・作業台・橋・炉・通信ビーコンのランタイム生成
@@ -57,16 +57,17 @@ Flutter Sceneを、窓際族物語の正典ボクセル素材で実ゲームへ�
 - プレイヤー追従カメラ、カメラ相対8方向移動、段差・海岸衝突
 - 高低差1.25マスまでの放物線ジャンプと、それを超える崖の移動阻止
 - 正典GLBの共通リグを使った脚・腕・触手の手続き歩行モーション
-- `PhysicalSkySource`による10分周期の昼夜、太陽・月光・露出・色調の連動
+- `PhysicalSkySource`による約12分周期の昼夜、16〜21時の長い夕方、太陽・月光・露出・色調の連動
 - 画質別1〜3 cascades / 28〜56マス / 384〜1024pxの影と静的shadow cache
 - 松明のemissive材質、ちらつくPoint Light、加算合成の火の粉
 - ランドマーク固有光、朝夕限定God Rays、時間連動fog
 - 海面の微動・時間帯別PBRマテリアル・低解像度SSR
 - ACES tone mapping、Bloom、half-resolution AO、color grading、vignette
 - 常設情報を絞ったFlutter WidgetのHUD、アナログスティック、状況アクション
-- `Scene.renderScale`による0.58〜1.0xの描画解像度制御とAutoの5秒ヒステリシス
+- キャラクターモデルと顔材質を維持し、遠景LOD・影・全画面効果を先に落とすimportance-first Auto品質制御
+- `Scene.renderScale`による0.58〜1.0xの最終的な描画解像度制御とAutoの5秒ヒステリシス
 - 縦横両対応のレスポンシブUI、44px以上の主要タッチ領域、操作時の触覚フィードバック
-- 端末の実ピクセル数から0.62〜2.4MPの描画予算を算出し、縦横回転時も負荷を一定化
+- 端末の実ピクセル数から1.2〜5.0MPの描画予算を算出し、縦横回転時も負荷を一定化
 - Androidでは高リフレッシュ端末も60Hzに寄せ、余剰描画と発熱を抑制
 
 ## ゲームメニューとビジュアル・デバッグ設定
@@ -78,9 +79,9 @@ Flutter Sceneを、窓際族物語の正典ボクセル素材で実ゲームへ�
 ゲームメニューでは、画質プリセット、時刻プリセット／時刻スライダーと次の機能を個別に
 ON/OFFできます。描画負荷と見た目を同じ地点で比較するための設定です。
 
-- Auto: FPS/P95を5秒ごとに評価する4段階制御。影・遠方範囲を順次軽量化し、最終段だけAO/Bloomをemissive材質と接地影へ置換
+- Auto: FPS/P95を5秒ごとに評価する5段階制御。1.0xのまま遠景LOD・キャラクター影代理化を先行し、AO/Bloom・視界範囲を落としても不足する場合だけ0.88→0.72→0.58xへ移行
 - Performance: 0.62x、3×3チャンク、1 cascade、AO/SSR/Bloom/God Raysなし
-- Balanced: 0.75x、5×5地形＋3×3資源、2 cascades、half-resolution AO
+- Balanced: 1.0x、5×5地形＋3×3資源、2 cascades、half-resolution AO
 - Quality: 1.0x、5×5地形・資源、3 cascades、SSR/Bloom/God Raysあり
 
 - 昼夜サイクル

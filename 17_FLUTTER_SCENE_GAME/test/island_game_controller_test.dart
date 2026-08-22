@@ -12,10 +12,27 @@ void main() {
     test('sun and phase helpers identify noon, twilight, and midnight', () {
       expect(daylightForTime(0.5), closeTo(1, 0.000001));
       expect(daylightForTime(0), closeTo(0, 0.000001));
+      expect(moonlightForTime(0.5), closeTo(0, 0.000001));
+      expect(moonlightForTime(0), closeTo(1, 0.000001));
       expect(twilightForTime(0.25), closeTo(1, 0.000001));
+      expect(solarTimeForClock(0.5), closeTo(0.5, 0.000001));
+      expect(sunElevationForTime(solarTimeForClock(0.75)), greaterThan(0.45));
+      expect(
+        sunElevationForTime(solarTimeForClock(0.875)),
+        closeTo(0, 0.000001),
+      );
       expect(phaseLabelForTime(0.5), '昼');
+      expect(phaseLabelForTime(0.7), '夕方');
+      expect(phaseLabelForTime(0.86), '夕方');
       expect(phaseLabelForTime(0.88), '夜');
       expect(clockLabelForTime(0.5), '12:00');
+    });
+
+    test('golden hour advances more slowly than daytime', () {
+      expect(timeFlowRate(0.72), lessThan(timeFlowRate(0.5)));
+      final dayAdvance = advanceTimeOfDay(0.5, 60) - 0.5;
+      final eveningAdvance = advanceTimeOfDay(0.72, 60) - 0.72;
+      expect(eveningAdvance, lessThan(dayAdvance));
     });
   });
 

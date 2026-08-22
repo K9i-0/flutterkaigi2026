@@ -194,6 +194,18 @@ class MadogiwaIslandScene extends ChangeNotifier {
   String get graphicsQualityLabel => graphicsQuality == GraphicsQuality.auto
       ? 'Auto L${_autoQuality.pressureLevel}'
       : graphicsQuality.label;
+  bool get characterAtNativeResolution => scene.renderScale >= 0.999;
+  String get adaptiveDetailLabel => graphicsQuality == GraphicsQuality.auto
+      ? switch (_autoQuality.pressureLevel) {
+          0 => 'ネイティブ / フル世界',
+          1 => 'ネイティブ / 遠景LOD',
+          2 => '0.88x / エフェクト節約',
+          3 => '0.72x / 近景優先',
+          _ => '0.58x / 緊急安定化',
+        }
+      : '${scene.renderScale.toStringAsFixed(2)}x / ${graphicsQuality.label}';
+  String get resourceLodLabel =>
+      '${_qualityProfile.resourceFullDetailDistance.toStringAsFixed(0)}マス以内フル、以遠は簡略形状';
   String get shadowProfileLabel =>
       '${_qualityProfile.shadowCascades} cascades / '
       '${_qualityProfile.shadowDistance.toStringAsFixed(0)}マス / '
@@ -854,12 +866,17 @@ class MadogiwaIslandScene extends ChangeNotifier {
         _unlit(0.72, 0.9, 0.35),
       ),
     };
-    void add(String name, vm.Vector3 position, {vm.Quaternion? rotation}) {
+    void add(
+      String name,
+      vm.Vector3 position, {
+      vm.Quaternion? rotation,
+      vm.Vector3? scale,
+    }) {
       batches[name]!.addInstance(
         vm.Matrix4.compose(
           position,
           rotation ?? vm.Quaternion.identity(),
-          vm.Vector3.all(1),
+          scale ?? vm.Vector3.all(1),
         ),
       );
     }
@@ -881,45 +898,62 @@ class MadogiwaIslandScene extends ChangeNotifier {
         IslandWorld.surfaceY(entry.key.x, entry.key.z),
         entry.key.z.toDouble(),
       );
+      final dx = entry.key.x - _playerPosition.x;
+      final dz = entry.key.z - _playerPosition.z;
+      final fullDetail = _qualityProfile.usesFullResourceDetail(
+        dx * dx + dz * dz,
+      );
       switch (entry.value) {
         case IslandResource.tree:
           add('trunk', base + vm.Vector3(0, 0.62, 0));
-          for (final spec in const [
-            (-0.28, 1.35, 0.0, 'leafA'),
-            (0.28, 1.38, 0.0, 'leafA'),
-            (0.0, 1.65, 0.0, 'leafB'),
-            (0.0, 1.38, -0.28, 'leafA'),
-            (0.0, 1.38, 0.28, 'leafA'),
-          ]) {
-            add(spec.$4, base + vm.Vector3(spec.$1, spec.$2, spec.$3));
+          if (fullDetail) {
+            for (final spec in const [
+              (-0.28, 1.35, 0.0, 'leafA'),
+              (0.28, 1.38, 0.0, 'leafA'),
+              (0.0, 1.65, 0.0, 'leafB'),
+              (0.0, 1.38, -0.28, 'leafA'),
+              (0.0, 1.38, 0.28, 'leafA'),
+            ]) {
+              add(spec.$4, base + vm.Vector3(spec.$1, spec.$2, spec.$3));
+            }
+          } else {
+            add(
+              'leafB',
+              base + vm.Vector3(0, 1.43, 0),
+              scale: vm.Vector3(1.7, 1.45, 1.7),
+            );
           }
         case IslandResource.rock:
           add('rockA', base + vm.Vector3(-0.08, 0.31, 0));
-          add(
-            'rockB',
-            base + vm.Vector3(0.32, 0.2, 0.18),
-            rotation: vm.Quaternion.axisAngle(vm.Vector3(0, 1, 0), 0.35),
-          );
+          if (fullDetail) {
+            add(
+              'rockB',
+              base + vm.Vector3(0.32, 0.2, 0.18),
+              rotation: vm.Quaternion.axisAngle(vm.Vector3(0, 1, 0), 0.35),
+            );
+          }
         case IslandResource.coal || IslandResource.iron:
           add('oreRock', base + vm.Vector3(0, 0.34, 0));
           final oreName = entry.value == IslandResource.coal ? 'coal' : 'iron';
-          for (final offset in const [
-            (-0.22, 0.51, -0.39),
-            (0.24, 0.3, -0.4),
-            (0.35, 0.6, 0.02),
-          ]) {
+          final offsets = fullDetail
+              ? const [
+                  (-0.22, 0.51, -0.39),
+                  (0.24, 0.3, -0.4),
+                  (0.35, 0.6, 0.02),
+                ]
+              : const [(0.0, 0.48, -0.39)];
+          for (final offset in offsets) {
             add(oreName, base + vm.Vector3(offset.$1, offset.$2, offset.$3));
           }
         case IslandResource.berry || IslandResource.herb:
           final prefix = entry.value == IslandResource.berry ? 'berry' : 'herb';
-          for (final x in [-0.28, 0.0, 0.28]) {
+          for (final x in fullDetail ? [-0.28, 0.0, 0.28] : [0.0]) {
             add('${prefix}Leaf', base + vm.Vector3(x, 0.33, x.abs() * 0.35));
           }
-          for (final offset in const [
-            (-0.24, 0.58),
-            (0.05, 0.72),
-            (0.3, 0.52),
-          ]) {
+          final fruitOffsets = fullDetail
+              ? const [(-0.24, 0.58), (0.05, 0.72), (0.3, 0.52)]
+              : const [(0.0, 0.58)];
+          for (final offset in fruitOffsets) {
             add(
               '${prefix}Fruit',
               base + vm.Vector3(offset.$1, offset.$2, -0.12),
@@ -1365,19 +1399,19 @@ class MadogiwaIslandScene extends ChangeNotifier {
   double _effectiveRenderScale(MobileQualityProfile profile) {
     if (_nativeViewportPixels <= 0) return profile.renderScale;
     final pixelBudget = switch (graphicsQuality) {
-      GraphicsQuality.performance => 850000.0,
-      GraphicsQuality.balanced => 1500000.0,
-      GraphicsQuality.quality => 2400000.0,
+      GraphicsQuality.performance => 2200000.0,
+      GraphicsQuality.balanced => 4000000.0,
+      GraphicsQuality.quality => 5000000.0,
       GraphicsQuality.auto => switch (_autoQuality.pressureLevel) {
-        0 => 1500000.0,
-        1 => 1250000.0,
-        2 => 1000000.0,
-        _ => 620000.0,
+        0 || 1 => 4000000.0,
+        2 => 3000000.0,
+        3 => 2000000.0,
+        _ => 1200000.0,
       },
     };
-    final orientationBudget = pixelBudget * (_portraitViewport ? 0.94 : 1);
+    final orientationBudget = pixelBudget * (_portraitViewport ? 0.96 : 1);
     final pixelScale = math.sqrt(orientationBudget / _nativeViewportPixels);
-    return math.min(profile.renderScale, pixelScale.clamp(0.42, 1.0));
+    return math.min(profile.renderScale, pixelScale.clamp(0.5, 1.0));
   }
 
   Map<String, bool> get visualOptions => {
@@ -1404,16 +1438,22 @@ class MadogiwaIslandScene extends ChangeNotifier {
   }
 
   void _applyQualityProfile({bool refreshChunks = true}) {
-    final previousRadius = _qualityProfile.terrainChunkRadius;
+    final previousProfile = _qualityProfile;
     final profile = graphicsQuality == GraphicsQuality.auto
         ? switch (_autoQuality.pressureLevel) {
-            0 || 1 => MobileQualityProfile.balanced.withRenderScale(
+            0 => MobileQualityProfile.balanced.withRenderScale(
+              _autoQuality.renderScale,
+            ),
+            1 => MobileQualityProfile.adaptiveWorld.withRenderScale(
               _autoQuality.renderScale,
             ),
             2 => MobileQualityProfile.adaptiveVisual.withRenderScale(
               _autoQuality.renderScale,
             ),
-            _ => MobileQualityProfile.adaptivePerformance.withRenderScale(
+            3 => MobileQualityProfile.adaptivePerformance.withRenderScale(
+              _autoQuality.renderScale,
+            ),
+            _ => MobileQualityProfile.adaptiveEmergency.withRenderScale(
               _autoQuality.renderScale,
             ),
           }
@@ -1424,7 +1464,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
       ..filterQuality = scene.renderScale < 0.7
           ? FilterQuality.low
           : FilterQuality.medium
-      ..antiAliasingMode = scene.renderScale < 0.65
+      ..antiAliasingMode = scene.renderScale < 0.8
           ? AntiAliasingMode.fxaa
           : AntiAliasingMode.auto;
     _sunLight
@@ -1458,7 +1498,13 @@ class MadogiwaIslandScene extends ChangeNotifier {
     if (refreshChunks && _loaded) {
       unawaited(
         _refreshVisibleChunks(
-          force: previousRadius != profile.terrainChunkRadius,
+          force:
+              previousProfile.terrainChunkRadius !=
+                  profile.terrainChunkRadius ||
+              previousProfile.resourceChunkRadius !=
+                  profile.resourceChunkRadius ||
+              previousProfile.resourceFullDetailDistance !=
+                  profile.resourceFullDetailDistance,
         ),
       );
     }
@@ -1468,7 +1514,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
   bool get _usesCharacterShadowProxy =>
       graphicsQuality == GraphicsQuality.performance ||
       (graphicsQuality == GraphicsQuality.auto &&
-          _autoQuality.pressureLevel >= 2);
+          _autoQuality.pressureLevel >= 1);
 
   void _applyCharacterShadowQuality() {
     final proxy = _usesCharacterShadowProxy;
@@ -1526,6 +1572,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
 
   void setTimeOfDay(double value) {
     timeOfDay = normalizedTime(value);
+    _skyEnvironment.invalidate();
     _updateVisualEnvironment(0);
     notifyListeners();
   }
@@ -1552,66 +1599,73 @@ class MadogiwaIslandScene extends ChangeNotifier {
 
   void _updateVisualEnvironment(double dt, {bool forceLighting = false}) {
     if (dayNightCycleEnabled && dt > 0) {
-      timeOfDay = normalizedTime(timeOfDay + dt / 600);
+      timeOfDay = advanceTimeOfDay(timeOfDay, dt);
     }
     _lightingAccumulator += dt;
     final lightingInterval = 1 / _qualityProfile.lightingUpdatesPerSecond;
     final updateLighting =
         forceLighting || dt == 0 || _lightingAccumulator >= lightingInterval;
     if (updateLighting) _lightingAccumulator = 0;
-    final lightingTime = dynamicLightingEnabled ? timeOfDay : 0.5;
-    final elevation = sunElevationForTime(lightingTime);
-    final daylight = daylightForTime(lightingTime);
+    final lightingClock = dynamicLightingEnabled ? timeOfDay : 0.5;
+    final solarTime = solarTimeForClock(lightingClock);
+    final elevation = sunElevationForTime(solarTime);
+    final daylight = daylightForTime(solarTime);
+    final moonlight = moonlightForTime(solarTime);
     // Keep the physically based sky from clipping pale voxel materials at noon.
     // A low sun gets more intensity because its grazing angle contributes less
     // irradiance to horizontal terrain while still producing long shadows.
-    final lightLevel = math.min(daylight, 0.84);
     final sunHeight = math.max(0.0, elevation);
-    final directLight = daylight * (0.72 + (1 - sunHeight) * 1.75);
-    final twilight = twilightForTime(lightingTime);
-    final azimuth = lightingTime * math.pi * 2;
+    final directLight =
+        daylight * (0.74 + (1 - sunHeight) * 1.25) + moonlight * 0.5;
+    final twilight = twilightForTime(solarTime);
+    final azimuth = solarTime * math.pi * 2;
+    final nightLighting = daylight < 0.08;
+    final keyElevation = nightLighting
+        ? math.max(0.2, -elevation * 0.72)
+        : math.max(0.035, elevation);
+    final keyAzimuth = nightLighting ? azimuth + math.pi : azimuth;
     if (updateLighting) {
       _sky.sunDirection
         ..setValues(
-          math.cos(azimuth) * math.cos(elevation * 0.5),
-          elevation,
-          math.sin(azimuth) * math.cos(elevation * 0.5),
+          math.cos(keyAzimuth) * math.cos(keyElevation * 0.5),
+          keyElevation,
+          math.sin(keyAzimuth) * math.cos(keyElevation * 0.5),
         )
         ..normalize();
       _sky
-        ..energy = 0.14 + lightLevel * 0.58
+        ..energy = 0.22 + daylight * 0.48 + moonlight * 0.12
         ..turbidity = 6.8 + twilight * 4.2
         ..groundColor.setValues(
-          0.025 + daylight * 0.08,
-          0.04 + daylight * 0.1,
-          0.075 + daylight * 0.06,
+          0.04 + daylight * 0.055 + moonlight * 0.018,
+          0.06 + daylight * 0.075 + moonlight * 0.03,
+          0.105 + daylight * 0.04 + moonlight * 0.06,
         );
     }
 
     if (updateLighting) {
       final sunColor = _sunLight.color ??= vm.Vector3.zero();
-      if (daylight < 0.08) {
-        sunColor.setValues(0.24, 0.34, 0.62);
+      if (nightLighting) {
+        sunColor.setValues(0.38, 0.5, 0.82);
       } else {
         sunColor.setValues(1.0, 0.58 + daylight * 0.36, 0.34 + daylight * 0.58);
       }
       _sunLight
-        ..intensity = 0.18 + directLight
+        ..intensity = 0.12 + directLight
         ..castsShadow = shadowsEnabled
         ..contactShadows =
             contactShadowsEnabled && _qualityProfile.contactShadows
-        ..shadowSoftness = 0.2 - daylight * 0.1
-        ..shadowAmbientStrength = 0.28 + (1 - daylight) * 0.12;
+        ..shadowSoftness = 0.24 - daylight * 0.14
+        ..shadowAmbientStrength = 0.3 + moonlight * 0.22;
 
       scene
-        ..exposure = 0.54 + lightLevel * 0.24
-        ..environmentIntensity = 0.2 + lightLevel * 0.44;
+        ..exposure = 0.64 + daylight * 0.14 + moonlight * 0.07
+        ..environmentIntensity = 0.29 + daylight * 0.33 + moonlight * 0.12;
       scene.postProcess.colorGrading
         ..enabled = true
-        ..brightness = 0.9 + daylight * 0.1
-        ..contrast = 1.12 - daylight * 0.06
-        ..saturation = 0.84 + daylight * 0.26
-        ..temperature = twilight * 0.16 - (1 - daylight) * 0.08;
+        ..brightness = 0.98 + daylight * 0.02
+        ..contrast = 1.08
+        ..saturation = 1.02 + daylight * 0.22
+        ..temperature = twilight * math.sqrt(daylight) * 0.2 - moonlight * 0.09;
       scene.postProcess.bloom
         ..enabled = _qualityProfile.bloom
         ..threshold = 0.62 + daylight * 0.3
@@ -1620,20 +1674,20 @@ class MadogiwaIslandScene extends ChangeNotifier {
       scene.fog
         ..enabled = dynamicFogEnabled
         ..density =
-            0.018 +
-            (1 - daylight) * 0.018 +
-            twilight * 0.008 +
-            (_qualityProfile.terrainChunkRadius == 1 ? 0.008 : 0) +
+            0.012 +
+            (1 - daylight) * 0.006 +
+            twilight * 0.004 +
+            (_qualityProfile.terrainChunkRadius == 1 ? 0.004 : 0) +
             (controller.chapter == GameChapter.marsh ? 0.014 : 0)
-        ..skyColorInfluence = 0.62
+        ..skyColorInfluence = 0.4
         ..height = 1.15
         ..heightFalloff = 0.075
         ..sunInScatter = twilight * daylight * 0.72
         ..sunInScatterExponent = 12
         ..color.setValues(
-          0.055 + daylight * 0.19 + twilight * 0.12,
-          0.08 + daylight * 0.4 + twilight * 0.08,
-          0.17 + daylight * 0.48 + twilight * 0.05,
+          0.045 + daylight * 0.12 + twilight * 0.08,
+          0.08 + daylight * 0.27 + twilight * 0.06,
+          0.18 + daylight * 0.3 + twilight * 0.03 + moonlight * 0.08,
         );
       scene.godRays
         ..enabled =
@@ -1662,11 +1716,11 @@ class MadogiwaIslandScene extends ChangeNotifier {
     if (updateEffects) _effectsAccumulator = 0;
     if ((_loaded || _torches.isNotEmpty) && updateEffects) {
       _updateLocalLights(daylight);
-      _updateWater(daylight, twilight);
+      _updateWater(daylight, twilight, moonlight);
     }
   }
 
-  void _updateWater(double daylight, double twilight) {
+  void _updateWater(double daylight, double twilight, double moonlight) {
     if (!waterEffectsEnabled) {
       _oceanNode.position = vm.Vector3(0, 0.28, 0);
       _waterMaterial
@@ -1682,9 +1736,9 @@ class MadogiwaIslandScene extends ChangeNotifier {
     );
     _waterMaterial
       ..baseColorFactor = vm.Vector4(
-        0.012 + daylight * 0.02,
-        0.06 + daylight * 0.3 + twilight * 0.05,
-        0.16 + daylight * 0.48,
+        0.018 + daylight * 0.02 + moonlight * 0.015,
+        0.09 + daylight * 0.27 + twilight * 0.05 + moonlight * 0.06,
+        0.22 + daylight * 0.42 + moonlight * 0.1,
         1,
       )
       ..roughnessFactor = 0.075 + (1 - daylight) * 0.08

@@ -750,7 +750,7 @@ class _GameMenuOverlay extends StatelessWidget {
                             _VisualSwitch(
                               option: 'dayNightCycle',
                               label: '昼夜サイクル',
-                              description: '実時間10分でゲーム内24時間',
+                              description: '約12分周期。夕方は16〜21時をゆっくり進行',
                               value: options['dayNightCycle']!,
                               scene: scene,
                             ),
@@ -1035,7 +1035,9 @@ class _QualitySelector extends StatelessWidget {
                 ),
                 const Spacer(),
                 Text(
-                  '実効 ${scene.renderScale.toStringAsFixed(2)}x',
+                  scene.characterAtNativeResolution
+                      ? 'キャラ優先 1.00x'
+                      : '実効 ${scene.renderScale.toStringAsFixed(2)}x',
                   style: const TextStyle(
                     color: Color(0xff72efbc),
                     fontSize: 11,
@@ -1070,9 +1072,11 @@ class _QualitySelector extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 6),
-            const Text(
-              'Autoは5秒単位でGPU負荷を判定し、解像度を段階調整します。',
-              style: TextStyle(color: Color(0xff8fb4bc), fontSize: 10),
+            Text(
+              '現在: ${scene.adaptiveDetailLabel}\n'
+              '${scene.resourceLodLabel}\n'
+              'Autoは遠景LOD・影・エフェクトを先に節約し、解像度は最後に調整します。',
+              style: const TextStyle(color: Color(0xff8fb4bc), fontSize: 10),
             ),
           ],
         ),

@@ -27,6 +27,7 @@ class MobileQualityProfile {
     required this.maxTorchParticles,
     required this.terrainChunkRadius,
     required this.resourceChunkRadius,
+    required this.resourceFullDetailDistance,
     required this.skyBakeInterval,
     required this.lightingUpdatesPerSecond,
     required this.effectsUpdatesPerSecond,
@@ -48,9 +49,14 @@ class MobileQualityProfile {
   final int maxTorchParticles;
   final int terrainChunkRadius;
   final int resourceChunkRadius;
+  final double resourceFullDetailDistance;
   final Duration skyBakeInterval;
   final double lightingUpdatesPerSecond;
   final double effectsUpdatesPerSecond;
+
+  bool usesFullResourceDetail(double distanceSquared) =>
+      distanceSquared <=
+      resourceFullDetailDistance * resourceFullDetailDistance;
 
   static const performance = MobileQualityProfile(
     renderScale: 0.62,
@@ -69,13 +75,14 @@ class MobileQualityProfile {
     maxTorchParticles: 0,
     terrainChunkRadius: 1,
     resourceChunkRadius: 1,
+    resourceFullDetailDistance: 7,
     skyBakeInterval: Duration(seconds: 30),
     lightingUpdatesPerSecond: 1,
     effectsUpdatesPerSecond: 15,
   );
 
   static const balanced = MobileQualityProfile(
-    renderScale: 0.75,
+    renderScale: 1,
     shadowCascades: 2,
     shadowResolution: 512,
     shadowDistance: 36,
@@ -91,6 +98,7 @@ class MobileQualityProfile {
     maxTorchParticles: 4,
     terrainChunkRadius: 2,
     resourceChunkRadius: 1,
+    resourceFullDetailDistance: 14,
     skyBakeInterval: Duration(seconds: 15),
     lightingUpdatesPerSecond: 0.5,
     effectsUpdatesPerSecond: 30,
@@ -113,41 +121,68 @@ class MobileQualityProfile {
     maxTorchParticles: 8,
     terrainChunkRadius: 2,
     resourceChunkRadius: 2,
+    resourceFullDetailDistance: 40,
     skyBakeInterval: Duration(seconds: 5),
     lightingUpdatesPerSecond: 2,
     effectsUpdatesPerSecond: 60,
   );
 
-  /// Keeps the characteristic AO, bloom and contact shadows while reducing
-  /// the expensive shadow work that dominates sustained mobile rendering.
-  static const adaptiveVisual = MobileQualityProfile(
-    renderScale: 0.58,
+  /// First automatic fallback: retain native resolution and character models,
+  /// then reduce distant world detail and expensive shadow work.
+  static const adaptiveWorld = MobileQualityProfile(
+    renderScale: 1,
     shadowCascades: 1,
-    shadowResolution: 512,
-    shadowDistance: 36,
-    contactShadows: true,
+    shadowResolution: 384,
+    shadowDistance: 30,
+    contactShadows: false,
     ambientOcclusion: true,
-    ambientOcclusionSamples: 8,
+    ambientOcclusionSamples: 6,
     screenSpaceReflections: false,
     ssrResolutionScale: 0.3,
     ssrSteps: 16,
     bloom: true,
     godRays: false,
-    maxTorchLights: 4,
-    maxTorchParticles: 4,
+    maxTorchLights: 3,
+    maxTorchParticles: 2,
     terrainChunkRadius: 2,
     resourceChunkRadius: 1,
+    resourceFullDetailDistance: 10,
     skyBakeInterval: Duration(seconds: 20),
     lightingUpdatesPerSecond: 0.5,
-    effectsUpdatesPerSecond: 24,
+    effectsUpdatesPerSecond: 20,
   );
 
-  /// Last automatic fallback: keep PBR lighting, world shadows, emissive
+  /// Second fallback: preserve character geometry/materials, remove
+  /// fullscreen/depth effects, and apply only a modest resolution reduction.
+  static const adaptiveVisual = MobileQualityProfile(
+    renderScale: 0.88,
+    shadowCascades: 1,
+    shadowResolution: 384,
+    shadowDistance: 26,
+    contactShadows: false,
+    ambientOcclusion: false,
+    ambientOcclusionSamples: 6,
+    screenSpaceReflections: false,
+    ssrResolutionScale: 0.3,
+    ssrSteps: 16,
+    bloom: true,
+    godRays: false,
+    maxTorchLights: 3,
+    maxTorchParticles: 0,
+    terrainChunkRadius: 1,
+    resourceChunkRadius: 1,
+    resourceFullDetailDistance: 7,
+    skyBakeInterval: Duration(seconds: 30),
+    lightingUpdatesPerSecond: 0.33,
+    effectsUpdatesPerSecond: 15,
+  );
+
+  /// Sustained-load fallback: keep PBR lighting, world shadows, emissive
   /// highlights and fog, but remove the depth-driven AO/contact-shadow chain
   /// and the bloom mip chain. Both are fullscreen multi-pass effects; proxy
   /// shadows and emissive materials keep the important visual cues.
   static const adaptivePerformance = MobileQualityProfile(
-    renderScale: 0.58,
+    renderScale: 0.72,
     shadowCascades: 1,
     shadowResolution: 384,
     shadowDistance: 28,
@@ -163,9 +198,34 @@ class MobileQualityProfile {
     maxTorchParticles: 3,
     terrainChunkRadius: 1,
     resourceChunkRadius: 1,
+    resourceFullDetailDistance: 6,
     skyBakeInterval: Duration(seconds: 30),
     lightingUpdatesPerSecond: 0.25,
     effectsUpdatesPerSecond: 20,
+  );
+
+  /// Final emergency mode for devices where world/effect LOD is insufficient.
+  static const adaptiveEmergency = MobileQualityProfile(
+    renderScale: 0.58,
+    shadowCascades: 1,
+    shadowResolution: 256,
+    shadowDistance: 22,
+    contactShadows: false,
+    ambientOcclusion: false,
+    ambientOcclusionSamples: 4,
+    screenSpaceReflections: false,
+    ssrResolutionScale: 0.25,
+    ssrSteps: 10,
+    bloom: false,
+    godRays: false,
+    maxTorchLights: 2,
+    maxTorchParticles: 0,
+    terrainChunkRadius: 1,
+    resourceChunkRadius: 1,
+    resourceFullDetailDistance: 5,
+    skyBakeInterval: Duration(seconds: 40),
+    lightingUpdatesPerSecond: 0.25,
+    effectsUpdatesPerSecond: 12,
   );
 
   static MobileQualityProfile forQuality(GraphicsQuality quality) =>
@@ -192,6 +252,7 @@ class MobileQualityProfile {
     maxTorchParticles: maxTorchParticles,
     terrainChunkRadius: terrainChunkRadius,
     resourceChunkRadius: resourceChunkRadius,
+    resourceFullDetailDistance: resourceFullDetailDistance,
     skyBakeInterval: skyBakeInterval,
     lightingUpdatesPerSecond: lightingUpdatesPerSecond,
     effectsUpdatesPerSecond: effectsUpdatesPerSecond,
@@ -205,7 +266,7 @@ class AutoQualityController {
   final double evaluationIntervalSeconds;
   double _elapsed = 0;
   int _healthyWindows = 0;
-  double renderScale = MobileQualityProfile.balanced.renderScale;
+  double renderScale = 1;
   int pressureLevel = 0;
 
   bool update({
@@ -221,11 +282,15 @@ class AutoQualityController {
 
     if (framesPerSecond < 57 || p95FrameTimeMs > 18.5) {
       _healthyWindows = 0;
-      final nextLevel = (pressureLevel + 1).clamp(0, 3);
+      // Do not leave a thermally constrained device stuck at native
+      // resolution for several evaluation windows. Moderate pressure still
+      // walks through every fidelity tier; severe pressure skips one tier.
+      final severePressure = framesPerSecond < 35 || p95FrameTimeMs > 30;
+      final nextLevel = (pressureLevel + (severePressure ? 2 : 1)).clamp(0, 4);
       final next = switch (nextLevel) {
-        0 => MobileQualityProfile.balanced.renderScale,
-        1 => 0.67,
-        2 || 3 => 0.58,
+        0 || 1 => 1.0,
+        2 => 0.88,
+        3 => 0.72,
         _ => 0.58,
       };
       if (next == renderScale && nextLevel == pressureLevel) return false;
@@ -237,11 +302,11 @@ class AutoQualityController {
       _healthyWindows++;
       if (_healthyWindows < 2) return false;
       _healthyWindows = 0;
-      final nextLevel = (pressureLevel - 1).clamp(0, 3);
+      final nextLevel = (pressureLevel - 1).clamp(0, 4);
       final next = switch (nextLevel) {
-        0 => 0.82,
-        1 => 0.67,
-        2 || 3 => 0.58,
+        0 || 1 => 1.0,
+        2 => 0.88,
+        3 => 0.72,
         _ => 0.58,
       };
       if (next == renderScale && nextLevel == pressureLevel) return false;
@@ -257,6 +322,6 @@ class AutoQualityController {
     _elapsed = 0;
     _healthyWindows = 0;
     pressureLevel = 0;
-    renderScale = MobileQualityProfile.balanced.renderScale;
+    renderScale = 1;
   }
 }
