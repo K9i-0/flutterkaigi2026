@@ -1,5 +1,15 @@
 # 窓際族・無人島クラフト
 
+<p align="center">
+  <img
+    src="artwork/package_concepts/01-sunrise-adventure.png"
+    alt="窓際族・無人島クラフト キービジュアル"
+    width="640"
+  >
+</p>
+
+<p align="center"><strong>島流しから、冒険が始まる。</strong></p>
+
 窓際族のメンバーが無人島へ島流しされ、ブロックを採取・設置して生活基盤を作る
 Minecraft風の256×256マス3Dクラフトゲームです。Flutter 3.47 stableで利用可能になった
 Flutter Sceneを、窓際族物語の正典ボクセル素材で実ゲームへ使う検証も兼ねています。
