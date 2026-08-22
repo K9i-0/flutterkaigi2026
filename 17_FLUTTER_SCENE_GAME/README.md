@@ -7,7 +7,7 @@ Flutter Sceneを、窓際族物語の正典ボクセル素材で実ゲームへ�
 ## ゲーム内容
 
 - そば屋を操作し、島の別々の場所に隠れたやめ太郎、ゆめみん、タコさんと再会
-- 256×256マスの島をWASD／矢印キー／画面方向パッドで自由に探索
+- 256×256マスの島をWASD／矢印キー／画面アナログスティックで自由に探索
 - 歩いた周囲だけ地形が開く簡易マップと、4つの固有ランドマーク
 - 木、岩、木の実、石炭、鉄鉱石、薬草を7マス以内から直接採取
 - 木材、石材、食料、石炭、鉄、薬草をスタックするインベントリ
@@ -20,6 +20,8 @@ Flutter Sceneを、窓際族物語の正典ボクセル素材で実ゲームへ�
 - 侵入可能範囲を地形追従の赤い発光リングとミニマップ上の赤円で常時表示
 - 山頂の最終通信機を完成させ、「会社へ帰る」「島に残る」の二つの結末を選択
 - 1本指ドラッグでカメラ旋回、ピンチでズーム、左右ボタンでも旋回
+- 右下の状況アクションで、近い資源の採取・選択マスへの設置・設備調査を実行
+- ミニマップはタップで76pxの簡易表示と146pxの詳細表示を切り替え
 
 開始地点にはチュートリアル分の木8本・岩3個・木の実があり、島全域にも決定論的に
 資源が生成されます。石の斧で木材入手量が増え、石のツルハシで石炭と鉄を採掘できます。
@@ -44,8 +46,9 @@ Flutter Sceneを、窓際族物語の正典ボクセル素材で実ゲームへ�
 - 正典GLB 4体の同時ロード（合計152 meshes）
 - GLBのPBRマテリアル、ノード階層、`Idle`アニメーション
 - 256×256マス、16×16チャンクの決定論的なプロシージャル島生成
-- 現在地周辺5×5チャンクだけを動的ロード／アンロード
+- 画質に応じ、現在地周辺3×3または5×5チャンクだけを動的ロード／アンロード
 - 1ブロック1Nodeではなく、露出面をチャンク単位のindexed meshへ結合
+- 木・岩・鉱石・植物を形状別InstancedMeshへ統合し、探索境界も288 Nodeから2 batchへ統合
 - Dart isolateで地形メッシュを生成し、UI／描画isolateの停止を抑制
 - vertex color付きPBRブロック地形、海、木、岩、家のランタイム生成
 - 鉱石・植物・焚き火・作業台・橋・炉・通信ビーコンのランタイム生成
@@ -55,17 +58,24 @@ Flutter Sceneを、窓際族物語の正典ボクセル素材で実ゲームへ�
 - 高低差1.25マスまでの放物線ジャンプと、それを超える崖の移動阻止
 - 正典GLBの共通リグを使った脚・腕・触手の手続き歩行モーション
 - `PhysicalSkySource`による10分周期の昼夜、太陽・月光・露出・色調の連動
-- 3 cascades / 56マス / 1024pxの動的な太陽・月の影と接地影
+- 画質別1〜3 cascades / 28〜56マス / 384〜1024pxの影と静的shadow cache
 - 松明のemissive材質、ちらつくPoint Light、加算合成の火の粉
 - ランドマーク固有光、朝夕限定God Rays、時間連動fog
 - 海面の微動・時間帯別PBRマテリアル・低解像度SSR
-- ACES tone mapping、Bloom、GTAO、color grading、vignette
-- Flutter WidgetのHUD、長押し方向パッド、ツール選択、3Dシーンへのオーバーレイ
+- ACES tone mapping、Bloom、half-resolution AO、color grading、vignette
+- Flutter WidgetのHUD、アナログスティック、状況アクション、ツール選択
+- `Scene.renderScale`による0.58〜1.0xの描画解像度制御とAutoの5秒ヒステリシス
+- iPhoneの横画面固定、44px以上の主要タッチ領域、操作時の触覚フィードバック
 
 ## ビジュアル・デバッグ設定
 
-HUD右上のスライダーアイコンから、時刻プリセット／時刻スライダーと次の機能を
+HUD右上のスライダーアイコンから、画質プリセット、時刻プリセット／時刻スライダーと次の機能を
 個別にON/OFFできます。描画負荷と見た目を同じ地点で比較するための設定です。
+
+- Auto: Balancedを基準にFPS/P95を5秒ごとに評価し、0.58〜0.82xへ自動調整
+- Performance: 0.62x、3×3チャンク、1 cascade、AO/SSR/Bloom/God Raysなし
+- Balanced: 0.75x、5×5地形＋3×3資源、2 cascades、half-resolution AO
+- Quality: 1.0x、5×5地形・資源、3 cascades、SSR/Bloom/God Raysあり
 
 - 昼夜サイクル
 - 時間連動の環境光
@@ -82,7 +92,8 @@ HUD右上のスライダーアイコンから、時刻プリセット／時刻�
 
 パネル下部の「ビジュアル設定を初期化」で、時刻と全機能を既定値へ戻せます。
 パフォーマンスHUDは`SceneView.onTick`を120フレーム分ローリング計測し、0.4秒ごとに
-FPS・平均/P95フレーム時間・1% Low FPSを更新します。最終的な性能比較はdebug固有の
+FPS・平均/P95フレーム時間・1% Low FPSを更新します。Flutterの`FrameTiming`から
+build/raster平均とraster P95も別々に表示します。最終的な性能比較はdebug固有の
 オーバーヘッドを避けるため、profileビルドでも確認してください。
 
 ## ワールド構成
@@ -90,7 +101,7 @@ FPS・平均/P95フレーム時間・1% Low FPSを更新します。最終的な
 ```text
 全体       256 × 256 blocks = 65,536 cells
 チャンク    16 × 16 blocks  = 256 chunks
-描画範囲     5 × 5 chunks  = 最大6,400 cells相当
+描画範囲     3 × 3〜5 × 5 chunks  = 最大6,400 cells相当
 地形保存     seed式で再生成（未変更チャンクは保存不要）
 変更保存     将来はchunk座標 + local index + block IDの差分だけを永続化
 ```
@@ -137,6 +148,7 @@ mise exec flutter@3.47.1 -- dart pub global activate marionette_mcp
 
 - `madogiwa.inspectIsland`: 座標、チャンク、探索、再会、資源、建築、時刻、描画設定を取得
 - `madogiwa.setVisualOption`: 各描画機能を名前指定でON/OFF
+- `madogiwa.setGraphicsQuality`: auto/performance/balanced/qualityを切り替え
 - `madogiwa.setTimeOfDay`: morning/day/evening/nightまたは0.0〜1.0で時刻を指定
 - `madogiwa.keyInput`: W/A/S/D・矢印キー相当のdown/up/tap入力
 - `madogiwa.releaseKeys`: 押下状態をすべて解除
@@ -145,6 +157,7 @@ mise exec flutter@3.47.1 -- dart pub global activate marionette_mcp
 - `madogiwa.grantResources`: キャンペーン検証用資源を追加
 - `madogiwa.craftRecipe`: レシピ名指定でクラフト
 - `madogiwa.performObjective`: 現在地付近の通信設備を起動
+- `madogiwa.performContextAction`: モバイルの状況アクションと同じ操作を実行
 - `madogiwa.advanceCampaign`: 現在の章を決定論的な状態で完了
 - `madogiwa.chooseEnding`: rescue/stayのエンディングを選択
 - `madogiwa.resetIsland`: 島を初期状態へ戻す

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:math' as math;
-import 'dart:ui' show Offset, Size;
+import 'dart:ui' show FilterQuality, Offset, Size;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_scene/scene.dart';
@@ -8,6 +8,7 @@ import 'package:vector_math/vector_math.dart' as vm;
 
 import '../game/frame_performance_tracker.dart';
 import '../game/island_game_controller.dart';
+import '../game/mobile_quality.dart';
 import '../game/movement_math.dart';
 import '../game/visual_math.dart';
 import '../world/chunk_mesh_builder.dart';
@@ -78,9 +79,14 @@ class MadogiwaIslandScene extends ChangeNotifier {
   final List<Node> _resourceAnimatedParts = [];
   final List<_Worker> _workers = [];
   final FramePerformanceTracker _performance = FramePerformanceTracker();
+  final ValueNotifier<int> mapRevision = ValueNotifier(0);
+  final ValueNotifier<int> hudRevision = ValueNotifier(0);
+  final ValueNotifier<int> performanceRevision = ValueNotifier(0);
+  final AutoQualityController _autoQuality = AutoQualityController();
   final Uint8List _explored = Uint8List(
     IslandWorld.worldSize * IslandWorld.worldSize,
   );
+  final List<int> _explorationHistory = [];
   final PhysicallyBasedMaterial _terrainMaterial = PhysicallyBasedMaterial()
     ..baseColorFactor = vm.Vector4(1, 1, 1, 1)
     ..vertexColorWeight = 1
@@ -94,6 +100,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
   late final PhysicallyBasedMaterial _waterMaterial;
   late final PhysicalSkySource _sky;
   late final SunLight _sunLight;
+  late final SkyEnvironment _skyEnvironment;
   late PerspectiveCamera _activeCamera;
   Node? _playerRoot;
   bool _loaded = false;
@@ -106,11 +113,16 @@ class MadogiwaIslandScene extends ChangeNotifier {
   double _moveRight = 0;
   double _moveForward = 0;
   double _hudAccumulator = 0;
+  double _lightingAccumulator = 0;
   vm.Vector3 _playerPosition = vm.Vector3(0, IslandWorld.surfaceY(0, 3), 3);
   ChunkCoordinate _playerChunk = const ChunkCoordinate(0, 0);
   int _lastExploredX = 1 << 30;
   int _lastExploredZ = 1 << 30;
   int _exploredCellCount = 0;
+  int _exploredMinX = 0;
+  int _exploredMaxX = 0;
+  int _exploredMinZ = 0;
+  int _exploredMaxZ = 0;
   bool _isJumping = false;
   bool _signalBoundaryBlocked = false;
   double _signalBoundaryRadius = -1;
@@ -131,6 +143,8 @@ class MadogiwaIslandScene extends ChangeNotifier {
   bool signalBoundaryEnabled = true;
   bool performanceHudEnabled = true;
   double timeOfDay = 0.34;
+  GraphicsQuality graphicsQuality = GraphicsQuality.auto;
+  MobileQualityProfile _qualityProfile = MobileQualityProfile.balanced;
 
   int characterMeshCount = 0;
   List<String> characterNames = const [];
@@ -152,6 +166,8 @@ class MadogiwaIslandScene extends ChangeNotifier {
       controller.signalLevel * 2 +
       (controller.reunitedMembers.contains('yametaro') ? 4 : 0);
   int get exploredCellCount => _exploredCellCount;
+  int get explorationHistoryLength => _explorationHistory.length;
+  int explorationIndexAt(int historyIndex) => _explorationHistory[historyIndex];
   String get clockLabel => clockLabelForTime(timeOfDay);
   String get phaseLabel => phaseLabelForTime(timeOfDay);
   int get torchCount => _torches.length;
@@ -162,6 +178,29 @@ class MadogiwaIslandScene extends ChangeNotifier {
   double get averageFrameTimeMs => _performance.averageFrameTimeMs;
   double get p95FrameTimeMs => _performance.p95FrameTimeMs;
   double get onePercentLowFps => _performance.onePercentLowFps;
+  double get averageBuildTimeMs => _performance.averageBuildTimeMs;
+  double get averageRasterTimeMs => _performance.averageRasterTimeMs;
+  double get p95RasterTimeMs => _performance.p95RasterTimeMs;
+  double get renderScale => scene.renderScale;
+  String get graphicsQualityLabel => graphicsQuality.label;
+  String get shadowProfileLabel =>
+      '${_qualityProfile.shadowCascades} cascades / '
+      '${_qualityProfile.shadowDistance.toStringAsFixed(0)}マス / '
+      '${_qualityProfile.shadowResolution}px';
+  String get torchProfileLabel =>
+      '近い${_qualityProfile.maxTorchLights}本までPoint Light';
+  String get particleProfileLabel => _qualityProfile.maxTorchParticles == 0
+      ? '現在のプリセットでは停止'
+      : '近い${_qualityProfile.maxTorchParticles}本に火の粉';
+  String get godRaysProfileLabel =>
+      _qualityProfile.godRays ? '朝夕限定の14 steps' : '現在のプリセットでは停止';
+  String get reflectionsProfileLabel => _qualityProfile.screenSpaceReflections
+      ? '${_qualityProfile.ssrResolutionScale}x / ${_qualityProfile.ssrSteps} steps'
+      : '海面PBRのみ（SSR停止）';
+  int get exploredMinX => _exploredMinX;
+  int get exploredMaxX => _exploredMaxX;
+  int get exploredMinZ => _exploredMinZ;
+  int get exploredMaxZ => _exploredMaxZ;
   bool get isJumping => _isJumping;
   double get jumpOffset =>
       _isJumping ? jumpArcOffset(_jumpElapsed / _jumpDuration) : 0;
@@ -177,6 +216,17 @@ class MadogiwaIslandScene extends ChangeNotifier {
       if (dx * dx + dz * dz <= 49) return landmark;
     }
     return null;
+  }
+
+  String get contextActionLabel {
+    if (nearbyLandmark case final landmark?) return '${landmark.label}を調べる';
+    return switch (controller.tool) {
+      IslandTool.gather => '近くを採取',
+      IslandTool.floor => '床を置く',
+      IslandTool.wall => '壁を置く',
+      IslandTool.roof => '屋根を置く',
+      IslandTool.torch => '松明を置く',
+    };
   }
 
   bool isExplored(int x, int z) {
@@ -212,7 +262,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
     _sunLight = SunLight(
       _sky,
       castsShadow: true,
-      cacheStaticShadows: false,
+      cacheStaticShadows: true,
       shadowSoftness: 0.1,
       shadowMaxDistance: 56,
       shadowCascadeCount: 3,
@@ -222,15 +272,16 @@ class MadogiwaIslandScene extends ChangeNotifier {
       contactShadowDistance: 0.26,
       shadowCasterFaces: ShadowCasterFaces.back,
     );
+    _skyEnvironment = SkyEnvironment(
+      _sky,
+      refresh: SkyEnvironmentRefresh.interval,
+      interval: const Duration(seconds: 15),
+      faceResolution: 64,
+      equirectWidth: 256,
+    );
     scene.environmentSettings = EnvironmentSettings(
       skybox: Skybox(_sky),
-      skyEnvironment: SkyEnvironment(
-        _sky,
-        refresh: SkyEnvironmentRefresh.interval,
-        interval: const Duration(seconds: 3),
-        faceResolution: 64,
-        equirectWidth: 256,
-      ),
+      skyEnvironment: _skyEnvironment,
       sunLight: _sunLight,
       toneMapping: ToneMappingMode.aces,
       exposure: 1.04,
@@ -239,7 +290,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
       bloomIntensity: 0.2,
       bloomScatter: 0.68,
       ambientOcclusionEnabled: true,
-      ambientOcclusionMethod: AmbientOcclusionMethod.groundTruth,
+      ambientOcclusionMethod: AmbientOcclusionMethod.obscurance,
       ambientOcclusionIntensity: 0.92,
       ambientOcclusionRadius: 0.38,
       ambientOcclusionMultiBounce: 0.18,
@@ -254,7 +305,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
       fogSkyColorInfluence: 0.45,
       fogHeight: 1.2,
       fogHeightFalloff: 0.08,
-      screenSpaceReflectionsEnabled: true,
+      screenSpaceReflectionsEnabled: false,
       screenSpaceReflectionsIntensity: 0.38,
       screenSpaceReflectionsMaxDistance: 18,
       screenSpaceReflectionsMaxSteps: 32,
@@ -269,6 +320,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
       _partyRoot,
       _signalBoundaryRoot,
     ]);
+    _applyQualityProfile(refreshChunks: false);
     _updateVisualEnvironment(0);
   }
 
@@ -332,6 +384,18 @@ class MadogiwaIslandScene extends ChangeNotifier {
     final radius = controller.explorationLimit;
     const segmentCount = 256;
     final segmentLength = 2 * math.pi * radius / segmentCount * 0.78;
+    final segments = InstancedMesh(
+      geometry: CuboidGeometry(vm.Vector3(segmentLength, 0.12, 0.16)),
+      material: _signalBoundaryMaterial,
+      cullInstances: true,
+      sortTransparentInstances: false,
+    );
+    final pylons = InstancedMesh(
+      geometry: CuboidGeometry(vm.Vector3(0.14, 1.35, 0.14)),
+      material: _signalBoundaryMaterial,
+      cullInstances: true,
+      sortTransparentInstances: false,
+    );
 
     for (var index = 0; index < segmentCount; index++) {
       final angle = index * 2 * math.pi / segmentCount;
@@ -341,33 +405,36 @@ class MadogiwaIslandScene extends ChangeNotifier {
         IslandWorld.surfaceY(x.round(), z.round()),
         0.82,
       );
-      final marker = Node(name: 'SignalBoundarySegment_$index')
-        ..position = vm.Vector3(x, surface + 0.1, z)
-        ..rotation = vm.Quaternion.axisAngle(
-          vm.Vector3(0, 1, 0),
-          -angle - math.pi / 2,
-        )
-        ..raycastable = false
-        ..add(
-          Node(
-            mesh: Mesh(
-              CuboidGeometry(vm.Vector3(segmentLength, 0.12, 0.16)),
-              _signalBoundaryMaterial,
-            ),
+      final rotation = vm.Quaternion.axisAngle(
+        vm.Vector3(0, 1, 0),
+        -angle - math.pi / 2,
+      );
+      segments.addInstance(
+        vm.Matrix4.compose(
+          vm.Vector3(x, surface + 0.1, z),
+          rotation,
+          vm.Vector3.all(1),
+        ),
+      );
+      if (index % 8 == 0) {
+        pylons.addInstance(
+          vm.Matrix4.compose(
+            vm.Vector3(x, surface + 0.78, z),
+            rotation,
+            vm.Vector3.all(1),
           ),
         );
-      if (index % 8 == 0) {
-        marker.add(
-          Node(
-            mesh: Mesh(
-              CuboidGeometry(vm.Vector3(0.14, 1.35, 0.14)),
-              _signalBoundaryMaterial,
-            ),
-          )..position = vm.Vector3(0, 0.68, 0),
-        );
       }
-      _signalBoundaryRoot.add(marker);
     }
+    final segmentNode = Node(name: 'SignalBoundarySegments')
+      ..raycastable = false
+      ..castsShadows = false
+      ..addComponent(InstancedMeshComponent(segments));
+    final pylonNode = Node(name: 'SignalBoundaryPylons')
+      ..raycastable = false
+      ..castsShadows = false
+      ..addComponent(InstancedMeshComponent(pylons));
+    _signalBoundaryRoot.addAll([segmentNode, pylonNode]);
     _signalBoundaryRadius = radius;
     _signalBoundaryRoot.visible = signalBoundaryEnabled;
   }
@@ -631,13 +698,13 @@ class MadogiwaIslandScene extends ChangeNotifier {
   Set<ChunkCoordinate> _desiredChunks() {
     final desired = <ChunkCoordinate>{};
     for (
-      var dx = -IslandWorld.renderRadiusChunks;
-      dx <= IslandWorld.renderRadiusChunks;
+      var dx = -_qualityProfile.terrainChunkRadius;
+      dx <= _qualityProfile.terrainChunkRadius;
       dx++
     ) {
       for (
-        var dz = -IslandWorld.renderRadiusChunks;
-        dz <= IslandWorld.renderRadiusChunks;
+        var dz = -_qualityProfile.terrainChunkRadius;
+        dz <= _qualityProfile.terrainChunkRadius;
         dz++
       ) {
         final coordinate = ChunkCoordinate(
@@ -720,141 +787,147 @@ class MadogiwaIslandScene extends ChangeNotifier {
     _resourceRoot.removeAll();
     _resourceNodes.clear();
     _resourceAnimatedParts.clear();
+    InstancedMesh batch(Geometry geometry, Material material) => InstancedMesh(
+      geometry: geometry,
+      material: material,
+      cullInstances: true,
+      sortTransparentInstances: false,
+    );
+
+    final batches = <String, InstancedMesh>{
+      'trunk': batch(
+        CuboidGeometry(vm.Vector3(0.34, 1.25, 0.34)),
+        _pbr(0.38, 0.18, 0.06, roughness: 0.95),
+      ),
+      'leafA': batch(
+        CuboidGeometry(vm.Vector3(0.72, 0.72, 0.72)),
+        _pbr(0.08, 0.5, 0.2, roughness: 0.9),
+      ),
+      'leafB': batch(
+        CuboidGeometry(vm.Vector3(0.72, 0.72, 0.72)),
+        _pbr(0.16, 0.68, 0.27, roughness: 0.88),
+      ),
+      'rockA': batch(
+        CuboidGeometry(vm.Vector3(0.75, 0.62, 0.72)),
+        _pbr(0.34, 0.39, 0.42, roughness: 0.82, metallic: 0.12),
+      ),
+      'rockB': batch(
+        CuboidGeometry(vm.Vector3(0.42, 0.4, 0.48)),
+        _pbr(0.34, 0.39, 0.42, roughness: 0.82, metallic: 0.12),
+      ),
+      'oreRock': batch(
+        CuboidGeometry(vm.Vector3(0.82, 0.68, 0.76)),
+        _pbr(0.27, 0.31, 0.33, roughness: 0.84, metallic: 0.1),
+      ),
+      'coal': batch(
+        CuboidGeometry(vm.Vector3(0.19, 0.19, 0.08)),
+        _pbr(0.055, 0.065, 0.075, roughness: 0.48, metallic: 0.18),
+      ),
+      'iron': batch(
+        CuboidGeometry(vm.Vector3(0.19, 0.19, 0.08)),
+        _pbr(0.72, 0.32, 0.16, roughness: 0.48, metallic: 0.62),
+      ),
+      'berryLeaf': batch(
+        CuboidGeometry(vm.Vector3(0.24, 0.66, 0.24)),
+        _pbr(0.16, 0.48, 0.18, roughness: 0.9),
+      ),
+      'berryFruit': batch(
+        CuboidGeometry(vm.Vector3(0.16, 0.16, 0.16)),
+        _unlit(0.85, 0.08, 0.12),
+      ),
+      'herbLeaf': batch(
+        CuboidGeometry(vm.Vector3(0.24, 0.66, 0.24)),
+        _pbr(0.16, 0.72, 0.48, roughness: 0.9),
+      ),
+      'herbFruit': batch(
+        CuboidGeometry(vm.Vector3(0.16, 0.16, 0.16)),
+        _unlit(0.72, 0.9, 0.35),
+      ),
+    };
+    void add(String name, vm.Vector3 position, {vm.Quaternion? rotation}) {
+      batches[name]!.addInstance(
+        vm.Matrix4.compose(
+          position,
+          rotation ?? vm.Quaternion.identity(),
+          vm.Vector3.all(1),
+        ),
+      );
+    }
+
     for (final entry in controller.resources.entries) {
       final chunk = ChunkCoordinate(
         IslandWorld.chunkForCoordinate(entry.key.x.toDouble()),
         IslandWorld.chunkForCoordinate(entry.key.z.toDouble()),
       );
       if (!visibleChunks.contains(chunk)) continue;
-      final node = switch (entry.value) {
-        IslandResource.tree => _buildTree(entry.key),
-        IslandResource.rock => _buildRock(entry.key),
-        IslandResource.berry => _buildPlant(
-          entry.key,
-          name: 'Berry',
-          leafColor: (0.16, 0.48, 0.18),
-          fruitColor: (0.85, 0.08, 0.12),
-        ),
-        IslandResource.coal => _buildOre(
-          entry.key,
-          name: 'Coal',
-          oreColor: (0.055, 0.065, 0.075),
-          metallic: 0.18,
-        ),
-        IslandResource.iron => _buildOre(
-          entry.key,
-          name: 'Iron',
-          oreColor: (0.72, 0.32, 0.16),
-          metallic: 0.62,
-        ),
-        IslandResource.herb => _buildPlant(
-          entry.key,
-          name: 'Herb',
-          leafColor: (0.16, 0.72, 0.48),
-          fruitColor: (0.72, 0.9, 0.35),
-        ),
-      };
-      node.position = vm.Vector3(
+      if ((chunk.x - _playerChunk.x).abs() >
+              _qualityProfile.resourceChunkRadius ||
+          (chunk.z - _playerChunk.z).abs() >
+              _qualityProfile.resourceChunkRadius) {
+        continue;
+      }
+      final base = vm.Vector3(
         entry.key.x.toDouble(),
         IslandWorld.surfaceY(entry.key.x, entry.key.z),
         entry.key.z.toDouble(),
       );
-      _resourceRoot.add(node);
-      _resourceNodes[entry.key] = node;
+      switch (entry.value) {
+        case IslandResource.tree:
+          add('trunk', base + vm.Vector3(0, 0.62, 0));
+          for (final spec in const [
+            (-0.28, 1.35, 0.0, 'leafA'),
+            (0.28, 1.38, 0.0, 'leafA'),
+            (0.0, 1.65, 0.0, 'leafB'),
+            (0.0, 1.38, -0.28, 'leafA'),
+            (0.0, 1.38, 0.28, 'leafA'),
+          ]) {
+            add(spec.$4, base + vm.Vector3(spec.$1, spec.$2, spec.$3));
+          }
+        case IslandResource.rock:
+          add('rockA', base + vm.Vector3(-0.08, 0.31, 0));
+          add(
+            'rockB',
+            base + vm.Vector3(0.32, 0.2, 0.18),
+            rotation: vm.Quaternion.axisAngle(vm.Vector3(0, 1, 0), 0.35),
+          );
+        case IslandResource.coal || IslandResource.iron:
+          add('oreRock', base + vm.Vector3(0, 0.34, 0));
+          final oreName = entry.value == IslandResource.coal ? 'coal' : 'iron';
+          for (final offset in const [
+            (-0.22, 0.51, -0.39),
+            (0.24, 0.3, -0.4),
+            (0.35, 0.6, 0.02),
+          ]) {
+            add(oreName, base + vm.Vector3(offset.$1, offset.$2, offset.$3));
+          }
+        case IslandResource.berry || IslandResource.herb:
+          final prefix = entry.value == IslandResource.berry ? 'berry' : 'herb';
+          for (final x in [-0.28, 0.0, 0.28]) {
+            add('${prefix}Leaf', base + vm.Vector3(x, 0.33, x.abs() * 0.35));
+          }
+          for (final offset in const [
+            (-0.24, 0.58),
+            (0.05, 0.72),
+            (0.3, 0.52),
+          ]) {
+            add(
+              '${prefix}Fruit',
+              base + vm.Vector3(offset.$1, offset.$2, -0.12),
+            );
+          }
+      }
+      // Logical proxy used by tap targeting; drawing is handled by batches.
+      _resourceNodes[entry.key] = Node(name: 'ResourceProxy');
     }
-  }
-
-  Node _buildTree(GridCell cell) {
-    final trunk = _pbr(0.38, 0.18, 0.06, roughness: 0.95);
-    final leafA = _pbr(0.08, 0.5, 0.2, roughness: 0.9);
-    final leafB = _pbr(0.16, 0.68, 0.27, roughness: 0.88);
-    final root = Node(name: 'Tree_${cell.x}_${cell.z}');
-    final crown = Node(name: 'TreeCrown');
-    root.add(
-      Node(mesh: Mesh(CuboidGeometry(vm.Vector3(0.34, 1.25, 0.34)), trunk))
-        ..position = vm.Vector3(0, 0.62, 0),
-    );
-    for (final spec in const [
-      (-0.28, 1.35, 0.0),
-      (0.28, 1.38, 0.0),
-      (0.0, 1.65, 0.0),
-      (0.0, 1.38, -0.28),
-      (0.0, 1.38, 0.28),
-    ]) {
-      crown.add(
-        Node(
-          mesh: Mesh(
-            CuboidGeometry(vm.Vector3(0.72, 0.72, 0.72)),
-            spec.$2 > 1.5 ? leafB : leafA,
-          ),
-        )..position = vm.Vector3(spec.$1, spec.$2, spec.$3),
+    for (final entry in batches.entries) {
+      if (entry.value.instanceCount == 0) continue;
+      _resourceRoot.add(
+        Node(name: 'ResourceBatch_${entry.key}')
+          ..shadowStatic = true
+          ..raycastable = false
+          ..addComponent(InstancedMeshComponent(entry.value)),
       );
     }
-    root.add(crown);
-    _resourceAnimatedParts.add(crown);
-    return root;
-  }
-
-  Node _buildRock(GridCell cell) {
-    final stone = _pbr(0.34, 0.39, 0.42, roughness: 0.82, metallic: 0.12);
-    final root = Node(name: 'Rock_${cell.x}_${cell.z}');
-    root.addAll([
-      Node(mesh: Mesh(CuboidGeometry(vm.Vector3(0.75, 0.62, 0.72)), stone))
-        ..position = vm.Vector3(-0.08, 0.31, 0),
-      Node(mesh: Mesh(CuboidGeometry(vm.Vector3(0.42, 0.4, 0.48)), stone))
-        ..position = vm.Vector3(0.32, 0.2, 0.18)
-        ..rotation = vm.Quaternion.axisAngle(vm.Vector3(0, 1, 0), 0.35),
-    ]);
-    return root;
-  }
-
-  Node _buildOre(
-    GridCell cell, {
-    required String name,
-    required (double, double, double) oreColor,
-    required double metallic,
-  }) {
-    final stone = _pbr(0.27, 0.31, 0.33, roughness: 0.84, metallic: 0.1);
-    final ore = _pbr(
-      oreColor.$1,
-      oreColor.$2,
-      oreColor.$3,
-      roughness: 0.48,
-      metallic: metallic,
-    );
-    final root = Node(name: '${name}_${cell.x}_${cell.z}');
-    root.addAll([
-      Node(mesh: Mesh(CuboidGeometry(vm.Vector3(0.82, 0.68, 0.76)), stone))
-        ..position = vm.Vector3(0, 0.34, 0),
-      for (final offset in const [
-        (-0.22, 0.51, -0.39),
-        (0.24, 0.3, -0.4),
-        (0.35, 0.6, 0.02),
-      ])
-        Node(mesh: Mesh(CuboidGeometry(vm.Vector3(0.19, 0.19, 0.08)), ore))
-          ..position = vm.Vector3(offset.$1, offset.$2, offset.$3),
-    ]);
-    return root;
-  }
-
-  Node _buildPlant(
-    GridCell cell, {
-    required String name,
-    required (double, double, double) leafColor,
-    required (double, double, double) fruitColor,
-  }) {
-    final leaf = _pbr(leafColor.$1, leafColor.$2, leafColor.$3, roughness: 0.9);
-    final fruit = _unlit(fruitColor.$1, fruitColor.$2, fruitColor.$3);
-    final root = Node(name: '${name}_${cell.x}_${cell.z}');
-    root.addAll([
-      for (final x in [-0.28, 0.0, 0.28])
-        Node(mesh: Mesh(CuboidGeometry(vm.Vector3(0.24, 0.66, 0.24)), leaf))
-          ..position = vm.Vector3(x, 0.33, x.abs() * 0.35),
-      for (final offset in const [(-0.24, 0.58), (0.05, 0.72), (0.3, 0.52)])
-        Node(mesh: Mesh(CuboidGeometry(vm.Vector3(0.16, 0.16, 0.16)), fruit))
-          ..position = vm.Vector3(offset.$1, offset.$2, -0.12),
-    ]);
-    return root;
   }
 
   Future<void> _loadParty() async {
@@ -959,6 +1032,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
     _cancelJump();
     _playerChunk = const ChunkCoordinate(0, 0);
     _explored.fillRange(0, _explored.length, 0);
+    _explorationHistory.clear();
     _exploredCellCount = 0;
     _lastExploredX = 1 << 30;
     _lastExploredZ = 1 << 30;
@@ -1003,6 +1077,54 @@ class MadogiwaIslandScene extends ChangeNotifier {
     _revealAroundPlayer(force: true);
     notifyListeners();
     return true;
+  }
+
+  bool performContextAction() {
+    if (nearbyLandmark != null) return performNearbyObjective();
+    GridCell? target;
+    if (controller.tool == IslandTool.gather) {
+      var bestDistance = double.infinity;
+      for (final cell in controller.resources.keys) {
+        if (!_resourceNodes.containsKey(cell)) continue;
+        final distance = _horizontalDistanceToPlayer(cell);
+        if (distance <= _interactionReach && distance < bestDistance) {
+          target = cell;
+          bestDistance = distance;
+        }
+      }
+      if (target == null) {
+        controller.showMessage('7マス以内に採取できる資源がない');
+        return false;
+      }
+    } else {
+      final selected = controller.selectedCell;
+      if (selected != null &&
+          _horizontalDistanceToPlayer(selected) <= _interactionReach) {
+        target = selected;
+      } else {
+        final forward = cameraRelativeMovement(yaw: _yaw, right: 0, forward: 1);
+        target = GridCell(
+          (_playerPosition.x + forward.$1 * 2).round(),
+          (_playerPosition.z + forward.$2 * 2).round(),
+        );
+      }
+    }
+    if (!IslandWorld.containsCell(target.x, target.z) ||
+        !IslandWorld.isLand(target.x, target.z)) {
+      controller.showMessage('ここには設置できない');
+      return false;
+    }
+    _selection
+      ..visible = true
+      ..position = vm.Vector3(
+        target.x.toDouble(),
+        IslandWorld.surfaceY(target.x, target.z) + 0.04,
+        target.z.toDouble(),
+      );
+    final result = controller.actOn(target);
+    if (result.changed) _apply(result);
+    hudRevision.value++;
+    return result.changed;
   }
 
   void chooseEnding(EndingChoice choice) => controller.chooseEnding(choice);
@@ -1210,6 +1332,69 @@ class MadogiwaIslandScene extends ChangeNotifier {
     'performanceHud': performanceHudEnabled,
   };
 
+  void setGraphicsQuality(GraphicsQuality quality) {
+    if (graphicsQuality == quality) return;
+    graphicsQuality = quality;
+    if (quality == GraphicsQuality.auto) _autoQuality.reset();
+    _applyQualityProfile();
+    notifyListeners();
+  }
+
+  void _applyQualityProfile({bool refreshChunks = true}) {
+    final previousRadius = _qualityProfile.terrainChunkRadius;
+    final profile = graphicsQuality == GraphicsQuality.auto
+        ? MobileQualityProfile.balanced.withRenderScale(
+            _autoQuality.renderScale,
+          )
+        : MobileQualityProfile.forQuality(graphicsQuality);
+    _qualityProfile = profile;
+    scene
+      ..renderScale = profile.renderScale
+      ..filterQuality = profile.renderScale < 0.7
+          ? FilterQuality.low
+          : FilterQuality.medium
+      ..antiAliasingMode = profile.renderScale < 0.65
+          ? AntiAliasingMode.fxaa
+          : AntiAliasingMode.auto;
+    _sunLight
+      ..cacheStaticShadows = true
+      ..shadowCascadeCount = profile.shadowCascades
+      ..shadowMapResolution = profile.shadowResolution
+      ..shadowMaxDistance = profile.shadowDistance;
+    scene.ambientOcclusion
+      ..enabled = profile.ambientOcclusion
+      ..method = AmbientOcclusionMethod.obscurance
+      ..sampleCount = profile.ambientOcclusionSamples
+      ..halfResolution = true
+      ..depthMipChain = false;
+    scene.screenSpaceReflections
+      ..enabled = profile.screenSpaceReflections && waterEffectsEnabled
+      ..resolutionScale = profile.ssrResolutionScale
+      ..maxSteps = profile.ssrSteps;
+    _skyEnvironment
+      ..refresh = SkyEnvironmentRefresh.interval
+      ..interval = profile.skyBakeInterval;
+    _updateVisualEnvironment(0, forceLighting: true);
+    if (refreshChunks && _loaded) {
+      unawaited(
+        _refreshVisibleChunks(
+          force: previousRadius != profile.terrainChunkRadius,
+        ),
+      );
+    }
+    performanceRevision.value++;
+  }
+
+  void recordFlutterFrame({
+    required double buildTimeMs,
+    required double rasterTimeMs,
+  }) {
+    _performance.recordFlutterFrame(
+      buildTimeMs: buildTimeMs,
+      rasterTimeMs: rasterTimeMs,
+    );
+  }
+
   bool setVisualOption(String option, bool enabled) {
     switch (option) {
       case 'dayNightCycle':
@@ -1263,15 +1448,22 @@ class MadogiwaIslandScene extends ChangeNotifier {
     waterEffectsEnabled = true;
     signalBoundaryEnabled = true;
     performanceHudEnabled = true;
+    graphicsQuality = GraphicsQuality.auto;
+    _autoQuality.reset();
     timeOfDay = 0.34;
-    _updateVisualEnvironment(0);
+    _applyQualityProfile();
     notifyListeners();
   }
 
-  void _updateVisualEnvironment(double dt) {
+  void _updateVisualEnvironment(double dt, {bool forceLighting = false}) {
     if (dayNightCycleEnabled && dt > 0) {
       timeOfDay = normalizedTime(timeOfDay + dt / 600);
     }
+    _lightingAccumulator += dt;
+    final lightingInterval = 1 / _qualityProfile.lightingUpdatesPerSecond;
+    final updateLighting =
+        forceLighting || dt == 0 || _lightingAccumulator >= lightingInterval;
+    if (updateLighting) _lightingAccumulator = 0;
     final lightingTime = dynamicLightingEnabled ? timeOfDay : 0.5;
     final elevation = sunElevationForTime(lightingTime);
     final daylight = daylightForTime(lightingTime);
@@ -1283,21 +1475,23 @@ class MadogiwaIslandScene extends ChangeNotifier {
     final directLight = daylight * (0.72 + (1 - sunHeight) * 1.75);
     final twilight = twilightForTime(lightingTime);
     final azimuth = lightingTime * math.pi * 2;
-    _sky.sunDirection
-      ..setValues(
-        math.cos(azimuth) * math.cos(elevation * 0.5),
-        elevation,
-        math.sin(azimuth) * math.cos(elevation * 0.5),
-      )
-      ..normalize();
-    _sky
-      ..energy = 0.14 + lightLevel * 0.58
-      ..turbidity = 6.8 + twilight * 4.2
-      ..groundColor.setValues(
-        0.025 + daylight * 0.08,
-        0.04 + daylight * 0.1,
-        0.075 + daylight * 0.06,
-      );
+    if (updateLighting) {
+      _sky.sunDirection
+        ..setValues(
+          math.cos(azimuth) * math.cos(elevation * 0.5),
+          elevation,
+          math.sin(azimuth) * math.cos(elevation * 0.5),
+        )
+        ..normalize();
+      _sky
+        ..energy = 0.14 + lightLevel * 0.58
+        ..turbidity = 6.8 + twilight * 4.2
+        ..groundColor.setValues(
+          0.025 + daylight * 0.08,
+          0.04 + daylight * 0.1,
+          0.075 + daylight * 0.06,
+        );
+    }
 
     final sunColor = _sunLight.color ??= vm.Vector3.zero();
     if (daylight < 0.08) {
@@ -1308,7 +1502,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
     _sunLight
       ..intensity = 0.18 + directLight
       ..castsShadow = shadowsEnabled
-      ..contactShadows = contactShadowsEnabled
+      ..contactShadows = contactShadowsEnabled && _qualityProfile.contactShadows
       ..shadowSoftness = 0.2 - daylight * 0.1
       ..shadowAmbientStrength = 0.28 + (1 - daylight) * 0.12;
 
@@ -1322,7 +1516,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
       ..saturation = 0.84 + daylight * 0.26
       ..temperature = twilight * 0.16 - (1 - daylight) * 0.08;
     scene.postProcess.bloom
-      ..enabled = true
+      ..enabled = _qualityProfile.bloom
       ..threshold = 0.62 + daylight * 0.3
       ..intensity = 0.38 - daylight * 0.17
       ..scatter = 0.7;
@@ -1345,7 +1539,11 @@ class MadogiwaIslandScene extends ChangeNotifier {
       );
     scene.godRays
       ..enabled =
-          godRaysEnabled && shadowsEnabled && twilight > 0.18 && daylight > 0.08
+          _qualityProfile.godRays &&
+          godRaysEnabled &&
+          shadowsEnabled &&
+          twilight > 0.18 &&
+          daylight > 0.08
       ..intensity = twilight * 0.34
       ..density = 0.28
       ..anisotropy = 0.72
@@ -1354,7 +1552,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
       ..jitter = 1
       ..color.setValues(1.0, 0.58 + daylight * 0.28, 0.32 + daylight * 0.42);
     scene.screenSpaceReflections
-      ..enabled = waterEffectsEnabled
+      ..enabled = _qualityProfile.screenSpaceReflections && waterEffectsEnabled
       ..intensity = 0.32 + daylight * 0.14;
 
     if (_loaded || _torches.isNotEmpty) {
@@ -1403,7 +1601,10 @@ class MadogiwaIslandScene extends ChangeNotifier {
         IslandWorld.chunkForCoordinate(torch.cell.z.toDouble()),
       );
       final visible = visibleChunks.contains(chunk);
-      final active = visible && torchLightsEnabled && index < 8;
+      final active =
+          visible &&
+          torchLightsEnabled &&
+          index < _qualityProfile.maxTorchLights;
       final flicker =
           0.95 +
           math.sin(_elapsed * 8.7 + torch.cell.hashCode) * 0.035 +
@@ -1418,7 +1619,9 @@ class MadogiwaIslandScene extends ChangeNotifier {
         1,
       );
       torch.particleNode.visible =
-          visible && torchParticlesEnabled && index < 8;
+          visible &&
+          torchParticlesEnabled &&
+          index < _qualityProfile.maxTorchParticles;
       torch.particleComponent.enabled = torch.particleNode.visible;
     }
 
@@ -1586,6 +1789,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
     }
     _lastExploredX = centerX;
     _lastExploredZ = centerZ;
+    var revealed = false;
     for (var dz = -explorationRadius; dz <= explorationRadius; dz++) {
       for (var dx = -explorationRadius; dx <= explorationRadius; dx++) {
         if (dx * dx + dz * dz > explorationRadius * explorationRadius) {
@@ -1598,10 +1802,23 @@ class MadogiwaIslandScene extends ChangeNotifier {
           if (_explored[index] == 0) {
             _explored[index] = 1;
             _exploredCellCount++;
+            _explorationHistory.add(index);
+            if (!revealed && _exploredCellCount == 1) {
+              _exploredMinX = _exploredMaxX = x;
+              _exploredMinZ = _exploredMaxZ = z;
+            } else {
+              _exploredMinX = math.min(_exploredMinX, x);
+              _exploredMaxX = math.max(_exploredMaxX, x);
+              _exploredMinZ = math.min(_exploredMinZ, z);
+              _exploredMaxZ = math.max(_exploredMaxZ, z);
+            }
+            revealed = true;
           }
         }
       }
     }
+    if (revealed || force) mapRevision.value++;
+    hudRevision.value++;
   }
 
   void _updateLandmarkVisibility() {
@@ -1622,8 +1839,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
       case IslandActionKind.coalHarvested:
       case IslandActionKind.ironHarvested:
       case IslandActionKind.herbHarvested:
-        final node = _resourceNodes.remove(result.cell);
-        if (node != null) _resourceRoot.remove(node);
+        _rebuildVisibleResources(_desiredChunks());
         break;
       case IslandActionKind.floorPlaced:
         _addFloor(result.cell);
@@ -1717,9 +1933,17 @@ class MadogiwaIslandScene extends ChangeNotifier {
 
   void tick(double deltaSeconds) {
     if (!_loaded) return;
-    _performance.recordFrame(deltaSeconds);
+    if (_performance.recordFrame(deltaSeconds)) performanceRevision.value++;
     final dt = deltaSeconds.clamp(0.0, 0.05);
     _elapsed += dt;
+    if (graphicsQuality == GraphicsQuality.auto &&
+        _autoQuality.update(
+          deltaSeconds: dt,
+          framesPerSecond: framesPerSecond,
+          p95FrameTimeMs: p95FrameTimeMs,
+        )) {
+      _applyQualityProfile(refreshChunks: false);
+    }
     _updateVisualEnvironment(dt);
     _updateSignalBoundary();
     _hudAccumulator += dt;
@@ -1789,7 +2013,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
             : worker.root.rotation;
       worker.walkRig.update(dt: dt, elapsed: _elapsed, moving: moving);
     }
-    if (_hudAccumulator >= 0.15) {
+    if (_hudAccumulator >= 1) {
       _hudAccumulator = 0;
       notifyListeners();
     }
@@ -1978,6 +2202,9 @@ class MadogiwaIslandScene extends ChangeNotifier {
   @override
   void dispose() {
     scene.removeAll();
+    mapRevision.dispose();
+    hudRevision.dispose();
+    performanceRevision.dispose();
     super.dispose();
   }
 }
