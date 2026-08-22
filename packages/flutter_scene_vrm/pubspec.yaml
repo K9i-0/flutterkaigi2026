@@ -15,6 +15,7 @@ dependencies:
       url: https://github.com/K9i-0/flutter_scene.git
       ref: 8d340138f80d1fb5d09d163f62ab836be9379e2e
       path: packages/flutter_scene
+  vector_math: ^2.4.2
 
 dev_dependencies:
   flutter_test:

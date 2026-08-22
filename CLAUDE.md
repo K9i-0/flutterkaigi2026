@@ -51,3 +51,8 @@ Marionette MCPでUI操作・スクリーンショット・カスタムハーネ�
 プロジェクト設定は`.mcp.json`と`.codex/config.toml`、専用拡張は
 `14_MADOGIWA_CARD_GAME/lib/automation/`を参照する。Flameキャンバス内の状態確認には
 `madogiwa.inspectGame`、決定論的シナリオへの遷移には`madogiwa.openScenario`を使う。
+
+`19_FLUTTER_SCENE_VRM_LAB/`も同じDart MCP / Marionette MCPを使用する。
+VRM・追跡状態の確認には`madogiwa.inspectVrm`、決定論的な顔角度・目・口の注入には
+`madogiwa.injectFace`を使う。専用extension一覧と引数は同ディレクトリの
+`README.md`を参照する。
