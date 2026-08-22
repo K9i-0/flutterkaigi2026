@@ -17,8 +17,9 @@ Flutter UI / camera / future streaming features
 The tracking vertical slice is:
 
 ```text
-camera image (iOS BGRA / Android NV21)
-  -> on-device ML Kit face detector
+camera image
+  -> macOS: AVFoundation + on-device Apple Vision
+  -> iOS / Android: camera plugin + on-device ML Kit
   -> camera-independent FaceTrackingSignal
   -> calibration + exponential smoothing + clamping
   -> VrmFaceTrackingDriver
@@ -58,7 +59,10 @@ symlink.
 | Head / neck humanoid drive | Pass; 25% neck + 75% head rotation |
 | Blink and mouth tracking drive | Pass |
 | Camera-independent tracking pipeline | Pass; unit tested |
-| macOS continuous tracking simulation | Pass; same VRM driver as camera path |
+| macOS real-camera integration | Pass; Apple Vision face/landmark events at about 10 fps on the development Mac |
+| macOS camera selection | Pass; live-switched between HD Pro Webcam C920 and the built-in MacBook Air camera |
+| macOS continuous tracking simulation | Pass; optional deterministic fallback through the same VRM driver |
+| Full-body / bust-up framing | Pass; UI and MCP switching visually verified |
 | Android camera integration build | Pass; debug APK |
 | iOS camera integration build | Pass; simulator debug app |
 | Marionette MCP custom extensions | Pass; discovered and called live |
@@ -76,6 +80,12 @@ result (`-28°`, `-10°`, `-7°`, blink `0.85/0.20`, mouth `0.70`) was returned 
 - `camera 0.12.0+2` supplies the front-camera image stream.
 - `google_mlkit_face_detection 0.15.1` supplies Euler angles, eye-open
   probabilities, and lip contours on iOS/Android.
+- On macOS, AVFoundation supplies 640x480 camera frames and Apple Vision
+  supplies face landmarks plus yaw, pitch, and roll. Analysis is throttled to
+  15 fps and late frames are discarded.
+- AVFoundation device discovery exposes external, built-in, and Continuity
+  cameras. External cameras are preferred initially; the UI can refresh and
+  switch devices while tracking is active.
 - Head yaw and roll are mirrored for front-camera UX. Mouth opening is derived
   from the normalized upper/lower lip contour gap.
 - A busy-frame gate prevents overlapping detector calls. Detector FPS and
@@ -101,16 +111,22 @@ lab. Debug native builds register:
 - `madogiwa.calibrateFace`
 - `madogiwa.setVrmExpression`
 - `madogiwa.resetVrm`
+- `madogiwa.setAvatarFraming`
+- `madogiwa.selectCamera`
 
-macOS simulation demonstrates continuous motion through the production input
-contract. `injectFace` bypasses smoothing for exact repeatable assertions and
+On the development Mac, Marionette reported live HD Pro Webcam C920 processing
+at about 10–11 fps and transitioned between face/no-face states. It also
+switched live to the built-in MacBook Air camera and back by stable device ID.
+Computer-driven visual QA confirmed the bust-up composition and selected-camera
+label. `injectFace` bypasses smoothing for exact repeatable assertions and
 screenshots.
 
 ## Remaining work before production
 
 1. **Physical-device camera acceptance:** sustained tests on representative
-   iPhones and Android devices. Integration builds do not prove real camera
-   orientation, permission recovery, thermal behavior, or detector quality.
+   iPhones and Android devices, plus longer macOS runs. Integration builds do
+   not prove mobile camera orientation, permission recovery, thermal behavior,
+   or detector quality across hardware.
 2. **Richer facial capture:** ML Kit provides head Euler angles and coarse
    eye/smile data, not ARKit-class blendshapes or phoneme visemes. ARKit or
    MediaPipe should plug in behind `FaceTrackingSignal`.

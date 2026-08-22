@@ -36,6 +36,7 @@ void registerVrmLabMarionetteExtensions() {
         'tracking': {
           'enabled': lab.trackingEnabled,
           'source': lab.trackingSource,
+          'framing': lab.avatarFraming.name,
           'yawDegrees': frame.yawRadians * toDegrees,
           'pitchDegrees': frame.pitchRadians * toDegrees,
           'rollDegrees': frame.rollRadians * toDegrees,
@@ -46,12 +47,74 @@ void registerVrmLabMarionetteExtensions() {
         },
         'camera': {
           'state': lab.faceCamera.state.name,
+          'selectedDeviceId': lab.faceCamera.selectedDeviceId,
+          'selectedDeviceName': lab.faceCamera.selectedDeviceName,
+          'devices': [
+            for (final device in lab.faceCamera.availableDevices)
+              {
+                'id': device.id,
+                'name': device.name,
+                'isExternal': device.isExternal,
+              },
+          ],
           'detectorFps': lab.faceCamera.detectorFps,
           'processedFrames': lab.faceCamera.processedFrames,
           'droppedFrames': lab.faceCamera.droppedFrames,
           'error': lab.faceCamera.errorMessage,
         },
         'expressions': lab.avatar!.expressionWeights,
+      });
+    },
+  );
+
+  registerMarionetteExtension(
+    name: 'madogiwa.selectCamera',
+    description: 'List cameras or select one by deviceId.',
+    callback: (params) async {
+      final lab = VrmLabAutomationState.controller;
+      if (lab == null || !lab.ready) {
+        return MarionetteExtensionResult.error(1, 'VRM lab is not ready.');
+      }
+      await lab.faceCamera.refreshDevices();
+      final deviceId = params['deviceId'];
+      if (deviceId != null) {
+        if (!lab.faceCamera.availableDevices.any(
+          (device) => device.id == deviceId,
+        )) {
+          return MarionetteExtensionResult.invalidParams(
+            'deviceId must identify an available camera.',
+          );
+        }
+        await lab.selectCameraDevice(deviceId);
+      }
+      return MarionetteExtensionResult.success({
+        'selectedDeviceId': lab.faceCamera.selectedDeviceId,
+        'selectedDeviceName': lab.faceCamera.selectedDeviceName,
+        'devices': [
+          for (final device in lab.faceCamera.availableDevices)
+            {
+              'id': device.id,
+              'name': device.name,
+              'isExternal': device.isExternal,
+            },
+        ],
+      });
+    },
+  );
+
+  registerMarionetteExtension(
+    name: 'madogiwa.setAvatarFraming',
+    description: 'Set avatar framing. Required mode=fullBody/bustUp.',
+    callback: (params) async {
+      final lab = VrmLabAutomationState.controller;
+      final mode = params['mode'];
+      if (lab == null || !lab.ready || !lab.setAvatarFramingByName(mode)) {
+        return MarionetteExtensionResult.invalidParams(
+          'VRM lab must be ready and mode=fullBody/bustUp is required.',
+        );
+      }
+      return MarionetteExtensionResult.success({
+        'mode': lab.avatarFraming.name,
       });
     },
   );

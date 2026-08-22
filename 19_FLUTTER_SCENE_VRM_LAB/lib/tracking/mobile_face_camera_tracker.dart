@@ -3,18 +3,14 @@ import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:camera/camera.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 
+import 'face_camera_tracker.dart';
 import 'face_tracking_signal.dart';
 
-enum FaceCameraState { idle, starting, running, noFace, unsupported, error }
-
-class MobileFaceCameraTracker extends ChangeNotifier {
-  MobileFaceCameraTracker({required this.onSignal});
-
-  final ValueChanged<FaceTrackingSignal> onSignal;
+class MobileFaceCameraTracker extends FaceCameraTracker {
+  MobileFaceCameraTracker({required super.onSignal});
   final FaceDetector _detector = FaceDetector(
     options: FaceDetectorOptions(
       enableClassification: true,
@@ -34,15 +30,23 @@ class MobileFaceCameraTracker extends ChangeNotifier {
   int _droppedFrames = 0;
   final Stopwatch _fpsWatch = Stopwatch();
 
+  @override
   FaceCameraState state = FaceCameraState.idle;
+  @override
   String? errorMessage;
+  @override
   double detectorFps = 0;
 
-  static bool get isSupportedPlatform => Platform.isAndroid || Platform.isIOS;
+  @override
+  bool get isSupportedPlatform => Platform.isAndroid || Platform.isIOS;
+  @override
   CameraController? get cameraController => _controller;
+  @override
   int get processedFrames => _processedFrames;
+  @override
   int get droppedFrames => _droppedFrames;
 
+  @override
   Future<void> start() async {
     if (!isSupportedPlatform) {
       state = FaceCameraState.unsupported;
@@ -88,6 +92,7 @@ class MobileFaceCameraTracker extends ChangeNotifier {
     }
   }
 
+  @override
   Future<void> stop() async {
     await _disposeCamera();
     state = FaceCameraState.idle;
