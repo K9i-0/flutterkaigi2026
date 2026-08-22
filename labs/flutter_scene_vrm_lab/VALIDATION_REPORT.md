@@ -4,7 +4,8 @@
 
 The two-layer architecture is feasible. An official VRM 1.0 human model loads
 and renders through Flutter alone. Camera-independent face values now drive the
-avatar's head, neck, eyes, and mouth through the same reusable VRM layer.
+avatar's upper body, head, neck, eyes, and mouth through the same reusable VRM
+layer.
 
 ```text
 Flutter UI / camera / future streaming features
@@ -56,7 +57,10 @@ symlink.
 | VRM preset expression mapping | Pass |
 | Emotion, `aa` mouth, automatic blink | Pass |
 | Humanoid map discovery | Pass |
-| Head / neck humanoid drive | Pass; 25% neck + 75% head rotation |
+| Upper-body humanoid drive | Pass; axis-specific distribution through spine, chest, upperChest, neck, and head |
+| Body follow tuning | Pass; Natural / Anime counter-roll / legacy head-only modes and 0–150% intensity |
+| Torso stabilization | Pass; 4° dead zone and slower exponential response |
+| Presenter idle arm pose | Pass; validation model no longer presents in a T-pose |
 | Blink and mouth tracking drive | Pass |
 | Camera-independent tracking pipeline | Pass; unit tested |
 | macOS real-camera integration | Pass; Apple Vision face/landmark events at about 10 fps on the development Mac |
@@ -74,6 +78,11 @@ The live MCP check injected yaw `28°`, pitch `-10°`, roll `7°`, left eye open
 `0.15`, right eye open `0.8`, and mouth open `0.7`. The normalized mirror-space
 result (`-28°`, `-10°`, `-7°`, blink `0.85/0.20`, mouth `0.70`) was returned by
 `madogiwa.inspectVrm` and visible in both the avatar and tracking panel.
+
+The upper-body check injected yaw `30°`, pitch `12°`, and roll `10°`. Natural
+mode distributed the calibrated result through all five upper-body bones;
+head-only mode returned every torso rotation to zero; Anime mode reversed only
+the torso roll. The MCP inspection exposes the applied torso angles by bone.
 
 ## Camera implementation boundary
 
@@ -113,6 +122,7 @@ lab. Debug native builds register:
 - `madogiwa.resetVrm`
 - `madogiwa.setAvatarFraming`
 - `madogiwa.selectCamera`
+- `madogiwa.setBodyFollow`
 
 On the development Mac, Marionette reported live HD Pro Webcam C920 processing
 at about 10–11 fps and transitioned between face/no-face states. It also
