@@ -58,6 +58,12 @@ void registerIslandMarionetteExtensions() {
         },
         'heldDirections': IslandAutomationState.heldDirections.toList(),
         'tool': controller.tool.name,
+        'selectedBuildCell': controller.selectedCell == null
+            ? null
+            : {
+                'x': controller.selectedCell!.x,
+                'z': controller.selectedCell!.z,
+              },
         'chapter': controller.chapter.name,
         'chapterLabel': controller.chapter.label,
         'objective': controller.chapterObjective,
@@ -270,7 +276,7 @@ void registerIslandMarionetteExtensions() {
 
   registerMarionetteExtension(
     name: 'madogiwa.selectTool',
-    description: 'Select gather, floor, wall, roof, or torch.',
+    description: 'Select gather/build mode or a legacy placement tool.',
     callback: (params) async {
       final controller = IslandAutomationState.controller;
       final toolName = params['tool'];
@@ -287,6 +293,41 @@ void registerIslandMarionetteExtensions() {
       }
       controller.selectTool(tool);
       return MarionetteExtensionResult.success({'tool': tool.name});
+    },
+  );
+
+  registerMarionetteExtension(
+    name: 'madogiwa.buildAt',
+    description:
+        'Build immediately at a cell. Params: blueprint=floor/wall/roof/'
+        'torch/house, x, z.',
+    callback: (params) async {
+      final controller = IslandAutomationState.controller;
+      final scene = IslandAutomationState.scene;
+      final blueprintName = params['blueprint'];
+      final x = int.tryParse(params['x'] ?? '');
+      final z = int.tryParse(params['z'] ?? '');
+      final blueprint = BuildBlueprint.values
+          .where((item) => item.name == blueprintName)
+          .firstOrNull;
+      if (controller == null ||
+          scene == null ||
+          blueprint == null ||
+          x == null ||
+          z == null) {
+        return MarionetteExtensionResult.invalidParams(
+          'Required blueprint=floor/wall/roof/torch/house and integer x/z.',
+        );
+      }
+      controller.selectBuildTarget(GridCell(x, z));
+      final built = scene.buildAtSelected(blueprint);
+      return MarionetteExtensionResult.success({
+        'blueprint': blueprint.name,
+        'x': x,
+        'z': z,
+        'built': built,
+        'message': controller.message,
+      });
     },
   );
 

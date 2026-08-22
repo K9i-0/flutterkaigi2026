@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:madogiwa_island_craft/game/island_game_controller.dart';
 import 'package:madogiwa_island_craft/game/movement_math.dart';
+import 'package:madogiwa_island_craft/game/terrain_picker.dart';
 import 'package:madogiwa_island_craft/game/visual_math.dart';
 import 'package:madogiwa_island_craft/world/chunk_mesh_builder.dart';
 import 'package:madogiwa_island_craft/world/island_world.dart';
@@ -65,6 +66,39 @@ void main() {
       expect(left, (1.0, 0.0));
       expect(right, (-1.0, 0.0));
       expect(forward, (0.0, -1.0));
+    });
+  });
+
+  group('terrain tap picking', () {
+    test('selects the exact voxel top on either side of a cell boundary', () {
+      GridCell? pick(double x) => pickTerrainTopCell(
+        originX: x,
+        originY: 10,
+        originZ: 0,
+        directionX: 0,
+        directionY: -1,
+        directionZ: 0,
+        centerX: 0,
+        centerZ: 0,
+      );
+
+      expect(pick(0.49), const GridCell(0, 0));
+      expect(pick(0.51), const GridCell(1, 0));
+    });
+
+    test('uses the visible top face for an oblique camera ray', () {
+      final picked = pickTerrainTopCell(
+        originX: 0,
+        originY: 10,
+        originZ: 10,
+        directionX: 0,
+        directionY: -9,
+        directionZ: -10,
+        centerX: 0,
+        centerZ: 3,
+      );
+
+      expect(picked, const GridCell(0, 0));
     });
   });
 
@@ -135,6 +169,67 @@ void main() {
       expect(result.kind, IslandActionKind.floorPlaced);
       expect(controller.floorsBuilt, 1);
     });
+
+    test(
+      'build mode places a selected blueprint without leaving build mode',
+      () {
+        final controller = IslandGameController()
+          ..grantDebugResources(1)
+          ..selectTool(IslandTool.build);
+
+        final result = controller.buildAt(
+          BuildBlueprint.floor,
+          const GridCell(0, 0),
+        );
+
+        expect(result.kind, IslandActionKind.floorPlaced);
+        expect(controller.tool, IslandTool.build);
+        expect(controller.selectedCell, const GridCell(0, 0));
+      },
+    );
+
+    test('house blueprint completes a two by two home in one action', () {
+      final controller = IslandGameController()..grantDebugResources(10);
+
+      final result = controller.buildAt(
+        BuildBlueprint.house,
+        const GridCell(0, 0),
+      );
+
+      expect(result.kind, IslandActionKind.housePlaced);
+      expect(controller.homeComplete, isTrue);
+      expect(controller.structures.length, 4);
+      expect(controller.structures.values, everyElement(BuildLevel.wall));
+      expect(controller.wood, 0);
+      expect(controller.stone, 6);
+    });
+
+    test(
+      'house blueprint rejects occupied or underfunded sites atomically',
+      () {
+        final controller = IslandGameController();
+
+        expect(
+          controller
+              .buildAt(BuildBlueprint.house, const GridCell(0, 0))
+              .changed,
+          isFalse,
+        );
+        expect(controller.structures, isEmpty);
+        expect(controller.homeComplete, isFalse);
+
+        controller
+          ..grantDebugResources(10)
+          ..resources[const GridCell(1, 1)] = IslandResource.rock;
+        expect(
+          controller
+              .buildAt(BuildBlueprint.house, const GridCell(0, 0))
+              .changed,
+          isFalse,
+        );
+        expect(controller.structures, isEmpty);
+      },
+    );
 
     test('one wood places a torch while the camp torch remains free', () {
       final controller = IslandGameController()

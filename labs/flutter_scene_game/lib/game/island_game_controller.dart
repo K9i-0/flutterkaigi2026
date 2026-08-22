@@ -5,7 +5,43 @@ import 'island_progression.dart';
 
 export 'island_progression.dart';
 
-enum IslandTool { gather, floor, wall, roof, torch }
+enum IslandTool { gather, build, floor, wall, roof, torch }
+
+enum BuildBlueprint { floor, wall, roof, torch, house }
+
+extension BuildBlueprintDetails on BuildBlueprint {
+  String get label => switch (this) {
+    BuildBlueprint.floor => '床',
+    BuildBlueprint.wall => '壁',
+    BuildBlueprint.roof => '屋根',
+    BuildBlueprint.torch => '松明',
+    BuildBlueprint.house => '小屋を一括建築',
+  };
+
+  String get description => switch (this) {
+    BuildBlueprint.floor => '地面に足場を置く',
+    BuildBlueprint.wall => '選んだ床へ壁を立てる',
+    BuildBlueprint.roof => '壁4枚の上へ屋根を載せる',
+    BuildBlueprint.torch => '周囲を照らす',
+    BuildBlueprint.house => '2×2の床・壁・屋根を一度に完成',
+  };
+
+  Map<IslandItem, int> get cost => switch (this) {
+    BuildBlueprint.floor => const {IslandItem.wood: 1},
+    BuildBlueprint.wall => const {IslandItem.wood: 1, IslandItem.stone: 1},
+    BuildBlueprint.roof => const {IslandItem.wood: 2},
+    BuildBlueprint.torch => const {IslandItem.wood: 1},
+    BuildBlueprint.house => const {IslandItem.wood: 10, IslandItem.stone: 4},
+  };
+
+  IslandTool? get placementTool => switch (this) {
+    BuildBlueprint.floor => IslandTool.floor,
+    BuildBlueprint.wall => IslandTool.wall,
+    BuildBlueprint.roof => IslandTool.roof,
+    BuildBlueprint.torch => IslandTool.torch,
+    BuildBlueprint.house => null,
+  };
+}
 
 enum IslandResource { tree, rock, berry, coal, iron, herb }
 
@@ -19,6 +55,7 @@ enum IslandActionKind {
   wallPlaced,
   roofPlaced,
   torchPlaced,
+  housePlaced,
   berryHarvested,
   coalHarvested,
   ironHarvested,
@@ -232,6 +269,7 @@ class IslandGameController extends ChangeNotifier {
     tool = next;
     message = switch (next) {
       IslandTool.gather => '木と岩をタップして資源を採取',
+      IslandTool.build => '建設したい地面をタップして位置を指定',
       IslandTool.floor => '好きな地面へ床ブロックを置こう（木材1）',
       IslandTool.wall => '床の上に壁を4つ積もう（木材1・石材1）',
       IslandTool.roof => '4つの壁ができたら屋根を載せよう（木材2）',
@@ -240,16 +278,114 @@ class IslandGameController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void selectBuildTarget(GridCell cell) {
+    selectedCell = cell;
+    message = '建設位置 ${cell.x}, ${cell.z} を選択';
+    notifyListeners();
+  }
+
   void showMessage(String next) {
     message = next;
     notifyListeners();
   }
 
-  IslandActionResult actOn(GridCell cell) {
+  IslandActionResult actOn(GridCell cell) => _actOn(cell, tool);
+
+  IslandActionResult buildAt(BuildBlueprint blueprint, GridCell cell) {
+    selectedCell = cell;
+    final failure = buildFailureReason(blueprint, cell);
+    if (failure != null) {
+      message = failure;
+      notifyListeners();
+      return IslandActionResult(IslandActionKind.none, cell);
+    }
+    if (blueprint != BuildBlueprint.house) {
+      return _actOn(cell, blueprint.placementTool!);
+    }
+
+    for (final entry in blueprint.cost.entries) {
+      _changeItem(entry.key, -entry.value);
+    }
+    for (final footprintCell in houseFootprint(cell)) {
+      structures[footprintCell] = BuildLevel.wall;
+    }
+    roofComplete = true;
+    message = '小屋を一括建築！ 次は焚き火と作業台を用意しよう';
+    _updateChapter();
+    notifyListeners();
+    return IslandActionResult(IslandActionKind.housePlaced, cell);
+  }
+
+  String? buildFailureReason(BuildBlueprint blueprint, GridCell cell) {
+    if (!IslandWorld.containsCell(cell.x, cell.z) ||
+        !IslandWorld.isLand(cell.x, cell.z)) {
+      return 'ここには設置できない';
+    }
+    if (blueprint == BuildBlueprint.house) {
+      if (roofComplete) return '生活用の小屋は完成済み';
+      final footprint = houseFootprint(cell);
+      if (footprint.any(
+        (target) =>
+            !IslandWorld.containsCell(target.x, target.z) ||
+            !IslandWorld.isLand(target.x, target.z),
+      )) {
+        return '小屋には2×2マスの陸地が必要';
+      }
+      final heights = footprint
+          .map((target) => IslandWorld.surfaceHeight(target.x, target.z))
+          .toList(growable: false);
+      final minHeight = heights.reduce((a, b) => a < b ? a : b);
+      final maxHeight = heights.reduce((a, b) => a > b ? a : b);
+      if (maxHeight - minHeight > 1) return '小屋には平らな2×2マスが必要';
+      if (footprint.any(resources.containsKey)) return '建設予定地の資源を先に採取しよう';
+      if (footprint.any(structures.containsKey)) return '建設予定地に別の建物がある';
+    } else if (resources.containsKey(cell)) {
+      return 'このマスの資源を先に採取しよう';
+    }
+
+    final level = structures[cell] ?? BuildLevel.ground;
+    switch (blueprint) {
+      case BuildBlueprint.floor:
+        if (level != BuildLevel.ground) return 'このマスには床がある';
+        break;
+      case BuildBlueprint.wall:
+        if (level == BuildLevel.ground) return '先にこのマスへ床を置こう';
+        if (level == BuildLevel.wall) return 'このマスの壁は完成している';
+        break;
+      case BuildBlueprint.roof:
+        if (roofComplete) return '家の屋根は完成済み';
+        if (!wallCells.contains(cell)) return '建てた壁のマスを選択しよう';
+        if (wallsBuilt < 4) return '屋根を支える壁があと${4 - wallsBuilt}つ必要';
+        break;
+      case BuildBlueprint.torch:
+        if (torches.contains(cell)) return 'このマスには松明がある';
+        break;
+      case BuildBlueprint.house:
+        break;
+    }
+
+    final missing = blueprint.cost.entries
+        .where((entry) => itemCount(entry.key) < entry.value)
+        .map((entry) => '${entry.key.label}${entry.value}')
+        .join('・');
+    return missing.isEmpty ? null : '$missingが必要';
+  }
+
+  bool canBuildAt(BuildBlueprint blueprint, GridCell cell) =>
+      buildFailureReason(blueprint, cell) == null;
+
+  List<GridCell> houseFootprint(GridCell anchor) => [
+    anchor,
+    GridCell(anchor.x + 1, anchor.z),
+    GridCell(anchor.x, anchor.z + 1),
+    GridCell(anchor.x + 1, anchor.z + 1),
+  ];
+
+  IslandActionResult _actOn(GridCell cell, IslandTool activeTool) {
     selectedCell = cell;
     final resource = resources[cell];
     if (resource != null) {
-      if (tool != IslandTool.gather) {
+      if (activeTool != IslandTool.gather) {
         message = 'まず「採取」に切り替えよう';
         notifyListeners();
         return IslandActionResult(IslandActionKind.none, cell);
@@ -308,9 +444,12 @@ class IslandGameController extends ChangeNotifier {
     }
 
     final level = structures[cell] ?? BuildLevel.ground;
-    switch (tool) {
+    switch (activeTool) {
       case IslandTool.gather:
         message = 'ここには採取できるものがない';
+        break;
+      case IslandTool.build:
+        message = '建設メニューから作りたいものを選ぼう';
         break;
       case IslandTool.floor:
         if (level != BuildLevel.ground) {

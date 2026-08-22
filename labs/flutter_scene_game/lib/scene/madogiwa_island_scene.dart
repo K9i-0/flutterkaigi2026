@@ -10,6 +10,7 @@ import '../game/frame_performance_tracker.dart';
 import '../game/island_game_controller.dart';
 import '../game/mobile_quality.dart';
 import '../game/movement_math.dart';
+import '../game/terrain_picker.dart';
 import '../game/visual_math.dart';
 import '../world/chunk_mesh_builder.dart';
 import '../world/island_world.dart';
@@ -245,6 +246,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
     if (nearbyLandmark case final landmark?) return '${landmark.label}を調べる';
     return switch (controller.tool) {
       IslandTool.gather => '近くを採取',
+      IslandTool.build => '地面をタップ',
       IslandTool.floor => '床を置く',
       IslandTool.wall => '壁を置く',
       IslandTool.roof => '屋根を置く',
@@ -1116,7 +1118,26 @@ class MadogiwaIslandScene extends ChangeNotifier {
     notifyListeners();
   }
 
-  void selectTool(IslandTool tool) => controller.selectTool(tool);
+  void selectTool(IslandTool tool) {
+    controller.selectTool(tool);
+    if (tool == IslandTool.gather) _selection.visible = false;
+    hudRevision.value++;
+  }
+
+  bool buildAtSelected(BuildBlueprint blueprint) {
+    final cell = controller.selectedCell;
+    if (cell == null) {
+      controller.showMessage('先に建設したい地面をタップしよう');
+      return false;
+    }
+    final result = controller.buildAt(blueprint, cell);
+    if (!result.changed) return false;
+    _apply(result);
+    _selection.visible = false;
+    hudRevision.value++;
+    notifyListeners();
+    return true;
+  }
 
   bool craftRecipe(CraftRecipe recipe) {
     final crafted = controller.craft(recipe);
@@ -1847,35 +1868,33 @@ class MadogiwaIslandScene extends ChangeNotifier {
     return destination;
   }
 
-  void handleTap(Offset position, Size viewSize) {
-    if (!_loaded || viewSize.isEmpty) return;
+  GridCell? handleTap(Offset position, Size viewSize) {
+    if (!_loaded || viewSize.isEmpty) return null;
     final ray = _activeCamera.screenPointToRay(position, viewSize);
     GridCell? cell = controller.tool == IslandTool.gather
         ? _findResourceTarget(ray)
         : null;
     if (controller.tool == IslandTool.gather && cell == null) {
       controller.showMessage('近くの木・岩・鉱石・植物を直接タップしよう（7マス以内）');
-      return;
+      return null;
     }
-    for (var distance = 0.2; distance <= 70; distance += 0.16) {
-      if (cell != null) break;
-      final x = ray.origin.x + ray.direction.x * distance;
-      final y = ray.origin.y + ray.direction.y * distance;
-      final z = ray.origin.z + ray.direction.z * distance;
-      final candidate = GridCell(x.round(), z.round());
-      if (!IslandWorld.containsCell(candidate.x, candidate.z) ||
-          !IslandWorld.isLand(candidate.x, candidate.z)) {
-        continue;
-      }
-      if (y <= IslandWorld.surfaceY(candidate.x, candidate.z) + 0.12) {
-        cell = candidate;
-        break;
-      }
+    cell ??= pickTerrainTopCell(
+      originX: ray.origin.x,
+      originY: ray.origin.y,
+      originZ: ray.origin.z,
+      directionX: ray.direction.x,
+      directionY: ray.direction.y,
+      directionZ: ray.direction.z,
+      centerX: playerX,
+      centerZ: playerZ,
+    );
+    if (cell == null) {
+      controller.showMessage('地面の天面をタップして位置を指定しよう');
+      return null;
     }
-    if (cell == null) return;
     if (_horizontalDistanceToPlayer(cell) > _interactionReach) {
       controller.showMessage('遠すぎて届かない。対象の近くまで移動しよう');
-      return;
+      return null;
     }
 
     _selection
@@ -1885,8 +1904,16 @@ class MadogiwaIslandScene extends ChangeNotifier {
         IslandWorld.surfaceY(cell.x, cell.z) + 0.04,
         cell.z.toDouble(),
       );
+    if (controller.tool != IslandTool.gather) {
+      if (controller.tool != IslandTool.build) {
+        controller.selectTool(IslandTool.build);
+      }
+      controller.selectBuildTarget(cell);
+      return cell;
+    }
     final result = controller.actOn(cell);
     if (result.changed) _apply(result);
+    return null;
   }
 
   GridCell? _findResourceTarget(vm.Ray ray) {
@@ -2012,9 +2039,21 @@ class MadogiwaIslandScene extends ChangeNotifier {
       case IslandActionKind.torchPlaced:
         _addTorch(result.cell);
         break;
+      case IslandActionKind.housePlaced:
+        _rebuildStructures();
+        break;
       case IslandActionKind.none:
         return;
     }
+  }
+
+  void _rebuildStructures() {
+    _structureRoot.removeAll();
+    for (final entry in controller.structures.entries) {
+      _addFloor(entry.key);
+      if (entry.value == BuildLevel.wall) _addWall(entry.key);
+    }
+    if (controller.roofComplete) _addRoof();
   }
 
   void _addFloor(GridCell cell) {
