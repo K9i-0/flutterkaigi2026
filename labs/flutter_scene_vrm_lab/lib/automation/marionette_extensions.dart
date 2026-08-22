@@ -70,6 +70,12 @@ void registerVrmLabMarionetteExtensions() {
           'detectorFps': lab.faceCamera.detectorFps,
           'processedFrames': lab.faceCamera.processedFrames,
           'droppedFrames': lab.faceCamera.droppedFrames,
+          'hasPreviewFrame':
+              lab.faceCamera.previewJpeg != null ||
+              lab.faceCamera.cameraController?.value.isInitialized == true,
+          'hasFaceOverlay': lab.faceCamera.faceOverlay != null,
+          'landmarkRegions':
+              lab.faceCamera.faceOverlay?.landmarks.keys.toList() ?? const [],
           'error': lab.faceCamera.errorMessage,
         },
         'expressions': lab.avatar!.expressionWeights,

@@ -1,5 +1,6 @@
 import AVFoundation
 import Cocoa
+import CoreImage
 import FlutterMacOS
 import Vision
 
@@ -33,10 +34,12 @@ final class MacOSFaceTrackingPlugin: NSObject,
     qos: .userInitiated
   )
   private let captureSession = AVCaptureSession()
+  private let previewContext = CIContext(options: [.cacheIntermediates: false])
   private var eventSink: FlutterEventSink?
   private var configured = false
   private var configuredDeviceID: String?
   private var lastAnalysisTime = 0.0
+  private var lastPreviewTime = 0.0
   private var startedAt = 0.0
   private var processedFrames = 0
   private var droppedFrames = 0
@@ -138,6 +141,7 @@ final class MacOSFaceTrackingPlugin: NSObject,
         self.processedFrames = 0
         self.droppedFrames = 0
         self.lastAnalysisTime = 0
+        self.lastPreviewTime = 0
         self.startedAt = CFAbsoluteTimeGetCurrent()
         if !self.captureSession.isRunning {
           self.captureSession.startRunning()
@@ -258,6 +262,7 @@ final class MacOSFaceTrackingPlugin: NSObject,
       droppedFrames += 1
       return
     }
+    emitPreview(pixelBuffer, now: now)
 
     let request = VNDetectFaceLandmarksRequest()
     request.revision = VNDetectFaceLandmarksRequestRevision3
@@ -298,7 +303,69 @@ final class MacOSFaceTrackingPlugin: NSObject,
       face.landmarks?.innerLips ?? face.landmarks?.outerLips
     )
     event["confidence"] = Double(face.confidence)
+    let bounds = face.boundingBox
+    event["faceBounds"] = [
+      Double(bounds.minX),
+      Double(1 - bounds.maxY),
+      Double(bounds.width),
+      Double(bounds.height),
+    ]
+    event["landmarks"] = landmarkMap(face)
     return event
+  }
+
+  private func emitPreview(_ pixelBuffer: CVPixelBuffer, now: Double) {
+    guard lastPreviewTime == 0 || now - lastPreviewTime >= 1.0 / 8.0 else {
+      return
+    }
+    lastPreviewTime = now
+    let image = CIImage(cvPixelBuffer: pixelBuffer)
+    guard let cgImage = previewContext.createCGImage(image, from: image.extent) else {
+      return
+    }
+    let bitmap = NSBitmapImageRep(cgImage: cgImage)
+    guard let data = bitmap.representation(
+      using: .jpeg,
+      properties: [.compressionFactor: 0.5]
+    ) else {
+      return
+    }
+    emit([
+      "type": "preview",
+      "imageBytes": FlutterStandardTypedData(bytes: data),
+    ])
+  }
+
+  private func landmarkMap(_ face: VNFaceObservation) -> [String: Any] {
+    guard let landmarks = face.landmarks else { return [:] }
+    let regions: [(String, VNFaceLandmarkRegion2D?)] = [
+      ("contour", landmarks.faceContour),
+      ("leftEyebrow", landmarks.leftEyebrow),
+      ("rightEyebrow", landmarks.rightEyebrow),
+      ("leftEye", landmarks.leftEye),
+      ("rightEye", landmarks.rightEye),
+      ("nose", landmarks.nose),
+      ("noseCrest", landmarks.noseCrest),
+      ("outerLips", landmarks.outerLips),
+      ("innerLips", landmarks.innerLips),
+    ]
+    var mapped: [String: Any] = [:]
+    for (name, region) in regions {
+      guard let region else { continue }
+      mapped[name] = normalizedPoints(region, in: face.boundingBox)
+    }
+    return mapped
+  }
+
+  private func normalizedPoints(
+    _ region: VNFaceLandmarkRegion2D,
+    in faceBounds: CGRect
+  ) -> [[Double]] {
+    region.normalizedPoints.map { point in
+      let x = faceBounds.minX + point.x * faceBounds.width
+      let visionY = faceBounds.minY + point.y * faceBounds.height
+      return [Double(x), Double(1 - visionY)]
+    }
   }
 
   private func stats(type: String, now: Double) -> [String: Any] {
