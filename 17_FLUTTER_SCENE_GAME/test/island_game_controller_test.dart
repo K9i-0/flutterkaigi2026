@@ -205,6 +205,63 @@ void main() {
     });
 
     test(
+      'one-shot house, campfire, and workbench advance the beach chapter',
+      () {
+        final controller = IslandGameController()..grantDebugResources(20);
+
+        expect(
+          controller
+              .buildAt(BuildBlueprint.house, const GridCell(0, 0))
+              .changed,
+          isTrue,
+        );
+        expect(controller.chapterObjective, contains('焚き火'));
+
+        expect(controller.craft(CraftRecipe.campfire), isTrue);
+        expect(controller.chapter, GameChapter.beach);
+        expect(controller.chapterObjective, contains('作業台'));
+        expect(controller.message, contains('次:'));
+
+        expect(controller.craft(CraftRecipe.workbench), isTrue);
+        expect(controller.chapter, GameChapter.forest);
+        expect(controller.chapterObjective, contains('石の斧'));
+      },
+    );
+
+    test('crafting explains prerequisites and quarry starts with reunion', () {
+      final controller = IslandGameController();
+
+      expect(
+        controller.craftFailureReason(CraftRecipe.workbench),
+        contains('小屋'),
+      );
+      expect(
+        controller.craftFailureReason(CraftRecipe.stonePickaxe),
+        contains('作業台'),
+      );
+
+      controller
+        ..grantDebugResources()
+        ..chapter = GameChapter.quarry
+        ..craftedRecipes.add(CraftRecipe.workbench);
+      expect(controller.chapterObjective, contains('ゆめみん'));
+      expect(
+        controller.craftFailureReason(CraftRecipe.ironPickaxe),
+        contains('ゆめみん'),
+      );
+      final yumeminDistance = math.sqrt(64 * 64 + 44 * 44);
+      expect(
+        controller.explorationLimit,
+        greaterThanOrEqualTo(yumeminDistance - 2.6),
+      );
+
+      controller
+        ..reuniteMember('yumemin', 'ゆめみん')
+        ..craftedRecipes.add(CraftRecipe.ironPickaxe);
+      expect(controller.explorationLimit, 86);
+    });
+
+    test(
       'house blueprint rejects occupied or underfunded sites atomically',
       () {
         final controller = IslandGameController();
@@ -298,6 +355,7 @@ void main() {
       expect(controller.chapter, GameChapter.summit);
       expect(controller.completeLandmark('summit_relay'), isTrue);
       expect(controller.endingAvailable, isTrue);
+      expect(controller.chapterObjective, contains('救助信号'));
 
       controller.chooseEnding(EndingChoice.rescue);
       expect(controller.endingChoice, EndingChoice.rescue);

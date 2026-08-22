@@ -141,7 +141,7 @@ class IslandGameController extends ChangeNotifier {
   double get explorationLimit => switch (chapter) {
     GameChapter.beach => 24,
     GameChapter.forest => hasRecipe(CraftRecipe.bridgeKit) ? 64 : 38,
-    GameChapter.quarry => hasRecipe(CraftRecipe.ironPickaxe) ? 86 : 70,
+    GameChapter.quarry => hasRecipe(CraftRecipe.ironPickaxe) ? 86 : 80,
     GameChapter.marsh => hasRecipe(CraftRecipe.fogGear) ? 104 : 90,
     GameChapter.summit || GameChapter.complete => 120,
   };
@@ -171,8 +171,10 @@ class IslandGameController extends ChangeNotifier {
         if (!reunitedMembers.contains('yametaro')) return '壊れた無線塔でやめ太郎を捜す';
         return '無線塔を調べて修復する（石材4・石炭2）';
       case GameChapter.quarry:
-        if (!hasRecipe(CraftRecipe.ironPickaxe)) return '鉄4で鉄のツルハシを作る';
         if (!reunitedMembers.contains('yumemin')) return '漂着した会議室でゆめみんを捜す';
+        if (!hasRecipe(CraftRecipe.ironPickaxe)) {
+          return 'ゆめみんと鉄のツルハシを作る（木材2・鉄4）';
+        }
         if (!hasRecipe(CraftRecipe.forge)) return 'ゆめみんと簡易炉を作る';
         return '漂着した会議室の中継器を起動する';
       case GameChapter.marsh:
@@ -180,7 +182,8 @@ class IslandGameController extends ChangeNotifier {
         if (!reunitedMembers.contains('takosan')) return 'タコ石の門でタコさんを捜す';
         return 'タコ石の門を修復する（鉄6・石炭4）';
       case GameChapter.summit:
-        return '山頂の社内遺跡で最終通信機を完成させる';
+        if (endingAvailable) return '救助信号を送るか、島に残るか選ぶ';
+        return '山頂で最終通信機を完成（鉄8・石炭6・石材10）';
       case GameChapter.complete:
         return endingChoice == EndingChoice.stay
             ? '島を新しい窓際族エリアとして発展させる'
@@ -310,8 +313,10 @@ class IslandGameController extends ChangeNotifier {
       structures[footprintCell] = BuildLevel.wall;
     }
     roofComplete = true;
-    message = '小屋を一括建築！ 次は焚き火と作業台を用意しよう';
+    message = '小屋を一括建築！';
+    final previousChapter = chapter;
     _updateChapter();
+    if (chapter == previousChapter) message = '小屋が完成。次: $chapterObjective';
     notifyListeners();
     return IslandActionResult(IslandActionKind.housePlaced, cell);
   }
@@ -490,8 +495,12 @@ class IslandGameController extends ChangeNotifier {
         } else {
           wood -= 2;
           roofComplete = true;
-          message = '小屋が完成！ 次は焚き火と作業台を用意しよう';
+          message = '小屋が完成！';
+          final previousChapter = chapter;
           _updateChapter();
+          if (chapter == previousChapter) {
+            message = '小屋が完成。次: $chapterObjective';
+          }
           notifyListeners();
           return IslandActionResult(IslandActionKind.roofPlaced, cell);
         }
@@ -514,26 +523,35 @@ class IslandGameController extends ChangeNotifier {
     return IslandActionResult(IslandActionKind.none, cell);
   }
 
-  bool canCraft(CraftRecipe recipe) {
-    if (hasRecipe(recipe)) return false;
-    if (recipe == CraftRecipe.workbench && !homeComplete) return false;
+  bool canCraft(CraftRecipe recipe) => craftFailureReason(recipe) == null;
+
+  String? craftFailureReason(CraftRecipe recipe) {
+    if (hasRecipe(recipe)) return '作成済み';
+    if (recipe == CraftRecipe.workbench && !homeComplete) {
+      return '先に小屋を完成させよう';
+    }
     if (recipe != CraftRecipe.campfire &&
         recipe != CraftRecipe.workbench &&
         !hasRecipe(CraftRecipe.workbench)) {
-      return false;
+      return '先に作業台を作ろう';
     }
     if ((recipe == CraftRecipe.ironPickaxe ||
             recipe == CraftRecipe.forge ||
             recipe == CraftRecipe.fogGear) &&
         !reunitedMembers.contains('yumemin')) {
-      return false;
+      return '先に漂着した会議室でゆめみんと再会しよう';
     }
     if (recipe == CraftRecipe.fogGear && !hasRecipe(CraftRecipe.forge)) {
-      return false;
+      return '先に簡易炉を作ろう';
     }
-    return recipe.cost.entries.every(
-      (entry) => itemCount(entry.key) >= entry.value,
-    );
+    final missing = recipe.cost.entries
+        .where((entry) => itemCount(entry.key) < entry.value)
+        .map(
+          (entry) =>
+              '${entry.key.label}あと${entry.value - itemCount(entry.key)}',
+        )
+        .join('・');
+    return missing.isEmpty ? null : missing;
   }
 
   bool craft(CraftRecipe recipe) {
@@ -543,11 +561,7 @@ class IslandGameController extends ChangeNotifier {
       return false;
     }
     if (!canCraft(recipe)) {
-      final missing = recipe.cost.entries
-          .where((entry) => itemCount(entry.key) < entry.value)
-          .map((entry) => '${entry.key.label}${entry.value}')
-          .join('・');
-      message = missing.isEmpty ? '${recipe.label}はまだ作れない' : '$missingが必要';
+      message = craftFailureReason(recipe) ?? '${recipe.label}はまだ作れない';
       notifyListeners();
       return false;
     }
@@ -555,8 +569,11 @@ class IslandGameController extends ChangeNotifier {
       _changeItem(entry.key, -entry.value);
     }
     craftedRecipes.add(recipe);
-    message = '${recipe.label}をクラフトした';
+    final previousChapter = chapter;
     _updateChapter();
+    if (chapter == previousChapter) {
+      message = '${recipe.label}をクラフト。次: $chapterObjective';
+    }
     notifyListeners();
     return true;
   }
@@ -643,7 +660,7 @@ class IslandGameController extends ChangeNotifier {
     completedLandmarks.add(id);
     message = id == 'summit_relay'
         ? '最終通信機が完成。会社へ救助信号を送るか決めよう'
-        : '中継設備を起動！ 圏外の霧が後退した';
+        : '中継設備を起動！ 次: $chapterObjective';
     notifyListeners();
     return true;
   }
