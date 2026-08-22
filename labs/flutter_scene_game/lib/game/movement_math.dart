@@ -6,11 +6,12 @@ const double jumpArcHeight = 1.25;
 bool canTraverseHeight({
   required double currentHeight,
   required double targetHeight,
-}) => targetHeight >= 0 && (targetHeight - currentHeight).abs() <= maxJumpClimb;
+  double maxClimb = maxJumpClimb,
+}) => targetHeight >= 0 && (targetHeight - currentHeight).abs() <= maxClimb;
 
-double jumpArcOffset(double progress) {
+double jumpArcOffset(double progress, {double height = jumpArcHeight}) {
   final t = progress.clamp(0.0, 1.0);
-  return 4 * jumpArcHeight * t * (1 - t);
+  return 4 * height * t * (1 - t);
 }
 
 /// Canonical voxel characters face local -Z after their model correction.

@@ -120,7 +120,11 @@ class MadogiwaIslandScene extends ChangeNotifier {
   double _hudAccumulator = 0;
   double _lightingAccumulator = 0;
   double _effectsAccumulator = 0;
+  double _autoGatherAccumulator = 0;
   vm.Vector3 _playerPosition = vm.Vector3(0, IslandWorld.surfaceY(0, 3), 3);
+  final List<vm.Vector3> _partyTrail = [];
+  double _playerFacingX = 0;
+  double _playerFacingZ = -1;
   ChunkCoordinate _playerChunk = const ChunkCoordinate(0, 0);
   int _lastExploredX = 1 << 30;
   int _lastExploredZ = 1 << 30;
@@ -162,6 +166,8 @@ class MadogiwaIslandScene extends ChangeNotifier {
       _chunkQuadCounts.values.fold(0, (sum, count) => sum + count);
   int get playerX => _playerPosition.x.round();
   int get playerZ => _playerPosition.z.round();
+  double get playerFacingX => _playerFacingX;
+  double get playerFacingZ => _playerFacingZ;
   int get playerChunkX => _playerChunk.x;
   int get playerChunkZ => _playerChunk.z;
   double get cameraDistance => _distance;
@@ -226,8 +232,14 @@ class MadogiwaIslandScene extends ChangeNotifier {
   int get exploredMinZ => _exploredMinZ;
   int get exploredMaxZ => _exploredMaxZ;
   bool get isJumping => _isJumping;
-  double get jumpOffset =>
-      _isJumping ? jumpArcOffset(_jumpElapsed / _jumpDuration) : 0;
+  double get jumpOffset => _isJumping
+      ? jumpArcOffset(
+          _jumpElapsed / _jumpDuration,
+          height: controller.doubleJumpUnlocked
+              ? jumpArcHeight * 2
+              : jumpArcHeight,
+        )
+      : 0;
   List<String> get reunitedMemberNames => _workers
       .where((worker) => !worker.isPlayer && worker.reunited)
       .map((worker) => worker.displayName)
@@ -1069,6 +1081,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
       if (spec.isPlayer) {
         _playerRoot = root;
         _playerPosition = vm.Vector3.copy(home);
+        _resetPartyTrail();
       }
     }
     characterMeshCount = totalMeshes;
@@ -1090,6 +1103,9 @@ class MadogiwaIslandScene extends ChangeNotifier {
     _selection.visible = false;
     _rebuildVisibleResources(_desiredChunks());
     _playerPosition = vm.Vector3(0, IslandWorld.surfaceY(0, 3), 3);
+    _playerFacingX = 0;
+    _playerFacingZ = -1;
+    _resetPartyTrail();
     _signalBoundaryBlocked = false;
     _rebuildSignalBoundary();
     _cancelJump();
@@ -1632,6 +1648,9 @@ class MadogiwaIslandScene extends ChangeNotifier {
     final elevation = sunElevationForTime(solarTime);
     final daylight = daylightForTime(solarTime);
     final moonlight = moonlightForTime(solarTime);
+    final partyNightVision = controller.nightVisionUnlocked
+        ? math.pow(1 - daylight, 2).toDouble()
+        : 0.0;
     // Keep the physically based sky from clipping pale voxel materials at noon.
     // A low sun gets more intensity because its grazing angle contributes less
     // irradiance to horizontal terrain while still producing long shadows.
@@ -1654,12 +1673,16 @@ class MadogiwaIslandScene extends ChangeNotifier {
         )
         ..normalize();
       _sky
-        ..energy = 0.22 + daylight * 0.48 + moonlight * 0.12
+        ..energy =
+            0.22 + daylight * 0.48 + moonlight * 0.12 + partyNightVision * 0.16
         ..turbidity = 6.8 + twilight * 4.2
         ..groundColor.setValues(
-          0.04 + daylight * 0.055 + moonlight * 0.018,
-          0.06 + daylight * 0.075 + moonlight * 0.03,
-          0.105 + daylight * 0.04 + moonlight * 0.06,
+          0.04 +
+              daylight * 0.055 +
+              moonlight * 0.018 +
+              partyNightVision * 0.018,
+          0.06 + daylight * 0.075 + moonlight * 0.03 + partyNightVision * 0.05,
+          0.105 + daylight * 0.04 + moonlight * 0.06 + partyNightVision * 0.04,
         );
     }
 
@@ -1679,13 +1702,15 @@ class MadogiwaIslandScene extends ChangeNotifier {
         ..shadowAmbientStrength = 0.3 + moonlight * 0.22;
 
       scene
-        ..exposure = 0.64 + daylight * 0.14 + moonlight * 0.07
-        ..environmentIntensity = 0.29 + daylight * 0.33 + moonlight * 0.12;
+        ..exposure =
+            0.64 + daylight * 0.14 + moonlight * 0.07 + partyNightVision * 0.24
+        ..environmentIntensity =
+            0.29 + daylight * 0.33 + moonlight * 0.12 + partyNightVision * 0.32;
       scene.postProcess.colorGrading
         ..enabled = true
-        ..brightness = 0.98 + daylight * 0.02
-        ..contrast = 1.08
-        ..saturation = 1.02 + daylight * 0.22
+        ..brightness = 0.98 + daylight * 0.02 + partyNightVision * 0.06
+        ..contrast = 1.08 - partyNightVision * 0.06
+        ..saturation = 1.02 + daylight * 0.22 + partyNightVision * 0.04
         ..temperature = twilight * math.sqrt(daylight) * 0.2 - moonlight * 0.09;
       scene.postProcess.bloom
         ..enabled = _qualityProfile.bloom
@@ -1698,6 +1723,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
             0.012 +
             (1 - daylight) * 0.006 +
             twilight * 0.004 +
+            partyNightVision * -0.003 +
             (_qualityProfile.terrainChunkRadius == 1 ? 0.004 : 0) +
             (controller.chapter == GameChapter.marsh ? 0.014 : 0)
         ..skyColorInfluence = 0.4
@@ -1706,9 +1732,13 @@ class MadogiwaIslandScene extends ChangeNotifier {
         ..sunInScatter = twilight * daylight * 0.72
         ..sunInScatterExponent = 12
         ..color.setValues(
-          0.045 + daylight * 0.12 + twilight * 0.08,
-          0.08 + daylight * 0.27 + twilight * 0.06,
-          0.18 + daylight * 0.3 + twilight * 0.03 + moonlight * 0.08,
+          0.045 + daylight * 0.12 + twilight * 0.08 + partyNightVision * 0.04,
+          0.08 + daylight * 0.27 + twilight * 0.06 + partyNightVision * 0.08,
+          0.18 +
+              daylight * 0.3 +
+              twilight * 0.03 +
+              moonlight * 0.08 +
+              partyNightVision * 0.06,
         );
       scene.godRays
         ..enabled =
@@ -1848,6 +1878,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
       destination.z.toDouble(),
     );
     _playerRoot?.position = vm.Vector3.copy(_playerPosition);
+    _resetPartyTrail();
     _playerChunk = ChunkCoordinate(
       IslandWorld.chunkForCoordinate(_playerPosition.x),
       IslandWorld.chunkForCoordinate(_playerPosition.z),
@@ -2146,6 +2177,7 @@ class MadogiwaIslandScene extends ChangeNotifier {
     _updateSignalBoundary();
     _hudAccumulator += dt;
     _updatePlayer(dt);
+    _updatePartyAbilities(dt);
     _revealAroundPlayer();
     _selection.scale = vm.Vector3.all(1 + math.sin(_elapsed * 4) * 0.05);
     for (var index = 0; index < _workers.length; index++) {
@@ -2169,21 +2201,9 @@ class MadogiwaIslandScene extends ChangeNotifier {
           _revealAroundPlayer(force: true);
         }
       }
+      final partyIndex = controller.reunitedMembers.toList().indexOf(worker.id);
       final destination = worker.reunited
-          ? controller.companionMode(worker.id) == CompanionMode.follow
-                ? vm.Vector3(
-                    _playerPosition.x + worker.followOffset.$1,
-                    _playerPosition.y,
-                    _playerPosition.z + worker.followOffset.$2,
-                  )
-                : vm.Vector3(
-                    worker.followOffset.$1 * 1.8,
-                    IslandWorld.surfaceY(
-                      (worker.followOffset.$1 * 1.8).round(),
-                      (worker.followOffset.$2 * 1.8).round(),
-                    ),
-                    worker.followOffset.$2 * 1.8,
-                  )
+          ? _partyTrailTarget(math.max(0, partyIndex))
           : worker.home;
       final position = worker.root.position;
       final previousX = position.x;
@@ -2266,6 +2286,9 @@ class MadogiwaIslandScene extends ChangeNotifier {
           canTraverseHeight(
             currentHeight: currentHeight.toDouble(),
             targetHeight: xHeight.toDouble(),
+            maxClimb: controller.doubleJumpUnlocked
+                ? maxJumpClimb * 2
+                : maxJumpClimb,
           )) {
         _playerPosition.x = nextX;
       }
@@ -2280,6 +2303,9 @@ class MadogiwaIslandScene extends ChangeNotifier {
           canTraverseHeight(
             currentHeight: currentHeight.toDouble(),
             targetHeight: zHeight.toDouble(),
+            maxClimb: controller.doubleJumpUnlocked
+                ? maxJumpClimb * 2
+                : maxJumpClimb,
           )) {
         _playerPosition.z = nextZ;
       }
@@ -2306,10 +2332,14 @@ class MadogiwaIslandScene extends ChangeNotifier {
         _jumpLandingSurfaceY = _playerPosition.y;
       }
       if (moving) {
+        final moveLength = math.sqrt(movedX * movedX + movedZ * movedZ);
+        _playerFacingX = movedX / moveLength;
+        _playerFacingZ = movedZ / moveLength;
         player.rotation = vm.Quaternion.axisAngle(
           vm.Vector3(0, 1, 0),
           characterFacingYaw(movedX, movedZ),
         );
+        _recordPartyTrail();
       }
       final nextChunk = ChunkCoordinate(
         IslandWorld.chunkForCoordinate(_playerPosition.x),
@@ -2349,6 +2379,65 @@ class MadogiwaIslandScene extends ChangeNotifier {
       elapsed: _elapsed,
       moving: moving || jumping,
     );
+  }
+
+  void _resetPartyTrail() {
+    _partyTrail
+      ..clear()
+      ..add(vm.Vector3.copy(_playerPosition));
+  }
+
+  void _recordPartyTrail() {
+    if (_partyTrail.isEmpty) {
+      _partyTrail.add(vm.Vector3.copy(_playerPosition));
+      return;
+    }
+    final latest = _partyTrail.last;
+    final dx = latest.x - _playerPosition.x;
+    final dz = latest.z - _playerPosition.z;
+    if (dx * dx + dz * dz < 0.0324) return;
+    _partyTrail.add(vm.Vector3.copy(_playerPosition));
+    if (_partyTrail.length > 150) {
+      _partyTrail.removeRange(0, _partyTrail.length - 150);
+    }
+  }
+
+  vm.Vector3 _partyTrailTarget(int partyIndex) {
+    if (_partyTrail.isEmpty) return vm.Vector3.copy(_playerPosition);
+    final sampleLag = 11 + partyIndex * 11;
+    final targetIndex = math.max(0, _partyTrail.length - 1 - sampleLag);
+    return vm.Vector3.copy(_partyTrail[targetIndex]);
+  }
+
+  void _updatePartyAbilities(double dt) {
+    if (!controller.autoGatherUnlocked) {
+      _autoGatherAccumulator = 0;
+      return;
+    }
+    _autoGatherAccumulator += dt;
+    if (_autoGatherAccumulator < 1.8) return;
+    _autoGatherAccumulator = 0;
+    GridCell? target;
+    var bestDistanceSquared = 25.0;
+    for (final entry in controller.resources.entries) {
+      if (!_resourceNodes.containsKey(entry.key) ||
+          !controller.canAutoHarvest(entry.value)) {
+        continue;
+      }
+      final dx = entry.key.x - _playerPosition.x;
+      final dz = entry.key.z - _playerPosition.z;
+      final distanceSquared = dx * dx + dz * dz;
+      if (distanceSquared < bestDistanceSquared) {
+        bestDistanceSquared = distanceSquared;
+        target = entry.key;
+      }
+    }
+    if (target == null) return;
+    final result = controller.autoHarvestAt(target);
+    if (result.changed) {
+      _apply(result);
+      hudRevision.value++;
+    }
   }
 
   void _startJump({required double fromSurfaceY, required double toSurfaceY}) {
