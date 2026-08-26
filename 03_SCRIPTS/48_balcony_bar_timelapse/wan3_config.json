@@ -1,0 +1,22 @@
+{
+  "model": "wan3.0-video",
+  "prompt_file": "prompt_wan3.txt",
+  "media": [
+    {"type": "reference_image", "path": "character_sobaya_basic_sheet.png"},
+    {"type": "reference_image", "path": "character_fukuchan_basic_sheet.png"},
+    {"type": "reference_image", "path": "character_tokun_basic_sheet.png"},
+    {"type": "reference_image", "path": "reference_opening_dirty_balcony.png"},
+    {"type": "reference_image", "path": "reference_finished_balcony_bar.png"},
+    {"type": "reference_audio", "path": "../../02_CHARACTERS/Fukuchan_voice.wav"}
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 30,
+    "audio": true,
+    "seed": 300048,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_episode48_balcony_bar_timelapse_character_sheets_seed300048_480p.mp4"
+}

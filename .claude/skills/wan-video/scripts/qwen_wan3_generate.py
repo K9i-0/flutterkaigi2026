@@ -35,6 +35,7 @@ ALLOWED_MEDIA_TYPES = {
 }
 ALLOWED_RESOLUTIONS = {"480P", "720P", "1080P"}
 ALLOWED_RATIOS = {"adaptive", "16:9", "4:3", "1:1", "3:4", "9:16"}
+ALLOWED_MODELS = {"wan3.0-video", "wan3.0-video-prime"}
 
 
 def parse_args() -> argparse.Namespace:
@@ -63,9 +64,10 @@ def resolve_inside(base: Path, value: str) -> Path:
     return path if path.is_absolute() else (base / path).resolve()
 
 
-def validate(config: dict[str, Any], base: Path) -> tuple[str, list[tuple[str, Path]], dict[str, Any], Path]:
-    if config.get("model") != "wan3.0-video":
-        raise ValueError('model must be "wan3.0-video"')
+def validate(config: dict[str, Any], base: Path) -> tuple[str, str, list[tuple[str, Path]], dict[str, Any], Path]:
+    model = config.get("model")
+    if model not in ALLOWED_MODELS:
+        raise ValueError(f"model must be one of: {', '.join(sorted(ALLOWED_MODELS))}")
 
     prompt_path = resolve_inside(base, str(config.get("prompt_file", "")))
     if not prompt_path.is_file():
@@ -124,7 +126,7 @@ def validate(config: dict[str, Any], base: Path) -> tuple[str, list[tuple[str, P
     output = resolve_inside(base, str(config.get("output", "")))
     if not output.name.lower().endswith(".mp4"):
         raise ValueError("output must end in .mp4")
-    return prompt, media, parameters, output
+    return model, prompt, media, parameters, output
 
 
 def data_uri(path: Path) -> str:
@@ -133,9 +135,9 @@ def data_uri(path: Path) -> str:
     return f"data:{mime};base64,{encoded}"
 
 
-def build_payload(prompt: str, media: list[tuple[str, Path]], parameters: dict[str, Any]) -> dict[str, Any]:
+def build_payload(model: str, prompt: str, media: list[tuple[str, Path]], parameters: dict[str, Any]) -> dict[str, Any]:
     return {
-        "model": "wan3.0-video",
+        "model": model,
         "input": {
             "prompt": prompt,
             "media": [{"type": kind, "url": data_uri(path)} for kind, path in media],
@@ -184,7 +186,7 @@ def main() -> int:
     args = parse_args()
     try:
         config, base = load_config(args.config)
-        prompt, media, parameters, output = validate(config, base)
+        model, prompt, media, parameters, output = validate(config, base)
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         print(f"Validation error: {exc}", file=sys.stderr)
         return 2
@@ -194,7 +196,7 @@ def main() -> int:
     print(f"Prompt: {len(prompt):,} characters")
     print(f"Media: {counts} ({total_bytes / 1024 / 1024:.1f} MiB raw)")
     print(
-        f"Request: wan3.0-video, {parameters['duration']} s, "
+        f"Request: {model}, {parameters['duration']} s, "
         f"{parameters['resolution']}, {parameters['ratio']}, audio={parameters['audio']}"
     )
     print(
@@ -213,7 +215,7 @@ def main() -> int:
         return 2
 
     try:
-        payload = build_payload(prompt, media, parameters)
+        payload = build_payload(model, prompt, media, parameters)
         created = api_json(SUBMIT_URL, api_key, method="POST", payload=payload)
         task_id = created.get("output", {}).get("task_id")
         if not task_id:

@@ -14,7 +14,7 @@
 Create exactly one <duration>-second, <ratio>, <style> video with synchronized audio.
 
 References:
-- Image 1: identity reference for <character>. Preserve <identity traits>.
+- Image 1: episode-local character sheet for <character>. Preserve <identity traits>. Use the sheet only for face, body, clothing, and design; do not reproduce its panel layout, labels, white background, or multiple views as multiple people.
 - Image 2: exact prop/logo/environment reference. Use only for <role>.
 - Audio 1: voice-timbre reference only. Do not copy its words.
 

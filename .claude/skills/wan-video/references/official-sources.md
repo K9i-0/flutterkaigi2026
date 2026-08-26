@@ -3,6 +3,7 @@
 有料実行または仕様案内の直前に、以下をウェブで確認する。二次情報ではなく公式ページを優先する。
 
 - Qwen Cloud Wan 3.0モデル・現在価格: https://www.qwencloud.com/models/wan3.0-video
+- Qwen Cloud Wan 3.0 Primeモデル・現在価格: https://www.qwencloud.com/models/wan3.0-video-prime
 - Qwen Cloud Wan 3.0タスク作成API: https://docs.qwencloud.com/api-reference/video-generation/wan30-video/create-task
 - Qwen Cloud Wan 3.0結果取得API: https://docs.qwencloud.com/api-reference/video-generation/wan30-video/query-result
 - Qwen Cloud動画モデル一覧: https://docs.qwencloud.com/developer-guides/getting-started/video-models

@@ -5,7 +5,7 @@
   "model": "wan3.0-video",
   "prompt_file": "prompt_wan3.txt",
   "media": [
-    {"type": "reference_image", "path": "character.png"},
+    {"type": "reference_image", "path": "character_sobaya_basic_sheet.png"},
     {"type": "reference_image", "path": "logo.png"}
   ],
   "parameters": {
@@ -22,7 +22,9 @@
 ```
 
 - パスは設定ファイルのあるディレクトリを基準にする。
+- 通常形の人物シートはテンプレートから設定ファイルと同じエピソードディレクトリへ実ファイルとしてコピーし、その相対パスを指定する。
+- テンプレート、`02_CHARACTERS/`、過去エピソードの人物画像を設定から直接参照しない。正典参照WAVは`VOICE_CAST.md`の指定に従う。
 - `media`の配列順とプロンプトの`Image n`、`Video n`、`Audio n`を一致させる。
 - `reference_*`と`first_frame`/`last_frame`を混在させない。
-- スクリプトは`model`を`wan3.0-video`へ限定し、危険な任意エンドポイント指定を受け付けない。
+- スクリプトは`model`を`wan3.0-video`または`wan3.0-video-prime`へ限定し、危険な任意エンドポイント指定を受け付けない。
 - 出力MP4は設定ファイルのディレクトリ内へ保存する。絶対パスも指定できるが、通常は相対パスを使う。
