@@ -1,0 +1,22 @@
+{
+  "model": "wan3.0-video",
+  "prompt_file": "prompt_wan3.txt",
+  "media": [
+    {"type": "reference_image", "path": "character_sobaya_basic_sheet.png"},
+    {"type": "reference_image", "path": "logo_yumemi_master.png"},
+    {"type": "reference_image", "path": "scene_00_sobaya_m202_front_start_production.png"},
+    {"type": "reference_image", "path": "scene_01_yumemi_office_start_production_pose_fixed_v2.png"},
+    {"type": "reference_image", "path": "vfx_yumemi_office_blast_production.png"},
+    {"type": "reference_image", "path": "scene_02_sobaya_drinking_final_production.png"}
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 15,
+    "audio": true,
+    "seed": 300030,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_episode30_seed300030_480p.mp4"
+}

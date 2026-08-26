@@ -1,0 +1,4 @@
+interface:
+  display_name: "Wan動画制作"
+  short_description: "Wan 3.0動画の設計・生成・監査を一貫して行う"
+  default_prompt: "Use $wan-video to create and validate a Wan 3.0 video from this episode."
