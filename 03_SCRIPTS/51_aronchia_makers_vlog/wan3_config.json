@@ -1,0 +1,48 @@
+{
+  "model": "wan3.0-video",
+  "prompt_file": "prompt_wan3.txt",
+  "media": [
+    {
+      "type": "reference_image",
+      "path": "character_fukuchan_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_yotan_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_sobaya_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "scene_01_workshop_vlog_start_production.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "prop_aronchia_handwritten_final.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "prop_aronchia_completed_chair_production.png"
+    },
+    {
+      "type": "reference_audio",
+      "path": "fukuchan_voice_ref_7s.wav"
+    },
+    {
+      "type": "reference_audio",
+      "path": "../../02_CHARACTERS/Sobaya_voice.wav"
+    }
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 30,
+    "audio": true,
+    "seed": 510030,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_result_seed510030_480p.mp4"
+}

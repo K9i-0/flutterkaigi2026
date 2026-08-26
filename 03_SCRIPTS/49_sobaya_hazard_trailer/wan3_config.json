@@ -1,0 +1,23 @@
+{
+  "model": "wan3.0-video",
+  "prompt_file": "prompt_wan3.txt",
+  "media": [
+    {"type": "reference_image", "path": "character_fukuchan_basic_sheet.png"},
+    {"type": "reference_image", "path": "character_sobaya_basic_sheet.png"},
+    {"type": "reference_image", "path": "character_takosan_basic_sheet.png"},
+    {"type": "reference_image", "path": "character_yotan_basic_sheet.png"},
+    {"type": "reference_audio", "path": "voice_ref_fukuchan_5s.wav"},
+    {"type": "reference_audio", "path": "voice_ref_sobaya_5s.wav"},
+    {"type": "reference_audio", "path": "voice_ref_yotan_5s.wav"}
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 30,
+    "audio": true,
+    "seed": 260826,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_raw_seed260826_480p.mp4"
+}

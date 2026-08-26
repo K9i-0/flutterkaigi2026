@@ -1,0 +1,19 @@
+[Script Info]
+Title: Sobaya Hazard Japanese Subtitles
+ScriptType: v4.00+
+PlayResX: 832
+PlayResY: 480
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Trailer,Hiragino Sans GB,27,&H00FFFFFF,&H000000FF,&HCC000000,&H80000000,-1,0,0,0,100,100,0,0,1,2.4,0.8,2,45,45,32,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.35,0:00:02.45,Trailer,Sobaya,0,0,0,,【いたぞ！ 捕まえろ！】
+Dialogue: 0,0:00:06.15,0:00:08.95,Trailer,Fukuchan,0,0,0,,【ゾンビじゃない　そば屋だ】
+Dialogue: 0,0:00:15.75,0:00:18.10,Trailer,Yotan,0,0,0,,【福ちゃん！ 城へ走れ！】
+Dialogue: 0,0:00:22.00,0:00:24.45,Trailer,Sobaya,0,0,0,,【後ろだ　マヌケ！】
+Dialogue: 0,0:00:25.10,0:00:27.15,Trailer,Fukuchan,0,0,0,,【窓際へようこそ】

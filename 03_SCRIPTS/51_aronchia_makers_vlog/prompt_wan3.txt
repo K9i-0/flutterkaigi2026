@@ -1,0 +1,100 @@
+Create exactly one 30.0-second, 16:9, photorealistic Japanese workplace maker vlog with synchronized audio. Film it like a warm, spontaneous documentary captured on a handheld compact mirrorless camera inside a real Akasaka office. Natural late-morning window light, realistic skin and cardboard texture, subtle handheld movement, occasional gentle autofocus shifts, coherent editorial cuts, intimate close-ups of skilled hands and materials. No game graphics, no fantasy action, no glossy commercial lighting, and no background music.
+
+Maintain strict character consistency:
+
+- Image 1: episode-local character sheet for FUKUCHAN. Preserve his exact Japanese face, black center-parted hair, slim build, black blazer, graphic white T-shirt, black trousers, white sneakers, black SPONSOR lanyard and “福ちゃん” name badge. The face close-ups in Image 1 are the identity priority. Use the sheet only for face, hair, body, and clothing. Do not reproduce its panels, white background, labels, headless clothing body, back-view body, or multiple Fukuchans.
+- Image 2: episode-local character sheet for YOTAN. Preserve his exact Japanese face, long blond hair, dark round sunglasses, slim build, black leather biker jacket, black shirt, loose black trousers, black boots, necklace and earring. No guitar appears in this episode. Use the sheet only for identity, hair, body, and clothing. Do not reproduce panels, white background, headless bodies, labels, guitar, or multiple Yotans.
+- Image 3: episode-local character sheet for SOBAYA. Preserve exactly his white oval mask, two black circular eyeholes, two vertical red tear-like marks, small black forehead dot, short spiky black hair, neutral gray exposed skin, huge muscular body, fitted white short-sleeve T-shirt, black jeans and white sneakers. The white mask remains rigid. Use the sheet only for identity, body, clothes and colors. Do not reproduce panels, labels, white studio background, reaction thumbnails, multiple views, multiple bodies, or beer-drinking poses.
+- Image 4: exact opening composition and environment reference at 0.0 seconds. Begin with Fukuchan in handheld selfie-vlog framing while Yotan measures cardboard and Sobaya aligns panels at the same window-side worktable. Preserve the real office, natural daylight, Tokyo Tower view, worktable and blank starting cardboard. Images 1–3 override Image 4 for each person's identity.
+- Image 5: exact final prop and exact lettering reference. Use its brown corrugated-cardboard construction, tape, thick black handwritten style and exact single-line Japanese spelling “アーロンチュア”. The video must show the word being handwritten from a completely blank panel, one character at a time, and finish with the exact Image 5 spelling. Do not show the word before the handwriting scene.
+- Image 6: the only completed-chair geometry reference, selected from Candidate A. Preserve its exact crude adult-size chair made from intact taped shipping cartons: one tall mostly upright back tower made from three stacked closed rectangular boxes; one broad flat box seat; one large central cube-shaped front/base box; two long bulky rectangular box armrests; additional stacked box supports beneath both armrests; many visible clear packing-tape patches, dents, corrugated seams and slightly imperfect alignment. There are no ventilation cutouts, cushion, conventional legs, wheels, metal, plastic or upholstery. Preserve the same front-left three-quarter proportions whenever the whole chair is visible. Ignore Image 6's already-written label before 20.0 seconds: the central front box must remain completely blank until the handwriting shot. From 25.0 seconds onward use Image 6 geometry and Image 5's exact lettering together. The transparent area around the chair is not a location; keep the office from Image 4.
+- Audio 1: FUKUCHAN voice-timbre reference only. Generate Fukuchan's four new Japanese lines below in this same bright, energetic adult male voice. Do not reuse words from Audio 1.
+- Audio 2: SOBAYA voice-timbre reference only. Generate Sobaya's one new Japanese line below in this same deep, rough, monster-like adult male voice. Do not reuse words from Audio 2.
+
+Exactly three people make the chair: Fukuchan, Yotan and Sobaya. No generic employee, extra craftsperson or unseen helper touches the materials or chair. Yotan does not speak. Background office workers may remain far away at their desks but never join the workshop. The same cardboard cartons, ruler, tape measure, marker, packing tape, cutting mat and unfinished chair persist coherently through the edit. The finished chair is handmade and slightly imperfect but physically plausible, and its stacked back boxes, seat box, central front/base box, armrests, lower box supports and tape patches remain locked to Image 6 through every shot. It is not a real branded office chair.
+
+00:00–00:04 — OPENING SELFIE
+
+Match Image 4 at the first frame. Handheld wide selfie shot. Fukuchan smiles into the lens, then gestures naturally toward Yotan and Sobaya working behind him. The autofocus briefly shifts from Fukuchan's face to the blank cardboard and back. Tokyo Tower and an ordinary working office remain softly visible beyond the windows.
+
+FUKUCHAN says exactly once in Japanese:
+「今日は、窓際族だけで高級オフィスチェアを作ります。」
+
+No one else speaks.
+
+00:04–00:08 — MATERIALS
+
+Clean documentary cut to a medium handheld shot beside the worn worktable. Fukuchan lowers the camera toward the materials. Yotan measures a large blank corrugated sheet with a steel ruler and pencil. Sobaya holds two thick panels perfectly aligned. Several plain flat-packed shipping cartons wait nearby. Fukuchan taps the roll of packing tape while speaking.
+
+FUKUCHAN says exactly once in Japanese:
+「材料は、段ボールとガムテープだけです。」
+
+Natural sounds: cardboard sliding, steel ruler touching the table, tape measure retracting. No one else speaks.
+
+00:08–00:16 — BUILD MONTAGE
+
+Fast but coherent maker-vlog montage with four clean cuts and no dialogue:
+
+1. Extreme close-up: Yotan marks straight pencil lines and slowly draws the utility knife along a steel ruler on the cutting mat; the blade stays safely away from fingers. Crisp cardboard cutting sound.
+2. Macro close-up: Fukuchan folds corrugated panels along scored lines and pulls one long strip of brown packing tape, pressing it flat with both hands. Loud tape peel and finger rub on paper fibers.
+3. Close handheld shot: Sobaya calmly squares a large folded shipping carton between his large gray palms while Fukuchan tapes its seam. The cardboard flexes slightly but does not crush or explode.
+4. Wide overhead shot: all three join closed cartons into the seat box, central base, two armrest stacks and three-box back tower using broad packing-tape strips. Keep each person's hands anatomically correct and clearly associated with the matching person.
+
+No background music. Emphasize utility-knife scrape, cardboard fibers, tape peeling, folds, taps and quiet office ambience.
+
+00:16–00:20 — ASSEMBLY REVEAL
+
+Clean cut to a medium front-left three-quarter handheld shot. The chair is now structurally complete on the office floor beside the worktable and exactly matches Image 6's full geometry, component count, proportions and taped carton joints, but the large central front/base box remains entirely blank. Yotan aligns and presses the top carton onto the three-box back tower. Sobaya holds the two armrest stacks steady. Fukuchan smooths one final strip of clear packing tape across the seat seam, pats the bare cardboard seat twice and looks impressed.
+
+FUKUCHAN says exactly once in Japanese:
+「思ったより、ちゃんと椅子ですね。」
+
+Yotan and Sobaya remain silent. Natural cardboard creak, tape rubbing and two soft pats on the box seat.
+
+00:20–00:25 — HANDWRITTEN FINISH
+
+This is the most important shot. Clean cut to an extreme macro handheld close-up matching Image 5's cardboard texture and angle, on Image 6's large central front/base box. The box front starts completely blank. Yotan's right hand uncaps one thick black marker. In continuous real time, with the marker tip visibly touching the cardboard and black ink appearing only behind the moving tip, he writes exactly one centered single-line word from left to right, one character at a time:
+
+「アーロンチュア」
+
+Required visible writing order: ア → ー → ロ → ン → チ → ュ → ア. Preserve the long vowel mark after the first ア and the small ュ. Do not skip, morph, pre-fill or replace the panel. Hold briefly after the final ア so the completed lettering exactly matches Image 5. Ink squeaks softly on cardboard.
+
+During the first part of the shot, FUKUCHAN says exactly once off camera:
+「最後に、名前を入れます。」
+
+No other visible or spoken text.
+
+00:25–00:28.5 — LOAD TEST
+
+Clean cut to a low, close front-left three-quarter handheld shot of the finished chair on the office floor. It matches Image 6 exactly and the handwritten “アーロンチュア” from Image 5 remains readable on its central front/base box. Sobaya turns, carefully lowers his full muscular weight onto the bare box seat and settles with both feet planted. The cardboard gives one realistic creak and compresses by only one centimeter, but the reinforced chair stays intact and its three-box back tower, two armrest stacks, seat box, central base and lower supports do not change shape or count. No collapse and no magical strength effect. Yotan watches the taped joints closely; Fukuchan watches with amused suspense.
+
+After the chair has clearly held his weight, SOBAYA says exactly once in Japanese:
+「快適です！」
+
+00:28.5–00:30 — ENDING
+
+Quick clean cut to a close handheld selfie frame. Sobaya remains seated safely in the completed chair with “アーロンチュア” still visible. Yotan stands behind the chair and gives a small satisfied nod. Fukuchan leans into frame, smiles at the lens and makes his recognizable cheek-side gyun-gyun pose with both hands.
+
+FUKUCHAN says exactly once in Japanese:
+「ぎゅぎゅんです！」
+
+All three laugh or react naturally without extra words. Hold until exactly 30.0 seconds, then cut to black.
+
+VISUAL AND AUDIO DIRECTION
+
+Photorealistic, intimate Japanese workplace maker vlog. Real cardboard fibers, tape gloss, marker ink, worn worktable, believable weight and hand contact. Camera language alternates between friendly handheld selfie, medium workshop observation, top-down assembly and macro craft photography. Cuts are intentional and coherent, similar to a well-edited documentary vlog. Mild autofocus breathing is welcome; excessive shake is not.
+
+Natural office soundscape only. No background music at any time. Dialogue must be clear, precisely synchronized and spoken only in Japanese. Keep utility knife, cardboard, tape, marker, chair creak and quiet office ambience below dialogue. No narrator other than Fukuchan speaking on camera or briefly off camera.
+
+HARD CONSTRAINTS
+
+- Exact duration 30.0 seconds, 16:9, synchronized audio.
+- Exactly three participating people: one Fukuchan, one Yotan and one Sobaya. All three are Madogiwa characters from Images 1–3. No generic worker participates in making, labeling or testing the chair.
+- Preserve each identity and outfit throughout. No face swaps, merged faces, duplicate people, headless bodies, changing hair, changing glasses, changing mask, changing clothing or changing body size.
+- Yotan has no guitar and no dialogue. Sobaya has no beer in his hand. The one mug from Image 4 may remain untouched on the distant side table only.
+- Exact state order: blank flat cardboard and flat-packed cartons → measured, folded and taped closed cartons → stacked carton components → assembled blank chair matching Image 6 → handwritten “アーロンチュア” → Sobaya seated safely in the same Image 6 chair → final group selfie.
+- Image 6 is the single geometry source for the completed chair. Once assembled, never change the chair's scale, upright three-box back tower, two armrest stacks, broad seat box, large central front/base box, lower supports, tape pattern or overall silhouette between cuts. Never add ventilation holes, a cushion, wheels or conventional chair parts.
+- “アーロンチュア” appears exactly once, only from 20.0 seconds onward, on the chair's central front/base box. It is visibly handwritten in the exact seven-character order ア・ー・ロ・ン・チ・ュ・ア and remains correctly spelled afterward.
+- Do not show subtitles, captions, lower thirds, title cards, logos, watermarks, printed brand marks or any other generated text.
+- No game HUD, video-game rendering, CGI look, explosions, destruction, superhuman action, slapstick collapse, luxury showroom, glossy advertisement, background music or copyrighted melody.
+- No distorted hands, extra fingers, floating tools, unsafe knife contact, duplicated chair parts, spontaneous completed chair, fake plastic cardboard or incorrect lip synchronization.

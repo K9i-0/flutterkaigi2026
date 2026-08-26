@@ -1,0 +1,29 @@
+Use case: production reference record
+Asset type: exact completed-prop reference for Wan 3.0 video consistency
+Adopted asset: prop_aronchia_completed_chair_production.png
+Selection: Candidate A, adopted on 2026-08-26
+
+Primary request: Preserve one highly photorealistic, isolated full-body reference of the handmade cardboard office chair called アーロンチュア. The chair must match episode_02's crude box-built concept and remain physically plausible for an adult.
+
+Chair geometry — preserve all of these:
+- one adult-size chair built entirely from intact brown corrugated shipping cartons
+- one tall, mostly upright back tower made from exactly three stacked closed rectangular boxes
+- one broad flat cardboard-box seat
+- one large cube-shaped central front/base box
+- two long bulky rectangular box armrests
+- additional stacked carton supports beneath both armrests, reaching the floor
+- visible clear packing-tape patches on seams, joints and corners
+- slightly uneven alignment, dents, scuffs and softened corners that retain amateur office-DIY realism
+- no ventilation cutouts, no cushion, no caster wheels, no conventional legs, no metal, no plastic and no upholstery
+
+Text (verbatim): “アーロンチュア”
+Exact character order: ア ー ロ ン チ ュ ア
+Text placement: exactly once, centered on the large central front/base box, in casual black-marker handwriting. Preserve the long vowel mark and small ュ. Never write アーロンチェア.
+
+Backdrop: transparent alpha outside the chair. No office, floor, person, hand, tool, beer, paper, shadow, reflection, caption, logo or watermark.
+
+Style: authentic documentary product reference with real cardboard fibers, tape gloss, dents and believable construction; not CGI, not a game asset and not a polished furniture design.
+
+Composition: full chair visible from a front-left three-quarter angle with generous transparent padding around the complete silhouette.
+
+Production note: The final PNG was generated on a uniform green chroma-key background, converted to RGBA transparency, and visually checked for the exact spelling アーロンチュア.

@@ -1,0 +1,11 @@
+Use case: logo-brand
+Asset type: 16:9 final title-card reference for a 30-second survival-horror game trailer
+Primary request: Create a finished cinematic title card for a Japanese parody horror game.
+Scene/backdrop: pure near-black background with a very subtle dirty charcoal vignette and faint drifting ash, no scenery.
+Subject: one centered Japanese title logo only.
+Style/medium: distressed survival-horror game logo, late-2000s European rural horror mood, weathered ivory letters with one restrained dark-crimson accent slash and slightly corroded metal texture; ominous, serious, premium, readable. Evoke the compositional hierarchy and tension of a fourth-entry survival-horror title treatment without copying any existing trademarked wordmark or symbol.
+Composition/framing: 16:9 landscape; title occupies the center 55% width; generous empty black margins; flat frontal logo, no perspective distortion.
+Lighting/mood: cold, grim, smoky, high contrast.
+Text (verbatim): "そば屋ハザード"
+Typography: render exactly those seven Japanese characters once, large and fully legible; no spelling variation. そ・ば・屋・ハ・ザ・ー・ド.
+Constraints: only the exact Japanese title; no subtitle, no English, no number, no credits, no publisher mark, no extra icons, no watermark, no border, no blood or gore.

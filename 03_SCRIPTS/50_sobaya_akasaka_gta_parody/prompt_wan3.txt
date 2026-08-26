@@ -1,0 +1,57 @@
+Create exactly one 30.0-second, 16:9, synchronized-audio parody video that looks like raw recorded open-world crime-action video game gameplay. Pack the 30 seconds with a new readable stunt, obstacle, collision, NPC reaction, HUD update, or punch line approximately every 2–3 seconds. It is one escalating GTA V-style gameplay mission, never a movie trailer and never live-action cinema. The camera stays locked behind playable character Sobaya and follows him seamlessly from the Akasaka street, onto one motorcycle, through the glass lobby, across reception and a meeting room, and into the connected open-plan office. Zero cuts, dissolves, wipes, time jumps, teleports, or angle resets.
+
+References:
+- Image 1: episode-local character sheet for Sobaya and the highest-priority identity source. Preserve exactly one character with the same white oval mask, two black circular eyeholes, two vertical red tear-like stripes, small black forehead dot, short spiky black hair, neutral gray exposed skin, huge muscular body, plain fitted white short-sleeve T-shirt, black jeans, and white sneakers. Extract only identity, body proportions, clothes, mask, colors, and beer-mug design. Do not reproduce the sheet layout, panels, labels, measurement text, white studio background, multiple views, multiple bodies, or reaction thumbnails.
+- Image 2: exact opening composition and environment reference at 0.0 seconds. Begin from this gameplay camera position, Sobaya position, single parked black motorcycle, single mug in the motorcycle cup holder, dry sunny Akasaka street, Tokyo Tower, office entrance, and HUD placement. Preserve the fictional building name “アクシデンチュア”. Image 1 overrides Image 2 for Sobaya identity. Do not freeze the scene; animate from the first instant.
+- Audio 1: Sobaya voice-timbre reference only. Generate the three new Japanese Sobaya lines below in this same deep, rough, monster-like male timbre. Do not copy, quote, or reuse any words from Audio 1.
+
+Overall continuity:
+- Exactly one Sobaya, one black sport motorcycle, and one oversized clear beer mug filled with golden beer and foam exist throughout.
+- The mug starts secured in the motorcycle's rigid side cup holder. Sobaya removes it only while the motorcycle is fully stopped at 11.0–14.0 seconds, drinks and poses, then locks it back into the holder before moving. He removes the same mug again only after the final stop at 28.0 seconds.
+- The boulevard, office forecourt, ramp, glass lobby, reception, turnstiles, meeting room, and open-plan office are one physically connected game map. The camera crosses every threshold behind Sobaya. Never replace the world with a different location.
+- Camera: shoulder-height third-person game camera about 3 meters behind Sobaya or the motorcycle, mild controller sway, stable horizon, wide gameplay field of view. It may smoothly orbit up to 20 degrees to keep each stunt visible, but never cuts or moves in front of Sobaya.
+- Visual style: detailed modern game-engine render, readable rigged animations, responsive arcade vehicle physics, crisp textures, high-contrast dry late-afternoon sunlight outside, bright clean corporate lighting inside. It must feel actively playable, not filmed with actors.
+- Persistent anchored HUD: top-left black mission objective box; top-right green health “100/100”, money “¥12,500”, five wanted-star slots; bottom-left circular minimap, yellow route, waypoint, and distance. HUD never drifts, warps, duplicates, disappears, or becomes part of the 3D world.
+- Wanted stars: five gray outlines at 0.0; exactly two fill after motorcycle theft; three fill after the delivery-truck jump; all five fill after the glass entrance breaks.
+- Mission sequence: “バイクを奪え” → “追手を振り切れ” → “アクシデンチュアへ突入しろ” → “緊急会議を中止しろ” → “ミッション完了”.
+
+Shot 1 [0.0-2.5 s] — Opening beat of the same uncut take. Match Image 2 as the exact first frame. Sobaya immediately heavy-sprints to the motorcycle. At 1.5 seconds he shoulder-checks a stack of three orange traffic cones; the cones tumble with exaggerated game physics while he keeps running. Objective: “バイクを奪え”.
+
+Shot 2 [2.5-5.0 s] — Without a cut, Sobaya grabs the handlebars, swings onto the seat with a fast game mount animation, starts the engine, and launches. “ガチャ！” flashes once beside the ignition. Two wanted stars fill. Objective changes to “追手を振り切れ”. Sobaya says exactly once: 「このバイク、快適です！」
+
+Shot 3 [5.0-8.0 s] — Without a cut, he performs a short controlled wheelie down the Akasaka lane, clips a lightweight roadwork barrier with the rear wheel, and sends it spinning harmlessly aside. “ブォン！” flashes once. A yellow taxi crosses ahead; Sobaya swerves around it in a close but collision-free near miss. The camera sways like quick player input.
+
+Shot 4 [8.0-11.0 s] — Without a cut, a small delivery truck ahead lowers its rear loading plate, creating a temporary ramp. Sobaya hits the ramp and makes one brief arcade jump over a line of cardboard packages. He lands with both wheels, suspension compressing visibly. Three wanted stars fill. A center-right score popup reads “危険運転 +100”. The mug stays rigidly locked in its holder throughout the jump.
+
+Shot 5 [11.0-14.0 s] — Without a cut, Sobaya handbrake-turns into the office forecourt and stops completely facing the entrance. “キキィ！” flashes once. Only after both wheels stop, he plants one foot, removes the mug, takes one exaggerated sip, raises it high, and flexes his free arm in a ridiculous victory emote. Sobaya says exactly once: 「業務中のビールも、メリットでもあります！」
+
+Shot 6 [14.0-17.0 s] — Without a cut, a black game-security sedan slides into the forecourt behind him with flashing amber lights. One uniformed NPC leans from the passenger window and shouts exactly once in Japanese: 「止まってください！」 Sobaya calmly locks the mug back into the side holder, grips both handlebars, revs, rides up the shallow entry steps, and jumps cleanly over the sedan's low hood without touching the NPC. Objective changes to “アクシデンチュアへ突入しろ”.
+
+Shot 7 [17.0-20.0 s] — Without a cut, Sobaya lands on the entrance ramp and crashes through the center glass doors. “ガシャーン！” flashes once as game-physics glass bursts inward. All five wanted stars fill. He immediately rides over a lowered lobby turnstile; its two lightweight arms spin away. The camera passes through the broken doorway behind him without clipping.
+
+Shot 8 [20.0-23.0 s] — Without a cut, he rides up a broad reception ramp, across the long reception counter, and drops back to the floor. A desk bell rings, two potted plants spin, and a stack of visitor badges showers into the air. The receptionist dives sideways safely with a silent game NPC panic animation. A score popup reads “受付突破 +300”.
+
+Shot 9 [23.0-26.0 s] — Without a cut, Sobaya bursts through a lightweight meeting-room partition and crosses an emergency meeting in progress. A suited NPC points at him and shouts exactly once in Japanese: 「会議中です！」 Sobaya plows through a rolling whiteboard, scattering sticky notes and printed charts. Objective changes to “緊急会議を中止しろ”. Nobody is struck. A score popup reads “会議破壊 +500”.
+
+Shot 10 [26.0-28.0 s] — Without a cut, he enters the connected open office and makes one tight donut around a pillar. The rear wheel knocks over stacks of cardboard “アーロンチェア” boxes, three rolling chairs, and one copier in a readable chain reaction. The copier ejects a blizzard of paper and the ceiling sprinklers switch on. Office workers scatter sideways with silent game NPC panic animations.
+
+Shot 11 [28.0-30.0 s] — Without a cut, Sobaya ends the donut, brakes to a full stop beneath the sprinklers, removes the same mug, takes a fast sip, and raises it overhead while still seated on the motorcycle. Objective becomes “ミッション完了”; giant center text “定時退社” pops once with a bright completion chime. Sobaya says exactly once: 「定時なので帰ります！」 Hold the final wet, paper-filled gameplay tableau through exactly 30.0 seconds. No logo and no fade.
+
+Audio and performance:
+- All spoken language is Japanese only. Exact dialogue count: five lines total—three Sobaya lines, one security NPC line, one meeting NPC line. Each appears exactly once in its assigned interval, fully intelligible, with no paraphrase, no English, no narrator, no radio host, and no extra speech.
+- Sobaya's rigid white mask never deforms and needs no mouth movement; his voice emanates naturally from the mask.
+- Original instrumental background music only: fast satirical urban action-game beat with taiko and shamisen accents, rising in intensity every five seconds, no lyrics and no recognizable copyrighted melody. Keep it below speech.
+- Synchronized effects: heavy footsteps, cones bouncing, handlebar grab, ignition, engine, wheelie, barrier spin, taxi horn, ramp launch, landing suspension, tire squeal, beer sip, mug clink, security siren, stair jump, glass break, turnstile clang, desk bell, plants and badges, partition and whiteboard impact, sticky notes, boxes, chairs, copier, paper, sprinklers, wanted-star alerts, score pings, and completion chime.
+
+Hard constraints:
+- Exact duration 30.0 seconds; 16:9; synchronized audio; high event density with all eleven timed beats readable.
+- One continuous uncut shot from 0.0 to 30.0 seconds. No cuts, dissolves, wipes, montage, flash frames, title cards, black frames, time jumps, teleports, slow motion, speed ramps, or camera resets.
+- Third-person game camera behind Sobaya throughout. Recorded gameplay aesthetics only; not live-action, cinematic, or a movie trailer.
+- Exactly one Sobaya, one motorcycle, and one beer mug. No duplicate limbs, rider, vehicle, mug, spontaneous replacement, wardrobe change, or identity drift.
+- Preserve Image 1 identity. Never show the character sheet, labels, panels, multiple views, white sheet background, or a second Sobaya.
+- Exact mug state: holder while moving and jumping; hand only during the full stop at 11.0–14.0; holder again before the security sedan arrives; hand again only after final stop at 28.0.
+- Exactly three orange cones, one roadwork barrier, one yellow taxi, one delivery truck, one security sedan, one receptionist, one speaking security NPC, one speaking meeting NPC, three rolling chairs, and one copier.
+- Use fictional “アクシデンチュア”; no real Accenture logo. No GTA or Rockstar logo, no real game title, no watermark.
+- No English speech, English subtitles, dialogue bubbles, subtitle bar, captions, foreign-language vocals, or call-to-prayer audio.
+- No weapons, gunfire, police violence, collision with people, injury, blood, gore, fire, or explosion.
+- Do not end early. Keep the world visible and final pose stable through 30.0 seconds.

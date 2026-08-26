@@ -1,0 +1,18 @@
+Use case: stylized-concept
+Asset type: Wan 3.0 all-in-one opening-composition reference frame for a 30-second parody video
+Primary request: Create a polished 16:9 screenshot that unmistakably looks like recorded open-world crime-action video game gameplay, third-person camera locked behind the player character, game-engine render, NOT live-action film, NOT cinematic, no depth-of-field glamour shot.
+Input images:
+- Image 1 is the only identity source for SOBAYA. Preserve exactly his white oval mask with two black circular eyeholes, two vertical red tear-like stripes under the eyes, small black forehead dot, short spiky black hair, neutral gray exposed skin, huge muscular build, plain white fitted short-sleeve T-shirt, black jeans, white sneakers. Use only one Sobaya. Do not reproduce the character-sheet panels, labels, white studio background, or multiple bodies.
+- Image 2 is an environment mood reference only for a broad modern Akasaka, Tokyo boulevard and distant Tokyo Tower. Do NOT include the reporter, microphone, wet/rainy weather, cracked road, or the existing Sobaya from Image 2.
+Scene/backdrop: bright dry late-afternoon Akasaka street, modern glass office towers, Japanese road markings and street furniture, Tokyo Tower visible in the distance. A fictional corporate office tower straight ahead has a clean entrance sign reading exactly “アクシデンチュア”. A parked black sport motorcycle sits four meters ahead of Sobaya near the curb. Exactly one oversized clear beer mug filled with golden beer and white foam is securely mounted in a side cup holder on the motorcycle; Sobaya is not holding it yet.
+Subject/action: Sobaya is centered in the lower middle, seen from behind at three-quarter angle, ready to sprint toward the parked motorcycle. His mask silhouette and one red stripe remain partly visible in profile so identity is readable.
+Composition/framing: 16:9 landscape, shoulder-height third-person gameplay camera about three meters behind Sobaya, player character full body, motorcycle fully visible ahead, office entrance and route legible in the same spatial axis.
+UI overlay throughout the frame, crisp game HUD:
+- top-left black mission box with exact Japanese text “バイクを奪え”
+- top-right green health bar and exact text “100/100”, money “¥12,500”, five gray outlined wanted-star slots
+- bottom-left circular minimap with a yellow route, yellow waypoint marker, exact distance “120m”
+Typography: bold condensed sans-serif game UI, clean and readable. No other words.
+Lighting/mood: vivid high-contrast game-engine daylight, sharp sun, clean reflections, playful chaotic anticipation.
+Color palette: realistic Tokyo grays, white and black character, yellow waypoint, amber beer.
+Constraints: exact single Sobaya, exact single motorcycle, exact single beer mug, continuous-world starting state, clear rear gameplay camera, crisp HUD anchored to screen edges, no real GTA or Rockstar logo, no Accenture logo, no weapons, no reporter, no duplicated character, no film grain, no split screen, no comic panel, no subtitle bar, no watermark.
+Avoid: cinematic movie still, live-action photography, multiple Sobayas, malformed hands, extra mugs, illegible character identity, cropped feet, fisheye lens.

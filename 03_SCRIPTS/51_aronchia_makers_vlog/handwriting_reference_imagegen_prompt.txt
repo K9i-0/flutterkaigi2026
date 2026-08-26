@@ -1,0 +1,10 @@
+Use case: photorealistic-natural
+Asset type: exact prop and end-state reference for a Wan 3.0 documentary workshop video
+Primary request: Create a photorealistic extreme close-up of the front panel of a handmade office chair made from brown corrugated cardboard. Across the center, the exact Japanese word “アーロンチュア” has just been written by hand with a thick black permanent marker.
+Scene/backdrop: the cardboard chair sits on a worn office worktable; only the chair’s front panel and a small part of the tabletop are visible. Subtle cardboard fibers, cut edges, folded layers and strips of brown packing tape. A black marker lies nearby with its cap off.
+Composition/framing: 16:9 macro documentary close-up, shallow depth of field, the handwritten word fills the center and remains fully visible with generous margins.
+Lighting/mood: soft natural office window light, honest workshop texture, spontaneous documentary photography.
+Text (verbatim): “アーロンチュア”
+Typography: casual but very legible Japanese handwriting in one continuous line, thick black marker, exactly seven katakana characters: ア ー ロ ン チ ュ ア. Preserve the long vowel mark after ア. No other writing anywhere.
+Constraints: exact spelling “アーロンチュア”; one occurrence only; black ink on plain brown cardboard; no person, no hand, no logo, no subtitle, no printed type, no watermark.
+Avoid: misspelled Japanese, extra marks, duplicated text, English letters, chair brand logo, clean vector typography, illustration, CGI, game graphics.
