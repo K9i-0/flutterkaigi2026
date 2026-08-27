@@ -1,0 +1,26 @@
+{
+  "name": "madogiwa-remotion-edit",
+  "version": "1.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@remotion/cli": "__REMOTION_VERSION__",
+    "@remotion/media": "__REMOTION_VERSION__",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "remotion": "__REMOTION_VERSION__"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.7",
+    "typescript": "5.9.3"
+  },
+  "scripts": {
+    "studio": "remotion studio",
+    "typecheck": "tsc",
+    "bundle": "remotion bundle",
+    "render": "remotion render src/index.ts __COMPOSITION_ID__ ../final_remotion.mp4 --codec=h264 --overwrite"
+  },
+  "sideEffects": [
+    "*.css"
+  ]
+}

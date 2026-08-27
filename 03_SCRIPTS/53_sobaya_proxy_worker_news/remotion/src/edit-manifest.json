@@ -1,0 +1,107 @@
+{
+  "composition": {
+    "id": "YumeTeleBreakingNews",
+    "width": 832,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 900
+  },
+  "inputVideo": "input.mp4",
+  "inputVideoVolume": 1,
+  "replacementAudio": null,
+  "overlays": [
+    {
+      "type": "station-bug",
+      "startFrame": 0,
+      "endFrame": 900,
+      "text": "19:00",
+      "position": "top-left",
+      "variant": "clock"
+    },
+    {
+      "type": "station-bug",
+      "startFrame": 0,
+      "endFrame": 900,
+      "text": "ゆめテレ",
+      "position": "top-right",
+      "variant": "brand"
+    },
+    {
+      "type": "news-lower-third",
+      "startFrame": 15,
+      "endFrame": 252,
+      "kicker": "速報",
+      "headline": "窓際社員「そば屋」に実刑判決",
+      "subheadline": "替え玉を出社・労働させた罪",
+      "accentColor": "#c51b2f",
+      "placement": "bottom",
+      "variant": "full"
+    },
+    {
+      "type": "news-lower-third",
+      "startFrame": 252,
+      "endFrame": 384,
+      "kicker": "資料映像",
+      "headline": "「そば屋」を連行",
+      "subheadline": "手錠をはめ警察官2人が同行",
+      "accentColor": "#c51b2f",
+      "placement": "top-left",
+      "variant": "compact",
+      "widthPercent": 40
+    },
+    {
+      "type": "news-lower-third",
+      "startFrame": 384,
+      "endFrame": 554,
+      "kicker": "防犯映像",
+      "headline": "代理社員は\n福ちゃん1人",
+      "subheadline": "同じ仮面を着けて\n出社・労働",
+      "accentColor": "#183a62",
+      "placement": "top-left",
+      "variant": "compact",
+      "widthPercent": 29
+    },
+    {
+      "type": "news-lower-third",
+      "startFrame": 554,
+      "endFrame": 687,
+      "kicker": "再現映像",
+      "headline": "本人は自宅で飲酒",
+      "subheadline": "代理出社中に酒を飲んでいた\nという",
+      "accentColor": "#183a62",
+      "placement": "top-left",
+      "variant": "compact",
+      "widthPercent": 29
+    },
+    {
+      "type": "news-lower-third",
+      "startFrame": 687,
+      "endFrame": 748,
+      "kicker": "ゆめみ地方裁判所",
+      "headline": "窓際社員「そば屋」に実刑判決",
+      "accentColor": "#c51b2f",
+      "placement": "bottom",
+      "variant": "full"
+    },
+    {
+      "type": "news-lower-third",
+      "startFrame": 748,
+      "endFrame": 900,
+      "kicker": "判決後のコメント",
+      "headline": "「スーパードライが\n美味かった」",
+      "accentColor": "#c51b2f",
+      "placement": "bottom-left",
+      "variant": "compact",
+      "widthPercent": 39
+    },
+    {
+      "type": "ticker",
+      "startFrame": 252,
+      "endFrame": 900,
+      "label": "速報",
+      "text": "代理社員は福ちゃん1人　同じ仮面を着けて本人の代わりに出社・労働　本人はその間、自宅で酒を飲んでいたということです",
+      "accentColor": "#c51b2f"
+    }
+  ],
+  "captions": []
+}

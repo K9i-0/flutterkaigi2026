@@ -1,0 +1,4 @@
+interface:
+  display_name: "Remotion動画編集"
+  short_description: "生成動画へ字幕・テロップ・音声・演出を正確に合成する"
+  default_prompt: "Use $remotion-video to finish this generated video with precise post-production graphics and audio."

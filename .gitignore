@@ -20,3 +20,5 @@ scratch/voice_extract/
 03_SCRIPTS/**/*.[mM][kK][vV]
 03_SCRIPTS/**/*.[aA][vV][iI]
 03_SCRIPTS/**/*.[mM]4[vV]
+03_SCRIPTS/**/remotion/out/
+03_SCRIPTS/**/remotion/.remotion/

@@ -1,0 +1,28 @@
+{
+  "name": "madogiwa-remotion-edit",
+  "version": "1.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@remotion/cli": "4.0.518",
+    "@remotion/media": "4.0.518",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "remotion": "4.0.518"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.7",
+    "typescript": "5.9.3"
+  },
+  "scripts": {
+    "studio": "remotion studio",
+    "typecheck": "tsc",
+    "bundle": "remotion bundle",
+    "render": "npm run render:graphics && npm run mux:final",
+    "render:graphics": "remotion render src/index.ts YumeTeleBreakingNews out/wan3_result_v6_seed530030_480p_hybrid_audio_v2_remotion_news.mp4 --codec=h264 --crf=18 --overwrite",
+    "mux:final": "ffmpeg -y -i out/wan3_result_v6_seed530030_480p_hybrid_audio_v2_remotion_news.mp4 -i public/input.mp4 -map 0:v:0 -map 1:a:0 -c copy -shortest -movflags +faststart ../final_remotion_news.mp4"
+  },
+  "sideEffects": [
+    "*.css"
+  ]
+}
