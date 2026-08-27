@@ -15,7 +15,7 @@
 
 Gitでは、Seedanceの再生成と同じ声の継続利用に必要な最小限の入力資産を管理する。
 
-- 追跡する：`script.md`、実際に貼り付ける`prompt*.txt`、本番入力画像、`VOICE_CAST.md`が指定する正典参照WAV、採用音声の再生成に使う参照WAV、エピソード直下の採用済みセリフWAV、軽量な台帳・README
+- 追跡する：`script.md`、実際に貼り付ける`prompt*.txt`、本番入力画像、`VOICE_CAST.md`が指定する正典参照WAV、採用音声の再生成に使う参照WAV、エピソード直下の採用済みセリフWAV、Remotion編集の`src/`・設定・字幕データ・`package.json`・lockfile、軽量な台帳・README
 - 追跡しない：入手した元動画、正典参照WAVへ採用していない元動画抽出物、候補・未採用・テスト・中間音声、`03_SCRIPTS/`配下の生成動画・previs・監査用動画
 - 追跡しない素材はローカルまたは別ストレージへ保持し、採用した入力だけを正本の場所へ移す
 - 例外：ゲームへ実際に組み込むことを決定した完成動画だけは`04_GAME_ASSETS/videos/`を正典として追跡する。エピソードディレクトリへ同じ動画を複製しない
@@ -30,6 +30,7 @@ Gitでは、Seedanceの再生成と同じ声の継続利用に必要な最小限
 
 - **Seedance動画制作** (`/seedance`): ユーザーからストーリー（あらすじ）を渡されたら、このスキルに従って台本＋Seedanceプロンプト＋Codex参考画像を作成する。詳細: `.claude/skills/seedance/SKILL.md`
 - **Wan動画制作** (`wan-video`): Wan 3.0、Qwen Cloud、Alibaba Cloud Model Studioで動画を新規制作・改修・生成・監査するときに使用する。台本、参照素材、プロンプト、従量課金API設定、生成結果を一体で管理する。詳細: `.claude/skills/wan-video/SKILL.md`
+- **Remotion動画編集** (`remotion-video`): Wan・Seedance等の生成済み動画へ、正確な字幕、ニューステロップ、局ロゴ、ティッカー、音声差し替え、UI、効果音を再現可能なReactコードで合成し、レンダリング・監査するときに使用する。詳細: `.claude/skills/remotion-video/SKILL.md`
 - **映画ポスター制作** (`create-movie-poster`): 映画ポスターの新規制作・改修・シリーズ統一では、独立した初回3案から方向性を選び、縦2:3正本、正確な日本語文字、キャラクター同一性を管理する。実写のよーたん、福ちゃん、とーくん、おかやまんは正典写真へ顔を厳密に一致させる。SNS安全域はユーザー指定時だけ調整し、生成画像への反復編集を避ける。詳細: `.claude/skills/create-movie-poster/SKILL.md`
 - **ボクセルモデル制作** (`build-voxel-character-from-image`): キャラクターの参照画像からリグ付きボクセルGLBを作成・修正するときに使用する。成果物は`04_GAME_ASSETS/voxel/`に配置する。詳細: `.claude/skills/build-voxel-character-from-image/SKILL.md`
 - **2Dゲーム制作** (`/2d-game`): 2Dゲームを新規作成するとき、およびSeedanceで制作した完成動画（添付mp4）をオープニング/イベントのカットシーンとしてゲームに組み込むときに使用する。完成動画の正典置き場は`04_GAME_ASSETS/videos/`（ゲームからは`public/videos/`の相対symlinkで参照）。詳細: `.claude/skills/2d-game/SKILL.md`
