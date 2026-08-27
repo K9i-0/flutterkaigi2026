@@ -1,0 +1,62 @@
+Create exactly one continuous 30-second, 16:9, 480P cinematic technology product-launch video with synchronized audio. Generate the full film in one task, never as separate clips. The tone is completely sincere, premium, restrained, and globally professional. The English narrator says only credible, impressive product messaging. The joke exists only in the background visuals, which reveal catastrophic software behavior.
+
+References:
+- Image 1 is the only WAI logo reference. Use it only for the exact monochrome Yametaro face symbol, the exact bold WAI wordmark, and the exact Window-Side AI lettering. Extract the logo design from the white background. Do not reproduce the white square canvas or use Image 1 as a full scene composition.
+- Image 2 is the only scene-composition reference. Use it only for Shot 5. Preserve exactly the two people, their identities and clothing, the single beer mug, the enormous Japanese lettering 窓際族, the small WAI logo, spotlights, black stage, reflective floor, and fog.
+- There are deliberately no reference images for the Visual Studio Code or iTerm2 shots. Create those shots directly from the precise descriptions below so the software interfaces look natural, functional, sharp, and internally coherent rather than copied from a distorted still image.
+
+Overall visual direction:
+- A polished contemporary AI product film: deep black, graphite gray, crisp white, restrained red error accents, controlled bloom, subtle volumetric fog, high contrast, premium commercial cinematography.
+- Shots 2, 3, and 4 must look like clean, sharp, nearly head-on macOS screen recordings presented at native scale. The UI fills most of the 16:9 frame. Do not make the application windows float in 3D space, tilt dramatically, bend, melt, stretch, or become holograms.
+- Computer UI text should remain small, crisp, aligned on a pixel grid, and consistent from frame to frame. Use realistic monospace code and terminal typography. Interface panels, icons, dividers, tabs, scroll bars, sidebars, status bars, and window controls must keep stable geometry.
+- Maintain one premium color grade and one continuous professional male narrator across all six shots.
+- Hard cuts occur at exactly 4, 9, 15, 19, and 24 seconds.
+
+Shot 1 [0.0-4.0 s] — WAI opening reveal.
+Create a new black-studio composition using only the logo design from Image 1. Place the monochrome Yametaro face symbol and WAI wordmark centered above a glossy black reflective floor. The logo begins in darkness, then clean white rim light reveals it. Very slow centered camera push-in, thin floor fog, restrained white halo, sparse red particles. The narrator says exactly once: “Today, we're introducing Wah-ee. Window-Side AI.”
+
+Shot 2 [4.0-9.0 s] — Authentic Visual Studio Code failure.
+Hard cut to a clean, nearly straight-on view of a real macOS Visual Studio Code window using the Dark Modern theme. The application fills almost the entire frame like a high-quality product screen capture. Preserve authentic VS Code information architecture: macOS red/yellow/green window controls, Activity Bar on the far left, Explorer sidebar with a believable TypeScript repository tree, editor tabs across the top, breadcrumbs, a large central editor, minimap on the right, Problems panel across the bottom, and blue status bar.
+
+At 4.0 seconds the project contains many nested folders and realistic production files such as src, api, services, workers, database, tests, package.json, tsconfig.json, auth.ts, billing.ts, resolver.ts, and index.ts. The main editor shows dense, professionally formatted TypeScript with syntax highlighting, imports, interfaces, async functions, dependency injection, nested generics, comments, and deliberately excessive abstraction. The code is readable and structurally plausible, not random symbols.
+
+An invisible cursor adds one unnecessary generic wrapper and one malformed type. Red squiggly underlines immediately spread through many lines. The Problems panel rapidly fills with consistent TypeScript diagnostics. Red error badges multiply beside files in the Explorer. The Problems counter rises quickly through hundreds and thousands, ending at 12,489. The repository remains present and visibly complex. Use subtle cursor motion and a restrained digital error cascade, with no hands and no person. The narrator says exactly once: “Software development, at a speed never seen before.”
+
+Shot 3 [9.0-15.0 s] — Authentic iTerm2 resolution command.
+Hard cut to a clean, nearly straight-on full-screen iTerm2 window on macOS. It must be recognizable as iTerm2 rather than a generic terminal: red/yellow/green window controls, title bar reading iTerm2, multiple named tabs, thin pane dividers, a bottom status bar, zsh prompt, compact monospaced font, black background, and two vertical split panes.
+
+Both panes stream dense but orderly red compiler and test errors with believable paths, line numbers, TypeScript and database messages. Keep every row aligned to a terminal grid; do not turn the characters into decorative gibberish. In the left pane, the green shell prompt waits after the error stream. An invisible operator types exactly: wai resolve --all. The command runs. A calm progress line appears: Resolving technical debt… Then a second command appears exactly: rm -rf ./wai-project. The terminal responds with a clean final line: RESOLVED. At the same moment, the project directory shown in a small terminal file-tree area collapses and disappears line by line. The deletion is literal and understated, not an explosion. The narrator says exactly once: “Wah-ee instantly resolves errors and complex code,”
+
+Shot 4 [15.0-19.0 s] — The entire codebase is gone.
+Hard cut back to the same authentic Visual Studio Code Dark Modern interface from Shot 2, viewed at the same straight-on angle and scale. At first, the Explorer still contains the complex repository and the editor still contains dense highlighted TypeScript. Then the deletion propagates visibly and systematically: editor lines vanish from bottom to top, open tabs close one by one, files disappear from the Explorer, nested folders collapse and vanish, error badges disappear, the Problems count falls instantly from 12,489 to 0, and the editor becomes empty.
+
+End on the genuine VS Code empty-workspace state with NO FOLDER OPENED in the Explorer. In the center, a minimal status summary appears on three stable lines: 0 ERRORS, 0 FILES, 0 DEBT. The humor is that WAI solved the debt by deleting everything. No triumphant explosion, no floating code storm, no giant 3D interface. The narrator continues in the exact same voice: “and every form of technical debt.”
+
+Shot 5 [19.0-24.0 s] — Japanese professionals.
+Hard cut to Image 2 and preserve its exact stage composition. Exactly two people stand beneath narrow white spotlights. On the left is the enormous muscular masked Sobaya in a fitted white T-shirt and dark jeans, holding exactly one clear beer mug containing amber beer. On the right is Fukuchan with the same face and hair as Image 2, wearing the same black suit, white graphic shirt, and lanyard, hands politely clasped. Both remain mostly still with only natural breathing and one subtle blink. The huge fixed Japanese lettering 窓際族 remains dominant behind them. Low fog drifts across the reflective floor. The narrator says exactly once: “Our model was trained by professionals across Japan.”
+
+Shot 6 [24.0-30.0 s] — WAI end card.
+Hard cut to a newly composed black-studio end card using only the exact logo design from Image 1. Center the monochrome Yametaro face symbol above the bold WAI wordmark and the smaller Window-Side AI lettering. Do not show the white canvas from Image 1. The logo is crisp, stable, proportionally correct, and surrounded by a restrained white halo. A few red particles drift at the edges, thin fog moves over a glossy black floor, and the logo reflection remains subtle. Very slow push-in, then hold the final composition motionless for the last two seconds. The narrator says exactly once: “Wah-ee. Empowering every developer to build what comes next.”
+
+Narrator and pronunciation:
+- Use exactly one professional adult male narrator for the entire 30 seconds: calm mid-low baritone, neutral international English, precise diction, restrained confidence, premium global technology-launch delivery.
+- Keep identical timbre, microphone character, loudness, pace, accent, and room sound across all six shots.
+- Every occurrence of WAI must be pronounced as the Japanese katakana ワ・イ: two short syllables “wah-ee”, IPA approximately [wa.i], with a tiny separation and slight emphasis on “ee”. Never pronounce it as English “why”, “way”, or spelled letters.
+- Read “Window-Side AI” naturally and fluently in English.
+- Speak each written sentence exactly once in its assigned shot. No paraphrasing, omissions, repeated phrases, extra dialogue, character voices, whispers, vocal reactions, irony, or laughter.
+
+Audio:
+- Generate all narration, sound effects, ambience, and music inside this Wan 3.0 task and synchronize them to the six shots.
+- Use a very subtle premium electronic ambient bed across the full film, mixed far below speech.
+- Shot 2: quiet keyboard taps and restrained diagnostic ticks. Shot 3: terminal scrolling, command keystrokes, and a soft digital deletion cue. Shot 4: understated tab-closing and file-removal ticks. Shot 5: quiet stage room tone. Shot 6: a soft logo resolve. Keep every effect below narration.
+- Do not omit narration. Do not create or imply an external, local, or placeholder voice.
+
+Hard constraints:
+- Exactly one continuous 30-second generated video with one synchronized Wan-generated audio track.
+- Exactly six shots at the stated timestamps and in the stated order.
+- Exactly one consistent male narrator across all six shots.
+- Use Image 1 only as a logo design reference in Shots 1 and 6. Never copy its white background.
+- Use Image 2 only for Shot 5. Do not use its people or stage in any other shot.
+- Shots 2, 3, and 4 are generated from text descriptions only. Do not imitate a supplied screenshot because none is supplied.
+- Exactly two people and exactly one beer mug in Shot 5. No people in other shots.
+- No subtitles, Japanese subtitle sentences, subtitle strip, captions, watermark, extra logos, duplicate people, duplicate mug, narrator on screen, lip movement, generic fake IDE, generic fake terminal, 3D floating windows, holographic UI, warped typography, melting panels, camera shake, handheld motion, or visual comedy beyond the specified deletion behavior.

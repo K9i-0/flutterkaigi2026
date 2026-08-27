@@ -36,6 +36,8 @@ ALLOWED_MEDIA_TYPES = {
 ALLOWED_RESOLUTIONS = {"480P", "720P", "1080P"}
 ALLOWED_RATIOS = {"adaptive", "16:9", "4:3", "1:1", "3:4", "9:16"}
 ALLOWED_MODELS = {"wan3.0-video", "wan3.0-video-prime"}
+ALLOWED_AUDIO_SOURCES = {"wan3", "local_madogiwa_member_japanese", "silent"}
+ALLOWED_GENERATION_MODES = {"single", "segmented_over_30"}
 
 
 def parse_args() -> argparse.Namespace:
@@ -64,10 +66,38 @@ def resolve_inside(base: Path, value: str) -> Path:
     return path if path.is_absolute() else (base / path).resolve()
 
 
-def validate(config: dict[str, Any], base: Path) -> tuple[str, str, list[tuple[str, Path]], dict[str, Any], Path]:
+def validate(
+    config: dict[str, Any], base: Path
+) -> tuple[
+    str,
+    str,
+    list[tuple[str, Path]],
+    dict[str, Any],
+    Path,
+    str,
+    str,
+    int,
+]:
     model = config.get("model")
     if model not in ALLOWED_MODELS:
         raise ValueError(f"model must be one of: {', '.join(sorted(ALLOWED_MODELS))}")
+
+    audio_source = config.get("audio_source")
+    if audio_source not in ALLOWED_AUDIO_SOURCES:
+        raise ValueError(
+            "audio_source must be one of: "
+            + ", ".join(sorted(ALLOWED_AUDIO_SOURCES))
+        )
+
+    generation_mode = config.get("generation_mode")
+    if generation_mode not in ALLOWED_GENERATION_MODES:
+        raise ValueError(
+            "generation_mode must be one of: "
+            + ", ".join(sorted(ALLOWED_GENERATION_MODES))
+        )
+    project_duration = config.get("project_duration")
+    if not isinstance(project_duration, int) or project_duration < 2:
+        raise ValueError("project_duration must be an integer of at least 2 seconds")
 
     prompt_path = resolve_inside(base, str(config.get("prompt_file", "")))
     if not prompt_path.is_file():
@@ -117,16 +147,43 @@ def validate(config: dict[str, Any], base: Path) -> tuple[str, str, list[tuple[s
         raise ValueError(f"Invalid ratio: {ratio}")
     if not isinstance(duration, int) or not 2 <= duration <= 30:
         raise ValueError("duration must be an integer from 2 to 30")
+    if project_duration <= 30:
+        if generation_mode != "single":
+            raise ValueError(
+                "Projects up to 30 seconds require generation_mode=single"
+            )
+        if duration != project_duration:
+            raise ValueError(
+                "For projects up to 30 seconds, parameters.duration must equal "
+                "project_duration; split generation is forbidden"
+            )
+    elif generation_mode != "segmented_over_30":
+        raise ValueError(
+            "Projects over 30 seconds require generation_mode=segmented_over_30"
+        )
     if not isinstance(seed, int) or not 0 <= seed <= 2_147_483_647:
         raise ValueError("seed must be an integer from 0 to 2147483647")
     for key in ("audio", "watermark", "prompt_extend"):
         if not isinstance(parameters.get(key), bool):
             raise ValueError(f"parameters.{key} must be boolean")
+    if audio_source == "wan3" and not parameters["audio"]:
+        raise ValueError("audio_source=wan3 requires parameters.audio=true")
+    if audio_source == "silent" and parameters["audio"]:
+        raise ValueError("audio_source=silent requires parameters.audio=false")
 
     output = resolve_inside(base, str(config.get("output", "")))
     if not output.name.lower().endswith(".mp4"):
         raise ValueError("output must end in .mp4")
-    return model, prompt, media, parameters, output
+    return (
+        model,
+        prompt,
+        media,
+        parameters,
+        output,
+        audio_source,
+        generation_mode,
+        project_duration,
+    )
 
 
 def data_uri(path: Path) -> str:
@@ -146,7 +203,13 @@ def build_payload(model: str, prompt: str, media: list[tuple[str, Path]], parame
     }
 
 
-def api_json(url: str, api_key: str, method: str = "GET", payload: Any = None) -> Any:
+def api_json(
+    url: str,
+    api_key: str,
+    method: str = "GET",
+    payload: Any = None,
+    timeout_seconds: int = 180,
+) -> Any:
     headers = {"Authorization": f"Bearer {api_key}"}
     data = None
     if payload is not None:
@@ -155,7 +218,7 @@ def api_json(url: str, api_key: str, method: str = "GET", payload: Any = None) -
         headers["X-DashScope-Async"] = "enable"
     request = Request(url, data=data, headers=headers, method=method)
     try:
-        with urlopen(request, timeout=180) as response:
+        with urlopen(request, timeout=timeout_seconds) as response:
             return json.load(response)
     except HTTPError as exc:
         body = exc.read().decode("utf-8", errors="replace")
@@ -186,7 +249,16 @@ def main() -> int:
     args = parse_args()
     try:
         config, base = load_config(args.config)
-        model, prompt, media, parameters, output = validate(config, base)
+        (
+            model,
+            prompt,
+            media,
+            parameters,
+            output,
+            audio_source,
+            generation_mode,
+            project_duration,
+        ) = validate(config, base)
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         print(f"Validation error: {exc}", file=sys.stderr)
         return 2
@@ -198,6 +270,11 @@ def main() -> int:
     print(
         f"Request: {model}, {parameters['duration']} s, "
         f"{parameters['resolution']}, {parameters['ratio']}, audio={parameters['audio']}"
+    )
+    print(f"Audio source: {audio_source}")
+    print(
+        f"Generation: {generation_mode}; project duration={project_duration} s; "
+        f"request duration={parameters['duration']} s"
     )
     print(
         f"Seed: {parameters['seed']}; prompt_extend={parameters['prompt_extend']}; "
@@ -216,7 +293,13 @@ def main() -> int:
 
     try:
         payload = build_payload(model, prompt, media, parameters)
-        created = api_json(SUBMIT_URL, api_key, method="POST", payload=payload)
+        created = api_json(
+            SUBMIT_URL,
+            api_key,
+            method="POST",
+            payload=payload,
+            timeout_seconds=600,
+        )
         task_id = created.get("output", {}).get("task_id")
         if not task_id:
             raise RuntimeError(f"No task_id in response: {json.dumps(created, ensure_ascii=False)}")

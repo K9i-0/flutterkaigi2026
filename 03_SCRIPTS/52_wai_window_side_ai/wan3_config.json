@@ -1,0 +1,21 @@
+{
+  "model": "wan3.0-video",
+  "audio_source": "wan3",
+  "project_duration": 30,
+  "generation_mode": "single",
+  "prompt_file": "prompt_wan3.txt",
+  "media": [
+    { "type": "reference_image", "path": "logo_wai_concept_v1.png" },
+    { "type": "reference_image", "path": "wan_refs/scene_05_japanese_professionals.jpg" }
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 30,
+    "seed": 523031,
+    "audio": true,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "generated/wai_window_side_ai_30s_v2_wan_master.mp4"
+}
