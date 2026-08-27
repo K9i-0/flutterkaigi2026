@@ -36,7 +36,25 @@ ALLOWED_MEDIA_TYPES = {
 ALLOWED_RESOLUTIONS = {"480P", "720P", "1080P"}
 ALLOWED_RATIOS = {"adaptive", "16:9", "4:3", "1:1", "3:4", "9:16"}
 ALLOWED_MODELS = {"wan3.0-video", "wan3.0-video-prime"}
-ALLOWED_AUDIO_SOURCES = {"wan3", "local_madogiwa_member_japanese", "silent"}
+ALLOWED_AUDIO_SOURCES = {
+    "wan3",
+    "local_madogiwa_member_japanese",
+    "local_yume_tele_anchor_japanese",
+    "silent",
+}
+ALLOWED_AUDIO_SYNC_STRATEGIES = {
+    "wan_generated_lip_sync",
+    "hybrid_visible_wan_offscreen_local",
+    "local_post_mux_offscreen",
+    "no_visible_speech",
+}
+ALLOWED_AUDIO_REPAIR_REASONS = {
+    "mispronunciation",
+    "omission",
+    "repetition",
+    "paraphrase",
+    "extra_words",
+}
 ALLOWED_GENERATION_MODES = {"single", "segmented_over_30"}
 
 
@@ -76,6 +94,7 @@ def validate(
     Path,
     str,
     str,
+    str,
     int,
 ]:
     model = config.get("model")
@@ -87,6 +106,15 @@ def validate(
         raise ValueError(
             "audio_source must be one of: "
             + ", ".join(sorted(ALLOWED_AUDIO_SOURCES))
+        )
+
+    audio_sync_strategy = config.get("audio_sync_strategy")
+    if audio_sync_strategy is None:
+        audio_sync_strategy = "legacy_unspecified"
+    elif audio_sync_strategy not in ALLOWED_AUDIO_SYNC_STRATEGIES:
+        raise ValueError(
+            "audio_sync_strategy must be one of: "
+            + ", ".join(sorted(ALLOWED_AUDIO_SYNC_STRATEGIES))
         )
 
     generation_mode = config.get("generation_mode")
@@ -170,6 +198,125 @@ def validate(
         raise ValueError("audio_source=wan3 requires parameters.audio=true")
     if audio_source == "silent" and parameters["audio"]:
         raise ValueError("audio_source=silent requires parameters.audio=false")
+    if audio_sync_strategy == "wan_generated_lip_sync":
+        if audio_source != "wan3" or not parameters["audio"]:
+            raise ValueError(
+                "audio_sync_strategy=wan_generated_lip_sync requires "
+                "audio_source=wan3 and parameters.audio=true"
+            )
+    if audio_sync_strategy == "hybrid_visible_wan_offscreen_local":
+        if audio_source != "wan3" or not parameters["audio"]:
+            raise ValueError(
+                "audio_sync_strategy=hybrid_visible_wan_offscreen_local requires "
+                "audio_source=wan3 and parameters.audio=true"
+            )
+        hybrid_edit = config.get("hybrid_audio_edit")
+        if not isinstance(hybrid_edit, dict):
+            raise ValueError(
+                "hybrid_visible_wan_offscreen_local requires hybrid_audio_edit"
+            )
+        switch_time = hybrid_edit.get("switch_time")
+        if not isinstance(switch_time, (int, float)) or not 0 < switch_time < duration:
+            raise ValueError(
+                "hybrid_audio_edit.switch_time must be inside the video duration"
+            )
+        local_audio_path = resolve_inside(
+            base, str(hybrid_edit.get("local_audio_path", ""))
+        )
+        if not local_audio_path.is_file():
+            raise ValueError(
+                f"Hybrid local audio file not found: {local_audio_path}"
+            )
+        wan_gain_db = hybrid_edit.get("wan_gain_db", 0)
+        if not isinstance(wan_gain_db, (int, float)):
+            raise ValueError("hybrid_audio_edit.wan_gain_db must be numeric")
+        hybrid_output = resolve_inside(base, str(hybrid_edit.get("output", "")))
+        if not hybrid_output.name.lower().endswith(".mp4"):
+            raise ValueError("hybrid_audio_edit.output must end in .mp4")
+    if audio_sync_strategy == "local_post_mux_offscreen":
+        if audio_source not in {
+            "local_madogiwa_member_japanese",
+            "local_yume_tele_anchor_japanese",
+        }:
+            raise ValueError(
+                "audio_sync_strategy=local_post_mux_offscreen requires a "
+                "canonical local audio_source"
+            )
+    if audio_source == "silent" and audio_sync_strategy not in {
+        "no_visible_speech",
+        "legacy_unspecified",
+    }:
+        raise ValueError(
+            "audio_source=silent requires audio_sync_strategy=no_visible_speech"
+        )
+
+    post_audio_repairs = config.get("post_audio_repairs")
+    if post_audio_repairs is not None:
+        if audio_sync_strategy not in {
+            "wan_generated_lip_sync",
+            "hybrid_visible_wan_offscreen_local",
+        }:
+            raise ValueError(
+                "post_audio_repairs requires wan_generated_lip_sync or "
+                "hybrid_visible_wan_offscreen_local"
+            )
+        if not isinstance(post_audio_repairs, dict):
+            raise ValueError("post_audio_repairs must be an object")
+        repair_audio_path = resolve_inside(
+            base, str(post_audio_repairs.get("local_audio_path", ""))
+        )
+        if not repair_audio_path.is_file():
+            raise ValueError(
+                f"Post-repair local audio file not found: {repair_audio_path}"
+            )
+        repair_segments = post_audio_repairs.get("segments")
+        if not isinstance(repair_segments, list) or not repair_segments:
+            raise ValueError("post_audio_repairs.segments must be a non-empty array")
+        for index, segment in enumerate(repair_segments, 1):
+            if not isinstance(segment, dict):
+                raise ValueError(
+                    f"post_audio_repairs.segments[{index}] must be an object"
+                )
+            values = {
+                key: segment.get(key)
+                for key in (
+                    "source_start",
+                    "source_end",
+                    "target_start",
+                    "target_end",
+                )
+            }
+            if not all(isinstance(value, (int, float)) for value in values.values()):
+                raise ValueError(
+                    f"post_audio_repairs.segments[{index}] times must be numeric"
+                )
+            if not 0 <= values["source_start"] < values["source_end"]:
+                raise ValueError(
+                    f"post_audio_repairs.segments[{index}] has invalid source range"
+                )
+            if not 0 <= values["target_start"] < values["target_end"] <= duration:
+                raise ValueError(
+                    f"post_audio_repairs.segments[{index}] has invalid target range"
+                )
+            source_duration = values["source_end"] - values["source_start"]
+            target_duration = values["target_end"] - values["target_start"]
+            if abs(source_duration - target_duration) > 0.001:
+                raise ValueError(
+                    f"post_audio_repairs.segments[{index}] source and target "
+                    "durations must match; redesign silence or shot timing instead "
+                    "of time-stretching speech"
+                )
+            reason = segment.get("reason")
+            if reason not in ALLOWED_AUDIO_REPAIR_REASONS:
+                raise ValueError(
+                    f"post_audio_repairs.segments[{index}].reason must be one of: "
+                    + ", ".join(sorted(ALLOWED_AUDIO_REPAIR_REASONS))
+                )
+        repair_output = resolve_inside(
+            base, str(post_audio_repairs.get("output", ""))
+        )
+        if not repair_output.name.lower().endswith(".mp4"):
+            raise ValueError("post_audio_repairs.output must end in .mp4")
 
     output = resolve_inside(base, str(config.get("output", "")))
     if not output.name.lower().endswith(".mp4"):
@@ -181,6 +328,7 @@ def validate(
         parameters,
         output,
         audio_source,
+        audio_sync_strategy,
         generation_mode,
         project_duration,
     )
@@ -256,6 +404,7 @@ def main() -> int:
             parameters,
             output,
             audio_source,
+            audio_sync_strategy,
             generation_mode,
             project_duration,
         ) = validate(config, base)
@@ -272,6 +421,28 @@ def main() -> int:
         f"{parameters['resolution']}, {parameters['ratio']}, audio={parameters['audio']}"
     )
     print(f"Audio source: {audio_source}")
+    print(f"Audio sync strategy: {audio_sync_strategy}")
+    if audio_sync_strategy == "hybrid_visible_wan_offscreen_local":
+        hybrid_edit = config["hybrid_audio_edit"]
+        print(
+            "Hybrid audio edit: switch="
+            f"{hybrid_edit['switch_time']} s; local={hybrid_edit['local_audio_path']}; "
+            f"wan gain={hybrid_edit.get('wan_gain_db', 0)} dB; "
+            f"output={hybrid_edit['output']}"
+        )
+    post_audio_repairs = config.get("post_audio_repairs")
+    if post_audio_repairs is not None:
+        print(
+            "Post audio repairs: "
+            f"{len(post_audio_repairs['segments'])} segment(s); "
+            f"local={post_audio_repairs['local_audio_path']}; "
+            f"output={post_audio_repairs['output']}"
+        )
+    if audio_sync_strategy == "legacy_unspecified":
+        print(
+            "Warning: legacy config has no audio_sync_strategy; add one before "
+            "authoring a new generation."
+        )
     print(
         f"Generation: {generation_mode}; project duration={project_duration} s; "
         f"request duration={parameters['duration']} s"

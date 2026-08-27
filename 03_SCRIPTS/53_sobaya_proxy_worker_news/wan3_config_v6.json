@@ -1,0 +1,25 @@
+{
+  "model": "wan3.0-video",
+  "audio_source": "wan3",
+  "audio_sync_strategy": "wan_generated_lip_sync",
+  "project_duration": 30,
+  "generation_mode": "single",
+  "prompt_file": "prompt_wan3_v6.txt",
+  "media": [
+    {"type": "reference_image", "path": "character_sobaya_basic_sheet.png"},
+    {"type": "reference_image", "path": "character_fukuchan_basic_sheet.png"},
+    {"type": "reference_image", "path": "character_yume_tele_anchor_basic_sheet.png"},
+    {"type": "reference_image", "path": "logo_yume_tele_master.png"},
+    {"type": "reference_audio", "path": "reference_yume_tele_anchor_ep25.wav"}
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 30,
+    "audio": true,
+    "seed": 530030,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_result_v6_seed530030_480p.mp4"
+}

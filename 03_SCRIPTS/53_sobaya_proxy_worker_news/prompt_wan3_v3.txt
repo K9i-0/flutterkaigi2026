@@ -1,0 +1,56 @@
+Create exactly one continuous 30.0-second, 16:9, photorealistic Japanese breaking-news video. Generate the complete broadcast as one Wan 3.0 task, never as separate clips. The presentation is sober, credible, and deadpan, like a professionally edited regional television news bulletin. The bizarre crime is reported completely seriously; no performer signals that it is a joke.
+
+AUDIO 1 — ABSOLUTE TIMING AND FINAL-NARRATION MASTER:
+- Audio 1 is the complete 30.0-second final Japanese narration master selected by the user. It contains the exact approved female anchor voice, pronunciation, wording, pauses, timing, initial silence, and ending silence.
+- Use Audio 1 as the synchronization and performance master for the entire video. Preserve its audible narration without paraphrasing, repeating, omitting, translating, re-pronouncing, voice-changing, or adding any spoken word.
+- Do not generate a new narrator, reporter, police voice, crowd voice, whisper, chant, laughter, radio speech, or character dialogue. Do not add music or sound effects over Audio 1.
+- While the anchor is visible in Shot 1, synchronize her mouth naturally to the portion of Audio 1 audible during that shot. After Shot 1, the same Audio 1 continues only as off-screen voice-over; all visible people keep their mouths closed.
+- Audio timing landmarks after the 0.4-second lead silence: the breaking-news phrase ends at about 1.29 seconds; the sentencing sentence runs about 2.31-7.87 seconds; the proxy-work sentence runs about 9.20-16.49 seconds; the home-drinking sentence runs about 17.50-21.07 seconds; the final sentence runs about 22.23-26.94 seconds. Do not time-stretch or compress Audio 1.
+
+References:
+- Image 1: episode-local character sheet for SOBAYA. Preserve exactly his rigid white oval mask, two large black circular eyeholes, two vertical red tear-like markings, small black forehead dot, short spiky black hair, neutral gray exposed skin, 180-centimeter 100-kilogram muscular silhouette, fitted white short-sleeve T-shirt, black jeans, and white sneakers. For Fukuchan's disguise in Shot 3, use only the exact mask design from Image 1. Do not reproduce the sheet layout, labels, white background, beer poses, multiple views, or multiple real Sobayas.
+- Image 2: episode-local character sheet for FUKUCHAN, the only proxy employee. Preserve his exact Japanese face before the mask goes on, center-parted black hair, slim body, black blazer and loose black trousers, graphic white T-shirt, white sneakers, black lanyard, and small name badge. Face portraits define his face; clothing panels define outfit and body only. Do not create a headless person, duplicate Fukuchan, panel separators, or the white sheet background.
+- Image 3: episode-local identity sheet for the YUME-TELE female anchor from Episode 25. In Shot 1 use exactly the same individual woman as the center portrait: her natural facial geometry and asymmetry, dark almond-shaped eyes, eyebrow shape, nose, lips, jawline, realistic late-thirties skin texture, dark-brown side-parted chin-length bob, pearl stud earrings, navy blazer, off-white pleated blouse, and black lapel microphone. Do not average or beautify her face, change her age, create another woman, or reproduce three portraits, panel divisions, or the gray sheet background in the broadcast.
+- Image 4: exact fictional YUME-TELE logo master. Extract only the navy-and-coral symbol and exact Japanese lettering “ゆめテレ” from the white master canvas. Place exactly one small stable logo in the upper-right corner throughout. Never reproduce the white canvas or create a second logo.
+- Audio 1: exact approved 30-second narration and timing master, not merely a voice-timbre suggestion. It is the sole spoken-audio source.
+
+Overall continuity and broadcast language:
+- One coherent fictional Japanese broadcaster, one exact Episode 25 anchor identity, one navy-white-coral broadcast design, and one stable Image 4 logo.
+- The same real Sobaya identity from Image 1 appears in Shots 2, 4, and 6. Shot 4 is earlier reconstructed home footage with no handcuffs. Shots 2 and 6 are the same police-escort event with identical clothing, cuffs, officers, entrance, overcast light, and press group.
+- Police uniforms, courthouse architecture, microphones, vehicles, and broadcast design are fictional and unbranded. No real police crest, court seal, television network, news program, company, or government institution.
+- No subtitles, captions, lower thirds, headline, ticker, date, clock, case number, watermark, or generated words anywhere except the single exact Image 4 logo.
+
+Shot 1 [0.0-4.0 s] — Episode 25 anchor begins the breaking news.
+Open directly in a restrained modern fictional Japanese local-news studio. Exactly one female anchor, the same individual as Image 3, sits behind a clean blue-gray desk. Chest-up, level 70 mm broadcast camera, locked centered framing, direct eye contact, controlled urgent expression, natural skin texture, flat professional newsroom lighting, and real studio depth. At 0.4 seconds she begins moving her mouth in precise sync with Audio 1; no mouth movement before the voice begins. Keep her face, bob, pearl earrings, navy blazer, blouse, and lapel microphone identical to Image 3. The small Image 4 logo remains upper-right. No papers contain readable text. At 4.0 seconds hard cut away while Audio 1 continues as voice-over.
+
+Shot 2 [4.0-9.2 s] — Handcuffed Sobaya escorted from a building.
+Hard cut to credible handheld press footage outside a modern glass-and-stone office building under flat overcast daylight. Exactly one real Sobaya from Image 1 walks out calmly with his wrists secured together by exactly one realistic pair of silver handcuffs in front of his waist. The linked cuffs and both wrists remain unobstructed and clearly visible. Exactly two fictional Japanese police officers in plain unbranded navy uniforms escort him, one on each side, each lightly holding one upper arm. A 28 mm news camera walks backward as the trio advances. Four reporters remain only at the far frame edges with plain microphones that never block the mask or cuffs. Sobaya and everyone else remain silent with mouths closed. No violence, resistance, beer, insignia, or readable signs.
+
+Shot 3 [9.2-16.8 s] — Fukuchan is the sole proxy employee.
+Hard cut into a concise three-part security-camera evidence montage, always showing the same single Fukuchan from Image 2 in the same black outfit:
+1. [9.2-11.7 s] Medium fixed office corridor angle. One unmasked Fukuchan clearly faces camera for 0.7 seconds, then raises exactly one rigid Sobaya mask from Image 1 and fits it over his face in one continuous plausible motion. His center-parted hair remains visible.
+2. [11.7-13.9 s] Hard cut. The same masked Fukuchan taps one unmarked access card at an office gate and walks through. He keeps the same slim body, hair, black clothes, lanyard, and badge and never becomes Sobaya.
+3. [13.9-16.8 s] Hard cut. The same masked Fukuchan sits at one computer in an ordinary office and types continuously. The mask never duplicates or disappears.
+No second proxy, coworker, generic employee, gray skin, muscular transformation, beer, readable CCTV text, or dialogue.
+
+Shot 4 [16.8-22.2 s] — Sobaya drinks at home while the proxy works.
+Hard cut to warm reconstructed footage in a modest apartment. Exactly one real Sobaya from Image 1, with no handcuffs and no police, relaxes on a small fabric sofa in his white T-shirt and black jeans. A closed work laptop remains untouched on the coffee table. He slowly pours pale golden beer from one plain silver can with no label into exactly one clear glass mug, sets the can down, raises the mug, and takes one satisfied sip. Warm practical light, calm 50 mm observational lens. He never speaks or moves the rigid mask mouth. No duplicate Sobaya, proxy, readable brand, or police.
+
+Shot 5 [22.2-24.5 s] — Sentencing context.
+Hard cut to a long-lens exterior news shot of a large fictional regional courthouse under gray skies. Restrained stone and glass, broad stairs, a few anonymous distant people, one slow centered push-in. No readable building name, court seal, national emblem, flag, protest sign, police crest, or real landmark. Audio 1 begins its final sentence during this shot.
+
+Shot 6 [24.5-30.0 s] — Silent deadpan reaction under the final quoted comment.
+Hard cut back to the exact same entrance, overcast light, Sobaya clothing, front handcuffs, two officers, and press group from Shot 2. Use an 85 mm chest-up frontal news camera. Exactly one real Sobaya stops between the same two officers and turns his rigid white mask toward the lens. Make one short deliberate tilt down to show the linked cuffs, return to the mask, and lock. Plain microphones enter only at the lower edge. Sobaya never removes the mask, exposes a face, speaks, or moves its mouth slit. During the final quoted words in Audio 1 he gives one tiny satisfied nod. After Audio 1 becomes silent at about 26.94 seconds, hold the silent deadpan mask and visible handcuffs without camera drift until a clean cut to black at exactly 30.0 seconds.
+
+Hard constraints:
+- Exactly 30.0 seconds, 16:9, photorealistic, one continuous Wan-generated video, one task, and exactly six top-level shots at the stated boundaries.
+- Audio 1 is the sole narration and sole spoken source. Never generate or add another voice, alternate reading, repeated phrase, dialogue, music, sound effect, or audible background conversation.
+- Shot 1 uses exactly the Episode 25 anchor identity from Image 3, one woman only. Never show the three-view identity sheet or three anchors.
+- Shots 2 and 6 clearly show one real Sobaya, one pair of front handcuffs linking both wrists, and exactly two officers.
+- Shot 3 shows exactly one proxy: Fukuchan. Establish his unmasked face, then the same person puts on one Sobaya mask and remains the same slim Fukuchan while entering and working.
+- Shot 4 shows one real Sobaya, one plain silver can, one clear beer mug, and one untouched closed laptop, with no cuffs or police.
+- Preserve the exact story order: anchor; police escort; Fukuchan mask-and-work evidence; Sobaya drinking at home; courthouse; silent handcuffed final reaction.
+- “スーパードライ” exists only in Audio 1 and never appears visually as a logo, can design, subtitle, caption, or generated text.
+- The only readable on-screen text is exactly one small Image 4 “ゆめテレ” logo upper-right. No duplicate logo, subtitles, malformed text, real brands, real institutions, or real police insignia.
+- No character-sheet panels, labels, white sheet background, gray identity-sheet background, headless clothing body, reaction thumbnails, duplicated people, face blending, changed mask markings, missing mask, extra handcuffs, extra police, deformed hands, fused wrists, weapons, assault, injury, blood, chase, escape, slapstick, cheering, or comedy music.
+

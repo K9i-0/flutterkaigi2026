@@ -1,0 +1,31 @@
+{
+  "model": "wan3.0-video",
+  "audio_source": "wan3",
+  "project_duration": 30,
+  "generation_mode": "single",
+  "prompt_file": "prompt_wan3_v2.txt",
+  "media": [
+    {
+      "type": "reference_image",
+      "path": "character_sobaya_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_fukuchan_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "logo_yume_tele_master.png"
+    }
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 30,
+    "audio": true,
+    "seed": 530030,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_result_v2_seed530030_480p.mp4"
+}

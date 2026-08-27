@@ -1,4 +1,4 @@
-version: 7
+version: 8
 purpose: Seedance制作で再利用する正本テンプレート
 
 policy:
@@ -100,6 +100,13 @@ character_sheets:
         material_reference: ../21_takosan_php_prompt_pun/clip1_start.png
         adopted_design: Candidate A — ぷくもち幼体型
         use_for: 窓際トイジオラマ3D映像での通常形。少し縦につぶれたふっくらしたもち型、低めでやや離れた黒い点目、小さく丸みのある耳、短く柔らかく上向きに反る鼻を固定する。脚・腕・口なし、青い体、白い後部、可動鼻、別小道具の木槌を維持し、21準拠のマットな微細素材感と暖色トイ照明を適用する
+  yume_tele_anchor:
+    file: characters/character_yume_tele_anchor_basic_sheet.png
+    prompt: characters/source_prompts/character_yume_tele_anchor_basic_sheet.md
+    canon: 02_CHARACTERS/09_YumeTeleAnchor.md
+    face_identity_canon: 02_CHARACTERS/YumeTeleAnchor.png
+    use_for: ユーザーが別配役を指定しない「ゆめテレ」のニュース、速報、スタジオ進行。エピソード25と同じ女性アナウンサーの顔、ボブ、紺ジャケット、オフホワイトのブラウスを固定する
+    sheet_layout: 同一人物の正面胸上／左3分の4胸上／右3分の4胸上。背景、ロゴ、文字、別人物を含まない
 
 action_prompt:
   design_source_of_truth: prompt/seedance_script_template.md

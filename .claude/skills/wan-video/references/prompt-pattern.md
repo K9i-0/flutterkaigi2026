@@ -2,11 +2,13 @@
 
 ## 音声生成元
 
-- 窓際族メンバーの日本語発話だけは`VOICE_CAST.md`準拠のローカル音声を使える。
+- 窓際族メンバーの日本語発話と、正典ゆめテレアナウンサーの日本語ニュース音声は`VOICE_CAST.md`準拠のローカル音声を使える。
 - それ以外の台詞、ナレーション、効果音、環境音、BGMは必ずWan 3.0へ生成させる。
 - 「字幕は後付け」を「音声も後付け」と読み替えない。
 - 例外外のナレーションでは`audio_source: wan3`、`parameters.audio: true`とし、プロンプトへ話者、全文、読み、声質、感情、音響を明記する。
 - ショット分割時も汎用ローカルTTSで声を補わない。同じナレーター記述と発音指定を各ショットで完全に揃える。
+- 可視話者のリップシンクを優先する場合は[lip-sync-workflow.md](lip-sync-workflow.md)を読み、Wan埋め込み音声を基本の同期源にする。生成後の全面差し替えを前提に可視口パクを設計せず、発音失敗の部分修正だけを例外とする。
+- ニュース等の早口・長文・一字一句固定の日本語で正典ローカル話者を使える場合は、生成前に完成音声マスターを作る。画面内のWan台詞は短くし、長文は早めに資料映像へ切り替えてローカル音声で完成させる。生成後に発音失敗が残れば、音声だけの有料再生成より編集修正を先に行う。
 
 ## 生成単位
 
@@ -40,6 +42,8 @@ Shot 2 [3.0-7.0 s] — Hard cut. <shot content and state transition>.
 
 Audio: <speaker> says exactly once: 「<exact line>」.
 Pronunciation: <reading notes>. No other dialogue. No background music.
+Lip sync: generate speech and facial motion together; animate lips, jaw, and cheeks to the generated phonemes. Keep the mouth closed during silence and do not cut before the final phoneme ends.
+Fast exact-script policy: keep visible Wan speech short. After the speaker is off-screen, use the canonical local master on the same timeline. If Wan mispronounces, omits, repeats, or changes a visible phrase, replace only that failed meaning unit in post and re-audit lip sync.
 Sound effects: <sources and timing>, mixed below speech.
 
 Hard constraints: exact duration; exact subject count; exact prop count; exact state order;
@@ -54,7 +58,8 @@ no subtitles, watermark, duplicate subjects, unintended text, or extra dialogue.
 - 数え間違いが致命的な要素は`exactly four`のように繰り返し固定する。
 - 途中状態は「開始時に4本、発射ごとに空になる、終了時は4本とも空」のように遷移で書く。
 - 台詞がない人物には`No dialogue.`、BGM不要なら`No background music.`を明記する。
-- 窓際族メンバー以外の声、または日本語以外の発話では、`No dialogue.`や`audio=false`で逃げず、要求された音声をWanの同期音声として生成する。
+- `reference_audio`へ完成台詞が入っていても、Wanがそのサンプル単位の時間軸を再現すると仮定しない。声質参照なら元の語句をコピーしないと明記する。
+- 正典ゆめテレアナウンサーを除く窓際族メンバー以外の声、または日本語以外の発話では、`No dialogue.`や`audio=false`で逃げず、要求された音声をWanの同期音声として生成する。
 - 文字は専用画像を参照し、正確な表記、色、出現回数、位置を指定する。
 - 既に詳細な秒設計がある場合は`prompt_extend=false`を使う。
 
