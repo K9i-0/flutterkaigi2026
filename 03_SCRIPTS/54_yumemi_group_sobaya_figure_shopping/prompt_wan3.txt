@@ -1,0 +1,38 @@
+Create exactly one continuous 30.0-second, 16:9, photorealistic Japanese television shopping-program video. The production looks expensive, sincere, brightly lit, slightly old-fashioned, and completely serious. Do not render any readable text, captions, prices, logos, clocks, watermarks, phone numbers, QR codes, or interface graphics; all broadcast graphics will be added later in Remotion.
+
+References:
+- Image 1: episode-local identity sheet for Fukuchan, the energetic male shopping host. Preserve only his exact face, black hair, slim build, black jacket and clothing identity. The headless clothing panel is clothing reference only, never a decapitated person. Do not reproduce panel borders, labels, white background, multiple views, lanyard text, or duplicate bodies.
+- Image 2: episode-local identity sheet for Tokun, the cheerful male company president. Preserve his exact face, slightly stocky build, turquoise aloha shirt, straw hat, purple sunglasses, pink flower lei, navy wide trousers, bare feet, and one small ukulele. The headless clothing panel is clothing reference only. Do not reproduce sheet layout, labels, white background, multiple bodies, or duplicate instruments.
+- Image 3: episode-local identity sheet for Sobaya, the real guest. Preserve his unique white mask with black circular eye openings, red vertical markings, gray exposed skin, black hair, muscular 180 cm / 100 kg silhouette, white T-shirt, dark jeans, and white sneakers. His white mask remains correctly worn in every frame; never remove, lift, shift, reveal through, transform, damage, or replace it. Do not copy sheet layout, labels, white background, multiple views, or duplicate bodies.
+- Image 4: exact prop reference for one cheap life-size Sobaya figure. Preserve the same inanimate rigid FRP statue: white oval mask with black circular eyes, red vertical markings and a gray forehead dot; black angular hair; plain white sleeveless torso; huge spherical shoulders; crude segmented arms; open left hand; exactly one foamy beer mug held in the right hand; dark-gray tight shorts; thin gray lower legs; white ankle bands; black-gray bare feet; exactly one low dark charcoal-gray rectangular display plinth beneath both feet. Preserve its intentionally low-detail, awkward 3D construction and physically credible foot contact with the plinth. It is one physical prop, not a person.
+
+Overall setting and continuity:
+A cream, burgundy, and champagne-gold Japanese TV-shopping studio with glossy product pedestal, softboxes, warm key light, subtle sparkle reflections, and a small turntable. Reserve at least 5 percent of every edge and the lower 25 percent for later Remotion graphics. Keep faces, the figure, the ukulele, masks, hands, and important product defects away from those graphic-safe areas. Exactly three living people appear in the whole video: Fukuchan, Tokun, and the real Sobaya. Exactly one life-size figure appears. Never show anonymous staff, audience, models, customers, or extra people.
+
+The figure is always visibly a cheap rigid object: it never blinks, breathes, talks, looks around, moves by itself, changes pose, becomes flesh, or transforms into the real Sobaya. Across every cut it keeps precisely the same oval mask, oversized spherical shoulders, segmented joints, crude hands and feet, shorts, ankle bands, single beer mug, and single rectangular display plinth. Both feet remain planted naturally on the same plinth. The real Sobaya remains visibly human through subtle breathing and one small final head tilt, but his mask remains fixed and opaque.
+
+Shot 1 [0.0-1.8 s] — Glamorous 50 mm product reveal. The cheap figure stands alone on the pedestal under luxurious warm spotlights. Slow controlled dolly-in. The visual contradiction is immediate: premium lighting reveals obvious rough seams and uneven paint. No people and no text.
+
+Shot 2 [1.8-6.0 s] — Hard cut to a medium-wide studio shot. Fukuchan stands beside the figure and presents it with both hands. During the entire future voice-over window, keep his mouth invisible by using rear three-quarter framing, his head turned toward the product, and brief inserts of his hands and the figure. He does not speak in the generated audio and keeps his mouth closed whenever visible.
+
+Shot 3 [6.0-10.7 s] — Product turntable and premium macro cinematography. Show the same figure's flat oval mask, low-detail face, spherical shoulders, crude elbow joints, simple open hand, foamy mug, thin gray legs, ankle bands, and rough bare feet in crisp detail. The camera and lighting praise the object while its low-detail construction remains unmistakable. No text.
+
+Shot 4 [10.7-14.3 s] — Over Fukuchan's shoulder from behind toward Tokun. Fukuchan's mouth is fully hidden. Tokun stands beside the set with his ukulele, listens silently, smiles, and keeps his mouth closed. No one speaks.
+
+Shot 5 [14.3-17.2 s] — Medium shot of Tokun. He keeps his mouth closed, plays exactly one bright ukulele chord, pauses, then gives one solemn approving nod as if deciding the price. No dialogue. Do not duplicate the ukulele.
+
+Shot 6 [17.2-21.1 s] — The real Sobaya enters from screen right and calmly takes position beside the same figure. The camera favors his entrance and full-body identity. Fukuchan may gesture in the deep background, but his mouth must be invisible and closed. The figure stays rigid. Sobaya's white mask stays correctly attached and opaque.
+
+Shot 7 [21.1-24.7 s] — Locked frontal full-body comparison of exactly two Sobaya-shaped subjects: the real Sobaya on one side and the same cheap figure on the other. Fukuchan and Tokun are completely off-screen. The real Sobaya shows only natural subtle breathing; the figure remains absolutely motionless. Compose symmetrically with clear negative space for a later comparison meter. No dialogue.
+
+Shot 8 [24.7-27.8 s] — Two quick but elegant close comparison inserts: first the real Sobaya's exact mask and clean clothing, then the figure's crooked simplified mask, rough seam and paint drip. Preserve object continuity. No dialogue and no moving mouths.
+
+Shot 9 [27.8-29.1 s] — Medium close-up of the real Sobaya beside the figure. His mouth is fully concealed behind the opaque mask. He makes one tiny incredulous head tilt, then holds still. The figure remains rigid.
+
+Shot 10 [29.1-30.0 s] — Clean final full-body comparison, almost freeze-frame stillness, premium studio lighting, both subjects fully visible and separated. End on a stable frame with graphic-safe space.
+
+Audio:
+Generate no speech, no spoken Japanese, no announcer, no crowd voices, no singing, and no lyrics. Generate only an upbeat instrumental Japanese television-shopping jingle, subtle studio ambience, quiet turntable motor, exactly one ukulele chord at 14.3-17.2 seconds, restrained sparkle accents, and a clean short ending sting. Keep 24.7-29.1 seconds mostly silent except faint room tone so post-production dialogue and the comic pause land clearly. The accepted local Fukuchan and Sobaya voices will be added later.
+
+Hard constraints:
+exactly 30.0 seconds; one Wan task; exactly three living people total; exactly one inanimate figure; no duplicate subjects; no extra people; no duplicated ukulele; no readable text; no captions; no logo; no price; no watermark; no QR code; no generated speech; no singing; no visible talking mouths; the figure never animates; the figure never becomes Sobaya; the real Sobaya never removes or shifts his mask; no sheet panels, labels, dividers, swatches, white sheet backgrounds, or headless bodies copied into the scene.

@@ -5,12 +5,14 @@
   "model": "wan3.0-video",
   "audio_source": "wan3",
   "audio_sync_strategy": "wan_generated_lip_sync",
+  "reference_audio_usage": "voice_timbre_only",
   "project_duration": 15,
   "generation_mode": "single",
   "prompt_file": "prompt_wan3.txt",
   "media": [
     {"type": "reference_image", "path": "character_sobaya_basic_sheet.png"},
-    {"type": "reference_image", "path": "logo.png"}
+    {"type": "reference_image", "path": "logo.png"},
+    {"type": "reference_audio", "path": "sobaya_voice_timbre.wav"}
   ],
   "parameters": {
     "resolution": "480P",
@@ -30,6 +32,7 @@
 - テンプレート、`02_CHARACTERS/`、過去エピソードの人物画像を設定から直接参照しない。正典参照WAVは`VOICE_CAST.md`の指定に従う。
 - `media`の配列順とプロンプトの`Image n`、`Video n`、`Audio n`を一致させる。
 - `reference_*`と`first_frame`/`last_frame`を混在させない。
+- `reference_audio`は最大5本、各1〜15秒、合計15.0秒以内にする。`wan_generated_lip_sync`または`hybrid_visible_wan_offscreen_local`で使う場合は`reference_audio_usage=voice_timbre_only`を必須とする。
 - スクリプトは`model`を`wan3.0-video`または`wan3.0-video-prime`へ限定し、危険な任意エンドポイント指定を受け付けない。
 - 出力MP4は設定ファイルのディレクトリ内へ保存する。絶対パスも指定できるが、通常は相対パスを使う。
 
@@ -54,6 +57,8 @@
 - `no_visible_speech`: 台詞がない、話者が常に画面外、または口元を一切見せず同期を評価しない。`audio_source`は要件に応じて選ぶ。
 
 `reference_audio`を渡すこと自体は同期方式にならない。声質参照なのか、完成編集で使う音声なのかをプロンプトと生成記録へ明記する。
+
+ユーザーがリップシンクを指定した場合、正典WAVやIrodori音声が存在しても`local_post_mux_offscreen`へ変更しない。正典WAVは15秒枠内の声質参照、Irodoriは生成後の破綻箇所だけを直す`post_audio_repairs`の入力として扱う。
 
 ハイブリッド設定ではAPIパラメータ外の編集メタデータを追加する。
 
@@ -92,6 +97,7 @@
 ```
 
 - `local_audio_path`: `VOICE_CAST.md`準拠の採用済み正典ローカル音声。
+- 複数話者では、各話者の正典Irodori音声と必須後処理を完成タイムラインへ配置した統合修復マスターを`local_audio_path`へ指定する。
 - `source_start` / `source_end`: 正典音声から切り出す時刻。
 - `target_start` / `target_end`: 完成タイムライン上で置換する時刻。動画尺と後続音声の時刻を変えない。
 - `reason`: `mispronunciation`、`omission`、`repetition`、`paraphrase`、`extra_words`のいずれか。

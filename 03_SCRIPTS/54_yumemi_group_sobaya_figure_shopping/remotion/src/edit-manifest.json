@@ -1,0 +1,77 @@
+{
+  "composition": {
+    "id": "YumemiGroupShoppingV1",
+    "width": 832,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 900
+  },
+  "inputVideo": "input.mp4",
+  "inputVideoVolume": 0,
+  "replacementAudio": "shopping_irodori_instrumental_master_30s.wav",
+  "brand": {
+    "name": "ゆめみグループ",
+    "cornerLabel": "本日限り"
+  },
+  "product": {
+    "name": "等身大そば屋 プレミアムフィギュア",
+    "claims": ["職人完全監修", "驚異の本人再現率", "超高品質FRP"],
+    "height": "身長180cm",
+    "weight": "重量100kg",
+    "regularPrice": "1,238,000円",
+    "todayPrice": "198,000円",
+    "stock": "残り2体！",
+    "matchRate": "本人一致率 99.9%",
+    "disclaimer": "※品質の感じ方には個人差があります",
+    "presidentTitle": "ゆめみグループ社長　とーくん"
+  },
+  "cues": {
+    "intro": {"startFrame": 0, "endFrame": 54},
+    "features": {"startFrame": 180, "endFrame": 321},
+    "president": {"startFrame": 321, "endFrame": 429},
+    "priceReveal": {"startFrame": 429, "endFrame": 516},
+    "comparison": {"startFrame": 633, "endFrame": 741},
+    "disclaimer": {"startFrame": 741, "endFrame": 834},
+    "punchline": {"startFrame": 834, "endFrame": 873},
+    "final": {"startFrame": 873, "endFrame": 900}
+  },
+  "captions": [
+    {
+      "startFrame": 54,
+      "endFrame": 180,
+      "speaker": "福ちゃん",
+      "text": "本日ご紹介するのは、等身大そば屋フィギュア！"
+    },
+    {
+      "startFrame": 180,
+      "endFrame": 318,
+      "speaker": "福ちゃん",
+      "text": "職人が細部まで仕上げた、驚きの再現度です！"
+    },
+    {
+      "startFrame": 321,
+      "endFrame": 429,
+      "speaker": "福ちゃん",
+      "text": "とーくん社長、こちら、おいくらですか？"
+    },
+    {
+      "startFrame": 516,
+      "endFrame": 627,
+      "speaker": "福ちゃん",
+      "text": "そして、ご本人にも来ていただきました！"
+    },
+    {
+      "startFrame": 633,
+      "endFrame": 741,
+      "speaker": "福ちゃん",
+      "text": "うわ、どっちが本物かわからないぎゅん！",
+      "emphasis": "ぎゅん！"
+    },
+    {
+      "startFrame": 834,
+      "endFrame": 873,
+      "speaker": "そば屋",
+      "text": "わかるやろ。"
+    }
+  ]
+}

@@ -8,10 +8,12 @@ from __future__ import annotations
 
 import argparse
 import base64
+from collections import Counter
 import json
 import mimetypes
 import os
 from pathlib import Path
+import subprocess
 import sys
 import time
 from typing import Any
@@ -82,6 +84,30 @@ def load_config(path: Path) -> tuple[dict[str, Any], Path]:
 def resolve_inside(base: Path, value: str) -> Path:
     path = Path(value)
     return path if path.is_absolute() else (base / path).resolve()
+
+
+def probe_duration(path: Path) -> float:
+    result = subprocess.run(
+        [
+            "ffprobe",
+            "-v",
+            "error",
+            "-show_entries",
+            "format=duration",
+            "-of",
+            "default=noprint_wrappers=1:nokey=1",
+            str(path),
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        raise ValueError(f"Could not probe media duration: {path}")
+    try:
+        return float(result.stdout.strip())
+    except ValueError as exc:
+        raise ValueError(f"Invalid media duration: {path}") from exc
 
 
 def validate(
@@ -155,6 +181,34 @@ def validate(
         types.add(kind)
         media.append((kind, media_path))
 
+    media_counts = Counter(kind for kind, _ in media)
+    if media_counts["reference_image"] > 10:
+        raise ValueError("reference_image accepts at most 10 files")
+    if media_counts["reference_video"] > 5:
+        raise ValueError("reference_video accepts at most 5 files")
+    if media_counts["reference_audio"] > 5:
+        raise ValueError("reference_audio accepts at most 5 files")
+    if media_counts["first_frame"] > 1 or media_counts["last_frame"] > 1:
+        raise ValueError("first_frame and last_frame accept at most one file each")
+
+    for kind in ("reference_video", "reference_audio"):
+        durations = [
+            probe_duration(path)
+            for media_kind, path in media
+            if media_kind == kind
+        ]
+        for index, value in enumerate(durations, 1):
+            if not 1.0 <= value <= 15.0:
+                raise ValueError(
+                    f"{kind}[{index}] duration must be from 1.0 to 15.0 seconds: "
+                    f"{value:.3f}"
+                )
+        total = sum(durations)
+        if total > 15.0005:
+            raise ValueError(
+                f"{kind} total duration exceeds 15.0 seconds: {total:.3f}"
+            )
+
     has_reference = bool(types & {"reference_image", "reference_video", "reference_audio", "file", "link"})
     has_frames = bool(types & {"first_frame", "last_frame"})
     if has_reference and has_frames:
@@ -204,11 +258,25 @@ def validate(
                 "audio_sync_strategy=wan_generated_lip_sync requires "
                 "audio_source=wan3 and parameters.audio=true"
             )
+        if media_counts["reference_audio"] and config.get(
+            "reference_audio_usage"
+        ) != "voice_timbre_only":
+            raise ValueError(
+                "wan_generated_lip_sync with reference_audio requires "
+                "reference_audio_usage=voice_timbre_only"
+            )
     if audio_sync_strategy == "hybrid_visible_wan_offscreen_local":
         if audio_source != "wan3" or not parameters["audio"]:
             raise ValueError(
                 "audio_sync_strategy=hybrid_visible_wan_offscreen_local requires "
                 "audio_source=wan3 and parameters.audio=true"
+            )
+        if media_counts["reference_audio"] and config.get(
+            "reference_audio_usage"
+        ) != "voice_timbre_only":
+            raise ValueError(
+                "hybrid_visible_wan_offscreen_local with reference_audio "
+                "requires reference_audio_usage=voice_timbre_only"
             )
         hybrid_edit = config.get("hybrid_audio_edit")
         if not isinstance(hybrid_edit, dict):

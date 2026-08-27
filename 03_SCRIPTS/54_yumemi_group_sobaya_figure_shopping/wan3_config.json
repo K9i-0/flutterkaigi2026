@@ -1,0 +1,36 @@
+{
+  "model": "wan3.0-video",
+  "audio_source": "local_madogiwa_member_japanese",
+  "audio_sync_strategy": "local_post_mux_offscreen",
+  "project_duration": 30,
+  "generation_mode": "single",
+  "prompt_file": "prompt_wan3.txt",
+  "media": [
+    {
+      "type": "reference_image",
+      "path": "character_fukuchan_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_tokun_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_sobaya_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "sobaya_figure_wan_reference.png"
+    }
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 30,
+    "audio": true,
+    "seed": 540030,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_result_seed540030_480p_clean.mp4"
+}

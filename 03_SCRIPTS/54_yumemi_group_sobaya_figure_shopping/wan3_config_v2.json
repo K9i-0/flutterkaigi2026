@@ -1,0 +1,45 @@
+{
+  "model": "wan3.0-video",
+  "audio_source": "wan3",
+  "audio_sync_strategy": "wan_generated_lip_sync",
+  "reference_audio_usage": "voice_timbre_only",
+  "project_duration": 30,
+  "generation_mode": "single",
+  "prompt_file": "prompt_wan3_v2.txt",
+  "media": [
+    {
+      "type": "reference_image",
+      "path": "character_fukuchan_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_tokun_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_sobaya_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "sobaya_figure_wan_reference.png"
+    },
+    {
+      "type": "reference_audio",
+      "path": "voice_ref_fukuchan_9s.wav"
+    },
+    {
+      "type": "reference_audio",
+      "path": "voice_ref_sobaya_5_24s.wav"
+    }
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 30,
+    "audio": true,
+    "seed": 540030,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_result_v2_seed540030_480p_lipsync.mp4"
+}
