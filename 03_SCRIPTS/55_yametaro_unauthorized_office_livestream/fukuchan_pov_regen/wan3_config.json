@@ -1,0 +1,22 @@
+{
+  "model": "wan3.0-video",
+  "audio_source": "local_madogiwa_member_japanese",
+  "audio_sync_strategy": "local_post_mux_offscreen",
+  "project_duration": 10,
+  "generation_mode": "single",
+  "prompt_file": "prompt_wan3.txt",
+  "media": [
+    {"type": "reference_image", "path": "../character_fukuchan_basic_sheet.png"},
+    {"type": "reference_image", "path": "../environment_open_plan_office_production.jpg"}
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 10,
+    "audio": true,
+    "seed": 550032,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_fukuchan_pov_seed550032_480p.mp4"
+}

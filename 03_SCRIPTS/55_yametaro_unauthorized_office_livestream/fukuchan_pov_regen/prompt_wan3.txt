@@ -1,0 +1,38 @@
+Create one 10-second, 16:9, 480P realistic live-action office video composed of exactly two clean smartphone-camera POV shots. This is replacement footage for a comedy livestream. The camera in every generated frame IS the physical image sensor of Yametaro's single livestreaming smartphone. It is never an outside camera filming that smartphone.
+
+REFERENCE ROLES
+- Image 1: Fukuchan identity reference only. Preserve the same real Japanese adult man's face, hairline, black medium-length hair, body proportions, and black office-casual outfit. Extract one person only. Do not copy the character-sheet layout, labels, white background, duplicate views, borders, or extra bodies.
+- Image 2: open-plan office environment reference. Preserve the bright daytime Japanese office, rows of desks, black monitors, large windows, neutral daylight, and ordinary working employees in the distant background. Do not copy any readable text, logos, phones, cameras, tripods, selfie sticks, or specific people from this image.
+
+GLOBAL CAMERA TRUTH — HIGHEST PRIORITY
+- Every frame is directly recorded by Yametaro's one livestreaming smartphone lens. The viewer is located inside that phone camera.
+- The recording smartphone itself cannot appear in its own image. The selfie stick, phone body, phone screen, phone case, clamp, tripod, camera rig, second camera, second phone, mirror image, glass reflection, monitor reflection, shadow of the rig, and any person holding another recording device must never appear.
+- Yametaro stands immediately behind the camera and stays completely offscreen. No part of Yametaro's body, head, hands, glasses, or reflection may enter the frame.
+- Exactly one featured person: Fukuchan. No Takosan. No mascot. No duplicate Fukuchan. Background office workers remain distant, silent, and uninvolved.
+- Natural handheld smartphone movement only. Slight wide-angle phone-lens perspective and subtle hand jitter are welcome, but no impossible floating camera and no external cinematic camera angle.
+- Generate a clean plate with no subtitles, no YumeTube UI, no LIVE badge, no comments, no channel name, no logos, no readable Japanese, and no readable fake text. Remotion will add all exact graphics later.
+- No spoken dialogue. Generate only quiet office ambience, a chair scrape, fabric movement, a forceful grab, violent handling noise, and a dull palm impact against the lens. No music and no voices from anyone.
+
+SHOT 1 [0.0-4.0 s] — SMARTPHONE LIVESTREAM POV, FUKUCHAN IMMEDIATELY OBJECTS
+Hard cut directly into the phone's live lens view. The smartphone is already aimed at Fukuchan seated at his desk from about one arm's length away. Chest-up composition, Fukuchan centered slightly right, office monitor behind him. Fukuchan notices the unauthorized camera instantly in the very first moments. He looks alarmed and irritated directly into the lens. He immediately raises one hand across his own mouth and lower face while urgently objecting, keeping his lips completely hidden for this entire shot so exact local Japanese dialogue can be added later. His brows, eyes, head movement, shoulders, and free hand communicate: stop filming now. He does not touch the lens yet. The camera annoyingly inches closer despite his warning. Maintain direct smartphone POV; absolutely no phone, stick, clamp, tripod, camera, or reflective device appears anywhere.
+
+At exactly 4.0 seconds, use a clean hard cut. No dissolve, whip-pan transition, flash, glitch, black frame, or generated UI.
+
+SHOT 2 [4.0-10.0 s] — SMARTPHONE LIVESTREAM POV, CONFIDENTIAL MONITOR THEN VIOLENT LENS COVER
+Begin already from the same smartphone lens POV aimed closely at Fukuchan's desktop monitor. The monitor fills most of the center frame but displays only a bright, blank, neutral document area with no readable text; leave a large clean rectangular region for Remotion to overlay exact Japanese text later. No phone, phone screen, selfie stick, tripod, camera, or device reflection may be visible on the desk, monitor, glass, or screen.
+
+For roughly the first 1.8 seconds of this shot, the camera stubbornly holds on the blank monitor with nervous handheld jitter. Fukuchan is visible at the right edge or just behind the monitor, realizes what is being exposed, and snaps toward the lens. He lunges directly at the phone camera with escalating urgency. He reaches with an empty open five-finger human hand toward the viewer. His hand hits and grabs the unseen camera position, causing a sharp violent shake left, right, and downward. The office background smears naturally from the physical struggle.
+
+From about 7.7 seconds overall, Fukuchan's open palm rushes toward the lens. The palm grows rapidly and physically until it completely blocks the optical lens by about 9.2 seconds overall. From 9.2 to 10.0 seconds, the image remains fully occluded by the close palm: dark warm skin-toned blur with no gaps, no office visible, no phone visible, no fingers transforming, no reopening, and no cutaway. End while the lens is still fully covered.
+
+HARD CONSTRAINT CHECKLIST
+1. Exactly two shots and one hard cut at 4.0 seconds.
+2. Both shots are the actual livestream phone-lens POV, never third-person coverage.
+3. Zero visible smartphones, selfie sticks, clamps, tripods, camera rigs, recording screens, or device reflections in every frame.
+4. Yametaro stays entirely behind the camera and entirely invisible.
+5. Exactly one featured Fukuchan, matching Image 1. No Takosan and no duplicate person.
+6. Fukuchan's mouth is fully hidden by his own hand throughout Shot 1; he does not visibly lip-sync.
+7. Shot 2 monitor contains no readable text and reserves a clean central rectangle for postproduction.
+8. Fukuchan violently grabs the unseen camera position and his palm fully covers the lens before the final 0.8 seconds.
+9. No dialogue, narration, laughter, background speech, or music. Office/action sound effects only.
+10. No generated subtitles, livestream UI, comments, logos, badges, channel text, confidential text, or fake readable writing.

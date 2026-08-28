@@ -202,6 +202,6 @@
 - ラベル: `Wan 3.0＋Irodori＋Remotion 自然編集版`
 - モデル: `Wan 3.0 + Irodori-TTS v4.1 Small + Remotion`
 - プロンプト: `prompt_wan3.txt`を`Wan 3.0 30秒・文字なし通販映像プロンプト`として登録。
-- 完成動画: `final_remotion_shopping_v1.mp4`、video ID `3463f877-21d2-42e5-836d-b9b672711c73`、サムネイル付き、状態`ready`、9,052,043 bytes。
+- 完成動画: `final_remotion_shopping_v1.mp4`、video ID `3463f877-21d2-42e5-836d-b9b672711c73`、サムネイル付き、状態`ready`、9,052,043 bytes、Pickup（イチオシ）指定済み。
 - 登場メンバー: そば屋、とーくん、福ちゃん。
 - 人物参照画像の外部アップロードは追加承認が必要なため未実施。福ちゃん参照画像の未使用アップロード行が`upload_pending`で1件残るが、動画・プロンプトの登録状態には影響しない。

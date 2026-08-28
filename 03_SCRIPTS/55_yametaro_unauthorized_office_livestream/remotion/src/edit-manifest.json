@@ -1,0 +1,126 @@
+{
+  "composition": {
+    "id": "YameChannelLiveV1",
+    "width": 832,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 948
+  },
+  "inputVideo": "input.mp4",
+  "inputVideoVolume": 1,
+  "replacementAudio": "dialogue-master-fukuchan-regen.wav",
+  "replacementVideo": {
+    "path": "fukuchan-regen.mp4",
+    "startFrame": 528,
+    "sourceCutFrame": 501
+  },
+  "videoInserts": [
+    {
+      "path": "fukuchan-pov.mp4",
+      "startFrame": 564,
+      "endFrame": 677,
+      "sourceStartFrame": 36,
+      "playbackRate": 0.8
+    },
+    {
+      "path": "fukuchan-pov.mp4",
+      "startFrame": 783,
+      "endFrame": 948,
+      "sourceStartFrame": 135,
+      "lensCover": {
+        "startFrame": 888,
+        "endFrame": 930,
+        "scale": 7.5,
+        "origin": "25% 30%"
+      }
+    }
+  ],
+  "platform": {
+    "name": "YumeTube Live",
+    "logoBlack": "yumetube-logo-black.png",
+    "logoWhite": "yumetube-logo-white.png"
+  },
+  "channel": {
+    "name": "やめチャンネル",
+    "handle": "@musyoku_yametaro"
+  },
+  "liveSegments": [
+    {"startFrame": 38, "endFrame": 145, "viewerCount": "128", "logoVariant": "white"},
+    {"startFrame": 177, "endFrame": 528, "viewerCount": "666", "logoVariant": "white"},
+    {"startFrame": 564, "endFrame": 677, "viewerCount": "1,180", "logoVariant": "white"},
+    {"startFrame": 783, "endFrame": 948, "viewerCount": "2,431", "logoVariant": "white"}
+  ],
+  "comments": [
+    {"startFrame": 44, "endFrame": 145, "text": "見てるぞー", "author": "okayaman", "tone": "hot"},
+    {"startFrame": 60, "endFrame": 145, "text": "やめさん働いてたの？"},
+    {"startFrame": 83, "endFrame": 145, "text": "許可とか取ってるのかな？"},
+    {"startFrame": 108, "endFrame": 145, "text": "👆やめ太郎が取ってるわけないだろ", "tone": "hot"},
+    {"startFrame": 183, "endFrame": 337, "text": "ヤバい仮面の男キター", "tone": "hot"},
+    {"startFrame": 213, "endFrame": 348, "text": "窓際族のエースって何のエースだよ"},
+    {"startFrame": 284, "endFrame": 427, "text": "もう缶じゃなくてジョッキで草", "tone": "hot"},
+    {"startFrame": 326, "endFrame": 411, "text": "え、仕事中にビール？", "tone": "danger"},
+    {"startFrame": 335, "endFrame": 474, "text": "驚いております！", "author": "okayaman", "tone": "hot"},
+    {"startFrame": 337, "endFrame": 474, "text": "🍺🍺🍺🍺🍺", "tone": "hot"},
+    {"startFrame": 351, "endFrame": 453, "text": "認めてて草", "tone": "hot"},
+    {"startFrame": 369, "endFrame": 474, "text": "乾杯すな", "tone": "danger"},
+    {"startFrame": 398, "endFrame": 528, "text": "……え？", "tone": "danger"},
+    {"startFrame": 422, "endFrame": 528, "text": "冗談じゃないの怖", "tone": "danger"},
+    {"startFrame": 448, "endFrame": 528, "text": "常識どこに置いてきた", "tone": "danger"},
+    {"startFrame": 475, "endFrame": 528, "text": "会社以前の問題だろ", "tone": "danger"},
+    {"startFrame": 500, "endFrame": 528, "text": "こいつマジもんや", "tone": "danger"},
+    {"startFrame": 570, "endFrame": 672, "text": "初手で止められてて草"},
+    {"startFrame": 600, "endFrame": 672, "text": "距離感バグってる", "tone": "hot"},
+    {"startFrame": 789, "endFrame": 870, "text": "隠す気ゼロで草", "tone": "hot"},
+    {"startFrame": 805, "endFrame": 900, "text": "社外秘全画面は終わった", "tone": "danger"},
+    {"startFrame": 816, "endFrame": 915, "text": "大変驚いております！", "author": "okayaman", "tone": "danger"},
+    {"startFrame": 828, "endFrame": 925, "text": "情報漏えいRTA世界新", "tone": "danger"},
+    {"startFrame": 850, "endFrame": 930, "text": "配信切れ今すぐ切れ", "tone": "danger"},
+    {"startFrame": 866, "endFrame": 940, "text": "はい懲戒", "tone": "danger"},
+    {"startFrame": 846, "endFrame": 948, "text": "福ちゃん止めろ", "tone": "danger"},
+    {"startFrame": 885, "endFrame": 948, "text": "物理で止めにきた", "tone": "hot"}
+  ],
+  "confidential": {
+    "startFrame": 783,
+    "endFrame": 858,
+    "text": "社外秘"
+  },
+  "overlays": [],
+  "captions": [
+    {
+      "startFrame": 30,
+      "endFrame": 146,
+      "speaker": "やめ太郎",
+      "text": "今からオフィスの様子を\n配信するやで！"
+    },
+    {
+      "startFrame": 146,
+      "endFrame": 367,
+      "speaker": "やめ太郎",
+      "text": "じゃーん、彼が窓際族のエース、そば屋やで！\nお、そば屋さん、勤務中に酒かー？"
+    },
+    {
+      "startFrame": 369,
+      "endFrame": 411,
+      "speaker": "そば屋",
+      "text": "かんぱーい！"
+    },
+    {
+      "startFrame": 413,
+      "endFrame": 527,
+      "speaker": "やめ太郎",
+      "text": "え、普通の会社は\n酒ダメなん？"
+    },
+    {
+      "startFrame": 564,
+      "endFrame": 677,
+      "speaker": "福ちゃん",
+      "text": "ちょ、やめ太郎！ 今はあかん！\nカメラ止めろって！"
+    },
+    {
+      "startFrame": 678,
+      "endFrame": 798,
+      "speaker": "やめ太郎",
+      "text": "ええやん、ちょっとだけ！\n何見てるん？ 見せてや！"
+    }
+  ]
+}

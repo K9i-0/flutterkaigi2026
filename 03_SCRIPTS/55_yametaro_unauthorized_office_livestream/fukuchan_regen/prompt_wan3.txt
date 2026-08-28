@@ -1,0 +1,43 @@
+Create exactly one continuous 14-second, 16:9, 480P live-action office comedy replacement scene. This clip replaces only the Fukuchan section of an existing unauthorized livestream video. Bright Japanese open-plan office in daytime, realistic office lighting and materials, energetic handheld camera language, escalating physical comedy without injury.
+
+References:
+- Image 1: episode-local character sheet for Mushoku Yametaro. Preserve his exact square cartoon head, black hair silhouette, small round glasses, pink cheeks, compact body, and purple collared shirt. Use only his identity and clothing. Do not reproduce the sheet layout, labels, white background, or multiple views as duplicate people.
+- Image 2: episode-local character sheet for Fukuchan. Preserve his exact adult Japanese face, black hairstyle, body proportions, and recognizable identity. He is serious, irritated, and increasingly desperate, never smiling. Use only his identity. Do not reproduce the sheet layout, labels, white background, or multiple views as duplicate people.
+- Image 3: bright open-plan office environment reference. Preserve the clean desk rows, office monitors, large windows, daylight, and neutral corporate atmosphere. Do not copy any people, logos, or readable text from the image.
+
+Characters and objects for the entire clip:
+- Exactly two featured characters: Yametaro and Fukuchan.
+- Takosan does not appear anywhere. No black hood, no white round face, no tentacles, no third mascot, and no substitute creature.
+- Yametaro holds exactly one smartphone attached to exactly one selfie stick. The phone and stick remain one connected object.
+- Fukuchan sits at one desk with one monitor. The monitor must remain a bright clean screen with no readable text because the exact Japanese confidential label will be added later in Remotion.
+- Ordinary background office workers may remain distant and non-featured, but none approach or join the confrontation.
+
+Audio policy:
+- Generate only office air-conditioning, subtle keyboard noise, chair scrape, desk-item rattles, clothing movement, selfie-stick impacts, forceful camera handling, and a final palm contact against the lens.
+- No spoken dialogue, no vocal words, no laughter, no narration, no background music, and no synthetic voice. Canonical Japanese dialogue will be added locally in post-production.
+- During Fukuchan's planned dialogue moments, hide his readable mouth with his raised palm, forearm, shoulder turn, or the edge of the phone. During Yametaro's planned dialogue moments, keep Yametaro off-camera in smartphone POV or show only a rear/side angle where his mouth cannot be evaluated.
+
+Shot 1 [0.0-1.2 s] — Hard cut directly to Fukuchan's desk; do not show walking or arrival. Third-person medium-wide view. Yametaro is already standing uncomfortably close beside Fukuchan and abruptly thrusts the selfie-stick smartphone toward him. Fukuchan immediately notices the lens, snaps his head around with alarm, and raises one palm in front of his lower face while turning his mouth away. His reaction begins within the first 0.3 seconds. No Takosan.
+
+Shot 2 [1.2-4.8 s] — Hard cut to the smartphone livestream POV, close and invasive. Fukuchan fills the frame and urgently blocks his mouth and part of his face with one palm while pushing the phone back. He is visibly saying an urgent warning in post, but this generated clip contains no spoken words. The handheld phone recoils slightly from each push. Yametaro stays behind the phone and is not visible. The office monitor is behind Fukuchan but contains no readable text.
+
+Shot 3 [4.8-8.7 s] — Hard cut to third-person side view. Yametaro keeps pestering instead of backing away: he leans around Fukuchan's blocking arm, repeatedly angles the selfie stick toward the monitor, pulls it back when swatted, then immediately pokes it forward again. Yametaro's mouth is turned away from camera or hidden behind the phone because his exact teasing dialogue will be added in post. Fukuchan repeatedly bats the selfie stick away with sharper, faster motions. His chair rolls back, papers and small desk items rattle, but nobody falls and nobody is injured.
+
+Shot 4 [8.7-10.6 s] — Hard cut to smartphone POV. The phone briefly catches the clean monitor straight on, still with no readable text. Fukuchan suddenly lunges into frame from the side, grabs the selfie stick close to the phone with one hand, and yanks hard. The view whips sideways with strong motion blur and a loud handling impact. This is much more forceful and chaotic than a gentle hand reaching toward the lens.
+
+Shot 5 [10.6-14.0 s] — Continue smartphone POV during an intense struggle over the camera. Fukuchan jerks the phone left, right, and downward in two or three distinct violent movements while Yametaro resists from offscreen. The horizon tilts, the desk and ceiling flash through frame, the selfie stick flexes but does not break, and office objects rattle. At 12.7 seconds Fukuchan forcefully slaps his open palm directly onto the lens. His palm completely covers every edge of the picture by 13.1 seconds and remains physically pressed against the lens through the final frame. No end card, no black digital transition, no glitch, no fade, and no release of the lens.
+
+Camera and continuity:
+- Clearly alternate third-person views and actual smartphone livestream POV.
+- Use hard cuts only at the stated boundaries. No montage, no dissolve, no travel shot, and no arrival animation.
+- Maintain Yametaro and Fukuchan identity, clothing, desk position, phone, and selfie stick across every shot.
+- The final struggle must feel genuinely abrupt, forceful, and messy while remaining comedic and non-injurious.
+
+Hard constraints:
+- Exactly 14 seconds, 16:9, 480P.
+- Exactly two featured characters: Yametaro and Fukuchan.
+- Absolutely no Takosan or Takosan-like creature in any frame.
+- No spoken dialogue or vocalization in generated audio.
+- No subtitles, livestream UI, comments, channel names, logos, watermarks, signs, Japanese characters, English words, numbers, or any other readable text burned into the video.
+- No duplicate Yametaro, duplicate Fukuchan, extra selfie stick, extra phone, broken phone, detached phone, injury, punching, or falling person.
+- End only on Fukuchan's real palm physically covering the lens edge-to-edge.
