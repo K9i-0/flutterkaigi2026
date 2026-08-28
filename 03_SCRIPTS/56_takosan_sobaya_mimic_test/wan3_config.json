@@ -1,0 +1,32 @@
+{
+  "model": "wan3.0-video",
+  "audio_source": "wan3",
+  "audio_sync_strategy": "no_visible_speech",
+  "project_duration": 8,
+  "generation_mode": "single",
+  "prompt_file": "prompt_wan3.txt",
+  "media": [
+    {
+      "type": "reference_image",
+      "path": "character_takosan_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_sobaya_toy_diorama_3d_no_mug_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_takosan_sobaya_shape_black_phase_toy_diorama_3d_production.png"
+    }
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 8,
+    "audio": true,
+    "seed": 560828,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_takosan_sobaya_mimic_toy_seed560828_480p.mp4"
+}

@@ -16,6 +16,7 @@ Wan 3.0のマルチモーダル参照と音声生成を使い、再現可能な�
 - リップシンク優先では、正典WAVを`reference_audio`の`voice-timbre`参照として渡し、今回の台詞全文はプロンプトでWanに生成させる。生成後はWan埋め込み音声を正本とし、誤読、欠落、反復、言い換え、余計な語句などの破綻箇所だけをIrodori正典音声で修復する。正常区間を全面差し替えしない。
 - ニュース原稿など、早口で文面の完全一致が必要な日本語は発音失敗、誤読、欠落が起きる前提で設計する。正典ローカル話者なら生成前に完成音声マスターを作り、画面外区間と生成失敗箇所を編集で修正する。音声だけの失敗を理由に、有料の動画再生成を最初の修正手段にしない。
 - 通常形の人物を入力する場合は、`03_SCRIPTS/00_TEMPLATES/characters/`の基本キャラクターシートを対象エピソード直下へ実ファイルとしてコピーし、コピー先をWanへ渡す。人物画像はテンプレート、`02_CHARACTERS/`、過去エピソードからAPI設定へ直接参照しない。詳細は[references/identity-and-reference-workflow.md](references/identity-and-reference-workflow.md)を読む。
+- たこさんの通常形は、媒体指定の有無にかかわらずトイジオラマ版の`character_takosan_basic_sheet.png`を使う。旧写実寄りシートや廃止済みの`character_takosan_toy_diorama_3d_basic_sheet.png`を参照・復元しない。ユーザーが別媒体を明示した場合だけ新しい媒体版を作る。
 - 価格、利用可能モデル、入力上限、APIパラメータは変わる。案内または有料実行の直前に公式Qwen Cloud情報をウェブで再確認する。公式リンクと確認項目は[references/official-sources.md](references/official-sources.md)を読む。
 - 有料API呼び出しは、ユーザーが従量課金での生成を明示的に承認した場合だけ行う。APIキーをチャットへ貼らせず、`DASHSCOPE_API_KEY`環境変数を使う。
 - APIキー、Bearerヘッダー、Base64化した素材をログや成果物へ保存しない。

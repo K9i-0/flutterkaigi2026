@@ -1,4 +1,4 @@
-version: 8
+version: 9
 purpose: Seedance制作で再利用する正本テンプレート
 
 policy:
@@ -48,14 +48,12 @@ character_sheets:
     invariant: 露出する顔、首、耳、腕、手の肌は全てニュートラルなグレー系で統一する。肌色や褐色へ変更しない
   takosan:
     file: characters/character_takosan_basic_sheet.png
+    prompt: characters/source_prompts/character_takosan_basic_sheet.md
     canon: 02_CHARACTERS/02_Takosan.md
-    media_variants:
-      toy_diorama_3d:
-        file: characters/character_takosan_toy_diorama_3d_basic_sheet.png
-        prompt: characters/source_prompts/character_takosan_toy_diorama_3d_basic_sheet.md
-        identity_canon: ../21_takosan_php_prompt_pun/clip1_start.png
-        precedence: この媒体バリアントでは21の完成フレームを最上位正典とし、02_CHARACTERS/Takosan.pngと旧基本シートの造形を適用しない
-        use_for: 窓際トイジオラマ3D映像での通常形。21準拠の丸くコンパクトな比率、無地寄りの大きなフード、少数の太いローブ模様、裾直下へ重なる細めで自然にテーパーした触手を固定する。触手と吸盤は光沢・湿潤感を禁止し、マットな布製ぬいぐるみ／柔らかい粘土トイ質感にする
+    default_media_style: toy_diorama_3d
+    identity_canon: ../21_takosan_php_prompt_pun/clip1_start.png
+    precedence: 21の完成フレームと本標準シートを通常形の最上位正典とし、旧写実寄り基本シートや廃止済みの別名トイ媒体シートを適用しない
+    use_for: たこさんが通常形で登場する全制作。21準拠の丸くコンパクトなトイ比率、無地寄りの大きなフード、少数の太いローブ模様、裾直下へ重なる細めで自然にテーパーした6本の触手を固定する。触手と吸盤は光沢・湿潤感を禁止し、マットな布製ぬいぐるみ／柔らかい粘土トイ質感にする
   tokun:
     file: characters/character_tokun_basic_sheet.png
     canon: 02_CHARACTERS/03_Tokun.md

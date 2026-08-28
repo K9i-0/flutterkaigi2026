@@ -6,6 +6,7 @@
 - 世界観の基本資料: `01_WORLD/WORLD_BIBLE.md`（ユーザー指定がないときの出発点。改変可能）
 - 過去エピソード台帳: `01_WORLD/STORY_TIMELINE.md`（ネタと出来事の参照用。正史の連続性や整合性を要求しない）
 - キャラクター設定: `02_CHARACTERS/*.md`（各ファイルの「人物同一性」だけを維持し、それ以外は通常形の参考とする）
+- たこさんの標準キャラクターシート: `03_SCRIPTS/00_TEMPLATES/characters/character_takosan_basic_sheet.png`（窓際トイジオラマ3D版が通常形。旧写実寄りシートや廃止済みの`character_takosan_toy_diorama_3d_basic_sheet.png`を探したり再利用しない）
 - ボイスキャスト: `02_CHARACTERS/VOICE_CAST.md`（Irodori-TTSのモデル、参照WAV、既定seed、固有後処理が正典。別シナリオでも同じ声を維持する）
 - 台本・生成済みプロンプト: `03_SCRIPTS/`
 - ゲーム用アセット（ボクセル）: `04_GAME_ASSETS/voxel/`（全キャラのリグ付きボクセルモデル`.glb`は`04_GAME_ASSETS/voxel/models/`が正典。`tools/build_*_voxel_model.py`から生成するため手作業で編集しない。新規ゲームはモデルをコピーせず、`public/models/`等からここへの相対symlinkで参照する。リグ仕様は`04_GAME_ASSETS/voxel/VOXEL_CHARACTER_KIT.md`を参照）

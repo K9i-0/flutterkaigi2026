@@ -5,6 +5,7 @@
 ## 正本とコピー
 
 - 通常形は`03_SCRIPTS/00_TEMPLATES/characters/character_<name>_basic_sheet.png`を正本とし、対象エピソード直下へ同名の実ファイルとしてコピーする。
+- たこさんは`character_takosan_basic_sheet.png`自体が標準の窓際トイジオラマ3D版である。媒体指定のない通常形でもこのシートを使い、旧写実寄りシートや廃止済みの`character_takosan_toy_diorama_3d_basic_sheet.png`を探したり再利用しない。
 - Wanの設定ファイルからはコピー先だけを相対参照する。テンプレート、`02_CHARACTERS/`、過去エピソードへの直参照やシンボリックリンクを使わない。
 - コピー後はSHA-256がテンプレートと一致することを確認する。ラン固有の変更が必要ならコピー後のファイルを上書きせず、限定形として別名で作る。
 - 生成済みリクエストの設定と入力履歴を新方針で書き換えない。旧入力を履歴ファイルへ保存し、次回生成用設定を別に用意する。
@@ -12,6 +13,7 @@
 ## 通常形、限定形、実写人物
 
 - 通常形は`character_<name>_basic_sheet.png`を使う。
+- たこさんをトイ以外の媒体にするのはユーザーが明示した場合だけとし、その場合は`character_takosan_<medium>_basic_sheet.png`を新規作成する。標準シートを上書きしない。
 - 実写化、3D化など汎用の媒体違いは`character_<name>_<medium>_basic_sheet.png`を使う。
 - 変身、巨大化、専用装備、負傷などエピソード固有形は`character_<name>_<form>_sheet.png`を使う。
 - 実写人物の顔の正本は`02_CHARACTERS/<Name>.jpg`とする。基本シートを新規作成・改修するときは正典写真を唯一の顔identity sourceとして使い、原寸で顔を検証する。

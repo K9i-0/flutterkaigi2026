@@ -230,3 +230,17 @@
 - 全台詞は採用済みIrodori正本WAVへ置換し、Wan生成台詞をミュートした。字幕manifestの文言・開始終了フレーム・話者順を検証済み。実再生による主観的な聞き取り確認は別途行う。
 - 可視話者は代表フレームで発話区間と口元の見え方を監査し、福ちゃんは発話中に口を手で覆う動き、やめ太郎は画面外または横向きになる構図を確認した。
 - Remotion完成版で字幕、コメント、視聴者数、`社外秘`、境界フレーム、重要人物との重なりを確認済み。終了時に中断カードや終了文言はなく、福ちゃんの手で覆われた映像のまま最終フレームへ到達する。
+
+## Madogiwa Studio登録
+
+- 登録日: 2026-08-28
+- Studio ID: `MS-AXQM76D2`
+- slug: `yametaro-unauthorized-office-livestream`
+- generation: v1 `b4c71325-5f03-43f1-a04c-323609cebc2e`
+- ラベル: `Wan 3.0＋Irodori＋Remotion 完成版`
+- モデル: `Wan 3.0 + Irodori-TTS v4.1 Small + Remotion`
+- プロンプト: 本編、福ちゃんパート差し替え、実スマホPOV差し替えの採用済み3本を`Wan 3.0 本編＋福ちゃん差し替え＋実スマホPOV`としてrevision 1へ登録。
+- 入力素材: Wan参照画像5点、Wan参照音声3点、完成音声マスター1点、YumeTube Live UI画像3点、Remotion編集manifest 1点の合計13点。すべて状態`ready`、サイズ登録済み。
+- 完成動画: `final_remotion_livestream.mp4`、video ID `cee9f4b1-0a73-4cee-a5bf-3fae7ff6bb60`、サムネイル付き、状態`ready`、11,011,323 bytes。Pickup（イチオシ）は未指定。
+- 登場メンバー: そば屋、福ちゃん、無職やめ太郎、窓際王おかやまん。
+- 公開ページのSSR表示、動画`video/mp4`、サムネイル`image/jpeg`のRange取得を確認済み。
