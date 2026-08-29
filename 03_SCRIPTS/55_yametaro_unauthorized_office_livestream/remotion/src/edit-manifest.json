@@ -79,10 +79,34 @@
     {"startFrame": 846, "endFrame": 948, "text": "福ちゃん止めろ", "tone": "danger"},
     {"startFrame": 885, "endFrame": 948, "text": "物理で止めにきた", "tone": "hot"}
   ],
-  "confidential": {
-    "startFrame": 783,
+  "monitorScreen": {
+    "startFrame": 798,
     "endFrame": 858,
-    "text": "社外秘"
+    "text": "社外秘",
+    "trackData": "monitor-track.json",
+    "refinedTrackData": "monitor-track-refined.json",
+    "keyframes": "monitor-track-keyframes.json",
+    "bakedVideo": "fukuchan-pov-opencv-refined.mp4"
+  },
+  "greenMonitorTest": {
+    "insert": {
+      "path": "monitor-green-replaced.mp4",
+      "startFrame": 783,
+      "endFrame": 888,
+      "sourceStartFrame": 0
+    },
+    "returnInsert": {
+      "path": "fukuchan-pov.mp4",
+      "startFrame": 888,
+      "endFrame": 948,
+      "sourceStartFrame": 240,
+      "lensCover": {
+        "startFrame": 888,
+        "endFrame": 930,
+        "scale": 7.5,
+        "origin": "25% 30%"
+      }
+    }
   },
   "overlays": [],
   "captions": [

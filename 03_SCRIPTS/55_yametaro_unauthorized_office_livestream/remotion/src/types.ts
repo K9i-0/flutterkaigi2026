@@ -31,6 +31,30 @@ export type VideoInsert = FrameRange & {
   };
 };
 
+export type MonitorTrackFrame = {
+  frame: number;
+  sourceFrame: number;
+  corners: [[number, number], [number, number], [number, number], [number, number]];
+  homography: [number, number, number, number, number, number, number, number, number];
+  features: number;
+  inliers: number;
+  fallback: boolean;
+};
+
+export type MonitorTrack = {
+  sourceVideo: string;
+  sourceStartFrame: number;
+  sourceEndFrame: number;
+  compositionStartFrame: number;
+  compositionEndFrame: number;
+  canonicalWidth: number;
+  canonicalHeight: number;
+  frameWidth: number;
+  frameHeight: number;
+  fps: number;
+  frames: MonitorTrackFrame[];
+};
+
 export type EditManifest = {
   composition: {
     id: string;
@@ -59,8 +83,16 @@ export type EditManifest = {
   };
   liveSegments: LiveSegment[];
   comments: ChatComment[];
-  confidential: FrameRange & {
+  monitorScreen: FrameRange & {
     text: string;
+    trackData: string;
+    refinedTrackData?: string;
+    keyframes?: string;
+    bakedVideo?: string;
+  };
+  greenMonitorTest: {
+    insert: VideoInsert;
+    returnInsert: VideoInsert;
   };
   overlays: [];
   captions: Caption[];

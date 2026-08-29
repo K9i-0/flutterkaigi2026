@@ -20,7 +20,10 @@
     "bundle": "remotion bundle",
     "validate": "python3 ../../../.claude/skills/remotion-video/scripts/validate_edit_manifest.py src/edit-manifest.json --public-dir public && python3 scripts/validate_livestream_manifest.py",
     "render": "remotion render src/index.ts YameChannelLiveV1 ../final_remotion_livestream.mp4 --codec=h264 --crf=18 --audio-codec=aac --overwrite",
-    "render:preview": "remotion render src/index.ts YameChannelLiveV1 out/livestream_ui_preview.mp4 --codec=h264 --crf=18 --audio-codec=aac --overwrite"
+    "render:preview": "remotion render src/index.ts YameChannelLiveV1 out/livestream_ui_preview.mp4 --codec=h264 --crf=18 --audio-codec=aac --overwrite",
+    "render:monitor-opencv-comparison": "bash scripts/render_monitor_opencv_comparison.sh",
+    "render:monitor-refined-comparison": "bash scripts/render_monitor_refined_comparison.sh",
+    "render:green-monitor-full": "remotion render src/index.ts YameChannelLiveGreenMonitor ../final_remotion_livestream_green_monitor.mp4 --codec=h264 --crf=18 --audio-codec=aac --overwrite"
   },
   "sideEffects": [
     "*.css"

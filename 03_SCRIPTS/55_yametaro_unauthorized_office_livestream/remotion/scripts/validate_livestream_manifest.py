@@ -86,10 +86,81 @@ def main() -> int:
         if not any(start >= live_start and end <= live_end for live_start, live_end in live_ranges):
             raise ValueError(f"comments[{index}] must be fully inside one live segment")
 
-    confidential = manifest["confidential"]
-    frame_range(confidential, "confidential", duration)
-    if confidential["text"] != "社外秘":
-        raise ValueError("confidential text must be 社外秘")
+    if "confidential" in manifest:
+        raise ValueError("fixed confidential card is obsolete; use monitorScreen tracking")
+    monitor_screen = manifest["monitorScreen"]
+    if frame_range(monitor_screen, "monitorScreen", duration) != (798, 858):
+        raise ValueError("tracked monitor replacement must occupy frames 798..858")
+    if monitor_screen["text"] != "社外秘":
+        raise ValueError("monitorScreen text must be 社外秘")
+    baked_video = monitor_screen.get("bakedVideo")
+    if not isinstance(baked_video, str) or not baked_video.endswith(".mp4"):
+        raise ValueError("monitorScreen.bakedVideo must be an MP4 path")
+    track_path = ROOT / "src" / monitor_screen.get("trackData", "")
+    if not track_path.is_file():
+        raise ValueError("monitorScreen.trackData must exist in src")
+    track = json.loads(track_path.read_text(encoding="utf-8"))
+    if track.get("compositionStartFrame") != 798 or track.get("compositionEndFrame") != 858:
+        raise ValueError("monitor tracking frame range must match monitorScreen")
+    track_frames = track.get("frames")
+    if not isinstance(track_frames, list) or len(track_frames) != 60:
+        raise ValueError("monitor tracking must contain exactly 60 frames")
+    expected_frames = list(range(798, 858))
+    if [item.get("frame") for item in track_frames] != expected_frames:
+        raise ValueError("monitor tracking frames must be contiguous")
+    if any(item.get("fallback") for item in track_frames):
+        raise ValueError("monitor tracking contains an optical-flow fallback")
+
+    refined_track_path = ROOT / "src" / monitor_screen.get("refinedTrackData", "")
+    if not refined_track_path.is_file():
+        raise ValueError("monitorScreen.refinedTrackData must exist in src")
+    refined_track = json.loads(refined_track_path.read_text(encoding="utf-8"))
+    refined_frames = refined_track.get("frames")
+    if (
+        refined_track.get("compositionStartFrame") != 798
+        or refined_track.get("compositionEndFrame") != 858
+        or not isinstance(refined_frames, list)
+        or len(refined_frames) != 60
+    ):
+        raise ValueError("refined monitor tracking must contain frames 798..857")
+    expected_keyframes = [150, 160, 170, 180, 190, 200, 205, 209]
+    actual_keyframes = [
+        item.get("sourceFrame") for item in refined_frames if item.get("manualKeyframe")
+    ]
+    if actual_keyframes != expected_keyframes:
+        raise ValueError("refined monitor tracking has unexpected manual keyframes")
+    if refined_track.get("smoothingRadius") != 0:
+        raise ValueError("refined monitor tracking must not use temporal smoothing")
+    keyframes_path = ROOT / "src" / monitor_screen.get("keyframes", "")
+    if not keyframes_path.is_file():
+        raise ValueError("monitorScreen.keyframes must exist in src")
+
+    green_test = manifest.get("greenMonitorTest")
+    if not isinstance(green_test, dict):
+        raise ValueError("greenMonitorTest is required")
+    expected_green_inserts = {
+        "insert": (783, 888, 0),
+        "returnInsert": (888, 948, 240),
+    }
+    for key, expected in expected_green_inserts.items():
+        item = green_test.get(key)
+        if not isinstance(item, dict):
+            raise ValueError(f"greenMonitorTest.{key} is required")
+        start, end = frame_range(item, f"greenMonitorTest.{key}", duration)
+        if (start, end, item.get("sourceStartFrame")) != expected:
+            raise ValueError(f"greenMonitorTest.{key} has unexpected splice timing")
+        path = item.get("path")
+        if not isinstance(path, str) or not (ROOT / "public" / path).is_file():
+            raise ValueError(f"greenMonitorTest.{key}.path must exist in public")
+    return_lens_cover = green_test["returnInsert"].get("lensCover")
+    if not isinstance(return_lens_cover, dict):
+        raise ValueError("greenMonitorTest.returnInsert must retain the lens cover")
+    if (
+        return_lens_cover.get("startFrame"),
+        return_lens_cover.get("endFrame"),
+        return_lens_cover.get("scale"),
+    ) != (888, 930, 7.5):
+        raise ValueError("green monitor return lens cover has unexpected timing")
 
     if "interruption" in manifest:
         raise ValueError("interruption card is forbidden; end on Fukuchan's hand over the lens")

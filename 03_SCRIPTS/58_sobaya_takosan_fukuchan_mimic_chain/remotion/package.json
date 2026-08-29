@@ -1,0 +1,30 @@
+{
+  "name": "madogiwa-remotion-edit",
+  "version": "1.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@remotion/cli": "4.0.518",
+    "@remotion/media": "4.0.518",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "remotion": "4.0.518"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.7",
+    "typescript": "5.9.3"
+  },
+  "scripts": {
+    "studio": "remotion studio",
+    "typecheck": "tsc",
+    "bundle": "remotion bundle",
+    "validate": "python3 ../../../.claude/skills/remotion-video/scripts/validate_edit_manifest.py src/edit-manifest.json --public-dir public",
+    "prepare:media": "ffmpeg -hide_banner -loglevel error -i ../../56_takosan_sobaya_mimic_test/wan3_takosan_sobaya_normal_mimic_twist_v2_seed560828_480p.mp4 -vf reverse -af areverse -c:v libx264 -preset medium -crf 12 -pix_fmt yuv420p -c:a aac -b:a 192k -movflags +faststart public/sobaya_to_takosan_reversed.mp4 -y && ffmpeg -hide_banner -loglevel error -i ../../57_takosan_fukuchan_liveaction_mimic_test/wan3_takosan_fukuchan_liveaction_mimic_seed570828_480p.mp4 -c copy -movflags +faststart public/input_fukuchan.mp4 -y",
+    "prepare:surveillance": "ffmpeg -hide_banner -loglevel error -i ../final_remotion_mimic_chain.mp4 -c copy -movflags +faststart public/surveillance_source.mp4 -y && ffmpeg -hide_banner -loglevel error -f lavfi -i 'anoisesrc=color=pink:amplitude=0.02:sample_rate=48000:duration=14.867' -f lavfi -i 'sine=frequency=58:sample_rate=48000:duration=14.867' -filter_complex '[1:a]volume=0.12[hum];[0:a][hum]amix=inputs=2:duration=longest,highpass=f=35,lowpass=f=7000[a]' -map '[a]' -c:a pcm_s16le public/cctv_noise.wav -y && ffmpeg -hide_banner -loglevel error -f lavfi -i 'sine=frequency=960:sample_rate=48000:duration=0.24' -af 'volume=0.35,afade=t=in:st=0:d=0.015,afade=t=out:st=0.16:d=0.08' -c:a pcm_s16le public/alert_beep.wav -y",
+    "render": "remotion render src/index.ts SobayaTakosanFukuchanChain ../final_remotion_mimic_chain.mp4 --codec=h264 --crf=18 --audio-codec=aac --browser-executable='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --overwrite",
+    "render:surveillance": "remotion render src/index.ts TakosanSurveillanceReveal ../final_remotion_surveillance_reveal.mp4 --codec=h264 --crf=18 --audio-codec=aac --browser-executable='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --overwrite"
+  },
+  "sideEffects": [
+    "*.css"
+  ]
+}

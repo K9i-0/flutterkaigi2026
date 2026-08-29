@@ -1,0 +1,4 @@
+interface:
+  display_name: "画面差し替え"
+  short_description: "モニターや端末画面を追跡し、画像・動画を自然に合成する"
+  default_prompt: "Use $screen-replacement to track this screen and replace its contents without visible jitter or chroma spill."

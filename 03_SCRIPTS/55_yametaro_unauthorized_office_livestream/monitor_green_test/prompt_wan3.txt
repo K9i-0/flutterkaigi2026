@@ -1,0 +1,9 @@
+Create exactly one continuous 4-second, 16:9, realistic live-action smartphone POV shot inside the same Japanese open-plan office as Video 1. Use Video 1 only as the reference for the office, handheld camera language, monitor shape, viewing angle, and close-up composition. Start already at Fukuchan's desk with the camera aimed at the office monitor. Do not recreate or preserve any readable content from the reference monitor.
+
+The black office monitor fills the center and most of the frame. Keep the complete active display area and all four corners visible inside its opaque black bezel for the entire shot. The active display surface is one perfectly uniform, flat, saturated broadcast chroma-key green (#00FF00). Green appears only on the active display surface and nowhere else in the office. Preserve a crisp, high-contrast boundary between the green display and the black bezel.
+
+The green display contains absolutely nothing else: no text, logo, icon, cursor, taskbar, window, browser chrome, pattern, gradient, shadow, glare, reflection, moire, bloom, vignette, animation, or color variation. The bezel must never become green or transparent.
+
+Use subtle natural handheld motion, with a small lateral movement and a slight perspective change across the four seconds. No cuts, zooms, whip pans, major shake, or sudden reframing. Nothing may cover or cross the monitor: no hand, person, phone, selfie stick, camera rig, cable, or reflection. No featured person is visible. Background office workers may remain distant and unobtrusive.
+
+Audio is quiet office ambience only. No speech, vocalization, music, notification sound, or dramatic sound effect.

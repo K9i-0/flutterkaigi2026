@@ -1,0 +1,24 @@
+{
+  "model": "wan3.0-video",
+  "audio_source": "wan3",
+  "audio_sync_strategy": "no_visible_speech",
+  "project_duration": 4,
+  "generation_mode": "single",
+  "prompt_file": "prompt_wan3.txt",
+  "media": [
+    {
+      "type": "reference_video",
+      "path": "../remotion/public/fukuchan-pov.mp4"
+    }
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 4,
+    "audio": true,
+    "seed": 550033,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_monitor_green_seed550033_480p.mp4"
+}

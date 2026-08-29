@@ -1,0 +1,36 @@
+{
+  "model": "wan3.0-video",
+  "audio_source": "wan3",
+  "audio_sync_strategy": "no_visible_speech",
+  "project_duration": 8,
+  "generation_mode": "single",
+  "prompt_file": "prompt_wan3.txt",
+  "media": [
+    {
+      "type": "reference_image",
+      "path": "character_takosan_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_fukuchan_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_takosan_fukuchan_shape_black_phase_liveaction_production.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "composition_takosan_small_start_16x9.png"
+    }
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 8,
+    "audio": true,
+    "seed": 570828,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_takosan_fukuchan_liveaction_mimic_seed570828_480p.mp4"
+}

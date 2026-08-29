@@ -1,0 +1,36 @@
+{
+  "model": "wan3.0-video",
+  "audio_source": "wan3",
+  "audio_sync_strategy": "no_visible_speech",
+  "project_duration": 8,
+  "generation_mode": "single",
+  "prompt_file": "prompt_wan3_v2.txt",
+  "media": [
+    {
+      "type": "reference_image",
+      "path": "character_takosan_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_sobaya_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_takosan_sobaya_shape_black_phase_normal_production.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "composition_takosan_small_start_16x9.png"
+    }
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 8,
+    "audio": true,
+    "seed": 560828,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_takosan_sobaya_normal_mimic_twist_v2_seed560828_480p.mp4"
+}

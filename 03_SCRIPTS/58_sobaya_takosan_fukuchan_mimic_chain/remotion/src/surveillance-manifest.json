@@ -1,0 +1,22 @@
+{
+  "composition": {
+    "id": "TakosanSurveillanceReveal",
+    "width": 832,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 446
+  },
+  "inputVideo": "surveillance_source.mp4",
+  "inputVideoVolume": 0.82,
+  "replacementAudio": null,
+  "overlays": [],
+  "captions": [],
+  "cameraId": "CAM 03",
+  "location": "SERVER ROOM B-17",
+  "timestamp": "2026-08-28 02:17:43",
+  "anomalyStartFrame": 174,
+  "anomalyEndFrame": 276,
+  "identityStartFrame": 366,
+  "identityEndFrame": 446,
+  "glitchFrames": [197, 198, 218, 219, 220, 221]
+}

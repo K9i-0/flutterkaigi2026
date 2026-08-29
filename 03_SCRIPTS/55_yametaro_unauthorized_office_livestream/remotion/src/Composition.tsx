@@ -16,12 +16,15 @@ import type {
   EditManifest,
   FrameRange,
   LiveSegment,
+  MonitorTrack,
   VideoInsert,
 } from './types';
+import monitorTrackJson from './monitor-track.json';
 
 const fontStack =
   '"Hiragino Sans", "Yu Gothic", "Noto Sans JP", system-ui, sans-serif';
 const red = '#ff2547';
+const monitorTrack = monitorTrackJson as MonitorTrack;
 
 const isActive = (frame: number, range: FrameRange) =>
   frame >= range.startFrame && frame < range.endFrame;
@@ -389,51 +392,141 @@ const CaptionLayer: React.FC<{caption: Caption; isLive: boolean}> = ({
   );
 };
 
-const ConfidentialCard: React.FC<{manifest: EditManifest}> = ({manifest}) => {
-  const frame = useCurrentFrame();
-  const {fps} = useVideoConfig();
-  const local = frame - manifest.confidential.startFrame;
-  const enter = spring({
-    frame: local,
-    fps,
-    config: {damping: 16, stiffness: 220, mass: 0.48},
-  });
-  const exit = interpolate(
-    frame,
-    [manifest.confidential.endFrame - 5, manifest.confidential.endFrame],
-    [1, 0],
-    {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'},
-  );
-  const pulse = 1 + Math.sin(local * 0.24) * 0.012;
+const homographyToCssMatrix3d = (homography: MonitorTrack['frames'][number]['homography']) => {
+  const [h00, h01, h02, h10, h11, h12, h20, h21, h22] = homography;
+  return `matrix3d(${[
+    h00,
+    h10,
+    0,
+    h20,
+    h01,
+    h11,
+    0,
+    h21,
+    0,
+    0,
+    1,
+    0,
+    h02,
+    h12,
+    0,
+    h22,
+  ].join(',')})`;
+};
+
+const MonitorScreenSurface: React.FC<{text: string}> = ({text}) => {
   return (
     <div
       style={{
         position: 'absolute',
-        left: '28%',
-        right: '28%',
-        top: '25%',
-        height: '39%',
-        display: 'grid',
-        placeItems: 'center',
-        opacity: Math.min(enter, exit),
-        transform: `scale(${interpolate(enter, [0, 1], [0.82, pulse])})`,
-        border: '6px solid #d91838',
-        borderRadius: 5,
-        background:
-          'repeating-linear-gradient(-45deg, rgba(255,255,255,0.98) 0 15px, rgba(249,242,244,0.98) 15px 30px)',
-        boxShadow: '0 8px 28px rgba(0,0,0,0.48)',
-        color: '#c8102e',
-        fontFamily: fontStack,
-        fontSynthesis: 'none',
-        fontSize: 53,
-        lineHeight: 1,
-        fontWeight: 700,
-        letterSpacing: '0.11em',
-        textShadow: '0 2px 0 white',
-        zIndex: 15,
+        inset: 0,
+        overflow: 'hidden',
+        background: 'linear-gradient(180deg, #e7eaed 0 11%, #d9dfe4 11% 100%)',
+        filter: 'saturate(0.82) brightness(1.03) blur(0.28px)',
+        boxShadow: 'inset 0 0 34px rgba(34, 49, 63, 0.18)',
       }}
     >
-      {manifest.confidential.text}
+      <div
+        style={{
+          height: 66,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 20,
+          padding: '0 30px',
+          borderBottom: '2px solid rgba(50, 63, 74, 0.18)',
+          background: 'rgba(244, 246, 247, 0.92)',
+        }}
+      >
+        <div style={{width: 23, height: 23, borderRadius: 5, background: '#4078a8'}} />
+        <div style={{width: 126, height: 10, borderRadius: 8, background: '#9da8b1'}} />
+        <div style={{width: 82, height: 10, borderRadius: 8, background: '#b5bdc4'}} />
+        <div style={{width: 106, height: 10, borderRadius: 8, background: '#b5bdc4'}} />
+      </div>
+      <div
+        style={{
+          position: 'absolute',
+          left: 150,
+          right: 150,
+          top: 92,
+          bottom: 45,
+          display: 'grid',
+          placeItems: 'center',
+          background: '#fbfaf7',
+          border: '2px solid rgba(67, 73, 78, 0.16)',
+          boxShadow: '0 10px 30px rgba(38, 45, 50, 0.16)',
+        }}
+      >
+        <div
+          style={{
+            padding: '30px 42px 29px',
+            border: '10px double #b5122e',
+            color: '#b5122e',
+            fontFamily: fontStack,
+            fontSynthesis: 'none',
+            fontSize: 116,
+            lineHeight: 1,
+            fontWeight: 700,
+            letterSpacing: '0.16em',
+            textIndent: '0.16em',
+            textShadow: '0 1px 0 rgba(255,255,255,0.85)',
+          }}
+        >
+          {text}
+        </div>
+      </div>
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          pointerEvents: 'none',
+          background:
+            'linear-gradient(112deg, rgba(255,255,255,0.18), transparent 34%, rgba(255,255,255,0.06) 68%, transparent)',
+        }}
+      />
+    </div>
+  );
+};
+
+export const MonitorScreenSource: React.FC<{text: string}> = ({text}) => (
+  <AbsoluteFill style={{backgroundColor: '#d9dfe4'}}>
+    <MonitorScreenSurface text={text} />
+  </AbsoluteFill>
+);
+
+const MonitorScreenReplacement: React.FC<{manifest: EditManifest}> = ({manifest}) => {
+  const frame = useCurrentFrame();
+  const localIndex = frame - monitorTrack.compositionStartFrame;
+  const trackedFrame = monitorTrack.frames[localIndex];
+  if (!trackedFrame) {
+    return null;
+  }
+  const enter = interpolate(
+    frame,
+    [manifest.monitorScreen.startFrame, manifest.monitorScreen.startFrame + 3],
+    [0, 1],
+    {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'},
+  );
+  const exit = interpolate(
+    frame,
+    [manifest.monitorScreen.endFrame - 5, manifest.monitorScreen.endFrame],
+    [1, 0],
+    {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'},
+  );
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        width: monitorTrack.canonicalWidth,
+        height: monitorTrack.canonicalHeight,
+        opacity: Math.min(enter, exit),
+        transform: homographyToCssMatrix3d(trackedFrame.homography),
+        transformOrigin: '0 0',
+        zIndex: 14,
+      }}
+    >
+      <MonitorScreenSurface text={manifest.monitorScreen.text} />
     </div>
   );
 };
@@ -469,13 +562,18 @@ const InsertedVideo: React.FC<{insert: VideoInsert; globalFrame: number}> = ({
   );
 };
 
-export const EditComposition: React.FC<{manifest: EditManifest}> = ({manifest}) => {
+type MonitorBackend = 'remotion' | 'opencv' | 'green';
+
+export const EditComposition: React.FC<{
+  manifest: EditManifest;
+  monitorBackend?: MonitorBackend;
+}> = ({manifest, monitorBackend = 'remotion'}) => {
   const frame = useCurrentFrame();
   const replacementAudio = manifest.replacementAudio;
   const liveSegment = liveSegmentAt(frame, manifest.liveSegments);
   const activeCaption = manifest.captions.find((caption) => isActive(frame, caption));
   const activeComments = manifest.comments.filter((comment) => isActive(frame, comment));
-  const confidential = isActive(frame, manifest.confidential);
+  const monitorScreen = isActive(frame, manifest.monitorScreen);
   const replacement = manifest.replacementVideo;
   const lensCoverScale = interpolate(frame, [909, 921], [1, 2.4], {
     extrapolateLeft: 'clamp',
@@ -511,17 +609,25 @@ export const EditComposition: React.FC<{manifest: EditManifest}> = ({manifest}) 
           }}
         />
       </Sequence>
-      {manifest.videoInserts.map((insert, index) => (
-        <Sequence
-          key={`${insert.path}-${insert.startFrame}-${index}`}
-          from={insert.startFrame}
-          durationInFrames={insert.endFrame - insert.startFrame}
-        >
-          <InsertedVideo insert={insert} globalFrame={frame} />
-        </Sequence>
-      ))}
+      {manifest.videoInserts.map((insert, index) => {
+        const effectiveInsert =
+          monitorBackend === 'opencv' && manifest.monitorScreen.bakedVideo
+            ? {...insert, path: manifest.monitorScreen.bakedVideo}
+            : insert;
+        return (
+          <Sequence
+            key={`${effectiveInsert.path}-${effectiveInsert.startFrame}-${index}`}
+            from={effectiveInsert.startFrame}
+            durationInFrames={effectiveInsert.endFrame - effectiveInsert.startFrame}
+          >
+            <InsertedVideo insert={effectiveInsert} globalFrame={frame} />
+          </Sequence>
+        );
+      })}
       {replacementAudio ? <Html5Audio src={staticFile(replacementAudio)} /> : null}
-      {confidential ? <ConfidentialCard manifest={manifest} /> : null}
+      {monitorScreen && monitorBackend === 'remotion' ? (
+        <MonitorScreenReplacement manifest={manifest} />
+      ) : null}
       {liveSegment ? (
         <>
           <LivestreamChrome manifest={manifest} segment={liveSegment} />

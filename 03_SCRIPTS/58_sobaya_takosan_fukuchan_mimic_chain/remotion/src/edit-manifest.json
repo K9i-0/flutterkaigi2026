@@ -1,0 +1,36 @@
+{
+  "composition": {
+    "id": "SobayaTakosanFukuchanChain",
+    "width": 832,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 446
+  },
+  "inputVideo": "input.mp4",
+  "inputVideoVolume": 1,
+  "replacementAudio": null,
+  "overlays": [],
+  "captions": [],
+  "clips": [
+    {
+      "id": "sobaya-to-takosan-reversed",
+      "src": "sobaya_to_takosan_reversed.mp4",
+      "startFrame": 0,
+      "durationInFrames": 226,
+      "trimBeforeFrames": 0,
+      "fadeInFrames": 0,
+      "fadeOutFrames": 6,
+      "volume": 1
+    },
+    {
+      "id": "takosan-to-fukuchan",
+      "src": "input_fukuchan.mp4",
+      "startFrame": 220,
+      "durationInFrames": 226,
+      "trimBeforeFrames": 15,
+      "fadeInFrames": 6,
+      "fadeOutFrames": 0,
+      "volume": 1
+    }
+  ]
+}

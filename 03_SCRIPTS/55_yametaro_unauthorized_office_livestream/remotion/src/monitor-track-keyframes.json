@@ -1,0 +1,14 @@
+{
+  "description": "Manually reviewed inner-display corners for the Fukuchan POV monitor shot",
+  "cornerOrder": ["topLeft", "topRight", "bottomRight", "bottomLeft"],
+  "keyframes": [
+    {"sourceFrame": 150, "corners": [[126, 91], [655, 99], [648, 382], [141, 438]]},
+    {"sourceFrame": 160, "corners": [[147, 83], [679, 90], [668, 375], [161, 431]]},
+    {"sourceFrame": 170, "corners": [[122, 74], [661, 85], [654, 367], [141, 427]]},
+    {"sourceFrame": 180, "corners": [[98, 66], [642, 78], [637, 359], [120, 423]]},
+    {"sourceFrame": 190, "corners": [[107, 75], [637, 87], [633, 362], [125, 426]]},
+    {"sourceFrame": 200, "corners": [[107, 83], [629, 95], [626, 366], [122, 431]]},
+    {"sourceFrame": 205, "corners": [[59, 84], [588, 102], [586, 365], [74, 440]]},
+    {"sourceFrame": 209, "corners": [[-116, 86], [454, 115], [453, 363], [-118, 485]]}
+  ]
+}
