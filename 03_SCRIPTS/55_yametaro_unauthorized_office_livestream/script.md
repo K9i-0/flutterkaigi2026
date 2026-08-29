@@ -286,4 +286,14 @@
 - 完成動画: `final_remotion_livestream.mp4`、video ID `cee9f4b1-0a73-4cee-a5bf-3fae7ff6bb60`、サムネイル付き、状態`ready`、11,011,323 bytes。Pickup（イチオシ）は未指定。
 - 登場メンバー: そば屋、福ちゃん、無職やめ太郎、窓際王おかやまん。
 - 公開ページのSSR表示、動画`video/mp4`、サムネイル`image/jpeg`のRange取得を確認済み。
-- 2026-08-29のOpenCVモニター追跡版はローカル完成版のみ更新。上記Studio動画IDには追跡前の完成版が登録されている。
+
+### v2 モニター差し替え安定化版
+
+- 登録日: 2026-08-29
+- generation: v2 `85edd057-81d9-4241-9a2f-5a09fd252f18`
+- ラベル: `Wan 3.0＋Remotion モニター差し替え安定化版`
+- モデル: `Wan 3.0 + Irodori-TTS v4.1 Small + Remotion + OpenCV`
+- プロンプト: `monitor_green_test/prompt_wan3.txt`を`Wan 3.0 グリーンモニター差し替え（seed 550033）`として登録。
+- 入力素材: 実際に合成した`monitor-screen-source.png`と、HSV緑領域の四隅を19フレーム二次多項式で平滑化した`monitor-green-track.json`の2点。どちらも状態`ready`、サイズ登録済み。
+- 完成動画: `final_remotion_livestream_green_monitor.mp4`、video ID `40403208-9d81-4305-9a7a-66258a1c11c5`、サムネイル付き、状態`ready`、10,678,385 bytes、SHA-256 `910c5a07c295064e0dda5645313dc018a9277b1cbd977e825bedf072c287941b`。
+- Pickup（イチオシ）: 指定済み。`is_featured=1`を確認し、Pickup一覧のprimary videoもv2のvideo IDへ切り替わっている。
