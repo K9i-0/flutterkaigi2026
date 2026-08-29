@@ -32,6 +32,7 @@ Gitでは、Seedanceの再生成と同じ声の継続利用に必要な最小限
 - **Seedance動画制作** (`/seedance`): ユーザーからストーリー（あらすじ）を渡されたら、このスキルに従って台本＋Seedanceプロンプト＋Codex参考画像を作成する。詳細: `.claude/skills/seedance/SKILL.md`
 - **Wan動画制作** (`wan-video`): Wan 3.0、Qwen Cloud、Alibaba Cloud Model Studioで動画を新規制作・改修・生成・監査するときに使用する。台本、参照素材、プロンプト、従量課金API設定、生成結果を一体で管理する。詳細: `.claude/skills/wan-video/SKILL.md`
 - **Remotion動画編集** (`remotion-video`): Wan・Seedance等の生成済み動画へ、正確な字幕、ニューステロップ、局ロゴ、ティッカー、音声差し替え、UI、効果音を再現可能なReactコードで合成し、レンダリング・監査するときに使用する。詳細: `.claude/skills/remotion-video/SKILL.md`
+- **画面差し替え** (`screen-replacement`): ユーザーが明示した場合に、モニター・テレビ・スマホ等の表示面をOpenCVで追跡し、画像・動画を透視合成する。グリーン画面生成、通常画面追跡、揺れ抑制、緑残り除去、Remotion統合を扱う。画面が映るだけでは自動適用しない。詳細: `.claude/skills/screen-replacement/SKILL.md`
 - **映画ポスター制作** (`create-movie-poster`): 映画ポスターの新規制作・改修・シリーズ統一では、独立した初回3案から方向性を選び、縦2:3正本、正確な日本語文字、キャラクター同一性を管理する。実写のよーたん、福ちゃん、とーくん、おかやまんは正典写真へ顔を厳密に一致させる。SNS安全域はユーザー指定時だけ調整し、生成画像への反復編集を避ける。詳細: `.claude/skills/create-movie-poster/SKILL.md`
 - **ボクセルモデル制作** (`build-voxel-character-from-image`): キャラクターの参照画像からリグ付きボクセルGLBを作成・修正するときに使用する。成果物は`04_GAME_ASSETS/voxel/`に配置する。詳細: `.claude/skills/build-voxel-character-from-image/SKILL.md`
 - **2Dゲーム制作** (`/2d-game`): 2Dゲームを新規作成するとき、およびSeedanceで制作した完成動画（添付mp4）をオープニング/イベントのカットシーンとしてゲームに組み込むときに使用する。完成動画の正典置き場は`04_GAME_ASSETS/videos/`（ゲームからは`public/videos/`の相対symlinkで参照）。詳細: `.claude/skills/2d-game/SKILL.md`
