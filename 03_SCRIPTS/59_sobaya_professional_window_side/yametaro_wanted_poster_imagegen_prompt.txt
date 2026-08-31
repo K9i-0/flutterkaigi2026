@@ -1,0 +1,7 @@
+Use case: product-mockup and identity-preserve
+Asset type: standalone production prop reference for Wan 3.0
+Input images: Image 1 is `02_CHARACTERS/Yametaro.jpg`, the highest-priority identity source. Image 2 is `character_yametaro_basic_sheet.png`, confirming the same front-view proportions. Image 3 is `01_WORLD/props/yametaro_wanted_poster.png`, used only for the recurring beige WANTED-poster hierarchy visible inside its contact sheet.
+Primary request: Create one vertical 2:3 vintage internal-company wanted poster on aged beige paper, perfectly straight-on and filling the canvas. The central portrait must be exactly the canonical deformed Yametaro: huge rounded-square peach face, large smooth black side-parted hair with a pointed triangular forehead opening, tiny ears, small round black glasses with white lenses, dot nose, pink circular cheeks, small smile, and purple patterned collared shirt.
+Exact text: `WANTED`, `YAMETARO`, `REWARD`, `¥200,000,000`.
+Style: dark brown Western slab-serif type, centered hierarchy, ornamental border and small corner flourishes.
+Constraints: poster only; no wall, tape, frame, office, shadow, hands, perspective skew, Japanese text, misspelling, changed number, extra words, generic human boy, anime redesign, duplicate portrait, other character, watermark, logo, or collage.

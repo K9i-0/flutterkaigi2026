@@ -1,0 +1,175 @@
+{
+  "composition": {
+    "id": "ProfessionalWindowSide",
+    "width": 832,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 1095
+  },
+  "inputVideo": "input.mp4",
+  "sourceDurationInFrames": 900,
+  "inputVideoVolume": 1,
+  "replacementAudio": null,
+  "ambientBed": {
+    "src": "sobaya_ambient_bed.wav",
+    "volume": 0.1
+  },
+  "irodoriAudio": [
+    {
+      "startFrame": 177,
+      "endFrame": 399,
+      "src": "sobaya_answer01_beer.wav",
+      "volume": 1
+    },
+    {
+      "startFrame": 466,
+      "endFrame": 615,
+      "src": "sobaya_answer02_excel.wav",
+      "volume": 1
+    },
+    {
+      "startFrame": 699,
+      "endFrame": 885,
+      "src": "sobaya_answer03_final.wav",
+      "volume": 1
+    }
+  ],
+  "timeline": [
+    {
+      "kind": "video",
+      "startFrame": 0,
+      "endFrame": 120,
+      "sourceStartFrame": 0
+    },
+    {
+      "kind": "video",
+      "startFrame": 168,
+      "endFrame": 408,
+      "sourceStartFrame": 120
+    },
+    {
+      "kind": "video",
+      "startFrame": 450,
+      "endFrame": 630,
+      "sourceStartFrame": 360
+    },
+    {
+      "kind": "video",
+      "startFrame": 672,
+      "endFrame": 912,
+      "sourceStartFrame": 660
+    }
+  ],
+  "questionCards": [
+    {
+      "startFrame": 120,
+      "endFrame": 168,
+      "text": "なぜ、出社してすぐビールを？"
+    },
+    {
+      "startFrame": 408,
+      "endFrame": 450,
+      "text": "エクセルでは、何を？"
+    },
+    {
+      "startFrame": 630,
+      "endFrame": 672,
+      "text": "最後に、一言。"
+    }
+  ],
+  "openingTitle": {
+    "startFrame": 10,
+    "endFrame": 116,
+    "eyebrow": "YHK DOCUMENTARY",
+    "title": "プロフェッショナル",
+    "subtitle": "窓際の流儀"
+  },
+  "lowerThird": {
+    "startFrame": 168,
+    "endFrame": 408,
+    "company": "アクシデンチュア株式会社",
+    "role": "ウィンドウサイドエンジニア",
+    "name": "そば屋"
+  },
+  "outro": {
+    "startFrame": 912,
+    "endFrame": 1095,
+    "brand": "YHK",
+    "title": "プロフェッショナル",
+    "subtitle": "窓際の流儀"
+  },
+  "captions": [
+    {
+      "startFrame": 168,
+      "endFrame": 260,
+      "text": "出社したら真っ先に\nビールを飲んでます。"
+    },
+    {
+      "startFrame": 260,
+      "endFrame": 330,
+      "text": "手の震えが止まって、"
+    },
+    {
+      "startFrame": 330,
+      "endFrame": 408,
+      "text": "エクセルの操作が\n安定するんですよね。"
+    },
+    {
+      "startFrame": 450,
+      "endFrame": 520,
+      "text": "開いたり閉じたりしてます。"
+    },
+    {
+      "startFrame": 520,
+      "endFrame": 630,
+      "text": "こうすると働いてるって\n思われますから。"
+    },
+    {
+      "startFrame": 672,
+      "endFrame": 770,
+      "text": "窓際に追い込まれてるうちは二流。"
+    },
+    {
+      "startFrame": 770,
+      "endFrame": 912,
+      "text": "一流の窓際族は、\n窓際を作り出す。"
+    }
+  ],
+  "irodoriCaptions": [
+    {
+      "startFrame": 177,
+      "endFrame": 262,
+      "text": "出社したら真っ先に\nビールを飲んでます。"
+    },
+    {
+      "startFrame": 262,
+      "endFrame": 327,
+      "text": "手の震えが止まって、"
+    },
+    {
+      "startFrame": 327,
+      "endFrame": 399,
+      "text": "エクセルの操作が\n安定するんですよね。"
+    },
+    {
+      "startFrame": 466,
+      "endFrame": 524,
+      "text": "開いたり閉じたりしてます。"
+    },
+    {
+      "startFrame": 524,
+      "endFrame": 615,
+      "text": "こうすると働いてるって\n思われますから。"
+    },
+    {
+      "startFrame": 699,
+      "endFrame": 775,
+      "text": "窓際に追い込まれてるうちは二流。"
+    },
+    {
+      "startFrame": 775,
+      "endFrame": 885,
+      "text": "一流の窓際族は、\n窓際を作り出す。"
+    }
+  ]
+}
