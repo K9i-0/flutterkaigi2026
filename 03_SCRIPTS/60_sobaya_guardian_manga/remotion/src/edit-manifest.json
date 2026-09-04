@@ -1,0 +1,14 @@
+{
+  "composition": {
+    "id": "SobayaGuardian",
+    "width": 832,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 450
+  },
+  "inputVideo": "input.mp4",
+  "inputVideoVolume": 1,
+  "replacementAudio": null,
+  "overlays": [],
+  "captions": []
+}

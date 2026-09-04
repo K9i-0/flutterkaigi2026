@@ -1,0 +1,28 @@
+Create exactly one 15.0-second, 16:9 cinematic video in a gritty dramatic martial arts anime-cinema style, heavily inspired by the tense, epic atmosphere of the Baki manga series. The scene takes place entirely inside a traditional, austere Japanese martial arts dojo. The camera stays in one continuous, slow, deliberate cinematic take without any cuts, dissolves, wipes, or angle resets. Exactly one character Sobaya sits solemnly on the polished wooden floorboards, gripping a large cold glass beer mug, radiating the silent, absolute intimidation of an ultimate guardian.
+
+References:
+- Image 1: episode-local character sheet for Sobaya and the highest-priority identity source. Preserve exactly one character with the same smooth white oval mask, two black circular eyeholes (deep black voids), sharp vertical red paint stripes passing directly vertically through each eyehole, a small black circular forehead dot, a horizontal slit mouth without human lips, short spiky black hair, neutral ash-gray exposed skin, colossal muscular build, plain white crew-neck T-shirt, black pants, and large muscular gray hands. Extract only identity, body proportions, clothing, mask, and beer mug. Do not reproduce sheet layout, panels, labels, white background, multiple views, or thumbnails.
+- Image 2: exact opening composition, environment, and initial pose reference at 0.0 seconds. Begin from this precise composition: Sobaya sitting in the center of the wooden dojo, holding a cold amber draft beer mug with white foam, with the traditional hanging scroll bearing the bold black Japanese ink calligraphy kanji "窓" hanging on the back wall. Image 1 overrides Image 2 for Sobaya identity. Animate smoothly from the first frame.
+- Audio 1: Sobaya voice-timbre reference only. Preserve this low, heavy timbre for low-frequency presence.
+
+Overall continuity:
+- Exactly one Sobaya, one heavy glass beer mug filled with amber beer and white foam, one hanging scroll with "窓", and one dojo interior exist throughout.
+- Lighting: dramatic low-key cinematic lighting, strong contrast, sharp rim lights catching the muscular contours of Sobaya's shoulders, neck, and the white mask. The amber liquid in the beer mug glows subtly in the dim dojo.
+- Clean visual plate: do not render any spoken dialogue, text captions, subtitles, speech bubbles, comic book panel borders, or overlays into the video frame. The only text permitted is the single calligraphy kanji "窓" on the hanging scroll in the background.
+
+Shot sequence within the single uncut take:
+- Shot 1 [0.0-5.0 s] — Opening beat matches Image 2. In the quiet, tense atmosphere of the dojo, the camera slowly and smoothly pushes in towards Sobaya. Condensation trickles down the cold glass of the beer mug, and carbonation bubbles rise through the amber liquid. Sobaya's massive gray hand with pronounced veins grips the handle of the mug firmly on the floor/low stance. The "窓" calligraphy scroll hangs steadily in the background.
+- Shot 2 [5.0-10.0 s] — The camera smoothly cranes and tilts into a closer, lower-angle perspective, highlighting Sobaya's enormous tree-trunk neck, colossal trapezius muscles, and broad shoulders. He slightly shifts his grip on the heavy beer mug, holding it steady before his chest. Faint dust particles drift slowly through the atmospheric lighting.
+- Shot 3 [10.0-15.0 s] — Powerful medium close-up focused on Sobaya's white mask and upper torso, framed with the "窓" hanging scroll behind him. The pitch-black eyeholes on his mask look directly into the camera with an unyielding, deadpan intensity. The mug remains firmly held, emitting a subtle chill. Sobaya radiates an immovable, terrifying aura of a guardian who has resolved to protect everyone. Hold this epic, tense tableau rock-solid through exactly 15.0 seconds. No fade to black and no logo.
+
+Audio and sound design:
+- Synchronized atmospheric audio: heavy silence of the dojo, low deep atmospheric drone building tension, subtle carbonation fizz from the beer, gentle wooden creak, and the tactile sound of heavy fingers gripping the glass handle. No spoken dialogue or singing.
+
+Hard constraints:
+- Exact duration 15.0 seconds; 16:9; 480P.
+- One continuous uncut take from 0.0 to 15.0 seconds. Zero cuts, scene changes, flash frames, or speed ramps.
+- Exactly one Sobaya, one beer mug, one "窓" scroll. No duplicate limbs, no morphing, no disappearing objects.
+- Preserve Image 1 identity. Never deform the rigid white mask; no human lips, teeth, or eyeballs.
+- No comic panels, no speech balloons, no on-screen subtitle text, no watermarks.
+- No weapons, no violence, no gore, no destruction.
+- Maintain final composition through exactly 15.0 seconds.

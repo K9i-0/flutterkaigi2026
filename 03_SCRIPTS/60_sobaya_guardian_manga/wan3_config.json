@@ -1,0 +1,32 @@
+{
+  "model": "wan3.0-video",
+  "audio_source": "wan3",
+  "audio_sync_strategy": "no_visible_speech",
+  "project_duration": 15,
+  "generation_mode": "single",
+  "prompt_file": "prompt_wan3.txt",
+  "media": [
+    {
+      "type": "reference_image",
+      "path": "character_sobaya_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "scene_01_sobaya_dojo_mado_production.png"
+    },
+    {
+      "type": "reference_audio",
+      "path": "../../02_CHARACTERS/Sobaya_voice.wav"
+    }
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 15,
+    "audio": true,
+    "seed": 600015,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_result_seed600015_480p.mp4"
+}
