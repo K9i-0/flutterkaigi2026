@@ -37,6 +37,7 @@ Gitでは、Seedanceの再生成と同じ声の継続利用に必要な最小限
 - **ボクセルモデル制作** (`build-voxel-character-from-image`): キャラクターの参照画像からリグ付きボクセルGLBを作成・修正するときに使用する。成果物は`04_GAME_ASSETS/voxel/`に配置する。詳細: `.claude/skills/build-voxel-character-from-image/SKILL.md`
 - **2Dゲーム制作** (`/2d-game`): 2Dゲームを新規作成するとき、およびSeedanceで制作した完成動画（添付mp4）をオープニング/イベントのカットシーンとしてゲームに組み込むときに使用する。完成動画の正典置き場は`04_GAME_ASSETS/videos/`（ゲームからは`public/videos/`の相対symlinkで参照）。詳細: `.claude/skills/2d-game/SKILL.md`
 - **Madogiwa Studio登録** (`madogiwa-studio`): Remote Web MCP経由でエピソード、生成バージョン、使用モデル、プロンプト、入力画像・参照音声、生成動画をStudioへ登録・確認するときに使用する。詳細: `.claude/skills/madogiwa-studio/SKILL.md`
+- **Antigravity画像生成** (`antigravity-imagegen`): Antigravity専用。Geminiネイティブの`generate_image`を使い、窓際族物語のキャラクター同一性を厳密に維持したシーン・背景・参照画像を生成する。CodexやClaude Codeなど他ハーネスでは対象外。詳細: `.claude/skills/antigravity-imagegen/SKILL.md`
 
 スキルの実体は`.claude/skills/`に置き、Codex CLI向けには`.agents/skills/`からsymlinkで同じスキルを参照させている（Claude Code・Codexの両方が同一のSKILL.mdを読む）。スキルを追加したら`.agents/skills/`にもsymlinkを張ること。
 
