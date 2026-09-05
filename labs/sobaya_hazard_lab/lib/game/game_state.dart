@@ -112,6 +112,20 @@ class Enemy {
     BossMove.recovery => '反撃のチャンス',
     BossMove.ready => hp <= 175 ? '怒りのラストオーダー' : 'ラストオーダー',
   };
+  static const meleeWindup = .85, meleeFollowThrough = .55;
+  double meleeRecovery = 0, approachTimer = 0;
+  double? approachHeading, approachX, approachZ;
+  bool runningApproach = false;
+  int get flankSide => boss || id % 3 == 0
+      ? 0
+      : id % 3 == 1
+      ? -1
+      : 1;
+  double? get meleeClipTime => attackPending
+      ? .77 * (1 - windup / meleeWindup).clamp(0.0, 1.0)
+      : meleeRecovery > 0
+      ? .77 + (meleeFollowThrough - meleeRecovery) * .9
+      : null;
   final bool boss;
   final int id;
   double x,
@@ -252,9 +266,9 @@ class HazardGameState {
     }
   }
 
-  void emitSound(String name, {double? x, double? z}) {
+  void emitSound(String name, {double? x, double? z, double y = 1.2}) {
     if (_sounds.length == 32) _sounds.removeAt(0);
-    _sounds.add(HazardSound(name, x: x, z: z));
+    _sounds.add(HazardSound(name, x: x, y: y, z: z));
   }
 
   List<HazardSound> drainSounds() {
@@ -325,7 +339,7 @@ class HazardGameState {
           (j['x'] as num).toDouble(),
           (j['z'] as num).toDouble(),
           boss: j['boss'] == true,
-        )..active = j['active'] as bool? ?? j['id'] < 4,
+        )..active = j['active'] as bool? ?? true,
       );
     }
     pickups
@@ -696,12 +710,13 @@ class HazardGameState {
     }
     for (final e in enemies) {
       e.moved = 0;
+      e.runningApproach = false;
       if (!e.alive) {
         e.vanish += dt;
         if (e.vanish >= .65 && !e.dropped) {
           e.dropped = true;
           pickups.add(Pickup('beer_${e.id}', 'beer', e.x, e.y + .25, e.z));
-          emitSound('defeat', x: e.x, z: e.z);
+          emitSound('defeat', x: e.x, y: e.y + .25, z: e.z);
         }
         continue;
       }
@@ -709,6 +724,8 @@ class HazardGameState {
       if (e.boss && x < 1 && !e.alerted) continue;
       e.cooldown = math.max(0, e.cooldown - dt);
       e.stun = math.max(0, e.stun - dt);
+      e.meleeRecovery = math.max(0, e.meleeRecovery - dt);
+      e.approachTimer -= dt;
       final dx = x - e.x, dz = z - e.z, dist = math.sqrt(dx * dx + dz * dz);
       if (!e.alerted) {
         final facing = dist < .01
@@ -734,7 +751,8 @@ class HazardGameState {
         e.windup -= dt;
         if (e.windup <= 0) {
           e.attackPending = false;
-          e.cooldown = e.boss ? 2.2 : 1.5;
+          e.cooldown = 1.5;
+          e.meleeRecovery = Enemy.meleeFollowThrough;
           if (dist < (e.boss ? 2.0 : 1.65) &&
               invulnerable <= 0 &&
               (dist < .01 ||
@@ -762,19 +780,27 @@ class HazardGameState {
         }
         continue;
       }
-      if (e.stun > 0) continue;
+      if (e.stun > 0 || e.meleeRecovery > 0) continue;
       if (!e.boss && dist < 1.15 && (y - e.y).abs() < .8 && e.cooldown <= 0) {
         e.attackPending = true;
         e.heading = math.atan2(dx, dz);
-        e.windup = e.boss ? 1.15 : .7;
-        emitSound('enemy', x: e.x, z: e.z);
+        e.windup = Enemy.meleeWindup;
+        emitSound('enemy', x: e.x, y: e.y + 1.2, z: e.z);
         continue;
       }
       if (dist < .95 && (y - e.y).abs() < .8) continue;
       if (dist > 17 && noiseTime <= 0) continue;
       final waypoint = _navigation?.waypoint(e.x, e.y, e.z);
       if (waypoint == null) continue;
-      final tx = waypoint.x, tz = waypoint.z;
+      if (e.approachTimer <= 0) {
+        e.approachTimer = .3 + (e.id % 3) * .035;
+        _planApproach(e, dist);
+      }
+      final direct = e.approachX != null;
+      final tx = direct ? (dist < 3.2 ? x : e.approachX!) : waypoint.x;
+      final tz = direct ? (dist < 3.2 ? z : e.approachZ!) : waypoint.z;
+      e.runningApproach = direct && e.flankSide != 0 && dist > 5;
+
       var vx = tx - e.x, vz = tz - e.z;
       final len = math.sqrt(vx * vx + vz * vz);
       if (len < .00001) continue;
@@ -795,7 +821,16 @@ class HazardGameState {
         }
       }
       e.heading = math.atan2(vx, vz);
-      final speed = math.min(len, (e.boss ? 1.15 : .8) * enemySpeedScale * dt);
+      final speed = math.min(
+        len,
+        (e.boss
+                ? 1.15
+                : e.runningApproach
+                ? 1.7
+                : .8) *
+            enemySpeedScale *
+            dt,
+      );
       final oldX = e.x, oldZ = e.z;
       _moveEnemy(e, vx * speed, vz * speed);
       e.moved = math.sqrt(math.pow(e.x - oldX, 2) + math.pow(e.z - oldZ, 2));
@@ -931,8 +966,32 @@ class HazardGameState {
     e.heading = math.atan2(dx, dz);
     e.windup = e.bossTimer;
     e.attackPending = true;
-    emitSound('enemy', x: e.x, z: e.z);
+    emitSound('enemy', x: e.x, y: e.y + 1.2, z: e.z);
     return true;
+  }
+
+  /// A stable side per enemy avoids oscillating between left and right.
+  /// Cover and elevation return control to the shared floor navigation.
+  void _planApproach(Enemy e, double distance) {
+    e.approachX = e.approachZ = null;
+    if (distance < 1 || distance > 13 || (e.y - y).abs() > .2) {
+      return;
+    }
+    e.approachHeading ??= math.atan2(x - e.x, z - e.z);
+    final side = distance > 3.2 ? e.flankSide * 2.3 : 0.0;
+    final tx = x + math.cos(e.approachHeading!) * side;
+    final tz = z - math.sin(e.approachHeading!) * side;
+    final steps = math.max(1, (distance / .25).ceil());
+    for (var i = 1; i <= steps; i++) {
+      final px = e.x + (tx - e.x) * i / steps;
+      final pz = e.z + (tz - e.z) * i / steps;
+      if ((floorHeight(px, pz, e.y) - e.y).abs() > .15 ||
+          blocked(px, pz, e.y, radius: .4)) {
+        return;
+      }
+    }
+    e.approachX = tx;
+    e.approachZ = tz;
   }
 
   void _moveEnemy(Enemy e, double dx, double dz) {
@@ -1127,6 +1186,7 @@ class HazardGameState {
       if (!victim.boss) {
         victim.stun = head ? 1.4 : .5;
         victim.attackPending = false;
+        victim.meleeRecovery = 0;
       } else if (victim.bossMove == BossMove.ready && head) {
         victim.stun = .35;
       }
@@ -1209,6 +1269,7 @@ class HazardGameState {
       }
       e.hp -= 50;
       e.stun = 1.5;
+      e.meleeRecovery = 0;
       e.alerted = true;
       e.attackPending = false;
       if (e.boss) {
@@ -1234,12 +1295,6 @@ class HazardGameState {
     kills++;
     say(e.boss ? '最後のそば屋を撃退した。脱出路の門へ！' : 'そば屋を倒した。ビールを回収しよう。');
     if (e.boss) checkpointRequested = true;
-    for (final other in enemies) {
-      if (zoneId == 'village' &&
-          other.id < 4 + enemies.where((e) => !e.alive).length) {
-        other.active = true;
-      }
-    }
   }
 
   void breakCrate(Breakable c) {
@@ -1563,6 +1618,13 @@ class HazardGameState {
             'alerted': e.alerted,
             'stun': e.stun,
             'attackPending': e.attackPending,
+            'meleeRecovery': e.meleeRecovery,
+            'meleeClipTime': e.meleeClipTime,
+            'approach': e.runningApproach
+                ? 'run'
+                : e.approachX != null
+                ? 'flank'
+                : 'pursue',
             'bossMove': e.bossMove.name,
             'bossTimer': e.bossTimer,
             if (e.boss) 'bossCue': e.bossCue,

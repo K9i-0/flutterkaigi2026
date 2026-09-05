@@ -18,6 +18,7 @@ class GameBenchmark {
   Timer? timer;
   final watch = Stopwatch();
   int index = -1;
+  bool interrupted = false;
   static const cases = [
     (
       name: 'village-four',
@@ -104,6 +105,7 @@ class GameBenchmark {
     game.scene.renderScale = c.scale;
     game.contactShadows?.node.visible = c.contacts;
     game.frames.reset();
+    interrupted = false;
     watch
       ..reset()
       ..start();
@@ -118,7 +120,11 @@ class GameBenchmark {
         'region': cases[index].region,
         'contactShadows': cases[index].contacts,
         'profile': kProfileMode,
-        'valid': kProfileMode && game.frames.count == 240,
+        'valid': kProfileMode && game.frames.count == 240 && !interrupted && game.foreground && game.state!.phase == PlayPhase.playing && game.state!.time >= 6,
+        'interrupted': interrupted,
+        'foreground': game.foreground,
+        'gamePhase': game.state!.phase.name,
+        'simulatedSeconds': game.state!.time,
         'renderScale': game.scene.renderScale,
         'viewport': [game.viewport.width, game.viewport.height],
         'devicePixelRatio': game.devicePixelRatio,
@@ -132,6 +138,7 @@ class GameBenchmark {
   void tick() {
     if (index < cases.length) {
       final s = game.state!;
+      if (!game.foreground || s.phase != PlayPhase.playing) interrupted = true;
       s.yaw = math.pi + math.sin(s.time * .3) * .25;
     }
   }

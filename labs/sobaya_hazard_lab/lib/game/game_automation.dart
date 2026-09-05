@@ -112,6 +112,8 @@ void attachGameAutomation(HazardGameController game) {
       final name = p['name'];
       if (![
         'combat',
+        'encounter',
+        'mugTiming',
         'pickup',
         'collection',
         'gate',
@@ -224,6 +226,27 @@ void attachGameAutomation(HazardGameController game) {
             ..z = -14.6
             ..hp = 35
             ..stun = 30;
+        case 'mugTiming':
+          s.x = 0;
+          s.z = -16;
+          s.yaw = 3.141592653589793;
+          s.enemies.first
+            ..active = true
+            ..alerted = true
+            ..x = .25
+            ..z = -15.1;
+        case 'encounter':
+          s.x = 0;
+          s.z = -14;
+          s.yaw = 3.141592653589793;
+          s.invulnerable = 100;
+          for (final e in s.enemies.take(3)) {
+            e
+              ..active = true
+              ..alerted = true
+              ..x = (e.id - 1) * 1.2
+              ..z = -6;
+          }
         case 'combat':
           s.x = 0;
           s.z = -16;
@@ -275,7 +298,9 @@ void attachGameAutomation(HazardGameController game) {
             ..x = 0
             ..z = -15.1;
       }
-      s.phase = name == 'bossCombat' ? PlayPhase.paused : PlayPhase.playing;
+      s.phase = ['bossCombat', 'mugTiming'].contains(name)
+          ? PlayPhase.paused
+          : PlayPhase.playing;
       final event = {
         'introEvent': 'opening',
         'farmEvent': 'farm',

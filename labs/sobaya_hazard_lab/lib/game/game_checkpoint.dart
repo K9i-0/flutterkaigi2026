@@ -5,6 +5,7 @@ import 'game_state.dart';
 extension HazardCheckpoint on HazardGameState {
   Map<String, dynamic> checkpoint() => {
     'version': 1,
+    'encounterVersion': 2,
     'map': zoneId,
     'mapVersion': map['version'],
     'savedAt': DateTime.now().toIso8601String(),
@@ -68,6 +69,8 @@ extension HazardCheckpoint on HazardGameState {
             'cooldown': e.cooldown,
             'attackPending': e.attackPending,
             'windup': e.windup,
+            'meleeRecovery': e.meleeRecovery,
+            'approachHeading': e.approachHeading,
             'bossMove': e.bossMove.name,
             'bossAttack': e.bossAttack.name,
             'bossRecoveryDuration': e.bossRecoveryDuration,
@@ -240,6 +243,20 @@ HazardGameState restoreHazardCheckpoint(
       ..cooldown = number(j['cooldown'], 0, 30)
       ..attackPending = j['attackPending'] as bool
       ..windup = number(j['windup'], -.051, 30);
+    e.meleeRecovery = number(
+      j['meleeRecovery'] ?? 0,
+      0,
+      Enemy.meleeFollowThrough,
+    );
+    if (j['approachHeading'] != null) {
+      e.approachHeading = number(j['approachHeading'], -1e9, 1e9);
+    }
+    if (data['encounterVersion'] == null &&
+        s.zoneId == 'village' &&
+        e.id >= 4 &&
+        e.alive) {
+      e.active = true;
+    }
     if (j.containsKey('bossMove')) {
       e.bossMove = BossMove.values.byName(j['bossMove'] as String);
       e.bossAttack = BossMove.values.byName(

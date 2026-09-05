@@ -1,0 +1,217 @@
+{
+  "date": "2026-09-06",
+  "device": "Apple M4 macOS",
+  "flutter": "3.47.2",
+  "flutter_scene": "0.23.0",
+  "mode": "profile",
+  "command": "flutter run -d macos -t lib/game_main.dart --profile --dart-define=HAZARD_GAME_BENCHMARK=true",
+  "method": "Actual SceneView rendering; 7 sequential synthetic encounter cases; at least 8s each, last 240 Flutter FrameTiming samples. Test health inflated, normal AI, benchmark saves disabled. Active state, simulation time, foreground and uninterrupted status recorded.",
+  "results": [
+    {
+      "case": "village-four",
+      "region": "village",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "interrupted": false,
+      "foreground": true,
+      "gamePhase": "playing",
+      "simulatedSeconds": 7.950116999999991,
+      "renderScale": 0.85,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8003,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 5.973,
+      "rasterP95Ms": 20.901,
+      "uiMaxMs": 18.675,
+      "rasterMaxMs": 37.433,
+      "uiOver16_7Ms": 2,
+      "rasterOver16_7Ms": 16
+    },
+    {
+      "case": "village-eight",
+      "region": "village",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "interrupted": false,
+      "foreground": true,
+      "gamePhase": "playing",
+      "simulatedSeconds": 8.016783999999992,
+      "renderScale": 0.85,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8019,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 17.963,
+      "rasterP95Ms": 27.427,
+      "uiMaxMs": 35.289,
+      "rasterMaxMs": 37.532,
+      "uiOver16_7Ms": 20,
+      "rasterOver16_7Ms": 56
+    },
+    {
+      "case": "village-eight-no-contact",
+      "region": "village",
+      "contactShadows": false,
+      "profile": true,
+      "valid": true,
+      "interrupted": false,
+      "foreground": true,
+      "gamePhase": "playing",
+      "simulatedSeconds": 8.500127999999993,
+      "renderScale": 0.85,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8490,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 17.836,
+      "rasterP95Ms": 25.997,
+      "uiMaxMs": 28.939,
+      "rasterMaxMs": 30.762,
+      "uiOver16_7Ms": 14,
+      "rasterOver16_7Ms": 33
+    },
+    {
+      "case": "village-eight-full",
+      "region": "village",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "interrupted": false,
+      "foreground": true,
+      "gamePhase": "playing",
+      "simulatedSeconds": 8.466785999999992,
+      "renderScale": 1.0,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8494,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 30.564,
+      "rasterP95Ms": 35.258,
+      "uiMaxMs": 37.733,
+      "rasterMaxMs": 44.323,
+      "uiOver16_7Ms": 61,
+      "rasterOver16_7Ms": 112
+    },
+    {
+      "case": "farm-six",
+      "region": "farm",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "interrupted": false,
+      "foreground": true,
+      "gamePhase": "playing",
+      "simulatedSeconds": 7.983450999999991,
+      "renderScale": 0.85,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8021,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 14.309,
+      "rasterP95Ms": 22.636,
+      "uiMaxMs": 26.002,
+      "rasterMaxMs": 37.406,
+      "uiOver16_7Ms": 7,
+      "rasterOver16_7Ms": 25
+    },
+    {
+      "case": "mountain-six",
+      "region": "mountain",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "interrupted": false,
+      "foreground": true,
+      "gamePhase": "playing",
+      "simulatedSeconds": 8.000107999999992,
+      "renderScale": 0.85,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8467,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 10.629,
+      "rasterP95Ms": 18.037,
+      "uiMaxMs": 31.242,
+      "rasterMaxMs": 32.606,
+      "uiOver16_7Ms": 2,
+      "rasterOver16_7Ms": 15
+    },
+    {
+      "case": "mountain-six-full",
+      "region": "mountain",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "interrupted": false,
+      "foreground": true,
+      "gamePhase": "playing",
+      "simulatedSeconds": 8.01678399999999,
+      "renderScale": 1.0,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8021,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 19.317,
+      "rasterP95Ms": 33.608,
+      "uiMaxMs": 35.57,
+      "rasterMaxMs": 45.316,
+      "uiOver16_7Ms": 25,
+      "rasterOver16_7Ms": 134
+    }
+  ],
+  "environment": {
+    "concurrent_work": "Separate iOS Simulator app and SimRenderServer/SimMetalHost were rendering during this measurement; these unrelated processes were not stopped.",
+    "observed_cpu_percent": {
+      "game": 58.7,
+      "simulator_app": 28.2,
+      "sim_render_server": 11.4,
+      "sim_metal_hosts": [
+        9.8,
+        7.4
+      ]
+    },
+    "thermal": "pmset -g therm reported no recorded thermal/performance warnings"
+  },
+  "assessment": "Frame budget exceeded in this concurrent-work run. Isolated performance comparison remains unverified. Do not attribute the increase solely to encounter changes or solely to Simulator contention. Default 85% retained, no stable-FPS claim.",
+  "limitations": [
+    "Flutter UI/raster timings are not GPU execution time or measured presentation FPS.",
+    "One machine, brief windows and synthetic placement; no worst-view, mobile, long-duration or uncontended guarantee.",
+    "Run validity means active gameplay samples; it does not mean meeting the frame budget."
+  ],
+  "code_sha256": {
+    "21_SOBAYA_HAZARD_LAB/lib/game/game_state.dart": "1a4627a8691c5acf1118af4c5be972c542824c79b2867086d3a8cdeaedaf26b9",
+    "21_SOBAYA_HAZARD_LAB/lib/game/game_controller.dart": "69fb64f05ec746f7b95d00972862a7f91d3413dfb5ba827bbdba5d3399ced174",
+    "21_SOBAYA_HAZARD_LAB/lib/game/game_benchmark.dart": "e232e924263065d7dc466309297673a58a32ed6467a0f3319c17b4244ec3a3f9"
+  }
+}
