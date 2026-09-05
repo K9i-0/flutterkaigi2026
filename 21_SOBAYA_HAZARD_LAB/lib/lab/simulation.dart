@@ -54,7 +54,7 @@ class LabSimulation {
     if (magnitude < 1e-6 || !magnitude.isFinite) return;
     dx /= math.max(1, magnitude);
     dz /= math.max(1, magnitude);
-    final speed = sprint ? 4.8 : 2.6;
+    final speed = sprint ? 3.6 : 1.4;
     final travel = speed * seconds.clamp(0, .1);
     final steps = math.max(1, (travel / .05).ceil());
     final sx = dx * travel / steps, sz = dz * travel / steps;

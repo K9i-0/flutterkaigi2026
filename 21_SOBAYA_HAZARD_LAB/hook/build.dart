@@ -10,7 +10,7 @@ void main(List<String> args) async {
       buildInput: input,
       buildOutput: output,
       // Discovery deliberately excludes symlinks. Keep the canonical GLB shared.
-      inputFilePaths: ['assets/models/sobaya.glb'],
+      inputFilePaths: ['assets/models/sobaya.glb', 'assets/models/beer_mug.glb'],
       compressTextures: true,
     );
     // Compile .fmat materials under assets/, loadable by source path with

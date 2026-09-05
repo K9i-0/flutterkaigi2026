@@ -1,0 +1,21 @@
+{
+  "asset": "beer_mug.glb",
+  "version": 1,
+  "triangles": 3120,
+  "materials": 3,
+  "units": "metres",
+  "grip_blender": [
+    0.1550000011920929,
+    0.0,
+    0.11699999868869781
+  ],
+  "grip_gltf": [
+    0.155,
+    0.117,
+    0
+  ],
+  "origin": "base centre",
+  "textures": 0,
+  "glass": "alpha blend, no refraction pass required",
+  "liquid": "static beer and foam"
+}

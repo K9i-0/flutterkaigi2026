@@ -14,6 +14,7 @@ import 'automation/extensions.dart';
 import 'lab/benchmark.dart';
 import 'lab/lab_controller.dart';
 import 'lab/simulation.dart';
+import 'lab/motion_catalog.dart';
 
 const accent = Color(0xffe7b76a),
     muted = Color(0xff99aaa7),
@@ -149,6 +150,18 @@ class _LabPageState extends State<LabPage> {
   }
 
   KeyEventResult keyEvent(FocusNode node, KeyEvent e) {
+    const actions = {
+      'c': 'Toast',
+      'e': 'MugAttack',
+      '1': 'DanceStep',
+      '2': 'DanceDisco',
+      '3': 'DanceVictory',
+    };
+    final action = actions[e.logicalKey.keyLabel.toLowerCase()];
+    if (action != null && lab.ready) {
+      if (e is KeyDownEvent) lab.selectMotion(action);
+      return KeyEventResult.handled;
+    }
     const allowed = [
       LogicalKeyboardKey.keyW,
       LogicalKeyboardKey.keyA,
@@ -233,7 +246,7 @@ class _LabPageState extends State<LabPage> {
                 child: Row(
                   children: [
                     for (final e in [
-                      (LabMode.model, Icons.view_in_ar_outlined, 'モデル観察'),
+                      (LabMode.model, Icons.view_in_ar_outlined, 'モーション'),
                       (LabMode.movement, Icons.directions_walk, '移動・衝突'),
                       (LabMode.crowd, Icons.groups_outlined, '群集負荷'),
                     ])
@@ -399,9 +412,7 @@ class _LabPageState extends State<LabPage> {
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            lab.collisionTest
-                                ? lab.testResult
-                                : 'WASD / 矢印で移動 · Shiftで走る\nドラッグで視点 · ホイールで距離',
+                            lab.collisionTest ? lab.testResult : 'WASD / 矢印 · Shiftで走る\nC 乾杯 · E 攻撃 · 1 / 2 / 3 ダンス',
                             style: const TextStyle(fontSize: 11, height: 1.6),
                           ),
                         ),
@@ -436,9 +447,9 @@ class _LabPageState extends State<LabPage> {
                       ],
                     ),
                   const SizedBox(height: 8),
-                  const Text(
-                    '原型モデル · リグなし（歩行アニメーション未実装）',
-                    style: TextStyle(fontSize: 10, color: muted),
+                  Text(
+                    '41 bones · ${motionSpec(lab.firstRig?.current ?? 'Idle').label} · ${lab.firstRig?.active.playbackTime.toStringAsFixed(2) ?? '0.00'} s',
+                    style: const TextStyle(fontSize: 11, color: muted),
                   ),
                 ],
               ),
@@ -554,6 +565,137 @@ class _LabPageState extends State<LabPage> {
         value: value,
         onChanged: lab.ready ? (v) => lab.option(key, v) : null,
       );
+  Widget motionControls() {
+    final rig = lab.firstRig;
+    final duration = rig?.duration ?? 1;
+    final stopped = lab.animationPaused || (rig?.finished ?? false);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        section('ANIMATION / 9 CLIPS'),
+        DropdownButton<String>(
+          key: const ValueKey('motion-select'),
+          isExpanded: true,
+          value: lab.selectedMotion,
+          items: [
+            for (final motion in motions)
+              DropdownMenuItem(value: motion.name, child: Text(motion.label)),
+          ],
+          onChanged: lab.ready ? (value) => lab.selectMotion(value!) : null,
+        ),
+        if (lab.mode != LabMode.movement) ...[
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton.icon(
+                  key: const ValueKey('animation-pause'),
+                  onPressed: lab.ready
+                      ? () {
+                          if (rig?.finished ?? false) {
+                            lab.selectMotion(lab.selectedMotion);
+                          } else {
+                            lab.pauseAnimation(!lab.animationPaused);
+                          }
+                        }
+                      : null,
+                  icon: Icon(
+                    stopped ? Icons.play_arrow : Icons.pause,
+                    size: 16,
+                  ),
+                  label: Text(stopped ? '再生' : '一時停止'),
+                ),
+              ),
+              IconButton(
+                key: const ValueKey('animation-replay'),
+                tooltip: 'モーションを先頭から再生',
+                onPressed: lab.ready
+                    ? () => lab.selectMotion(lab.selectedMotion)
+                    : null,
+                icon: const Icon(Icons.replay, size: 20),
+              ),
+              DropdownButton<double>(
+                key: const ValueKey('animation-speed'),
+                value: lab.animationSpeed,
+                items: [
+                  for (final speed in ({
+                    .25,
+                    .5,
+                    1.0,
+                    1.5,
+                    2.0,
+                    lab.animationSpeed,
+                  }.toList()..sort()))
+                    DropdownMenuItem(value: speed, child: Text('×$speed')),
+                ],
+                onChanged: lab.ready ? (v) => lab.setAnimationSpeed(v!) : null,
+              ),
+            ],
+          ),
+          Slider(
+            key: const ValueKey('animation-timeline'),
+            value: (rig?.active.playbackTime ?? 0).clamp(0, duration),
+            min: 0,
+            max: duration,
+            label: '${rig?.active.playbackTime.toStringAsFixed(2)} s',
+            onChanged: lab.ready ? lab.seekAnimation : null,
+          ),
+          Text(
+            '${(rig?.active.playbackTime ?? 0).toStringAsFixed(2)} / ${duration.toStringAsFixed(2)} s · ${motionSpec(lab.selectedMotion).loop ? 'ループ' : '1回再生'}',
+            style: const TextStyle(fontSize: 11, color: muted),
+          ),
+        ] else ...[
+          const Text(
+            '移動中は歩行／走行を自動切替。\nエモートと攻撃は移動を止めて1回再生。',
+            style: TextStyle(fontSize: 11, color: muted, height: 1.5),
+          ),
+          SwitchListTile.adaptive(
+            key: const ValueKey('zombie-locomotion'),
+            contentPadding: EdgeInsets.zero,
+            dense: true,
+            title: const Text('ゾンビの歩き方', style: TextStyle(fontSize: 13)),
+            value: lab.zombieLocomotion,
+            onChanged: lab.ready
+                ? (v) {
+                    lab.zombieLocomotion = v;
+                    changed();
+                  }
+                : null,
+          ),
+        ],
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            Expanded(
+              child: FilledButton.tonal(
+                key: const ValueKey('play-toast'),
+                onPressed: lab.ready ? () => lab.selectMotion('Toast') : null,
+                child: const Text('乾杯  C'),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: FilledButton.tonal(
+                key: const ValueKey('play-attack'),
+                onPressed: lab.ready
+                    ? () => lab.selectMotion('MugAttack')
+                    : null,
+                child: const Text('攻撃  E'),
+              ),
+            ),
+          ],
+        ),
+        SwitchListTile.adaptive(
+          key: const ValueKey('equip-mug'),
+          contentPadding: EdgeInsets.zero,
+          dense: true,
+          title: const Text('ジョッキを表示', style: TextStyle(fontSize: 13)),
+          value: lab.mugEquipped,
+          onChanged: lab.ready ? lab.equipMug : null,
+        ),
+      ],
+    );
+  }
+
   Widget settings() => Container(
     margin: const EdgeInsets.fromLTRB(0, 0, 20, 18),
     padding: const EdgeInsets.symmetric(horizontal: 18),
@@ -566,6 +708,7 @@ class _LabPageState extends State<LabPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          motionControls(),
           section('FRAME TIMING / P95'),
           Row(
             children: [
@@ -590,12 +733,12 @@ class _LabPageState extends State<LabPage> {
           section('SCENARIO'),
           if (lab.mode == LabMode.model) ...[
             const Text(
-              '仮面・肌・背面を確認',
+              '骨格と小道具の動きを確認',
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 6),
             const Text(
-              '21,068 triangles / 1 material\n4Kの原型をそのまま観察します。',
+              '41 bones / 21,066 triangles\n4Kの質感を保持したスキンモデル。',
               style: TextStyle(fontSize: 12, color: muted, height: 1.7),
             ),
           ],
@@ -641,10 +784,10 @@ class _LabPageState extends State<LabPage> {
             ),
             const SizedBox(height: 6),
             Text(
-              '配置三角面 ${(21068 * lab.count / 1000).toStringAsFixed(1)}K（概算）\n同一メッシュ・材質を共有。スキン負荷は含みません。',
+              '本体三角面 ${(21066 * lab.count / 1000).toStringAsFixed(1)}K（概算）\nメッシュ・材質は共有。骨格と再生位置は各体で独立。',
               style: const TextStyle(fontSize: 11, color: muted, height: 1.7),
             ),
-            toggle('motion', '原型を一斉に移動', lab.crowdMotion),
+            toggle('motion', '群集の配置を動かす', lab.crowdMotion),
           ],
           section('RENDER CONTROLS'),
           toggle('shadows', '影を描画', lab.shadows),
@@ -708,9 +851,9 @@ class _LabPageState extends State<LabPage> {
             icon: const Icon(Icons.restart_alt, size: 17),
             label: const Text('シーンを初期位置へ'),
           ),
-          section('ASSET / SOBAYA v01'),
+          section('ASSET / SOBAYA RIG v01'),
           Text(
-            '読込 ${lab.loadMs} ms · GLB 10.3 MiB\nImagegen → Tripo P2.0 → Blender',
+            '読込 ${lab.loadMs} ms · 4K PBR\nジョッキ 3,120 triangles / 3 materials\nImagegen → Tripo P2.0 → Blender rig',
             style: const TextStyle(fontSize: 10, color: muted, height: 1.7),
           ),
           const SizedBox(height: 18),

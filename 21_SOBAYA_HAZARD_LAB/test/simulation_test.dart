@@ -27,12 +27,12 @@ void main() {
       s.move(0, 1, 1 / 60, sprint: true);
     }
     final stopped = s.z;
-    for (var i = 0; i < 20; i++) {
+    for (var i = 0; i < 40; i++) {
       s.move(1, 1, 1 / 60);
     }
     expect(s.x, greaterThan(.5));
     expect(s.z, closeTo(stopped, .03));
-    for (var i = 0; i < 60; i++) {
+    for (var i = 0; i < 120; i++) {
       s.move(1, 1, 1 / 60);
     }
     expect(s.z, greaterThan(stopped));
