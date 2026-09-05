@@ -30,6 +30,8 @@ extension HazardCheckpoint on HazardGameState {
     'gateOpen': gateOpen,
     'metYametaro': metYametaro,
     'receivedYametaroAmmo': receivedYametaroAmmo,
+    'metTakosan': metTakosan,
+    'tradePurchases': Map<String, int>.of(tradePurchases),
     'bag': bag.map((i) => i.toJson()).toList(),
     'crates': crates.where((c) => c.broken).map((c) => c.id).toList(),
     'pickups': pickups
@@ -117,6 +119,15 @@ HazardGameState restoreHazardCheckpoint(
   require(!s.gateOpen || s.hasKey);
   s.metYametaro = data['metYametaro'] as bool;
   s.receivedYametaroAmmo = data['receivedYametaroAmmo'] as bool;
+  s.metTakosan = data['metTakosan'] as bool? ?? false;
+  for (final entry in ((data['tradePurchases'] as Map?) ?? {}).entries) {
+    require(['ammo', 'herb', 'shells'].contains(entry.key));
+    s.tradePurchases[entry.key] = integer(
+      entry.value,
+      0,
+      entry.key == 'ammo' ? 3 : 2,
+    );
+  }
   s.bag.clear();
   final occupied = <int>{}, ids = <int>{};
   for (final j in data['bag'] as List) {

@@ -130,6 +130,7 @@ class HazardGameController extends ChangeNotifier {
         'sobaya',
         'fukuchan',
         'yametaro',
+        'takosan',
       ].map((n) => loadScene('assets/models/$n.glb')),
     );
     if (disposed) return;
@@ -139,11 +140,11 @@ class HazardGameController extends ChangeNotifier {
     sobayaTemplate = loaded[3];
     fukuTemplate = loaded[4];
     for (final n in state!.npcs) {
-      final actor = CharacterPlayer(loaded[5], [
+      final actor = CharacterPlayer(loaded[n['id'] == 'yametaro' ? 5 : 6], [
         'Idle',
         'Talk',
         'Wave',
-        'Walk',
+        if (n['id'] == 'yametaro') 'Walk',
       ]);
       actor.node.position = vm.Vector3(
         (n['x'] as num).toDouble(),
@@ -483,9 +484,11 @@ class HazardGameController extends ChangeNotifier {
         );
       }
       actor.setMotion(
-        talking && s.dialogueLine.speaker == 'やめ太郎'
+        talking &&
+                s.dialogueLine.speaker ==
+                    (entry.key == 'yametaro' ? 'やめ太郎' : 'たこさん')
             ? 'Talk'
-            : near && !s.metYametaro
+            : near && !(entry.key == 'yametaro' ? s.metYametaro : s.metTakosan)
             ? 'Wave'
             : 'Idle',
       );
@@ -630,6 +633,7 @@ class HazardGameController extends ChangeNotifier {
       'sobaya',
       'fukuchan',
       'yametaro',
+      'takosan',
     ]) {
       unawaited(releaseScene('assets/models/$name.glb'));
     }

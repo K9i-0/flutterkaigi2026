@@ -1,0 +1,49 @@
+{
+  "date": "2026-09-06",
+  "platform": "macOS native debug / Flutter 3.47.2 / flutter_scene 0.23.0",
+  "automated_tests": 28,
+  "analyze": "No issues found",
+  "visual_review": "Blender Idle / Talk / Wave; Flutter Scene dialogue face and trade UI",
+  "input": "real E keys and game-trade-ammo button after debug merchant setup with 8 beers",
+  "after_trade": {
+    "beers": 6,
+    "reserve": 50,
+    "dialogue": {
+      "npc": "takosan",
+      "topic": "trade_result",
+      "line": 0,
+      "choices": true,
+      "metYametaro": false,
+      "receivedAmmo": false,
+      "metTakosan": true,
+      "tradePurchases": {
+        "ammo": 1
+      }
+    }
+  },
+  "after_hot_restart_continue": {
+    "beers": 6,
+    "reserve": 50,
+    "dialogue": {
+      "npc": null,
+      "topic": "intro",
+      "line": 0,
+      "choices": false,
+      "metYametaro": false,
+      "receivedAmmo": false,
+      "metTakosan": true,
+      "tradePurchases": {
+        "ammo": 1
+      }
+    }
+  },
+  "log_errors": [],
+  "source": "procedural Blender, canonical character sheet",
+  "tripo_credits_spent": 0,
+  "limitations": [
+    "Farm and mountain chapter still absent",
+    "No natural full demo playthrough yet",
+    "Takosan has no locomotion or voice clips",
+    "Final profile measurement pending"
+  ]
+}
