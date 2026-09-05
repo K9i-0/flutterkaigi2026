@@ -111,7 +111,7 @@ void main() {
           ..alerted = true
           ..x = 0
           ..z = -15.1;
-        for (var i = 0; i < 50; i++) {
+        for (var i = 0; i < 60; i++) {
           s.tick(1 / 60);
         }
         expect(s.health, closeTo(100 - 15 * settings.damageScale, .001));

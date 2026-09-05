@@ -6,6 +6,38 @@ import 'package:sobaya_hazard_lab/game/game_audio.dart';
 import 'package:sobaya_hazard_lab/game/game_state.dart';
 
 void main() {
+  test('upstairs attack and drop emit from the actual enemy floor', () {
+    final s =
+        HazardGameState(
+            jsonDecode(File('assets/village.json').readAsStringSync()),
+          )
+          ..x = 7
+          ..y = 3.03
+          ..z = -5;
+    for (final e in s.enemies) {
+      e.active = false;
+    }
+    final e = s.enemies.first
+      ..x = 7
+      ..y = 3.03
+      ..z = -5.9
+      ..active = true
+      ..alerted = true;
+    s.drainSounds();
+    s.tick(1 / 60);
+    expect(
+      s.drainSounds().singleWhere((e) => e.name == 'enemy').y,
+      closeTo(4.23, .001),
+    );
+    e.alive = false;
+    for (var i = 0; i < 42; i++) {
+      s.tick(1 / 60);
+    }
+    expect(
+      s.drainSounds().singleWhere((e) => e.name == 'defeat').y,
+      closeTo(3.28, .001),
+    );
+  });
   test(
     'world sound fades with distance and cover, player cues stay audible',
     () {

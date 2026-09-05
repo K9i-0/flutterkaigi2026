@@ -67,11 +67,12 @@ class CharacterPlayer {
 }
 
 class HeldFingerPose extends Component {
-  HeldFingerPose(this.pose);
+  HeldFingerPose(this.pose, {this.shouldHold});
   final vm.Quaternion pose;
+  final bool Function()? shouldHold;
   @override
   void update(double deltaSeconds) {
-    node.rotation = pose.clone();
+    if (shouldHold?.call() ?? true) node.rotation = pose.clone();
   }
 }
 
@@ -297,7 +298,14 @@ class HazardGameController extends ChangeNotifier {
       for (final finger in fingerPoses.entries) {
         actor.node
             .getChildByName(finger.key)!
-            .addComponent(HeldFingerPose(finger.value));
+            .addComponent(
+              HeldFingerPose(
+                finger.value,
+                shouldHold: () =>
+                    actor.current != 'MugAttack' &&
+                    actor.clips['MugAttack']!.weight < .005,
+              ),
+            );
       }
       final mug = beerTemplate.clone();
       final anchor = mug.getChildByName('Grip')!;
@@ -839,7 +847,9 @@ class HazardGameController extends ChangeNotifier {
             ? 'Run'
             : e.bossMove == BossMove.chargeWindup
             ? 'Run'
-            : bossMelee || e.attackPending
+            : e.runningApproach && e.moved > .0001
+            ? 'Run'
+            : bossMelee || e.attackPending || e.meleeRecovery > 0
             ? 'MugAttack'
             : e.stun > 0
             ? 'Idle'
@@ -859,14 +869,18 @@ class HazardGameController extends ChangeNotifier {
             : e.moved > .0001 && dt > 0
             ? (e.moved /
                       dt /
-                      (e.bossMove == BossMove.charging
+                      ((e.bossMove == BossMove.charging || e.runningApproach)
                           ? 2.381708109
                           : 1.007474632) /
                       (e.boss ? 1.2 : 1))
                   .clamp(.1, 3)
             : 1,
       );
-      if (director == null && bossMelee) {
+      if (director == null && !e.boss && e.meleeClipTime != null) {
+        actor.clips['MugAttack']!
+          ..seek(e.meleeClipTime!)
+          ..playbackTimeScale = 0;
+      } else if (director == null && bossMelee) {
         final attackSeconds = e.bossAttack == BossMove.slamWindup ? 1.25 : .85;
         final time = e.bossMove == BossMove.recovery
             ? .77 + (e.bossRecoveryDuration - e.bossTimer) * .8
