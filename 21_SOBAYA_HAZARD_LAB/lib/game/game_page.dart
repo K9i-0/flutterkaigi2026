@@ -225,6 +225,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
               child: LayoutBuilder(
                 builder: (context, bounds) {
                   game.viewport = Size(bounds.maxWidth, bounds.maxHeight);
+                  game.devicePixelRatio = View.of(context).devicePixelRatio;
                   return Stack(
                     children: [
                       Listener(
@@ -1491,6 +1492,10 @@ class VillageMapPainter extends CustomPainter {
   final HazardGameState state;
   @override
   void paint(Canvas c, Size size) {
+    c.save();
+    // Boundary cliffs extend beyond the playable area; keep both maps inside
+    // their viewport instead of painting over the surrounding controls.
+    c.clipRect(Offset.zero & size);
     Offset at(double x, double z) =>
         Offset((x + 24) / 48 * size.width, (27 - z) / 54 * size.height);
     final p = Paint()..color = const Color(0xff30362e);
@@ -1552,6 +1557,7 @@ class VillageMapPainter extends CustomPainter {
       center + Offset(math.sin(state.heading), -math.cos(state.heading)) * 9,
       p..strokeWidth = 2,
     );
+    c.restore();
   }
 
   @override

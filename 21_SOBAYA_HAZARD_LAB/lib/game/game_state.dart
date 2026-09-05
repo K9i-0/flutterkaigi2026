@@ -5,6 +5,8 @@ import 'package:vector_math/vector_math.dart' as vm;
 import 'game_dialogue.dart';
 import 'game_audio.dart';
 
+const minCameraPitch = -.75, maxCameraPitch = .85;
+
 enum PlayPhase {
   title,
   settings,
@@ -38,9 +40,15 @@ class Obstacle {
     return dx * dx + dz * dz < radius * radius;
   }
 
-  double? ray(vm.Vector3 origin, vm.Vector3 direction, double maxDistance) {
+  double? ray(
+    vm.Vector3 origin,
+    vm.Vector3 direction,
+    double maxDistance, {
+    double padding = 0,
+  }) {
     var near = 0.0, far = maxDistance;
-    final lo = [x - w / 2, bottom, z - d / 2], hi = [x + w / 2, top, z + d / 2];
+    final lo = [x - w / 2 - padding, bottom - padding, z - d / 2 - padding],
+        hi = [x + w / 2 + padding, top + padding, z + d / 2 + padding];
     for (var i = 0; i < 3; i++) {
       if (direction[i].abs() < 1e-7) {
         if (origin[i] < lo[i] || origin[i] > hi[i]) return null;

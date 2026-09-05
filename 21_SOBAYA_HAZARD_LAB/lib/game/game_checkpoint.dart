@@ -110,7 +110,7 @@ HazardGameState restoreHazardCheckpoint(
   s.y = number(p['y'], 0, 6);
   s.z = number(p['z'], -24.4, 30);
   s.yaw = number(p['yaw'], -1e9, 1e9);
-  s.pitch = number(p['pitch'], -.25, .65);
+  s.pitch = number(p['pitch'], minCameraPitch, maxCameraPitch);
   s.heading = number(p['heading'], -1e9, 1e9);
   s.maxHealth = number(p['maxHealth'], 100, 200);
   s.health = number(p['health'], .001, s.maxHealth);

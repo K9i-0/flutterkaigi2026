@@ -62,6 +62,8 @@ def house(id,x,z,w,d,two=False):
  if two:
   # Upstairs floor with a stairwell along its east wall.
   box(g,boards,(x-.9,z,2.95),(w-2.3,d-.6,.16));box(g,boards,(x+w/2-1.05,z+d/2-1,2.95),(1.7,1.7,.16))
+  solid(x-.9,z,w-2.3,d-.6,.16,2.87)
+  solid(x+w/2-1.05,z+d/2-1,1.7,1.7,.16,2.87)
   for i in range(15):box(g,boards,(x+w/2-1.05,z-d/2+.65+i*.43,.1+i*.1),(1.6,.45,.2+i*.2))
   ramps.append({'x':x+w/2-1.05,'z0':z-d/2+.4,'z1':z-d/2+6.85,'w':1.7,'height':3.03})
   for zz in [z-d/2,z+d/2]:box(g,wood,(x,zz,3),(w,.18,.22))

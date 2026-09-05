@@ -11,6 +11,8 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:vector_math/vector_math.dart' as vm;
 
 import 'game_state.dart';
+import 'game_camera.dart';
+import 'game_contact_shadows.dart';
 import 'game_campaign.dart';
 import 'game_settings.dart';
 import 'game_events.dart';
@@ -120,9 +122,13 @@ class HazardGameController extends ChangeNotifier {
   bool get saving => _pendingSaves > 0;
   bool get hasCheckpoint => _checkpointJson != null;
   ui.Size viewport = const ui.Size(1280, 800);
+  double devicePixelRatio = 1;
   double _notifyTime = 0, _stepDistance = 0;
   String? error;
   bool posePreview = false;
+  bool benchmarkMode = false;
+  int runEpoch = 0;
+  ContactShadows? contactShadows;
   Future<void> load() async {
     preferences = await SharedPreferences.getInstance();
     settings = HazardSettings.decode(
@@ -336,6 +342,8 @@ class HazardGameController extends ChangeNotifier {
         maxPlayers: 3,
       );
     }
+    contactShadows = ContactShadows(11);
+    scene.add(contactShadows!.node);
     ready = true;
     await ambience.setReleaseMode(ReleaseMode.loop);
     await ambience.setVolume(settings.muted ? 0 : .24 * settings.volume);
@@ -492,6 +500,7 @@ class HazardGameController extends ChangeNotifier {
   }
 
   void restart() {
+    runEpoch++;
     posePreview = false;
     director = null;
     campaign.restart();
@@ -511,6 +520,7 @@ class HazardGameController extends ChangeNotifier {
     if (!ready ||
         s == null ||
         posePreview ||
+        benchmarkMode ||
         s.health <= 0 ||
         [
           PlayPhase.title,
@@ -572,7 +582,10 @@ class HazardGameController extends ChangeNotifier {
     final s = state!;
     if (!s.running) return;
     s.yaw -= dx * .006 * settings.sensitivity;
-    s.pitch = (s.pitch + dy * .004 * settings.sensitivity).clamp(-.25, .65);
+    s.pitch = (s.pitch + dy * .004 * settings.sensitivity).clamp(
+      minCameraPitch,
+      maxCameraPitch,
+    );
   }
 
   PerspectiveCamera camera() {
@@ -600,24 +613,7 @@ class HazardGameController extends ChangeNotifier {
         fovFar: 85,
       );
     }
-    final right = vm.Vector3(-math.cos(s.yaw), 0, math.sin(s.yaw));
-    final target =
-        vm.Vector3(s.x, s.y + 1.35, s.z) + right * (s.aiming ? .43 : .22);
-    final distance = s.aiming ? 2.0 : 3.4;
-    final offset = vm.Vector3(
-      math.sin(s.yaw) * math.cos(s.pitch - s.recoil) * distance,
-      math.sin(s.pitch - s.recoil) * distance + .18,
-      math.cos(s.yaw) * math.cos(s.pitch - s.recoil) * distance,
-    );
-    final length = s.wallDistance(target, offset.normalized(), offset.length);
-    final actual = math.max(.35, math.min(offset.length, length - .18));
-    return PerspectiveCamera(
-      position: target + offset.normalized() * actual,
-      target: target,
-      fovRadiansY: (s.aiming ? 42 : 53) * math.pi / 180,
-      fovNear: .07,
-      fovFar: 85,
-    );
+    return playerCamera(s);
   }
 
   void fire() {
@@ -742,7 +738,11 @@ class HazardGameController extends ChangeNotifier {
     );
     player.node.position = vm.Vector3(s.x, s.y, s.z);
     // Dialogue uses a close shot of the speaker, beyond the player's shoulder.
-    player.node.visible = s.phase != PlayPhase.dialogue;
+    final closeCamera =
+        director == null &&
+        (playerCamera(s).position - vm.Vector3(s.x, s.y + 1.25, s.z)).length <
+            .8;
+    player.node.visible = s.phase != PlayPhase.dialogue && !closeCamera;
     player.node.rotation = vm.Quaternion.axisAngle(
       vm.Vector3(0, 1, 0),
       s.heading + math.pi,
@@ -983,6 +983,16 @@ class HazardGameController extends ChangeNotifier {
       _stepDistance = 0;
       s.lastSound ??= 'step';
     }
+    contactShadows?.update([
+      (actor: player.node, width: .46, depth: .32),
+      for (final actor in enemies) (actor: actor.node, width: .58, depth: .39),
+      for (final entry in npcs.entries)
+        (
+          actor: entry.value.node,
+          width: entry.key == 'takosan' ? .47 : .32,
+          depth: entry.key == 'takosan' ? .37 : .24,
+        ),
+    ]);
     _sound();
     if (s.collectionDirty) {
       s.collectionDirty = false;
