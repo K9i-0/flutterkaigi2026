@@ -61,6 +61,15 @@ void attachGameAutomation(HazardGameController game) {
             'frames': _game!.frames.toJson(),
             'settings': _game!.settings.encode(),
             'audioPlayback': _game!.audioPlayback,
+            'rendering': {
+              'continuous': _game!.animateScene,
+              'foreground': _game!.foreground,
+              'posePreview': _game!.posePreview,
+              'ticks': _game!.renderedTicks,
+              'simulationSeconds': _game!.state!.time,
+              'playerClipSeconds':
+                  _game!.player.clips[_game!.player.current]!.playbackTime,
+            },
             'voice': _game!.voice.inspect(),
             'soundscape': _game!.soundscape.inspect(),
             'event': _game!.director == null
@@ -316,6 +325,7 @@ void attachGameAutomation(HazardGameController game) {
         }
         g.startEvent(event);
       }
+      g.refreshView();
       return MarionetteExtensionResult.success(s.inspect());
     },
   );
@@ -496,6 +506,7 @@ void attachGameAutomation(HazardGameController game) {
         default:
           return MarionetteExtensionResult.invalidParams('Invalid action');
       }
+      g.refreshView();
       return MarionetteExtensionResult.success(s.inspect());
     },
   );

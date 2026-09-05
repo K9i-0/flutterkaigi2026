@@ -135,10 +135,20 @@ class GameBenchmark {
     next();
   }
 
+  // A paused SceneView has no tick callbacks. Observe UI/lifecycle changes too
+  // so a pause cannot disappear from the benchmark's interruption history.
+  void observeState() {
+    if (index >= 0 &&
+        index < cases.length &&
+        (!game.foreground || game.state!.phase != PlayPhase.playing)) {
+      interrupted = true;
+    }
+  }
+
   void tick() {
+    observeState();
     if (index < cases.length) {
       final s = game.state!;
-      if (!game.foreground || s.phase != PlayPhase.playing) interrupted = true;
       s.yaw = math.pi + math.sin(s.time * .3) * .25;
     }
   }

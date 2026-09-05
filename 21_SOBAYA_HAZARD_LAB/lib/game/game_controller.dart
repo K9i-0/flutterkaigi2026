@@ -43,6 +43,7 @@ class CharacterPlayer {
         ..weight = 0;
     }
     setMotion('Idle');
+    clips['Idle']!.weight = 1;
   }
   final Node node;
   final List<String> names;
@@ -108,11 +109,43 @@ class HazardGameController extends ChangeNotifier {
   HazardSettings settings = HazardSettings();
   HazardDirector? director;
   bool foreground = true;
+  int renderedTicks = 0;
+  bool get animateScene =>
+      ready &&
+      !disposed &&
+      foreground &&
+      !posePreview &&
+      (state!.running ||
+          state!.phase == PlayPhase.dialogue ||
+          (director != null && !director!.paused));
+
+  /// A static SceneView still repaints on UI changes. Freeze animation clocks
+  /// and audio immediately; no future frame callback is needed to pause them.
+  void prepareStaticFrame() {
+    if (!ready || disposed || animateScene) return;
+    _syncVoice();
+    soundscape.pause();
+    for (final actor in [player, ...enemies, ...npcs.values]) {
+      for (final clip in actor.clips.values) {
+        clip.pause();
+      }
+    }
+    scene.update(0);
+  }
+
+  void refreshView() {
+    if (!ready || disposed) return;
+    tick(Duration.zero, 0);
+    prepareStaticFrame();
+    notifyListeners();
+  }
+
   void setForeground(bool value) {
     foreground = value;
     _syncVoice();
     // A hidden window may stop frame callbacks before the next tick arrives.
     if (!value) soundscape.pause();
+    if (ready && !disposed) notifyListeners();
   }
 
   bool get muted => settings.muted;
@@ -384,6 +417,8 @@ class HazardGameController extends ChangeNotifier {
       ),
     );
     ready = true;
+    tick(Duration.zero, 0);
+    prepareStaticFrame();
     notifyListeners();
   }
 

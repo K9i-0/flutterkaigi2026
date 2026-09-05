@@ -34,6 +34,8 @@ class _HazardGamePageState extends State<HazardGamePage> {
   AppLifecycleListener? lifecycle;
   double touchX = 0, touchY = 0;
   bool rightMouseHeld = false;
+  bool? sceneTicking;
+  bool resetSceneClock = true;
   @override
   void initState() {
     super.initState();
@@ -76,6 +78,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
   }
 
   void changed() {
+    benchmark?.observeState();
     if (mounted) setState(() {});
   }
 
@@ -191,6 +194,12 @@ class _HazardGamePageState extends State<HazardGamePage> {
   @override
   Widget build(BuildContext context) {
     final s = game.state;
+    game.prepareStaticFrame();
+    final tickScene = game.animateScene || game.renderedTicks == 0;
+    if (sceneTicking != tickScene) {
+      sceneTicking = tickScene;
+      resetSceneClock = true;
+    }
     return Scaffold(
       body: error != null
           ? Center(child: SelectableText('読み込みに失敗しました\n$error'))
@@ -253,14 +262,30 @@ class _HazardGamePageState extends State<HazardGamePage> {
                         onPointerMove: (e) {
                           if (s.running) game.rotate(e.delta.dx, e.delta.dy);
                         },
-                        child: SceneView(
-                          game.scene,
-                          cameraBuilder: (_) => game.camera(),
-                          onTick: (elapsed, delta) {
-                            benchmark?.tick();
-                            game.tick(elapsed, delta);
-                          },
-                          warmUp: true,
+                        child: RepaintBoundary(
+                          child: TickerMode(
+                            enabled: tickScene,
+                            child: SceneView(
+                              game.scene,
+                              // SceneView 0.23 uses SingleTickerProviderStateMixin.
+                              // Keep its ticker alive and mute it through TickerMode.
+                              cameraBuilder: (_) => game.camera(),
+                              onTick: (elapsed, delta) {
+                                game.renderedTicks++;
+                                final step = resetSceneClock
+                                    ? 0.0
+                                    : delta.clamp(0.0, .05);
+                                resetSceneClock = false;
+                                benchmark?.tick();
+                                game.tick(elapsed, step);
+                                // Keep skeletal motion on the same bounded clock as
+                                // gameplay, including the first tick after resume.
+                                game.scene.update(step);
+                                if (game.renderedTicks == 1) changed();
+                              },
+                              warmUp: true,
+                            ),
+                          ),
                         ),
                       ),
                       const Positioned.fill(
