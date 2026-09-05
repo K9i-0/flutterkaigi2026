@@ -25,6 +25,7 @@ void attachGameAutomation(HazardGameController game) {
             ..._game!.state!.inspect(),
             'frames': _game!.frames.toJson(),
             'settings': _game!.settings.encode(),
+            'audioPlayback': _game!.audioPlayback,
             'event': _game!.director == null
                 ? null
                 : {
@@ -236,7 +237,7 @@ void attachGameAutomation(HazardGameController game) {
   );
   registerMarionetteExtension(
     name: 'madogiwa.gameAction',
-    description: 'Debug action=previewState|simulate|interact|reload|fire|fireAtEnemy|step|move|aim|pause|evade|kick|pose. pose clip and seconds=0..3. step/simulate seconds=0..10. simulate x/y=-1..1 sprint/evade=true uses normal simulation and pauses for inspection.',
+    description: 'Debug action=soundCue|previewState|simulate|interact|reload|fire|fireAtEnemy|step|move|aim|pause|evade|kick|pose. pose clip and seconds=0..3. step/simulate seconds=0..10. simulate x/y=-1..1 sprint/evade=true uses normal simulation and pauses for inspection.',
     callback: (p) async {
       final g = _game;
       if (g == null || !g.ready) {
@@ -244,9 +245,26 @@ void attachGameAutomation(HazardGameController game) {
       }
       final s = g.state!;
       switch (p['action']) {
+        case 'soundCue':
+          final x = double.tryParse(p['x'] ?? '');
+          final z = double.tryParse(p['z'] ?? '');
+          if (x == null ||
+              z == null ||
+              !x.isFinite ||
+              !z.isFinite ||
+              x.abs() > 30 ||
+              z.abs() > 35) {
+            return MarionetteExtensionResult.invalidParams(
+              'Finite world x/z required',
+            );
+          }
+          s.emitSound('enemy', x: x, z: z);
+
         case 'previewState':
           if (s.phase != PlayPhase.paused) {
-            return MarionetteExtensionResult.invalidParams('Pause the run first');
+            return MarionetteExtensionResult.invalidParams(
+              'Pause the run first',
+            );
           }
           // Render a deterministic combat pose without a pause-menu overlay.
           // posePreview also prevents debug snapshots overwriting checkpoints.

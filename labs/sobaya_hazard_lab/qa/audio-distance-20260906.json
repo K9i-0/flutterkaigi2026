@@ -1,0 +1,48 @@
+{
+  "date": "2026-09-06",
+  "platform": "macOS native debug / Flutter 3.47.2 / audioplayers 6.8.1",
+  "listener": [
+    0,
+    1.2,
+    -21
+  ],
+  "sources": {
+    "near": [
+      0,
+      1.2,
+      -19
+    ],
+    "far": [
+      0,
+      1.2,
+      -9
+    ],
+    "occluded": [
+      -8,
+      1.2,
+      -15
+    ]
+  },
+  "native_audio_pool_acknowledgements": {
+    "near": {
+      "name": "enemy",
+      "volume": 0.44000000000000006,
+      "started": true
+    },
+    "far": {
+      "name": "enemy",
+      "volume": 0.05500000000000001,
+      "started": true
+    },
+    "occluded": {
+      "name": "enemy",
+      "volume": 0.026551724137931037,
+      "started": true
+    }
+  },
+  "behavior": "3D distance attenuation; world collision reduces muffled cues to 35%; local shot/reload/UI cues stay at user volume. Same-name cues coalesce to loudest per frame; different cues survive together.",
+  "limits": [
+    "Native playback-start acknowledgements and volumes verified; no loopback waveform or listening-quality audit",
+    "Stereo direction/panning and recorded character voices are not implemented"
+  ]
+}

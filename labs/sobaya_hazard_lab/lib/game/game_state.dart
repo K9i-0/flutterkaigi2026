@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:vector_math/vector_math.dart' as vm;
 
 import 'game_dialogue.dart';
+import 'game_audio.dart';
 
 enum PlayPhase {
   title,
@@ -231,7 +232,27 @@ class HazardGameState {
       shots = 0,
       hits = 0,
       nextBagId = 0;
-  String? lastSound;
+  final _sounds = <HazardSound>[];
+  String? get lastSound => _sounds.lastOrNull?.name;
+  set lastSound(String? name) {
+    if (name == null) {
+      _sounds.clear();
+    } else {
+      emitSound(name);
+    }
+  }
+
+  void emitSound(String name, {double? x, double? z}) {
+    if (_sounds.length == 32) _sounds.removeAt(0);
+    _sounds.add(HazardSound(name, x: x, z: z));
+  }
+
+  List<HazardSound> drainSounds() {
+    final result = List<HazardSound>.of(_sounds);
+    _sounds.clear();
+    return result;
+  }
+
   vm.Vector3? shotEnd;
   String? interaction;
   String? talkingTo;
@@ -506,6 +527,7 @@ class HazardGameState {
   }
 
   void equip(String name) {
+    if (name == weapon || !['handgun', 'shotgun'].contains(name)) return;
     if (name == 'shotgun' && !hasShotgun) {
       say('ショットガンは民家の二階にある。');
       return;
@@ -667,6 +689,7 @@ class HazardGameState {
         if (e.vanish >= .65 && !e.dropped) {
           e.dropped = true;
           pickups.add(Pickup('beer_${e.id}', 'beer', e.x, .25, e.z));
+          emitSound('defeat', x: e.x, z: e.z);
         }
         continue;
       }
@@ -732,7 +755,7 @@ class HazardGameState {
         e.attackPending = true;
         e.heading = math.atan2(dx, dz);
         e.windup = e.boss ? 1.15 : .7;
-        lastSound = 'enemy';
+        emitSound('enemy', x: e.x, z: e.z);
         continue;
       }
       if (dist > 17 && noiseTime <= 0) continue;
@@ -899,7 +922,7 @@ class HazardGameState {
     e.heading = math.atan2(dx, dz);
     e.windup = e.bossTimer;
     e.attackPending = true;
-    lastSound = 'enemy';
+    emitSound('enemy', x: e.x, z: e.z);
     return true;
   }
 
@@ -1198,7 +1221,7 @@ class HazardGameState {
         amount: c.id.hashCode.isEven ? 10 : 1,
       ),
     );
-    lastSound = 'break';
+    emitSound('break', x: c.x, z: c.z);
   }
 
   String? _nearestInteraction() {
@@ -1331,7 +1354,11 @@ class HazardGameState {
         gateOpen = true;
         checkpointRequested = true;
         say('${gate['label'] ?? '農場への門'}が開いた。');
-        lastSound = 'gate';
+        emitSound(
+          'gate',
+          x: (gate['x'] as num).toDouble(),
+          z: (gate['z'] as num).toDouble(),
+        );
       } else {
         say(
           gateMode == 'boss'

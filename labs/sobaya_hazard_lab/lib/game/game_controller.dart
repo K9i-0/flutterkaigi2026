@@ -110,6 +110,7 @@ class HazardGameController extends ChangeNotifier {
       crateNodes = <String, Node>{};
   late Node pistol, shotgun, impact, muzzle;
   final fxPools = <String, AudioPool>{};
+  final audioPlayback = <Map<String, dynamic>>[];
   final ambience = AudioPlayer();
   SharedPreferences? preferences;
   String? _checkpointJson;
@@ -632,16 +633,54 @@ class HazardGameController extends ChangeNotifier {
   }
 
   void _sound() {
-    final s = state!, sound = s.lastSound;
-    s.lastSound = null;
-    if (sound == null || muted) return;
-    final pool = fxPools[sound];
-    if (pool != null) {
-      unawaited(
-        pool
-            .start(volume: (sound == 'shotgun' ? .75 : .55) * settings.volume)
-            .then((_) {}),
+    final s = state!, sounds = s.drainSounds();
+    if (muted) return;
+    // Coalesce identical cues to the nearest/loudest source in this frame.
+    // A shot no longer erases a simultaneous enemy cue or beer drop.
+    final gains = <String, double>{};
+    for (final sound in sounds) {
+      var occluded = false;
+      if (sound.spatial) {
+        final delta = vm.Vector3(
+          sound.x! - s.x,
+          sound.y - (s.y + 1.2),
+          sound.z! - s.z,
+        );
+        occluded =
+            delta.length > .001 &&
+            s.wallDistance(
+                  vm.Vector3(s.x, s.y + 1.2, s.z),
+                  delta.normalized(),
+                  delta.length,
+                ) <
+                delta.length - .1;
+      }
+      final gain = sound.gain(
+        s.x,
+        s.z,
+        occluded: occluded,
+        listenerY: s.y + 1.2,
       );
+      gains[sound.name] = math.max(gains[sound.name] ?? 0, gain);
+    }
+    for (final entry in gains.entries) {
+      final pool = fxPools[entry.key];
+      final volume =
+          (entry.key == 'shotgun' ? .75 : .55) * settings.volume * entry.value;
+      if (pool != null && volume > .001) {
+        final record = <String, dynamic>{
+          'name': entry.key,
+          'volume': volume,
+          'started': false,
+        };
+        audioPlayback.add(record);
+        if (audioPlayback.length > 12) audioPlayback.removeAt(0);
+        unawaited(
+          pool.start(volume: volume).then((_) {
+            record['started'] = true;
+          }),
+        );
+      }
     }
   }
 
