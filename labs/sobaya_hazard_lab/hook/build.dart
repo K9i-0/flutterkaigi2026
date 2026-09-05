@@ -16,6 +16,7 @@ void main(List<String> args) async {
         'assets/models/village.glb',
         'assets/models/items.glb',
         'assets/models/fukuchan.glb',
+        'assets/models/yametaro.glb',
       ],
       compressTextures: true,
     );

@@ -2,7 +2,18 @@ import 'dart:math' as math;
 
 import 'package:vector_math/vector_math.dart' as vm;
 
-enum PlayPhase { title, playing, paused, inventory, collection, dead, clear }
+import 'game_dialogue.dart';
+
+enum PlayPhase {
+  title,
+  playing,
+  dialogue,
+  paused,
+  inventory,
+  collection,
+  dead,
+  clear,
+}
 
 class Obstacle {
   Obstacle(Map<String, dynamic> j)
@@ -71,7 +82,10 @@ class Enemy {
       windup = 0,
       cooldown = 0,
       stun = 0,
-      vanish = 0;
+      vanish = 0,
+      notice = 0,
+      moved = 0;
+  bool alerted = false;
   bool alive = true, dropped = false, active = false, attackPending = false;
 }
 
@@ -142,6 +156,14 @@ class HazardGameState {
       toastTime = 0,
       footDistance = 0,
       noiseTime = 0;
+  double invulnerable = 0,
+      evadeTime = 0,
+      evadeCooldown = 0,
+      kickTime = 0,
+      kickCooldown = 0,
+      hurtTime = 0,
+      recoil = 0;
+  double _evadeX = 0, _evadeZ = 0;
   bool sprint = false,
       aiming = false,
       gateOpen = false,
@@ -158,6 +180,16 @@ class HazardGameState {
   String? lastSound;
   vm.Vector3? shotEnd;
   String? interaction;
+  String? talkingTo;
+  String dialogueTopic = 'intro';
+  int dialogueIndex = 0;
+  bool metYametaro = false, receivedYametaroAmmo = false;
+  bool checkpointRequested = false;
+  List<Map<String, dynamic>> get npcs =>
+      (map['npcs'] as List? ?? const []).cast<Map<String, dynamic>>();
+  List<DialogueLine> get dialogueLines => yametaroDialogue[dialogueTopic]!;
+  DialogueLine get dialogueLine => dialogueLines[dialogueIndex];
+  bool get dialogueChoices => dialogueIndex == dialogueLines.length - 1;
   final Map<int, int> _flow = {};
   double _flowTimer = 0;
   int get reserve => bag
@@ -223,8 +255,16 @@ class HazardGameState {
     reloading = 0;
     fireCooldown = 0;
     hitFlash = damageFlash = noiseTime = footDistance = 0;
+    invulnerable = evadeTime = evadeCooldown = kickTime = kickCooldown =
+        hurtTime = recoil = 0;
     shotEnd = null;
+    interaction = null;
     lastSound = null;
+    talkingTo = null;
+    metYametaro = receivedYametaroAmmo = false;
+    checkpointRequested = false;
+    dialogueTopic = 'intro';
+    dialogueIndex = 0;
     sprint = false;
     pitch = .12;
     inputX = 0;
@@ -244,6 +284,10 @@ class HazardGameState {
   }
 
   void toggle(PlayPhase p) {
+    if (phase == PlayPhase.dialogue) {
+      if (p == PlayPhase.paused) endDialogue();
+      return;
+    }
     if (phase == PlayPhase.dead || phase == PlayPhase.clear) return;
     phase = phase == p ? PlayPhase.playing : p;
     stopInput();
@@ -382,7 +426,13 @@ class HazardGameState {
   }
 
   void reload() {
-    if (!running || reloading > 0 || loaded >= capacity) return;
+    if (!running ||
+        reloading > 0 ||
+        loaded >= capacity ||
+        evadeTime > 0 ||
+        kickTime > 0) {
+      return;
+    }
     if (reserve == 0) {
       say('予備の弾がない。');
       return;
@@ -417,6 +467,15 @@ class HazardGameState {
     )) {
       return true;
     }
+    if (py < 1.3 &&
+        npcs.any(
+          (n) =>
+              math.pow(px - (n['x'] as num), 2) +
+                  math.pow(pz - (n['z'] as num), 2) <
+              math.pow(radius + .32, 2),
+        )) {
+      return true;
+    }
     return crates.any(
       (c) =>
           !c.broken &&
@@ -446,10 +505,10 @@ class HazardGameState {
     return 0;
   }
 
-  void move(double dx, double dz, double dt) {
+  void move(double dx, double dz, double dt, {double? speed}) {
     final magnitude = math.sqrt(dx * dx + dz * dz);
     if (magnitude < 1e-5) return;
-    final length = (sprint ? 2.8 : 1.25) * dt;
+    final length = (speed ?? (sprint ? 2.8 : 1.25)) * dt;
     dx /= math.max(1, magnitude);
     dz /= math.max(1, magnitude);
     final steps = math.max(1, (length / .05).ceil());
@@ -475,11 +534,26 @@ class HazardGameState {
     damageFlash = math.max(0, damageFlash - dt);
     toastTime = math.max(0, toastTime - dt);
     noiseTime = math.max(0, noiseTime - dt);
+    invulnerable = math.max(0, invulnerable - dt);
+    evadeCooldown = math.max(0, evadeCooldown - dt);
+    kickCooldown = math.max(0, kickCooldown - dt);
+    hurtTime = math.max(0, hurtTime - dt);
+    recoil *= math.exp(-dt * 15);
+    final oldKick = kickTime;
+    kickTime = math.max(0, kickTime - dt);
+    if (oldKick > .42 && kickTime <= .42) _kickImpact();
     if (reloading > 0) {
       reloading -= dt;
       if (reloading <= 0) _finishReload();
     }
-    if (!aiming) {
+    if (evadeTime > 0) {
+      final oldHeading = heading;
+      move(_evadeX, _evadeZ, dt, speed: 3.7);
+      heading = oldHeading;
+      evadeTime = math.max(0, evadeTime - dt);
+    } else if (kickTime > 0 || hurtTime > .2 || reloading > 0) {
+      // Authored actions hold the feet; their hit moments use the same clock.
+    } else if (!aiming) {
       move(
         -inputY * math.sin(yaw) - inputX * math.cos(yaw),
         -inputY * math.cos(yaw) + inputX * math.sin(yaw),
@@ -494,6 +568,7 @@ class HazardGameState {
       _buildFlow();
     }
     for (final e in enemies) {
+      e.moved = 0;
       if (!e.alive) {
         e.vanish += dt;
         if (e.vanish >= .65 && !e.dropped) {
@@ -506,12 +581,35 @@ class HazardGameState {
       e.cooldown = math.max(0, e.cooldown - dt);
       e.stun = math.max(0, e.stun - dt);
       final dx = x - e.x, dz = z - e.z, dist = math.sqrt(dx * dx + dz * dz);
+      if (!e.alerted) {
+        final facing = dist < .01
+            ? 1.0
+            : (dx * math.sin(e.heading) + dz * math.cos(e.heading)) / dist;
+        final sees =
+            dist < 13 &&
+            (dist < 5 || facing > -.2) &&
+            wallDistance(
+                  vm.Vector3(e.x, 1.3, e.z),
+                  vm.Vector3(dx, 0, dz).normalized(),
+                  dist,
+                ) >=
+                dist - .1;
+        e.notice = sees ? e.notice + dt : math.max(0, e.notice - dt * 2);
+        if (dist < 2.5 || e.notice > .45 || (noiseTime > 0 && dist < 20)) {
+          e.alerted = true;
+        }
+        if (!e.alerted) continue;
+      }
       if (e.attackPending) {
         e.windup -= dt;
         if (e.windup <= 0) {
           e.attackPending = false;
           e.cooldown = 1.5;
           if (dist < 1.65 &&
+              invulnerable <= 0 &&
+              (dist < .01 ||
+                  (dx * math.sin(e.heading) + dz * math.cos(e.heading)) / dist >
+                      .35) &&
               y < 1 &&
               wallDistance(
                     vm.Vector3(e.x, 1, e.z),
@@ -520,6 +618,9 @@ class HazardGameState {
                   ) >=
                   dist - .1) {
             health -= 15;
+            invulnerable = .8;
+            hurtTime = .45;
+            reloading = 0;
             damageFlash = .4;
             lastSound = 'hurt';
             if (health <= 0) {
@@ -534,6 +635,7 @@ class HazardGameState {
       if (e.stun > 0) continue;
       if (dist < 1.15 && y < 1 && e.cooldown <= 0) {
         e.attackPending = true;
+        e.heading = math.atan2(dx, dz);
         e.windup = .7;
         lastSound = 'enemy';
         continue;
@@ -566,8 +668,10 @@ class HazardGameState {
       }
       e.heading = math.atan2(vx, vz);
       final speed = .8 * dt;
+      final oldX = e.x, oldZ = e.z;
       if (!blocked(e.x + vx * speed, e.z, 0, radius: .37)) e.x += vx * speed;
       if (!blocked(e.x, e.z + vz * speed, 0, radius: .37)) e.z += vz * speed;
+      e.moved = math.sqrt(math.pow(e.x - oldX, 2) + math.pow(e.z - oldZ, 2));
     }
     if (gateOpen && z > 26.5 && x > 8 && x < 15) {
       phase = PlayPhase.clear;
@@ -620,7 +724,15 @@ class HazardGameState {
   }
 
   void shoot(vm.Vector3 origin, vm.Vector3 direction) {
-    if (!running || !aiming || fireCooldown > 0 || reloading > 0) return;
+    if (!running ||
+        !aiming ||
+        fireCooldown > 0 ||
+        reloading > 0 ||
+        evadeTime > 0 ||
+        kickTime > 0 ||
+        hurtTime > .2) {
+      return;
+    }
     if (loaded == 0) {
       lastSound = 'empty';
       say('Rでリロード');
@@ -635,6 +747,7 @@ class HazardGameState {
     shots++;
     noiseTime = 4;
     fireCooldown = weapon == 'handgun' ? .32 : .9;
+    recoil = weapon == 'handgun' ? .065 : .15;
     lastSound = weapon == 'handgun' ? 'shot' : 'shotgun';
     final dir = direction.normalized();
     var distance = wallDistance(origin, dir, 60);
@@ -689,6 +802,8 @@ class HazardGameState {
       hits++;
       hitFlash = .18;
       victim.stun = .5;
+      victim.alerted = true;
+      if (head) victim.stun = 1.4;
       victim.attackPending = false;
       victim.hp -= weapon == 'shotgun'
           ? 100
@@ -696,14 +811,104 @@ class HazardGameState {
           ? 65
           : 35;
       if (victim.hp <= 0) {
-        victim.alive = false;
-        victim.vanish = 0;
-        kills++;
-        say('そば屋を倒した。ビールを回収しよう。');
-        for (final e in enemies) {
-          if (e.id < 4 + kills) e.active = true;
+        _defeat(victim);
+      }
+    }
+  }
+
+  void evade() {
+    if (!running || evadeCooldown > 0 || kickTime > 0 || hurtTime > .2) return;
+    _evadeX = -inputY * math.sin(yaw) - inputX * math.cos(yaw);
+    _evadeZ = -inputY * math.cos(yaw) + inputX * math.sin(yaw);
+    final length = math.sqrt(_evadeX * _evadeX + _evadeZ * _evadeZ);
+    if (length < .01) {
+      _evadeX = -math.sin(heading);
+      _evadeZ = -math.cos(heading);
+    } else {
+      _evadeX /= length;
+      _evadeZ /= length;
+    }
+    evadeTime = .42;
+    evadeCooldown = 1.45;
+    invulnerable = .32;
+    aiming = false;
+    reloading = 0;
+    lastSound = 'step';
+  }
+
+  Enemy? get kickTarget => enemies
+      .where(
+        (e) =>
+            e.alive &&
+            e.active &&
+            e.stun > 0 &&
+            y < 1 &&
+            math.pow(e.x - x, 2) + math.pow(e.z - z, 2) < 3.24 &&
+            _reachable(e.x, e.z),
+      )
+      .firstOrNull;
+
+  void kick() {
+    if (!running ||
+        kickTime > 0 ||
+        kickCooldown > 0 ||
+        evadeTime > 0 ||
+        hurtTime > .2) {
+      return;
+    }
+    final target = kickTarget;
+    if (target == null) {
+      say('ひるんだそば屋に近づくと蹴りを出せる。');
+      return;
+    }
+    heading = math.atan2(target.x - x, target.z - z);
+    kickTime = .78;
+    kickCooldown = 1.1;
+    aiming = false;
+    reloading = 0;
+  }
+
+  void _kickImpact() {
+    for (final e in enemies) {
+      final dx = e.x - x, dz = e.z - z, dist = math.sqrt(dx * dx + dz * dz);
+      if (!e.alive ||
+          !e.active ||
+          dist > 2.05 ||
+          y > 1 ||
+          !_reachable(e.x, e.z)) {
+        continue;
+      }
+      if (dist > .01 &&
+          (dx * math.sin(heading) + dz * math.cos(heading)) / dist < .15) {
+        continue;
+      }
+      e.hp -= 50;
+      e.stun = 1.5;
+      e.alerted = true;
+      e.attackPending = false;
+      if (dist > .01) {
+        for (var i = 0; i < 12; i++) {
+          final nx = e.x + dx / dist * .055, nz = e.z + dz / dist * .055;
+          if (!blocked(nx, nz, 0, radius: .37)) {
+            e.x = nx;
+            e.z = nz;
+          }
         }
       }
+      if (e.hp <= 0) _defeat(e);
+    }
+    lastSound = 'hurt';
+    hitFlash = .15;
+  }
+
+  void _defeat(Enemy e) {
+    if (!e.alive) return;
+    e.alive = false;
+    e.vanish = 0;
+    kills++;
+    say('そば屋を倒した。ビールを回収しよう。');
+    for (final other in enemies) {
+      if (other.id < 4 + kills) other.active = true;
     }
   }
 
@@ -724,6 +929,16 @@ class HazardGameState {
   }
 
   String? _nearestInteraction() {
+    for (final n in npcs) {
+      if (_near(
+        (n['x'] as num).toDouble(),
+        0,
+        (n['z'] as num).toDouble(),
+        1.9,
+      )) {
+        return 'npc:${n['id']}';
+      }
+    }
     for (final p in pickups) {
       if (!p.taken && _near(p.x, p.y, p.z, 1.55)) return 'pickup:${p.id}';
     }
@@ -764,6 +979,7 @@ class HazardGameState {
   String get interactionLabel {
     final key = interaction;
     if (key == null) return '';
+    if (key == 'npc:yametaro') return 'やめ太郎と話す';
     if (key.startsWith('pickup:')) {
       final p = pickups.firstWhere((p) => 'pickup:${p.id}' == key);
       return '${itemNames[p.kind]}を拾う';
@@ -783,10 +999,13 @@ class HazardGameState {
     interaction = _nearestInteraction();
     final key = interaction;
     if (key == null) return;
-    if (key.startsWith('pickup:')) {
+    if (key.startsWith('npc:')) {
+      startDialogue(key.substring(4));
+    } else if (key.startsWith('pickup:')) {
       final p = pickups.firstWhere((p) => 'pickup:${p.id}' == key);
       if (addItem(p.kind, p.amount)) {
         p.taken = true;
+        if (p.kind == 'key' || p.kind == 'shotgun') checkpointRequested = true;
         lastSound = 'pickup';
         say('${itemNames[p.kind]} ×${p.amount} を入手');
       } else {
@@ -814,6 +1033,7 @@ class HazardGameState {
     } else if (key == 'gate') {
       if (hasKey) {
         gateOpen = true;
+        checkpointRequested = true;
         say('農場への門が開いた。');
         lastSound = 'gate';
       } else {
@@ -822,11 +1042,89 @@ class HazardGameState {
     }
   }
 
+  void startDialogue(String id) {
+    if (!running ||
+        id != 'yametaro' ||
+        evadeTime > 0 ||
+        kickTime > 0 ||
+        hurtTime > 0) {
+      return;
+    }
+    final npc = npcs.where((n) => n['id'] == id).firstOrNull;
+    if (npc == null ||
+        !_near(
+          (npc['x'] as num).toDouble(),
+          0,
+          (npc['z'] as num).toDouble(),
+          1.9,
+        )) {
+      return;
+    }
+    if (enemies.any(
+      (e) =>
+          e.alive &&
+          e.active &&
+          e.alerted &&
+          math.pow(e.x - x, 2) + math.pow(e.z - z, 2) < 49 &&
+          _reachable(e.x, e.z),
+    )) {
+      say('そば屋が近い。距離を取ってから話そう。');
+      return;
+    }
+    talkingTo = id;
+    dialogueTopic = metYametaro ? 'greeting' : 'intro';
+    dialogueIndex = 0;
+    metYametaro = true;
+    phase = PlayPhase.dialogue;
+    reloading = 0;
+    stopInput();
+  }
+
+  void advanceDialogue() {
+    if (phase == PlayPhase.dialogue && !dialogueChoices) dialogueIndex++;
+  }
+
+  void chooseDialogue(String topic) {
+    if (phase != PlayPhase.dialogue || !dialogueChoices) return;
+    if (topic == 'leave') {
+      endDialogue();
+      return;
+    }
+    if (!['route', 'combat', 'records', 'supplies'].contains(topic)) return;
+    if (topic == 'supplies') {
+      if (receivedYametaroAmmo) return;
+      if (addItem('ammo', 10)) {
+        receivedYametaroAmmo = true;
+        lastSound = 'pickup';
+      } else {
+        topic = 'full';
+      }
+    }
+    dialogueTopic = topic;
+    dialogueIndex = 0;
+  }
+
+  void endDialogue() {
+    if (phase != PlayPhase.dialogue) return;
+    talkingTo = null;
+    phase = PlayPhase.playing;
+    checkpointRequested = true;
+    stopInput();
+  }
+
   Map<String, Object?> inspect() => {
     'phase': phase.name,
     'position': {'x': x, 'y': y, 'z': z},
     'yaw': yaw,
     'health': health,
+    'combat': {
+      'evadeTime': evadeTime,
+      'evadeCooldown': evadeCooldown,
+      'kickTime': kickTime,
+      'invulnerable': invulnerable,
+      'reloading': reloading,
+      'recoil': recoil,
+    },
     'maxHealth': maxHealth,
     'weapon': weapon,
     'loaded': loaded,
@@ -839,6 +1137,14 @@ class HazardGameState {
     'hasKey': hasKey,
     'collected': collected.toList(),
     'interaction': interaction,
+    'dialogue': {
+      'npc': talkingTo,
+      'topic': dialogueTopic,
+      'line': dialogueIndex,
+      'choices': dialogueChoices,
+      'metYametaro': metYametaro,
+      'receivedAmmo': receivedYametaroAmmo,
+    },
     'bag': bag.map((i) => i.toJson()).toList(),
     'enemies': enemies
         .map(
@@ -848,6 +1154,9 @@ class HazardGameState {
             'active': e.active,
             'dropped': e.dropped,
             'hp': e.hp,
+            'alerted': e.alerted,
+            'stun': e.stun,
+            'attackPending': e.attackPending,
             'x': e.x,
             'z': e.z,
           },

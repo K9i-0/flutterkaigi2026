@@ -1,0 +1,94 @@
+{
+  "date": "2026-09-06",
+  "platform": "macOS native debug / Flutter 3.47.2 / flutter_scene 0.23.0",
+  "automated_tests": 26,
+  "flutter_analyze": "No issues found",
+  "combat": {
+    "input": "real F key with debug stagger setup, then fixed simulation",
+    "kills": 1,
+    "health": 100.0,
+    "bloodEffects": false
+  },
+  "checkpoint": {
+    "procedure": "NPC E dialogue, supplies button, Escape auto-save, stop Dart tool and native process, relaunch via Dart MCP, Continue button, death scenario and Retry button",
+    "before": {
+      "position": {
+        "x": -2.8,
+        "y": 0.0,
+        "z": -23.0
+      },
+      "health": 100.0,
+      "reserve": 50,
+      "dialogue": {
+        "npc": null,
+        "topic": "supplies",
+        "line": 0,
+        "choices": true,
+        "metYametaro": true,
+        "receivedAmmo": true
+      },
+      "checkpoint": {
+        "exists": true,
+        "saving": false,
+        "status": "チェックポイントを保存しました。"
+      }
+    },
+    "after_relaunch": {
+      "position": {
+        "x": -2.8,
+        "y": 0.0,
+        "z": -23.0
+      },
+      "health": 100.0,
+      "reserve": 50,
+      "dialogue": {
+        "npc": null,
+        "topic": "intro",
+        "line": 0,
+        "choices": false,
+        "metYametaro": true,
+        "receivedAmmo": true
+      },
+      "checkpoint": {
+        "exists": true,
+        "saving": false,
+        "status": ""
+      }
+    },
+    "after_death_retry": {
+      "position": {
+        "x": -2.8,
+        "y": 0.0,
+        "z": -23.0
+      },
+      "health": 100.0,
+      "reserve": 50,
+      "dialogue": {
+        "npc": null,
+        "topic": "intro",
+        "line": 0,
+        "choices": false,
+        "metYametaro": true,
+        "receivedAmmo": true
+      },
+      "checkpoint": {
+        "exists": true,
+        "saving": false,
+        "status": ""
+      }
+    }
+  },
+  "visual_review": [
+    "Yametaro Talk, face and dialogue camera in Flutter",
+    "Fukuchan Kick in Blender and Flutter",
+    "Fukuchan ReloadHandgun with attached gun in Flutter",
+    "Fukuchan Evade in Blender"
+  ],
+  "limitations": [
+    "UI tests use deterministic debug scenarios, not a full natural playthrough",
+    "New authored action clips are not motion capture",
+    "No final FPS or GPU claim; last profile benchmark predates these additions",
+    "Farm, mountain finale and Takosan are not yet implemented"
+  ],
+  "source_evidence_directory": "evidence/ (local ignored)"
+}

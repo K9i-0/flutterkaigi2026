@@ -25,6 +25,14 @@ void attachGameAutomation(HazardGameController game) {
             ..._game!.state!.inspect(),
             'frames': _game!.frames.toJson(),
             'motion': _game!.player.current,
+            'checkpoint': {
+              'exists': _game!.hasCheckpoint,
+              'saving': _game!.saving,
+              'status': _game!.saveStatus,
+            },
+            'npcMotions': _game!.npcs.map(
+              (id, actor) => MapEntry(id, actor.current),
+            ),
             'clipWeights': _game!.player.clips.map(
               (n, c) => MapEntry(n, c.weight),
             ),
@@ -37,7 +45,7 @@ void attachGameAutomation(HazardGameController game) {
   );
   registerMarionetteExtension(
     name: 'madogiwa.openGameScenario',
-    description: 'Debug deterministic scenario name=combat|pickup|collection|gate|stairs|death. Resets this run, keeps saved collection.',
+    description: 'Debug scenario name=combat|stagger|npc|pickup|collection|gate|stairs|death. Resets run, keeps collection.',
     callback: (p) async {
       final g = _game;
       if (g == null || !g.ready) {
@@ -51,6 +59,8 @@ void attachGameAutomation(HazardGameController game) {
         'gate',
         'stairs',
         'death',
+        'npc',
+        'stagger',
       ].contains(name)) {
         return MarionetteExtensionResult.invalidParams('Invalid scenario');
       }
@@ -60,6 +70,21 @@ void attachGameAutomation(HazardGameController game) {
         e.active = false;
       }
       switch (name) {
+        case 'npc':
+          s.x = -2.8;
+          s.z = -23;
+          s.pitch = .12;
+        case 'stagger':
+          s.x = 0;
+          s.z = -16;
+          s.heading = 0;
+          s.enemies[0]
+            ..active = true
+            ..alerted = true
+            ..x = 0
+            ..z = -14.6
+            ..hp = 35
+            ..stun = 30;
         case 'combat':
           s.x = 0;
           s.z = -16;
@@ -99,7 +124,7 @@ void attachGameAutomation(HazardGameController game) {
   );
   registerMarionetteExtension(
     name: 'madogiwa.gameAction',
-    description: 'Debug action=interact|reload|fireAtEnemy|step|aim|pause. step seconds=0..10 advances fixed 60 Hz game simulation.',
+    description: 'Debug action=interact|reload|fire|fireAtEnemy|step|move|aim|pause|evade|kick|pose. pose clip and seconds=0..3. step seconds=0..10.',
     callback: (p) async {
       final g = _game;
       if (g == null || !g.ready) {
@@ -107,6 +132,43 @@ void attachGameAutomation(HazardGameController game) {
       }
       final s = g.state!;
       switch (p['action']) {
+        case 'pose':
+          final name = p['clip'];
+          if (!g.player.clips.containsKey(name)) {
+            return MarionetteExtensionResult.invalidParams('Unknown clip');
+          }
+          final seconds = double.tryParse(p['seconds'] ?? '0');
+          if (seconds == null ||
+              !seconds.isFinite ||
+              seconds < 0 ||
+              seconds > 3) {
+            return MarionetteExtensionResult.invalidParams('seconds=0..3');
+          }
+          g.posePreview = true;
+          s.phase = PlayPhase.playing;
+          s.x = 0;
+          s.z = -18;
+          s.y = 0;
+          s.yaw = 0;
+          s.heading = 0;
+          for (final e in s.enemies) {
+            e.active = false;
+          }
+          s.toastTime = 0;
+          s.interaction = null;
+          s.reloading = name!.startsWith('Reload') ? .5 : 0;
+          s.weapon = name.contains('Shotgun') ? 'shotgun' : 'handgun';
+          s.aiming = name.startsWith('Aim');
+          g.player.setMotion(name);
+          for (final e in g.player.clips.entries) {
+            e.value.weight = e.key == name ? 1 : 0;
+            e.value.pause();
+          }
+          g.player.clips[name]!.seek(seconds);
+        case 'evade':
+          s.evade();
+        case 'kick':
+          s.kick();
         case 'interact':
           s.interact();
         case 'reload':
