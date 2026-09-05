@@ -3,6 +3,11 @@ import 'dart:math' as math;
 typedef FloorSampler = double Function(double x, double z, double previous);
 typedef NavigationCollision = bool Function(double x, double z, double y);
 
+class NavigationTransition {
+  const NavigationTransition(this.from, this.to);
+  final (double, double, double) from, to;
+}
+
 class NavigationPoint {
   NavigationPoint(this.id, this.x, this.y, this.z);
   final int id;
@@ -14,12 +19,16 @@ class NavigationPoint {
 /// Shared flow over actual floor heights. Static geometry is sampled once;
 /// doors and breakables are checked when the destination field is refreshed.
 class EnemyNavigation {
-  EnemyNavigation(this.height, this.staticBlocked) : points = {} {
+  EnemyNavigation(
+    this.height,
+    this.staticBlocked, {
+    List<NavigationTransition> transitions = const [],
+  }) : points = {} {
     for (var row = 0; row < rows; row++) {
       for (var col = 0; col < columns; col++) {
         final x = minX + (col + .5) * spacing;
         final z = minZ + (row + .5) * spacing;
-        final ground = height(x, z, 0), upper = height(x, z, 3.03);
+        final ground = height(x, z, 0), upper = height(x, z, 6);
         for (var layer = 0; layer < 2; layer++) {
           if (layer == 1 && (upper - ground).abs() < .05) continue;
           final y = layer == 0 ? ground : upper;
@@ -51,6 +60,15 @@ class EnemyNavigation {
           }
         }
       }
+    }
+    for (final t in transitions) {
+      final a = nearest(t.from.$1, t.from.$2, t.from.$3);
+      final b = nearest(t.to.$1, t.to.$2, t.to.$3);
+      if (a == null || b == null) continue;
+      a.links.add(b.id);
+      b.incoming.add(a.id);
+      b.links.add(a.id);
+      a.incoming.add(b.id);
     }
   }
 

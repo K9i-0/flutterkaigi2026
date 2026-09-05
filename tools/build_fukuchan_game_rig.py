@@ -120,6 +120,8 @@ for name,frames in [('ReloadHandgun',39),('ReloadShotgun',60),('Hit',14),('Evade
    rig.pose.bones['Head'].rotation_quaternion=Quaternion((1,0,0),-.06*arc)
   ground();key(i)
  report['clips'].append({'name':name,'duration':frames/30,'source':'authored action; no new motion capture claimed'})
+from hazard_climb_motion import bake_climb
+report['clips'].append(bake_climb(rig))
 # Mount the gun at the hand grip in the aiming pose. Bone parent handles all clip blending.
 rig.animation_data.action=bpy.data.actions['Aim']
 bpy.context.scene.frame_set(0);bpy.context.view_layer.update()

@@ -312,6 +312,7 @@ class HazardGameController extends ChangeNotifier {
       'Hit',
       'Evade',
       'Kick',
+      'Climb',
     ]);
     player.node
         .getChildByName('Spine1')!
@@ -340,6 +341,7 @@ class HazardGameController extends ChangeNotifier {
         'Walk',
         'Run',
         'ZombieWalk',
+        'Climb',
         'MugAttack',
       ]);
       for (final finger in fingerPoses.entries) {
@@ -349,6 +351,8 @@ class HazardGameController extends ChangeNotifier {
               HeldFingerPose(
                 finger.value,
                 shouldHold: () =>
+                    actor.current != 'Climb' &&
+                    actor.clips['Climb']!.weight < .005 &&
                     actor.current != 'MugAttack' &&
                     actor.clips['MugAttack']!.weight < .005,
               ),
@@ -826,7 +830,9 @@ class HazardGameController extends ChangeNotifier {
       volume: settings.muted ? 0 : settings.volume * settings.environmentVolume,
     );
     final moved = math.sqrt(math.pow(s.x - bx, 2) + math.pow(s.z - bz, 2));
-    var motion = s.hurtTime > 0
+    var motion = s.climb != null
+        ? (s.climb!.onRungs ? 'Climb' : 'Walk')
+        : s.hurtTime > 0
         ? 'Hit'
         : s.evadeTime > 0
         ? 'Evade'
@@ -853,12 +859,19 @@ class HazardGameController extends ChangeNotifier {
       dt,
       (s.running || (director != null && !director!.paused && foreground)) &&
           !posePreview,
-      speed: motion == 'Walk'
+      speed: s.climb != null && motion == 'Walk'
+          ? (s.climb!.up ? 1 : -1) * 1.4 / .91610738
+          : motion == 'Walk'
           ? 1.25 / .91610738
           : motion == 'Run'
           ? 2.8 / 2.16571248
           : 1,
     );
+    if (s.climb?.onRungs ?? false) {
+      player.clips['Climb']!
+        ..seek(s.climb!.clipTime)
+        ..playbackTimeScale = 0;
+    }
     player.node.position = vm.Vector3(s.x, s.y, s.z);
     // Dialogue uses a close shot of the speaker, beyond the player's shoulder.
     final closeCamera =
@@ -926,7 +939,7 @@ class HazardGameController extends ChangeNotifier {
       }
       final e = s.enemies[i];
       enemyBeer[i].detail = i == detailedMug;
-      enemyMugs[i].visible = e.active && !e.dropped;
+      enemyMugs[i].visible = e.active && !e.dropped && e.climb == null;
       actor.node.visible = e.active && (!e.dropped);
       actor.node.position = vm.Vector3(e.x, e.y, e.z);
       actor.node.rotation = vm.Quaternion.axisAngle(
@@ -943,7 +956,9 @@ class HazardGameController extends ChangeNotifier {
                   (e.bossAttack == BossMove.swipeWindup ||
                       e.bossAttack == BossMove.slamWindup)));
       actor.setMotion(
-        e.boss && director?.shot.actor == 'sobaya'
+        e.climb != null
+            ? (e.climb!.onRungs ? 'Climb' : 'Walk')
+            : e.boss && director?.shot.actor == 'sobaya'
             ? director!.shot.motion
             : e.bossMove == BossMove.charging
             ? 'Run'
@@ -964,7 +979,9 @@ class HazardGameController extends ChangeNotifier {
         (s.running || (director != null && !director!.paused && foreground)) &&
             e.alive &&
             e.active,
-        speed: e.attackPending
+        speed: e.climb != null && !e.climb!.onRungs
+            ? (e.climb!.up ? 1 : -1) * 1.4 / 1.007474632
+            : e.attackPending
             ? (e.boss
                   ? 1.05 / (e.bossMove == BossMove.slamWindup ? 1.25 : .85)
                   : 1.5)
@@ -978,7 +995,11 @@ class HazardGameController extends ChangeNotifier {
                   .clamp(.1, 3)
             : 1,
       );
-      if (director == null && !e.boss && e.meleeClipTime != null) {
+      if (e.climb?.onRungs ?? false) {
+        actor.clips['Climb']!
+          ..seek(e.climb!.clipTime)
+          ..playbackTimeScale = 0;
+      } else if (director == null && !e.boss && e.meleeClipTime != null) {
         actor.clips['MugAttack']!
           ..seek(e.meleeClipTime!)
           ..playbackTimeScale = 0;

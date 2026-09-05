@@ -81,6 +81,13 @@
       "loop": false,
       "fps": 30,
       "prop": "beer_mug"
+    },
+    {
+      "name": "Climb",
+      "duration": 1,
+      "vertical_speed_mps": 0.7,
+      "rung_spacing_m": 0.35,
+      "source": "authored two-bone IK; distance-synchronized ladder loop"
     }
   ],
   "mocap": [

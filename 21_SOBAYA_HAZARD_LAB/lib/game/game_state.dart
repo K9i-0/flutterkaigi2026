@@ -5,6 +5,7 @@ import 'package:vector_math/vector_math.dart' as vm;
 import 'game_dialogue.dart';
 import 'game_audio.dart';
 import 'game_navigation.dart';
+import 'game_ladder.dart';
 
 const minCameraPitch = -.75, maxCameraPitch = .85;
 
@@ -126,6 +127,8 @@ class Enemy {
       : meleeRecovery > 0
       ? .77 + (meleeFollowThrough - meleeRecovery) * .9
       : null;
+  LadderTraversal? climb;
+  bool fallingFromLadder = false;
   final bool boss;
   final int id;
   double x,
@@ -314,6 +317,12 @@ class HazardGameState {
   int get loaded => weapon == 'handgun' ? pistolLoaded : shotgunLoaded;
   int get capacity => weapon == 'handgun' ? 10 : 5;
   bool get hasShotgun => bag.any((i) => i.kind == 'shotgun');
+  late final HazardLadder? ladder = map['tower'] == null
+      ? null
+      : HazardLadder(Map<String, dynamic>.from(map['tower']));
+  LadderTraversal? climb;
+  bool get ladderOccupied =>
+      climb != null || enemies.any((e) => e.climb != null);
   bool get running => phase == PlayPhase.playing;
   List<Map<String, dynamic>> get images =>
       (map['collection'] as List).cast<Map<String, dynamic>>();
@@ -372,6 +381,7 @@ class HazardGameState {
     gateOpen = false;
     hasKey = false;
     time = 0;
+    climb = null;
     reloading = 0;
     fireCooldown = 0;
     hitFlash = damageFlash = noiseTime = footDistance = 0;
@@ -562,6 +572,7 @@ class HazardGameState {
   }
 
   void reload() {
+    if (climb != null) return;
     if (!running ||
         reloading > 0 ||
         loaded >= capacity ||
@@ -687,7 +698,19 @@ class HazardGameState {
       reloading -= dt;
       if (reloading <= 0) _finishReload();
     }
-    if (evadeTime > 0) {
+    final previousHeight = y;
+    if (climb != null) {
+      aiming = false;
+      if (hurtTime <= .2) climb!.advance(dt);
+      x = climb!.x;
+      y = climb!.y;
+      z = climb!.z;
+      heading = 0;
+      if (climb!.done) {
+        climb = null;
+        _flowTimer = 0;
+      }
+    } else if (evadeTime > 0) {
       final oldHeading = heading;
       move(_evadeX, _evadeZ, dt, speed: 3.7);
       heading = oldHeading;
@@ -703,6 +726,12 @@ class HazardGameState {
     } else {
       heading = math.atan2(-math.sin(yaw), -math.cos(yaw));
     }
+    // Gravity continues when input stops, including a hit while leaving a ledge.
+    // move() already integrates a falling frame when movement is requested.
+    if (climb == null && y == previousHeight) {
+      final floor = floorHeight(x, z, y);
+      if (y > floor) y = math.max(floor, y - 5 * dt);
+    }
     _flowTimer -= dt;
     if (_flowTimer <= 0) {
       _flowTimer = .7;
@@ -713,6 +742,10 @@ class HazardGameState {
       e.runningApproach = false;
       if (!e.alive) {
         e.vanish += dt;
+        if (e.fallingFromLadder) {
+          e.y = math.max(0, e.y - 8 * dt);
+          if (e.y == 0) e.fallingFromLadder = false;
+        }
         if (e.vanish >= .65 && !e.dropped) {
           e.dropped = true;
           pickups.add(Pickup('beer_${e.id}', 'beer', e.x, e.y + .25, e.z));
@@ -745,6 +778,19 @@ class HazardGameState {
           e.alerted = true;
         }
         if (!e.alerted) continue;
+      }
+      if (e.climb != null) {
+        final c = e.climb!;
+        if (e.stun <= 0) c.advance(dt);
+        e.x = c.x;
+        e.y = c.y;
+        e.z = c.z;
+        e.heading = 0;
+        if (c.done) {
+          e.climb = null;
+          _flowTimer = 0;
+        }
+        continue;
       }
       if (e.boss && _tickBoss(e, dt, dx, dz, dist)) continue;
       if (!e.boss && e.attackPending) {
@@ -786,6 +832,21 @@ class HazardGameState {
         e.heading = math.atan2(dx, dz);
         e.windup = Enemy.meleeWindup;
         emitSound('enemy', x: e.x, y: e.y + 1.2, z: e.z);
+        continue;
+      }
+      final tower = ladder;
+      final wantsUp = climb?.up ?? (y > 3.8);
+      if (!e.boss &&
+          tower != null &&
+          e.stun <= 0 &&
+          ((wantsUp && e.y < .12) || (!wantsUp && e.y > 3.8)) &&
+          tower.atEntry(e.x, e.y, e.z, wantsUp)) {
+        if (!ladderOccupied) {
+          e.climb = LadderTraversal(tower, wantsUp, e.x, e.z);
+          e.attackPending = false;
+          e.meleeRecovery = 0;
+          e.approachX = e.approachZ = null;
+        }
         continue;
       }
       if (dist < .95 && (y - e.y).abs() < .8) continue;
@@ -1026,8 +1087,18 @@ class HazardGameState {
             ));
   }
 
-  EnemyNavigation prepareNavigation() =>
-      _navigation ??= EnemyNavigation(floorHeight, _staticNavigationBlocked);
+  EnemyNavigation prepareNavigation() => _navigation ??= EnemyNavigation(
+    floorHeight,
+    _staticNavigationBlocked,
+    transitions: ladder == null
+        ? []
+        : [
+            NavigationTransition(
+              (ladder!.x, 0, ladder!.lowerZ),
+              (ladder!.x, ladder!.top, ladder!.upperZ),
+            ),
+          ],
+  );
 
   void useNavigation(EnemyNavigation geometry) {
     _navigation = geometry.fork();
@@ -1042,9 +1113,11 @@ class HazardGameState {
         : obstacles.where((o) => o.id == 'gate').toList();
     final intact = crates.where((c) => !c.broken).toList();
     _navigation!.update(
-      x,
-      y,
-      z,
+      climb == null ? x : climb!.ladder.x,
+      climb == null ? y : (climb!.up ? climb!.ladder.top : 0),
+      climb == null
+          ? z
+          : (climb!.up ? climb!.ladder.upperZ : climb!.ladder.lowerZ),
       (px, pz, py) =>
           gates.any((o) => o.overlaps(px, pz, .37, py)) ||
           intact.any(
@@ -1069,6 +1142,7 @@ class HazardGameState {
   }
 
   void shoot(vm.Vector3 origin, vm.Vector3 direction) {
+    if (climb != null) return;
     if (!running ||
         !aiming ||
         fireCooldown > 0 ||
@@ -1202,6 +1276,7 @@ class HazardGameState {
   }
 
   void evade() {
+    if (climb != null) return;
     if (!running || evadeCooldown > 0 || kickTime > 0 || hurtTime > .2) return;
     _evadeX = -inputY * math.sin(yaw) - inputX * math.cos(yaw);
     _evadeZ = -inputY * math.cos(yaw) + inputX * math.sin(yaw);
@@ -1234,6 +1309,7 @@ class HazardGameState {
       .firstOrNull;
 
   void kick() {
+    if (climb != null) return;
     if (!running ||
         kickTime > 0 ||
         kickCooldown > 0 ||
@@ -1287,6 +1363,8 @@ class HazardGameState {
 
   void _defeat(Enemy e) {
     if (!e.alive) return;
+    e.fallingFromLadder = e.climb != null && e.y > 0;
+    e.climb = null;
     e.alive = false;
     e.attackPending = false;
     e.bossMove = BossMove.ready;
@@ -1314,6 +1392,7 @@ class HazardGameState {
   }
 
   String? _nearestInteraction() {
+    if (climb != null) return null;
     for (final n in npcs) {
       if (_near(
         (n['x'] as num).toDouble(),
@@ -1350,8 +1429,7 @@ class HazardGameState {
     )) {
       return 'gate';
     }
-    if (map['tower'] != null &&
-        (_near(-13.5, 0, -8.8, 1.7) || _near(-13.5, 4.22, -6.5, 1.7))) {
+    if (ladder != null && ladder!.atEntry(x, y, z, y < 2)) {
       return 'tower';
     }
     return null;
@@ -1403,6 +1481,7 @@ class HazardGameState {
   }
 
   void interact() {
+    if (climb != null) return;
     if (!running) return;
     interaction = _nearestInteraction();
     final key = interaction;
@@ -1428,15 +1507,15 @@ class HazardGameState {
     } else if (key.startsWith('crate:')) {
       breakCrate(crates.firstWhere((c) => 'crate:${c.id}' == key));
     } else if (key == 'tower') {
-      if (y < 2) {
-        x = -13.5;
-        z = -6.5;
-        y = 4.22;
-      } else {
-        x = -13.5;
-        z = -9.4;
-        y = 0;
+      if (ladderOccupied) {
+        say('そば屋がはしごを使っている。');
+        return;
       }
+      if (evadeTime > 0 || kickTime > 0 || hurtTime > .2) return;
+      climb = LadderTraversal(ladder!, y < 2, x, z);
+      aiming = false;
+      reloading = 0;
+      interaction = null;
       lastSound = 'step';
     } else if (key == 'gate') {
       if (canOpenGate) {
@@ -1571,6 +1650,7 @@ class HazardGameState {
   Map<String, Object?> inspect() => {
     'phase': phase.name,
     'position': {'x': x, 'y': y, 'z': z},
+    'climb': climb?.toJson(),
     'yaw': yaw,
     'health': health,
     'combat': {
@@ -1618,6 +1698,8 @@ class HazardGameState {
             'alerted': e.alerted,
             'stun': e.stun,
             'attackPending': e.attackPending,
+            'climb': e.climb?.toJson(),
+            'fallingFromLadder': e.fallingFromLadder,
             'meleeRecovery': e.meleeRecovery,
             'meleeClipTime': e.meleeClipTime,
             'approach': e.runningApproach

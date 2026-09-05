@@ -21,12 +21,16 @@ for i in range(6):cylinder('Flame_'+str(i),amber,(rng.uniform(-.5,.5),rng.unifor
 solid(0,0,2.2,2.2,.6)
 # Timber watchtower with climbing interaction.
 for x in [-15,-12]:
- for z in [-8,-5]:box('Tower',wood,(x,z,3),(.28,.28,6))
+ for z in [-8,-5]:
+  box('Tower',wood,(x,z,3),(.28,.28,6));solid(x,z,.28,.28,6)
 box('Tower',boards,(-13.5,-6.5,4.1),(3.6,3.6,.2))
-for i in range(11):box('Tower',boards,(-13.5,-8.3,.3+i*.35),(1,.10,.09))
-for x in [-14,-13]:box('Tower',wood,(x,-8.3,2),(.09,.11,4))
+solid(-13.5,-6.5,3.6,3.6,.2,bottom=4)
+for i in range(16):box('Tower',boards,(-13.5,-8.3,.35+i*.35),(1,.10,.09))
+for x in [-14,-13]:box('Tower',wood,(x,-8.3,2.825),(.09,.11,5.65))
 box('TowerRoof',roof,(-13.5,-6.5,6.4),(4,4,.22))
-for z in [-8.2,-4.8]:box('Tower',wood,(-13.5,z,5),(3.6,.15,.15))
+box('Tower',wood,(-13.5,-4.8,5),(3.6,.15,.15))
+# Leave the ladder exit open between the front rail segments.
+for x in [-14.65,-12.35]:box('Tower',wood,(x,-8.2,5),(1.3,.15,.15))
 # Farm gate, enclosure and bell arch.
 for x in [8,15]:wall('GateArch',x,24,1.1,1.4,5)
 box('GateArch',stone,(11.5,24,5),(8,1.5,.5));cylinder('Bell',brass,(11.5,24,4.3),.5,.7,16,r2=.27)

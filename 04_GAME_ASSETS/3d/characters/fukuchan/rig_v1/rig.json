@@ -56,6 +56,13 @@
       "name": "Kick",
       "duration": 0.8,
       "source": "authored action; no new motion capture claimed"
+    },
+    {
+      "name": "Climb",
+      "duration": 1,
+      "vertical_speed_mps": 0.7,
+      "rung_spacing_m": 0.35,
+      "source": "authored two-bone IK; distance-synchronized ladder loop"
     }
   ]
 }
