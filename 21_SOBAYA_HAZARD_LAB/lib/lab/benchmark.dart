@@ -31,6 +31,9 @@ class LabBenchmark {
     ),
     (name: 'twelve-half-res', count: 12, shadows: true, ao: false, scale: .5),
     (name: 'twelve-ao', count: 12, shadows: true, ao: true, scale: 1.0),
+    (name: 'mug-close', count: 1, shadows: true, ao: false, scale: 1.0),
+    (name: 'mugs-four', count: 4, shadows: true, ao: false, scale: 1.0),
+    (name: 'mugs-twelve', count: 12, shadows: true, ao: false, scale: 1.0),
   ];
 
   void _next() {
@@ -48,6 +51,18 @@ class LabBenchmark {
     lab.option('shadows', test.shadows);
     lab.option('ao', test.ao);
     lab.option('scale', test.scale);
+    if (test.name.startsWith('mug')) {
+      lab.selectMotion('Toast');
+      for (final rig in lab.rigs) {
+        rig.active.loop = true;
+      }
+      if (test.name == 'mug-close') {
+        lab.open(LabMode.model);
+        lab.selectMotion('Toast');
+        lab.firstRig!.active.loop = true;
+        lab.setView('grip');
+      }
+    }
     _watch
       ..reset()
       ..start();

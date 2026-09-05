@@ -1,0 +1,136 @@
+{
+  "date": "2026-09-05",
+  "mode": "macOS debug, Dart MCP + Marionette",
+  "rig_sha256": "998441db2fbc04ffa6b5a9eafacb5b08e04a9e1d783a6bdaeb04f1bdbfcc344a",
+  "rig_triangles": 28576,
+  "clips": [
+    {
+      "clip": "Idle",
+      "seek": 0.3,
+      "paused": true,
+      "normalized_weights": true
+    },
+    {
+      "clip": "Walk",
+      "seek": 0.22,
+      "paused": true,
+      "normalized_weights": true
+    },
+    {
+      "clip": "Run",
+      "seek": 0.17,
+      "paused": true,
+      "normalized_weights": true
+    },
+    {
+      "clip": "ZombieWalk",
+      "seek": 0.4,
+      "paused": true,
+      "normalized_weights": true
+    },
+    {
+      "clip": "DanceStep",
+      "seek": 0.24,
+      "paused": true,
+      "normalized_weights": true
+    },
+    {
+      "clip": "DanceDisco",
+      "seek": 0.624,
+      "paused": true,
+      "normalized_weights": true
+    },
+    {
+      "clip": "DanceVictory",
+      "seek": 0.24,
+      "paused": true,
+      "normalized_weights": true
+    },
+    {
+      "clip": "MugAttack",
+      "seek": 0.53,
+      "paused": true,
+      "normalized_weights": true,
+      "grip_socket_error_m": 0.0
+    },
+    {
+      "clip": "Toast",
+      "seek": 1.35,
+      "paused": true,
+      "normalized_weights": true,
+      "grip_socket_error_m": 0.0
+    }
+  ],
+  "liquid": [
+    {
+      "fill": 0,
+      "morphs": {
+        "BeerVolume": [
+          0.07784440368413925,
+          -0.23230884969234467,
+          1.0
+        ],
+        "LiquidSurface": [
+          0.07784440368413925,
+          -0.23230884969234467,
+          1.0
+        ],
+        "Foam": [
+          0.07784440368413925,
+          -0.23230884969234467,
+          1.0
+        ]
+      },
+      "finite": true
+    },
+    {
+      "fill": 0.5,
+      "morphs": {
+        "BeerVolume": [
+          0.07784440368413925,
+          -0.23230884969234467,
+          0.5
+        ],
+        "LiquidSurface": [
+          0.07784440368413925,
+          -0.23230884969234467,
+          0.5
+        ],
+        "Foam": [
+          0.07784440368413925,
+          -0.23230884969234467,
+          0.5
+        ]
+      },
+      "finite": true
+    },
+    {
+      "fill": 1,
+      "morphs": {
+        "BeerVolume": [
+          0.07784440368413925,
+          -0.23230884969234467,
+          0.0
+        ],
+        "LiquidSurface": [
+          0.07784440368413925,
+          -0.23230884969234467,
+          0.0
+        ],
+        "Foam": [
+          0.07784440368413925,
+          -0.23230884969234467,
+          0.0
+        ]
+      },
+      "finite": true
+    }
+  ],
+  "result": "PASS",
+  "limitations": [
+    "Structural and deterministic state checks, not visual quality certification",
+    "Final profile/GPU/mobile performance unverified",
+    "Close-up wrist, fingers and mask edge need further art polish"
+  ],
+  "debug_log_errors": 0
+}

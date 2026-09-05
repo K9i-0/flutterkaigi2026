@@ -1,0 +1,14 @@
+{
+  "result": "PASS",
+  "sha256": "3456dcd7a79ec55936e6141a2b51432d51f38084d62a636368216530de2972f4",
+  "bytes": 502584,
+  "deformed_vertex_samples": 96816,
+  "minimum_height": 0.027000000700354576,
+  "maximum_height": 0.204717960831647,
+  "checks": [
+    "zero default morph weights",
+    "nonmetal transmission + volume",
+    "fill .1/.5/1 at 8 tilt azimuths",
+    "fixed radius and inner floor/rim bounds"
+  ]
+}

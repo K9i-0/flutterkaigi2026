@@ -22,3 +22,6 @@ scratch/voice_extract/
 03_SCRIPTS/**/*.[mM]4[vV]
 03_SCRIPTS/**/remotion/out/
 03_SCRIPTS/**/remotion/.remotion/
+
+# Python generator caches
+__pycache__/

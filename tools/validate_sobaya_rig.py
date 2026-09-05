@@ -3,10 +3,11 @@ import hashlib
 import json
 import math
 import struct
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-DIR = ROOT / '04_GAME_ASSETS/3d/characters/sobaya/rig_v1'
+DIR = ROOT / ('04_GAME_ASSETS/3d/characters/sobaya/' + (sys.argv[1] if len(sys.argv)>1 else 'rig_v1'))
 path = DIR / 'sobaya_rig.glb'
 raw = path.read_bytes()
 assert raw[:4] == b'glTF'
@@ -30,14 +31,17 @@ def accessor(index):
 
 assert len(gltf['skins']) == 1
 skin = gltf['skins'][0]
-assert len(skin['joints']) == 41
+expected_bones = json.loads((DIR/'rig.json').read_text())['bone_count']
+assert len(skin['joints']) == expected_bones
 assert any(n.get('name') == 'PropSocket.R' for n in gltf['nodes'])
-assert len(accessor(skin['inverseBindMatrices'])) == 41
+assert len(accessor(skin['inverseBindMatrices'])) == expected_bones
 triangles = vertices = 0
 max_weight_error = 0.0
 for mesh in gltf['meshes']:
     for p in mesh['primitives']:
         attrs = p['attributes']
+        for attribute in attrs.values():
+            accessor(attribute)  # Positions, UVs, normals and tangents must be finite too.
         weights = accessor(attrs['WEIGHTS_0'])
         joints = accessor(attrs['JOINTS_0'])
         assert 'WEIGHTS_1' not in attrs

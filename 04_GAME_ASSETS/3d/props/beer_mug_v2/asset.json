@@ -1,0 +1,44 @@
+{
+  "version": 2,
+  "triangles": 8276,
+  "units": "metres",
+  "grip_blender": [
+    0.155,
+    0,
+    0.117
+  ],
+  "grip_gltf": [
+    0.155,
+    0.117,
+    0
+  ],
+  "nodes": [
+    "GlassBody",
+    "Handle",
+    "BeerVolume",
+    "LiquidSurface",
+    "Foam",
+    "Carbonation",
+    "Grip"
+  ],
+  "materials": {
+    "glass": {
+      "transmission": 1,
+      "ior": 1.5,
+      "thickness": 0.007
+    },
+    "beer": {
+      "transmission": 1,
+      "ior": 1.333,
+      "thickness": 0.11,
+      "attenuation_distance": 0.14
+    }
+  },
+  "liquid": {
+    "bottom": 0.027,
+    "surface": 0.18,
+    "radius": 0.063,
+    "fill_drop": 0.13,
+    "slope_per_weight": 0.46875
+  }
+}

@@ -29,10 +29,13 @@ def keys(t, points):
     return points[-1][1]
 
 
-def setup():
+def setup(*, quality=False):
     OUT.mkdir(parents=True,exist_ok=True)
     bpy.ops.object.select_all(action='SELECT'); bpy.ops.object.delete(use_global=False)
-    bpy.ops.import_scene.gltf(filepath=str(SOURCE),merge_vertices=True)
+    if quality and SOURCE.with_name('sobaya_source.blend').exists():
+        bpy.ops.wm.open_mainfile(filepath=str(SOURCE.with_name('sobaya_source.blend')))
+    else:
+        bpy.ops.import_scene.gltf(filepath=str(SOURCE),merge_vertices=True)
     bpy.context.view_layer.update()
     mesh=next(o for o in bpy.context.scene.objects if o.type=='MESH')
     world=mesh.matrix_world.copy(); mesh.parent=None; mesh.matrix_world=world
@@ -96,7 +99,7 @@ def setup():
         original={mesh.vertex_groups[g.group].name:g.weight for g in vertex.groups}
         if z>=1.58:
             weights={'Head':1.0}
-        elif z>.84 and ax<.335:
+        elif not quality and z>.84 and ax<.335:
             core={body_stops[-1][1]:1.0}
             if z<=body_stops[0][0]: core={'Hips':1.0}
             else:

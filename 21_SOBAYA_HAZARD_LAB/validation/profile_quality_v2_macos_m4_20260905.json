@@ -1,0 +1,6517 @@
+{
+  "device": "MacBook Air M4 32GB / macOS 26.6.2",
+  "flutter": "3.47.2",
+  "scene": "0.23.0",
+  "status": "partial; on-screen window unavailable during later cases",
+  "limitations": "Only valid=true rows contain 240 samples. UI/Raster timings are not GPU time or measured FPS. CUA could not retrieve any native window (cgWindowNotFound).",
+  "cases": [
+    {
+      "case": "one",
+      "valid": true,
+      "elapsedMs": 8004,
+      "ready": true,
+      "mode": "crowd",
+      "model": "assets/models/sobaya.glb",
+      "rigged": true,
+      "boneCount": 43,
+      "motion": {
+        "clip": "Walk",
+        "seconds": 0.9820000000000054,
+        "duration": 1.0,
+        "playing": true,
+        "loop": true,
+        "speed": 1.0,
+        "mugVisible": false,
+        "beer": {
+          "fill": 1.0,
+          "slope": [
+            0.0,
+            0.0
+          ],
+          "detail": false,
+          "surfaceHeight": 0.18,
+          "morphs": {
+            "BeerVolume": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "LiquidSurface": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Foam": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "handWorld": [
+          0.6130200624465942,
+          0.8832516074180603,
+          0.18583914637565613
+        ],
+        "socketWorld": [
+          0.5952420234680176,
+          0.8129299879074097,
+          0.2636902630329132
+        ],
+        "gripWorld": [
+          0.5952420234680176,
+          0.8129299879074097,
+          0.2636902630329132
+        ],
+        "mugUp": [
+          -0.20642244815826416,
+          0.2019808143377304,
+          0.9573893547058105,
+          0.0
+        ],
+        "weights": {
+          "Idle": 0.0,
+          "Walk": 1.0,
+          "Run": 0.0,
+          "ZombieWalk": 0.0,
+          "DanceStep": 0.0,
+          "DanceDisco": 0.0,
+          "DanceVictory": 0.0,
+          "Toast": 0.0,
+          "MugAttack": 0.0
+        }
+      },
+      "actorMotions": [
+        {
+          "clip": "Walk",
+          "seconds": 0.9820000000000054,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            0.6130200624465942,
+            0.8832516074180603,
+            0.18583914637565613
+          ],
+          "socketWorld": [
+            0.5952420234680176,
+            0.8129299879074097,
+            0.2636902630329132
+          ],
+          "gripWorld": [
+            0.5952420234680176,
+            0.8129299879074097,
+            0.2636902630329132
+          ],
+          "mugUp": [
+            -0.20642244815826416,
+            0.2019808143377304,
+            0.9573893547058105,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        }
+      ],
+      "availableMotions": [
+        "Idle",
+        "Walk",
+        "Run",
+        "ZombieWalk",
+        "DanceStep",
+        "DanceDisco",
+        "DanceVictory",
+        "Toast",
+        "MugAttack"
+      ],
+      "propAsset": "assets/models/beer_mug.glb",
+      "count": 1,
+      "placedTriangles": 22536,
+      "sourceTextureSize": 4096,
+      "loadMs": 727,
+      "position": {
+        "x": 0.0,
+        "z": 0.0
+      },
+      "distanceM": 0.0,
+      "colliding": false,
+      "collisionFrames": 0,
+      "cameraFraction": 1.0,
+      "cameraYaw": 0.0,
+      "focusView": "body",
+      "backdrop": "studio",
+      "cameraDistance": 12.0,
+      "shadows": true,
+      "ao": false,
+      "renderScale": 1.0,
+      "paused": false,
+      "test": "未実行",
+      "testRunning": false,
+      "frameTimings": {
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 4.346,
+        "rasterP95Ms": 1.728
+      },
+      "buildMode": "profile",
+      "viewport": {
+        "logicalWidth": 924.0,
+        "logicalHeight": 691.0,
+        "devicePixelRatio": 2.0,
+        "renderWidth": 1848,
+        "renderHeight": 1382
+      },
+      "capturedAt": "2026-09-05T15:42:35.801175"
+    },
+    {
+      "case": "four",
+      "valid": true,
+      "elapsedMs": 8496,
+      "ready": true,
+      "mode": "crowd",
+      "model": "assets/models/sobaya.glb",
+      "rigged": true,
+      "boneCount": 43,
+      "motion": {
+        "clip": "Walk",
+        "seconds": 0.5000000000000057,
+        "duration": 1.0,
+        "playing": true,
+        "loop": true,
+        "speed": 1.0,
+        "mugVisible": false,
+        "beer": {
+          "fill": 1.0,
+          "slope": [
+            0.0,
+            0.0
+          ],
+          "detail": false,
+          "surfaceHeight": 0.18,
+          "morphs": {
+            "BeerVolume": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "LiquidSurface": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Foam": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "handWorld": [
+          -0.35220345854759216,
+          0.8862700462341309,
+          -0.8265390396118164
+        ],
+        "socketWorld": [
+          -0.37478360533714294,
+          0.8178455233573914,
+          -0.7482434511184692
+        ],
+        "gripWorld": [
+          -0.37478360533714294,
+          0.8178455233573914,
+          -0.7482434511184692
+        ],
+        "mugUp": [
+          -0.2584914267063141,
+          0.22495123744010925,
+          0.9394569993019104,
+          0.0
+        ],
+        "weights": {
+          "Idle": 0.0,
+          "Walk": 1.0,
+          "Run": 0.0,
+          "ZombieWalk": 0.0,
+          "DanceStep": 0.0,
+          "DanceDisco": 0.0,
+          "DanceVictory": 0.0,
+          "Toast": 0.0,
+          "MugAttack": 0.0
+        }
+      },
+      "actorMotions": [
+        {
+          "clip": "Walk",
+          "seconds": 0.5000000000000057,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -0.35220345854759216,
+            0.8862700462341309,
+            -0.8265390396118164
+          ],
+          "socketWorld": [
+            -0.37478360533714294,
+            0.8178455233573914,
+            -0.7482434511184692
+          ],
+          "gripWorld": [
+            -0.37478360533714294,
+            0.8178455233573914,
+            -0.7482434511184692
+          ],
+          "mugUp": [
+            -0.2584914267063141,
+            0.22495123744010925,
+            0.9394569993019104,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.6300000000000058,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            1.2686727046966553,
+            0.8727341294288635,
+            -0.9681165814399719
+          ],
+          "socketWorld": [
+            1.2543258666992188,
+            0.7927366495132446,
+            -0.8994393944740295
+          ],
+          "gripWorld": [
+            1.2543258666992188,
+            0.7927366495132446,
+            -0.8994393944740295
+          ],
+          "mugUp": [
+            -0.19262030720710754,
+            0.07450331747531891,
+            0.9784414172172546,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.7600000000000058,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -0.7275636196136475,
+            0.8706510663032532,
+            0.9829243421554565
+          ],
+          "socketWorld": [
+            -0.7232761383056641,
+            0.7868621945381165,
+            1.0483691692352295
+          ],
+          "gripWorld": [
+            -0.7232761383056641,
+            0.7868621945381165,
+            1.0483691692352295
+          ],
+          "mugUp": [
+            0.07665573060512543,
+            0.018730774521827698,
+            0.9968820810317993,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.8900000000000053,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            1.0651935338974,
+            0.873773992061615,
+            0.9517330527305603
+          ],
+          "socketWorld": [
+            1.0857281684875488,
+            0.7951604127883911,
+            1.0204368829727173
+          ],
+          "gripWorld": [
+            1.0857281684875488,
+            0.7951604127883911,
+            1.0204368829727173
+          ],
+          "mugUp": [
+            0.2961915135383606,
+            0.09394125640392303,
+            0.9504978060722351,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        }
+      ],
+      "availableMotions": [
+        "Idle",
+        "Walk",
+        "Run",
+        "ZombieWalk",
+        "DanceStep",
+        "DanceDisco",
+        "DanceVictory",
+        "Toast",
+        "MugAttack"
+      ],
+      "propAsset": "assets/models/beer_mug.glb",
+      "count": 4,
+      "placedTriangles": 90144,
+      "sourceTextureSize": 4096,
+      "loadMs": 727,
+      "position": {
+        "x": 0.0,
+        "z": 0.0
+      },
+      "distanceM": 0.0,
+      "colliding": false,
+      "collisionFrames": 0,
+      "cameraFraction": 1.0,
+      "cameraYaw": 0.0,
+      "focusView": "body",
+      "backdrop": "studio",
+      "cameraDistance": 12.0,
+      "shadows": true,
+      "ao": false,
+      "renderScale": 1.0,
+      "paused": false,
+      "test": "未実行",
+      "testRunning": false,
+      "frameTimings": {
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 6.18,
+        "rasterP95Ms": 0.847
+      },
+      "buildMode": "profile",
+      "viewport": {
+        "logicalWidth": 924.0,
+        "logicalHeight": 691.0,
+        "devicePixelRatio": 2.0,
+        "renderWidth": 1848,
+        "renderHeight": 1382
+      },
+      "capturedAt": "2026-09-05T15:42:44.301901"
+    },
+    {
+      "case": "eight",
+      "valid": true,
+      "elapsedMs": 8493,
+      "ready": true,
+      "mode": "crowd",
+      "model": "assets/models/sobaya.glb",
+      "rigged": true,
+      "boneCount": 43,
+      "motion": {
+        "clip": "Walk",
+        "seconds": 0.4990000000000056,
+        "duration": 1.0,
+        "playing": true,
+        "loop": true,
+        "speed": 1.0,
+        "mugVisible": false,
+        "beer": {
+          "fill": 1.0,
+          "slope": [
+            0.0,
+            0.0
+          ],
+          "detail": false,
+          "surfaceHeight": 0.18,
+          "morphs": {
+            "BeerVolume": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "LiquidSurface": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Foam": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "handWorld": [
+          -2.1526002883911133,
+          0.8864161968231201,
+          -0.8253820538520813
+        ],
+        "socketWorld": [
+          -2.17524790763855,
+          0.8180981278419495,
+          -0.7470129728317261
+        ],
+        "gripWorld": [
+          -2.17524790763855,
+          0.8180981278419495,
+          -0.7470129728317261
+        ],
+        "mugUp": [
+          -0.25891995429992676,
+          0.22622349858283997,
+          0.9390336275100708,
+          0.0
+        ],
+        "weights": {
+          "Idle": 0.0,
+          "Walk": 1.0,
+          "Run": 0.0,
+          "ZombieWalk": 0.0,
+          "DanceStep": 0.0,
+          "DanceDisco": 0.0,
+          "DanceVictory": 0.0,
+          "Toast": 0.0,
+          "MugAttack": 0.0
+        }
+      },
+      "actorMotions": [
+        {
+          "clip": "Walk",
+          "seconds": 0.4990000000000056,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -2.1526002883911133,
+            0.8864161968231201,
+            -0.8253820538520813
+          ],
+          "socketWorld": [
+            -2.17524790763855,
+            0.8180981278419495,
+            -0.7470129728317261
+          ],
+          "gripWorld": [
+            -2.17524790763855,
+            0.8180981278419495,
+            -0.7470129728317261
+          ],
+          "mugUp": [
+            -0.25891995429992676,
+            0.22622349858283997,
+            0.9390336275100708,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.629000000000006,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -0.5315107107162476,
+            0.8727751970291138,
+            -0.9672285914421082
+          ],
+          "socketWorld": [
+            -0.5459018349647522,
+            0.792846143245697,
+            -0.898481011390686
+          ],
+          "gripWorld": [
+            -0.5459018349647522,
+            0.792846143245697,
+            -0.898481011390686
+          ],
+          "mugUp": [
+            -0.1930050253868103,
+            0.0754757821559906,
+            0.9782910346984863,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.7590000000000062,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            1.0724364519119263,
+            0.8706510663032532,
+            -1.1170755624771118
+          ],
+          "socketWorld": [
+            1.0767239332199097,
+            0.7868621945381165,
+            -1.0516307353973389
+          ],
+          "gripWorld": [
+            1.0767239332199097,
+            0.7868621945381165,
+            -1.0516307353973389
+          ],
+          "mugUp": [
+            0.07665558904409409,
+            0.018730685114860535,
+            0.9968820810317993,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.8890000000000057,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            2.864936351776123,
+            0.8737108111381531,
+            -1.1491398811340332
+          ],
+          "socketWorld": [
+            2.885477304458618,
+            0.7950273156166077,
+            -1.0805180072784424
+          ],
+          "gripWorld": [
+            2.885477304458618,
+            0.7950273156166077,
+            -1.0805180072784424
+          ],
+          "mugUp": [
+            0.2966054379940033,
+            0.09297007322311401,
+            0.9504642486572266,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.01900000000000611,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -2.298210859298706,
+            0.8894094824790955,
+            1.0831880569458008
+          ],
+          "socketWorld": [
+            -2.2773046493530273,
+            0.8230288028717041,
+            1.1636772155761719
+          ],
+          "gripWorld": [
+            -2.2773046493530273,
+            0.8230288028717041,
+            1.1636772155761719
+          ],
+          "mugUp": [
+            0.2550862729549408,
+            0.2490665167570114,
+            0.9342898726463318,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.14900000000000557,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -0.3095090985298157,
+            0.9144766330718994,
+            1.3059931993484497
+          ],
+          "socketWorld": [
+            -0.31226441264152527,
+            0.8606263995170593,
+            1.3977240324020386
+          ],
+          "gripWorld": [
+            -0.31226441264152527,
+            0.8606263995170593,
+            1.3977240324020386
+          ],
+          "mugUp": [
+            -0.015402145683765411,
+            0.38454681634902954,
+            0.9229774475097656,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.2790000000000059,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            1.4263113737106323,
+            0.9225725531578064,
+            1.4313281774520874
+          ],
+          "socketWorld": [
+            1.397007942199707,
+            0.8721755146980286,
+            1.5203418731689453
+          ],
+          "gripWorld": [
+            1.397007942199707,
+            0.8721755146980286,
+            1.5203418731689453
+          ],
+          "mugUp": [
+            -0.27217891812324524,
+            0.41863536834716797,
+            0.8664087653160095,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.4090000000000054,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            3.054549217224121,
+            0.9036936163902283,
+            1.3775417804718018
+          ],
+          "socketWorld": [
+            3.0241665840148926,
+            0.8448866605758667,
+            1.4608522653579712
+          ],
+          "gripWorld": [
+            3.0241665840148926,
+            0.8448866605758667,
+            1.4608522653579712
+          ],
+          "mugUp": [
+            -0.31153491139411926,
+            0.33329835534095764,
+            0.8898645639419556,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        }
+      ],
+      "availableMotions": [
+        "Idle",
+        "Walk",
+        "Run",
+        "ZombieWalk",
+        "DanceStep",
+        "DanceDisco",
+        "DanceVictory",
+        "Toast",
+        "MugAttack"
+      ],
+      "propAsset": "assets/models/beer_mug.glb",
+      "count": 8,
+      "placedTriangles": 180288,
+      "sourceTextureSize": 4096,
+      "loadMs": 727,
+      "position": {
+        "x": 0.0,
+        "z": 0.0
+      },
+      "distanceM": 0.0,
+      "colliding": false,
+      "collisionFrames": 0,
+      "cameraFraction": 1.0,
+      "cameraYaw": 0.0,
+      "focusView": "body",
+      "backdrop": "studio",
+      "cameraDistance": 12.0,
+      "shadows": true,
+      "ao": false,
+      "renderScale": 1.0,
+      "paused": false,
+      "test": "未実行",
+      "testRunning": false,
+      "frameTimings": {
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 5.743,
+        "rasterP95Ms": 0.69
+      },
+      "buildMode": "profile",
+      "viewport": {
+        "logicalWidth": 924.0,
+        "logicalHeight": 691.0,
+        "devicePixelRatio": 2.0,
+        "renderWidth": 1848,
+        "renderHeight": 1382
+      },
+      "capturedAt": "2026-09-05T15:42:52.801443"
+    },
+    {
+      "case": "twelve",
+      "valid": true,
+      "elapsedMs": 8492,
+      "ready": true,
+      "mode": "crowd",
+      "model": "assets/models/sobaya.glb",
+      "rigged": true,
+      "boneCount": 43,
+      "motion": {
+        "clip": "Walk",
+        "seconds": 0.5000000000000057,
+        "duration": 1.0,
+        "playing": true,
+        "loop": true,
+        "speed": 1.0,
+        "mugVisible": false,
+        "beer": {
+          "fill": 1.0,
+          "slope": [
+            0.0,
+            0.0
+          ],
+          "detail": false,
+          "surfaceHeight": 0.18,
+          "morphs": {
+            "BeerVolume": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "LiquidSurface": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Foam": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "handWorld": [
+          -2.15220308303833,
+          0.8862700462341309,
+          -1.8765392303466797
+        ],
+        "socketWorld": [
+          -2.174783229827881,
+          0.8178455233573914,
+          -1.7982436418533325
+        ],
+        "gripWorld": [
+          -2.174783229827881,
+          0.8178455233573914,
+          -1.7982436418533325
+        ],
+        "mugUp": [
+          -0.2584914267063141,
+          0.22495123744010925,
+          0.9394569993019104,
+          0.0
+        ],
+        "weights": {
+          "Idle": 0.0,
+          "Walk": 1.0,
+          "Run": 0.0,
+          "ZombieWalk": 0.0,
+          "DanceStep": 0.0,
+          "DanceDisco": 0.0,
+          "DanceVictory": 0.0,
+          "Toast": 0.0,
+          "MugAttack": 0.0
+        }
+      },
+      "actorMotions": [
+        {
+          "clip": "Walk",
+          "seconds": 0.5000000000000057,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -2.15220308303833,
+            0.8862700462341309,
+            -1.8765392303466797
+          ],
+          "socketWorld": [
+            -2.174783229827881,
+            0.8178455233573914,
+            -1.7982436418533325
+          ],
+          "gripWorld": [
+            -2.174783229827881,
+            0.8178455233573914,
+            -1.7982436418533325
+          ],
+          "mugUp": [
+            -0.2584914267063141,
+            0.22495123744010925,
+            0.9394569993019104,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.6300000000000057,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -0.5313271880149841,
+            0.8727341294288635,
+            -2.0181162357330322
+          ],
+          "socketWorld": [
+            -0.5456740260124207,
+            0.7927366495132446,
+            -1.9494390487670898
+          ],
+          "gripWorld": [
+            -0.5456740260124207,
+            0.7927366495132446,
+            -1.9494390487670898
+          ],
+          "mugUp": [
+            -0.19262030720710754,
+            0.07450331747531891,
+            0.9784414172172546,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.7600000000000059,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            1.0724363327026367,
+            0.8706510663032532,
+            -2.1670753955841064
+          ],
+          "socketWorld": [
+            1.0767238140106201,
+            0.7868621945381165,
+            -2.101630687713623
+          ],
+          "gripWorld": [
+            1.0767238140106201,
+            0.7868621945381165,
+            -2.101630687713623
+          ],
+          "mugUp": [
+            0.07665573060512543,
+            0.018730774521827698,
+            0.9968820810317993,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.8900000000000056,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            2.8651936054229736,
+            0.873773992061615,
+            -2.1982667446136475
+          ],
+          "socketWorld": [
+            2.885728120803833,
+            0.7951604127883911,
+            -2.1295628547668457
+          ],
+          "gripWorld": [
+            2.885728120803833,
+            0.7951604127883911,
+            -2.1295628547668457
+          ],
+          "mugUp": [
+            0.2961915135383606,
+            0.09394125640392303,
+            0.9504978060722351,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.020000000000005777,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -2.2979736328125,
+            0.8895959854125977,
+            0.03438466042280197
+          ],
+          "socketWorld": [
+            -2.2770895957946777,
+            0.8233240246772766,
+            0.1149691715836525
+          ],
+          "gripWorld": [
+            -2.2770895957946777,
+            0.8233240246772766,
+            0.1149691715836525
+          ],
+          "mugUp": [
+            0.2544972598552704,
+            0.250331848859787,
+            0.9341122508049011,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.15000000000000557,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -0.3096053898334503,
+            0.9146372675895691,
+            0.256675660610199
+          ],
+          "socketWorld": [
+            -0.31239137053489685,
+            0.8608580231666565,
+            0.34844717383384705
+          ],
+          "gripWorld": [
+            -0.31239137053489685,
+            0.8608580231666565,
+            0.34844717383384705
+          ],
+          "mugUp": [
+            -0.0156876128166914,
+            0.38526031374931335,
+            0.9226750135421753,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.2800000000000059,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            1.426413655281067,
+            0.922511100769043,
+            0.38111230731010437
+          ],
+          "socketWorld": [
+            1.3971246480941772,
+            0.8720884323120117,
+            0.47011616826057434
+          ],
+          "gripWorld": [
+            1.3971246480941772,
+            0.8720884323120117,
+            0.47011616826057434
+          ],
+          "mugUp": [
+            -0.27211713790893555,
+            0.4183870553970337,
+            0.8665481805801392,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.4100000000000055,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            3.054990291595459,
+            0.9034789800643921,
+            0.3266012668609619
+          ],
+          "socketWorld": [
+            3.024670124053955,
+            0.8445711135864258,
+            0.40986311435699463
+          ],
+          "gripWorld": [
+            3.024670124053955,
+            0.8445711135864258,
+            0.40986311435699463
+          ],
+          "mugUp": [
+            -0.3112453818321228,
+            0.33222484588623047,
+            0.8903670907020569,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.540000000000006,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -2.4895894527435303,
+            0.8802632689476013,
+            2.2111241817474365
+          ],
+          "socketWorld": [
+            -2.4961087703704834,
+            0.8077060580253601,
+            2.288680076599121
+          ],
+          "gripWorld": [
+            -2.4961087703704834,
+            0.8077060580253601,
+            2.288680076599121
+          ],
+          "mugUp": [
+            -0.070691779255867,
+            0.17413711547851562,
+            0.982181191444397,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.6700000000000057,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -0.7662877440452576,
+            0.8714141845703125,
+            1.978721022605896
+          ],
+          "socketWorld": [
+            -0.749269962310791,
+            0.7892979979515076,
+            2.0442137718200684
+          ],
+          "gripWorld": [
+            -0.749269962310791,
+            0.7892979979515076,
+            2.0442137718200684
+          ],
+          "mugUp": [
+            0.2622864544391632,
+            0.04381944611668587,
+            0.963995099067688,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.8000000000000059,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            1.1711629629135132,
+            0.8708981871604919,
+            1.9248309135437012
+          ],
+          "socketWorld": [
+            1.1951286792755127,
+            0.78770911693573,
+            1.9866952896118164
+          ],
+          "gripWorld": [
+            1.1951286792755127,
+            0.78770911693573,
+            1.9866952896118164
+          ],
+          "mugUp": [
+            0.3716629445552826,
+            0.027820467948913574,
+            0.9279512763023376,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.9300000000000058,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            3.250493288040161,
+            0.8769290447235107,
+            2.0867364406585693
+          ],
+          "socketWorld": [
+            3.262281656265259,
+            0.801535427570343,
+            2.1608903408050537
+          ],
+          "gripWorld": [
+            3.262281656265259,
+            0.801535427570343,
+            2.1608903408050537
+          ],
+          "mugUp": [
+            0.16707904636859894,
+            0.13750219345092773,
+            0.9763085842132568,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        }
+      ],
+      "availableMotions": [
+        "Idle",
+        "Walk",
+        "Run",
+        "ZombieWalk",
+        "DanceStep",
+        "DanceDisco",
+        "DanceVictory",
+        "Toast",
+        "MugAttack"
+      ],
+      "propAsset": "assets/models/beer_mug.glb",
+      "count": 12,
+      "placedTriangles": 270432,
+      "sourceTextureSize": 4096,
+      "loadMs": 727,
+      "position": {
+        "x": 0.0,
+        "z": 0.0
+      },
+      "distanceM": 0.0,
+      "colliding": false,
+      "collisionFrames": 0,
+      "cameraFraction": 1.0,
+      "cameraYaw": 0.0,
+      "focusView": "body",
+      "backdrop": "studio",
+      "cameraDistance": 12.0,
+      "shadows": true,
+      "ao": false,
+      "renderScale": 1.0,
+      "paused": false,
+      "test": "未実行",
+      "testRunning": false,
+      "frameTimings": {
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 5.081,
+        "rasterP95Ms": 0.578
+      },
+      "buildMode": "profile",
+      "viewport": {
+        "logicalWidth": 924.0,
+        "logicalHeight": 691.0,
+        "devicePixelRatio": 2.0,
+        "renderWidth": 1848,
+        "renderHeight": 1382
+      },
+      "capturedAt": "2026-09-05T15:43:01.300978"
+    },
+    {
+      "case": "twelve-no-shadow",
+      "valid": false,
+      "elapsedMs": 30492,
+      "ready": true,
+      "mode": "crowd",
+      "model": "assets/models/sobaya.glb",
+      "rigged": true,
+      "boneCount": 43,
+      "motion": {
+        "clip": "Walk",
+        "seconds": 0.9680000000000025,
+        "duration": 1.0,
+        "playing": true,
+        "loop": true,
+        "speed": 1.0,
+        "mugVisible": false,
+        "beer": {
+          "fill": 1.0,
+          "slope": [
+            0.0,
+            0.0
+          ],
+          "detail": false,
+          "surfaceHeight": 0.18,
+          "morphs": {
+            "BeerVolume": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "LiquidSurface": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Foam": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "handWorld": [
+          -2.4419338703155518,
+          0.8813772201538086,
+          -2.1312313079833984
+        ],
+        "socketWorld": [
+          -2.4194180965423584,
+          0.8096070885658264,
+          -2.055971384048462
+        ],
+        "gripWorld": [
+          -2.4194180965423584,
+          0.8096070885658264,
+          -2.055971384048462
+        ],
+        "mugUp": [
+          0.2930610179901123,
+          0.18403936922550201,
+          0.9382139444351196,
+          0.0
+        ],
+        "weights": {
+          "Idle": 0.0,
+          "Walk": 1.0,
+          "Run": 0.0,
+          "ZombieWalk": 0.0,
+          "DanceStep": 0.0,
+          "DanceDisco": 0.0,
+          "DanceVictory": 0.0,
+          "Toast": 0.0,
+          "MugAttack": 0.0
+        }
+      },
+      "actorMotions": [
+        {
+          "clip": "Walk",
+          "seconds": 0.9680000000000025,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -2.4419338703155518,
+            0.8813772201538086,
+            -2.1312313079833984
+          ],
+          "socketWorld": [
+            -2.4194180965423584,
+            0.8096070885658264,
+            -2.055971384048462
+          ],
+          "gripWorld": [
+            -2.4194180965423584,
+            0.8096070885658264,
+            -2.055971384048462
+          ],
+          "mugUp": [
+            0.2930610179901123,
+            0.18403936922550201,
+            0.9382139444351196,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.09800000000000297,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -0.7498704791069031,
+            0.9052392244338989,
+            -1.895717978477478
+          ],
+          "socketWorld": [
+            -0.7486284375190735,
+            0.8471408486366272,
+            -1.8065831661224365
+          ],
+          "gripWorld": [
+            -0.7486284375190735,
+            0.8471408486366272,
+            -1.8065831661224365
+          ],
+          "mugUp": [
+            0.025317087769508362,
+            0.34080010652542114,
+            0.9397953748703003,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.22800000000000267,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            1.0751765966415405,
+            0.9230049848556519,
+            -1.7223998308181763
+          ],
+          "socketWorld": [
+            1.0473576784133911,
+            0.8727874159812927,
+            -1.6328102350234985
+          ],
+          "gripWorld": [
+            1.0473576784133911,
+            0.8727874159812927,
+            -1.6328102350234985
+          ],
+          "mugUp": [
+            -0.2572113573551178,
+            0.42037278413772583,
+            0.8701320886611938,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.35800000000000254,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            3.097445487976074,
+            0.9133713841438293,
+            -1.730851173400879
+          ],
+          "socketWorld": [
+            3.063891649246216,
+            0.8590254187583923,
+            -1.6457475423812866
+          ],
+          "gripWorld": [
+            3.063891649246216,
+            0.8590254187583923,
+            -1.6457475423812866
+          ],
+          "mugUp": [
+            -0.32786795496940613,
+            0.37954723834991455,
+            0.865128755569458,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.48800000000000243,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -2.0756731033325195,
+            0.8881641030311584,
+            0.18268641829490662
+          ],
+          "socketWorld": [
+            -2.0868327617645264,
+            0.8210254311561584,
+            0.2644778788089752
+          ],
+          "gripWorld": [
+            -2.0868327617645264,
+            0.8210254311561584,
+            0.2644778788089752
+          ],
+          "mugUp": [
+            -0.11933747678995132,
+            0.24019698798656464,
+            0.9633612036705017,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.6180000000000024,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -0.35813650488853455,
+            0.8733026385307312,
+            -0.07535338401794434
+          ],
+          "socketWorld": [
+            -0.34288421273231506,
+            0.7941318154335022,
+            -0.005917559377849102
+          ],
+          "gripWorld": [
+            -0.34288421273231506,
+            0.7941318154335022,
+            -0.005917556118220091
+          ],
+          "mugUp": [
+            0.2250327616930008,
+            0.0861692950129509,
+            0.9705339074134827,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.7480000000000023,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            1.169416069984436,
+            0.8706510663032532,
+            -0.18350699543952942
+          ],
+          "socketWorld": [
+            1.1934517621994019,
+            0.7868621945381165,
+            -0.12248494476079941
+          ],
+          "gripWorld": [
+            1.1934517621994019,
+            0.7868621945381165,
+            -0.12248495221138
+          ],
+          "mugUp": [
+            0.3769288659095764,
+            0.01873069256544113,
+            0.9260532259941101,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.8780000000000023,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            2.8458352088928223,
+            0.8730946183204651,
+            -0.07313735783100128
+          ],
+          "socketWorld": [
+            2.8601083755493164,
+            0.7936469912528992,
+            -0.003809581743553281
+          ],
+          "gripWorld": [
+            2.8601083755493164,
+            0.7936469912528992,
+            -0.00380958104506135
+          ],
+          "mugUp": [
+            0.2122705727815628,
+            0.08228150755167007,
+            0.9737410545349121,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.008000000000002672,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -2.505983352661133,
+            0.8874988555908203,
+            2.283891201019287
+          ],
+          "socketWorld": [
+            -2.518221616744995,
+            0.8199295997619629,
+            2.3651721477508545
+          ],
+          "gripWorld": [
+            -2.518221616744995,
+            0.8199295997619629,
+            2.3651721477508545
+          ],
+          "mugUp": [
+            -0.13285759091377258,
+            0.23512037098407745,
+            0.9628438949584961,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.13800000000000257,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -0.568659782409668,
+            0.9127553701400757,
+            2.4673995971679688
+          ],
+          "socketWorld": [
+            -0.6022541522979736,
+            0.8581268191337585,
+            2.5523061752319336
+          ],
+          "gripWorld": [
+            -0.6022541522979736,
+            0.8581268191337585,
+            2.5523061752319336
+          ],
+          "mugUp": [
+            -0.329345703125,
+            0.37668538093566895,
+            0.8658177852630615,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.2680000000000027,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            1.4362962245941162,
+            0.9232537150382996,
+            2.4744579792022705
+          ],
+          "socketWorld": [
+            1.4096184968948364,
+            0.8731387853622437,
+            2.564451217651367
+          ],
+          "gripWorld": [
+            1.4096184968948364,
+            0.8731387853622437,
+            2.564451217651367
+          ],
+          "mugUp": [
+            -0.24584484100341797,
+            0.42136508226394653,
+            0.872933566570282,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.3980000000000026,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            3.304985284805298,
+            0.9060403108596802,
+            2.3013339042663574
+          ],
+          "socketWorld": [
+            3.307584047317505,
+            0.8483194708824158,
+            2.3906846046447754
+          ],
+          "gripWorld": [
+            3.307584047317505,
+            0.8483194708824158,
+            2.3906846046447754
+          ],
+          "mugUp": [
+            0.03951117396354675,
+            0.3447733521461487,
+            0.937854528427124,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        }
+      ],
+      "availableMotions": [
+        "Idle",
+        "Walk",
+        "Run",
+        "ZombieWalk",
+        "DanceStep",
+        "DanceDisco",
+        "DanceVictory",
+        "Toast",
+        "MugAttack"
+      ],
+      "propAsset": "assets/models/beer_mug.glb",
+      "count": 12,
+      "placedTriangles": 270432,
+      "sourceTextureSize": 4096,
+      "loadMs": 727,
+      "position": {
+        "x": 0.0,
+        "z": 0.0
+      },
+      "distanceM": 0.0,
+      "colliding": false,
+      "collisionFrames": 0,
+      "cameraFraction": 1.0,
+      "cameraYaw": 0.0,
+      "focusView": "body",
+      "backdrop": "studio",
+      "cameraDistance": 12.0,
+      "shadows": false,
+      "ao": false,
+      "renderScale": 1.0,
+      "paused": false,
+      "test": "未実行",
+      "testRunning": false,
+      "frameTimings": {
+        "samples": 200,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 5.195,
+        "rasterP95Ms": 0.651
+      },
+      "buildMode": "profile",
+      "viewport": {
+        "logicalWidth": 924.0,
+        "logicalHeight": 691.0,
+        "devicePixelRatio": 2.0,
+        "renderWidth": 1848,
+        "renderHeight": 1382
+      },
+      "capturedAt": "2026-09-05T15:43:31.797685"
+    },
+    {
+      "case": "twelve-half-res",
+      "valid": false,
+      "elapsedMs": 30483,
+      "ready": true,
+      "mode": "crowd",
+      "model": "assets/models/sobaya.glb",
+      "rigged": true,
+      "boneCount": 43,
+      "motion": {
+        "clip": "Walk",
+        "seconds": 0.0,
+        "duration": 1.0,
+        "playing": true,
+        "loop": true,
+        "speed": 1.0,
+        "mugVisible": false,
+        "beer": {
+          "fill": 1.0,
+          "slope": [
+            0.0,
+            0.0
+          ],
+          "detail": true,
+          "surfaceHeight": 0.18,
+          "morphs": {
+            "BeerVolume": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "LiquidSurface": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Foam": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "handWorld": [
+          -2.3050003051757812,
+          0.8899999856948853,
+          -2.0350000858306885
+        ],
+        "socketWorld": [
+          -2.306000232696533,
+          0.8049999475479126,
+          -1.9710001945495605
+        ],
+        "gripWorld": [
+          -2.306000232696533,
+          0.8049999475479126,
+          -1.97100031375885
+        ],
+        "mugUp": [
+          -1.033612235801229e-07,
+          7.59612603928872e-08,
+          1.0000001192092896,
+          0.0
+        ],
+        "weights": {
+          "Idle": 0.0,
+          "Walk": 1.0,
+          "Run": 0.0,
+          "ZombieWalk": 0.0,
+          "DanceStep": 0.0,
+          "DanceDisco": 0.0,
+          "DanceVictory": 0.0,
+          "Toast": 0.0,
+          "MugAttack": 0.0
+        }
+      },
+      "actorMotions": [
+        {
+          "clip": "Walk",
+          "seconds": 0.0,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": true,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -2.3050003051757812,
+            0.8899999856948853,
+            -2.0350000858306885
+          ],
+          "socketWorld": [
+            -2.306000232696533,
+            0.8049999475479126,
+            -1.9710001945495605
+          ],
+          "gripWorld": [
+            -2.306000232696533,
+            0.8049999475479126,
+            -1.97100031375885
+          ],
+          "mugUp": [
+            -1.033612235801229e-07,
+            7.59612603928872e-08,
+            1.0000001192092896,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.13,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": true,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -0.29091677069664,
+            0.8899999856948853,
+            -2.135718584060669
+          ],
+          "socketWorld": [
+            -0.2758999466896057,
+            0.8049999475479126,
+            -2.0734972953796387
+          ],
+          "gripWorld": [
+            -0.2758999466896057,
+            0.8049999475479126,
+            -2.0734972953796387
+          ],
+          "mugUp": [
+            0.24976854026317596,
+            7.59612603928872e-08,
+            0.9683056473731995,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.26,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": true,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            1.5252305269241333,
+            0.8899999856948853,
+            -2.1438236236572266
+          ],
+          "socketWorld": [
+            1.5415102243423462,
+            0.8049999475479126,
+            -2.081920862197876
+          ],
+          "gripWorld": [
+            1.5415102243423462,
+            0.8049999475479126,
+            -2.081920862197876
+          ],
+          "mugUp": [
+            0.26941847801208496,
+            7.59612603928872e-08,
+            0.9630231857299805,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.39,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": true,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            3.1326770782470703,
+            0.8899999856948853,
+            -2.0517759323120117
+          ],
+          "socketWorld": [
+            3.1343865394592285,
+            0.8049999475479126,
+            -1.9877910614013672
+          ],
+          "gripWorld": [
+            3.1343865394592285,
+            0.8049999475479126,
+            -1.9877910614013672
+          ],
+          "mugUp": [
+            0.04232325032353401,
+            7.59612603928872e-08,
+            0.9991040825843811,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.52,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": true,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -2.5189692974090576,
+            0.8899999856948853,
+            0.1522444486618042
+          ],
+          "socketWorld": [
+            -2.5343496799468994,
+            0.8049999475479126,
+            0.21437683701515198
+          ],
+          "gripWorld": [
+            -2.5343496799468994,
+            0.8049999475479126,
+            0.21437683701515198
+          ],
+          "mugUp": [
+            -0.22509534657001495,
+            7.59612603928872e-08,
+            0.9743367433547974,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.65,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": true,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -0.7794057726860046,
+            0.8899999856948853,
+            0.1744004487991333
+          ],
+          "socketWorld": [
+            -0.7985231280326843,
+            0.8049999475479126,
+            0.23548659682273865
+          ],
+          "gripWorld": [
+            -0.7985231280326843,
+            0.8049999475479126,
+            0.23548659682273865
+          ],
+          "mugUp": [
+            -0.28372591733932495,
+            7.59612603928872e-08,
+            0.9589053988456726,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.78,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": true,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            1.2183167934417725,
+            0.8899999856948853,
+            0.0978437140583992
+          ],
+          "socketWorld": [
+            1.2119617462158203,
+            0.8049999475479126,
+            0.16153520345687866
+          ],
+          "gripWorld": [
+            1.2119617462158203,
+            0.8049999475479126,
+            0.16153520345687866
+          ],
+          "mugUp": [
+            -0.08372662216424942,
+            7.59612603928872e-08,
+            0.9964887499809265,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.91,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": true,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            3.26432728767395,
+            0.8899999856948853,
+            -0.013608246110379696
+          ],
+          "socketWorld": [
+            3.275879144668579,
+            0.8049999475479126,
+            0.04934844374656677
+          ],
+          "gripWorld": [
+            3.275879144668579,
+            0.8049999475479126,
+            0.04934844374656677
+          ],
+          "mugUp": [
+            0.19582228362560272,
+            7.59612603928872e-08,
+            0.9806395173072815,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.040000000000000036,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": true,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -2.0559213161468506,
+            0.8899999856948853,
+            2.046632766723633
+          ],
+          "socketWorld": [
+            -2.0381596088409424,
+            0.8049999475479126,
+            2.1081268787384033
+          ],
+          "gripWorld": [
+            -2.0381596088409424,
+            0.8049999475479126,
+            2.1081268787384033
+          ],
+          "mugUp": [
+            0.2924686670303345,
+            7.59612603928872e-08,
+            0.9562752842903137,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.16999999999999993,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": true,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -0.396969735622406,
+            0.8899999856948853,
+            2.1157920360565186
+          ],
+          "socketWorld": [
+            -0.3900696337223053,
+            0.8049999475479126,
+            2.179426670074463
+          ],
+          "gripWorld": [
+            -0.3900696337223053,
+            0.8049999475479126,
+            2.179426670074463
+          ],
+          "mugUp": [
+            0.12332072108983994,
+            7.59612603928872e-08,
+            0.9923670887947083,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.30000000000000004,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": true,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            1.1431841850280762,
+            0.8899999856948853,
+            2.2283170223236084
+          ],
+          "socketWorld": [
+            1.131798505783081,
+            0.8049999475479126,
+            2.291304111480713
+          ],
+          "gripWorld": [
+            1.131798505783081,
+            0.8049999475479126,
+            2.291304111480713
+          ],
+          "mugUp": [
+            -0.16248288750648499,
+            7.59612603928872e-08,
+            0.9867116808891296,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.43000000000000016,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": true,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            2.808152198791504,
+            0.8899999856948853,
+            2.2788262367248535
+          ],
+          "socketWorld": [
+            2.7882838249206543,
+            0.8049999475479126,
+            2.339672327041626
+          ],
+          "gripWorld": [
+            2.7882838249206543,
+            0.8049999475479126,
+            2.339672327041626
+          ],
+          "mugUp": [
+            -0.29551753401756287,
+            7.59612603928872e-08,
+            0.9553374648094177,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        }
+      ],
+      "availableMotions": [
+        "Idle",
+        "Walk",
+        "Run",
+        "ZombieWalk",
+        "DanceStep",
+        "DanceDisco",
+        "DanceVictory",
+        "Toast",
+        "MugAttack"
+      ],
+      "propAsset": "assets/models/beer_mug.glb",
+      "count": 12,
+      "placedTriangles": 270432,
+      "sourceTextureSize": 4096,
+      "loadMs": 727,
+      "position": {
+        "x": 0.0,
+        "z": 0.0
+      },
+      "distanceM": 0.0,
+      "colliding": false,
+      "collisionFrames": 0,
+      "cameraFraction": 1.0,
+      "cameraYaw": 0.0,
+      "focusView": "body",
+      "backdrop": "studio",
+      "cameraDistance": 12.0,
+      "shadows": true,
+      "ao": false,
+      "renderScale": 0.5,
+      "paused": false,
+      "test": "未実行",
+      "testRunning": false,
+      "frameTimings": {
+        "samples": 0,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": null,
+        "rasterP95Ms": null
+      },
+      "buildMode": "profile",
+      "viewport": {
+        "logicalWidth": 924.0,
+        "logicalHeight": 691.0,
+        "devicePixelRatio": 2.0,
+        "renderWidth": 924,
+        "renderHeight": 691
+      },
+      "capturedAt": "2026-09-05T15:44:02.299008"
+    },
+    {
+      "case": "twelve-ao",
+      "valid": false,
+      "elapsedMs": 30485,
+      "ready": true,
+      "mode": "crowd",
+      "model": "assets/models/sobaya.glb",
+      "rigged": true,
+      "boneCount": 43,
+      "motion": {
+        "clip": "Walk",
+        "seconds": 0.0,
+        "duration": 1.0,
+        "playing": true,
+        "loop": true,
+        "speed": 1.0,
+        "mugVisible": false,
+        "beer": {
+          "fill": 1.0,
+          "slope": [
+            0.0,
+            0.0
+          ],
+          "detail": true,
+          "surfaceHeight": 0.18,
+          "morphs": {
+            "BeerVolume": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "LiquidSurface": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Foam": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "handWorld": [
+          -2.3050003051757812,
+          0.8899999856948853,
+          -2.0350000858306885
+        ],
+        "socketWorld": [
+          -2.306000232696533,
+          0.8049999475479126,
+          -1.9710001945495605
+        ],
+        "gripWorld": [
+          -2.306000232696533,
+          0.8049999475479126,
+          -1.97100031375885
+        ],
+        "mugUp": [
+          -1.033612235801229e-07,
+          7.59612603928872e-08,
+          1.0000001192092896,
+          0.0
+        ],
+        "weights": {
+          "Idle": 0.0,
+          "Walk": 1.0,
+          "Run": 0.0,
+          "ZombieWalk": 0.0,
+          "DanceStep": 0.0,
+          "DanceDisco": 0.0,
+          "DanceVictory": 0.0,
+          "Toast": 0.0,
+          "MugAttack": 0.0
+        }
+      },
+      "actorMotions": [
+        {
+          "clip": "Walk",
+          "seconds": 0.0,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": true,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -2.3050003051757812,
+            0.8899999856948853,
+            -2.0350000858306885
+          ],
+          "socketWorld": [
+            -2.306000232696533,
+            0.8049999475479126,
+            -1.9710001945495605
+          ],
+          "gripWorld": [
+            -2.306000232696533,
+            0.8049999475479126,
+            -1.97100031375885
+          ],
+          "mugUp": [
+            -1.033612235801229e-07,
+            7.59612603928872e-08,
+            1.0000001192092896,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.13,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": true,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -0.29091677069664,
+            0.8899999856948853,
+            -2.135718584060669
+          ],
+          "socketWorld": [
+            -0.2758999466896057,
+            0.8049999475479126,
+            -2.0734972953796387
+          ],
+          "gripWorld": [
+            -0.2758999466896057,
+            0.8049999475479126,
+            -2.0734972953796387
+          ],
+          "mugUp": [
+            0.24976854026317596,
+            7.59612603928872e-08,
+            0.9683056473731995,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.26,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": true,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            1.5252305269241333,
+            0.8899999856948853,
+            -2.1438236236572266
+          ],
+          "socketWorld": [
+            1.5415102243423462,
+            0.8049999475479126,
+            -2.081920862197876
+          ],
+          "gripWorld": [
+            1.5415102243423462,
+            0.8049999475479126,
+            -2.081920862197876
+          ],
+          "mugUp": [
+            0.26941847801208496,
+            7.59612603928872e-08,
+            0.9630231857299805,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.39,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": true,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            3.1326770782470703,
+            0.8899999856948853,
+            -2.0517759323120117
+          ],
+          "socketWorld": [
+            3.1343865394592285,
+            0.8049999475479126,
+            -1.9877910614013672
+          ],
+          "gripWorld": [
+            3.1343865394592285,
+            0.8049999475479126,
+            -1.9877910614013672
+          ],
+          "mugUp": [
+            0.04232325032353401,
+            7.59612603928872e-08,
+            0.9991040825843811,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.52,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": true,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -2.5189692974090576,
+            0.8899999856948853,
+            0.1522444486618042
+          ],
+          "socketWorld": [
+            -2.5343496799468994,
+            0.8049999475479126,
+            0.21437683701515198
+          ],
+          "gripWorld": [
+            -2.5343496799468994,
+            0.8049999475479126,
+            0.21437683701515198
+          ],
+          "mugUp": [
+            -0.22509534657001495,
+            7.59612603928872e-08,
+            0.9743367433547974,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.65,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": true,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -0.7794057726860046,
+            0.8899999856948853,
+            0.1744004487991333
+          ],
+          "socketWorld": [
+            -0.7985231280326843,
+            0.8049999475479126,
+            0.23548659682273865
+          ],
+          "gripWorld": [
+            -0.7985231280326843,
+            0.8049999475479126,
+            0.23548659682273865
+          ],
+          "mugUp": [
+            -0.28372591733932495,
+            7.59612603928872e-08,
+            0.9589053988456726,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.78,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": true,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            1.2183167934417725,
+            0.8899999856948853,
+            0.0978437140583992
+          ],
+          "socketWorld": [
+            1.2119617462158203,
+            0.8049999475479126,
+            0.16153520345687866
+          ],
+          "gripWorld": [
+            1.2119617462158203,
+            0.8049999475479126,
+            0.16153520345687866
+          ],
+          "mugUp": [
+            -0.08372662216424942,
+            7.59612603928872e-08,
+            0.9964887499809265,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.91,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": true,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            3.26432728767395,
+            0.8899999856948853,
+            -0.013608246110379696
+          ],
+          "socketWorld": [
+            3.275879144668579,
+            0.8049999475479126,
+            0.04934844374656677
+          ],
+          "gripWorld": [
+            3.275879144668579,
+            0.8049999475479126,
+            0.04934844374656677
+          ],
+          "mugUp": [
+            0.19582228362560272,
+            7.59612603928872e-08,
+            0.9806395173072815,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.040000000000000036,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": true,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -2.0559213161468506,
+            0.8899999856948853,
+            2.046632766723633
+          ],
+          "socketWorld": [
+            -2.0381596088409424,
+            0.8049999475479126,
+            2.1081268787384033
+          ],
+          "gripWorld": [
+            -2.0381596088409424,
+            0.8049999475479126,
+            2.1081268787384033
+          ],
+          "mugUp": [
+            0.2924686670303345,
+            7.59612603928872e-08,
+            0.9562752842903137,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.16999999999999993,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": true,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -0.396969735622406,
+            0.8899999856948853,
+            2.1157920360565186
+          ],
+          "socketWorld": [
+            -0.3900696337223053,
+            0.8049999475479126,
+            2.179426670074463
+          ],
+          "gripWorld": [
+            -0.3900696337223053,
+            0.8049999475479126,
+            2.179426670074463
+          ],
+          "mugUp": [
+            0.12332072108983994,
+            7.59612603928872e-08,
+            0.9923670887947083,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.30000000000000004,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": true,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            1.1431841850280762,
+            0.8899999856948853,
+            2.2283170223236084
+          ],
+          "socketWorld": [
+            1.131798505783081,
+            0.8049999475479126,
+            2.291304111480713
+          ],
+          "gripWorld": [
+            1.131798505783081,
+            0.8049999475479126,
+            2.291304111480713
+          ],
+          "mugUp": [
+            -0.16248288750648499,
+            7.59612603928872e-08,
+            0.9867116808891296,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Walk",
+          "seconds": 0.43000000000000016,
+          "duration": 1.0,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": false,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": true,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            2.808152198791504,
+            0.8899999856948853,
+            2.2788262367248535
+          ],
+          "socketWorld": [
+            2.7882838249206543,
+            0.8049999475479126,
+            2.339672327041626
+          ],
+          "gripWorld": [
+            2.7882838249206543,
+            0.8049999475479126,
+            2.339672327041626
+          ],
+          "mugUp": [
+            -0.29551753401756287,
+            7.59612603928872e-08,
+            0.9553374648094177,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 1.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.0,
+            "MugAttack": 0.0
+          }
+        }
+      ],
+      "availableMotions": [
+        "Idle",
+        "Walk",
+        "Run",
+        "ZombieWalk",
+        "DanceStep",
+        "DanceDisco",
+        "DanceVictory",
+        "Toast",
+        "MugAttack"
+      ],
+      "propAsset": "assets/models/beer_mug.glb",
+      "count": 12,
+      "placedTriangles": 270432,
+      "sourceTextureSize": 4096,
+      "loadMs": 727,
+      "position": {
+        "x": 0.0,
+        "z": 0.0
+      },
+      "distanceM": 0.0,
+      "colliding": false,
+      "collisionFrames": 0,
+      "cameraFraction": 1.0,
+      "cameraYaw": 0.0,
+      "focusView": "body",
+      "backdrop": "studio",
+      "cameraDistance": 12.0,
+      "shadows": true,
+      "ao": true,
+      "renderScale": 1.0,
+      "paused": false,
+      "test": "未実行",
+      "testRunning": false,
+      "frameTimings": {
+        "samples": 0,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": null,
+        "rasterP95Ms": null
+      },
+      "buildMode": "profile",
+      "viewport": {
+        "logicalWidth": 924.0,
+        "logicalHeight": 691.0,
+        "devicePixelRatio": 2.0,
+        "renderWidth": 1848,
+        "renderHeight": 1382
+      },
+      "capturedAt": "2026-09-05T15:44:32.799633"
+    },
+    {
+      "case": "mug-close",
+      "valid": false,
+      "elapsedMs": 30491,
+      "ready": true,
+      "mode": "model",
+      "model": "assets/models/sobaya.glb",
+      "rigged": true,
+      "boneCount": 43,
+      "motion": {
+        "clip": "Toast",
+        "seconds": 0.0,
+        "duration": 2.5999999046325684,
+        "playing": true,
+        "loop": true,
+        "speed": 1.0,
+        "mugVisible": true,
+        "beer": {
+          "fill": 1.0,
+          "slope": [
+            0.0,
+            0.0
+          ],
+          "detail": true,
+          "surfaceHeight": 0.18,
+          "morphs": {
+            "BeerVolume": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "LiquidSurface": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Foam": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "handWorld": [
+          0.39499983191490173,
+          0.8899999856948853,
+          0.06499999016523361
+        ],
+        "socketWorld": [
+          0.39399978518486023,
+          0.8049999475479126,
+          0.12899993360042572
+        ],
+        "gripWorld": [
+          0.39399978518486023,
+          0.8049999475479126,
+          0.12899993360042572
+        ],
+        "mugUp": [
+          -1.033612235801229e-07,
+          7.59612603928872e-08,
+          1.0000001192092896,
+          0.0
+        ],
+        "weights": {
+          "Idle": 0.0,
+          "Walk": 0.0,
+          "Run": 0.0,
+          "ZombieWalk": 0.0,
+          "DanceStep": 0.0,
+          "DanceDisco": 0.0,
+          "DanceVictory": 0.0,
+          "Toast": 1.0,
+          "MugAttack": 0.0
+        }
+      },
+      "actorMotions": [
+        {
+          "clip": "Toast",
+          "seconds": 0.0,
+          "duration": 2.5999999046325684,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": true,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0,
+              0.0
+            ],
+            "detail": true,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Foam": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            0.39499983191490173,
+            0.8899999856948853,
+            0.06499999016523361
+          ],
+          "socketWorld": [
+            0.39399978518486023,
+            0.8049999475479126,
+            0.12899993360042572
+          ],
+          "gripWorld": [
+            0.39399978518486023,
+            0.8049999475479126,
+            0.12899993360042572
+          ],
+          "mugUp": [
+            -1.033612235801229e-07,
+            7.59612603928872e-08,
+            1.0000001192092896,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 0.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 1.0,
+            "MugAttack": 0.0
+          }
+        }
+      ],
+      "availableMotions": [
+        "Idle",
+        "Walk",
+        "Run",
+        "ZombieWalk",
+        "DanceStep",
+        "DanceDisco",
+        "DanceVictory",
+        "Toast",
+        "MugAttack"
+      ],
+      "propAsset": "assets/models/beer_mug.glb",
+      "count": 1,
+      "placedTriangles": 30812,
+      "sourceTextureSize": 4096,
+      "loadMs": 727,
+      "position": {
+        "x": 0.0,
+        "z": 0.0
+      },
+      "distanceM": 0.0,
+      "colliding": false,
+      "collisionFrames": 0,
+      "cameraFraction": 1.0,
+      "cameraYaw": 0.0,
+      "focusView": "grip",
+      "backdrop": "studio",
+      "cameraDistance": 0.7,
+      "shadows": true,
+      "ao": false,
+      "renderScale": 1.0,
+      "paused": false,
+      "test": "未実行",
+      "testRunning": false,
+      "frameTimings": {
+        "samples": 0,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": null,
+        "rasterP95Ms": null
+      },
+      "buildMode": "profile",
+      "viewport": {
+        "logicalWidth": 924.0,
+        "logicalHeight": 691.0,
+        "devicePixelRatio": 2.0,
+        "renderWidth": 1848,
+        "renderHeight": 1382
+      },
+      "capturedAt": "2026-09-05T15:45:03.296525"
+    },
+    {
+      "case": "mugs-four",
+      "valid": false,
+      "elapsedMs": 30014,
+      "ready": true,
+      "mode": "crowd",
+      "model": "assets/models/sobaya.glb",
+      "rigged": true,
+      "boneCount": 43,
+      "motion": {
+        "clip": "Toast",
+        "seconds": 1.1200053405761707,
+        "duration": 2.5999999046325684,
+        "playing": true,
+        "loop": true,
+        "speed": 1.0,
+        "mugVisible": true,
+        "beer": {
+          "fill": 1.0,
+          "slope": [
+            -0.031715027987957,
+            -0.2038974016904831
+          ],
+          "detail": false,
+          "surfaceHeight": 0.18,
+          "morphs": {
+            "BeerVolume": [
+              -0.06765872985124588,
+              -0.4349811375141144,
+              0.0
+            ],
+            "LiquidSurface": [
+              -0.06765872985124588,
+              -0.4349811375141144,
+              0.0
+            ],
+            "Foam": [
+              -0.06765872985124588,
+              -0.4349811375141144,
+              0.0
+            ]
+          }
+        },
+        "handWorld": [
+          -0.4584117829799652,
+          0.9238568544387817,
+          -0.9242082238197327
+        ],
+        "socketWorld": [
+          -0.4322541356086731,
+          0.8677785992622375,
+          -0.8404741883277893
+        ],
+        "gripWorld": [
+          -0.4322541356086731,
+          0.8677785992622375,
+          -0.8404741883277893
+        ],
+        "mugUp": [
+          0.11449901014566422,
+          0.2295866459608078,
+          0.9665302634239197,
+          0.0
+        ],
+        "weights": {
+          "Idle": 0.0,
+          "Walk": 0.8113854595336076,
+          "Run": 0.0,
+          "ZombieWalk": 0.0,
+          "DanceStep": 0.0,
+          "DanceDisco": 0.0,
+          "DanceVictory": 0.0,
+          "Toast": 0.18861454046639237,
+          "MugAttack": 0.0
+        }
+      },
+      "actorMotions": [
+        {
+          "clip": "Toast",
+          "seconds": 1.1200053405761707,
+          "duration": 2.5999999046325684,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": true,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              -0.031715027987957,
+              -0.2038974016904831
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                -0.06765872985124588,
+                -0.4349811375141144,
+                0.0
+              ],
+              "LiquidSurface": [
+                -0.06765872985124588,
+                -0.4349811375141144,
+                0.0
+              ],
+              "Foam": [
+                -0.06765872985124588,
+                -0.4349811375141144,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -0.4584117829799652,
+            0.9238568544387817,
+            -0.9242082238197327
+          ],
+          "socketWorld": [
+            -0.4322541356086731,
+            0.8677785992622375,
+            -0.8404741883277893
+          ],
+          "gripWorld": [
+            -0.4322541356086731,
+            0.8677785992622375,
+            -0.8404741883277893
+          ],
+          "mugUp": [
+            0.11449901014566422,
+            0.2295866459608078,
+            0.9665302634239197,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 0.8113854595336076,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.18861454046639237,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Toast",
+          "seconds": 1.1200053405761707,
+          "duration": 2.5999999046325684,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": true,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              -0.03197886794805527,
+              -0.2038561850786209
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                -0.06822158396244049,
+                -0.4348931908607483,
+                0.0
+              ],
+              "LiquidSurface": [
+                -0.06822158396244049,
+                -0.4348931908607483,
+                0.0
+              ],
+              "Foam": [
+                -0.06822158396244049,
+                -0.4348931908607483,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            1.5688751935958862,
+            0.9323160648345947,
+            -1.0126533508300781
+          ],
+          "socketWorld": [
+            1.6144245862960815,
+            0.8782840371131897,
+            -0.93619304895401
+          ],
+          "gripWorld": [
+            1.6144245862960815,
+            0.8782840371131897,
+            -0.93619304895401
+          ],
+          "mugUp": [
+            0.3373812139034271,
+            0.25266575813293457,
+            0.9068267941474915,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 0.8113854595336076,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.18861454046639237,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Toast",
+          "seconds": 1.1200053405761707,
+          "duration": 2.5999999046325684,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": true,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              -0.03298798203468323,
+              -0.20369532704353333
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                -0.07037436217069626,
+                -0.434550017118454,
+                0.0
+              ],
+              "LiquidSurface": [
+                -0.07037436217069626,
+                -0.434550017118454,
+                0.0
+              ],
+              "Foam": [
+                -0.07037436217069626,
+                -0.434550017118454,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -0.20851491391658783,
+            0.9647918343544006,
+            1.1639925241470337
+          ],
+          "socketWorld": [
+            -0.16398538649082184,
+            0.9191164970397949,
+            1.2462801933288574
+          ],
+          "gripWorld": [
+            -0.16398538649082184,
+            0.9191164970397949,
+            1.2462801933288574
+          ],
+          "mugUp": [
+            0.3025772273540497,
+            0.34211042523384094,
+            0.8896114826202393,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 0.8113854595336076,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.18861454046639237,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Toast",
+          "seconds": 1.1200053405761707,
+          "duration": 2.5999999046325684,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": true,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              -0.03408549726009369,
+              -0.20351456105709076
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                -0.07271572947502136,
+                -0.4341644048690796,
+                0.0
+              ],
+              "LiquidSurface": [
+                -0.07271572947502136,
+                -0.4341644048690796,
+                0.0
+              ],
+              "Foam": [
+                -0.07271572947502136,
+                -0.4341644048690796,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            1.3429999351501465,
+            0.9990694522857666,
+            1.359710454940796
+          ],
+          "socketWorld": [
+            1.3628445863723755,
+            0.9632112383842468,
+            1.455422282218933
+          ],
+          "gripWorld": [
+            1.3628445863723755,
+            0.9632112383842468,
+            1.455422282218933
+          ],
+          "mugUp": [
+            0.042849671095609665,
+            0.43845483660697937,
+            0.8977317214012146,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 0.8113854595336076,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 0.18861454046639237,
+            "MugAttack": 0.0
+          }
+        }
+      ],
+      "availableMotions": [
+        "Idle",
+        "Walk",
+        "Run",
+        "ZombieWalk",
+        "DanceStep",
+        "DanceDisco",
+        "DanceVictory",
+        "Toast",
+        "MugAttack"
+      ],
+      "propAsset": "assets/models/beer_mug.glb",
+      "count": 4,
+      "placedTriangles": 123248,
+      "sourceTextureSize": 4096,
+      "loadMs": 727,
+      "position": {
+        "x": 0.0,
+        "z": 0.0
+      },
+      "distanceM": 0.0,
+      "colliding": false,
+      "collisionFrames": 0,
+      "cameraFraction": 1.0,
+      "cameraYaw": 0.0,
+      "focusView": "body",
+      "backdrop": "studio",
+      "cameraDistance": 12.0,
+      "shadows": true,
+      "ao": false,
+      "renderScale": 1.0,
+      "paused": false,
+      "test": "未実行",
+      "testRunning": false,
+      "frameTimings": {
+        "samples": 0,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": null,
+        "rasterP95Ms": null
+      },
+      "buildMode": "profile",
+      "viewport": {
+        "logicalWidth": 924.0,
+        "logicalHeight": 691.0,
+        "devicePixelRatio": 2.0,
+        "renderWidth": 1848,
+        "renderHeight": 1382
+      },
+      "capturedAt": "2026-09-05T15:45:33.319384"
+    },
+    {
+      "case": "mugs-twelve",
+      "valid": true,
+      "elapsedMs": 8464,
+      "ready": true,
+      "mode": "crowd",
+      "model": "assets/models/sobaya.glb",
+      "rigged": true,
+      "boneCount": 43,
+      "motion": {
+        "clip": "Toast",
+        "seconds": 2.0020002861022803,
+        "duration": 2.5999999046325684,
+        "playing": true,
+        "loop": true,
+        "speed": 1.0,
+        "mugVisible": true,
+        "beer": {
+          "fill": 1.0,
+          "slope": [
+            0.04536530002951622,
+            -0.11983627080917358
+          ],
+          "detail": false,
+          "surfaceHeight": 0.18,
+          "morphs": {
+            "BeerVolume": [
+              0.09677930921316147,
+              -0.25565069913864136,
+              0.0
+            ],
+            "LiquidSurface": [
+              0.09677930921316147,
+              -0.25565069913864136,
+              0.0
+            ],
+            "Foam": [
+              0.09677930921316147,
+              -0.25565069913864136,
+              0.0
+            ]
+          }
+        },
+        "handWorld": [
+          -2.1659111976623535,
+          1.4056137800216675,
+          -1.6364550590515137
+        ],
+        "socketWorld": [
+          -2.1289892196655273,
+          1.4430466890335083,
+          -1.553741455078125
+        ],
+        "gripWorld": [
+          -2.1289892196655273,
+          1.4430466890335083,
+          -1.553741455078125
+        ],
+        "mugUp": [
+          -0.069227434694767,
+          0.9975560307502747,
+          -0.00949336402118206,
+          0.0
+        ],
+        "weights": {
+          "Idle": 0.0,
+          "Walk": 0.0,
+          "Run": 0.0,
+          "ZombieWalk": 0.0,
+          "DanceStep": 0.0,
+          "DanceDisco": 0.0,
+          "DanceVictory": 0.0,
+          "Toast": 1.0,
+          "MugAttack": 0.0
+        }
+      },
+      "actorMotions": [
+        {
+          "clip": "Toast",
+          "seconds": 2.0020002861022803,
+          "duration": 2.5999999046325684,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": true,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.04536530002951622,
+              -0.11983627080917358
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.09677930921316147,
+                -0.25565069913864136,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.09677930921316147,
+                -0.25565069913864136,
+                0.0
+              ],
+              "Foam": [
+                0.09677930921316147,
+                -0.25565069913864136,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -2.1659111976623535,
+            1.4056137800216675,
+            -1.6364550590515137
+          ],
+          "socketWorld": [
+            -2.1289892196655273,
+            1.4430466890335083,
+            -1.553741455078125
+          ],
+          "gripWorld": [
+            -2.1289892196655273,
+            1.4430466890335083,
+            -1.553741455078125
+          ],
+          "mugUp": [
+            -0.069227434694767,
+            0.9975560307502747,
+            -0.00949336402118206,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 0.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 1.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Toast",
+          "seconds": 2.0020002861022803,
+          "duration": 2.5999999046325684,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": true,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.042952001094818115,
+              -0.11627065390348434
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.09163093566894531,
+                -0.24804405868053436,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.09163093566894531,
+                -0.24804405868053436,
+                0.0
+              ],
+              "Foam": [
+                0.09163093566894531,
+                -0.24804405868053436,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -0.5789301991462708,
+            1.4056137800216675,
+            -1.6395155191421509
+          ],
+          "socketWorld": [
+            -0.5412537455558777,
+            1.4430466890335083,
+            -1.557142734527588
+          ],
+          "gripWorld": [
+            -0.5412537455558777,
+            1.4430466890335083,
+            -1.557142734527588
+          ],
+          "mugUp": [
+            -0.06931131333112717,
+            0.9975560307502747,
+            -0.008860241621732712,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 0.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 1.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Toast",
+          "seconds": 2.0020002861022803,
+          "duration": 2.5999999046325684,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": true,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.04029213264584541,
+              -0.11345592141151428
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.08595655113458633,
+                -0.242039293050766,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.08595655113458633,
+                -0.242039293050766,
+                0.0
+              ],
+              "Foam": [
+                0.08595655113458633,
+                -0.242039293050766,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            1.1207387447357178,
+            1.4056137800216675,
+            -1.735816240310669
+          ],
+          "socketWorld": [
+            1.177402377128601,
+            1.4430466890335083,
+            -1.6651479005813599
+          ],
+          "gripWorld": [
+            1.177402377128601,
+            1.4430466890335083,
+            -1.6651479005813599
+          ],
+          "mugUp": [
+            -0.06937507539987564,
+            0.9975560307502747,
+            0.008345967158675194,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 0.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 1.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Toast",
+          "seconds": 2.0020002861022803,
+          "duration": 2.5999999046325684,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": true,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.03896564990282059,
+              -0.11429648101329803
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.08312671631574631,
+                -0.24383249878883362,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.08312671631574631,
+                -0.24383249878883362,
+                0.0
+              ],
+              "Foam": [
+                0.08312671631574631,
+                -0.24383249878883362,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            2.99729585647583,
+            1.4056137800216675,
+            -1.8597537279129028
+          ],
+          "socketWorld": [
+            3.0700948238372803,
+            1.4430466890335083,
+            -1.8058547973632812
+          ],
+          "gripWorld": [
+            3.0700948238372803,
+            1.4430466890335083,
+            -1.8058547973632812
+          ],
+          "mugUp": [
+            -0.06495905667543411,
+            0.9975560307502747,
+            0.02574647031724453,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 0.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 1.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Toast",
+          "seconds": 2.0020002861022803,
+          "duration": 2.5999999046325684,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": true,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.04239034652709961,
+              -0.1169721931219101
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.09043274074792862,
+                -0.24954067170619965,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.09043274074792862,
+                -0.24954067170619965,
+                0.0
+              ],
+              "Foam": [
+                0.09043274074792862,
+                -0.24954067170619965,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -2.1946206092834473,
+            1.4056137800216675,
+            0.2238132506608963
+          ],
+          "socketWorld": [
+            -2.1201589107513428,
+            1.4430466890335083,
+            0.27539071440696716
+          ],
+          "gripWorld": [
+            -2.1201589107513428,
+            1.4430466890335083,
+            0.27539071440696716
+          ],
+          "mugUp": [
+            -0.0641152560710907,
+            0.9975560307502747,
+            0.027781225740909576,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 0.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 1.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Toast",
+          "seconds": 2.0020002861022803,
+          "duration": 2.5999999046325684,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": true,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.04652392864227295,
+              -0.11977383494377136
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.09925104677677155,
+                -0.25551751255989075,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.09925104677677155,
+                -0.25551751255989075,
+                0.0
+              ],
+              "Foam": [
+                0.09925104677677155,
+                -0.25551751255989075,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -0.23861628770828247,
+            1.4056137800216675,
+            0.3346092700958252
+          ],
+          "socketWorld": [
+            -0.17744259536266327,
+            1.4430466890335083,
+            0.40141168236732483
+          ],
+          "gripWorld": [
+            -0.17744259536266327,
+            1.4430466890335083,
+            0.40141168236732483
+          ],
+          "mugUp": [
+            -0.06867887824773788,
+            0.9975560307502747,
+            0.012875191867351532,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 0.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 1.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Toast",
+          "seconds": 2.0020002861022803,
+          "duration": 2.5999999046325684,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": true,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.04605922847986221,
+              -0.12039206176996231
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.09825968742370605,
+                -0.2568363845348358,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.09825968742370605,
+                -0.2568363845348358,
+                0.0
+              ],
+              "Foam": [
+                0.09825968742370605,
+                -0.2568363845348358,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            1.4895471334457397,
+            1.4056137800216675,
+            0.44687119126319885
+          ],
+          "socketWorld": [
+            1.5304352045059204,
+            1.4430466890335083,
+            0.5276978015899658
+          ],
+          "gripWorld": [
+            1.5304352045059204,
+            1.4430466890335083,
+            0.5276978015899658
+          ],
+          "mugUp": [
+            -0.06960619986057281,
+            0.9975560307502747,
+            -0.00612641591578722,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 0.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 1.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Toast",
+          "seconds": 2.0020002861022803,
+          "duration": 2.5999999046325684,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": true,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.04360334575176239,
+              -0.11739441752433777
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.0930204689502716,
+                -0.25044143199920654,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.0930204689502716,
+                -0.25044143199920654,
+                0.0
+              ],
+              "Foam": [
+                0.0930204689502716,
+                -0.25044143199920654,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            3.0764129161834717,
+            1.4056137800216675,
+            0.4710954427719116
+          ],
+          "socketWorld": [
+            3.111417531967163,
+            1.4430466890335083,
+            0.5546386241912842
+          ],
+          "gripWorld": [
+            3.111417531967163,
+            1.4430466890335083,
+            0.5546386241912842
+          ],
+          "mugUp": [
+            -0.06899003684520721,
+            0.9975560307502747,
+            -0.011087440885603428,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 0.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 1.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Toast",
+          "seconds": 2.0020002861022803,
+          "duration": 2.5999999046325684,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": true,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.0410986952483654,
+              -0.1139352098107338
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.08767721801996231,
+                -0.24306178092956543,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.08767721801996231,
+                -0.24306178092956543,
+                0.0
+              ],
+              "Foam": [
+                0.08767721801996231,
+                -0.24306178092956543,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -2.468447208404541,
+            1.4056137800216675,
+            2.49946665763855
+          ],
+          "socketWorld": [
+            -2.4178595542907715,
+            1.4430466890335083,
+            2.5746042728424072
+          ],
+          "gripWorld": [
+            -2.4178595542907715,
+            1.4430466890335083,
+            2.5746042728424072
+          ],
+          "mugUp": [
+            -0.06982896476984024,
+            0.9975560307502747,
+            0.002545132301747799,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 0.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 1.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Toast",
+          "seconds": 2.0020002861022803,
+          "duration": 2.5999999046325684,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": true,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.03891158476471901,
+              -0.11372978240251541
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.08301138132810593,
+                -0.24262353777885437,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.08301138132810593,
+                -0.24262353777885437,
+                0.0
+              ],
+              "Foam": [
+                0.08301138132810593,
+                -0.24262353777885437,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            -0.6417200565338135,
+            1.4056137800216675,
+            2.369744300842285
+          ],
+          "socketWorld": [
+            -0.5721564292907715,
+            1.4430466890335083,
+            2.4277589321136475
+          ],
+          "gripWorld": [
+            -0.5721564292907715,
+            1.4430466890335083,
+            2.4277589321136475
+          ],
+          "mugUp": [
+            -0.0663379356265068,
+            0.9975560307502747,
+            0.021950731053948402,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 0.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 1.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Toast",
+          "seconds": 2.0020002861022803,
+          "duration": 2.5999999046325684,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": true,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.04102674499154091,
+              -0.11616494506597519
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.08752372115850449,
+                -0.24781854450702667,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.08752372115850449,
+                -0.24781854450702667,
+                0.0
+              ],
+              "Foam": [
+                0.08752372115850449,
+                -0.24781854450702667,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            1.3410627841949463,
+            1.4056137800216675,
+            2.312830686569214
+          ],
+          "socketWorld": [
+            1.4165828227996826,
+            1.4430466890335083,
+            2.3628458976745605
+          ],
+          "gripWorld": [
+            1.4165828227996826,
+            1.4430466890335083,
+            2.3628458976745605
+          ],
+          "mugUp": [
+            -0.06352262198925018,
+            0.9975560307502747,
+            0.029110770672559738,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 0.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 1.0,
+            "MugAttack": 0.0
+          }
+        },
+        {
+          "clip": "Toast",
+          "seconds": 2.0020002861022803,
+          "duration": 2.5999999046325684,
+          "playing": true,
+          "loop": true,
+          "speed": 1.0,
+          "mugVisible": true,
+          "beer": {
+            "fill": 1.0,
+            "slope": [
+              0.04572194069623947,
+              -0.11905118077993393
+            ],
+            "detail": false,
+            "surfaceHeight": 0.18,
+            "morphs": {
+              "BeerVolume": [
+                0.09754014015197754,
+                -0.25397583842277527,
+                0.0
+              ],
+              "LiquidSurface": [
+                0.09754014015197754,
+                -0.25397583842277527,
+                0.0
+              ],
+              "Foam": [
+                0.09754014015197754,
+                -0.25397583842277527,
+                0.0
+              ]
+            }
+          },
+          "handWorld": [
+            3.3365955352783203,
+            1.4056137800216675,
+            2.3964500427246094
+          ],
+          "socketWorld": [
+            3.4029314517974854,
+            1.4430466890335083,
+            2.4581291675567627
+          ],
+          "gripWorld": [
+            3.4029314517974854,
+            1.4430466890335083,
+            2.4581291675567627
+          ],
+          "mugUp": [
+            -0.06742455065250397,
+            0.9975560307502747,
+            0.018343709409236908,
+            0.0
+          ],
+          "weights": {
+            "Idle": 0.0,
+            "Walk": 0.0,
+            "Run": 0.0,
+            "ZombieWalk": 0.0,
+            "DanceStep": 0.0,
+            "DanceDisco": 0.0,
+            "DanceVictory": 0.0,
+            "Toast": 1.0,
+            "MugAttack": 0.0
+          }
+        }
+      ],
+      "availableMotions": [
+        "Idle",
+        "Walk",
+        "Run",
+        "ZombieWalk",
+        "DanceStep",
+        "DanceDisco",
+        "DanceVictory",
+        "Toast",
+        "MugAttack"
+      ],
+      "propAsset": "assets/models/beer_mug.glb",
+      "count": 12,
+      "placedTriangles": 369744,
+      "sourceTextureSize": 4096,
+      "loadMs": 727,
+      "position": {
+        "x": 0.0,
+        "z": 0.0
+      },
+      "distanceM": 0.0,
+      "colliding": false,
+      "collisionFrames": 0,
+      "cameraFraction": 1.0,
+      "cameraYaw": 0.0,
+      "focusView": "body",
+      "backdrop": "studio",
+      "cameraDistance": 12.0,
+      "shadows": true,
+      "ao": false,
+      "renderScale": 1.0,
+      "paused": false,
+      "test": "未実行",
+      "testRunning": false,
+      "frameTimings": {
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 17.467,
+        "rasterP95Ms": 3.075
+      },
+      "buildMode": "profile",
+      "viewport": {
+        "logicalWidth": 924.0,
+        "logicalHeight": 691.0,
+        "devicePixelRatio": 2.0,
+        "renderWidth": 1848,
+        "renderHeight": 1382
+      },
+      "capturedAt": "2026-09-05T15:45:41.797812"
+    }
+  ],
+  "asset_revision": "Intermediate before final hand subdivision; not final rig_v2 performance",
+  "body_triangles": 22536
+}

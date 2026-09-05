@@ -154,14 +154,36 @@ void attachLabAutomation(LabController lab) {
     },
   );
   registerMarionetteExtension(
+    name: 'madogiwa.setBeerFill',
+    description: 'Set fill=0..1 for the reusable beer prop.',
+    callback: (p) async {
+      final l = _lab, fill = double.tryParse(p['fill'] ?? '');
+      if (l == null || !l.ready) {
+        return MarionetteExtensionResult.error(1, 'Not ready');
+      }
+      if (fill == null || !fill.isFinite || fill < 0 || fill > 1) {
+        return MarionetteExtensionResult.invalidParams('fill must be 0..1');
+      }
+      l.setBeerFill(fill);
+      final background = p['background'];
+      if (background != null &&
+          ['studio', 'dark', 'light', 'pattern'].contains(background)) {
+        l.setBackdrop(background);
+      }
+      await SchedulerBinding.instance.endOfFrame;
+      await SchedulerBinding.instance.endOfFrame;
+      return MarionetteExtensionResult.success(l.inspect());
+    },
+  );
+  registerMarionetteExtension(
     name: 'madogiwa.setLabView',
-    description: 'Set view=front|side|back.',
+    description: 'Set view=front|side|back|face|grip.',
     callback: (p) async {
       final l = _lab, v = p['view'];
       if (l == null || !l.ready) {
         return MarionetteExtensionResult.error(1, 'Not ready');
       }
-      if (!['front', 'side', 'back'].contains(v)) {
+      if (!['front', 'side', 'back', 'face', 'grip'].contains(v)) {
         return MarionetteExtensionResult.invalidParams('Invalid view');
       }
       l.setView('$v');

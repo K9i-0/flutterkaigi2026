@@ -1,0 +1,76 @@
+{
+  "source": "04_GAME_ASSETS/3d/characters/sobaya/tripo_p2_20260905/sobaya_source.blend",
+  "rig_version": 2,
+  "bone_count": 43,
+  "deform_bones": 41,
+  "weighted_vertices": 14789,
+  "triangles": 28576,
+  "max_vertex_influences": 4,
+  "socket": "PropSocket.R",
+  "root_motion": "in-place",
+  "clips": [
+    {
+      "name": "Idle",
+      "duration": 2.4,
+      "loop": true,
+      "fps": 30,
+      "prop": null
+    },
+    {
+      "name": "Walk",
+      "duration": 1.0,
+      "loop": true,
+      "fps": 30,
+      "prop": null
+    },
+    {
+      "name": "Run",
+      "duration": 0.7,
+      "loop": true,
+      "fps": 30,
+      "prop": null
+    },
+    {
+      "name": "ZombieWalk",
+      "duration": 1.8,
+      "loop": true,
+      "fps": 30,
+      "prop": null
+    },
+    {
+      "name": "DanceStep",
+      "duration": 2.0,
+      "loop": true,
+      "fps": 30,
+      "prop": null
+    },
+    {
+      "name": "DanceDisco",
+      "duration": 2.4,
+      "loop": true,
+      "fps": 30,
+      "prop": null
+    },
+    {
+      "name": "DanceVictory",
+      "duration": 2.0,
+      "loop": true,
+      "fps": 30,
+      "prop": null
+    },
+    {
+      "name": "Toast",
+      "duration": 2.6,
+      "loop": false,
+      "fps": 30,
+      "prop": "beer_mug"
+    },
+    {
+      "name": "MugAttack",
+      "duration": 1.4,
+      "loop": false,
+      "fps": 30,
+      "prop": "beer_mug"
+    }
+  ]
+}
