@@ -88,6 +88,14 @@ void attachGameAutomation(HazardGameController game) {
               'saving': _game!.saving,
               'status': _game!.saveStatus,
             },
+            'enemyMotions': _game!.enemies
+                .map(
+                  (a) => {
+                    'motion': a.current,
+                    'seconds': a.clips[a.current]!.playbackTime,
+                  },
+                )
+                .toList(),
             'enemyMugGripErrors': [
               for (var i = 0; i < _game!.enemyMugs.length; i++)
                 (_game!.enemyMugs[i]
@@ -131,6 +139,8 @@ void attachGameAutomation(HazardGameController game) {
         'gate',
         'stairs',
         'enemyStairs',
+        'ladder',
+        'enemyLadder',
         'farmEnemyStairs',
         'death',
         'npc',
@@ -279,6 +289,26 @@ void attachGameAutomation(HazardGameController game) {
           s.x = 11.5;
           s.z = 22;
           s.hasKey = true;
+        case 'ladder':
+          s.x = -13.5;
+          s.y = 0;
+          s.z = -9.1;
+          s.yaw = 3.141592653589793;
+          s.heading = 0;
+        case 'enemyLadder':
+          s.x = -13.5;
+          s.y = 4.22;
+          s.z = -6.5;
+          s.yaw = 0;
+          s.invulnerable = 100;
+          for (var i = 0; i < 2; i++) {
+            s.enemies[i]
+              ..active = true
+              ..alerted = true
+              ..x = -13.5 + i * .9
+              ..y = 0
+              ..z = -12;
+          }
         case 'enemyStairs':
         case 'farmEnemyStairs':
           final ramp = (s.map['ramps'] as List).first;
@@ -310,7 +340,8 @@ void attachGameAutomation(HazardGameController game) {
             ..x = 0
             ..z = -15.1;
       }
-      s.phase = ['bossCombat', 'mugTiming'].contains(name)
+      s.phase =
+          ['bossCombat', 'mugTiming', 'ladder', 'enemyLadder'].contains(name)
           ? PlayPhase.paused
           : PlayPhase.playing;
       final event = {
@@ -361,6 +392,7 @@ void attachGameAutomation(HazardGameController game) {
           s.seenEvents.addAll(['opening', 'farm', 'last_order', 'ending']);
           s.phase = PlayPhase.playing;
           s.stopInput();
+          s.climb = null;
           s.x = x;
           s.y = y;
           s.z = z;
@@ -370,7 +402,7 @@ void attachGameAutomation(HazardGameController game) {
           s.aiming = false;
           s.toastTime = 0;
           for (final e in s.enemies) {
-            e.active = false;
+            if (p['keepEnemies'] != 'true') e.active = false;
           }
         case 'soundCue':
           final x = double.tryParse(p['x'] ?? '');

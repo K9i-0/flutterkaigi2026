@@ -1,4 +1,5 @@
 import 'game_state.dart';
+import 'game_ladder.dart';
 
 /// Progress is independent of the account-wide collection. Loading a checkpoint
 /// never removes images already collected on a later attempt.
@@ -16,6 +17,7 @@ extension HazardCheckpoint on HazardGameState {
       'yaw': yaw,
       'pitch': pitch,
       'heading': heading,
+      'climb': climb?.toJson(),
       'health': health,
       'maxHealth': maxHealth,
     },
@@ -58,6 +60,8 @@ extension HazardCheckpoint on HazardGameState {
             'y': e.y,
             'z': e.z,
             'heading': e.heading,
+            'climb': e.climb?.toJson(),
+            'fallingFromLadder': e.fallingFromLadder,
             'hp': e.hp,
             'alive': e.alive,
             'active': e.active,
@@ -118,6 +122,7 @@ HazardGameState restoreHazardCheckpoint(
   s.heading = number(p['heading'], -1e9, 1e9);
   s.maxHealth = number(p['maxHealth'], 100, 200);
   s.health = number(p['health'], .001, s.maxHealth);
+  s.climb = LadderTraversal.restore(p['climb'], s.ladder, s.x, s.y, s.z);
   s.weapon = data['weapon'] as String;
   require(['handgun', 'shotgun'].contains(s.weapon));
   s.pistolLoaded = integer(data['pistolLoaded'], 0, 10);
@@ -243,6 +248,10 @@ HazardGameState restoreHazardCheckpoint(
       ..cooldown = number(j['cooldown'], 0, 30)
       ..attackPending = j['attackPending'] as bool
       ..windup = number(j['windup'], -.051, 30);
+    e.climb = LadderTraversal.restore(j['climb'], s.ladder, e.x, e.y, e.z);
+    e.fallingFromLadder = j['fallingFromLadder'] as bool? ?? false;
+    require(e.climb == null || (e.alive && e.active && !e.boss));
+    require(!e.fallingFromLadder || (!e.alive && e.climb == null));
     e.meleeRecovery = number(
       j['meleeRecovery'] ?? 0,
       0,
@@ -275,7 +284,12 @@ HazardGameState restoreHazardCheckpoint(
     require(e.alive == (e.hp > 0) && (!e.dropped || !e.alive));
   }
   require(s.enemies.where((e) => !e.alive).length <= s.kills);
-  require(!s.blocked(s.x, s.z, s.y));
+  require(
+    s.enemies.where((e) => e.climb != null).length +
+            (s.climb == null ? 0 : 1) <=
+        1,
+  );
+  require(s.climb != null || !s.blocked(s.x, s.z, s.y));
   s.phase = PlayPhase.playing;
   s.invulnerable = .5;
   s.say('チェックポイントから探索を再開した。');

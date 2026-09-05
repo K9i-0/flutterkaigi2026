@@ -1,0 +1,798 @@
+{
+  "date": "2026-09-06",
+  "scope": "Mac debug ladder traversal and authored animation; not campaign completion or performance certification",
+  "tests": {
+    "flutter_test": 78,
+    "flutter_analyze": "No issues found"
+  },
+  "assets": {
+    "04_GAME_ASSETS/3d/characters/fukuchan/rig_v1/fukuchan.glb": "4ab25a431b98e5251479dc5600a8676f214aa581e3f44c2004a0426d75344197",
+    "04_GAME_ASSETS/3d/characters/sobaya/rig_v3/sobaya_rig.glb": "96c981a708183179cfcad12839cee2a6bdee2de16b829872b72915cb068dc557",
+    "04_GAME_ASSETS/3d/environments/pueblo/village.glb": "849d48bae42f0a28cc5de433d3bb889d80e61044b2311b3251a90be59e34a4ca",
+    "04_GAME_ASSETS/3d/environments/pueblo/village.json": "a7656fbec5d4a7d984b6df017d21d0f2ed7b32329560b78dc2a97b6ece4930ea"
+  },
+  "verified": [
+    "E starts continuous ascent/descent; Climb clip follows vertical distance",
+    "Escape freezes position and clip time; UI save/load preserves both player and enemy ladder state",
+    "Two enemies queue, climb, attack on the platform, descend and attack on the ground",
+    "Stopping input during a fall still lands on the ground",
+    "Unit: input guards, damage at lower entry, old save compatibility, invalid traversal rejection, one reachable beer after shooting a climbing enemy"
+  ],
+  "limitations": [
+    "Authored IK clip, not captured human ladder movement; exact finger contact and top/bottom transitions can be refined",
+    "Native scenarios explicitly place actors and isolate enemies; not proof of ordinary first-play difficulty or campaign duration",
+    "Enemy pursuit scenario starts temporarily invulnerable; melee state is inspected, bottom-entry damage verified separately by unit test",
+    "Native visual still review uses a relocated frozen camera/player (keepEnemies=true); the visible hovering player in that review is an inspection placement",
+    "No new Tripo request, no new credits consumed; gameplay performance not measured in this pass"
+  ],
+  "samples": {
+    "ladder-final-up-mid": {
+      "phase": "paused",
+      "position": {
+        "x": -13.5,
+        "y": 1.3416906999999991,
+        "z": -8.700000000000001
+      },
+      "climb": {
+        "up": true,
+        "startX": -13.5,
+        "startZ": -9.1,
+        "elapsed": 2.316700999999999
+      },
+      "health": 100.0,
+      "rendering": {
+        "continuous": false,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 188,
+        "simulationSeconds": 3.1667129999999974,
+        "playerClipSeconds": 0.9167009999999989
+      },
+      "motion": "Climb",
+      "enemyMotions": [
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        }
+      ],
+      "enemies": []
+    },
+    "ladder-final-paused-stable": {
+      "phase": "paused",
+      "position": {
+        "x": -13.5,
+        "y": 1.3416906999999991,
+        "z": -8.700000000000001
+      },
+      "climb": {
+        "up": true,
+        "startX": -13.5,
+        "startZ": -9.1,
+        "elapsed": 2.316700999999999
+      },
+      "health": 100.0,
+      "rendering": {
+        "continuous": false,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 189,
+        "simulationSeconds": 3.1667129999999974,
+        "playerClipSeconds": 0.9167009999999989
+      },
+      "motion": "Climb",
+      "enemyMotions": [
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        }
+      ],
+      "enemies": []
+    },
+    "ladder-final-restored": {
+      "phase": "paused",
+      "position": {
+        "x": -13.5,
+        "y": 1.3416906999999991,
+        "z": -8.700000000000001
+      },
+      "climb": {
+        "up": true,
+        "startX": -13.5,
+        "startZ": -9.1,
+        "elapsed": 2.316700999999999
+      },
+      "health": 100.0,
+      "rendering": {
+        "continuous": false,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 191,
+        "simulationSeconds": 3.1667129999999974,
+        "playerClipSeconds": 0.9167009999999989
+      },
+      "motion": "Climb",
+      "enemyMotions": [
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        }
+      ],
+      "enemies": []
+    },
+    "ladder-final-top": {
+      "phase": "paused",
+      "position": {
+        "x": -13.5,
+        "y": 4.22,
+        "z": -7.65
+      },
+      "climb": null,
+      "health": 100.0,
+      "rendering": {
+        "continuous": false,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 522,
+        "simulationSeconds": 8.733461999999992,
+        "playerClipSeconds": 0.8000119999999996
+      },
+      "motion": "Idle",
+      "enemyMotions": [
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        }
+      ],
+      "enemies": []
+    },
+    "ladder-final-down-mid": {
+      "phase": "paused",
+      "position": {
+        "x": -13.5,
+        "y": 3.123308600000001,
+        "z": -8.700000000000001
+      },
+      "climb": {
+        "up": false,
+        "startX": -13.5,
+        "startZ": -7.65,
+        "elapsed": 2.316701999999999
+      },
+      "health": 100.0,
+      "rendering": {
+        "continuous": false,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 723,
+        "simulationSeconds": 12.100178000000003,
+        "playerClipSeconds": 0.46186942857143
+      },
+      "motion": "Climb",
+      "enemyMotions": [
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        }
+      ],
+      "enemies": []
+    },
+    "ladder-final-bottom": {
+      "phase": "paused",
+      "position": {
+        "x": -13.5,
+        "y": 0.0,
+        "z": -9.100000000000001
+      },
+      "climb": null,
+      "health": 100.0,
+      "rendering": {
+        "continuous": false,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 1101,
+        "simulationSeconds": 18.366939000000254,
+        "playerClipSeconds": 1.1500179999999993
+      },
+      "motion": "Idle",
+      "enemyMotions": [
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        }
+      ],
+      "enemies": []
+    },
+    "ladder-final-enemy-mid": {
+      "phase": "paused",
+      "position": {
+        "x": -13.5,
+        "y": 4.22,
+        "z": -6.5
+      },
+      "climb": null,
+      "health": 100.0,
+      "rendering": {
+        "continuous": false,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 1527,
+        "simulationSeconds": 7.066772999999992,
+        "playerClipSeconds": 0.2167909999999969
+      },
+      "motion": "Idle",
+      "enemyMotions": [
+        {
+          "motion": "Idle",
+          "seconds": 2.183401904632566
+        },
+        {
+          "motion": "Climb",
+          "seconds": 0.48271374473311024
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        }
+      ],
+      "enemies": [
+        {
+          "id": 0,
+          "x": -14.659755186566544,
+          "y": 0.0,
+          "z": -10.464499763669568,
+          "climb": null,
+          "attackPending": false,
+          "meleeRecovery": 0.0
+        },
+        {
+          "id": 1,
+          "x": -13.5,
+          "y": 2.437899621313177,
+          "z": -8.700000000000001,
+          "climb": {
+            "up": true,
+            "startX": -13.710475444684262,
+            "startZ": -10.884189549486525,
+            "elapsed": 5.050075999999995
+          },
+          "attackPending": false,
+          "meleeRecovery": 0.0
+        }
+      ]
+    },
+    "ladder-final-enemy-restored": {
+      "phase": "paused",
+      "position": {
+        "x": -13.5,
+        "y": 4.22,
+        "z": -6.5
+      },
+      "climb": null,
+      "health": 100.0,
+      "rendering": {
+        "continuous": false,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 1530,
+        "simulationSeconds": 7.066772999999992,
+        "playerClipSeconds": 0.2167909999999969
+      },
+      "motion": "Idle",
+      "enemyMotions": [
+        {
+          "motion": "Idle",
+          "seconds": 2.183401904632566
+        },
+        {
+          "motion": "Climb",
+          "seconds": 0.48271374473311024
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        }
+      ],
+      "enemies": [
+        {
+          "id": 0,
+          "x": -14.659755186566544,
+          "y": 0.0,
+          "z": -10.464499763669568,
+          "climb": null,
+          "attackPending": false,
+          "meleeRecovery": 0.0
+        },
+        {
+          "id": 1,
+          "x": -13.5,
+          "y": 2.437899621313177,
+          "z": -8.700000000000001,
+          "climb": {
+            "up": true,
+            "startX": -13.710475444684262,
+            "startZ": -10.884189549486525,
+            "elapsed": 5.050075999999995
+          },
+          "attackPending": false,
+          "meleeRecovery": 0.0
+        }
+      ]
+    },
+    "ladder-final-enemy-top": {
+      "phase": "paused",
+      "position": {
+        "x": -13.5,
+        "y": 4.22,
+        "z": -6.5
+      },
+      "climb": null,
+      "health": 100.0,
+      "rendering": {
+        "continuous": false,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 1769,
+        "simulationSeconds": 11.100165,
+        "playerClipSeconds": 0.2501829999999954
+      },
+      "motion": "Idle",
+      "enemyMotions": [
+        {
+          "motion": "Walk",
+          "seconds": 1.1580271730355594
+        },
+        {
+          "motion": "MugAttack",
+          "seconds": 0.7247167529411761
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        }
+      ],
+      "enemies": [
+        {
+          "id": 0,
+          "x": -14.03176656413429,
+          "y": 0.0,
+          "z": -9.509051761622363,
+          "climb": {
+            "up": true,
+            "startX": -14.659755186566544,
+            "startZ": -10.464499763669568,
+            "elapsed": 0.8166789999999995
+          },
+          "attackPending": false,
+          "meleeRecovery": 0.0
+        },
+        {
+          "id": 1,
+          "x": -13.5,
+          "y": 4.22,
+          "z": -7.6366672000000015,
+          "climb": null,
+          "attackPending": true,
+          "meleeRecovery": 0.0
+        }
+      ]
+    },
+    "ladder-gravity-ledge": {
+      "phase": "paused",
+      "position": {
+        "x": -15.229166666666716,
+        "y": 3.4699999999999993,
+        "z": -6.5
+      },
+      "climb": null,
+      "health": 100.0,
+      "enemies": [
+        {
+          "id": 0,
+          "x": -13.5,
+          "y": 1.1209987690239172,
+          "z": -8.700000000000001,
+          "climb": {
+            "up": true,
+            "startX": -14.660305968520948,
+            "startZ": -10.475922338001745,
+            "elapsed": 3.116690999999994
+          },
+          "attackPending": false,
+          "meleeRecovery": 0.0
+        },
+        {
+          "id": 1,
+          "x": -13.72272529439033,
+          "y": 4.22,
+          "z": -7.1557375866527035,
+          "climb": null,
+          "attackPending": true,
+          "meleeRecovery": 0.0
+        }
+      ]
+    },
+    "ladder-gravity-ground": {
+      "phase": "paused",
+      "position": {
+        "x": -15.229166666666716,
+        "y": 0.0,
+        "z": -6.5
+      },
+      "climb": null,
+      "health": 100.0,
+      "rendering": {
+        "continuous": false,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 839,
+        "simulationSeconds": 15.483543000000084,
+        "playerClipSeconds": 1.883541999999995
+      },
+      "motion": "Idle",
+      "enemyMotions": [
+        {
+          "motion": "Climb",
+          "seconds": 0.6681248128913078
+        },
+        {
+          "motion": "Idle",
+          "seconds": 1.4333549999999993
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        }
+      ],
+      "enemies": [
+        {
+          "id": 0,
+          "x": -13.5,
+          "y": 2.5676873690239153,
+          "z": -8.700000000000001,
+          "climb": {
+            "up": true,
+            "startX": -14.660305968520948,
+            "startZ": -10.475922338001745,
+            "elapsed": 5.183388999999991
+          },
+          "attackPending": false,
+          "meleeRecovery": 0.0
+        },
+        {
+          "id": 1,
+          "x": -13.72272529439033,
+          "y": 4.22,
+          "z": -7.1557375866527035,
+          "climb": null,
+          "attackPending": false,
+          "meleeRecovery": 0.0
+        }
+      ]
+    },
+    "ladder-final-enemies-returned": {
+      "phase": "paused",
+      "position": {
+        "x": -15.229166666666716,
+        "y": 0.0,
+        "z": -6.5
+      },
+      "climb": null,
+      "health": 100.0,
+      "rendering": {
+        "continuous": false,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 2100,
+        "simulationSeconds": 36.53385700000127,
+        "playerClipSeconds": 0.9338559999999863
+      },
+      "motion": "Idle",
+      "enemyMotions": [
+        {
+          "motion": "Walk",
+          "seconds": 0.4969822667072021
+        },
+        {
+          "motion": "MugAttack",
+          "seconds": 0.6341276117647054
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        },
+        {
+          "motion": "Idle",
+          "seconds": 0.0
+        }
+      ],
+      "enemies": [
+        {
+          "id": 0,
+          "x": -14.46536957495158,
+          "y": 0.0,
+          "z": -7.6484563499524425,
+          "climb": null,
+          "attackPending": false,
+          "meleeRecovery": 0.0
+        },
+        {
+          "id": 1,
+          "x": -14.703557792995811,
+          "y": 0.0,
+          "z": -7.290313101616038,
+          "climb": null,
+          "attackPending": true,
+          "meleeRecovery": 0.0
+        }
+      ]
+    }
+  },
+  "visual_review": {
+    "sobaya": "evidence/screenshot-1788650667-0.png",
+    "fukuchan_initial_descent": "evidence/screenshot-1788650246-0.png"
+  }
+}

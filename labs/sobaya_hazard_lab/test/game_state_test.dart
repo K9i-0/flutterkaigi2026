@@ -277,19 +277,23 @@ void main() {
     expect(s.z, greaterThan(-3.5));
   });
   test('enemy attack has a windup and cannot damage from another floor', () {
-    final s = game();
+    final s = game()
+      ..x = 7
+      ..z = -5;
     for (final e in s.enemies) {
       e.active = false;
     }
     final e = s.enemies.first
       ..active = true
-      ..x = 0
-      ..z = -20.1;
+      ..x = 7
+      ..z = -4.1;
     advance(s, .2);
     expect(e.attackPending, true);
     expect(s.health, 100);
-    s.y = 3;
+    // Use the actual upstairs floor; empty air now correctly falls.
+    s.y = 3.03;
     advance(s, .7);
+    expect(s.y, 3.03);
     expect(s.health, 100);
   });
   test('paused game does not advance attacks or reload', () {

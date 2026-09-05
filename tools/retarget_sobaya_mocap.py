@@ -264,6 +264,8 @@ def build():
             (INPUT.parent/(name.lower()+'_retarget_samples.json')).write_text(json.dumps(data['samples'],indent=2))
             for clip in report['clips']:
                 if clip['name']==name:clip.update({k:v for k,v in data.items() if k!='samples'})
+    from hazard_climb_motion import bake_climb
+    report['clips'].append(bake_climb(rig, sobaya=True))
     rig.animation_data.action=None
     for b in rig.pose.bones:b.location=(0,0,0);b.rotation_quaternion=Quaternion()
     bpy.context.scene.frame_set(0)
