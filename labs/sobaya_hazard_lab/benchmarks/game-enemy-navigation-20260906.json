@@ -1,0 +1,471 @@
+{
+  "date": "2026-09-06",
+  "device": "Apple M4 macOS",
+  "flutter": "3.47.2",
+  "flutter_scene": "0.23.0",
+  "mode": "profile",
+  "command": "flutter run -d macos -t lib/game_main.dart --profile --dart-define=HAZARD_GAME_BENCHMARK=true",
+  "method": "7 sequential cases, actual SceneView rendering, >=8s per case, last 240 Flutter FrameTiming samples. Static navigation built in loading isolate and shared as immutable geometry; per-run flow checks only dynamic gates/crates. Normal enemy AI, synthetic placement, inflated test health, saves disabled.",
+  "limitations": [
+    "UI/raster durations are not direct GPU execution times or measured display FPS.",
+    "Single run on one Mac; differences around 0.1ms do not establish causal speedups.",
+    "Enemy placement is synthetic and may include occlusion; does not bound the worst view or every gameplay situation.",
+    "No mobile or prolonged thermal/memory measurement.",
+    "P95 and maxima describe only the retained 240-frame window per case; full resolution variability remains unresolved."
+  ],
+  "results": [
+    {
+      "case": "village-four",
+      "region": "village",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "renderScale": 0.85,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8006,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 5.061,
+      "rasterP95Ms": 0.592,
+      "uiMaxMs": 10.203,
+      "rasterMaxMs": 1.29,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0
+    },
+    {
+      "case": "village-eight",
+      "region": "village",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "renderScale": 0.85,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8000,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 5.447,
+      "rasterP95Ms": 0.522,
+      "uiMaxMs": 9.692,
+      "rasterMaxMs": 1.825,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0
+    },
+    {
+      "case": "village-eight-no-contact",
+      "region": "village",
+      "contactShadows": false,
+      "profile": true,
+      "valid": true,
+      "renderScale": 0.85,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8494,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 5.261,
+      "rasterP95Ms": 0.503,
+      "uiMaxMs": 9.258,
+      "rasterMaxMs": 0.732,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0
+    },
+    {
+      "case": "village-eight-full",
+      "region": "village",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "renderScale": 1.0,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8507,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 21.175,
+      "rasterP95Ms": 29.98,
+      "uiMaxMs": 35.575,
+      "rasterMaxMs": 40.183,
+      "uiOver16_7Ms": 23,
+      "rasterOver16_7Ms": 54
+    },
+    {
+      "case": "farm-six",
+      "region": "farm",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "renderScale": 0.85,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8491,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 4.763,
+      "rasterP95Ms": 0.561,
+      "uiMaxMs": 9.557,
+      "rasterMaxMs": 0.686,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0
+    },
+    {
+      "case": "mountain-six",
+      "region": "mountain",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "renderScale": 0.85,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8000,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 5.546,
+      "rasterP95Ms": 0.581,
+      "uiMaxMs": 7.229,
+      "rasterMaxMs": 0.671,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0
+    },
+    {
+      "case": "mountain-six-full",
+      "region": "mountain",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "renderScale": 1.0,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8503,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 5.269,
+      "rasterP95Ms": 0.582,
+      "uiMaxMs": 7.37,
+      "rasterMaxMs": 0.931,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0
+    }
+  ],
+  "source": "evidence/environment-detail-profile-logs.json",
+  "backend": "Impeller MetalSDF (runtime log verified)",
+  "asset_hashes": {
+    "farm": "8ea7a5bf3ae5923b37a40e7d8979e8bdef5f46f388c12ef89749607100a0fc37",
+    "pueblo": "15422c8c7c2955d581eea12777a800b8a34e4f94b8de9b03ab171042d85fca04",
+    "mountain": "e1f73c288927cd22322f84927129e10d9f8aa296a8ca72809e4fca12835857e0"
+  },
+  "pre_optimization_runs": [
+    [
+      {
+        "case": "village-four",
+        "region": "village",
+        "contactShadows": true,
+        "profile": true,
+        "valid": true,
+        "renderScale": 0.85,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "elapsedMs": 8002,
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 5.208,
+        "rasterP95Ms": 15.863
+      },
+      {
+        "case": "village-eight",
+        "region": "village",
+        "contactShadows": true,
+        "profile": true,
+        "valid": true,
+        "renderScale": 0.85,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "elapsedMs": 8499,
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 6.324,
+        "rasterP95Ms": 10.204
+      },
+      {
+        "case": "village-eight-no-contact",
+        "region": "village",
+        "contactShadows": false,
+        "profile": true,
+        "valid": true,
+        "renderScale": 0.85,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "elapsedMs": 8000,
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 16.071,
+        "rasterP95Ms": 21.602
+      },
+      {
+        "case": "village-eight-full",
+        "region": "village",
+        "contactShadows": true,
+        "profile": true,
+        "valid": true,
+        "renderScale": 1.0,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "elapsedMs": 8499,
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 5.026,
+        "rasterP95Ms": 24.451
+      },
+      {
+        "case": "farm-six",
+        "region": "farm",
+        "contactShadows": true,
+        "profile": true,
+        "valid": true,
+        "renderScale": 0.85,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "elapsedMs": 8499,
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 5.802,
+        "rasterP95Ms": 12.915
+      },
+      {
+        "case": "mountain-six",
+        "region": "mountain",
+        "contactShadows": true,
+        "profile": true,
+        "valid": true,
+        "renderScale": 0.85,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "elapsedMs": 8000,
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 4.667,
+        "rasterP95Ms": 0.515
+      },
+      {
+        "case": "mountain-six-full",
+        "region": "mountain",
+        "contactShadows": true,
+        "profile": true,
+        "valid": true,
+        "renderScale": 1.0,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "elapsedMs": 8498,
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 19.23,
+        "rasterP95Ms": 32.337
+      }
+    ],
+    [
+      {
+        "case": "village-four",
+        "region": "village",
+        "contactShadows": true,
+        "profile": true,
+        "valid": true,
+        "renderScale": 0.85,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "elapsedMs": 8000,
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 4.539,
+        "rasterP95Ms": 6.82,
+        "uiMaxMs": 30.762,
+        "rasterMaxMs": 17.996,
+        "uiOver16_7Ms": 6,
+        "rasterOver16_7Ms": 2
+      },
+      {
+        "case": "village-eight",
+        "region": "village",
+        "contactShadows": true,
+        "profile": true,
+        "valid": true,
+        "renderScale": 0.85,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "elapsedMs": 8001,
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 6.56,
+        "rasterP95Ms": 7.499,
+        "uiMaxMs": 27.843,
+        "rasterMaxMs": 21.98,
+        "uiOver16_7Ms": 6,
+        "rasterOver16_7Ms": 3
+      },
+      {
+        "case": "village-eight-no-contact",
+        "region": "village",
+        "contactShadows": false,
+        "profile": true,
+        "valid": true,
+        "renderScale": 0.85,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "elapsedMs": 8499,
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 6.111,
+        "rasterP95Ms": 3.463,
+        "uiMaxMs": 27.641,
+        "rasterMaxMs": 21.155,
+        "uiOver16_7Ms": 5,
+        "rasterOver16_7Ms": 3
+      },
+      {
+        "case": "village-eight-full",
+        "region": "village",
+        "contactShadows": true,
+        "profile": true,
+        "valid": true,
+        "renderScale": 1.0,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "elapsedMs": 8500,
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 5.715,
+        "rasterP95Ms": 3.244,
+        "uiMaxMs": 27.014,
+        "rasterMaxMs": 16.868,
+        "uiOver16_7Ms": 4,
+        "rasterOver16_7Ms": 1
+      },
+      {
+        "case": "farm-six",
+        "region": "farm",
+        "contactShadows": true,
+        "profile": true,
+        "valid": true,
+        "renderScale": 0.85,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "elapsedMs": 8499,
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 5.065,
+        "rasterP95Ms": 3.758,
+        "uiMaxMs": 26.473,
+        "rasterMaxMs": 19.219,
+        "uiOver16_7Ms": 5,
+        "rasterOver16_7Ms": 2
+      },
+      {
+        "case": "mountain-six",
+        "region": "mountain",
+        "contactShadows": true,
+        "profile": true,
+        "valid": true,
+        "renderScale": 0.85,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "elapsedMs": 8000,
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 5.271,
+        "rasterP95Ms": 0.548,
+        "uiMaxMs": 10.6,
+        "rasterMaxMs": 0.685,
+        "uiOver16_7Ms": 0,
+        "rasterOver16_7Ms": 0
+      },
+      {
+        "case": "mountain-six-full",
+        "region": "mountain",
+        "contactShadows": true,
+        "profile": true,
+        "valid": true,
+        "renderScale": 1.0,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "elapsedMs": 8499,
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 5.197,
+        "rasterP95Ms": 0.531,
+        "uiMaxMs": 10.758,
+        "rasterMaxMs": 10.603,
+        "uiOver16_7Ms": 0,
+        "rasterOver16_7Ms": 0
+      }
+    ]
+  ],
+  "interpretation": "Final 85% cases show UI P95 4.763–5.546ms, maxima <=10.203ms and no sampled UI/raster frames >16.7ms. Village full resolution still shows UI P95 21.175ms / raster 29.98ms with 23/54 over-budget samples. Full-resolution variability is unresolved; do not claim 60fps or a proven cause for raster changes. Keep default 85%. Pre-optimization runs preserved, not hidden.",
+  "code_sha256": {
+    "21_SOBAYA_HAZARD_LAB/lib/game/game_navigation.dart": "768fb765952ea91d0ff3111e4001e342daa9b50bc2365d03867b279037a42842",
+    "21_SOBAYA_HAZARD_LAB/lib/game/game_state.dart": "2a47cbc21ecace1e2e983e5071f17b61e722058992c0d5e0d29cc67c0ed43bd7",
+    "21_SOBAYA_HAZARD_LAB/lib/game/game_controller.dart": "f0c3efff17144919b0216d1c7f9d0035bba30cb9a47fb71743569c42da699849"
+  }
+}

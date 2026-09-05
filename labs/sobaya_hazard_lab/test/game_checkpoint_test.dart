@@ -15,6 +15,20 @@ void advance(HazardGameState s, double seconds) {
 }
 
 void main() {
+  test('enemy floor height survives save and old saves default to ground', () {
+    final world = map();
+    final s = HazardGameState(world);
+    s.enemies.first
+      ..x = 7
+      ..y = 3.03
+      ..z = -5;
+    final data = jsonDecode(jsonEncode(s.checkpoint())) as Map<String, dynamic>;
+    expect(restoreHazardCheckpoint(data, world, {}).enemies.first.y, 3.03);
+    for (final e in data['enemies']) {
+      e.remove('y');
+    }
+    expect(restoreHazardCheckpoint(data, world, {}).enemies.first.y, 0);
+  });
   test('old saves adopt authored supply heights and preserve dynamic loot', () {
     final world = map();
     final s = HazardGameState(world);

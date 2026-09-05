@@ -54,6 +54,7 @@ extension HazardCheckpoint on HazardGameState {
           (e) => {
             'id': e.id,
             'x': e.x,
+            'y': e.y,
             'z': e.z,
             'heading': e.heading,
             'hp': e.hp,
@@ -225,6 +226,7 @@ HazardGameState restoreHazardCheckpoint(
     require(j['id'] == e.id);
     e
       ..x = number(j['x'], -30, 30)
+      ..y = number(j['y'] ?? 0, 0, 6)
       ..z = number(j['z'], -30, 35)
       ..heading = number(j['heading'], -1e9, 1e9)
       ..hp = number(j['hp'], -100, e.boss ? 350 : 100)

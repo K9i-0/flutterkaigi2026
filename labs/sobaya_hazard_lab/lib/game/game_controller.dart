@@ -11,6 +11,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:vector_math/vector_math.dart' as vm;
 
 import 'game_state.dart';
+import 'game_navigation.dart';
 import 'game_camera.dart';
 import 'game_contact_shadows.dart';
 import 'game_campaign.dart';
@@ -18,6 +19,9 @@ import 'game_settings.dart';
 import 'game_events.dart';
 import '../lab/beer_mug_component.dart';
 import '../lab/simulation.dart' show FrameSamples;
+
+EnemyNavigation _buildEnemyNavigation(Map<String, dynamic> map) =>
+    HazardGameState(map).prepareNavigation();
 
 class CharacterPlayer {
   CharacterPlayer(Node template, this.names) : node = template.clone() {
@@ -95,6 +99,7 @@ class HazardGameController extends ChangeNotifier {
   HazardGameState? state;
   late HazardCampaign campaign;
   final environments = <String, Node>{};
+  final _navigationGeometry = <String, EnemyNavigation>{};
   bool ready = false, disposed = false;
   HazardSettings settings = HazardSettings();
   HazardDirector? director;
@@ -144,7 +149,14 @@ class HazardGameController extends ChangeNotifier {
       maps,
       collection: preferences!.getStringList('hazard.collection.v1')?.toSet(),
     );
+    for (final entry in maps.entries) {
+      _navigationGeometry[entry.key] = await compute(
+        _buildEnemyNavigation,
+        entry.value,
+      );
+    }
     state = campaign.state..phase = PlayPhase.title;
+    state!.useNavigation(_navigationGeometry[state!.zoneId]!);
     final savedRun = preferences!.getString('hazard.run.v1');
     if (savedRun != null) {
       try {
@@ -468,6 +480,7 @@ class HazardGameController extends ChangeNotifier {
   }
 
   void _mountRegion() {
+    state!.useNavigation(_navigationGeometry[state!.zoneId]!);
     _applySettings();
     scene.remove(village);
     village = environments[state!.zoneId]!;
@@ -787,7 +800,7 @@ class HazardGameController extends ChangeNotifier {
     for (var i = 0; i < s.enemies.length; i++) {
       final e = s.enemies[i];
       if (!e.active || e.dropped) continue;
-      final distance = (mugCamera - vm.Vector3(e.x, 1, e.z)).length;
+      final distance = (mugCamera - vm.Vector3(e.x, e.y + 1, e.z)).length;
       if (distance < nearestMugDistance) {
         nearestMugDistance = distance;
         detailedMug = i;
@@ -805,7 +818,7 @@ class HazardGameController extends ChangeNotifier {
       enemyBeer[i].detail = i == detailedMug;
       enemyMugs[i].visible = e.active && !e.dropped;
       actor.node.visible = e.active && (!e.dropped);
-      actor.node.position = vm.Vector3(e.x, 0, e.z);
+      actor.node.position = vm.Vector3(e.x, e.y, e.z);
       actor.node.rotation = vm.Quaternion.axisAngle(
         vm.Vector3(0, 1, 0),
         e.heading + math.pi,

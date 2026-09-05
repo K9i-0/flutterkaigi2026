@@ -1,0 +1,343 @@
+{
+  "date": "2026-09-06",
+  "scope": "Height-aware enemy pursuit, collision and upstairs combat. No asset generation or Tripo spending.",
+  "tests": {
+    "count": 60,
+    "passed": true,
+    "checks": [
+      "Village and farm stairs ascend and descend in 60Hz simulation without floor teleport",
+      "Upstairs bullet hit and exactly one beer at enemy floor",
+      "Player cannot side-step onto a high stair tread",
+      "Enemy height save round trip and old-save default",
+      "Existing game regression suite"
+    ]
+  },
+  "native": {
+    "mode": "debug",
+    "method": "Dart MCP launch and Marionette scenarios, actual SceneView update frames. One alerted enemy; player stationary upstairs and temporarily invulnerable. Isolated pursuit check, not full campaign difficulty validation.",
+    "results": {
+      "village": {
+        "player": {
+          "x": 8.95,
+          "y": 3.03,
+          "z": -3.0000000000000004
+        },
+        "enemy": {
+          "id": 0,
+          "alive": true,
+          "active": true,
+          "dropped": false,
+          "hp": 100.0,
+          "alerted": true,
+          "stun": 0.0,
+          "attackPending": false,
+          "bossMove": "ready",
+          "bossTimer": 0.0,
+          "x": 8.962284762878555,
+          "y": 3.03,
+          "z": -3.1228057874311124
+        },
+        "evidence": "evidence/navigation-native-village-end.json"
+      },
+      "farm": {
+        "player": {
+          "x": 9.45,
+          "y": 3.03,
+          "z": -6.5
+        },
+        "enemy": {
+          "id": 0,
+          "alive": true,
+          "active": true,
+          "dropped": false,
+          "hp": 100.0,
+          "alerted": true,
+          "stun": 0.0,
+          "attackPending": false,
+          "bossMove": "ready",
+          "bossTimer": 0.0,
+          "x": 10.01234721238856,
+          "y": 3.03,
+          "z": -7.2607226351253376
+        },
+        "evidence": "evidence/navigation-native-farm-end.json"
+      }
+    },
+    "farm_screenshot": "evidence/screenshot-1788642445-0.png"
+  },
+  "campaign_simulation": {
+    "success": true,
+    "scope": "Rules and collision simulation, not rendered UI or human full playthrough",
+    "completionist": true,
+    "weaponsUsed": [
+      "handgun",
+      "shotgun"
+    ],
+    "final": {
+      "phase": "clear",
+      "position": {
+        "x": 20.988012322287908,
+        "y": 0.0,
+        "z": 14.142947087330931
+      },
+      "yaw": 0.0,
+      "health": 100.0,
+      "combat": {
+        "evadeTime": 0.0,
+        "evadeCooldown": 0.0,
+        "kickTime": 0.0,
+        "invulnerable": 0.0,
+        "reloading": 0.0,
+        "recoil": 1e-323
+      },
+      "maxHealth": 100.0,
+      "weapon": "shotgun",
+      "loaded": 2,
+      "reserve": 15,
+      "beers": 19,
+      "kills": 20,
+      "shots": 68,
+      "hits": 68,
+      "zone": "mountain",
+      "exitRequested": {
+        "id": "escape",
+        "target": "ending",
+        "x": 21.2,
+        "z": 15,
+        "radius": 0.9,
+        "requiresGate": true
+      },
+      "medallions": [
+        "farm_0",
+        "farm_1",
+        "farm_2",
+        "farm_3",
+        "farm_4",
+        "farm_5",
+        "farm_6"
+      ],
+      "gateOpen": true,
+      "hasKey": false,
+      "collected": [
+        "shark",
+        "bug",
+        "debug",
+        "detective",
+        "wanted",
+        "beer",
+        "work",
+        "alcohol",
+        "recruit",
+        "watch",
+        "drybeer",
+        "chair"
+      ],
+      "interaction": "gate",
+      "dialogue": {
+        "npc": null,
+        "topic": "intro",
+        "line": 0,
+        "choices": true,
+        "metYametaro": true,
+        "receivedAmmo": true,
+        "metTakosan": true,
+        "tradePurchases": {
+          "ammo": 2
+        }
+      },
+      "bag": [
+        {
+          "id": 0,
+          "kind": "handgun",
+          "count": 1,
+          "col": 0,
+          "row": 0,
+          "w": 3,
+          "h": 2
+        },
+        {
+          "id": 1,
+          "kind": "ammo",
+          "count": 25,
+          "col": 3,
+          "row": 0,
+          "w": 2,
+          "h": 1
+        },
+        {
+          "id": 2,
+          "kind": "green",
+          "count": 1,
+          "col": 5,
+          "row": 0,
+          "w": 1,
+          "h": 2
+        },
+        {
+          "id": 3,
+          "kind": "ammo",
+          "count": 40,
+          "col": 6,
+          "row": 0,
+          "w": 2,
+          "h": 1
+        },
+        {
+          "id": 4,
+          "kind": "shotgun",
+          "count": 1,
+          "col": 0,
+          "row": 2,
+          "w": 7,
+          "h": 2
+        },
+        {
+          "id": 5,
+          "kind": "shells",
+          "count": 15,
+          "col": 8,
+          "row": 0,
+          "w": 2,
+          "h": 1
+        },
+        {
+          "id": 6,
+          "kind": "green",
+          "count": 1,
+          "col": 7,
+          "row": 1,
+          "w": 1,
+          "h": 2
+        },
+        {
+          "id": 7,
+          "kind": "ammo",
+          "count": 15,
+          "col": 3,
+          "row": 1,
+          "w": 2,
+          "h": 1
+        },
+        {
+          "id": 8,
+          "kind": "red",
+          "count": 1,
+          "col": 8,
+          "row": 1,
+          "w": 1,
+          "h": 2
+        },
+        {
+          "id": 9,
+          "kind": "green",
+          "count": 1,
+          "col": 9,
+          "row": 1,
+          "w": 1,
+          "h": 2
+        }
+      ],
+      "enemies": [
+        {
+          "id": 0,
+          "alive": false,
+          "active": true,
+          "dropped": true,
+          "hp": -5.0,
+          "alerted": true,
+          "stun": 0.5,
+          "attackPending": false,
+          "bossMove": "ready",
+          "bossTimer": 0.0,
+          "x": -19.0,
+          "y": 0.0,
+          "z": -5.0
+        },
+        {
+          "id": 1,
+          "alive": false,
+          "active": true,
+          "dropped": true,
+          "hp": -5.0,
+          "alerted": true,
+          "stun": 0.5,
+          "attackPending": false,
+          "bossMove": "ready",
+          "bossTimer": 0.0,
+          "x": -1.0,
+          "y": 0.0,
+          "z": 4.0
+        },
+        {
+          "id": 2,
+          "alive": false,
+          "active": true,
+          "dropped": true,
+          "hp": -5.0,
+          "alerted": true,
+          "stun": 0.5,
+          "attackPending": false,
+          "bossMove": "ready",
+          "bossTimer": 0.0,
+          "x": 4.0672414647568225,
+          "y": 0.0,
+          "z": 3.067241464756817
+        },
+        {
+          "id": 3,
+          "alive": false,
+          "active": true,
+          "dropped": true,
+          "hp": -5.0,
+          "alerted": true,
+          "stun": 0.5,
+          "attackPending": false,
+          "bossMove": "ready",
+          "bossTimer": 0.0,
+          "x": 13.406652719726356,
+          "y": 0.0,
+          "z": 5.406652719726356
+        },
+        {
+          "id": 4,
+          "alive": false,
+          "active": true,
+          "dropped": true,
+          "hp": 0.0,
+          "alerted": true,
+          "stun": 0.0,
+          "attackPending": false,
+          "bossMove": "ready",
+          "bossTimer": 0.0,
+          "bossCue": "怒りのラストオーダー",
+          "x": 1.046905125094834,
+          "y": 0.0,
+          "z": 5.78588547292373
+        },
+        {
+          "id": 5,
+          "alive": false,
+          "active": true,
+          "dropped": true,
+          "hp": 0.0,
+          "alerted": true,
+          "stun": 0.5,
+          "attackPending": false,
+          "bossMove": "ready",
+          "bossTimer": 0.0,
+          "x": 8.885520864776069,
+          "y": 0.0,
+          "z": 5.502024720651666
+        }
+      ],
+      "bloodEffects": false
+    }
+  },
+  "limitations": [
+    "Tower ladder traversal by enemies is not implemented",
+    "No new native full-campaign audit in this change; complete campaign checked with rules simulation",
+    "First-play duration, encounter balance and audio remain unfinished",
+    "Village full-resolution benchmark exceeded frame budget; 85% default retained. Cause and long-term variance unresolved."
+  ],
+  "profile": "benchmarks/game-enemy-navigation-20260906.json"
+}
