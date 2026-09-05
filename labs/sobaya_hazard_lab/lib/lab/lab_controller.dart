@@ -332,8 +332,8 @@ class LabController extends ChangeNotifier {
         for (final rig in rigs) {
           rig.setMotion(name);
           const groundSpeed = {
-            'Walk': .933333333,
-            'Run': 2.642857143,
+            'Walk': 1.007474632,
+            'Run': 2.381708109,
             'ZombieWalk': .196078431,
           };
           rig.speed = moving && dt > 0
@@ -571,7 +571,7 @@ class LabController extends ChangeNotifier {
     'mode': mode.name,
     'model': asset,
     'rigged': true,
-    'boneCount': 43,
+    'boneCount': 45,
     'motion': firstRig?.inspect(),
     'actorMotions': [for (final rig in rigs) rig.inspect()],
     'availableMotions': motions.map((m) => m.name).toList(),

@@ -1,0 +1,78 @@
+{
+  "result": "PASS",
+  "date": "2026-09-05",
+  "asset_sha256": "2af56a525c56547f7739780bba145b1589750c4fd1c39c1cae1bcff77745cc79",
+  "environment": "macOS M4 / Flutter 3.47.2 / flutter_scene 0.23.0 debug",
+  "bone_count": 45,
+  "clips": {
+    "DanceDisco": {
+      "seconds": 0.6,
+      "duration": 2.4000000953674316,
+      "weight_sum": 1.0,
+      "grip_error_m": 3.332000937312528e-08
+    },
+    "DanceStep": {
+      "seconds": 0.3,
+      "duration": 2.0,
+      "weight_sum": 1.0,
+      "grip_error_m": 2.9802322387695312e-08
+    },
+    "DanceVictory": {
+      "seconds": 0.5,
+      "duration": 2.0,
+      "weight_sum": 1.0,
+      "grip_error_m": 1.4901161193847656e-08
+    },
+    "Idle": {
+      "seconds": 0.5,
+      "duration": 2.4000000953674316,
+      "weight_sum": 1.0,
+      "grip_error_m": 0.0
+    },
+    "MugAttack": {
+      "seconds": 0.53,
+      "duration": 1.399999976158142,
+      "weight_sum": 1.0,
+      "grip_error_m": 0.0
+    },
+    "Run": {
+      "seconds": 0.2,
+      "duration": 0.8333333134651184,
+      "weight_sum": 1.0,
+      "grip_error_m": 0.0
+    },
+    "Toast": {
+      "seconds": 1.35,
+      "duration": 2.5999999046325684,
+      "weight_sum": 1.0,
+      "grip_error_m": 0.0
+    },
+    "Walk": {
+      "seconds": 0.3,
+      "duration": 1.2333333492279053,
+      "weight_sum": 1.0,
+      "grip_error_m": 2.9802322387695312e-08
+    },
+    "ZombieWalk": {
+      "seconds": 0.4,
+      "duration": 1.7999999523162842,
+      "weight_sum": 1.0,
+      "grip_error_m": 0.0
+    }
+  },
+  "movement_distance_m": 1.1458500000000136,
+  "collision": {
+    "result": "PASS · 壁の手前で停止",
+    "z": -1.6866227999999912
+  },
+  "continuous_walk": {
+    "playing": true,
+    "sample_seconds": [
+      0.17999718666077122,
+      0.7579963760376054
+    ]
+  },
+  "flutter_analyze": "PASS",
+  "flutter_tests": 6,
+  "limits": "Debug functional checks; no v3 profile, GPU or mobile performance measurement."
+}
