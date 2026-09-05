@@ -46,12 +46,12 @@ solid(4,5,2,2.4,.9)
 for i in range(65):
  x=rng.uniform(-29,29);z=rng.uniform(-29,32)
  if abs(x)<22 and -24<z<25:continue
- height=rng.uniform(5,10);cylinder('TreeTrunks',wood,(x,z,height/2),.2,height,7,r2=.08)
- for a in range(3):cylinder('TreeNeedles',leaf,(x,z,height*(.5+a*.17)),1.9-a*.35,height*.55,8,r2=.03)
+ height=rng.uniform(5,10);backdrop_pine(x,z,height)
 for i in range(200):
  x=rng.uniform(-21,21);z=rng.uniform(-23,23)
  if abs(x)<5 and -23<z<20:continue
- cylinder('Weeds',grass,(x,z,.13),.07,.26,3,r2=.005)
+ if any(abs(x-h['x'])<h['w']/2+.25 and abs(z-h['z'])<h['d']/2+.25 for h in houses):continue
+ weed_tuft('Weeds',x,z)
 
 # Collectible images stay canonical in the script library.
 posters=[
@@ -70,6 +70,9 @@ for id,title,path,x,z,h in posters:
  collection.append({'id':id,'title':title,'source':path,'x':x,'z':z,'y':h-1.0,'node':g})
 
 items=[{'id':'ammo_entry','kind':'ammo','x':-8,'z':-14,'y':.9,'amount':20}, {'id':'herb_west','kind':'green','x':-13,'z':3,'y':.9,'amount':1},{'id':'shotgun','kind':'shotgun','x':6,'z':-3,'y':3.4,'amount':1},{'id':'shells_up','kind':'shells','x':7,'z':-3,'y':3.4,'amount':10},{'id':'key','kind':'key','x':-5,'z':12,'y':.95,'amount':1},{'id':'herb_red','kind':'red','x':14,'z':7,'y':.95,'amount':1},{'id':'ammo_square','kind':'ammo','x':3,'z':4,'y':.85,'amount':20},{'id':'yellow_up','kind':'yellow','x':5,'z':-8,'y':3.35,'amount':1}]
+# These supplies lie on the floor; only the upstairs set has an elevated floor.
+for item in items:
+ if item['y']<2:item['y']=.28
 crates=[{'id':'crate_'+str(i),'x':x,'z':z,'kind':'crate' if i%2 else 'barrel'} for i,(x,z) in enumerate([(-4,-13),(4,-12),(-7,6),(10,11),(18,4),(-16,-1),(4,13)])]
 enemies=[{'id':i,'x':x,'z':z} for i,(x,z) in enumerate([(-2,-6),(3,-2),(-5,3),(6,7),(-9,6),(11,11),(-2,14),(17,1)])]
 data={'version':1,'spawn':{'x':0,'z':-21,'yaw':math.pi},'houses':houses,'solids':solids,'ramps':ramps,'items':items,'crates':crates,'enemies':enemies,'collection':collection,'gate':{'x':11.5,'z':23,'y':0},'tower':{'x':-13.5,'z':-8.8,'top':4.22}}

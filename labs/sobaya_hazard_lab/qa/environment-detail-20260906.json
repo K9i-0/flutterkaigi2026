@@ -1,0 +1,139 @@
+{
+  "date": "2026-09-06",
+  "assets": {
+    "farm": {
+      "bytes": 14269384,
+      "triangles": 13748,
+      "meshes": 45,
+      "primitives": 101,
+      "materials": 18,
+      "images": 10,
+      "sha256": "8ea7a5bf3ae5923b37a40e7d8979e8bdef5f46f388c12ef89749607100a0fc37",
+      "vegetation_material": {
+        "alphaCutoff": 0.44999998807907104,
+        "alphaMode": "MASK",
+        "doubleSided": true,
+        "name": "Distant pine cutout",
+        "pbrMetallicRoughness": {
+          "baseColorTexture": {
+            "index": 7
+          },
+          "metallicFactor": 0
+        }
+      }
+    },
+    "pueblo": {
+      "bytes": 21626416,
+      "triangles": 16636,
+      "meshes": 46,
+      "primitives": 110,
+      "materials": 20,
+      "images": 12,
+      "sha256": "15422c8c7c2955d581eea12777a800b8a34e4f94b8de9b03ab171042d85fca04",
+      "vegetation_material": {
+        "alphaCutoff": 0.44999998807907104,
+        "alphaMode": "MASK",
+        "doubleSided": true,
+        "name": "Distant pine cutout",
+        "pbrMetallicRoughness": {
+          "baseColorTexture": {
+            "index": 6
+          },
+          "metallicFactor": 0
+        }
+      }
+    },
+    "mountain": {
+      "bytes": 14643928,
+      "triangles": 9211,
+      "meshes": 31,
+      "primitives": 46,
+      "materials": 17,
+      "images": 10,
+      "sha256": "e1f73c288927cd22322f84927129e10d9f8aa296a8ca72809e4fca12835857e0",
+      "vegetation_material": {
+        "alphaCutoff": 0.44999998807907104,
+        "alphaMode": "MASK",
+        "doubleSided": true,
+        "name": "Distant pine cutout",
+        "pbrMetallicRoughness": {
+          "baseColorTexture": {
+            "index": 2
+          },
+          "metallicFactor": 0
+        }
+      }
+    }
+  },
+  "generation": "Blender 5.1.2; tools/hazard_environment_kit.py, tools/build_hazard_village.py, tools/build_hazard_regions.py. Built-in Imagegen albedos and pine cutout; prompts and selected originals in canonical pueblo/textures.",
+  "checks": {
+    "tests": 55,
+    "simulation_completionist": {
+      "event": "clear",
+      "region": "mountain",
+      "seconds": 460.34999999991,
+      "x": 20.98876035486662,
+      "y": 0.0,
+      "z": 14.14408540880356,
+      "health": 70.0,
+      "kills": 20,
+      "shots": 70,
+      "hits": 70,
+      "loaded": 3,
+      "reserve": 15,
+      "beers": 19,
+      "collection": 12
+    },
+    "analyze": "No issues found",
+    "native_art_review": {
+      "scope": "Debug viewpoint placements, enemies disabled, standard gameplay camera; visual inspection only. Not evidence of route difficulty.",
+      "village_exterior": {
+        "x": 5,
+        "z": -16,
+        "yaw": -2.82,
+        "pitch": -0.12,
+        "screenshot": "evidence/screenshot-1788640288-0.png"
+      },
+      "village_floor": {
+        "x": -8,
+        "z": -15.3,
+        "yaw": -2.25,
+        "pitch": 0.12,
+        "screenshot": "evidence/screenshot-1788640328-0.png",
+        "finding": "Feet clear of the floor; supplies near the floor; house footprint exclusion removed the indoor grass. Final native screenshot checked.",
+        "final_screenshot": "evidence/screenshot-1788640799-0.png"
+      },
+      "farm": {
+        "x": 1,
+        "z": -19,
+        "yaw": -2.53,
+        "pitch": -0.1,
+        "screenshot": "evidence/screenshot-1788640397-0.png"
+      },
+      "mountain": {
+        "x": 10,
+        "z": 5,
+        "yaw": -2.8,
+        "pitch": -0.1,
+        "screenshot": "evidence/screenshot-1788640448-0.png"
+      },
+      "foliage": "No opaque rectangular backgrounds or prominent alpha fringes observed at reviewed views. Alpha mask confirmed in exported GLBs.",
+      "logs": "evidence/environment-final-native-logs.json"
+    },
+    "profile": "benchmarks/game-environment-detail-20260906.json",
+    "gallery_twelve": {
+      "actions": [
+        "C",
+        "swipe collection-beer up 520",
+        "swipe collection-recruit up 320",
+        "tap collection-chair",
+        "close enlarged image"
+      ],
+      "top": "evidence/screenshot-1788640815-0.png",
+      "bottom": "evidence/screenshot-1788640895-0.png",
+      "enlarged_last_item": "evidence/screenshot-1788640909-0.png",
+      "result": "All 12 recorded images reachable; last image enlarges with title and close control; no overflow observed."
+    }
+  },
+  "remaining_validation": []
+}

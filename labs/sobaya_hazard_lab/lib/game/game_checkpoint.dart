@@ -196,6 +196,7 @@ HazardGameState restoreHazardCheckpoint(
   for (final c in s.crates) {
     c.broken = broken.contains(c.id);
   }
+  final authoredPickups = {for (final p in s.pickups) p.id: p};
   s.pickups.clear();
   final pickupIds = <String>{};
   final pickups = data['pickups'] as List;
@@ -203,11 +204,15 @@ HazardGameState restoreHazardCheckpoint(
   for (final j in pickups) {
     require(pickupIds.add(j['id'] as String));
     require(itemNames.containsKey(j['kind']));
+    final savedHeight = number(j['y'], 0, 6);
+    final authored = authoredPickups[j['id']];
     final p = Pickup(
       j['id'],
       j['kind'],
       number(j['x'], -30, 30),
-      number(j['y'], 0, 6),
+      // Adopt corrected display heights for map supplies while retaining the
+      // exact location of dynamic enemy/crate drops and all taken flags.
+      authored != null && authored.kind == j['kind'] ? authored.y : savedHeight,
       number(j['z'], -30, 35),
       amount: integer(j['amount'], 1, 50),
     )..taken = j['taken'] as bool;
