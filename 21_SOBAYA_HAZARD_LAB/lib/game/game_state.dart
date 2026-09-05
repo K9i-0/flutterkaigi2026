@@ -76,10 +76,32 @@ class Pickup {
   );
 }
 
+enum BossMove {
+  ready,
+  chargeWindup,
+  charging,
+  swipeWindup,
+  slamWindup,
+  recovery,
+}
+
 class Enemy {
   Enemy(this.id, this.x, this.z, {this.boss = false}) {
     hp = boss ? 350 : 100;
   }
+  BossMove bossMove = BossMove.ready;
+  BossMove bossAttack = BossMove.ready;
+  double bossTimer = 0, bossRecoveryDuration = 0;
+  int bossSequence = 0;
+  bool chargeHit = false;
+  String get bossCue => switch (bossMove) {
+    BossMove.chargeWindup => '突進 — 横へ避けろ',
+    BossMove.charging => '突進',
+    BossMove.swipeWindup => 'ジョッキの一撃 — 距離を取れ',
+    BossMove.slamWindup => '叩きつけ — 離れろ',
+    BossMove.recovery => '反撃のチャンス',
+    BossMove.ready => hp <= 175 ? '怒りのラストオーダー' : 'ラストオーダー',
+  };
   final bool boss;
   final int id;
   double x,
@@ -672,7 +694,8 @@ class HazardGameState {
         }
         if (!e.alerted) continue;
       }
-      if (e.attackPending) {
+      if (e.boss && _tickBoss(e, dt, dx, dz, dist)) continue;
+      if (!e.boss && e.attackPending) {
         e.windup -= dt;
         if (e.windup <= 0) {
           e.attackPending = false;
@@ -705,7 +728,7 @@ class HazardGameState {
         continue;
       }
       if (e.stun > 0) continue;
-      if (dist < (e.boss ? 1.8 : 1.15) && y < 1 && e.cooldown <= 0) {
+      if (!e.boss && dist < 1.15 && y < 1 && e.cooldown <= 0) {
         e.attackPending = true;
         e.heading = math.atan2(dx, dz);
         e.windup = e.boss ? 1.15 : .7;
@@ -762,6 +785,122 @@ class HazardGameState {
       }
     }
     interaction = _nearestInteraction();
+  }
+
+  // Heading locks at the start of a tell: the player can step out of the path.
+  // Committed attacks take damage but cannot be held still by repeated bullets.
+  bool _tickBoss(Enemy e, double dt, double dx, double dz, double dist) {
+    void recover(double seconds) {
+      e.bossMove = BossMove.recovery;
+      e.bossTimer = seconds;
+      e.bossRecoveryDuration = seconds;
+      e.attackPending = false;
+      e.windup = 0;
+    }
+
+    bool clearToPlayer() =>
+        y < 1 &&
+        (dist < .001 ||
+            wallDistance(
+                  vm.Vector3(e.x, 1, e.z),
+                  vm.Vector3(dx, 0, dz).normalized(),
+                  dist,
+                ) >=
+                dist - .1);
+
+    void hurt(double damage) {
+      if (invulnerable > 0 || !running) return;
+      health = math.max(0, health - damage * damageScale);
+      invulnerable = .8;
+      hurtTime = .45;
+      reloading = 0;
+      damageFlash = .4;
+      lastSound = 'hurt';
+      if (health <= 0) {
+        phase = PlayPhase.dead;
+        stopInput();
+      }
+    }
+
+    if (e.bossMove != BossMove.ready) {
+      e.bossTimer = math.max(0, e.bossTimer - dt);
+      e.windup = e.bossTimer;
+      switch (e.bossMove) {
+        case BossMove.chargeWindup:
+          if (e.bossTimer == 0) {
+            e.bossMove = BossMove.charging;
+            e.bossTimer = 1.1;
+            e.attackPending = false;
+            e.chargeHit = false;
+          }
+        case BossMove.charging:
+          final distance = 5.2 * enemySpeedScale * dt;
+          final steps = (distance / .05).ceil().clamp(1, 100);
+          for (var i = 0; i < steps; i++) {
+            final nx = e.x + math.sin(e.heading) * distance / steps;
+            final nz = e.z + math.cos(e.heading) * distance / steps;
+            if (blocked(nx, nz, 0, radius: .45)) {
+              recover(2.5);
+              break;
+            }
+            e.x = nx;
+            e.z = nz;
+            e.moved += distance / steps;
+            if (!e.chargeHit &&
+                y < 1 &&
+                math.pow(x - e.x, 2) + math.pow(z - e.z, 2) < .9 * .9 &&
+                wallDistance(
+                      vm.Vector3(e.x, 1, e.z),
+                      vm.Vector3(x - e.x, 0, z - e.z).normalized(),
+                      .9,
+                    ) >=
+                    math.sqrt(math.pow(x - e.x, 2) + math.pow(z - e.z, 2)) -
+                        .1) {
+              e.chargeHit = true;
+              hurt(25);
+            }
+          }
+          if (e.bossMove == BossMove.charging && e.bossTimer == 0) recover(1.8);
+        case BossMove.swipeWindup:
+        case BossMove.slamWindup:
+          if (e.bossTimer == 0) {
+            final slam = e.bossMove == BossMove.slamWindup;
+            final facing = dist < .001
+                ? 1.0
+                : (dx * math.sin(e.heading) + dz * math.cos(e.heading)) / dist;
+            if (dist < (slam ? 2.6 : 1.95) &&
+                (slam || facing > .35) &&
+                clearToPlayer()) {
+              hurt(slam ? 35 : 30);
+            }
+            recover(slam ? 2.2 : 1.6);
+          }
+        case BossMove.recovery:
+          if (e.bossTimer == 0) e.bossMove = BossMove.ready;
+        case BossMove.ready:
+          break;
+      }
+      return true;
+    }
+    if (e.stun > 0 || e.cooldown > 0) return true;
+    if (y >= 1 || !clearToPlayer()) return false;
+    if (dist >= 3 && dist <= 9) {
+      e.bossMove = BossMove.chargeWindup;
+      e.bossTimer = 1.15;
+    } else if (dist < 1.8 || (e.hp <= 175 && dist < 2.5)) {
+      final slam = e.hp <= 175 && e.bossSequence.isOdd;
+      e.bossMove = slam ? BossMove.slamWindup : BossMove.swipeWindup;
+      e.bossTimer = slam ? 1.25 : .85;
+    } else {
+      return false;
+    }
+    e.bossAttack = e.bossMove;
+    e.bossSequence++;
+    e.heading = math.atan2(dx, dz);
+    e.windup = e.bossTimer;
+    e.attackPending = true;
+    lastSound = 'enemy';
+    return true;
   }
 
   int _cell(double px, double pz) => (pz.floor() + 25) * 46 + (px.floor() + 23);
@@ -921,10 +1060,13 @@ class HazardGameState {
     if (victim != null) {
       hits++;
       hitFlash = .18;
-      victim.stun = .5;
       victim.alerted = true;
-      if (head) victim.stun = 1.4;
-      victim.attackPending = false;
+      if (!victim.boss) {
+        victim.stun = head ? 1.4 : .5;
+        victim.attackPending = false;
+      } else if (victim.bossMove == BossMove.ready && head) {
+        victim.stun = .35;
+      }
       victim.hp -= weapon == 'shotgun'
           ? 100
           : head
@@ -1006,6 +1148,10 @@ class HazardGameState {
       e.stun = 1.5;
       e.alerted = true;
       e.attackPending = false;
+      if (e.boss) {
+        e.bossMove = BossMove.recovery;
+        e.bossTimer = 1.5;
+      }
       if (dist > .01) {
         for (var i = 0; i < 12; i++) {
           final nx = e.x + dx / dist * .055, nz = e.z + dz / dist * .055;
@@ -1024,6 +1170,9 @@ class HazardGameState {
   void _defeat(Enemy e) {
     if (!e.alive) return;
     e.alive = false;
+    e.attackPending = false;
+    e.bossMove = BossMove.ready;
+    e.bossTimer = 0;
     e.vanish = 0;
     kills++;
     say(e.boss ? '最後のそば屋を撃退した。脱出路の門へ！' : 'そば屋を倒した。ビールを回収しよう。');
@@ -1352,6 +1501,9 @@ class HazardGameState {
             'alerted': e.alerted,
             'stun': e.stun,
             'attackPending': e.attackPending,
+            'bossMove': e.bossMove.name,
+            'bossTimer': e.bossTimer,
+            if (e.boss) 'bossCue': e.bossCue,
             'x': e.x,
             'z': e.z,
           },

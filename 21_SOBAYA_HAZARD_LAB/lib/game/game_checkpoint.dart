@@ -67,6 +67,12 @@ extension HazardCheckpoint on HazardGameState {
             'cooldown': e.cooldown,
             'attackPending': e.attackPending,
             'windup': e.windup,
+            'bossMove': e.bossMove.name,
+            'bossAttack': e.bossAttack.name,
+            'bossRecoveryDuration': e.bossRecoveryDuration,
+            'bossTimer': e.bossTimer,
+            'bossSequence': e.bossSequence,
+            'chargeHit': e.chargeHit,
           },
         )
         .toList(),
@@ -227,6 +233,21 @@ HazardGameState restoreHazardCheckpoint(
       ..cooldown = number(j['cooldown'], 0, 30)
       ..attackPending = j['attackPending'] as bool
       ..windup = number(j['windup'], -.051, 30);
+    if (j.containsKey('bossMove')) {
+      e.bossMove = BossMove.values.byName(j['bossMove'] as String);
+      e.bossAttack = BossMove.values.byName(
+        (j['bossAttack'] ?? 'ready') as String,
+      );
+      e.bossRecoveryDuration = number(j['bossRecoveryDuration'] ?? 0, 0, 30);
+      e.bossTimer = number(j['bossTimer'], 0, 30);
+      e.bossSequence = (j['bossSequence'] as num).toInt();
+      require(e.bossSequence >= 0);
+      e.chargeHit = j['chargeHit'] as bool;
+    } else if (e.boss) {
+      // Older checkpoints used the generic melee state.
+      e.attackPending = false;
+      e.windup = 0;
+    }
     require(e.alive == (e.hp > 0) && (!e.dropped || !e.alive));
   }
   require(s.enemies.where((e) => !e.alive).length <= s.kills);
