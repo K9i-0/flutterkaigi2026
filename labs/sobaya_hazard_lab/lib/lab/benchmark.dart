@@ -42,6 +42,7 @@ class LabBenchmark {
     }
     final test = _cases[_index];
     lab.open(LabMode.crowd);
+    lab.selectMotion('Walk');
     lab.setCount(test.count);
     lab.option('motion', true);
     lab.option('shadows', test.shadows);

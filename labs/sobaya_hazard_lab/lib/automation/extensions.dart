@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:marionette_flutter/marionette_flutter.dart';
 
 import '../lab/lab_controller.dart';
 import '../lab/simulation.dart';
+import '../lab/motion_catalog.dart';
 
 LabController? _lab;
 bool _registered = false;
@@ -14,6 +16,36 @@ void attachLabAutomation(LabController lab) {
   _lab = lab;
   if (!kDebugMode || kIsWeb || _registered) return;
   _registered = true;
+  registerMarionetteExtension(
+    name: 'madogiwa.playMotion',
+    description: 'Play named skeletal clip. name=Idle|Walk|Run|ZombieWalk|DanceStep|DanceDisco|DanceVictory|Toast|MugAttack. Optional seek seconds pauses at a deterministic pose; speed=.25..2.',
+    callback: (p) async {
+      final l = _lab;
+      final name = '${p['name']}';
+      final seek = p['seek'] == null ? null : double.tryParse('${p['seek']}');
+      final speed = p['speed'] == null ? 1.0 : double.tryParse('${p['speed']}');
+      if (l == null || !l.ready) {
+        return MarionetteExtensionResult.error(1, 'Not ready');
+      }
+      if (!motions.any((m) => m.name == name) ||
+          speed == null ||
+          !speed.isFinite ||
+          speed < .25 ||
+          speed > 2 ||
+          (p['seek'] != null && (seek == null || !seek.isFinite || seek < 0))) {
+        return MarionetteExtensionResult.invalidParams(
+          'Invalid clip, speed or seek',
+        );
+      }
+      l.selectMotion(name);
+      l.setAnimationSpeed(speed);
+      if (seek != null) l.seekAnimation(seek);
+      await SchedulerBinding.instance.endOfFrame;
+      SchedulerBinding.instance.scheduleFrame();
+      await SchedulerBinding.instance.endOfFrame;
+      return MarionetteExtensionResult.success(l.inspect());
+    },
+  );
   registerMarionetteExtension(
     name: 'madogiwa.inspectHazard',
     description: 'Inspect Sobaya model, scenario, collision, camera, render options and measured Flutter frame timings.',

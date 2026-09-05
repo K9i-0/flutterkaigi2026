@@ -6,9 +6,12 @@ import 'package:flutter_scene/scene.dart';
 import 'package:vector_math/vector_math.dart' as vm;
 
 import 'simulation.dart';
+import 'motion_catalog.dart';
+import 'rig_actor.dart';
 
 class LabController extends ChangeNotifier {
   static const asset = 'assets/models/sobaya.glb';
+  static const propAsset = 'assets/models/beer_mug.glb';
   final scene = Scene();
   final simulation = LabSimulation();
   final frames = FrameSamples();
@@ -16,6 +19,13 @@ class LabController extends ChangeNotifier {
   final actors = Node(name: 'Sobaya instances');
   final outlines = Node(name: 'Collision footprint');
   Node? _template;
+  Node? _propTemplate;
+  final List<RigActor> rigs = [];
+  String selectedMotion = 'Idle';
+  bool animationPaused = false, mugEquipped = false, zombieLocomotion = false;
+  double animationSpeed = 1;
+  String? movementAction;
+  RigActor? get firstRig => rigs.isEmpty ? null : rigs.first;
   bool ready = false, disposed = false;
   bool shadows = true, ao = false, showCollision = true, paused = false;
   bool turntable = false, crowdMotion = false, collisionTest = false;
@@ -33,11 +43,14 @@ class LabController extends ChangeNotifier {
     final watch = Stopwatch()..start();
     await Scene.initializeStaticResources();
     final template = await loadScene(asset);
+    final prop = await loadScene(propAsset);
     if (disposed) {
       await releaseScene(asset);
+      await releaseScene(propAsset);
       return;
     }
     _template = template;
+    _propTemplate = prop;
     scene.add(world);
     scene.add(actors);
     scene.add(outlines);
@@ -90,6 +103,9 @@ class LabController extends ChangeNotifier {
     inputY = 0;
     sprint = false;
     paused = false;
+    animationPaused = false;
+    movementAction = null;
+    if (next == LabMode.movement) mugEquipped = false;
     turntable = false;
     collisionTest = false;
     testRemaining = 0;
@@ -195,10 +211,22 @@ class LabController extends ChangeNotifier {
 
   void rebuildActors() {
     actors.removeAll();
+    rigs.clear();
     for (var i = 0; i < count; i++) {
-      final node = _template!.clone();
-      node.name = 'Sobaya_${i + 1}';
-      actors.add(node);
+      final rig = RigActor(_template!, _propTemplate!, 'Sobaya_${i + 1}');
+      rig.setMotion(
+        mode == LabMode.movement ? 'Idle' : selectedMotion,
+        immediate: true,
+      );
+      rig.mug.visible = mugEquipped;
+      rig.speed = animationSpeed;
+      rig.setPaused(animationPaused);
+      // Separate phases exercise independently cloned skeletons in the crowd.
+      if (mode == LabMode.crowd && rig.active.loop) {
+        rig.active.seek(i * .13 % rig.duration);
+      }
+      rigs.add(rig);
+      actors.add(rig.root);
     }
     placeActors();
   }
@@ -235,7 +263,11 @@ class LabController extends ChangeNotifier {
   void tick(Duration elapsed, double delta) {
     if (!ready || disposed || paused) return;
     final dt = delta.clamp(0.0, .05);
+    final beforeX = simulation.x, beforeZ = simulation.z;
     _time += dt;
+    for (final rig in rigs) {
+      rig.update(dt);
+    }
     if (mode == LabMode.model && turntable) {
       yaw += dt * .35;
     }
@@ -250,16 +282,113 @@ class LabController extends ChangeNotifier {
             : 'FAIL · 衝突を確認できません';
         notifyListeners();
       }
-    } else {
+    } else if (movementAction == null) {
       final forwardX = -math.sin(yaw), forwardZ = -math.cos(yaw);
       simulation.move(
-        inputY * forwardX + inputX * math.cos(yaw),
-        inputY * forwardZ - inputX * math.sin(yaw),
+        (inputY * forwardX + inputX * math.cos(yaw)) *
+            (zombieLocomotion ? .25 : 1),
+        (inputY * forwardZ - inputX * math.sin(yaw)) *
+            (zombieLocomotion ? .25 : 1),
         dt,
         sprint: sprint,
       );
     }
+    if (mode == LabMode.movement && firstRig != null) {
+      if (movementAction != null && firstRig!.finished) {
+        movementAction = null;
+        mugEquipped = false;
+        for (final rig in rigs) {
+          rig.mug.visible = false;
+        }
+      }
+      if (movementAction == null) {
+        final travelled = math.sqrt(
+          math.pow(simulation.x - beforeX, 2) +
+              math.pow(simulation.z - beforeZ, 2),
+        );
+        final moving = travelled > .00001;
+        final name = !moving
+            ? 'Idle'
+            : zombieLocomotion
+            ? 'ZombieWalk'
+            : sprint || collisionTest
+            ? 'Run'
+            : 'Walk';
+        for (final rig in rigs) {
+          rig.setMotion(name);
+          const groundSpeed = {
+            'Walk': .933333333,
+            'Run': 2.642857143,
+            'ZombieWalk': .196078431,
+          };
+          rig.speed = moving && dt > 0
+              ? (travelled / dt) / groundSpeed[name]!
+              : 1;
+        }
+      }
+    }
     placeActors();
+  }
+
+  void selectMotion(String name) {
+    final spec = motionSpec(name);
+    selectedMotion = name;
+    animationPaused = false;
+    mugEquipped = spec.mug;
+    if (mode == LabMode.movement) {
+      if (['Idle', 'Walk', 'Run', 'ZombieWalk'].contains(name)) {
+        zombieLocomotion = name == 'ZombieWalk';
+        movementAction = null;
+      } else {
+        // Emotes play once in the movement test; the preview preserves loops.
+        movementAction = name;
+      }
+    }
+    for (final rig in rigs) {
+      rig.setPaused(false);
+      rig.setMotion(name, replay: true);
+      rig.active.loop = mode == LabMode.movement && movementAction != null
+          ? false
+          : spec.loop;
+      rig.mug.visible = mugEquipped;
+    }
+    resetMeasurement();
+    notifyListeners();
+  }
+
+  void pauseAnimation(bool value) {
+    animationPaused = value;
+    for (final rig in rigs) {
+      rig.setPaused(value);
+    }
+    notifyListeners();
+  }
+
+  void seekAnimation(double seconds) {
+    animationPaused = true;
+    for (final rig in rigs) {
+      rig.seek(seconds);
+    }
+    notifyListeners();
+  }
+
+  void setAnimationSpeed(double speed) {
+    if (!speed.isFinite || speed < .25 || speed > 2) {
+      throw ArgumentError('speed=.25..2');
+    }
+    animationSpeed = speed;
+    for (final rig in rigs) {
+      rig.speed = speed;
+    }
+    notifyListeners();
+  }
+
+  void equipMug(bool value) {
+    mugEquipped = value;
+    for (final rig in rigs) {
+      rig.mug.visible = value;
+    }
+    notifyListeners();
   }
 
   PerspectiveCamera camera() {
@@ -334,6 +463,7 @@ class LabController extends ChangeNotifier {
         rebuildWorld();
       case 'paused':
         paused = value as bool;
+        pauseAnimation(paused);
         inputX = 0;
         inputY = 0;
       case 'turntable':
@@ -362,9 +492,14 @@ class LabController extends ChangeNotifier {
     'ready': ready,
     'mode': mode.name,
     'model': asset,
-    'rigged': false,
+    'rigged': true,
+    'boneCount': 41,
+    'motion': firstRig?.inspect(),
+    'actorMotions': [for (final rig in rigs) rig.inspect()],
+    'availableMotions': motions.map((m) => m.name).toList(),
+    'propAsset': propAsset,
     'count': count,
-    'placedTriangles': 21068 * count,
+    'placedTriangles': (21066 + (mugEquipped ? 3120 : 0)) * count,
     'sourceTextureSize': 4096,
     'loadMs': loadMs,
     'position': {'x': simulation.x, 'z': simulation.z},
@@ -400,9 +535,14 @@ class LabController extends ChangeNotifier {
   void dispose() {
     disposed = true;
     scene.root.removeAll();
+    rigs.clear();
     if (_template != null) {
       _template = null;
       unawaited(releaseScene(asset));
+    }
+    if (_propTemplate != null) {
+      _propTemplate = null;
+      unawaited(releaseScene(propAsset));
     }
     super.dispose();
   }

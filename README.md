@@ -24,7 +24,7 @@
 
 ## ゲーム
 
-- **[そば屋ハザード · 3D検証室](21_SOBAYA_HAZARD_LAB/README.md)** (`21_SOBAYA_HAZARD_LAB/`): Tripo P2.0製の非ボクセルそば屋で、質感・三人称移動・壁衝突・1〜12体の描画負荷を検証。Flutter 3.47.2 + Flutter Scene 0.23.0。macOSで実描画・profile計測を確認。
+- **[そば屋ハザード · 3D検証室](21_SOBAYA_HAZARD_LAB/README.md)** (`21_SOBAYA_HAZARD_LAB/`): Tripo P2.0製の非ボクセルそば屋で、41ボーン／9モーション・共通ビールジョッキ・三人称移動・壁衝突・1〜12体のスキニング負荷を検証。Flutter 3.47.2 + Flutter Scene 0.23.0。macOSで実描画・profile計測を確認。
 手っ取り早く遊びたい方はこちら: https://sobaya-0141.github.io/Seedance_Madogiwa/
 
 - **[そば屋のオフィスクラッシュ ～無限フロア大整理～](05_OFFICE_CRASH_GAME/README.md)** (`05_OFFICE_CRASH_GAME/`): 大型ビールジョッキを強化し、8つの備品循環フロアを攻略する3Dアクションハクスラ＋ローグライト。ラン履歴、自己ベスト、永続強化、ランキングをSitesのD1へ保存。Three.js + React + vinext製。
