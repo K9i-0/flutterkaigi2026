@@ -34,6 +34,8 @@ mise exec -- flutter run -d macos
 
 ## モデルと軽量化
 
+肩・顔・握り・ガラス／液体表現と、Tripo複数画像入力の調査は[品質改善方針](ASSET_QUALITY_PLAN.md)を参照。
+
 `assets/models/sobaya.glb`は[GLB正本](../04_GAME_ASSETS/3d/characters/sobaya/rig_v1/sobaya_rig.glb)への相対symlink。ゲーム側へコピーしない。採用したGLBをGit管理対象にし、Tripo生レスポンス・署名付きURL・APIキーは含めない。
 
 リグ版は身長1.8m、21,066三角面、1材質、4K PBRテクスチャ、41ボーン／最大4ウェイト。歩行・走行・ゾンビ歩行・ダンス3種・乾杯・ジョッキ攻撃・待機の9クリップを持つ。[リグ仕様・再生成](../04_GAME_ASSETS/3d/characters/sobaya/rig_v1/README.md)を参照。
