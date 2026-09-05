@@ -773,10 +773,21 @@ class HazardGameController extends ChangeNotifier {
       );
       final scale = e.alive ? 1.0 : math.max(.001, 1 - e.vanish / .65);
       actor.node.scale = vm.Vector3.all(scale * (e.boss ? 1.2 : 1));
+      final bossMelee =
+          e.boss &&
+          (e.bossMove == BossMove.swipeWindup ||
+              e.bossMove == BossMove.slamWindup ||
+              (e.bossMove == BossMove.recovery &&
+                  (e.bossAttack == BossMove.swipeWindup ||
+                      e.bossAttack == BossMove.slamWindup)));
       actor.setMotion(
         e.boss && director?.shot.actor == 'sobaya'
             ? director!.shot.motion
-            : e.attackPending
+            : e.bossMove == BossMove.charging
+            ? 'Run'
+            : e.bossMove == BossMove.chargeWindup
+            ? 'Run'
+            : bossMelee || e.attackPending
             ? 'MugAttack'
             : e.stun > 0
             ? 'Idle'
@@ -790,11 +801,34 @@ class HazardGameController extends ChangeNotifier {
             e.alive &&
             e.active,
         speed: e.attackPending
-            ? (e.boss ? 1.5 * .7 / 1.15 : 1.5)
+            ? (e.boss
+                  ? 1.05 / (e.bossMove == BossMove.slamWindup ? 1.25 : .85)
+                  : 1.5)
             : e.moved > .0001 && dt > 0
-            ? (e.moved / dt / 1.007474632).clamp(.1, 2)
+            ? (e.moved /
+                      dt /
+                      (e.bossMove == BossMove.charging
+                          ? 2.381708109
+                          : 1.007474632) /
+                      (e.boss ? 1.2 : 1))
+                  .clamp(.1, 3)
             : 1,
       );
+      if (director == null && bossMelee) {
+        final attackSeconds = e.bossAttack == BossMove.slamWindup ? 1.25 : .85;
+        final time = e.bossMove == BossMove.recovery
+            ? .77 + (e.bossRecoveryDuration - e.bossTimer) * .8
+            : .77 * (1 - e.bossTimer / attackSeconds);
+        actor.clips['MugAttack']!
+          ..seek(time.clamp(0.0, 1.4))
+          ..playbackTimeScale = 0;
+      } else if (director == null && e.bossMove == BossMove.chargeWindup) {
+        // A forward-weighted stance distinguishes the rush from a raised mug.
+        actor.setMotion('Run');
+        actor.clips['Run']!
+          ..seek(.12)
+          ..playbackTimeScale = 0;
+      }
     }
     for (final h in s.map['houses']) {
       final inside =

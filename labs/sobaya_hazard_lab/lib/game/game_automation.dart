@@ -91,6 +91,7 @@ void attachGameAutomation(HazardGameController game) {
         'introEvent',
         'farmEvent',
         'bossEvent',
+        'bossCombat',
         'endingEvent',
       ].contains(name)) {
         return MarionetteExtensionResult.invalidParams('Invalid scenario');
@@ -103,6 +104,7 @@ void attachGameAutomation(HazardGameController game) {
         'mountainGate',
         'farmEvent',
         'bossEvent',
+        'bossCombat',
         'endingEvent',
       ].contains(name)) {
         final first = g.state!;
@@ -116,6 +118,7 @@ void attachGameAutomation(HazardGameController game) {
           'mountain',
           'mountainGate',
           'bossEvent',
+          'bossCombat',
           'endingEvent',
         ].contains(name)) {
           final farm = g.state!..gateOpen = true;
@@ -133,6 +136,16 @@ void attachGameAutomation(HazardGameController game) {
         e.active = false;
       }
       switch (name) {
+        case 'bossCombat':
+          s.x = 6;
+          s.z = 4;
+          s.yaw = -1.5707963267948966;
+          s.seenEvents.add('last_order');
+          s.enemies.firstWhere((e) => e.boss)
+            ..active = true
+            ..alerted = true;
+          s.phase = PlayPhase.paused;
+
         case 'farm':
           s.x = -19;
           s.z = -21;
@@ -205,7 +218,7 @@ void attachGameAutomation(HazardGameController game) {
             ..x = 0
             ..z = -15.1;
       }
-      s.phase = PlayPhase.playing;
+      s.phase = name == 'bossCombat' ? PlayPhase.paused : PlayPhase.playing;
       final event = {
         'introEvent': 'opening',
         'farmEvent': 'farm',
@@ -223,7 +236,7 @@ void attachGameAutomation(HazardGameController game) {
   );
   registerMarionetteExtension(
     name: 'madogiwa.gameAction',
-    description: 'Debug action=interact|reload|fire|fireAtEnemy|step|move|aim|pause|evade|kick|pose. pose clip and seconds=0..3. step seconds=0..10.',
+    description: 'Debug action=previewState|simulate|interact|reload|fire|fireAtEnemy|step|move|aim|pause|evade|kick|pose. pose clip and seconds=0..3. step/simulate seconds=0..10. simulate x/y=-1..1 sprint/evade=true uses normal simulation and pauses for inspection.',
     callback: (p) async {
       final g = _game;
       if (g == null || !g.ready) {
@@ -231,6 +244,48 @@ void attachGameAutomation(HazardGameController game) {
       }
       final s = g.state!;
       switch (p['action']) {
+        case 'previewState':
+          if (s.phase != PlayPhase.paused) {
+            return MarionetteExtensionResult.invalidParams('Pause the run first');
+          }
+          // Render a deterministic combat pose without a pause-menu overlay.
+          // posePreview also prevents debug snapshots overwriting checkpoints.
+          g.posePreview = true;
+          s.stopInput();
+          s.phase = PlayPhase.playing;
+
+        case 'simulate':
+          final seconds = double.tryParse(p['seconds'] ?? '1');
+          final inputX = double.tryParse(p['x'] ?? '0');
+          final inputY = double.tryParse(p['y'] ?? '0');
+          if (seconds == null ||
+              !seconds.isFinite ||
+              seconds < 0 ||
+              seconds > 10 ||
+              inputX == null ||
+              !inputX.isFinite ||
+              inputX.abs() > 1 ||
+              inputY == null ||
+              !inputY.isFinite ||
+              inputY.abs() > 1 ||
+              ![PlayPhase.playing, PlayPhase.paused].contains(s.phase)) {
+            return MarionetteExtensionResult.invalidParams(
+              'seconds=0..10, x/y=-1..1, active run required',
+            );
+          }
+          // Use the regular simulation clock and input path, including enemy
+          // movement, damage, collision and cooldowns. Freeze only for inspection.
+          s.phase = PlayPhase.playing;
+          s.inputX = inputX;
+          s.inputY = inputY;
+          s.sprint = p['sprint'] == 'true';
+          if (p['evade'] == 'true') s.evade();
+          for (var i = 0; i < (seconds * 60).round(); i++) {
+            s.tick(1 / 60);
+          }
+          s.stopInput();
+          if (s.running) s.phase = PlayPhase.paused;
+
         case 'pose':
           final name = p['clip'];
           if (!g.player.clips.containsKey(name)) {

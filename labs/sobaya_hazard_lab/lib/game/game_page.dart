@@ -309,6 +309,40 @@ class _HazardGamePageState extends State<HazardGamePage> {
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
+                                for (final boss in s.enemies.where(
+                                  (e) =>
+                                      e.boss &&
+                                      e.alive &&
+                                      e.active &&
+                                      e.alerted,
+                                ))
+                                  SizedBox(
+                                    width: 300,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const SizedBox(height: 12),
+                                        Text(
+                                          '最終そば屋  —  ${boss.bossCue}',
+                                          style: const TextStyle(
+                                            color: gold,
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 6),
+                                        LinearProgressIndicator(
+                                          value: (boss.hp / 350).clamp(
+                                            0.0,
+                                            1.0,
+                                          ),
+                                          color: gold,
+                                          backgroundColor: ink,
+                                          minHeight: 4,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 const SizedBox(height: 12),
                                 Text(
                                   s.objective,

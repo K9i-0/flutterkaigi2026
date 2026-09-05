@@ -153,13 +153,15 @@ void main() {
       s.z = 5.5;
       s.tick(.01);
       expect(boss.attackPending, true);
-      expect(boss.windup, greaterThan(1));
+      expect(boss.windup, greaterThan(.8));
+      s.inputX = -1;
+      s.sprint = true;
       for (var i = 0; i < 75; i++) {
-        s.move(1, 0, 1 / 60);
         s.tick(1 / 60);
       }
       expect(s.health, 100);
-      expect(boss.cooldown, greaterThan(1));
+      expect(boss.bossMove, BossMove.recovery);
+      expect(boss.bossTimer, greaterThan(1));
       expect(boss.attackPending, false);
     },
   );

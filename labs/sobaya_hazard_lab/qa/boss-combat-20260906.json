@@ -1,0 +1,107 @@
+{
+  "date": "2026-09-06",
+  "platform": "macOS native debug / Flutter 3.47.2 / flutter_scene 0.23.0",
+  "automated_tests": 47,
+  "analyze": "No issues found",
+  "native_simulation": {
+    "tell": {
+      "position": {
+        "x": 6.0,
+        "y": 0.0,
+        "z": 4.0
+      },
+      "health": 100.0,
+      "boss": {
+        "id": 4,
+        "alive": true,
+        "active": true,
+        "dropped": false,
+        "hp": 350.0,
+        "alerted": true,
+        "stun": 0.0,
+        "attackPending": true,
+        "bossMove": "chargeWindup",
+        "bossTimer": 1.1166666666666667,
+        "bossCue": "突進 — 横へ避けろ",
+        "x": 12.0,
+        "z": 4.0
+      }
+    },
+    "dodge": {
+      "position": {
+        "x": 6.0,
+        "y": 0.0,
+        "z": 7.220000000000013
+      },
+      "health": 100.0,
+      "boss": {
+        "id": 4,
+        "alive": true,
+        "active": true,
+        "dropped": false,
+        "hp": 350.0,
+        "alerted": true,
+        "stun": 0.0,
+        "attackPending": false,
+        "bossMove": "charging",
+        "bossTimer": 1.0666666666666669,
+        "bossCue": "突進",
+        "x": 11.826666666666668,
+        "z": 4.0
+      }
+    },
+    "recovery": {
+      "position": {
+        "x": 6.0,
+        "y": 0.0,
+        "z": 7.220000000000013
+      },
+      "health": 100.0,
+      "boss": {
+        "id": 4,
+        "alive": true,
+        "active": true,
+        "dropped": false,
+        "hp": 350.0,
+        "alerted": true,
+        "stun": 0.0,
+        "attackPending": false,
+        "bossMove": "recovery",
+        "bossTimer": 1.6666666666666672,
+        "bossCue": "反撃のチャンス",
+        "x": 6.280000000000044,
+        "z": 4.0
+      }
+    }
+  },
+  "scope": "Isolated boss setup; other enemies disabled for this scenario. simulate uses normal state tick, input, movement, collision, damage and cooldowns. Not a full playthrough.",
+  "coverage": [
+    "locked charge direction and lateral evasion",
+    "charge contact deals damage only once",
+    "wall stops charge and grants longer recovery",
+    "committed attacks take damage without bullet stunlock",
+    "second-phase slam escape and wall occlusion",
+    "charge state survives checkpoint restoration",
+    "real mountain geometry: starting ammunition and ordinary movement can defeat isolated boss",
+    "death cancels attacks; exactly one beer drop"
+  ],
+  "limitations": [
+    "Full campaign playthrough and initial-player balance unverified",
+    "Slam currently uses retimed authored mug strike; no dedicated heavy impact VFX/audio yet",
+    "Final profile and spatial audio remain pending"
+  ],
+  "tripo_credits_spent": 0,
+  "visual_review": {
+    "screenshot": "evidence/screenshot-1788635280-0.png",
+    "method": "Deterministic paused combat state rendered without menu; not live-motion proof",
+    "observed": [
+      "boss health/cue readable",
+      "forward-weighted charge stance",
+      "held mug visible"
+    ],
+    "limitations": [
+      "heavy slam uses existing mug animation with adjusted timing",
+      "full speed cinematic capture still pending"
+    ]
+  }
+}
