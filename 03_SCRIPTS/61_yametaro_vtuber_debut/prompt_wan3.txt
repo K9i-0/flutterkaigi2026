@@ -1,0 +1,42 @@
+Create exactly one 18-second, 16:9, polished Japanese Live2D-style VTuber talking video with synchronized audio. Generate a clean video plate with no broadcast UI and no readable text anywhere.
+
+References:
+- Image 1: the approved clean composition and environment reference for Mushoku Abel. Preserve the cozy late-night window-side home office, purple-gold lighting, desk, laptop, plants, broad night-city window, chest-up framing, lavender leaf-pattern shirt, dark purple consultant jacket, and headset microphone. Preserve the avatar design, but do not freeze the supplied facial expression. Do not invent title bars, chat boxes, labels, logos, letters, numbers, or pseudo-text.
+- Image 2: episode-local character sheet for Yametaro. Preserve the same identity: huge rounded black hair, sharply triangular exposed forehead, soft square face and head shape, tiny ears, perfectly round black glasses, tiny eyes behind pale lenses, small nose and mouth, vivid round pink cheeks, and chibi proportions. Use the sheet only for identity and body design. Do not reproduce its panel layout, labels, white background, multiple views, or multiple copies of the character.
+- Audio 1: canonical Yametaro voice-timbre reference only. Do not copy its words, pauses, or timing. Generate the new dialogue below in that same relaxed adult male timbre with gentle Kansai intonation, dry self-deprecating humor, and clear diction.
+
+Overall continuity: exactly one Yametaro / Mushoku Abel avatar sits slightly left of center in the same cozy night office. Keep his identity, round glasses, pink cheeks, hair silhouette, clothing, headset, desk, laptop, plants, window, city skyline, room layout, and purple-gold lighting unchanged for all 18 seconds. Keep the rightmost 35 percent calm and uncluttered for viewer comments added later in Remotion. Keep top and bottom safety areas visually simple. Use a stable eye-level chest-up camera with no cuts, no zoom, no pan, and no shake.
+
+Live2D motion direction: the character must move like a professionally rigged 2D Live2D avatar, not like a freely rotating 3D model. Treat the face, hair, eyes, mouth, cheeks, shoulders, and torso as controlled layered 2D rig parts. Use only subtle breathing of 1-2 percent, gentle head roll of 2-4 degrees, very small yaw within 5 degrees, natural eye tracking, blinks led by the upper eyelids, and restrained shoulder follow-through. The front hair settles one or two frames after the head. Use clean controlled 2D mouth visemes synchronized to the phonemes, with tiny jaw and cheek deformation. Preserve the flat front-facing face design and glasses. Avoid profile turns, large perspective rotations, rubbery morphing, whole-body wobble, repetitive bobbing, floating, exaggerated squash-and-stretch, and random hand motion.
+
+Shot 1 [0.0-0.7 s] — Stable front-facing chest-up shot. Mushoku Abel looks into the camera with his mouth fully closed. A tiny Live2D breathing loop and one natural blink establish the rig. No dialogue.
+
+Shot 2 [0.7-2.9 s] — He makes one very small appreciative nod while keeping his eyes mostly on camera and says exactly once: 「みなさん、コメントありがとうございます。」 Reading: 「みなさん、コメントありがとうございます。」 Tone: grateful, relaxed, slightly amused. The head nod finishes gently with a one-to-two-frame hair follow-through.
+
+Shot 3 [2.9-3.2 s] — Short silent pause. Mouth fully closed. Move only his eyes toward the empty comment area on screen right; do not turn the head yet, as though a highlighted paid comment has just appeared there.
+
+Shot 4 [3.2-6.4 s] — His eyes open only slightly in recognition. He gives one polite, restrained thank-you nod toward the empty comment area and says exactly once: 「あっ、おかやまんさん。スパチャありがとうございます。」 Reading: 「あっ、おかやまんさん。スパチャありがとうございます。」 Tone: spontaneous streamer gratitude with a small note of surprise, warm but understated. Keep his mouth clearly visible. Finish the nod without bobbing.
+
+Shot 5 [6.4-6.7 s] — Short silent pause. Mouth fully closed. His eyes move a little lower as though reading the paid comment body.
+
+Shot 6 [6.7-7.9 s] — He adds a gentle three-degree head tilt toward the empty comment area and reads exactly once: 「『見てるぞー』と。」 Reading: 「みてるぞー、と。」 Tone: quoting the message, amused caution. Keep his mouth clearly visible.
+
+Shot 7 [7.9-8.1 s] — Very short silent pause. Mouth fully closed. Return his eyes to camera.
+
+Shot 8 [8.1-10.3 s] — He raises one hand only a few centimeters near his chest in a restrained explanatory gesture and says exactly once: 「この方、私の上司ですね。」 Reading: 「このかた、わたしのじょうしですね。」 Tone: matter-of-fact and deadpan, letting the reveal land naturally. Add a tiny eyebrow lift on 「上司」 but no broad reaction. The hand never covers the face or mouth.
+
+Shot 9 [10.3-10.6 s] — Short silent reaction beat after the boss reveal. Mouth fully closed. Hold eye contact with the camera, lower the hand, and raise the eyebrows a fraction as though the unseen chat has suddenly become lively. Do not look alarmed or overact.
+
+Shot 10 [10.6-14.3 s] — He lowers his shoulders slightly, gives a tiny resigned smile, and says exactly once: 「初配信から監視されております。」 Reading: 「はつはいしんから、かんしされております。」 Tone: self-deprecating, gentle, quietly funny. No large head movement.
+
+Shot 11 [14.3-14.7 s] — Short silent pause. Mouth fully closed. Return to a neutral upright Live2D pose.
+
+Shot 12 [14.7-17.3 s] — He gives one small introduction nod toward the camera and says exactly once: 「どうも、無職アベルです。」 Reading: 「どうも、むしょくアベルです。」 Tone: friendly and understated. Complete the final phoneme before closing the mouth.
+
+Shot 13 [17.3-18.0 s] — After the final phoneme, close the mouth fully, settle into a small relaxed smile, and blink naturally once. No further speech.
+
+Audio: generate Yametaro's dialogue and facial motion together. The six quoted lines must be spoken exactly once in the specified order. Preserve the natural hesitation in 「あっ」 and the brief deadpan pause before revealing that the sender is his boss. No narrator and no other voices. Very quiet indoor room tone and faint distant city ambience only, always below speech. No background music, notification sounds, typing, laughter, applause, or sound effects.
+
+Lip sync: synchronize the controlled 2D mouth shapes, jaw, and cheeks to every generated phoneme. Keep the mouth closed before speech, during every specified silent pause, and after the final phoneme. Never cut away, hide the mouth, or move the camera during speech.
+
+Hard constraints: exact duration 18 seconds; exactly one character; no cuts; no camera movement; no extra people; no duplicate character; no subtitles; no title; no LIVE badge; no viewer count; no chat panel; no comments; no user icons; no letters; no numbers; no symbols; no readable text; no pseudo-text; no logos; no watermark; no extra dialogue; no background music; no altered hairstyle; no missing or deformed round glasses; no changed pink cheeks; no sharp anime chin; no realistic human face; no profile view; no head rotation beyond 5 degrees; no large arm motion; no hand covering the mouth; no identity drift; no rigid statue; no 3D model spin; no rubbery deformation; no repetitive bobbing.

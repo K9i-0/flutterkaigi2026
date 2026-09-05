@@ -1,0 +1,28 @@
+{
+  "name": "madogiwa-remotion-edit",
+  "version": "1.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@remotion/cli": "4.0.520",
+    "@remotion/media": "4.0.520",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "remotion": "4.0.520"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.7",
+    "typescript": "5.9.3"
+  },
+  "scripts": {
+    "studio": "remotion studio",
+    "typecheck": "tsc",
+    "bundle": "remotion bundle",
+    "validate": "python3 ../../../.claude/skills/remotion-video/scripts/validate_edit_manifest.py src/edit-manifest.json --public-dir public && python3 scripts/validate_livestream_manifest.py",
+    "render": "remotion render src/index.ts MushokuAbelDebut ../final_remotion_vtuber_debut.mp4 --codec=h264 --crf=18 --audio-codec=aac --overwrite",
+    "render:preview": "remotion render src/index.ts MushokuAbelDebut out/vtuber_ui_preview.mp4 --codec=h264 --crf=18 --audio-codec=aac --overwrite"
+  },
+  "sideEffects": [
+    "*.css"
+  ]
+}
