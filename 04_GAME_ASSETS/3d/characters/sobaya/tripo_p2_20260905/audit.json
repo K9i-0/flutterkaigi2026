@@ -1,0 +1,64 @@
+{
+  "source": "raw/output_model_url.fbx",
+  "objects": [
+    {
+      "name": "tripo_node_523d7211",
+      "vertices": 11008,
+      "polygons": 12257,
+      "triangles": 21068,
+      "polygon_sides": {
+        "3": 3446,
+        "4": 8811
+      },
+      "uv_layers": 1,
+      "materials": 1,
+      "source_dimensions": [
+        0.23974609375,
+        0.49560546875,
+        0.99951171875
+      ]
+    }
+  ],
+  "images": [
+    {
+      "name": "tripo_image_523d7211_0",
+      "size": [
+        4096,
+        4096
+      ],
+      "packed": true
+    },
+    {
+      "name": "tripo_image_523d7211_1",
+      "size": [
+        4096,
+        4096
+      ],
+      "packed": true
+    },
+    {
+      "name": "tripo_image_523d7211_2",
+      "size": [
+        4096,
+        4096
+      ],
+      "packed": true
+    },
+    {
+      "name": "tripo_image_523d7211_3",
+      "size": [
+        4096,
+        4096
+      ],
+      "packed": true
+    }
+  ],
+  "armatures": 0,
+  "animations": 0,
+  "normalized_dimensions_m": [
+    0.8925256729125977,
+    0.43175381422042847,
+    1.8000000715255737
+  ],
+  "normalization": "1.80 m tall, feet at Z=0, Blender -Y forward / glTF +Z forward"
+}

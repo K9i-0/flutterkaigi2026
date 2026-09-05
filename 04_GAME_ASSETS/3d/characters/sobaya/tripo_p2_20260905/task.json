@@ -1,0 +1,16 @@
+{
+  "task_id": "523d7211-c30f-4dae-b7f4-e9f20b4f4db0",
+  "input_sha256": "9cb6c88da8e66a99f40066699b0258f9002f0dc652c69f5cf9c9f6f4afab4438",
+  "balance_before": {
+    "balance": 600.0,
+    "frozen": 0.0
+  },
+  "model": "P2-20260801",
+  "status": "success",
+  "progress": 100,
+  "credits_consumed": 120.0,
+  "balance_after": {
+    "balance": 480.0,
+    "frozen": 0.0
+  }
+}

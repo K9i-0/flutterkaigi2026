@@ -1,0 +1,9 @@
+/raw/
+/upload_response.json
+/task_response.json
+/submission_started.json
+/download_manifest.json
+/sobaya_source.blend
+/sobaya_source.blend1
+# sobaya_preview.glb is now the canonical input used by 21_SOBAYA_HAZARD_LAB.
+/review/

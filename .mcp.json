@@ -5,7 +5,7 @@
       "command": "mise",
       "args": [
         "exec",
-        "flutter@3.47.1",
+        "flutter@3.47.2",
         "--",
         "dart",
         "pub",
@@ -17,7 +17,7 @@
     "dart-mcp": {
       "type": "stdio",
       "command": "mise",
-      "args": ["exec", "flutter@3.47.1", "--", "dart", "mcp-server"],
+      "args": ["exec", "flutter@3.47.2", "--", "dart", "mcp-server", "--enable=flutter_app_lifecycle"],
       "env": {}
     },
     "cloudflare": {

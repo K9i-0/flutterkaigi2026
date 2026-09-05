@@ -1,0 +1,328 @@
+{
+  "date": "2026-09-05",
+  "host": {
+    "model": "MacBook Air",
+    "chip": "Apple M4",
+    "memoryGB": 32,
+    "os": "macOS 26.6.2 (25G83)"
+  },
+  "flutter": "3.47.2",
+  "dart": "3.13.2",
+  "flutter_scene": "0.23.0",
+  "backend": "Impeller MetalSDF",
+  "limitations": [
+    "Single local run, no GPU timer or actual FPS measurement",
+    "Unrigged character, no AI or skinning",
+    "OS scheduling, thermal and other desktop workload are not controlled"
+  ],
+  "results": [
+    {
+      "case": "one",
+      "valid": true,
+      "elapsedMs": 8002,
+      "ready": true,
+      "mode": "crowd",
+      "model": "assets/models/sobaya.glb",
+      "rigged": false,
+      "count": 1,
+      "placedTriangles": 21068,
+      "sourceTextureSize": 4096,
+      "loadMs": 628,
+      "position": {
+        "x": 0.0,
+        "z": 0.0
+      },
+      "distanceM": 0.0,
+      "colliding": false,
+      "collisionFrames": 0,
+      "cameraFraction": 1.0,
+      "cameraYaw": 0.0,
+      "cameraDistance": 12.0,
+      "shadows": true,
+      "ao": false,
+      "renderScale": 1.0,
+      "paused": false,
+      "test": "未実行",
+      "testRunning": false,
+      "frameTimings": {
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 2.435,
+        "rasterP95Ms": 1.857
+      },
+      "buildMode": "profile",
+      "viewport": {
+        "logicalWidth": 924.0,
+        "logicalHeight": 691.0,
+        "devicePixelRatio": 2.0,
+        "renderWidth": 1848,
+        "renderHeight": 1382
+      },
+      "capturedAt": "2026-09-05T13:51:31.887027"
+    },
+    {
+      "case": "four",
+      "valid": true,
+      "elapsedMs": 8499,
+      "ready": true,
+      "mode": "crowd",
+      "model": "assets/models/sobaya.glb",
+      "rigged": false,
+      "count": 4,
+      "placedTriangles": 84272,
+      "sourceTextureSize": 4096,
+      "loadMs": 628,
+      "position": {
+        "x": 0.0,
+        "z": 0.0
+      },
+      "distanceM": 0.0,
+      "colliding": false,
+      "collisionFrames": 0,
+      "cameraFraction": 1.0,
+      "cameraYaw": 0.0,
+      "cameraDistance": 12.0,
+      "shadows": true,
+      "ao": false,
+      "renderScale": 1.0,
+      "paused": false,
+      "test": "未実行",
+      "testRunning": false,
+      "frameTimings": {
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 2.476,
+        "rasterP95Ms": 1.863
+      },
+      "buildMode": "profile",
+      "viewport": {
+        "logicalWidth": 924.0,
+        "logicalHeight": 691.0,
+        "devicePixelRatio": 2.0,
+        "renderWidth": 1848,
+        "renderHeight": 1382
+      },
+      "capturedAt": "2026-09-05T13:51:40.386944"
+    },
+    {
+      "case": "eight",
+      "valid": true,
+      "elapsedMs": 8499,
+      "ready": true,
+      "mode": "crowd",
+      "model": "assets/models/sobaya.glb",
+      "rigged": false,
+      "count": 8,
+      "placedTriangles": 168544,
+      "sourceTextureSize": 4096,
+      "loadMs": 628,
+      "position": {
+        "x": 0.0,
+        "z": 0.0
+      },
+      "distanceM": 0.0,
+      "colliding": false,
+      "collisionFrames": 0,
+      "cameraFraction": 1.0,
+      "cameraYaw": 0.0,
+      "cameraDistance": 12.0,
+      "shadows": true,
+      "ao": false,
+      "renderScale": 1.0,
+      "paused": false,
+      "test": "未実行",
+      "testRunning": false,
+      "frameTimings": {
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 2.369,
+        "rasterP95Ms": 1.69
+      },
+      "buildMode": "profile",
+      "viewport": {
+        "logicalWidth": 924.0,
+        "logicalHeight": 691.0,
+        "devicePixelRatio": 2.0,
+        "renderWidth": 1848,
+        "renderHeight": 1382
+      },
+      "capturedAt": "2026-09-05T13:51:48.886812"
+    },
+    {
+      "case": "twelve",
+      "valid": true,
+      "elapsedMs": 8499,
+      "ready": true,
+      "mode": "crowd",
+      "model": "assets/models/sobaya.glb",
+      "rigged": false,
+      "count": 12,
+      "placedTriangles": 252816,
+      "sourceTextureSize": 4096,
+      "loadMs": 628,
+      "position": {
+        "x": 0.0,
+        "z": 0.0
+      },
+      "distanceM": 0.0,
+      "colliding": false,
+      "collisionFrames": 0,
+      "cameraFraction": 1.0,
+      "cameraYaw": 0.0,
+      "cameraDistance": 12.0,
+      "shadows": true,
+      "ao": false,
+      "renderScale": 1.0,
+      "paused": false,
+      "test": "未実行",
+      "testRunning": false,
+      "frameTimings": {
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 2.356,
+        "rasterP95Ms": 1.7
+      },
+      "buildMode": "profile",
+      "viewport": {
+        "logicalWidth": 924.0,
+        "logicalHeight": 691.0,
+        "devicePixelRatio": 2.0,
+        "renderWidth": 1848,
+        "renderHeight": 1382
+      },
+      "capturedAt": "2026-09-05T13:51:57.387281"
+    },
+    {
+      "case": "twelve-no-shadow",
+      "valid": true,
+      "elapsedMs": 8498,
+      "ready": true,
+      "mode": "crowd",
+      "model": "assets/models/sobaya.glb",
+      "rigged": false,
+      "count": 12,
+      "placedTriangles": 252816,
+      "sourceTextureSize": 4096,
+      "loadMs": 628,
+      "position": {
+        "x": 0.0,
+        "z": 0.0
+      },
+      "distanceM": 0.0,
+      "colliding": false,
+      "collisionFrames": 0,
+      "cameraFraction": 1.0,
+      "cameraYaw": 0.0,
+      "cameraDistance": 12.0,
+      "shadows": false,
+      "ao": false,
+      "renderScale": 1.0,
+      "paused": false,
+      "test": "未実行",
+      "testRunning": false,
+      "frameTimings": {
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 2.142,
+        "rasterP95Ms": 2.157
+      },
+      "buildMode": "profile",
+      "viewport": {
+        "logicalWidth": 924.0,
+        "logicalHeight": 691.0,
+        "devicePixelRatio": 2.0,
+        "renderWidth": 1848,
+        "renderHeight": 1382
+      },
+      "capturedAt": "2026-09-05T13:52:05.886734"
+    },
+    {
+      "case": "twelve-half-res",
+      "valid": true,
+      "elapsedMs": 8499,
+      "ready": true,
+      "mode": "crowd",
+      "model": "assets/models/sobaya.glb",
+      "rigged": false,
+      "count": 12,
+      "placedTriangles": 252816,
+      "sourceTextureSize": 4096,
+      "loadMs": 628,
+      "position": {
+        "x": 0.0,
+        "z": 0.0
+      },
+      "distanceM": 0.0,
+      "colliding": false,
+      "collisionFrames": 0,
+      "cameraFraction": 1.0,
+      "cameraYaw": 0.0,
+      "cameraDistance": 12.0,
+      "shadows": true,
+      "ao": false,
+      "renderScale": 0.5,
+      "paused": false,
+      "test": "未実行",
+      "testRunning": false,
+      "frameTimings": {
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 2.429,
+        "rasterP95Ms": 2.206
+      },
+      "buildMode": "profile",
+      "viewport": {
+        "logicalWidth": 924.0,
+        "logicalHeight": 691.0,
+        "devicePixelRatio": 2.0,
+        "renderWidth": 924,
+        "renderHeight": 691
+      },
+      "capturedAt": "2026-09-05T13:52:14.386679"
+    },
+    {
+      "case": "twelve-ao",
+      "valid": true,
+      "elapsedMs": 8499,
+      "ready": true,
+      "mode": "crowd",
+      "model": "assets/models/sobaya.glb",
+      "rigged": false,
+      "count": 12,
+      "placedTriangles": 252816,
+      "sourceTextureSize": 4096,
+      "loadMs": 628,
+      "position": {
+        "x": 0.0,
+        "z": 0.0
+      },
+      "distanceM": 0.0,
+      "colliding": false,
+      "collisionFrames": 0,
+      "cameraFraction": 1.0,
+      "cameraYaw": 0.0,
+      "cameraDistance": 12.0,
+      "shadows": true,
+      "ao": true,
+      "renderScale": 1.0,
+      "paused": false,
+      "test": "未実行",
+      "testRunning": false,
+      "frameTimings": {
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 2.868,
+        "rasterP95Ms": 2.34
+      },
+      "buildMode": "profile",
+      "viewport": {
+        "logicalWidth": 924.0,
+        "logicalHeight": 691.0,
+        "devicePixelRatio": 2.0,
+        "renderWidth": 1848,
+        "renderHeight": 1382
+      },
+      "capturedAt": "2026-09-05T13:52:22.887221"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "image": "inputs/sobaya_front.png",
+  "generation": {
+    "model": "P2-20260801",
+    "quad": true,
+    "face_limit": 10000,
+    "texture": true,
+    "pbr": true,
+    "texture_quality": "detailed",
+    "texture_alignment": "original_image",
+    "model_seed": 260905,
+    "texture_seed": 260905,
+    "export_uv": true,
+    "auto_size": false
+  }
+}
