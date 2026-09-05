@@ -11,6 +11,7 @@ import 'package:flutter_scene/scene.dart' show SceneView;
 import 'game_controller.dart';
 import 'game_state.dart';
 import 'game_dialogue.dart';
+import 'game_settings.dart';
 import 'game_automation.dart';
 import 'game_benchmark.dart';
 
@@ -52,7 +53,11 @@ class _HazardGamePageState extends State<HazardGamePage> {
           if (mounted) setState(() => error = e.toString());
         });
     lifecycle = AppLifecycleListener(
+      onResume: () {
+        game.foreground = true;
+      },
       onInactive: () {
+        game.foreground = false;
         held.clear();
         game.state?.stopInput();
         if (game.state?.running ?? false) game.toggle(PlayPhase.paused);
@@ -123,6 +128,21 @@ class _HazardGamePageState extends State<HazardGamePage> {
     updateInput();
     if (e is KeyRepeatEvent) return KeyEventResult.handled;
     final k = e.logicalKey;
+    if (s.phase == PlayPhase.cinematic) {
+      if (k == LogicalKeyboardKey.escape) {
+        game.director!.paused = !game.director!.paused;
+        setState(() {});
+      } else if (k == LogicalKeyboardKey.keyE ||
+          k == LogicalKeyboardKey.space) {
+        game.advanceEvent();
+      }
+      return KeyEventResult.handled;
+    }
+    if (s.phase == PlayPhase.settings) {
+      if (k == LogicalKeyboardKey.escape) game.closeSettings();
+      return KeyEventResult.handled;
+    }
+    if (s.phase == PlayPhase.title) return KeyEventResult.ignored;
     if (s.phase == PlayPhase.dialogue) {
       if (k == LogicalKeyboardKey.escape) s.endDialogue();
       if (k == LogicalKeyboardKey.keyE || k == LogicalKeyboardKey.space) {
@@ -262,7 +282,9 @@ class _HazardGamePageState extends State<HazardGamePage> {
                         ),
                       ),
                       if (s.phase != PlayPhase.title &&
-                          s.phase != PlayPhase.dialogue) ...[
+                          s.phase != PlayPhase.dialogue &&
+                          s.phase != PlayPhase.settings &&
+                          s.phase != PlayPhase.cinematic) ...[
                         Positioned(
                           left: 28,
                           top: 26,
@@ -468,6 +490,8 @@ class _HazardGamePageState extends State<HazardGamePage> {
                           ),
                       ],
                       if (s.phase == PlayPhase.title) title(s),
+                      if (s.phase == PlayPhase.cinematic) eventOverlay(),
+                      if (s.phase == PlayPhase.settings) settingsPanel(),
                       if (s.phase == PlayPhase.dialogue) dialogue(s),
                       if (s.phase == PlayPhase.inventory) inventory(s),
                       if (s.phase == PlayPhase.mapView) fullMap(s),
@@ -801,6 +825,11 @@ class _HazardGamePageState extends State<HazardGamePage> {
                 style: const TextStyle(fontSize: 17, letterSpacing: 3),
               ),
             ),
+            TextButton(
+              key: const ValueKey('game-title-settings'),
+              onPressed: game.openSettings,
+              child: const Text('設定', style: TextStyle(color: ivory)),
+            ),
             if (game.hasCheckpoint)
               const Padding(
                 padding: EdgeInsets.only(top: 8),
@@ -863,7 +892,11 @@ class _HazardGamePageState extends State<HazardGamePage> {
                       IconButton(
                         key: const ValueKey('game-modal-close'),
                         onPressed: () {
-                          game.state!.phase = PlayPhase.playing;
+                          if (game.state!.phase == PlayPhase.settings) {
+                            game.closeSettings();
+                          } else {
+                            game.state!.phase = PlayPhase.playing;
+                          }
                           focus.requestFocus();
                           setState(() {});
                         },
@@ -1091,6 +1124,201 @@ class _HazardGamePageState extends State<HazardGamePage> {
       ],
     ),
   );
+  Widget eventOverlay() {
+    final d = game.director!;
+    return Positioned.fill(
+      child: Stack(
+        children: [
+          const Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 66,
+            child: ColoredBox(color: Colors.black),
+          ),
+          Positioned(
+            top: 22,
+            left: 30,
+            child: Text(
+              d.id == 'opening' ? 'SOBAYA HAZARD' : game.state!.chapterLabel,
+              style: const TextStyle(
+                color: gold,
+                letterSpacing: 4,
+                fontSize: 14,
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              constraints: const BoxConstraints(minHeight: 158),
+              padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
+              color: const Color(0xf5000000),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (d.shot.speaker.isNotEmpty)
+                          Text(
+                            d.shot.speaker,
+                            style: const TextStyle(
+                              color: gold,
+                              fontSize: 16,
+                              letterSpacing: 2,
+                            ),
+                          ),
+                        const SizedBox(height: 7),
+                        Text(
+                          d.shot.text,
+                          style: const TextStyle(
+                            color: ivory,
+                            fontSize: 20,
+                            height: 1.65,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 24),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      action(
+                        'event-next',
+                        d.paused ? '再開  E' : '次へ  E',
+                        () => game.advanceEvent(),
+                      ),
+                      const SizedBox(height: 8),
+                      action(
+                        'event-skip',
+                        'スキップ',
+                        () => game.advanceEvent(skip: true),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          if (d.paused)
+            const Center(
+              child: Text(
+                'PAUSED',
+                style: TextStyle(color: ivory, fontSize: 32, letterSpacing: 5),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget settingsPanel() {
+    final options = game.settings;
+    return modal(
+      'SETTINGS',
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('難易度', style: TextStyle(color: gold)),
+          DropdownButton<HazardDifficulty>(
+            key: const ValueKey('game-difficulty'),
+            isExpanded: true,
+            dropdownColor: ink,
+            value: options.difficulty,
+            style: const TextStyle(color: ivory, fontSize: 16),
+            items: [
+              for (final d in HazardDifficulty.values)
+                DropdownMenuItem(
+                  value: d,
+                  child: Text(HazardSettings(difficulty: d).difficultyLabel),
+                ),
+            ],
+            onChanged: (d) {
+              if (d != null) game.changeSettings((s) => s.difficulty = d);
+            },
+          ),
+          const Text(
+            '被ダメージと敵の接近速度を変更します。探索中も切り替えられます。',
+            style: TextStyle(color: ivory, fontSize: 12),
+          ),
+          const SizedBox(height: 20),
+          Text(
+            '視点感度  ×${options.sensitivity.toStringAsFixed(1)}',
+            style: const TextStyle(color: gold),
+          ),
+          Slider(
+            key: const ValueKey('game-sensitivity'),
+            value: options.sensitivity,
+            min: .5,
+            max: 2,
+            divisions: 15,
+            label: options.sensitivity.toStringAsFixed(1),
+            activeColor: gold,
+            onChanged: (v) => game.changeSettings((s) => s.sensitivity = v),
+          ),
+          Text(
+            '音量  ${(options.volume * 100).round()}%',
+            style: const TextStyle(color: gold),
+          ),
+          Slider(
+            key: const ValueKey('game-volume'),
+            value: options.volume,
+            divisions: 10,
+            activeColor: gold,
+            onChanged: (v) => game.changeSettings((s) => s.volume = v),
+          ),
+          Wrap(
+            spacing: 12,
+            runSpacing: 12,
+            children: [
+              action(
+                'mute',
+                options.muted ? '消音：ON' : '消音：OFF',
+                () => game.changeSettings((s) => s.muted = !s.muted),
+              ),
+              action(
+                'settings-default',
+                '標準設定に戻す',
+                () => game.changeSettings((s) {
+                  s.difficulty = HazardDifficulty.standard;
+                  s.volume = 1;
+                  s.sensitivity = 1;
+                  s.renderScale = .85;
+                  s.muted = false;
+                }),
+              ),
+              action(
+                'quality',
+                '画質：${options.renderScale < .8
+                    ? '軽量'
+                    : options.renderScale < 1
+                    ? '標準'
+                    : '高精細'}',
+                () => game.changeSettings(
+                  (s) => s.renderScale = s.renderScale < .8
+                      ? .85
+                      : s.renderScale < 1
+                      ? 1
+                      : .65,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          action('settings-back', '戻る', game.closeSettings),
+        ],
+      ),
+      width: 660,
+    );
+  }
+
   Widget fullMap(HazardGameState s) => modal(
     '${s.chapterLabel}  /  MAP',
     Column(
@@ -1133,19 +1361,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
             if (game.hasCheckpoint)
               action('load', 'チェックポイントへ戻る', game.continueRun),
             action('restart', '最初から', game.startRun),
-            action('mute', game.muted ? '音：OFF' : '音：ON', () {
-              game.muted = !game.muted;
-              game.ambience.setVolume(game.muted ? 0 : .24);
-            }),
-            action(
-              'quality',
-              '画質：${game.scene.renderScale < .8 ? '軽量' : '標準'}',
-              () {
-                game.scene.renderScale = game.scene.renderScale < .8
-                    ? .85
-                    : .65;
-              },
-            ),
+            action('settings', '設定', game.openSettings),
           ],
         ),
         const SizedBox(height: 20),
@@ -1189,7 +1405,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
             ),
             const SizedBox(height: 25),
             Text(
-              '撃退 ${s.kills}    ビール ${s.beers}    記録 ${s.collected.length}/${s.gallery.length}',
+              '撃退 ${s.kills}    ビール ${s.beers}    記録 ${s.collected.length}/${s.gallery.length}\n探索 ${(s.time / 60).floor()}分 ${(s.time % 60).floor()}秒    命中率 ${s.shots == 0 ? '—' : '${(s.hits / s.shots * 100).round()}%'}    ${game.settings.difficultyLabel}',
               style: const TextStyle(color: ivory),
             ),
             const SizedBox(height: 28),

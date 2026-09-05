@@ -6,6 +6,8 @@ import 'game_dialogue.dart';
 
 enum PlayPhase {
   title,
+  settings,
+  cinematic,
   playing,
   dialogue,
   transition,
@@ -157,6 +159,7 @@ class HazardGameState {
       : '村を探索し、紋章の鍵を探せ';
   Map<String, dynamic>? exitRequested;
   final medallions = <String>{};
+  final seenEvents = <String>{};
   List<Map<String, dynamic>> get targets =>
       (map['targets'] as List? ?? const []).cast<Map<String, dynamic>>();
   final Set<String> collected;
@@ -192,6 +195,7 @@ class HazardGameState {
       hurtTime = 0,
       recoil = 0;
   double _evadeX = 0, _evadeZ = 0;
+  double damageScale = 1, enemySpeedScale = 1;
   bool sprint = false,
       aiming = false,
       gateOpen = false,
@@ -318,6 +322,7 @@ class HazardGameState {
     checkpointRequested = false;
     exitRequested = null;
     medallions.clear();
+    seenEvents.clear();
     dialogueTopic = 'intro';
     dialogueIndex = 0;
     sprint = false;
@@ -343,7 +348,15 @@ class HazardGameState {
       if (p == PlayPhase.paused) endDialogue();
       return;
     }
-    if (phase == PlayPhase.dead || phase == PlayPhase.clear) return;
+    if ([
+      PlayPhase.dead,
+      PlayPhase.clear,
+      PlayPhase.title,
+      PlayPhase.settings,
+      PlayPhase.cinematic,
+    ].contains(phase)) {
+      return;
+    }
     phase = phase == p ? PlayPhase.playing : p;
     stopInput();
   }
@@ -636,6 +649,7 @@ class HazardGameState {
         continue;
       }
       if (!e.active) continue;
+      if (e.boss && x < 1 && !e.alerted) continue;
       e.cooldown = math.max(0, e.cooldown - dt);
       e.stun = math.max(0, e.stun - dt);
       final dx = x - e.x, dz = z - e.z, dist = math.sqrt(dx * dx + dz * dz);
@@ -675,7 +689,7 @@ class HazardGameState {
                     dist,
                   ) >=
                   dist - .1) {
-            health -= e.boss ? 30 : 15;
+            health -= (e.boss ? 30 : 15) * damageScale;
             invulnerable = .8;
             hurtTime = .45;
             reloading = 0;
@@ -725,7 +739,7 @@ class HazardGameState {
         }
       }
       e.heading = math.atan2(vx, vz);
-      final speed = (e.boss ? 1.15 : .8) * dt;
+      final speed = (e.boss ? 1.15 : .8) * enemySpeedScale * dt;
       final oldX = e.x, oldZ = e.z;
       if (!blocked(e.x + vx * speed, e.z, 0, radius: .37)) e.x += vx * speed;
       if (!blocked(e.x, e.z + vz * speed, 0, radius: .37)) e.z += vz * speed;
@@ -900,6 +914,7 @@ class HazardGameState {
       }
     }
     if (crate != null) {
+      hits++;
       breakCrate(crate);
       hitFlash = .15;
     }

@@ -1,0 +1,75 @@
+{
+  "date": "2026-09-06",
+  "platform": "macOS native debug / Flutter 3.47.2 / flutter_scene 0.23.0",
+  "automated_tests": 40,
+  "analyze": "No issues found",
+  "native_ui": [
+    "Real E advances subtitle shots; Esc pauses/resumes; skip button returns to play",
+    "Opening village establishing shot and Yametaro close-up reviewed",
+    "Farm Takosan close-up reviewed",
+    "Ending Yametaro, Fukuchan, Takosan shots reviewed; Takosan/table overlap corrected",
+    "Last Order Sobaya holding a mug reviewed",
+    "Title and pause settings, dropdown keyboard selection and pointer slider changes",
+    "Settings modal close returns to its originating screen"
+  ],
+  "settings_before_restart": {
+    "difficulty": "tense",
+    "volume": 0.4,
+    "sensitivity": 1.4,
+    "renderScale": 1.0,
+    "muted": false
+  },
+  "settings_after_restart": {
+    "difficulty": "tense",
+    "volume": 0.4,
+    "sensitivity": 1.4,
+    "renderScale": 1.0,
+    "muted": false
+  },
+  "opening_pause": {
+    "id": "opening",
+    "shot": 0,
+    "elapsed": 0.016667,
+    "paused": true
+  },
+  "opening_skip": {
+    "phase": "playing",
+    "event": null,
+    "seenEvents": [
+      "opening"
+    ]
+  },
+  "ending_finish": {
+    "phase": "clear",
+    "seenEvents": [
+      "ending"
+    ]
+  },
+  "mug_grip_anchor_error_metres": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "rendering_fix": "Initial eight mugs exceeded the scene-color capture cap during warm-up. Apply material tier synchronously on component attach; after hot restart the new log has no cap message. At most the nearest enemy mug within 4m gets detailed refraction.",
+  "scenario_scope": "Deterministic debug event setups. These do not prove a normal full playthrough or combat balance.",
+  "limitations": [
+    "Dialogue is subtitled but has no recorded voices",
+    "Dedicated final encounter patterns and balance still pending",
+    "Natural full playthrough and 15–25 minute duration unverified",
+    "Spatial audio and final profile/GPU measurements pending"
+  ],
+  "tripo_credits_spent": 0,
+  "restored_default_settings": {
+    "difficulty": "standard",
+    "volume": 1.0,
+    "sensitivity": 1.0,
+    "renderScale": 0.85,
+    "muted": false
+  },
+  "settings_modal_close_phase": "title"
+}

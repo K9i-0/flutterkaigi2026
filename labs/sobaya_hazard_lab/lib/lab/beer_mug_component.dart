@@ -50,6 +50,22 @@ class BeerMugComponent extends Component {
             : farBeer;
       }
     }
+    // Mount/warm-up may render before the first asynchronous component tick.
+    // Establish the requested material tier before registering render items.
+    _applyMaterialDetail();
+    _bubbles?.visible = detail && fill > .7;
+    for (final part in _liquid) {
+      part.visible = fill > .001 && (detail || part.name != 'LiquidSurface');
+    }
+  }
+
+  void _applyMaterialDetail() {
+    if (_appliedDetail == detail) return;
+    final materials = detail ? _nearMaterials : _farMaterials;
+    for (final entry in materials.entries) {
+      entry.key.material = entry.value;
+    }
+    _appliedDetail = detail;
   }
 
   void reset() {
@@ -64,13 +80,7 @@ class BeerMugComponent extends Component {
       reset();
       return;
     }
-    if (_appliedDetail != detail) {
-      final materials = detail ? _nearMaterials : _farMaterials;
-      for (final e in materials.entries) {
-        e.key.material = e.value;
-      }
-      _appliedDetail = detail;
-    }
+    _applyMaterialDetail();
     final dt = deltaSeconds.clamp(0.0, 1 / 30);
     final transform = _basis!.globalTransform;
     final position = transform.getTranslation();
