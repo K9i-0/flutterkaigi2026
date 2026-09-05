@@ -1,0 +1,150 @@
+{
+  "date": "2026-09-06",
+  "device": "Apple M4 macOS",
+  "flutter": "3.47.2",
+  "flutter_scene": "0.23.0",
+  "mode": "profile",
+  "command": "flutter run -d macos -t lib/game_main.dart --profile --dart-define=HAZARD_GAME_BENCHMARK=true",
+  "method": "7 sequential cases, real SceneView rendering, at least 8s each; last 240 Flutter FrameTiming samples. Debug game stopped first. Actors have normal AI but test health is inflated; benchmark saves disabled. Same region geometry, characters, props and shadows as game. Updated environment detail and alpha-masked pine cards included.",
+  "limitations": [
+    "UI/raster durations are not direct GPU execution times or measured display FPS.",
+    "Single run on one Mac; differences around 0.1ms do not establish causal speedups.",
+    "Enemy placement is synthetic and may include occlusion; does not bound the worst view or every gameplay situation.",
+    "No mobile or prolonged thermal/memory measurement."
+  ],
+  "results": [
+    {
+      "case": "village-four",
+      "region": "village",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "renderScale": 0.85,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8003,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 5.037,
+      "rasterP95Ms": 0.58
+    },
+    {
+      "case": "village-eight",
+      "region": "village",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "renderScale": 0.85,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8498,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 4.82,
+      "rasterP95Ms": 0.508
+    },
+    {
+      "case": "village-eight-no-contact",
+      "region": "village",
+      "contactShadows": false,
+      "profile": true,
+      "valid": true,
+      "renderScale": 0.85,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8000,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 4.924,
+      "rasterP95Ms": 0.543
+    },
+    {
+      "case": "village-eight-full",
+      "region": "village",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "renderScale": 1.0,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8500,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 5.06,
+      "rasterP95Ms": 0.503
+    },
+    {
+      "case": "farm-six",
+      "region": "farm",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "renderScale": 0.85,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8501,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 4.736,
+      "rasterP95Ms": 0.555
+    },
+    {
+      "case": "mountain-six",
+      "region": "mountain",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "renderScale": 0.85,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8496,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 4.696,
+      "rasterP95Ms": 0.539
+    },
+    {
+      "case": "mountain-six-full",
+      "region": "mountain",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "renderScale": 1.0,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8000,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 8.862,
+      "rasterP95Ms": 1.863
+    }
+  ],
+  "source": "evidence/environment-detail-profile-logs.json",
+  "backend": "Impeller MetalSDF (runtime log verified)",
+  "asset_hashes": {
+    "farm": "8ea7a5bf3ae5923b37a40e7d8979e8bdef5f46f388c12ef89749607100a0fc37",
+    "pueblo": "15422c8c7c2955d581eea12777a800b8a34e4f94b8de9b03ab171042d85fca04",
+    "mountain": "e1f73c288927cd22322f84927129e10d9f8aa296a8ca72809e4fca12835857e0"
+  }
+}

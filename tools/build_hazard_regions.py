@@ -145,6 +145,11 @@ for x,z in [(-20,8),(-18,17),(0,19),(19,21),(-21,-3)]:
 wall('Farm boundary',-22,4,.7,46,2.7);wall('Farm boundary',22,8,.7,31,2.7)
 wall('Farm boundary',22,-20,.7,11,2.7);wall('Farm boundary',0,23,44,.7,2.7)
 wall('Farm boundary',3,-24,38,.7,2.7)
+for i in range(15):
+    backdrop_pine(-27+i*3.8,29,7+(i*7%5))
+for i in range(10):
+    backdrop_pine(-27,-20+i*4.8,7+(i*3%4))
+    backdrop_pine(28,-18+i*4.8,8+(i*5%4))
 gate(20,-10,'z')
 fence('Exit lane',17.5,-12,5,'x');fence('Exit lane',17.5,-8,5,'x')
 for x,z in [(-20,-16),(-21,4),(-12,5),(-2,12),(6,18),(18,20),(17,-15),(0,-19)]:weeds('Farm weeds',x,z,24)
@@ -159,6 +164,8 @@ items=[{'id':'farm_'+id,'kind':kind,'x':x,'z':z,'y':y,'amount':n} for id,kind,x,
     ('herb','green',-17,-13,.8,1),('barn_ammo','ammo',6,-7,3.35,15),
     ('barn_shells','shells',8,-6,3.35,5),('field_ammo','ammo',-10,17,.85,15),
     ('red','red',-9,3,.85,1),('yellow','yellow',10,-12,3.35,1)]]
+for item in items:
+    if item['y']<2:item['y']=.28
 crates=[{'id':'farm_crate_'+str(i),'x':x,'z':z,'kind':'crate' if i%2 else 'barrel'}
     for i,(x,z) in enumerate([(-17,-17.7),(-8,6),(0,9),(18,16),(7,-14.8),(15,-5)])]
 enemies=[{'id':i,'x':x,'z':z,'active':True} for i,(x,z) in enumerate([(-5,-3),(0,2),(8,-5),(14,10),(-11,12),(-9,3)])]
@@ -178,6 +185,9 @@ rocks('East cliff',14,-12,16,21,5.0)
 rocks('West ridge',-26,-9,8.8,31,6)
 rocks('Far ridge',26,11,8.8,26,5.5)
 rocks('North ridge',11,27,22,8.8,6)
+for x,z,base in [(-24,-18,6),(-25,-7,6),(-25,8,6),(-14,18,6.5),(-5,20,6.5),
+                 (6,-15,5.8),(19,-9,5),(26,3,5.5),(26,16,5.5),(7,29,6),(18,29,6)]:
+    backdrop_pine(x,z,7+abs(x+z)%4,base)
 for x in [-14,-11,-8,-5]:
     box('Tunnel roof',rock,(x,4.0,3.5),(3.3,6,.9))
     for z in [1.5,6.5]:box('Tunnel frame',wood,(x,z,1.7),(.22,.25,3.4))

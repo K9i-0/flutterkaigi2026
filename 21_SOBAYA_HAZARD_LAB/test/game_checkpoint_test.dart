@@ -15,6 +15,21 @@ void advance(HazardGameState s, double seconds) {
 }
 
 void main() {
+  test('old saves adopt authored supply heights and preserve dynamic loot', () {
+    final world = map();
+    final s = HazardGameState(world);
+    s.pickups.first.taken = true;
+    s.pickups.add(Pickup('beer_0', 'beer', -2, .25, -6)..taken = true);
+    final data = jsonDecode(jsonEncode(s.checkpoint())) as Map<String, dynamic>;
+    (data['pickups'] as List).first['y'] = .9;
+    (world['items'] as List).first['y'] = .28;
+    final restored = restoreHazardCheckpoint(data, world, {});
+    expect(restored.pickups.first.y, .28);
+    expect(restored.pickups.first.taken, true);
+    final beer = restored.pickups.firstWhere((p) => p.id == 'beer_0');
+    expect([beer.x, beer.y, beer.z], [-2, .25, -6]);
+    expect(beer.taken, true);
+  });
   test('beer purchases consume currency and persistent stock exactly once', () {
     final s = HazardGameState(map())
       ..x = -13

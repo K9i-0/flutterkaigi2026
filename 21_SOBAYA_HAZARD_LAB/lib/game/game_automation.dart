@@ -272,7 +272,7 @@ void attachGameAutomation(HazardGameController game) {
   );
   registerMarionetteExtension(
     name: 'madogiwa.gameAction',
-    description: 'Debug action=soundCue|previewState|simulate|interact|reload|fire|fireAtEnemy|step|move|aim|pause|evade|kick|pose. pose clip and seconds=0..3. step/simulate seconds=0..10. simulate x/y=-1..1 sprint/evade=true uses normal simulation and pauses for inspection.',
+    description: 'Debug action=viewpoint|soundCue|previewState|simulate|interact|reload|fire|fireAtEnemy|step|move|aim|pause|evade|kick|pose. pose clip and seconds=0..3. step/simulate seconds=0..10. simulate x/y=-1..1 sprint/evade=true uses normal simulation and pauses for inspection.',
     callback: (p) async {
       final g = _game;
       if (g == null || !g.ready) {
@@ -280,6 +280,39 @@ void attachGameAutomation(HazardGameController game) {
       }
       final s = g.state!;
       switch (p['action']) {
+        case 'viewpoint':
+          final x = double.tryParse(p['x'] ?? '');
+          final y = double.tryParse(p['y'] ?? '0');
+          final z = double.tryParse(p['z'] ?? '');
+          final yaw = double.tryParse(p['yaw'] ?? '');
+          final pitch = double.tryParse(p['pitch'] ?? '.12');
+          if ([x, y, z, yaw, pitch].any((v) => v == null || !v.isFinite) ||
+              x!.abs() > 30 ||
+              z!.abs() > 35 ||
+              y! < 0 ||
+              y > 10) {
+            return MarionetteExtensionResult.invalidParams(
+              'Finite x/z/yaw required, y=0..10; visual inspection only',
+            );
+          }
+          // Reproducible art review with the normal gameplay camera. Explicit
+          // placement and disabled enemies make this unsuitable as route proof.
+          g.posePreview = true;
+          g.director = null;
+          s.seenEvents.addAll(['opening', 'farm', 'last_order', 'ending']);
+          s.phase = PlayPhase.playing;
+          s.stopInput();
+          s.x = x;
+          s.y = y;
+          s.z = z;
+          s.yaw = yaw!;
+          s.heading = yaw + 3.141592653589793;
+          s.pitch = pitch!.clamp(minCameraPitch, maxCameraPitch);
+          s.aiming = false;
+          s.toastTime = 0;
+          for (final e in s.enemies) {
+            e.active = false;
+          }
         case 'soundCue':
           final x = double.tryParse(p['x'] ?? '');
           final z = double.tryParse(p['z'] ?? '');
