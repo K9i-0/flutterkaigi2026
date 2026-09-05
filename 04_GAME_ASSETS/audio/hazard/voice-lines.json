@@ -1,0 +1,219 @@
+[
+  {
+    "speaker": "やめ太郎",
+    "text": "福ちゃん！ 広場がそば屋だらけなんだ。\n全員、乾杯する気満々でさ。",
+    "uses": [
+      "event:opening:1"
+    ]
+  },
+  {
+    "speaker": "福ちゃん",
+    "text": "乾杯にしては、ジョッキの振りが大きすぎるだろ。",
+    "uses": [
+      "event:opening:2"
+    ]
+  },
+  {
+    "speaker": "やめ太郎",
+    "text": "北の納屋に門の鍵がある。農場へ抜けよう。\n壁の記録も、できるだけ回収しておいて。",
+    "uses": [
+      "event:opening:3"
+    ]
+  },
+  {
+    "speaker": "たこさん",
+    "text": "……。東の門から山道へ進めます。\nビールは弾やハーブと交換できます。",
+    "uses": [
+      "event:farm:1"
+    ]
+  },
+  {
+    "speaker": "たこさん",
+    "text": "納屋の二階も、お調べください。\n青いメダリオンは七つ。全部落とせば、おまけもあります。",
+    "uses": [
+      "event:farm:2"
+    ]
+  },
+  {
+    "speaker": "そば屋",
+    "text": "最後の一杯だ。乾杯！",
+    "uses": [
+      "event:last_order:1"
+    ]
+  },
+  {
+    "speaker": "福ちゃん",
+    "text": "その一杯、遠慮させてもらう！",
+    "uses": [
+      "event:last_order:2"
+    ]
+  },
+  {
+    "speaker": "やめ太郎",
+    "text": "おかえり、福ちゃん。\n……今日はもう、乾杯は遠慮したいな。",
+    "uses": [
+      "event:ending:1"
+    ]
+  },
+  {
+    "speaker": "福ちゃん",
+    "text": "明日はノンアルで集まろう。\n記録の整理も、まだ残ってるし。",
+    "uses": [
+      "event:ending:2"
+    ]
+  },
+  {
+    "speaker": "たこさん",
+    "text": "……。それも仕入れておきます。",
+    "uses": [
+      "event:ending:3"
+    ]
+  },
+  {
+    "speaker": "やめ太郎",
+    "text": "え、また集まるの？",
+    "uses": [
+      "event:ending:4"
+    ]
+  },
+  {
+    "speaker": "やめ太郎",
+    "text": "福ちゃん！ よかった、生きてた！\n広場がそば屋だらけなんだ。しかも全員、乾杯する気満々でさ。",
+    "uses": [
+      "dialogue:yametaro:intro:0"
+    ]
+  },
+  {
+    "speaker": "福ちゃん",
+    "text": "乾杯にしては、ジョッキの振りが大きすぎるだろ……。",
+    "uses": [
+      "dialogue:yametaro:intro:1"
+    ]
+  },
+  {
+    "speaker": "やめ太郎",
+    "text": "農場へ抜けよう。北側の納屋に、門の鍵があるはず。\n僕はここで、まだ来てないみんなを待つよ。",
+    "uses": [
+      "dialogue:yametaro:intro:2"
+    ]
+  },
+  {
+    "speaker": "やめ太郎",
+    "text": "必要なことがあれば聞いて。\nあ、それから壁の貼り紙も見ておいた方がいいかも。",
+    "uses": [
+      "dialogue:yametaro:greeting:0"
+    ]
+  },
+  {
+    "speaker": "やめ太郎",
+    "text": "村の奥、広場の北に大きな納屋がある。鍵はその中だよ。\n北東の紋章がついた門を開ければ、農場へ行ける。",
+    "uses": [
+      "dialogue:yametaro:route:0"
+    ]
+  },
+  {
+    "speaker": "福ちゃん",
+    "text": "まず鍵。余裕があれば民家も調べるか。",
+    "uses": [
+      "dialogue:yametaro:route:1"
+    ]
+  },
+  {
+    "speaker": "やめ太郎",
+    "text": "右手の二階建ての家には、ショットガンが残ってる。\n囲まれる前に、逃げる道も覚えておいてね。",
+    "uses": [
+      "dialogue:yametaro:route:2"
+    ]
+  },
+  {
+    "speaker": "やめ太郎",
+    "text": "ジョッキを振り上げたら、横へ避けて。Xで素早く踏み込めるよ。\n頭を狙ってひるませたら、近づいてFで蹴り飛ばせる。",
+    "uses": [
+      "dialogue:yametaro:combat:0"
+    ]
+  },
+  {
+    "speaker": "福ちゃん",
+    "text": "一人ずつ相手にすれば、弾も節約できそうだな。",
+    "uses": [
+      "dialogue:yametaro:combat:1"
+    ]
+  },
+  {
+    "speaker": "やめ太郎",
+    "text": "家の壁に貼ってある、僕らの映画や事件の記録。\n近づいてEで集めたら、Cでいつでも見られるよ。",
+    "uses": [
+      "dialogue:yametaro:records:0"
+    ]
+  },
+  {
+    "speaker": "福ちゃん",
+    "text": "入口の家に、お前の指名手配書もあったぞ。",
+    "uses": [
+      "dialogue:yametaro:records:1"
+    ]
+  },
+  {
+    "speaker": "やめ太郎",
+    "text": "それは……できれば回収してほしい。なるべく早く。",
+    "uses": [
+      "dialogue:yametaro:records:2"
+    ]
+  },
+  {
+    "speaker": "やめ太郎",
+    "text": "予備の弾、10発。持っていって。\n僕の分まで、みんなを連れて帰ってきてよ。",
+    "uses": [
+      "dialogue:yametaro:supplies:0"
+    ]
+  },
+  {
+    "speaker": "やめ太郎",
+    "text": "ケースに空きがないみたい。整理したら、また声をかけて。\n弾はちゃんと取っておくから。",
+    "uses": [
+      "dialogue:yametaro:full:0"
+    ]
+  },
+  {
+    "speaker": "たこさん",
+    "text": "……。そば屋を倒して、ビールを拾いましたか。\n弾やハーブと交換できます。",
+    "uses": [
+      "dialogue:takosan:intro:0"
+    ]
+  },
+  {
+    "speaker": "福ちゃん",
+    "text": "こんな所で商売してるのか。\nそのビール、どうするんだ？",
+    "uses": [
+      "dialogue:takosan:intro:1"
+    ]
+  },
+  {
+    "speaker": "たこさん",
+    "text": "必要なことです。\n持てる量だけ、お選びください。",
+    "uses": [
+      "dialogue:takosan:intro:2"
+    ]
+  },
+  {
+    "speaker": "たこさん",
+    "text": "……。補給ですね。ビールはお持ちですか。",
+    "uses": [
+      "dialogue:takosan:greeting:0"
+    ]
+  },
+  {
+    "speaker": "やめ太郎",
+    "text": "廃屋の前にいるそば屋が、帰り道を塞いでる。\nジョッキを大きく振り上げたら、横か後ろへ。振り終わりを狙おう。",
+    "uses": [
+      "dialogue:mountain:before"
+    ]
+  },
+  {
+    "speaker": "やめ太郎",
+    "text": "福ちゃん、やったね！ 東側の門から帰ろう。\n今日はもう、乾杯は遠慮したいな。",
+    "uses": [
+      "dialogue:mountain:after"
+    ]
+  }
+]

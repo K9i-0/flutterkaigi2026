@@ -1,0 +1,554 @@
+{
+  "version": 1,
+  "model": "Aratako/Irodori-TTS-v4.1-Small",
+  "engine_revision": "8224dafb46d0aba89209a8f905f1cb7e3299d9c1",
+  "clips": [
+    {
+      "speaker": "やめ太郎",
+      "text": "福ちゃん！ 広場がそば屋だらけなんだ。\n全員、乾杯する気満々でさ。",
+      "uses": [
+        "event:opening:1"
+      ],
+      "caption": "焦りを少し抑えて、友人へ道案内する。柔らかい関西イントネーションで、聞き取りやすく自然に話す。",
+      "seed": 7,
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "福ちゃん！ 広場がそば屋だらけなんだ。 全員、乾杯する気満々でさ。",
+      "id": "d864ef7a0e18f59d",
+      "asset": "audio/voice/d864ef7a0e18f59d.wav",
+      "seconds": 5.880041666666667,
+      "kind": "speech",
+      "sha256": "e188774418abe80f8b67fdf18014db094de598740caaed87f555a6d102f8397c",
+      "raw_sha256": "2c5572eb36dc7528f1a9615c0c143798205adfe6de68d56525795dfef30b6d70"
+    },
+    {
+      "speaker": "福ちゃん",
+      "text": "乾杯にしては、ジョッキの振りが大きすぎるだろ。",
+      "uses": [
+        "event:opening:2"
+      ],
+      "caption": "友人に話しかける。少し呆れながらも明瞭に、言葉の最後まで自然に話す。",
+      "seed": 100,
+      "reference": "02_CHARACTERS/Fukuchan_voice.wav",
+      "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "乾杯にしては、ジョッキの振りが大きすぎるだろ。",
+      "id": "99588c724f7df5d4",
+      "asset": "audio/voice/99588c724f7df5d4.wav",
+      "seconds": 3.600041666666667,
+      "kind": "speech",
+      "sha256": "ac0a2603bd523d3e5b8ac8692929375685dd1db4ed7097d176b0ef4dff8e1669",
+      "raw_sha256": "3cb615aff094578ea9b62058ebf0e8125329c055dc50ac4ba9d601040335eeb9"
+    },
+    {
+      "speaker": "やめ太郎",
+      "text": "北の納屋に門の鍵がある。農場へ抜けよう。\n壁の記録も、できるだけ回収しておいて。",
+      "uses": [
+        "event:opening:3"
+      ],
+      "caption": "焦りを少し抑えて、友人へ道案内する。柔らかい関西イントネーションで、聞き取りやすく自然に話す。",
+      "seed": 7,
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "北の納屋に門の鍵がある。農場へ抜けよう。 壁の記録も、できるだけ回収しておいて。",
+      "id": "baf75fba08fee9f9",
+      "asset": "audio/voice/baf75fba08fee9f9.wav",
+      "seconds": 6.800041666666667,
+      "kind": "speech",
+      "sha256": "b50344d93eee7896253fc9e7f5fcfbeda04d2bc0d856734a2a1d3833a3f5c3a2",
+      "raw_sha256": "a731a3db6cd125ef9c50cafdf308d39303a117cdb01d031e664e8360bd894751"
+    },
+    {
+      "speaker": "たこさん",
+      "text": "……。東の門から山道へ進めます。\nビールは弾やハーブと交換できます。",
+      "uses": [
+        "event:farm:1"
+      ],
+      "id": "0d48ddcb529c5db1",
+      "asset": "audio/voice/takosan_response.wav",
+      "seconds": 0.85,
+      "kind": "nonverbal",
+      "provenance": "Original procedural response, no canonical speaking voice assigned"
+    },
+    {
+      "speaker": "たこさん",
+      "text": "納屋の二階も、お調べください。\n青いメダリオンは七つ。全部落とせば、おまけもあります。",
+      "uses": [
+        "event:farm:2"
+      ],
+      "id": "37a20882f1242958",
+      "asset": "audio/voice/takosan_response.wav",
+      "seconds": 0.85,
+      "kind": "nonverbal",
+      "provenance": "Original procedural response, no canonical speaking voice assigned"
+    },
+    {
+      "speaker": "そば屋",
+      "text": "最後の一杯だ。乾杯！",
+      "uses": [
+        "event:last_order:1"
+      ],
+      "caption": "相手を誘うように、堂々と。最後の乾杯を呼びかける。",
+      "seed": 42,
+      "reference": "02_CHARACTERS/Sobaya_voice.wav",
+      "reference_sha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "最後の一杯だ。乾杯！",
+      "id": "e279a5b4f20956a8",
+      "asset": "audio/voice/e279a5b4f20956a8.wav",
+      "seconds": 2.581375,
+      "kind": "speech",
+      "sha256": "5cb80913933ce560ea2dc716916ebf9180713d20177f09a72e9f28b4646d3d3f",
+      "raw_sha256": "51b632d4ccf43613296ca27a74c646b7b0dc6bfa5bd7dfc15c87a6a867e0d0c6"
+    },
+    {
+      "speaker": "福ちゃん",
+      "text": "その一杯、遠慮させてもらう！",
+      "uses": [
+        "event:last_order:2"
+      ],
+      "caption": "友人に話しかける。少し呆れながらも明瞭に、言葉の最後まで自然に話す。",
+      "seed": 100,
+      "reference": "02_CHARACTERS/Fukuchan_voice.wav",
+      "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "その一杯、遠慮させてもらう！",
+      "id": "ceb0620a2d88fba6",
+      "asset": "audio/voice/ceb0620a2d88fba6.wav",
+      "seconds": 2.8000416666666665,
+      "kind": "speech",
+      "sha256": "d8fa4bfd9b7ce0fbb83e9abf11c23d3a7747285f524120c0e362a0426eeed5a8",
+      "raw_sha256": "c77007f68fe6438c77f77ff2224b4f5948a9485d42e8962a32c275eb5256a4d8"
+    },
+    {
+      "speaker": "やめ太郎",
+      "text": "おかえり、福ちゃん。\n……今日はもう、乾杯は遠慮したいな。",
+      "uses": [
+        "event:ending:1"
+      ],
+      "caption": "ほっとして、親しい仲間に軽い冗談を交えながら自然に話す。",
+      "seed": 7,
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "おかえり、福ちゃん。 ……今日はもう、乾杯は遠慮したいな。",
+      "id": "a553dbde8d155536",
+      "asset": "audio/voice/a553dbde8d155536.wav",
+      "seconds": 4.400041666666667,
+      "kind": "speech",
+      "sha256": "7cc14c31f384d980cc0467d0f507e42f82a0c87de77a06ca6f367104029e524f",
+      "raw_sha256": "18982879fef5160f47a14b7b936ce863680507378d0c3a4a2970ce409e8eaada"
+    },
+    {
+      "speaker": "福ちゃん",
+      "text": "明日はノンアルで集まろう。\n記録の整理も、まだ残ってるし。",
+      "uses": [
+        "event:ending:2"
+      ],
+      "caption": "ほっとして、親しい仲間に軽い冗談を交えながら自然に話す。",
+      "seed": 100,
+      "reference": "02_CHARACTERS/Fukuchan_voice.wav",
+      "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "明日はノンアルで集まろう。 記録の整理も、まだ残ってるし。",
+      "id": "b8ee7b3a5c30c32c",
+      "asset": "audio/voice/b8ee7b3a5c30c32c.wav",
+      "seconds": 4.440041666666667,
+      "kind": "speech",
+      "sha256": "bc5acc95c5f3eaf06ad65a5dc07d6facbb0033a0245f9547f88465e01b62f8da",
+      "raw_sha256": "500e9fa33ca40bcafeeb3df9793d3c7ab0ddf9f12a25bc30153bc586de4aa53c"
+    },
+    {
+      "speaker": "たこさん",
+      "text": "……。それも仕入れておきます。",
+      "uses": [
+        "event:ending:3"
+      ],
+      "id": "5900b2463a63f3dd",
+      "asset": "audio/voice/takosan_response.wav",
+      "seconds": 0.85,
+      "kind": "nonverbal",
+      "provenance": "Original procedural response, no canonical speaking voice assigned"
+    },
+    {
+      "speaker": "やめ太郎",
+      "text": "え、また集まるの？",
+      "uses": [
+        "event:ending:4"
+      ],
+      "caption": "驚いて、短く聞き返す。",
+      "seed": 7,
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "えっ、また集まるの？",
+      "id": "4aa750fa623336f6",
+      "asset": "audio/voice/4aa750fa623336f6.wav",
+      "seconds": 2.640041666666667,
+      "kind": "speech",
+      "sha256": "ba345a2998bbb2b7171f4338cdc8f2b2363570c09eb686fd28386d0aefe19e97",
+      "raw_sha256": "66e464de60f0d9f8e937272588885cc6a0a61987106e4924fd78b54c6c8088c8"
+    },
+    {
+      "speaker": "やめ太郎",
+      "text": "福ちゃん！ よかった、生きてた！\n広場がそば屋だらけなんだ。しかも全員、乾杯する気満々でさ。",
+      "uses": [
+        "dialogue:yametaro:intro:0"
+      ],
+      "caption": "焦りを少し抑えて、友人へ道案内する。柔らかい関西イントネーションで、聞き取りやすく自然に話す。",
+      "seed": 7,
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "福ちゃん！ よかった、生きてた！ 広場がそば屋だらけなんだ。しかも全員、乾杯する気満々でさ。",
+      "id": "08272ad77b153d57",
+      "asset": "audio/voice/08272ad77b153d57.wav",
+      "seconds": 7.720041666666667,
+      "kind": "speech",
+      "sha256": "b00c31dfb163984e31cf3a83d2407390a1e6d8253d8893a5dad96bba0d400202",
+      "raw_sha256": "64cd2422b3922a586d3db110c39b8d62cec460605462f71b88ecd5df9214d5c6"
+    },
+    {
+      "speaker": "福ちゃん",
+      "text": "乾杯にしては、ジョッキの振りが大きすぎるだろ……。",
+      "uses": [
+        "dialogue:yametaro:intro:1"
+      ],
+      "caption": "友人に話しかける。少し呆れながらも明瞭に、言葉の最後まで自然に話す。",
+      "seed": 100,
+      "reference": "02_CHARACTERS/Fukuchan_voice.wav",
+      "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "乾杯にしては、ジョッキの振りが大きすぎるだろ……。",
+      "id": "abc6898e1c395932",
+      "asset": "audio/voice/abc6898e1c395932.wav",
+      "seconds": 3.640041666666667,
+      "kind": "speech",
+      "sha256": "c9acab2fd5fb050694e5e38296e1052e3981ca5bafe87dc828677293b88b7b50",
+      "raw_sha256": "0db9988af123d20a113ee7a6a7eb482badfcdff63089ca990256c859938f7684"
+    },
+    {
+      "speaker": "やめ太郎",
+      "text": "農場へ抜けよう。北側の納屋に、門の鍵があるはず。\n僕はここで、まだ来てないみんなを待つよ。",
+      "uses": [
+        "dialogue:yametaro:intro:2"
+      ],
+      "caption": "焦りを少し抑えて、友人へ道案内する。柔らかい関西イントネーションで、聞き取りやすく自然に話す。",
+      "seed": 7,
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "農場へ抜けよう。北側の納屋に、門の鍵があるはず。 僕はここで、まだ来てないみんなを待つよ。",
+      "id": "048dbc77a640f072",
+      "asset": "audio/voice/048dbc77a640f072.wav",
+      "seconds": 7.440041666666667,
+      "kind": "speech",
+      "sha256": "6bc7626df0dc0466a3ef29796d43116f6695139292f5a8b270bc816fee43dfa2",
+      "raw_sha256": "e67b839d10b59becc4cc6b6819c97f84003aa3fcd67ce5a30e74a54721abba1d"
+    },
+    {
+      "speaker": "やめ太郎",
+      "text": "必要なことがあれば聞いて。\nあ、それから壁の貼り紙も見ておいた方がいいかも。",
+      "uses": [
+        "dialogue:yametaro:greeting:0"
+      ],
+      "caption": "焦りを少し抑えて、友人へ道案内する。柔らかい関西イントネーションで、聞き取りやすく自然に話す。",
+      "seed": 7,
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "必要なことがあれば聞いて。 あ、それから壁の貼り紙も見ておいた方がいいかも。",
+      "id": "7035a52e8de4d6c2",
+      "asset": "audio/voice/7035a52e8de4d6c2.wav",
+      "seconds": 5.520041666666667,
+      "kind": "speech",
+      "sha256": "bbc9d6595e126f031dd4c3b52fb651e67c53f2d13af6f598d06e58a63bed3598",
+      "raw_sha256": "33c505917925d07f242d27601c17ec41f39fd705786af466853cde180f6b2f3f"
+    },
+    {
+      "speaker": "やめ太郎",
+      "text": "村の奥、広場の北に大きな納屋がある。鍵はその中だよ。\n北東の紋章がついた門を開ければ、農場へ行ける。",
+      "uses": [
+        "dialogue:yametaro:route:0"
+      ],
+      "caption": "焦りを少し抑えて、友人へ道案内する。柔らかい関西イントネーションで、聞き取りやすく自然に話す。",
+      "seed": 7,
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "村の奥、広場の北に大きな納屋がある。鍵はその中だよ。 北東の紋章がついた門を開ければ、農場へ行ける。",
+      "id": "74d94d34a40123a6",
+      "asset": "audio/voice/74d94d34a40123a6.wav",
+      "seconds": 9.520041666666666,
+      "kind": "speech",
+      "sha256": "f3c71c1da164c407f98250e1fd00c1106f816542f5c03df59de8d9755396a2ba",
+      "raw_sha256": "1f77e536e60b45e0d46bfcd0652d4799b4f9ff954f46bf8d443ce1029686d333"
+    },
+    {
+      "speaker": "福ちゃん",
+      "text": "まず鍵。余裕があれば民家も調べるか。",
+      "uses": [
+        "dialogue:yametaro:route:1"
+      ],
+      "caption": "友人に話しかける。少し呆れながらも明瞭に、言葉の最後まで自然に話す。",
+      "seed": 100,
+      "reference": "02_CHARACTERS/Fukuchan_voice.wav",
+      "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "まず鍵。余裕があれば民家も調べるか。",
+      "id": "ceb4079460b2e1c3",
+      "asset": "audio/voice/ceb4079460b2e1c3.wav",
+      "seconds": 3.680041666666667,
+      "kind": "speech",
+      "sha256": "97ac07989b078f406472187cf65233fdf946e9fab7fdace978ba62786c4dbc3c",
+      "raw_sha256": "026ac6563bd292b54861a479429fc861073336fdefd28d3c1c5d7680df8c0d97"
+    },
+    {
+      "speaker": "やめ太郎",
+      "text": "右手の二階建ての家には、ショットガンが残ってる。\n囲まれる前に、逃げる道も覚えておいてね。",
+      "uses": [
+        "dialogue:yametaro:route:2"
+      ],
+      "caption": "焦りを少し抑えて、友人へ道案内する。柔らかい関西イントネーションで、聞き取りやすく自然に話す。",
+      "seed": 7,
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "右手の二階建ての家には、ショットガンが残ってる。 囲まれる前に、逃げる道も覚えておいてね。",
+      "id": "ba304ddf47829a71",
+      "asset": "audio/voice/ba304ddf47829a71.wav",
+      "seconds": 7.320041666666667,
+      "kind": "speech",
+      "sha256": "22f4697c37db540842a581416081e33c4aafae52ed76800ae1768c47cb940a4d",
+      "raw_sha256": "127f834ddbae6dd6ddff08072590c708c113b08e3566f52ea4f6f49f7d8ab04e"
+    },
+    {
+      "speaker": "やめ太郎",
+      "text": "ジョッキを振り上げたら、横へ避けて。Xで素早く踏み込めるよ。\n頭を狙ってひるませたら、近づいてFで蹴り飛ばせる。",
+      "uses": [
+        "dialogue:yametaro:combat:0"
+      ],
+      "caption": "焦りを少し抑えて、友人へ道案内する。柔らかい関西イントネーションで、聞き取りやすく自然に話す。",
+      "seed": 7,
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "ジョッキを振り上げたら、横へ避けて。エックスで素早く踏み込めるよ。 頭を狙ってひるませたら、近づいてエフで蹴り飛ばせる。",
+      "id": "e903446ece431552",
+      "asset": "audio/voice/e903446ece431552.wav",
+      "seconds": 10.160041666666666,
+      "kind": "speech",
+      "sha256": "7967e70c9845f182ec77b8868723ce7f028a3a133e5266cf3471b39c864c95d3",
+      "raw_sha256": "c07b5079e3e8b6972ef28508c08b6edfabe54e0e0535b8d04942b608a36aef52"
+    },
+    {
+      "speaker": "福ちゃん",
+      "text": "一人ずつ相手にすれば、弾も節約できそうだな。",
+      "uses": [
+        "dialogue:yametaro:combat:1"
+      ],
+      "caption": "友人に話しかける。少し呆れながらも明瞭に、言葉の最後まで自然に話す。",
+      "seed": 100,
+      "reference": "02_CHARACTERS/Fukuchan_voice.wav",
+      "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "一人ずつ相手にすれば、弾も節約できそうだな。",
+      "id": "7865487a77a74866",
+      "asset": "audio/voice/7865487a77a74866.wav",
+      "seconds": 3.9200416666666666,
+      "kind": "speech",
+      "sha256": "58523f63f1d841ed3a6f998c8da1c769155cbd0611ed6bf97d9a3bbbe7fc376f",
+      "raw_sha256": "0cb53404c26e3ed6892c4f3cf0d68689bc756cf921ab01c9714587112c736371"
+    },
+    {
+      "speaker": "やめ太郎",
+      "text": "家の壁に貼ってある、僕らの映画や事件の記録。\n近づいてEで集めたら、Cでいつでも見られるよ。",
+      "uses": [
+        "dialogue:yametaro:records:0"
+      ],
+      "caption": "焦りを少し抑えて、友人へ道案内する。柔らかい関西イントネーションで、聞き取りやすく自然に話す。",
+      "seed": 7,
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "家の壁に貼ってある、僕らの映画や事件の記録。 近づいてイーで集めたら、シーでいつでも見られるよ。",
+      "id": "c43aee6a545b25a6",
+      "asset": "audio/voice/c43aee6a545b25a6.wav",
+      "seconds": 8.120041666666667,
+      "kind": "speech",
+      "sha256": "508cd2b9c13503356ee14f2af7d2c334fc6b4e4d80e575666453069649f31361",
+      "raw_sha256": "87a4756ce4b7f0ba14c10bf0583bee97b559d3524d14cbf5ddecaa5364fb2038"
+    },
+    {
+      "speaker": "福ちゃん",
+      "text": "入口の家に、お前の指名手配書もあったぞ。",
+      "uses": [
+        "dialogue:yametaro:records:1"
+      ],
+      "caption": "友人に話しかける。少し呆れながらも明瞭に、言葉の最後まで自然に話す。",
+      "seed": 100,
+      "reference": "02_CHARACTERS/Fukuchan_voice.wav",
+      "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "入口の家に、お前の指名手配書もあったぞ。",
+      "id": "535568f2bf19d49e",
+      "asset": "audio/voice/535568f2bf19d49e.wav",
+      "seconds": 3.7200416666666665,
+      "kind": "speech",
+      "sha256": "eb7e51dbb59a12093d8ec7603ec15cd72951642a02fa86c043061dce14beddc8",
+      "raw_sha256": "dafa0df2d597295df5b9ad4eba283e9e3adaa98e91d622aaecf83e732177dfc2"
+    },
+    {
+      "speaker": "やめ太郎",
+      "text": "それは……できれば回収してほしい。なるべく早く。",
+      "uses": [
+        "dialogue:yametaro:records:2"
+      ],
+      "caption": "焦りを少し抑えて、友人へ道案内する。柔らかい関西イントネーションで、聞き取りやすく自然に話す。",
+      "seed": 7,
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "それは……できれば回収してほしい。なるべく早く。",
+      "id": "a71e587b3245ef7d",
+      "asset": "audio/voice/a71e587b3245ef7d.wav",
+      "seconds": 4.2800416666666665,
+      "kind": "speech",
+      "sha256": "2ad8d118ca6a8a872bc0f3b6909e43987b27083f38867275af4faeb06f444728",
+      "raw_sha256": "3b5c3ccf3f643179bfa2c532538d831a20e33339004c1d9aad3e3e5aa6c136e1"
+    },
+    {
+      "speaker": "やめ太郎",
+      "text": "予備の弾、10発。持っていって。\n僕の分まで、みんなを連れて帰ってきてよ。",
+      "uses": [
+        "dialogue:yametaro:supplies:0"
+      ],
+      "caption": "焦りを少し抑えて、友人へ道案内する。柔らかい関西イントネーションで、聞き取りやすく自然に話す。",
+      "seed": 7,
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "予備の弾、10発。持っていって。 僕の分まで、みんなを連れて帰ってきてよ。",
+      "id": "544645864d918cf4",
+      "asset": "audio/voice/544645864d918cf4.wav",
+      "seconds": 6.000041666666666,
+      "kind": "speech",
+      "sha256": "44f7ea89be6d279923cce6f7a0ba465c209226abad8a5bd4812d994823c6d349",
+      "raw_sha256": "764f2dcfb9940c3abf8101798e70fea779acccf3127f3d281c4dd82dd4e79126"
+    },
+    {
+      "speaker": "やめ太郎",
+      "text": "ケースに空きがないみたい。整理したら、また声をかけて。\n弾はちゃんと取っておくから。",
+      "uses": [
+        "dialogue:yametaro:full:0"
+      ],
+      "caption": "焦りを少し抑えて、友人へ道案内する。柔らかい関西イントネーションで、聞き取りやすく自然に話す。",
+      "seed": 7,
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "ケースに空きがないみたい。整理したら、また声をかけて。 弾はちゃんと取っておくから。",
+      "id": "3bc1f131b9e6302a",
+      "asset": "audio/voice/3bc1f131b9e6302a.wav",
+      "seconds": 6.2400416666666665,
+      "kind": "speech",
+      "sha256": "ae7ea2def1cbd23c1d8525f5b27246761b6cdec58291727b14753fcc42378ebb",
+      "raw_sha256": "9347fdb6b8f04de6e7d948a15cc24ac6ffad81e2e6691237342b4112a5336f25"
+    },
+    {
+      "speaker": "たこさん",
+      "text": "……。そば屋を倒して、ビールを拾いましたか。\n弾やハーブと交換できます。",
+      "uses": [
+        "dialogue:takosan:intro:0"
+      ],
+      "id": "5987fdc435962d4e",
+      "asset": "audio/voice/takosan_response.wav",
+      "seconds": 0.85,
+      "kind": "nonverbal",
+      "provenance": "Original procedural response, no canonical speaking voice assigned"
+    },
+    {
+      "speaker": "福ちゃん",
+      "text": "こんな所で商売してるのか。\nそのビール、どうするんだ？",
+      "uses": [
+        "dialogue:takosan:intro:1"
+      ],
+      "caption": "友人に話しかける。少し呆れながらも明瞭に、言葉の最後まで自然に話す。",
+      "seed": 100,
+      "reference": "02_CHARACTERS/Fukuchan_voice.wav",
+      "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "こんな所で商売してるのか。 そのビール、どうするんだ？",
+      "id": "0b2763d6e23ad1d3",
+      "asset": "audio/voice/0b2763d6e23ad1d3.wav",
+      "seconds": 4.120041666666666,
+      "kind": "speech",
+      "sha256": "2038b51ac538062ea2435b351a6472eab840b19cfde30804555db7d7ef7005c0",
+      "raw_sha256": "0f20aaabdf17a850435bebb10678a5b4d3681e85d9f0723b8e1570dde91fa86f"
+    },
+    {
+      "speaker": "たこさん",
+      "text": "必要なことです。\n持てる量だけ、お選びください。",
+      "uses": [
+        "dialogue:takosan:intro:2"
+      ],
+      "id": "786092808e6f8581",
+      "asset": "audio/voice/takosan_response.wav",
+      "seconds": 0.85,
+      "kind": "nonverbal",
+      "provenance": "Original procedural response, no canonical speaking voice assigned"
+    },
+    {
+      "speaker": "たこさん",
+      "text": "……。補給ですね。ビールはお持ちですか。",
+      "uses": [
+        "dialogue:takosan:greeting:0"
+      ],
+      "id": "3c3abe898678a76c",
+      "asset": "audio/voice/takosan_response.wav",
+      "seconds": 0.85,
+      "kind": "nonverbal",
+      "provenance": "Original procedural response, no canonical speaking voice assigned"
+    },
+    {
+      "speaker": "やめ太郎",
+      "text": "廃屋の前にいるそば屋が、帰り道を塞いでる。\nジョッキを大きく振り上げたら、横か後ろへ。振り終わりを狙おう。",
+      "uses": [
+        "dialogue:mountain:before"
+      ],
+      "caption": "焦りを少し抑えて、友人へ道案内する。柔らかい関西イントネーションで、聞き取りやすく自然に話す。",
+      "seed": 7,
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "廃屋の前にいるそば屋が、帰り道を塞いでる。 ジョッキを大きく振り上げたら、横か後ろへ。振り終わりを狙おう。",
+      "id": "35c3ecec89730ce4",
+      "asset": "audio/voice/35c3ecec89730ce4.wav",
+      "seconds": 8.840041666666666,
+      "kind": "speech",
+      "sha256": "cea8015235ae29dad4bba780994f402f6609669154e70f0bf074424b3f7d30c3",
+      "raw_sha256": "4108f13330990f87dff383be0d8d71c7d08448e74af6aadde0a83e7ac5958f94"
+    },
+    {
+      "speaker": "やめ太郎",
+      "text": "福ちゃん、やったね！ 東側の門から帰ろう。\n今日はもう、乾杯は遠慮したいな。",
+      "uses": [
+        "dialogue:mountain:after"
+      ],
+      "caption": "焦りを少し抑えて、友人へ道案内する。柔らかい関西イントネーションで、聞き取りやすく自然に話す。",
+      "seed": 7,
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "福ちゃん、やったね！ 東側の門から帰ろう。 今日はもう、乾杯は遠慮したいな。",
+      "id": "9490570c5c6a09c6",
+      "asset": "audio/voice/9490570c5c6a09c6.wav",
+      "seconds": 6.2400416666666665,
+      "kind": "speech",
+      "sha256": "46a5a133da9a41e9e10f1753f4202ce8d3ceb4985f085b77f3da0b7cd2a75aff",
+      "raw_sha256": "79e39e1726ce0b18618a785a6163778f08a25187acf287eb688916a177e28e4c"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:sobaya_hazard_lab/game/game_dialogue.dart';
+import 'package:sobaya_hazard_lab/game/game_events.dart';
+import 'package:sobaya_hazard_lab/game/game_state.dart';
+
+void main(List<String> args) {
+  final rows = <String, Map<String, dynamic>>{};
+  void add(String speaker, String text, String usage) {
+    if (speaker.isEmpty) return;
+    final key = '$speaker\n$text';
+    final row = rows.putIfAbsent(
+      key,
+      () => {'speaker': speaker, 'text': text, 'uses': <String>[]},
+    );
+    (row['uses'] as List).add(usage);
+  }
+
+  for (final event in hazardEvents.entries) {
+    for (var i = 0; i < event.value.length; i++) {
+      add(event.value[i].speaker, event.value[i].text, 'event:${event.key}:$i');
+    }
+  }
+  for (final owner in {
+    'yametaro': yametaroDialogue,
+    'takosan': takosanDialogue,
+  }.entries) {
+    for (final topic in owner.value.entries) {
+      for (var i = 0; i < topic.value.length; i++) {
+        add(
+          topic.value[i].speaker,
+          topic.value[i].text,
+          'dialogue:${owner.key}:${topic.key}:$i',
+        );
+      }
+    }
+  }
+  final mountain = HazardGameState(
+    jsonDecode(File('assets/mountain.json').readAsStringSync()),
+  );
+  for (final alive in [true, false]) {
+    for (final e in mountain.enemies.where((e) => e.boss)) {
+      e.alive = alive;
+    }
+    final line = mountain.dialogueLine;
+    add(
+      line.speaker,
+      line.text,
+      'dialogue:mountain:${alive ? 'before' : 'after'}',
+    );
+  }
+  final file = File(args.single);
+  file.parent.createSync(recursive: true);
+  file.writeAsStringSync(
+    '${const JsonEncoder.withIndent('  ').convert(rows.values.toList())}\n',
+  );
+  stdout.writeln('Exported ${rows.length} unique spoken lines');
+}

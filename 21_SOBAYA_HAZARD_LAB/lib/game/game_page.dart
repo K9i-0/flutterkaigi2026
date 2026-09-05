@@ -54,10 +54,10 @@ class _HazardGamePageState extends State<HazardGamePage> {
         });
     lifecycle = AppLifecycleListener(
       onResume: () {
-        game.foreground = true;
+        game.setForeground(true);
       },
       onInactive: () {
-        game.foreground = false;
+        game.setForeground(false);
         held.clear();
         game.state?.stopInput();
         if (game.state?.running ?? false) game.toggle(PlayPhase.paused);
@@ -1257,98 +1257,125 @@ class _HazardGamePageState extends State<HazardGamePage> {
     final options = game.settings;
     return modal(
       'SETTINGS',
-      Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text('難易度', style: TextStyle(color: gold)),
-          DropdownButton<HazardDifficulty>(
-            key: const ValueKey('game-difficulty'),
-            isExpanded: true,
-            dropdownColor: ink,
-            value: options.difficulty,
-            style: const TextStyle(color: ivory, fontSize: 16),
-            items: [
-              for (final d in HazardDifficulty.values)
-                DropdownMenuItem(
-                  value: d,
-                  child: Text(HazardSettings(difficulty: d).difficultyLabel),
+      SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('難易度', style: TextStyle(color: gold)),
+            DropdownButton<HazardDifficulty>(
+              key: const ValueKey('game-difficulty'),
+              isExpanded: true,
+              dropdownColor: ink,
+              value: options.difficulty,
+              style: const TextStyle(color: ivory, fontSize: 16),
+              items: [
+                for (final d in HazardDifficulty.values)
+                  DropdownMenuItem(
+                    value: d,
+                    child: Text(HazardSettings(difficulty: d).difficultyLabel),
+                  ),
+              ],
+              onChanged: (d) {
+                if (d != null) game.changeSettings((s) => s.difficulty = d);
+              },
+            ),
+            const Text(
+              '被ダメージと敵の接近速度を変更します。探索中も切り替えられます。',
+              style: TextStyle(color: ivory, fontSize: 12),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              '視点感度  ×${options.sensitivity.toStringAsFixed(1)}',
+              style: const TextStyle(color: gold),
+            ),
+            Slider(
+              key: const ValueKey('game-sensitivity'),
+              value: options.sensitivity,
+              min: .5,
+              max: 2,
+              divisions: 15,
+              label: options.sensitivity.toStringAsFixed(1),
+              activeColor: gold,
+              onChanged: (v) => game.changeSettings((s) => s.sensitivity = v),
+            ),
+            Text(
+              '全体音量  ${(options.volume * 100).round()}%',
+              style: const TextStyle(color: gold),
+            ),
+            Slider(
+              key: const ValueKey('game-volume'),
+              value: options.volume,
+              divisions: 10,
+              activeColor: gold,
+              onChanged: (v) => game.changeSettings((s) => s.volume = v),
+            ),
+            Text(
+              '台詞  ${(options.voiceVolume * 100).round()}%',
+              style: const TextStyle(color: gold),
+            ),
+            Slider(
+              key: const ValueKey('game-voice-volume'),
+              value: options.voiceVolume,
+              divisions: 10,
+              activeColor: gold,
+              onChanged: (v) => game.changeSettings((s) => s.voiceVolume = v),
+            ),
+            Text(
+              '環境音・緊張時の音楽  ${(options.environmentVolume * 100).round()}%',
+              style: const TextStyle(color: gold),
+            ),
+            Slider(
+              key: const ValueKey('game-environment-volume'),
+              value: options.environmentVolume,
+              divisions: 10,
+              activeColor: gold,
+              onChanged: (v) =>
+                  game.changeSettings((s) => s.environmentVolume = v),
+            ),
+            Wrap(
+              spacing: 12,
+              runSpacing: 12,
+              children: [
+                action(
+                  'mute',
+                  options.muted ? '消音：ON' : '消音：OFF',
+                  () => game.changeSettings((s) => s.muted = !s.muted),
                 ),
-            ],
-            onChanged: (d) {
-              if (d != null) game.changeSettings((s) => s.difficulty = d);
-            },
-          ),
-          const Text(
-            '被ダメージと敵の接近速度を変更します。探索中も切り替えられます。',
-            style: TextStyle(color: ivory, fontSize: 12),
-          ),
-          const SizedBox(height: 20),
-          Text(
-            '視点感度  ×${options.sensitivity.toStringAsFixed(1)}',
-            style: const TextStyle(color: gold),
-          ),
-          Slider(
-            key: const ValueKey('game-sensitivity'),
-            value: options.sensitivity,
-            min: .5,
-            max: 2,
-            divisions: 15,
-            label: options.sensitivity.toStringAsFixed(1),
-            activeColor: gold,
-            onChanged: (v) => game.changeSettings((s) => s.sensitivity = v),
-          ),
-          Text(
-            '音量  ${(options.volume * 100).round()}%',
-            style: const TextStyle(color: gold),
-          ),
-          Slider(
-            key: const ValueKey('game-volume'),
-            value: options.volume,
-            divisions: 10,
-            activeColor: gold,
-            onChanged: (v) => game.changeSettings((s) => s.volume = v),
-          ),
-          Wrap(
-            spacing: 12,
-            runSpacing: 12,
-            children: [
-              action(
-                'mute',
-                options.muted ? '消音：ON' : '消音：OFF',
-                () => game.changeSettings((s) => s.muted = !s.muted),
-              ),
-              action(
-                'settings-default',
-                '標準設定に戻す',
-                () => game.changeSettings((s) {
-                  s.difficulty = HazardDifficulty.standard;
-                  s.volume = 1;
-                  s.sensitivity = 1;
-                  s.renderScale = .85;
-                  s.muted = false;
-                }),
-              ),
-              action(
-                'quality',
-                '画質：${options.renderScale < .8
-                    ? '軽量'
-                    : options.renderScale < 1
-                    ? '標準'
-                    : '高精細'}',
-                () => game.changeSettings(
-                  (s) => s.renderScale = s.renderScale < .8
-                      ? .85
-                      : s.renderScale < 1
-                      ? 1
-                      : .65,
+                action(
+                  'settings-default',
+                  '標準設定に戻す',
+                  () => game.changeSettings((s) {
+                    s.difficulty = HazardDifficulty.standard;
+                    s.volume = 1;
+                    s.voiceVolume = 1;
+                    s.environmentVolume = 1;
+                    s.sensitivity = 1;
+                    s.renderScale = .85;
+                    s.muted = false;
+                  }),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          action('settings-back', '戻る', game.closeSettings),
-        ],
+                action(
+                  'quality',
+                  '画質：${options.renderScale < .8
+                      ? '軽量'
+                      : options.renderScale < 1
+                      ? '標準'
+                      : '高精細'}',
+                  () => game.changeSettings(
+                    (s) => s.renderScale = s.renderScale < .8
+                        ? .85
+                        : s.renderScale < 1
+                        ? 1
+                        : .65,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            action('settings-back', '戻る', game.closeSettings),
+          ],
+        ),
       ),
       width: 660,
     );
