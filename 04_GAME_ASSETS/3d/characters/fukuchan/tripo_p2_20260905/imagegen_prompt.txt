@@ -1,0 +1,1 @@
+Built-in Imagegen. Reference: 02_CHARACTERS/Fukuchan.jpg. Preserve exact face, slim 170cm man, black center-parted hair, navy blazer/trousers, white printed T-shirt/sneakers. Full-body front relaxed A-pose on white, separated arms/hands. Back derived from generated front: identical proportions, pose, hem, framing, lighting; back of head and tailored navy jacket. No held props.

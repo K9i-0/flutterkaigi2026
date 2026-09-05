@@ -1,0 +1,36 @@
+{
+  "source_sha256": "45d288d868ee3b706e1e8441861845c8d5ec27149ea6265ab26370a8a93ecab7",
+  "height_m": 1.7,
+  "bones": 23,
+  "clips": [
+    {
+      "name": "Walk",
+      "duration": 1.2333333333333334,
+      "ground_speed_mps": 0.9161073819691108,
+      "source": "walk_standard.fbx",
+      "source_sha256": "dd857d3dfb155642d17f917715f94e2e90c82326b95921274c8c926789c8a0de"
+    },
+    {
+      "name": "Run",
+      "duration": 0.8333333333333334,
+      "ground_speed_mps": 2.165712475906825,
+      "source": "run_weighted.fbx",
+      "source_sha256": "2a35b5c56951c2fea53e36a1a2822645cfdaa72e26be0a821a19426dd147d085"
+    },
+    {
+      "name": "Idle",
+      "duration": 2,
+      "source": "authored breathing / two-hand IK pose"
+    },
+    {
+      "name": "Aim",
+      "duration": 2,
+      "source": "authored breathing / two-hand IK pose"
+    },
+    {
+      "name": "AimShotgun",
+      "duration": 2,
+      "source": "authored breathing / two-hand IK pose"
+    }
+  ]
+}

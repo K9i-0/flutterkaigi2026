@@ -1,0 +1,54 @@
+{
+  "date": "2026-09-06",
+  "platform": "macOS Apple M4",
+  "flutter": "3.47.2",
+  "scene": "0.23.0",
+  "metric_note": "Flutter FrameTiming UI/Raster P95; not GPU execution time or measured FPS. Audio pooling changed after this run.",
+  "cases": [
+    {
+      "case": "village-four",
+      "profile": true,
+      "valid": true,
+      "renderScale": 0.85,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "elapsedMs": 8003,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 5.005,
+      "rasterP95Ms": 0.735
+    },
+    {
+      "case": "village-eight",
+      "profile": true,
+      "valid": true,
+      "renderScale": 0.85,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "elapsedMs": 8499,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 5.125,
+      "rasterP95Ms": 0.507
+    },
+    {
+      "case": "village-eight-full",
+      "profile": true,
+      "valid": true,
+      "renderScale": 1.0,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "elapsedMs": 8500,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 5.0,
+      "rasterP95Ms": 0.51
+    }
+  ]
+}

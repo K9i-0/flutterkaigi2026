@@ -1,0 +1,7 @@
+raw/
+review/
+*.blend
+*.blend1
+upload_*.json
+submission_started.json
+task*.json
