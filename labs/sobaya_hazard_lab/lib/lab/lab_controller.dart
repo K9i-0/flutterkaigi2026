@@ -23,7 +23,9 @@ class LabController extends ChangeNotifier {
   final List<RigActor> rigs = [];
   String selectedMotion = 'Idle';
   bool animationPaused = false, mugEquipped = false, zombieLocomotion = false;
-  double animationSpeed = 1;
+  double animationSpeed = 1, beerFill = 1;
+  String focusView = 'body', backdropStyle = 'studio';
+  final backdrop = Node(name: 'Transmission backdrop');
   String? movementAction;
   RigActor? get firstRig => rigs.isEmpty ? null : rigs.first;
   bool ready = false, disposed = false;
@@ -52,9 +54,20 @@ class LabController extends ChangeNotifier {
     _template = template;
     _propTemplate = prop;
     scene.add(world);
+    scene.add(backdrop);
     scene.add(actors);
     scene.add(outlines);
     ready = true;
+    // Transmission samples the 3D color buffer, not the Flutter widget behind
+    // it. Draw a real background so glass above the floor does not turn black.
+    scene.skybox = Skybox(
+      GradientSkySource(
+        zenithColor: vm.Vector3(.12, .16, .17),
+        horizonColor: vm.Vector3(.28, .33, .32),
+        groundColor: vm.Vector3(.08, .10, .10),
+        sunColor: vm.Vector3.zero(),
+      ),
+    );
     configure();
     open(LabMode.model);
     loadMs = watch.elapsedMilliseconds;
@@ -99,6 +112,7 @@ class LabController extends ChangeNotifier {
   void open(LabMode next) {
     if (!ready) return;
     simulation.reset(next);
+    focusView = 'body';
     inputX = 0;
     inputY = 0;
     sprint = false;
@@ -219,6 +233,7 @@ class LabController extends ChangeNotifier {
         immediate: true,
       );
       rig.mug.visible = mugEquipped;
+      rig.beer.fill = beerFill;
       rig.speed = animationSpeed;
       rig.setPaused(animationPaused);
       // Separate phases exercise independently cloned skeletons in the crowd.
@@ -351,6 +366,7 @@ class LabController extends ChangeNotifier {
           ? false
           : spec.loop;
       rig.mug.visible = mugEquipped;
+      rig.beer.fill = beerFill;
     }
     resetMeasurement();
     notifyListeners();
@@ -398,6 +414,15 @@ class LabController extends ChangeNotifier {
       simulation.z,
     );
     if (mode == LabMode.crowd) target.setValues(0, .9, 0);
+    if (mode == LabMode.model && focusView == 'face') target.y = 1.66;
+    if (mode == LabMode.model && focusView == 'grip' && firstRig != null) {
+      target.setFrom(
+        firstRig!.mug.getChildByName('Grip')!.globalTransform.getTranslation(),
+      );
+    }
+    for (final rig in rigs) {
+      rig.beer.detail = distance < 5;
+    }
     final offset = vm.Vector3(
       math.sin(yaw) * math.cos(pitch) * distance,
       math.sin(pitch) * distance,
@@ -427,17 +452,70 @@ class LabController extends ChangeNotifier {
   }
 
   void zoom(double delta) {
-    distance = (distance + delta).clamp(1.5, 18);
+    distance = (distance + delta).clamp(.3, 18);
   }
 
   void setView(String view) {
+    focusView = ['face', 'grip'].contains(view) ? view : 'body';
     yaw = switch (view) {
       'back' => math.pi,
       'side' => math.pi / 2,
       _ => 0,
     };
     pitch = .16;
-    distance = mode == LabMode.crowd ? 12 : 3.8;
+    distance = focusView == 'face'
+        ? .6
+        : focusView == 'grip'
+        ? .7
+        : mode == LabMode.crowd
+        ? 12
+        : 3.8;
+    notifyListeners();
+  }
+
+  void setBackdrop(String style) {
+    if (!['studio', 'dark', 'light', 'pattern'].contains(style)) {
+      throw ArgumentError('Invalid backdrop');
+    }
+    backdropStyle = style;
+    backdrop.removeAll();
+    if (style != 'studio') {
+      final light = style == 'light';
+      final color = light ? .75 : .015;
+      backdrop.add(
+        Node(
+          mesh: Mesh(
+            CuboidGeometry(vm.Vector3(6, 5, .02)),
+            material(color, color, color),
+          ),
+        )..position = vm.Vector3(0, 2, -1),
+      );
+      if (style == 'pattern') {
+        final tiles = InstancedMesh(
+          geometry: CuboidGeometry(vm.Vector3(.24, .24, .025)),
+          material: material(.8, .65, .32),
+        );
+        for (var x = -12; x <= 12; x++) {
+          for (var y = 0; y < 20; y++) {
+            if ((x + y).isEven) {
+              tiles.addInstance(
+                vm.Matrix4.translation(vm.Vector3(x * .25, y * .25, -.98)),
+              );
+            }
+          }
+        }
+        backdrop.add(Node()..addComponent(InstancedMeshComponent(tiles)));
+      }
+    }
+    notifyListeners();
+  }
+
+  void setBeerFill(double value) {
+    beerFill = value.clamp(0, 1);
+    for (final rig in rigs) {
+      rig.beer.fill = beerFill;
+      rig.beer.reset();
+    }
     notifyListeners();
   }
 
@@ -493,13 +571,13 @@ class LabController extends ChangeNotifier {
     'mode': mode.name,
     'model': asset,
     'rigged': true,
-    'boneCount': 41,
+    'boneCount': 43,
     'motion': firstRig?.inspect(),
     'actorMotions': [for (final rig in rigs) rig.inspect()],
     'availableMotions': motions.map((m) => m.name).toList(),
     'propAsset': propAsset,
     'count': count,
-    'placedTriangles': (21066 + (mugEquipped ? 3120 : 0)) * count,
+    'placedTriangles': (28576 + (mugEquipped ? 8276 : 0)) * count,
     'sourceTextureSize': 4096,
     'loadMs': loadMs,
     'position': {'x': simulation.x, 'z': simulation.z},
@@ -508,6 +586,8 @@ class LabController extends ChangeNotifier {
     'collisionFrames': simulation.collisionFrames,
     'cameraFraction': cameraCompression,
     'cameraYaw': yaw,
+    'focusView': focusView,
+    'backdrop': backdropStyle,
     'cameraDistance': distance,
     'shadows': shadows,
     'ao': ao,

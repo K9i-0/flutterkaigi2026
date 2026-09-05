@@ -100,3 +100,15 @@ mise exec -- flutter test
 `test/simulation_test.dart`で壁停止、斜め速度、壁沿い移動、カメラ遮蔽、リセット、計測値の空・非有限入力を検証。GPU描画は単体テストで代用せず、実行画面とログを確認する。
 
 参考: [公式リポジトリ](https://github.com/bdero/flutter_scene)、[flutter_scene 0.23.0](https://pub.dev/packages/flutter_scene/versions/0.23.0)。
+
+## 品質改善版 v2
+
+正本を`rig_v2/sobaya_rig.glb`と`props/beer_mug_v2/beer_mug.glb`へ切り替えた。43骨・28,576三角面、9モーション。肩／袖口と裾、仮面の黒い目、手と握りを改訂し、ジョッキを透過・吸収・液面モーフ付きにした。原型とv1は比較用に保持。
+
+- ビューの「顔」「手元」で寄って確認。「乾杯」→一時停止→「手元」が持ち方の確認に向く。
+- ジョッキ表示中は液量0〜100%、背景スタジオ／暗色／明色／格子を選べる。
+- 近接は屈折を使用し、検証カメラの注視点距離が5m以上では軽い材質に切り替える。泡・液面は同じ傾斜に追従。
+- Marionette: `madogiwa.setLabView`に`face` / `grip`を追加。`madogiwa.setBeerFill`は`fill=0..1`、任意`background=studio|dark|light|pattern`。
+- profileベンチは従来7条件に、近接ジョッキ1個・遠景4個・12個を追加。欠けたサンプルを性能PASS扱いにしない。
+
+詳細と制限は正本モデルのREADME、`VALIDATION.md`を参照。今回の改善ではTripo APIを実行していない。

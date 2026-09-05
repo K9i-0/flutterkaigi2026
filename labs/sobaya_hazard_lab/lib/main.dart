@@ -427,6 +427,8 @@ class _LabPageState extends State<LabPage> {
                           ('front', '正面'),
                           ('side', '側面'),
                           ('back', '背面'),
+                          if (lab.mode == LabMode.model) ('face', '顔'),
+                          if (lab.mode == LabMode.model) ('grip', '手元'),
                         ])
                           OutlinedButton(
                             key: ValueKey('view-${v.$1}'),
@@ -448,7 +450,7 @@ class _LabPageState extends State<LabPage> {
                     ),
                   const SizedBox(height: 8),
                   Text(
-                    '41 bones · ${motionSpec(lab.firstRig?.current ?? 'Idle').label} · ${lab.firstRig?.active.playbackTime.toStringAsFixed(2) ?? '0.00'} s',
+                    '43 bones · ${motionSpec(lab.firstRig?.current ?? 'Idle').label} · ${lab.firstRig?.active.playbackTime.toStringAsFixed(2) ?? '0.00'} s',
                     style: const TextStyle(fontSize: 11, color: muted),
                   ),
                 ],
@@ -692,6 +694,31 @@ class _LabPageState extends State<LabPage> {
           value: lab.mugEquipped,
           onChanged: lab.ready ? lab.equipMug : null,
         ),
+        if (lab.mugEquipped) ...[
+          DropdownButton<String>(
+            value: lab.backdropStyle,
+            isExpanded: true,
+            items: const [
+              DropdownMenuItem(value: 'studio', child: Text('背景：スタジオ')),
+              DropdownMenuItem(value: 'dark', child: Text('背景：暗色')),
+              DropdownMenuItem(value: 'light', child: Text('背景：明色')),
+              DropdownMenuItem(value: 'pattern', child: Text('背景：屈折確認の格子')),
+            ],
+            onChanged: (value) {
+              if (value != null) lab.setBackdrop(value);
+            },
+          ),
+          Text(
+            'ビールの量 ${(lab.beerFill * 100).round()}%',
+            style: const TextStyle(fontSize: 12),
+          ),
+          Slider(
+            key: const ValueKey('beer-fill'),
+            value: lab.beerFill,
+            divisions: 10,
+            onChanged: lab.setBeerFill,
+          ),
+        ],
       ],
     );
   }
@@ -738,7 +765,7 @@ class _LabPageState extends State<LabPage> {
             ),
             const SizedBox(height: 6),
             const Text(
-              '41 bones / 21,066 triangles\n4Kの質感を保持したスキンモデル。',
+              '43 bones / 28,576 triangles\n4Kの質感を保持したスキンモデル。',
               style: TextStyle(fontSize: 12, color: muted, height: 1.7),
             ),
           ],
@@ -784,7 +811,7 @@ class _LabPageState extends State<LabPage> {
             ),
             const SizedBox(height: 6),
             Text(
-              '本体三角面 ${(21066 * lab.count / 1000).toStringAsFixed(1)}K（概算）\nメッシュ・材質は共有。骨格と再生位置は各体で独立。',
+              '本体三角面 ${(28576 * lab.count / 1000).toStringAsFixed(1)}K（概算）\nメッシュ・材質は共有。骨格と再生位置は各体で独立。',
               style: const TextStyle(fontSize: 11, color: muted, height: 1.7),
             ),
             toggle('motion', '群集の配置を動かす', lab.crowdMotion),
@@ -853,7 +880,7 @@ class _LabPageState extends State<LabPage> {
           ),
           section('ASSET / SOBAYA RIG v01'),
           Text(
-            '読込 ${lab.loadMs} ms · 4K PBR\nジョッキ 3,120 triangles / 3 materials\nImagegen → Tripo P2.0 → Blender rig',
+            '読込 ${lab.loadMs} ms · 4K PBR\nジョッキ 8,276 triangles / 透過・液面\nImagegen → Tripo P2.0 → Blender rig',
             style: const TextStyle(fontSize: 10, color: muted, height: 1.7),
           ),
           const SizedBox(height: 18),

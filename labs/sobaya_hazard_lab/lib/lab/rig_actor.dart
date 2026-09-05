@@ -4,6 +4,7 @@ import 'package:flutter_scene/scene.dart';
 import 'package:vector_math/vector_math.dart' as vm;
 
 import 'motion_catalog.dart';
+import 'beer_mug_component.dart';
 
 /// Each actor owns joint nodes and a player, while sharing immutable geometry.
 class RigActor {
@@ -36,11 +37,14 @@ class RigActor {
     mug.localTransform = vm.Matrix4.rotationX(-math.pi / 2)
       ..multiply(inverseGrip);
     socket.add(mug);
+    beer = BeerMugComponent(isPaused: () => paused);
+    mug.addComponent(beer);
     mug.visible = false;
     setMotion('Idle', immediate: true);
   }
 
   final Node root, model, mug;
+  late final BeerMugComponent beer;
   final Map<String, AnimationClip> clips = {};
   final Map<String, double> durations = {};
   final Map<String, double> _from = {};
@@ -100,6 +104,7 @@ class RigActor {
   }
 
   void seek(double seconds) {
+    beer.reset();
     setPaused(true);
     _fade = 1;
     _applyWeights();
@@ -117,6 +122,7 @@ class RigActor {
       'loop': active.loop,
       'speed': speed,
       'mugVisible': mug.visible,
+      'beer': beer.inspect(),
       'handWorld': hand.globalTransform.getTranslation().storage.toList(),
       'socketWorld': socket.globalTransform.getTranslation().storage.toList(),
       'gripWorld': mug
