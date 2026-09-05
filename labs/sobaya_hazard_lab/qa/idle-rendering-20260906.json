@@ -1,0 +1,560 @@
+{
+  "date": "2026-09-06",
+  "mode": "native macOS debug, Dart MCP + Marionette",
+  "implementation": "Retain SceneView ticker using TickerMode; prime one revealed frame; RepaintBoundary; explicit bounded Scene.update clock; reset first resumed timestep to zero.",
+  "native": {
+    "title": {
+      "phase": "title",
+      "rendering": {
+        "continuous": false,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 1,
+        "simulationSeconds": 0.0,
+        "playerClipSeconds": 0.0
+      },
+      "event": null,
+      "voice": {
+        "requested": null,
+        "active": null,
+        "loading": false,
+        "speaking": false,
+        "finished": false,
+        "paused": false,
+        "volume": 1.0,
+        "errors": []
+      },
+      "soundscape": {
+        "intensity": 0.0,
+        "duck": 1.0,
+        "ambience": {
+          "requested": "village",
+          "active": "village",
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0.0,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 0,
+            "durationMs": 16000,
+            "loop": true
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0.0,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 0,
+            "durationMs": 16000,
+            "loop": true
+          }
+        }
+      }
+    },
+    "live": {
+      "phase": "cinematic",
+      "rendering": {
+        "continuous": true,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 110,
+        "simulationSeconds": 0.0,
+        "playerClipSeconds": 1.866692999999999
+      },
+      "event": {
+        "id": "opening",
+        "shot": 1,
+        "elapsed": 1.0833489999999995,
+        "duration": 7.0,
+        "paused": false
+      },
+      "voice": {
+        "requested": "event:1:opening:1",
+        "active": "event:1:opening:1",
+        "loading": false,
+        "speaking": true,
+        "finished": false,
+        "paused": false,
+        "volume": 1.0,
+        "errors": [],
+        "backend": {
+          "state": "playing",
+          "positionMs": 989,
+          "durationMs": 5880,
+          "loop": false
+        }
+      },
+      "soundscape": {
+        "intensity": 0.0,
+        "duck": 0.38007440822030375,
+        "ambience": {
+          "requested": "village",
+          "active": "village",
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.14,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 1725,
+            "durationMs": 16000,
+            "loop": true
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0.0,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 0,
+            "durationMs": 16000,
+            "loop": true
+          }
+        }
+      }
+    },
+    "pause-a": {
+      "phase": "cinematic",
+      "rendering": {
+        "continuous": false,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 178,
+        "simulationSeconds": 0.0,
+        "playerClipSeconds": 0.9833769999999986
+      },
+      "event": {
+        "id": "opening",
+        "shot": 1,
+        "elapsed": 2.200032999999999,
+        "duration": 7.0,
+        "paused": true
+      },
+      "voice": {
+        "requested": "event:1:opening:1",
+        "active": "event:1:opening:1",
+        "loading": false,
+        "speaking": false,
+        "finished": false,
+        "paused": true,
+        "volume": 1.0,
+        "errors": [],
+        "backend": {
+          "state": "paused",
+          "positionMs": 2130,
+          "durationMs": 5880,
+          "loop": false
+        }
+      },
+      "soundscape": {
+        "intensity": 0.0,
+        "duck": 0.392782548184888,
+        "ambience": {
+          "requested": "village",
+          "active": "village",
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0.0,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 2902,
+            "durationMs": 16000,
+            "loop": true
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0.0,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 0,
+            "durationMs": 16000,
+            "loop": true
+          }
+        }
+      }
+    },
+    "pause-b": {
+      "phase": "cinematic",
+      "rendering": {
+        "continuous": false,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 178,
+        "simulationSeconds": 0.0,
+        "playerClipSeconds": 0.9833769999999986
+      },
+      "event": {
+        "id": "opening",
+        "shot": 1,
+        "elapsed": 2.200032999999999,
+        "duration": 7.0,
+        "paused": true
+      },
+      "voice": {
+        "requested": "event:1:opening:1",
+        "active": "event:1:opening:1",
+        "loading": false,
+        "speaking": false,
+        "finished": false,
+        "paused": true,
+        "volume": 1.0,
+        "errors": [],
+        "backend": {
+          "state": "paused",
+          "positionMs": 2130,
+          "durationMs": 5880,
+          "loop": false
+        }
+      },
+      "soundscape": {
+        "intensity": 0.0,
+        "duck": 0.392782548184888,
+        "ambience": {
+          "requested": "village",
+          "active": "village",
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0.0,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 2902,
+            "durationMs": 16000,
+            "loop": true
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0.0,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 0,
+            "durationMs": 16000,
+            "loop": true
+          }
+        }
+      }
+    },
+    "resume": {
+      "phase": "cinematic",
+      "rendering": {
+        "continuous": true,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 242,
+        "simulationSeconds": 0.0,
+        "playerClipSeconds": 0.05005899999999848
+      },
+      "event": {
+        "id": "opening",
+        "shot": 1,
+        "elapsed": 3.2667149999999974,
+        "duration": 7.0,
+        "paused": false
+      },
+      "voice": {
+        "requested": "event:1:opening:1",
+        "active": "event:1:opening:1",
+        "loading": false,
+        "speaking": true,
+        "finished": false,
+        "paused": false,
+        "volume": 1.0,
+        "errors": [],
+        "backend": {
+          "state": "playing",
+          "positionMs": 3171,
+          "durationMs": 5880,
+          "loop": false
+        }
+      },
+      "soundscape": {
+        "intensity": 0.0,
+        "duck": 0.3800017626518885,
+        "ambience": {
+          "requested": "village",
+          "active": "village",
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.14,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 3924,
+            "durationMs": 16000,
+            "loop": true
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0.0,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 0,
+            "durationMs": 16000,
+            "loop": true
+          }
+        }
+      }
+    },
+    "play-pause-a": {
+      "phase": "paused",
+      "rendering": {
+        "continuous": false,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 374,
+        "simulationSeconds": 1.0833489999999995,
+        "playerClipSeconds": 0.25009199999999776
+      },
+      "event": null,
+      "voice": {
+        "requested": null,
+        "active": null,
+        "loading": false,
+        "speaking": false,
+        "finished": false,
+        "paused": false,
+        "volume": 1.0,
+        "errors": []
+      },
+      "soundscape": {
+        "intensity": 0.0,
+        "duck": 0.8432425858212054,
+        "ambience": {
+          "requested": "village",
+          "active": "village",
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0.0,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 6189,
+            "durationMs": 16000,
+            "loop": true
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0.0,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 0,
+            "durationMs": 16000,
+            "loop": true
+          }
+        }
+      }
+    },
+    "play-pause-b": {
+      "phase": "paused",
+      "rendering": {
+        "continuous": false,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 374,
+        "simulationSeconds": 1.0833489999999995,
+        "playerClipSeconds": 0.25009199999999776
+      },
+      "event": null,
+      "voice": {
+        "requested": null,
+        "active": null,
+        "loading": false,
+        "speaking": false,
+        "finished": false,
+        "paused": false,
+        "volume": 1.0,
+        "errors": []
+      },
+      "soundscape": {
+        "intensity": 0.0,
+        "duck": 0.8432425858212054,
+        "ambience": {
+          "requested": "village",
+          "active": "village",
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0.0,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 6189,
+            "durationMs": 16000,
+            "loop": true
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0.0,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 0,
+            "durationMs": 16000,
+            "loop": true
+          }
+        }
+      }
+    },
+    "play-resume": {
+      "phase": "playing",
+      "rendering": {
+        "continuous": true,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 439,
+        "simulationSeconds": 2.150031999999999,
+        "playerClipSeconds": 1.3167749999999971
+      },
+      "event": null,
+      "voice": {
+        "requested": null,
+        "active": null,
+        "loading": false,
+        "speaking": false,
+        "finished": false,
+        "paused": false,
+        "volume": 1.0,
+        "errors": []
+      },
+      "soundscape": {
+        "intensity": 0.0,
+        "duck": 0.9586800378685536,
+        "ambience": {
+          "requested": "village",
+          "active": "village",
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.35,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 7238,
+            "durationMs": 16000,
+            "loop": true
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0.0,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 0,
+            "durationMs": 16000,
+            "loop": true
+          }
+        }
+      }
+    }
+  },
+  "cpu_before": {
+    "pid": 89900,
+    "mode": "debug",
+    "elapsed_seconds": 6.020445790956728,
+    "cpu_start": "34:03.12",
+    "cpu_end": "34:10.07",
+    "process_cpu_percent": 115.43995646368616,
+    "note": "Process CPU time over a 6 second idle interval. Concurrent unrelated iOS Simulator remains running. Not a GPU, gameplay FPS, or profile measurement."
+  },
+  "cpu_after": {
+    "pid": 89900,
+    "mode": "debug",
+    "elapsed_seconds": 6.022153333993629,
+    "cpu_start": "39:30.92",
+    "cpu_end": "39:30.92",
+    "process_cpu_percent": 0.0,
+    "note": "Process CPU time over a 6 second idle interval. Concurrent unrelated iOS Simulator remains running. Not a GPU, gameplay FPS, or profile measurement."
+  },
+  "tests": {
+    "flutter_test": 71,
+    "flutter_analyze": "No issues found"
+  },
+  "notes": [
+    "The initial autoTick toggle approach stopped rendering after resume because SceneView 0.23.0 uses SingleTickerProviderStateMixin; replaced before acceptance.",
+    "A failed CUA window lookup and inactive-app samples were not treated as foreground resume evidence. Final retained samples assert foreground=true.",
+    "CPU figures concern idle process CPU, not gameplay FPS or GPU execution time. Unrelated iOS Simulator remains active.",
+    "Tower traversal, first-play pacing, voice listening and audio-enabled profile performance remain pending."
+  ],
+  "screenshots": {
+    "primed_title": "evidence/screenshot-1788648007-0.png",
+    "paused_overlay": "evidence/screenshot-1788647922-0.png"
+  },
+  "tripoCreditsSpent": 0,
+  "finalTitle": {
+    "continuous": false,
+    "foreground": true,
+    "posePreview": false,
+    "ticks": 1,
+    "simulationSeconds": 0.0,
+    "playerClipSeconds": 0.0
+  }
+}
