@@ -1,0 +1,1029 @@
+import 'dart:math' as math;
+import 'dart:ui' as ui;
+
+import 'package:flutter/scheduler.dart';
+
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_scene/scene.dart' show SceneView;
+
+import 'game_controller.dart';
+import 'game_state.dart';
+import 'game_automation.dart';
+import 'game_benchmark.dart';
+
+const ivory = Color(0xffe6dec6),
+    gold = Color(0xffc8b077),
+    ink = Color(0xf0181b17);
+
+class HazardGamePage extends StatefulWidget {
+  const HazardGamePage({super.key});
+  @override
+  State<HazardGamePage> createState() => _HazardGamePageState();
+}
+
+class _HazardGamePageState extends State<HazardGamePage> {
+  final game = HazardGameController();
+  final focus = FocusNode();
+  final held = <LogicalKeyboardKey>{};
+  GameBenchmark? benchmark;
+  String? error;
+  AppLifecycleListener? lifecycle;
+  double touchX = 0, touchY = 0;
+  bool rightMouseHeld = false;
+  @override
+  void initState() {
+    super.initState();
+    game.addListener(changed);
+    SchedulerBinding.instance.addTimingsCallback(record);
+    game
+        .load()
+        .then((_) {
+          if (!mounted) return;
+          attachGameAutomation(game);
+          if (const bool.fromEnvironment('HAZARD_GAME_BENCHMARK')) {
+            benchmark = GameBenchmark(game);
+          }
+          setState(() {});
+        })
+        .catchError((Object e) {
+          if (mounted) setState(() => error = e.toString());
+        });
+    lifecycle = AppLifecycleListener(
+      onInactive: () {
+        held.clear();
+        game.state?.stopInput();
+        if (game.state?.running ?? false) game.toggle(PlayPhase.paused);
+      },
+    );
+  }
+
+  void record(List<ui.FrameTiming> timings) {
+    if (!game.ready) return;
+    for (final t in timings) {
+      game.frames.add(
+        t.buildDuration.inMicroseconds / 1000,
+        t.rasterDuration.inMicroseconds / 1000,
+      );
+    }
+  }
+
+  void changed() {
+    if (mounted) setState(() {});
+  }
+
+  @override
+  void dispose() {
+    SchedulerBinding.instance.removeTimingsCallback(record);
+    detachGameAutomation();
+    game.removeListener(changed);
+    benchmark?.dispose();
+    game.dispose();
+    lifecycle?.dispose();
+    focus.dispose();
+    super.dispose();
+  }
+
+  void updateInput() {
+    final s = game.state;
+    if (s == null) return;
+    bool has(LogicalKeyboardKey a, LogicalKeyboardKey b) =>
+        held.contains(a) || held.contains(b);
+    s.inputX =
+        ((has(LogicalKeyboardKey.keyD, LogicalKeyboardKey.arrowRight) ? 1 : 0) -
+                (has(LogicalKeyboardKey.keyA, LogicalKeyboardKey.arrowLeft)
+                    ? 1
+                    : 0) +
+                touchX)
+            .clamp(-1, 1)
+            .toDouble();
+    s.inputY =
+        ((has(LogicalKeyboardKey.keyW, LogicalKeyboardKey.arrowUp) ? 1 : 0) -
+                (has(LogicalKeyboardKey.keyS, LogicalKeyboardKey.arrowDown)
+                    ? 1
+                    : 0) +
+                touchY)
+            .clamp(-1, 1)
+            .toDouble();
+    s.sprint =
+        held.contains(LogicalKeyboardKey.shiftLeft) ||
+        held.contains(LogicalKeyboardKey.shiftRight);
+  }
+
+  KeyEventResult onKey(FocusNode node, KeyEvent e) {
+    final s = game.state!;
+    if (e is KeyUpEvent) {
+      held.remove(e.logicalKey);
+      updateInput();
+      return KeyEventResult.handled;
+    }
+    held.add(e.logicalKey);
+    updateInput();
+    if (e is KeyRepeatEvent) return KeyEventResult.handled;
+    final k = e.logicalKey;
+    if (k == LogicalKeyboardKey.escape) {
+      game.toggle(PlayPhase.paused);
+    } else if (k == LogicalKeyboardKey.tab) {
+      game.toggle(PlayPhase.inventory);
+    } else if (k == LogicalKeyboardKey.keyC) {
+      game.toggle(PlayPhase.collection);
+    } else if (s.running) {
+      if (k == LogicalKeyboardKey.keyQ) {
+        s.aiming = !s.aiming;
+      } else if (k == LogicalKeyboardKey.space) {
+        game.fire();
+      } else if (k == LogicalKeyboardKey.keyR) {
+        s.reload();
+      } else if (k == LogicalKeyboardKey.keyE) {
+        s.interact();
+      } else if (k == LogicalKeyboardKey.keyH) {
+        s.heal();
+      } else if (k == LogicalKeyboardKey.digit1) {
+        s.equip('handgun');
+      } else if (k == LogicalKeyboardKey.digit2) {
+        s.equip('shotgun');
+      }
+    }
+    setState(() {});
+    return KeyEventResult.handled;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final s = game.state;
+    return Scaffold(
+      body: error != null
+          ? Center(child: SelectableText('読み込みに失敗しました\n$error'))
+          : !game.ready || s == null
+          ? const Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'S O B A Y A   H A Z A R D',
+                    style: TextStyle(color: gold, fontSize: 24),
+                  ),
+                  SizedBox(height: 24),
+                  CircularProgressIndicator(color: gold),
+                  SizedBox(height: 18),
+                  Text('村の記録を読み込んでいます…'),
+                ],
+              ),
+            )
+          : Focus(
+              focusNode: focus,
+              autofocus: true,
+              onKeyEvent: onKey,
+              onFocusChange: (value) {
+                if (!value) {
+                  held.clear();
+                  touchX = 0;
+                  touchY = 0;
+                  s.stopInput();
+                }
+              },
+              child: LayoutBuilder(
+                builder: (context, bounds) {
+                  game.viewport = Size(bounds.maxWidth, bounds.maxHeight);
+                  return Stack(
+                    children: [
+                      Listener(
+                        behavior: HitTestBehavior.opaque,
+                        onPointerDown: (e) {
+                          focus.requestFocus();
+                          if (!s.running) return;
+                          if (e.buttons & kSecondaryMouseButton != 0) {
+                            rightMouseHeld = true;
+                            s.aiming = true;
+                          }
+                          if (e.buttons & kPrimaryMouseButton != 0 &&
+                              s.aiming) {
+                            game.fire();
+                          }
+                        },
+                        onPointerUp: (e) {
+                          if (e.kind == PointerDeviceKind.mouse &&
+                              rightMouseHeld &&
+                              e.buttons & kSecondaryMouseButton == 0) {
+                            rightMouseHeld = false;
+                            s.aiming = false;
+                          }
+                        },
+                        onPointerMove: (e) {
+                          if (s.running) game.rotate(e.delta.dx, e.delta.dy);
+                        },
+                        child: SceneView(
+                          game.scene,
+                          cameraBuilder: (_) => game.camera(),
+                          onTick: (elapsed, delta) {
+                            benchmark?.tick();
+                            game.tick(elapsed, delta);
+                          },
+                          warmUp: true,
+                        ),
+                      ),
+                      const Positioned.fill(
+                        child: IgnorePointer(
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Color(0x88101510),
+                                  Colors.transparent,
+                                  Colors.transparent,
+                                  Color(0xbb101510),
+                                ],
+                                stops: [0, .24, .67, 1],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      if (s.phase != PlayPhase.title) ...[
+                        Positioned(
+                          left: 28,
+                          top: 26,
+                          child: IgnorePointer(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'CHAPTER 01  /  PUEBLO',
+                                  style: TextStyle(
+                                    color: gold,
+                                    fontSize: 12,
+                                    letterSpacing: 3,
+                                  ),
+                                ),
+                                const SizedBox(height: 7),
+                                const Text(
+                                  '静かな村、騒がしい住人。',
+                                  style: TextStyle(
+                                    color: ivory,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                Text(
+                                  s.gateOpen
+                                      ? '農場への門をくぐれ'
+                                      : s.hasKey
+                                      ? '紋章の鍵で北東の門を開けろ'
+                                      : '村を探索し、紋章の鍵を探せ',
+                                  style: const TextStyle(
+                                    color: ivory,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          right: 24,
+                          top: 24,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Container(
+                                width: 140,
+                                height: 140,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xbb151a15),
+                                  border: Border.all(
+                                    color: const Color(0x558f947d),
+                                  ),
+                                ),
+                                child: CustomPaint(
+                                  painter: VillageMapPainter(s),
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                '記録 ${s.collected.length} / ${s.images.length}    ビール ${s.beers}',
+                                style: const TextStyle(
+                                  color: ivory,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        if (s.aiming && s.running)
+                          Center(
+                            child: CustomPaint(
+                              size: const Size(44, 44),
+                              painter: ReticlePainter(s.hitFlash > 0),
+                            ),
+                          ),
+                        if (s.damageFlash > 0)
+                          Positioned.fill(
+                            child: IgnorePointer(
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: const Color(0xaae0b46f),
+                                    width: 10,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        Positioned(right: 28, bottom: 28, child: healthHud(s)),
+                        Positioned(
+                          left: 26,
+                          bottom: 24,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  pad('up', Icons.keyboard_arrow_up, 0, 1),
+                                  pad('left', Icons.keyboard_arrow_left, -1, 0),
+                                  pad('down', Icons.keyboard_arrow_down, 0, -1),
+                                  pad(
+                                    'right',
+                                    Icons.keyboard_arrow_right,
+                                    1,
+                                    0,
+                                  ),
+                                  const SizedBox(width: 12),
+                                  action('aim', '構える Q', () {
+                                    s.aiming = !s.aiming;
+                                  }),
+                                  const SizedBox(width: 6),
+                                  action('fire', '撃つ SPACE', game.fire),
+                                ],
+                              ),
+                              const SizedBox(height: 9),
+                              const Text(
+                                'WASD 移動   SHIFT 走る   ドラッグ 視点   R 装填   E 調べる',
+                                style: TextStyle(
+                                  color: Color(0xffb8bdac),
+                                  fontSize: 11,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  action(
+                                    'bag',
+                                    '持ち物 TAB',
+                                    () => game.toggle(PlayPhase.inventory),
+                                  ),
+                                  const SizedBox(width: 6),
+                                  action(
+                                    'collection',
+                                    '記録 C',
+                                    () => game.toggle(PlayPhase.collection),
+                                  ),
+                                  const SizedBox(width: 6),
+                                  action(
+                                    'pause',
+                                    '休止 ESC',
+                                    () => game.toggle(PlayPhase.paused),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        if (s.interaction != null && s.running)
+                          Positioned(
+                            bottom: 160,
+                            left: 0,
+                            right: 0,
+                            child: Center(
+                              child: FilledButton.icon(
+                                key: const ValueKey('game-interact'),
+                                onPressed: s.interact,
+                                icon: const Icon(Icons.touch_app_outlined),
+                                label: Text('E  ${s.interactionLabel}'),
+                              ),
+                            ),
+                          ),
+                        if (s.toastTime > 0 && s.running)
+                          Positioned(
+                            left: 0,
+                            right: 0,
+                            bottom: 220,
+                            child: Center(
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                  vertical: 12,
+                                ),
+                                color: ink,
+                                child: Text(
+                                  s.message,
+                                  style: const TextStyle(
+                                    color: ivory,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                      ],
+                      if (s.phase == PlayPhase.title) title(s),
+                      if (s.phase == PlayPhase.inventory) inventory(s),
+                      if (s.phase == PlayPhase.collection) collection(s),
+                      if (s.phase == PlayPhase.paused) pause(s),
+                      if (s.phase == PlayPhase.dead ||
+                          s.phase == PlayPhase.clear)
+                        ending(s),
+                    ],
+                  );
+                },
+              ),
+            ),
+    );
+  }
+
+  Widget action(String key, String label, VoidCallback callback) =>
+      OutlinedButton(
+        key: ValueKey('game-$key'),
+        style: OutlinedButton.styleFrom(
+          foregroundColor: ivory,
+          backgroundColor: const Color(0xaa181c17),
+          side: const BorderSide(color: Color(0x557a836d)),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+        ),
+        onPressed: () {
+          callback();
+          focus.requestFocus();
+        },
+        child: Text(label, style: const TextStyle(fontSize: 11)),
+      );
+  Widget pad(String name, IconData icon, double x, double y) => Listener(
+    onPointerDown: (_) {
+      touchX = x;
+      touchY = y;
+      updateInput();
+    },
+    onPointerUp: (_) {
+      touchX = 0;
+      touchY = 0;
+      updateInput();
+    },
+    onPointerCancel: (_) {
+      touchX = 0;
+      touchY = 0;
+      updateInput();
+    },
+    child: Container(
+      key: ValueKey('game-move-$name'),
+      width: 35,
+      height: 35,
+      margin: const EdgeInsets.only(right: 4),
+      decoration: BoxDecoration(
+        color: ink,
+        border: Border.all(color: const Color(0x667a836d)),
+      ),
+      child: Icon(icon, color: ivory),
+    ),
+  );
+  Widget healthHud(HazardGameState s) => Container(
+    padding: const EdgeInsets.all(17),
+    decoration: BoxDecoration(
+      color: ink,
+      border: Border.all(color: const Color(0x667a836d)),
+    ),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(
+          width: 68,
+          height: 68,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              SizedBox(
+                width: 62,
+                height: 62,
+                child: CircularProgressIndicator(
+                  value: s.health / s.maxHealth,
+                  strokeWidth: 5,
+                  color: s.health < 35
+                      ? Colors.orange
+                      : const Color(0xff90ac72),
+                  backgroundColor: const Color(0xff353d2e),
+                ),
+              ),
+              Text(
+                '${s.health.ceil()}',
+                style: const TextStyle(
+                  color: ivory,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w300,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(width: 16),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'FUKUCHAN',
+              style: TextStyle(color: gold, letterSpacing: 3, fontSize: 10),
+            ),
+            Text(
+              s.weapon == 'handgun' ? 'HANDGUN' : 'SHOTGUN',
+              style: const TextStyle(
+                color: ivory,
+                fontSize: 13,
+                letterSpacing: 1,
+              ),
+            ),
+            Text(
+              s.reloading > 0
+                  ? 'RELOADING…'
+                  : '${s.loaded.toString().padLeft(2, '0')} / ${s.reserve}',
+              style: TextStyle(
+                color: ivory,
+                fontSize: s.reloading > 0 ? 16 : 27,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
+  Widget title(HazardGameState s) => Positioned.fill(
+    child: Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Color(0xf010140f), Color(0x5510140f)],
+        ),
+      ),
+      padding: const EdgeInsets.all(64),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              '窓 際 族 物 語',
+              style: TextStyle(color: gold, fontSize: 15, letterSpacing: 7),
+            ),
+            const SizedBox(height: 24),
+            const Text(
+              'SOBAYA\nHAZARD',
+              style: TextStyle(
+                color: ivory,
+                fontFamily: 'Georgia',
+                fontSize: 76,
+                height: .95,
+                letterSpacing: 5,
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'そば屋ハザード',
+              style: TextStyle(color: ivory, fontSize: 24, letterSpacing: 5),
+            ),
+            const SizedBox(height: 24),
+            const Text(
+              '村の広場に、いつもの顔がいる。\n消えた住人のあとには、冷えたビールだけ。',
+              style: TextStyle(
+                color: Color(0xffb6bda9),
+                height: 1.9,
+                fontSize: 15,
+              ),
+            ),
+            const SizedBox(height: 36),
+            FilledButton(
+              key: const ValueKey('game-start'),
+              style: FilledButton.styleFrom(
+                backgroundColor: gold,
+                foregroundColor: const Color(0xff1a1f16),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 45,
+                  vertical: 23,
+                ),
+              ),
+              onPressed: () {
+                s.phase = PlayPhase.playing;
+                focus.requestFocus();
+                setState(() {});
+              },
+              child: const Text(
+                '村へ入る',
+                style: TextStyle(fontSize: 17, letterSpacing: 3),
+              ),
+            ),
+            const SizedBox(height: 18),
+            Text(
+              'COLLECTION  ${s.collected.length} / ${s.images.length}',
+              style: const TextStyle(
+                color: gold,
+                letterSpacing: 2,
+                fontSize: 11,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+  Widget modal(String heading, Widget body, {double width = 850}) =>
+      Positioned.fill(
+        child: Container(
+          color: const Color(0xe810130f),
+          child: Center(
+            child: Container(
+              width: width,
+              margin: const EdgeInsets.all(30),
+              padding: const EdgeInsets.all(26),
+              decoration: BoxDecoration(
+                color: ink,
+                border: Border.all(color: const Color(0xff60654f)),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          heading,
+                          style: const TextStyle(
+                            color: ivory,
+                            fontSize: 24,
+                            letterSpacing: 3,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        key: const ValueKey('game-modal-close'),
+                        onPressed: () {
+                          game.state!.phase = PlayPhase.playing;
+                          focus.requestFocus();
+                          setState(() {});
+                        },
+                        icon: const Icon(Icons.close, color: ivory),
+                      ),
+                    ],
+                  ),
+                  const Divider(color: Color(0xff484e3d)),
+                  Flexible(child: body),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+  Widget inventory(HazardGameState s) => modal(
+    'ATTACHÉ CASE',
+    SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'ドラッグして整理 ／ クリックして装備・使用・調合',
+            style: TextStyle(color: gold, fontSize: 12),
+          ),
+          const SizedBox(height: 20),
+          LayoutBuilder(
+            builder: (context, b) {
+              final cell = math.min(66.0, b.maxWidth / 10);
+              return SizedBox(
+                width: cell * 10,
+                height: cell * 6,
+                child: Stack(
+                  children: [
+                    for (var row = 0; row < 6; row++)
+                      for (var col = 0; col < 10; col++)
+                        Positioned(
+                          left: col * cell,
+                          top: row * cell,
+                          width: cell,
+                          height: cell,
+                          child: DragTarget<int>(
+                            onWillAcceptWithDetails: (_) => true,
+                            onAcceptWithDetails: (d) {
+                              s.moveBag(d.data, col, row);
+                              setState(() {});
+                            },
+                            builder: (context, candidate, rejected) =>
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: candidate.isEmpty
+                                        ? const Color(0xff24291f)
+                                        : const Color(0xff596248),
+                                    border: Border.all(
+                                      color: const Color(0xff3d4534),
+                                    ),
+                                  ),
+                                ),
+                          ),
+                        ),
+                    for (final item in s.bag)
+                      Positioned(
+                        left: item.col * cell + 2,
+                        top: item.row * cell + 2,
+                        width: item.w * cell - 4,
+                        height: item.h * cell - 4,
+                        child: Draggable<int>(
+                          data: item.id,
+                          feedback: Material(
+                            color: Colors.transparent,
+                            child: SizedBox(
+                              width: item.w * cell - 4,
+                              height: item.h * cell - 4,
+                              child: itemTile(item),
+                            ),
+                          ),
+                          childWhenDragging: const SizedBox(),
+                          child: GestureDetector(
+                            onTap: () {
+                              s.useBag(item.id);
+                              setState(() {});
+                            },
+                            child: itemTile(item),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              );
+            },
+          ),
+          const SizedBox(height: 18),
+          Text(
+            'ビール  ${s.beers}    ｜    ${s.hasKey ? '紋章の鍵：入手済み' : '紋章の鍵：未入手'}',
+            style: const TextStyle(color: ivory),
+          ),
+          if (s.toastTime > 0)
+            Padding(
+              padding: const EdgeInsets.only(top: 12),
+              child: Text(s.message, style: const TextStyle(color: gold)),
+            ),
+        ],
+      ),
+    ),
+  );
+  Widget itemTile(BagItem i) => Container(
+    decoration: BoxDecoration(
+      color: switch (i.kind) {
+        'green' => const Color(0xff30492c),
+        'red' => const Color(0xff5a342d),
+        'yellow' => const Color(0xff615733),
+        'ammo' => const Color(0xff50332b),
+        _ => const Color(0xff434838),
+      },
+      border: Border.all(color: gold.withValues(alpha: .5)),
+    ),
+    padding: const EdgeInsets.all(5),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(
+          switch (i.kind) {
+            'handgun' || 'shotgun' => Icons.gps_fixed,
+            'ammo' || 'shells' => Icons.view_week,
+            _ => Icons.eco_outlined,
+          },
+          color: ivory,
+          size: 22,
+        ),
+        Flexible(
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              itemNames[i.kind]!,
+              style: const TextStyle(color: ivory, fontSize: 11),
+            ),
+          ),
+        ),
+        if (i.count > 1)
+          Text(
+            '×${i.count}',
+            style: const TextStyle(color: gold, fontSize: 11),
+          ),
+      ],
+    ),
+  );
+  Widget collection(HazardGameState s) => modal(
+    '窓際族の記録  ${s.collected.length}/${s.images.length}',
+    GridView.count(
+      shrinkWrap: true,
+      crossAxisCount: 3,
+      childAspectRatio: .86,
+      crossAxisSpacing: 15,
+      mainAxisSpacing: 15,
+      children: [
+        for (final row in s.images)
+          GestureDetector(
+            key: ValueKey('collection-${row['id']}'),
+            onTap: () {
+              if (s.collected.contains(row['id'])) {
+                showDialog(
+                  context: context,
+                  builder: (context) => Dialog(
+                    backgroundColor: ink,
+                    child: Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Flexible(
+                            child: Image.asset(
+                              'assets/collection/${row['id']}.png',
+                              cacheWidth: 1200,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                          Text(
+                            row['title'],
+                            style: const TextStyle(color: ivory),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text('閉じる'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: const Color(0xff252b21),
+                border: Border.all(color: const Color(0xff4a523f)),
+              ),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: s.collected.contains(row['id'])
+                        ? Image.asset(
+                            'assets/collection/${row['id']}.png',
+                            cacheWidth: 350,
+                            fit: BoxFit.contain,
+                          )
+                        : const Center(
+                            child: Icon(
+                              Icons.lock_outline,
+                              size: 40,
+                              color: Color(0xff59634c),
+                            ),
+                          ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Text(
+                      s.collected.contains(row['id']) ? row['title'] : '未発見',
+                      style: const TextStyle(color: ivory, fontSize: 12),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+      ],
+    ),
+  );
+  Widget pause(HazardGameState s) => modal(
+    'PAUSED',
+    Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text('村の探索を再開する準備ができたら、戻ってください。', style: TextStyle(color: ivory)),
+        const SizedBox(height: 20),
+        Wrap(
+          spacing: 12,
+          children: [
+            action('resume', '探索に戻る', () => game.toggle(PlayPhase.paused)),
+            action('restart', '最初から', game.restart),
+            action('mute', game.muted ? '音：OFF' : '音：ON', () {
+              game.muted = !game.muted;
+              game.ambience.setVolume(game.muted ? 0 : .24);
+            }),
+            action(
+              'quality',
+              '画質：${game.scene.renderScale < .8 ? '軽量' : '標準'}',
+              () {
+                game.scene.renderScale = game.scene.renderScale < .8
+                    ? .85
+                    : .65;
+              },
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
+        const Text(
+          '1 / 2 武器切替     H ハーブを使う\n構え中は移動を止めます。木箱や樽はEでも壊せます。',
+          style: TextStyle(color: gold, height: 2),
+        ),
+      ],
+    ),
+    width: 700,
+  );
+  Widget ending(HazardGameState s) => Positioned.fill(
+    child: Container(
+      color: const Color(0xe810130f),
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              s.phase == PlayPhase.clear ? 'CHAPTER COMPLETE' : 'YOU ARE DOWN',
+              style: const TextStyle(
+                color: gold,
+                fontSize: 38,
+                letterSpacing: 5,
+              ),
+            ),
+            const SizedBox(height: 18),
+            Text(
+              s.phase == PlayPhase.clear ? '農場への道が開けた。' : 'ビールの包囲網を抜けられなかった。',
+              style: const TextStyle(color: ivory, fontSize: 18),
+            ),
+            const SizedBox(height: 25),
+            Text(
+              '撃退 ${s.kills}    ビール ${s.beers}    記録 ${s.collected.length}/${s.images.length}',
+              style: const TextStyle(color: ivory),
+            ),
+            const SizedBox(height: 28),
+            FilledButton(
+              key: const ValueKey('game-retry'),
+              onPressed: game.restart,
+              child: const Text('もう一度探索する'),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+class ReticlePainter extends CustomPainter {
+  ReticlePainter(this.hit);
+  final bool hit;
+  @override
+  void paint(Canvas c, Size s) {
+    final p = Paint()
+      ..color = hit ? gold : ivory
+      ..strokeWidth = 1.5;
+    final x = s.width / 2, y = s.height / 2;
+    for (final d in [
+      const Offset(1, 0),
+      const Offset(-1, 0),
+      const Offset(0, 1),
+      const Offset(0, -1),
+    ]) {
+      c.drawLine(Offset(x, y) + d * 6, Offset(x, y) + d * 16, p);
+    }
+    c.drawCircle(Offset(x, y), 1.5, p);
+  }
+
+  @override
+  bool shouldRepaint(ReticlePainter old) => old.hit != hit;
+}
+
+class VillageMapPainter extends CustomPainter {
+  VillageMapPainter(this.state);
+  final HazardGameState state;
+  @override
+  void paint(Canvas c, Size size) {
+    Offset at(double x, double z) =>
+        Offset((x + 24) / 48 * size.width, (27 - z) / 54 * size.height);
+    final p = Paint()..color = const Color(0xff657057);
+    for (final h in state.map['houses']) {
+      final a = at(
+            (h['x'] - h['w'] / 2).toDouble(),
+            (h['z'] + h['d'] / 2).toDouble(),
+          ),
+          b = at(
+            (h['x'] + h['w'] / 2).toDouble(),
+            (h['z'] - h['d'] / 2).toDouble(),
+          );
+      c.drawRect(Rect.fromPoints(a, b), p);
+    }
+    p.color = gold;
+    c.drawCircle(at(11.5, 24), 3, p);
+    p.color = ivory;
+    c.drawCircle(at(state.x, state.z), 3, p);
+    final center = at(state.x, state.z);
+    c.drawLine(
+      center,
+      center + Offset(math.sin(state.heading), -math.cos(state.heading)) * 9,
+      p..strokeWidth = 2,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter old) => true;
+}

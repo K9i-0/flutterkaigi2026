@@ -1,0 +1,707 @@
+{
+  "version": 1,
+  "spawn": {
+    "x": 0,
+    "z": -21,
+    "yaw": 3.141592653589793
+  },
+  "houses": [
+    {
+      "id": "Shotgun",
+      "x": 8,
+      "z": -6,
+      "w": 8,
+      "d": 9,
+      "height": 5.8,
+      "two": true
+    },
+    {
+      "id": "Barn",
+      "x": -4,
+      "z": 11,
+      "w": 11,
+      "d": 7,
+      "height": 3.1,
+      "two": false
+    },
+    {
+      "id": "West",
+      "x": -11,
+      "z": 1,
+      "w": 7,
+      "d": 7,
+      "height": 3.1,
+      "two": false
+    },
+    {
+      "id": "East",
+      "x": 14,
+      "z": 6,
+      "w": 6,
+      "d": 7,
+      "height": 3.1,
+      "two": false
+    },
+    {
+      "id": "Entrance",
+      "x": -8,
+      "z": -15,
+      "w": 5.5,
+      "d": 5,
+      "height": 3.1,
+      "two": false
+    }
+  ],
+  "solids": [
+    {
+      "x": 4.0,
+      "z": -6,
+      "w": 0.35,
+      "d": 9,
+      "bottom": 0,
+      "top": 5.8,
+      "id": null
+    },
+    {
+      "x": 12.0,
+      "z": -6,
+      "w": 0.35,
+      "d": 9,
+      "bottom": 0,
+      "top": 5.8,
+      "id": null
+    },
+    {
+      "x": 8,
+      "z": -1.5,
+      "w": 8,
+      "d": 0.35,
+      "bottom": 0,
+      "top": 5.8,
+      "id": null
+    },
+    {
+      "x": 5.57,
+      "z": -10.5,
+      "w": 3.14,
+      "d": 0.35,
+      "bottom": 0,
+      "top": 5.8,
+      "id": null
+    },
+    {
+      "x": 10.43,
+      "z": -10.5,
+      "w": 3.14,
+      "d": 0.35,
+      "bottom": 0,
+      "top": 5.8,
+      "id": null
+    },
+    {
+      "x": 8,
+      "z": -10.5,
+      "w": 1.72,
+      "d": 0.35,
+      "bottom": 2.2,
+      "top": 5.8,
+      "id": null
+    },
+    {
+      "x": -9.5,
+      "z": 11,
+      "w": 0.35,
+      "d": 7,
+      "bottom": 0,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": 1.5,
+      "z": 11,
+      "w": 0.35,
+      "d": 7,
+      "bottom": 0,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": -4,
+      "z": 14.5,
+      "w": 11,
+      "d": 0.35,
+      "bottom": 0,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": -7.18,
+      "z": 7.5,
+      "w": 4.64,
+      "d": 0.35,
+      "bottom": 0,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": -0.8199999999999998,
+      "z": 7.5,
+      "w": 4.64,
+      "d": 0.35,
+      "bottom": 0,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": -4,
+      "z": 7.5,
+      "w": 1.72,
+      "d": 0.35,
+      "bottom": 2.2,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": 0.8,
+      "z": 11.5,
+      "w": 0.8,
+      "d": 1.6,
+      "bottom": 0,
+      "top": 1.8,
+      "id": null
+    },
+    {
+      "x": -14.5,
+      "z": 1,
+      "w": 0.35,
+      "d": 7,
+      "bottom": 0,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": -7.5,
+      "z": 1,
+      "w": 0.35,
+      "d": 7,
+      "bottom": 0,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": -11,
+      "z": 4.5,
+      "w": 7,
+      "d": 0.35,
+      "bottom": 0,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": -13.18,
+      "z": -2.5,
+      "w": 2.64,
+      "d": 0.35,
+      "bottom": 0,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": -8.82,
+      "z": -2.5,
+      "w": 2.64,
+      "d": 0.35,
+      "bottom": 0,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": -11,
+      "z": -2.5,
+      "w": 1.72,
+      "d": 0.35,
+      "bottom": 2.2,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": -8.2,
+      "z": 1.5,
+      "w": 0.8,
+      "d": 1.6,
+      "bottom": 0,
+      "top": 1.8,
+      "id": null
+    },
+    {
+      "x": 11.0,
+      "z": 6,
+      "w": 0.35,
+      "d": 7,
+      "bottom": 0,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": 17.0,
+      "z": 6,
+      "w": 0.35,
+      "d": 7,
+      "bottom": 0,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": 14,
+      "z": 9.5,
+      "w": 6,
+      "d": 0.35,
+      "bottom": 0,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": 12.07,
+      "z": 2.5,
+      "w": 2.14,
+      "d": 0.35,
+      "bottom": 0,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": 15.93,
+      "z": 2.5,
+      "w": 2.14,
+      "d": 0.35,
+      "bottom": 0,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": 14,
+      "z": 2.5,
+      "w": 1.72,
+      "d": 0.35,
+      "bottom": 2.2,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": 16.3,
+      "z": 6.5,
+      "w": 0.8,
+      "d": 1.6,
+      "bottom": 0,
+      "top": 1.8,
+      "id": null
+    },
+    {
+      "x": -10.75,
+      "z": -15,
+      "w": 0.35,
+      "d": 5,
+      "bottom": 0,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": -5.25,
+      "z": -15,
+      "w": 0.35,
+      "d": 5,
+      "bottom": 0,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": -8,
+      "z": -12.5,
+      "w": 5.5,
+      "d": 0.35,
+      "bottom": 0,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": -9.805,
+      "z": -17.5,
+      "w": 1.8900000000000001,
+      "d": 0.35,
+      "bottom": 0,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": -6.195,
+      "z": -17.5,
+      "w": 1.8900000000000001,
+      "d": 0.35,
+      "bottom": 0,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": -8,
+      "z": -17.5,
+      "w": 1.72,
+      "d": 0.35,
+      "bottom": 2.2,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": -5.95,
+      "z": -14.5,
+      "w": 0.8,
+      "d": 1.6,
+      "bottom": 0,
+      "top": 1.8,
+      "id": null
+    },
+    {
+      "x": -23,
+      "z": 1,
+      "w": 1.2,
+      "d": 52,
+      "bottom": 0,
+      "top": 2.5,
+      "id": null
+    },
+    {
+      "x": 23,
+      "z": 1,
+      "w": 1.2,
+      "d": 52,
+      "bottom": 0,
+      "top": 2.5,
+      "id": null
+    },
+    {
+      "x": -10,
+      "z": 24,
+      "w": 27,
+      "d": 1.1,
+      "bottom": 0,
+      "top": 2.7,
+      "id": null
+    },
+    {
+      "x": 20,
+      "z": 24,
+      "w": 8,
+      "d": 1.1,
+      "bottom": 0,
+      "top": 2.7,
+      "id": null
+    },
+    {
+      "x": -15,
+      "z": -25,
+      "w": 16,
+      "d": 1.1,
+      "bottom": 0,
+      "top": 2.5,
+      "id": null
+    },
+    {
+      "x": 15,
+      "z": -25,
+      "w": 16,
+      "d": 1.1,
+      "bottom": 0,
+      "top": 2.5,
+      "id": null
+    },
+    {
+      "x": 0,
+      "z": 0,
+      "w": 2.2,
+      "d": 2.2,
+      "bottom": 0,
+      "top": 0.6,
+      "id": null
+    },
+    {
+      "x": 8,
+      "z": 24,
+      "w": 1.1,
+      "d": 1.4,
+      "bottom": 0,
+      "top": 5,
+      "id": null
+    },
+    {
+      "x": 15,
+      "z": 24,
+      "w": 1.1,
+      "d": 1.4,
+      "bottom": 0,
+      "top": 5,
+      "id": null
+    },
+    {
+      "x": 11.5,
+      "z": 24,
+      "w": 6.1,
+      "d": 0.3,
+      "bottom": 0,
+      "top": 3,
+      "id": "gate"
+    },
+    {
+      "x": -15.4,
+      "z": 7,
+      "w": 7.8,
+      "d": 0.2,
+      "bottom": 0,
+      "top": 1.7,
+      "id": null
+    },
+    {
+      "x": -3,
+      "z": 5,
+      "w": 1.6,
+      "d": 1.6,
+      "bottom": 0,
+      "top": 1,
+      "id": null
+    },
+    {
+      "x": 4,
+      "z": 5,
+      "w": 2,
+      "d": 2.4,
+      "bottom": 0,
+      "top": 0.9,
+      "id": null
+    }
+  ],
+  "ramps": [
+    {
+      "x": 10.95,
+      "z0": -10.1,
+      "z1": -3.6500000000000004,
+      "w": 1.7,
+      "height": 3.03
+    }
+  ],
+  "items": [
+    {
+      "id": "ammo_entry",
+      "kind": "ammo",
+      "x": -8,
+      "z": -14,
+      "y": 0.9,
+      "amount": 20
+    },
+    {
+      "id": "herb_west",
+      "kind": "green",
+      "x": -13,
+      "z": 3,
+      "y": 0.9,
+      "amount": 1
+    },
+    {
+      "id": "shotgun",
+      "kind": "shotgun",
+      "x": 6,
+      "z": -3,
+      "y": 3.4,
+      "amount": 1
+    },
+    {
+      "id": "shells_up",
+      "kind": "shells",
+      "x": 7,
+      "z": -3,
+      "y": 3.4,
+      "amount": 10
+    },
+    {
+      "id": "key",
+      "kind": "key",
+      "x": -5,
+      "z": 12,
+      "y": 0.95,
+      "amount": 1
+    },
+    {
+      "id": "herb_red",
+      "kind": "red",
+      "x": 14,
+      "z": 7,
+      "y": 0.95,
+      "amount": 1
+    },
+    {
+      "id": "ammo_square",
+      "kind": "ammo",
+      "x": 3,
+      "z": 4,
+      "y": 0.85,
+      "amount": 20
+    },
+    {
+      "id": "yellow_up",
+      "kind": "yellow",
+      "x": 5,
+      "z": -8,
+      "y": 3.35,
+      "amount": 1
+    }
+  ],
+  "crates": [
+    {
+      "id": "crate_0",
+      "x": -4,
+      "z": -13,
+      "kind": "barrel"
+    },
+    {
+      "id": "crate_1",
+      "x": 4,
+      "z": -12,
+      "kind": "crate"
+    },
+    {
+      "id": "crate_2",
+      "x": -7,
+      "z": 6,
+      "kind": "barrel"
+    },
+    {
+      "id": "crate_3",
+      "x": 10,
+      "z": 11,
+      "kind": "crate"
+    },
+    {
+      "id": "crate_4",
+      "x": 18,
+      "z": 4,
+      "kind": "barrel"
+    },
+    {
+      "id": "crate_5",
+      "x": -16,
+      "z": -1,
+      "kind": "crate"
+    },
+    {
+      "id": "crate_6",
+      "x": 4,
+      "z": 13,
+      "kind": "barrel"
+    }
+  ],
+  "enemies": [
+    {
+      "id": 0,
+      "x": -2,
+      "z": -6
+    },
+    {
+      "id": 1,
+      "x": 3,
+      "z": -2
+    },
+    {
+      "id": 2,
+      "x": -5,
+      "z": 3
+    },
+    {
+      "id": 3,
+      "x": 6,
+      "z": 7
+    },
+    {
+      "id": 4,
+      "x": -9,
+      "z": 6
+    },
+    {
+      "id": 5,
+      "x": 11,
+      "z": 11
+    },
+    {
+      "id": 6,
+      "x": -2,
+      "z": 14
+    },
+    {
+      "id": 7,
+      "x": 17,
+      "z": 1
+    }
+  ],
+  "collection": [
+    {
+      "id": "shark",
+      "title": "そばシャーク2",
+      "source": "03_SCRIPTS/35_soba_shark/poster_soba_shark_2_production.png",
+      "x": -10,
+      "z": -2.66,
+      "y": 0.6000000000000001,
+      "node": "Poster_shark"
+    },
+    {
+      "id": "bug",
+      "title": "BUG MAN",
+      "source": "03_SCRIPTS/37_bug_man_poster/prop_bug_man_poster_production.png",
+      "x": 8,
+      "z": -10.69,
+      "y": 0.6000000000000001,
+      "node": "Poster_bug"
+    },
+    {
+      "id": "debug",
+      "title": "NO WAY DEBUG",
+      "source": "03_SCRIPTS/37_bug_man_poster/prop_bug_man_poster_no_way_debug_production.png",
+      "x": -3,
+      "z": 7.31,
+      "y": 0.6000000000000001,
+      "node": "Poster_debug"
+    },
+    {
+      "id": "detective",
+      "title": "名探偵よーたん",
+      "source": "03_SCRIPTS/39_detective_yotan_beer_disappearance/poster_detective_yotan_beer_disappearance_production.png",
+      "x": 14,
+      "z": 2.31,
+      "y": 0.6000000000000001,
+      "node": "Poster_detective"
+    },
+    {
+      "id": "wanted",
+      "title": "やめ太郎 指名手配",
+      "source": "03_SCRIPTS/59_sobaya_professional_window_side/prop_yametaro_wanted_poster.png",
+      "x": -8,
+      "z": -17.69,
+      "y": 0.6000000000000001,
+      "node": "Poster_wanted"
+    },
+    {
+      "id": "beer",
+      "title": "窓際族物語",
+      "source": "03_SCRIPTS/32_sobaya_beer_encouragement/prop_madogiwa_movie_poster_production.png",
+      "x": 6,
+      "z": -10.3,
+      "y": 3.5,
+      "node": "Poster_beer"
+    }
+  ],
+  "gate": {
+    "x": 11.5,
+    "z": 23,
+    "y": 0
+  },
+  "tower": {
+    "x": -13.5,
+    "z": -8.8,
+    "top": 4.22
+  }
+}
