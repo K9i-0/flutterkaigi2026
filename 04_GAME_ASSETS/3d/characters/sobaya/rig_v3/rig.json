@@ -25,7 +25,8 @@
       "ground_speed_mps": 1.0074746322065635,
       "source_file": "walk_standard.fbx",
       "source_sha256": "dd857d3dfb155642d17f917715f94e2e90c82326b95921274c8c926789c8a0de",
-      "source_scale": 0.9260575825786282
+      "source_scale": 0.9260575825786282,
+      "posture": "forward gaze; authored shoulder width with 50% captured clavicle variation; body-sized arm clearance"
     },
     {
       "name": "Run",
@@ -36,7 +37,8 @@
       "ground_speed_mps": 2.3817081087585468,
       "source_file": "run_weighted.fbx",
       "source_sha256": "2a35b5c56951c2fea53e36a1a2822645cfdaa72e26be0a821a19426dd147d085",
-      "source_scale": 0.9260575825786282
+      "source_scale": 0.9260575825786282,
+      "posture": "forward gaze; authored shoulder width with 50% captured clavicle variation; body-sized arm clearance"
     },
     {
       "name": "ZombieWalk",
@@ -90,7 +92,8 @@
       "ground_speed_mps": 1.0074746322065635,
       "source_file": "walk_standard.fbx",
       "source_sha256": "dd857d3dfb155642d17f917715f94e2e90c82326b95921274c8c926789c8a0de",
-      "source_scale": 0.9260575825786282
+      "source_scale": 0.9260575825786282,
+      "posture": "forward gaze; authored shoulder width with 50% captured clavicle variation; body-sized arm clearance"
     },
     {
       "name": "Run",
@@ -100,7 +103,8 @@
       "ground_speed_mps": 2.3817081087585468,
       "source_file": "run_weighted.fbx",
       "source_sha256": "2a35b5c56951c2fea53e36a1a2822645cfdaa72e26be0a821a19426dd147d085",
-      "source_scale": 0.9260575825786282
+      "source_scale": 0.9260575825786282,
+      "posture": "forward gaze; authored shoulder width with 50% captured clavicle variation; body-sized arm clearance"
     }
   ]
 }

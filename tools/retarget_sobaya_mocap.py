@@ -70,6 +70,30 @@ def rotation(matrix):
     return matrix.to_quaternion().to_matrix()
 
 
+def average_rotation(rotations):
+    reference=rotations[0].to_quaternion()
+    components=[0.0]*4
+    for matrix in rotations:
+        q=matrix.to_quaternion()
+        if q.dot(reference)<0:q.negate()
+        for i in range(4):components[i]+=q[i]
+    return Quaternion(components).normalized()
+
+
+def posture_reference(rest, samples):
+    # Neutralize the performer's habitual clavicle pose, not the character's
+    # broad authored shoulders. Retain the changing motion around that mean.
+    shoulders={side:[] for side in ['L','R']};gaze=[]
+    for sample in samples[:-1]:
+        chest=rotation(sample['Spine2'])@rotation(rest['Spine2']).inverted()
+        for side,word in [('L','Left'),('R','Right')]:
+            skin=rotation(sample[word+'Shoulder'])@rotation(rest[word+'Shoulder']).inverted()
+            shoulders[side].append(chest.inverted()@skin)
+        forward=(rotation(sample['Head'])@rotation(rest['Head']).inverted())@Vector((0,-1,0))
+        gaze.append((math.asin(max(-1,min(1,forward.z))),math.atan2(forward.x,-forward.y)))
+    return {s:average_rotation(v) for s,v in shoulders.items()}, tuple(sum(p[i] for p in gaze)/len(gaze) for i in range(2))
+
+
 def solve_leg(rig, side, ankle, pole, foot_rotation):
     thigh=rig.pose.bones['Thigh.'+side];shin=rig.pose.bones['Shin.'+side]
     hip=thigh.head.copy();a=thigh.bone.length;b=shin.bone.length
@@ -89,6 +113,7 @@ def solve_leg(rig, side, ankle, pole, foot_rotation):
 
 def bake(rig, mesh, name, source):
     rest,samples=import_motion(source)
+    shoulder_neutral,gaze_neutral=posture_reference(rest,samples)
     rig.animation_data.action=None
     for b in rig.pose.bones:
         b.location=(0,0,0);b.rotation_mode='QUATERNION';b.rotation_quaternion=Quaternion();b.scale=(1,1,1)
@@ -134,9 +159,34 @@ def bake(rig, mesh, name, source):
         displacement=(sample['Hips'].translation-center-travel*(frame/frames))*scale
         # Keep recorded vertical compression, lateral weight transfer and yaw.
         root=rig.data.bones['Hips'].head_local+displacement
+        chest_skin=rotation(sample['Spine2'])@rotation(rest['Spine2']).inverted()
+        head_skin=rotation(sample['Head'])@rotation(rest['Head']).inverted()
+        forward=head_skin@Vector((0,-1,0))
+        pitch=.2*(math.asin(max(-1,min(1,forward.z)))-gaze_neutral[0])
+        yaw=.35*(math.atan2(forward.x,-forward.y)-gaze_neutral[1])
+        gaze=Vector((math.sin(yaw)*math.cos(pitch),-math.cos(yaw)*math.cos(pitch),math.sin(pitch)))
+        head_skin=forward.rotation_difference(gaze).to_matrix()@head_skin
         for target,short in MAP.items():
             b=rig.pose.bones[target]
             r=rotation(sample[short])@correction[target]
+            if target=='Head':
+                r=head_skin@b.bone.matrix_local.to_3x3()
+            elif target=='Neck':
+                neck_skin=rotation(sample[short])@rotation(rest[short]).inverted()
+                r=neck_skin.to_quaternion().slerp(head_skin.to_quaternion(),.35).to_matrix()@b.bone.matrix_local.to_3x3()
+            elif target.startswith('Shoulder.'):
+                side=target[-1]
+                skin=rotation(sample[short])@rotation(rest[short]).inverted()
+                delta=(chest_skin.inverted()@skin).to_quaternion()@shoulder_neutral[side].inverted()
+                r=chest_skin@Quaternion().slerp(delta,.5).to_matrix()@b.bone.matrix_local.to_3x3()
+            elif target.startswith(('UpperArm.','Forearm.','Hand.')):
+                # Carry the complete arm chain outward together: elbow flexion
+                # and captured swing stay intact while clearing the broad torso.
+                side=target[-1];upper=rig.data.bones['UpperArm.'+side]
+                axis=(upper.tail_local-upper.head_local).normalized()
+                authored_open=math.atan2(abs(axis.x),-axis.z)
+                angle=authored_open*(.65 if name=='Walk' else .45)*(1 if side=='L' else -1)
+                r=Quaternion(chest_skin@Vector((0,-1,0)),angle).to_matrix()@r
             b.matrix=Matrix.Translation(root if target=='Hips' else b.head)@r.to_4x4()
             bpy.context.view_layer.update()
         for side,word,sign in [('L','Left',1),('R','Right',-1)]:
@@ -192,7 +242,9 @@ def bake(rig, mesh, name, source):
         diagnostics.append({'frame':frame,'hips':list(root),'left_ankle':list(rig.pose.bones['Foot.L'].head),'right_ankle':list(rig.pose.bones['Foot.R'].head)})
     action.use_frame_range=True;action.frame_start=0;action.frame_end=frames
     return {'name':name,'duration':duration,'fps':30,'loop':True,'ground_speed_mps':travel.length*scale/duration,
-            'source_file':source.name,'source_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'source_scale':scale,'samples':diagnostics}
+            'source_file':source.name,'source_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'source_scale':scale,
+            'posture':'forward gaze; authored shoulder width with 50% captured clavicle variation; body-sized arm clearance',
+            'samples':diagnostics}
 
 
 def build():

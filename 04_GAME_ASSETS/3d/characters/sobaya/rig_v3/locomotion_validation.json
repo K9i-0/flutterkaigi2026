@@ -1,22 +1,53 @@
 {
   "result": "PASS",
-  "sha256": "2af56a525c56547f7739780bba145b1589750c4fd1c39c1cae1bcff77745cc79",
+  "sha256": "439642bede6d6698f8e22aeda00dd8a6d6c614a72e31c3a20923be50c78bf310",
   "clips": {
     "Walk": {
       "frames": 38,
       "minimum_sole_height_m": 0.003004668280482292,
-      "maximum_lower_sole_height_m": 0.004569722339510918
+      "maximum_lower_sole_height_m": 0.004569722339510918,
+      "posture_ranges": {
+        "face_pitch_degrees": [
+          -0.28899045113689964,
+          0.312965439778975
+        ],
+        "face_yaw_degrees": [
+          -0.2100249632497773,
+          0.30045386479281927
+        ],
+        "shoulder_width_m": [
+          0.5339081287384033,
+          0.5340277850627899
+        ]
+      }
     },
     "Run": {
       "frames": 26,
       "minimum_sole_height_m": 0.002631228184327483,
-      "maximum_lower_sole_height_m": 0.01319901179522276
+      "maximum_lower_sole_height_m": 0.01319901179522276,
+      "posture_ranges": {
+        "face_pitch_degrees": [
+          -0.8165776124501398,
+          1.3764194528564522
+        ],
+        "face_yaw_degrees": [
+          -0.7542666206800667,
+          1.2092872866047022
+        ],
+        "shoulder_width_m": [
+          0.5339269936084747,
+          0.5340316593647003
+        ]
+      }
     }
   },
+  "rest_shoulder_width_m": 0.5339998713200437,
   "checks": [
     "finite deformed vertices",
     "exported shoes do not penetrate floor beyond 3 mm",
-    "walking always has a sole within 12 mm of floor"
+    "walking always has a sole within 12 mm of floor",
+    "face elevation and yaw within 2 degrees of forward",
+    "chest-local shoulder width within 0.5 percent of authored rest width"
   ],
   "limits": "Does not certify all foot sliding, transitions, terrain IK or subjective motion quality."
 }
