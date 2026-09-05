@@ -1,0 +1,149 @@
+{
+  "asset_sha256": "439642bede6d6698f8e22aeda00dd8a6d6c614a72e31c3a20923be50c78bf310",
+  "previous_sha256": "2af56a525c56547f7739780bba145b1589750c4fd1c39c1cae1bcff77745cc79",
+  "before_blend_metrics": {
+    "Idle": {
+      "pitch": [
+        -1.1995899853908303,
+        1.1995899853908303
+      ],
+      "yaw": [
+        -1.5003289908129254,
+        1.5003289908129254
+      ],
+      "shoulder_span": [
+        0.5339997876056345,
+        0.5340001503680085
+      ],
+      "shoulder_projected": [
+        0.5339997708797455,
+        0.5340001285076141
+      ]
+    },
+    "Walk": {
+      "pitch": [
+        3.4861321002065826,
+        6.49603729969306
+      ],
+      "yaw": [
+        0.7947224874990434,
+        2.253230294270093
+      ],
+      "shoulder_span": [
+        0.5232726314418452,
+        0.5252219669503548
+      ],
+      "shoulder_projected": [
+        0.5227396786212921,
+        0.5249598622322083
+      ]
+    },
+    "Run": {
+      "pitch": [
+        10.43747548856432,
+        21.40245711196107
+      ],
+      "yaw": [
+        -2.694837041087963,
+        2.9153005034139166
+      ],
+      "shoulder_span": [
+        0.5226569907468621,
+        0.5240949572923185
+      ],
+      "shoulder_projected": [
+        0.5225304365158081,
+        0.5239845812320709
+      ]
+    }
+  },
+  "after_glb_validation": {
+    "result": "PASS",
+    "sha256": "439642bede6d6698f8e22aeda00dd8a6d6c614a72e31c3a20923be50c78bf310",
+    "clips": {
+      "Walk": {
+        "frames": 38,
+        "minimum_sole_height_m": 0.003004668280482292,
+        "maximum_lower_sole_height_m": 0.004569722339510918,
+        "posture_ranges": {
+          "face_pitch_degrees": [
+            -0.28899045113689964,
+            0.312965439778975
+          ],
+          "face_yaw_degrees": [
+            -0.2100249632497773,
+            0.30045386479281927
+          ],
+          "shoulder_width_m": [
+            0.5339081287384033,
+            0.5340277850627899
+          ]
+        }
+      },
+      "Run": {
+        "frames": 26,
+        "minimum_sole_height_m": 0.002631228184327483,
+        "maximum_lower_sole_height_m": 0.01319901179522276,
+        "posture_ranges": {
+          "face_pitch_degrees": [
+            -0.8165776124501398,
+            1.3764194528564522
+          ],
+          "face_yaw_degrees": [
+            -0.7542666206800667,
+            1.2092872866047022
+          ],
+          "shoulder_width_m": [
+            0.5339269936084747,
+            0.5340316593647003
+          ]
+        }
+      }
+    },
+    "rest_shoulder_width_m": 0.5339998713200437,
+    "checks": [
+      "finite deformed vertices",
+      "exported shoes do not penetrate floor beyond 3 mm",
+      "walking always has a sole within 12 mm of floor",
+      "face elevation and yaw within 2 degrees of forward",
+      "chest-local shoulder width within 0.5 percent of authored rest width"
+    ],
+    "limits": "Does not certify all foot sliding, transitions, terrain IK or subjective motion quality."
+  },
+  "scope": [
+    "Walk",
+    "Run"
+  ],
+  "note": "Angles use the authored face-forward axis; widths are shoulder joints in chest coordinates. Surface appearance also needs visual review.",
+  "flutter_compiled_asset": {
+    "file": "scene.sobaya.fd082e41.fsceneb",
+    "sha256": "154c2103ca4d2ff42ff8731b43145361ca1ba62c58e6d5faafcb36537d694a9d",
+    "bundle_matches_generated": true
+  },
+  "runtime_clips": {
+    "Idle": {
+      "seconds": 0.5,
+      "duration": 2.4000000953674316,
+      "weight_sum": 1.0
+    },
+    "Walk": {
+      "seconds": 0.3,
+      "duration": 1.2333333492279053,
+      "weight_sum": 1.0
+    },
+    "Run": {
+      "seconds": 0.2,
+      "duration": 0.8333333134651184,
+      "weight_sum": 1.0
+    }
+  },
+  "result": "PASS",
+  "flutter_visual_review": [
+    "Idle front",
+    "Walk front at 0.3 seconds",
+    "Run side at 0.2 seconds"
+  ],
+  "continuous_run_playing": true,
+  "runtime_exception_or_overflow": false,
+  "limits": "Posture and existing ground-contact validation, no new profile/GPU/mobile measurements."
+}
