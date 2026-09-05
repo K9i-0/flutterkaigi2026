@@ -17,6 +17,9 @@ import 'game_contact_shadows.dart';
 import 'game_campaign.dart';
 import 'game_settings.dart';
 import 'game_events.dart';
+import 'game_voice.dart';
+import 'game_voice_player.dart';
+import 'game_soundscape.dart';
 import '../lab/beer_mug_component.dart';
 import '../lab/simulation.dart' show FrameSamples;
 
@@ -105,6 +108,13 @@ class HazardGameController extends ChangeNotifier {
   HazardSettings settings = HazardSettings();
   HazardDirector? director;
   bool foreground = true;
+  void setForeground(bool value) {
+    foreground = value;
+    _syncVoice();
+    // A hidden window may stop frame callbacks before the next tick arrives.
+    if (!value) soundscape.pause();
+  }
+
   bool get muted => settings.muted;
   PlayPhase settingsReturn = PlayPhase.title;
   Future<void> _settingsQueue = Future.value();
@@ -119,7 +129,11 @@ class HazardGameController extends ChangeNotifier {
   late Node pistol, shotgun, impact, muzzle;
   final fxPools = <String, AudioPool>{};
   final audioPlayback = <Map<String, dynamic>>[];
-  final ambience = AudioPlayer();
+  late VoiceCatalog voiceCatalog;
+  final voice = VoiceSession(AssetVoicePort.new);
+  final soundscape = HazardSoundscape();
+  int _dialogueVisit = 0;
+  bool _wasDialogue = false;
   SharedPreferences? preferences;
   String? _checkpointJson;
   String saveStatus = '';
@@ -364,16 +378,18 @@ class HazardGameController extends ChangeNotifier {
     }
     contactShadows = ContactShadows(11);
     scene.add(contactShadows!.node);
+    voiceCatalog = VoiceCatalog(
+      jsonDecode(
+        await rootBundle.loadString('assets/audio/voice-manifest.json'),
+      ),
+    );
     ready = true;
-    await ambience.setReleaseMode(ReleaseMode.loop);
-    await ambience.setVolume(settings.muted ? 0 : .24 * settings.volume);
-    unawaited(ambience.play(AssetSource('audio/ambient.wav')));
     notifyListeners();
   }
 
   void startEvent(String id) {
     if (state!.seenEvents.contains(id)) return;
-    director = HazardDirector(id);
+    director = HazardDirector(id, voiceSeconds: voiceCatalog.eventSeconds);
     state!
       ..stopInput()
       ..phase = PlayPhase.cinematic;
@@ -391,6 +407,7 @@ class HazardGameController extends ChangeNotifier {
       d.next();
     }
     if (d.done) _finishEvent();
+    _syncVoice();
     notifyListeners();
   }
 
@@ -429,7 +446,7 @@ class HazardGameController extends ChangeNotifier {
   void changeSettings(void Function(HazardSettings) change) {
     change(settings);
     _applySettings();
-    unawaited(ambience.setVolume(settings.muted ? 0 : .24 * settings.volume));
+    _syncVoice();
     final encoded = settings.encode();
     _settingsQueue = _settingsQueue.then((_) async {
       try {
@@ -701,12 +718,41 @@ class HazardGameController extends ChangeNotifier {
     }
   }
 
+  void _syncVoice() {
+    if (!ready || disposed) return;
+    final s = state!, d = director;
+    final dialogue = s.phase == PlayPhase.dialogue;
+    if (dialogue && !_wasDialogue) _dialogueVisit++;
+    _wasDialogue = dialogue;
+    VoiceCue? cue;
+    if (d != null) {
+      cue = voiceCatalog.cue(
+        'event:$runEpoch:${d.id}:${d.index}',
+        d.shot.speaker,
+        d.shot.text,
+      );
+    } else if (dialogue) {
+      final line = s.dialogueLine;
+      cue = voiceCatalog.cue(
+        'dialogue:$runEpoch:$_dialogueVisit:${s.zoneId}:${s.dialogueOwner}:${s.dialogueTopic}:${s.dialogueIndex}:${line.text}',
+        line.speaker,
+        line.text,
+      );
+    }
+    voice.sync(
+      cue,
+      paused: !foreground || (d?.paused ?? false),
+      volume: settings.muted ? 0 : settings.volume * settings.voiceVolume,
+    );
+  }
+
   void tick(Duration elapsed, double delta) {
     if (!ready || disposed) return;
     final s = state!, dt = delta.clamp(0.0, .05);
+    _syncVoice();
     final bx = s.x, bz = s.z;
     if (director != null) {
-      if (foreground) director!.tick(dt);
+      if (foreground && !voice.loading) director!.tick(dt);
       if (director!.done) _finishEvent();
     }
     if (!posePreview) s.tick(dt);
@@ -723,6 +769,27 @@ class HazardGameController extends ChangeNotifier {
       }
     }
     if (s.phase == PlayPhase.transition && transitionRegion()) return;
+    _syncVoice();
+    soundscape.tick(
+      dt,
+      zone: s.zoneId,
+      active:
+          foreground &&
+          (s.running ||
+              s.phase == PlayPhase.dialogue ||
+              (director != null && !director!.paused)),
+      threat:
+          s.running &&
+          s.enemies.any(
+            (e) =>
+                e.alive &&
+                e.active &&
+                e.alerted &&
+                (e.x - s.x) * (e.x - s.x) + (e.z - s.z) * (e.z - s.z) < 144,
+          ),
+      speaking: voice.speaking && settings.voiceVolume > 0,
+      volume: settings.muted ? 0 : settings.volume * settings.environmentVolume,
+    );
     final moved = math.sqrt(math.pow(s.x - bx, 2) + math.pow(s.z - bz, 2));
     var motion = s.hurtTime > 0
         ? 'Hit'
@@ -1048,7 +1115,8 @@ class HazardGameController extends ChangeNotifier {
     for (final a in fxPools.values) {
       unawaited(a.dispose());
     }
-    unawaited(ambience.dispose());
+    unawaited(voice.dispose());
+    unawaited(soundscape.dispose());
     for (final name in [
       'village',
       'items',

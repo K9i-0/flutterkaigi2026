@@ -1,0 +1,1038 @@
+{
+  "date": "2026-09-06",
+  "mode": "native macOS debug, Dart MCP + Marionette",
+  "scope": "Audio lifecycle, events/dialogue, mix controls. Controlled scenarios; not campaign completion proof or performance measurement.",
+  "assetAudit": "voice-assets-20260906.json",
+  "transcriptAudit": "voice-transcript-20260906.json",
+  "tests": {
+    "fullSuite": 71,
+    "staticAnalysis": "No issues found"
+  },
+  "native": {
+    "voice-clock-playing": {
+      "phase": "cinematic",
+      "event": {
+        "id": "opening",
+        "shot": 1,
+        "elapsed": 1.0666829999999994,
+        "duration": 7.0,
+        "paused": false
+      },
+      "voice": {
+        "requested": "event:2:opening:1",
+        "active": "event:2:opening:1",
+        "loading": false,
+        "speaking": true,
+        "finished": false,
+        "paused": false,
+        "volume": 1.0,
+        "errors": [],
+        "backend": {
+          "state": "playing",
+          "positionMs": 970,
+          "durationMs": 5880,
+          "loop": false
+        }
+      },
+      "soundscape": {
+        "intensity": 0.0,
+        "duck": 0.3800854943042719,
+        "ambience": {
+          "requested": "village",
+          "active": "village",
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.14,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 14852,
+            "durationMs": 16000,
+            "loop": true
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0.0,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 0,
+            "durationMs": 16000,
+            "loop": true
+          }
+        }
+      },
+      "settings": {
+        "difficulty": "standard",
+        "volume": 1.0,
+        "voiceVolume": 1.0,
+        "environmentVolume": 1.0,
+        "sensitivity": 1.0,
+        "renderScale": 0.85,
+        "muted": false
+      }
+    },
+    "voice-clock-pause-a": {
+      "phase": "cinematic",
+      "event": {
+        "id": "opening",
+        "shot": 1,
+        "elapsed": 2.183365999999999,
+        "duration": 7.0,
+        "paused": true
+      },
+      "voice": {
+        "requested": "event:2:opening:1",
+        "active": "event:2:opening:1",
+        "loading": false,
+        "speaking": false,
+        "finished": false,
+        "paused": true,
+        "volume": 1.0,
+        "errors": [],
+        "backend": {
+          "state": "paused",
+          "positionMs": 2109,
+          "durationMs": 5880,
+          "loop": false
+        }
+      },
+      "soundscape": {
+        "intensity": 0.0,
+        "duck": 0.8365729087994972,
+        "ambience": {
+          "requested": "village",
+          "active": "village",
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0.3,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 15991,
+            "durationMs": 16000,
+            "loop": true
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0.0,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 0,
+            "durationMs": 16000,
+            "loop": true
+          }
+        }
+      },
+      "settings": {
+        "difficulty": "standard",
+        "volume": 1.0,
+        "voiceVolume": 1.0,
+        "environmentVolume": 1.0,
+        "sensitivity": 1.0,
+        "renderScale": 0.85,
+        "muted": false
+      }
+    },
+    "voice-clock-pause-b": {
+      "phase": "cinematic",
+      "event": {
+        "id": "opening",
+        "shot": 1,
+        "elapsed": 2.183365999999999,
+        "duration": 7.0,
+        "paused": true
+      },
+      "voice": {
+        "requested": "event:2:opening:1",
+        "active": "event:2:opening:1",
+        "loading": false,
+        "speaking": false,
+        "finished": false,
+        "paused": true,
+        "volume": 1.0,
+        "errors": [],
+        "backend": {
+          "state": "paused",
+          "positionMs": 2109,
+          "durationMs": 5880,
+          "loop": false
+        }
+      },
+      "soundscape": {
+        "intensity": 0.0,
+        "duck": 0.9909705566997222,
+        "ambience": {
+          "requested": "village",
+          "active": "village",
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0.36,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 15991,
+            "durationMs": 16000,
+            "loop": true
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0.0,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 0,
+            "durationMs": 16000,
+            "loop": true
+          }
+        }
+      },
+      "settings": {
+        "difficulty": "standard",
+        "volume": 1.0,
+        "voiceVolume": 1.0,
+        "environmentVolume": 1.0,
+        "sensitivity": 1.0,
+        "renderScale": 0.85,
+        "muted": false
+      }
+    },
+    "voice-clock-resumed": {
+      "phase": "cinematic",
+      "event": {
+        "id": "opening",
+        "shot": 1,
+        "elapsed": 3.283380999999997,
+        "duration": 7.0,
+        "paused": false
+      },
+      "voice": {
+        "requested": "event:2:opening:1",
+        "active": "event:2:opening:1",
+        "loading": false,
+        "speaking": true,
+        "finished": false,
+        "paused": false,
+        "volume": 1.0,
+        "errors": [],
+        "backend": {
+          "state": "playing",
+          "positionMs": 3186,
+          "durationMs": 5880,
+          "loop": false
+        }
+      },
+      "soundscape": {
+        "intensity": 0.0,
+        "duck": 0.38006452613342134,
+        "ambience": {
+          "requested": "village",
+          "active": "village",
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.14,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 845,
+            "durationMs": 16000,
+            "loop": true
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0.0,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 0,
+            "durationMs": 16000,
+            "loop": true
+          }
+        }
+      },
+      "settings": {
+        "difficulty": "standard",
+        "volume": 1.0,
+        "voiceVolume": 1.0,
+        "environmentVolume": 1.0,
+        "sensitivity": 1.0,
+        "renderScale": 0.85,
+        "muted": false
+      }
+    },
+    "voice-clock-skipped": {
+      "phase": "playing",
+      "event": null,
+      "voice": {
+        "requested": null,
+        "active": null,
+        "loading": false,
+        "speaking": false,
+        "finished": false,
+        "paused": false,
+        "volume": 1.0,
+        "errors": []
+      },
+      "soundscape": {
+        "intensity": 0.0,
+        "duck": 0.8399424851299855,
+        "ambience": {
+          "requested": "village",
+          "active": "village",
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.3,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 3067,
+            "durationMs": 16000,
+            "loop": true
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0.0,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 0,
+            "durationMs": 16000,
+            "loop": true
+          }
+        }
+      },
+      "settings": {
+        "difficulty": "standard",
+        "volume": 1.0,
+        "voiceVolume": 1.0,
+        "environmentVolume": 1.0,
+        "sensitivity": 1.0,
+        "renderScale": 0.85,
+        "muted": false
+      }
+    },
+    "voice-final-farmEvent": {
+      "phase": "cinematic",
+      "event": {
+        "id": "farm",
+        "shot": 1,
+        "elapsed": 1.0500149999999995,
+        "duration": 7.0,
+        "paused": false
+      },
+      "voice": {
+        "requested": "event:1:farm:1",
+        "active": "event:1:farm:1",
+        "loading": false,
+        "speaking": false,
+        "finished": true,
+        "paused": false,
+        "volume": 0.5,
+        "errors": [],
+        "backend": {
+          "state": "completed",
+          "positionMs": 0,
+          "durationMs": 850,
+          "loop": false
+        }
+      },
+      "soundscape": {
+        "intensity": 0.0,
+        "duck": 0.42973022405858524,
+        "ambience": {
+          "requested": "farm",
+          "active": "farm",
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.15,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 1796,
+            "durationMs": 16000,
+            "loop": true
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0.0,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 0,
+            "durationMs": 16000,
+            "loop": true
+          }
+        }
+      },
+      "settings": {
+        "difficulty": "standard",
+        "volume": 1.0,
+        "voiceVolume": 1.0,
+        "environmentVolume": 1.0,
+        "sensitivity": 1.0,
+        "renderScale": 0.85,
+        "muted": false
+      }
+    },
+    "voice-final-bossEvent": {
+      "phase": "cinematic",
+      "event": {
+        "id": "last_order",
+        "shot": 1,
+        "elapsed": 1.0666829999999994,
+        "duration": 5.0,
+        "paused": false
+      },
+      "voice": {
+        "requested": "event:2:last_order:1",
+        "active": "event:2:last_order:1",
+        "loading": false,
+        "speaking": true,
+        "finished": false,
+        "paused": false,
+        "volume": 1.0,
+        "errors": [],
+        "backend": {
+          "state": "playing",
+          "positionMs": 981,
+          "durationMs": 2581,
+          "loop": false
+        }
+      },
+      "soundscape": {
+        "intensity": 0.0,
+        "duck": 0.38008432495949884,
+        "ambience": {
+          "requested": "mountain",
+          "active": "mountain",
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.14,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 2048,
+            "durationMs": 16000,
+            "loop": true
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0.0,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 0,
+            "durationMs": 16000,
+            "loop": true
+          }
+        }
+      },
+      "settings": {
+        "difficulty": "standard",
+        "volume": 1.0,
+        "voiceVolume": 1.0,
+        "environmentVolume": 1.0,
+        "sensitivity": 1.0,
+        "renderScale": 0.85,
+        "muted": false
+      }
+    },
+    "voice-final-endingEvent": {
+      "phase": "cinematic",
+      "event": {
+        "id": "ending",
+        "shot": 1,
+        "elapsed": 1.0833499999999994,
+        "duration": 6.0,
+        "paused": false
+      },
+      "voice": {
+        "requested": "event:3:ending:1",
+        "active": "event:3:ending:1",
+        "loading": false,
+        "speaking": true,
+        "finished": false,
+        "paused": false,
+        "volume": 1.0,
+        "errors": [],
+        "backend": {
+          "state": "playing",
+          "positionMs": 972,
+          "durationMs": 4400,
+          "loop": false
+        }
+      },
+      "soundscape": {
+        "intensity": 0.0,
+        "duck": 0.3800697491488178,
+        "ambience": {
+          "requested": "mountain",
+          "active": "mountain",
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.14,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 6465,
+            "durationMs": 16000,
+            "loop": true
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0.0,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 0,
+            "durationMs": 16000,
+            "loop": true
+          }
+        }
+      },
+      "settings": {
+        "difficulty": "standard",
+        "volume": 1.0,
+        "voiceVolume": 1.0,
+        "environmentVolume": 1.0,
+        "sensitivity": 1.0,
+        "renderScale": 0.85,
+        "muted": false
+      }
+    },
+    "voice-final-dialogue": {
+      "phase": "dialogue",
+      "event": null,
+      "voice": {
+        "requested": "dialogue:4:1:village:yametaro:intro:0:福ちゃん！ よかった、生きてた！\n広場がそば屋だらけなんだ。しかも全員、乾杯する気満々でさ。",
+        "active": "dialogue:4:1:village:yametaro:intro:0:福ちゃん！ よかった、生きてた！\n広場がそば屋だらけなんだ。しかも全員、乾杯する気満々でさ。",
+        "loading": false,
+        "speaking": true,
+        "finished": false,
+        "paused": false,
+        "volume": 1.0,
+        "errors": [],
+        "backend": {
+          "state": "playing",
+          "positionMs": 989,
+          "durationMs": 7720,
+          "loop": false
+        }
+      },
+      "soundscape": {
+        "intensity": 0.0,
+        "duck": 0.38006974914881525,
+        "ambience": {
+          "requested": "village",
+          "active": "village",
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.14,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 2066,
+            "durationMs": 16000,
+            "loop": true
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0.0,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 0,
+            "durationMs": 16000,
+            "loop": true
+          }
+        }
+      },
+      "settings": {
+        "difficulty": "standard",
+        "volume": 1.0,
+        "voiceVolume": 1.0,
+        "environmentVolume": 1.0,
+        "sensitivity": 1.0,
+        "renderScale": 0.85,
+        "muted": false
+      }
+    },
+    "voice-dialogue-next": {
+      "phase": "dialogue",
+      "event": null,
+      "voice": {
+        "requested": "dialogue:4:1:village:yametaro:intro:1:乾杯にしては、ジョッキの振りが大きすぎるだろ……。",
+        "active": "dialogue:4:1:village:yametaro:intro:1:乾杯にしては、ジョッキの振りが大きすぎるだろ……。",
+        "loading": false,
+        "speaking": true,
+        "finished": false,
+        "paused": false,
+        "volume": 1.0,
+        "errors": [],
+        "backend": {
+          "state": "playing",
+          "positionMs": 969,
+          "durationMs": 3640,
+          "loop": false
+        }
+      },
+      "soundscape": {
+        "intensity": 0.0,
+        "duck": 0.38008549501672756,
+        "ambience": {
+          "requested": "village",
+          "active": "village",
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.14,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 8521,
+            "durationMs": 16000,
+            "loop": true
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0.0,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 0,
+            "durationMs": 16000,
+            "loop": true
+          }
+        }
+      },
+      "settings": {
+        "difficulty": "standard",
+        "volume": 1.0,
+        "voiceVolume": 1.0,
+        "environmentVolume": 1.0,
+        "sensitivity": 1.0,
+        "renderScale": 0.85,
+        "muted": false
+      }
+    },
+    "voice-tension-playing": {
+      "phase": "playing",
+      "event": null,
+      "voice": {
+        "requested": null,
+        "active": null,
+        "loading": false,
+        "speaking": false,
+        "finished": false,
+        "paused": false,
+        "volume": 1.0,
+        "errors": []
+      },
+      "soundscape": {
+        "intensity": 0.7922565613321231,
+        "duck": 0.8432425883748893,
+        "ambience": {
+          "requested": "village",
+          "active": "village",
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.3,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 10738,
+            "durationMs": 16000,
+            "loop": true
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.19,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 946,
+            "durationMs": 16000,
+            "loop": true
+          }
+        }
+      },
+      "settings": {
+        "difficulty": "standard",
+        "volume": 1.0,
+        "voiceVolume": 1.0,
+        "environmentVolume": 1.0,
+        "sensitivity": 1.0,
+        "renderScale": 0.85,
+        "muted": false
+      }
+    },
+    "voice-master-muted": {
+      "phase": "cinematic",
+      "event": {
+        "id": "opening",
+        "shot": 1,
+        "elapsed": 1.0833499999999994,
+        "duration": 7.0,
+        "paused": false
+      },
+      "voice": {
+        "requested": "event:6:opening:1",
+        "active": "event:6:opening:1",
+        "loading": false,
+        "speaking": true,
+        "finished": false,
+        "paused": false,
+        "volume": 0.0,
+        "errors": [],
+        "backend": {
+          "state": "playing",
+          "positionMs": 989,
+          "durationMs": 5880,
+          "loop": false
+        }
+      },
+      "soundscape": {
+        "intensity": 0.1512852866622809,
+        "duck": 0.3800743893406398,
+        "ambience": {
+          "requested": "village",
+          "active": "village",
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.0,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 14070,
+            "durationMs": 16000,
+            "loop": true
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.0,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 4302,
+            "durationMs": 16000,
+            "loop": true
+          }
+        }
+      },
+      "settings": {
+        "difficulty": "standard",
+        "volume": 1.0,
+        "voiceVolume": 1.0,
+        "environmentVolume": 1.0,
+        "sensitivity": 1.0,
+        "renderScale": 0.85,
+        "muted": true
+      }
+    },
+    "voice-channel-volumes": {
+      "phase": "cinematic",
+      "event": {
+        "id": "opening",
+        "shot": 1,
+        "elapsed": 1.0833489999999995,
+        "duration": 7.0,
+        "paused": false
+      },
+      "voice": {
+        "requested": "event:7:opening:1",
+        "active": "event:7:opening:1",
+        "loading": false,
+        "speaking": true,
+        "finished": false,
+        "paused": false,
+        "volume": 0.5,
+        "errors": [],
+        "backend": {
+          "state": "playing",
+          "positionMs": 969,
+          "durationMs": 5880,
+          "loop": false
+        }
+      },
+      "soundscape": {
+        "intensity": 8.043747449282082e-07,
+        "duck": 0.38007440822030364,
+        "ambience": {
+          "requested": "village",
+          "active": "village",
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.07,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 2286,
+            "durationMs": 16000,
+            "loop": true
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0.0,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 6546,
+            "durationMs": 16000,
+            "loop": true
+          }
+        }
+      },
+      "settings": {
+        "difficulty": "standard",
+        "volume": 1.0,
+        "voiceVolume": 0.5,
+        "environmentVolume": 0.5,
+        "sensitivity": 1.0,
+        "renderScale": 0.85,
+        "muted": false
+      }
+    },
+    "voice-master-restored": {
+      "phase": "settings",
+      "event": null,
+      "voice": {
+        "requested": null,
+        "active": null,
+        "loading": false,
+        "speaking": false,
+        "finished": false,
+        "paused": false,
+        "volume": 1.0,
+        "errors": []
+      },
+      "soundscape": {
+        "intensity": 0.024186792102473157,
+        "duck": 0.9974130729163402,
+        "ambience": {
+          "requested": "village",
+          "active": "village",
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0.36,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 150,
+            "durationMs": 16000,
+            "loop": true
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0.01,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 6546,
+            "durationMs": 16000,
+            "loop": true
+          }
+        }
+      },
+      "settings": {
+        "difficulty": "standard",
+        "volume": 1.0,
+        "voiceVolume": 1.0,
+        "environmentVolume": 1.0,
+        "sensitivity": 1.0,
+        "renderScale": 0.85,
+        "muted": false
+      }
+    },
+    "voice-ending-repaired": {
+      "phase": "cinematic",
+      "event": {
+        "id": "ending",
+        "shot": 4,
+        "elapsed": 1.0666829999999994,
+        "duration": 4.0,
+        "paused": false
+      },
+      "voice": {
+        "requested": "event:8:ending:4",
+        "active": "event:8:ending:4",
+        "loading": false,
+        "speaking": true,
+        "finished": false,
+        "paused": false,
+        "volume": 1.0,
+        "errors": [],
+        "backend": {
+          "state": "playing",
+          "positionMs": 976,
+          "durationMs": 2640,
+          "loop": false
+        }
+      },
+      "soundscape": {
+        "intensity": 2.956831765934676e-35,
+        "duck": 0.38001004729670335,
+        "ambience": {
+          "requested": "mountain",
+          "active": "mountain",
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.14,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 5296,
+            "durationMs": 16000,
+            "loop": true
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0.0,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 6546,
+            "durationMs": 16000,
+            "loop": true
+          }
+        }
+      },
+      "settings": {
+        "difficulty": "standard",
+        "volume": 1.0,
+        "voiceVolume": 1.0,
+        "environmentVolume": 1.0,
+        "sensitivity": 1.0,
+        "renderScale": 0.85,
+        "muted": false
+      }
+    }
+  },
+  "limitations": [
+    "Auditory naturalness and canonical voice likeness have not been reviewed by listening.",
+    "ASR retains homophone/transcription errors and cannot guarantee spoken accuracy.",
+    "No lip synchronization added.",
+    "Audio-enabled profile performance and uncontended full-resolution frame budget remain unverified."
+  ],
+  "logs": "Marionette get_logs returned Server error; Dart get_app_logs succeeded. Existing launch warning Failed to foreground app; no audio exceptions or overflow in retained logs.",
+  "tripoCreditsSpent": 0
+}

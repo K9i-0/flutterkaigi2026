@@ -61,12 +61,15 @@ void attachGameAutomation(HazardGameController game) {
             'frames': _game!.frames.toJson(),
             'settings': _game!.settings.encode(),
             'audioPlayback': _game!.audioPlayback,
+            'voice': _game!.voice.inspect(),
+            'soundscape': _game!.soundscape.inspect(),
             'event': _game!.director == null
                 ? null
                 : {
                     'id': _game!.director!.id,
                     'shot': _game!.director!.index,
                     'elapsed': _game!.director!.elapsed,
+                    'duration': _game!.director!.duration,
                     'paused': _game!.director!.paused,
                   },
             'seenEvents': _game!.state!.seenEvents.toList(),

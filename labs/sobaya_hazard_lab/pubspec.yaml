@@ -29,4 +29,6 @@ flutter:
     - assets/village.json
     - assets/collection/
     - assets/audio/
+    - assets/audio/voice/
+    - assets/audio/soundscape/
   uses-material-design: true

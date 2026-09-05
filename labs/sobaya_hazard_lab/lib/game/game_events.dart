@@ -109,6 +109,16 @@ const hazardEvents = <String, List<EventShot>>{
       actor: 'sobaya',
       motion: 'MugAttack',
     ),
+    EventShot(
+      5,
+      'そば屋',
+      '最後の一杯だ。乾杯！',
+      (6, 1.7, 1),
+      (7, 1.45, 1.5),
+      (12, 1.35, 4),
+      actor: 'sobaya',
+      motion: 'MugAttack',
+    ),
     EventShot(5, '福ちゃん', 'その一杯、遠慮させてもらう！', (3, 3.1, 7), (4, 2.6, 7), (
       12,
       1,
@@ -168,19 +178,22 @@ const hazardEvents = <String, List<EventShot>>{
 
 /// Rendering and input consume the same clock. Pausing never advances a shot.
 class HazardDirector {
-  HazardDirector(this.id)
+  HazardDirector(this.id, {this.voiceSeconds = const {}})
     : shots = hazardEvents[id] ?? (throw ArgumentError.value(id));
   final String id;
+  final Map<String, double> voiceSeconds;
+  double get duration =>
+      math.max(shot.seconds, (voiceSeconds['event:$id:$index'] ?? 0) + .5);
   final List<EventShot> shots;
   int index = 0;
   double elapsed = 0;
   bool paused = false, done = false;
   EventShot get shot => shots[math.min(index, shots.length - 1)];
-  double get progress => (elapsed / shot.seconds).clamp(0, 1);
+  double get progress => (elapsed / duration).clamp(0, 1);
   void tick(double dt) {
     if (done || paused) return;
     elapsed += dt.clamp(0, .05);
-    if (elapsed >= shot.seconds) next();
+    if (elapsed >= duration) next();
   }
 
   void next() {

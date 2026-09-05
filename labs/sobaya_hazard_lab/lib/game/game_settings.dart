@@ -7,12 +7,14 @@ class HazardSettings {
   HazardSettings({
     this.difficulty = HazardDifficulty.standard,
     this.volume = 1,
+    this.voiceVolume = 1,
+    this.environmentVolume = 1,
     this.sensitivity = 1,
     this.renderScale = .85,
     this.muted = false,
   });
   HazardDifficulty difficulty;
-  double volume, sensitivity, renderScale;
+  double volume, voiceVolume, environmentVolume, sensitivity, renderScale;
   bool muted;
   double get damageScale => switch (difficulty) {
     HazardDifficulty.casual => .65,
@@ -32,6 +34,8 @@ class HazardSettings {
   String encode() => jsonEncode({
     'difficulty': difficulty.name,
     'volume': volume,
+    'voiceVolume': voiceVolume,
+    'environmentVolume': environmentVolume,
     'sensitivity': sensitivity,
     'renderScale': renderScale,
     'muted': muted,
@@ -54,6 +58,8 @@ class HazardSettings {
       }
 
       s.volume = bounded('volume', 0, 1, 1);
+      s.voiceVolume = bounded('voiceVolume', 0, 1, 1);
+      s.environmentVolume = bounded('environmentVolume', 0, 1, 1);
       s.sensitivity = bounded('sensitivity', .5, 2, 1);
       s.renderScale = [.65, .85, 1.0].contains(j['renderScale'])
           ? (j['renderScale'] as num).toDouble()
