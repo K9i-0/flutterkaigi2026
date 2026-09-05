@@ -1,0 +1,25 @@
+{
+  "composition": {
+    "id": "MadogiwaEdit",
+    "width": 832,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 901
+  },
+  "inputVideo": "input.mp4",
+  "inputVideoVolume": 0,
+  "replacementAudio": "dialogue.wav",
+  "overlays": [
+    {
+      "type": "variety-popup",
+      "image": "daichikuwa_telop.png",
+      "startFrame": 175,
+      "endFrame": 295,
+      "bottom": "3%",
+      "left": "50%",
+      "width": 520,
+      "rotateDeg": -2
+    }
+  ],
+  "captions": []
+}
