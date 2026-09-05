@@ -86,6 +86,9 @@ class HazardCampaign {
     to.collected
       ..clear()
       ..addAll(from.collected);
+    to.seenEvents
+      ..clear()
+      ..addAll(from.seenEvents);
     to.medallions
       ..clear()
       ..addAll(from.medallions);

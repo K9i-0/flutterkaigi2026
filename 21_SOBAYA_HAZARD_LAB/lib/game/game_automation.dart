@@ -24,12 +24,34 @@ void attachGameAutomation(HazardGameController game) {
         : MarionetteExtensionResult.success({
             ..._game!.state!.inspect(),
             'frames': _game!.frames.toJson(),
+            'settings': _game!.settings.encode(),
+            'event': _game!.director == null
+                ? null
+                : {
+                    'id': _game!.director!.id,
+                    'shot': _game!.director!.index,
+                    'elapsed': _game!.director!.elapsed,
+                    'paused': _game!.director!.paused,
+                  },
+            'seenEvents': _game!.state!.seenEvents.toList(),
             'motion': _game!.player.current,
             'checkpoint': {
               'exists': _game!.hasCheckpoint,
               'saving': _game!.saving,
               'status': _game!.saveStatus,
             },
+            'enemyMugGripErrors': [
+              for (var i = 0; i < _game!.enemyMugs.length; i++)
+                (_game!.enemyMugs[i]
+                            .getChildByName('Grip')!
+                            .globalTransform
+                            .getTranslation() -
+                        _game!.enemies[i].node
+                            .getChildByName('PropSocket.R')!
+                            .globalTransform
+                            .getTranslation())
+                    .length,
+            ],
             'npcMotions': _game!.npcs.map(
               (id, actor) => MapEntry(id, actor.current),
             ),
@@ -66,11 +88,23 @@ void attachGameAutomation(HazardGameController game) {
         'mountain',
         'farmGate',
         'mountainGate',
+        'introEvent',
+        'farmEvent',
+        'bossEvent',
+        'endingEvent',
       ].contains(name)) {
         return MarionetteExtensionResult.invalidParams('Invalid scenario');
       }
       g.restart();
-      if (['farm', 'farmGate', 'mountain', 'mountainGate'].contains(name)) {
+      if ([
+        'farm',
+        'farmGate',
+        'mountain',
+        'mountainGate',
+        'farmEvent',
+        'bossEvent',
+        'endingEvent',
+      ].contains(name)) {
         final first = g.state!;
         first.hasKey = first.gateOpen = true;
         first.exitRequested = Map<String, dynamic>.from(
@@ -78,7 +112,12 @@ void attachGameAutomation(HazardGameController game) {
         );
         first.phase = PlayPhase.transition;
         g.transitionRegion();
-        if (['mountain', 'mountainGate'].contains(name)) {
+        if ([
+          'mountain',
+          'mountainGate',
+          'bossEvent',
+          'endingEvent',
+        ].contains(name)) {
           final farm = g.state!..gateOpen = true;
           farm.exitRequested = Map<String, dynamic>.from(
             (farm.map['exits'] as List).last,
@@ -87,6 +126,7 @@ void attachGameAutomation(HazardGameController game) {
           g.transitionRegion();
         }
       }
+      g.director = null;
       final s = g.state!;
       s.checkpointRequested = false;
       for (final e in s.enemies) {
@@ -166,6 +206,18 @@ void attachGameAutomation(HazardGameController game) {
             ..z = -15.1;
       }
       s.phase = PlayPhase.playing;
+      final event = {
+        'introEvent': 'opening',
+        'farmEvent': 'farm',
+        'bossEvent': 'last_order',
+        'endingEvent': 'ending',
+      }[name];
+      if (event != null) {
+        if (event == 'last_order') {
+          s.enemies.firstWhere((e) => e.boss).active = true;
+        }
+        g.startEvent(event);
+      }
       return MarionetteExtensionResult.success(s.inspect());
     },
   );

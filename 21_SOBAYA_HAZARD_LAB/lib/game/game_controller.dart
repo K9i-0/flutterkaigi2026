@@ -12,6 +12,8 @@ import 'package:vector_math/vector_math.dart' as vm;
 
 import 'game_state.dart';
 import 'game_campaign.dart';
+import 'game_settings.dart';
+import 'game_events.dart';
 import '../lab/beer_mug_component.dart';
 import '../lab/simulation.dart' show FrameSamples;
 
@@ -58,6 +60,15 @@ class CharacterPlayer {
   }
 }
 
+class HeldFingerPose extends Component {
+  HeldFingerPose(this.pose);
+  final vm.Quaternion pose;
+  @override
+  void update(double deltaSeconds) {
+    node.rotation = pose.clone();
+  }
+}
+
 class UpperBodyAim extends Component {
   UpperBodyAim(this.state);
   final HazardGameState Function() state;
@@ -82,10 +93,18 @@ class HazardGameController extends ChangeNotifier {
   HazardGameState? state;
   late HazardCampaign campaign;
   final environments = <String, Node>{};
-  bool ready = false, disposed = false, muted = false;
+  bool ready = false, disposed = false;
+  HazardSettings settings = HazardSettings();
+  HazardDirector? director;
+  bool foreground = true;
+  bool get muted => settings.muted;
+  PlayPhase settingsReturn = PlayPhase.title;
+  Future<void> _settingsQueue = Future.value();
   late Node village, itemsTemplate, beerTemplate, fukuTemplate, sobayaTemplate;
   late CharacterPlayer player;
   final npcs = <String, CharacterPlayer>{};
+  final enemyMugs = <Node>[];
+  final enemyBeer = <BeerMugComponent>[];
   final enemies = <CharacterPlayer>[],
       pickupNodes = <String, Node>{},
       crateNodes = <String, Node>{};
@@ -105,6 +124,9 @@ class HazardGameController extends ChangeNotifier {
   bool posePreview = false;
   Future<void> load() async {
     preferences = await SharedPreferences.getInstance();
+    settings = HazardSettings.decode(
+      preferences!.getString('hazard.settings.v1'),
+    );
     final maps = <String, Map<String, dynamic>>{};
     for (final id in ['village', 'farm', 'mountain']) {
       maps[id] = jsonDecode(
@@ -211,7 +233,7 @@ class HazardGameController extends ChangeNotifier {
       shadowDepthBias: .003,
       shadowNormalBias: .01,
     );
-    scene.renderScale = .85;
+    _applySettings();
     player = CharacterPlayer(fukuTemplate, [
       'Idle',
       'Walk',
@@ -228,6 +250,23 @@ class HazardGameController extends ChangeNotifier {
         .getChildByName('Spine1')!
         .addComponent(UpperBodyAim(() => state!));
     scene.add(player.node);
+    // Sample the already-reviewed gripping pose through the public animation
+    // player, preserving the engine's handedness and bone-frame conversion.
+    final gripRig = sobayaTemplate.clone(), sampler = AnimationPlayer();
+    final gripClip = sampler.createAnimationClip(
+      gripRig.findAnimationByName('MugAttack')!,
+      gripRig,
+    )..weight = 1;
+    gripClip.seek(.3);
+    sampler.update(0);
+    final fingerPoses = <String, vm.Quaternion>{
+      for (final digit in ['Index', 'Middle', 'Ring', 'Thumb'])
+        for (final joint in [1, 2])
+          '$digit$joint.R': gripRig
+              .getChildByName('$digit$joint.R')!
+              .rotation
+              .clone(),
+    };
     for (var i = 0; i < state!.enemies.length; i++) {
       final actor = CharacterPlayer(sobayaTemplate, [
         'Idle',
@@ -236,6 +275,27 @@ class HazardGameController extends ChangeNotifier {
         'ZombieWalk',
         'MugAttack',
       ]);
+      for (final finger in fingerPoses.entries) {
+        actor.node
+            .getChildByName(finger.key)!
+            .addComponent(HeldFingerPose(finger.value));
+      }
+      final mug = beerTemplate.clone();
+      final anchor = mug.getChildByName('Grip')!;
+      final inverseGrip = vm.Matrix4.copy(anchor.globalTransform)
+        ..invert()
+        ..multiply(mug.globalTransform);
+      mug.localTransform = vm.Matrix4.rotationX(-math.pi / 2)
+        ..multiply(inverseGrip);
+      actor.node.getChildByName('PropSocket.R')!.add(mug);
+      final liquid = BeerMugComponent(
+        isPaused: () =>
+            !(state!.running ||
+                (director != null && !director!.paused && foreground)),
+      )..detail = false;
+      mug.addComponent(liquid);
+      enemyMugs.add(mug);
+      enemyBeer.add(liquid);
       enemies.add(actor);
       scene.add(actor.node);
     }
@@ -277,8 +337,94 @@ class HazardGameController extends ChangeNotifier {
     }
     ready = true;
     await ambience.setReleaseMode(ReleaseMode.loop);
-    await ambience.setVolume(.24);
+    await ambience.setVolume(settings.muted ? 0 : .24 * settings.volume);
     unawaited(ambience.play(AssetSource('audio/ambient.wav')));
+    notifyListeners();
+  }
+
+  void startEvent(String id) {
+    if (state!.seenEvents.contains(id)) return;
+    director = HazardDirector(id);
+    state!
+      ..stopInput()
+      ..phase = PlayPhase.cinematic;
+    notifyListeners();
+  }
+
+  void advanceEvent({bool skip = false}) {
+    final d = director;
+    if (d == null) return;
+    if (skip) {
+      d.skip();
+    } else if (d.paused) {
+      d.paused = false;
+    } else {
+      d.next();
+    }
+    if (d.done) _finishEvent();
+    notifyListeners();
+  }
+
+  void _finishEvent() {
+    final id = director!.id;
+    state!.seenEvents.add(id);
+    state!
+      ..stopInput()
+      ..phase = id == 'ending' ? PlayPhase.clear : PlayPhase.playing;
+    director = null;
+    // Restore any temporary ending positions and normally absent actors.
+    for (final entry in npcs.entries) {
+      final rows = state!.npcs.where((n) => n['id'] == entry.key);
+      entry.value.node.visible = rows.isNotEmpty;
+      if (rows.isNotEmpty) {
+        entry.value.node.position = vm.Vector3(
+          (rows.first['x'] as num).toDouble(),
+          0,
+          (rows.first['z'] as num).toDouble(),
+        );
+      }
+    }
+    if (id != 'ending') {
+      state!.invulnerable = 1;
+      state!.say(state!.objective);
+      unawaited(saveCheckpoint());
+    }
+  }
+
+  void _applySettings() {
+    state?.damageScale = settings.damageScale;
+    state?.enemySpeedScale = settings.enemySpeedScale;
+    scene.renderScale = settings.renderScale;
+  }
+
+  void changeSettings(void Function(HazardSettings) change) {
+    change(settings);
+    _applySettings();
+    unawaited(ambience.setVolume(settings.muted ? 0 : .24 * settings.volume));
+    final encoded = settings.encode();
+    _settingsQueue = _settingsQueue.then((_) async {
+      try {
+        if (!await preferences!.setString('hazard.settings.v1', encoded)) {
+          throw StateError('Preferences were not saved');
+        }
+      } catch (_) {
+        saveStatus = '設定を保存できませんでした。';
+        if (!disposed) notifyListeners();
+      }
+    });
+    notifyListeners();
+  }
+
+  void openSettings() {
+    settingsReturn = state!.phase;
+    state!
+      ..stopInput()
+      ..phase = PlayPhase.settings;
+    notifyListeners();
+  }
+
+  void closeSettings() {
+    state!.phase = settingsReturn;
     notifyListeners();
   }
 
@@ -313,6 +459,7 @@ class HazardGameController extends ChangeNotifier {
   }
 
   void _mountRegion() {
+    _applySettings();
     scene.remove(village);
     village = environments[state!.zoneId]!;
     scene.add(village);
@@ -336,12 +483,16 @@ class HazardGameController extends ChangeNotifier {
     if (!campaign.traverse()) return false;
     state = campaign.state;
     _mountRegion();
+    if (state!.zoneId == 'farm' && !state!.seenEvents.contains('farm')) {
+      startEvent('farm');
+    }
     notifyListeners();
     return true;
   }
 
   void restart() {
     posePreview = false;
+    director = null;
     campaign.restart();
     state = campaign.state;
     _mountRegion();
@@ -351,6 +502,7 @@ class HazardGameController extends ChangeNotifier {
   void startRun() {
     restart();
     unawaited(saveCheckpoint());
+    startEvent('opening');
   }
 
   Future<void> saveCheckpoint({bool announce = false}) {
@@ -364,6 +516,8 @@ class HazardGameController extends ChangeNotifier {
           PlayPhase.dead,
           PlayPhase.clear,
           PlayPhase.dialogue,
+          PlayPhase.cinematic,
+          PlayPhase.settings,
         ].contains(s.phase)) {
       return Future.value();
     }
@@ -397,6 +551,7 @@ class HazardGameController extends ChangeNotifier {
         state!.collected,
       );
       state = campaign.state;
+      director = null;
       posePreview = false;
       _mountRegion();
       player.setMotion('Idle');
@@ -415,12 +570,22 @@ class HazardGameController extends ChangeNotifier {
   void rotate(double dx, double dy) {
     final s = state!;
     if (!s.running) return;
-    s.yaw -= dx * .006;
-    s.pitch = (s.pitch + dy * .004).clamp(-.25, .65);
+    s.yaw -= dx * .006 * settings.sensitivity;
+    s.pitch = (s.pitch + dy * .004 * settings.sensitivity).clamp(-.25, .65);
   }
 
   PerspectiveCamera camera() {
     final s = state!;
+    final d = director;
+    if (d != null) {
+      return PerspectiveCamera(
+        position: d.shot.camera(d.progress),
+        target: d.shot.aim,
+        fovRadiansY: .78,
+        fovNear: .07,
+        fovFar: 85,
+      );
+    }
     if (s.phase == PlayPhase.dialogue && npcs.containsKey(s.talkingTo)) {
       final n = npcs[s.talkingTo]!.node.position;
       final angle = math.atan2(s.x - n.x, s.z - n.z) + .2;
@@ -473,7 +638,9 @@ class HazardGameController extends ChangeNotifier {
     final pool = fxPools[sound];
     if (pool != null) {
       unawaited(
-        pool.start(volume: sound == 'shotgun' ? .75 : .55).then((_) {}),
+        pool
+            .start(volume: (sound == 'shotgun' ? .75 : .55) * settings.volume)
+            .then((_) {}),
       );
     }
   }
@@ -482,7 +649,23 @@ class HazardGameController extends ChangeNotifier {
     if (!ready || disposed) return;
     final s = state!, dt = delta.clamp(0.0, .05);
     final bx = s.x, bz = s.z;
+    if (director != null) {
+      if (foreground) director!.tick(dt);
+      if (director!.done) _finishEvent();
+    }
     if (!posePreview) s.tick(dt);
+    if (!posePreview && director == null) {
+      if (s.phase == PlayPhase.clear && !s.seenEvents.contains('ending')) {
+        startEvent('ending');
+      }
+      if (s.running &&
+          s.zoneId == 'mountain' &&
+          s.x > 1 &&
+          s.bossAlive &&
+          !s.seenEvents.contains('last_order')) {
+        startEvent('last_order');
+      }
+    }
     if (s.phase == PlayPhase.transition && transitionRegion()) return;
     final moved = math.sqrt(math.pow(s.x - bx, 2) + math.pow(s.z - bz, 2));
     var motion = s.hurtTime > 0
@@ -502,11 +685,16 @@ class HazardGameController extends ChangeNotifier {
               ? 'Run'
               : 'Walk'
         : 'Idle';
-    if (!s.running || posePreview) motion = player.current;
+    if (director != null) {
+      motion = 'Idle';
+    } else if (!s.running || posePreview) {
+      motion = player.current;
+    }
     player.setMotion(motion);
     player.update(
       dt,
-      s.running && !posePreview,
+      (s.running || (director != null && !director!.paused && foreground)) &&
+          !posePreview,
       speed: motion == 'Walk'
           ? 1.25 / .91610738
           : motion == 'Run'
@@ -527,6 +715,7 @@ class HazardGameController extends ChangeNotifier {
         continue;
       }
       final near = math.pow(s.x - n.x, 2) + math.pow(s.z - n.z, 2) < 36;
+      final cinematicTalk = director?.shot.actor == entry.key;
       final talking = s.phase == PlayPhase.dialogue && s.talkingTo == entry.key;
       if (near) {
         actor.node.rotation = vm.Quaternion.axisAngle(
@@ -535,24 +724,47 @@ class HazardGameController extends ChangeNotifier {
         );
       }
       actor.setMotion(
-        talking &&
-                s.dialogueLine.speaker ==
-                    (entry.key == 'yametaro' ? 'やめ太郎' : 'たこさん')
+        cinematicTalk
+            ? director!.shot.motion
+            : talking &&
+                  s.dialogueLine.speaker ==
+                      (entry.key == 'yametaro' ? 'やめ太郎' : 'たこさん')
             ? 'Talk'
             : near && !(entry.key == 'yametaro' ? s.metYametaro : s.metTakosan)
             ? 'Wave'
             : 'Idle',
       );
-      actor.update(dt, s.running || talking);
+      actor.update(
+        dt,
+        s.running ||
+            talking ||
+            (director != null && !director!.paused && foreground),
+      );
+    }
+    final mugCamera =
+        director?.shot.camera(director!.progress) ??
+        vm.Vector3(s.x, s.y + 1, s.z);
+    var detailedMug = -1, nearestMugDistance = 4.0;
+    for (var i = 0; i < s.enemies.length; i++) {
+      final e = s.enemies[i];
+      if (!e.active || e.dropped) continue;
+      final distance = (mugCamera - vm.Vector3(e.x, 1, e.z)).length;
+      if (distance < nearestMugDistance) {
+        nearestMugDistance = distance;
+        detailedMug = i;
+      }
     }
     for (var i = 0; i < enemies.length; i++) {
       final actor = enemies[i];
       if (i >= s.enemies.length) {
+        enemyMugs[i].visible = false;
         actor.node.visible = false;
         actor.update(dt, false);
         continue;
       }
       final e = s.enemies[i];
+      enemyBeer[i].detail = i == detailedMug;
+      enemyMugs[i].visible = e.active && !e.dropped;
       actor.node.visible = e.active && (!e.dropped);
       actor.node.position = vm.Vector3(e.x, 0, e.z);
       actor.node.rotation = vm.Quaternion.axisAngle(
@@ -562,7 +774,9 @@ class HazardGameController extends ChangeNotifier {
       final scale = e.alive ? 1.0 : math.max(.001, 1 - e.vanish / .65);
       actor.node.scale = vm.Vector3.all(scale * (e.boss ? 1.2 : 1));
       actor.setMotion(
-        e.attackPending
+        e.boss && director?.shot.actor == 'sobaya'
+            ? director!.shot.motion
+            : e.attackPending
             ? 'MugAttack'
             : e.stun > 0
             ? 'Idle'
@@ -572,11 +786,13 @@ class HazardGameController extends ChangeNotifier {
       );
       actor.update(
         dt,
-        s.running && e.alive && e.active,
+        (s.running || (director != null && !director!.paused && foreground)) &&
+            e.alive &&
+            e.active,
         speed: e.attackPending
             ? (e.boss ? 1.5 * .7 / 1.15 : 1.5)
             : e.moved > .0001 && dt > 0
-            ? (e.moved / dt / .91610738).clamp(.1, 2)
+            ? (e.moved / dt / 1.007474632).clamp(.1, 2)
             : 1,
       );
     }
@@ -629,6 +845,37 @@ class HazardGameController extends ChangeNotifier {
         p.z,
       );
       n.rotation = vm.Quaternion.axisAngle(vm.Vector3(0, 1, 0), s.time * .5);
+    }
+    if (director != null) {
+      final d = director!, shot = d.shot;
+      if (d.id == 'ending') {
+        player.node.position = vm.Vector3(14, 0, 16);
+        npcs['takosan']!.node
+          ..visible = true
+          ..position = vm.Vector3(17.7, 0, 17.5);
+      }
+      final speaker = shot.actor == 'fukuchan' ? player : npcs[shot.actor];
+      if (speaker != null) {
+        final eye = shot.camera(d.progress), p = speaker.node.position;
+        speaker.node.rotation = vm.Quaternion.axisAngle(
+          vm.Vector3(0, 1, 0),
+          math.atan2(eye.x - p.x, eye.z - p.z) + math.pi,
+        );
+      }
+      if (shot.actor == 'sobaya') {
+        final i = s.enemies.indexWhere((e) => e.boss);
+        if (i >= 0) {
+          final actor = enemies[i], eye = shot.camera(d.progress);
+          actor.node.rotation = vm.Quaternion.axisAngle(
+            vm.Vector3(0, 1, 0),
+            math.atan2(
+                  eye.x - actor.node.position.x,
+                  eye.z - actor.node.position.z,
+                ) +
+                math.pi,
+          );
+        }
+      }
     }
     // Authored GunSocket is baked with the two-handed aiming pose.
     final socket = player.node.getChildByName('GunSocket');

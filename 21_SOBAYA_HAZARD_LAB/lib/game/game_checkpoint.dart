@@ -27,6 +27,7 @@ extension HazardCheckpoint on HazardGameState {
     'hits': hits,
     'time': time,
     'medallions': medallions.toList(),
+    'seenEvents': seenEvents.toList(),
     'hasKey': hasKey,
     'gateOpen': gateOpen,
     'metYametaro': metYametaro,
@@ -119,6 +120,7 @@ HazardGameState restoreHazardCheckpoint(
   s.hasKey = data['hasKey'] as bool;
   s.gateOpen = data['gateOpen'] as bool;
   require(!s.gateOpen || s.gateMode != 'key' || s.hasKey);
+  s.seenEvents.addAll((data['seenEvents'] as List? ?? const []).cast<String>());
   s.medallions.addAll((data['medallions'] as List? ?? const []).cast<String>());
   s.metYametaro = data['metYametaro'] as bool;
   s.receivedYametaroAmmo = data['receivedYametaroAmmo'] as bool;
