@@ -51,6 +51,12 @@ Gitでは、Seedanceの再生成と同じ声の継続利用に必要な最小限
 
 ## FlutterゲームのUI検証
 
+`21_SOBAYA_HAZARD_LAB/`は非ボクセル3Dゲームのモデル・移動・衝突・描画負荷検証用。
+Dart MCPでdebug起動し、MarionetteでUI操作・スクリーンショットと
+`madogiwa.inspectHazard` / `madogiwa.openScenario`等の専用extensionを確認する。
+profile測定は`--dart-define=LAB_BENCHMARK=true`で再現できる。
+引数・測定条件は同ディレクトリの`README.md`を参照する。
+
 `14_MADOGIWA_CARD_GAME/`は`ccpocket`と同じくDart MCPでデバッグアプリを起動し、
 Marionette MCPでUI操作・スクリーンショット・カスタムハーネス検証を行う。
 プロジェクト設定は`.mcp.json`と`.codex/config.toml`、専用拡張は

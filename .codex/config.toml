@@ -4,7 +4,7 @@
 command = "mise"
 args = [
   "exec",
-  "flutter@3.47.1",
+  "flutter@3.47.2",
   "--",
   "dart",
   "pub",
@@ -25,6 +25,7 @@ enabled_tools = [
   "swipe",
   "pinch_zoom",
   "press_back_button",
+  "press_key",
   "take_screenshots",
   "list_custom_extensions",
   "call_custom_extension",
@@ -32,7 +33,7 @@ enabled_tools = [
 
 [mcp_servers.dart-mcp]
 command = "mise"
-args = ["exec", "flutter@3.47.1", "--", "dart", "mcp-server"]
+args = ["exec", "flutter@3.47.2", "--", "dart", "mcp-server", "--enable=flutter_app_lifecycle"]
 env = {}
 enabled_tools = [
   "launch_app",
@@ -42,7 +43,9 @@ enabled_tools = [
   "dtd",
   "hot_reload",
   "hot_restart",
-  "get_widget_tree",
+  "widget_inspector",
+  "roots",
+  "list_devices",
   "get_runtime_errors",
 ]
 
