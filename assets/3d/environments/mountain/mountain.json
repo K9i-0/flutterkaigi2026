@@ -1,0 +1,357 @@
+{
+  "version": 1,
+  "id": "mountain",
+  "label": "CHAPTER 03  /  LAST ORDER",
+  "subtitle": "最後の一杯は、遠慮します。",
+  "spawn": {
+    "x": -19,
+    "z": -21,
+    "yaw": 3.141592653589793
+  },
+  "houses": [
+    {
+      "id": "Ruins",
+      "x": 13,
+      "z": 14,
+      "w": 12,
+      "d": 9,
+      "height": 3.1,
+      "two": false
+    }
+  ],
+  "solids": [
+    {
+      "x": 0,
+      "z": -13.5,
+      "w": 32,
+      "d": 25,
+      "bottom": 0,
+      "top": 5.8,
+      "id": null
+    },
+    {
+      "x": -9,
+      "z": 16,
+      "w": 24,
+      "d": 17,
+      "bottom": 0,
+      "top": 6.5,
+      "id": null
+    },
+    {
+      "x": 14,
+      "z": -12,
+      "w": 16,
+      "d": 21,
+      "bottom": 0,
+      "top": 5.0,
+      "id": null
+    },
+    {
+      "x": -26,
+      "z": -9,
+      "w": 8.8,
+      "d": 31,
+      "bottom": 0,
+      "top": 6,
+      "id": null
+    },
+    {
+      "x": 26,
+      "z": 11,
+      "w": 8.8,
+      "d": 26,
+      "bottom": 0,
+      "top": 5.5,
+      "id": null
+    },
+    {
+      "x": 11,
+      "z": 27,
+      "w": 22,
+      "d": 8.8,
+      "bottom": 0,
+      "top": 6,
+      "id": null
+    },
+    {
+      "x": 7.0,
+      "z": 14,
+      "w": 0.35,
+      "d": 9,
+      "bottom": 0,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": 19.0,
+      "z": 14,
+      "w": 0.35,
+      "d": 9,
+      "bottom": 0,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": 13,
+      "z": 18.5,
+      "w": 12,
+      "d": 0.35,
+      "bottom": 0,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": 9.57,
+      "z": 9.5,
+      "w": 5.14,
+      "d": 0.35,
+      "bottom": 0,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": 16.43,
+      "z": 9.5,
+      "w": 5.14,
+      "d": 0.35,
+      "bottom": 0,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": 13,
+      "z": 9.5,
+      "w": 1.72,
+      "d": 0.35,
+      "bottom": 2.2,
+      "top": 3.1,
+      "id": null
+    },
+    {
+      "x": 18.3,
+      "z": 14.5,
+      "w": 0.8,
+      "d": 1.6,
+      "bottom": 0,
+      "top": 1.8,
+      "id": null
+    },
+    {
+      "x": 9.1,
+      "z": 16,
+      "w": 1.5,
+      "d": 2.4,
+      "bottom": 0,
+      "top": 0.7,
+      "id": null
+    },
+    {
+      "x": 4,
+      "z": 1,
+      "w": 1.6,
+      "d": 1.3,
+      "bottom": 0,
+      "top": 1.3,
+      "id": null
+    },
+    {
+      "x": 17,
+      "z": 2,
+      "w": 1.6,
+      "d": 1.3,
+      "bottom": 0,
+      "top": 1.3,
+      "id": null
+    },
+    {
+      "x": 4,
+      "z": 9,
+      "w": 1.6,
+      "d": 1.3,
+      "bottom": 0,
+      "top": 1.3,
+      "id": null
+    },
+    {
+      "x": 20,
+      "z": 15,
+      "w": 0.25,
+      "d": 3.2,
+      "bottom": 0,
+      "top": 2.5,
+      "id": "gate"
+    }
+  ],
+  "ramps": [],
+  "items": [
+    {
+      "id": "mountain_ammo",
+      "kind": "ammo",
+      "x": -18,
+      "z": -1,
+      "y": 0.3,
+      "amount": 15
+    },
+    {
+      "id": "mountain_green",
+      "kind": "green",
+      "x": 3,
+      "z": 5,
+      "y": 0.25,
+      "amount": 1
+    },
+    {
+      "id": "mountain_shells",
+      "kind": "shells",
+      "x": 16,
+      "z": 16,
+      "y": 0.9,
+      "amount": 5
+    },
+    {
+      "id": "mountain_red",
+      "kind": "red",
+      "x": 9,
+      "z": 16,
+      "y": 0.85,
+      "amount": 1
+    }
+  ],
+  "crates": [
+    {
+      "id": "mountain_crate_0",
+      "x": -20,
+      "z": -6,
+      "kind": "crate"
+    },
+    {
+      "id": "mountain_crate_1",
+      "x": -9,
+      "z": 5,
+      "kind": "crate"
+    },
+    {
+      "id": "mountain_crate_2",
+      "x": 7,
+      "z": 7,
+      "kind": "crate"
+    },
+    {
+      "id": "mountain_crate_3",
+      "x": 18,
+      "z": 18,
+      "kind": "crate"
+    }
+  ],
+  "enemies": [
+    {
+      "id": 0,
+      "x": -19,
+      "z": -5,
+      "active": true,
+      "boss": false
+    },
+    {
+      "id": 1,
+      "x": -1,
+      "z": 4,
+      "active": true,
+      "boss": false
+    },
+    {
+      "id": 2,
+      "x": 6,
+      "z": 5,
+      "active": true,
+      "boss": false
+    },
+    {
+      "id": 3,
+      "x": 15,
+      "z": 7,
+      "active": true,
+      "boss": false
+    },
+    {
+      "id": 4,
+      "x": 12,
+      "z": 4,
+      "active": true,
+      "boss": true
+    },
+    {
+      "id": 5,
+      "x": 10,
+      "z": 13,
+      "active": true,
+      "boss": false
+    }
+  ],
+  "collection": [
+    {
+      "id": "watch",
+      "title": "見てるぞ",
+      "source": "03_SCRIPTS/38_miteruzo_horror_poster/poster_miteruzo_variant_c_revised_v3.png",
+      "x": 11.2,
+      "z": 9.28,
+      "y": 0.6000000000000001,
+      "node": "Poster_watch"
+    },
+    {
+      "id": "drybeer",
+      "title": "極度乾燥ビール",
+      "source": "03_SCRIPTS/32_sobaya_beer_encouragement/prop_kyokudo_kanso_beer_production.png",
+      "x": 14.7,
+      "z": 9.28,
+      "y": 0.6000000000000001,
+      "node": "Poster_drybeer"
+    },
+    {
+      "id": "chair",
+      "title": "アロンチェア制作記録",
+      "source": "03_SCRIPTS/51_aronchia_makers_vlog/prop_aronchia_handwritten_final.png",
+      "x": 11,
+      "z": 9.72,
+      "y": 0.6000000000000001,
+      "node": "Poster_chair"
+    }
+  ],
+  "npcs": [
+    {
+      "id": "yametaro",
+      "x": 16,
+      "z": 17.5
+    }
+  ],
+  "exits": [
+    {
+      "id": "back",
+      "target": "farm",
+      "x": -19,
+      "z": -23.5,
+      "radius": 1,
+      "arrival": {
+        "x": 18,
+        "z": -10,
+        "yaw": 1.5707963267948966
+      }
+    },
+    {
+      "id": "escape",
+      "target": "ending",
+      "x": 21.2,
+      "z": 15,
+      "radius": 0.9,
+      "requiresGate": true
+    }
+  ],
+  "gate": {
+    "x": 20,
+    "z": 15,
+    "y": 0,
+    "mode": "boss",
+    "label": "脱出路の門"
+  },
+  "targets": []
+}

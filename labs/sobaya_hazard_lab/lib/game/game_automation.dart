@@ -62,15 +62,56 @@ void attachGameAutomation(HazardGameController game) {
         'npc',
         'stagger',
         'merchant',
+        'farm',
+        'mountain',
+        'farmGate',
+        'mountainGate',
       ].contains(name)) {
         return MarionetteExtensionResult.invalidParams('Invalid scenario');
       }
       g.restart();
+      if (['farm', 'farmGate', 'mountain', 'mountainGate'].contains(name)) {
+        final first = g.state!;
+        first.hasKey = first.gateOpen = true;
+        first.exitRequested = Map<String, dynamic>.from(
+          (first.map['exits'] as List).first,
+        );
+        first.phase = PlayPhase.transition;
+        g.transitionRegion();
+        if (['mountain', 'mountainGate'].contains(name)) {
+          final farm = g.state!..gateOpen = true;
+          farm.exitRequested = Map<String, dynamic>.from(
+            (farm.map['exits'] as List).last,
+          );
+          farm.phase = PlayPhase.transition;
+          g.transitionRegion();
+        }
+      }
       final s = g.state!;
+      s.checkpointRequested = false;
       for (final e in s.enemies) {
         e.active = false;
       }
       switch (name) {
+        case 'farm':
+          s.x = -19;
+          s.z = -21;
+        case 'mountain':
+          s.x = 0;
+          s.z = 4;
+          s.yaw = -1.5707963267948966;
+        case 'farmGate':
+          s.x = 18.5;
+          s.z = -10;
+          s.yaw = -1.5707963267948966;
+        case 'mountainGate':
+          s.x = 19.5;
+          s.z = 15;
+          s.yaw = -1.5707963267948966;
+          final boss = s.enemies.firstWhere((e) => e.boss);
+          boss.hp = 0;
+          boss.alive = false;
+          s.kills = 1;
         case 'merchant':
           s.x = -13;
           s.z = -19.8;
