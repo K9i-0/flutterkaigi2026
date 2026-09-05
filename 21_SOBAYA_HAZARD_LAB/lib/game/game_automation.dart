@@ -116,6 +116,8 @@ void attachGameAutomation(HazardGameController game) {
         'collection',
         'gate',
         'stairs',
+        'enemyStairs',
+        'farmEnemyStairs',
         'death',
         'npc',
         'stagger',
@@ -135,6 +137,7 @@ void attachGameAutomation(HazardGameController game) {
       g.restart();
       if ([
         'farm',
+        'farmEnemyStairs',
         'farmGate',
         'mountain',
         'mountainGate',
@@ -241,6 +244,24 @@ void attachGameAutomation(HazardGameController game) {
           s.x = 11.5;
           s.z = 22;
           s.hasKey = true;
+        case 'enemyStairs':
+        case 'farmEnemyStairs':
+          final ramp = (s.map['ramps'] as List).first;
+          s.x = (ramp['x'] as num).toDouble() - 2;
+          s.z = (ramp['z1'] as num).toDouble() + .65;
+          s.y = 3.03;
+          s.yaw = 0;
+          s.invulnerable = 100;
+          s.enemies.first
+            ..active = true
+            ..alerted = true
+            ..x = (ramp['x'] as num).toDouble()
+            ..z = (ramp['z0'] as num).toDouble() + .35;
+          s.enemies.first.y = s.floorHeight(
+            s.enemies.first.x,
+            s.enemies.first.z,
+            0,
+          );
         case 'stairs':
           s.x = 11;
           s.z = -10;
@@ -423,7 +444,7 @@ void attachGameAutomation(HazardGameController game) {
           if (e == null) return MarionetteExtensionResult.error(2, 'No enemy');
           s.aiming = true;
           final o = vm.Vector3(s.x, s.y + 1.25, s.z);
-          s.shoot(o, vm.Vector3(e.x, 1.1, e.z) - o);
+          s.shoot(o, vm.Vector3(e.x, e.y + 1.1, e.z) - o);
         case 'fire':
           g.fire();
         case 'move':

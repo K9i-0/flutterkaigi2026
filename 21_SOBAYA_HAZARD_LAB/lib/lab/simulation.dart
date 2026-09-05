@@ -142,5 +142,9 @@ class FrameSamples {
     'window': 'last 240 Flutter frames',
     'uiP95Ms': uiP95,
     'rasterP95Ms': rasterP95,
+    'uiMaxMs': _ui.isEmpty ? null : _ui.reduce(math.max),
+    'rasterMaxMs': _raster.isEmpty ? null : _raster.reduce(math.max),
+    'uiOver16_7Ms': _ui.where((ms) => ms > 16.7).length,
+    'rasterOver16_7Ms': _raster.where((ms) => ms > 16.7).length,
   };
 }

@@ -109,7 +109,7 @@ class CampaignAudit {
                   e.active &&
                   !(e.boss && s.x < 1 && !e.alerted) &&
                   math.pow(e.x - s.x, 2) + math.pow(e.z - s.z, 2) < 12 * 12 &&
-                  visible(e.x, 1.1, e.z),
+                  visible(e.x, e.y + 1.1, e.z),
             )
             .toList()
           ..sort(
@@ -159,9 +159,9 @@ class CampaignAudit {
       final before = s.shots;
       final origin = vm.Vector3(s.x, s.y + 1.25, s.z);
       if (aimAndFire != null) {
-        aimAndFire!(vm.Vector3(e.x, 1.1, e.z));
+        aimAndFire!(vm.Vector3(e.x, e.y + 1.1, e.z));
       } else {
-        s.shoot(origin, vm.Vector3(e.x, 1.1, e.z) - origin);
+        s.shoot(origin, vm.Vector3(e.x, e.y + 1.1, e.z) - origin);
       }
       if (s.shots > before) weaponsUsed.add(s.weapon);
     }

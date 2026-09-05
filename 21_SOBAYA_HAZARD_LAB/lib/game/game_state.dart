@@ -4,6 +4,7 @@ import 'package:vector_math/vector_math.dart' as vm;
 
 import 'game_dialogue.dart';
 import 'game_audio.dart';
+import 'game_navigation.dart';
 
 const minCameraPitch = -.75, maxCameraPitch = .85;
 
@@ -114,6 +115,7 @@ class Enemy {
   final bool boss;
   final int id;
   double x,
+      y = 0,
       z,
       heading = 0,
       hp = 100,
@@ -290,7 +292,7 @@ class HazardGameState {
       : yametaroDialogue[dialogueTopic]!;
   DialogueLine get dialogueLine => dialogueLines[dialogueIndex];
   bool get dialogueChoices => dialogueIndex == dialogueLines.length - 1;
-  final Map<int, int> _flow = {};
+  EnemyNavigation? _navigation;
   double _flowTimer = 0;
   int get reserve => bag
       .where((i) => i.kind == (weapon == 'handgun' ? 'ammo' : 'shells'))
@@ -382,7 +384,7 @@ class HazardGameState {
     inputY = 0;
     aiming = false;
     _flowTimer = 0;
-    _flow.clear();
+    _navigation = null;
     phase = PlayPhase.playing;
     say(objective);
   }
@@ -638,8 +640,10 @@ class HazardGameState {
     final oldX = x, oldZ = z;
     for (var n = 0; n < steps; n++) {
       final nx = x + dx * length / steps, nz = z + dz * length / steps;
-      if (!blocked(nx, z, y)) x = nx;
-      if (!blocked(x, nz, y)) z = nz;
+      final floorX = floorHeight(nx, z, y);
+      if (floorX <= y + .34 && !blocked(nx, z, math.max(y, floorX))) x = nx;
+      final floorZ = floorHeight(x, nz, y);
+      if (floorZ <= y + .34 && !blocked(x, nz, math.max(y, floorZ))) z = nz;
       final floor = floorHeight(x, z, y);
       y = floor > y - .25 ? floor : math.max(floor, y - 5 * dt / steps);
     }
@@ -696,7 +700,7 @@ class HazardGameState {
         e.vanish += dt;
         if (e.vanish >= .65 && !e.dropped) {
           e.dropped = true;
-          pickups.add(Pickup('beer_${e.id}', 'beer', e.x, .25, e.z));
+          pickups.add(Pickup('beer_${e.id}', 'beer', e.x, e.y + .25, e.z));
           emitSound('defeat', x: e.x, z: e.z);
         }
         continue;
@@ -714,11 +718,11 @@ class HazardGameState {
             dist < 13 &&
             (dist < 5 || facing > -.2) &&
             wallDistance(
-                  vm.Vector3(e.x, 1.3, e.z),
-                  vm.Vector3(dx, 0, dz).normalized(),
-                  dist,
+                  vm.Vector3(e.x, e.y + 1.3, e.z),
+                  vm.Vector3(dx, y - e.y, dz).normalized(),
+                  math.sqrt(dist * dist + math.pow(y - e.y, 2)),
                 ) >=
-                dist - .1;
+                math.sqrt(dist * dist + math.pow(y - e.y, 2)) - .1;
         e.notice = sees ? e.notice + dt : math.max(0, e.notice - dt * 2);
         if (dist < 2.5 || e.notice > .45 || (noiseTime > 0 && dist < 20)) {
           e.alerted = true;
@@ -736,13 +740,13 @@ class HazardGameState {
               (dist < .01 ||
                   (dx * math.sin(e.heading) + dz * math.cos(e.heading)) / dist >
                       .35) &&
-              y < 1 &&
+              (y - e.y).abs() < 1 &&
               wallDistance(
-                    vm.Vector3(e.x, 1, e.z),
-                    vm.Vector3(dx, 0, dz).normalized(),
-                    dist,
+                    vm.Vector3(e.x, e.y + 1, e.z),
+                    vm.Vector3(dx, y - e.y, dz).normalized(),
+                    math.sqrt(dist * dist + math.pow(y - e.y, 2)),
                   ) >=
-                  dist - .1) {
+                  math.sqrt(dist * dist + math.pow(y - e.y, 2)) - .1) {
             health -= (e.boss ? 30 : 15) * damageScale;
             invulnerable = .8;
             hurtTime = .45;
@@ -759,32 +763,30 @@ class HazardGameState {
         continue;
       }
       if (e.stun > 0) continue;
-      if (!e.boss && dist < 1.15 && y < 1 && e.cooldown <= 0) {
+      if (!e.boss && dist < 1.15 && (y - e.y).abs() < .8 && e.cooldown <= 0) {
         e.attackPending = true;
         e.heading = math.atan2(dx, dz);
         e.windup = e.boss ? 1.15 : .7;
         emitSound('enemy', x: e.x, z: e.z);
         continue;
       }
+      if (dist < .95 && (y - e.y).abs() < .8) continue;
       if (dist > 17 && noiseTime <= 0) continue;
-      var tx = x, tz = z;
-      final cell = _cell(e.x, e.z);
-      var best = _flow[cell] ?? 999999;
-      for (final n in _neighbors(cell)) {
-        final value = _flow[n] ?? 999999;
-        if (value < best) {
-          best = value;
-          tx = _cx(n);
-          tz = _cz(n);
-        }
-      }
+      final waypoint = _navigation?.waypoint(e.x, e.y, e.z);
+      if (waypoint == null) continue;
+      final tx = waypoint.x, tz = waypoint.z;
       var vx = tx - e.x, vz = tz - e.z;
       final len = math.sqrt(vx * vx + vz * vz);
-      if (len < .05) continue;
+      if (len < .00001) continue;
       vx /= len;
       vz /= len;
       for (final other in enemies) {
-        if (other == e || !other.alive || !other.active) continue;
+        if (other == e ||
+            !other.alive ||
+            !other.active ||
+            (other.y - e.y).abs() > .8) {
+          continue;
+        }
         final ox = e.x - other.x, oz = e.z - other.z;
         final sep = math.sqrt(ox * ox + oz * oz);
         if (sep > .01 && sep < .85) {
@@ -793,10 +795,9 @@ class HazardGameState {
         }
       }
       e.heading = math.atan2(vx, vz);
-      final speed = (e.boss ? 1.15 : .8) * enemySpeedScale * dt;
+      final speed = math.min(len, (e.boss ? 1.15 : .8) * enemySpeedScale * dt);
       final oldX = e.x, oldZ = e.z;
-      if (!blocked(e.x + vx * speed, e.z, 0, radius: .37)) e.x += vx * speed;
-      if (!blocked(e.x, e.z + vz * speed, 0, radius: .37)) e.z += vz * speed;
+      _moveEnemy(e, vx * speed, vz * speed);
       e.moved = math.sqrt(math.pow(e.x - oldX, 2) + math.pow(e.z - oldZ, 2));
     }
     if (running) {
@@ -934,32 +935,63 @@ class HazardGameState {
     return true;
   }
 
-  int _cell(double px, double pz) => (pz.floor() + 25) * 46 + (px.floor() + 23);
-  double _cx(int c) => (c % 46) - 22.5;
-  double _cz(int c) => (c ~/ 46) - 24.5;
-  Iterable<int> _neighbors(int c) sync* {
-    final col = c % 46, row = c ~/ 46;
-    if (col > 0) yield c - 1;
-    if (col < 45) yield c + 1;
-    if (row > 0) yield c - 46;
-    if (row < 54) yield c + 46;
+  void _moveEnemy(Enemy e, double dx, double dz) {
+    final steps = math.max(1, (math.sqrt(dx * dx + dz * dz) / .05).ceil());
+    for (var i = 0; i < steps; i++) {
+      final nx = e.x + dx / steps;
+      var floor = floorHeight(nx, e.z, e.y);
+      if ((floor - e.y).abs() <= .34 && !blocked(nx, e.z, floor, radius: .37)) {
+        e.x = nx;
+        e.y = floor;
+      }
+      final nz = e.z + dz / steps;
+      floor = floorHeight(e.x, nz, e.y);
+      if ((floor - e.y).abs() <= .34 && !blocked(e.x, nz, floor, radius: .37)) {
+        e.z = nz;
+        e.y = floor;
+      }
+    }
+  }
+
+  bool _staticNavigationBlocked(double px, double pz, double py) {
+    if (px.abs() > 22.3 || pz < -24.4 || pz > 30) return true;
+    return obstacles.any(
+          (o) => o.id != 'gate' && o.overlaps(px, pz, .37, py),
+        ) ||
+        (py < 1.3 &&
+            npcs.any(
+              (n) =>
+                  math.pow(px - (n['x'] as num), 2) +
+                      math.pow(pz - (n['z'] as num), 2) <
+                  .69 * .69,
+            ));
+  }
+
+  EnemyNavigation prepareNavigation() =>
+      _navigation ??= EnemyNavigation(floorHeight, _staticNavigationBlocked);
+
+  void useNavigation(EnemyNavigation geometry) {
+    _navigation = geometry.fork();
+    _flowTimer = 0;
   }
 
   void _buildFlow() {
-    _flow.clear();
-    final start = _cell(x, z);
-    final queue = <int>[start];
-    _flow[start] = 0;
-    for (var i = 0; i < queue.length; i++) {
-      final cell = queue[i], depth = _flow[cell]!;
-      for (final n in _neighbors(cell)) {
-        if (_flow.containsKey(n) || blocked(_cx(n), _cz(n), 0, radius: .4)) {
-          continue;
-        }
-        _flow[n] = depth + 1;
-        queue.add(n);
-      }
-    }
+    prepareNavigation();
+    // Static walls/floors are already encoded in the immutable graph.
+    final gates = gateOpen
+        ? <Obstacle>[]
+        : obstacles.where((o) => o.id == 'gate').toList();
+    final intact = crates.where((c) => !c.broken).toList();
+    _navigation!.update(
+      x,
+      y,
+      z,
+      (px, pz, py) =>
+          gates.any((o) => o.overlaps(px, pz, .37, py)) ||
+          intact.any(
+            (c) => py < 1 && (c.x - px).abs() < .82 && (c.z - pz).abs() < .82,
+          ),
+    );
   }
 
   double wallDistance(
@@ -1026,19 +1058,19 @@ class HazardGameState {
       }
     }
     for (final e in enemies.where((e) => e.alive && e.active)) {
-      final center = vm.Vector3(e.x, .95, e.z), to = center - origin;
+      final center = vm.Vector3(e.x, e.y + .95, e.z), to = center - origin;
       final along = to.dot(dir);
       if (along <= 0 || along > distance) continue;
       final at = origin + dir * along;
       final radius = weapon == 'shotgun' ? .45 + along * .025 : .43;
       if ((at.x - e.x) * (at.x - e.x) + (at.z - e.z) * (at.z - e.z) <
               radius * radius &&
-          at.y > .05 &&
-          at.y < (e.boss ? 2.22 : 1.85)) {
+          at.y > e.y + .05 &&
+          at.y < e.y + (e.boss ? 2.22 : 1.85)) {
         distance = along;
         victim = e;
         crate = null;
-        head = at.y > 1.48;
+        head = at.y > e.y + 1.48;
       }
     }
     for (final target in targets.where((t) => !medallions.contains(t['id']))) {
@@ -1135,7 +1167,7 @@ class HazardGameState {
             e.alive &&
             e.active &&
             e.stun > 0 &&
-            y < 1 &&
+            (y - e.y).abs() < 1 &&
             math.pow(e.x - x, 2) + math.pow(e.z - z, 2) < 3.24 &&
             _reachable(e.x, e.z),
       )
@@ -1167,7 +1199,7 @@ class HazardGameState {
       if (!e.alive ||
           !e.active ||
           dist > 2.05 ||
-          y > 1 ||
+          (y - e.y).abs() > 1 ||
           !_reachable(e.x, e.z)) {
         continue;
       }
@@ -1184,13 +1216,7 @@ class HazardGameState {
         e.bossTimer = 1.5;
       }
       if (dist > .01) {
-        for (var i = 0; i < 12; i++) {
-          final nx = e.x + dx / dist * .055, nz = e.z + dz / dist * .055;
-          if (!blocked(nx, nz, 0, radius: .37)) {
-            e.x = nx;
-            e.z = nz;
-          }
-        }
+        _moveEnemy(e, dx / dist * .66, dz / dist * .66);
       }
       if (e.hp <= 0) _defeat(e);
     }
@@ -1400,6 +1426,7 @@ class HazardGameState {
           e.alive &&
           e.active &&
           e.alerted &&
+          (e.y - y).abs() < 1 &&
           math.pow(e.x - x, 2) + math.pow(e.z - z, 2) < 49 &&
           _reachable(e.x, e.z),
     )) {
@@ -1540,6 +1567,7 @@ class HazardGameState {
             'bossTimer': e.bossTimer,
             if (e.boss) 'bossCue': e.bossCue,
             'x': e.x,
+            'y': e.y,
             'z': e.z,
           },
         )
