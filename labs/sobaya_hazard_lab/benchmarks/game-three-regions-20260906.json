@@ -1,0 +1,145 @@
+{
+  "date": "2026-09-06",
+  "device": "Apple M4 macOS",
+  "flutter": "3.47.2",
+  "flutter_scene": "0.23.0",
+  "mode": "profile",
+  "command": "flutter run -d macos -t lib/game_main.dart --profile --dart-define=HAZARD_GAME_BENCHMARK=true",
+  "method": "7 sequential cases, real SceneView rendering, at least 8s each; last 240 Flutter FrameTiming samples. Debug game stopped first. Actors have normal AI but test health is inflated; benchmark saves disabled. Same region geometry, characters, props and shadows as game.",
+  "limitations": [
+    "UI/raster durations are not direct GPU execution times or measured display FPS.",
+    "Single run on one Mac; differences around 0.1ms do not establish causal speedups.",
+    "Enemy placement is synthetic and may include occlusion; does not bound the worst view or every gameplay situation.",
+    "No mobile or prolonged thermal/memory measurement."
+  ],
+  "results": [
+    {
+      "case": "village-four",
+      "region": "village",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "renderScale": 0.85,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8001,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 5.154,
+      "rasterP95Ms": 0.517
+    },
+    {
+      "case": "village-eight",
+      "region": "village",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "renderScale": 0.85,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8501,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 4.927,
+      "rasterP95Ms": 0.491
+    },
+    {
+      "case": "village-eight-no-contact",
+      "region": "village",
+      "contactShadows": false,
+      "profile": true,
+      "valid": true,
+      "renderScale": 0.85,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8499,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 4.988,
+      "rasterP95Ms": 0.509
+    },
+    {
+      "case": "village-eight-full",
+      "region": "village",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "renderScale": 1.0,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8000,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 4.826,
+      "rasterP95Ms": 0.462
+    },
+    {
+      "case": "farm-six",
+      "region": "farm",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "renderScale": 0.85,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8501,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 4.662,
+      "rasterP95Ms": 0.584
+    },
+    {
+      "case": "mountain-six",
+      "region": "mountain",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "renderScale": 0.85,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8496,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 4.674,
+      "rasterP95Ms": 0.539
+    },
+    {
+      "case": "mountain-six-full",
+      "region": "mountain",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "renderScale": 1.0,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8000,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 4.977,
+      "rasterP95Ms": 0.567
+    }
+  ],
+  "source": "evidence/profile-three-regions-logs.json",
+  "backend": "Impeller MetalSDF (runtime log verified)"
+}

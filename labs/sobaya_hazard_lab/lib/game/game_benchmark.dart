@@ -5,10 +5,12 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 
 import 'game_controller.dart';
+import 'game_state.dart';
 
 /// Opt-in profile run. Uses real rendered Flutter frames, never inferred FPS.
 class GameBenchmark {
   GameBenchmark(this.game) {
+    game.benchmarkMode = true;
     next();
     timer = Timer.periodic(const Duration(milliseconds: 500), (_) => poll());
   }
@@ -17,10 +19,51 @@ class GameBenchmark {
   final watch = Stopwatch();
   int index = -1;
   static const cases = [
-    (name: 'village-four', count: 4, scale: .85),
-    (name: 'village-eight', count: 8, scale: .85),
-    (name: 'village-eight-full', count: 8, scale: 1.0),
+    (
+      name: 'village-four',
+      region: 'village',
+      count: 4,
+      scale: .85,
+      contacts: true,
+    ),
+    (
+      name: 'village-eight',
+      region: 'village',
+      count: 8,
+      scale: .85,
+      contacts: true,
+    ),
+    (
+      name: 'village-eight-no-contact',
+      region: 'village',
+      count: 8,
+      scale: .85,
+      contacts: false,
+    ),
+    (
+      name: 'village-eight-full',
+      region: 'village',
+      count: 8,
+      scale: 1.0,
+      contacts: true,
+    ),
+    (name: 'farm-six', region: 'farm', count: 6, scale: .85, contacts: true),
+    (
+      name: 'mountain-six',
+      region: 'mountain',
+      count: 6,
+      scale: .85,
+      contacts: true,
+    ),
+    (
+      name: 'mountain-six-full',
+      region: 'mountain',
+      count: 6,
+      scale: 1.0,
+      contacts: true,
+    ),
   ];
+
   void next() {
     index++;
     if (index == cases.length) {
@@ -30,16 +73,36 @@ class GameBenchmark {
     }
     final c = cases[index];
     game.restart();
+    while (game.state!.zoneId != c.region) {
+      final current = game.state!;
+      current.exitRequested = Map<String, dynamic>.from(
+        (current.map['exits'] as List).last,
+      );
+      current.phase = PlayPhase.transition;
+      game.transitionRegion();
+    }
+    game.director = null;
     final s = game.state!;
-    s.x = 0;
-    s.z = -13;
+    s.seenEvents.addAll(['opening', 'farm', 'last_order', 'ending']);
+    s.checkpointRequested = false;
+    s.phase = PlayPhase.playing;
+    final baseX = c.region == 'mountain' ? 8.0 : 0.0;
+    final baseZ = c.region == 'mountain'
+        ? 1.0
+        : c.region == 'farm'
+        ? -8.0
+        : -13.0;
+    s.x = baseX;
+    s.z = baseZ;
     s.health = 100000;
     for (final e in s.enemies) {
       e.active = e.id < c.count;
-      e.x = (e.id % 4 - 1.5) * 1.5;
-      e.z = -7 + (e.id ~/ 4) * 2;
+      e.alerted = true;
+      e.x = baseX + (e.id % 4 - 1.5) * 1.5;
+      e.z = baseZ + 6 + (e.id ~/ 4) * 2;
     }
     game.scene.renderScale = c.scale;
+    game.contactShadows?.node.visible = c.contacts;
     game.frames.reset();
     watch
       ..reset()
@@ -52,10 +115,13 @@ class GameBenchmark {
     debugPrintSynchronously(
       'HAZARD_GAME_BENCHMARK ${jsonEncode({
         'case': cases[index].name,
+        'region': cases[index].region,
+        'contactShadows': cases[index].contacts,
         'profile': kProfileMode,
         'valid': kProfileMode && game.frames.count == 240,
         'renderScale': game.scene.renderScale,
         'viewport': [game.viewport.width, game.viewport.height],
+        'devicePixelRatio': game.devicePixelRatio,
         'elapsedMs': watch.elapsedMilliseconds,
         ...game.frames.toJson(),
       })}',

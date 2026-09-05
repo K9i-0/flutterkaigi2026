@@ -4,10 +4,14 @@ import 'package:vector_math/vector_math.dart' as vm;
 
 import 'game_controller.dart';
 import 'game_state.dart';
+import 'game_native_audit.dart';
 
 HazardGameController? _game;
 bool _registered = false;
+NativeCampaignAudit? _nativeAudit;
 void detachGameAutomation() {
+  _nativeAudit?.stop();
+  _nativeAudit = null;
   _game = null;
 }
 
@@ -16,6 +20,37 @@ void attachGameAutomation(HazardGameController game) {
   _game = game;
   if (_registered) return;
   _registered = true;
+  registerMarionetteExtension(
+    name: 'madogiwa.auditCampaign',
+    description: 'Start/inspect/stop a native rendered campaign audit. action=start|inspect|stop, complete=true includes optional collection. Start resets the run. Exact automated aim; not a human difficulty test.',
+    callback: (p) async {
+      final g = _game;
+      if (g == null || !g.ready) {
+        return MarionetteExtensionResult.error(1, 'Not ready');
+      }
+      switch (p['action']) {
+        case 'start':
+          if (_nativeAudit?.status == 'running') {
+            return MarionetteExtensionResult.error(2, 'Already running');
+          }
+          _nativeAudit = NativeCampaignAudit(
+            g,
+            completionist: p['complete'] == 'true',
+          );
+        case 'stop':
+          _nativeAudit?.stop();
+        case 'inspect':
+          break;
+        default:
+          return MarionetteExtensionResult.invalidParams(
+            'action=start|inspect|stop',
+          );
+      }
+      return MarionetteExtensionResult.success(
+        _nativeAudit?.inspect() ?? {'status': 'not-started'},
+      );
+    },
+  );
   registerMarionetteExtension(
     name: 'madogiwa.inspectHazardGame',
     description: 'Inspect game combat, pickup, collection and chapter state.',
