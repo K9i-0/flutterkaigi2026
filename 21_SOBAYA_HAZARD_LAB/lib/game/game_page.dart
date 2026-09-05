@@ -139,6 +139,8 @@ class _HazardGamePageState extends State<HazardGamePage> {
       game.toggle(PlayPhase.paused);
     } else if (k == LogicalKeyboardKey.tab) {
       game.toggle(PlayPhase.inventory);
+    } else if (k == LogicalKeyboardKey.keyM) {
+      game.toggle(PlayPhase.mapView);
     } else if (k == LogicalKeyboardKey.keyC) {
       game.toggle(PlayPhase.collection);
     } else if (s.running) {
@@ -268,8 +270,8 @@ class _HazardGamePageState extends State<HazardGamePage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  'CHAPTER 01  /  PUEBLO',
+                                Text(
+                                  s.chapterLabel,
                                   style: TextStyle(
                                     color: gold,
                                     fontSize: 12,
@@ -277,8 +279,8 @@ class _HazardGamePageState extends State<HazardGamePage> {
                                   ),
                                 ),
                                 const SizedBox(height: 7),
-                                const Text(
-                                  '静かな村、騒がしい住人。',
+                                Text(
+                                  s.subtitle,
                                   style: TextStyle(
                                     color: ivory,
                                     fontSize: 20,
@@ -287,11 +289,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
                                 ),
                                 const SizedBox(height: 12),
                                 Text(
-                                  s.gateOpen
-                                      ? '農場への門をくぐれ'
-                                      : s.hasKey
-                                      ? '紋章の鍵で北東の門を開けろ'
-                                      : '村を探索し、紋章の鍵を探せ',
+                                  s.objective,
                                   style: const TextStyle(
                                     color: ivory,
                                     fontSize: 13,
@@ -322,7 +320,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                '記録 ${s.collected.length} / ${s.images.length}    ビール ${s.beers}',
+                                '記録 ${s.collected.length} / ${s.gallery.length}    ビール ${s.beers}${s.zoneId == 'farm' ? '\n青いメダリオン ${s.medallions.length} / 7' : ''}',
                                 style: const TextStyle(
                                   color: ivory,
                                   fontSize: 13,
@@ -472,6 +470,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
                       if (s.phase == PlayPhase.title) title(s),
                       if (s.phase == PlayPhase.dialogue) dialogue(s),
                       if (s.phase == PlayPhase.inventory) inventory(s),
+                      if (s.phase == PlayPhase.mapView) fullMap(s),
                       if (s.phase == PlayPhase.collection) collection(s),
                       if (s.phase == PlayPhase.paused) pause(s),
                       if (s.phase == PlayPhase.dead ||
@@ -514,7 +513,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
           top: 51,
           left: 30,
           child: Text(
-            s.talkingTo == 'takosan' ? '村の補給所  /  たこさん' : '村の入口  /  やめ太郎',
+            s.talkingTo == 'takosan' ? '補給所  /  たこさん' : '道案内  /  やめ太郎',
             style: TextStyle(
               color: ivory.withValues(alpha: .8),
               fontSize: 12,
@@ -579,7 +578,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
                         ] else ...[
                           action(
                             'dialogue-route',
-                            '農場への道',
+                            s.zoneId == 'mountain' ? '脱出路について' : '農場への道',
                             () => s.chooseDialogue('route'),
                           ),
                           action(
@@ -820,7 +819,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
               ),
             const SizedBox(height: 18),
             Text(
-              'COLLECTION  ${s.collected.length} / ${s.images.length}',
+              'COLLECTION  ${s.collected.length} / ${s.gallery.length}',
               style: const TextStyle(
                 color: gold,
                 letterSpacing: 2,
@@ -1012,7 +1011,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
     ),
   );
   Widget collection(HazardGameState s) => modal(
-    '窓際族の記録  ${s.collected.length}/${s.images.length}',
+    '窓際族の記録  ${s.collected.length}/${s.gallery.length}',
     GridView.count(
       shrinkWrap: true,
       crossAxisCount: 3,
@@ -1020,7 +1019,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
       crossAxisSpacing: 15,
       mainAxisSpacing: 15,
       children: [
-        for (final row in s.images)
+        for (final row in s.gallery)
           GestureDetector(
             key: ValueKey('collection-${row['id']}'),
             onTap: () {
@@ -1092,13 +1091,37 @@ class _HazardGamePageState extends State<HazardGamePage> {
       ],
     ),
   );
+  Widget fullMap(HazardGameState s) => modal(
+    '${s.chapterLabel}  /  MAP',
+    Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(s.objective, style: const TextStyle(color: ivory)),
+        const SizedBox(height: 12),
+        SizedBox(
+          height: 300,
+          width: 300,
+          child: CustomPaint(painter: VillageMapPainter(s, detailed: true)),
+        ),
+        const SizedBox(height: 12),
+        const Text(
+          '白：現在地  金：門と出口  水色：仲間\n明るい壁：建物  暗い壁：岩壁・柵',
+          style: TextStyle(color: ivory, height: 1.6),
+        ),
+        const SizedBox(height: 12),
+        action('close-map', '探索に戻る  M', () => game.toggle(PlayPhase.mapView)),
+      ],
+    ),
+    width: 600,
+  );
+
   Widget pause(HazardGameState s) => modal(
     'PAUSED',
     Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('村の探索を再開する準備ができたら、戻ってください。', style: TextStyle(color: ivory)),
+        const Text('探索を再開する準備ができたら、戻ってください。', style: TextStyle(color: ivory)),
         const SizedBox(height: 20),
         Wrap(
           spacing: 12,
@@ -1150,7 +1173,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              s.phase == PlayPhase.clear ? 'CHAPTER COMPLETE' : 'YOU ARE DOWN',
+              s.phase == PlayPhase.clear ? 'DEMO COMPLETE' : 'YOU ARE DOWN',
               style: const TextStyle(
                 color: gold,
                 fontSize: 38,
@@ -1159,12 +1182,14 @@ class _HazardGamePageState extends State<HazardGamePage> {
             ),
             const SizedBox(height: 18),
             Text(
-              s.phase == PlayPhase.clear ? '農場への道が開けた。' : 'ビールの包囲網を抜けられなかった。',
+              s.phase == PlayPhase.clear
+                  ? '最後の一杯を断り、村を抜けた。'
+                  : 'ビールの包囲網を抜けられなかった。',
               style: const TextStyle(color: ivory, fontSize: 18),
             ),
             const SizedBox(height: 25),
             Text(
-              '撃退 ${s.kills}    ビール ${s.beers}    記録 ${s.collected.length}/${s.images.length}',
+              '撃退 ${s.kills}    ビール ${s.beers}    記録 ${s.collected.length}/${s.gallery.length}',
               style: const TextStyle(color: ivory),
             ),
             const SizedBox(height: 28),
@@ -1211,13 +1236,27 @@ class ReticlePainter extends CustomPainter {
 }
 
 class VillageMapPainter extends CustomPainter {
-  VillageMapPainter(this.state);
+  VillageMapPainter(this.state, {this.detailed = false});
+  final bool detailed;
   final HazardGameState state;
   @override
   void paint(Canvas c, Size size) {
     Offset at(double x, double z) =>
         Offset((x + 24) / 48 * size.width, (27 - z) / 54 * size.height);
-    final p = Paint()..color = const Color(0xff657057);
+    final p = Paint()..color = const Color(0xff30362e);
+    c.drawRect(Offset.zero & size, p);
+    p.color = const Color(0xff454c3e);
+    for (final o in state.obstacles) {
+      if (o.bottom > 1.5 || (o.id == 'gate' && state.gateOpen)) continue;
+      c.drawRect(
+        Rect.fromPoints(
+          at(o.x - o.w / 2, o.z + o.d / 2),
+          at(o.x + o.w / 2, o.z - o.d / 2),
+        ),
+        p,
+      );
+    }
+    p.color = const Color(0xff657057);
     for (final h in state.map['houses']) {
       final a = at(
             (h['x'] - h['w'] / 2).toDouble(),
@@ -1230,7 +1269,31 @@ class VillageMapPainter extends CustomPainter {
       c.drawRect(Rect.fromPoints(a, b), p);
     }
     p.color = gold;
-    c.drawCircle(at(11.5, 24), 3, p);
+    c.drawCircle(
+      at(
+        (state.gate['x'] as num).toDouble(),
+        (state.gate['z'] as num).toDouble(),
+      ),
+      3,
+      p,
+    );
+    if (detailed) {
+      for (final e in state.map['exits'] as List? ?? []) {
+        c.drawCircle(
+          at((e['x'] as num).toDouble(), (e['z'] as num).toDouble()),
+          5,
+          p,
+        );
+      }
+      p.color = const Color(0xff9cd0cc);
+      for (final n in state.npcs) {
+        c.drawCircle(
+          at((n['x'] as num).toDouble(), (n['z'] as num).toDouble()),
+          4,
+          p,
+        );
+      }
+    }
     p.color = ivory;
     c.drawCircle(at(state.x, state.z), 3, p);
     final center = at(state.x, state.z);

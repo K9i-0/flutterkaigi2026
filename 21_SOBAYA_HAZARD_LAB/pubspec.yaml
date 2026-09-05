@@ -24,6 +24,8 @@ dev_dependencies:
 flutter:
   assets:
     - flutter_scene_generated/
+    - assets/farm.json
+    - assets/mountain.json
     - assets/village.json
     - assets/collection/
     - assets/audio/

@@ -239,19 +239,23 @@ void main() {
     s.restart();
     expect(s.collected, contains('wanted'));
   });
-  test('gate requires its key and crossing open gate completes chapter', () {
-    final s = game();
-    s.x = 11.5;
-    s.z = 22;
-    s.interact();
-    expect(s.gateOpen, false);
-    s.hasKey = true;
-    s.interact();
-    expect(s.gateOpen, true);
-    s.z = 27;
-    advance(s, .1);
-    expect(s.phase, PlayPhase.clear);
-  });
+  test(
+    'gate requires its key and crossing open gate requests farm transition',
+    () {
+      final s = game();
+      s.x = 11.5;
+      s.z = 22;
+      s.interact();
+      expect(s.gateOpen, false);
+      s.hasKey = true;
+      s.interact();
+      expect(s.gateOpen, true);
+      s.z = 27;
+      advance(s, .1);
+      expect(s.phase, PlayPhase.transition);
+      expect(s.exitRequested?['target'], 'farm');
+    },
+  );
   test('stairs reach the real upper floor without teleporting', () {
     final s = game();
     s.x = 11;

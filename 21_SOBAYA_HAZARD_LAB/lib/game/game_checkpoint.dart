@@ -5,7 +5,7 @@ import 'game_state.dart';
 extension HazardCheckpoint on HazardGameState {
   Map<String, dynamic> checkpoint() => {
     'version': 1,
-    'map': 'village',
+    'map': zoneId,
     'mapVersion': map['version'],
     'savedAt': DateTime.now().toIso8601String(),
     'player': {
@@ -26,6 +26,7 @@ extension HazardCheckpoint on HazardGameState {
     'shots': shots,
     'hits': hits,
     'time': time,
+    'medallions': medallions.toList(),
     'hasKey': hasKey,
     'gateOpen': gateOpen,
     'metYametaro': metYametaro,
@@ -74,8 +75,9 @@ extension HazardCheckpoint on HazardGameState {
 HazardGameState restoreHazardCheckpoint(
   Map<String, dynamic> data,
   Map<String, dynamic> map,
-  Set<String> collection,
-) {
+  Set<String> collection, {
+  List<Map<String, dynamic>>? catalog,
+}) {
   void require(bool valid) {
     if (!valid) throw const FormatException('Invalid checkpoint');
   }
@@ -92,10 +94,10 @@ HazardGameState restoreHazardCheckpoint(
 
   require(
     data['version'] == 1 &&
-        data['map'] == 'village' &&
+        data['map'] == (map['id'] ?? 'village') &&
         data['mapVersion'] == map['version'],
   );
-  final s = HazardGameState(map, savedCollection: collection);
+  final s = HazardGameState(map, savedCollection: collection, catalog: catalog);
   final p = data['player'] as Map<String, dynamic>;
   s.x = number(p['x'], -22.3, 22.3);
   s.y = number(p['y'], 0, 6);
@@ -110,13 +112,14 @@ HazardGameState restoreHazardCheckpoint(
   s.pistolLoaded = integer(data['pistolLoaded'], 0, 10);
   s.shotgunLoaded = integer(data['shotgunLoaded'], 0, 5);
   s.beers = integer(data['beers'], 0, 100000);
-  s.kills = integer(data['kills'], 0, s.enemies.length);
+  s.kills = integer(data['kills'], 0, 100000);
   s.shots = integer(data['shots'], 0, 1000000);
   s.hits = integer(data['hits'], 0, s.shots);
   s.time = number(data['time'], 0, 1e9);
   s.hasKey = data['hasKey'] as bool;
   s.gateOpen = data['gateOpen'] as bool;
-  require(!s.gateOpen || s.hasKey);
+  require(!s.gateOpen || s.gateMode != 'key' || s.hasKey);
+  s.medallions.addAll((data['medallions'] as List? ?? const []).cast<String>());
   s.metYametaro = data['metYametaro'] as bool;
   s.receivedYametaroAmmo = data['receivedYametaroAmmo'] as bool;
   s.metTakosan = data['metTakosan'] as bool? ?? false;
@@ -211,7 +214,7 @@ HazardGameState restoreHazardCheckpoint(
       ..x = number(j['x'], -30, 30)
       ..z = number(j['z'], -30, 35)
       ..heading = number(j['heading'], -1e9, 1e9)
-      ..hp = number(j['hp'], -100, 100)
+      ..hp = number(j['hp'], -100, e.boss ? 350 : 100)
       ..alive = j['alive'] as bool
       ..active = j['active'] as bool
       ..dropped = j['dropped'] as bool
@@ -224,7 +227,7 @@ HazardGameState restoreHazardCheckpoint(
       ..windup = number(j['windup'], -.051, 30);
     require(e.alive == (e.hp > 0) && (!e.dropped || !e.alive));
   }
-  require(s.enemies.where((e) => !e.alive).length == s.kills);
+  require(s.enemies.where((e) => !e.alive).length <= s.kills);
   require(!s.blocked(s.x, s.z, s.y));
   s.phase = PlayPhase.playing;
   s.invulnerable = .5;

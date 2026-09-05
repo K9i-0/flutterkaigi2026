@@ -1,6 +1,6 @@
-# そば屋ハザード · 村の広場と3D検証室
+# そば屋ハザード · 村・農場・山道と3D検証室
 
-**本編が追加されました。** 福ちゃんで探索・射撃・ビール回収・画像収集を行う第一章は `mise exec -- flutter run -d macos -t lib/game_main.dart` で起動します。[本編の操作・範囲・検証結果](GAMEPLAY.md)を参照してください。
+**本編が追加されました。** 福ちゃんで探索・射撃・ビール回収・画像収集を行う3区画の制作中体験版は `mise exec -- flutter run -d macos -t lib/game_main.dart` で起動します。[本編の操作・範囲・検証結果](GAMEPLAY.md)を参照してください。
 
 以下は従来の3D検証室 `lib/main.dart` の説明です。Flutter Sceneでモデル・操作・衝突・描画負荷を個別に検証します。
 

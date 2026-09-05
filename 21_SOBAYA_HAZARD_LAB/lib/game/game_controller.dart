@@ -11,7 +11,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:vector_math/vector_math.dart' as vm;
 
 import 'game_state.dart';
-import 'game_checkpoint.dart';
+import 'game_campaign.dart';
 import '../lab/beer_mug_component.dart';
 import '../lab/simulation.dart' show FrameSamples;
 
@@ -80,6 +80,8 @@ class HazardGameController extends ChangeNotifier {
   final scene = Scene();
   final frames = FrameSamples();
   HazardGameState? state;
+  late HazardCampaign campaign;
+  final environments = <String, Node>{};
   bool ready = false, disposed = false, muted = false;
   late Node village, itemsTemplate, beerTemplate, fukuTemplate, sobayaTemplate;
   late CharacterPlayer player;
@@ -103,19 +105,21 @@ class HazardGameController extends ChangeNotifier {
   bool posePreview = false;
   Future<void> load() async {
     preferences = await SharedPreferences.getInstance();
-    final map = jsonDecode(
-      await rootBundle.loadString('assets/village.json'),
-    ) as Map<String, dynamic>;
-    state = HazardGameState(
-      map,
-      savedCollection: preferences!
-          .getStringList('hazard.collection.v1')
-          ?.toSet(),
-    )..phase = PlayPhase.title;
+    final maps = <String, Map<String, dynamic>>{};
+    for (final id in ['village', 'farm', 'mountain']) {
+      maps[id] = jsonDecode(
+        await rootBundle.loadString('assets/$id.json'),
+      ) as Map<String, dynamic>;
+    }
+    campaign = HazardCampaign(
+      maps,
+      collection: preferences!.getStringList('hazard.collection.v1')?.toSet(),
+    );
+    state = campaign.state..phase = PlayPhase.title;
     final savedRun = preferences!.getString('hazard.run.v1');
     if (savedRun != null) {
       try {
-        restoreHazardCheckpoint(jsonDecode(savedRun), map, state!.collected);
+        HazardCampaign.restore(jsonDecode(savedRun), maps, state!.collected);
         _checkpointJson = savedRun;
       } catch (_) {
         saveStatus = '保存データを読み込めませんでした。新しく探索を始められます。';
@@ -131,9 +135,16 @@ class HazardGameController extends ChangeNotifier {
         'fukuchan',
         'yametaro',
         'takosan',
+        'farm',
+        'mountain',
       ].map((n) => loadScene('assets/models/$n.glb')),
     );
     if (disposed) return;
+    environments.addAll({
+      'village': loaded[0],
+      'farm': loaded[7],
+      'mountain': loaded[8],
+    });
     village = loaded[0];
     itemsTemplate = loaded[1];
     beerTemplate = loaded[2];
@@ -154,17 +165,22 @@ class HazardGameController extends ChangeNotifier {
       npcs[n['id']] = actor;
       scene.add(actor.node);
     }
+    for (final entry in environments.entries) {
+      final environment = entry.value, map = maps[entry.key]!;
+      _static(environment);
+      for (final h in map['houses']) {
+        final roof = environment.getChildByName('Roof_${h['id']}');
+        if (roof != null) _static(roof, value: false);
+      }
+      _static(environment.getChildByName('FarmGate')!, value: false);
+      for (final row in [
+        ...map['collection'],
+        ...(map['targets'] as List? ?? []),
+      ]) {
+        _static(environment.getChildByName(row['node'])!, value: false);
+      }
+    }
     scene.add(village);
-    _static(village);
-    // Roofs are hidden when the player enters a house; those casters are dynamic.
-    for (final h in state!.map['houses']) {
-      final roof = village.getChildByName('Roof_${h['id']}');
-      if (roof != null) _static(roof, value: false);
-    }
-    _static(village.getChildByName('FarmGate')!, value: false);
-    for (final row in state!.images) {
-      _static(village.getChildByName(row['node'])!, value: false);
-    }
     scene.environmentSettings = EnvironmentSettings(
       exposure: 1.05,
       ambientOcclusionEnabled: false,
@@ -296,10 +312,39 @@ class HazardGameController extends ChangeNotifier {
     }
   }
 
+  void _mountRegion() {
+    scene.remove(village);
+    village = environments[state!.zoneId]!;
+    scene.add(village);
+    for (final entry in npcs.entries) {
+      final rows = state!.npcs.where((n) => n['id'] == entry.key);
+      entry.value.node.visible = rows.isNotEmpty;
+      if (rows.isNotEmpty) {
+        final n = rows.first;
+        entry.value.node.position = vm.Vector3(
+          (n['x'] as num).toDouble(),
+          0,
+          (n['z'] as num).toDouble(),
+        );
+      }
+    }
+    _resetNodes();
+    _stepDistance = 0;
+  }
+
+  bool transitionRegion() {
+    if (!campaign.traverse()) return false;
+    state = campaign.state;
+    _mountRegion();
+    notifyListeners();
+    return true;
+  }
+
   void restart() {
     posePreview = false;
-    state!.restart();
-    _resetNodes();
+    campaign.restart();
+    state = campaign.state;
+    _mountRegion();
     notifyListeners();
   }
 
@@ -322,7 +367,7 @@ class HazardGameController extends ChangeNotifier {
         ].contains(s.phase)) {
       return Future.value();
     }
-    final encoded = jsonEncode(s.checkpoint());
+    final encoded = jsonEncode(campaign.checkpoint());
     _pendingSaves++;
     saveStatus = '記録中…';
     _saveQueue = _saveQueue.then((_) async {
@@ -346,13 +391,14 @@ class HazardGameController extends ChangeNotifier {
   void continueRun() {
     if (_checkpointJson == null) return;
     try {
-      state = restoreHazardCheckpoint(
+      campaign = HazardCampaign.restore(
         jsonDecode(_checkpointJson!),
-        state!.map,
+        campaign.maps,
         state!.collected,
       );
+      state = campaign.state;
       posePreview = false;
-      _resetNodes();
+      _mountRegion();
       player.setMotion('Idle');
       saveStatus = '';
     } catch (_) {
@@ -437,6 +483,7 @@ class HazardGameController extends ChangeNotifier {
     final s = state!, dt = delta.clamp(0.0, .05);
     final bx = s.x, bz = s.z;
     if (!posePreview) s.tick(dt);
+    if (s.phase == PlayPhase.transition && transitionRegion()) return;
     final moved = math.sqrt(math.pow(s.x - bx, 2) + math.pow(s.z - bz, 2));
     var motion = s.hurtTime > 0
         ? 'Hit'
@@ -475,6 +522,10 @@ class HazardGameController extends ChangeNotifier {
     );
     for (final entry in npcs.entries) {
       final actor = entry.value, n = entry.value.node.position;
+      if (!actor.node.visible) {
+        actor.update(dt, false);
+        continue;
+      }
       final near = math.pow(s.x - n.x, 2) + math.pow(s.z - n.z, 2) < 36;
       final talking = s.phase == PlayPhase.dialogue && s.talkingTo == entry.key;
       if (near) {
@@ -495,7 +546,13 @@ class HazardGameController extends ChangeNotifier {
       actor.update(dt, s.running || talking);
     }
     for (var i = 0; i < enemies.length; i++) {
-      final e = s.enemies[i], actor = enemies[i];
+      final actor = enemies[i];
+      if (i >= s.enemies.length) {
+        actor.node.visible = false;
+        actor.update(dt, false);
+        continue;
+      }
+      final e = s.enemies[i];
       actor.node.visible = e.active && (!e.dropped);
       actor.node.position = vm.Vector3(e.x, 0, e.z);
       actor.node.rotation = vm.Quaternion.axisAngle(
@@ -503,7 +560,7 @@ class HazardGameController extends ChangeNotifier {
         e.heading + math.pi,
       );
       final scale = e.alive ? 1.0 : math.max(.001, 1 - e.vanish / .65);
-      actor.node.scale = vm.Vector3.all(scale);
+      actor.node.scale = vm.Vector3.all(scale * (e.boss ? 1.2 : 1));
       actor.setMotion(
         e.attackPending
             ? 'MugAttack'
@@ -516,7 +573,11 @@ class HazardGameController extends ChangeNotifier {
       actor.update(
         dt,
         s.running && e.alive && e.active,
-        speed: e.attackPending ? 1.5 : .8,
+        speed: e.attackPending
+            ? (e.boss ? 1.5 * .7 / 1.15 : 1.5)
+            : e.moved > .0001 && dt > 0
+            ? (e.moved / dt / .91610738).clamp(.1, 2)
+            : 1,
       );
     }
     for (final h in s.map['houses']) {
@@ -529,6 +590,11 @@ class HazardGameController extends ChangeNotifier {
     for (final p in s.images) {
       village.getChildByName(p['node'])!.visible = !s.collected.contains(
         p['id'],
+      );
+    }
+    for (final target in s.targets) {
+      village.getChildByName(target['node'])!.visible = !s.medallions.contains(
+        target['id'],
       );
     }
     for (final c in s.crates) {
@@ -634,6 +700,8 @@ class HazardGameController extends ChangeNotifier {
       'fukuchan',
       'yametaro',
       'takosan',
+      'farm',
+      'mountain',
     ]) {
       unawaited(releaseScene('assets/models/$name.glb'));
     }

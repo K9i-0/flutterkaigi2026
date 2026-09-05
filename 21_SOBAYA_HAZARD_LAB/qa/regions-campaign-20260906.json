@@ -1,0 +1,84 @@
+{
+  "date": "2026-09-06",
+  "platform": "macOS native debug / Flutter 3.47.2 / flutter_scene 0.23.0",
+  "automated_tests": 34,
+  "analyze": "No issues found",
+  "tests": [
+    "three-region round trip, shared current inventory and persistent per-region loot",
+    "version 2 campaign JSON round trip and old village checkpoint compatibility",
+    "all exits and NPCs reachable with player capsule collision",
+    "ground-floor collections reachable; all farm medallions visible within current aim pitch range from reachable ground",
+    "seven medallions award 3 beer exactly once",
+    "boss telegraph can be avoided by ordinary lateral movement",
+    "final gate requires boss defeat; closed gate cannot trigger ending"
+  ],
+  "native_setup": "Deterministic debug scenarios; these are targeted checks, not a normal full playthrough. E and M are real UI key events; forward movement uses the simulation harness. The final-gate scenario marks the boss defeated.",
+  "after_farm_gate_and_crossing": {
+    "phase": "playing",
+    "zone": "mountain",
+    "position": {
+      "x": -19.0,
+      "y": 0.0,
+      "z": -21.0
+    },
+    "health": 100.0,
+    "loaded": 10,
+    "reserve": 40,
+    "kills": 0,
+    "gateOpen": false,
+    "collected": [
+      "wanted"
+    ]
+  },
+  "after_complete_process_restart_and_continue": {
+    "phase": "playing",
+    "zone": "mountain",
+    "position": {
+      "x": 19.5,
+      "y": 0.0,
+      "z": 15.0
+    },
+    "health": 100.0,
+    "loaded": 10,
+    "reserve": 40,
+    "kills": 1,
+    "gateOpen": true,
+    "collected": [
+      "wanted"
+    ]
+  },
+  "ending_trigger": {
+    "phase": "clear",
+    "zone": "mountain",
+    "position": {
+      "x": 20.999999999999915,
+      "y": 0.0,
+      "z": 15.0
+    },
+    "health": 100.0,
+    "loaded": 10,
+    "reserve": 40,
+    "kills": 1,
+    "gateOpen": true,
+    "collected": [
+      "wanted"
+    ]
+  },
+  "visual_review": [
+    "farm entrance, model, UI and poster/window correction",
+    "full map with exits and merchant",
+    "mountain exposed bedrock, house and tunnel exit",
+    "ending result"
+  ],
+  "village_generator_regression": "Regenerated village/items mesh, accessor and node metadata identical; canonical GLBs unchanged in git",
+  "game_log_errors": [],
+  "launcher_note": "Dart MCP launcher reports failed foreground; the native renderer and Marionette work.",
+  "tripo_credits_spent": 0,
+  "limitations": [
+    "No natural full demo playthrough or validated 15–25 minute duration",
+    "Opening, chapter events and narrative ending incomplete",
+    "Final encounter is currently a stronger ordinary Sobaya; further presentation and balance needed",
+    "Difficulty and sensitivity settings pending",
+    "Final profile/GPU measurement pending"
+  ]
+}

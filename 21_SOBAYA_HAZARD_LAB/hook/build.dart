@@ -14,6 +14,8 @@ void main(List<String> args) async {
         'assets/models/sobaya.glb',
         'assets/models/beer_mug.glb',
         'assets/models/village.glb',
+        'assets/models/farm.glb',
+        'assets/models/mountain.glb',
         'assets/models/items.glb',
         'assets/models/fukuchan.glb',
         'assets/models/yametaro.glb',

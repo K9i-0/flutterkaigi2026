@@ -697,7 +697,9 @@
   "gate": {
     "x": 11.5,
     "z": 23,
-    "y": 0
+    "y": 0,
+    "mode": "key",
+    "label": "農場への門"
   },
   "tower": {
     "x": -13.5,
@@ -714,6 +716,24 @@
       "id": "takosan",
       "x": -13,
       "z": -18
+    }
+  ],
+  "id": "village",
+  "label": "CHAPTER 01  /  PUEBLO",
+  "subtitle": "静かな村、騒がしい住人。",
+  "exits": [
+    {
+      "id": "forward",
+      "target": "farm",
+      "x": 11.5,
+      "z": 27.2,
+      "radius": 1.2,
+      "requiresGate": true,
+      "arrival": {
+        "x": -19,
+        "z": -21,
+        "yaw": 3.141592653589793
+      }
     }
   ]
 }

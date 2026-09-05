@@ -8,8 +8,10 @@ enum PlayPhase {
   title,
   playing,
   dialogue,
+  transition,
   paused,
   inventory,
+  mapView,
   collection,
   dead,
   clear,
@@ -73,7 +75,10 @@ class Pickup {
 }
 
 class Enemy {
-  Enemy(this.id, this.x, this.z);
+  Enemy(this.id, this.x, this.z, {this.boss = false}) {
+    hp = boss ? 350 : 100;
+  }
+  final bool boss;
   final int id;
   double x,
       z,
@@ -126,11 +131,34 @@ const itemNames = {
 };
 
 class HazardGameState {
-  HazardGameState(this.map, {Set<String>? savedCollection})
+  HazardGameState(this.map, {Set<String>? savedCollection, this.catalog})
     : collected = {...?savedCollection} {
     restart();
   }
   final Map<String, dynamic> map;
+  final List<Map<String, dynamic>>? catalog;
+  List<Map<String, dynamic>> get gallery => catalog ?? images;
+  String get zoneId => map['id'] as String? ?? 'village';
+  String get chapterLabel => map['label'] as String? ?? 'CHAPTER 01  /  PUEBLO';
+  String get subtitle => map['subtitle'] as String? ?? '静かな村、騒がしい住人。';
+  Map<String, dynamic> get gate => map['gate'] as Map<String, dynamic>;
+  String get gateMode => gate['mode'] as String? ?? 'key';
+  bool get bossAlive => enemies.any((e) => e.boss && e.alive);
+  bool get canOpenGate =>
+      gateMode == 'free' || (gateMode == 'boss' ? !bossAlive : hasKey);
+  String get objective => zoneId == 'farm'
+      ? '納屋で補給し、東の門から山道へ'
+      : zoneId == 'mountain'
+      ? (bossAlive ? '廃屋の前のそば屋を撃退し、脱出路を開け' : '東の脱出路から村を抜けろ')
+      : gateOpen
+      ? '農場への門をくぐれ'
+      : hasKey
+      ? '北東の門を紋章の鍵で開けろ'
+      : '村を探索し、紋章の鍵を探せ';
+  Map<String, dynamic>? exitRequested;
+  final medallions = <String>{};
+  List<Map<String, dynamic>> get targets =>
+      (map['targets'] as List? ?? const []).cast<Map<String, dynamic>>();
   final Set<String> collected;
   late List<Obstacle> obstacles;
   final enemies = <Enemy>[],
@@ -194,6 +222,16 @@ class HazardGameState {
       ? dialogueTopic == 'trade_result'
             ? [DialogueLine('たこさん', tradeMessage)]
             : takosanDialogue[dialogueTopic]!
+      : zoneId == 'mountain' &&
+            ['intro', 'greeting', 'route'].contains(dialogueTopic)
+      ? [
+          DialogueLine(
+            'やめ太郎',
+            bossAlive
+                ? '廃屋の前にいるそば屋が、帰り道を塞いでる。\nジョッキを大きく振り上げたら、横か後ろへ。振り終わりを狙おう。'
+                : '福ちゃん、やったね！ 東側の門から帰ろう。\n今日はもう、乾杯は遠慮したいな。',
+          ),
+        ]
       : yametaroDialogue[dialogueTopic]!;
   DialogueLine get dialogueLine => dialogueLines[dialogueIndex];
   bool get dialogueChoices => dialogueIndex == dialogueLines.length - 1;
@@ -217,16 +255,20 @@ class HazardGameState {
     x = (map['spawn']['x'] as num).toDouble();
     z = (map['spawn']['z'] as num).toDouble();
     y = 0;
-    yaw = math.pi;
-    heading = 0;
+    yaw = (map['spawn']['yaw'] as num? ?? math.pi).toDouble();
+    heading = yaw + math.pi;
     health = 100;
     maxHealth = 100;
     obstacles = (map['solids'] as List).map((j) => Obstacle(j)).toList();
     enemies.clear();
     for (final j in map['enemies']) {
       enemies.add(
-        Enemy(j['id'], (j['x'] as num).toDouble(), (j['z'] as num).toDouble())
-          ..active = j['id'] < 4,
+        Enemy(
+          j['id'],
+          (j['x'] as num).toDouble(),
+          (j['z'] as num).toDouble(),
+          boss: j['boss'] == true,
+        )..active = j['active'] as bool? ?? j['id'] < 4,
       );
     }
     pickups
@@ -274,6 +316,8 @@ class HazardGameState {
     dialogueOwner = 'yametaro';
     tradeMessage = '';
     checkpointRequested = false;
+    exitRequested = null;
+    medallions.clear();
     dialogueTopic = 'intro';
     dialogueIndex = 0;
     sprint = false;
@@ -284,7 +328,7 @@ class HazardGameState {
     _flowTimer = 0;
     _flow.clear();
     phase = PlayPhase.playing;
-    say('村の広場を探索し、紋章の鍵を探せ。');
+    say(objective);
   }
 
   void stopInput() {
@@ -510,7 +554,10 @@ class HazardGameState {
         return 3.03;
       }
     }
-    if (previous > 3.8 && (px + 13.5).abs() < 1.7 && (pz + 6.5).abs() < 1.7) {
+    if (map['tower'] != null &&
+        previous > 3.8 &&
+        (px + 13.5).abs() < 1.7 &&
+        (pz + 6.5).abs() < 1.7) {
       return 4.22;
     }
     return 0;
@@ -615,8 +662,8 @@ class HazardGameState {
         e.windup -= dt;
         if (e.windup <= 0) {
           e.attackPending = false;
-          e.cooldown = 1.5;
-          if (dist < 1.65 &&
+          e.cooldown = e.boss ? 2.2 : 1.5;
+          if (dist < (e.boss ? 2.0 : 1.65) &&
               invulnerable <= 0 &&
               (dist < .01 ||
                   (dx * math.sin(e.heading) + dz * math.cos(e.heading)) / dist >
@@ -628,7 +675,7 @@ class HazardGameState {
                     dist,
                   ) >=
                   dist - .1) {
-            health -= 15;
+            health -= e.boss ? 30 : 15;
             invulnerable = .8;
             hurtTime = .45;
             reloading = 0;
@@ -644,10 +691,10 @@ class HazardGameState {
         continue;
       }
       if (e.stun > 0) continue;
-      if (dist < 1.15 && y < 1 && e.cooldown <= 0) {
+      if (dist < (e.boss ? 1.8 : 1.15) && y < 1 && e.cooldown <= 0) {
         e.attackPending = true;
         e.heading = math.atan2(dx, dz);
-        e.windup = .7;
+        e.windup = e.boss ? 1.15 : .7;
         lastSound = 'enemy';
         continue;
       }
@@ -678,16 +725,27 @@ class HazardGameState {
         }
       }
       e.heading = math.atan2(vx, vz);
-      final speed = .8 * dt;
+      final speed = (e.boss ? 1.15 : .8) * dt;
       final oldX = e.x, oldZ = e.z;
       if (!blocked(e.x + vx * speed, e.z, 0, radius: .37)) e.x += vx * speed;
       if (!blocked(e.x, e.z + vz * speed, 0, radius: .37)) e.z += vz * speed;
       e.moved = math.sqrt(math.pow(e.x - oldX, 2) + math.pow(e.z - oldZ, 2));
     }
-    if (gateOpen && z > 26.5 && x > 8 && x < 15) {
-      phase = PlayPhase.clear;
-      stopInput();
-      lastSound = 'clear';
+    if (running) {
+      for (final exit in map['exits'] as List? ?? const []) {
+        if (exit['requiresGate'] == true && !gateOpen) continue;
+        if (y < 1 &&
+            math.pow(x - exit['x'], 2) + math.pow(z - exit['z'], 2) <
+                math.pow(exit['radius'], 2)) {
+          exitRequested = Map<String, dynamic>.from(exit);
+          phase = exit['target'] == 'ending'
+              ? PlayPhase.clear
+              : PlayPhase.transition;
+          stopInput();
+          lastSound = exit['target'] == 'ending' ? 'clear' : 'gate';
+          break;
+        }
+      }
     }
     interaction = _nearestInteraction();
   }
@@ -723,11 +781,12 @@ class HazardGameState {
   double wallDistance(
     vm.Vector3 origin,
     vm.Vector3 direction,
-    double maxDistance,
-  ) {
+    double maxDistance, {
+    bool ignoreGate = false,
+  }) {
     var limit = maxDistance;
     for (final o in obstacles) {
-      if (o.id == 'gate' && gateOpen) continue;
+      if (o.id == 'gate' && (gateOpen || ignoreGate)) continue;
       final t = o.ray(origin, direction, limit);
       if (t != null) limit = math.min(limit, t);
     }
@@ -764,6 +823,7 @@ class HazardGameState {
     var distance = wallDistance(origin, dir, 60);
     Enemy? victim;
     Breakable? crate;
+    Map<String, dynamic>? medallion;
     bool head = false;
     for (final c in crates.where((c) => !c.broken)) {
       final o = Obstacle({
@@ -790,11 +850,31 @@ class HazardGameState {
       if ((at.x - e.x) * (at.x - e.x) + (at.z - e.z) * (at.z - e.z) <
               radius * radius &&
           at.y > .05 &&
-          at.y < 1.85) {
+          at.y < (e.boss ? 2.22 : 1.85)) {
         distance = along;
         victim = e;
         crate = null;
         head = at.y > 1.48;
+      }
+    }
+    for (final target in targets.where((t) => !medallions.contains(t['id']))) {
+      final center = vm.Vector3(
+        (target['x'] as num).toDouble(),
+        (target['y'] as num).toDouble(),
+        (target['z'] as num).toDouble(),
+      );
+      final to = center - origin, along = to.dot(dir);
+      final radius = (target['radius'] as num).toDouble();
+      final perpendicular = to.length2 - along * along;
+      if (along > 0 && perpendicular < radius * radius) {
+        final near =
+            along - math.sqrt(math.max(0, radius * radius - perpendicular));
+        if (near < distance) {
+          distance = near;
+          medallion = target;
+          victim = null;
+          crate = null;
+        }
       }
     }
     shotEnd = origin + dir * distance;
@@ -804,6 +884,20 @@ class HazardGameState {
         toHit.length - .5) {
       victim = null;
       crate = null;
+      medallion = null;
+    }
+    if (medallion != null) {
+      medallions.add(medallion['id']);
+      hits++;
+      hitFlash = .18;
+      checkpointRequested = true;
+      final count = targets.where((t) => medallions.contains(t['id'])).length;
+      if (count == targets.length) {
+        beers += 3;
+        say('青いメダリオン $count / ${targets.length} — 達成報酬 ビール ×3');
+      } else {
+        say('青いメダリオン $count / ${targets.length}');
+      }
     }
     if (crate != null) {
       breakCrate(crate);
@@ -917,9 +1011,13 @@ class HazardGameState {
     e.alive = false;
     e.vanish = 0;
     kills++;
-    say('そば屋を倒した。ビールを回収しよう。');
+    say(e.boss ? '最後のそば屋を撃退した。脱出路の門へ！' : 'そば屋を倒した。ビールを回収しよう。');
+    if (e.boss) checkpointRequested = true;
     for (final other in enemies) {
-      if (other.id < 4 + kills) other.active = true;
+      if (zoneId == 'village' &&
+          other.id < 4 + enemies.where((e) => !e.alive).length) {
+        other.active = true;
+      }
     }
   }
 
@@ -967,23 +1065,43 @@ class HazardGameState {
     for (final c in crates) {
       if (!c.broken && _near(c.x, 0, c.z, 1.6)) return 'crate:${c.id}';
     }
-    if (_near(11.5, 0, 23, 2.4)) return 'gate';
-    if (_near(-13.5, 0, -8.8, 1.7) || _near(-13.5, 4.22, -6.5, 1.7)) {
+    if (_near(
+      (gate['x'] as num).toDouble(),
+      0,
+      (gate['z'] as num).toDouble(),
+      2.4,
+      ignoreGate: true,
+    )) {
+      return 'gate';
+    }
+    if (map['tower'] != null &&
+        (_near(-13.5, 0, -8.8, 1.7) || _near(-13.5, 4.22, -6.5, 1.7))) {
       return 'tower';
     }
     return null;
   }
 
-  bool _near(double px, double py, double pz, double radius) =>
+  bool _near(
+    double px,
+    double py,
+    double pz,
+    double radius, {
+    bool ignoreGate = false,
+  }) =>
       math.pow(x - px, 2) + math.pow(z - pz, 2) < radius * radius &&
       (y - py).abs() < 1.5 &&
-      _reachable(px, pz);
-  bool _reachable(double px, double pz) {
+      _reachable(px, pz, ignoreGate: ignoreGate);
+  bool _reachable(double px, double pz, {bool ignoreGate = false}) {
     final origin = vm.Vector3(x, y + .9, z),
         target = vm.Vector3(px, y + .9, pz),
         delta = target - origin;
     return delta.length < .001 ||
-        wallDistance(origin, delta.normalized(), delta.length) >=
+        wallDistance(
+              origin,
+              delta.normalized(),
+              delta.length,
+              ignoreGate: ignoreGate,
+            ) >=
             delta.length - .12;
   }
 
@@ -1000,9 +1118,11 @@ class HazardGameState {
     if (key.startsWith('crate:')) return '木箱・樽を壊す';
     if (key == 'tower') return y > 2 ? 'はしごを降りる' : '見張り塔へ登る';
     return gateOpen
-        ? '農場へ進む'
-        : hasKey
-        ? '紋章の鍵で門を開ける'
+        ? '門の先へ進む'
+        : canOpenGate
+        ? '${gate['label'] ?? '農場への門'}を開ける'
+        : gateMode == 'boss'
+        ? '廃屋前のそば屋を撃退する'
         : '紋章の鍵が必要';
   }
 
@@ -1028,7 +1148,7 @@ class HazardGameState {
       collected.add(id);
       collectionDirty = true;
       lastSound = 'collect';
-      say('記録を収集した ${collected.length}/${images.length} — Cで鑑賞');
+      say('記録を収集した ${collected.length}/${gallery.length} — Cで鑑賞');
     } else if (key.startsWith('crate:')) {
       breakCrate(crates.firstWhere((c) => 'crate:${c.id}' == key));
     } else if (key == 'tower') {
@@ -1043,13 +1163,17 @@ class HazardGameState {
       }
       lastSound = 'step';
     } else if (key == 'gate') {
-      if (hasKey) {
+      if (canOpenGate) {
         gateOpen = true;
         checkpointRequested = true;
-        say('農場への門が開いた。');
+        say('${gate['label'] ?? '農場への門'}が開いた。');
         lastSound = 'gate';
       } else {
-        say('紋章の鍵が必要だ。北側の納屋を調べよう。');
+        say(
+          gateMode == 'boss'
+              ? '廃屋前のそば屋を撃退して、脱出路を確保しよう。'
+              : '紋章の鍵が必要だ。北側の納屋を調べよう。',
+        );
       }
     }
   }
@@ -1184,6 +1308,9 @@ class HazardGameState {
     'kills': kills,
     'shots': shots,
     'hits': hits,
+    'zone': zoneId,
+    'exitRequested': exitRequested,
+    'medallions': medallions.toList(),
     'gateOpen': gateOpen,
     'hasKey': hasKey,
     'collected': collected.toList(),
