@@ -1,0 +1,106 @@
+{
+  "source": "04_GAME_ASSETS/3d/characters/sobaya/tripo_p2_20260905/sobaya_source.blend",
+  "rig_version": 3,
+  "bone_count": 45,
+  "deform_bones": 43,
+  "weighted_vertices": 14789,
+  "triangles": 28576,
+  "max_vertex_influences": 4,
+  "socket": "PropSocket.R",
+  "root_motion": "in-place",
+  "clips": [
+    {
+      "name": "Idle",
+      "duration": 2.4,
+      "loop": true,
+      "fps": 30,
+      "prop": null
+    },
+    {
+      "name": "Walk",
+      "duration": 1.2333333333333334,
+      "loop": true,
+      "fps": 30,
+      "prop": null,
+      "ground_speed_mps": 1.0074746322065635,
+      "source_file": "walk_standard.fbx",
+      "source_sha256": "dd857d3dfb155642d17f917715f94e2e90c82326b95921274c8c926789c8a0de",
+      "source_scale": 0.9260575825786282
+    },
+    {
+      "name": "Run",
+      "duration": 0.8333333333333334,
+      "loop": true,
+      "fps": 30,
+      "prop": null,
+      "ground_speed_mps": 2.3817081087585468,
+      "source_file": "run_weighted.fbx",
+      "source_sha256": "2a35b5c56951c2fea53e36a1a2822645cfdaa72e26be0a821a19426dd147d085",
+      "source_scale": 0.9260575825786282
+    },
+    {
+      "name": "ZombieWalk",
+      "duration": 1.8,
+      "loop": true,
+      "fps": 30,
+      "prop": null
+    },
+    {
+      "name": "DanceStep",
+      "duration": 2.0,
+      "loop": true,
+      "fps": 30,
+      "prop": null
+    },
+    {
+      "name": "DanceDisco",
+      "duration": 2.4,
+      "loop": true,
+      "fps": 30,
+      "prop": null
+    },
+    {
+      "name": "DanceVictory",
+      "duration": 2.0,
+      "loop": true,
+      "fps": 30,
+      "prop": null
+    },
+    {
+      "name": "Toast",
+      "duration": 2.6,
+      "loop": false,
+      "fps": 30,
+      "prop": "beer_mug"
+    },
+    {
+      "name": "MugAttack",
+      "duration": 1.4,
+      "loop": false,
+      "fps": 30,
+      "prop": "beer_mug"
+    }
+  ],
+  "mocap": [
+    {
+      "name": "Walk",
+      "duration": 1.2333333333333334,
+      "fps": 30,
+      "loop": true,
+      "ground_speed_mps": 1.0074746322065635,
+      "source_file": "walk_standard.fbx",
+      "source_sha256": "dd857d3dfb155642d17f917715f94e2e90c82326b95921274c8c926789c8a0de",
+      "source_scale": 0.9260575825786282
+    },
+    {
+      "name": "Run",
+      "duration": 0.8333333333333334,
+      "fps": 30,
+      "loop": true,
+      "ground_speed_mps": 2.3817081087585468,
+      "source_file": "run_weighted.fbx",
+      "source_sha256": "2a35b5c56951c2fea53e36a1a2822645cfdaa72e26be0a821a19426dd147d085",
+      "source_scale": 0.9260575825786282
+    }
+  ]
+}

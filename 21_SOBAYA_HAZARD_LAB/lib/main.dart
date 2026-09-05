@@ -450,7 +450,7 @@ class _LabPageState extends State<LabPage> {
                     ),
                   const SizedBox(height: 8),
                   Text(
-                    '43 bones · ${motionSpec(lab.firstRig?.current ?? 'Idle').label} · ${lab.firstRig?.active.playbackTime.toStringAsFixed(2) ?? '0.00'} s',
+                    '45 bones · ${motionSpec(lab.firstRig?.current ?? 'Idle').label} · ${lab.firstRig?.active.playbackTime.toStringAsFixed(2) ?? '0.00'} s',
                     style: const TextStyle(fontSize: 11, color: muted),
                   ),
                 ],
@@ -765,7 +765,7 @@ class _LabPageState extends State<LabPage> {
             ),
             const SizedBox(height: 6),
             const Text(
-              '43 bones / 28,576 triangles\n4Kの質感を保持したスキンモデル。',
+              '45 bones / 28,576 triangles\n4Kの質感を保持したスキンモデル。',
               style: TextStyle(fontSize: 12, color: muted, height: 1.7),
             ),
           ],

@@ -1,0 +1,22 @@
+{
+  "result": "PASS",
+  "sha256": "2af56a525c56547f7739780bba145b1589750c4fd1c39c1cae1bcff77745cc79",
+  "clips": {
+    "Walk": {
+      "frames": 38,
+      "minimum_sole_height_m": 0.003004668280482292,
+      "maximum_lower_sole_height_m": 0.004569722339510918
+    },
+    "Run": {
+      "frames": 26,
+      "minimum_sole_height_m": 0.002631228184327483,
+      "maximum_lower_sole_height_m": 0.01319901179522276
+    }
+  },
+  "checks": [
+    "finite deformed vertices",
+    "exported shoes do not penetrate floor beyond 3 mm",
+    "walking always has a sole within 12 mm of floor"
+  ],
+  "limits": "Does not certify all foot sliding, transitions, terrain IK or subjective motion quality."
+}

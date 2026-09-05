@@ -1,0 +1,65 @@
+{
+  "sha256": "2af56a525c56547f7739780bba145b1589750c4fd1c39c1cae1bcff77745cc79",
+  "bytes": 12403224,
+  "skin_joints": 45,
+  "exported_vertices": 32378,
+  "triangles": 28576,
+  "max_weight_sum_error": 1.2014061212539673e-07,
+  "clips": [
+    {
+      "name": "DanceDisco",
+      "seconds": 2.4000000953674316,
+      "loop": true,
+      "endpoint_max_delta": 4.050511553770064e-18
+    },
+    {
+      "name": "DanceStep",
+      "seconds": 2.0,
+      "loop": true,
+      "endpoint_max_delta": 1.3877787807814457e-17
+    },
+    {
+      "name": "DanceVictory",
+      "seconds": 2.0,
+      "loop": true,
+      "endpoint_max_delta": 0
+    },
+    {
+      "name": "Idle",
+      "seconds": 2.4000000953674316,
+      "loop": true,
+      "endpoint_max_delta": 0
+    },
+    {
+      "name": "MugAttack",
+      "seconds": 1.399999976158142,
+      "loop": false,
+      "endpoint_max_delta": 0
+    },
+    {
+      "name": "Run",
+      "seconds": 0.8333333134651184,
+      "loop": true,
+      "endpoint_max_delta": 0
+    },
+    {
+      "name": "Toast",
+      "seconds": 2.5999999046325684,
+      "loop": false,
+      "endpoint_max_delta": 0
+    },
+    {
+      "name": "Walk",
+      "seconds": 1.2333333492279053,
+      "loop": true,
+      "endpoint_max_delta": 0
+    },
+    {
+      "name": "ZombieWalk",
+      "seconds": 1.7999999523162842,
+      "loop": true,
+      "endpoint_max_delta": 8.639736061993863e-20
+    }
+  ],
+  "result": "PASS"
+}

@@ -54,7 +54,9 @@ class LabSimulation {
     if (magnitude < 1e-6 || !magnitude.isFinite) return;
     dx /= math.max(1, magnitude);
     dz /= math.max(1, magnitude);
-    final speed = sprint ? 3.6 : 1.4;
+    // Match the captured gait without making the heavy character take tiny,
+    // excessively rapid steps. Playback still follows actual collision travel.
+    final speed = sprint ? 2.8 : 1.25;
     final travel = speed * seconds.clamp(0, .1);
     final steps = math.max(1, (travel / .05).ceil());
     final sx = dx * travel / steps, sz = dz * travel / steps;
