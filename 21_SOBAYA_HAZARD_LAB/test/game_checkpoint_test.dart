@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sobaya_hazard_lab/game/game_checkpoint.dart';
 import 'package:sobaya_hazard_lab/game/game_state.dart';
+import 'package:sobaya_hazard_lab/game/game_dialogue.dart';
 
 Map<String, dynamic> map() =>
     jsonDecode(File('assets/village.json').readAsStringSync());
@@ -14,6 +15,55 @@ void advance(HazardGameState s, double seconds) {
 }
 
 void main() {
+  test('beer purchases consume currency and persistent stock exactly once', () {
+    final s = HazardGameState(map())
+      ..x = -13
+      ..z = -19.8
+      ..beers = 8;
+    s.interact();
+    expect(s.talkingTo, 'takosan');
+    while (!s.dialogueChoices) {
+      s.advanceDialogue();
+    }
+    for (var i = 0; i < 3; i++) {
+      s.chooseDialogue('trade:ammo');
+    }
+    expect(s.beers, 2);
+    expect(s.reserve, 70);
+    s.chooseDialogue('trade:ammo');
+    expect(s.beers, 2);
+    expect(s.reserve, 70);
+    expect(s.tradeMessage, contains('売り切れ'));
+    s.endDialogue();
+    final restored = restoreHazardCheckpoint(s.checkpoint(), map(), {});
+    restored.interact();
+    expect(restored.dialogueTopic, 'greeting');
+    expect(restored.stockRemaining(tradeOffers.first), 0);
+    restored.chooseDialogue('trade:ammo');
+    expect(restored.beers, 2);
+    expect(restored.reserve, 70);
+  });
+  test(
+    'insufficient beer or full case never consumes merchant stock or money',
+    () {
+      final s = HazardGameState(map())
+        ..x = -13
+        ..z = -19.8;
+      s.interact();
+      while (!s.dialogueChoices) {
+        s.advanceDialogue();
+      }
+      s.chooseDialogue('trade:herb');
+      expect(s.beers, 0);
+      expect(s.tradePurchases, isEmpty);
+      while (s.addItem('green', 1)) {}
+      s.beers = 3;
+      s.chooseDialogue('trade:herb');
+      expect(s.beers, 3);
+      expect(s.tradePurchases, isEmpty);
+      expect(s.tradeMessage, contains('ケースに入りません'));
+    },
+  );
   test('checkpoint restores resources, layout and one-time NPC reward across JSON round trip', () {
     final s = HazardGameState(map())
       ..x = -2.8

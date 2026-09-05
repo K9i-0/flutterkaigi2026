@@ -10,6 +10,7 @@ import 'package:flutter_scene/scene.dart' show SceneView;
 
 import 'game_controller.dart';
 import 'game_state.dart';
+import 'game_dialogue.dart';
 import 'game_automation.dart';
 import 'game_benchmark.dart';
 
@@ -513,7 +514,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
           top: 51,
           left: 30,
           child: Text(
-            '村の入口  /  やめ太郎',
+            s.talkingTo == 'takosan' ? '村の補給所  /  たこさん' : '村の入口  /  やめ太郎',
             style: TextStyle(
               color: ivory.withValues(alpha: .8),
               fontSize: 12,
@@ -555,32 +556,49 @@ class _HazardGamePageState extends State<HazardGamePage> {
                     ),
                   ),
                   const SizedBox(height: 16),
+                  if (s.talkingTo == 'takosan' && s.dialogueChoices)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: Text(
+                        '所持ビール  ${s.beers}杯',
+                        style: const TextStyle(color: gold),
+                      ),
+                    ),
                   if (s.dialogueChoices)
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,
                       children: [
-                        action(
-                          'dialogue-route',
-                          '農場への道',
-                          () => s.chooseDialogue('route'),
-                        ),
-                        action(
-                          'dialogue-combat',
-                          'そば屋への対処',
-                          () => s.chooseDialogue('combat'),
-                        ),
-                        action(
-                          'dialogue-records',
-                          '壁の貼り紙',
-                          () => s.chooseDialogue('records'),
-                        ),
-                        if (!s.receivedYametaroAmmo)
+                        if (s.talkingTo == 'takosan') ...[
+                          for (final offer in tradeOffers)
+                            action(
+                              'trade-${offer.id}',
+                              '${itemNames[offer.kind]} ×${offer.amount}  /  ${offer.price}杯  /  ${s.stockRemaining(offer) == 0 ? '売切' : '残${s.stockRemaining(offer)}'}',
+                              () => s.chooseDialogue('trade:${offer.id}'),
+                            ),
+                        ] else ...[
                           action(
-                            'dialogue-supplies',
-                            '予備弾をもらう',
-                            () => s.chooseDialogue('supplies'),
+                            'dialogue-route',
+                            '農場への道',
+                            () => s.chooseDialogue('route'),
                           ),
+                          action(
+                            'dialogue-combat',
+                            'そば屋への対処',
+                            () => s.chooseDialogue('combat'),
+                          ),
+                          action(
+                            'dialogue-records',
+                            '壁の貼り紙',
+                            () => s.chooseDialogue('records'),
+                          ),
+                          if (!s.receivedYametaroAmmo)
+                            action(
+                              'dialogue-supplies',
+                              '予備弾をもらう',
+                              () => s.chooseDialogue('supplies'),
+                            ),
+                        ],
                         action('dialogue-leave', 'E  探索へ戻る', s.endDialogue),
                       ],
                     )
@@ -1112,7 +1130,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
           Text(game.saveStatus, style: const TextStyle(color: gold)),
         const SizedBox(height: 8),
         const Text(
-          'やめ太郎との会話後、武器・鍵の取得時、門を開けた時にも自動保存します。',
+          '案内役・補給所での会話後、武器・鍵の取得時、門を開けた時にも自動保存します。',
           style: TextStyle(color: ivory, fontSize: 12),
         ),
         const SizedBox(height: 12),

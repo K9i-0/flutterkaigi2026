@@ -1,0 +1,16 @@
+{
+  "height_m": 1.432699203491211,
+  "triangles": 19870,
+  "bones": 27,
+  "materials": 6,
+  "clips": [
+    "Idle",
+    "Talk",
+    "Wave"
+  ],
+  "humanoid_arms": 2,
+  "undivided_white_hands": 2,
+  "lower_tentacles": 6,
+  "source": "procedural Blender / canonical basic sheet",
+  "units": "metres"
+}

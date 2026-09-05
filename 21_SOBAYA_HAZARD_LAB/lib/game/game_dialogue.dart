@@ -30,3 +30,24 @@ const yametaroDialogue = <String, List<DialogueLine>>{
   'supplies': [DialogueLine('やめ太郎', '予備の弾、10発。持っていって。\n僕の分まで、みんなを連れて帰ってきてよ。')],
   'full': [DialogueLine('やめ太郎', 'ケースに空きがないみたい。整理したら、また声をかけて。\n弾はちゃんと取っておくから。')],
 };
+
+const takosanDialogue = <String, List<DialogueLine>>{
+  'intro': [
+    DialogueLine('たこさん', '……。そば屋を倒して、ビールを拾いましたか。\n弾やハーブと交換できます。'),
+    DialogueLine('福ちゃん', 'こんな所で商売してるのか。\nそのビール、どうするんだ？'),
+    DialogueLine('たこさん', '必要なことです。\n持てる量だけ、お選びください。'),
+  ],
+  'greeting': [DialogueLine('たこさん', '……。補給ですね。ビールはお持ちですか。')],
+};
+
+class TradeOffer {
+  const TradeOffer(this.id, this.kind, this.amount, this.price, this.stock);
+  final String id, kind;
+  final int amount, price, stock;
+}
+
+const tradeOffers = [
+  TradeOffer('ammo', 'ammo', 10, 2, 3),
+  TradeOffer('herb', 'green', 1, 3, 2),
+  TradeOffer('shells', 'shells', 5, 3, 2),
+];

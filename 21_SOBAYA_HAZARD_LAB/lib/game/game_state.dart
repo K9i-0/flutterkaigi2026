@@ -182,12 +182,19 @@ class HazardGameState {
   String? interaction;
   String? talkingTo;
   String dialogueTopic = 'intro';
+  String dialogueOwner = 'yametaro', tradeMessage = '';
   int dialogueIndex = 0;
   bool metYametaro = false, receivedYametaroAmmo = false;
+  bool metTakosan = false;
+  final tradePurchases = <String, int>{};
   bool checkpointRequested = false;
   List<Map<String, dynamic>> get npcs =>
       (map['npcs'] as List? ?? const []).cast<Map<String, dynamic>>();
-  List<DialogueLine> get dialogueLines => yametaroDialogue[dialogueTopic]!;
+  List<DialogueLine> get dialogueLines => dialogueOwner == 'takosan'
+      ? dialogueTopic == 'trade_result'
+            ? [DialogueLine('たこさん', tradeMessage)]
+            : takosanDialogue[dialogueTopic]!
+      : yametaroDialogue[dialogueTopic]!;
   DialogueLine get dialogueLine => dialogueLines[dialogueIndex];
   bool get dialogueChoices => dialogueIndex == dialogueLines.length - 1;
   final Map<int, int> _flow = {};
@@ -262,6 +269,10 @@ class HazardGameState {
     lastSound = null;
     talkingTo = null;
     metYametaro = receivedYametaroAmmo = false;
+    metTakosan = false;
+    tradePurchases.clear();
+    dialogueOwner = 'yametaro';
+    tradeMessage = '';
     checkpointRequested = false;
     dialogueTopic = 'intro';
     dialogueIndex = 0;
@@ -980,6 +991,7 @@ class HazardGameState {
     final key = interaction;
     if (key == null) return '';
     if (key == 'npc:yametaro') return 'やめ太郎と話す';
+    if (key == 'npc:takosan') return 'たこさんの補給所';
     if (key.startsWith('pickup:')) {
       final p = pickups.firstWhere((p) => 'pickup:${p.id}' == key);
       return '${itemNames[p.kind]}を拾う';
@@ -1044,7 +1056,7 @@ class HazardGameState {
 
   void startDialogue(String id) {
     if (!running ||
-        id != 'yametaro' ||
+        !['yametaro', 'takosan'].contains(id) ||
         evadeTime > 0 ||
         kickTime > 0 ||
         hurtTime > 0) {
@@ -1072,9 +1084,16 @@ class HazardGameState {
       return;
     }
     talkingTo = id;
-    dialogueTopic = metYametaro ? 'greeting' : 'intro';
+    dialogueOwner = id;
+    dialogueTopic = (id == 'yametaro' ? metYametaro : metTakosan)
+        ? 'greeting'
+        : 'intro';
     dialogueIndex = 0;
-    metYametaro = true;
+    if (id == 'yametaro') {
+      metYametaro = true;
+    } else {
+      metTakosan = true;
+    }
     phase = PlayPhase.dialogue;
     reloading = 0;
     stopInput();
@@ -1090,6 +1109,10 @@ class HazardGameState {
       endDialogue();
       return;
     }
+    if (talkingTo == 'takosan') {
+      if (topic.startsWith('trade:')) buySupplies(topic.substring(6));
+      return;
+    }
     if (!['route', 'combat', 'records', 'supplies'].contains(topic)) return;
     if (topic == 'supplies') {
       if (receivedYametaroAmmo) return;
@@ -1101,6 +1124,34 @@ class HazardGameState {
       }
     }
     dialogueTopic = topic;
+    dialogueIndex = 0;
+  }
+
+  int stockRemaining(TradeOffer offer) =>
+      offer.stock - (tradePurchases[offer.id] ?? 0);
+
+  void buySupplies(String id) {
+    if (phase != PlayPhase.dialogue ||
+        talkingTo != 'takosan' ||
+        !dialogueChoices) {
+      return;
+    }
+    final offer = tradeOffers.where((o) => o.id == id).firstOrNull;
+    if (offer == null) return;
+    if (stockRemaining(offer) <= 0) {
+      tradeMessage = 'それは売り切れです。別の品をどうぞ。';
+    } else if (beers < offer.price) {
+      tradeMessage = 'ビールが足りません。\nこの品には${offer.price}杯、必要です。';
+    } else if (!addItem(offer.kind, offer.amount)) {
+      tradeMessage = 'ケースに入りません。整理してから、またどうぞ。\nビールはまだ頂いていません。';
+    } else {
+      beers -= offer.price;
+      tradePurchases[id] = (tradePurchases[id] ?? 0) + 1;
+      tradeMessage =
+          '${itemNames[offer.kind]} ×${offer.amount}。お受け取りください。\n……。また、お待ちしています。';
+      lastSound = 'pickup';
+    }
+    dialogueTopic = 'trade_result';
     dialogueIndex = 0;
   }
 
@@ -1144,6 +1195,8 @@ class HazardGameState {
       'choices': dialogueChoices,
       'metYametaro': metYametaro,
       'receivedAmmo': receivedYametaroAmmo,
+      'metTakosan': metTakosan,
+      'tradePurchases': Map<String, int>.of(tradePurchases),
     },
     'bag': bag.map((i) => i.toJson()).toList(),
     'enemies': enemies

@@ -45,7 +45,7 @@ void attachGameAutomation(HazardGameController game) {
   );
   registerMarionetteExtension(
     name: 'madogiwa.openGameScenario',
-    description: 'Debug scenario name=combat|stagger|npc|pickup|collection|gate|stairs|death. Resets run, keeps collection.',
+    description: 'Debug scenario name=combat|stagger|npc|merchant|pickup|collection|gate|stairs|death. Resets run, keeps collection.',
     callback: (p) async {
       final g = _game;
       if (g == null || !g.ready) {
@@ -61,6 +61,7 @@ void attachGameAutomation(HazardGameController game) {
         'death',
         'npc',
         'stagger',
+        'merchant',
       ].contains(name)) {
         return MarionetteExtensionResult.invalidParams('Invalid scenario');
       }
@@ -70,6 +71,11 @@ void attachGameAutomation(HazardGameController game) {
         e.active = false;
       }
       switch (name) {
+        case 'merchant':
+          s.x = -13;
+          s.z = -19.8;
+          s.beers = 8;
+          s.pitch = .12;
         case 'npc':
           s.x = -2.8;
           s.z = -23;
