@@ -14,6 +14,15 @@ void advance(HazardGameState s, double seconds) {
 }
 
 void main() {
+  test('selecting the equipped weapon does not cancel an ongoing reload', () {
+    final s = game()..pistolLoaded = 0;
+    s.reload();
+    s.equip('handgun');
+    advance(s, 1.4);
+    expect(s.loaded, 10);
+    expect(s.reserve, 30);
+  });
+
   test(
     'nearby guide conversation pauses combat and grants supplies only once',
     () {

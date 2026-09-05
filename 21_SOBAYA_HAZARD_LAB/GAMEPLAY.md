@@ -79,3 +79,14 @@ mise exec -- flutter run -d macos -t lib/game_main.dart --profile --dart-define=
 ## 最終戦の検証（2026-09-06）
 
 47テストと静的解析を通過。最終戦を単独にした山道の実機シミュレーションで、横走りによる突進回避と反撃の隙を確認。通常の弾数と入力経路を使った自動戦闘でも撃破できた。全区画の通しプレイの証明ではない。詳細は `qa/boss-combat-20260906.json`。検証用 `bossCombat` は停止状態から始まり、`gameAction simulate` の x/y入力・sprint・evadeで通常のゲーム時間を進め、結果を停止して確認する。`previewState` は停止中の戦闘姿勢をメニューなしで表示するだけで、保存を無効化する。通常へ戻すにはシナリオを再起動する。
+
+## 通し進行の自動監査
+
+```sh
+dart run tool/audit_campaign.dart evidence/campaign-direct.json
+dart run tool/audit_campaign.dart evidence/campaign-collection.json --complete
+```
+
+プロジェクト直下で実行。前者は補給と鍵・門から脱出まで、後者は全12枚・7メダリオン・20体・ビール回収と交換・両武器も検査する。通常の入力経路と60Hzゲーム時間を使い、位置や敵や体力をテスト都合で書き換えない。経路と正確な照準を知る自動操作であり、実画面の操作性や人間の初見時間を証明しない。詳細は `qa/campaign-audit-20260906.json`。
+
+敵・ビール出現・木箱・門の音は距離（高低差を含む）と遮蔽物で小さくなる。自分の銃声・装填音・UI音は距離減衰しない。現段階では左右方向の定位と台詞音声は未実装。近／遠／壁越しの実機再生開始記録は `qa/audio-distance-20260906.json`。
