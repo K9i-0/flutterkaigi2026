@@ -31,6 +31,31 @@
       "name": "AimShotgun",
       "duration": 2,
       "source": "authored breathing / two-hand IK pose"
+    },
+    {
+      "name": "ReloadHandgun",
+      "duration": 1.3,
+      "source": "authored action; no new motion capture claimed"
+    },
+    {
+      "name": "ReloadShotgun",
+      "duration": 2.0,
+      "source": "authored action; no new motion capture claimed"
+    },
+    {
+      "name": "Hit",
+      "duration": 0.4666666666666667,
+      "source": "authored action; no new motion capture claimed"
+    },
+    {
+      "name": "Evade",
+      "duration": 0.43333333333333335,
+      "source": "authored action; no new motion capture claimed"
+    },
+    {
+      "name": "Kick",
+      "duration": 0.8,
+      "source": "authored action; no new motion capture claimed"
     }
   ]
 }

@@ -122,6 +122,18 @@ class _HazardGamePageState extends State<HazardGamePage> {
     updateInput();
     if (e is KeyRepeatEvent) return KeyEventResult.handled;
     final k = e.logicalKey;
+    if (s.phase == PlayPhase.dialogue) {
+      if (k == LogicalKeyboardKey.escape) s.endDialogue();
+      if (k == LogicalKeyboardKey.keyE || k == LogicalKeyboardKey.space) {
+        if (s.dialogueChoices) {
+          s.endDialogue();
+        } else {
+          s.advanceDialogue();
+        }
+      }
+      setState(() {});
+      return KeyEventResult.handled;
+    }
     if (k == LogicalKeyboardKey.escape) {
       game.toggle(PlayPhase.paused);
     } else if (k == LogicalKeyboardKey.tab) {
@@ -139,6 +151,10 @@ class _HazardGamePageState extends State<HazardGamePage> {
         s.interact();
       } else if (k == LogicalKeyboardKey.keyH) {
         s.heal();
+      } else if (k == LogicalKeyboardKey.keyX) {
+        s.evade();
+      } else if (k == LogicalKeyboardKey.keyF) {
+        s.kick();
       } else if (k == LogicalKeyboardKey.digit1) {
         s.equip('handgun');
       } else if (k == LogicalKeyboardKey.digit2) {
@@ -242,7 +258,8 @@ class _HazardGamePageState extends State<HazardGamePage> {
                           ),
                         ),
                       ),
-                      if (s.phase != PlayPhase.title) ...[
+                      if (s.phase != PlayPhase.title &&
+                          s.phase != PlayPhase.dialogue) ...[
                         Positioned(
                           left: 28,
                           top: 26,
@@ -320,6 +337,28 @@ class _HazardGamePageState extends State<HazardGamePage> {
                               painter: ReticlePainter(s.hitFlash > 0),
                             ),
                           ),
+                        if (s.running &&
+                            s.kickTarget != null &&
+                            s.kickTime <= 0)
+                          Positioned(
+                            bottom: 175,
+                            left: 0,
+                            right: 0,
+                            child: Center(
+                              child: FilledButton(
+                                key: const ValueKey('game-kick'),
+                                onPressed: () {
+                                  s.kick();
+                                  focus.requestFocus();
+                                },
+                                style: FilledButton.styleFrom(
+                                  backgroundColor: gold,
+                                  foregroundColor: ink,
+                                ),
+                                child: const Text('F  蹴りで押し返す'),
+                              ),
+                            ),
+                          ),
                         if (s.damageFlash > 0)
                           Positioned.fill(
                             child: IgnorePointer(
@@ -361,7 +400,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
                               ),
                               const SizedBox(height: 9),
                               const Text(
-                                'WASD 移動   SHIFT 走る   ドラッグ 視点   R 装填   E 調べる',
+                                'WASD 移動   SHIFT 走る   ドラッグ 視点   R 装填   E 調べる   X 回避   F 蹴り',
                                 style: TextStyle(
                                   color: Color(0xffb8bdac),
                                   fontSize: 11,
@@ -430,6 +469,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
                           ),
                       ],
                       if (s.phase == PlayPhase.title) title(s),
+                      if (s.phase == PlayPhase.dialogue) dialogue(s),
                       if (s.phase == PlayPhase.inventory) inventory(s),
                       if (s.phase == PlayPhase.collection) collection(s),
                       if (s.phase == PlayPhase.paused) pause(s),
@@ -459,6 +499,108 @@ class _HazardGamePageState extends State<HazardGamePage> {
         },
         child: Text(label, style: const TextStyle(fontSize: 11)),
       );
+  Widget dialogue(HazardGameState s) => Positioned.fill(
+    child: Stack(
+      children: [
+        const Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          height: 34,
+          child: ColoredBox(color: Color(0xff0c100c)),
+        ),
+        Positioned(
+          top: 51,
+          left: 30,
+          child: Text(
+            '村の入口  /  やめ太郎',
+            style: TextStyle(
+              color: ivory.withValues(alpha: .8),
+              fontSize: 12,
+              letterSpacing: 2,
+            ),
+          ),
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            width: double.infinity,
+            constraints: const BoxConstraints(maxHeight: 280),
+            padding: const EdgeInsets.fromLTRB(32, 20, 32, 20),
+            decoration: const BoxDecoration(
+              color: Color(0xf00d130e),
+              border: Border(top: BorderSide(color: Color(0xff727155))),
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    s.dialogueLine.speaker,
+                    style: const TextStyle(
+                      color: gold,
+                      fontSize: 14,
+                      letterSpacing: 3,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    s.dialogueLine.text,
+                    key: const ValueKey('game-dialogue-text'),
+                    style: const TextStyle(
+                      color: ivory,
+                      fontSize: 17,
+                      height: 1.65,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  if (s.dialogueChoices)
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        action(
+                          'dialogue-route',
+                          '農場への道',
+                          () => s.chooseDialogue('route'),
+                        ),
+                        action(
+                          'dialogue-combat',
+                          'そば屋への対処',
+                          () => s.chooseDialogue('combat'),
+                        ),
+                        action(
+                          'dialogue-records',
+                          '壁の貼り紙',
+                          () => s.chooseDialogue('records'),
+                        ),
+                        if (!s.receivedYametaroAmmo)
+                          action(
+                            'dialogue-supplies',
+                            '予備弾をもらう',
+                            () => s.chooseDialogue('supplies'),
+                          ),
+                        action('dialogue-leave', 'E  探索へ戻る', s.endDialogue),
+                      ],
+                    )
+                  else
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: action(
+                        'dialogue-next',
+                        'E  次へ',
+                        s.advanceDialogue,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
   Widget pad(String name, IconData icon, double x, double y) => Listener(
     onPointerDown: (_) {
       touchX = x;
@@ -600,6 +742,28 @@ class _HazardGamePageState extends State<HazardGamePage> {
               ),
             ),
             const SizedBox(height: 36),
+            if (game.hasCheckpoint) ...[
+              FilledButton(
+                key: const ValueKey('game-continue'),
+                style: FilledButton.styleFrom(
+                  backgroundColor: gold,
+                  foregroundColor: ink,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 45,
+                    vertical: 18,
+                  ),
+                ),
+                onPressed: () {
+                  game.continueRun();
+                  focus.requestFocus();
+                },
+                child: const Text(
+                  '続きから',
+                  style: TextStyle(fontSize: 17, letterSpacing: 3),
+                ),
+              ),
+              const SizedBox(height: 12),
+            ],
             FilledButton(
               key: const ValueKey('game-start'),
               style: FilledButton.styleFrom(
@@ -611,15 +775,31 @@ class _HazardGamePageState extends State<HazardGamePage> {
                 ),
               ),
               onPressed: () {
-                s.phase = PlayPhase.playing;
+                game.startRun();
                 focus.requestFocus();
                 setState(() {});
               },
-              child: const Text(
-                '村へ入る',
-                style: TextStyle(fontSize: 17, letterSpacing: 3),
+              child: Text(
+                game.hasCheckpoint ? '新しく始める' : '村へ入る',
+                style: const TextStyle(fontSize: 17, letterSpacing: 3),
               ),
             ),
+            if (game.hasCheckpoint)
+              const Padding(
+                padding: EdgeInsets.only(top: 8),
+                child: Text(
+                  '新しく始めると進行の記録を上書きします。収集画像は残ります。',
+                  style: TextStyle(color: ivory, fontSize: 11),
+                ),
+              ),
+            if (game.saveStatus.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Text(
+                  game.saveStatus,
+                  style: const TextStyle(color: gold, fontSize: 11),
+                ),
+              ),
             const SizedBox(height: 18),
             Text(
               'COLLECTION  ${s.collected.length} / ${s.images.length}',
@@ -906,7 +1086,12 @@ class _HazardGamePageState extends State<HazardGamePage> {
           spacing: 12,
           children: [
             action('resume', '探索に戻る', () => game.toggle(PlayPhase.paused)),
-            action('restart', '最初から', game.restart),
+            action('save', game.saving ? '記録中…' : 'チェックポイントを保存', () {
+              game.saveCheckpoint(announce: true);
+            }),
+            if (game.hasCheckpoint)
+              action('load', 'チェックポイントへ戻る', game.continueRun),
+            action('restart', '最初から', game.startRun),
             action('mute', game.muted ? '音：OFF' : '音：ON', () {
               game.muted = !game.muted;
               game.ambience.setVolume(game.muted ? 0 : .24);
@@ -923,6 +1108,14 @@ class _HazardGamePageState extends State<HazardGamePage> {
           ],
         ),
         const SizedBox(height: 20),
+        if (game.saveStatus.isNotEmpty)
+          Text(game.saveStatus, style: const TextStyle(color: gold)),
+        const SizedBox(height: 8),
+        const Text(
+          'やめ太郎との会話後、武器・鍵の取得時、門を開けた時にも自動保存します。',
+          style: TextStyle(color: ivory, fontSize: 12),
+        ),
+        const SizedBox(height: 12),
         const Text(
           '1 / 2 武器切替     H ハーブを使う\n構え中は移動を止めます。木箱や樽はEでも壊せます。',
           style: TextStyle(color: gold, height: 2),
@@ -959,8 +1152,14 @@ class _HazardGamePageState extends State<HazardGamePage> {
             const SizedBox(height: 28),
             FilledButton(
               key: const ValueKey('game-retry'),
-              onPressed: game.restart,
-              child: const Text('もう一度探索する'),
+              onPressed: s.phase == PlayPhase.dead && game.hasCheckpoint
+                  ? game.continueRun
+                  : game.startRun,
+              child: Text(
+                s.phase == PlayPhase.dead && game.hasCheckpoint
+                    ? 'チェックポイントから再開'
+                    : 'もう一度探索する',
+              ),
             ),
           ],
         ),

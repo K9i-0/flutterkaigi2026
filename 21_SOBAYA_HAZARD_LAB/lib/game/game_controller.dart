@@ -11,6 +11,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:vector_math/vector_math.dart' as vm;
 
 import 'game_state.dart';
+import 'game_checkpoint.dart';
 import '../lab/beer_mug_component.dart';
 import '../lab/simulation.dart' show FrameSamples;
 
@@ -20,7 +21,14 @@ class CharacterPlayer {
       final animation = node.findAnimationByName(name);
       if (animation == null) throw StateError('Missing $name');
       clips[name] = node.createAnimationClip(animation)
-        ..loop = true
+        ..loop = ![
+          'ReloadHandgun',
+          'ReloadShotgun',
+          'Hit',
+          'Evade',
+          'Kick',
+          'MugAttack',
+        ].contains(name)
         ..weight = 0;
     }
     setMotion('Idle');
@@ -50,6 +58,24 @@ class CharacterPlayer {
   }
 }
 
+class UpperBodyAim extends Component {
+  UpperBodyAim(this.state);
+  final HazardGameState Function() state;
+  @override
+  void update(double deltaSeconds) {
+    final s = state();
+    if (!s.aiming || s.reloading > 0 || s.hurtTime > 0) return;
+    final parentRotation = node.parent?.globalTransform.getRotation();
+    if (parentRotation == null) return;
+    parentRotation.invert();
+    final axis = parentRotation.transform(
+      vm.Vector3(math.cos(s.heading), 0, -math.sin(s.heading)),
+    );
+    node.rotation =
+        vm.Quaternion.axisAngle(axis, s.pitch - s.recoil) * node.rotation;
+  }
+}
+
 class HazardGameController extends ChangeNotifier {
   final scene = Scene();
   final frames = FrameSamples();
@@ -57,16 +83,24 @@ class HazardGameController extends ChangeNotifier {
   bool ready = false, disposed = false, muted = false;
   late Node village, itemsTemplate, beerTemplate, fukuTemplate, sobayaTemplate;
   late CharacterPlayer player;
+  final npcs = <String, CharacterPlayer>{};
   final enemies = <CharacterPlayer>[],
       pickupNodes = <String, Node>{},
       crateNodes = <String, Node>{};
-  late Node pistol, shotgun, impact;
+  late Node pistol, shotgun, impact, muzzle;
   final fxPools = <String, AudioPool>{};
   final ambience = AudioPlayer();
   SharedPreferences? preferences;
+  String? _checkpointJson;
+  String saveStatus = '';
+  Future<void> _saveQueue = Future.value();
+  int _pendingSaves = 0;
+  bool get saving => _pendingSaves > 0;
+  bool get hasCheckpoint => _checkpointJson != null;
   ui.Size viewport = const ui.Size(1280, 800);
   double _notifyTime = 0, _stepDistance = 0;
   String? error;
+  bool posePreview = false;
   Future<void> load() async {
     preferences = await SharedPreferences.getInstance();
     final map = jsonDecode(
@@ -78,6 +112,15 @@ class HazardGameController extends ChangeNotifier {
           .getStringList('hazard.collection.v1')
           ?.toSet(),
     )..phase = PlayPhase.title;
+    final savedRun = preferences!.getString('hazard.run.v1');
+    if (savedRun != null) {
+      try {
+        restoreHazardCheckpoint(jsonDecode(savedRun), map, state!.collected);
+        _checkpointJson = savedRun;
+      } catch (_) {
+        saveStatus = '保存データを読み込めませんでした。新しく探索を始められます。';
+      }
+    }
     await Scene.initializeStaticResources();
     final loaded = await Future.wait(
       [
@@ -86,6 +129,7 @@ class HazardGameController extends ChangeNotifier {
         'beer_mug',
         'sobaya',
         'fukuchan',
+        'yametaro',
       ].map((n) => loadScene('assets/models/$n.glb')),
     );
     if (disposed) return;
@@ -94,6 +138,21 @@ class HazardGameController extends ChangeNotifier {
     beerTemplate = loaded[2];
     sobayaTemplate = loaded[3];
     fukuTemplate = loaded[4];
+    for (final n in state!.npcs) {
+      final actor = CharacterPlayer(loaded[5], [
+        'Idle',
+        'Talk',
+        'Wave',
+        'Walk',
+      ]);
+      actor.node.position = vm.Vector3(
+        (n['x'] as num).toDouble(),
+        0,
+        (n['z'] as num).toDouble(),
+      );
+      npcs[n['id']] = actor;
+      scene.add(actor.node);
+    }
     scene.add(village);
     _static(village);
     // Roofs are hidden when the player enters a house; those casters are dynamic.
@@ -142,7 +201,15 @@ class HazardGameController extends ChangeNotifier {
       'Run',
       'Aim',
       'AimShotgun',
+      'ReloadHandgun',
+      'ReloadShotgun',
+      'Hit',
+      'Evade',
+      'Kick',
     ]);
+    player.node
+        .getChildByName('Spine1')!
+        .addComponent(UpperBodyAim(() => state!));
     scene.add(player.node);
     for (var i = 0; i < state!.enemies.length; i++) {
       final actor = CharacterPlayer(sobayaTemplate, [
@@ -164,6 +231,10 @@ class HazardGameController extends ChangeNotifier {
       ..castsShadows = false
       ..visible = false;
     scene.add(impact);
+    muzzle = Node(mesh: Mesh(SphereGeometry(radius: .045), mat))
+      ..castsShadows = false
+      ..visible = false;
+    scene.add(muzzle);
     _resetNodes();
     for (final name in [
       'shot',
@@ -225,8 +296,67 @@ class HazardGameController extends ChangeNotifier {
   }
 
   void restart() {
+    posePreview = false;
     state!.restart();
     _resetNodes();
+    notifyListeners();
+  }
+
+  void startRun() {
+    restart();
+    unawaited(saveCheckpoint());
+  }
+
+  Future<void> saveCheckpoint({bool announce = false}) {
+    final s = state;
+    if (!ready ||
+        s == null ||
+        posePreview ||
+        s.health <= 0 ||
+        [
+          PlayPhase.title,
+          PlayPhase.dead,
+          PlayPhase.clear,
+          PlayPhase.dialogue,
+        ].contains(s.phase)) {
+      return Future.value();
+    }
+    final encoded = jsonEncode(s.checkpoint());
+    _pendingSaves++;
+    saveStatus = '記録中…';
+    _saveQueue = _saveQueue.then((_) async {
+      try {
+        final ok = await preferences!.setString('hazard.run.v1', encoded);
+        if (!ok) throw StateError('Save failed');
+        _checkpointJson = encoded;
+        saveStatus = 'チェックポイントを保存しました。';
+        if (announce && identical(s, state)) s.say(saveStatus);
+      } catch (_) {
+        saveStatus = '保存に失敗しました。もう一度お試しください。';
+        if (identical(s, state)) s.say(saveStatus);
+      } finally {
+        _pendingSaves--;
+        if (!disposed) notifyListeners();
+      }
+    });
+    return _saveQueue;
+  }
+
+  void continueRun() {
+    if (_checkpointJson == null) return;
+    try {
+      state = restoreHazardCheckpoint(
+        jsonDecode(_checkpointJson!),
+        state!.map,
+        state!.collected,
+      );
+      posePreview = false;
+      _resetNodes();
+      player.setMotion('Idle');
+      saveStatus = '';
+    } catch (_) {
+      saveStatus = '保存データを復元できませんでした。';
+    }
     notifyListeners();
   }
 
@@ -244,14 +374,27 @@ class HazardGameController extends ChangeNotifier {
 
   PerspectiveCamera camera() {
     final s = state!;
+    if (s.phase == PlayPhase.dialogue && npcs.containsKey(s.talkingTo)) {
+      final n = npcs[s.talkingTo]!.node.position;
+      final angle = math.atan2(s.x - n.x, s.z - n.z) + .2;
+      return PerspectiveCamera(
+        position:
+            n +
+            vm.Vector3(math.sin(angle) * 2.25, 1.25, math.cos(angle) * 2.25),
+        target: n + vm.Vector3(0, .94, 0),
+        fovRadiansY: .68,
+        fovNear: .07,
+        fovFar: 85,
+      );
+    }
     final right = vm.Vector3(-math.cos(s.yaw), 0, math.sin(s.yaw));
     final target =
         vm.Vector3(s.x, s.y + 1.35, s.z) + right * (s.aiming ? .43 : .22);
     final distance = s.aiming ? 2.0 : 3.4;
     final offset = vm.Vector3(
-      math.sin(s.yaw) * math.cos(s.pitch) * distance,
-      math.sin(s.pitch) * distance + .18,
-      math.cos(s.yaw) * math.cos(s.pitch) * distance,
+      math.sin(s.yaw) * math.cos(s.pitch - s.recoil) * distance,
+      math.sin(s.pitch - s.recoil) * distance + .18,
+      math.cos(s.yaw) * math.cos(s.pitch - s.recoil) * distance,
     );
     final length = s.wallDistance(target, offset.normalized(), offset.length);
     final actual = math.max(.35, math.min(offset.length, length - .18));
@@ -292,9 +435,17 @@ class HazardGameController extends ChangeNotifier {
     if (!ready || disposed) return;
     final s = state!, dt = delta.clamp(0.0, .05);
     final bx = s.x, bz = s.z;
-    s.tick(dt);
+    if (!posePreview) s.tick(dt);
     final moved = math.sqrt(math.pow(s.x - bx, 2) + math.pow(s.z - bz, 2));
-    final motion = s.aiming
+    var motion = s.hurtTime > 0
+        ? 'Hit'
+        : s.evadeTime > 0
+        ? 'Evade'
+        : s.kickTime > 0
+        ? 'Kick'
+        : s.reloading > 0
+        ? (s.weapon == 'shotgun' ? 'ReloadShotgun' : 'ReloadHandgun')
+        : s.aiming
         ? s.weapon == 'shotgun'
               ? 'AimShotgun'
               : 'Aim'
@@ -303,10 +454,11 @@ class HazardGameController extends ChangeNotifier {
               ? 'Run'
               : 'Walk'
         : 'Idle';
+    if (!s.running || posePreview) motion = player.current;
     player.setMotion(motion);
     player.update(
       dt,
-      s.running,
+      s.running && !posePreview,
       speed: motion == 'Walk'
           ? 1.25 / .91610738
           : motion == 'Run'
@@ -314,10 +466,31 @@ class HazardGameController extends ChangeNotifier {
           : 1,
     );
     player.node.position = vm.Vector3(s.x, s.y, s.z);
+    // Dialogue uses a close shot of the speaker, beyond the player's shoulder.
+    player.node.visible = s.phase != PlayPhase.dialogue;
     player.node.rotation = vm.Quaternion.axisAngle(
       vm.Vector3(0, 1, 0),
       s.heading + math.pi,
     );
+    for (final entry in npcs.entries) {
+      final actor = entry.value, n = entry.value.node.position;
+      final near = math.pow(s.x - n.x, 2) + math.pow(s.z - n.z, 2) < 36;
+      final talking = s.phase == PlayPhase.dialogue && s.talkingTo == entry.key;
+      if (near) {
+        actor.node.rotation = vm.Quaternion.axisAngle(
+          vm.Vector3(0, 1, 0),
+          math.atan2(s.x - n.x, s.z - n.z) + math.pi,
+        );
+      }
+      actor.setMotion(
+        talking && s.dialogueLine.speaker == 'やめ太郎'
+            ? 'Talk'
+            : near && !s.metYametaro
+            ? 'Wave'
+            : 'Idle',
+      );
+      actor.update(dt, s.running || talking);
+    }
     for (var i = 0; i < enemies.length; i++) {
       final e = s.enemies[i], actor = enemies[i];
       actor.node.visible = e.active && (!e.dropped);
@@ -333,7 +506,9 @@ class HazardGameController extends ChangeNotifier {
             ? 'MugAttack'
             : e.stun > 0
             ? 'Idle'
-            : 'Walk',
+            : e.moved > .0001
+            ? 'Walk'
+            : 'Idle',
       );
       actor.update(
         dt,
@@ -401,8 +576,17 @@ class HazardGameController extends ChangeNotifier {
       pistol.rotation = player.node.rotation;
       shotgun.rotation = player.node.rotation;
     }
-    pistol.visible = s.aiming && s.weapon == 'handgun';
-    shotgun.visible = s.aiming && s.weapon == 'shotgun';
+    pistol.visible = (s.aiming || s.reloading > 0) && s.weapon == 'handgun';
+    shotgun.visible = (s.aiming || s.reloading > 0) && s.weapon == 'shotgun';
+    muzzle.visible =
+        s.fireCooldown > (s.weapon == 'handgun' ? .25 : .83) && s.aiming;
+    if (muzzle.visible) {
+      muzzle.position = (s.weapon == 'handgun' ? pistol : shotgun)
+          .globalTransform
+          .transformed3(
+            vm.Vector3(0, .095, s.weapon == 'handgun' ? -.215 : -.765),
+          );
+    }
     impact.visible = s.hitFlash > 0 && s.shotEnd != null;
     if (impact.visible) impact.position = s.shotEnd!;
     _stepDistance += moved;
@@ -421,6 +605,10 @@ class HazardGameController extends ChangeNotifier {
             }),
       );
     }
+    if (s.checkpointRequested) {
+      s.checkpointRequested = false;
+      unawaited(saveCheckpoint());
+    }
     _notifyTime += dt;
     if (_notifyTime > .07) {
       _notifyTime = 0;
@@ -435,7 +623,14 @@ class HazardGameController extends ChangeNotifier {
       unawaited(a.dispose());
     }
     unawaited(ambience.dispose());
-    for (final name in ['village', 'items', 'beer_mug', 'sobaya', 'fukuchan']) {
+    for (final name in [
+      'village',
+      'items',
+      'beer_mug',
+      'sobaya',
+      'fukuchan',
+      'yametaro',
+    ]) {
       unawaited(releaseScene('assets/models/$name.glb'));
     }
     super.dispose();

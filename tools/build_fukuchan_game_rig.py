@@ -86,6 +86,40 @@ for name in ['Idle','Aim','AimShotgun']:
    point_bone('LeftHand',rig.pose.bones['LeftHand'].head+Vector((-.04,-.10,.03)))
   ground();key(i)
  report['clips'].append({'name':name,'duration':2,'source':'authored breathing / two-hand IK pose'})
+# Short authored actions supplement captured locomotion. Hit clocks in Dart
+# match these frame counts; the upper-body aim pose remains the common baseline.
+for name,frames in [('ReloadHandgun',39),('ReloadShotgun',60),('Hit',14),('Evade',13),('Kick',24)]:
+ action(name,frames)
+ for i in range(frames+1):
+  bpy.context.scene.frame_set(i);reset();t=i/frames;arc=math.sin(math.pi*t)**2
+  if name.startswith('Reload'):
+   long=name=='ReloadShotgun';arm_ik('Right',Vector((-.15,-.37,1.22)),Vector((-.8,.2,-1)))
+   # Supporting hand reaches the magazine/belt, then seats the reload.
+   support=Vector((.015,-.65,1.2)) if long else Vector((-.075,-.48,1.235))
+   hand=support.lerp(Vector((.12,-.14,.89)),arc)
+   arm_ik('Left',hand,Vector((.7,.25,-1)))
+   point_bone('RightHand',rig.pose.bones['RightHand'].head+Vector((-.035*arc,-.13,-.07+.055*arc)))
+   point_bone('LeftHand',rig.pose.bones['LeftHand'].head+Vector((-.04,-.08,.035)))
+  elif name=='Kick':
+   rig.pose.bones['Spine1'].rotation_quaternion=Quaternion((1,0,0),-.10*arc)
+   bpy.context.view_layer.update()
+   thigh=rig.pose.bones['RightUpLeg'];shin=rig.pose.bones['RightLeg']
+   a=1.35*arc;point_bone(thigh.name,thigh.head+Vector((-.05,-math.sin(a),-math.cos(a)))*thigh.bone.length)
+   a=1.65*arc;point_bone(shin.name,shin.head+Vector((0,-math.sin(a),-math.cos(a)))*shin.bone.length)
+   arm_ik('Right',Vector((-.29,-.10,1.03)),Vector((-.8,.2,-1)))
+   arm_ik('Left',Vector((.30,-.11,1.10)),Vector((.7,.25,-1)))
+  elif name=='Evade':
+   rig.pose.bones['Spine1'].rotation_quaternion=Quaternion((1,0,0),.16*arc)
+   for side,sign in [('Left',1),('Right',-1)]:
+    thigh=rig.pose.bones[side+'UpLeg'];a=sign*.35*math.sin(t*math.pi)
+    point_bone(thigh.name,thigh.head+Vector((0,-math.sin(a),-math.cos(a)))*thigh.bone.length)
+   arm_ik('Right',Vector((-.28,-.12,1.07)),Vector((-.8,.2,-1)))
+   arm_ik('Left',Vector((.28,-.12,1.07)),Vector((.8,.2,-1)))
+  else:
+   rig.pose.bones['Spine1'].rotation_quaternion=Quaternion((1,0,0),-.19*arc)
+   rig.pose.bones['Head'].rotation_quaternion=Quaternion((1,0,0),-.06*arc)
+  ground();key(i)
+ report['clips'].append({'name':name,'duration':frames/30,'source':'authored action; no new motion capture claimed'})
 # Mount the gun at the hand grip in the aiming pose. Bone parent handles all clip blending.
 rig.animation_data.action=bpy.data.actions['Aim']
 bpy.context.scene.frame_set(0);bpy.context.view_layer.update()

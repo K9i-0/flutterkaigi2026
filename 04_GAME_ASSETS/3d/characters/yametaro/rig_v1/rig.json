@@ -1,0 +1,28 @@
+{
+  "height_m": 1.3,
+  "source_sha256": "2336b53a3bea3e5757a503f81269d5443ad8ae76b6def42410d0253846235ee9",
+  "clips": [
+    {
+      "name": "Idle",
+      "duration": 3,
+      "source": "authored NPC gesture"
+    },
+    {
+      "name": "Talk",
+      "duration": 3,
+      "source": "authored NPC gesture"
+    },
+    {
+      "name": "Wave",
+      "duration": 3,
+      "source": "authored NPC gesture"
+    },
+    {
+      "name": "Walk",
+      "duration": 1.2333333333333334,
+      "ground_speed_mps": 0.3326961970503716,
+      "source": "walk_standard.fbx",
+      "sha256": "dd857d3dfb155642d17f917715f94e2e90c82326b95921274c8c926789c8a0de"
+    }
+  ]
+}
