@@ -299,10 +299,12 @@ class LabController extends ChangeNotifier {
       }
     } else if (movementAction == null) {
       final forwardX = -math.sin(yaw), forwardZ = -math.cos(yaw);
+      // Flutter Scene's view uses right = up × forward.
+      // Match that basis so right input stays screen-right at every orbit angle.
       simulation.move(
-        (inputY * forwardX + inputX * math.cos(yaw)) *
+        (inputY * forwardX - inputX * math.cos(yaw)) *
             (zombieLocomotion ? .25 : 1),
-        (inputY * forwardZ - inputX * math.sin(yaw)) *
+        (inputY * forwardZ + inputX * math.sin(yaw)) *
             (zombieLocomotion ? .25 : 1),
         dt,
         sprint: sprint,

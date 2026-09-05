@@ -1,0 +1,56 @@
+{
+  "result": "PASS",
+  "input": "Marionette left/right movement buttons, 600ms hold; shared mapping with A/D and arrow keys",
+  "checks": [
+    {
+      "view": "back",
+      "button": "left",
+      "yaw_radians": 3.141592653589793,
+      "delta_x": -0.8333437499999997,
+      "delta_z": 0.0,
+      "screen_right_distance_m": -0.8333437499999997
+    },
+    {
+      "view": "back",
+      "button": "right",
+      "yaw_radians": 3.141592653589793,
+      "delta_x": 0.7916762499999997,
+      "delta_z": 0.0,
+      "screen_right_distance_m": 0.7916762499999997
+    },
+    {
+      "view": "front",
+      "button": "left",
+      "yaw_radians": 0.0,
+      "delta_x": 0.7916774999999997,
+      "delta_z": 0.0,
+      "screen_right_distance_m": -0.7916774999999997
+    },
+    {
+      "view": "front",
+      "button": "right",
+      "yaw_radians": 0.0,
+      "delta_x": -0.7916762499999997,
+      "delta_z": 0.0,
+      "screen_right_distance_m": 0.7916762499999997
+    },
+    {
+      "view": "side",
+      "button": "left",
+      "yaw_radians": 1.5707963267948966,
+      "delta_x": 4.8476265816598914e-17,
+      "delta_z": -0.7916775000000147,
+      "screen_right_distance_m": -0.7916775000000147
+    },
+    {
+      "view": "side",
+      "button": "right",
+      "yaw_radians": 1.5707963267948966,
+      "delta_x": -4.720049001358716e-17,
+      "delta_z": 0.7708425000000139,
+      "screen_right_distance_m": 0.7708425000000139
+    }
+  ],
+  "flutter_analyze": "PASS",
+  "flutter_test_count": 6
+}
