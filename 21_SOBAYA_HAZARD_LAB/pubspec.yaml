@@ -9,7 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_scene: 0.23.0
+  flutter_scene:
+    path: vendor/flutter_scene
   hooks: ^2.0.2
   marionette_flutter: ^0.6.0
   vector_math: ^2.4.2

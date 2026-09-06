@@ -133,6 +133,9 @@ void attachGameAutomation(HazardGameController game) {
             },
             'voice': _game!.voice.inspect(),
             'speechFaces': _game!.inspectSpeechFaces(),
+            'beerLiquids': [
+              for (final beer in _game!.enemyBeer) beer.inspect(),
+            ],
             'soundscape': _game!.soundscape.inspect(),
             'event': _game!.director == null
                 ? null

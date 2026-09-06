@@ -1,0 +1,464 @@
+{
+  "baseline": [
+    {
+      "case": "village-four",
+      "valid": true,
+      "uiP95Ms": 4.508,
+      "rasterP95Ms": 0.541,
+      "uiMaxMs": 7.395,
+      "rasterMaxMs": 0.66,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0,
+      "samples": 240,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "renderScale": 0.85,
+      "foreground": true,
+      "speechMorphTicks": {},
+      "completedWindowPassages": 0
+    },
+    {
+      "case": "village-eight",
+      "valid": true,
+      "uiP95Ms": 5.2,
+      "rasterP95Ms": 0.469,
+      "uiMaxMs": 9.556,
+      "rasterMaxMs": 11.678,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0,
+      "samples": 240,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "renderScale": 0.85,
+      "foreground": true,
+      "speechMorphTicks": {},
+      "completedWindowPassages": 0
+    },
+    {
+      "case": "village-eight-no-contact",
+      "valid": true,
+      "uiP95Ms": 5.616,
+      "rasterP95Ms": 0.502,
+      "uiMaxMs": 11.822,
+      "rasterMaxMs": 1.735,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0,
+      "samples": 240,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "renderScale": 0.85,
+      "foreground": true,
+      "speechMorphTicks": {},
+      "completedWindowPassages": 0
+    },
+    {
+      "case": "village-eight-full",
+      "valid": true,
+      "uiP95Ms": 5.411,
+      "rasterP95Ms": 0.454,
+      "uiMaxMs": 8.517,
+      "rasterMaxMs": 3.464,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0,
+      "samples": 240,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "renderScale": 1.0,
+      "foreground": true,
+      "speechMorphTicks": {},
+      "completedWindowPassages": 0
+    },
+    {
+      "case": "farm-six",
+      "valid": true,
+      "uiP95Ms": 5.61,
+      "rasterP95Ms": 0.545,
+      "uiMaxMs": 8.635,
+      "rasterMaxMs": 0.665,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0,
+      "samples": 240,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "renderScale": 0.85,
+      "foreground": true,
+      "speechMorphTicks": {},
+      "completedWindowPassages": 0
+    },
+    {
+      "case": "mountain-six",
+      "valid": true,
+      "uiP95Ms": 4.783,
+      "rasterP95Ms": 0.589,
+      "uiMaxMs": 5.517,
+      "rasterMaxMs": 2.396,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0,
+      "samples": 240,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "renderScale": 0.85,
+      "foreground": true,
+      "speechMorphTicks": {},
+      "completedWindowPassages": 0
+    },
+    {
+      "case": "mountain-six-full",
+      "valid": true,
+      "uiP95Ms": 4.652,
+      "rasterP95Ms": 0.522,
+      "uiMaxMs": 6.598,
+      "rasterMaxMs": 1.907,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0,
+      "samples": 240,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "renderScale": 1.0,
+      "foreground": true,
+      "speechMorphTicks": {},
+      "completedWindowPassages": 0
+    },
+    {
+      "case": "window-player",
+      "valid": true,
+      "uiP95Ms": 4.98,
+      "rasterP95Ms": 0.769,
+      "uiMaxMs": 10.068,
+      "rasterMaxMs": 0.941,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0,
+      "samples": 240,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "renderScale": 0.85,
+      "foreground": true,
+      "speechMorphTicks": {},
+      "completedWindowPassages": 4
+    },
+    {
+      "case": "window-enemies",
+      "valid": true,
+      "uiP95Ms": 4.448,
+      "rasterP95Ms": 0.683,
+      "uiMaxMs": 10.444,
+      "rasterMaxMs": 1.992,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0,
+      "samples": 240,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "renderScale": 0.85,
+      "foreground": true,
+      "speechMorphTicks": {},
+      "completedWindowPassages": 2
+    },
+    {
+      "case": "opening-voice",
+      "valid": true,
+      "uiP95Ms": 5.039,
+      "rasterP95Ms": 0.482,
+      "uiMaxMs": 6.772,
+      "rasterMaxMs": 1.692,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0,
+      "samples": 240,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "renderScale": 0.85,
+      "foreground": true,
+      "speechMorphTicks": {
+        "やめ太郎": 466,
+        "福ちゃん": 16
+      },
+      "completedWindowPassages": 0
+    },
+    {
+      "case": "boss-voice",
+      "valid": true,
+      "uiP95Ms": 4.899,
+      "rasterP95Ms": 0.506,
+      "uiMaxMs": 6.262,
+      "rasterMaxMs": 0.599,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0,
+      "samples": 240,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "renderScale": 0.85,
+      "foreground": true,
+      "speechMorphTicks": {
+        "福ちゃん": 1
+      },
+      "completedWindowPassages": 0
+    }
+  ],
+  "enhanced": [
+    {
+      "case": "village-four",
+      "valid": true,
+      "uiP95Ms": 5.288,
+      "rasterP95Ms": 0.462,
+      "uiMaxMs": 9.024,
+      "rasterMaxMs": 0.889,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0,
+      "samples": 240,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "renderScale": 0.85,
+      "foreground": true,
+      "speechMorphTicks": {},
+      "completedWindowPassages": 0
+    },
+    {
+      "case": "village-eight",
+      "valid": true,
+      "uiP95Ms": 6.536,
+      "rasterP95Ms": 0.449,
+      "uiMaxMs": 11.463,
+      "rasterMaxMs": 2.268,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0,
+      "samples": 240,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "renderScale": 0.85,
+      "foreground": true,
+      "speechMorphTicks": {},
+      "completedWindowPassages": 0
+    },
+    {
+      "case": "village-eight-no-contact",
+      "valid": true,
+      "uiP95Ms": 6.922,
+      "rasterP95Ms": 0.517,
+      "uiMaxMs": 10.371,
+      "rasterMaxMs": 4.085,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0,
+      "samples": 240,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "renderScale": 0.85,
+      "foreground": true,
+      "speechMorphTicks": {},
+      "completedWindowPassages": 0
+    },
+    {
+      "case": "village-eight-full",
+      "valid": true,
+      "uiP95Ms": 5.745,
+      "rasterP95Ms": 0.436,
+      "uiMaxMs": 8.935,
+      "rasterMaxMs": 2.914,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0,
+      "samples": 240,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "renderScale": 1.0,
+      "foreground": true,
+      "speechMorphTicks": {},
+      "completedWindowPassages": 0
+    },
+    {
+      "case": "farm-six",
+      "valid": true,
+      "uiP95Ms": 5.55,
+      "rasterP95Ms": 0.445,
+      "uiMaxMs": 7.359,
+      "rasterMaxMs": 3.108,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0,
+      "samples": 240,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "renderScale": 0.85,
+      "foreground": true,
+      "speechMorphTicks": {},
+      "completedWindowPassages": 0
+    },
+    {
+      "case": "mountain-six",
+      "valid": true,
+      "uiP95Ms": 4.986,
+      "rasterP95Ms": 0.475,
+      "uiMaxMs": 5.911,
+      "rasterMaxMs": 3.145,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0,
+      "samples": 240,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "renderScale": 0.85,
+      "foreground": true,
+      "speechMorphTicks": {},
+      "completedWindowPassages": 0
+    },
+    {
+      "case": "mountain-six-full",
+      "valid": true,
+      "uiP95Ms": 5.065,
+      "rasterP95Ms": 0.494,
+      "uiMaxMs": 6.141,
+      "rasterMaxMs": 6.03,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0,
+      "samples": 240,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "renderScale": 1.0,
+      "foreground": true,
+      "speechMorphTicks": {},
+      "completedWindowPassages": 0
+    },
+    {
+      "case": "window-player",
+      "valid": true,
+      "uiP95Ms": 4.653,
+      "rasterP95Ms": 0.628,
+      "uiMaxMs": 10.568,
+      "rasterMaxMs": 1.805,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0,
+      "samples": 240,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "renderScale": 0.85,
+      "foreground": true,
+      "speechMorphTicks": {},
+      "completedWindowPassages": 4
+    },
+    {
+      "case": "window-enemies",
+      "valid": true,
+      "uiP95Ms": 4.436,
+      "rasterP95Ms": 0.543,
+      "uiMaxMs": 9.298,
+      "rasterMaxMs": 1.635,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0,
+      "samples": 240,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "renderScale": 0.85,
+      "foreground": true,
+      "speechMorphTicks": {},
+      "completedWindowPassages": 2
+    },
+    {
+      "case": "opening-voice",
+      "valid": true,
+      "uiP95Ms": 3.962,
+      "rasterP95Ms": 0.379,
+      "uiMaxMs": 7.177,
+      "rasterMaxMs": 1.11,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0,
+      "samples": 240,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "renderScale": 0.85,
+      "foreground": true,
+      "speechMorphTicks": {
+        "やめ太郎": 466,
+        "福ちゃん": 16
+      },
+      "completedWindowPassages": 0
+    },
+    {
+      "case": "boss-voice",
+      "valid": true,
+      "uiP95Ms": 4.835,
+      "rasterP95Ms": 0.471,
+      "uiMaxMs": 5.303,
+      "rasterMaxMs": 0.551,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0,
+      "samples": 240,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "renderScale": 0.85,
+      "foreground": true,
+      "speechMorphTicks": {
+        "福ちゃん": 1
+      },
+      "completedWindowPassages": 0
+    }
+  ],
+  "conditions": {
+    "date": "2026-09-06",
+    "mode": "Flutter profile on macOS",
+    "flutter": "3.47.2",
+    "engine": "Flutter Scene 0.23.0 with unskinned morph bind correction in both runs",
+    "enhanced": "Static sky IBL 1.3, ACES, warm key, 2 shadow cascades, half-resolution 8-sample AO, bloom, grade, fog",
+    "note": "Sequential runs, not a controlled GPU benchmark. Flutter UI/raster timings are not GPU completion time or a device-independent FPS guarantee."
+  }
+}

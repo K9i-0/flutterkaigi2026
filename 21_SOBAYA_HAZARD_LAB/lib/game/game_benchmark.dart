@@ -13,7 +13,13 @@ class GameBenchmark {
   GameBenchmark(this.game) {
     game.benchmarkMode = true;
     // Reproducible audible settings without writing the user's preferences.
-    game.settings = HazardSettings();
+    game.settings = HazardSettings(
+      cinematicLighting: const bool.fromEnvironment(
+        'HAZARD_CINEMATIC',
+        defaultValue: true,
+      ),
+    );
+    game.lighting.apply(game.scene, enabled: game.settings.cinematicLighting);
     next();
     timer = Timer.periodic(const Duration(milliseconds: 500), (_) => poll());
   }

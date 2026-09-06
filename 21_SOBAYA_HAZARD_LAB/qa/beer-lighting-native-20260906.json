@@ -1,0 +1,268 @@
+{
+  "date": "2026-09-06",
+  "rootCause": "Flutter Scene 0.23.0 SceneEncoder._bindGeometry treated MorphedUnskinnedGeometry as ordinary UnskinnedGeometry and bypassed its MorphInfo/morph_texture binding. Per-draw GPU input was missing in the color path.",
+  "fix": "Retain the static fast path only for geometry with morphTargets == null; call full bind for morph geometry.",
+  "enginePatch": "vendor/flutter_scene/PATCHES.md",
+  "modelsChanged": false,
+  "checks": {
+    "flutterAnalyze": "PASS",
+    "flutterTests": 140,
+    "profileCasesValid": 22,
+    "sourceGLBLiquidSamples": 96816,
+    "nativeVisual": [
+      "Near mug with tilted liquid and foam contained; no long triangles in reviewed frame.",
+      "Several cloned mugs in encounter scene.",
+      "Takosan and Fukuchan closeup under enhanced lighting.",
+      "Settings toggles OFF/ON correctly."
+    ],
+    "limitations": [
+      "Visual spot checks are not an exhaustive GPU/hardware stress test.",
+      "Extra background/paused sampling was excluded from dynamic verification.",
+      "Performance timings are Flutter UI/raster, not GPU completion time."
+    ]
+  },
+  "nativeLiquidSnapshot": [
+    {
+      "fill": 1,
+      "slope": [
+        0.08286017924547195,
+        -0.1885097175836563
+      ],
+      "detail": false,
+      "surfaceHeight": 0.18,
+      "morphs": {
+        "BeerVolume": [
+          0.17676837742328644,
+          -0.4021540582180023,
+          0
+        ],
+        "LiquidSurface": [
+          0.17676837742328644,
+          -0.4021540582180023,
+          0
+        ],
+        "Foam": [
+          0.17676837742328644,
+          -0.4021540582180023,
+          0
+        ]
+      }
+    },
+    {
+      "fill": 1,
+      "slope": [
+        -0.04108302295207977,
+        -0.2000998556613922
+      ],
+      "detail": false,
+      "surfaceHeight": 0.18,
+      "morphs": {
+        "BeerVolume": [
+          -0.08764377981424332,
+          -0.4268797039985657,
+          0
+        ],
+        "LiquidSurface": [
+          -0.08764377981424332,
+          -0.4268797039985657,
+          0
+        ],
+        "Foam": [
+          -0.08764377981424332,
+          -0.4268797039985657,
+          0
+        ]
+      }
+    },
+    {
+      "fill": 1,
+      "slope": [
+        -0.05049612373113632,
+        -0.19869378209114075
+      ],
+      "detail": false,
+      "surfaceHeight": 0.18,
+      "morphs": {
+        "BeerVolume": [
+          -0.10772506147623062,
+          -0.42388007044792175,
+          0
+        ],
+        "LiquidSurface": [
+          -0.10772506147623062,
+          -0.42388007044792175,
+          0
+        ],
+        "Foam": [
+          -0.10772506147623062,
+          -0.42388007044792175,
+          0
+        ]
+      }
+    },
+    {
+      "fill": 1,
+      "slope": [
+        -4.811950837790846e-09,
+        -0.2063492089509964
+      ],
+      "detail": false,
+      "surfaceHeight": 0.18,
+      "morphs": {
+        "BeerVolume": [
+          -1.0265495120620471e-08,
+          -0.4402116537094116,
+          0
+        ],
+        "LiquidSurface": [
+          -1.0265495120620471e-08,
+          -0.4402116537094116,
+          0
+        ],
+        "Foam": [
+          -1.0265495120620471e-08,
+          -0.4402116537094116,
+          0
+        ]
+      }
+    },
+    {
+      "fill": 1,
+      "slope": [
+        -4.811950837790846e-09,
+        -0.2063492089509964
+      ],
+      "detail": false,
+      "surfaceHeight": 0.18,
+      "morphs": {
+        "BeerVolume": [
+          -1.0265495120620471e-08,
+          -0.4402116537094116,
+          0
+        ],
+        "LiquidSurface": [
+          -1.0265495120620471e-08,
+          -0.4402116537094116,
+          0
+        ],
+        "Foam": [
+          -1.0265495120620471e-08,
+          -0.4402116537094116,
+          0
+        ]
+      }
+    },
+    {
+      "fill": 1,
+      "slope": [
+        -4.811950837790846e-09,
+        -0.2063492089509964
+      ],
+      "detail": false,
+      "surfaceHeight": 0.18,
+      "morphs": {
+        "BeerVolume": [
+          -1.0265495120620471e-08,
+          -0.4402116537094116,
+          0
+        ],
+        "LiquidSurface": [
+          -1.0265495120620471e-08,
+          -0.4402116537094116,
+          0
+        ],
+        "Foam": [
+          -1.0265495120620471e-08,
+          -0.4402116537094116,
+          0
+        ]
+      }
+    },
+    {
+      "fill": 1,
+      "slope": [
+        -4.811950837790846e-09,
+        -0.2063492089509964
+      ],
+      "detail": false,
+      "surfaceHeight": 0.18,
+      "morphs": {
+        "BeerVolume": [
+          -1.0265495120620471e-08,
+          -0.4402116537094116,
+          0
+        ],
+        "LiquidSurface": [
+          -1.0265495120620471e-08,
+          -0.4402116537094116,
+          0
+        ],
+        "Foam": [
+          -1.0265495120620471e-08,
+          -0.4402116537094116,
+          0
+        ]
+      }
+    },
+    {
+      "fill": 1,
+      "slope": [
+        -4.811950837790846e-09,
+        -0.2063492089509964
+      ],
+      "detail": false,
+      "surfaceHeight": 0.18,
+      "morphs": {
+        "BeerVolume": [
+          -1.0265495120620471e-08,
+          -0.4402116537094116,
+          0
+        ],
+        "LiquidSurface": [
+          -1.0265495120620471e-08,
+          -0.4402116537094116,
+          0
+        ],
+        "Foam": [
+          -1.0265495120620471e-08,
+          -0.4402116537094116,
+          0
+        ]
+      }
+    }
+  ],
+  "settingsToggle": {
+    "off": {
+      "difficulty": "standard",
+      "volume": 1,
+      "voiceVolume": 1,
+      "environmentVolume": 1,
+      "musicVolume": 1,
+      "effectsVolume": 1,
+      "sensitivity": 1,
+      "renderScale": 0.85,
+      "muted": false,
+      "cinematicLighting": false
+    },
+    "on": {
+      "difficulty": "standard",
+      "volume": 1,
+      "voiceVolume": 1,
+      "environmentVolume": 1,
+      "musicVolume": 1,
+      "effectsVolume": 1,
+      "sensitivity": 1,
+      "renderScale": 0.85,
+      "muted": false,
+      "cinematicLighting": true
+    }
+  },
+  "preferencesPreserved": {
+    "keys": [
+      "flutter.hazard.run.v1",
+      "flutter.hazard.collection.v1",
+      "flutter.hazard.settings.v1"
+    ],
+    "verifiedEqual": true
+  }
+}

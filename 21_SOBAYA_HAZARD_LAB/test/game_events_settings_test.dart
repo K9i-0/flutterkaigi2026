@@ -76,6 +76,7 @@ void main() {
       sensitivity: 1.7,
       renderScale: .65,
       muted: true,
+      cinematicLighting: false,
     );
     final restored = HazardSettings.decode(p.encode());
     expect(restored.encode(), p.encode());
@@ -86,6 +87,8 @@ void main() {
     final bad = HazardSettings.decode(
       '{"volume":-4,"sensitivity":99,"renderScale":0,"difficulty":"unknown"}',
     );
+    expect(HazardSettings.decode('{}').cinematicLighting, true);
+    expect(restored.cinematicLighting, false);
     expect(bad.volume, 0);
     expect(bad.sensitivity, 2);
     expect(bad.renderScale, .85);

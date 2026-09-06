@@ -1484,7 +1484,15 @@ class _HazardGamePageState extends State<HazardGamePage> {
                     s.sensitivity = 1;
                     s.renderScale = .85;
                     s.muted = false;
+                    s.cinematicLighting = true;
                   }),
+                ),
+                action(
+                  'lighting',
+                  options.cinematicLighting ? '光と影の演出：ON' : '光と影の演出：OFF',
+                  () => game.changeSettings(
+                    (s) => s.cinematicLighting = !s.cinematicLighting,
+                  ),
                 ),
                 action(
                   'quality',
