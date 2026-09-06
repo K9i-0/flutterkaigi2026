@@ -24,6 +24,10 @@ void main(List<String> args) {
         event.value[i].text,
         'event:${event.key}:$i',
       );
+      final shot = event.value[i];
+      if (shot.unreadText.isNotEmpty) {
+        add(shot.voiceSpeaker, shot.unreadText, 'event:${event.key}:$i:unread');
+      }
     }
   }
   for (final owner in {
@@ -44,6 +48,18 @@ void main(List<String> args) {
   final mountain = HazardGameState(
     jsonDecode(File('assets/mountain.json').readAsStringSync()),
   );
+  add(
+    unreadKeeperReply.speaker,
+    unreadKeeperReply.text,
+    'dialogue:takosan:evidence:unread',
+  );
+  for (final entry in purchaseLines.entries) {
+    add(
+      entry.value.speaker,
+      entry.value.text,
+      'dialogue:purchase:${entry.key}',
+    );
+  }
   for (final alive in [true, false]) {
     for (final e in mountain.enemies.where((e) => e.boss)) {
       e.alive = alive;
