@@ -50,12 +50,23 @@ def audit(app):
             if file.is_file():
                 match(file, assets / 'assets' / folder / file.relative_to(LAB / 'assets' / folder))
     manifest = json.loads((assets / 'flutter_scene_generated/manifest.json').read_text())
+    if manifest != json.loads((LAB / 'flutter_scene_generated/manifest.json').read_text()):
+        raise ValueError('Bundle scene manifest differs from the generated scene catalog')
     expected = {'beer_mug', 'farm', 'fukuchan', 'items', 'mountain', 'sobaya', 'takosan', 'village', 'yametaro'}
     found = {entry['id'].split('/')[-1] for entry in manifest['entries'] if entry['family'] == 'scene'}
     if found != expected:
         raise ValueError(f'Unexpected model catalog: {found}')
+    scene_sources = []
     for entry in manifest['entries']:
         match(LAB / 'flutter_scene_generated' / entry['file'], assets / 'flutter_scene_generated' / entry['file'])
+        if entry['family'] == 'scene':
+            source = (LAB / entry['source']).resolve(strict=True)
+            scene_sources.append({
+                'id': entry['id'], 'source': str(source.relative_to(ROOT)),
+                'sourceSha256': sha(source), 'compiledFile': entry['file'],
+                'compiledSha256': sha(assets / 'flutter_scene_generated' / entry['file']),
+                'importStamp': entry['stamp'],
+            })
     voice = json.loads((assets / 'assets/audio/voice-manifest.json').read_text())['clips']
     for clip in voice:
         source = LAB / 'assets' / clip['asset']
@@ -81,6 +92,7 @@ def audit(app):
         'signatureIntegrity': 'codesign --verify --deep --strict passed',
         'signatureDistribution': 'ad hoc; not notarized',
         'sceneCount': len(found), 'voiceCueCount': len(voice),
+        'sceneSources': scene_sources,
         'assetHashes': matched,
         'appBytes': sum(p.stat().st_size for p in app.rglob('*') if p.is_file() and not p.is_symlink()),
         'binaryHashes': {
@@ -109,13 +121,14 @@ def main():
 村・農場・山道を探索し、そば屋を倒してビールを集め、壁の記録を収集します。
 
 WASD / 矢印: 移動   Shift: 走る   ドラッグ: 視点
-Q: 構える   Space: 射撃   R: リロード   E: 調べる・拾う・はしご
+Q: 構える   Space: 射撃   R: リロード   E: 調べる・拾う・はしご・窓越え
 X: 回避   F: ひるんだ敵への蹴り   1 / 2: 武器切替   H: ハーブ
 Tab: 持ち物   C: 記録   Esc: 一時停止・保存
 
 新しく始めると進行記録を上書きします。収集した記録は維持します。
 
-制作途中のプレビューです。口の動きと台詞の同期、窓越え・掴みは未実装です。
+制作途中のプレビューです。口の動きと台詞の同期、掴みは未実装です。
+はしごと窓は敵も追跡に使います。窓越えの手の接触や服の伸縮は調整中です。
 Apple SiliconのMacで起動・操作を確認。Intelと他のMac環境は未実機確認です。
 このビルドはローカル検証用のad hoc署名で、Appleの公証は受けていません。
 公開配布向けの署名と最終的な安定性確認は別途必要です。

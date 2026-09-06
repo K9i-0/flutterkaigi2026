@@ -22,6 +22,8 @@ class GameBenchmark {
   final watch = Stopwatch();
   int index = -1;
   bool interrupted = false, heardAmbience = false, heardSpeech = false;
+  int windowMotionTicks = 0, completedPassages = 0;
+  bool playerWasVaulting = false;
   static const cases = [
     (
       name: 'village-four',
@@ -76,6 +78,22 @@ class GameBenchmark {
       region: 'mountain',
       count: 6,
       scale: 1.0,
+      contacts: true,
+      event: null,
+    ),
+    (
+      name: 'window-player',
+      region: 'village',
+      count: 0,
+      scale: .85,
+      contacts: true,
+      event: null,
+    ),
+    (
+      name: 'window-enemies',
+      region: 'village',
+      count: 2,
+      scale: .85,
       contacts: true,
       event: null,
     ),
@@ -136,6 +154,23 @@ class GameBenchmark {
     }
     game.scene.renderScale = c.scale;
     game.contactShadows?.node.visible = c.contacts;
+    windowMotionTicks = completedPassages = 0;
+    playerWasVaulting = false;
+    if (c.name.startsWith('window-')) {
+      final w = s.windows.first;
+      s.x = w.x;
+      s.y = 0;
+      s.pitch = .12;
+      s.invulnerable = 100000;
+      if (c.name == 'window-player') {
+        s.z = w.entryZ(true);
+        s.yaw = math.pi;
+      } else {
+        s.z = w.exitZ(true) + 2;
+        s.yaw = 0;
+        resetWindowEnemies();
+      }
+    }
     if (c.event != null) {
       s.seenEvents.remove(c.event);
       game.startEvent(c.event!);
@@ -159,7 +194,9 @@ class GameBenchmark {
         'region': cases[index].region,
         'contactShadows': cases[index].contacts,
         'profile': kProfileMode,
-        'valid': kProfileMode && game.frames.count == 240 && !interrupted && game.foreground && game.state!.phase == expectedPhase && (cases[index].event == null ? game.state!.time >= 6 : heardSpeech) && heardAmbience && game.voice.inspect()['errors'].isEmpty,
+        'valid': kProfileMode && game.frames.count == 240 && !interrupted && game.foreground && game.state!.phase == expectedPhase && (cases[index].event == null ? game.state!.time >= 6 : heardSpeech) && heardAmbience && game.voice.inspect()['errors'].isEmpty && (!cases[index].name.startsWith('window-') || (windowMotionTicks >= 60 && completedPassages > 0)),
+        'windowMotionTicks': windowMotionTicks,
+        'completedWindowPassages': completedPassages,
         'interrupted': interrupted,
         'foreground': game.foreground,
         'gamePhase': game.state!.phase.name,
@@ -193,7 +230,49 @@ class GameBenchmark {
     heardSpeech |= game.voice.speaking;
     if (index < cases.length) {
       final s = game.state!;
-      s.yaw = math.pi + math.sin(s.time * .3) * .25;
+      final name = cases[index].name;
+      if (name == 'window-player') {
+        if (s.vault?.crossing ?? false) windowMotionTicks++;
+        if (playerWasVaulting && s.vault == null) completedPassages++;
+        playerWasVaulting = s.vault != null;
+        if (s.vault == null && s.interaction?.startsWith('window:') == true) {
+          s.yaw = s.z < s.windows.first.z ? math.pi : 0;
+          s.interact();
+        }
+      } else if (name == 'window-enemies') {
+        final enemies = s.enemies.take(2);
+        if (enemies.any((e) => e.vault?.crossing ?? false)) {
+          windowMotionTicks++;
+        }
+        if (enemies.every(
+          (e) => e.vault == null && e.z > s.windows.first.z + .8,
+        )) {
+          completedPassages += 2;
+          resetWindowEnemies();
+        }
+      } else {
+        s.yaw = math.pi + math.sin(s.time * .3) * .25;
+      }
+    }
+  }
+
+  // A repeated rendering workload, not evidence of normal route progression.
+  // Only the opt-in benchmark relocates enemies after both have landed.
+  void resetWindowEnemies() {
+    final s = game.state!, w = s.windows.first;
+    for (var i = 0; i < 2; i++) {
+      s.enemies[i]
+        ..x = w.x
+        ..y = 0
+        ..z = w.entryZ(true) - i
+        ..heading = 0
+        ..vault = null
+        ..climb = null
+        ..attackPending = false
+        ..meleeRecovery = 0
+        ..approachX = null
+        ..approachZ = null
+        ..approachTimer = 0;
     }
   }
 
