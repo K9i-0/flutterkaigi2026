@@ -1,8 +1,9 @@
 import 'dart:async';
 
 class VoiceCue {
-  const VoiceCue(this.identity, this.asset, {this.gain = 1});
+  const VoiceCue(this.identity, this.asset, {this.gain = 1, this.speaker = ''});
   final String identity, asset;
+  final String speaker;
   final double gain;
 }
 
@@ -28,6 +29,7 @@ class VoiceCatalog {
       return VoiceCue(
         identity,
         clip['asset'] as String,
+        speaker: speaker,
         gain: clip['kind'] == 'nonverbal' ? .5 : 1,
       );
     }
@@ -50,6 +52,11 @@ abstract interface class VoiceTelemetry {
   Map<String, dynamic> get playback;
 }
 
+/// A position anchored to backend observations, interpolated between updates.
+abstract interface class VoicePositionClock {
+  double? get playbackSeconds;
+}
+
 /// Each line owns its player, so late completion from a skipped line cannot
 /// complete its replacement. Changes are serialized, including slow loads.
 class VoiceSession {
@@ -67,6 +74,10 @@ class VoiceSession {
       _wanted != null && (_loading || _active?.identity != _wanted!.identity);
   bool get speaking => _active != null && !_loading && !_paused && !_finished;
   String? get activeIdentity => _active?.identity;
+  VoiceCue? get activeCue => _active;
+  double? get playbackSeconds => _port is VoicePositionClock
+      ? (_port as VoicePositionClock).playbackSeconds
+      : null;
   Future<void> get idle async {
     while (_work != null) {
       await _work;
@@ -154,6 +165,7 @@ class VoiceSession {
   Map<String, dynamic> inspect() => {
     'requested': _wanted?.identity,
     'active': activeIdentity,
+    'playbackSeconds': playbackSeconds,
     'loading': loading,
     'speaking': speaking,
     'finished': _finished,

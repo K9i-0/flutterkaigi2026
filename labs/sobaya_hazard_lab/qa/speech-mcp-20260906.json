@@ -1,0 +1,85 @@
+{
+  "date": "2026-09-06",
+  "scope": "Speech morphs and debug MCP conversation probe; demo remains in progress",
+  "environment": {
+    "flutter": "3.47.2",
+    "dart": "3.13.2",
+    "flutterScene": "0.23.0",
+    "platform": "macOS debug"
+  },
+  "validation": {
+    "analyze": "No issues found",
+    "flutterTests": 100,
+    "conversation": {
+      "success": true,
+      "durationMs": 2483,
+      "snapshots": 17,
+      "firstTick": 25,
+      "lastTick": 137,
+      "foregroundThroughout": true,
+      "pausedClock": 0.9463440000000001,
+      "resumedClock": 1.035331,
+      "speakers": {
+        "福ちゃん": {
+          "samples": 7,
+          "minOpening": 0.20803476499999998,
+          "maxOpening": 0.74706228
+        },
+        "やめ太郎": {
+          "samples": 7,
+          "minOpening": 0.21167567999999976,
+          "maxOpening": 0.933782905
+        }
+      },
+      "pauseClosedBoth": true,
+      "evidence": "evidence/conversation-probe-20260906.json"
+    },
+    "backgroundPreflight": {
+      "success": false,
+      "durationMs": 0,
+      "snapshots": 0,
+      "error": "Ready foreground game required; no run was reset",
+      "nativePid": 91848,
+      "ticksBeforeAndAfter": 137
+    }
+  },
+  "method": {
+    "envelopes": "Local hash-checked PCM RMS at 50 Hz; not phoneme recognition",
+    "speechClips": 25,
+    "morphTargets": [
+      "SpeechOpen",
+      "SpeechNarrow"
+    ],
+    "speakers": [
+      "福ちゃん",
+      "やめ太郎"
+    ]
+  },
+  "limitations": [
+    "Controller-driven native frame/audio probe does not certify keyboard or pointer input.",
+    "GLB morph pose audit checks finite vertices and local displacement, not every body animation or subjective speech quality.",
+    "No profile or long campaign audit after speech morph addition.",
+    "Existing adf5ea4 Mac ZIP does not contain these changes; no new ZIP built.",
+    "No public push."
+  ],
+  "modelAudit": {
+    "fukuchan": {
+      "sha256": "ee23e45beacc9a1983e4751e35a8dea95ff8aba84e43a61a30ddb7537881c13b",
+      "poses": 11,
+      "finite": true,
+      "maximumMorphDelta": 0.007553977449560222,
+      "minimumChangedHeight": 1.4516854286193848,
+      "changedVertexTargetPairs": 2932,
+      "joints": 23
+    },
+    "yametaro": {
+      "sha256": "3585bf50c60041069c5ef8343712935be4bac7391aa6b5a1a4341a2c8ea82a12",
+      "poses": 11,
+      "finite": true,
+      "maximumMorphDelta": 0.027193710356119383,
+      "minimumChangedHeight": 0.5906204581260681,
+      "changedVertexTargetPairs": 302,
+      "joints": 23
+    }
+  }
+}

@@ -5,10 +5,14 @@ import 'package:vector_math/vector_math.dart' as vm;
 import 'game_controller.dart';
 import 'game_state.dart';
 import 'game_native_audit.dart';
+import 'game_debug_probe.dart';
+
+import 'dart:io' show pid;
 
 HazardGameController? _game;
 bool _registered = false;
 NativeCampaignAudit? _nativeAudit;
+bool _probeRunning = false;
 void detachGameAutomation() {
   _nativeAudit?.stop();
   _nativeAudit = null;
@@ -21,6 +25,47 @@ void attachGameAutomation(HazardGameController game) {
   if (_registered) return;
   _registered = true;
   registerMarionetteExtension(
+    name: 'madogiwa.debugSession',
+    description: 'Read-only connection identity and readiness. Check pid/foreground before any native UI test.',
+    callback: (_) async => MarionetteExtensionResult.success({
+      'protocol': 1,
+      'app': 'sobaya_hazard',
+      'pid': pid,
+      'ready': _game?.ready ?? false,
+      'foreground': _game?.foreground ?? false,
+      'phase': _game?.state?.phase.name,
+      'ticks': _game?.renderedTicks,
+      'probeRunning': _probeRunning,
+      'campaignAudit': _nativeAudit?.status,
+      'probes': ['conversation'],
+    }),
+  );
+  registerMarionetteExtension(
+    name: 'madogiwa.runGameProbe',
+    description: 'name=conversation. Resets the test run, keeps saved collection; observes real frames/audio, pauses at the end. Foreground required, 12s deadline. Controller test, not keyboard/pointer input.',
+    callback: (p) async {
+      final g = _game;
+      if (p['name'] != 'conversation') {
+        return MarionetteExtensionResult.invalidParams('name=conversation');
+      }
+      if (g == null || !g.ready) {
+        return MarionetteExtensionResult.error(1, 'Not ready');
+      }
+      if (_probeRunning || _nativeAudit?.status == 'running') {
+        return MarionetteExtensionResult.error(
+          2,
+          'Another probe or campaign audit is running',
+        );
+      }
+      _probeRunning = true;
+      try {
+        return MarionetteExtensionResult.success(await probeConversation(g));
+      } finally {
+        _probeRunning = false;
+      }
+    },
+  );
+  registerMarionetteExtension(
     name: 'madogiwa.auditCampaign',
     description: 'Start/inspect/stop a native rendered campaign audit. action=start|inspect|stop, complete=true includes optional collection. Start resets the run. Exact automated aim; not a human difficulty test.',
     callback: (p) async {
@@ -30,8 +75,11 @@ void attachGameAutomation(HazardGameController game) {
       }
       switch (p['action']) {
         case 'start':
-          if (_nativeAudit?.status == 'running') {
-            return MarionetteExtensionResult.error(2, 'Already running');
+          if (_probeRunning || _nativeAudit?.status == 'running') {
+            return MarionetteExtensionResult.error(
+              2,
+              'Another probe or campaign audit is running',
+            );
           }
           _nativeAudit = NativeCampaignAudit(
             g,
@@ -71,6 +119,7 @@ void attachGameAutomation(HazardGameController game) {
                   _game!.player.clips[_game!.player.current]!.playbackTime,
             },
             'voice': _game!.voice.inspect(),
+            'speechFaces': _game!.inspectSpeechFaces(),
             'soundscape': _game!.soundscape.inspect(),
             'event': _game!.director == null
                 ? null
