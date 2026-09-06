@@ -1,0 +1,13 @@
+{
+  "preview": ".local/audio-polish-20260907/audio-preview.wav",
+  "previewPeak": 0.5547445678732057,
+  "mixes": 105,
+  "worst": {
+    "variant": 1,
+    "delay": 0.05,
+    "scoreSecond": 36,
+    "samplePeak": 0.9257504917189949,
+    "oversampledPeak": 0.9267695638386665
+  },
+  "note": "105 full-gain launch/impact/background combinations without music duck; no dialogue/ambience. Not a guarantee for all concurrent game audio."
+}

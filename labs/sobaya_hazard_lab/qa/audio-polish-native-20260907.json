@@ -1,0 +1,937 @@
+{
+  "date": "2026-09-07",
+  "app": "sobaya_hazard",
+  "device": "macOS debug",
+  "tests": 161,
+  "analyze": "No issues found",
+  "runtimeErrors": [],
+  "nativeFinalLauncherPid": 56978,
+  "nativeFinalAppPid": 57419,
+  "snapshots": [
+    {
+      "name": "exploration",
+      "soundscape": {
+        "intensity": 0,
+        "duck": 1,
+        "impactDuck": 1,
+        "alertCooldown": 0,
+        "releaseHold": 0,
+        "ambience": {
+          "requested": "village",
+          "active": "village",
+          "playbackSeconds": 1.485964,
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.2,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 1456,
+            "durationMs": 16000,
+            "loop": true,
+            "loopCompletions": 0,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        },
+        "exploration": {
+          "requested": "exploration",
+          "active": "exploration",
+          "playbackSeconds": 1.463086,
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.4,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 1433,
+            "durationMs": 48000,
+            "loop": true,
+            "loopCompletions": 0,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "playbackSeconds": 1.453079,
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 1423,
+            "durationMs": 48000,
+            "loop": true,
+            "loopCompletions": 0,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        }
+      },
+      "voice": {
+        "requested": null,
+        "active": null,
+        "playbackSeconds": null,
+        "loading": false,
+        "speaking": false,
+        "finished": false,
+        "paused": false,
+        "volume": 1,
+        "errors": []
+      },
+      "audio": []
+    },
+    {
+      "name": "pursuit",
+      "soundscape": {
+        "intensity": 0.9985664582418471,
+        "duck": 1,
+        "impactDuck": 1,
+        "alertCooldown": 8.166669999999971,
+        "releaseHold": 3.5,
+        "ambience": {
+          "requested": "village",
+          "active": "village",
+          "playbackSeconds": 3.644302,
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.2,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 3459,
+            "durationMs": 16000,
+            "loop": true,
+            "loopCompletions": 0,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        },
+        "exploration": {
+          "requested": "exploration",
+          "active": "exploration",
+          "playbackSeconds": 3.621878,
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 3548,
+            "durationMs": 48000,
+            "loop": true,
+            "loopCompletions": 0,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "playbackSeconds": 3.611189,
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.5,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 3454,
+            "durationMs": 48000,
+            "loop": true,
+            "loopCompletions": 0,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        }
+      },
+      "audio": [
+        {
+          "name": "alert",
+          "variant": "alert",
+          "volume": 0.6,
+          "started": true
+        }
+      ]
+    },
+    {
+      "name": "launchAccent",
+      "soundscape": {
+        "intensity": 0.9999999999999993,
+        "duck": 1,
+        "impactDuck": 0.8311858406114637,
+        "alertCooldown": 0,
+        "releaseHold": 3.5,
+        "ambience": {
+          "requested": "village",
+          "active": "village",
+          "playbackSeconds": null,
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.2,
+          "errors": [],
+          "backend": {
+            "state": "completed",
+            "positionMs": 3097,
+            "durationMs": 16000,
+            "loop": true,
+            "loopCompletions": 1,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        },
+        "exploration": {
+          "requested": "exploration",
+          "active": "exploration",
+          "playbackSeconds": 19.232746,
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 19147,
+            "durationMs": 48000,
+            "loop": true,
+            "loopCompletions": 0,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "playbackSeconds": 19.117,
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.42,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 18867,
+            "durationMs": 48000,
+            "loop": true,
+            "loopCompletions": 0,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        }
+      },
+      "audio": [
+        {
+          "name": "alert",
+          "variant": "alert",
+          "volume": 0.6,
+          "started": true
+        },
+        {
+          "name": "rocket_launch",
+          "variant": "rocket_launch_0",
+          "volume": 0.88,
+          "started": true
+        }
+      ]
+    },
+    {
+      "name": "paused",
+      "soundscape": {
+        "intensity": 0.9999999999999994,
+        "duck": 1,
+        "impactDuck": 0.9463239336006695,
+        "alertCooldown": 0,
+        "releaseHold": 3.5,
+        "ambience": {
+          "requested": "village",
+          "active": "village",
+          "playbackSeconds": null,
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 3562,
+            "durationMs": 16000,
+            "loop": true,
+            "loopCompletions": 1,
+            "playbackRequested": false,
+            "positionUpdateMs": 200
+          }
+        },
+        "exploration": {
+          "requested": "exploration",
+          "active": "exploration",
+          "playbackSeconds": null,
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 19653,
+            "durationMs": 48000,
+            "loop": true,
+            "loopCompletions": 0,
+            "playbackRequested": false,
+            "positionUpdateMs": 200
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "playbackSeconds": null,
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": true,
+          "volume": 0,
+          "errors": [],
+          "backend": {
+            "state": "paused",
+            "positionMs": 19701,
+            "durationMs": 48000,
+            "loop": true,
+            "loopCompletions": 0,
+            "playbackRequested": false,
+            "positionUpdateMs": 200
+          }
+        }
+      },
+      "audio": [
+        {
+          "name": "alert",
+          "variant": "alert",
+          "volume": 0.6,
+          "started": true
+        },
+        {
+          "name": "rocket_launch",
+          "variant": "rocket_launch_0",
+          "volume": 0.88,
+          "started": true
+        }
+      ]
+    },
+    {
+      "name": "threatReleased",
+      "soundscape": {
+        "intensity": 1.4152480521791553e-07,
+        "duck": 1,
+        "impactDuck": 0.9999999999999993,
+        "alertCooldown": 0,
+        "releaseHold": 0,
+        "ambience": {
+          "requested": "village",
+          "active": "village",
+          "playbackSeconds": null,
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.2,
+          "errors": [],
+          "backend": {
+            "state": "completed",
+            "positionMs": 12503,
+            "durationMs": 16000,
+            "loop": true,
+            "loopCompletions": 3,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        },
+        "exploration": {
+          "requested": "exploration",
+          "active": "exploration",
+          "playbackSeconds": null,
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.4,
+          "errors": [],
+          "backend": {
+            "state": "completed",
+            "positionMs": 12720,
+            "durationMs": 48000,
+            "loop": true,
+            "loopCompletions": 1,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "playbackSeconds": null,
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0,
+          "errors": [],
+          "backend": {
+            "state": "completed",
+            "positionMs": 12718,
+            "durationMs": 48000,
+            "loop": true,
+            "loopCompletions": 1,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        }
+      },
+      "audio": [
+        {
+          "name": "alert",
+          "variant": "alert",
+          "volume": 0.6,
+          "started": true
+        },
+        {
+          "name": "rocket_launch",
+          "variant": "rocket_launch_0",
+          "volume": 0.88,
+          "started": true
+        }
+      ]
+    },
+    {
+      "name": "nativeRocketImpactBeforeFinalMaster",
+      "audio": [
+        {
+          "name": "alert",
+          "variant": "alert",
+          "volume": 0.6,
+          "started": true
+        },
+        {
+          "name": "rocket_launch",
+          "variant": "rocket_launch_0",
+          "volume": 0.88,
+          "started": true
+        },
+        {
+          "name": "equip",
+          "variant": "equip",
+          "volume": 0.55,
+          "started": true
+        },
+        {
+          "name": "alert",
+          "variant": "alert",
+          "volume": 0.6,
+          "started": true
+        },
+        {
+          "name": "enemy",
+          "variant": "enemy_0",
+          "volume": 0.16923076923076924,
+          "started": true
+        },
+        {
+          "name": "mug_ready",
+          "variant": "mug_ready_0",
+          "volume": 0.16923076923076924,
+          "started": true
+        },
+        {
+          "name": "rocket_launch",
+          "variant": "rocket_launch_1",
+          "volume": 0.88,
+          "started": true
+        },
+        {
+          "name": "rocket_blast",
+          "variant": "rocket_blast_0",
+          "volume": 0.6607999805096006,
+          "started": true
+        }
+      ]
+    },
+    {
+      "name": "dialogueMix",
+      "soundscape": {
+        "intensity": 0,
+        "duck": 0.26000591991524363,
+        "impactDuck": 1,
+        "alertCooldown": 0,
+        "releaseHold": 0,
+        "ambience": {
+          "requested": "village",
+          "active": "village",
+          "playbackSeconds": 1.2985790000000001,
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.05,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 1195,
+            "durationMs": 16000,
+            "loop": true,
+            "loopCompletions": 0,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        },
+        "exploration": {
+          "requested": "exploration",
+          "active": "exploration",
+          "playbackSeconds": 1.3422960000000002,
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.1,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 1247,
+            "durationMs": 48000,
+            "loop": true,
+            "loopCompletions": 2,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "playbackSeconds": null,
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0,
+          "errors": [],
+          "backend": {
+            "state": "completed",
+            "positionMs": 1298,
+            "durationMs": 48000,
+            "loop": true,
+            "loopCompletions": 2,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        }
+      },
+      "voice": {
+        "requested": "event:4:opening:0",
+        "active": "event:4:opening:0",
+        "playbackSeconds": 1.330382,
+        "loading": false,
+        "speaking": true,
+        "finished": false,
+        "paused": false,
+        "volume": 1,
+        "errors": [],
+        "backend": {
+          "state": "playing",
+          "positionMs": 1135,
+          "durationMs": 14754,
+          "loop": false,
+          "loopCompletions": 0,
+          "playbackRequested": true,
+          "positionUpdateMs": 200
+        }
+      }
+    },
+    {
+      "name": "finalMasterRocket1",
+      "audio": [
+        {
+          "name": "equip",
+          "variant": "equip",
+          "volume": 0.55,
+          "started": true
+        },
+        {
+          "name": "alert",
+          "variant": "alert",
+          "volume": 0.6,
+          "started": true
+        },
+        {
+          "name": "rocket_launch",
+          "variant": "rocket_launch_0",
+          "volume": 0.88,
+          "started": true
+        },
+        {
+          "name": "rocket_blast",
+          "variant": "rocket_blast_0",
+          "volume": 0.6607498521302797,
+          "started": true
+        }
+      ],
+      "soundscape": {
+        "intensity": 0.9999958021251248,
+        "duck": 1,
+        "impactDuck": 0.9992276671911853,
+        "alertCooldown": 6.53333899999995,
+        "releaseHold": 3.5,
+        "ambience": {
+          "requested": "mountain",
+          "active": "mountain",
+          "playbackSeconds": 3.286523,
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.2,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 3135,
+            "durationMs": 16000,
+            "loop": true,
+            "loopCompletions": 0,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        },
+        "exploration": {
+          "requested": "exploration",
+          "active": "exploration",
+          "playbackSeconds": 3.373703,
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 3356,
+            "durationMs": 48000,
+            "loop": true,
+            "loopCompletions": 0,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "playbackSeconds": 3.382677,
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.5,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 3365,
+            "durationMs": 48000,
+            "loop": true,
+            "loopCompletions": 0,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        }
+      }
+    },
+    {
+      "name": "finalMasterRocket2",
+      "audio": [
+        {
+          "name": "equip",
+          "variant": "equip",
+          "volume": 0.55,
+          "started": true
+        },
+        {
+          "name": "alert",
+          "variant": "alert",
+          "volume": 0.6,
+          "started": true
+        },
+        {
+          "name": "rocket_launch",
+          "variant": "rocket_launch_0",
+          "volume": 0.88,
+          "started": true
+        },
+        {
+          "name": "rocket_blast",
+          "variant": "rocket_blast_0",
+          "volume": 0.6607498521302797,
+          "started": true
+        },
+        {
+          "name": "rocket_launch",
+          "variant": "rocket_launch_1",
+          "volume": 0.88,
+          "started": true
+        },
+        {
+          "name": "rocket_blast",
+          "variant": "rocket_blast_1",
+          "volume": 0.6607468596272132,
+          "started": true
+        }
+      ],
+      "soundscape": {
+        "intensity": 0.9999999998094139,
+        "duck": 1,
+        "impactDuck": 0.9992857121533484,
+        "alertCooldown": 3.7333429999999144,
+        "releaseHold": 3.5,
+        "ambience": {
+          "requested": "mountain",
+          "active": "mountain",
+          "playbackSeconds": 6.084416,
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.2,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 5942,
+            "durationMs": 16000,
+            "loop": true,
+            "loopCompletions": 0,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        },
+        "exploration": {
+          "requested": "exploration",
+          "active": "exploration",
+          "playbackSeconds": 6.171193,
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 6152,
+            "durationMs": 48000,
+            "loop": true,
+            "loopCompletions": 0,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "playbackSeconds": 6.17997,
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.5,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 6138,
+            "durationMs": 48000,
+            "loop": true,
+            "loopCompletions": 0,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        }
+      }
+    },
+    {
+      "name": "finalMasterRocket3",
+      "audio": [
+        {
+          "name": "equip",
+          "variant": "equip",
+          "volume": 0.55,
+          "started": true
+        },
+        {
+          "name": "alert",
+          "variant": "alert",
+          "volume": 0.6,
+          "started": true
+        },
+        {
+          "name": "rocket_launch",
+          "variant": "rocket_launch_0",
+          "volume": 0.88,
+          "started": true
+        },
+        {
+          "name": "rocket_blast",
+          "variant": "rocket_blast_0",
+          "volume": 0.6607498521302797,
+          "started": true
+        },
+        {
+          "name": "rocket_launch",
+          "variant": "rocket_launch_1",
+          "volume": 0.88,
+          "started": true
+        },
+        {
+          "name": "rocket_blast",
+          "variant": "rocket_blast_1",
+          "volume": 0.6607468596272132,
+          "started": true
+        },
+        {
+          "name": "rocket_launch",
+          "variant": "rocket_launch_2",
+          "volume": 0.88,
+          "started": true
+        },
+        {
+          "name": "rocket_blast",
+          "variant": "rocket_blast_2",
+          "volume": 0.6607468539154708,
+          "started": true
+        },
+        {
+          "name": "defeat",
+          "variant": "defeat",
+          "volume": 0.16634374556968007,
+          "started": true
+        }
+      ],
+      "soundscape": {
+        "intensity": 0.9999999999999851,
+        "duck": 1,
+        "impactDuck": 0.9991863783992112,
+        "alertCooldown": 1.0833479999999245,
+        "releaseHold": 1.4916700000000076,
+        "ambience": {
+          "requested": "mountain",
+          "active": "mountain",
+          "playbackSeconds": 8.731306,
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.2,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 8534,
+            "durationMs": 16000,
+            "loop": true,
+            "loopCompletions": 0,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        },
+        "exploration": {
+          "requested": "exploration",
+          "active": "exploration",
+          "playbackSeconds": 8.818088,
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 8760,
+            "durationMs": 48000,
+            "loop": true,
+            "loopCompletions": 0,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        },
+        "tension": {
+          "requested": "tension",
+          "active": "tension",
+          "playbackSeconds": 8.827314000000001,
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 0.5,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 8627,
+            "durationMs": 48000,
+            "loop": true,
+            "loopCompletions": 0,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        }
+      }
+    }
+  ],
+  "scope": "Native loop switching, pause/resume, dialogue duck, repeated launcher variants and real rocket impacts. PCM/mastering and offline mixed-peak checks are separate; not a listening approval.",
+  "preferencesRestored": true,
+  "bundleMatches": [
+    {
+      "asset": "assets/audio/combat/rocket_launch_0.wav",
+      "sha256": "7f20ed2cae0f227fa1be5c8eb1f43798b3d79236120b2d8d8a6b789a6fbaae83"
+    },
+    {
+      "asset": "assets/audio/combat/rocket_blast_0.wav",
+      "sha256": "b5be6d3de050b3ac3f0877897f62c580baad257f13a87e646cc9e2d983199799"
+    },
+    {
+      "asset": "assets/audio/combat/rocket_launch_1.wav",
+      "sha256": "68cd9c727f2a177d49f98af2af5a31bbf029a800cc94f672058d00016025dce5"
+    },
+    {
+      "asset": "assets/audio/combat/rocket_blast_1.wav",
+      "sha256": "8c354be6d3ea813457ba9b7e52dffb0447c85f0870c9b8dc00ffe55e71cac27c"
+    },
+    {
+      "asset": "assets/audio/combat/rocket_launch_2.wav",
+      "sha256": "c5db5c9b5581f46eb6736e0ec4e7504e5dc85792016c82604fcef16ac68c2ed3"
+    },
+    {
+      "asset": "assets/audio/combat/rocket_blast_2.wav",
+      "sha256": "ce5d22f6ca0f462bcd887d11eb637c21a6ba9c982af13d9c574dc05508c6a8b2"
+    },
+    {
+      "asset": "assets/audio/combat/alert.wav",
+      "sha256": "dee12fcdafc94ca435ed92cfcb4b5eb7b2e27d860d1b72cc44bd6b719306d4ed"
+    },
+    {
+      "asset": "assets/audio/soundscape/exploration.wav",
+      "sha256": "9e05378609505fcc2cadd61cd1487e1dfefdf7196372bfb0f671270efeff00e8"
+    },
+    {
+      "asset": "assets/audio/soundscape/tension.wav",
+      "sha256": "549f87da7049cb60f6f84abe79e8411fc0ab609109ed5ea1e2124feab4cdf69b"
+    }
+  ]
+}

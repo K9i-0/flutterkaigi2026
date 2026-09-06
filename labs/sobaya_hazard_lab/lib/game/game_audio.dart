@@ -19,9 +19,11 @@ class HazardSound {
           math.pow(z! - listenerZ, 2) +
           math.pow(y - listenerY, 2),
     );
-    if (distance >= 24) return 0;
-    final rolloff = 1 / (1 + math.pow(distance / 4, 2));
-    final edge = ((24 - distance) / 4).clamp(0.0, 1.0);
-    return rolloff * edge * (occluded ? .35 : 1);
+    final blast = name == 'rocket_blast';
+    final range = blast ? 45.0 : 24.0;
+    if (distance >= range) return 0;
+    final rolloff = 1 / (1 + math.pow(distance / (blast ? 10 : 4), 2));
+    final edge = ((range - distance) / 4).clamp(0.0, 1.0);
+    return rolloff * edge * (occluded ? (blast ? .55 : .35) : 1);
   }
 }

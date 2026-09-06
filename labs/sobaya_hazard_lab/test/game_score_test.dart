@@ -72,12 +72,12 @@ void main() {
       expect(music.tension.inspect()['paused'], false);
       advance(4, threat: true);
       expect(music.intensity, greaterThan(.98));
-      advance(2);
+      advance(3);
       expect(music.intensity, greaterThan(.98));
       advance(12);
       expect(music.intensity, lessThan(.015));
       advance(1, speaking: true);
-      expect(music.duck, lessThan(.34));
+      expect(music.duck, lessThan(.28));
       final clock = music.intensity;
       advance(4, active: false);
       expect(music.intensity, clock);

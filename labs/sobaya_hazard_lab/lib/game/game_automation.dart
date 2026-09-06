@@ -664,6 +664,9 @@ void attachGameAutomation(HazardGameController game) {
             'mug_ready',
             'mug_swing',
             'mug_hit',
+            'rocket_launch',
+            'rocket_blast',
+            'alert',
           ].contains(cue)) {
             return MarionetteExtensionResult.invalidParams(
               'Unsupported audio cue',
