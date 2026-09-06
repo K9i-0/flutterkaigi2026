@@ -54,6 +54,8 @@ class HazardCampaign {
     to.reloading = to.hurtTime = to.evadeTime = to.kickTime = 0;
     to.fireCooldown = to.recoil = to.damageFlash = to.noiseTime = 0;
     to.invulnerable = 1;
+    to.reaction = null;
+    to.reactionTime = 0;
     to.exitRequested = null;
     to.phase = PlayPhase.playing;
     to.say('${to.subtitle}\n${to.objective}');
@@ -96,6 +98,9 @@ class HazardCampaign {
     to.collected
       ..clear()
       ..addAll(from.collected);
+    to.foundMemos
+      ..clear()
+      ..addAll(from.foundMemos);
     to.seenEvents
       ..clear()
       ..addAll(from.seenEvents);

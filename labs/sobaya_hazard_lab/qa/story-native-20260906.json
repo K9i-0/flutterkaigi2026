@@ -1,0 +1,1015 @@
+{
+  "date": "2026-09-06",
+  "scope": "Native rendered frames and backend audio; not human listening approval",
+  "probes": {
+    "conversation": {
+      "success": true,
+      "probe": "conversation",
+      "scope": "Actual native frames/audio and controller transitions; not a keyboard/gesture test",
+      "durationMs": 2568,
+      "pausedClock": 0.96154,
+      "snapshots": [
+        {
+          "stage": "やめ太郎:0",
+          "wallMs": 455,
+          "ticks": 25,
+          "foreground": true,
+          "shot": 1,
+          "paused": false,
+          "voice": {
+            "requested": "event:1:opening:1",
+            "active": "event:1:opening:1",
+            "playbackSeconds": 0.23910199999999998,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 1,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 53,
+              "durationMs": 5240,
+              "loop": false,
+              "loopCompletions": 0,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          },
+          "faces": {
+            "福ちゃん": {
+              "opening": 0,
+              "nodes": 1,
+              "weights": [
+                0,
+                0
+              ]
+            },
+            "やめ太郎": {
+              "opening": 0.8555916800000001,
+              "nodes": 1,
+              "weights": [
+                0.8555916547775269,
+                0.1711183339357376
+              ]
+            }
+          }
+        },
+        {
+          "stage": "やめ太郎:1",
+          "wallMs": 556,
+          "ticks": 31,
+          "foreground": true,
+          "shot": 1,
+          "paused": false,
+          "voice": {
+            "requested": "event:1:opening:1",
+            "active": "event:1:opening:1",
+            "playbackSeconds": 0.339847,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 1,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 253,
+              "durationMs": 5240,
+              "loop": false,
+              "loopCompletions": 0,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          },
+          "faces": {
+            "福ちゃん": {
+              "opening": 0,
+              "nodes": 1,
+              "weights": [
+                0,
+                0
+              ]
+            },
+            "やめ太郎": {
+              "opening": 0.39820337999999966,
+              "nodes": 1,
+              "weights": [
+                0.39820337295532227,
+                0.07964067906141281
+              ]
+            }
+          }
+        },
+        {
+          "stage": "やめ太郎:2",
+          "wallMs": 659,
+          "ticks": 37,
+          "foreground": true,
+          "shot": 1,
+          "paused": false,
+          "voice": {
+            "requested": "event:1:opening:1",
+            "active": "event:1:opening:1",
+            "playbackSeconds": 0.442473,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 1,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 253,
+              "durationMs": 5240,
+              "loop": false,
+              "loopCompletions": 0,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          },
+          "faces": {
+            "福ちゃん": {
+              "opening": 0,
+              "nodes": 1,
+              "weights": [
+                0,
+                0
+              ]
+            },
+            "やめ太郎": {
+              "opening": 0.98487582,
+              "nodes": 1,
+              "weights": [
+                0.9848757982254028,
+                0.19697515666484833
+              ]
+            }
+          }
+        },
+        {
+          "stage": "やめ太郎:3",
+          "wallMs": 761,
+          "ticks": 43,
+          "foreground": true,
+          "shot": 1,
+          "paused": false,
+          "voice": {
+            "requested": "event:1:opening:1",
+            "active": "event:1:opening:1",
+            "playbackSeconds": 0.544749,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 1,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 453,
+              "durationMs": 5240,
+              "loop": false,
+              "loopCompletions": 0,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          },
+          "faces": {
+            "福ちゃん": {
+              "opening": 0,
+              "nodes": 1,
+              "weights": [
+                0,
+                0
+              ]
+            },
+            "やめ太郎": {
+              "opening": 0.6504993999999997,
+              "nodes": 1,
+              "weights": [
+                0.6504994034767151,
+                0.13009987771511078
+              ]
+            }
+          }
+        },
+        {
+          "stage": "やめ太郎:4",
+          "wallMs": 872,
+          "ticks": 50,
+          "foreground": true,
+          "shot": 1,
+          "paused": false,
+          "voice": {
+            "requested": "event:1:opening:1",
+            "active": "event:1:opening:1",
+            "playbackSeconds": 0.655275,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 1,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 453,
+              "durationMs": 5240,
+              "loop": false,
+              "loopCompletions": 0,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          },
+          "faces": {
+            "福ちゃん": {
+              "opening": 0,
+              "nodes": 1,
+              "weights": [
+                0,
+                0
+              ]
+            },
+            "やめ太郎": {
+              "opening": 0.18505761999999995,
+              "nodes": 1,
+              "weights": [
+                0.1850576251745224,
+                0.0370115227997303
+              ]
+            }
+          }
+        },
+        {
+          "stage": "やめ太郎:5",
+          "wallMs": 974,
+          "ticks": 56,
+          "foreground": true,
+          "shot": 1,
+          "paused": false,
+          "voice": {
+            "requested": "event:1:opening:1",
+            "active": "event:1:opening:1",
+            "playbackSeconds": 0.758092,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 1,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 656,
+              "durationMs": 5240,
+              "loop": false,
+              "loopCompletions": 0,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          },
+          "faces": {
+            "福ちゃん": {
+              "opening": 0,
+              "nodes": 1,
+              "weights": [
+                0,
+                0
+              ]
+            },
+            "やめ太郎": {
+              "opening": 0.2192306000000001,
+              "nodes": 1,
+              "weights": [
+                0.21923060715198517,
+                0.043846119195222855
+              ]
+            }
+          }
+        },
+        {
+          "stage": "やめ太郎:6",
+          "wallMs": 1077,
+          "ticks": 62,
+          "foreground": true,
+          "shot": 1,
+          "paused": false,
+          "voice": {
+            "requested": "event:1:opening:1",
+            "active": "event:1:opening:1",
+            "playbackSeconds": 0.8608589999999999,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 1,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 853,
+              "durationMs": 5240,
+              "loop": false,
+              "loopCompletions": 0,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          },
+          "faces": {
+            "福ちゃん": {
+              "opening": 0,
+              "nodes": 1,
+              "weights": [
+                0,
+                0
+              ]
+            },
+            "やめ太郎": {
+              "opening": 0.19531362500000005,
+              "nodes": 1,
+              "weights": [
+                0.19531361758708954,
+                0.03906272351741791
+              ]
+            }
+          }
+        },
+        {
+          "stage": "paused-yametaro",
+          "wallMs": 1369,
+          "ticks": 69,
+          "foreground": true,
+          "shot": 1,
+          "paused": true,
+          "voice": {
+            "requested": "event:1:opening:1",
+            "active": "event:1:opening:1",
+            "playbackSeconds": null,
+            "loading": false,
+            "speaking": false,
+            "finished": false,
+            "paused": true,
+            "volume": 1,
+            "errors": [],
+            "backend": {
+              "state": "paused",
+              "positionMs": 1011,
+              "durationMs": 5240,
+              "loop": false,
+              "loopCompletions": 0,
+              "playbackRequested": false,
+              "positionUpdateMs": 200
+            }
+          },
+          "faces": {
+            "福ちゃん": {
+              "opening": 0,
+              "nodes": 1,
+              "weights": [
+                0,
+                0
+              ]
+            },
+            "やめ太郎": {
+              "opening": 0,
+              "nodes": 1,
+              "weights": [
+                0,
+                0
+              ]
+            }
+          }
+        },
+        {
+          "stage": "resumed-yametaro",
+          "wallMs": 1426,
+          "ticks": 71,
+          "foreground": true,
+          "shot": 1,
+          "paused": false,
+          "voice": {
+            "requested": "event:1:opening:1",
+            "active": "event:1:opening:1",
+            "playbackSeconds": 1.066781,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 1,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 1011,
+              "durationMs": 5240,
+              "loop": false,
+              "loopCompletions": 0,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          },
+          "faces": {
+            "福ちゃん": {
+              "opening": 0,
+              "nodes": 1,
+              "weights": [
+                0,
+                0
+              ]
+            },
+            "やめ太郎": {
+              "opening": 0.71642854,
+              "nodes": 1,
+              "weights": [
+                0.7164285182952881,
+                0.14328570663928986
+              ]
+            }
+          }
+        },
+        {
+          "stage": "福ちゃん:0",
+          "wallMs": 1692,
+          "ticks": 87,
+          "foreground": true,
+          "shot": 2,
+          "paused": false,
+          "voice": {
+            "requested": "event:1:opening:2",
+            "active": "event:1:opening:2",
+            "playbackSeconds": 0.202073,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 1,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 0,
+              "durationMs": 6520,
+              "loop": false,
+              "loopCompletions": 0,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          },
+          "faces": {
+            "福ちゃん": {
+              "opening": 0.869144225,
+              "nodes": 1,
+              "weights": [
+                0.8691442012786865,
+                0.1738288402557373
+              ]
+            },
+            "やめ太郎": {
+              "opening": 0,
+              "nodes": 1,
+              "weights": [
+                0,
+                0
+              ]
+            }
+          }
+        },
+        {
+          "stage": "福ちゃん:1",
+          "wallMs": 1794,
+          "ticks": 93,
+          "foreground": true,
+          "shot": 2,
+          "paused": false,
+          "voice": {
+            "requested": "event:1:opening:2",
+            "active": "event:1:opening:2",
+            "playbackSeconds": 0.221382,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 1,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 119,
+              "durationMs": 6520,
+              "loop": false,
+              "loopCompletions": 0,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          },
+          "faces": {
+            "福ちゃん": {
+              "opening": 0.83005905,
+              "nodes": 1,
+              "weights": [
+                0.8300590515136719,
+                0.16601181030273438
+              ]
+            },
+            "やめ太郎": {
+              "opening": 0,
+              "nodes": 1,
+              "weights": [
+                0,
+                0
+              ]
+            }
+          }
+        },
+        {
+          "stage": "福ちゃん:2",
+          "wallMs": 1901,
+          "ticks": 100,
+          "foreground": true,
+          "shot": 2,
+          "paused": false,
+          "voice": {
+            "requested": "event:1:opening:2",
+            "active": "event:1:opening:2",
+            "playbackSeconds": 0.3279,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 1,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 319,
+              "durationMs": 6520,
+              "loop": false,
+              "loopCompletions": 0,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          },
+          "faces": {
+            "福ちゃん": {
+              "opening": 0.72536,
+              "nodes": 1,
+              "weights": [
+                0.7253599762916565,
+                0.14507199823856354
+              ]
+            },
+            "やめ太郎": {
+              "opening": 0,
+              "nodes": 1,
+              "weights": [
+                0,
+                0
+              ]
+            }
+          }
+        },
+        {
+          "stage": "福ちゃん:3",
+          "wallMs": 2005,
+          "ticks": 106,
+          "foreground": true,
+          "shot": 2,
+          "paused": false,
+          "voice": {
+            "requested": "event:1:opening:2",
+            "active": "event:1:opening:2",
+            "playbackSeconds": 0.431749,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 1,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 319,
+              "durationMs": 6520,
+              "loop": false,
+              "loopCompletions": 0,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          },
+          "faces": {
+            "福ちゃん": {
+              "opening": 0.47612455999999964,
+              "nodes": 1,
+              "weights": [
+                0.4761245548725128,
+                0.09522490948438644
+              ]
+            },
+            "やめ太郎": {
+              "opening": 0,
+              "nodes": 1,
+              "weights": [
+                0,
+                0
+              ]
+            }
+          }
+        },
+        {
+          "stage": "福ちゃん:4",
+          "wallMs": 2107,
+          "ticks": 112,
+          "foreground": true,
+          "shot": 2,
+          "paused": false,
+          "voice": {
+            "requested": "event:1:opening:2",
+            "active": "event:1:opening:2",
+            "playbackSeconds": 0.534962,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 1,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 520,
+              "durationMs": 6520,
+              "loop": false,
+              "loopCompletions": 0,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          },
+          "faces": {
+            "福ちゃん": {
+              "opening": 0.5450065099999999,
+              "nodes": 1,
+              "weights": [
+                0.545006513595581,
+                0.10900130122900009
+              ]
+            },
+            "やめ太郎": {
+              "opening": 0,
+              "nodes": 1,
+              "weights": [
+                0,
+                0
+              ]
+            }
+          }
+        },
+        {
+          "stage": "福ちゃん:5",
+          "wallMs": 2209,
+          "ticks": 118,
+          "foreground": true,
+          "shot": 2,
+          "paused": false,
+          "voice": {
+            "requested": "event:1:opening:2",
+            "active": "event:1:opening:2",
+            "playbackSeconds": 0.6364070000000001,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 1,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 520,
+              "durationMs": 6520,
+              "loop": false,
+              "loopCompletions": 0,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          },
+          "faces": {
+            "福ちゃん": {
+              "opening": 0.8569536750000001,
+              "nodes": 1,
+              "weights": [
+                0.8569536805152893,
+                0.17139074206352234
+              ]
+            },
+            "やめ太郎": {
+              "opening": 0,
+              "nodes": 1,
+              "weights": [
+                0,
+                0
+              ]
+            }
+          }
+        },
+        {
+          "stage": "福ちゃん:6",
+          "wallMs": 2311,
+          "ticks": 124,
+          "foreground": true,
+          "shot": 2,
+          "paused": false,
+          "voice": {
+            "requested": "event:1:opening:2",
+            "active": "event:1:opening:2",
+            "playbackSeconds": 0.7380209999999999,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 1,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 719,
+              "durationMs": 6520,
+              "loop": false,
+              "loopCompletions": 0,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          },
+          "faces": {
+            "福ちゃん": {
+              "opening": 0.661302645,
+              "nodes": 1,
+              "weights": [
+                0.6613026261329651,
+                0.1322605311870575
+              ]
+            },
+            "やめ太郎": {
+              "opening": 0,
+              "nodes": 1,
+              "weights": [
+                0,
+                0
+              ]
+            }
+          }
+        },
+        {
+          "stage": "paused-fukuchan",
+          "wallMs": 2568,
+          "ticks": 132,
+          "foreground": true,
+          "shot": 2,
+          "paused": true,
+          "voice": {
+            "requested": "event:1:opening:2",
+            "active": "event:1:opening:2",
+            "playbackSeconds": null,
+            "loading": false,
+            "speaking": false,
+            "finished": false,
+            "paused": true,
+            "volume": 1,
+            "errors": [],
+            "backend": {
+              "state": "paused",
+              "positionMs": 852,
+              "durationMs": 6520,
+              "loop": false,
+              "loopCompletions": 0,
+              "playbackRequested": false,
+              "positionUpdateMs": 200
+            }
+          },
+          "faces": {
+            "福ちゃん": {
+              "opening": 0,
+              "nodes": 1,
+              "weights": [
+                0,
+                0
+              ]
+            },
+            "やめ太郎": {
+              "opening": 0,
+              "nodes": 1,
+              "weights": [
+                0,
+                0
+              ]
+            }
+          }
+        }
+      ],
+      "type": "_extensionType",
+      "method": "ext.flutter.madogiwa.runGameProbe",
+      "status": "Success"
+    },
+    "companionYametaro": {
+      "success": true,
+      "probe": "companion:yametaro",
+      "snapshots": [
+        {
+          "stage": "hurt",
+          "ms": 1105,
+          "ticks": 192,
+          "health": 40,
+          "phase": "playing",
+          "text": "うわー！ そば屋さん、やめてくれー！",
+          "voice": {
+            "requested": "reaction:2:village:1",
+            "active": "reaction:2:village:1",
+            "playbackSeconds": 0.102436,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 1,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 0,
+              "durationMs": 3760,
+              "loop": false,
+              "loopCompletions": 0,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          }
+        },
+        {
+          "stage": "fatal",
+          "ms": 5903,
+          "ticks": 473,
+          "health": 0,
+          "phase": "companionDown",
+          "text": "福ちゃん……まだ、帰れてへんやん……。",
+          "voice": {
+            "requested": "reaction:2:village:2",
+            "active": "reaction:2:village:2",
+            "playbackSeconds": 0.100338,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 1,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 0,
+              "durationMs": 3280,
+              "loop": false,
+              "loopCompletions": 0,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          }
+        },
+        {
+          "stage": "game-over",
+          "ms": 6915,
+          "ticks": 534,
+          "health": 0,
+          "phase": "dead",
+          "text": "福ちゃん……まだ、帰れてへんやん……。",
+          "voice": {
+            "requested": "reaction:2:village:2",
+            "active": "reaction:2:village:2",
+            "playbackSeconds": 1.0304250000000001,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 1,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 920,
+              "durationMs": 3280,
+              "loop": false,
+              "loopCompletions": 0,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          }
+        }
+      ],
+      "type": "_extensionType",
+      "method": "ext.flutter.madogiwa.runGameProbe",
+      "status": "Success"
+    },
+    "companionTakosan": {
+      "success": true,
+      "probe": "companion:takosan",
+      "snapshots": [
+        {
+          "stage": "hurt",
+          "ms": 1057,
+          "ticks": 596,
+          "health": 40,
+          "phase": "playing",
+          "text": "いたっ！ そば屋さん、落ち着いて！",
+          "voice": {
+            "requested": "reaction:3:village:1",
+            "active": "reaction:3:village:1",
+            "playbackSeconds": 0.130538,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 1,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 0,
+              "durationMs": 2368,
+              "loop": false,
+              "loopCompletions": 0,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          }
+        },
+        {
+          "stage": "fatal",
+          "ms": 5831,
+          "ticks": 876,
+          "health": 0,
+          "phase": "companionDown",
+          "text": "福ちゃん……補給所を、頼みます……。",
+          "voice": {
+            "requested": "reaction:3:village:2",
+            "active": "reaction:3:village:2",
+            "playbackSeconds": 0.100211,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 1,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 0,
+              "durationMs": 2848,
+              "loop": false,
+              "loopCompletions": 0,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          }
+        },
+        {
+          "stage": "game-over",
+          "ms": 6887,
+          "ticks": 940,
+          "health": 0,
+          "phase": "dead",
+          "text": "福ちゃん……補給所を、頼みます……。",
+          "voice": {
+            "requested": "reaction:3:village:2",
+            "active": "reaction:3:village:2",
+            "playbackSeconds": 1.0638260000000002,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 1,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 917,
+              "durationMs": 2848,
+              "loop": false,
+              "loopCompletions": 0,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          }
+        }
+      ],
+      "type": "_extensionType",
+      "method": "ext.flutter.madogiwa.runGameProbe",
+      "status": "Success"
+    }
+  },
+  "journal": {
+    "memoPickup": "proposal through normal interact; foundMemos contains proposal",
+    "memoReader": "Opened by Marionette tap; checked readable full body",
+    "posterReader": "Collected wanted, scrolled poster tab and opened image + backside note",
+    "materialFix": "Journal owns transparent Material to keep ListTile ink visible; widget regression passed",
+    "screenshots": [
+      ".local/hazard-story/story-memo.png",
+      ".local/hazard-story/story-poster.png",
+      ".local/hazard-story/story-ending.png",
+      ".local/hazard-story/story-boss.png"
+    ],
+    "screenshotsScope": "Initial story revision, retained only as UI-layout evidence"
+  },
+  "validation": {
+    "flutterTests": 126,
+    "storyRegressionTests": 7,
+    "voiceFiles": 60,
+    "voiceSeconds": 393.9,
+    "ASR": "60 clips screened; homophone/orthography differences remain, not human listening approval",
+    "memos": 8
+  },
+  "storyRevision": "ゆめみ村・特別研修／発明者設定なし",
+  "priorRevisionNativeProof": "The recorded conversation/companion probes and screenshots below were captured before the final plot revision. Combat voice implementation and reaction assets are unchanged. Final story dialogue replay awaits Mac unlock.",
+  "finalApp": {
+    "pid": 42005,
+    "ready": true,
+    "phase": "title",
+    "foregroundReplay": "Not performed: macOS locked; CUA requested manual unlock. No foreground override used."
+  }
+}

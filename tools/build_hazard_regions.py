@@ -169,7 +169,7 @@ for item in items:
 crates=[{'id':'farm_crate_'+str(i),'x':x,'z':z,'kind':'crate' if i%2 else 'barrel'}
     for i,(x,z) in enumerate([(-17,-17.7),(-8,6),(0,9),(18,16),(7,-14.8),(15,-5)])]
 enemies=[{'id':i,'x':x,'z':z,'active':True} for i,(x,z) in enumerate([(-5,-3),(0,2),(8,-5),(14,10),(-11,12),(-9,3)])]
-save('farm','CHAPTER 02  /  FARM','乾杯のあとに、補給を。',{'x':-19,'z':-21,'yaw':math.pi},items,crates,enemies,collection,
+save('farm','CHAPTER 02  /  ABANDONED PROJECT','秘密案件の補給施設。撤収対象外。',{'x':-19,'z':-21,'yaw':math.pi},items,crates,enemies,collection,
     [{'id':'takosan','x':-13,'z':-17.8}],
     [{'id':'back','target':'village','x':-19,'z':-23.5,'radius':1.0,'arrival':{'x':11.5,'z':25.2,'yaw':0}},
      {'id':'forward','target':'mountain','x':21.2,'z':-10,'radius':.9,'requiresGate':True,'arrival':{'x':-19,'z':-21,'yaw':math.pi}}],
@@ -209,7 +209,7 @@ crates=[{'id':'mountain_crate_'+str(i),'x':x,'z':z,'kind':'crate'}
     for i,(x,z) in enumerate([(-20,-6),(-9,5),(7,7),(18,18)])]
 enemies=[{'id':i,'x':x,'z':z,'active':True,'boss':i==4} for i,(x,z) in enumerate([
     (-19,-5),(-1,4),(6,5),(15,7),(12,4),(10,13)])]
-save('mountain','CHAPTER 03  /  LAST ORDER','最後の一杯は、遠慮します。',{'x':-19,'z':-21,'yaw':math.pi},items,crates,enemies,collection,
+save('mountain','CHAPTER 03  /  LAST ORDER','誰も終わらせに来ない仕事。',{'x':-19,'z':-21,'yaw':math.pi},items,crates,enemies,collection,
     [{'id':'yametaro','x':16,'z':17.5}],
     [{'id':'back','target':'farm','x':-19,'z':-23.5,'radius':1,'arrival':{'x':18,'z':-10,'yaw':math.pi/2}},
      {'id':'escape','target':'ending','x':21.2,'z':15,'radius':.9,'requiresGate':True}],

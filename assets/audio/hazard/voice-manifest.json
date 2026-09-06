@@ -5,27 +5,26 @@
   "clips": [
     {
       "speaker": "やめ太郎",
-      "text": "福ちゃん！ 広場がそば屋だらけなんだ。\nこのプロジェクトが成功したら、僕、まとめて有休を取るんだ。",
+      "text": "本番で全社員の配属を窓際にしてもうたんは、確かにワイらや。せやけど、ほんまに島流しにする会社ある？",
       "uses": [
-        "event:opening:1",
-        "dialogue:yametaro:intro:0"
+        "event:opening:1"
       ],
       "caption": "焦りを少し抑えて、友人へ道案内する。柔らかい関西イントネーションで、聞き取りやすく自然に話す。",
       "seed": 7,
       "reference": "02_CHARACTERS/Yametaro_voice.wav",
       "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
       "model": "Aratako/Irodori-TTS-v4.1-Small",
-      "speechText": "福ちゃん！ 広場がそば屋だらけなんだ。 このプロジェクトが成功したら、僕、まとめて有休を取るんだ。",
-      "id": "51fd0733176cd44a",
-      "asset": "audio/voice/51fd0733176cd44a.wav",
-      "seconds": 7.560041666666667,
+      "speechText": "本番で全社員の配属を窓際にしてもうたんは、確かにワイらや。せやけど、ほんまに島流しにする会社ある？",
+      "id": "86481a0d2cf557eb",
+      "asset": "audio/voice/86481a0d2cf557eb.wav",
+      "seconds": 8.560041666666667,
       "kind": "speech",
-      "sha256": "f775279bf3f57b3780597bc45f2f1f8e917469f1816eb3684fe139d850a9cf97",
-      "raw_sha256": "737f4e8d535fef4f2ff3572fbe01c15c040fc39375784814bf75385200fb181f"
+      "sha256": "2afa3a6ad376d0e574d5119249f5de9ca9cb5553574534e93c12fe6aa6ea6142",
+      "raw_sha256": "ab4dbe3d4343a0441e0f905ba180588a717bab6e0c6d525fb05e1fdf12b1a27a"
     },
     {
       "speaker": "福ちゃん",
-      "text": "乾杯にしては、ジョッキの振りが大きすぎるだろ。",
+      "text": "僕が実行して、やめさんが承認して、たこさんが確認した。三人とも、これで大丈夫だと思ったんですよね。",
       "uses": [
         "event:opening:2"
       ],
@@ -34,61 +33,150 @@
       "reference": "02_CHARACTERS/Fukuchan_voice.wav",
       "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
       "model": "Aratako/Irodori-TTS-v4.1-Small",
-      "speechText": "乾杯にしては、ジョッキの振りが大きすぎるだろ。",
-      "id": "99588c724f7df5d4",
-      "asset": "audio/voice/99588c724f7df5d4.wav",
-      "seconds": 3.600041666666667,
+      "speechText": "僕が実行して、やめさんが承認して、たこさんが確認した。三人とも、これで大丈夫だと思ったんですよね。",
+      "id": "0b4a9ba3b16f4b43",
+      "asset": "audio/voice/0b4a9ba3b16f4b43.wav",
+      "seconds": 8.120041666666667,
       "kind": "speech",
-      "sha256": "ac0a2603bd523d3e5b8ac8692929375685dd1db4ed7097d176b0ef4dff8e1669",
-      "raw_sha256": "3cb615aff094578ea9b62058ebf0e8125329c055dc50ac4ba9d601040335eeb9"
+      "sha256": "69f4a29ef0d5966b2e322df3ed3cd23564ec0cb4e973363e00c2504a41485cad",
+      "raw_sha256": "ffac946d06a74857ce7ebe05f45775736ebc229f95a131db3eb7d922072c3ce0"
     },
     {
       "speaker": "やめ太郎",
-      "text": "北の納屋に門の鍵がある。農場へ抜けよう。\nこの炎上は僕一人で何とかする。先に行って！ 朝までには全部直すから！",
+      "text": "社長にまで窓際配属の通知が届いたんやで。大丈夫なわけあるかい。……あれ、そば屋さん？ なんで何人もおるん？",
       "uses": [
-        "event:opening:3",
-        "dialogue:yametaro:intro:2"
+        "event:opening:3"
       ],
       "caption": "焦りを少し抑えて、友人へ道案内する。柔らかい関西イントネーションで、聞き取りやすく自然に話す。",
       "seed": 7,
       "reference": "02_CHARACTERS/Yametaro_voice.wav",
       "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
       "model": "Aratako/Irodori-TTS-v4.1-Small",
-      "speechText": "北の納屋に門の鍵がある。農場へ抜けよう。 この炎上は僕一人で何とかする。先に行って！ 朝までには全部直すから！",
-      "id": "9a92bed01975d9c9",
-      "asset": "audio/voice/9a92bed01975d9c9.wav",
-      "seconds": 9.560041666666667,
+      "speechText": "社長にまで窓際配属の通知が届いたんやで。大丈夫なわけあるかい。……あれ、そば屋さん？ なんで何人もおるん？",
+      "id": "c697fbed6b513329",
+      "asset": "audio/voice/c697fbed6b513329.wav",
+      "seconds": 8.440041666666668,
       "kind": "speech",
-      "sha256": "3a962869da87abaa7b4ebe7cba668d33385edcea90a4ae2ab16c43ae1b581278",
-      "raw_sha256": "9708486cf86f8f54ef2f1d6a20d6243b5c34842e5ff6017ef8e864bb50d0142d"
+      "sha256": "c0223034f8239eb315a3ef9d1bee239d68ff817310a63797ceade27a022f6179",
+      "raw_sha256": "2d8133f453ebbb375cd1b4d1ce66e3d670530a1f03a46859f804bc993748062a"
+    },
+    {
+      "speaker": "福ちゃん",
+      "text": "迎えの担当者じゃ、なさそうですね。まず安全な場所と、帰る方法を探しましょう。",
+      "uses": [
+        "event:opening:4"
+      ],
+      "caption": "友人に話しかける。少し呆れながらも明瞭に、言葉の最後まで自然に話す。",
+      "seed": 100,
+      "reference": "02_CHARACTERS/Fukuchan_voice.wav",
+      "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "迎えの担当者じゃ、なさそうですね。まず安全な場所と、帰る方法を探しましょう。",
+      "id": "ed18135541ad9eef",
+      "asset": "audio/voice/ed18135541ad9eef.wav",
+      "seconds": 6.440041666666667,
+      "kind": "speech",
+      "sha256": "3b1787ecf12a41d2ff51a794880f7c6460cd853bec382d67b29df711c519140d",
+      "raw_sha256": "0a50c9c94fcb66f9fa51c56dd7f60fdf5660f39159ea0d3d253e942cf147dcbf"
+    },
+    {
+      "speaker": "やめ太郎",
+      "text": "北の納屋に門の鍵がある。農場へ抜けよう。ワイら三人で帰るんや。打ち上げは、それからやで。",
+      "uses": [
+        "event:opening:5"
+      ],
+      "caption": "焦りを少し抑えて、友人へ道案内する。柔らかい関西イントネーションで、聞き取りやすく自然に話す。",
+      "seed": 7,
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "北の納屋に門の鍵がある。農場へ抜けよう。ワイら三人で帰るんや。打ち上げは、それからやで。",
+      "id": "584d82897e8491e1",
+      "asset": "audio/voice/584d82897e8491e1.wav",
+      "seconds": 7.480041666666667,
+      "kind": "speech",
+      "sha256": "d409405e8d7802c0710c7300cae1c7607df7c2778ed9da020c3c5222b1abcffc",
+      "raw_sha256": "2cc8ebd641e70ff320ddf39da46e0d5f3c0143e10f91c84cd05ec4cd39ac4490"
     },
     {
       "speaker": "たこさん",
-      "text": "……。東の門から山道へ進めます。\nビールは弾やハーブと交換できます。",
+      "text": "そば屋エンジン。そば屋のクローンにビールを飲ませて、怪力で設備を動かす。ここは、その補給施設でした。",
       "uses": [
         "event:farm:1"
       ],
-      "id": "0d48ddcb529c5db1",
-      "asset": "audio/voice/takosan_response.wav",
-      "seconds": 0.85,
-      "kind": "nonverbal",
-      "provenance": "Original procedural response, no canonical speaking voice assigned"
+      "id": "b220f7d093b8c9fe",
+      "asset": "audio/voice/b220f7d093b8c9fe.wav",
+      "seconds": 8.938666666666666,
+      "kind": "speech",
+      "model": "VOICEVOX:Voidoll",
+      "style": 89,
+      "speedScale": 1.0,
+      "speechText": "そば屋エンジン。そば屋のクローンにビールを飲ませて、怪力で設備を動かす。ここは、その補給施設でした。",
+      "engine_version": "0.25.1",
+      "sha256": "8297fd4e05b7ed417802b7c58b51a0638228262625a28d049a78d7b5fadda42a",
+      "raw_sha256": "05d7789b77218f31d5d85d1aeec96f4bf8cbc8522dfc207c360d8d666241a491",
+      "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
     },
     {
       "speaker": "たこさん",
-      "text": "納屋の二階も、お調べください。\n青いメダリオンは七つ。全部落とせば、おまけもあります。",
+      "text": "案件は炎上し、担当者が逃げ、ビールも尽きました。残されたクローンが村へ出た。それが、そば屋ハザードです。",
       "uses": [
         "event:farm:2"
       ],
-      "id": "37a20882f1242958",
-      "asset": "audio/voice/takosan_response.wav",
-      "seconds": 0.85,
-      "kind": "nonverbal",
-      "provenance": "Original procedural response, no canonical speaking voice assigned"
+      "id": "b35453c00205cd87",
+      "asset": "audio/voice/b35453c00205cd87.wav",
+      "seconds": 9.781333333333333,
+      "kind": "speech",
+      "model": "VOICEVOX:Voidoll",
+      "style": 89,
+      "speedScale": 1.0,
+      "speechText": "案件は炎上し、担当者が逃げ、ビールも尽きました。残されたクローンが村へ出た。それが、そば屋ハザードです。",
+      "engine_version": "0.25.1",
+      "sha256": "c705a9e09f162e73de83f52718c246d064f256b5c6f8a979abe74b3e488392a4",
+      "raw_sha256": "cb886776b97fac82f81cf7af5d65a54a0a3a8a77f50b327e28a1ee2c5221dd6f",
+      "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
+    },
+    {
+      "speaker": "たこさん",
+      "text": "山に非常用の無線があります。ただ、エンジンが動く間は、運転命令の放送しか流せません。まず中枢を止めましょう。",
+      "uses": [
+        "event:farm:3"
+      ],
+      "id": "d86de11fcfdf0397",
+      "asset": "audio/voice/d86de11fcfdf0397.wav",
+      "seconds": 10.496,
+      "kind": "speech",
+      "model": "VOICEVOX:Voidoll",
+      "style": 89,
+      "speedScale": 1.0,
+      "speechText": "山に非常用の無線があります。ただ、エンジンが動く間は、運転命令の放送しか流せません。まず中枢を止めましょう。",
+      "engine_version": "0.25.1",
+      "sha256": "288402db4bab7fde3fc834d4ce0a8b73efc12532d3c43b22c4959f579e47a3d9",
+      "raw_sha256": "47a4245f65c74cd7682a562a47448af77f5c208b1f549ac1933e01e9bedcb39e",
+      "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
+    },
+    {
+      "speaker": "たこさん",
+      "text": "青いメダリオンは七つ。全部落とせば、おまけもあります。こんな日でも、約束は守ります。",
+      "uses": [
+        "event:farm:4"
+      ],
+      "id": "d6cecd4ae5626ff7",
+      "asset": "audio/voice/d6cecd4ae5626ff7.wav",
+      "seconds": 7.712,
+      "kind": "speech",
+      "model": "VOICEVOX:Voidoll",
+      "style": 89,
+      "speedScale": 1.0,
+      "speechText": "青いメダリオンは七つ。全部落とせば、おまけもあります。こんな日でも、約束は守ります。",
+      "engine_version": "0.25.1",
+      "sha256": "24f6d101423d12163562880bfdcb401c9fc919383e55a140bf3e5795db3efa96",
+      "raw_sha256": "0af8a5da9b0e0ea6838a8dd65d07e9d38bd49c73e434eb2d0aa7c59ceae2d174",
+      "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
     },
     {
       "speaker": "そば屋",
-      "text": "最後の一杯だ。乾杯！",
+      "text": "ビール……最後の一杯だ。乾杯！",
       "uses": [
         "event:last_order:1"
       ],
@@ -97,17 +185,17 @@
       "reference": "02_CHARACTERS/Sobaya_voice.wav",
       "reference_sha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
       "model": "Aratako/Irodori-TTS-v4.1-Small",
-      "speechText": "最後の一杯だ。乾杯！",
-      "id": "e279a5b4f20956a8",
-      "asset": "audio/voice/e279a5b4f20956a8.wav",
-      "seconds": 2.581375,
+      "speechText": "ビール……最後の一杯だ。乾杯！",
+      "id": "d92e19322bc05e7e",
+      "asset": "audio/voice/d92e19322bc05e7e.wav",
+      "seconds": 3.817083333333333,
       "kind": "speech",
-      "sha256": "5cb80913933ce560ea2dc716916ebf9180713d20177f09a72e9f28b4646d3d3f",
-      "raw_sha256": "51b632d4ccf43613296ca27a74c646b7b0dc6bfa5bd7dfc15c87a6a867e0d0c6"
+      "sha256": "9de6e485b5e9c30d332e49280f700e94805abd9f73ad826f84bb352ac7c0f0ac",
+      "raw_sha256": "7618134290724b2e06ea897fcdff88df3a187d4fda5052bd4ac095ea93f42b2c"
     },
     {
       "speaker": "福ちゃん",
-      "text": "その一杯、遠慮させてもらう！",
+      "text": "検収が終わるまで止めるな。そう教えたのに、検収する人がいなくなった。ずっと、終わるのを待ってたんですね。",
       "uses": [
         "event:last_order:2"
       ],
@@ -116,17 +204,36 @@
       "reference": "02_CHARACTERS/Fukuchan_voice.wav",
       "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
       "model": "Aratako/Irodori-TTS-v4.1-Small",
-      "speechText": "その一杯、遠慮させてもらう！",
-      "id": "ceb0620a2d88fba6",
-      "asset": "audio/voice/ceb0620a2d88fba6.wav",
-      "seconds": 2.8000416666666665,
+      "speechText": "検収が終わるまで止めるな。そう教えたのに、検収する人がいなくなった。ずっと、終わるのを待ってたんですね。",
+      "id": "3309f4baff3c525e",
+      "asset": "audio/voice/3309f4baff3c525e.wav",
+      "seconds": 7.680041666666667,
       "kind": "speech",
-      "sha256": "d8fa4bfd9b7ce0fbb83e9abf11c23d3a7747285f524120c0e362a0426eeed5a8",
-      "raw_sha256": "c77007f68fe6438c77f77ff2224b4f5948a9485d42e8962a32c275eb5256a4d8"
+      "sha256": "6dd85ebff6356f559fad6d756589475f541bf5e005da75ad252179445c567a02",
+      "raw_sha256": "e28a5e83c69db431f49284ee25bda050c5b526369f5cd62e8a66b137c472e2f1"
+    },
+    {
+      "speaker": "福ちゃん",
+      "text": "この仕事は、もう終わりです。誰も終わらせに来ないなら、僕らが止めます。帰りましょう。",
+      "uses": [
+        "event:last_order:3"
+      ],
+      "caption": "友人に話しかける。少し呆れながらも明瞭に、言葉の最後まで自然に話す。",
+      "seed": 100,
+      "reference": "02_CHARACTERS/Fukuchan_voice.wav",
+      "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "この仕事は、もう終わりです。誰も終わらせに来ないなら、僕らが止めます。帰りましょう。",
+      "id": "f279f2ba428be160",
+      "asset": "audio/voice/f279f2ba428be160.wav",
+      "seconds": 6.120041666666666,
+      "kind": "speech",
+      "sha256": "5ba3b9e0d1736c3cbf89cd5b05591bc062c74fd68a58ee31ea111513e5259210",
+      "raw_sha256": "b6fe7e1172f01177da57dd88af98448614b0aa6fd849d9f2aff26bf56bef273c"
     },
     {
       "speaker": "やめ太郎",
-      "text": "おかえり、福ちゃん。\n……今日はもう、乾杯は遠慮したいな。",
+      "text": "おかえり、福ちゃん。ワイ、ちゃんと三人分の席、空けといたで。",
       "uses": [
         "event:ending:1"
       ],
@@ -135,17 +242,17 @@
       "reference": "02_CHARACTERS/Yametaro_voice.wav",
       "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
       "model": "Aratako/Irodori-TTS-v4.1-Small",
-      "speechText": "おかえり、福ちゃん。 ……今日はもう、乾杯は遠慮したいな。",
-      "id": "a553dbde8d155536",
-      "asset": "audio/voice/a553dbde8d155536.wav",
-      "seconds": 4.400041666666667,
+      "speechText": "おかえり、福ちゃん。ワイ、ちゃんと三人分の席、空けといたで。",
+      "id": "aa38686af3c7b266",
+      "asset": "audio/voice/aa38686af3c7b266.wav",
+      "seconds": 4.720041666666667,
       "kind": "speech",
-      "sha256": "7cc14c31f384d980cc0467d0f507e42f82a0c87de77a06ca6f367104029e524f",
-      "raw_sha256": "18982879fef5160f47a14b7b936ce863680507378d0c3a4a2970ce409e8eaada"
+      "sha256": "e93779db4c3ae10c5e14a7a817b0300c74f7fb4eb8c7546a3ab252cf16827305",
+      "raw_sha256": "c55e8cbe0dbb34859a0918a1221e0b8c1d021e5de3420f565612856caee72ad9"
     },
     {
       "speaker": "福ちゃん",
-      "text": "明日はノンアルで集まろう。\n記録の整理も、まだ残ってるし。",
+      "text": "僕らの失敗は、帰ってからちゃんと説明します。でも、ここに人を置いていったことまで、なかったことにはさせません。",
       "uses": [
         "event:ending:2"
       ],
@@ -154,48 +261,169 @@
       "reference": "02_CHARACTERS/Fukuchan_voice.wav",
       "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
       "model": "Aratako/Irodori-TTS-v4.1-Small",
-      "speechText": "明日はノンアルで集まろう。 記録の整理も、まだ残ってるし。",
-      "id": "b8ee7b3a5c30c32c",
-      "asset": "audio/voice/b8ee7b3a5c30c32c.wav",
-      "seconds": 4.440041666666667,
+      "speechText": "僕らの失敗は、帰ってからちゃんと説明します。でも、ここに人を置いていったことまで、なかったことにはさせません。",
+      "id": "ce6dd323bf482127",
+      "asset": "audio/voice/ce6dd323bf482127.wav",
+      "seconds": 8.080041666666666,
       "kind": "speech",
-      "sha256": "bc5acc95c5f3eaf06ad65a5dc07d6facbb0033a0245f9547f88465e01b62f8da",
-      "raw_sha256": "500e9fa33ca40bcafeeb3df9793d3c7ab0ddf9f12a25bc30153bc586de4aa53c"
-    },
-    {
-      "speaker": "たこさん",
-      "text": "……。それも仕入れておきます。",
-      "uses": [
-        "event:ending:3"
-      ],
-      "id": "5900b2463a63f3dd",
-      "asset": "audio/voice/takosan_response.wav",
-      "seconds": 0.85,
-      "kind": "nonverbal",
-      "provenance": "Original procedural response, no canonical speaking voice assigned"
+      "sha256": "ba779f9072616d6317015b6ec90733871755474071d234a92d841c4e4063c5f5",
+      "raw_sha256": "737d69ff75351e353499357e6fce781b2c289ba612436b8061421ae9102fcb04"
     },
     {
       "speaker": "やめ太郎",
-      "text": "え、また集まるの？",
+      "text": "せやな。ワイらがやらかした話も、この村で見た話も、両方持って帰ろ。次に誰かが送られてくる前に。",
       "uses": [
-        "event:ending:4"
+        "event:ending:3"
       ],
-      "caption": "驚いて、短く聞き返す。",
+      "caption": "ほっとして、親しい仲間に軽い冗談を交えながら自然に話す。",
       "seed": 7,
       "reference": "02_CHARACTERS/Yametaro_voice.wav",
       "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
       "model": "Aratako/Irodori-TTS-v4.1-Small",
-      "speechText": "えっ、また集まるの？",
-      "id": "4aa750fa623336f6",
-      "asset": "audio/voice/4aa750fa623336f6.wav",
-      "seconds": 2.640041666666667,
+      "speechText": "せやな。ワイらがやらかした話も、この村で見た話も、両方持って帰ろ。次に誰かが送られてくる前に。",
+      "id": "bf6df1880e8d964b",
+      "asset": "audio/voice/bf6df1880e8d964b.wav",
+      "seconds": 8.440041666666668,
       "kind": "speech",
-      "sha256": "ba345a2998bbb2b7171f4338cdc8f2b2363570c09eb686fd28386d0aefe19e97",
-      "raw_sha256": "66e464de60f0d9f8e937272588885cc6a0a61987106e4924fd78b54c6c8088c8"
+      "sha256": "65ed8756ef081e7d8480faf0eac243c253bcdf10fdaf2ff00c83f34500ebb468",
+      "raw_sha256": "a98b76b125c55243e9e36ff01ff48b909f7cf97da7dcdb85e6f9e3ef8c4dbf8d"
+    },
+    {
+      "speaker": "たこさん",
+      "text": "ビールと飼育区画は封鎖しました。取り残された社員も、同じ船で帰します。",
+      "uses": [
+        "event:ending:4"
+      ],
+      "id": "89e94a81f84f090d",
+      "asset": "audio/voice/89e94a81f84f090d.wav",
+      "seconds": 6.346666666666667,
+      "kind": "speech",
+      "model": "VOICEVOX:Voidoll",
+      "style": 89,
+      "speedScale": 1.0,
+      "speechText": "ビールと飼育区画は封鎖しました。取り残された社員も、同じ船で帰します。",
+      "engine_version": "0.25.1",
+      "sha256": "79360429884ffe6d11f23d5c572e1f23e7fc86a288b691308eb42e04fc03ddfd",
+      "raw_sha256": "79d1b7a3e31da9cf2327a73ca7dffff79f3d223a695fa61eba6a5104d71361e9",
+      "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
     },
     {
       "speaker": "福ちゃん",
-      "text": "乾杯にしては、ジョッキの振りが大きすぎるだろ……。",
+      "text": "引き継ぎは、人が帰れるところまで。今度は、三人でそこまで確認しましょう。",
+      "uses": [
+        "event:ending:5"
+      ],
+      "caption": "ほっとして、親しい仲間に軽い冗談を交えながら自然に話す。",
+      "seed": 100,
+      "reference": "02_CHARACTERS/Fukuchan_voice.wav",
+      "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "引き継ぎは、人が帰れるところまで。今度は、三人でそこまで確認しましょう。",
+      "id": "a471ef2890f56c00",
+      "asset": "audio/voice/a471ef2890f56c00.wav",
+      "seconds": 6.040041666666666,
+      "kind": "speech",
+      "sha256": "95237054453420c40d52ad4010467455269196f4cba42f11bb05d1016386df27",
+      "raw_sha256": "2b8d53b57aff97062a4954742a4b3d448505f066d2c4c79f770cc515a0e74943"
+    },
+    {
+      "speaker": "やめ太郎",
+      "text": "ええやん。ワイらも閉店や。……ところで、この椅子、段ボールやない？",
+      "uses": [
+        "event:ending:6"
+      ],
+      "caption": "ほっとして、親しい仲間に軽い冗談を交えながら自然に話す。",
+      "seed": 7,
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "ええやん。ワイらも閉店や。……ところで、この椅子、段ボールやない？",
+      "id": "7f397e47527599b3",
+      "asset": "audio/voice/7f397e47527599b3.wav",
+      "seconds": 5.160041666666666,
+      "kind": "speech",
+      "sha256": "b5c36a2261e5fa5d6908256459bdc83188ea72113c819866b842a8ad8b065a70",
+      "raw_sha256": "9542de2a97b73d3894aed8331595f58af5a7d4481c8183dcf71341f4650870b9"
+    },
+    {
+      "speaker": "たこさん",
+      "text": "アーロンチュアです。快適です。",
+      "uses": [
+        "event:ending:7"
+      ],
+      "id": "36564756ecd55008",
+      "asset": "audio/voice/36564756ecd55008.wav",
+      "seconds": 2.3786666666666667,
+      "kind": "speech",
+      "model": "VOICEVOX:Voidoll",
+      "style": 89,
+      "speedScale": 1.0,
+      "speechText": "アーロンチュアです。快適です。",
+      "engine_version": "0.25.1",
+      "sha256": "2e41313483f8001e4595e66e06e3ec84d5b72d46789a9493f420186d1d64b3e9",
+      "raw_sha256": "87e581cf532296e1ed9fb155925f1017be95cbb62604727da5395f03b60884c0",
+      "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
+    },
+    {
+      "speaker": "福ちゃん",
+      "text": "ぎゅぎゅんです。じゃあ今日は、お茶で乾杯しましょう。",
+      "uses": [
+        "event:ending:8"
+      ],
+      "caption": "ほっとして、親しい仲間に軽い冗談を交えながら自然に話す。",
+      "seed": 100,
+      "reference": "02_CHARACTERS/Fukuchan_voice.wav",
+      "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "ぎゅぎゅんです。じゃあ今日は、お茶で乾杯しましょう。",
+      "id": "d20d269ae8c2fbba",
+      "asset": "audio/voice/d20d269ae8c2fbba.wav",
+      "seconds": 3.9600416666666667,
+      "kind": "speech",
+      "sha256": "a8dd96d88ba4fc8c0bdd68729a6fc95a5674e2406026eb2762a223524cf1820e",
+      "raw_sha256": "2aad174121a5b00f8d1282bfb779624aa3bae5b398c342e2cf4be20a5f4f467b"
+    },
+    {
+      "speaker": "やめ太郎",
+      "text": "次の研修先、茶畑とか言わんといてな。",
+      "uses": [
+        "event:ending:9"
+      ],
+      "caption": "ほっとして、親しい仲間に軽い冗談を交えながら自然に話す。",
+      "seed": 7,
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "次の研修先、茶畑とか言わんといてな。",
+      "id": "80e767790fc421c8",
+      "asset": "audio/voice/80e767790fc421c8.wav",
+      "seconds": 3.680041666666667,
+      "kind": "speech",
+      "sha256": "6dc9e8261b18969d9f1c194e6a609a1604243e0a4effdd5a20d2ed89d496256b",
+      "raw_sha256": "7ab540751032683cf41d80a96a1023c07f605820e692cf23e2f778ddd346765e"
+    },
+    {
+      "speaker": "やめ太郎",
+      "text": "本番を壊したんはワイらや。せやけど、廃村に三人置いて帰るんは、研修とちゃうやろ。",
+      "uses": [
+        "dialogue:yametaro:intro:0"
+      ],
+      "caption": "焦りを少し抑えて、友人へ道案内する。柔らかい関西イントネーションで、聞き取りやすく自然に話す。",
+      "seed": 7,
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "本番を壊したんはワイらや。せやけど、廃村に三人置いて帰るんは、研修とちゃうやろ。",
+      "id": "c0afdfb5a1e10e25",
+      "asset": "audio/voice/c0afdfb5a1e10e25.wav",
+      "seconds": 6.720041666666667,
+      "kind": "speech",
+      "sha256": "54624865bf297fa8bc2b790c9b96551db8ebc936caf4f52dcc8861a59c9e78f6",
+      "raw_sha256": "d5269a7ac58963e9deea7cb5a5e1784419dc50a141536740c5112e930a7d66a9"
+    },
+    {
+      "speaker": "福ちゃん",
+      "text": "辞令には、現地の担当者から引き継ぎを受けるようにって。まず、その人を探しましょう。",
       "uses": [
         "dialogue:yametaro:intro:1"
       ],
@@ -204,17 +432,36 @@
       "reference": "02_CHARACTERS/Fukuchan_voice.wav",
       "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
       "model": "Aratako/Irodori-TTS-v4.1-Small",
-      "speechText": "乾杯にしては、ジョッキの振りが大きすぎるだろ……。",
-      "id": "abc6898e1c395932",
-      "asset": "audio/voice/abc6898e1c395932.wav",
-      "seconds": 3.640041666666667,
+      "speechText": "辞令には、現地の担当者から引き継ぎを受けるようにって。まず、その人を探しましょう。",
+      "id": "a8f541cecb4ef749",
+      "asset": "audio/voice/a8f541cecb4ef749.wav",
+      "seconds": 6.2000416666666665,
       "kind": "speech",
-      "sha256": "c9acab2fd5fb050694e5e38296e1052e3981ca5bafe87dc828677293b88b7b50",
-      "raw_sha256": "0db9988af123d20a113ee7a6a7eb482badfcdff63089ca990256c859938f7684"
+      "sha256": "8708956f496fb291ad6f9f9f9e681bc160cfd8aa71715841724fcb898c2110c1",
+      "raw_sha256": "42d952bca404f66348680d44a84f1f0b5552813637628bc4a1c8248b4f4a360a"
     },
     {
       "speaker": "やめ太郎",
-      "text": "大丈夫、手元では動いてる。あとは本番に出すだけだよ。\nこのリリースが終わったら、みんなで打ち上げしよう。約束だよ。",
+      "text": "人がおるならええけどな。さっきから見かけるん、全部そば屋さんなんや。",
+      "uses": [
+        "dialogue:yametaro:intro:2"
+      ],
+      "caption": "焦りを少し抑えて、友人へ道案内する。柔らかい関西イントネーションで、聞き取りやすく自然に話す。",
+      "seed": 7,
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "人がおるならええけどな。さっきから見かけるん、全部そば屋さんなんや。",
+      "id": "42c1f97db3969267",
+      "asset": "audio/voice/42c1f97db3969267.wav",
+      "seconds": 5.040041666666666,
+      "kind": "speech",
+      "sha256": "b6116e7f2efd8c537534b20456acd94851694f925e061345405e3fe5733dc227",
+      "raw_sha256": "4c1fe412f5d6c36a6807f09c6dcaf9922f9416b6d1b9c8327e90376e1ee05966"
+    },
+    {
+      "speaker": "やめ太郎",
+      "text": "ワイ、ここで逃げてくる人を待っとくわ。そば屋さんを連れて戻ってくるのだけは勘弁な。",
       "uses": [
         "dialogue:yametaro:greeting:0"
       ],
@@ -223,17 +470,17 @@
       "reference": "02_CHARACTERS/Yametaro_voice.wav",
       "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
       "model": "Aratako/Irodori-TTS-v4.1-Small",
-      "speechText": "大丈夫、手元では動いてる。あとは本番に出すだけだよ。 このリリースが終わったら、みんなで打ち上げしよう。約束だよ。",
-      "id": "cd03178ae8ce5eb3",
-      "asset": "audio/voice/cd03178ae8ce5eb3.wav",
-      "seconds": 8.480041666666667,
+      "speechText": "ワイ、ここで逃げてくる人を待っとくわ。そば屋さんを連れて戻ってくるのだけは勘弁な。",
+      "id": "6798f73ad77fbf8f",
+      "asset": "audio/voice/6798f73ad77fbf8f.wav",
+      "seconds": 6.360041666666667,
       "kind": "speech",
-      "sha256": "e45c15932c930e13343e82c9996b91da2963c5e30a4d5d5d2ab40013561b3840",
-      "raw_sha256": "c70b5afb284159291d2c0b9ec6b836f60fc52c924c5958806301cb2d26bfd3ad"
+      "sha256": "ab6d3d9e0f1153337deb737d10fb48eb5c83c22010942376ace7a89ca583ed8c",
+      "raw_sha256": "b06c0424606fa4621b8a28425f94c6032e1745508ac7516fb54721c1fc21c226"
     },
     {
       "speaker": "やめ太郎",
-      "text": "村の奥、広場の北に大きな納屋がある。鍵はその中だよ。\n北東の紋章がついた門を開ければ、農場へ行ける。",
+      "text": "広場の北にある納屋で鍵を拾って、北東の門へ。右手の二階建てにはショットガンもあるで。",
       "uses": [
         "dialogue:yametaro:route:0"
       ],
@@ -242,17 +489,17 @@
       "reference": "02_CHARACTERS/Yametaro_voice.wav",
       "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
       "model": "Aratako/Irodori-TTS-v4.1-Small",
-      "speechText": "村の奥、広場の北に大きな納屋がある。鍵はその中だよ。 北東の紋章がついた門を開ければ、農場へ行ける。",
-      "id": "74d94d34a40123a6",
-      "asset": "audio/voice/74d94d34a40123a6.wav",
-      "seconds": 9.520041666666666,
+      "speechText": "広場の北にある納屋で鍵を拾って、北東の門へ。右手の二階建てにはショットガンもあるで。",
+      "id": "2bb233be91faa0cd",
+      "asset": "audio/voice/2bb233be91faa0cd.wav",
+      "seconds": 7.600041666666667,
       "kind": "speech",
-      "sha256": "f3c71c1da164c407f98250e1fd00c1106f816542f5c03df59de8d9755396a2ba",
-      "raw_sha256": "1f77e536e60b45e0d46bfcd0652d4799b4f9ff954f46bf8d443ce1029686d333"
+      "sha256": "d8f0068c8e05bdf7fc7f967393b8f5d5a21ead0d30e557db3bb9781a48694beb",
+      "raw_sha256": "dd66ad78b0271e64847f3df7fdb81267e8dcc51731785154d73030eef31ae2cd"
     },
     {
       "speaker": "福ちゃん",
-      "text": "まず鍵。余裕があれば民家も調べるか。",
+      "text": "農場に管理棟があるそうです。船を呼べる無線か、ここで何があったか分かるものを探します。",
       "uses": [
         "dialogue:yametaro:route:1"
       ],
@@ -261,17 +508,17 @@
       "reference": "02_CHARACTERS/Fukuchan_voice.wav",
       "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
       "model": "Aratako/Irodori-TTS-v4.1-Small",
-      "speechText": "まず鍵。余裕があれば民家も調べるか。",
-      "id": "ceb4079460b2e1c3",
-      "asset": "audio/voice/ceb4079460b2e1c3.wav",
-      "seconds": 3.680041666666667,
+      "speechText": "農場に管理棟があるそうです。船を呼べる無線か、ここで何があったか分かるものを探します。",
+      "id": "07d667c9145ff7fa",
+      "asset": "audio/voice/07d667c9145ff7fa.wav",
+      "seconds": 7.2000416666666665,
       "kind": "speech",
-      "sha256": "97ac07989b078f406472187cf65233fdf946e9fab7fdace978ba62786c4dbc3c",
-      "raw_sha256": "026ac6563bd292b54861a479429fc861073336fdefd28d3c1c5d7680df8c0d97"
+      "sha256": "f8cd8697105e714484a700bd248b315b901256eb1073ef3cfde2732979108cac",
+      "raw_sha256": "bfc9743b3157e54655626a7408ad39e09797521c9545ae20ef345f943e7a9465"
     },
     {
       "speaker": "やめ太郎",
-      "text": "右手の二階建ての家に、ショットガンが残ってる。持っていって。\n僕ならバックアップなしでも何とかなる。この修正、たった一行だから。",
+      "text": "この案件を片付けたら、ワイらも本社へ帰れるやろ。戻ったら、今度こそちゃんと休み取るわ。",
       "uses": [
         "dialogue:yametaro:route:2"
       ],
@@ -280,17 +527,17 @@
       "reference": "02_CHARACTERS/Yametaro_voice.wav",
       "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
       "model": "Aratako/Irodori-TTS-v4.1-Small",
-      "speechText": "右手の二階建ての家に、ショットガンが残ってる。持っていって。 僕ならバックアップなしでも何とかなる。この修正、たった一行だから。",
-      "id": "4f0d650cca050882",
-      "asset": "audio/voice/4f0d650cca050882.wav",
-      "seconds": 10.120041666666667,
+      "speechText": "この案件を片付けたら、ワイらも本社へ帰れるやろ。戻ったら、今度こそちゃんと休み取るわ。",
+      "id": "6222d14259359dc6",
+      "asset": "audio/voice/6222d14259359dc6.wav",
+      "seconds": 6.880041666666667,
       "kind": "speech",
-      "sha256": "5f9cd16a1087741b7e9c43242f763916cf145cb1a5c9454037a834e514cc8544",
-      "raw_sha256": "f335f84d3b2da49230288a36f1c9e2facca91052df004b0b715184380e92b635"
+      "sha256": "37b2c003c0b222ed0f832020ed2c1bcb99da879748be74ffe6179dd04f821f30",
+      "raw_sha256": "6bd79eddc25834154cb5e0f5fbc12ece59558a65960b54de64c3b1cfbf7f4abd"
     },
     {
       "speaker": "やめ太郎",
-      "text": "ジョッキを振り上げたら、横へ避けて。Xで素早く踏み込めるよ。\n頭を狙ってひるませたら、近づいてFで蹴り飛ばせる。",
+      "text": "ジョッキを上げたら横へ避けるんや。Xで踏み込める。頭を狙ってひるませたら、近づいてFで蹴れるで。",
       "uses": [
         "dialogue:yametaro:combat:0"
       ],
@@ -299,17 +546,17 @@
       "reference": "02_CHARACTERS/Yametaro_voice.wav",
       "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
       "model": "Aratako/Irodori-TTS-v4.1-Small",
-      "speechText": "ジョッキを振り上げたら、横へ避けて。エックスで素早く踏み込めるよ。 頭を狙ってひるませたら、近づいてエフで蹴り飛ばせる。",
-      "id": "e903446ece431552",
-      "asset": "audio/voice/e903446ece431552.wav",
-      "seconds": 10.160041666666666,
+      "speechText": "ジョッキを上げたら横へ避けるんや。エックスで踏み込める。頭を狙ってひるませたら、近づいてエフで蹴れるで。",
+      "id": "09adf6cc1db7e386",
+      "asset": "audio/voice/09adf6cc1db7e386.wav",
+      "seconds": 8.720041666666667,
       "kind": "speech",
-      "sha256": "7967e70c9845f182ec77b8868723ce7f028a3a133e5266cf3471b39c864c95d3",
-      "raw_sha256": "c07b5079e3e8b6972ef28508c08b6edfabe54e0e0535b8d04942b608a36aef52"
+      "sha256": "83d6fcb5977540dd393b0d9ecec020bafcc0150c12af2f5ad865043498b912c3",
+      "raw_sha256": "d78254eedb5d9ecf86184052d9902b9e4225d6a5a8b5c32d31dd725e3b424931"
     },
     {
       "speaker": "福ちゃん",
-      "text": "一人ずつ相手にすれば、弾も節約できそうだな。",
+      "text": "落としたビールも拾っておいてください。補給所に預ければ、そば屋たちに飲まれずに済みます。",
       "uses": [
         "dialogue:yametaro:combat:1"
       ],
@@ -318,17 +565,17 @@
       "reference": "02_CHARACTERS/Fukuchan_voice.wav",
       "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
       "model": "Aratako/Irodori-TTS-v4.1-Small",
-      "speechText": "一人ずつ相手にすれば、弾も節約できそうだな。",
-      "id": "7865487a77a74866",
-      "asset": "audio/voice/7865487a77a74866.wav",
-      "seconds": 3.9200416666666666,
+      "speechText": "落としたビールも拾っておいてください。補給所に預ければ、そば屋たちに飲まれずに済みます。",
+      "id": "19f3780dd48d1680",
+      "asset": "audio/voice/19f3780dd48d1680.wav",
+      "seconds": 6.480041666666667,
       "kind": "speech",
-      "sha256": "58523f63f1d841ed3a6f998c8da1c769155cbd0611ed6bf97d9a3bbbe7fc376f",
-      "raw_sha256": "0cb53404c26e3ed6892c4f3cf0d68689bc756cf921ab01c9714587112c736371"
+      "sha256": "5da5967dfc17ff718fd5235560669e1f4b3ffc2f9179fbbda8991a29d15d4bbf",
+      "raw_sha256": "310f6fbc07d7cb09384c23d033c637751a9a6476bf05166df6d47535a8ce2932"
     },
     {
       "speaker": "やめ太郎",
-      "text": "家の壁に貼ってある、僕らの映画や事件の記録。\n近づいてEで集めたら、Cでいつでも見られるよ。",
+      "text": "壁のポスター、懐かしいやろ。島流しにされた社員が持ち込んだんや。裏の書き込みや日記も、Eで拾ってCで読めるで。",
       "uses": [
         "dialogue:yametaro:records:0"
       ],
@@ -337,17 +584,17 @@
       "reference": "02_CHARACTERS/Yametaro_voice.wav",
       "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
       "model": "Aratako/Irodori-TTS-v4.1-Small",
-      "speechText": "家の壁に貼ってある、僕らの映画や事件の記録。 近づいてイーで集めたら、シーでいつでも見られるよ。",
-      "id": "c43aee6a545b25a6",
-      "asset": "audio/voice/c43aee6a545b25a6.wav",
-      "seconds": 8.120041666666667,
+      "speechText": "壁のポスター、懐かしいやろ。島流しにされた社員が持ち込んだんや。裏の書き込みや日記も、イーで拾ってシーで読めるで。",
+      "id": "0ad9ae5261777b49",
+      "asset": "audio/voice/0ad9ae5261777b49.wav",
+      "seconds": 9.480041666666667,
       "kind": "speech",
-      "sha256": "508cd2b9c13503356ee14f2af7d2c334fc6b4e4d80e575666453069649f31361",
-      "raw_sha256": "87a4756ce4b7f0ba14c10bf0583bee97b559d3524d14cbf5ddecaa5364fb2038"
+      "sha256": "646833d185ab17a10ca649865a4305db9c8d9eb12eaeaf28c5a25d8760f99503",
+      "raw_sha256": "84d5d87e0fa5fec98c105caf4028bed4062fc917871c0d717b1f5a72c7b5d277"
     },
     {
       "speaker": "福ちゃん",
-      "text": "入口の家に、お前の指名手配書もあったぞ。",
+      "text": "僕らより前にここへ来た人たちの記録ですね。帰れたのかどうかも、書いてあるかな。",
       "uses": [
         "dialogue:yametaro:records:1"
       ],
@@ -356,17 +603,17 @@
       "reference": "02_CHARACTERS/Fukuchan_voice.wav",
       "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
       "model": "Aratako/Irodori-TTS-v4.1-Small",
-      "speechText": "入口の家に、お前の指名手配書もあったぞ。",
-      "id": "535568f2bf19d49e",
-      "asset": "audio/voice/535568f2bf19d49e.wav",
-      "seconds": 3.7200416666666665,
+      "speechText": "僕らより前にここへ来た人たちの記録ですね。帰れたのかどうかも、書いてあるかな。",
+      "id": "92365f667fd9172b",
+      "asset": "audio/voice/92365f667fd9172b.wav",
+      "seconds": 6.080041666666666,
       "kind": "speech",
-      "sha256": "eb7e51dbb59a12093d8ec7603ec15cd72951642a02fa86c043061dce14beddc8",
-      "raw_sha256": "dafa0df2d597295df5b9ad4eba283e9e3adaa98e91d622aaecf83e732177dfc2"
+      "sha256": "3561d88dc13049545dc075ee4cfd349d54acef335beeb6834e0ef5985ab54356",
+      "raw_sha256": "b6a13df67e0c096da35b272ea6494ffc0d0ba6e3e10f3dec17528394bd754c73"
     },
     {
       "speaker": "やめ太郎",
-      "text": "もし僕に何かあったら、その指名手配書と未整理のチケットを頼む。\n引き継ぎ資料？ 戻ってから書けば間に合うよ。",
+      "text": "ワイの指名手配書だけ、まだ現役みたいなんやけど。あれ剥がしといてくれへん？",
       "uses": [
         "dialogue:yametaro:records:2"
       ],
@@ -375,17 +622,150 @@
       "reference": "02_CHARACTERS/Yametaro_voice.wav",
       "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
       "model": "Aratako/Irodori-TTS-v4.1-Small",
-      "speechText": "もし僕に何かあったら、その指名手配書と未整理のチケットを頼む。 引き継ぎ資料？ 戻ってから書けば間に合うよ。",
-      "id": "4deb98930346c15f",
-      "asset": "audio/voice/4deb98930346c15f.wav",
-      "seconds": 8.880041666666667,
+      "speechText": "ワイの指名手配書だけ、まだ現役みたいなんやけど。あれ剥がしといてくれへん？",
+      "id": "5f457edd371151e7",
+      "asset": "audio/voice/5f457edd371151e7.wav",
+      "seconds": 5.760041666666667,
       "kind": "speech",
-      "sha256": "2be75a01512820c8ec59d10bbbfde7a124bd3bcc3a7e2c9008c64c11b850bac3",
-      "raw_sha256": "2b77653629b4222cd927c15acd4bf0b5ea441d9413775c0639752b63ba363ef1"
+      "sha256": "7fd562f87273a42b1f32cdff47606ac60c3af2400b7a3244ae88b9b3ede2c4e3",
+      "raw_sha256": "c8fbd38ba94cc97c4423e1fdcba6007a17a2281d09af2872bc1f297a498ad55d"
+    },
+    {
+      "speaker": "福ちゃん",
+      "text": "この案内に、そば屋エンジンってあります。ビールを飲ませたクローンの怪力で、動力軸を回す設備だそうです。",
+      "uses": [
+        "dialogue:yametaro:engine:0"
+      ],
+      "caption": "友人に話しかける。少し呆れながらも明瞭に、言葉の最後まで自然に話す。",
+      "seed": 100,
+      "reference": "02_CHARACTERS/Fukuchan_voice.wav",
+      "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "この案内に、そば屋エンジンってあります。ビールを飲ませたクローンの怪力で、動力軸を回す設備だそうです。",
+      "id": "2770f018f805e2ba",
+      "asset": "audio/voice/2770f018f805e2ba.wav",
+      "seconds": 8.600041666666666,
+      "kind": "speech",
+      "sha256": "e85f68d5dc1cabad7d3ceb3affe353efd351dd1643ad41982caa417dfafa2415",
+      "raw_sha256": "bbe6860ca6c76d86fbbb4c84c9af2f732b06c8dbd2ea266a5411a8f47d386bbb"
     },
     {
       "speaker": "やめ太郎",
-      "text": "予備の弾、10発。全部持っていって。\n追加の応援は断っておいたよ。仕様は全部、僕の頭に入ってるから。",
+      "text": "ビールで動く夢のエンジンいうから、もっと機械みたいなん想像してたわ。",
+      "uses": [
+        "dialogue:yametaro:engine:1"
+      ],
+      "caption": "焦りを少し抑えて、友人へ道案内する。柔らかい関西イントネーションで、聞き取りやすく自然に話す。",
+      "seed": 7,
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "ビールで動く夢のエンジンいうから、もっと機械みたいなん想像してたわ。",
+      "id": "76a72606da1de8e8",
+      "asset": "audio/voice/76a72606da1de8e8.wav",
+      "seconds": 5.400041666666667,
+      "kind": "speech",
+      "sha256": "765c055ce75fcd5625004e69865e5deabd9c595f2662e31e6985f88937a84788",
+      "raw_sha256": "0b00c082fa3499915f4a28d12d70df73dcb3b2d48307f04d88e1ce01d7da56c4"
+    },
+    {
+      "speaker": "福ちゃん",
+      "text": "人の形をしたものが、ずっと回してたんですね。設計した人も、運用してた人も、今はどこにいるんだろう。",
+      "uses": [
+        "dialogue:yametaro:engine:2"
+      ],
+      "caption": "友人に話しかける。少し呆れながらも明瞭に、言葉の最後まで自然に話す。",
+      "seed": 100,
+      "reference": "02_CHARACTERS/Fukuchan_voice.wav",
+      "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "人の形をしたものが、ずっと回してたんですね。設計した人も、運用してた人も、今はどこにいるんだろう。",
+      "id": "6c779f0233f25ad3",
+      "asset": "audio/voice/6c779f0233f25ad3.wav",
+      "seconds": 7.920041666666667,
+      "kind": "speech",
+      "sha256": "e3fd32c01b19a618c269e596104c84a7be55574d4b6cf30d0d83ee85234234bb",
+      "raw_sha256": "dab96db5e156356a84b36b07d3e1f37bf79e740772177911ce81c3615baa1022"
+    },
+    {
+      "speaker": "やめ太郎",
+      "text": "作ったやつも止め方知っとるやつもおらん。ワイらに何を引き継がせる気やったんや。",
+      "uses": [
+        "dialogue:yametaro:engine:3"
+      ],
+      "caption": "焦りを少し抑えて、友人へ道案内する。柔らかい関西イントネーションで、聞き取りやすく自然に話す。",
+      "seed": 7,
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "作ったやつも止め方知っとるやつもおらん。ワイらに何を引き継がせる気やったんや。",
+      "id": "9a159f056407ca06",
+      "asset": "audio/voice/9a159f056407ca06.wav",
+      "seconds": 5.640041666666667,
+      "kind": "speech",
+      "sha256": "53771a8d740075b9a743d5346712a542275844a0081eef99644348cbd4cadcf5",
+      "raw_sha256": "8d3c3657f19f2591f673c514d1129a5b55be8d30048b1aca0f38bcb7f8cc6499"
+    },
+    {
+      "speaker": "やめ太郎",
+      "text": "プロジェクト終了、現地要員は自主的に解散。……ワイら、海を泳いで帰れってことか？",
+      "uses": [
+        "dialogue:yametaro:evidence:0"
+      ],
+      "caption": "焦りを少し抑えて、友人へ道案内する。柔らかい関西イントネーションで、聞き取りやすく自然に話す。",
+      "seed": 7,
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "プロジェクト終了、現地要員は自主的に解散。……ワイら、海を泳いで帰れってことか？",
+      "id": "4db591fc032afc33",
+      "asset": "audio/voice/4db591fc032afc33.wav",
+      "seconds": 7.120041666666666,
+      "kind": "speech",
+      "sha256": "5be0c1100f12ce0fdccdd54cbcc459021cd62fc3e541269dba3885dea3ab60d2",
+      "raw_sha256": "e781f77a82780ab13e7ce4ffa7fdc271c6e682b26b1d82fcff695998aca6e72a"
+    },
+    {
+      "speaker": "福ちゃん",
+      "text": "中止通知には機材の撤収しか書いてない。クローンも、世話をしていた社員も、予算の外に置き去りです。",
+      "uses": [
+        "dialogue:yametaro:evidence:1"
+      ],
+      "caption": "友人に話しかける。少し呆れながらも明瞭に、言葉の最後まで自然に話す。",
+      "seed": 100,
+      "reference": "02_CHARACTERS/Fukuchan_voice.wav",
+      "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "中止通知には機材の撤収しか書いてない。クローンも、世話をしていた社員も、予算の外に置き去りです。",
+      "id": "cfb31803224add7b",
+      "asset": "audio/voice/cfb31803224add7b.wav",
+      "seconds": 8.040041666666667,
+      "kind": "speech",
+      "sha256": "da5144cffa5e9b31410dbb78f1dd8b61e1818e985f096e5c0a4ef53b84bc3f46",
+      "raw_sha256": "63e8ad18366163a94f640ef873e1771c42bae3d37b3f5ac98974d49be2689bc1"
+    },
+    {
+      "speaker": "やめ太郎",
+      "text": "ワイらを人数で数えてたくせに、帰るときだけ誰も数えへんのやな。",
+      "uses": [
+        "dialogue:yametaro:evidence:2"
+      ],
+      "caption": "焦りを少し抑えて、友人へ道案内する。柔らかい関西イントネーションで、聞き取りやすく自然に話す。",
+      "seed": 7,
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "ワイらを人数で数えてたくせに、帰るときだけ誰も数えへんのやな。",
+      "id": "3f19adf590c962e8",
+      "asset": "audio/voice/3f19adf590c962e8.wav",
+      "seconds": 5.2800416666666665,
+      "kind": "speech",
+      "sha256": "1c3e4a711f3b42414533b792d321f29d81d937f0d15d0b505b4dab933f9c1d8b",
+      "raw_sha256": "5b0fc8167f1c1c4e4badee163f2a19aeedc235296747249de4a727c44323a6c4"
+    },
+    {
+      "speaker": "やめ太郎",
+      "text": "弾十発、持っていき。ワイはここを見とく。大丈夫、この研修が終わったら、打ち上げの店はワイが予約するわ。",
       "uses": [
         "dialogue:yametaro:supplies:0"
       ],
@@ -394,17 +774,17 @@
       "reference": "02_CHARACTERS/Yametaro_voice.wav",
       "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
       "model": "Aratako/Irodori-TTS-v4.1-Small",
-      "speechText": "予備の弾、10発。全部持っていって。 追加の応援は断っておいたよ。仕様は全部、僕の頭に入ってるから。",
-      "id": "2d57d5cb201da1ca",
-      "asset": "audio/voice/2d57d5cb201da1ca.wav",
-      "seconds": 8.680041666666666,
+      "speechText": "弾十発、持っていき。ワイはここを見とく。大丈夫、この研修が終わったら、打ち上げの店はワイが予約するわ。",
+      "id": "de3c059044c5bad8",
+      "asset": "audio/voice/de3c059044c5bad8.wav",
+      "seconds": 8.360041666666667,
       "kind": "speech",
-      "sha256": "0172508fbabc5c96115bc986176f067689b2207b59057e50403510c3f2e1a2d7",
-      "raw_sha256": "c01d4c9d968c9def18dfec078d55d23b6a4397e0e176519364d1ff60e098c449"
+      "sha256": "56caa0d0313d4d9185949f0f111c0edc9d33c6a1287d4bc07a16208c8001dffe",
+      "raw_sha256": "f1ebc1da84835caae47d94d42c89749d8033a8c212efa697abeaf7486922c54d"
     },
     {
       "speaker": "やめ太郎",
-      "text": "ケースに空きがないね。整理したら戻ってきて。\n僕はここで本番を見てる。監視アラートは止めたし、もう静かなもんだよ。",
+      "text": "ケースがいっぱいや。荷物を整理して戻ってき。無茶して全部背負わんでもええんやで。",
       "uses": [
         "dialogue:yametaro:full:0"
       ],
@@ -413,29 +793,36 @@
       "reference": "02_CHARACTERS/Yametaro_voice.wav",
       "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
       "model": "Aratako/Irodori-TTS-v4.1-Small",
-      "speechText": "ケースに空きがないね。整理したら戻ってきて。 僕はここで本番を見てる。監視アラートは止めたし、もう静かなもんだよ。",
-      "id": "6bda58713f6c52d6",
-      "asset": "audio/voice/6bda58713f6c52d6.wav",
-      "seconds": 9.280041666666667,
+      "speechText": "ケースがいっぱいや。荷物を整理して戻ってき。無茶して全部背負わんでもええんやで。",
+      "id": "bee5b0af3bf3b993",
+      "asset": "audio/voice/bee5b0af3bf3b993.wav",
+      "seconds": 6.2400416666666665,
       "kind": "speech",
-      "sha256": "daaefa18e324bc6b0406d87afccb274a36f1ebe8c514dd3d1ca897f1fa4b00a2",
-      "raw_sha256": "ab3531497b95f75bc9ed448ec3f3959bba7087bfb33910bbdfd2f578a5d9180f"
+      "sha256": "1605a08a877b813c609e8cba4bb7a6d216ad1a06d2e5e70d773d592d1c01d7b6",
+      "raw_sha256": "c5d8c4f73ebe318a6fc606b4dd01fbecd99f2644bc0c86c1983b2f07a254bf08"
     },
     {
       "speaker": "たこさん",
-      "text": "……。そば屋を倒して、ビールを拾いましたか。\n弾やハーブと交換できます。",
+      "text": "ここに残っていた物資を集めました。拾ったビールを、弾やハーブと交換できます。",
       "uses": [
         "dialogue:takosan:intro:0"
       ],
-      "id": "5987fdc435962d4e",
-      "asset": "audio/voice/takosan_response.wav",
-      "seconds": 0.85,
-      "kind": "nonverbal",
-      "provenance": "Original procedural response, no canonical speaking voice assigned"
+      "id": "16dbfea19f797aa7",
+      "asset": "audio/voice/16dbfea19f797aa7.wav",
+      "seconds": 6.688,
+      "kind": "speech",
+      "model": "VOICEVOX:Voidoll",
+      "style": 89,
+      "speedScale": 1.0,
+      "speechText": "ここに残っていた物資を集めました。拾ったビールを、弾やハーブと交換できます。",
+      "engine_version": "0.25.1",
+      "sha256": "25faad729d8ce4a9ed3b461c59a9f6d88d6557dc204e9c06d0c6f859e90df7bb",
+      "raw_sha256": "7c219cd77a23da1292022a5bc91e895459d77f2525e5a9eeb81ea70705d762ae",
+      "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
     },
     {
       "speaker": "福ちゃん",
-      "text": "こんな所で商売してるのか。\nそのビール、どうするんだ？",
+      "text": "さっき着いたばかりなのに、もう補給所になってる。",
       "uses": [
         "dialogue:takosan:intro:1"
       ],
@@ -444,41 +831,283 @@
       "reference": "02_CHARACTERS/Fukuchan_voice.wav",
       "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
       "model": "Aratako/Irodori-TTS-v4.1-Small",
-      "speechText": "こんな所で商売してるのか。 そのビール、どうするんだ？",
-      "id": "0b2763d6e23ad1d3",
-      "asset": "audio/voice/0b2763d6e23ad1d3.wav",
-      "seconds": 4.120041666666666,
+      "speechText": "さっき着いたばかりなのに、もう補給所になってる。",
+      "id": "e465ad1a08d747bb",
+      "asset": "audio/voice/e465ad1a08d747bb.wav",
+      "seconds": 3.8000416666666665,
       "kind": "speech",
-      "sha256": "2038b51ac538062ea2435b351a6472eab840b19cfde30804555db7d7ef7005c0",
-      "raw_sha256": "0f20aaabdf17a850435bebb10678a5b4d3681e85d9f0723b8e1570dde91fa86f"
+      "sha256": "620076feb4a9ba82f402ecabd36eb4ea3296cf173d34897ad6a8b1f54ad06775",
+      "raw_sha256": "6ecf64660bec5641bc54667db64c825ea07f6823aaed3c4e87d6c6aa200d7031"
     },
     {
       "speaker": "たこさん",
-      "text": "必要なことです。\n持てる量だけ、お選びください。",
+      "text": "待っていても、引き継ぎ担当者は来ません。まず、三人が帰る準備です。",
       "uses": [
         "dialogue:takosan:intro:2"
       ],
-      "id": "786092808e6f8581",
-      "asset": "audio/voice/takosan_response.wav",
-      "seconds": 0.85,
-      "kind": "nonverbal",
-      "provenance": "Original procedural response, no canonical speaking voice assigned"
+      "id": "fe2f49606477d04f",
+      "asset": "audio/voice/fe2f49606477d04f.wav",
+      "seconds": 6.325333333333333,
+      "kind": "speech",
+      "model": "VOICEVOX:Voidoll",
+      "style": 89,
+      "speedScale": 1.0,
+      "speechText": "待っていても、引き継ぎ担当者は来ません。まず、三人が帰る準備です。",
+      "engine_version": "0.25.1",
+      "sha256": "68bc2cc331acc39c89c35abbb162f45ac39479360693f1a56e1c0168cac080f9",
+      "raw_sha256": "1332a4fa799207686f8d1010bfdd722ee6b3a19d4e16d0dffc98f9e630785aa3",
+      "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
     },
     {
       "speaker": "たこさん",
-      "text": "……。補給ですね。ビールはお持ちですか。",
+      "text": "お帰りなさい。ビールはこちらへ。今日はもう、誰にも軸を回させません。",
       "uses": [
         "dialogue:takosan:greeting:0"
       ],
-      "id": "3c3abe898678a76c",
-      "asset": "audio/voice/takosan_response.wav",
-      "seconds": 0.85,
-      "kind": "nonverbal",
-      "provenance": "Original procedural response, no canonical speaking voice assigned"
+      "id": "c45ee1ec4dad924c",
+      "asset": "audio/voice/c45ee1ec4dad924c.wav",
+      "seconds": 6.378666666666667,
+      "kind": "speech",
+      "model": "VOICEVOX:Voidoll",
+      "style": 89,
+      "speedScale": 1.0,
+      "speechText": "お帰りなさい。ビールはこちらへ。今日はもう、誰にも軸を回させません。",
+      "engine_version": "0.25.1",
+      "sha256": "0f62fdf0e54616783fd89349aadc1c2411e172c0cfe9e6362a384cdb1def6d07",
+      "raw_sha256": "6004cb47df046ebd0eebb8fd6d41c5e0cde64ee06981123356b27d2edb7ab260",
+      "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
+    },
+    {
+      "speaker": "たこさん",
+      "text": "ここは、廃村を使った秘密案件の実験場です。名簿には、窓際社員の名前だけが並んでいます。",
+      "uses": [
+        "dialogue:takosan:engine:0"
+      ],
+      "id": "6c89f25a0159443d",
+      "asset": "audio/voice/6c89f25a0159443d.wav",
+      "seconds": 8.512,
+      "kind": "speech",
+      "model": "VOICEVOX:Voidoll",
+      "style": 89,
+      "speedScale": 1.0,
+      "speechText": "ここは、廃村を使った秘密案件の実験場です。名簿には、窓際社員の名前だけが並んでいます。",
+      "engine_version": "0.25.1",
+      "sha256": "5a521b95330fe1922726a0b5f489dac7123414272e6d975325b18c0cad4b1727",
+      "raw_sha256": "f0cc4d2f2a9049bfb9c44eb3b7deb426f4021b4b5ab3b30f8c372d241c055a94",
+      "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
+    },
+    {
+      "speaker": "福ちゃん",
+      "text": "研修じゃなくて、人手の補充だったんだ。僕らの辞令にも、終了日が書いてない。",
+      "uses": [
+        "dialogue:takosan:engine:1"
+      ],
+      "caption": "友人に話しかける。少し呆れながらも明瞭に、言葉の最後まで自然に話す。",
+      "seed": 100,
+      "reference": "02_CHARACTERS/Fukuchan_voice.wav",
+      "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "研修じゃなくて、人手の補充だったんだ。僕らの辞令にも、終了日が書いてない。",
+      "id": "0ad7ffcc65d0a782",
+      "asset": "audio/voice/0ad7ffcc65d0a782.wav",
+      "seconds": 6.2400416666666665,
+      "kind": "speech",
+      "sha256": "9416f255035bec3b30ece9cdaad669c48de09046f5f871571954489bed6ced64",
+      "raw_sha256": "e320bd3ea5cd21c910c06763fe1ebd619de4c540f1a0598997f9a1c701f55333"
+    },
+    {
+      "speaker": "たこさん",
+      "text": "責任者は先に帰りました。残ったのは、空のビール樽と、仕事の終わらないそば屋たちです。",
+      "uses": [
+        "dialogue:takosan:engine:2"
+      ],
+      "id": "94c7b4cda86d7538",
+      "asset": "audio/voice/94c7b4cda86d7538.wav",
+      "seconds": 7.722666666666667,
+      "kind": "speech",
+      "model": "VOICEVOX:Voidoll",
+      "style": 89,
+      "speedScale": 1.0,
+      "speechText": "責任者は先に帰りました。残ったのは、空のビール樽と、仕事の終わらないそば屋たちです。",
+      "engine_version": "0.25.1",
+      "sha256": "7b45180a1472013d4800a8c2397a0cc710a7f17fa30257a0917f360f38f1af39",
+      "raw_sha256": "3adcec74224e9f32eee77d3e58d8cbe2f2470f407e02fa097d1ec5be304bb772",
+      "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
+    },
+    {
+      "speaker": "たこさん",
+      "text": "この台帳、同じそば屋の顔に、別々の番号が付いています。二十四体。出庫はありますが、帰還の欄はありません。",
+      "uses": [
+        "dialogue:takosan:evidence:0"
+      ],
+      "id": "7845b0382ad1aa49",
+      "asset": "audio/voice/7845b0382ad1aa49.wav",
+      "seconds": 10.293333333333333,
+      "kind": "speech",
+      "model": "VOICEVOX:Voidoll",
+      "style": 89,
+      "speedScale": 1.0,
+      "speechText": "この台帳、同じそば屋の顔に、別々の番号が付いています。二十四体。出庫はありますが、帰還の欄はありません。",
+      "engine_version": "0.25.1",
+      "sha256": "227f2852808779b78a3e08236c555dfa06d59eefe5bc4e92a8a332b4080f99ea",
+      "raw_sha256": "36961e21572c9742c71643db457d2419d40314d847279dcc0764d25400f09399",
+      "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
+    },
+    {
+      "speaker": "福ちゃん",
+      "text": "ビールから生まれたわけじゃない。ここで作ったクローンを、案件が炎上したあとも放置していたんですね。",
+      "uses": [
+        "dialogue:takosan:evidence:1"
+      ],
+      "caption": "友人に話しかける。少し呆れながらも明瞭に、言葉の最後まで自然に話す。",
+      "seed": 100,
+      "reference": "02_CHARACTERS/Fukuchan_voice.wav",
+      "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "ビールから生まれたわけじゃない。ここで作ったクローンを、案件が炎上したあとも放置していたんですね。",
+      "id": "bbce37213951317d",
+      "asset": "audio/voice/bbce37213951317d.wav",
+      "seconds": 7.600041666666667,
+      "kind": "speech",
+      "sha256": "7491304462458539da0c14b038634fb383aa9bd851c9eab0bcae13b5c95a56d8",
+      "raw_sha256": "7ab7178dea71bb7bc65af175555de82677985326e86bd345583af8c44718be19"
+    },
+    {
+      "speaker": "たこさん",
+      "text": "山の中枢は、今も運転命令を繰り返しています。あそこを止めて、取り残された人を連れ帰りましょう。",
+      "uses": [
+        "dialogue:takosan:evidence:2"
+      ],
+      "id": "eb2fcd1098e931e8",
+      "asset": "audio/voice/eb2fcd1098e931e8.wav",
+      "seconds": 8.554666666666666,
+      "kind": "speech",
+      "model": "VOICEVOX:Voidoll",
+      "style": 89,
+      "speedScale": 1.0,
+      "speechText": "山の中枢は、今も運転命令を繰り返しています。あそこを止めて、取り残された人を連れ帰りましょう。",
+      "engine_version": "0.25.1",
+      "sha256": "f16e88baad022e8786a90225f3912fc3ebd230a62d9d4ef7d865bfcd54acdc19",
+      "raw_sha256": "8ebf9ce19bc6025b17ea24a5336c007ae48b12297cca14b79fbd5d8043f2b9ad",
+      "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
     },
     {
       "speaker": "やめ太郎",
-      "text": "廃屋の前にいるそば屋が、帰り道を塞いでる。\nジョッキを大きく振り上げたら、横か後ろへ。振り終わりを狙おう。",
+      "text": "うわー！ そば屋さん、やめてくれー！",
+      "uses": [
+        "dialogue:reaction:yametaro:0"
+      ],
+      "caption": "突然殴られて痛がり、仲間に助けを求める。短く切迫して。声の同一性は保つ。",
+      "seed": 7,
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "うわー！ そば屋さん、やめてくれー！",
+      "id": "06e0d554149d0059",
+      "asset": "audio/voice/06e0d554149d0059.wav",
+      "seconds": 3.7600416666666665,
+      "kind": "speech",
+      "sha256": "4d78fe46a90f744fc4948c1eeefb2fc165213f6b8ac8f6218b8fe12adafecac3",
+      "raw_sha256": "d4f061cd292a855c08ef23d1e9c9088323d9e56b9429f77705fdd68806806908"
+    },
+    {
+      "speaker": "やめ太郎",
+      "text": "痛いって！ ワイ、ビール持ってへん！",
+      "uses": [
+        "dialogue:reaction:yametaro:1"
+      ],
+      "caption": "突然殴られて痛がり、仲間に助けを求める。短く切迫して。声の同一性は保つ。",
+      "seed": 7,
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "痛いって！ ワイ、ビール持ってへん！",
+      "id": "c1f644501fa829c1",
+      "asset": "audio/voice/c1f644501fa829c1.wav",
+      "seconds": 3.4400416666666667,
+      "kind": "speech",
+      "sha256": "a2d2059646727b7eddf90cfe65e05f991e5bf58f6227d82977c092c423a6b1ef",
+      "raw_sha256": "813f044d3780058113973e0619c1af5f2a441a885d4a593c85e4ac66f80fe0fe"
+    },
+    {
+      "speaker": "やめ太郎",
+      "text": "福ちゃん……まだ、帰れてへんやん……。",
+      "uses": [
+        "dialogue:reaction:yametaro:2"
+      ],
+      "caption": "突然殴られて痛がり、仲間に助けを求める。短く切迫して。声の同一性は保つ。",
+      "seed": 7,
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "福ちゃん……まだ、帰れてへんやん……。",
+      "id": "fba3cc4df67ccf1e",
+      "asset": "audio/voice/fba3cc4df67ccf1e.wav",
+      "seconds": 3.2800416666666665,
+      "kind": "speech",
+      "sha256": "9a265a9e2d00de461acb0e99a2eea08da0721a3d611e704f3a4c30cd96bc823d",
+      "raw_sha256": "88ba9c5510a804e188b66bb204bb0f08435e3fe70028d7edec2ad3ee6b05989e"
+    },
+    {
+      "speaker": "たこさん",
+      "text": "いたっ！ そば屋さん、落ち着いて！",
+      "uses": [
+        "dialogue:reaction:takosan:0"
+      ],
+      "id": "58a1f8518fa007b0",
+      "asset": "audio/voice/58a1f8518fa007b0.wav",
+      "seconds": 2.368,
+      "kind": "speech",
+      "model": "VOICEVOX:Voidoll",
+      "style": 89,
+      "speedScale": 1.08,
+      "speechText": "いたっ！ そば屋さん、落ち着いて！",
+      "engine_version": "0.25.1",
+      "sha256": "7d821aa4f0a91f202df944a8047fc78690a9759261fc0b3dc29ea57e460f9c7b",
+      "raw_sha256": "131a38a8f13e92482461f5d91b2b1e60f40becf23852f5f2f4244cb5903f5bcf",
+      "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
+    },
+    {
+      "speaker": "たこさん",
+      "text": "殴らないで。ビールは渡せません。",
+      "uses": [
+        "dialogue:reaction:takosan:1"
+      ],
+      "id": "b11733a3e2a4acd4",
+      "asset": "audio/voice/b11733a3e2a4acd4.wav",
+      "seconds": 2.6773333333333333,
+      "kind": "speech",
+      "model": "VOICEVOX:Voidoll",
+      "style": 89,
+      "speedScale": 1.08,
+      "speechText": "殴らないで。ビールは渡せません。",
+      "engine_version": "0.25.1",
+      "sha256": "aed95e31d0447218ebced3280f37354bf7c57dab47ff8918367c9158fc914d80",
+      "raw_sha256": "5f22c553482763798c159b4afc6ad1055db2c3eeae8a609c4386e34b7cd44fb1",
+      "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
+    },
+    {
+      "speaker": "たこさん",
+      "text": "福ちゃん……補給所を、頼みます……。",
+      "uses": [
+        "dialogue:reaction:takosan:2"
+      ],
+      "id": "739e324a440e7cab",
+      "asset": "audio/voice/739e324a440e7cab.wav",
+      "seconds": 2.848,
+      "kind": "speech",
+      "model": "VOICEVOX:Voidoll",
+      "style": 89,
+      "speedScale": 1.08,
+      "speechText": "福ちゃん……補給所を、頼みます……。",
+      "engine_version": "0.25.1",
+      "sha256": "9ca339162b9d34d27a398d80b80056b71e9d563a59fa3507dc539cae39145ccd",
+      "raw_sha256": "5a5ad79aac65c31a1575358953b59f4f0c99be21dd424142bccb7de95bbce24e",
+      "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
+    },
+    {
+      "speaker": "やめ太郎",
+      "text": "廃屋の前の大きいそば屋が、中枢なんやな。\n振り上げたら横へ。振り終わりを狙うんや。ワイ、帰り道を開けとく。",
       "uses": [
         "dialogue:mountain:before"
       ],
@@ -487,17 +1116,17 @@
       "reference": "02_CHARACTERS/Yametaro_voice.wav",
       "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
       "model": "Aratako/Irodori-TTS-v4.1-Small",
-      "speechText": "廃屋の前にいるそば屋が、帰り道を塞いでる。 ジョッキを大きく振り上げたら、横か後ろへ。振り終わりを狙おう。",
-      "id": "35c3ecec89730ce4",
-      "asset": "audio/voice/35c3ecec89730ce4.wav",
-      "seconds": 8.840041666666666,
+      "speechText": "廃屋の前の大きいそば屋が、中枢なんやな。 振り上げたら横へ。振り終わりを狙うんや。ワイ、帰り道を開けとく。",
+      "id": "33873fb6a2700604",
+      "asset": "audio/voice/33873fb6a2700604.wav",
+      "seconds": 9.160041666666666,
       "kind": "speech",
-      "sha256": "cea8015235ae29dad4bba780994f402f6609669154e70f0bf074424b3f7d30c3",
-      "raw_sha256": "4108f13330990f87dff383be0d8d71c7d08448e74af6aadde0a83e7ac5958f94"
+      "sha256": "8f1e1ef8cd8f0ab6b54b0d2ba80b8ec88d689f956c27aafba05f1ae1a18884a7",
+      "raw_sha256": "63952e24be598e32cf4a5475c6a813f55fadc5473e424e32c195f7fd4b66aba2"
     },
     {
       "speaker": "やめ太郎",
-      "text": "福ちゃん、やったね！ 東側の門から帰ろう。\n今日はもう、乾杯は遠慮したいな。",
+      "text": "静かになったな。東の門から帰ろう。\n福ちゃん、この夜のこと、三人でちゃんと話そうや。",
       "uses": [
         "dialogue:mountain:after"
       ],
@@ -506,13 +1135,13 @@
       "reference": "02_CHARACTERS/Yametaro_voice.wav",
       "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
       "model": "Aratako/Irodori-TTS-v4.1-Small",
-      "speechText": "福ちゃん、やったね！ 東側の門から帰ろう。 今日はもう、乾杯は遠慮したいな。",
-      "id": "9490570c5c6a09c6",
-      "asset": "audio/voice/9490570c5c6a09c6.wav",
-      "seconds": 6.2400416666666665,
+      "speechText": "静かになったな。東の門から帰ろう。 福ちゃん、この夜のこと、三人でちゃんと話そうや。",
+      "id": "09af2a7810293c5a",
+      "asset": "audio/voice/09af2a7810293c5a.wav",
+      "seconds": 6.720041666666667,
       "kind": "speech",
-      "sha256": "46a5a133da9a41e9e10f1753f4202ce8d3ceb4985f085b77f3da0b7cd2a75aff",
-      "raw_sha256": "79e39e1726ce0b18618a785a6163778f08a25187acf287eb688916a177e28e4c"
+      "sha256": "aad4e0bfaea9ed434456ded2d15d4d05ae5c0ec4d428e3c8dc39c5fd4f8ee974",
+      "raw_sha256": "14207cb8932faf637882c95da1cafb6a664d9ccbc4d28bffc77ea8d4f3311034"
     }
   ]
 }

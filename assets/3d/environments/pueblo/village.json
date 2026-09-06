@@ -897,8 +897,8 @@
     }
   ],
   "id": "village",
-  "label": "CHAPTER 01  /  PUEBLO",
-  "subtitle": "静かな村、騒がしい住人。",
+  "label": "CHAPTER 01  /  YUMEMI VILLAGE",
+  "subtitle": "廃村ゆめみ村。特別研修、帰任日未定。",
   "exits": [
     {
       "id": "forward",

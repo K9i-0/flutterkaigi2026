@@ -1,3 +1,5 @@
+import 'game_story.dart';
+
 import 'dart:math' as math;
 
 import 'package:vector_math/vector_math.dart' as vm;
@@ -200,8 +202,9 @@ class HazardGameState {
   final List<Map<String, dynamic>>? catalog;
   List<Map<String, dynamic>> get gallery => catalog ?? images;
   String get zoneId => map['id'] as String? ?? 'village';
-  String get chapterLabel => map['label'] as String? ?? 'CHAPTER 01  /  PUEBLO';
-  String get subtitle => map['subtitle'] as String? ?? '静かな村、騒がしい住人。';
+  String get chapterLabel =>
+      map['label'] as String? ?? 'CHAPTER 01  /  YUMEMI VILLAGE';
+  String get subtitle => map['subtitle'] as String? ?? '廃村ゆめみ村。特別研修、帰任日未定。';
   Map<String, dynamic> get gate => map['gate'] as Map<String, dynamic>;
   String get gateMode => gate['mode'] as String? ?? 'key';
   bool get bossAlive => enemies.any((e) => e.boss && e.alive);
@@ -210,7 +213,7 @@ class HazardGameState {
   String get objective => zoneId == 'farm'
       ? '納屋で補給し、東の門から山道へ'
       : zoneId == 'mountain'
-      ? (bossAlive ? '廃屋の前のそば屋を撃退し、脱出路を開け' : '東の脱出路から村を抜けろ')
+      ? (bossAlive ? 'そば屋エンジンを止め、運転命令を断て' : '東の脱出路から村を抜けろ')
       : gateOpen
       ? '農場への門をくぐれ'
       : hasKey
@@ -219,6 +222,29 @@ class HazardGameState {
   Map<String, dynamic>? exitRequested;
   final medallions = <String>{};
   final seenEvents = <String>{};
+  final foundMemos = <String>{};
+  Iterable<VillageMemo> get localMemos =>
+      villageMemos.where((m) => m.zone == zoneId);
+  bool get knowsEngine =>
+      foundMemos.contains('proposal') ||
+      seenEvents.contains('farm') ||
+      zoneId != 'village';
+  bool get hasStoryEvidence => dialogueOwner == 'takosan'
+      ? foundMemos.contains('returns')
+      : foundMemos.contains('campaign');
+  DialogueLine? reaction;
+  double reactionTime = 0;
+  int reactionSerial = 0;
+  void reactToCompanionHit(String id) {
+    final fallen = companionHealth[id] == 0;
+    // A fatal reaction takes priority; ordinary hits cannot overlap a sentence.
+    if (!fallen && reactionTime > 0) return;
+    final variant = fallen ? 2 : (companionHealth[id]! <= 20 ? 1 : 0);
+    reaction = companionReactions[id]![variant];
+    reactionTime = 5;
+    reactionSerial++;
+  }
+
   List<Map<String, dynamic>> get targets =>
       (map['targets'] as List? ?? const []).cast<Map<String, dynamic>>();
   final Set<String> collected;
@@ -320,8 +346,8 @@ class HazardGameState {
           DialogueLine(
             'やめ太郎',
             bossAlive
-                ? '廃屋の前にいるそば屋が、帰り道を塞いでる。\nジョッキを大きく振り上げたら、横か後ろへ。振り終わりを狙おう。'
-                : '福ちゃん、やったね！ 東側の門から帰ろう。\n今日はもう、乾杯は遠慮したいな。',
+                ? '廃屋の前の大きいそば屋が、中枢なんやな。\n振り上げたら横へ。振り終わりを狙うんや。ワイ、帰り道を開けとく。'
+                : '静かになったな。東の門から帰ろう。\n福ちゃん、この夜のこと、三人でちゃんと話そうや。',
           ),
         ]
       : yametaroDialogue[dialogueTopic]!;
@@ -440,6 +466,9 @@ class HazardGameState {
     exitRequested = null;
     medallions.clear();
     seenEvents.clear();
+    foundMemos.clear();
+    reaction = null;
+    reactionTime = 0;
     dialogueTopic = 'intro';
     dialogueIndex = 0;
     sprint = false;
@@ -733,6 +762,7 @@ class HazardGameState {
     final dt = delta.clamp(0.0, .05);
     companionHurt.updateAll((_, value) => math.max(0, value - dt));
     _companionInvulnerable.updateAll((_, value) => math.max(0, value - dt));
+    reactionTime = math.max(0, reactionTime - dt);
     time += dt;
     fireCooldown = math.max(0, fireCooldown - dt);
     hitFlash = math.max(0, hitFlash - dt);
@@ -1143,6 +1173,7 @@ class HazardGameState {
           );
           _companionInvulnerable[id] = 1;
           companionHurt[id] = .5;
+          reactToCompanionHit(id);
           emitSound(
             'mug_hit',
             x: (npc['x'] as num).toDouble(),
@@ -1779,7 +1810,7 @@ class HazardGameState {
     e.bossTimer = 0;
     e.vanish = 0;
     kills++;
-    say(e.boss ? '最後のそば屋を撃退した。脱出路の門へ！' : 'そば屋を倒した。ビールを回収しよう。');
+    say(e.boss ? '中枢が停止した。仲間と東の脱出路へ！' : 'そば屋を倒した。ビールを回収しよう。');
     if (e.boss) checkpointRequested = true;
   }
 
@@ -1813,6 +1844,11 @@ class HazardGameState {
     }
     for (final p in pickups) {
       if (!p.taken && _near(p.x, p.y, p.z, 1.55)) return 'pickup:${p.id}';
+    }
+    for (final m in localMemos) {
+      if (!foundMemos.contains(m.id) && _near(m.x, m.y, m.z, 1.55)) {
+        return 'memo:${m.id}';
+      }
     }
     for (final p in images) {
       if (!collected.contains(p['id']) &&
@@ -1899,6 +1935,7 @@ class HazardGameState {
       final p = pickups.firstWhere((p) => 'pickup:${p.id}' == key);
       return '${itemNames[p.kind]}を拾う';
     }
+    if (key.startsWith('memo:')) return '村のメモを拾う';
     if (key.startsWith('poster:')) return '窓際族の記録をコレクション';
     if (key.startsWith('crate:')) return '木箱・樽を壊す';
     if (key.startsWith('window:')) return '窓を乗り越える';
@@ -1930,12 +1967,18 @@ class HazardGameState {
       } else {
         say('ケースが満杯です。Tabで整理してください。');
       }
+    } else if (key.startsWith('memo:')) {
+      final id = key.substring(5);
+      foundMemos.add(id);
+      checkpointRequested = true;
+      lastSound = 'collect';
+      say('${villageMemos.firstWhere((m) => m.id == id).title} — Cで記録を読む');
     } else if (key.startsWith('poster:')) {
       final id = key.substring(7);
       collected.add(id);
       collectionDirty = true;
       lastSound = 'collect';
-      say('記録を収集した ${collected.length}/${gallery.length} — Cで鑑賞');
+      say('ポスターの裏に書き込みを発見 — Cで読む（${collected.length}/${gallery.length}）');
     } else if (key.startsWith('crate:')) {
       breakCrate(crates.firstWhere((c) => 'crate:${c.id}' == key));
     } else if (key.startsWith('window:')) {
@@ -2025,6 +2068,8 @@ class HazardGameState {
       metTakosan = true;
     }
     phase = PlayPhase.dialogue;
+    reaction = null;
+    reactionTime = 0;
     reloading = 0;
     stopInput();
   }
@@ -2037,6 +2082,12 @@ class HazardGameState {
     if (phase != PlayPhase.dialogue || !dialogueChoices) return;
     if (topic == 'leave') {
       endDialogue();
+      return;
+    }
+    if ((topic == 'engine' && knowsEngine) ||
+        (topic == 'evidence' && hasStoryEvidence)) {
+      dialogueTopic = topic;
+      dialogueIndex = 0;
       return;
     }
     if (talkingTo == 'takosan') {
@@ -2125,6 +2176,15 @@ class HazardGameState {
     'gateOpen': gateOpen,
     'hasKey': hasKey,
     'collected': collected.toList(),
+    'foundMemos': foundMemos.toList(),
+    'reaction': reaction == null
+        ? null
+        : {
+            'speaker': reaction!.speaker,
+            'text': reaction!.text,
+            'serial': reactionSerial,
+            'remaining': reactionTime,
+          },
     'companions': Map<String, double>.of(companionHealth),
     'fallenCompanion': fallenCompanion,
     'companionFallTime': companionFallTime,

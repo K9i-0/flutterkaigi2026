@@ -23,6 +23,9 @@ class VoiceCatalog {
   }
   final clips = <String, Map<String, dynamic>>{};
   final eventSeconds = <String, double>{};
+  double seconds(String speaker, String text) =>
+      (clips['$speaker\n$text']?['seconds'] as num?)?.toDouble() ?? 0;
+
   VoiceCue? cue(String identity, String speaker, String text) {
     final clip = clips['$speaker\n$text'];
     if (clip != null) {

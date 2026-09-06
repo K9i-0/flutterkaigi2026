@@ -518,6 +518,8 @@ class HazardGameController extends ChangeNotifier {
 
   void startEvent(String id) {
     if (state!.seenEvents.contains(id)) return;
+    state!.reaction = null;
+    state!.reactionTime = 0;
     director = HazardDirector(id, voiceSeconds: voiceCatalog.eventSeconds);
     state!
       ..stopInput()
@@ -625,6 +627,22 @@ class HazardGameController extends ChangeNotifier {
     final template = itemsTemplate.getChildByName(name);
     if (template == null) throw StateError('Missing prop $name');
     return template.clone();
+  }
+
+  Node _memoProp() {
+    final paper = UnlitMaterial()
+      ..baseColorFactor = vm.Vector4(.92, .83, .60, 1);
+    final ink = UnlitMaterial()..baseColorFactor = vm.Vector4(.12, .13, .09, 1);
+    final node = Node(
+      mesh: Mesh(CuboidGeometry(vm.Vector3(.42, .035, .56)), paper),
+    );
+    for (var i = 0; i < 5; i++) {
+      node.add(
+        Node(mesh: Mesh(CuboidGeometry(vm.Vector3(.29, .006, .016)), ink))
+          ..position = vm.Vector3(0, .021, -.17 + i * .07),
+      );
+    }
+    return node;
   }
 
   void _resetNodes() {
@@ -765,9 +783,27 @@ class HazardGameController extends ChangeNotifier {
     final s = state!;
     final d = director;
     if (d != null) {
+      final anchor = d.shot.anchorToPlayer
+          ? vm.Vector3(s.x, s.y, s.z)
+          : vm.Vector3.zero();
+      final target = d.shot.aim + anchor;
+      var position = d.shot.camera(d.progress) + anchor;
+      if (d.shot.anchorToPlayer) {
+        final offset = position - target;
+        final clearance = cameraCollisionDistance(
+          s,
+          target,
+          offset.normalized(),
+          offset.length,
+        );
+        position =
+            target +
+            offset.normalized() *
+                math.max(.01, math.min(offset.length, clearance - .02));
+      }
       return PerspectiveCamera(
-        position: d.shot.camera(d.progress),
-        target: d.shot.aim,
+        position: position,
+        target: target,
         fovRadiansY: d.shot.fov,
         fovNear: .07,
         fovFar: 85,
@@ -888,6 +924,8 @@ class HazardGameController extends ChangeNotifier {
     }
   }
 
+  String? _reactionIdentity;
+
   void _syncVoice() {
     if (!ready || disposed) return;
     final s = state!, d = director;
@@ -909,9 +947,39 @@ class HazardGameController extends ChangeNotifier {
         line.text,
       );
     }
+    if (cue == null &&
+        d == null &&
+        !dialogue &&
+        s.reaction != null &&
+        s.reactionTime > 0 &&
+        (s.running ||
+            s.phase == PlayPhase.companionDown ||
+            s.phase == PlayPhase.dead ||
+            s.phase == PlayPhase.paused ||
+            s.phase == PlayPhase.inventory ||
+            s.phase == PlayPhase.collection ||
+            s.phase == PlayPhase.mapView ||
+            s.phase == PlayPhase.settings)) {
+      final identity = 'reaction:$runEpoch:${s.zoneId}:${s.reactionSerial}';
+      if (_reactionIdentity != identity) {
+        _reactionIdentity = identity;
+        s.reactionTime = math.max(
+          s.reactionTime,
+          voiceCatalog.seconds(s.reaction!.speaker, s.reaction!.text) + .3,
+        );
+      }
+      cue = voiceCatalog.cue(identity, s.reaction!.speaker, s.reaction!.text);
+    }
     voice.sync(
       cue,
-      paused: !foreground || (d?.paused ?? false),
+      paused:
+          !foreground ||
+          (d?.paused ?? false) ||
+          (d == null &&
+              !dialogue &&
+              !s.running &&
+              s.phase != PlayPhase.companionDown &&
+              s.phase != PlayPhase.dead),
       volume: settings.muted ? 0 : settings.volume * settings.voiceVolume,
     );
     _syncSpeechFaces();
@@ -1055,6 +1123,17 @@ class HazardGameController extends ChangeNotifier {
         ..playbackTimeScale = 0;
     }
     player.node.position = vm.Vector3(s.x, s.y, s.z);
+    if (director?.id == 'ending') {
+      // Render-only gathering outside the house; restore normal placement on
+      // event exit. Never teleport campaign/checkpoint positions for a cut.
+      player.node.position = vm.Vector3(11.5, 0, 6);
+      npcs['yametaro']!.node
+        ..visible = true
+        ..position = vm.Vector3(14, 0, 7);
+      npcs['takosan']!.node
+        ..visible = true
+        ..position = vm.Vector3(16.2, 0, 7);
+    }
     // Dialogue uses a close shot of the speaker, beyond the player's shoulder.
     final closeCamera =
         director == null &&
@@ -1132,9 +1211,9 @@ class HazardGameController extends ChangeNotifier {
         );
       }
     }
-    final mugCamera =
-        director?.shot.camera(director!.progress) ??
-        vm.Vector3(s.x, s.y + 1, s.z);
+    final mugCamera = director != null
+        ? camera().position
+        : vm.Vector3(s.x, s.y + 1, s.z);
     var detailedMug = -1, nearestMugDistance = 4.0;
     for (var i = 0; i < s.enemies.length; i++) {
       final e = s.enemies[i];
@@ -1163,7 +1242,7 @@ class HazardGameController extends ChangeNotifier {
           !e.grabPending &&
           s.grapple?.enemyId != e.id &&
           e.releaseTime <= 0;
-      actor.node.visible = e.active && (!e.dropped);
+      actor.node.visible = e.active && !e.dropped && director?.id != 'ending';
       actor.node.position = vm.Vector3(e.x, e.y, e.z);
       actor.node.rotation = vm.Quaternion.axisAngle(
         vm.Vector3(0, 1, 0),
@@ -1309,6 +1388,14 @@ class HazardGameController extends ChangeNotifier {
       'yellow': 'YellowHerb',
       'key': 'Key',
     };
+    for (final m in s.localMemos) {
+      final n = pickupNodes.putIfAbsent('memo:${m.id}', () {
+        final node = _memoProp()..position = vm.Vector3(m.x, m.y + .06, m.z);
+        scene.add(node);
+        return node;
+      });
+      n.visible = !s.foundMemos.contains(m.id);
+    }
     for (final p in s.pickups) {
       final n = pickupNodes.putIfAbsent(p.id, () {
         final node = p.kind == 'beer'
@@ -1332,12 +1419,6 @@ class HazardGameController extends ChangeNotifier {
     }
     if (director != null) {
       final d = director!, shot = d.shot;
-      if (d.id == 'ending') {
-        player.node.position = vm.Vector3(14, 0, 16);
-        npcs['takosan']!.node
-          ..visible = true
-          ..position = vm.Vector3(17.7, 0, 17.5);
-      }
       final speaker = shot.actor == 'fukuchan' ? player : npcs[shot.actor];
       if (d.id == 'opening') {
         // Keep the same eyeline across reverse shots, including the listener.
@@ -1350,25 +1431,37 @@ class HazardGameController extends ChangeNotifier {
             math.atan2(delta.x, delta.z) + math.pi,
           );
         }
-      } else if (speaker != null) {
-        final eye = shot.camera(d.progress), p = speaker.node.position;
+      } else if (d.id == 'ending') {
+        final friend = npcs['yametaro']!, merchant = npcs['takosan']!;
+        for (final pair in [
+          (player, friend),
+          (friend, player),
+          (merchant, player),
+        ]) {
+          final delta = pair.$2.node.position - pair.$1.node.position;
+          pair.$1.node.rotation = vm.Quaternion.axisAngle(
+            vm.Vector3(0, 1, 0),
+            math.atan2(delta.x, delta.z) + math.pi,
+          );
+        }
+      } else if (speaker != null && d.id != 'last_order') {
+        final eye = camera().position, p = speaker.node.position;
         speaker.node.rotation = vm.Quaternion.axisAngle(
           vm.Vector3(0, 1, 0),
           math.atan2(eye.x - p.x, eye.z - p.z) + math.pi,
         );
       }
-      if (shot.actor == 'sobaya') {
+      if (d.id == 'last_order') {
         final i = s.enemies.indexWhere((e) => e.boss);
         if (i >= 0) {
-          final actor = enemies[i], eye = shot.camera(d.progress);
-          actor.node.rotation = vm.Quaternion.axisAngle(
-            vm.Vector3(0, 1, 0),
-            math.atan2(
-                  eye.x - actor.node.position.x,
-                  eye.z - actor.node.position.z,
-                ) +
-                math.pi,
-          );
+          final boss = enemies[i];
+          for (final pair in [(player, boss), (boss, player)]) {
+            final delta = pair.$2.node.position - pair.$1.node.position;
+            pair.$1.node.rotation = vm.Quaternion.axisAngle(
+              vm.Vector3(0, 1, 0),
+              math.atan2(delta.x, delta.z) + math.pi,
+            );
+          }
         }
       }
     }
