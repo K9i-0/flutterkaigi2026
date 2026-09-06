@@ -4,6 +4,44 @@
   "engine_revision": "8224dafb46d0aba89209a8f905f1cb7e3299d9c1",
   "clips": [
     {
+      "speaker": "やめ太郎",
+      "text": "弾二十五発、持っていき。農場までこれでしのぐんや。ビールを拾っとけば、向こうでたこさんが弾と交換してくれる。打ち上げの店はワイが予約するわ。絶対やで。",
+      "uses": [
+        "dialogue:yametaro:supplies:hard"
+      ],
+      "caption": "焦りを少し抑えて、友人へ道案内する。柔らかい関西イントネーションで、聞き取りやすく自然に話す。",
+      "seed": 7,
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "弾二十五発、持っていき。農場までこれでしのぐんや。ビールを拾っとけば、向こうでたこさんが弾と交換してくれる。打ち上げの店はワイが予約するわ。絶対やで。",
+      "id": "d18d36ac1f79cd02",
+      "asset": "audio/voice/d18d36ac1f79cd02.wav",
+      "seconds": 12.280041666666667,
+      "kind": "speech",
+      "sha256": "89ccf79ed803b6b3ef7c2fc2820ae8a99426461f0e58874c20990f85590e0655",
+      "raw_sha256": "4403a9fdad05d1a831beeb8e0ff7918f3785c442a2489c6c4be4b9a68837bda3"
+    },
+    {
+      "speaker": "そば屋",
+      "text": "そば屋ハザード。",
+      "uses": [
+        "event:title_call:0"
+      ],
+      "caption": "ゲームのタイトルコール。低く重厚に、そば屋ハザード、と一息ではっきり告げる。語尾は短く、乾いた威圧感。",
+      "seed": 42,
+      "reference": "02_CHARACTERS/Sobaya_voice.wav",
+      "reference_sha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "そば屋ハザード。",
+      "id": "2b3687b44fb1d838",
+      "asset": "audio/voice/2b3687b44fb1d838.wav",
+      "seconds": 1.3815833333333334,
+      "kind": "speech",
+      "sha256": "9f318212280dcd2d8dcf467a703168c26d84333d74ed16f35a7ef9f6f352a14b",
+      "raw_sha256": "c5a0a35e4e7feda62e6ef53cda742e0165ce9a50256beea52f9a6906b07b6b64"
+    },
+    {
       "speaker": "ナレーション",
       "text": "アクシデンチュアからの辞令。赴任先は、廃村ゆめみ村。\n福ちゃんを降ろすと、船はすぐに岸を離れた。迎えに立っていたのは、やめ太郎だった。",
       "uses": [

@@ -1,0 +1,21 @@
+{
+  "model": "openai/whisper-small",
+  "device": "cpu",
+  "note": "Automated transcript screening; not human listening or identity verification.",
+  "clips": [
+    {
+      "id": "d18d36ac1f79cd02",
+      "speaker": "やめ太郎",
+      "expected": "弾二十五発、持っていき。農場までこれでしのぐんや。ビールを拾っとけば、向こうでたこさんが弾と交換してくれる。打ち上げの店はワイが予約するわ。絶対やで。",
+      "recognized": "たまにじゅうごはつもっていき 農場までこれでしのぐんやビールをひろっとけば向こうでたこさんがたまと交換してくれる うちあげのみせはわいが予約するわ絶対やで",
+      "sha256": "89ccf79ed803b6b3ef7c2fc2820ae8a99426461f0e58874c20990f85590e0655"
+    },
+    {
+      "id": "2b3687b44fb1d838",
+      "speaker": "そば屋",
+      "expected": "そば屋ハザード。",
+      "recognized": "そばやハザード",
+      "sha256": "9f318212280dcd2d8dcf467a703168c26d84333d74ed16f35a7ef9f6f352a14b"
+    }
+  ]
+}

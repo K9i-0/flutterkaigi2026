@@ -80,6 +80,9 @@ class EventCut {
 }
 
 const hazardEvents = <String, List<EventShot>>{
+  'title_call': [
+    EventShot(2.5, 'そば屋', 'そば屋ハザード。', (0, 3, -24), (0, 3, -24), (0, 1, -15)),
+  ],
   'opening': [
     EventShot(
       5,
@@ -397,9 +400,9 @@ const hazardEvents = <String, List<EventShot>>{
       4,
       "",
       "CHAPTER 03 — 巨大そば屋\n山道の先、廃屋の前に巨大なそば屋がいる。あいつを倒せば、そば屋エンジンは止まる。",
-      (8.3, 1.7, 1.7),
-      (8.7, 1.65, 1.9),
-      (12, 1.45, 4),
+      (5.0, 2.5, -.5),
+      (5.7, 2.6, 0),
+      (12, 3.5, 4),
       actor: 'sobaya',
       motion: 'MugAttack',
       fov: .66,
@@ -419,9 +422,9 @@ const hazardEvents = <String, List<EventShot>>{
       5,
       "そば屋",
       "ビール……最後の一杯だ。乾杯！",
-      (8.7, 1.65, 1.9),
-      (8.9, 1.62, 2.05),
-      (12, 1.45, 4),
+      (5.7, 2.6, 0),
+      (6.3, 2.7, .5),
+      (12, 3.5, 4),
       actor: 'sobaya',
       motion: 'MugAttack',
       fov: .66,
@@ -440,7 +443,7 @@ const hazardEvents = <String, List<EventShot>>{
         EventCut(0),
         EventCut(
           .62,
-          framing: EventShot(1, '', '', (8.3, 1.7, 1.7), (8.7, 1.65, 1.9), (
+          framing: EventShot(1, '', '', (5.0, 2.5, -.5), (5.7, 2.6, 0), (
             12,
             1.45,
             4,

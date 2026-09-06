@@ -555,6 +555,15 @@ class HazardGameController extends ChangeNotifier {
 
   void _finishEvent() {
     final id = director!.id;
+    if (id == 'title_call') {
+      director = null;
+      state!
+        ..stopInput()
+        ..phase = PlayPhase.playing;
+      if (_openingAfterTitle) startEvent('opening');
+      _openingAfterTitle = false;
+      return;
+    }
     state!.seenEvents.add(id);
     state!
       ..stopInput()
@@ -743,10 +752,13 @@ class HazardGameController extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool _openingAfterTitle = false;
+
   void startRun() {
     restart();
     unawaited(saveCheckpoint());
-    startEvent('opening');
+    _openingAfterTitle = true;
+    startEvent('title_call');
   }
 
   Future<void> saveCheckpoint({bool announce = false}) {
@@ -789,6 +801,7 @@ class HazardGameController extends ChangeNotifier {
   }
 
   void continueRun() {
+    final fromTitle = state?.phase == PlayPhase.title;
     if (_checkpointJson == null) return;
     try {
       campaign = HazardCampaign.restore(
@@ -802,9 +815,28 @@ class HazardGameController extends ChangeNotifier {
       _mountRegion();
       player.setMotion('Idle');
       saveStatus = '';
+      if (fromTitle) {
+        _openingAfterTitle = false;
+        state!.seenEvents.remove('title_call');
+        startEvent('title_call');
+      }
     } catch (_) {
       saveStatus = '保存データを復元できませんでした。';
     }
+    notifyListeners();
+  }
+
+  Future<void> returnToTitle() async {
+    if (state?.phase != PlayPhase.paused || saving) return;
+    state!.stopInput();
+    await saveCheckpoint();
+    if (disposed || saveStatus.startsWith('保存に失敗')) return;
+    director = null;
+    posePreview = false;
+    state!
+      ..reaction = null
+      ..phase = PlayPhase.title;
+    _syncVoice();
     notifyListeners();
   }
 
@@ -919,10 +951,7 @@ class HazardGameController extends ChangeNotifier {
     final e = s.enemies.where((e) => e.id == s.rocketLockId).firstOrNull;
     rocketLockScreen = e == null
         ? null
-        : c.worldToScreen(
-            vm.Vector3(e.x, e.y + (e.boss ? 1.35 : 1), e.z),
-            viewport,
-          );
+        : c.worldToScreen(vm.Vector3(e.x, e.y + e.targetHeight, e.z), viewport);
   }
 
   void fire() {
@@ -1341,7 +1370,7 @@ class HazardGameController extends ChangeNotifier {
         e.heading + math.pi,
       );
       final scale = e.alive ? 1.0 : math.max(.001, 1 - e.vanish / .65);
-      actor.node.scale = vm.Vector3.all(scale * (e.boss ? 1.2 : 1));
+      actor.node.scale = vm.Vector3.all(scale * e.modelScale);
       final bossMelee =
           e.boss &&
           (e.bossMove == BossMove.swipeWindup ||
@@ -1385,7 +1414,10 @@ class HazardGameController extends ChangeNotifier {
             ? (e.climb!.up ? 1 : -1) * 1.4 / 1.007474632
             : e.attackPending
             ? (e.boss
-                  ? 1.05 / (e.bossMove == BossMove.slamWindup ? 1.25 : .85)
+                  ? 1.05 /
+                        (e.bossMove == BossMove.slamWindup
+                            ? Enemy.bossSlamWindup
+                            : Enemy.bossSwipeWindup)
                   : 1.5)
             : e.moved > .0001 && dt > 0
             ? (e.moved /
@@ -1393,7 +1425,7 @@ class HazardGameController extends ChangeNotifier {
                       ((e.bossMove == BossMove.charging || e.runningApproach)
                           ? 2.381708109
                           : 1.007474632) /
-                      (e.boss ? 1.2 : 1))
+                      e.modelScale)
                   .clamp(.1, 3)
             : 1,
       );
@@ -1436,7 +1468,9 @@ class HazardGameController extends ChangeNotifier {
           ..seek(e.meleeClipTime!)
           ..playbackTimeScale = 0;
       } else if (director == null && bossMelee) {
-        final attackSeconds = e.bossAttack == BossMove.slamWindup ? 1.25 : .85;
+        final attackSeconds = e.bossAttack == BossMove.slamWindup
+            ? Enemy.bossSlamWindup
+            : Enemy.bossSwipeWindup;
         final time = e.bossMove == BossMove.recovery
             ? .77 + (e.bossRecoveryDuration - e.bossTimer) * .8
             : .77 * (1 - e.bossTimer / attackSeconds);
@@ -1457,7 +1491,7 @@ class HazardGameController extends ChangeNotifier {
       e.headCentre = head == null
           ? null
           : head.globalTransform.getTranslation() +
-                vm.Vector3(0, .10 * (e.boss ? 1.2 : 1), 0);
+                vm.Vector3(0, .10 * e.modelScale, 0);
       e.mugCentre = enemyMugs[i].visible
           ? enemyMugs[i].globalTransform.transformed3(vm.Vector3(0, .11, 0))
           : null;

@@ -179,6 +179,9 @@ void attachGameAutomation(HazardGameController game) {
                             .getTranslation())
                     .length,
             ],
+            'npcVisibility': _game!.npcs.map(
+              (id, actor) => MapEntry(id, actor.node.visible),
+            ),
             'npcMotions': _game!.npcs.map(
               (id, actor) => MapEntry(id, actor.current),
             ),
@@ -243,6 +246,7 @@ void attachGameAutomation(HazardGameController game) {
       g.restart();
       if ([
         'merchant',
+        'secretMerchant',
         'rocketBoss',
         'companionTakosan',
         'farm',
@@ -358,8 +362,8 @@ void attachGameAutomation(HazardGameController game) {
           s.kills = 1;
         case 'secretMerchant':
           s.beers = int.tryParse(p['beers'] ?? '10') ?? 10;
-          s.x = 4;
-          s.z = -22.8;
+          s.x = -13;
+          s.z = -19.4;
           s.yaw = 3.141592653589793;
           s.pitch = .12;
         case 'rocketCombat':
@@ -383,7 +387,7 @@ void attachGameAutomation(HazardGameController game) {
           s.x = 6;
           s.z = 4;
           s.yaw = -1.5707963267948966;
-          s.pitch = 0;
+          s.pitch = -.27;
           s.aiming = true;
           s.enemies.firstWhere((e) => e.boss)
             ..active = true

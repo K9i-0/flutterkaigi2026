@@ -32,7 +32,7 @@ extension HazardRocketCombat on HazardGameState {
     final muzzle = rocketMuzzle ?? vm.Vector3(x, y + 1.25, z);
     var best = double.infinity;
     for (final e in enemies.where((e) => e.alive && e.active)) {
-      final point = vm.Vector3(e.x, e.y + (e.boss ? 1.35 : 1), e.z);
+      final point = vm.Vector3(e.x, e.y + e.targetHeight, e.z);
       final to = point - eye, depth = to.dot(f);
       if (depth <= .1 || to.length > 60) continue;
       final sx = to.dot(right) / (depth * tanX);
@@ -63,8 +63,7 @@ extension HazardRocketCombat on HazardGameState {
     }
     final start = (rocketMuzzle ?? vm.Vector3(x, y + 1.25, z)).clone();
     final direction =
-        (vm.Vector3(target.x, target.y + (target.boss ? 1.35 : 1), target.z) -
-                start)
+        (vm.Vector3(target.x, target.y + target.targetHeight, target.z) - start)
             .normalized();
     if (wallDistance(start, direction, .6) < .6) return;
     rockets.add(HazardRocket(target.id, start, direction));
@@ -87,7 +86,7 @@ extension HazardRocketCombat on HazardGameState {
           .firstOrNull;
       final goal = target == null
           ? null
-          : vm.Vector3(target.x, target.y + (target.boss ? 1.35 : 1), target.z);
+          : vm.Vector3(target.x, target.y + target.targetHeight, target.z);
       final to = goal == null ? null : goal - r.position;
       // A bounded flight speed and swept segment avoid frame-dependent tunnelling.
       if (to != null && to.length > .001) r.direction = to.normalized();

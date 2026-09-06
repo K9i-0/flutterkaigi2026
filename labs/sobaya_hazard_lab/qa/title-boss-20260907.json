@@ -1,0 +1,197 @@
+{
+  "date": "2026-09-07",
+  "logo": {
+    "tool": "built-in image_gen",
+    "asset": "04_GAME_ASSETS/3d/ui/hazard/sobaya-hazard-logo-v1.png",
+    "size": [
+      2048,
+      768
+    ],
+    "alpha": "RGBA preserved from generated original"
+  },
+  "newGameTitleCall": {
+    "phase": "cinematic",
+    "event": {
+      "id": "title_call",
+      "shot": 0,
+      "elapsed": 0,
+      "duration": 2.5,
+      "visual": {
+        "image": null,
+        "document": null,
+        "progress": 0
+      },
+      "paused": false
+    },
+    "voice": {
+      "requested": "event:1:title_call:0",
+      "active": "event:1:title_call:0",
+      "playbackSeconds": 0.003234,
+      "loading": false,
+      "speaking": true,
+      "finished": false,
+      "paused": false,
+      "volume": 1,
+      "errors": [],
+      "backend": {
+        "state": "playing",
+        "positionMs": 0,
+        "durationMs": 1381,
+        "loop": false,
+        "loopCompletions": 0,
+        "playbackRequested": true,
+        "positionUpdateMs": 200
+      }
+    },
+    "npcVisibility": {
+      "yametaro": true,
+      "takosan": false
+    }
+  },
+  "openingCast": {
+    "event": {
+      "id": "opening",
+      "shot": 1,
+      "elapsed": 0.7166650000000001,
+      "duration": 8.180041666666668,
+      "visual": {
+        "image": null,
+        "document": null,
+        "progress": 0.08761141192231091
+      },
+      "paused": false
+    },
+    "npcVisibility": {
+      "yametaro": true,
+      "takosan": false
+    }
+  },
+  "pauseReturn": {
+    "phase": "title",
+    "position": {
+      "x": 0,
+      "y": 0,
+      "z": -21
+    },
+    "beers": 0
+  },
+  "continueTitleCall": {
+    "event": {
+      "id": "title_call",
+      "shot": 0,
+      "elapsed": 0.16666600000000006,
+      "duration": 2.5,
+      "visual": {
+        "image": null,
+        "document": null,
+        "progress": 0.06666640000000003
+      },
+      "paused": false
+    },
+    "voice": "event:1:title_call:0"
+  },
+  "continuedState": {
+    "phase": "playing",
+    "position": {
+      "x": 0,
+      "y": 0,
+      "z": -21
+    },
+    "loaded": 6,
+    "reserve": 8
+  },
+  "giant": {
+    "zone": "mountain",
+    "boss": {
+      "id": 4,
+      "alive": true,
+      "active": true,
+      "dropped": false,
+      "hp": 900,
+      "maxHp": 900,
+      "modelScale": 3,
+      "suppressBeer": false,
+      "headCentre": [
+        6.2136311531066895,
+        5.0603861808776855,
+        4.015847206115723
+      ],
+      "mugCentre": [
+        5.527034759521484,
+        3.2795090675354004,
+        5.817906856536865
+      ],
+      "alerted": true,
+      "stun": 0,
+      "attackPending": true,
+      "companionTarget": null,
+      "grabPending": false,
+      "grabCooldown": 0,
+      "releaseTime": 0,
+      "climb": null,
+      "vault": null,
+      "fallingFromLadder": false,
+      "meleeRecovery": 0,
+      "meleeClipTime": 0,
+      "approach": "pursue",
+      "bossMove": "swipeWindup",
+      "bossTimer": 0.9500000000000005,
+      "bossCue": "ジョッキの一撃 — 距離を取れ",
+      "x": 6.2366839999999915,
+      "y": 0,
+      "z": 4
+    },
+    "rocketLock": null
+  },
+  "giantRocketDamage": [
+    {
+      "shots": 0,
+      "hp": 900,
+      "phase": "playing",
+      "rockets": 0
+    },
+    {
+      "shots": 1,
+      "hp": 600,
+      "phase": "playing",
+      "rockets": 0
+    },
+    {
+      "shots": 2,
+      "hp": 300,
+      "phase": "playing",
+      "rockets": 0
+    },
+    {
+      "shots": 3,
+      "hp": 0,
+      "phase": "playing",
+      "rockets": 0
+    }
+  ],
+  "farmCast": {
+    "zone": "farm",
+    "event": {
+      "id": "farm",
+      "shot": 0,
+      "elapsed": 0.4416659999999998,
+      "duration": 14.402208333333334,
+      "visual": {
+        "image": "",
+        "document": "",
+        "progress": 0.0613330941724793
+      },
+      "paused": false
+    },
+    "npcVisibility": {
+      "yametaro": false,
+      "takosan": true
+    }
+  },
+  "tests": {
+    "passed": 156,
+    "analyze": "No issues found"
+  },
+  "limits": "Boss damage-count debug scenario gives temporary stun/invulnerability. Ordinary movement and attack telegraphs are covered by gameplay tests. Voice was checked through native playback telemetry and local ASR, not a human listening review.",
+  "originalProgressCollectionAndSettingsRestored": true
+}

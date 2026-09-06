@@ -113,7 +113,7 @@ void main() {
           s.inputY = 1;
           s.sprint = true;
         }
-        advance(s, 1.3);
+        advance(s, Enemy.bossSlamWindup + .05);
         expect(s.health, 100);
         expect(boss(s).bossMove, BossMove.recovery);
       }

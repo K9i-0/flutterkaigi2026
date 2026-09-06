@@ -61,7 +61,7 @@ void flight(HazardGameState s, [double seconds = 1]) {
 
 void main() {
   test('secret offer checks beer at conversation entry; successful exchange persists and cannot repeat', () {
-    final s = state()..beers = 9;
+    final s = state(id: 'farm')..beers = 9;
     shop(s);
     expect(s.visibleTradeOffers, isNot(contains(rocketOffer)));
     s.beers = 10;
@@ -79,7 +79,7 @@ void main() {
     s.endDialogue();
     final r = restoreHazardCheckpoint(
       jsonDecode(jsonEncode(s.checkpoint())),
-      world(),
+      world('farm'),
       {},
     );
     expect(r.hasRocket, true);
@@ -87,7 +87,7 @@ void main() {
     expect(r.tradePurchases['rocket'], 1);
   });
   test('full case does not charge for secret item', () {
-    final s = state()..beers = 10;
+    final s = state(id: 'farm')..beers = 10;
     while (s.addItem('green', 1)) {}
     shop(s);
     s.buySupplies('rocket');
@@ -210,7 +210,8 @@ void main() {
       free ~/ cost,
       1,
     ); // One beer cannot buy the two-beer ammunition pack.
-    expect((free + 10) ~/ cost, lessThan(s.enemies.length));
+    expect((free + 25) ~/ cost, greaterThanOrEqualTo(s.enemies.length));
+    expect((free + 25) ~/ cost, lessThan(19));
     for (final c in s.crates) {
       s.breakCrate(c);
     }
@@ -220,7 +221,7 @@ void main() {
     );
     // All 19 ordinary enemies + nine boss headshots: available earned beer
     // funds the ammo deficit and 10 shells, without a rocket or medallions.
-    const ordinary = 19, loose = 3, yame = 10, initial = 2;
+    const ordinary = 19, loose = 3, yame = 25, initial = 2;
     final purchases = ((ordinary * cost - loose - yame - initial) / 10).ceil();
     expect(purchases * 2 + 2 * 3, lessThanOrEqualTo(ordinary));
   });
@@ -279,7 +280,7 @@ void main() {
     expect(c.state.difficulty, HazardDifficulty.tense);
   });
   test('hard ammunition exchange can replenish beyond old global stock cap and restore', () {
-    final s = state(hard: true)..beers = 30;
+    final s = state(hard: true, id: 'farm')..beers = 30;
     shop(s);
     for (var i = 0; i < 5; i++) {
       s.buySupplies('ammo');
@@ -287,7 +288,7 @@ void main() {
     expect(s.tradePurchases['ammo'], 5);
     expect(s.beers, 20);
     s.endDialogue();
-    final r = restoreHazardCheckpoint(s.checkpoint(), world(), {});
+    final r = restoreHazardCheckpoint(s.checkpoint(), world('farm'), {});
     expect(r.tradePurchases['ammo'], 5);
   });
 }
