@@ -98,14 +98,35 @@
       "source": "authored paired upper-body IK; shared hold clock"
     }
   ],
+  "head_assembly": {
+    "source_sha256": "b96c58a488638f204011f8b4f793622380aa6d74a11628608553554170936538",
+    "source_task": "5b707218-e8be-48ef-a9c4-e9c95d962d17",
+    "height_range": [
+      1.375,
+      1.7
+    ],
+    "body_skin_removal_floor": 1.375,
+    "head_triangles": 11525,
+    "speech_shapes": {
+      "targets": [
+        "SpeechOpen",
+        "SpeechNarrow"
+      ],
+      "affectedVertices": 815,
+      "mouthHeight": 1.494,
+      "maximumJawDisplacement": 0.009,
+      "source": "authored split lip seam, inward oral lining and eight static upper teeth; not a phoneme rig"
+    },
+    "source": "P2 separate head; existing body skeleton and animations preserved"
+  },
   "speech_shapes": {
     "targets": [
       "SpeechOpen",
       "SpeechNarrow"
     ],
-    "affectedVertices": 1316,
-    "maximumJawDisplacement": 0.0075,
-    "mouthHeight": 1.507,
-    "source": "authored localized surface deformation; neutral likeness unchanged"
+    "affectedVertices": 815,
+    "mouthHeight": 1.494,
+    "maximumJawDisplacement": 0.009,
+    "source": "authored split lip seam, inward oral lining and eight static upper teeth; not a phoneme rig"
   }
 }
