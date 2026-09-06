@@ -12,8 +12,10 @@ class EventShot {
     this.target, {
     this.actor = '',
     this.motion = 'Idle',
+    this.fov = .78,
   });
   final double seconds;
+  final double fov;
   final String speaker, text, actor, motion;
   final (double, double, double) from, to, target;
   vm.Vector3 camera(double t) {
@@ -42,30 +44,33 @@ const hazardEvents = <String, List<EventShot>>{
       7,
       'やめ太郎',
       '福ちゃん！ 広場がそば屋だらけなんだ。\n全員、乾杯する気満々でさ。',
-      (-3.8, 1.5, -23.5),
-      (-3.4, 1.4, -23.1),
-      (-2.8, .95, -21.2),
+      (-.65, 1.3, -19.4),
+      (-.85, 1.25, -19.55),
+      (-2.8, .94, -21.2),
       actor: 'yametaro',
       motion: 'Talk',
+      fov: .64,
     ),
     EventShot(
       5,
       '福ちゃん',
       '乾杯にしては、ジョッキの振りが大きすぎるだろ。',
-      (.8, 1.6, -18.8),
-      (.5, 1.5, -19.2),
-      (0, 1.25, -21),
+      (-1.85, 1.58, -19.05),
+      (-1.7, 1.55, -19.2),
+      (0, 1.34, -21),
       actor: 'fukuchan',
+      fov: .58,
     ),
     EventShot(
       6,
       'やめ太郎',
       '北の納屋に門の鍵がある。農場へ抜けよう。\n壁の記録も、できるだけ回収しておいて。',
-      (-2.9, 1.5, -23.6),
-      (-2.6, 1.4, -23.2),
-      (-2.8, .95, -21.2),
+      (-.85, 1.25, -19.55),
+      (-.98, 1.23, -19.65),
+      (-2.8, .94, -21.2),
       actor: 'yametaro',
       motion: 'Talk',
+      fov: .64,
     ),
   ],
   'farm': [

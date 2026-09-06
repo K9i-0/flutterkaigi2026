@@ -34,6 +34,7 @@ Marionette `call_custom_extension` の引数:
 | --- | --- |
 | 接続先・前面状態・検査実行中の確認 | `madogiwa.debugSession` |
 | 再現条件へ移動 | `madogiwa.openGameScenario` |
+| 会話の構図を静止して確認 | `madogiwa.gameAction` の `action=eventFrame`、`shot`、`progress=0..1` |
 | 状態・音声・口・モーションの診断 | `madogiwa.inspectHazardGame`（`voice` / `speechFaces` など） |
 | 会話の回帰確認 | `madogiwa.runGameProbe` |
 | 長い通し経路の自動確認 | `madogiwa.auditCampaign` |
@@ -45,3 +46,5 @@ Dartコード変更後はDTDへ接続してhot reloadする。extension登録の
 終了にはDart MCP `stop_app` と記録した起動PIDを使う。ネイティブ子プロセスが残る場合があるため、同じパスの古いウィンドウに接続し続けないよう `debugSession.pid` と照合する。追加終了が必要な場合も、所有する対象PIDとコマンドを確認してから行い、他のFlutterアプリを一括終了しない。
 
 生ログ・画像はGit対象外の `evidence/`、軽量な採用検証記録は `qa/` に保存する。
+
+会話の構図確認は `openGameScenario name=introEvent`（または `farmEvent` / `bossEvent` / `endingEvent`）のあと、`gameAction action=eventFrame shot=2 progress=0.5` のように呼ぶ。音声と連続描画を止め、指定カットのカメラ位置と人物の向きを描画する。背景表示でも静止画は取得できるが、これは発話・実時間モーションの検証には使わない。画面の「再開」から通常の再生へ戻れる。

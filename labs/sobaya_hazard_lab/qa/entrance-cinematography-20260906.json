@@ -1,0 +1,57 @@
+{
+  "date": "2026-09-06",
+  "baseRevision": "5bbfe20",
+  "assets": {
+    "before": {
+      "bytes": 21598976,
+      "sha256": "742c8566c0811fbba22f384cb58daf7a20894cf1cc26a97b52703d7129a94307",
+      "triangles": 16204,
+      "meshes": 46,
+      "primitives": 110,
+      "materials": 20,
+      "images": 12
+    },
+    "after": {
+      "bytes": 21701432,
+      "sha256": "cf8025d37bc3e5ea5b25bd6a2486ddb3a139fddcf54f94569214283a58d8376a",
+      "triangles": 17428,
+      "meshes": 76,
+      "primitives": 141,
+      "materials": 20,
+      "images": 12
+    },
+    "unchangedLayout": true
+  },
+  "sourceSha256": {
+    "lib/game/game_events.dart": "b4e66ee30e558c00a49cefe4ac635867d896ee1164807d7b40361c75b4c768a1",
+    "lib/game/game_controller.dart": "83b447dcd3d0167b45d85de6bd803b3568b398146cce0c270d5086e4a58c3b8f",
+    "lib/game/game_benchmark.dart": "3f8bb0fd4dcf22b7101fbad8448003e98271d9141f407ce2733626a390598739",
+    "lib/game/game_automation.dart": "2d21e02b35ba761e330cd3780da1cc4b3deb105e9de37c23d2de3da0808be107",
+    "lib/game/game_page.dart": "c94126d6d70471260f5917a95ee9f2968b163c16e1a830713bfcb44252429617"
+  },
+  "checks": {
+    "analyze": "No issues found",
+    "tests": 100,
+    "conversationProbe": {
+      "success": true,
+      "durationMs": 2674,
+      "snapshots": 17,
+      "evidence": "evidence/entrance-conversation-probe.json"
+    },
+    "staticScreenshots": [
+      "evidence/entrance-fukuchan.png",
+      "evidence/entrance-yametaro.png"
+    ],
+    "profile": "benchmarks/game-entrance-20260906.json"
+  },
+  "visualFindings": [
+    "South-facing Fukuchan shot shows a wooded approach instead of a rectangular ground edge against empty sky.",
+    "Opening actors face each other across reverse shots; camera stays on the same side of their conversation axis.",
+    "Both closeups reviewed in Flutter Scene; camera preview is static and separately validated with native audio/morph playback."
+  ],
+  "limitations": [
+    "No new Mac ZIP; adf5ea4 preview remains older than these changes.",
+    "First-time 15–25 minute experience, long-term stability and final release UI remain unverified.",
+    "Other event scenes still have their previous framing and facing behavior."
+  ]
+}

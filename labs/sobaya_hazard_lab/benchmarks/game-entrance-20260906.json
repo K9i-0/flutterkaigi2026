@@ -1,0 +1,1127 @@
+{
+  "date": "2026-09-06",
+  "baseRevision": "5bbfe20",
+  "changes": "South entrance backdrop, opening reverse-shot composition and stable eyelines; benchmark places opening actors at their actual spawn and starts shot 1",
+  "command": "flutter run -d macos --profile -t lib/game_main.dart --dart-define=LAB_BENCHMARK=true",
+  "environment": {
+    "flutter": "3.47.2",
+    "platform": "macOS",
+    "chip": "Apple M4",
+    "viewport": [
+      1280,
+      840
+    ],
+    "devicePixelRatio": 2,
+    "otherApps": "iOS Simulator PID 70755 observed running; not an isolated-machine measurement"
+  },
+  "log": "21_SOBAYA_HAZARD_LAB/evidence/entrance-profile.log",
+  "results": [
+    {
+      "case": "village-four",
+      "settings": {
+        "difficulty": "standard",
+        "volume": 1,
+        "voiceVolume": 1,
+        "environmentVolume": 1,
+        "sensitivity": 1,
+        "renderScale": 0.85,
+        "muted": false
+      },
+      "audio": {
+        "observedAmbience": true,
+        "observedSpeech": false,
+        "voice": {
+          "requested": null,
+          "active": null,
+          "playbackSeconds": null,
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": false,
+          "volume": 1,
+          "errors": []
+        },
+        "soundscape": {
+          "intensity": 0.999985175255641,
+          "duck": 1,
+          "ambience": {
+            "requested": "village",
+            "active": "village",
+            "playbackSeconds": 7.6359189999999995,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 0.36,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 7481,
+              "durationMs": 16000,
+              "loop": true,
+              "loopCompletions": 0,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          },
+          "tension": {
+            "requested": "tension",
+            "active": "tension",
+            "playbackSeconds": 7.624925999999999,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 0.28,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 7470,
+              "durationMs": 16000,
+              "loop": true,
+              "loopCompletions": 0,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          }
+        }
+      },
+      "region": "village",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "speechMorphTicks": {},
+      "eventShot": null,
+      "windowMotionTicks": 0,
+      "completedWindowPassages": 0,
+      "interrupted": false,
+      "foreground": true,
+      "gamePhase": "playing",
+      "simulatedSeconds": 7.783448999999991,
+      "renderScale": 0.85,
+      "viewport": [
+        1280,
+        840
+      ],
+      "devicePixelRatio": 2,
+      "elapsedMs": 8003,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 5.401,
+      "rasterP95Ms": 0.541,
+      "uiMaxMs": 9.777,
+      "rasterMaxMs": 9.165,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0
+    },
+    {
+      "case": "village-eight",
+      "settings": {
+        "difficulty": "standard",
+        "volume": 1,
+        "voiceVolume": 1,
+        "environmentVolume": 1,
+        "sensitivity": 1,
+        "renderScale": 0.85,
+        "muted": false
+      },
+      "audio": {
+        "observedAmbience": true,
+        "observedSpeech": false,
+        "voice": {
+          "requested": null,
+          "active": null,
+          "playbackSeconds": null,
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": false,
+          "volume": 1,
+          "errors": []
+        },
+        "soundscape": {
+          "intensity": 0.9999999998387326,
+          "duck": 1,
+          "ambience": {
+            "requested": "village",
+            "active": "village",
+            "playbackSeconds": 15.636464,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 0.36,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 15481,
+              "durationMs": 16000,
+              "loop": true,
+              "loopCompletions": 0,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          },
+          "tension": {
+            "requested": "tension",
+            "active": "tension",
+            "playbackSeconds": 15.625472,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 0.28,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 15470,
+              "durationMs": 16000,
+              "loop": true,
+              "loopCompletions": 0,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          }
+        }
+      },
+      "region": "village",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "speechMorphTicks": {},
+      "eventShot": null,
+      "windowMotionTicks": 0,
+      "completedWindowPassages": 0,
+      "interrupted": false,
+      "foreground": true,
+      "gamePhase": "playing",
+      "simulatedSeconds": 8.000119999999992,
+      "renderScale": 0.85,
+      "viewport": [
+        1280,
+        840
+      ],
+      "devicePixelRatio": 2,
+      "elapsedMs": 8000,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 5.206,
+      "rasterP95Ms": 0.462,
+      "uiMaxMs": 8.702,
+      "rasterMaxMs": 2.435,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0
+    },
+    {
+      "case": "village-eight-no-contact",
+      "settings": {
+        "difficulty": "standard",
+        "volume": 1,
+        "voiceVolume": 1,
+        "environmentVolume": 1,
+        "sensitivity": 1,
+        "renderScale": 0.85,
+        "muted": false
+      },
+      "audio": {
+        "observedAmbience": true,
+        "observedSpeech": false,
+        "voice": {
+          "requested": null,
+          "active": null,
+          "playbackSeconds": null,
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": false,
+          "volume": 1,
+          "errors": []
+        },
+        "soundscape": {
+          "intensity": 0.9999999999999977,
+          "duck": 1,
+          "ambience": {
+            "requested": "village",
+            "active": "village",
+            "playbackSeconds": null,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 0.36,
+            "errors": [],
+            "backend": {
+              "state": "completed",
+              "positionMs": 7879,
+              "durationMs": 16000,
+              "loop": true,
+              "loopCompletions": 1,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          },
+          "tension": {
+            "requested": "tension",
+            "active": "tension",
+            "playbackSeconds": null,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 0.28,
+            "errors": [],
+            "backend": {
+              "state": "completed",
+              "positionMs": 7868,
+              "durationMs": 16000,
+              "loop": true,
+              "loopCompletions": 1,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          }
+        }
+      },
+      "region": "village",
+      "contactShadows": false,
+      "profile": true,
+      "valid": true,
+      "speechMorphTicks": {},
+      "eventShot": null,
+      "windowMotionTicks": 0,
+      "completedWindowPassages": 0,
+      "interrupted": false,
+      "foreground": true,
+      "gamePhase": "playing",
+      "simulatedSeconds": 8.500127999999993,
+      "renderScale": 0.85,
+      "viewport": [
+        1280,
+        840
+      ],
+      "devicePixelRatio": 2,
+      "elapsedMs": 8498,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 5.362,
+      "rasterP95Ms": 0.452,
+      "uiMaxMs": 8.476,
+      "rasterMaxMs": 3.279,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0
+    },
+    {
+      "case": "village-eight-full",
+      "settings": {
+        "difficulty": "standard",
+        "volume": 1,
+        "voiceVolume": 1,
+        "environmentVolume": 1,
+        "sensitivity": 1,
+        "renderScale": 0.85,
+        "muted": false
+      },
+      "audio": {
+        "observedAmbience": true,
+        "observedSpeech": false,
+        "voice": {
+          "requested": null,
+          "active": null,
+          "playbackSeconds": null,
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": false,
+          "volume": 1,
+          "errors": []
+        },
+        "soundscape": {
+          "intensity": 0.9999999999999977,
+          "duck": 1,
+          "ambience": {
+            "requested": "village",
+            "active": "village",
+            "playbackSeconds": null,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 0.36,
+            "errors": [],
+            "backend": {
+              "state": "completed",
+              "positionMs": 15878,
+              "durationMs": 16000,
+              "loop": true,
+              "loopCompletions": 1,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          },
+          "tension": {
+            "requested": "tension",
+            "active": "tension",
+            "playbackSeconds": null,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 0.28,
+            "errors": [],
+            "backend": {
+              "state": "completed",
+              "positionMs": 15867,
+              "durationMs": 16000,
+              "loop": true,
+              "loopCompletions": 1,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          }
+        }
+      },
+      "region": "village",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "speechMorphTicks": {},
+      "eventShot": null,
+      "windowMotionTicks": 0,
+      "completedWindowPassages": 0,
+      "interrupted": false,
+      "foreground": true,
+      "gamePhase": "playing",
+      "simulatedSeconds": 8.000119999999992,
+      "renderScale": 1,
+      "viewport": [
+        1280,
+        840
+      ],
+      "devicePixelRatio": 2,
+      "elapsedMs": 8000,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 5.273,
+      "rasterP95Ms": 0.522,
+      "uiMaxMs": 9.724,
+      "rasterMaxMs": 2.907,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0
+    },
+    {
+      "case": "farm-six",
+      "settings": {
+        "difficulty": "standard",
+        "volume": 1,
+        "voiceVolume": 1,
+        "environmentVolume": 1,
+        "sensitivity": 1,
+        "renderScale": 0.85,
+        "muted": false
+      },
+      "audio": {
+        "observedAmbience": true,
+        "observedSpeech": false,
+        "voice": {
+          "requested": null,
+          "active": null,
+          "playbackSeconds": null,
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": false,
+          "volume": 1,
+          "errors": []
+        },
+        "soundscape": {
+          "intensity": 0.9999999999999977,
+          "duck": 1,
+          "ambience": {
+            "requested": "farm",
+            "active": "farm",
+            "playbackSeconds": 8.328315,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 0.36,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 8321,
+              "durationMs": 16000,
+              "loop": true,
+              "loopCompletions": 0,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          },
+          "tension": {
+            "requested": "tension",
+            "active": "tension",
+            "playbackSeconds": null,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 0.28,
+            "errors": [],
+            "backend": {
+              "state": "completed",
+              "positionMs": 8076,
+              "durationMs": 16000,
+              "loop": true,
+              "loopCompletions": 2,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          }
+        }
+      },
+      "region": "farm",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "speechMorphTicks": {},
+      "eventShot": null,
+      "windowMotionTicks": 0,
+      "completedWindowPassages": 0,
+      "interrupted": false,
+      "foreground": true,
+      "gamePhase": "playing",
+      "simulatedSeconds": 8.500126999999994,
+      "renderScale": 0.85,
+      "viewport": [
+        1280,
+        840
+      ],
+      "devicePixelRatio": 2,
+      "elapsedMs": 8499,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 6.571,
+      "rasterP95Ms": 0.64,
+      "uiMaxMs": 9.705,
+      "rasterMaxMs": 2.722,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0
+    },
+    {
+      "case": "mountain-six",
+      "settings": {
+        "difficulty": "standard",
+        "volume": 1,
+        "voiceVolume": 1,
+        "environmentVolume": 1,
+        "sensitivity": 1,
+        "renderScale": 0.85,
+        "muted": false
+      },
+      "audio": {
+        "observedAmbience": true,
+        "observedSpeech": false,
+        "voice": {
+          "requested": null,
+          "active": null,
+          "playbackSeconds": null,
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": false,
+          "volume": 1,
+          "errors": []
+        },
+        "soundscape": {
+          "intensity": 0.9999999999999978,
+          "duck": 1,
+          "ambience": {
+            "requested": "mountain",
+            "active": "mountain",
+            "playbackSeconds": 8.348046,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 0.36,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 8326,
+              "durationMs": 16000,
+              "loop": true,
+              "loopCompletions": 0,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          },
+          "tension": {
+            "requested": "tension",
+            "active": "tension",
+            "playbackSeconds": null,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 0.28,
+            "errors": [],
+            "backend": {
+              "state": "completed",
+              "positionMs": 475,
+              "durationMs": 16000,
+              "loop": true,
+              "loopCompletions": 3,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          }
+        }
+      },
+      "region": "mountain",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "speechMorphTicks": {},
+      "eventShot": null,
+      "windowMotionTicks": 0,
+      "completedWindowPassages": 0,
+      "interrupted": false,
+      "foreground": true,
+      "gamePhase": "playing",
+      "simulatedSeconds": 8.500127999999993,
+      "renderScale": 0.85,
+      "viewport": [
+        1280,
+        840
+      ],
+      "devicePixelRatio": 2,
+      "elapsedMs": 8498,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 5.318,
+      "rasterP95Ms": 0.631,
+      "uiMaxMs": 11.781,
+      "rasterMaxMs": 1.162,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0
+    },
+    {
+      "case": "mountain-six-full",
+      "settings": {
+        "difficulty": "standard",
+        "volume": 1,
+        "voiceVolume": 1,
+        "environmentVolume": 1,
+        "sensitivity": 1,
+        "renderScale": 0.85,
+        "muted": false
+      },
+      "audio": {
+        "observedAmbience": true,
+        "observedSpeech": false,
+        "voice": {
+          "requested": null,
+          "active": null,
+          "playbackSeconds": null,
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": false,
+          "volume": 1,
+          "errors": []
+        },
+        "soundscape": {
+          "intensity": 0.9999999999999978,
+          "duck": 1,
+          "ambience": {
+            "requested": "mountain",
+            "active": "mountain",
+            "playbackSeconds": null,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 0.36,
+            "errors": [],
+            "backend": {
+              "state": "completed",
+              "positionMs": 81,
+              "durationMs": 16000,
+              "loop": true,
+              "loopCompletions": 1,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          },
+          "tension": {
+            "requested": "tension",
+            "active": "tension",
+            "playbackSeconds": null,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 0.28,
+            "errors": [],
+            "backend": {
+              "state": "completed",
+              "positionMs": 8477,
+              "durationMs": 16000,
+              "loop": true,
+              "loopCompletions": 3,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          }
+        }
+      },
+      "region": "mountain",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "speechMorphTicks": {},
+      "eventShot": null,
+      "windowMotionTicks": 0,
+      "completedWindowPassages": 0,
+      "interrupted": false,
+      "foreground": true,
+      "gamePhase": "playing",
+      "simulatedSeconds": 8.000119999999992,
+      "renderScale": 1,
+      "viewport": [
+        1280,
+        840
+      ],
+      "devicePixelRatio": 2,
+      "elapsedMs": 8000,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 4.666,
+      "rasterP95Ms": 0.503,
+      "uiMaxMs": 5.658,
+      "rasterMaxMs": 0.629,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0
+    },
+    {
+      "case": "window-player",
+      "settings": {
+        "difficulty": "standard",
+        "volume": 1,
+        "voiceVolume": 1,
+        "environmentVolume": 1,
+        "sensitivity": 1,
+        "renderScale": 0.85,
+        "muted": false
+      },
+      "audio": {
+        "observedAmbience": true,
+        "observedSpeech": false,
+        "voice": {
+          "requested": null,
+          "active": null,
+          "playbackSeconds": null,
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": false,
+          "volume": 1,
+          "errors": []
+        },
+        "soundscape": {
+          "intensity": 0.05881398179783237,
+          "duck": 1,
+          "ambience": {
+            "requested": "village",
+            "active": "village",
+            "playbackSeconds": 8.3357,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 0.36,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 8315,
+              "durationMs": 16000,
+              "loop": true,
+              "loopCompletions": 0,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          },
+          "tension": {
+            "requested": "tension",
+            "active": "tension",
+            "playbackSeconds": null,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 0.02,
+            "errors": [],
+            "backend": {
+              "state": "completed",
+              "positionMs": 877,
+              "durationMs": 16000,
+              "loop": true,
+              "loopCompletions": 4,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          }
+        }
+      },
+      "region": "village",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "speechMorphTicks": {},
+      "eventShot": null,
+      "windowMotionTicks": 419,
+      "completedWindowPassages": 4,
+      "interrupted": false,
+      "foreground": true,
+      "gamePhase": "playing",
+      "simulatedSeconds": 8.500126999999994,
+      "renderScale": 0.85,
+      "viewport": [
+        1280,
+        840
+      ],
+      "devicePixelRatio": 2,
+      "elapsedMs": 8499,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 6.22,
+      "rasterP95Ms": 1.09,
+      "uiMaxMs": 14.654,
+      "rasterMaxMs": 1.594,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0
+    },
+    {
+      "case": "window-enemies",
+      "settings": {
+        "difficulty": "standard",
+        "volume": 1,
+        "voiceVolume": 1,
+        "environmentVolume": 1,
+        "sensitivity": 1,
+        "renderScale": 0.85,
+        "muted": false
+      },
+      "audio": {
+        "observedAmbience": true,
+        "observedSpeech": false,
+        "voice": {
+          "requested": null,
+          "active": null,
+          "playbackSeconds": null,
+          "loading": false,
+          "speaking": false,
+          "finished": false,
+          "paused": false,
+          "volume": 1,
+          "errors": []
+        },
+        "soundscape": {
+          "intensity": 0.9999949878945293,
+          "duck": 1,
+          "ambience": {
+            "requested": "village",
+            "active": "village",
+            "playbackSeconds": null,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 0.36,
+            "errors": [],
+            "backend": {
+              "state": "completed",
+              "positionMs": 476,
+              "durationMs": 16000,
+              "loop": true,
+              "loopCompletions": 1,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          },
+          "tension": {
+            "requested": "tension",
+            "active": "tension",
+            "playbackSeconds": 9.422224,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 0.28,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 9303,
+              "durationMs": 16000,
+              "loop": true,
+              "loopCompletions": 4,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          }
+        }
+      },
+      "region": "village",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "speechMorphTicks": {},
+      "eventShot": null,
+      "windowMotionTicks": 378,
+      "completedWindowPassages": 2,
+      "interrupted": false,
+      "foreground": true,
+      "gamePhase": "playing",
+      "simulatedSeconds": 8.500127999999993,
+      "renderScale": 0.85,
+      "viewport": [
+        1280,
+        840
+      ],
+      "devicePixelRatio": 2,
+      "elapsedMs": 8499,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 5.784,
+      "rasterP95Ms": 0.609,
+      "uiMaxMs": 9.975,
+      "rasterMaxMs": 2.847,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0
+    },
+    {
+      "case": "opening-voice",
+      "settings": {
+        "difficulty": "standard",
+        "volume": 1,
+        "voiceVolume": 1,
+        "environmentVolume": 1,
+        "sensitivity": 1,
+        "renderScale": 0.85,
+        "muted": false
+      },
+      "audio": {
+        "observedAmbience": true,
+        "observedSpeech": true,
+        "voice": {
+          "requested": "event:10:opening:2",
+          "active": "event:10:opening:2",
+          "playbackSeconds": 1.3654220000000001,
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 1,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 1314,
+            "durationMs": 3600,
+            "loop": false,
+            "loopCompletions": 0,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        },
+        "soundscape": {
+          "intensity": 0.0588136870159526,
+          "duck": 0.3800025209379265,
+          "ambience": {
+            "requested": "village",
+            "active": "village",
+            "playbackSeconds": 9.17337,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 0.14,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 9089,
+              "durationMs": 16000,
+              "loop": true,
+              "loopCompletions": 1,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          },
+          "tension": {
+            "requested": "tension",
+            "active": "tension",
+            "playbackSeconds": 1.7606300000000001,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 0.01,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 1608,
+              "durationMs": 16000,
+              "loop": true,
+              "loopCompletions": 5,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          }
+        }
+      },
+      "region": "village",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "speechMorphTicks": {
+        "やめ太郎": 360,
+        "福ちゃん": 86
+      },
+      "eventShot": 2,
+      "windowMotionTicks": 0,
+      "completedWindowPassages": 0,
+      "interrupted": false,
+      "foreground": true,
+      "gamePhase": "cinematic",
+      "simulatedSeconds": 0,
+      "renderScale": 0.85,
+      "viewport": [
+        1280,
+        840
+      ],
+      "devicePixelRatio": 2,
+      "elapsedMs": 8497,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 4.937,
+      "rasterP95Ms": 0.418,
+      "uiMaxMs": 6.115,
+      "rasterMaxMs": 1.406,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0
+    },
+    {
+      "case": "boss-voice",
+      "settings": {
+        "difficulty": "standard",
+        "volume": 1,
+        "voiceVolume": 1,
+        "environmentVolume": 1,
+        "sensitivity": 1,
+        "renderScale": 0.85,
+        "muted": false
+      },
+      "audio": {
+        "observedAmbience": true,
+        "observedSpeech": true,
+        "voice": {
+          "requested": "event:11:last_order:1",
+          "active": "event:11:last_order:1",
+          "playbackSeconds": null,
+          "loading": false,
+          "speaking": false,
+          "finished": true,
+          "paused": false,
+          "volume": 1,
+          "errors": [],
+          "backend": {
+            "state": "completed",
+            "positionMs": 0,
+            "durationMs": 2581,
+            "loop": false,
+            "loopCompletions": 0,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        },
+        "soundscape": {
+          "intensity": 0.0040864144931571636,
+          "duck": 0.8753475483692436,
+          "ambience": {
+            "requested": "mountain",
+            "active": "mountain",
+            "playbackSeconds": 6.657,
+            "loading": false,
+            "speaking": true,
+            "finished": false,
+            "paused": false,
+            "volume": 0.32,
+            "errors": [],
+            "backend": {
+              "state": "playing",
+              "positionMs": 6407,
+              "durationMs": 16000,
+              "loop": true,
+              "loopCompletions": 0,
+              "playbackRequested": true,
+              "positionUpdateMs": 200
+            }
+          },
+          "tension": {
+            "requested": "tension",
+            "active": "tension",
+            "playbackSeconds": null,
+            "loading": false,
+            "speaking": false,
+            "finished": false,
+            "paused": true,
+            "volume": 0,
+            "errors": [],
+            "backend": {
+              "state": "paused",
+              "positionMs": 5856,
+              "durationMs": 16000,
+              "loop": true,
+              "loopCompletions": 5,
+              "playbackRequested": false,
+              "positionUpdateMs": 200
+            }
+          }
+        }
+      },
+      "region": "mountain",
+      "contactShadows": true,
+      "profile": true,
+      "valid": true,
+      "speechMorphTicks": {
+        "福ちゃん": 1
+      },
+      "eventShot": 1,
+      "windowMotionTicks": 0,
+      "completedWindowPassages": 0,
+      "interrupted": false,
+      "foreground": true,
+      "gamePhase": "cinematic",
+      "simulatedSeconds": 0,
+      "renderScale": 0.85,
+      "viewport": [
+        1280,
+        840
+      ],
+      "devicePixelRatio": 2,
+      "elapsedMs": 8000,
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 5.555,
+      "rasterP95Ms": 0.588,
+      "uiMaxMs": 9.633,
+      "rasterMaxMs": 1.086,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0
+    }
+  ],
+  "limitations": [
+    "Single run, 240 retained FrameTiming samples per condition. Does not measure GPU completion time or certify sustained display FPS.",
+    "Opening begins at shot 1 and observes both speakers; the reported sample window mixes the reverse shots.",
+    "Latest assets include grabs and speech morphs, but there is no dedicated sustained-grapple condition.",
+    "No release UI or long campaign audit in this measurement."
+  ]
+}

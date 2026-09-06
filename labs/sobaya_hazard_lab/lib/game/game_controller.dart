@@ -490,6 +490,7 @@ class HazardGameController extends ChangeNotifier {
   void advanceEvent({bool skip = false}) {
     final d = director;
     if (d == null) return;
+    posePreview = false;
     if (skip) {
       d.skip();
     } else if (d.paused) {
@@ -733,7 +734,7 @@ class HazardGameController extends ChangeNotifier {
       return PerspectiveCamera(
         position: d.shot.camera(d.progress),
         target: d.shot.aim,
-        fovRadiansY: .78,
+        fovRadiansY: d.shot.fov,
         fovNear: .07,
         fovFar: 85,
       );
@@ -1230,7 +1231,18 @@ class HazardGameController extends ChangeNotifier {
           ..position = vm.Vector3(17.7, 0, 17.5);
       }
       final speaker = shot.actor == 'fukuchan' ? player : npcs[shot.actor];
-      if (speaker != null) {
+      if (d.id == 'opening') {
+        // Keep the same eyeline across reverse shots, including the listener.
+        // Turning to each camera made both bodies jump at every cut.
+        final friend = npcs['yametaro']!;
+        for (final pair in [(player, friend), (friend, player)]) {
+          final delta = pair.$2.node.position - pair.$1.node.position;
+          pair.$1.node.rotation = vm.Quaternion.axisAngle(
+            vm.Vector3(0, 1, 0),
+            math.atan2(delta.x, delta.z) + math.pi,
+          );
+        }
+      } else if (speaker != null) {
         final eye = shot.camera(d.progress), p = speaker.node.position;
         speaker.node.rotation = vm.Quaternion.axisAngle(
           vm.Vector3(0, 1, 0),

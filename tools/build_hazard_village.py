@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from hazard_environment_kit import *
+from hazard_entrance_backdrop import build_entrance_backdrop
 # Plaza and approach. World layout is authored in meters, Blender Y = game Z.
 box('Ground',dirt,(0,0,-.16),(62,66,.3))
 for h in [('Shotgun',8,-6,8,9,True),('Barn',-4,11,11,7,False),('West',-11,1,7,7,False),('East',14,6,6,7,False),('Entrance',-8,-15,5.5,5,False)]:house(*h)
@@ -56,6 +57,8 @@ for i in range(200):
  if abs(x)<5 and -23<z<20:continue
  if any(abs(x-h['x'])<h['w']/2+.25 and abs(z-h['z'])<h['d']/2+.25 for h in houses):continue
  weed_tuft('Weeds',x,z)
+
+build_entrance_backdrop()
 
 # Collectible images stay canonical in the script library.
 posters=[
