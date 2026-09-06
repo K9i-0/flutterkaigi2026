@@ -2,12 +2,15 @@
 NumPy/SciPy instrument synthesis; editable note score and mix provenance emitted.
 """
 from pathlib import Path
-import hashlib,json,subprocess,wave
+import argparse,hashlib,json,subprocess,wave
 import numpy as np
 from scipy.signal import butter,sosfilt
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'04_GAME_ASSETS/audio/hazard';TMP=ROOT/'.local/hazard-score';TMP.mkdir(parents=True,exist_ok=True)
 SR=44100;BPM=80;BEAT=60/BPM;DURATION=48;N=int(SR*DURATION)
+parser=argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--pursuit-only',action='store_true',help='Keep adopted exploration and Foley masters unchanged')
+args=parser.parse_args()
 rng=np.random.default_rng(60649);notes=[];files=[]
 def band(x,lo=40,hi=10000):return sosfilt(butter(2,[lo,hi],fs=SR,btype='bandpass',output='sos'),x)
 def noise(n,lo=40,hi=10000):return band(rng.normal(0,1,n),lo,hi)
@@ -62,6 +65,7 @@ def room(x,wet,loop):
  return result
 
 def save(relative,x,loop=False,lufs=-20):
+ if args.pursuit_only and relative!='soundscape/tension.wav':return
  dest=OUT/relative;dest.parent.mkdir(parents=True,exist_ok=True)
  # One static gain for music avoids pumping or mismatched loudness at loop seam.
  if x.ndim==1:x=x[:,None]
@@ -98,23 +102,59 @@ for beat,m in [(5,74),(21,75),(37,81),(53,74)]:add(explore,metal(m,5,.014),beat*
 for beat,m in [(0,50),(8,57),(16,53),(24,51),(32,50),(40,57),(48,58),(56,51)]:
  add(explore,bowed(m,8,.023),beat*BEAT,-.4)
  add(chase,bowed(m,7,.047),beat*BEAT,.25)
-# 16-bar percussion phrase with rests, grace hits, and 3+3+2 subdivisions.
-for bar in range(16):
- energy=[.74,.78,.80,.87][bar%4]
+# Double-time 160 BPM, 32 bars. Keep D/Eb/A in common with the exploration
+# pedal: the two independently running loops need not have phase-locked beats.
+CHASE_BEAT=60/160
+def spiccato(m,dur,vel):
+ u=np.arange(int(dur*SR))/SR;f=hz(m);v=np.zeros(len(u))
+ for detune in [-.003,0,.0024]:
+  phase=rng.uniform(0,2*np.pi)
+  for k in range(1,15):
+   v+=np.sin(2*np.pi*f*(1+detune)*k*u+phase)*np.exp(-k*f/4200)/k
+ env=(1-np.exp(-u*230))*np.exp(-u*15)*np.minimum(1,(dur-u)/.035)
+ return (v*.24+noise(len(u),1600,5500)*.035)*env*vel
+
+def brass(m,dur,vel):
+ u=np.arange(int(dur*SR))/SR;f=hz(m);v=np.zeros(len(u))
+ for k in range(1,13):
+  v+=np.sin(2*np.pi*f*k*u+.12*k*np.sin(2*np.pi*4.1*u))*np.exp(-k/5)/k**.65
+ env=(1-np.exp(-u*35))*np.exp(-u*3)*np.minimum(1,(dur-u)/.1)
+ return np.tanh(v*1.3)*env*vel
+
+for bar in range(32):
+ # Four eight-bar sentences: pressure, answer, thin texture, final escalation.
+ energy=[.82,.94,.76,1.0][bar//8]
+ pattern=[38,45,38,39,38,45,46 if bar%4==3 else 39,45]
+ for step,m in enumerate(pattern):
+  beat=bar*4+step*.5;start=beat*CHASE_BEAT
+  accent=1 if step in [0,3,6] else .70
+  add(chase,spiccato(m,.33,.24*energy*accent),start,-.48)
+  add(chase,spiccato(m+12,.28,.115*energy*accent),start+.006,.52)
+  if bar//8!=2 or step%2==0:
+   add(chase,spiccato(m+24,.23,.054*energy),start+.012,.24)
+  notes.append({'piece':'pursuit','instrument':'divisi spiccato strings','beat':beat,'midi':m,'accent':accent})
  for off in [0,1.5,3]:
-  add(chase,drum('taiko',.27*energy*rng.uniform(.9,1.08)),(bar*4+off)*BEAT+rng.uniform(-.009,.009),rng.uniform(-.15,.15))
- for off in [.75,2.5,3.5]:
-  add(chase,drum('wood',.065*rng.uniform(.75,1)),(bar*4+off)*BEAT+rng.uniform(-.009,.009),(-.5 if off<2 else .5))
- for off,m in zip([0,.75,1.5,2.5,3,3.5],[38,38,39,45,38,46 if bar%4==3 else 45]):
-  add(chase,piano(m,1.9,.14*energy),(bar*4+off)*BEAT,rng.uniform(-.22,.22))
-  notes.append({'piece':'pursuit','instrument':'low plucked ostinato','beat':bar*4+off,'midi':m})
+  add(chase,drum('taiko',.37*energy),(bar*4+off)*CHASE_BEAT,rng.uniform(-.2,.2))
+ for off in [.5,1,2,2.5,3.5]:
+  add(chase,drum('wood',.10*energy),(bar*4+off)*CHASE_BEAT+rng.uniform(-.005,.005),-.65 if off<2 else .65)
+ if bar%4 in [0,3]:
+  for m,pan in [(38,-.25),(45,.3),(51,0)]:
+   add(chase,brass(m,1.25,.09*energy),bar*4*CHASE_BEAT,pan)
+  notes.append({'piece':'pursuit','instrument':'low brass cluster','beat':bar*4,'midi':[38,45,51]})
  if bar%4==3:
-  for off in [2.75,3.25,3.75]:add(chase,drum('wood',.06),(bar*4+off)*BEAT,.6)
-for beat,m in [(0,74),(6.5,75),(12,69),(18,70),(32,74),(38.5,75),(44,69),(58,75)]:
- add(chase,metal(m,4,.035),beat*BEAT,-.45)
+  for off in [2.75,3.25,3.75]:
+   add(chase,drum('wood',.15*energy),(bar*4+off)*CHASE_BEAT,.55)
+ if bar%8==7:
+  # Short reversed air rise hands the phrase back to the downbeat; wrapped tail.
+  u=np.arange(int(1.1*SR))/SR
+  rise=noise(len(u),900,6500)*(u/1.1)**2*.07
+  rise*=np.minimum(1,(1.1-u)/.015)
+  add(chase,rise,(bar*4+1)*CHASE_BEAT,-.35)
+for beat,m in [(0,74),(14,75),(30,81),(46,75),(64,74),(78,75),(94,81),(126,75)]:
+ add(chase,metal(m,2.3,.038),beat*CHASE_BEAT,-.5)
  notes.append({'piece':'pursuit','instrument':'struck glass','beat':beat,'midi':m})
 save('soundscape/exploration.wav',room(explore,.115,True),True,-24)
-save('soundscape/tension.wav',room(chase,.055,True),True,-21)
+save('soundscape/tension.wav',room(chase,.065,True),True,-19)
 
 for kind in ['shot','shotgun','mug_ready','mug_swing','mug_hit']:
  for variant in range(3):
@@ -147,7 +187,11 @@ for kind in ['shot','shotgun','mug_ready','mug_swing','mug_hit']:
   # Spatial game attenuation is applied later; keep combat source mono.
   signal=room(np.column_stack([mono,mono]),.055,False).mean(axis=1)
   save(f'combat/{kind}_{variant}.wav',signal,lufs=-17 if kind in ['shot','shotgun'] else -23)
-manifest={'version':2,'generator':'tools/build_hazard_score.py','seed':60649,'music':{'bpm':BPM,'meter':'4/4','bars':16,'seconds':DURATION,'mode':'D Phrygian','titles':{'exploration':'閉店後','pursuit':'ラストオーダー'},'instruments':'Felt piano, bowed partials, sub pedal, struck glass, membrane drum, wood percussion; original DSP synthesis','loop':'Circular note tails and stereo room; no repeated end fades'},'files':files,'score':notes}
+if args.pursuit_only:
+ previous=json.loads((OUT/'score-manifest.json').read_text())
+ files=[r for r in previous['files'] if r['file']!='soundscape/tension.wav']+files
+ notes=[r for r in previous['score'] if r['piece']!='pursuit']+[r for r in notes if r['piece']=='pursuit']
+manifest={'version':3,'generator':'tools/build_hazard_score.py','seed':60649,'music':{'bpm':{'exploration':80,'pursuit':160},'meter':'4/4','bars':{'exploration':16,'pursuit':32},'seconds':DURATION,'mode':'D Phrygian','titles':{'exploration':'閉店後','pursuit':'ラストオーダー・追い込み'},'instruments':'Felt piano / divisi spiccato strings, low brass clusters, sub pedal, struck glass, membrane drums and industrial wood percussion; original DSP synthesis','loop':'Circular note tails and stereo room; no repeated end fades'},'files':files,'score':notes}
 (OUT/'score-manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
 # Existing regional beds and Takosan response keep their provenance.
 p=OUT/'soundscape-manifest.json';existing=json.loads(p.read_text());existing['files']=[r for r in existing['files'] if r['file'] not in ['soundscape/tension.wav','soundscape/exploration.wav']];existing['files'] += [r for r in files if r['loop']];existing['score_manifest']='score-manifest.json';p.write_text(json.dumps(existing,ensure_ascii=False,indent=2)+'\n')

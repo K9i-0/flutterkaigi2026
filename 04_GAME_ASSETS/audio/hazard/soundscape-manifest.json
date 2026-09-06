@@ -65,11 +65,11 @@
       "channels": 2,
       "sample_rate": 44100,
       "loop": true,
-      "peak": 0.46738788444447554,
-      "rms": 0.08255083048999093,
-      "seam_delta": 79,
-      "sha256": "b0969a447718c43955a95c15c700baea0fb58211f790ed55e405544d839015de",
-      "target_lufs": -21
+      "peak": 0.641702353965282,
+      "rms": 0.10481945841045613,
+      "seam_delta": 65,
+      "sha256": "549f87da7049cb60f6f84abe79e8411fc0ab609109ed5ea1e2124feab4cdf69b",
+      "target_lufs": -19
     }
   ],
   "score_manifest": "score-manifest.json"

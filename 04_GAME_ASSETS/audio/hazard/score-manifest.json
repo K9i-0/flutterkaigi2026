@@ -1,18 +1,24 @@
 {
-  "version": 2,
+  "version": 3,
   "generator": "tools/build_hazard_score.py",
   "seed": 60649,
   "music": {
-    "bpm": 80,
+    "bpm": {
+      "exploration": 80,
+      "pursuit": 160
+    },
     "meter": "4/4",
-    "bars": 16,
+    "bars": {
+      "exploration": 16,
+      "pursuit": 32
+    },
     "seconds": 48,
     "mode": "D Phrygian",
     "titles": {
       "exploration": "閉店後",
-      "pursuit": "ラストオーダー"
+      "pursuit": "ラストオーダー・追い込み"
     },
-    "instruments": "Felt piano, bowed partials, sub pedal, struck glass, membrane drum, wood percussion; original DSP synthesis",
+    "instruments": "Felt piano / divisi spiccato strings, low brass clusters, sub pedal, struck glass, membrane drums and industrial wood percussion; original DSP synthesis",
     "loop": "Circular note tails and stereo room; no repeated end fades"
   },
   "files": [
@@ -27,18 +33,6 @@
       "seam_delta": 71,
       "sha256": "9e05378609505fcc2cadd61cd1487e1dfefdf7196372bfb0f671270efeff00e8",
       "target_lufs": -24
-    },
-    {
-      "file": "soundscape/tension.wav",
-      "seconds": 48.0,
-      "channels": 2,
-      "sample_rate": 44100,
-      "loop": true,
-      "peak": 0.46738788444447554,
-      "rms": 0.08255083048999093,
-      "seam_delta": 79,
-      "sha256": "b0969a447718c43955a95c15c700baea0fb58211f790ed55e405544d839015de",
-      "target_lufs": -21
     },
     {
       "file": "combat/shot_0.wav",
@@ -219,6 +213,18 @@
       "seam_delta": null,
       "sha256": "5dc3a84e95a9c9aea4c5c3a4861fdd9d0b9cb8de6a8b243931e96df8063d483e",
       "target_lufs": -23
+    },
+    {
+      "file": "soundscape/tension.wav",
+      "seconds": 48.0,
+      "channels": 2,
+      "sample_rate": 44100,
+      "loop": true,
+      "peak": 0.641702353965282,
+      "rms": 0.10481945841045613,
+      "seam_delta": 65,
+      "sha256": "549f87da7049cb60f6f84abe79e8411fc0ab609109ed5ea1e2124feab4cdf69b",
+      "target_lufs": -19
     }
   ],
   "score": [
@@ -336,579 +342,1955 @@
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 0,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 0.0,
+      "midi": 38,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 0.75,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 0.5,
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 1.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 1.5,
-      "midi": 39
+      "midi": 39,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 2.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 2.5,
-      "midi": 45
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 3,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 3.0,
+      "midi": 39,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
       "beat": 3.5,
-      "midi": 45
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 4,
-      "midi": 38
+      "instrument": "low brass cluster",
+      "beat": 0,
+      "midi": [
+        38,
+        45,
+        51
+      ]
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 4.75,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 4.0,
+      "midi": 38,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 4.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 5.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 5.5,
-      "midi": 39
+      "midi": 39,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 6.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 6.5,
-      "midi": 45
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 7,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 7.0,
+      "midi": 39,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
       "beat": 7.5,
-      "midi": 45
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 8,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 8.0,
+      "midi": 38,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 8.75,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 8.5,
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 9.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 9.5,
-      "midi": 39
+      "midi": 39,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 10.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 10.5,
-      "midi": 45
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 11,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 11.0,
+      "midi": 39,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
       "beat": 11.5,
-      "midi": 45
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 12,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 12.0,
+      "midi": 38,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 12.75,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 12.5,
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 13.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 13.5,
-      "midi": 39
+      "midi": 39,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 14.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 14.5,
-      "midi": 45
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 15,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 15.0,
+      "midi": 46,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
       "beat": 15.5,
-      "midi": 46
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 16,
-      "midi": 38
+      "instrument": "low brass cluster",
+      "beat": 12,
+      "midi": [
+        38,
+        45,
+        51
+      ]
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 16.75,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 16.0,
+      "midi": 38,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 16.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 17.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 17.5,
-      "midi": 39
+      "midi": 39,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 18.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 18.5,
-      "midi": 45
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 19,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 19.0,
+      "midi": 39,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
       "beat": 19.5,
-      "midi": 45
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 20,
-      "midi": 38
+      "instrument": "low brass cluster",
+      "beat": 16,
+      "midi": [
+        38,
+        45,
+        51
+      ]
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 20.75,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 20.0,
+      "midi": 38,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 20.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 21.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 21.5,
-      "midi": 39
+      "midi": 39,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 22.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 22.5,
-      "midi": 45
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 23,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 23.0,
+      "midi": 39,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
       "beat": 23.5,
-      "midi": 45
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 24,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 24.0,
+      "midi": 38,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 24.75,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 24.5,
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 25.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 25.5,
-      "midi": 39
+      "midi": 39,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 26.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 26.5,
-      "midi": 45
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 27,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 27.0,
+      "midi": 39,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
       "beat": 27.5,
-      "midi": 45
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 28,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 28.0,
+      "midi": 38,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 28.75,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 28.5,
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 29.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 29.5,
-      "midi": 39
+      "midi": 39,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 30.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 30.5,
-      "midi": 45
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 31,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 31.0,
+      "midi": 46,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
       "beat": 31.5,
-      "midi": 46
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 32,
-      "midi": 38
+      "instrument": "low brass cluster",
+      "beat": 28,
+      "midi": [
+        38,
+        45,
+        51
+      ]
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 32.75,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 32.0,
+      "midi": 38,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 32.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 33.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 33.5,
-      "midi": 39
+      "midi": 39,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 34.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 34.5,
-      "midi": 45
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 35,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 35.0,
+      "midi": 39,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
       "beat": 35.5,
-      "midi": 45
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 36,
-      "midi": 38
+      "instrument": "low brass cluster",
+      "beat": 32,
+      "midi": [
+        38,
+        45,
+        51
+      ]
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 36.75,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 36.0,
+      "midi": 38,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 36.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 37.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 37.5,
-      "midi": 39
+      "midi": 39,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 38.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 38.5,
-      "midi": 45
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 39,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 39.0,
+      "midi": 39,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
       "beat": 39.5,
-      "midi": 45
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 40,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 40.0,
+      "midi": 38,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 40.75,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 40.5,
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 41.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 41.5,
-      "midi": 39
+      "midi": 39,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 42.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 42.5,
-      "midi": 45
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 43,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 43.0,
+      "midi": 39,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
       "beat": 43.5,
-      "midi": 45
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 44,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 44.0,
+      "midi": 38,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 44.75,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 44.5,
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 45.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 45.5,
-      "midi": 39
+      "midi": 39,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 46.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 46.5,
-      "midi": 45
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 47,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 47.0,
+      "midi": 46,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
       "beat": 47.5,
-      "midi": 46
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 48,
-      "midi": 38
+      "instrument": "low brass cluster",
+      "beat": 44,
+      "midi": [
+        38,
+        45,
+        51
+      ]
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 48.75,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 48.0,
+      "midi": 38,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 48.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 49.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 49.5,
-      "midi": 39
+      "midi": 39,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 50.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 50.5,
-      "midi": 45
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 51,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 51.0,
+      "midi": 39,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
       "beat": 51.5,
-      "midi": 45
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 52,
-      "midi": 38
+      "instrument": "low brass cluster",
+      "beat": 48,
+      "midi": [
+        38,
+        45,
+        51
+      ]
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 52.75,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 52.0,
+      "midi": 38,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 52.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 53.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 53.5,
-      "midi": 39
+      "midi": 39,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 54.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 54.5,
-      "midi": 45
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 55,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 55.0,
+      "midi": 39,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
       "beat": 55.5,
-      "midi": 45
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 56,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 56.0,
+      "midi": 38,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 56.75,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 56.5,
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 57.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 57.5,
-      "midi": 39
+      "midi": 39,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 58.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 58.5,
-      "midi": 45
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 59,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 59.0,
+      "midi": 39,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
       "beat": 59.5,
-      "midi": 45
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 60,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 60.0,
+      "midi": 38,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 60.75,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 60.5,
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 61.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 61.5,
-      "midi": 39
+      "midi": 39,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
+      "beat": 62.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
       "beat": 62.5,
-      "midi": 45
+      "midi": 45,
+      "accent": 0.7
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
-      "beat": 63,
-      "midi": 38
+      "instrument": "divisi spiccato strings",
+      "beat": 63.0,
+      "midi": 46,
+      "accent": 1
     },
     {
       "piece": "pursuit",
-      "instrument": "low plucked ostinato",
+      "instrument": "divisi spiccato strings",
       "beat": 63.5,
-      "midi": 46
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low brass cluster",
+      "beat": 60,
+      "midi": [
+        38,
+        45,
+        51
+      ]
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 64.0,
+      "midi": 38,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 64.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 65.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 65.5,
+      "midi": 39,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 66.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 66.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 67.0,
+      "midi": 39,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 67.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low brass cluster",
+      "beat": 64,
+      "midi": [
+        38,
+        45,
+        51
+      ]
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 68.0,
+      "midi": 38,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 68.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 69.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 69.5,
+      "midi": 39,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 70.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 70.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 71.0,
+      "midi": 39,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 71.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 72.0,
+      "midi": 38,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 72.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 73.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 73.5,
+      "midi": 39,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 74.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 74.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 75.0,
+      "midi": 39,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 75.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 76.0,
+      "midi": 38,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 76.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 77.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 77.5,
+      "midi": 39,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 78.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 78.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 79.0,
+      "midi": 46,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 79.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low brass cluster",
+      "beat": 76,
+      "midi": [
+        38,
+        45,
+        51
+      ]
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 80.0,
+      "midi": 38,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 80.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 81.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 81.5,
+      "midi": 39,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 82.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 82.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 83.0,
+      "midi": 39,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 83.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low brass cluster",
+      "beat": 80,
+      "midi": [
+        38,
+        45,
+        51
+      ]
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 84.0,
+      "midi": 38,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 84.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 85.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 85.5,
+      "midi": 39,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 86.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 86.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 87.0,
+      "midi": 39,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 87.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 88.0,
+      "midi": 38,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 88.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 89.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 89.5,
+      "midi": 39,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 90.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 90.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 91.0,
+      "midi": 39,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 91.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 92.0,
+      "midi": 38,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 92.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 93.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 93.5,
+      "midi": 39,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 94.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 94.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 95.0,
+      "midi": 46,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 95.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low brass cluster",
+      "beat": 92,
+      "midi": [
+        38,
+        45,
+        51
+      ]
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 96.0,
+      "midi": 38,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 96.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 97.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 97.5,
+      "midi": 39,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 98.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 98.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 99.0,
+      "midi": 39,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 99.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low brass cluster",
+      "beat": 96,
+      "midi": [
+        38,
+        45,
+        51
+      ]
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 100.0,
+      "midi": 38,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 100.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 101.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 101.5,
+      "midi": 39,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 102.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 102.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 103.0,
+      "midi": 39,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 103.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 104.0,
+      "midi": 38,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 104.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 105.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 105.5,
+      "midi": 39,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 106.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 106.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 107.0,
+      "midi": 39,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 107.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 108.0,
+      "midi": 38,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 108.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 109.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 109.5,
+      "midi": 39,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 110.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 110.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 111.0,
+      "midi": 46,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 111.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low brass cluster",
+      "beat": 108,
+      "midi": [
+        38,
+        45,
+        51
+      ]
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 112.0,
+      "midi": 38,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 112.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 113.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 113.5,
+      "midi": 39,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 114.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 114.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 115.0,
+      "midi": 39,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 115.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low brass cluster",
+      "beat": 112,
+      "midi": [
+        38,
+        45,
+        51
+      ]
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 116.0,
+      "midi": 38,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 116.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 117.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 117.5,
+      "midi": 39,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 118.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 118.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 119.0,
+      "midi": 39,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 119.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 120.0,
+      "midi": 38,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 120.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 121.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 121.5,
+      "midi": 39,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 122.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 122.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 123.0,
+      "midi": 39,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 123.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 124.0,
+      "midi": 38,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 124.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 125.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 125.5,
+      "midi": 39,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 126.0,
+      "midi": 38,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 126.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 127.0,
+      "midi": 46,
+      "accent": 1
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "divisi spiccato strings",
+      "beat": 127.5,
+      "midi": 45,
+      "accent": 0.7
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low brass cluster",
+      "beat": 124,
+      "midi": [
+        38,
+        45,
+        51
+      ]
     },
     {
       "piece": "pursuit",
@@ -919,43 +2301,43 @@
     {
       "piece": "pursuit",
       "instrument": "struck glass",
-      "beat": 6.5,
+      "beat": 14,
       "midi": 75
     },
     {
       "piece": "pursuit",
       "instrument": "struck glass",
-      "beat": 12,
-      "midi": 69
+      "beat": 30,
+      "midi": 81
     },
     {
       "piece": "pursuit",
       "instrument": "struck glass",
-      "beat": 18,
-      "midi": 70
+      "beat": 46,
+      "midi": 75
     },
     {
       "piece": "pursuit",
       "instrument": "struck glass",
-      "beat": 32,
+      "beat": 64,
       "midi": 74
     },
     {
       "piece": "pursuit",
       "instrument": "struck glass",
-      "beat": 38.5,
+      "beat": 78,
       "midi": 75
     },
     {
       "piece": "pursuit",
       "instrument": "struck glass",
-      "beat": 44,
-      "midi": 69
+      "beat": 94,
+      "midi": 81
     },
     {
       "piece": "pursuit",
       "instrument": "struck glass",
-      "beat": 58,
+      "beat": 126,
       "midi": 75
     }
   ]

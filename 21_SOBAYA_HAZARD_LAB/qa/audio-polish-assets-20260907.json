@@ -1,0 +1,262 @@
+{
+  "checks": [
+    {
+      "file": "soundscape/exploration.wav",
+      "seconds": 48.0,
+      "channels": 2,
+      "sample_rate": 44100,
+      "peak": 0.29705810546875,
+      "rms": 0.05445043045910188,
+      "seam": 0.002166748046875,
+      "sample_difference_p995": 0.009521484375,
+      "integrated_lufs": -24.0,
+      "true_peak_dbtp": -10.54
+    },
+    {
+      "file": "combat/shot_0.wav",
+      "seconds": 1.1,
+      "channels": 1,
+      "sample_rate": 44100,
+      "peak": 0.663055419921875,
+      "rms": 0.04089406656125475
+    },
+    {
+      "file": "combat/shot_1.wav",
+      "seconds": 1.1,
+      "channels": 1,
+      "sample_rate": 44100,
+      "peak": 0.62567138671875,
+      "rms": 0.03256705248983198
+    },
+    {
+      "file": "combat/shot_2.wav",
+      "seconds": 1.1,
+      "channels": 1,
+      "sample_rate": 44100,
+      "peak": 0.698211669921875,
+      "rms": 0.03716594076286707
+    },
+    {
+      "file": "combat/shotgun_0.wav",
+      "seconds": 1.55,
+      "channels": 1,
+      "sample_rate": 44100,
+      "peak": 0.773468017578125,
+      "rms": 0.03728337338083236
+    },
+    {
+      "file": "combat/shotgun_1.wav",
+      "seconds": 1.55,
+      "channels": 1,
+      "sample_rate": 44100,
+      "peak": 0.87994384765625,
+      "rms": 0.036519007551635195
+    },
+    {
+      "file": "combat/shotgun_2.wav",
+      "seconds": 1.55,
+      "channels": 1,
+      "sample_rate": 44100,
+      "peak": 0.705963134765625,
+      "rms": 0.03830835252596736
+    },
+    {
+      "file": "combat/mug_ready_0.wav",
+      "seconds": 0.36,
+      "channels": 1,
+      "sample_rate": 44100,
+      "peak": 0.87994384765625,
+      "rms": 0.1369997952800121
+    },
+    {
+      "file": "combat/mug_ready_1.wav",
+      "seconds": 0.36,
+      "channels": 1,
+      "sample_rate": 44100,
+      "peak": 0.87994384765625,
+      "rms": 0.1770900398633073
+    },
+    {
+      "file": "combat/mug_ready_2.wav",
+      "seconds": 0.36,
+      "channels": 1,
+      "sample_rate": 44100,
+      "peak": 0.87994384765625,
+      "rms": 0.17748123918180528
+    },
+    {
+      "file": "combat/mug_swing_0.wav",
+      "seconds": 0.32,
+      "channels": 1,
+      "sample_rate": 44100,
+      "peak": 0.87994384765625,
+      "rms": 0.08635296205650451
+    },
+    {
+      "file": "combat/mug_swing_1.wav",
+      "seconds": 0.32,
+      "channels": 1,
+      "sample_rate": 44100,
+      "peak": 0.87994384765625,
+      "rms": 0.10845099912024482
+    },
+    {
+      "file": "combat/mug_swing_2.wav",
+      "seconds": 0.32,
+      "channels": 1,
+      "sample_rate": 44100,
+      "peak": 0.87994384765625,
+      "rms": 0.09058424044919038
+    },
+    {
+      "file": "combat/mug_hit_0.wav",
+      "seconds": 0.62,
+      "channels": 1,
+      "sample_rate": 44100,
+      "peak": 0.61065673828125,
+      "rms": 0.06167803997543026
+    },
+    {
+      "file": "combat/mug_hit_1.wav",
+      "seconds": 0.62,
+      "channels": 1,
+      "sample_rate": 44100,
+      "peak": 0.572418212890625,
+      "rms": 0.055773688630642526
+    },
+    {
+      "file": "combat/mug_hit_2.wav",
+      "seconds": 0.62,
+      "channels": 1,
+      "sample_rate": 44100,
+      "peak": 0.66827392578125,
+      "rms": 0.06014346227493042
+    },
+    {
+      "file": "soundscape/tension.wav",
+      "seconds": 48.0,
+      "channels": 2,
+      "sample_rate": 44100,
+      "peak": 0.64166259765625,
+      "rms": 0.10480484028366506,
+      "seam": 0.001983642578125,
+      "sample_difference_p995": 0.03717041015625,
+      "integrated_lufs": -19.0,
+      "true_peak_dbtp": -3.84
+    },
+    {
+      "file": "combat/enemy_0.wav",
+      "seconds": 1.354875,
+      "channels": 1,
+      "sample_rate": 24000,
+      "peak": 0.3948974609375,
+      "rms": 0.059191999452560984
+    },
+    {
+      "file": "combat/enemy_1.wav",
+      "seconds": 2.52575,
+      "channels": 1,
+      "sample_rate": 24000,
+      "peak": 0.476043701171875,
+      "rms": 0.07135893525968949
+    },
+    {
+      "file": "combat/enemy_2.wav",
+      "seconds": 1.0750416666666667,
+      "channels": 1,
+      "sample_rate": 24000,
+      "peak": 0.433013916015625,
+      "rms": 0.06671055931908108
+    },
+    {
+      "file": "combat/rocket_launch_0.wav",
+      "seconds": 1.8,
+      "channels": 1,
+      "sample_rate": 44100,
+      "peak": 0.5302734375,
+      "rms": 0.07728115102044454,
+      "integrated_lufs": -20.95,
+      "true_peak_dbtp": -4.5
+    },
+    {
+      "file": "combat/rocket_blast_0.wav",
+      "seconds": 2.8,
+      "channels": 1,
+      "sample_rate": 44100,
+      "peak": 0.52117919921875,
+      "rms": 0.07924882599300861,
+      "integrated_lufs": -23.39,
+      "true_peak_dbtp": -4.5
+    },
+    {
+      "file": "combat/rocket_launch_1.wav",
+      "seconds": 1.8,
+      "channels": 1,
+      "sample_rate": 44100,
+      "peak": 0.535980224609375,
+      "rms": 0.07609809865334054,
+      "integrated_lufs": -21.11,
+      "true_peak_dbtp": -4.5
+    },
+    {
+      "file": "combat/rocket_blast_1.wav",
+      "seconds": 2.8,
+      "channels": 1,
+      "sample_rate": 44100,
+      "peak": 0.5616455078125,
+      "rms": 0.0882881458166528,
+      "integrated_lufs": -22.4,
+      "true_peak_dbtp": -4.5
+    },
+    {
+      "file": "combat/rocket_launch_2.wav",
+      "seconds": 1.8,
+      "channels": 1,
+      "sample_rate": 44100,
+      "peak": 0.49761962890625,
+      "rms": 0.07185171234404673,
+      "integrated_lufs": -21.43,
+      "true_peak_dbtp": -4.5
+    },
+    {
+      "file": "combat/rocket_blast_2.wav",
+      "seconds": 2.8,
+      "channels": 1,
+      "sample_rate": 44100,
+      "peak": 0.56353759765625,
+      "rms": 0.09556902372795163,
+      "integrated_lufs": -21.87,
+      "true_peak_dbtp": -4.5
+    },
+    {
+      "file": "combat/alert.wav",
+      "seconds": 1.25,
+      "channels": 1,
+      "sample_rate": 44100,
+      "peak": 0.59405517578125,
+      "rms": 0.07309460773921697,
+      "integrated_lufs": -24.98,
+      "true_peak_dbtp": -4.5
+    }
+  ],
+  "music": {
+    "bpm": {
+      "exploration": 80,
+      "pursuit": 160
+    },
+    "meter": "4/4",
+    "bars": {
+      "exploration": 16,
+      "pursuit": 32
+    },
+    "seconds": 48,
+    "mode": "D Phrygian",
+    "titles": {
+      "exploration": "閉店後",
+      "pursuit": "ラストオーダー・追い込み"
+    },
+    "instruments": "Felt piano / divisi spiccato strings, low brass clusters, sub pedal, struck glass, membrane drums and industrial wood percussion; original DSP synthesis",
+    "loop": "Circular note tails and stereo room; no repeated end fades"
+  },
+  "note": "PCM/hash/seam checks; not perceptual approval or a device performance test."
+}

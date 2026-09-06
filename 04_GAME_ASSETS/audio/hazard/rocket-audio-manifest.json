@@ -1,0 +1,146 @@
+{
+  "version": 2,
+  "generator": "tools/build_hazard_rocket_audio.py",
+  "seeds": [
+    90780,
+    90781,
+    90782,
+    90799
+  ],
+  "files": [
+    {
+      "file": "combat/rocket_launch_0.wav",
+      "seconds": 1.8,
+      "channels": 1,
+      "sample_rate": 44100,
+      "loop": false,
+      "peak": 0.5303003561155076,
+      "rms": 0.07728349523352576,
+      "target_lufs": -15.5,
+      "layers": [
+        "ignition crack",
+        "48–115 Hz pressure",
+        "135 Hz body",
+        "turbulent jet",
+        "rising turbine",
+        "latch",
+        "early reflections"
+      ],
+      "sha256": "7f20ed2cae0f227fa1be5c8eb1f43798b3d79236120b2d8d8a6b789a6fbaae83"
+    },
+    {
+      "file": "combat/rocket_blast_0.wav",
+      "seconds": 2.8,
+      "channels": 1,
+      "sample_rate": 44100,
+      "loop": false,
+      "peak": 0.5212093346069325,
+      "rms": 0.07925129357250096,
+      "target_lufs": -17,
+      "layers": [
+        "impact crack",
+        "37–68 Hz shockwave",
+        "low-mid blast",
+        "air/debris scatter",
+        "rolling rumble",
+        "outdoor reflections"
+      ],
+      "sha256": "b5be6d3de050b3ac3f0877897f62c580baad257f13a87e646cc9e2d983199799"
+    },
+    {
+      "file": "combat/rocket_launch_1.wav",
+      "seconds": 1.8,
+      "channels": 1,
+      "sample_rate": 44100,
+      "loop": false,
+      "peak": 0.5360033556836238,
+      "rms": 0.0761004151568105,
+      "target_lufs": -15.5,
+      "layers": [
+        "ignition crack",
+        "48–115 Hz pressure",
+        "135 Hz body",
+        "turbulent jet",
+        "rising turbine",
+        "latch",
+        "early reflections"
+      ],
+      "sha256": "68cd9c727f2a177d49f98af2af5a31bbf029a800cc94f672058d00016025dce5"
+    },
+    {
+      "file": "combat/rocket_blast_1.wav",
+      "seconds": 2.8,
+      "channels": 1,
+      "sample_rate": 44100,
+      "loop": false,
+      "peak": 0.5616581571492071,
+      "rms": 0.08829085583524522,
+      "target_lufs": -17,
+      "layers": [
+        "impact crack",
+        "37–68 Hz shockwave",
+        "low-mid blast",
+        "air/debris scatter",
+        "rolling rumble",
+        "outdoor reflections"
+      ],
+      "sha256": "8c354be6d3ea813457ba9b7e52dffb0447c85f0870c9b8dc00ffe55e71cac27c"
+    },
+    {
+      "file": "combat/rocket_launch_2.wav",
+      "seconds": 1.8,
+      "channels": 1,
+      "sample_rate": 44100,
+      "loop": false,
+      "peak": 0.4976437295139872,
+      "rms": 0.07185386337050648,
+      "target_lufs": -15.5,
+      "layers": [
+        "ignition crack",
+        "48–115 Hz pressure",
+        "135 Hz body",
+        "turbulent jet",
+        "rising turbine",
+        "latch",
+        "early reflections"
+      ],
+      "sha256": "c5db5c9b5581f46eb6736e0ec4e7504e5dc85792016c82604fcef16ac68c2ed3"
+    },
+    {
+      "file": "combat/rocket_blast_2.wav",
+      "seconds": 2.8,
+      "channels": 1,
+      "sample_rate": 44100,
+      "loop": false,
+      "peak": 0.5635547582715785,
+      "rms": 0.09557191925035266,
+      "target_lufs": -17,
+      "layers": [
+        "impact crack",
+        "37–68 Hz shockwave",
+        "low-mid blast",
+        "air/debris scatter",
+        "rolling rumble",
+        "outdoor reflections"
+      ],
+      "sha256": "ce5d22f6ca0f462bcd887d11eb637c21a6ba9c982af13d9c574dc05508c6a8b2"
+    },
+    {
+      "file": "combat/alert.wav",
+      "seconds": 1.25,
+      "channels": 1,
+      "sample_rate": 44100,
+      "loop": false,
+      "peak": 0.5940754290135281,
+      "rms": 0.07309678942275631,
+      "target_lufs": -22,
+      "layers": [
+        "short low brass sting",
+        "tritone scrape",
+        "air transient"
+      ],
+      "sha256": "dee12fcdafc94ca435ed92cfcb4b5eb7b2e27d860d1b72cc44bd6b719306d4ed"
+    }
+  ],
+  "mastering": "44.1 kHz mono PCM16, layered synthesis, soft saturation then static gain; sample peak <= 0.86 and true peak <= -4.5 dBTP to allow near-instant launch/impact overlap; loudness target is subordinate to headroom"
+}

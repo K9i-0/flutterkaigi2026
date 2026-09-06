@@ -464,14 +464,16 @@ class HazardGameController extends ChangeNotifier {
       'break',
       'step',
       'defeat',
-      'rocket_launch',
-      'rocket_blast',
     ]) {
       fxPools[name] = await AudioPool.createFromAsset(
         path: 'audio/$name.wav',
         maxPlayers: 3,
       );
     }
+    fxPools['alert'] = await AudioPool.createFromAsset(
+      path: 'audio/combat/alert.wav',
+      maxPlayers: 1,
+    );
     for (final name in HazardFxPalette.variants) {
       for (var i = 0; i < 3; i++) {
         fxPools['${name}_$i'] = await AudioPool.createFromAsset(
@@ -743,6 +745,7 @@ class HazardGameController extends ChangeNotifier {
 
   void restart() {
     runEpoch++;
+    soundscape.resetEncounter();
     posePreview = false;
     director = null;
     campaign.difficulty = settings.difficulty;
@@ -1003,15 +1006,17 @@ class HazardGameController extends ChangeNotifier {
       if (selected == null) continue;
       final pool = fxPools[selected];
       final volume =
-          (entry.key == 'shotgun'
-              ? .72
-              : entry.key == 'shot'
-              ? .65
-              : .55) *
+          HazardFxPalette.sourceGain(
+            entry.key,
+            speaking: voice.speaking && settings.voiceVolume > 0,
+          ) *
           settings.volume *
           settings.effectsVolume *
           entry.value;
       if (pool != null && volume > .001) {
+        if (entry.key.startsWith('rocket_')) {
+          soundscape.accentImpact(entry.value * settings.effectsVolume);
+        }
         final record = <String, dynamic>{
           'name': entry.key,
           'variant': selected,
@@ -1021,9 +1026,16 @@ class HazardGameController extends ChangeNotifier {
         audioPlayback.add(record);
         if (audioPlayback.length > 12) audioPlayback.removeAt(0);
         unawaited(
-          pool.start(volume: volume).then((_) {
-            record['started'] = true;
-          }),
+          pool
+              .start(volume: volume)
+              .then(
+                (_) {
+                  record['started'] = true;
+                },
+                onError: (Object error, StackTrace stack) {
+                  record['error'] = '$error';
+                },
+              ),
         );
       }
     }
@@ -1133,7 +1145,7 @@ class HazardGameController extends ChangeNotifier {
     }
     if (s.phase == PlayPhase.transition && transitionRegion()) return;
     _syncVoice();
-    soundscape.tick(
+    final newAlert = soundscape.tick(
       dt,
       zone: s.zoneId,
       active:
@@ -1156,6 +1168,7 @@ class HazardGameController extends ChangeNotifier {
       volume: settings.muted ? 0 : settings.volume * settings.environmentVolume,
       musicVolume: settings.muted ? 0 : settings.volume * settings.musicVolume,
     );
+    if (newAlert) s.emitSound('alert');
     final moved = math.sqrt(math.pow(s.x - bx, 2) + math.pow(s.z - bz, 2));
     var motion = s.grapple != null
         ? 'Struggle'
