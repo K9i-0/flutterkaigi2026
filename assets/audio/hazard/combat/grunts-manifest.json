@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "clips": [
+    {
+      "text": "ビール！",
+      "caption": "相手に迫りながら、低く荒い声で短く叫ぶ。",
+      "seed": 42,
+      "reference": "02_CHARACTERS/Sobaya_voice.wav",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "file": "combat/enemy_0.wav",
+      "seconds": 1.354875,
+      "sha256": "837fa4a6a0c3f03bcf06c8ba6be5fbe7653876bbbfaaf8c678773704c4f06f05",
+      "raw_sha256": "eb1bd7d913ab6fec47952241efc8670d2140fc7d793235bb6b7ef949789dad94",
+      "postprocess": "canonical -5 semitones/70Hz tremolo; HP65 LP6500; 43/89ms room; -20 LUFS / -3 dBTP",
+      "derived_from": "combat/enemy_2.wav",
+      "variation": "tempo 0.78 without pitch shift, lowpass 4800Hz, -21 LUFS; two canonical takes yield three gameplay variants"
+    },
+    {
+      "text": "ビール、ビール。",
+      "caption": "息を切らし、ビールを求める低い声。二回のビールを、それぞれはっきり発音する。",
+      "seed": 42,
+      "reference": "02_CHARACTERS/Sobaya_voice.wav",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "file": "combat/enemy_1.wav",
+      "seconds": 2.52575,
+      "sha256": "7b8d18090d4c2fd5081762b431afe590e5393d2e9057c911fcf77255da2edf10",
+      "raw_sha256": "c939d681bd9a0f6feab9ef0c1db4785920436ed74acaa5b52adf27a06cfd492d",
+      "postprocess": "canonical -5 semitones/70Hz tremolo; HP65 LP6500; 43/89ms room; -20 LUFS / -3 dBTP"
+    },
+    {
+      "text": "ビール！",
+      "caption": "相手に迫りながら、低く荒い声で短く叫ぶ。",
+      "seed": 42,
+      "reference": "02_CHARACTERS/Sobaya_voice.wav",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "file": "combat/enemy_2.wav",
+      "seconds": 1.0750416666666667,
+      "sha256": "14b499afa551e742204bf8063fa9a485427c6959e59461b5997b5a942daef563",
+      "raw_sha256": "eb1bd7d913ab6fec47952241efc8670d2140fc7d793235bb6b7ef949789dad94",
+      "postprocess": "canonical -5 semitones/70Hz tremolo; HP65 LP6500; 43/89ms room; -20 LUFS / -3 dBTP"
+    }
+  ]
+}

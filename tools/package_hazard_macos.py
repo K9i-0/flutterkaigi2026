@@ -45,7 +45,7 @@ def audit(app):
 
     for region in ['village', 'farm', 'mountain']:
         match(LAB / f'assets/{region}.json', assets / f'assets/{region}.json')
-    for folder in ['audio', 'audio/voice', 'audio/soundscape', 'collection']:
+    for folder in ['audio', 'audio/voice', 'audio/soundscape', 'audio/combat', 'collection']:
         for file in (LAB / 'assets' / folder).rglob('*'):
             if file.is_file():
                 match(file, assets / 'assets' / folder / file.relative_to(LAB / 'assets' / folder))

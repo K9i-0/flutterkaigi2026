@@ -180,6 +180,8 @@ void attachGameAutomation(HazardGameController game) {
       }
       final name = p['name'];
       if (![
+        'audioExplore',
+        'audioThreat',
         'companionYametaro',
         'companionTakosan',
         'combat',
@@ -254,6 +256,18 @@ void attachGameAutomation(HazardGameController game) {
         e.active = false;
       }
       switch (name) {
+        case 'audioExplore':
+          s.x = 0;
+          s.z = -18;
+        case 'audioThreat':
+          s.x = 0;
+          s.z = -18;
+          s.enemies.first
+            ..active = true
+            ..alerted = true
+            ..x = 0
+            ..z = -9
+            ..stun = 60;
         case 'companionYametaro':
         case 'companionTakosan':
           final npc = s.npcs.firstWhere(
@@ -544,6 +558,10 @@ void attachGameAutomation(HazardGameController game) {
           for (final e in s.enemies) {
             if (p['keepEnemies'] != 'true') e.active = false;
           }
+        case 'audioThreatOff':
+          for (final e in s.enemies) {
+            e.active = false;
+          }
         case 'soundCue':
           final x = double.tryParse(p['x'] ?? '');
           final z = double.tryParse(p['z'] ?? '');
@@ -557,7 +575,20 @@ void attachGameAutomation(HazardGameController game) {
               'Finite world x/z required',
             );
           }
-          s.emitSound('enemy', x: x, z: z);
+          final cue = p['cue'] ?? 'enemy';
+          if (![
+            'enemy',
+            'shot',
+            'shotgun',
+            'mug_ready',
+            'mug_swing',
+            'mug_hit',
+          ].contains(cue)) {
+            return MarionetteExtensionResult.invalidParams(
+              'Unsupported audio cue',
+            );
+          }
+          s.emitSound(cue, x: x, z: z);
 
         case 'previewState':
           if (s.phase != PlayPhase.paused) {

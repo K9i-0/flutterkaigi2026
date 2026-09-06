@@ -120,7 +120,7 @@ class Enemy {
   double meleeRecovery = 0, approachTimer = 0;
   bool grabPending = false;
   String? companionTarget;
-  double grabCooldown = 0, releaseTime = 0;
+  double grabCooldown = 0, releaseTime = 0, vocalCooldown = 0;
   double? approachHeading, approachX, approachZ;
   bool runningApproach = false;
   int get flankSide => boss || id % 3 == 0
@@ -861,6 +861,11 @@ class HazardGameState {
         }
         if (!e.alerted) continue;
       }
+      e.vocalCooldown = math.max(0, e.vocalCooldown - dt);
+      if (e.vocalCooldown <= 0 && dist < 16 && e.stun <= 0) {
+        emitSound('enemy', x: e.x, y: e.y + 1.2, z: e.z);
+        e.vocalCooldown = 5.5 + (e.id % 4) * .73;
+      }
       if (e.vault != null) {
         final v = e.vault!;
         if (e.stun <= 0) v.advance(dt);
@@ -891,6 +896,9 @@ class HazardGameState {
       if (_tickCompanionCombat(e, dt, dist)) continue;
       if (e.boss && _tickBoss(e, dt, dx, dz, dist)) continue;
       if (!e.boss && e.attackPending) {
+        if (!e.grabPending && e.windup > .12 && e.windup - dt <= .12) {
+          emitSound('mug_swing', x: e.x, y: e.y + 1.2, z: e.z);
+        }
         e.windup -= dt;
         if (e.windup <= 0) {
           e.attackPending = false;
@@ -919,6 +927,7 @@ class HazardGameState {
             hurtTime = .45;
             reloading = 0;
             damageFlash = .4;
+            emitSound('mug_hit', x: x, y: y + 1.1, z: z);
             lastSound = 'hurt';
             if (health <= 0) {
               health = 0;
@@ -945,7 +954,7 @@ class HazardGameState {
                 .25;
         if (e.grabPending) e.grabCooldown = 7;
         e.windup = e.grabPending ? 1.0 : Enemy.meleeWindup;
-        emitSound('enemy', x: e.x, y: e.y + 1.2, z: e.z);
+        emitSound('mug_ready', x: e.x, y: e.y + 1.2, z: e.z);
         continue;
       }
       var waitingForWindow = false;
@@ -1113,6 +1122,9 @@ class HazardGameState {
     final dz = (npc['z'] as num).toDouble() - e.z;
     final distance = math.sqrt(dx * dx + dz * dz);
     if (e.attackPending) {
+      if (e.windup > .12 && e.windup - dt <= .12) {
+        emitSound('mug_swing', x: e.x, y: e.y + 1.2, z: e.z);
+      }
       e.windup -= dt;
       if (e.windup <= 0) {
         e.attackPending = false;
@@ -1131,6 +1143,12 @@ class HazardGameState {
           );
           _companionInvulnerable[id] = 1;
           companionHurt[id] = .5;
+          emitSound(
+            'mug_hit',
+            x: (npc['x'] as num).toDouble(),
+            y: .7,
+            z: (npc['z'] as num).toDouble(),
+          );
           emitSound(
             'hurt',
             x: (npc['x'] as num).toDouble(),
@@ -1164,7 +1182,7 @@ class HazardGameState {
         e.attackPending = true;
         e.grabPending = false;
         e.windup = Enemy.meleeWindup;
-        emitSound('enemy', x: e.x, z: e.z);
+        emitSound('mug_ready', x: e.x, z: e.z);
       }
       return true;
     }
@@ -1197,6 +1215,7 @@ class HazardGameState {
 
     void hurt(double damage) {
       if (invulnerable > 0 || !running) return;
+      emitSound('mug_hit', x: x, y: y + 1.1, z: z);
       health = math.max(0, health - damage * damageScale);
       invulnerable = .8;
       hurtTime = .45;
@@ -1210,6 +1229,12 @@ class HazardGameState {
     }
 
     if (e.bossMove != BossMove.ready) {
+      if ((e.bossMove == BossMove.swipeWindup ||
+              e.bossMove == BossMove.slamWindup) &&
+          e.bossTimer > .12 &&
+          e.bossTimer - dt <= .12) {
+        emitSound('mug_swing', x: e.x, y: e.y + 1.2, z: e.z);
+      }
       e.bossTimer = math.max(0, e.bossTimer - dt);
       e.windup = e.bossTimer;
       switch (e.bossMove) {
@@ -1286,7 +1311,7 @@ class HazardGameState {
     e.heading = math.atan2(dx, dz);
     e.windup = e.bossTimer;
     e.attackPending = true;
-    emitSound('enemy', x: e.x, y: e.y + 1.2, z: e.z);
+    emitSound('mug_ready', x: e.x, y: e.y + 1.2, z: e.z);
     return true;
   }
 

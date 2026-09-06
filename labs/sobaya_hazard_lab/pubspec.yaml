@@ -31,4 +31,5 @@ flutter:
     - assets/audio/
     - assets/audio/voice/
     - assets/audio/soundscape/
+    - assets/audio/combat/
   uses-material-design: true

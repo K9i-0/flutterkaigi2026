@@ -1,0 +1,76 @@
+{
+  "soundscape": {
+    "intensity": 0,
+    "duck": 1,
+    "releaseHold": 0,
+    "ambience": {
+      "requested": "village",
+      "active": "village",
+      "playbackSeconds": 0.660439,
+      "loading": false,
+      "speaking": true,
+      "finished": false,
+      "paused": false,
+      "volume": 0.2,
+      "errors": [],
+      "backend": {
+        "state": "playing",
+        "positionMs": 482,
+        "durationMs": 16000,
+        "loop": true,
+        "loopCompletions": 0,
+        "playbackRequested": true,
+        "positionUpdateMs": 200
+      }
+    },
+    "exploration": {
+      "requested": "exploration",
+      "active": "exploration",
+      "playbackSeconds": 0.6265700000000001,
+      "loading": false,
+      "speaking": true,
+      "finished": false,
+      "paused": false,
+      "volume": 0.4,
+      "errors": [],
+      "backend": {
+        "state": "playing",
+        "positionMs": 448,
+        "durationMs": 48000,
+        "loop": true,
+        "loopCompletions": 0,
+        "playbackRequested": true,
+        "positionUpdateMs": 200
+      }
+    },
+    "tension": {
+      "requested": "tension",
+      "active": "tension",
+      "playbackSeconds": 0.637565,
+      "loading": false,
+      "speaking": true,
+      "finished": false,
+      "paused": false,
+      "volume": 0,
+      "errors": [],
+      "backend": {
+        "state": "playing",
+        "positionMs": 459,
+        "durationMs": 48000,
+        "loop": true,
+        "loopCompletions": 0,
+        "playbackRequested": true,
+        "positionUpdateMs": 200
+      }
+    }
+  },
+  "rendering": {
+    "continuous": true,
+    "foreground": true,
+    "posePreview": false,
+    "ticks": 42,
+    "simulationSeconds": 0.7166759999999996,
+    "playerClipSeconds": 1.9556760000000006
+  },
+  "fx": []
+}

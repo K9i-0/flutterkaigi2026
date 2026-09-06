@@ -1,0 +1,113 @@
+{
+  "soundscape": {
+    "intensity": 2.3654536402872993e-7,
+    "duck": 1,
+    "releaseHold": 0,
+    "ambience": {
+      "requested": "village",
+      "active": "village",
+      "playbackSeconds": null,
+      "loading": false,
+      "speaking": true,
+      "finished": false,
+      "paused": false,
+      "volume": 0.2,
+      "errors": [],
+      "backend": {
+        "state": "completed",
+        "positionMs": 11874,
+        "durationMs": 16000,
+        "loop": true,
+        "loopCompletions": 4,
+        "playbackRequested": true,
+        "positionUpdateMs": 200
+      }
+    },
+    "exploration": {
+      "requested": "exploration",
+      "active": "exploration",
+      "playbackSeconds": null,
+      "loading": false,
+      "speaking": true,
+      "finished": false,
+      "paused": false,
+      "volume": 0.4,
+      "errors": [],
+      "backend": {
+        "state": "completed",
+        "positionMs": 28266,
+        "durationMs": 48000,
+        "loop": true,
+        "loopCompletions": 1,
+        "playbackRequested": true,
+        "positionUpdateMs": 200
+      }
+    },
+    "tension": {
+      "requested": "tension",
+      "active": "tension",
+      "playbackSeconds": 28.394762,
+      "loading": false,
+      "speaking": true,
+      "finished": false,
+      "paused": false,
+      "volume": 0,
+      "errors": [],
+      "backend": {
+        "state": "playing",
+        "positionMs": 28249,
+        "durationMs": 48000,
+        "loop": true,
+        "loopCompletions": 1,
+        "playbackRequested": true,
+        "positionUpdateMs": 200
+      }
+    }
+  },
+  "rendering": {
+    "continuous": true,
+    "foreground": true,
+    "posePreview": false,
+    "ticks": 4463,
+    "simulationSeconds": 75.46759799999829,
+    "playerClipSeconds": 1.6399429999999753
+  },
+  "fx": [
+    {
+      "name": "shot",
+      "variant": "shot_0",
+      "volume": 0.65,
+      "started": true
+    },
+    {
+      "name": "shotgun",
+      "variant": "shotgun_0",
+      "volume": 0.72,
+      "started": true
+    },
+    {
+      "name": "mug_ready",
+      "variant": "mug_ready_0",
+      "volume": 0.55,
+      "started": true
+    },
+    {
+      "name": "mug_swing",
+      "variant": "mug_swing_0",
+      "volume": 0.55,
+      "started": true
+    },
+    {
+      "name": "mug_hit",
+      "variant": "mug_hit_0",
+      "volume": 0.55,
+      "started": true
+    },
+    {
+      "name": "enemy",
+      "variant": "enemy_0",
+      "volume": 0.55,
+      "started": true
+    }
+  ]
+}

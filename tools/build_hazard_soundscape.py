@@ -31,7 +31,7 @@ def save(relative, samples, peak, loop=False):
     with wave.open(str(dest),'wb') as f:
         f.setparams((1,2,RATE,0,'NONE','not compressed'));f.writeframes(pcm.tobytes())
     rows.append({'file':relative, 'seconds':len(pcm)/RATE,
-       'peak':float(np.max(np.abs(samples))), 'rms':float(np.sqrt(np.mean(samples*samples))),
+       'sample_rate':RATE, 'channels':1, 'peak':float(np.max(np.abs(samples))), 'rms':float(np.sqrt(np.mean(samples*samples))),
        'loop':loop, 'seam_delta':int(abs(int(pcm[0])-int(pcm[-1]))) if loop else None,
        'sha256':hashlib.sha256(dest.read_bytes()).hexdigest()})
 
@@ -47,16 +47,7 @@ water=noise(300,3600)*.018
 for c,hz in [(1,921),(4.4,1237),(8.8,853),(13,1161)]:
     water+=.10*pulse(c,.027)*np.sin(2*np.pi*hz*t)
 save('soundscape/mountain.wav',wind+water,.5,True)
-# 90 BPM, 24 beats, sparse low D-minor ostinato; each oscillator is periodic.
-score=np.zeros(N)
-for beat in range(24):
-    center=beat*2/3
-    score+=.14*pulse(center,.065)*np.sin(2*np.pi*48*t)
-    if beat%2==0:
-        hz=[73.4375,87.3125,110,82.4375][(beat//2)%4]
-        score+=.11*pulse(center+.13,.24)*(np.sin(2*np.pi*hz*t)+.17*np.sin(2*np.pi*hz*2*t))
-score+=.035*np.sin(2*np.pi*36.6875*t)*(.6+.4*np.sin(2*np.pi*t/8))
-save('soundscape/tension.wav',score,.65,True)
+# The two music loops are authored by build_hazard_score.py.
 u=np.arange(int(.85*RATE))/RATE
 response=np.zeros_like(u)
 for start,hz in [(0.06,320),(.28,410),(.49,285)]:
@@ -65,5 +56,8 @@ for start,hz in [(0.06,320),(.28,410),(.49,285)]:
     response+=envelope*np.sin(2*np.pi*(hz*local+35*(1-np.exp(-local*15))))
 response*=np.sin(np.pi*u/.85)**.5
 save('voice/takosan_response.wav',response,.55)
-(OUT/'soundscape-manifest.json').write_text(json.dumps({'version':1,'generator':'tools/build_hazard_soundscape.py','seed':90449,'sample_rate':RATE,'files':rows},ensure_ascii=False,indent=2)+'\n')
+score=OUT/'score-manifest.json'
+if score.exists():
+    rows += [r for r in json.loads(score.read_text())['files'] if r['loop']]
+(OUT/'soundscape-manifest.json').write_text(json.dumps({'version':2,'generator':'tools/build_hazard_soundscape.py','score_manifest':'score-manifest.json','seed':90449,'files':rows},ensure_ascii=False,indent=2)+'\n')
 print(json.dumps(rows,indent=2))

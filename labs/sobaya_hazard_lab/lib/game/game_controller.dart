@@ -12,6 +12,7 @@ import 'package:vector_math/vector_math.dart' as vm;
 
 import 'game_state.dart';
 import 'game_collection.dart';
+import 'game_fx_palette.dart';
 import 'game_navigation.dart';
 import 'game_camera.dart';
 import 'game_contact_shadows.dart';
@@ -171,6 +172,7 @@ class HazardGameController extends ChangeNotifier {
       crateNodes = <String, Node>{};
   late Node pistol, shotgun, impact, muzzle;
   final fxPools = <String, AudioPool>{};
+  final fxPalette = HazardFxPalette();
   final audioPlayback = <Map<String, dynamic>>[];
   late VoiceCatalog voiceCatalog;
   late SpeechEnvelopes speechEnvelopes;
@@ -455,13 +457,10 @@ class HazardGameController extends ChangeNotifier {
     scene.add(muzzle);
     _resetNodes();
     for (final name in [
-      'shot',
-      'shotgun',
       'pickup',
       'collect',
       'heal',
       'clear',
-      'enemy',
       'hurt',
       'reload',
       'equip',
@@ -475,6 +474,14 @@ class HazardGameController extends ChangeNotifier {
         path: 'audio/$name.wav',
         maxPlayers: 3,
       );
+    }
+    for (final name in HazardFxPalette.variants) {
+      for (var i = 0; i < 3; i++) {
+        fxPools['${name}_$i'] = await AudioPool.createFromAsset(
+          path: 'audio/combat/${name}_$i.wav',
+          maxPlayers: name == 'enemy' ? 1 : 2,
+        );
+      }
     }
     contactShadows = ContactShadows(11);
     scene.add(contactShadows!.node);
@@ -851,12 +858,22 @@ class HazardGameController extends ChangeNotifier {
       gains[sound.name] = math.max(gains[sound.name] ?? 0, gain);
     }
     for (final entry in gains.entries) {
-      final pool = fxPools[entry.key];
+      final selected = fxPalette.select(entry.key, s.time);
+      if (selected == null) continue;
+      final pool = fxPools[selected];
       final volume =
-          (entry.key == 'shotgun' ? .75 : .55) * settings.volume * entry.value;
+          (entry.key == 'shotgun'
+              ? .72
+              : entry.key == 'shot'
+              ? .65
+              : .55) *
+          settings.volume *
+          settings.effectsVolume *
+          entry.value;
       if (pool != null && volume > .001) {
         final record = <String, dynamic>{
           'name': entry.key,
+          'variant': selected,
           'volume': volume,
           'started': false,
         };
@@ -958,10 +975,13 @@ class HazardGameController extends ChangeNotifier {
                 e.alive &&
                 e.active &&
                 e.alerted &&
-                (e.x - s.x) * (e.x - s.x) + (e.z - s.z) * (e.z - s.z) < 144,
+                (e.companionTarget != null ||
+                    (e.x - s.x) * (e.x - s.x) + (e.z - s.z) * (e.z - s.z) <
+                        144),
           ),
       speaking: voice.speaking && settings.voiceVolume > 0,
       volume: settings.muted ? 0 : settings.volume * settings.environmentVolume,
+      musicVolume: settings.muted ? 0 : settings.volume * settings.musicVolume,
     );
     final moved = math.sqrt(math.pow(s.x - bx, 2) + math.pow(s.z - bz, 2));
     var motion = s.grapple != null

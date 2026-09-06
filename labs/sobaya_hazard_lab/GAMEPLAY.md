@@ -252,3 +252,14 @@ Vaultを片手で枠を支える姿勢へ改訂した。腰を支え側へ寄せ
 検証: 既存112テスト通過後に遮蔽物・撃破後の保存・会話への逃げ込みを追加し、護衛/収集の13テストが通過、analyze指摘0。Dart MCP起動のmacOS実描画で両仲間の敗北、リトライ、通常そば屋への3発での救助（仲間体力60を維持）を確認。設定の確認画面とキャンセルを操作し、既収集12枚は保持。リセット実行・保存失敗・エリア復帰は状態/保存テストで検証し、ユーザーの実保存を消す操作は行っていない。新規7音声を含む29キューの整合性・波形とローカルASRを検査し、ネイティブ会話の17観測で再生・一時停止・話者切り替え・口同期を確認。ASRは聴感の承認ではない。今回の変更後のprofile/全編通しプレイは未実施。
 
 MCP: `madogiwa.openGameScenario` の `name=companionYametaro|companionTakosan` で、仲間へ接近するそば屋を一体配置する。`madogiwa.inspectHazardGame` の `companions`、`fallenCompanion`、敵の `companionTarget` で確認できる。[実機検証](qa/companions-yame-final-20260906.json)・[たこさん](qa/companions-tako-final-20260906.json)・[会話](qa/companions-conversation-20260906.json)。
+
+
+## 戦闘音・オリジナルBGM（2026-09-06）
+
+探索「閉店後」、追跡「ラストオーダー」を各48秒のオリジナル曲へ更新。通常は探索曲、警戒中は等電力クロスフェードで追跡曲へ移る。敵を振り切ってから2.5秒保持し、ゆっくり探索曲へ戻す。両曲は音量0でも同じ再生セッションを維持し、警戒するたびに冒頭へ戻さない。会話中は背景を約32%まで下げる。環境音は既存の地域別音源を維持。設定にはBGM/効果音それぞれのスライダーを追加し、旧設定は以前の環境音量をBGM音量にも引き継ぐ。
+
+ハンドガン・ショットガン、ジョッキの構え/振り/命中、そば屋の「ビール」声を各3バリエーションにした。声は同時発声を抑え、5.5秒以上の個体間隔/全体3.2秒の間隔を設ける。距離/遮蔽物/上下階による既存の減衰を維持。ステレオ音楽に対応するが、効果音の左右パン/HRTFは今回追加していない。
+
+検証: analyze指摘0、119テスト通過。20音源のハッシュ/PCMピーク/尺/ループ端点検査を通過。macOS debug実描画で探索→警戒（探索0/追跡0.46）→解除（探索0.4/追跡0）、48秒ループ後も再生位置が進むこと、6種類の効果音のネイティブ開始、設定のBGM/効果音スライダーを確認。audioplayersのループ後state表示はcompletedになるが、ネイティブ位置更新とループ回数は継続した。主観的な音質や物理出力の無音ギャップ測定とは区別する。音楽追加後のprofile、全編通し、配布ZIPは未実施。
+
+MCP検証は `openGameScenario name=audioExplore|audioThreat`、`gameAction action=audioThreatOff`、`gameAction action=soundCue cue=shot|shotgun|enemy|mug_ready|mug_swing|mug_hit x=0 z=-18`。前面の実描画で観測し、終了時にpauseする。状態は `soundscape.exploration` / `tension` / `intensity`、`audioPlayback.variant` で取得。[探索](qa/score-explore-20260906.json)・[警戒](qa/score-threat-20260906.json)・[解除とループ](qa/score-return-loop-20260906.json)・[音源検査](qa/score-assets-20260906.json)。
