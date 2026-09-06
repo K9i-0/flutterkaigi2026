@@ -18,6 +18,7 @@ import 'game_camera.dart';
 import 'game_contact_shadows.dart';
 import 'game_campaign.dart';
 import 'game_settings.dart';
+import 'game_lighting.dart';
 import 'game_events.dart';
 import 'game_voice.dart';
 import 'game_voice_player.dart';
@@ -109,6 +110,7 @@ class UpperBodyAim extends Component {
 
 class HazardGameController extends ChangeNotifier {
   final scene = Scene();
+  final lighting = HazardLighting();
   final frames = FrameSamples();
   HazardGameState? state;
   late HazardCampaign campaign;
@@ -330,36 +332,6 @@ class HazardGameController extends ChangeNotifier {
       }
     }
     scene.add(village);
-    scene.environmentSettings = EnvironmentSettings(
-      exposure: 1.05,
-      ambientOcclusionEnabled: false,
-      fogEnabled: true,
-      fogColor: vm.Vector3(.38, .39, .33),
-      fogDensity: .012,
-      fogStart: 16,
-      fogMaxOpacity: .80,
-      vignetteEnabled: true,
-      vignetteIntensity: .30,
-    );
-    scene.skybox = Skybox(
-      GradientSkySource(
-        zenithColor: vm.Vector3(.23, .26, .24),
-        horizonColor: vm.Vector3(.53, .51, .42),
-        groundColor: vm.Vector3(.16, .17, .12),
-        sunColor: vm.Vector3(.8, .65, .4),
-      ),
-    );
-    scene.directionalLight = DirectionalLight(
-      direction: vm.Vector3(-.6, -1, .3),
-      intensity: 2,
-      castsShadow: true,
-      shadowCascadeCount: 1,
-      shadowMapResolution: 1024,
-      shadowMaxDistance: 35,
-      cacheStaticShadows: true,
-      shadowDepthBias: .003,
-      shadowNormalBias: .01,
-    );
     _applySettings();
     player = CharacterPlayer(fukuTemplate, [
       'Idle',
@@ -602,6 +574,7 @@ class HazardGameController extends ChangeNotifier {
     state?.damageScale = settings.damageScale;
     state?.enemySpeedScale = settings.enemySpeedScale;
     scene.renderScale = settings.renderScale;
+    lighting.apply(scene, enabled: settings.cinematicLighting);
   }
 
   void changeSettings(void Function(HazardSettings) change) {

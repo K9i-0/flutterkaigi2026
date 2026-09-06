@@ -14,6 +14,7 @@ class HazardSettings {
     this.sensitivity = 1,
     this.renderScale = .85,
     this.muted = false,
+    this.cinematicLighting = true,
   });
   HazardDifficulty difficulty;
   double volume,
@@ -23,7 +24,7 @@ class HazardSettings {
       effectsVolume,
       sensitivity,
       renderScale;
-  bool muted;
+  bool muted, cinematicLighting;
   double get damageScale => switch (difficulty) {
     HazardDifficulty.casual => .65,
     HazardDifficulty.standard => 1,
@@ -49,6 +50,7 @@ class HazardSettings {
     'sensitivity': sensitivity,
     'renderScale': renderScale,
     'muted': muted,
+    'cinematicLighting': cinematicLighting,
   });
   factory HazardSettings.decode(String? encoded) {
     final s = HazardSettings();
@@ -77,6 +79,7 @@ class HazardSettings {
           ? (j['renderScale'] as num).toDouble()
           : .85;
       s.muted = j['muted'] == true;
+      s.cinematicLighting = j['cinematicLighting'] != false;
     } catch (_) {
       /* Damaged preferences use the playable defaults. */
     }

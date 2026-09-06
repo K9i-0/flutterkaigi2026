@@ -2,6 +2,7 @@ include: package:flutter_lints/flutter.yaml
 
 analyzer:
   exclude:
+    - vendor/** # Pinned upstream sources retain their own lint baseline.
     - build/**
     - android/**
     - ios/**
