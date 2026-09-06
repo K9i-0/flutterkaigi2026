@@ -1,0 +1,131 @@
+{
+  "date": "2026-09-06T11:08:15.052409+09:00",
+  "sourceRevision": "e7726a9fa7fc8d2fb663b83020e1b0a57c95edf0",
+  "archive": {
+    "archive": ".local/hazard_releases/sobaya-hazard-macos-e7726a9.zip",
+    "bytes": 174691908,
+    "sha256": "3fce9b5b664e920eb744c6427d041cc17ade2e3de61f1074a689855d03b75f7c",
+    "sourceRevision": "e7726a9fa7fc8d2fb663b83020e1b0a57c95edf0",
+    "sceneCount": 9,
+    "voiceCueCount": 31
+  },
+  "build": {
+    "date": "2026-09-06T11:02:29.141867+09:00",
+    "bundleId": "com.madogiwa.sobayaHazardLab",
+    "version": "0.1.0",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "declaredMinimumMacOS": "12.0",
+    "signatureIntegrity": "codesign --verify --deep --strict passed",
+    "signatureDistribution": "ad hoc; not notarized",
+    "sceneCount": 9,
+    "voiceCueCount": 31,
+    "sceneSources": [
+      {
+        "id": "assets/models/beer_mug",
+        "source": "04_GAME_ASSETS/3d/props/beer_mug_v2/beer_mug.glb",
+        "sourceSha256": "3456dcd7a79ec55936e6141a2b51432d51f38084d62a636368216530de2972f4",
+        "compiledFile": "scene.beer_mug.1e79f718.fsceneb",
+        "compiledSha256": "2251af923f238395819fe44cd0f23d4e3282b52b1cd8549467a0ccb01a83bb8c",
+        "importStamp": "c87e4829c1c7dce7"
+      },
+      {
+        "id": "assets/models/farm",
+        "source": "04_GAME_ASSETS/3d/environments/farm/farm.glb",
+        "sourceSha256": "e4d696a760171615744bca3841f74c509f0f0bed56ed4186b159d2118355032c",
+        "compiledFile": "scene.farm.df7fa6b4.fsceneb",
+        "compiledSha256": "b04821c9e828bb06aa00dc11eebe65ca798a7f48ab18fac69c5f083fc84e7350",
+        "importStamp": "ec1d1ccbf702f424"
+      },
+      {
+        "id": "assets/models/fukuchan",
+        "source": "04_GAME_ASSETS/3d/characters/fukuchan/rig_v1/fukuchan.glb",
+        "sourceSha256": "031ddc85939ce56f4562ae1b65f41109a11653a412e948a1db6e82dfe3d15fcc",
+        "compiledFile": "scene.fukuchan.c0d54c25.fsceneb",
+        "compiledSha256": "0d057c30e297f17cb8c30542d3302db1d25ca144425bfa54d60394af8e508920",
+        "importStamp": "fffd082ce8ea9aba"
+      },
+      {
+        "id": "assets/models/items",
+        "source": "04_GAME_ASSETS/3d/props/hazard_kit/items.glb",
+        "sourceSha256": "6ed27a4efb14863e54fc177ef8db88d195ee5c0436f98cddccb635244b2840eb",
+        "compiledFile": "scene.items.79a2d4bf.fsceneb",
+        "compiledSha256": "872c39c2988ad5725b32ce045cb5095deb0a424ef76a06433b14bc182ba419de",
+        "importStamp": "4abc4d9372c91875"
+      },
+      {
+        "id": "assets/models/mountain",
+        "source": "04_GAME_ASSETS/3d/environments/mountain/mountain.glb",
+        "sourceSha256": "c41adc03e32c0a8e42517c075092b559a7f4334575aa962b8f615a3e664c7a40",
+        "compiledFile": "scene.mountain.551294d6.fsceneb",
+        "compiledSha256": "637d54654c84ca0a6f6eb2b472a4154b57e047e78597005cf6435efe12fa5fb4",
+        "importStamp": "2696fb47fbfaf1eb"
+      },
+      {
+        "id": "assets/models/sobaya",
+        "source": "04_GAME_ASSETS/3d/characters/sobaya/rig_v3/sobaya_rig.glb",
+        "sourceSha256": "644f7898fad33edb8cbdd4fb1c8dce2a557b6a0147d8beea976feb8316f7ba96",
+        "compiledFile": "scene.sobaya.fd082e41.fsceneb",
+        "compiledSha256": "3f89f3762b85e0632f33b9d164d846f40e41f074864931c2594162bab3bd7619",
+        "importStamp": "c78722e5cd00e7a0"
+      },
+      {
+        "id": "assets/models/takosan",
+        "source": "04_GAME_ASSETS/3d/characters/takosan/rig_v1/takosan.glb",
+        "sourceSha256": "97040f7eecf665c83720ae918c15ea80c4688d0e3ef5ce2f49e27969353ab361",
+        "compiledFile": "scene.takosan.744cfef3.fsceneb",
+        "compiledSha256": "1926f02304166ff009e26f074570f4d45c85f76afe051494d63d68981953de49",
+        "importStamp": "ea9b8aaa51470ccf"
+      },
+      {
+        "id": "assets/models/village",
+        "source": "04_GAME_ASSETS/3d/environments/pueblo/village.glb",
+        "sourceSha256": "742c8566c0811fbba22f384cb58daf7a20894cf1cc26a97b52703d7129a94307",
+        "compiledFile": "scene.village.c8a19c1a.fsceneb",
+        "compiledSha256": "1aa6fc1eb260e117f394f92e6ff03a9d3dde694a6396163d1e7bc27872a2afdc",
+        "importStamp": "cd57b57444e021a0"
+      },
+      {
+        "id": "assets/models/yametaro",
+        "source": "04_GAME_ASSETS/3d/characters/yametaro/rig_v1/yametaro.glb",
+        "sourceSha256": "fc42ebf1ec1391132ab5bd9c29cbd3c7a0476068cb7e78f17d41914d9641e522",
+        "compiledFile": "scene.yametaro.349b9361.fsceneb",
+        "compiledSha256": "f78b727c3075cfcd06d70197dc19cc1325faa36f1fa83dc163763780ff5e57b3",
+        "importStamp": "f7ed8493ae814bb1"
+      }
+    ],
+    "appBytes": 233943739,
+    "binaryHashes": {
+      "runner": "ecfd7e1a2c92d3afce46c03a904d4050acbe0b43e9c6a68281501a0e0fa84073",
+      "dartAot": "753bcdaa715ea3fb799720954b9a4d98fc8060a47f771122a28c842854f913fc"
+    },
+    "sourceRevision": "e7726a9fa7fc8d2fb663b83020e1b0a57c95edf0"
+  },
+  "validation": {
+    "flutterTests": 86,
+    "flutterAnalyze": "No issues found",
+    "profile": "../benchmarks/game-traversal-20260906.json",
+    "campaign": "campaign-traversal-20260906.json",
+    "releaseBuild": "Flutter 3.47.2 / Dart 3.13.2; release lib/game_main.dart; 233.9MB",
+    "bundleAssets": "All map, collection, audio and compiled scene bytes match current local assets; scene manifest matches generated catalog. GLB source and compiled scene hashes are recorded separately.",
+    "zipIntegrity": "zipfile.testzip passed",
+    "finalPackagedLaunch": {
+      "method": "open -n on packaged app",
+      "processObserved": true,
+      "pidAtObservation": 40295,
+      "uiVerified": false,
+      "reason": "CUA getApp on both NFC/NFD paths returns cgWindowNotFound. Bundle ID lookup is ambiguous across installed builds. CUA inventory lists this game running; user was asked to foreground the window.",
+      "duplicateLog": "A direct launch of the same packaged executable initialized MetalSDF and flutter_scene compression support. The duplicate and older preview were then stopped."
+    }
+  },
+  "limitations": [
+    "Final packaged title/start/input UI verification is still pending; debug full campaign and profile runs are separate evidence.",
+    "First native process search missed the decomposed Japanese filename; this was a search mismatch, not evidence of an application crash.",
+    "Apple Silicon Mac M4 only; universal binaries and minimum OS declaration do not prove Intel or older macOS runtime compatibility.",
+    "Local ad hoc signed preview, not notarized; no public upload.",
+    "Long-run stability and human first-play/listening assessment remain incomplete.",
+    "Lip sync and grabbing remain unimplemented; traversal hand contact and extreme garment deformation still need refinement."
+  ]
+}
