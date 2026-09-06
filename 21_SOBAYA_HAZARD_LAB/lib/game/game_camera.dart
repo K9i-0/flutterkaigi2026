@@ -5,6 +5,21 @@ import 'package:vector_math/vector_math.dart' as vm;
 
 import 'game_state.dart';
 
+/// Pointer deltas steer the viewing direction, rather than dragging the world.
+void rotatePlayerView(
+  HazardGameState s,
+  double dx,
+  double dy, {
+  double sensitivity = 1,
+}) {
+  if (!s.running) return;
+  s.yaw += dx * .006 * sensitivity;
+  s.pitch = (s.pitch + dy * .004 * sensitivity).clamp(
+    minCameraPitch,
+    maxCameraPitch,
+  );
+}
+
 PerspectiveCamera playerCamera(HazardGameState s) {
   final right = vm.Vector3(-math.cos(s.yaw), 0, math.sin(s.yaw));
   final pivot = vm.Vector3(s.x, s.y + 1.35, s.z);
