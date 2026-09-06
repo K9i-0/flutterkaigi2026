@@ -310,10 +310,11 @@ void attachGameAutomation(HazardGameController game) {
             ..x = (npc['x'] as num).toDouble()
             ..z = (npc['z'] as num).toDouble() + 1;
         case 'bossEvent':
-          s.x = 1.5;
-          s.z = 4;
-          s.yaw = -1.5707963267948966;
-          s.heading = 1.5707963267948966;
+          // Match the chapter-entry framing; keep the real arrival position.
+          s.x = -19;
+          s.z = -21;
+          s.yaw = 3.141592653589793;
+          s.heading = 0;
         case 'bossCombat':
           s.x = 6;
           s.z = 4;

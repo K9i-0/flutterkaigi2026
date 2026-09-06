@@ -21,11 +21,7 @@ const cinematicDocuments = <String, (String, String, String)>{
     '帰任便への乗船には帰任票が必要\n帰任票の発行担当者：当便に乗船していません',
     '現地案件の完了後に申請してください',
   ),
-  'engine-link': (
-    'そば屋エンジン　動力の流れ',
-    '大型クローンの怪力 → 主軸 → 運転命令の送信機\n運転命令が救難回線へ割り込み続ける',
-    '大型クローンを止める → 送信機も停止\n独立蓄電池の非常無線から、たこさんが救助を要請',
-  ),
+  'engine-link': ('村から帰るために', '山の廃屋にいる巨大そば屋を倒す', 'エンジン停止 → たこさんが救助船を呼ぶ'),
   'shelter': (
     '宿舎　閉じた扉の向こう',
     '扉を二度たたく。\n内側から、二度返事があった。',
@@ -33,7 +29,7 @@ const cinematicDocuments = <String, (String, String, String)>{
   ),
   'rescue-radio': (
     '救難通信　たこさん → 救助船',
-    '中枢停止。避難者の搬送をお願いします。\n\n救助船：救難信号、受信しました。',
+    '巨大そば屋を倒し、エンジンが止まりました。避難者の搬送をお願いします。\n\n救助船：救難信号、受信しました。',
     '「帰任票は要りません。そこにいる人、全員乗せます」',
   ),
   'decree': (
@@ -53,9 +49,9 @@ const cinematicDocuments = <String, (String, String, String)>{
     '受入停止の連絡票：未送信',
   ),
   'radio': (
-    '非常停止・救難通信',
-    '管理端末から「検収完了」を承認\n管理端末：本社へ回収済み',
-    '中枢停止 → 運転命令の送信停止\n非常無線は独立した蓄電池で作動',
+    'そば屋エンジンの止め方',
+    '山の廃屋にいる巨大そば屋を倒す\nそれでエンジンは停止します',
+    '救助船はたこさんが呼びます\n難しい操作はありません',
   ),
   'diary': (
     '窓際社員の日記',
@@ -236,7 +232,7 @@ class EngineLinkDiagram extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                stopped ? '中枢を止めると' : '運転中の動力経路',
+                stopped ? 'あとは、みんなで帰る' : 'やることは、ひとつ',
                 style: TextStyle(color: color, fontSize: 26),
               ),
               const SizedBox(height: 20),
@@ -245,22 +241,22 @@ class EngineLinkDiagram extends StatelessWidget {
                 children: [
                   part(
                     Icons.fitness_center,
-                    '大型クローン',
-                    stopped ? '撃退・停止' : 'ビールで稼働',
+                    '巨大そば屋',
+                    stopped ? '撃退！' : 'こいつを倒す',
                   ),
                   Icon(Icons.arrow_forward, color: color, size: 40),
-                  part(Icons.settings, '主軸', stopped ? '回転停止' : '怪力で回転'),
+                  part(Icons.settings, 'そば屋エンジン', stopped ? '停止！' : '倒せば止まる'),
                   Icon(Icons.arrow_forward, color: color, size: 40),
                   part(
                     Icons.settings_input_antenna,
-                    '運転命令の送信機',
-                    stopped ? '割り込み停止' : '救難回線を妨害',
+                    '救助船',
+                    stopped ? 'たこさんが呼ぶ' : '手配はたこさん',
                   ),
                 ],
               ),
               const SizedBox(height: 20),
               Text(
-                stopped ? '独立蓄電池 → 非常無線 → たこさんが救助要請' : '通常の停止端末は、本社へ回収済み',
+                stopped ? '東の脱出路で仲間と合流しよう' : '山の廃屋にいる、一番でかいそば屋が目印',
                 style: TextStyle(color: color, fontSize: 21),
               ),
             ],

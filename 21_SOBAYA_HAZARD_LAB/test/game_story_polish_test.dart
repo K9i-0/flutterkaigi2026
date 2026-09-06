@@ -64,11 +64,24 @@ void main() {
       expect(s.tradePurchases[offer.id], 1);
       expect(s.tradeSerial, 1);
       expect(catalog.cue('purchase', 'たこさん', s.tradeMessage), isNotNull);
+      // A purchase is applied once, before the optional speaker exchange.
+      final replies = purchaseReplies[offer.id] ?? const <DialogueLine>[];
+      for (final reply in replies) {
+        expect(s.dialogueChoices, false);
+        s.buySupplies(offer.id);
+        expect(s.tradePurchases[offer.id], 1);
+        s.advanceDialogue();
+        expect(s.dialogueLine, reply);
+        expect(catalog.cue('reply', reply.speaker, reply.text), isNotNull);
+      }
+      expect(s.dialogueChoices, true);
       s.beers = 0;
       s.buySupplies(offer.id);
       expect(s.tradeMessage, contains('足りません'));
       expect(s.tradePurchases[offer.id], 1);
       expect(s.tradeSerial, 2);
+      expect(s.tradeReplies, isEmpty);
+      expect(s.dialogueChoices, true);
     }
   });
   test(

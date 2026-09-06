@@ -1,0 +1,454 @@
+{
+  "date": "2026-09-06",
+  "changes": [
+    "Boss defeat is the only required engine stop action; HUD, dialogue, cinematic diagram and memo agree.",
+    "Chapter 3 starts at mountain entry; no x > 1 threshold.",
+    "Takosan exiled for distributing employee images as free stock images.",
+    "Herb purchase is followed by Fukuchan/Takosan exchange and reverse shots."
+  ],
+  "checks": {
+    "flutterAnalyze": "PASS",
+    "flutterTests": 140,
+    "audioAssets": 88,
+    "changedVoiceClips": 14,
+    "localTranscription": "14 new/changed clips screened; Whisper has homophone/jargon errors. VOICEVOX gyun phonemes verified as gy/u/N repeated twice."
+  },
+  "native": {
+    "takosanExile": {
+      "phase": "dialogue",
+      "zone": "farm",
+      "position": {
+        "x": -13,
+        "y": 0,
+        "z": -19.4
+      },
+      "dialogue": {
+        "npc": "takosan",
+        "topic": "intro",
+        "line": 2,
+        "choices": false,
+        "metYametaro": false,
+        "receivedAmmo": false,
+        "metTakosan": true,
+        "tradePurchases": {}
+      },
+      "beers": 8,
+      "voice": {
+        "requested": "dialogue:4:2:farm:takosan:intro:2:0:社員の画像を、フリー素材としてネットで配っていたのがバレました。商用利用も可にしていました。",
+        "active": "dialogue:4:2:farm:takosan:intro:2:0:社員の画像を、フリー素材としてネットで配っていたのがバレました。商用利用も可にしていました。",
+        "playbackSeconds": 0.160536,
+        "loading": false,
+        "speaking": true,
+        "finished": false,
+        "paused": false,
+        "volume": 1,
+        "errors": [],
+        "backend": {
+          "state": "playing",
+          "positionMs": 0,
+          "durationMs": 7690,
+          "loop": false,
+          "loopCompletions": 0,
+          "playbackRequested": true,
+          "positionUpdateMs": 200
+        }
+      },
+      "speechFaces": {
+        "福ちゃん": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        },
+        "やめ太郎": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        }
+      },
+      "seenEvents": [],
+      "event": null
+    },
+    "herbExplanation": {
+      "phase": "dialogue",
+      "zone": "farm",
+      "position": {
+        "x": -13,
+        "y": 0,
+        "z": -19.4
+      },
+      "dialogue": {
+        "npc": "takosan",
+        "topic": "trade_result",
+        "line": 0,
+        "choices": false,
+        "metYametaro": false,
+        "receivedAmmo": false,
+        "metTakosan": true,
+        "tradePurchases": {
+          "herb": 1
+        }
+      },
+      "beers": 5,
+      "voice": {
+        "requested": "dialogue:1:1:farm:takosan:trade_result:0:1:グリーンハーブです。疲れも痛みも、すーっと消えますよ。何が入っているかは、聞かないほうが長生きできます。",
+        "active": "dialogue:1:1:farm:takosan:trade_result:0:1:グリーンハーブです。疲れも痛みも、すーっと消えますよ。何が入っているかは、聞かないほうが長生きできます。",
+        "playbackSeconds": 0.150111,
+        "loading": false,
+        "speaking": true,
+        "finished": false,
+        "paused": false,
+        "volume": 1,
+        "errors": [],
+        "backend": {
+          "state": "playing",
+          "positionMs": 0,
+          "durationMs": 8725,
+          "loop": false,
+          "loopCompletions": 0,
+          "playbackRequested": true,
+          "positionUpdateMs": 200
+        }
+      },
+      "speechFaces": {
+        "福ちゃん": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        },
+        "やめ太郎": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        }
+      },
+      "seenEvents": [],
+      "event": null
+    },
+    "herbFukuchan": {
+      "phase": "dialogue",
+      "zone": "farm",
+      "position": {
+        "x": -13,
+        "y": 0,
+        "z": -19.4
+      },
+      "dialogue": {
+        "npc": "takosan",
+        "topic": "trade_result",
+        "line": 1,
+        "choices": false,
+        "metYametaro": false,
+        "receivedAmmo": false,
+        "metTakosan": true,
+        "tradePurchases": {
+          "herb": 1
+        }
+      },
+      "beers": 5,
+      "voice": {
+        "requested": "dialogue:1:1:farm:takosan:trade_result:1:1:それってギュンギュンってこと？",
+        "active": "dialogue:1:1:farm:takosan:trade_result:1:1:それってギュンギュンってこと？",
+        "playbackSeconds": 0.427495,
+        "loading": false,
+        "speaking": true,
+        "finished": false,
+        "paused": false,
+        "volume": 1,
+        "errors": [],
+        "backend": {
+          "state": "playing",
+          "positionMs": 313,
+          "durationMs": 2720,
+          "loop": false,
+          "loopCompletions": 0,
+          "playbackRequested": true,
+          "positionUpdateMs": 200
+        }
+      },
+      "speechFaces": {
+        "福ちゃん": {
+          "opening": 0.2276095999999999,
+          "nodes": 1,
+          "weights": [
+            0.22760960459709167,
+            0.045521918684244156
+          ]
+        },
+        "やめ太郎": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        }
+      },
+      "seenEvents": [],
+      "event": null
+    },
+    "herbTakosan": {
+      "phase": "dialogue",
+      "zone": "farm",
+      "position": {
+        "x": -13,
+        "y": 0,
+        "z": -19.4
+      },
+      "dialogue": {
+        "npc": "takosan",
+        "topic": "trade_result",
+        "line": 2,
+        "choices": true,
+        "metYametaro": false,
+        "receivedAmmo": false,
+        "metTakosan": true,
+        "tradePurchases": {
+          "herb": 1
+        }
+      },
+      "beers": 5,
+      "voice": {
+        "requested": "dialogue:1:1:farm:takosan:trade_result:2:1:ギュンギュンです。",
+        "active": "dialogue:1:1:farm:takosan:trade_result:2:1:ギュンギュンです。",
+        "playbackSeconds": 0.460862,
+        "loading": false,
+        "speaking": true,
+        "finished": false,
+        "paused": false,
+        "volume": 1,
+        "errors": [],
+        "backend": {
+          "state": "playing",
+          "positionMs": 318,
+          "durationMs": 1077,
+          "loop": false,
+          "loopCompletions": 0,
+          "playbackRequested": true,
+          "positionUpdateMs": 200
+        }
+      },
+      "speechFaces": {
+        "福ちゃん": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        },
+        "やめ太郎": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        }
+      },
+      "seenEvents": [],
+      "event": null
+    },
+    "mountainEntry": {
+      "phase": "cinematic",
+      "zone": "mountain",
+      "position": {
+        "x": -19,
+        "y": 0,
+        "z": -21
+      },
+      "dialogue": {
+        "npc": null,
+        "topic": "intro",
+        "line": 0,
+        "choices": true,
+        "metYametaro": false,
+        "receivedAmmo": false,
+        "metTakosan": false,
+        "tradePurchases": {}
+      },
+      "beers": 0,
+      "voice": {
+        "requested": "event:2:last_order:0",
+        "active": "event:2:last_order:0",
+        "playbackSeconds": 0.210891,
+        "loading": false,
+        "speaking": true,
+        "finished": false,
+        "paused": false,
+        "volume": 1,
+        "errors": [],
+        "backend": {
+          "state": "playing",
+          "positionMs": 0,
+          "durationMs": 12522,
+          "loop": false,
+          "loopCompletions": 0,
+          "playbackRequested": true,
+          "positionUpdateMs": 200
+        }
+      },
+      "speechFaces": {
+        "福ちゃん": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        },
+        "やめ太郎": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        }
+      },
+      "seenEvents": [],
+      "event": {
+        "id": "last_order",
+        "shot": 0,
+        "elapsed": 0.21667,
+        "duration": 14.022083333333333,
+        "visual": {
+          "image": "",
+          "document": "",
+          "progress": 0.03433789954337899
+        },
+        "paused": false
+      }
+    },
+    "afterChapterMovie": {
+      "phase": "playing",
+      "zone": "mountain",
+      "position": {
+        "x": -19,
+        "y": 0,
+        "z": -21
+      },
+      "dialogue": {
+        "npc": null,
+        "topic": "intro",
+        "line": 0,
+        "choices": true,
+        "metYametaro": false,
+        "receivedAmmo": false,
+        "metTakosan": false,
+        "tradePurchases": {}
+      },
+      "beers": 0,
+      "voice": {
+        "requested": null,
+        "active": null,
+        "playbackSeconds": null,
+        "loading": false,
+        "speaking": false,
+        "finished": false,
+        "paused": false,
+        "volume": 1,
+        "errors": []
+      },
+      "speechFaces": {
+        "福ちゃん": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        },
+        "やめ太郎": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        }
+      },
+      "seenEvents": [
+        "last_order"
+      ],
+      "event": null
+    },
+    "mountainReentry": {
+      "phase": "playing",
+      "zone": "mountain",
+      "position": {
+        "x": -19,
+        "y": 0,
+        "z": -21
+      },
+      "dialogue": {
+        "npc": null,
+        "topic": "intro",
+        "line": 0,
+        "choices": true,
+        "metYametaro": false,
+        "receivedAmmo": false,
+        "metTakosan": false,
+        "tradePurchases": {}
+      },
+      "beers": 0,
+      "voice": {
+        "requested": null,
+        "active": null,
+        "playbackSeconds": null,
+        "loading": false,
+        "speaking": false,
+        "finished": false,
+        "paused": false,
+        "volume": 1,
+        "errors": []
+      },
+      "speechFaces": {
+        "福ちゃん": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        },
+        "やめ太郎": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        }
+      },
+      "seenEvents": [
+        "last_order",
+        "farm"
+      ],
+      "event": null
+    }
+  },
+  "limitations": [
+    "Native scenario transitions use the normal simulation, with enemies disabled by the debug scenario.",
+    "Visual and audio checks cover the modified dialogue and chapter shots; not a full playthrough.",
+    "No profile benchmark; performance-sensitive rendering settings unchanged."
+  ],
+  "savePreservation": {
+    "restoredAndVerifiedEqual": true,
+    "keys": [
+      "flutter.hazard.run.v1",
+      "flutter.hazard.collection.v1"
+    ]
+  }
+}

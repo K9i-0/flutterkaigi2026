@@ -60,7 +60,10 @@ const takosanDialogue = <String, List<DialogueLine>>{
       "一週間で店らしくなりました。倉庫に残った弾とハーブです。ビールと交換すれば、回収と補給を一度にできます。",
     ),
     DialogueLine("福ちゃん", "どうして、たこさんまで島流しに？"),
-    DialogueLine("たこさん", "見積もりの桁を一つ間違えました。安いほうです。今の価格は、三回確認しました。"),
+    DialogueLine("たこさん", "社員の画像を、フリー素材としてネットで配っていたのがバレました。商用利用も可にしていました。"),
+    DialogueLine("福ちゃん", "僕の画像もありました？"),
+    DialogueLine("たこさん", "はい。背景透過版が人気でした。"),
+    DialogueLine("福ちゃん", "便利ですね。……いや、勝手に透過しないでください。"),
   ],
   "greeting": [DialogueLine("たこさん", "お帰りなさい。ビールはこちらへ。帰りの人数も、忘れずに数えましょう。")],
   "engine": [
@@ -77,7 +80,10 @@ const takosanDialogue = <String, List<DialogueLine>>{
       "四体から十二体、最後は二十四体。納期を縮めるたび、そば屋を増やしています。世話係の名前は、ずっと一人です。",
     ),
     DialogueLine("福ちゃん", "日記にあった世話係ですね。一人で抱え込んだまま、置いていかれた。まだ、ここで待っているんでしょうか。"),
-    DialogueLine("たこさん", "宿舎に避難している社員がいます。中枢が止まったら、私が桟橋まで連れていきます。福ちゃんの席も残します。"),
+    DialogueLine(
+      "たこさん",
+      "宿舎に避難している社員がいます。巨大そば屋を倒したら、私が桟橋まで連れていきます。福ちゃんの席も残します。",
+    ),
   ],
 };
 
@@ -118,4 +124,12 @@ const purchaseLines = <String, DialogueLine>{
     'たこさん',
     'グリーンハーブです。疲れも痛みも、すーっと消えますよ。何が入っているかは、聞かないほうが長生きできます。',
   ),
+};
+
+/// Successful herb purchases continue as a short two-person exchange.
+const purchaseReplies = <String, List<DialogueLine>>{
+  'herb': [
+    DialogueLine('福ちゃん', 'それってギュンギュンってこと？'),
+    DialogueLine('たこさん', 'ギュンギュンです。'),
+  ],
 };

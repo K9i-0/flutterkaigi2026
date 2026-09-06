@@ -1,10 +1,10 @@
 # そば屋ハザード — 採用音声台本
 
-全81本、合計634.2秒。正本台詞はゲームのDartコード、生成入力は voice-lines.json、採用条件は voice-manifest.json。
+全88本、合計655.8秒。正本台詞はゲームのDartコード、生成入力は voice-lines.json、採用条件は voice-manifest.json。
 
 福ちゃん・やめ太郎・そば屋・ナレーションは Irodori-TTS v4.1-Small と正典参照音声。たこさんは VOICEVOX:Voidoll（style 89）。24kHz mono PCM16、-18LUFS/-2dBTP。採用seed・caption・参照ハッシュは以下とmanifestに記録。
 
-日記未取得の分岐と購入成功3種も音声化。購入失敗は従来の字幕と返答音。既存の進行・戦闘の台詞は該当部分以外を維持。
+第3章の巨大そば屋撃退目標、社員画像のフリー素材配布が発覚したたこさんの会話、ハーブ購入後の『ギュンギュン』掛け合いを音声化。購入失敗は字幕と返答音。
 
 ## ナレーション — 139f0c8d3089726f
 
@@ -138,6 +138,8 @@ caption: 落ち着いたアナウンサーの情景ナレーション。標準�
 
 8.757秒 / event:farm:1
 
+VOICEVOX:Voidoll / style 89 / speedScale 1.0
+
 ## 福ちゃん — aac29cbba6d6c346
 
 やめさんも、ここなら補給できるって。あと、よーたんの辞令に、村のそば屋は銃で撃ってOKとありました。
@@ -154,17 +156,23 @@ caption: 友人に話しかける。少し呆れながらも明瞭に、言葉�
 
 8.651秒 / event:farm:3
 
+VOICEVOX:Voidoll / style 89 / speedScale 1.0
+
 ## たこさん — a14b0dddf9a1d42f
 
 この写真を見てください。そば屋のクローンにビールを飲ませて、怪力で軸を回す。そば屋エンジンの開発施設だったんです。
 
 9.696秒 / event:farm:4
 
+VOICEVOX:Voidoll / style 89 / speedScale 1.0
+
 ## たこさん — 9e6a9215922a2c77
 
 台数だけ増やして、世話係は一人。案件が炎上すると、責任者は帰り、補給も止まりました。残されたクローンが、ビールを探して村へ出たんです。
 
 13.077秒 / event:farm:5
+
+VOICEVOX:Voidoll / style 89 / speedScale 1.0
 
 ## 福ちゃん — 2114ad24c74778d2
 
@@ -186,17 +194,37 @@ caption: 友人に話しかける。少し呆れながらも明瞭に、言葉�
 
 caption: 落ち着いたアナウンサーの情景ナレーション。標準語で、明瞭に、ゆっくりと文章の区切りに間を取り、最後まで読み上げる。抑制された抑揚で真面目に話す。
 
-## たこさん — 451cf475984620d9
+## たこさん — 94e259468b100659
 
-山の大型クローンが、運転命令の送信機まで回しています。止めれば非常無線が使えます。福ちゃんは中枢へ。私は無線で船を呼び、避難している社員を連れ出します。
+山の廃屋にいる、巨大そば屋を倒してください。それでエンジンは止まります。うるさい放送も止まるので、私が無線で救助船を呼びます。
 
-14.731秒 / event:farm:8
+11.157秒 / event:farm:8
+
+VOICEVOX:Voidoll / style 89 / speedScale 1.0
+
+## 福ちゃん — f2dc1fcb175c1422
+
+巨大そば屋さんを倒せばいいんですね。停止ボタンが、だいぶ大きいですね。
+
+5.360秒 / event:farm:9
+
+参照 `02_CHARACTERS/Fukuchan_voice.wav` / seed 100
+
+caption: 友人に話しかける。少し呆れながらも明瞭に、言葉の最後まで自然に話す。
+
+## たこさん — 71eaaf694fab09a3
+
+しかも、押そうとすると殴り返してきます。離れて撃ってください。
+
+5.248秒 / event:farm:10
+
+VOICEVOX:Voidoll / style 89 / speedScale 1.0
 
 ## 福ちゃん — e4d630d89894b804
 
 銃は、船でもらったばかりなんです。説明書より先に撃つことになりました。
 
-5.680秒 / event:farm:9
+5.680秒 / event:farm:11
 
 参照 `02_CHARACTERS/Fukuchan_voice.wav` / seed 100
 
@@ -206,20 +234,22 @@ caption: 友人に話しかける。少し呆れながらも明瞭に、言葉�
 
 山へ行く前に、その銃に慣れておきましょう。農場の青いメダリオンは、倉庫にあった射撃練習の的です。七つ全部落とせたら、ビール三杯分、お店の支払いをおまけします。
 
-14.773秒 / event:farm:10
+14.773秒 / event:farm:12
 
-## ナレーション — f21a97236bba4424
+VOICEVOX:Voidoll / style 89 / speedScale 1.0
 
-LAST ORDER — そば屋エンジン中枢
-「検収まで運転継続」。誰もいない監督席に向けて、録音された命令が繰り返される。
+## ナレーション — 108e7bc26387c8e1
 
-12.553秒 / event:last_order:0
+CHAPTER 03 — 巨大そば屋
+山道の先、廃屋の前に巨大なそば屋がいる。あいつを倒せば、そば屋エンジンは止まる。
+
+12.522秒 / event:last_order:0
 
 参照 `02_CHARACTERS/YumeTeleAnchor_voice.wav` / seed 2026
 
 caption: 落ち着いたアナウンサーの情景ナレーション。標準語で、明瞭に、ゆっくりと文章の区切りに間を取り、最後まで読み上げる。抑制された抑揚で真面目に話す。
 
-発話本文: ラストオーダー。 そば屋エンジン中枢。「検収まで運転継続」。誰もいない監督席に向けて、録音された命令が繰り返される。
+発話本文: 第三章。 巨大そば屋 山道の先、廃屋の前に巨大なそば屋がいる。あいつを倒せば、そば屋エンジンは止まる。
 
 ## そば屋 — d92e19322bc05e7e
 
@@ -231,11 +261,11 @@ caption: 落ち着いたアナウンサーの情景ナレーション。標準�
 
 caption: 相手を誘うように、堂々と。最後の乾杯を呼びかける。
 
-## 福ちゃん — d5b77789796ae4b7
+## 福ちゃん — 134ae5d879e4f96b
 
-止め方は、検収端末から承認。端末は、本社へ回収済み。……終了ボタンだけ先に帰ったんですね。
+あれが巨大そば屋さん……。停止ボタンがジョッキを持ってる。押しに来た人を帰す気、ないですね。
 
-7.640秒 / event:last_order:2
+7.200秒 / event:last_order:2
 
 参照 `02_CHARACTERS/Fukuchan_voice.wav` / seed 100
 
@@ -251,18 +281,18 @@ caption: 友人に話しかける。少し呆れながらも明瞭に、言葉�
 
 caption: 友人に話しかける。少し呆れながらも明瞭に、言葉の最後まで自然に話す。
 
-## ナレーション — 907e8b7b4195d977
+## ナレーション — 59c3f824b55eb72c
 
-中枢停止。運転命令が途切れた。たこさんが送った救難信号に、船から応答が返る。
+巨大そば屋を倒し、そば屋エンジンは止まった。たこさんが送った救難信号に、船から応答が返る。
 「帰任票は要りません。そこにいる人、全員乗せます」。三人は、避難していた社員たちを桟橋へ送り出した。
 
-20.025秒 / event:ending:0
+19.940秒 / event:ending:0
 
 参照 `02_CHARACTERS/YumeTeleAnchor_voice.wav` / seed 2026
 
 caption: 落ち着いたアナウンサーの情景ナレーション。標準語で、明瞭に、ゆっくりと文章の区切りに間を取り、最後まで読み上げる。抑制された抑揚で真面目に話す。
 
-発話本文: 中枢停止。運転命令が途切れた。たこさんが送った救難信号に、船から応答が返る。 「帰任票は要りません。そこにいる人、全員乗せます」。三人は、避難していた社員たちを桟橋へ送り出した。
+発話本文: 巨大そば屋を倒し、そば屋エンジンは止まった。たこさんが送った救難信号に、船から応答が返る。 「帰任票は要りません。そこにいる人、全員乗せます」。三人は、避難していた社員たちを桟橋へ送り出した。
 
 ## やめ太郎 — aa38686af3c7b266
 
@@ -299,6 +329,8 @@ caption: ほっとして、親しい仲間に軽い冗談を交えながら自�
 ビールと飼育区画は封鎖しました。避難者名簿も照合済みです。日記を書いた人もいました。船で、おにぎりを二つ食べています。
 
 10.560秒 / event:ending:4
+
+VOICEVOX:Voidoll / style 89 / speedScale 1.0
 
 ## 福ちゃん — d2d302ecbf16a656
 
@@ -337,6 +369,8 @@ caption: 関西弁で仲間へ話す。椅子が段ボールだと気づき、�
 アーロンチュアです。快適です。
 
 2.379秒 / event:ending:7
+
+VOICEVOX:Voidoll / style 89 / speedScale 1.0
 
 ## 福ちゃん — d20d269ae8c2fbba
 
@@ -588,6 +622,8 @@ caption: 焦りを少し抑えて、友人へ道案内する。柔らかい関�
 
 9.664秒 / dialogue:takosan:intro:0
 
+VOICEVOX:Voidoll / style 89 / speedScale 1.0
+
 ## 福ちゃん — ee4acb473eb1ca31
 
 どうして、たこさんまで島流しに？
@@ -598,11 +634,41 @@ caption: 焦りを少し抑えて、友人へ道案内する。柔らかい関�
 
 caption: 友人に話しかける。少し呆れながらも明瞭に、言葉の最後まで自然に話す。
 
-## たこさん — 1d653e76614f6174
+## たこさん — 4fc0e2fd6ebf6d98
 
-見積もりの桁を一つ間違えました。安いほうです。今の価格は、三回確認しました。
+社員の画像を、フリー素材としてネットで配っていたのがバレました。商用利用も可にしていました。
 
-7.488秒 / dialogue:takosan:intro:2
+7.691秒 / dialogue:takosan:intro:2
+
+VOICEVOX:Voidoll / style 89 / speedScale 1.0
+
+## 福ちゃん — d68f477767829f6b
+
+僕の画像もありました？
+
+3.200秒 / dialogue:takosan:intro:3
+
+参照 `02_CHARACTERS/Fukuchan_voice.wav` / seed 100
+
+caption: 友人に話しかける。少し呆れながらも明瞭に、言葉の最後まで自然に話す。
+
+## たこさん — fae6cfbaa952e830
+
+はい。背景透過版が人気でした。
+
+3.136秒 / dialogue:takosan:intro:4
+
+VOICEVOX:Voidoll / style 89 / speedScale 1.0
+
+## 福ちゃん — b108645a8a53065e
+
+便利ですね。……いや、勝手に透過しないでください。
+
+3.720秒 / dialogue:takosan:intro:5
+
+参照 `02_CHARACTERS/Fukuchan_voice.wav` / seed 100
+
+caption: 友人に話しかける。少し呆れながらも明瞭に、言葉の最後まで自然に話す。
 
 ## たこさん — 7436b43dd3016e39
 
@@ -610,11 +676,15 @@ caption: 友人に話しかける。少し呆れながらも明瞭に、言葉�
 
 6.411秒 / dialogue:takosan:greeting:0
 
+VOICEVOX:Voidoll / style 89 / speedScale 1.0
+
 ## たこさん — 7dd43297b355e209
 
 名目は特別研修。実際は、失敗しても表に出せない案件を、窓際社員にやらせる場所でした。
 
 8.693秒 / dialogue:takosan:engine:0
+
+VOICEVOX:Voidoll / style 89 / speedScale 1.0
 
 ## 福ちゃん — bc0cbaf4ac652b2c
 
@@ -632,11 +702,15 @@ caption: 友人に話しかける。少し呆れながらも明瞭に、言葉�
 
 9.088秒 / dialogue:takosan:engine:2
 
+VOICEVOX:Voidoll / style 89 / speedScale 1.0
+
 ## たこさん — 876bf58b1b598424
 
 四体から十二体、最後は二十四体。納期を縮めるたび、そば屋を増やしています。世話係の名前は、ずっと一人です。
 
 10.731秒 / dialogue:takosan:evidence:0
+
+VOICEVOX:Voidoll / style 89 / speedScale 1.0
 
 ## 福ちゃん — 6d1d4fe4099989ae
 
@@ -648,11 +722,13 @@ caption: 友人に話しかける。少し呆れながらも明瞭に、言葉�
 
 caption: 友人に話しかける。少し呆れながらも明瞭に、言葉の最後まで自然に話す。
 
-## たこさん — b98d5b5caa66bfa3
+## たこさん — ba8a4a082372f984
 
-宿舎に避難している社員がいます。中枢が止まったら、私が桟橋まで連れていきます。福ちゃんの席も残します。
+宿舎に避難している社員がいます。巨大そば屋を倒したら、私が桟橋まで連れていきます。福ちゃんの席も残します。
 
-9.163秒 / dialogue:takosan:evidence:2
+9.525秒 / dialogue:takosan:evidence:2
+
+VOICEVOX:Voidoll / style 89 / speedScale 1.0
 
 ## やめ太郎 — 06e0d554149d0059
 
@@ -690,17 +766,23 @@ caption: 突然殴られて痛がり、仲間に助けを求める。短く切�
 
 2.368秒 / dialogue:reaction:takosan:0
 
+VOICEVOX:Voidoll / style 89 / speedScale 1.08
+
 ## たこさん — b11733a3e2a4acd4
 
 殴らないで。ビールは渡せません。
 
 2.677秒 / dialogue:reaction:takosan:1
 
+VOICEVOX:Voidoll / style 89 / speedScale 1.08
+
 ## たこさん — 739e324a440e7cab
 
 福ちゃん……補給所を、頼みます……。
 
 2.848秒 / dialogue:reaction:takosan:2
+
+VOICEVOX:Voidoll / style 89 / speedScale 1.08
 
 ## 福ちゃん — cead3f8a8bf2a541
 
@@ -718,11 +800,15 @@ caption: 友人に話しかける。少し呆れながらも明瞭に、言葉�
 
 7.829秒 / dialogue:purchase:ammo
 
+VOICEVOX:Voidoll / style 89 / speedScale 1.0
+
 ## たこさん — 162a9842e4d28573
 
 ショットガンの弾、五発です。そば屋が近づいたら、景気よくどうぞ。壁の修理代は別です。
 
 7.723秒 / dialogue:purchase:shells
+
+VOICEVOX:Voidoll / style 89 / speedScale 1.0
 
 ## たこさん — c1007bc9b0b80dd3
 
@@ -730,18 +816,38 @@ caption: 友人に話しかける。少し呆れながらも明瞭に、言葉�
 
 8.725秒 / dialogue:purchase:herb
 
-## やめ太郎 — 33873fb6a2700604
+VOICEVOX:Voidoll / style 89 / speedScale 1.0
 
-廃屋の前の大きいそば屋が、中枢なんやな。
+## 福ちゃん — a042352914f8da89
+
+それってギュンギュンってこと？
+
+2.720秒 / dialogue:purchase:herb:reply:0
+
+参照 `02_CHARACTERS/Fukuchan_voice.wav` / seed 100
+
+caption: 友人に話しかける。少し呆れながらも明瞭に、言葉の最後まで自然に話す。
+
+## たこさん — e3ea96c86cc000aa
+
+ギュンギュンです。
+
+1.077秒 / dialogue:purchase:herb:reply:1
+
+VOICEVOX:Voidoll / style 89 / speedScale 1.0
+
+## やめ太郎 — 5239c13ce0487f14
+
+廃屋の前のでっかいそば屋を倒せば、エンジンも止まるんやな。
 振り上げたら横へ。振り終わりを狙うんや。ワイ、帰り道を開けとく。
 
-9.160秒 / dialogue:mountain:before
+9.861秒 / dialogue:mountain:before
 
 参照 `02_CHARACTERS/Yametaro_voice.wav` / seed 7
 
 caption: 焦りを少し抑えて、友人へ道案内する。柔らかい関西イントネーションで、聞き取りやすく自然に話す。
 
-発話本文: 廃屋の前の大きいそば屋が、中枢なんやな。 振り上げたら横へ。振り終わりを狙うんや。ワイ、帰り道を開けとく。
+発話本文: 廃屋の前のでっかいそば屋を倒せば、エンジンも止まるんやな。 振り上げたら横へ。振り終わりを狙うんや。ワイ、帰り道を開けとく。
 
 ## やめ太郎 — 09af2a7810293c5a
 

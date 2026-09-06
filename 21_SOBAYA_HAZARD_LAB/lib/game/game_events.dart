@@ -322,16 +322,36 @@ const hazardEvents = <String, List<EventShot>>{
     EventShot(
       7,
       "たこさん",
-      "山の大型クローンが、運転命令の送信機まで回しています。止めれば非常無線が使えます。福ちゃんは中枢へ。私は無線で船を呼び、避難している社員を連れ出します。",
+      "山の廃屋にいる、巨大そば屋を倒してください。それでエンジンは止まります。うるさい放送も止まるので、私が無線で救助船を呼びます。",
       (-13.8, 1.3, -20),
       (-13.5, 1.2, -19.7),
       (-13, .9, -17.8),
       actor: 'takosan',
       motion: 'Talk',
       cuts: [
-        EventCut(0, document: 'engine-link', label: '中枢と救難無線の関係'),
+        EventCut(0, document: 'engine-link', label: '巨大そば屋を倒せばOK'),
         EventCut(.68),
       ],
+    ),
+    EventShot(
+      4,
+      "福ちゃん",
+      "巨大そば屋さんを倒せばいいんですね。停止ボタンが、だいぶ大きいですね。",
+      (-11.8, 1.6, -18.8),
+      (-12, 1.55, -18.9),
+      (-13, 1.32, -20.8),
+      actor: 'fukuchan',
+      motion: 'Talk',
+    ),
+    EventShot(
+      4,
+      "たこさん",
+      "しかも、押そうとすると殴り返してきます。離れて撃ってください。",
+      (-13.5, 1.2, -19.7),
+      (-13.8, 1.3, -20),
+      (-13, .9, -17.8),
+      actor: 'takosan',
+      motion: 'Talk',
     ),
     EventShot(
       5,
@@ -376,7 +396,7 @@ const hazardEvents = <String, List<EventShot>>{
     EventShot(
       4,
       "",
-      "LAST ORDER — そば屋エンジン中枢\n「検収まで運転継続」。誰もいない監督席に向けて、録音された命令が繰り返される。",
+      "CHAPTER 03 — 巨大そば屋\n山道の先、廃屋の前に巨大なそば屋がいる。あいつを倒せば、そば屋エンジンは止まる。",
       (8.3, 1.7, 1.7),
       (8.7, 1.65, 1.9),
       (12, 1.45, 4),
@@ -384,7 +404,14 @@ const hazardEvents = <String, List<EventShot>>{
       motion: 'MugAttack',
       fov: .66,
       cuts: [
-        EventCut(0, image: 'engine-archive', label: '記録に残る試運転'),
+        EventCut(
+          0,
+          framing: EventShot(1, '', '', (-20, 10, 1), (-17, 9, 3), (
+            11,
+            1.5,
+            4,
+          ), fov: .9),
+        ),
         EventCut(.45),
       ],
     ),
@@ -402,7 +429,7 @@ const hazardEvents = <String, List<EventShot>>{
     EventShot(
       5,
       "福ちゃん",
-      "止め方は、検収端末から承認。端末は、本社へ回収済み。……終了ボタンだけ先に帰ったんですね。",
+      "あれが巨大そば屋さん……。停止ボタンがジョッキを持ってる。押しに来た人を帰す気、ないですね。",
       (2.0, 1.6, 2.4),
       (1.85, 1.55, 2.2),
       (0, 1.3, 0),
@@ -410,7 +437,7 @@ const hazardEvents = <String, List<EventShot>>{
       fov: .58,
       anchorToPlayer: true,
       cuts: [
-        EventCut(0, document: 'radio'),
+        EventCut(0),
         EventCut(
           .62,
           framing: EventShot(1, '', '', (8.3, 1.7, 1.7), (8.7, 1.65, 1.9), (
@@ -437,7 +464,7 @@ const hazardEvents = <String, List<EventShot>>{
     EventShot(
       5,
       "",
-      "中枢停止。運転命令が途切れた。たこさんが送った救難信号に、船から応答が返る。\n「帰任票は要りません。そこにいる人、全員乗せます」。三人は、避難していた社員たちを桟橋へ送り出した。",
+      "巨大そば屋を倒し、そば屋エンジンは止まった。たこさんが送った救難信号に、船から応答が返る。\n「帰任票は要りません。そこにいる人、全員乗せます」。三人は、避難していた社員たちを桟橋へ送り出した。",
       (13.6, 2.1, .2),
       (13.6, 1.85, .7),
       (13.6, .95, 6.5),

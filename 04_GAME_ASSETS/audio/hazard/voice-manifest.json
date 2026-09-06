@@ -366,28 +366,66 @@
     },
     {
       "speaker": "たこさん",
-      "text": "山の大型クローンが、運転命令の送信機まで回しています。止めれば非常無線が使えます。福ちゃんは中枢へ。私は無線で船を呼び、避難している社員を連れ出します。",
+      "text": "山の廃屋にいる、巨大そば屋を倒してください。それでエンジンは止まります。うるさい放送も止まるので、私が無線で救助船を呼びます。",
       "uses": [
         "event:farm:8"
       ],
-      "id": "451cf475984620d9",
-      "asset": "audio/voice/451cf475984620d9.wav",
-      "seconds": 14.730666666666666,
+      "id": "94e259468b100659",
+      "asset": "audio/voice/94e259468b100659.wav",
+      "seconds": 11.157333333333334,
       "kind": "speech",
       "model": "VOICEVOX:Voidoll",
       "style": 89,
       "speedScale": 1.0,
-      "speechText": "山の大型クローンが、運転命令の送信機まで回しています。止めれば非常無線が使えます。福ちゃんは中枢へ。私は無線で船を呼び、避難している社員を連れ出します。",
+      "speechText": "山の廃屋にいる、巨大そば屋を倒してください。それでエンジンは止まります。うるさい放送も止まるので、私が無線で救助船を呼びます。",
       "engine_version": "0.25.1",
-      "sha256": "7a1d0d52634cbcae3cf1fdb1566541ed294506a800c53e9584e240197824951a",
-      "raw_sha256": "b07f9d74b66504998967769dde3c9f8fbbc269a7a051abc319d55814f256cf35",
+      "sha256": "032f39e2dcdfb0810210f3858a280ff447cdcfcc8383943ac4076a1632c4c554",
+      "raw_sha256": "a102407e03408145a189d2bbd107fb53ae5770271c2c65048a44eed499e57d81",
+      "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
+    },
+    {
+      "speaker": "福ちゃん",
+      "text": "巨大そば屋さんを倒せばいいんですね。停止ボタンが、だいぶ大きいですね。",
+      "uses": [
+        "event:farm:9"
+      ],
+      "caption": "友人に話しかける。少し呆れながらも明瞭に、言葉の最後まで自然に話す。",
+      "seed": 100,
+      "reference": "02_CHARACTERS/Fukuchan_voice.wav",
+      "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "巨大そば屋さんを倒せばいいんですね。停止ボタンが、だいぶ大きいですね。",
+      "id": "f2dc1fcb175c1422",
+      "asset": "audio/voice/f2dc1fcb175c1422.wav",
+      "seconds": 5.360041666666667,
+      "kind": "speech",
+      "sha256": "ac5458381cfbf4201b102745976669526625d28b9bf52a0f86f05463b8f93c23",
+      "raw_sha256": "59632b80816f76a5dee43496ed21961722706062ef680ccea3b5b97abed09578"
+    },
+    {
+      "speaker": "たこさん",
+      "text": "しかも、押そうとすると殴り返してきます。離れて撃ってください。",
+      "uses": [
+        "event:farm:10"
+      ],
+      "id": "71eaaf694fab09a3",
+      "asset": "audio/voice/71eaaf694fab09a3.wav",
+      "seconds": 5.248,
+      "kind": "speech",
+      "model": "VOICEVOX:Voidoll",
+      "style": 89,
+      "speedScale": 1.0,
+      "speechText": "しかも、押そうとすると殴り返してきます。離れて撃ってください。",
+      "engine_version": "0.25.1",
+      "sha256": "6454d8ada0a4eb9a1f317baab949b4525a71dd2afc0d5c84fca61ba981ec1b43",
+      "raw_sha256": "1bcd27e7d9357b939077fd1d8c549f146c8d2fd8c5e2447a31926d181907376b",
       "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
     },
     {
       "speaker": "福ちゃん",
       "text": "銃は、船でもらったばかりなんです。説明書より先に撃つことになりました。",
       "uses": [
-        "event:farm:9"
+        "event:farm:11"
       ],
       "caption": "友人に話しかける。少し呆れながらも明瞭に、言葉の最後まで自然に話す。",
       "seed": 100,
@@ -406,7 +444,7 @@
       "speaker": "たこさん",
       "text": "山へ行く前に、その銃に慣れておきましょう。農場の青いメダリオンは、倉庫にあった射撃練習の的です。七つ全部落とせたら、ビール三杯分、お店の支払いをおまけします。",
       "uses": [
-        "event:farm:10"
+        "event:farm:12"
       ],
       "id": "63ba3dfb9909e401",
       "asset": "audio/voice/63ba3dfb9909e401.wav",
@@ -423,7 +461,7 @@
     },
     {
       "speaker": "ナレーション",
-      "text": "LAST ORDER — そば屋エンジン中枢\n「検収まで運転継続」。誰もいない監督席に向けて、録音された命令が繰り返される。",
+      "text": "CHAPTER 03 — 巨大そば屋\n山道の先、廃屋の前に巨大なそば屋がいる。あいつを倒せば、そば屋エンジンは止まる。",
       "uses": [
         "event:last_order:0"
       ],
@@ -432,13 +470,13 @@
       "reference": "02_CHARACTERS/YumeTeleAnchor_voice.wav",
       "reference_sha256": "e3cd210adad43fb3338684555e7e066f83cfad2400265c8a73fa55b9f96b753f",
       "model": "Aratako/Irodori-TTS-v4.1-Small",
-      "speechText": "ラストオーダー。 そば屋エンジン中枢。「検収まで運転継続」。誰もいない監督席に向けて、録音された命令が繰り返される。",
-      "id": "f21a97236bba4424",
-      "asset": "audio/voice/f21a97236bba4424.wav",
-      "seconds": 12.552708333333333,
+      "speechText": "第三章。 巨大そば屋 山道の先、廃屋の前に巨大なそば屋がいる。あいつを倒せば、そば屋エンジンは止まる。",
+      "id": "108e7bc26387c8e1",
+      "asset": "audio/voice/108e7bc26387c8e1.wav",
+      "seconds": 12.522083333333333,
       "kind": "speech",
-      "sha256": "9fc1ce8b299216ec7f6ad8c5d3b06d16f97a5a0d7d3f0a945e8d7f6b808485e4",
-      "raw_sha256": "18a0c210468842c88dadff5a3d7a7a043a17fa6f0dc60086b8df0565c447e239"
+      "sha256": "5116c567728a83b4f89c5051e21522801d94be3bbd693c0a375a37b4c6dc5487",
+      "raw_sha256": "06ab3a88d886d8303d780c444ec7e5e58ab88bed0de1606c6bff28798f926f2f"
     },
     {
       "speaker": "そば屋",
@@ -461,7 +499,7 @@
     },
     {
       "speaker": "福ちゃん",
-      "text": "止め方は、検収端末から承認。端末は、本社へ回収済み。……終了ボタンだけ先に帰ったんですね。",
+      "text": "あれが巨大そば屋さん……。停止ボタンがジョッキを持ってる。押しに来た人を帰す気、ないですね。",
       "uses": [
         "event:last_order:2"
       ],
@@ -470,13 +508,13 @@
       "reference": "02_CHARACTERS/Fukuchan_voice.wav",
       "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
       "model": "Aratako/Irodori-TTS-v4.1-Small",
-      "speechText": "止め方は、検収端末から承認。端末は、本社へ回収済み。……終了ボタンだけ先に帰ったんですね。",
-      "id": "d5b77789796ae4b7",
-      "asset": "audio/voice/d5b77789796ae4b7.wav",
-      "seconds": 7.640041666666667,
+      "speechText": "あれが巨大そば屋さん……。停止ボタンがジョッキを持ってる。押しに来た人を帰す気、ないですね。",
+      "id": "134ae5d879e4f96b",
+      "asset": "audio/voice/134ae5d879e4f96b.wav",
+      "seconds": 7.2000416666666665,
       "kind": "speech",
-      "sha256": "127c3a85fddec1c98c4bf39f70896241dff3a5caaaed2c87b4a5cadfac06a83d",
-      "raw_sha256": "4cf02ab7401e5eab01a11319f5b816391e2994696a0147a68674614a516b8ef6"
+      "sha256": "f512c2e038077b9c4f3924d2b29f9dc4f715543af74c6a602b0065c7c1845df1",
+      "raw_sha256": "706a1cfce3aae8426db994bc9981c934ce4d3faee8d12bb75218aba31afc1680"
     },
     {
       "speaker": "福ちゃん",
@@ -499,7 +537,7 @@
     },
     {
       "speaker": "ナレーション",
-      "text": "中枢停止。運転命令が途切れた。たこさんが送った救難信号に、船から応答が返る。\n「帰任票は要りません。そこにいる人、全員乗せます」。三人は、避難していた社員たちを桟橋へ送り出した。",
+      "text": "巨大そば屋を倒し、そば屋エンジンは止まった。たこさんが送った救難信号に、船から応答が返る。\n「帰任票は要りません。そこにいる人、全員乗せます」。三人は、避難していた社員たちを桟橋へ送り出した。",
       "uses": [
         "event:ending:0"
       ],
@@ -508,13 +546,13 @@
       "reference": "02_CHARACTERS/YumeTeleAnchor_voice.wav",
       "reference_sha256": "e3cd210adad43fb3338684555e7e066f83cfad2400265c8a73fa55b9f96b753f",
       "model": "Aratako/Irodori-TTS-v4.1-Small",
-      "speechText": "中枢停止。運転命令が途切れた。たこさんが送った救難信号に、船から応答が返る。 「帰任票は要りません。そこにいる人、全員乗せます」。三人は、避難していた社員たちを桟橋へ送り出した。",
-      "id": "907e8b7b4195d977",
-      "asset": "audio/voice/907e8b7b4195d977.wav",
-      "seconds": 20.02525,
+      "speechText": "巨大そば屋を倒し、そば屋エンジンは止まった。たこさんが送った救難信号に、船から応答が返る。 「帰任票は要りません。そこにいる人、全員乗せます」。三人は、避難していた社員たちを桟橋へ送り出した。",
+      "id": "59c3f824b55eb72c",
+      "asset": "audio/voice/59c3f824b55eb72c.wav",
+      "seconds": 19.940041666666666,
       "kind": "speech",
-      "sha256": "cb91c65840a954adc2ebd0cb98c1bc9ff3bcdbb592009279589101fcbf3f82c4",
-      "raw_sha256": "1567824e37b3b391d9c7a1c03f445cd0573e1d3fb301ce396c2da31e4785d26b"
+      "sha256": "e96b055251bfe724f22890af2bdbf4a35975949451223ad1aacfa1d874c12b33",
+      "raw_sha256": "e692f8c21e2455490c7e54002b948d328d372ffabf6d0ac76de72dc0eb0f3392"
     },
     {
       "speaker": "やめ太郎",
@@ -1164,22 +1202,79 @@
     },
     {
       "speaker": "たこさん",
-      "text": "見積もりの桁を一つ間違えました。安いほうです。今の価格は、三回確認しました。",
+      "text": "社員の画像を、フリー素材としてネットで配っていたのがバレました。商用利用も可にしていました。",
       "uses": [
         "dialogue:takosan:intro:2"
       ],
-      "id": "1d653e76614f6174",
-      "asset": "audio/voice/1d653e76614f6174.wav",
-      "seconds": 7.488,
+      "id": "4fc0e2fd6ebf6d98",
+      "asset": "audio/voice/4fc0e2fd6ebf6d98.wav",
+      "seconds": 7.690666666666667,
       "kind": "speech",
       "model": "VOICEVOX:Voidoll",
       "style": 89,
       "speedScale": 1.0,
-      "speechText": "見積もりの桁を一つ間違えました。安いほうです。今の価格は、三回確認しました。",
+      "speechText": "社員の画像を、フリー素材としてネットで配っていたのがバレました。商用利用も可にしていました。",
       "engine_version": "0.25.1",
-      "sha256": "5431906920e954e4718555b064ae53aefc343b6baa311bb04e2df59b7f802204",
-      "raw_sha256": "2abdec818336673b771178f89188627a598915fc402c39f269965d56c22e19d0",
+      "sha256": "1a4224c317cf1033d4991b7d39a6283738b66e61bc7dceaf9ff13f63e430ac2a",
+      "raw_sha256": "1e8dbf2a6fbc4d37345be423442feb45eb9b3be60ee5fababfae62544590f75a",
       "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
+    },
+    {
+      "speaker": "福ちゃん",
+      "text": "僕の画像もありました？",
+      "uses": [
+        "dialogue:takosan:intro:3"
+      ],
+      "caption": "友人に話しかける。少し呆れながらも明瞭に、言葉の最後まで自然に話す。",
+      "seed": 100,
+      "reference": "02_CHARACTERS/Fukuchan_voice.wav",
+      "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "僕の画像もありました？",
+      "id": "d68f477767829f6b",
+      "asset": "audio/voice/d68f477767829f6b.wav",
+      "seconds": 3.2000416666666665,
+      "kind": "speech",
+      "sha256": "e11b9b3b68058b8503ef2e3c833d38c8d57d1f9a4bb9058b5ead3cebd1267453",
+      "raw_sha256": "71a789936d00cea73e98056ce1cbe8a6b671ef419d0050b5c4bd32cb8319ab8b"
+    },
+    {
+      "speaker": "たこさん",
+      "text": "はい。背景透過版が人気でした。",
+      "uses": [
+        "dialogue:takosan:intro:4"
+      ],
+      "id": "fae6cfbaa952e830",
+      "asset": "audio/voice/fae6cfbaa952e830.wav",
+      "seconds": 3.136,
+      "kind": "speech",
+      "model": "VOICEVOX:Voidoll",
+      "style": 89,
+      "speedScale": 1.0,
+      "speechText": "はい。背景透過版が人気でした。",
+      "engine_version": "0.25.1",
+      "sha256": "3c483db592b3a63faf2fb3a1b044230ac3deecc866d950c85e08e5880ceb4f1a",
+      "raw_sha256": "04c6a9c37a04bd21d2facc099f37d88161744e53df28651c0fb2c50a5bceb2c3",
+      "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
+    },
+    {
+      "speaker": "福ちゃん",
+      "text": "便利ですね。……いや、勝手に透過しないでください。",
+      "uses": [
+        "dialogue:takosan:intro:5"
+      ],
+      "caption": "友人に話しかける。少し呆れながらも明瞭に、言葉の最後まで自然に話す。",
+      "seed": 100,
+      "reference": "02_CHARACTERS/Fukuchan_voice.wav",
+      "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "便利ですね。……いや、勝手に透過しないでください。",
+      "id": "b108645a8a53065e",
+      "asset": "audio/voice/b108645a8a53065e.wav",
+      "seconds": 3.7200416666666665,
+      "kind": "speech",
+      "sha256": "e4a8103d008c66ec2fe62482547f05ff0dbe902530a1d1f38a6980f1d7e063c9",
+      "raw_sha256": "b8201b760d2712f9e9fcf0130178165f76b7ceaf2058ec8e3135ad5f66151143"
     },
     {
       "speaker": "たこさん",
@@ -1297,21 +1392,21 @@
     },
     {
       "speaker": "たこさん",
-      "text": "宿舎に避難している社員がいます。中枢が止まったら、私が桟橋まで連れていきます。福ちゃんの席も残します。",
+      "text": "宿舎に避難している社員がいます。巨大そば屋を倒したら、私が桟橋まで連れていきます。福ちゃんの席も残します。",
       "uses": [
         "dialogue:takosan:evidence:2"
       ],
-      "id": "b98d5b5caa66bfa3",
-      "asset": "audio/voice/b98d5b5caa66bfa3.wav",
-      "seconds": 9.162666666666667,
+      "id": "ba8a4a082372f984",
+      "asset": "audio/voice/ba8a4a082372f984.wav",
+      "seconds": 9.525333333333334,
       "kind": "speech",
       "model": "VOICEVOX:Voidoll",
       "style": 89,
       "speedScale": 1.0,
-      "speechText": "宿舎に避難している社員がいます。中枢が止まったら、私が桟橋まで連れていきます。福ちゃんの席も残します。",
+      "speechText": "宿舎に避難している社員がいます。巨大そば屋を倒したら、私が桟橋まで連れていきます。福ちゃんの席も残します。",
       "engine_version": "0.25.1",
-      "sha256": "bac7484748d4fef5cd9c8c66c53d9c85fcd33f301811633691a9a5d29da49e62",
-      "raw_sha256": "7820c69b3975e11f519fa366f1dde60e132be6380e019f131d1ffa71bb2b6bdb",
+      "sha256": "13f8ea6fb51e34d69094abc73a470cb2e1760ed3e68fc1b12b558317e04c0376",
+      "raw_sha256": "b0041733934b997b792af369f5661f829536543070f158816601264bd422708e",
       "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
     },
     {
@@ -1505,8 +1600,46 @@
       "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
     },
     {
+      "speaker": "福ちゃん",
+      "text": "それってギュンギュンってこと？",
+      "uses": [
+        "dialogue:purchase:herb:reply:0"
+      ],
+      "caption": "友人に話しかける。少し呆れながらも明瞭に、言葉の最後まで自然に話す。",
+      "seed": 100,
+      "reference": "02_CHARACTERS/Fukuchan_voice.wav",
+      "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "それってギュンギュンってこと？",
+      "id": "a042352914f8da89",
+      "asset": "audio/voice/a042352914f8da89.wav",
+      "seconds": 2.7200416666666665,
+      "kind": "speech",
+      "sha256": "f468da8ede9560b5bf04d81a1bb94c5ff56bce2a3942c14de05dee0219fe5f9d",
+      "raw_sha256": "463696a1197573f0af5d133b41d4f66924983539b9467cc26a4ddcfca5bd968c"
+    },
+    {
+      "speaker": "たこさん",
+      "text": "ギュンギュンです。",
+      "uses": [
+        "dialogue:purchase:herb:reply:1"
+      ],
+      "id": "e3ea96c86cc000aa",
+      "asset": "audio/voice/e3ea96c86cc000aa.wav",
+      "seconds": 1.0773333333333333,
+      "kind": "speech",
+      "model": "VOICEVOX:Voidoll",
+      "style": 89,
+      "speedScale": 1.0,
+      "speechText": "ギュンギュンです。",
+      "engine_version": "0.25.1",
+      "sha256": "e7f23cc56f9a919c747389ca173ff68ef96e6947e81440cbb0d23465ee07bbda",
+      "raw_sha256": "a6b986cc3c4771c67552cab378f631ce67308d7de85b8f997216c9b4beaf5afe",
+      "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
+    },
+    {
       "speaker": "やめ太郎",
-      "text": "廃屋の前の大きいそば屋が、中枢なんやな。\n振り上げたら横へ。振り終わりを狙うんや。ワイ、帰り道を開けとく。",
+      "text": "廃屋の前のでっかいそば屋を倒せば、エンジンも止まるんやな。\n振り上げたら横へ。振り終わりを狙うんや。ワイ、帰り道を開けとく。",
       "uses": [
         "dialogue:mountain:before"
       ],
@@ -1515,13 +1648,13 @@
       "reference": "02_CHARACTERS/Yametaro_voice.wav",
       "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
       "model": "Aratako/Irodori-TTS-v4.1-Small",
-      "speechText": "廃屋の前の大きいそば屋が、中枢なんやな。 振り上げたら横へ。振り終わりを狙うんや。ワイ、帰り道を開けとく。",
-      "id": "33873fb6a2700604",
-      "asset": "audio/voice/33873fb6a2700604.wav",
-      "seconds": 9.160041666666666,
+      "speechText": "廃屋の前のでっかいそば屋を倒せば、エンジンも止まるんやな。 振り上げたら横へ。振り終わりを狙うんや。ワイ、帰り道を開けとく。",
+      "id": "5239c13ce0487f14",
+      "asset": "audio/voice/5239c13ce0487f14.wav",
+      "seconds": 9.861166666666668,
       "kind": "speech",
-      "sha256": "8f1e1ef8cd8f0ab6b54b0d2ba80b8ec88d689f956c27aafba05f1ae1a18884a7",
-      "raw_sha256": "63952e24be598e32cf4a5475c6a813f55fadc5473e424e32c195f7fd4b66aba2"
+      "sha256": "a61ea089ee664310726f6f16afc47fa3e191b5f147be15e0215f8f2e033501f4",
+      "raw_sha256": "7e440487fc6ba86f5ad57af2c1ba6ca30be6581509af0c7daf87fdf3cc1421ed"
     },
     {
       "speaker": "やめ太郎",
