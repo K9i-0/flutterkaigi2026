@@ -3,6 +3,7 @@ Run tool/export_hazard_voice.dart first. Raw candidates stay under .local.
 """
 from pathlib import Path
 import hashlib,json,os,subprocess,time,wave
+import urllib.request,urllib.parse
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'04_GAME_ASSETS/audio/hazard'
 RAW=ROOT/'.local/hazard_voice/raw';RAW.mkdir(parents=True,exist_ok=True)
@@ -13,6 +14,7 @@ CAST={
 }
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 def caption(row):
+ if any(u.startswith('dialogue:reaction:') for u in row['uses']):return '突然殴られて痛がり、仲間に助けを求める。短く切迫して。声の同一性は保つ。'
  if row['text']=='え、また集まるの？':return '驚いて、短く聞き返す。'
  if row['speaker']=='そば屋':return '相手を誘うように、堂々と。最後の乾杯を呼びかける。'
  if any(u.startswith('event:ending') for u in row['uses']):return 'ほっとして、親しい仲間に軽い冗談を交えながら自然に話す。'
@@ -24,7 +26,21 @@ manifest={'version':1,'model':'Aratako/Irodori-TTS-v4.1-Small','engine_revision'
 for index,row in enumerate(rows):
  ident=hashlib.sha256((row['speaker']+'\n'+row['text']).encode()).hexdigest()[:16]
  if row['speaker']=='たこさん':
-  manifest['clips'].append({**row,'id':ident,'asset':'audio/voice/takosan_response.wav','seconds':.85,'kind':'nonverbal','provenance':'Original procedural response, no canonical speaking voice assigned'})
+  def post(path,query,body=None):
+   url='http://127.0.0.1:50021/'+path+'?'+urllib.parse.urlencode(query)
+   req=urllib.request.Request(url,data=body or b'',headers={'Content-Type':'application/json'},method='POST')
+   return urllib.request.urlopen(req,timeout=120).read()
+  raw=RAW/f'{ident}_voidoll89.wav'
+  if not raw.exists():
+   query=json.loads(post('audio_query',{'speaker':89,'text':row['text'].replace('\n',' ')}))
+   query['speedScale']=1.08 if any('reaction:' in u for u in row['uses']) else 1.0
+   raw.write_bytes(post('synthesis',{'speaker':89},json.dumps(query).encode()))
+  dest=OUT/'voice'/f'{ident}.wav'
+  subprocess.run(['ffmpeg','-y','-v','error','-i',str(raw),'-af','loudnorm=I=-18:TP=-2:LRA=7','-ar','24000','-ac','1','-c:a','pcm_s16le',str(dest)],check=True)
+  with wave.open(str(dest)) as f:seconds=f.getnframes()/f.getframerate()
+  manifest['clips'].append({**row,'id':ident,'asset':f'audio/voice/{ident}.wav','seconds':seconds,'kind':'speech','model':'VOICEVOX:Voidoll','style':89,'speedScale':1.08 if any('reaction:' in u for u in row['uses']) else 1.0,'speechText':row['text'].replace('\n',' '),'engine_version':json.loads(urllib.request.urlopen('http://127.0.0.1:50021/version').read()),'sha256':sha(dest),'raw_sha256':sha(raw),'provenance':'Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal'})
+  (RAW/'working-manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
+  print(f'READY {ident} {seconds:.3f}s VOICEVOX:Voidoll',flush=True)
   continue
  ref_name,seed,expected=CAST[row['speaker']];ref=ROOT/'02_CHARACTERS'/ref_name
  if sha(ref)!=expected:raise RuntimeError(f'Canonical reference mismatch: {ref.name}')
@@ -46,7 +62,9 @@ for index,row in enumerate(rows):
  subprocess.run(['ffmpeg','-y','-v','error','-i',str(source),'-af','loudnorm=I=-18:TP=-2:LRA=7','-ar','24000','-ac','1','-c:a','pcm_s16le',str(dest)],check=True)
  with wave.open(str(dest)) as f:seconds=f.getnframes()/f.getframerate()
  manifest['clips'].append({**row,**request,'text':row['text'],'speechText':speech,'id':ident,'asset':f'audio/voice/{ident}.wav','seconds':seconds,'kind':'speech','sha256':sha(dest),'raw_sha256':sha(raw)})
- (OUT/'voice-manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
+ (RAW/'working-manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
  print(f'READY {ident} {seconds:.3f}s',flush=True)
-(OUT/'voice-manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
+pending=OUT/'voice-manifest.pending.json'
+pending.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
+pending.replace(OUT/'voice-manifest.json')
 print(f'COMPLETE {len(manifest["clips"])} cues',flush=True)

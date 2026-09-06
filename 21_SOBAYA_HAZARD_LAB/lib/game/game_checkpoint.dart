@@ -1,3 +1,4 @@
+import 'game_story.dart';
 import 'game_state.dart';
 import 'game_ladder.dart';
 import 'game_window.dart';
@@ -36,6 +37,7 @@ extension HazardCheckpoint on HazardGameState {
     'time': time,
     'medallions': medallions.toList(),
     'seenEvents': seenEvents.toList(),
+    'foundMemos': foundMemos.toList(),
     'hasKey': hasKey,
     'gateOpen': gateOpen,
     'metYametaro': metYametaro,
@@ -152,6 +154,9 @@ HazardGameState restoreHazardCheckpoint(
   s.gateOpen = data['gateOpen'] as bool;
   require(!s.gateOpen || s.gateMode != 'key' || s.hasKey);
   s.seenEvents.addAll((data['seenEvents'] as List? ?? const []).cast<String>());
+  final notes = (data['foundMemos'] as List? ?? const []).cast<String>();
+  require(notes.every((id) => villageMemos.any((m) => m.id == id)));
+  s.foundMemos.addAll(notes);
   s.medallions.addAll((data['medallions'] as List? ?? const []).cast<String>());
   s.metYametaro = data['metYametaro'] as bool;
   s.receivedYametaroAmmo = data['receivedYametaroAmmo'] as bool;

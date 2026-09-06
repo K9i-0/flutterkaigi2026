@@ -1,3 +1,5 @@
+import 'game_state.dart';
+
 import 'dart:async';
 
 import 'game_controller.dart';
@@ -126,6 +128,97 @@ Future<Map<String, Object?>> probeConversation(
   } finally {
     if (epoch != null && game.runEpoch == epoch && !game.disposed) {
       game.setEventPaused(true);
+    }
+  }
+}
+
+/// Observe damage and voice on real native frames, including the fatal line.
+Future<Map<String, Object?>> probeCompanionVoice(
+  HazardGameController game,
+  String id,
+) async {
+  final clock = Stopwatch()..start();
+  final snapshots = <Map<String, Object?>>[];
+  final benchmark = game.benchmarkMode;
+  int? epoch;
+  void capture(String stage) => snapshots.add({
+    'stage': stage,
+    'ms': clock.elapsedMilliseconds,
+    'ticks': game.renderedTicks,
+    'health': game.state!.companionHealth[id],
+    'phase': game.state!.phase.name,
+    'text': game.state!.reaction?.text,
+    'voice': game.voice.inspect(),
+  });
+  Future<void> until(bool Function() done) async {
+    while (!done()) {
+      if (!game.foreground ||
+          game.disposed ||
+          game.runEpoch != epoch ||
+          clock.elapsedMilliseconds > 15000) {
+        throw StateError('Companion voice probe interrupted or timed out');
+      }
+      await Future<void>.delayed(const Duration(milliseconds: 40));
+    }
+  }
+
+  try {
+    if (!game.ready || !game.foreground) {
+      throw StateError('Ready foreground game required');
+    }
+    game.benchmarkMode = true;
+    game.restart();
+    epoch = game.runEpoch;
+    // Both companions are present in the village; no region transition needed.
+    final s = game.state!;
+    final npc = s.npcs.firstWhere((n) => n['id'] == id);
+    s.x = (npc['x'] as num).toDouble() + 2.5;
+    s.z = (npc['z'] as num).toDouble() - 1.8;
+    s.yaw = -1;
+    for (final e in s.enemies) {
+      e.active = false;
+    }
+    s.enemies.first
+      ..active = true
+      ..alerted = true
+      ..x = (npc['x'] as num).toDouble()
+      ..z = (npc['z'] as num).toDouble() + 1;
+    game.refreshView();
+    await until(
+      () =>
+          s.companionHealth[id]! < 60 &&
+          game.voice.speaking &&
+          game.voice.activeCue?.speaker == HazardGameState.companionNames[id] &&
+          (game.voice.playbackSeconds ?? 0) > .1,
+    );
+    capture('hurt');
+    final hurt = game.voice.activeIdentity;
+    await until(
+      () =>
+          s.fallenCompanion == id &&
+          game.voice.speaking &&
+          game.voice.activeIdentity != hurt &&
+          (game.voice.playbackSeconds ?? 0) > .1,
+    );
+    capture('fatal');
+    await until(() => s.phase == PlayPhase.dead);
+    capture('game-over');
+    if (game.voice.errors.isNotEmpty) throw StateError('${game.voice.errors}');
+    return {'success': true, 'probe': 'companion:$id', 'snapshots': snapshots};
+  } catch (error) {
+    return {
+      'success': false,
+      'probe': 'companion:$id',
+      'error': '$error',
+      'snapshots': snapshots,
+    };
+  } finally {
+    game.benchmarkMode = benchmark;
+    if (epoch != null && game.runEpoch == epoch && !game.disposed) {
+      game.state!
+        ..phase = PlayPhase.paused
+        ..stopInput();
+      game.refreshView();
     }
   }
 }

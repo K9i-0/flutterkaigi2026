@@ -25,6 +25,7 @@ void main(List<String> args) {
   for (final owner in {
     'yametaro': yametaroDialogue,
     'takosan': takosanDialogue,
+    'reaction': companionReactions,
   }.entries) {
     for (final topic in owner.value.entries) {
       for (var i = 0; i < topic.value.length; i++) {

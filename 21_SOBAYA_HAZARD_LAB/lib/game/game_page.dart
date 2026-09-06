@@ -1,3 +1,5 @@
+import 'game_journal.dart';
+
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 
@@ -668,6 +670,28 @@ class _HazardGamePageState extends State<HazardGamePage> {
                             ),
                           ),
                       ],
+                      if (s.reaction != null &&
+                          s.reactionTime > 0 &&
+                          (s.running || s.phase == PlayPhase.companionDown))
+                        Positioned(
+                          left: 30,
+                          right: 30,
+                          bottom: 145,
+                          child: Center(
+                            child: Container(
+                              padding: const EdgeInsets.all(12),
+                              color: ink,
+                              child: Text(
+                                '${s.reaction!.speaker}：${s.reaction!.text}',
+                                key: const ValueKey('game-companion-reaction'),
+                                style: const TextStyle(
+                                  color: ivory,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       if (s.phase == PlayPhase.title) title(s),
                       if (s.phase == PlayPhase.cinematic) eventOverlay(),
                       if (s.phase == PlayPhase.settings) settingsPanel(),
@@ -801,6 +825,18 @@ class _HazardGamePageState extends State<HazardGamePage> {
                               () => s.chooseDialogue('supplies'),
                             ),
                         ],
+                        if (s.knowsEngine)
+                          action(
+                            'dialogue-engine',
+                            'そば屋エンジンについて',
+                            () => s.chooseDialogue('engine'),
+                          ),
+                        if (s.hasStoryEvidence)
+                          action(
+                            'dialogue-evidence',
+                            '拾った記録について',
+                            () => s.chooseDialogue('evidence'),
+                          ),
                         action('dialogue-leave', 'E  探索へ戻る', s.endDialogue),
                       ],
                     )
@@ -954,7 +990,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
             ),
             const SizedBox(height: 24),
             const Text(
-              '村の広場に、いつもの顔がいる。\n消えた住人のあとには、冷えたビールだけ。',
+              '窓際社員の島流し先、廃村ゆめみ村。\n炎上して捨てられた秘密案件が、まだ動いている。',
               style: TextStyle(
                 color: Color(0xffb6bda9),
                 height: 1.9,
@@ -1222,87 +1258,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
       ],
     ),
   );
-  Widget collection(HazardGameState s) => modal(
-    '窓際族の記録  ${s.collected.length}/${s.gallery.length}',
-    GridView.count(
-      shrinkWrap: true,
-      crossAxisCount: 3,
-      childAspectRatio: .86,
-      crossAxisSpacing: 15,
-      mainAxisSpacing: 15,
-      children: [
-        for (final row in s.gallery)
-          GestureDetector(
-            key: ValueKey('collection-${row['id']}'),
-            onTap: () {
-              if (s.collected.contains(row['id'])) {
-                showDialog(
-                  context: context,
-                  builder: (context) => Dialog(
-                    backgroundColor: ink,
-                    child: Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Flexible(
-                            child: Image.asset(
-                              'assets/collection/${row['id']}.png',
-                              cacheWidth: 1200,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                          Text(
-                            row['title'],
-                            style: const TextStyle(color: ivory),
-                          ),
-                          TextButton(
-                            onPressed: () => Navigator.pop(context),
-                            child: const Text('閉じる'),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              }
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                color: const Color(0xff252b21),
-                border: Border.all(color: const Color(0xff4a523f)),
-              ),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: s.collected.contains(row['id'])
-                        ? Image.asset(
-                            'assets/collection/${row['id']}.png',
-                            cacheWidth: 350,
-                            fit: BoxFit.contain,
-                          )
-                        : const Center(
-                            child: Icon(
-                              Icons.lock_outline,
-                              size: 40,
-                              color: Color(0xff59634c),
-                            ),
-                          ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Text(
-                      s.collected.contains(row['id']) ? row['title'] : '未発見',
-                      style: const TextStyle(color: ivory, fontSize: 12),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-      ],
-    ),
-  );
+  Widget collection(HazardGameState s) => modal('村の記録', HazardJournal(s));
   Widget eventOverlay() {
     final d = game.director!;
     return Positioned.fill(
@@ -1603,7 +1559,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
         ),
         const SizedBox(height: 12),
         const Text(
-          '白：現在地  金：門と出口  水色：仲間\n明るい壁：建物  暗い壁：岩壁・柵',
+          '白：現在地  金丸：門・出口  金の紙：メモ  水色：仲間\n明るい壁：建物  暗い壁：岩壁・柵',
           style: TextStyle(color: ivory, height: 1.6),
         ),
         const SizedBox(height: 12),
@@ -1789,6 +1745,19 @@ class VillageMapPainter extends CustomPainter {
           p,
         );
       }
+    }
+    p.color = gold;
+    for (final m in state.localMemos.where(
+      (m) => !state.foundMemos.contains(m.id),
+    )) {
+      c.drawRect(
+        Rect.fromCenter(
+          center: at(m.x, m.z),
+          width: detailed ? 6 : 3,
+          height: detailed ? 8 : 4,
+        ),
+        p,
+      );
     }
     p.color = ivory;
     c.drawCircle(at(state.x, state.z), 3, p);

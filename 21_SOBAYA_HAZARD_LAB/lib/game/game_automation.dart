@@ -1,3 +1,5 @@
+import 'game_story.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:marionette_flutter/marionette_flutter.dart';
 import 'package:vector_math/vector_math.dart' as vm;
@@ -37,15 +39,19 @@ void attachGameAutomation(HazardGameController game) {
       'ticks': _game?.renderedTicks,
       'probeRunning': _probeRunning,
       'campaignAudit': _nativeAudit?.status,
-      'probes': ['conversation'],
+      'probes': ['conversation', 'companionYametaro', 'companionTakosan'],
     }),
   );
   registerMarionetteExtension(
     name: 'madogiwa.runGameProbe',
-    description: 'name=conversation. Resets the test run, keeps saved collection; observes real frames/audio, pauses at the end. Foreground required, 12s deadline. Controller test, not keyboard/pointer input.',
+    description: 'name=conversation|companionYametaro|companionTakosan. Resets the test run, keeps saved collection; observes real frames/audio, pauses at the end. Foreground required, 15s deadline. Controller test, not keyboard/pointer input.',
     callback: (p) async {
       final g = _game;
-      if (p['name'] != 'conversation') {
+      if (![
+        'conversation',
+        'companionYametaro',
+        'companionTakosan',
+      ].contains(p['name'])) {
         return MarionetteExtensionResult.invalidParams('name=conversation');
       }
       if (g == null || !g.ready) {
@@ -59,7 +65,14 @@ void attachGameAutomation(HazardGameController game) {
       }
       _probeRunning = true;
       try {
-        return MarionetteExtensionResult.success(await probeConversation(g));
+        return MarionetteExtensionResult.success(
+          p['name'] == 'conversation'
+              ? await probeConversation(g)
+              : await probeCompanionVoice(
+                  g,
+                  p['name'] == 'companionYametaro' ? 'yametaro' : 'takosan',
+                ),
+        );
       } finally {
         _probeRunning = false;
       }
@@ -180,6 +193,7 @@ void attachGameAutomation(HazardGameController game) {
       }
       final name = p['name'];
       if (![
+        'storyMemo',
         'audioExplore',
         'audioThreat',
         'companionYametaro',
@@ -256,6 +270,12 @@ void attachGameAutomation(HazardGameController game) {
         e.active = false;
       }
       switch (name) {
+        case 'storyMemo':
+          final m = villageMemos.first;
+          s.x = m.x;
+          s.z = m.z + 1;
+          s.y = 0;
+          s.yaw = 0;
         case 'audioExplore':
           s.x = 0;
           s.z = -18;
@@ -283,6 +303,11 @@ void attachGameAutomation(HazardGameController game) {
             ..alerted = true
             ..x = (npc['x'] as num).toDouble()
             ..z = (npc['z'] as num).toDouble() + 1;
+        case 'bossEvent':
+          s.x = 1.5;
+          s.z = 4;
+          s.yaw = -1.5707963267948966;
+          s.heading = 1.5707963267948966;
         case 'bossCombat':
           s.x = 6;
           s.z = 4;
