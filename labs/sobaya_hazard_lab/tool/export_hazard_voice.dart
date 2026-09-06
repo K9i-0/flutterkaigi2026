@@ -60,6 +60,15 @@ void main(List<String> args) {
       'dialogue:purchase:${entry.key}',
     );
   }
+  for (final entry in purchaseReplies.entries) {
+    for (var i = 0; i < entry.value.length; i++) {
+      add(
+        entry.value[i].speaker,
+        entry.value[i].text,
+        'dialogue:purchase:${entry.key}:reply:$i',
+      );
+    }
+  }
   for (final alive in [true, false]) {
     for (final e in mountain.enemies.where((e) => e.boss)) {
       e.alive = alive;

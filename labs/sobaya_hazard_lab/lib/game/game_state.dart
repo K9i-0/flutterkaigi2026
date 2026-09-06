@@ -214,7 +214,7 @@ class HazardGameState {
   String get objective => zoneId == 'farm'
       ? '納屋で補給し、東の門から山道へ'
       : zoneId == 'mountain'
-      ? (bossAlive ? 'そば屋エンジンを止め、運転命令を断て' : '東の脱出路から村を抜けろ')
+      ? (bossAlive ? '山の廃屋にいる巨大そば屋を倒せ' : '東の脱出路から村を抜けろ')
       : gateOpen
       ? '農場への門をくぐれ'
       : hasKey
@@ -322,6 +322,7 @@ class HazardGameState {
   String? talkingTo;
   String dialogueTopic = 'intro';
   String dialogueOwner = 'yametaro', tradeMessage = '';
+  List<DialogueLine> tradeReplies = const [];
   int tradeSerial = 0;
   int dialogueIndex = 0;
   bool metYametaro = false, receivedYametaroAmmo = false;
@@ -341,7 +342,7 @@ class HazardGameState {
       (map['npcs'] as List? ?? const []).cast<Map<String, dynamic>>();
   List<DialogueLine> get dialogueLines => dialogueOwner == 'takosan'
       ? dialogueTopic == 'trade_result'
-            ? [DialogueLine('たこさん', tradeMessage)]
+            ? [DialogueLine('たこさん', tradeMessage), ...tradeReplies]
             : [
                 for (final line in takosanDialogue[dialogueTopic]!)
                   if (dialogueTopic == 'evidence' &&
@@ -363,7 +364,7 @@ class HazardGameState {
           DialogueLine(
             'やめ太郎',
             bossAlive
-                ? '廃屋の前の大きいそば屋が、中枢なんやな。\n振り上げたら横へ。振り終わりを狙うんや。ワイ、帰り道を開けとく。'
+                ? '廃屋の前のでっかいそば屋を倒せば、エンジンも止まるんやな。\n振り上げたら横へ。振り終わりを狙うんや。ワイ、帰り道を開けとく。'
                 : '静かになったな。東の門から帰ろう。\n福ちゃん、この夜のこと、三人でちゃんと話そうや。',
           ),
         ]
@@ -479,6 +480,7 @@ class HazardGameState {
     companionFallTime = 0;
     dialogueOwner = 'yametaro';
     tradeMessage = '';
+    tradeReplies = const [];
     tradeSerial = 0;
     checkpointRequested = false;
     exitRequested = null;
@@ -1830,7 +1832,7 @@ class HazardGameState {
     e.bossTimer = 0;
     e.vanish = 0;
     kills++;
-    say(e.boss ? '中枢が停止した。仲間と東の脱出路へ！' : 'そば屋を倒した。ビールを回収しよう。');
+    say(e.boss ? '巨大そば屋を倒した！ エンジン停止。仲間と東の脱出路へ！' : 'そば屋を倒した。ビールを回収しよう。');
     if (e.boss) checkpointRequested = true;
   }
 
@@ -2157,6 +2159,7 @@ class HazardGameState {
     final offer = tradeOffers.where((o) => o.id == id).firstOrNull;
     if (offer == null) return;
     tradeSerial++;
+    tradeReplies = const [];
     if (stockRemaining(offer) <= 0) {
       tradeMessage = 'それは売り切れです。別の品をどうぞ。';
     } else if (beers < offer.price) {
@@ -2167,6 +2170,7 @@ class HazardGameState {
       beers -= offer.price;
       tradePurchases[id] = (tradePurchases[id] ?? 0) + 1;
       tradeMessage = purchaseLines[id]!.text;
+      tradeReplies = purchaseReplies[id] ?? const [];
       lastSound = 'pickup';
     }
     dialogueTopic = 'trade_result';

@@ -49,7 +49,7 @@ for index,row in enumerate(rows):
  if sha(ref)!=expected:raise RuntimeError(f'Canonical reference mismatch: {ref.name}')
  speech=row['text'].replace('\n',' ').replace('せやな。……ところで、', 'せやな。ところで、')
  if row['speaker']=='ナレーション':
-  speech=speech.replace('CHAPTER 02 —', '第二章。').replace('LAST ORDER —', 'ラストオーダー。').replace('撤収対象外 ', '撤収対象外。').replace('そば屋エンジン中枢 ', 'そば屋エンジン中枢。')
+  speech=speech.replace('CHAPTER 02 —', '第二章。').replace('LAST ORDER —', 'ラストオーダー。').replace('CHAPTER 03 —', '第三章。').replace('撤収対象外 ', '撤収対象外。').replace('そば屋エンジン中枢 ', 'そば屋エンジン中枢。')
  if row['text']=='え、また集まるの？':speech='えっ、また集まるの？'
  for label,spoken in [('Xで','エックスで'),('Fで','エフで'),('Eで','イーで'),('Cで','シーで')]:speech=speech.replace(label,spoken)
  request={'text':speech,'speaker':row['speaker'],'caption':caption(row),'seed':seed,'reference':str(ref.relative_to(ROOT)),'reference_sha256':expected,'model':manifest['model']}

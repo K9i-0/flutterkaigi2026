@@ -739,6 +739,8 @@ class HazardGameController extends ChangeNotifier {
     _mountRegion();
     if (state!.zoneId == 'farm' && !state!.seenEvents.contains('farm')) {
       startEvent('farm');
+    } else if (state!.zoneId == 'mountain' && state!.bossAlive) {
+      startEvent('last_order');
     }
     notifyListeners();
     return true;
@@ -892,6 +894,19 @@ class HazardGameController extends ChangeNotifier {
     }
     if (s.phase == PlayPhase.dialogue && npcs.containsKey(s.talkingTo)) {
       final n = npcs[s.talkingTo]!.node.position;
+      if (s.dialogueLine.speaker == '福ちゃん') {
+        final position = vm.Vector3(s.x, s.y, s.z);
+        final angle = math.atan2(n.x - s.x, n.z - s.z) - .2;
+        return PerspectiveCamera(
+          position:
+              position +
+              vm.Vector3(math.sin(angle) * 2.15, 1.65, math.cos(angle) * 2.15),
+          target: position + vm.Vector3(0, 1.36, 0),
+          fovRadiansY: .68,
+          fovNear: .07,
+          fovFar: 85,
+        );
+      }
       final angle = math.atan2(s.x - n.x, s.z - n.z) + .2;
       return PerspectiveCamera(
         position:
@@ -1077,7 +1092,6 @@ class HazardGameController extends ChangeNotifier {
       }
       if (s.running &&
           s.zoneId == 'mountain' &&
-          s.x > 1 &&
           s.bossAlive &&
           !s.seenEvents.contains('last_order')) {
         startEvent('last_order');
@@ -1203,11 +1217,20 @@ class HazardGameController extends ChangeNotifier {
         director == null &&
         (playerCamera(s).position - vm.Vector3(s.x, s.y + 1.25, s.z)).length <
             .8;
-    player.node.visible = s.phase != PlayPhase.dialogue && !closeCamera;
+    player.node.visible = s.phase == PlayPhase.dialogue
+        ? s.dialogueLine.speaker == '福ちゃん'
+        : !closeCamera;
     player.node.rotation = vm.Quaternion.axisAngle(
       vm.Vector3(0, 1, 0),
       s.heading + math.pi,
     );
+    if (s.phase == PlayPhase.dialogue && npcs.containsKey(s.talkingTo)) {
+      final friend = npcs[s.talkingTo]!.node.position;
+      player.node.rotation = vm.Quaternion.axisAngle(
+        vm.Vector3(0, 1, 0),
+        math.atan2(friend.x - s.x, friend.z - s.z) + math.pi,
+      );
+    }
     for (final entry in npcs.entries) {
       final actor = entry.value;
       final authored = s.npcs.where((n) => n['id'] == entry.key).firstOrNull;
