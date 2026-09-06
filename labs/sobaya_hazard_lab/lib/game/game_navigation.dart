@@ -162,6 +162,17 @@ class EnemyNavigation {
     }
   }
 
+  bool transitionLeadsCloser(
+    (double, double, double) from,
+    (double, double, double) to,
+  ) {
+    final a = nearest(from.$1, from.$2, from.$3),
+        b = nearest(to.$1, to.$2, to.$3);
+    final da = a == null ? null : distances[a.id],
+        db = b == null ? null : distances[b.id];
+    return da != null && db != null && db < da;
+  }
+
   NavigationPoint? waypoint(double x, double y, double z) {
     final here = nearest(x, y, z);
     if (here == null || !distances.containsKey(here.id)) return null;

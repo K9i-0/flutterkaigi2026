@@ -7,7 +7,7 @@ ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'04_GAME_ASSETS/3d/environments/pueblo';PROPS=ROOT/'04_GAME_ASSETS/3d/props/hazard_kit'
 OUT.mkdir(parents=True,exist_ok=True);PROPS.mkdir(parents=True,exist_ok=True)
 bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False)
-rng=random.Random(4905);groups={};mats={};solids=[];houses=[];ramps=[]
+rng=random.Random(4905);groups={};mats={};solids=[];houses=[];ramps=[];windows=[]
 
 def material(name,color,rough=.9,metal=0,pattern=None):
  m=bpy.data.materials.new(name);m.diffuse_color=(*color,1);m.use_nodes=True;p=m.node_tree.nodes.get('Principled BSDF');p.inputs['Base Color'].default_value=(*color,1);p.inputs['Roughness'].default_value=rough;p.inputs['Metallic'].default_value=metal
@@ -144,8 +144,18 @@ def house(id,x,z,w,d,two=False):
  # contact shadows do not disappear 22 cm into the visible indoor floor.
  box(g,stone,(x,z,-.14),(w,d,.16));box(g,boards,(x,z,-.04),(w-.5,d-.5,.08))
  wall(g,x-w/2,z,.35,d,h);wall(g,x+w/2,z,.35,d,h);wall(g,x,z+d/2,w,.35,h)
- # Open doorway; lintel is a real elevated collider.
- for sign in [-1,1]:wall(g,x+sign*(w/4+.43),z-d/2,w/2-.86,.35,h)
+ # Selected front windows are real openings, with identical mesh/collider cuts.
+ vaultable = w >= 7
+ wx=x-w*.29;wz=z-d/2;half=.78;sill=.82;lintel=2.42
+ for sign in [-1,1]:
+  if sign==-1 and vaultable:
+   lo=x-w/2;hi=x-.86
+   for a,b in [(lo,wx-half),(wx+half,hi)]:
+    wall(g,(a+b)/2,wz,b-a,.35,h)
+   wall(g,wx,wz,half*2,.35,sill)
+   wall(g,wx,wz,half*2,.35,h-lintel,lintel)
+   windows.append({'id':id+'_front','x':wx,'z':wz,'sill':sill,'top':lintel,'width':half*2})
+  else:wall(g,x+sign*(w/4+.43),wz,w/2-.86,.35,h)
  wall(g,x,z-d/2,1.72,.35,h-2.2,2.2)
  facade_details(g,id,x,z,w,d,h,two)
  for sign in [-1,1]:
@@ -154,7 +164,14 @@ def house(id,x,z,w,d,two=False):
  for zz in [z-d/2-.23,z+d/2+.23]:
   for i,xx in enumerate([x-w*.29,x+w*.29]):
    for yy in [1.55]+([4.25] if two else []):
-    window(g,xx,zz,yy,-1 if zz<z else 1,shutter=(w>=7 and i==0))
+    if vaultable and zz<z and i==0 and yy==1.55:
+     # Open frame and outward-folded shutters; no glass or center crossbar.
+     for sign in [-1,1]:
+      box(g,wood,(wx+sign*.82,wz,1.62),(.09,.48,1.70))
+      box(g,boards,(wx+sign*1.10,wz+.06,1.62),(.48,.10,1.48))
+     box(g,wood,(wx,wz,2.46),(1.75,.48,.09))
+     box(g,stone,(wx,wz,.79),(1.75,.52,.06))
+    else:window(g,xx,zz,yy,-1 if zz<z else 1,shutter=(w>=7 and i==0))
  if two:
   # Upstairs floor with a stairwell along its east wall.
   box(g,boards,(x-.9,z,2.95),(w-2.3,d-.6,.16));box(g,boards,(x+w/2-1.05,z+d/2-1,2.95),(1.7,1.7,.16))
@@ -205,4 +222,4 @@ def export(path):
 
 def reset_world():
  bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False)
- groups.clear();solids.clear();houses.clear();ramps.clear()
+ groups.clear();solids.clear();houses.clear();ramps.clear();windows.clear()

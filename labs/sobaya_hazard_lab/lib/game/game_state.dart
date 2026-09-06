@@ -6,6 +6,7 @@ import 'game_dialogue.dart';
 import 'game_audio.dart';
 import 'game_navigation.dart';
 import 'game_ladder.dart';
+import 'game_window.dart';
 
 const minCameraPitch = -.75, maxCameraPitch = .85;
 
@@ -128,6 +129,7 @@ class Enemy {
       ? .77 + (meleeFollowThrough - meleeRecovery) * .9
       : null;
   LadderTraversal? climb;
+  WindowTraversal? vault;
   bool fallingFromLadder = false;
   final bool boss;
   final int id;
@@ -321,6 +323,14 @@ class HazardGameState {
       ? null
       : HazardLadder(Map<String, dynamic>.from(map['tower']));
   LadderTraversal? climb;
+  WindowTraversal? vault;
+  late final List<HazardWindow> windows = (map['windows'] as List? ?? const [])
+      .map((j) => HazardWindow(Map<String, dynamic>.from(j)))
+      .toList();
+  bool windowOccupied(HazardWindow w) =>
+      vault?.window.id == w.id ||
+      enemies.any((e) => e.vault?.window.id == w.id);
+  bool get traversing => climb != null || vault != null;
   bool get ladderOccupied =>
       climb != null || enemies.any((e) => e.climb != null);
   bool get running => phase == PlayPhase.playing;
@@ -382,6 +392,7 @@ class HazardGameState {
     hasKey = false;
     time = 0;
     climb = null;
+    vault = null;
     reloading = 0;
     fireCooldown = 0;
     hitFlash = damageFlash = noiseTime = footDistance = 0;
@@ -572,7 +583,7 @@ class HazardGameState {
   }
 
   void reload() {
-    if (climb != null) return;
+    if (traversing) return;
     if (!running ||
         reloading > 0 ||
         loaded >= capacity ||
@@ -699,7 +710,20 @@ class HazardGameState {
       if (reloading <= 0) _finishReload();
     }
     final previousHeight = y;
-    if (climb != null) {
+    if (vault != null) {
+      aiming = false;
+      if (hurtTime <= .2) vault!.advance(dt);
+      x = vault!.x;
+      y = vault!.y;
+      z = vault!.z;
+      heading = vault!.heading;
+      if (vault!.done) {
+        vault = null;
+        y = 0;
+        _flowTimer = 0;
+        lastSound = 'step';
+      }
+    } else if (climb != null) {
       aiming = false;
       if (hurtTime <= .2) climb!.advance(dt);
       x = climb!.x;
@@ -728,7 +752,7 @@ class HazardGameState {
     }
     // Gravity continues when input stops, including a hit while leaving a ledge.
     // move() already integrates a falling frame when movement is requested.
-    if (climb == null && y == previousHeight) {
+    if (!traversing && y == previousHeight) {
       final floor = floorHeight(x, z, y);
       if (y > floor) y = math.max(floor, y - 5 * dt);
     }
@@ -748,7 +772,14 @@ class HazardGameState {
         }
         if (e.vanish >= .65 && !e.dropped) {
           e.dropped = true;
-          pickups.add(Pickup('beer_${e.id}', 'beer', e.x, e.y + .25, e.z));
+          var dropZ = e.z;
+          for (final w in windows) {
+            if ((e.x - w.x).abs() < .78 && (e.z - w.z).abs() < .55 && e.y < 1) {
+              dropZ = e.z < w.z ? w.entryZ(true) : w.exitZ(true);
+              break;
+            }
+          }
+          pickups.add(Pickup('beer_${e.id}', 'beer', e.x, e.y + .25, dropZ));
           emitSound('defeat', x: e.x, y: e.y + .25, z: e.z);
         }
         continue;
@@ -778,6 +809,20 @@ class HazardGameState {
           e.alerted = true;
         }
         if (!e.alerted) continue;
+      }
+      if (e.vault != null) {
+        final v = e.vault!;
+        if (e.stun <= 0) v.advance(dt);
+        e.x = v.x;
+        e.y = v.y;
+        e.z = v.z;
+        e.heading = v.heading;
+        if (v.done) {
+          e.vault = null;
+          e.y = 0;
+          _flowTimer = 0;
+        }
+        continue;
       }
       if (e.climb != null) {
         final c = e.climb!;
@@ -834,6 +879,29 @@ class HazardGameState {
         emitSound('enemy', x: e.x, y: e.y + 1.2, z: e.z);
         continue;
       }
+      var waitingForWindow = false;
+      if (!e.boss) {
+        for (final w in windows) {
+          final inward = e.z < w.z;
+          if (!w.atEntry(e.x, e.y, e.z, inward) ||
+              !(_navigation?.transitionLeadsCloser(
+                    (w.x, 0, w.entryZ(inward)),
+                    (w.x, 0, w.exitZ(inward)),
+                  ) ??
+                  false)) {
+            continue;
+          }
+          waitingForWindow = true;
+          if (!windowOccupied(w) && _windowExitClear(w, inward, enemy: e)) {
+            e.vault = WindowTraversal(w, inward, e.x, e.z, enemy: true);
+            e.attackPending = false;
+            e.meleeRecovery = 0;
+            e.approachX = e.approachZ = null;
+          }
+          break;
+        }
+      }
+      if (waitingForWindow) continue;
       final tower = ladder;
       final wantsUp = climb?.up ?? (y > 3.8);
       if (!e.boss &&
@@ -1056,6 +1124,7 @@ class HazardGameState {
   }
 
   void _moveEnemy(Enemy e, double dx, double dz) {
+    if (e.climb != null || e.vault != null) return;
     final steps = math.max(1, (math.sqrt(dx * dx + dz * dz) / .05).ceil());
     for (var i = 0; i < steps; i++) {
       final nx = e.x + dx / steps;
@@ -1090,14 +1159,15 @@ class HazardGameState {
   EnemyNavigation prepareNavigation() => _navigation ??= EnemyNavigation(
     floorHeight,
     _staticNavigationBlocked,
-    transitions: ladder == null
-        ? []
-        : [
-            NavigationTransition(
-              (ladder!.x, 0, ladder!.lowerZ),
-              (ladder!.x, ladder!.top, ladder!.upperZ),
-            ),
-          ],
+    transitions: [
+      for (final w in windows)
+        NavigationTransition((w.x, 0, w.entryZ(true)), (w.x, 0, w.exitZ(true))),
+      if (ladder != null)
+        NavigationTransition(
+          (ladder!.x, 0, ladder!.lowerZ),
+          (ladder!.x, ladder!.top, ladder!.upperZ),
+        ),
+    ],
   );
 
   void useNavigation(EnemyNavigation geometry) {
@@ -1113,11 +1183,15 @@ class HazardGameState {
         : obstacles.where((o) => o.id == 'gate').toList();
     final intact = crates.where((c) => !c.broken).toList();
     _navigation!.update(
-      climb == null ? x : climb!.ladder.x,
-      climb == null ? y : (climb!.up ? climb!.ladder.top : 0),
-      climb == null
-          ? z
-          : (climb!.up ? climb!.ladder.upperZ : climb!.ladder.lowerZ),
+      vault?.window.x ?? (climb == null ? x : climb!.ladder.x),
+      vault != null
+          ? 0
+          : (climb == null ? y : (climb!.up ? climb!.ladder.top : 0)),
+      vault != null
+          ? vault!.window.exitZ(vault!.inward)
+          : (climb == null
+                ? z
+                : (climb!.up ? climb!.ladder.upperZ : climb!.ladder.lowerZ)),
       (px, pz, py) =>
           gates.any((o) => o.overlaps(px, pz, .37, py)) ||
           intact.any(
@@ -1142,7 +1216,7 @@ class HazardGameState {
   }
 
   void shoot(vm.Vector3 origin, vm.Vector3 direction) {
-    if (climb != null) return;
+    if (traversing) return;
     if (!running ||
         !aiming ||
         fireCooldown > 0 ||
@@ -1276,7 +1350,7 @@ class HazardGameState {
   }
 
   void evade() {
-    if (climb != null) return;
+    if (traversing) return;
     if (!running || evadeCooldown > 0 || kickTime > 0 || hurtTime > .2) return;
     _evadeX = -inputY * math.sin(yaw) - inputX * math.cos(yaw);
     _evadeZ = -inputY * math.cos(yaw) + inputX * math.sin(yaw);
@@ -1309,7 +1383,7 @@ class HazardGameState {
       .firstOrNull;
 
   void kick() {
-    if (climb != null) return;
+    if (traversing) return;
     if (!running ||
         kickTime > 0 ||
         kickCooldown > 0 ||
@@ -1363,7 +1437,10 @@ class HazardGameState {
 
   void _defeat(Enemy e) {
     if (!e.alive) return;
-    e.fallingFromLadder = e.climb != null && e.y > 0;
+    // Keep the visible actor at the impact position as it disappears.
+    final wasVaulting = e.vault != null;
+    e.vault = null;
+    e.fallingFromLadder = e.y > 0 && (e.climb != null || wasVaulting);
     e.climb = null;
     e.alive = false;
     e.attackPending = false;
@@ -1392,7 +1469,7 @@ class HazardGameState {
   }
 
   String? _nearestInteraction() {
-    if (climb != null) return null;
+    if (traversing) return null;
     for (final n in npcs) {
       if (_near(
         (n['x'] as num).toDouble(),
@@ -1429,10 +1506,33 @@ class HazardGameState {
     )) {
       return 'gate';
     }
+    for (final w in windows) {
+      if (w.atEntry(x, y, z, z < w.z)) {
+        return 'window:${w.id}';
+      }
+    }
     if (ladder != null && ladder!.atEntry(x, y, z, y < 2)) {
       return 'tower';
     }
     return null;
+  }
+
+  bool _windowExitClear(HazardWindow w, bool inward, {Enemy? enemy}) {
+    final ez = w.exitZ(inward);
+    if (blocked(w.x, ez, 0, radius: .37)) return false;
+    if (enemy != null &&
+        y < 1 &&
+        math.pow(x - w.x, 2) + math.pow(z - ez, 2) < .65 * .65) {
+      return false;
+    }
+    return !enemies.any(
+      (e) =>
+          e != enemy &&
+          e.active &&
+          e.alive &&
+          e.y < 1 &&
+          math.pow(e.x - w.x, 2) + math.pow(e.z - ez, 2) < .75 * .75,
+    );
   }
 
   bool _near(
@@ -1470,6 +1570,7 @@ class HazardGameState {
     }
     if (key.startsWith('poster:')) return '窓際族の記録をコレクション';
     if (key.startsWith('crate:')) return '木箱・樽を壊す';
+    if (key.startsWith('window:')) return '窓を乗り越える';
     if (key == 'tower') return y > 2 ? 'はしごを降りる' : '見張り塔へ登る';
     return gateOpen
         ? '門の先へ進む'
@@ -1481,7 +1582,7 @@ class HazardGameState {
   }
 
   void interact() {
-    if (climb != null) return;
+    if (traversing) return;
     if (!running) return;
     interaction = _nearestInteraction();
     final key = interaction;
@@ -1506,6 +1607,19 @@ class HazardGameState {
       say('記録を収集した ${collected.length}/${gallery.length} — Cで鑑賞');
     } else if (key.startsWith('crate:')) {
       breakCrate(crates.firstWhere((c) => 'crate:${c.id}' == key));
+    } else if (key.startsWith('window:')) {
+      final w = windows.firstWhere((w) => 'window:${w.id}' == key);
+      final inward = z < w.z;
+      if (windowOccupied(w) || !_windowExitClear(w, inward)) {
+        say('窓の向こうが塞がっている。');
+        return;
+      }
+      if (evadeTime > 0 || kickTime > 0 || hurtTime > .2) return;
+      vault = WindowTraversal(w, inward, x, z);
+      aiming = false;
+      reloading = 0;
+      interaction = null;
+      lastSound = 'step';
     } else if (key == 'tower') {
       if (ladderOccupied) {
         say('そば屋がはしごを使っている。');
@@ -1651,6 +1765,7 @@ class HazardGameState {
     'phase': phase.name,
     'position': {'x': x, 'y': y, 'z': z},
     'climb': climb?.toJson(),
+    'vault': vault?.toJson(),
     'yaw': yaw,
     'health': health,
     'combat': {
@@ -1699,6 +1814,7 @@ class HazardGameState {
             'stun': e.stun,
             'attackPending': e.attackPending,
             'climb': e.climb?.toJson(),
+            'vault': e.vault?.toJson(),
             'fallingFromLadder': e.fallingFromLadder,
             'meleeRecovery': e.meleeRecovery,
             'meleeClipTime': e.meleeClipTime,
