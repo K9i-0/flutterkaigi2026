@@ -718,13 +718,7 @@ class HazardGameController extends ChangeNotifier {
   }
 
   void rotate(double dx, double dy) {
-    final s = state!;
-    if (!s.running) return;
-    s.yaw -= dx * .006 * settings.sensitivity;
-    s.pitch = (s.pitch + dy * .004 * settings.sensitivity).clamp(
-      minCameraPitch,
-      maxCameraPitch,
-    );
+    rotatePlayerView(state!, dx, dy, sensitivity: settings.sensitivity);
   }
 
   PerspectiveCamera camera() {

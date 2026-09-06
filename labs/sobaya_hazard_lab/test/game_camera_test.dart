@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math' as math;
 import 'dart:ui' as ui;
 
 import 'package:flutter_test/flutter_test.dart';
@@ -10,6 +11,64 @@ import 'package:sobaya_hazard_lab/game/game_state.dart';
 import 'package:sobaya_hazard_lab/game/game_checkpoint.dart';
 
 void main() {
+  test(
+    'pointer movement turns the center ray toward that screen direction',
+    () {
+      final map = jsonDecode(File('assets/village.json').readAsStringSync());
+      const size = ui.Size(1280, 840), center = ui.Offset(640, 420);
+      // Check the rendered camera's rays, not just the sign of a stored angle.
+      for (final yaw in [0.0, math.pi / 2, math.pi, -math.pi / 2]) {
+        for (final aiming in [false, true]) {
+          for (final delta in [
+            const ui.Offset(20, 0),
+            const ui.Offset(-20, 0),
+            const ui.Offset(0, 20),
+            const ui.Offset(0, -20),
+          ]) {
+            final s = HazardGameState(map)
+              ..phase = PlayPhase.playing
+              ..yaw = yaw
+              ..pitch = 0
+              ..aiming = aiming;
+            s.obstacles.clear();
+            s.crates.clear();
+            final before = playerCamera(s);
+            final forward = before.screenPointToRay(center, size).direction;
+            final expected = before
+                .screenPointToRay(center + delta, size)
+                .direction;
+            rotatePlayerView(s, delta.dx, delta.dy);
+            final actual = playerCamera(s)
+                .screenPointToRay(center, size)
+                .direction;
+            expect(
+              (actual - forward).dot(expected - forward),
+              greaterThan(0),
+              reason: 'yaw=$yaw aiming=$aiming delta=$delta',
+            );
+          }
+        }
+      }
+    },
+  );
+
+  test('pointer look respects pause, sensitivity and vertical limits', () {
+    final s = HazardGameState(
+      jsonDecode(File('assets/village.json').readAsStringSync()),
+    )..phase = PlayPhase.paused;
+    final yaw = s.yaw, pitch = s.pitch;
+    rotatePlayerView(s, 30, 20);
+    expect(s.yaw, yaw);
+    expect(s.pitch, pitch);
+    s.phase = PlayPhase.playing;
+    rotatePlayerView(s, 30, 0, sensitivity: .5);
+    expect(s.yaw - yaw, closeTo(.09, .000001));
+    rotatePlayerView(s, 0, 10000);
+    expect(s.pitch, maxCameraPitch);
+    rotatePlayerView(s, 0, -10000);
+    expect(s.pitch, minCameraPitch);
+  });
+
   test('shoulder ray respects cover even when muzzle can see the target', () {
     final s =
         HazardGameState(

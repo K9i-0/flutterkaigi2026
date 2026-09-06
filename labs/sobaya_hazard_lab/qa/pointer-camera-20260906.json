@@ -1,0 +1,19 @@
+{
+  "date": "2026-09-06",
+  "issue": "Horizontal pointer drag turned camera opposite to input direction",
+  "fix": "Increase camera yaw for positive pointer dx; vertical pitch mapping retained",
+  "tests": {
+    "flutterTests": 102,
+    "analyze": "No issues found",
+    "rayDirectionCoverage": "4 camera headings × normal/aiming × left/right/up/down = 32 combinations; compares actual center camera rays to corresponding off-center rays",
+    "pauseSensitivityClamp": "passed"
+  },
+  "nativeMcp": {
+    "method": "Marionette swipe through real Flutter Listener; static inspection scenario, not a physical trackpad test",
+    "startYaw": 3.141592653589793,
+    "right100pxYaw": 3.741592653589793,
+    "left100pxYaw": 3.141592653589793,
+    "afterQAndRight80pxYaw": 3.6215926535897935
+  },
+  "remaining": "Physical trackpad feel can be reviewed in the relaunched debug app; no new ZIP built."
+}
