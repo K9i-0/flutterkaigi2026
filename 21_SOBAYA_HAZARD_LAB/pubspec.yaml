@@ -30,6 +30,7 @@ flutter:
     - assets/village.json
     - assets/collection/
     - assets/cinematics/
+    - assets/cinematics/title_logo.png
     - assets/audio/
     - assets/audio/voice/
     - assets/audio/soundscape/

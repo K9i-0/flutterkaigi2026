@@ -110,6 +110,10 @@ class Enemy {
   Enemy(this.id, this.x, this.z, {this.boss = false}) {
     hp = maxHp;
   }
+  double get modelScale => boss ? 3.0 : 1.0;
+  double get collisionRadius => .37 * modelScale;
+  double get targetHeight => modelScale;
+  double get headHeight => 1.68 * modelScale;
   double get maxHp => boss ? 900 : 100;
   bool suppressBeer = false;
   vm.Vector3? headCentre, mugCentre;
@@ -126,6 +130,7 @@ class Enemy {
     BossMove.recovery => '反撃のチャンス',
     BossMove.ready => hp <= maxHp / 2 ? '怒りのラストオーダー' : 'ラストオーダー',
   };
+  static const bossSwipeWindup = 1.2, bossSlamWindup = 1.6;
   static const meleeWindup = .85, meleeFollowThrough = .55;
   double meleeRecovery = 0, approachTimer = 0;
   bool grabPending = false;
@@ -396,6 +401,8 @@ class HazardGameState {
                 : '静かになったな。東の門から帰ろう。\n福ちゃん、この夜のこと、三人でちゃんと話そうや。',
           ),
         ]
+      : hardest && dialogueTopic == 'supplies'
+      ? [hardSuppliesLine]
       : yametaroDialogue[dialogueTopic]!;
   DialogueLine get dialogueLine => dialogueLines[dialogueIndex];
   bool get dialogueChoices => dialogueIndex == dialogueLines.length - 1;
@@ -1366,7 +1373,7 @@ class HazardGameState {
           for (var i = 0; i < steps; i++) {
             final nx = e.x + math.sin(e.heading) * distance / steps;
             final nz = e.z + math.cos(e.heading) * distance / steps;
-            if (blocked(nx, nz, 0, radius: .45)) {
+            if (blocked(nx, nz, 0, radius: e.collisionRadius)) {
               recover(2.5);
               break;
             }
@@ -1375,11 +1382,11 @@ class HazardGameState {
             e.moved += distance / steps;
             if (!e.chargeHit &&
                 y < 1 &&
-                math.pow(x - e.x, 2) + math.pow(z - e.z, 2) < .9 * .9 &&
+                math.pow(x - e.x, 2) + math.pow(z - e.z, 2) < 1.4 * 1.4 &&
                 wallDistance(
                       vm.Vector3(e.x, 1, e.z),
                       vm.Vector3(x - e.x, 0, z - e.z).normalized(),
-                      .9,
+                      1.4,
                     ) >=
                     math.sqrt(math.pow(x - e.x, 2) + math.pow(z - e.z, 2)) -
                         .1) {
@@ -1395,7 +1402,7 @@ class HazardGameState {
             final facing = dist < .001
                 ? 1.0
                 : (dx * math.sin(e.heading) + dz * math.cos(e.heading)) / dist;
-            if (dist < (slam ? 2.6 : 1.95) &&
+            if (dist < (slam ? 4.2 : 3.4) &&
                 (slam || facing > .35) &&
                 clearToPlayer()) {
               hurt(slam ? 35 : 30);
@@ -1411,13 +1418,13 @@ class HazardGameState {
     }
     if (e.stun > 0 || e.cooldown > 0) return true;
     if (y >= 1 || !clearToPlayer()) return false;
-    if (dist >= 3 && dist <= 9) {
+    if (dist >= 4.2 && dist <= 11) {
       e.bossMove = BossMove.chargeWindup;
       e.bossTimer = 1.15;
-    } else if (dist < 1.8 || (e.hp <= e.maxHp / 2 && dist < 2.5)) {
+    } else if (dist < 3.1 || (e.hp <= e.maxHp / 2 && dist < 3.8)) {
       final slam = e.hp <= e.maxHp / 2 && e.bossSequence.isOdd;
       e.bossMove = slam ? BossMove.slamWindup : BossMove.swipeWindup;
-      e.bossTimer = slam ? 1.25 : .85;
+      e.bossTimer = slam ? Enemy.bossSlamWindup : Enemy.bossSwipeWindup;
     } else {
       return false;
     }
@@ -1571,13 +1578,15 @@ class HazardGameState {
     for (var i = 0; i < steps; i++) {
       final nx = e.x + dx / steps;
       var floor = floorHeight(nx, e.z, e.y);
-      if ((floor - e.y).abs() <= .34 && !blocked(nx, e.z, floor, radius: .37)) {
+      if ((floor - e.y).abs() <= .34 &&
+          !blocked(nx, e.z, floor, radius: e.collisionRadius)) {
         e.x = nx;
         e.y = floor;
       }
       final nz = e.z + dz / steps;
       floor = floorHeight(e.x, nz, e.y);
-      if ((floor - e.y).abs() <= .34 && !blocked(e.x, nz, floor, radius: .37)) {
+      if ((floor - e.y).abs() <= .34 &&
+          !blocked(e.x, nz, floor, radius: e.collisionRadius)) {
         e.z = nz;
         e.y = floor;
       }
@@ -1712,15 +1721,17 @@ class HazardGameState {
       }
     }
     for (final e in enemies.where((e) => e.alive && e.active)) {
-      final center = vm.Vector3(e.x, e.y + .95, e.z), to = center - origin;
+      final center = vm.Vector3(e.x, e.y + e.targetHeight, e.z),
+          to = center - origin;
       final along = to.dot(dir);
       if (along <= 0 || along > distance) continue;
       final at = origin + dir * along;
-      final radius = weapon == 'shotgun' ? .45 + along * .025 : .43;
+      final radius =
+          (weapon == 'shotgun' ? .45 + along * .025 : .43) * e.modelScale;
       if ((at.x - e.x) * (at.x - e.x) + (at.z - e.z) * (at.z - e.z) <
               radius * radius &&
           at.y > e.y + .05 &&
-          at.y < e.y + (e.boss ? 1.8 : 1.48)) {
+          at.y < e.y + 1.48 * e.modelScale) {
         distance = along;
         victim = e;
         crate = null;
@@ -1728,10 +1739,9 @@ class HazardGameState {
       }
     }
     for (final e in enemies.where((e) => e.alive && e.active)) {
-      final head =
-          e.headCentre ?? vm.Vector3(e.x, e.y + (e.boss ? 2.0 : 1.68), e.z);
+      final head = e.headCentre ?? vm.Vector3(e.x, e.y + e.headHeight, e.z);
       for (final point in [
-        (part: ShotPart.head, centre: head, radius: e.boss ? .25 : .21),
+        (part: ShotPart.head, centre: head, radius: .21 * e.modelScale),
         if (e.mugCentre != null &&
             e.climb == null &&
             e.vault == null &&
@@ -1740,7 +1750,7 @@ class HazardGameState {
           (
             part: ShotPart.mug,
             centre: e.mugCentre!,
-            radius: e.boss ? .17 : .14,
+            radius: .14 * e.modelScale,
           ),
       ]) {
         final t = _raySphere(origin, dir, point.centre, point.radius, distance);
@@ -2244,7 +2254,7 @@ class HazardGameState {
     if (!['route', 'combat', 'records', 'supplies'].contains(topic)) return;
     if (topic == 'supplies') {
       if (receivedYametaroAmmo) return;
-      if (addItem('ammo', 10)) {
+      if (addItem('ammo', hardest ? 25 : 10)) {
         receivedYametaroAmmo = true;
         lastSound = 'pickup';
       } else {
@@ -2375,6 +2385,7 @@ class HazardGameState {
             'dropped': e.dropped,
             'hp': e.hp,
             'maxHp': e.maxHp,
+            'modelScale': e.modelScale,
             'suppressBeer': e.suppressBeer,
             'headCentre': e.headCentre?.storage.toList(),
             'mugCentre': e.mugCentre?.storage.toList(),

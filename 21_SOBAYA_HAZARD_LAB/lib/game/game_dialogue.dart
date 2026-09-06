@@ -139,3 +139,8 @@ const purchaseReplies = <String, List<DialogueLine>>{
     DialogueLine('たこさん', 'ギュンギュンです。'),
   ],
 };
+
+const hardSuppliesLine = DialogueLine(
+  'やめ太郎',
+  '弾二十五発、持っていき。農場までこれでしのぐんや。ビールを拾っとけば、向こうでたこさんが弾と交換してくれる。打ち上げの店はワイが予約するわ。絶対やで。',
+);

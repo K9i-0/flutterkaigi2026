@@ -17,6 +17,11 @@ void main(List<String> args) {
     (row['uses'] as List).add(usage);
   }
 
+  add(
+    hardSuppliesLine.speaker,
+    hardSuppliesLine.text,
+    'dialogue:yametaro:supplies:hard',
+  );
   for (final event in hazardEvents.entries) {
     for (var i = 0; i < event.value.length; i++) {
       add(

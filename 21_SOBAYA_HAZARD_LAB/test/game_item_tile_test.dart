@@ -35,7 +35,7 @@ void main() {
       }
     },
   );
-  test('Tako offers ammunition exchange in the village and farm', () {
+  test('Tako appears from the farm, never in the village', () {
     final village = jsonDecode(
       File('assets/village.json').readAsStringSync(),
     ) as Map<String, dynamic>;
@@ -43,11 +43,11 @@ void main() {
       File('assets/farm.json').readAsStringSync(),
     ) as Map<String, dynamic>;
     final first = HazardGameState(village);
-    expect(first.npcs.map((n) => n['id']), ['yametaro', 'takosan']);
+    expect(first.npcs.map((n) => n['id']), ['yametaro']);
     expect(HazardGameState(farm).npcs.map((n) => n['id']), contains('takosan'));
     first.x = 4;
     first.z = -22.8;
     first.interact();
-    expect(first.talkingTo, 'takosan');
+    expect(first.talkingTo, isNot('takosan'));
   });
 }

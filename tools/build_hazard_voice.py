@@ -15,6 +15,7 @@ CAST={
 }
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 def caption(row):
+ if row['text']=='そば屋ハザード。':return 'ゲームのタイトルコール。低く重厚に、そば屋ハザード、と一息ではっきり告げる。語尾は短く、乾いた威圧感。'
  if row['speaker']=='ナレーション':return '落ち着いたアナウンサーの情景ナレーション。標準語で、明瞭に、ゆっくりと文章の区切りに間を取り、最後まで読み上げる。抑制された抑揚で真面目に話す。'
  if any(u.startswith('dialogue:reaction:') for u in row['uses']):return '突然殴られて痛がり、仲間に助けを求める。短く切迫して。声の同一性は保つ。'
  if 'ワイ、二週間ぶりにくつろいだんやけど。' in row['text']:return '関西弁で仲間へ話す。椅子が段ボールだと気づき、そのあと二週間ぶりにくつろいだとぼやく。二つの文を最後まで明瞭に話す。'

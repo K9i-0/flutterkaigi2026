@@ -1058,20 +1058,15 @@ class _HazardGamePageState extends State<HazardGamePage> {
               style: TextStyle(color: gold, fontSize: 15, letterSpacing: 7),
             ),
             const SizedBox(height: 24),
-            const Text(
-              'SOBAYA\nHAZARD',
-              style: TextStyle(
-                color: ivory,
-                fontFamily: 'Georgia',
-                fontSize: 76,
-                height: .95,
-                letterSpacing: 5,
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 820),
+              child: Image.asset(
+                'assets/cinematics/title_logo.png',
+                key: const ValueKey('game-title-logo'),
+                fit: BoxFit.contain,
+                cacheWidth: 1640,
+                semanticLabel: 'そば屋ハザード',
               ),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'そば屋ハザード',
-              style: TextStyle(color: ivory, fontSize: 24, letterSpacing: 5),
             ),
             const SizedBox(height: 24),
             const Text(
@@ -1315,6 +1310,26 @@ class _HazardGamePageState extends State<HazardGamePage> {
   Widget collection(HazardGameState s) => modal('村の記録', HazardJournal(s));
   Widget eventOverlay() {
     final d = game.director!;
+    if (d.id == 'title_call') {
+      return Positioned.fill(
+        child: ColoredBox(
+          color: ink,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(48),
+              child: Image.asset(
+                'assets/cinematics/title_logo.png',
+                key: const ValueKey('game-title-call'),
+                width: 1000,
+                fit: BoxFit.contain,
+                cacheWidth: 1640,
+                semanticLabel: 'そば屋ハザード',
+              ),
+            ),
+          ),
+        ),
+      );
+    }
     return Positioned.fill(
       child: LayoutBuilder(
         builder: (context, constraints) => Stack(
@@ -1651,7 +1666,11 @@ class _HazardGamePageState extends State<HazardGamePage> {
             }),
             if (game.hasCheckpoint)
               action('load', 'チェックポイントへ戻る', game.continueRun),
-            action('restart', '最初から', game.startRun),
+            action(
+              'title',
+              game.saving ? '記録中…' : '保存してタイトルへ',
+              game.returnToTitle,
+            ),
             action('settings', '設定', game.openSettings),
           ],
         ),
