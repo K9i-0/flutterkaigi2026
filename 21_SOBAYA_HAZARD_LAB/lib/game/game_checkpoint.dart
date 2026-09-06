@@ -1,6 +1,7 @@
 import 'game_state.dart';
 import 'game_ladder.dart';
 import 'game_window.dart';
+import 'game_grapple.dart';
 
 /// Progress is independent of the account-wide collection. Loading a checkpoint
 /// never removes images already collected on a later attempt.
@@ -20,6 +21,8 @@ extension HazardCheckpoint on HazardGameState {
       'heading': heading,
       'climb': climb?.toJson(),
       'vault': vault?.toJson(),
+      'grapple': grapple?.toJson(),
+      'breakFreeTime': breakFreeTime,
       'health': health,
       'maxHealth': maxHealth,
     },
@@ -75,6 +78,9 @@ extension HazardCheckpoint on HazardGameState {
             'stun': e.stun,
             'cooldown': e.cooldown,
             'attackPending': e.attackPending,
+            'grabPending': e.grabPending,
+            'grabCooldown': e.grabCooldown,
+            'releaseTime': e.releaseTime,
             'windup': e.windup,
             'meleeRecovery': e.meleeRecovery,
             'approachHeading': e.approachHeading,
@@ -127,7 +133,10 @@ HazardGameState restoreHazardCheckpoint(
   s.health = number(p['health'], .001, s.maxHealth);
   s.climb = LadderTraversal.restore(p['climb'], s.ladder, s.x, s.y, s.z);
   s.vault = WindowTraversal.restore(p['vault'], s.windows, s.x, s.y, s.z);
+  s.grapple = HazardGrapple.restore(p['grapple']);
+  s.breakFreeTime = number(p['breakFreeTime'] ?? 0, 0, .7);
   require(s.climb == null || s.vault == null);
+  require(s.grapple == null || (!s.traversing && s.breakFreeTime == 0));
   s.weapon = data['weapon'] as String;
   require(['handgun', 'shotgun'].contains(s.weapon));
   s.pistolLoaded = integer(data['pistolLoaded'], 0, 10);
@@ -252,6 +261,9 @@ HazardGameState restoreHazardCheckpoint(
       ..stun = number(j['stun'], 0, 30)
       ..cooldown = number(j['cooldown'], 0, 30)
       ..attackPending = j['attackPending'] as bool
+      ..grabPending = j['grabPending'] as bool? ?? false
+      ..grabCooldown = number(j['grabCooldown'] ?? 0, 0, 30)
+      ..releaseTime = number(j['releaseTime'] ?? 0, 0, .7)
       ..windup = number(j['windup'], -.051, 30);
     e.climb = LadderTraversal.restore(j['climb'], s.ladder, e.x, e.y, e.z);
     e.vault = WindowTraversal.restore(
@@ -300,6 +312,28 @@ HazardGameState restoreHazardCheckpoint(
     require(e.alive == (e.hp > 0) && (!e.dropped || !e.alive));
   }
   require(s.enemies.where((e) => !e.alive).length <= s.kills);
+  if (s.grapple != null) {
+    final g = s.grapple!;
+    final enemy = s.enemies.where((e) => e.id == g.enemyId).firstOrNull;
+    final dx = g.startX - g.playerX, dz = g.startZ - g.playerZ;
+    require(
+      enemy != null &&
+          enemy.alive &&
+          enemy.active &&
+          !enemy.boss &&
+          enemy.climb == null &&
+          enemy.vault == null &&
+          !enemy.attackPending &&
+          (enemy.x - g.enemyX).abs() < .02 &&
+          (enemy.z - g.enemyZ).abs() < .02 &&
+          (enemy.y - g.playerY).abs() < .02 &&
+          (s.x - g.playerX).abs() < .02 &&
+          (s.z - g.playerZ).abs() < .02 &&
+          (s.y - g.playerY).abs() < .02 &&
+          dx * dx + dz * dz >= .5 * .5 &&
+          dx * dx + dz * dz <= 1.15 * 1.15,
+    );
+  }
   require(
     s.enemies.where((e) => e.climb != null).length +
             (s.climb == null ? 0 : 1) <=

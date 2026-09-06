@@ -124,6 +124,8 @@ from hazard_climb_motion import bake_climb
 report['clips'].append(bake_climb(rig))
 from hazard_vault_motion import bake_vault
 report['clips'].append(bake_vault(rig))
+from hazard_grapple_motion import bake_grapple
+report['clips'].extend(bake_grapple(rig))
 # Mount the gun at the hand grip in the aiming pose. Bone parent handles all clip blending.
 rig.animation_data.action=bpy.data.actions['Aim']
 bpy.context.scene.frame_set(0);bpy.context.view_layer.update()

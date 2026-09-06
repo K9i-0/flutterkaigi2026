@@ -143,6 +143,7 @@ void attachGameAutomation(HazardGameController game) {
         'enemyLadder',
         'window',
         'enemyWindow',
+        'grapple',
         'farmEnemyStairs',
         'death',
         'npc',
@@ -291,6 +292,20 @@ void attachGameAutomation(HazardGameController game) {
           s.x = 11.5;
           s.z = 22;
           s.hasKey = true;
+        case 'grapple':
+          s.x = 0;
+          s.y = 0;
+          s.z = -21;
+          s.yaw = 3.141592653589793;
+          s.heading = 0;
+          s.invulnerable = 0;
+          s.enemies.first
+            ..active = true
+            ..alerted = true
+            ..x = 0
+            ..y = 0
+            ..z = -20.1
+            ..heading = 3.141592653589793;
         case 'window':
           final w = s.windows.first;
           s.x = w.x;
@@ -373,6 +388,7 @@ void attachGameAutomation(HazardGameController game) {
             'enemyLadder',
             'window',
             'enemyWindow',
+            'grapple',
           ].contains(name)
           ? PlayPhase.paused
           : PlayPhase.playing;
@@ -518,6 +534,7 @@ void attachGameAutomation(HazardGameController game) {
           s.inputX = inputX;
           s.inputY = inputY;
           s.sprint = p['sprint'] == 'true';
+          s.struggling = p['struggling'] == 'true';
           if (p['evade'] == 'true') s.evade();
           for (var i = 0; i < (seconds * 60).round(); i++) {
             s.tick(1 / 60);

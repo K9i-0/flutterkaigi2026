@@ -80,6 +80,22 @@
         0.02,
         1.55
       ]
+    },
+    {
+      "name": "Struggle",
+      "duration": 1.0,
+      "fps": 30,
+      "loop": true,
+      "pair_separation_m": 0.7,
+      "source": "authored paired upper-body IK; shared hold clock"
+    },
+    {
+      "name": "BreakFree",
+      "duration": 0.7,
+      "fps": 30,
+      "loop": false,
+      "pair_separation_m": 0.7,
+      "source": "authored paired upper-body IK; shared hold clock"
     }
   ]
 }

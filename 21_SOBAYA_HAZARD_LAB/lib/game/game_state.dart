@@ -7,6 +7,7 @@ import 'game_audio.dart';
 import 'game_navigation.dart';
 import 'game_ladder.dart';
 import 'game_window.dart';
+import 'game_grapple.dart';
 
 const minCameraPitch = -.75, maxCameraPitch = .85;
 
@@ -116,6 +117,8 @@ class Enemy {
   };
   static const meleeWindup = .85, meleeFollowThrough = .55;
   double meleeRecovery = 0, approachTimer = 0;
+  bool grabPending = false;
+  double grabCooldown = 0, releaseTime = 0;
   double? approachHeading, approachX, approachZ;
   bool runningApproach = false;
   int get flankSide => boss || id % 3 == 0
@@ -123,7 +126,9 @@ class Enemy {
       : id % 3 == 1
       ? -1
       : 1;
-  double? get meleeClipTime => attackPending
+  double? get meleeClipTime => grabPending
+      ? null
+      : attackPending
       ? .77 * (1 - windup / meleeWindup).clamp(0.0, 1.0)
       : meleeRecovery > 0
       ? .77 + (meleeFollowThrough - meleeRecovery) * .9
@@ -324,6 +329,11 @@ class HazardGameState {
       : HazardLadder(Map<String, dynamic>.from(map['tower']));
   LadderTraversal? climb;
   WindowTraversal? vault;
+  HazardGrapple? grapple;
+  bool struggling = false;
+  double breakFreeTime = 0;
+  bool get actionLocked => traversing || grapple != null || breakFreeTime > 0;
+
   late final List<HazardWindow> windows = (map['windows'] as List? ?? const [])
       .map((j) => HazardWindow(Map<String, dynamic>.from(j)))
       .toList();
@@ -391,6 +401,9 @@ class HazardGameState {
     gateOpen = false;
     hasKey = false;
     time = 0;
+    grapple = null;
+    struggling = false;
+    breakFreeTime = 0;
     climb = null;
     vault = null;
     reloading = 0;
@@ -425,6 +438,7 @@ class HazardGameState {
   }
 
   void stopInput() {
+    struggling = false;
     inputX = 0;
     inputY = 0;
     sprint = false;
@@ -432,6 +446,7 @@ class HazardGameState {
   }
 
   void toggle(PlayPhase p) {
+    if ((grapple != null || breakFreeTime > 0) && p != PlayPhase.paused) return;
     if (phase == PlayPhase.dialogue) {
       if (p == PlayPhase.paused) endDialogue();
       return;
@@ -516,6 +531,7 @@ class HazardGameState {
   }
 
   void useBag(int id) {
+    if (actionLocked) return;
     final item = bag.where((i) => i.id == id).firstOrNull;
     if (item == null) return;
     if (['handgun', 'shotgun'].contains(item.kind)) {
@@ -561,6 +577,7 @@ class HazardGameState {
   }
 
   void heal() {
+    if (actionLocked) return;
     final i = bag
         .where((i) => i.kind == 'green' || i.kind == 'mixed')
         .firstOrNull;
@@ -572,6 +589,7 @@ class HazardGameState {
   }
 
   void equip(String name) {
+    if (actionLocked) return;
     if (name == weapon || !['handgun', 'shotgun'].contains(name)) return;
     if (name == 'shotgun' && !hasShotgun) {
       say('ショットガンは民家の二階にある。');
@@ -583,7 +601,7 @@ class HazardGameState {
   }
 
   void reload() {
-    if (traversing) return;
+    if (actionLocked) return;
     if (!running ||
         reloading > 0 ||
         loaded >= capacity ||
@@ -709,8 +727,13 @@ class HazardGameState {
       reloading -= dt;
       if (reloading <= 0) _finishReload();
     }
+    breakFreeTime = math.max(0, breakFreeTime - dt);
     final previousHeight = y;
-    if (vault != null) {
+    if (grapple != null) {
+      _tickGrapple(dt);
+    } else if (breakFreeTime > 0) {
+      aiming = false;
+    } else if (vault != null) {
       aiming = false;
       if (hurtTime <= .2) vault!.advance(dt);
       x = vault!.x;
@@ -789,6 +812,9 @@ class HazardGameState {
       e.cooldown = math.max(0, e.cooldown - dt);
       e.stun = math.max(0, e.stun - dt);
       e.meleeRecovery = math.max(0, e.meleeRecovery - dt);
+      e.grabCooldown = math.max(0, e.grabCooldown - dt);
+      e.releaseTime = math.max(0, e.releaseTime - dt);
+      if (grapple?.enemyId == e.id) continue;
       e.approachTimer -= dt;
       final dx = x - e.x, dz = z - e.z, dist = math.sqrt(dx * dx + dz * dz);
       if (!e.alerted) {
@@ -842,6 +868,12 @@ class HazardGameState {
         e.windup -= dt;
         if (e.windup <= 0) {
           e.attackPending = false;
+          if (e.grabPending) {
+            e.grabPending = false;
+            e.grabCooldown = 7;
+            if (!_beginGrapple(e, dx, dz, dist)) e.releaseTime = .7;
+            continue;
+          }
           e.cooldown = 1.5;
           e.meleeRecovery = Enemy.meleeFollowThrough;
           if (dist < (e.boss ? 2.0 : 1.65) &&
@@ -871,11 +903,22 @@ class HazardGameState {
         }
         continue;
       }
-      if (e.stun > 0 || e.meleeRecovery > 0) continue;
+      if (e.stun > 0 || e.meleeRecovery > 0 || e.releaseTime > 0) continue;
       if (!e.boss && dist < 1.15 && (y - e.y).abs() < .8 && e.cooldown <= 0) {
         e.attackPending = true;
         e.heading = math.atan2(dx, dz);
-        e.windup = Enemy.meleeWindup;
+        // Frontal grapplers alternate with mug attacks; misses retain the
+        // longer grab cooldown so a player can step out of the warning.
+        e.grabPending =
+            e.id % 3 == 0 &&
+            e.grabCooldown <= 0 &&
+            !actionLocked &&
+            invulnerable <= 0 &&
+            (-dx * math.sin(heading) - dz * math.cos(heading)) /
+                    math.max(.01, dist) >
+                .25;
+        if (e.grabPending) e.grabCooldown = 7;
+        e.windup = e.grabPending ? 1.0 : Enemy.meleeWindup;
         emitSound('enemy', x: e.x, y: e.y + 1.2, z: e.z);
         continue;
       }
@@ -895,6 +938,7 @@ class HazardGameState {
           if (!windowOccupied(w) && _windowExitClear(w, inward, enemy: e)) {
             e.vault = WindowTraversal(w, inward, e.x, e.z, enemy: true);
             e.attackPending = false;
+            e.grabPending = false;
             e.meleeRecovery = 0;
             e.approachX = e.approachZ = null;
           }
@@ -912,6 +956,7 @@ class HazardGameState {
         if (!ladderOccupied) {
           e.climb = LadderTraversal(tower, wantsUp, e.x, e.z);
           e.attackPending = false;
+          e.grabPending = false;
           e.meleeRecovery = 0;
           e.approachX = e.approachZ = null;
         }
@@ -1123,7 +1168,118 @@ class HazardGameState {
     e.approachZ = tz;
   }
 
+  bool _beginGrapple(Enemy e, double dx, double dz, double dist) {
+    if (actionLocked ||
+        invulnerable > 0 ||
+        evadeTime > 0 ||
+        e.stun > 0 ||
+        e.climb != null ||
+        e.vault != null ||
+        dist < .5 ||
+        dist > 1.15 ||
+        (y - e.y).abs() > .05 ||
+        (floorHeight(x, z, y) - y).abs() > .02 ||
+        (dx * math.sin(e.heading) + dz * math.cos(e.heading)) / dist < .35 ||
+        wallDistance(
+              vm.Vector3(e.x, e.y + 1, e.z),
+              vm.Vector3(dx, 0, dz).normalized(),
+              dist,
+            ) <
+            dist - .05) {
+      return false;
+    }
+    final g = HazardGrapple(
+      enemyId: e.id,
+      playerX: x,
+      playerY: y,
+      playerZ: z,
+      heading: math.atan2(dx, dz),
+      startX: e.x,
+      startZ: e.z,
+    );
+    for (var i = 0; i <= 8; i++) {
+      final t = i / 8,
+          px = e.x + (g.targetX - e.x) * t,
+          pz = e.z + (g.targetZ - e.z) * t;
+      if (blocked(px, pz, y, radius: .37) ||
+          (floorHeight(px, pz, y) - y).abs() > .03 ||
+          enemies.any(
+            (other) =>
+                other != e &&
+                other.alive &&
+                other.active &&
+                (other.y - y).abs() < .8 &&
+                math.pow(other.x - px, 2) + math.pow(other.z - pz, 2) <
+                    .55 * .55,
+          )) {
+        return false;
+      }
+    }
+    stopInput();
+    reloading = 0;
+    interaction = null;
+    grapple = g;
+    invulnerable = .15;
+    heading = g.heading + math.pi;
+    e.heading = g.heading;
+    e.meleeRecovery = e.releaseTime = 0;
+    say('掴まれた！ Eを長押しして振りほどく');
+    return true;
+  }
+
+  void _endGrapple({required bool escaped}) {
+    final g = grapple;
+    if (g == null) return;
+    final enemy = enemies.where((e) => e.id == g.enemyId).firstOrNull;
+    if (enemy != null) {
+      enemy.releaseTime = .7;
+      enemy.grabCooldown = 7;
+      enemy.cooldown = 1.5;
+      enemy.stun = math.max(enemy.stun, escaped ? 1.5 : .8);
+    }
+    grapple = null;
+    struggling = false;
+    breakFreeTime = .7;
+    invulnerable = 1.2;
+    say(escaped ? '振りほどいた — 反撃か、距離を取れ' : '拘束を抜けた — 距離を取れ');
+  }
+
+  void _tickGrapple(double dt) {
+    final g = grapple!;
+    final enemy = enemies.where((e) => e.id == g.enemyId).firstOrNull;
+    if (enemy == null || !enemy.alive || !enemy.active || enemy.stun > 0) {
+      _endGrapple(escaped: true);
+      return;
+    }
+    final beats = g.advance(dt, struggling: struggling);
+    x = g.playerX;
+    y = g.playerY;
+    z = g.playerZ;
+    heading = g.heading + math.pi;
+    aiming = false;
+    enemy.x = g.enemyX;
+    enemy.y = y;
+    enemy.z = g.enemyZ;
+    enemy.heading = g.heading;
+    // The paired attack owns damage while attached; nearby mugs cannot stack
+    // unavoidable damage on top of it.
+    invulnerable = .15;
+    if (beats > 0) {
+      health = math.max(0, health - 8 * beats * damageScale);
+      damageFlash = .35;
+      emitSound('hurt', x: x, y: y + 1.1, z: z);
+    }
+    if (health <= 0) {
+      _endGrapple(escaped: false);
+      phase = PlayPhase.dead;
+      stopInput();
+    } else if (g.escaped || g.expired) {
+      _endGrapple(escaped: g.escaped);
+    }
+  }
+
   void _moveEnemy(Enemy e, double dx, double dz) {
+    if (grapple?.enemyId == e.id) return;
     if (e.climb != null || e.vault != null) return;
     final steps = math.max(1, (math.sqrt(dx * dx + dz * dz) / .05).ceil());
     for (var i = 0; i < steps; i++) {
@@ -1216,7 +1372,7 @@ class HazardGameState {
   }
 
   void shoot(vm.Vector3 origin, vm.Vector3 direction) {
-    if (traversing) return;
+    if (actionLocked) return;
     if (!running ||
         !aiming ||
         fireCooldown > 0 ||
@@ -1334,6 +1490,7 @@ class HazardGameState {
       if (!victim.boss) {
         victim.stun = head ? 1.4 : .5;
         victim.attackPending = false;
+        victim.grabPending = false;
         victim.meleeRecovery = 0;
       } else if (victim.bossMove == BossMove.ready && head) {
         victim.stun = .35;
@@ -1350,7 +1507,7 @@ class HazardGameState {
   }
 
   void evade() {
-    if (traversing) return;
+    if (actionLocked) return;
     if (!running || evadeCooldown > 0 || kickTime > 0 || hurtTime > .2) return;
     _evadeX = -inputY * math.sin(yaw) - inputX * math.cos(yaw);
     _evadeZ = -inputY * math.cos(yaw) + inputX * math.sin(yaw);
@@ -1383,7 +1540,7 @@ class HazardGameState {
       .firstOrNull;
 
   void kick() {
-    if (traversing) return;
+    if (actionLocked) return;
     if (!running ||
         kickTime > 0 ||
         kickCooldown > 0 ||
@@ -1422,6 +1579,7 @@ class HazardGameState {
       e.meleeRecovery = 0;
       e.alerted = true;
       e.attackPending = false;
+      e.grabPending = false;
       if (e.boss) {
         e.bossMove = BossMove.recovery;
         e.bossTimer = 1.5;
@@ -1444,6 +1602,7 @@ class HazardGameState {
     e.climb = null;
     e.alive = false;
     e.attackPending = false;
+    e.grabPending = false;
     e.bossMove = BossMove.ready;
     e.bossTimer = 0;
     e.vanish = 0;
@@ -1469,7 +1628,7 @@ class HazardGameState {
   }
 
   String? _nearestInteraction() {
-    if (traversing) return null;
+    if (actionLocked) return null;
     for (final n in npcs) {
       if (_near(
         (n['x'] as num).toDouble(),
@@ -1582,7 +1741,7 @@ class HazardGameState {
   }
 
   void interact() {
-    if (traversing) return;
+    if (actionLocked) return;
     if (!running) return;
     interaction = _nearestInteraction();
     final key = interaction;
@@ -1762,10 +1921,13 @@ class HazardGameState {
   }
 
   Map<String, Object?> inspect() => {
+    'message': message,
     'phase': phase.name,
     'position': {'x': x, 'y': y, 'z': z},
     'climb': climb?.toJson(),
     'vault': vault?.toJson(),
+    'grapple': grapple?.toJson(),
+    'breakFreeTime': breakFreeTime,
     'yaw': yaw,
     'health': health,
     'combat': {
@@ -1813,6 +1975,9 @@ class HazardGameState {
             'alerted': e.alerted,
             'stun': e.stun,
             'attackPending': e.attackPending,
+            'grabPending': e.grabPending,
+            'grabCooldown': e.grabCooldown,
+            'releaseTime': e.releaseTime,
             'climb': e.climb?.toJson(),
             'vault': e.vault?.toJson(),
             'fallingFromLadder': e.fallingFromLadder,

@@ -1,6 +1,6 @@
 {
-  "sha256": "644f7898fad33edb8cbdd4fb1c8dce2a557b6a0147d8beea976feb8316f7ba96",
-  "bytes": 12473944,
+  "sha256": "84a7db2a4a3b2f0e3c72500452f149a97a457ccee6f39f4542155a9678816046",
+  "bytes": 12563592,
   "skin_joints": 45,
   "exported_vertices": 32378,
   "triangles": 28576,
@@ -31,6 +31,18 @@
       "endpoint_max_delta": 0
     },
     {
+      "name": "Grab",
+      "seconds": 0.8999999761581421,
+      "loop": false,
+      "endpoint_max_delta": 0.7128968238830566
+    },
+    {
+      "name": "Hold",
+      "seconds": 1.0,
+      "loop": true,
+      "endpoint_max_delta": 0
+    },
+    {
       "name": "Idle",
       "seconds": 2.4000000953674316,
       "loop": true,
@@ -41,6 +53,12 @@
       "seconds": 1.399999976158142,
       "loop": false,
       "endpoint_max_delta": 0
+    },
+    {
+      "name": "Release",
+      "seconds": 0.699999988079071,
+      "loop": false,
+      "endpoint_max_delta": 0.7128968238830566
     },
     {
       "name": "Run",

@@ -270,6 +270,8 @@ def build():
     report['clips'].append({**bake_climb(rig, sobaya=True), 'loop': True, 'fps': 30})
     from hazard_vault_motion import bake_vault
     report['clips'].append({**bake_vault(rig, sobaya=True), 'loop': False, 'fps': 30})
+    from hazard_grapple_motion import bake_grapple
+    report['clips'].extend(bake_grapple(rig, sobaya=True))
     rig.animation_data.action=None
     for b in rig.pose.bones:b.location=(0,0,0);b.rotation_quaternion=Quaternion()
     bpy.context.scene.frame_set(0)

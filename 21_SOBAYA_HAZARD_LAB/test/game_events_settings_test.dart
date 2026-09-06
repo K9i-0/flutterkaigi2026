@@ -107,6 +107,8 @@ void main() {
           e.active = false;
         }
         s.enemies.first
+          ..grabCooldown =
+              7 // This case measures the mug base damage.
           ..active = true
           ..alerted = true
           ..x = 0
