@@ -155,3 +155,5 @@ python3 tools/package_hazard_macos.py --revision BUILD_COMMIT --output .local/ha
 音声の再生位置は200ms間隔で取得する。audioplayers 6.8.1はループ完了時も位置通知を停止するため、再生要求中だけ位置通知を再開する。ネイティブの音源自体を再スタートさせる処理ではない。Darwinで音がループ継続していても、プラグイン由来の`state`は`completed`になり得るため、`positionMs`・`loopCompletions`・セッション状態を併せて確認する。通知頻度の変更によるFPS改善をこの計測からは断定しない。
 
 Macパッケージ作成では3区画、9シーン、31音声キューと収集画像の同梱・ハッシュ一致、内部symlink、署名整合性、ZIPのCRCを検査する。正本GLBや認証情報は同梱しない。出力はローカルの検証用ZIPで、ad hoc署名・未公証。Intel用バイナリは含まれるが実機検証はApple Siliconのみ。公開配布と長時間の最終確認は別途必要。
+
+ローカルMacプレビューのビルド情報と確認範囲は[Mac検証記録](qa/mac-preview-20260906.json)。`19a9d86`のZIPを作成済み。最終パッケージのプロセス起動は確認したが、UIツールのウィンドウ取得エラーにより画面確認は未完了。以前のReleaseの操作確認とは区別する。
