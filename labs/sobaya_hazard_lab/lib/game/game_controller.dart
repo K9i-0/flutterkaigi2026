@@ -536,7 +536,11 @@ class HazardGameController extends ChangeNotifier {
     if (state!.seenEvents.contains(id)) return;
     state!.reaction = null;
     state!.reactionTime = 0;
-    director = HazardDirector(id, voiceSeconds: voiceCatalog.eventSeconds);
+    director = HazardDirector(
+      id,
+      voiceSeconds: voiceCatalog.eventSeconds,
+      foundMemos: state!.foundMemos,
+    );
     state!
       ..stopInput()
       ..phase = PlayPhase.cinematic;
@@ -994,7 +998,7 @@ class HazardGameController extends ChangeNotifier {
     } else if (dialogue) {
       final line = s.dialogueLine;
       cue = voiceCatalog.cue(
-        'dialogue:$runEpoch:$_dialogueVisit:${s.zoneId}:${s.dialogueOwner}:${s.dialogueTopic}:${s.dialogueIndex}:${line.text}',
+        'dialogue:$runEpoch:$_dialogueVisit:${s.zoneId}:${s.dialogueOwner}:${s.dialogueTopic}:${s.dialogueIndex}:${s.tradeSerial}:${line.text}',
         line.speaker,
         line.text,
       );
@@ -1179,6 +1183,10 @@ class HazardGameController extends ChangeNotifier {
       chair.visible = director?.id == 'ending';
     }
     player.node.position = vm.Vector3(s.x, s.y, s.z);
+    if (director?.id == 'farm') {
+      // Stage the conversation without changing gameplay or saved position.
+      player.node.position = vm.Vector3(-13, 0, -20.8);
+    }
     if (director?.id == 'ending') {
       // Render-only gathering outside the house; restore normal placement on
       // event exit. Never teleport campaign/checkpoint positions for a cut.

@@ -25,35 +25,30 @@ void main() {
     },
   );
 
-  test(
-    'all four scene introductions have narration with time after speech',
-    () {
-      final catalog = VoiceCatalog(
-        jsonDecode(File('assets/audio/voice-manifest.json').readAsStringSync()),
-      );
-      var count = 0;
-      for (final event in hazardEvents.entries) {
-        for (var i = 0; i < event.value.length; i++) {
-          final shot = event.value[i];
-          if (!shot.isNarration) continue;
-          count++;
-          final cue = catalog.cue('review', shot.voiceSpeaker, shot.text);
-          expect(cue, isNotNull, reason: event.key);
-          expect(cue!.speaker, 'ナレーション');
-          expect(File('assets/${cue.asset}').existsSync(), true);
-          final seconds = catalog.seconds(shot.voiceSpeaker, shot.text);
-          expect(seconds, greaterThan(5));
-          final d = HazardDirector(
-            event.key,
-            voiceSeconds: catalog.eventSeconds,
-          )..index = i;
-          expect(d.duration, greaterThanOrEqualTo(seconds + 1.5));
-          expect(d.duration, greaterThanOrEqualTo(shot.readingSeconds));
-        }
+  test('all narrative scenes have narration with time after speech', () {
+    final catalog = VoiceCatalog(
+      jsonDecode(File('assets/audio/voice-manifest.json').readAsStringSync()),
+    );
+    var count = 0;
+    for (final event in hazardEvents.entries) {
+      for (var i = 0; i < event.value.length; i++) {
+        final shot = event.value[i];
+        if (!shot.isNarration) continue;
+        count++;
+        final cue = catalog.cue('review', shot.voiceSpeaker, shot.text);
+        expect(cue, isNotNull, reason: event.key);
+        expect(cue!.speaker, 'ナレーション');
+        expect(File('assets/${cue.asset}').existsSync(), true);
+        final seconds = catalog.seconds(shot.voiceSpeaker, shot.text);
+        expect(seconds, greaterThan(5));
+        final d = HazardDirector(event.key, voiceSeconds: catalog.eventSeconds)
+          ..index = i;
+        expect(d.duration, greaterThanOrEqualTo(seconds + 1.5));
+        expect(d.duration, greaterThanOrEqualTo(shot.readingSeconds));
       }
-      expect(count, 4);
-    },
-  );
+    }
+    expect(count, 5);
+  });
 
   test('every authored cut resolves an asset/document and a valid camera', () {
     for (final event in hazardEvents.entries) {
@@ -74,7 +69,8 @@ void main() {
           if (cut.document.isNotEmpty) {
             expect(cinematicDocuments, contains(cut.document));
           }
-          final d = HazardDirector(event.key)..index = i;
+          final d = HazardDirector(event.key, foundMemos: {'diary_end'})
+            ..index = i;
           d.elapsed = d.duration * cut.at;
           expect(d.cut, cut);
           expect(d.visualProgress, closeTo(0, .00001));

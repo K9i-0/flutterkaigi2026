@@ -322,6 +322,7 @@ class HazardGameState {
   String? talkingTo;
   String dialogueTopic = 'intro';
   String dialogueOwner = 'yametaro', tradeMessage = '';
+  int tradeSerial = 0;
   int dialogueIndex = 0;
   bool metYametaro = false, receivedYametaroAmmo = false;
   bool metTakosan = false;
@@ -341,7 +342,21 @@ class HazardGameState {
   List<DialogueLine> get dialogueLines => dialogueOwner == 'takosan'
       ? dialogueTopic == 'trade_result'
             ? [DialogueLine('たこさん', tradeMessage)]
-            : takosanDialogue[dialogueTopic]!
+            : [
+                for (final line in takosanDialogue[dialogueTopic]!)
+                  if (dialogueTopic == 'evidence' &&
+                      line.speaker == '福ちゃん' &&
+                      !foundMemos.any(
+                        (id) => [
+                          'night_shift',
+                          'diary_mid',
+                          'diary_end',
+                        ].contains(id),
+                      ))
+                    unreadKeeperReply
+                  else
+                    line,
+              ]
       : zoneId == 'mountain' &&
             ['intro', 'greeting', 'route'].contains(dialogueTopic)
       ? [
@@ -464,6 +479,7 @@ class HazardGameState {
     companionFallTime = 0;
     dialogueOwner = 'yametaro';
     tradeMessage = '';
+    tradeSerial = 0;
     checkpointRequested = false;
     exitRequested = null;
     medallions.clear();
@@ -1679,7 +1695,7 @@ class HazardGameState {
       final count = targets.where((t) => medallions.contains(t['id'])).length;
       if (count == targets.length) {
         beers += 3;
-        say('青いメダリオン $count / ${targets.length} — 達成報酬 ビール ×3');
+        say('青いメダリオン $count / ${targets.length} — 補給代にビール3杯分を加算');
       } else {
         say('青いメダリオン $count / ${targets.length}');
       }
@@ -2140,6 +2156,7 @@ class HazardGameState {
     }
     final offer = tradeOffers.where((o) => o.id == id).firstOrNull;
     if (offer == null) return;
+    tradeSerial++;
     if (stockRemaining(offer) <= 0) {
       tradeMessage = 'それは売り切れです。別の品をどうぞ。';
     } else if (beers < offer.price) {
@@ -2149,8 +2166,7 @@ class HazardGameState {
     } else {
       beers -= offer.price;
       tradePurchases[id] = (tradePurchases[id] ?? 0) + 1;
-      tradeMessage =
-          '${itemNames[offer.kind]} ×${offer.amount}。お受け取りください。\n……。また、お待ちしています。';
+      tradeMessage = purchaseLines[id]!.text;
       lastSound = 'pickup';
     }
     dialogueTopic = 'trade_result';

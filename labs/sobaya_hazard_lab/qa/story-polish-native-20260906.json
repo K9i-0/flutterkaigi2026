@@ -1,0 +1,138 @@
+{
+  "date": "2026-09-06",
+  "platform": "macOS debug / Flutter 3.47.2 / Dart MCP + Marionette",
+  "scope": "Static cinematic frames and native merchant button/audio checks; not a full campaign replay or performance measurement.",
+  "visualChecks": [
+    "intro shot 5 / .55: gun receipt and captain warning readable",
+    "farm shot 2 / .7: Fuku framed correctly",
+    "farm shot 7 / .4: shelter image and narration readable",
+    "farm shot 8 / .2 and .5: running/stopped engine diagrams readable",
+    "farm shot 10 / .25: actual blue medallion shown",
+    "ending shot 5 / .2, diary_end absent: unread text and rescue list"
+  ],
+  "purchases": [
+    {
+      "case": "purchase1",
+      "beers": 6,
+      "reserve": 50,
+      "dialogue": {
+        "npc": "takosan",
+        "topic": "trade_result",
+        "line": 0,
+        "choices": true,
+        "metYametaro": false,
+        "receivedAmmo": false,
+        "metTakosan": true,
+        "tradePurchases": {
+          "ammo": 1
+        }
+      },
+      "voice": {
+        "requested": "dialogue:4:3:farm:takosan:trade_result:0:1:ハンドガンの弾、十発です。これでそば屋を蜂の巣にしてください。領収書は研修費で切れます。",
+        "active": "dialogue:4:3:farm:takosan:trade_result:0:1:ハンドガンの弾、十発です。これでそば屋を蜂の巣にしてください。領収書は研修費で切れます。",
+        "playbackSeconds": 0.197404,
+        "loading": false,
+        "speaking": true,
+        "finished": false,
+        "paused": false,
+        "volume": 1,
+        "errors": [],
+        "backend": {
+          "state": "playing",
+          "positionMs": 0,
+          "durationMs": 7829,
+          "loop": false,
+          "loopCompletions": 0,
+          "playbackRequested": true,
+          "positionUpdateMs": 200
+        }
+      }
+    },
+    {
+      "case": "purchase2",
+      "beers": 4,
+      "reserve": 60,
+      "dialogue": {
+        "npc": "takosan",
+        "topic": "trade_result",
+        "line": 0,
+        "choices": true,
+        "metYametaro": false,
+        "receivedAmmo": false,
+        "metTakosan": true,
+        "tradePurchases": {
+          "ammo": 2
+        }
+      },
+      "voice": {
+        "requested": "dialogue:4:3:farm:takosan:trade_result:0:2:ハンドガンの弾、十発です。これでそば屋を蜂の巣にしてください。領収書は研修費で切れます。",
+        "active": "dialogue:4:3:farm:takosan:trade_result:0:2:ハンドガンの弾、十発です。これでそば屋を蜂の巣にしてください。領収書は研修費で切れます。",
+        "playbackSeconds": 0.112386,
+        "loading": false,
+        "speaking": true,
+        "finished": false,
+        "paused": false,
+        "volume": 1,
+        "errors": [],
+        "backend": {
+          "state": "playing",
+          "positionMs": 0,
+          "durationMs": 7829,
+          "loop": false,
+          "loopCompletions": 0,
+          "playbackRequested": true,
+          "positionUpdateMs": 200
+        }
+      }
+    },
+    {
+      "case": "herb",
+      "beers": 1,
+      "reserve": 60,
+      "dialogue": {
+        "npc": "takosan",
+        "topic": "trade_result",
+        "line": 0,
+        "choices": true,
+        "metYametaro": false,
+        "receivedAmmo": false,
+        "metTakosan": true,
+        "tradePurchases": {
+          "ammo": 2,
+          "herb": 1
+        }
+      },
+      "voice": {
+        "requested": "dialogue:4:3:farm:takosan:trade_result:0:3:グリーンハーブです。疲れも痛みも、すーっと消えますよ。何が入っているかは、聞かないほうが長生きできます。",
+        "active": "dialogue:4:3:farm:takosan:trade_result:0:3:グリーンハーブです。疲れも痛みも、すーっと消えますよ。何が入っているかは、聞かないほうが長生きできます。",
+        "playbackSeconds": 0.18925,
+        "loading": false,
+        "speaking": true,
+        "finished": false,
+        "paused": false,
+        "volume": 1,
+        "errors": [],
+        "backend": {
+          "state": "playing",
+          "positionMs": 0,
+          "durationMs": 8725,
+          "loop": false,
+          "loopCompletions": 0,
+          "playbackRequested": true,
+          "positionUpdateMs": 200
+        }
+      }
+    }
+  ],
+  "tests": {
+    "flutterTest": 140,
+    "flutterAnalyze": "No issues",
+    "audioAssets": "81 clips passed audit",
+    "newAudioTranscripts": "14 screened via Whisper; automated transcription, not human listening"
+  },
+  "notes": [
+    "Initial taps used an incorrect key without game- prefix and did not buy items. Correct game-trade-* keys succeeded.",
+    "Launcher reported a foreground attempt warning; debugSession confirmed foreground=true during native checks."
+  ],
+  "savePreservation": "Run and collection keys restored from pre-test preferences, exact plist values verified; latest app reopened at title."
+}

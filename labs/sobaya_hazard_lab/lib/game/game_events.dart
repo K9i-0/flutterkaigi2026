@@ -15,12 +15,35 @@ class EventShot {
     this.fov = .78,
     this.anchorToPlayer = false,
     this.cuts = const [],
+    this.readMemo = '',
+    this.unreadText = '',
+    this.unreadCuts,
+    this.voiceUseSuffix = '',
   });
   final List<EventCut> cuts;
   final double seconds;
   final double fov;
   final bool anchorToPlayer;
   final String speaker, text, actor, motion;
+  final String readMemo, unreadText, voiceUseSuffix;
+  final List<EventCut>? unreadCuts;
+  EventShot resolve(Set<String> foundMemos) =>
+      readMemo.isNotEmpty && !foundMemos.contains(readMemo)
+      ? EventShot(
+          seconds,
+          speaker,
+          unreadText,
+          from,
+          to,
+          target,
+          actor: actor,
+          motion: motion,
+          fov: fov,
+          anchorToPlayer: anchorToPlayer,
+          cuts: unreadCuts ?? cuts,
+          voiceUseSuffix: ':unread',
+        )
+      : this;
   bool get isNarration => speaker.isEmpty && text.isNotEmpty;
   String get voiceSpeaker => isNarration ? 'ナレーション' : speaker;
 
@@ -121,6 +144,21 @@ const hazardEvents = <String, List<EventShot>>{
       ],
     ),
     EventShot(
+      7,
+      "福ちゃん",
+      "船長に『村にはバケモノがいる。いざとなったら使え』って、この銃を渡されたんです。バケモノって、そば屋さんのことだったんですね。",
+      (-1.85, 1.58, -19.05),
+      (-1.7, 1.55, -19.2),
+      (0, 1.34, -21),
+      actor: 'fukuchan',
+      fov: .58,
+      cuts: [
+        EventCut(0, image: 'harbor', label: '行きの船で渡された銃'),
+        EventCut(.38, document: 'gun-receipt', label: '船長からの支給品'),
+        EventCut(.78),
+      ],
+    ),
+    EventShot(
       5,
       "福ちゃん",
       "でも、そば屋さんを撃っていいんですかね。……辞令に追記がある。「村のそば屋は銃で撃ってOK。よーたん」。",
@@ -148,7 +186,7 @@ const hazardEvents = <String, List<EventShot>>{
     EventShot(
       5,
       "福ちゃん",
-      "よーたんが言うなら大丈夫ですね。帰りの船については……何も書いてない。そっちも一行ほしかったですね。",
+      "よーたんが言うなら大丈夫ですね。帰りは……帰任票がないと乗船不可。銃はくれたのに、帰りの切符はくれないんですね。",
       (-1.85, 1.58, -19.05),
       (-1.7, 1.55, -19.2),
       (0, 1.34, -21),
@@ -156,7 +194,7 @@ const hazardEvents = <String, List<EventShot>>{
       fov: .58,
       cuts: [
         EventCut(0, document: 'decree'),
-        EventCut(.55, image: 'harbor', label: '帰りの船　手配なし'),
+        EventCut(.45, document: 'return-ticket', label: '帰任票を発行する担当者　不在'),
       ],
     ),
     EventShot(
@@ -220,9 +258,9 @@ const hazardEvents = <String, List<EventShot>>{
       7,
       "福ちゃん",
       "やめさんも、ここなら補給できるって。あと、よーたんの辞令に、村のそば屋は銃で撃ってOKとありました。",
-      (-13.8, 1.3, -20),
-      (-13.5, 1.2, -19.7),
-      (-13, .9, -17.8),
+      (-11.8, 1.6, -18.8),
+      (-12, 1.55, -18.9),
+      (-13, 1.32, -20.8),
       actor: 'fukuchan',
       motion: 'Talk',
     ),
@@ -265,31 +303,54 @@ const hazardEvents = <String, List<EventShot>>{
       7,
       "福ちゃん",
       "ここ、研修先じゃなくて、誰も片付けなかった現場なんですね。今も社員を送ってくるのに、帰す人はいない。",
-      (-13.8, 1.3, -20),
-      (-13.5, 1.2, -19.7),
-      (-13, .9, -17.8),
+      (-11.8, 1.6, -18.8),
+      (-12, 1.55, -18.9),
+      (-13, 1.32, -20.8),
       actor: 'fukuchan',
       motion: 'Talk',
       cuts: [EventCut(0, document: 'arrivals', label: '止まらなかった着任手続き')],
     ),
     EventShot(
+      6,
+      "",
+      "補給所の奥、閉じた宿舎の扉を、たこさんが二度たたく。内側から、二度返事があった。扉の前には、水と食事が置かれている。",
+      (-11, 2.6, -18),
+      (-10.5, 2.3, -17),
+      (-4, 1.2, -10),
+      cuts: [EventCut(0, image: 'shelter', label: '避難者の部屋　応答あり')],
+    ),
+    EventShot(
       7,
       "たこさん",
-      "山の非常無線で船を呼べます。でも中枢の運転命令が割り込んで、送信できません。中枢を止めてください。私は避難している社員を集めます。",
+      "山の大型クローンが、運転命令の送信機まで回しています。止めれば非常無線が使えます。福ちゃんは中枢へ。私は無線で船を呼び、避難している社員を連れ出します。",
       (-13.8, 1.3, -20),
       (-13.5, 1.2, -19.7),
       (-13, .9, -17.8),
       actor: 'takosan',
       motion: 'Talk',
       cuts: [
-        EventCut(0, document: 'radio', label: '非常無線　保守担当の控え'),
+        EventCut(0, document: 'engine-link', label: '中枢と救難無線の関係'),
         EventCut(.68),
+      ],
+    ),
+    EventShot(
+      5,
+      "福ちゃん",
+      "銃は、船でもらったばかりなんです。説明書より先に撃つことになりました。",
+      (-11.8, 1.6, -18.8),
+      (-12, 1.55, -18.9),
+      (-13, 1.32, -20.8),
+      actor: 'fukuchan',
+      fov: .64,
+      cuts: [
+        EventCut(0, document: 'gun-receipt'),
+        EventCut(.5),
       ],
     ),
     EventShot(
       6,
       "たこさん",
-      "青いメダリオンは七つ。全部落とせば、おまけもあります。こんな日でも、約束は守ります。",
+      "山へ行く前に、その銃に慣れておきましょう。農場の青いメダリオンは、倉庫にあった射撃練習の的です。七つ全部落とせたら、ビール三杯分、お店の支払いをおまけします。",
       (-13.5, 1.2, -19.7),
       (-13.8, 1.3, -20),
       (-13, .9, -17.8),
@@ -376,13 +437,13 @@ const hazardEvents = <String, List<EventShot>>{
     EventShot(
       5,
       "",
-      "中枢停止。運転命令が途切れ、非常無線から救難信号が届いた。\n救助の船が来る。避難していた社員たちを桟橋へ送り、三人も帰り支度を始める。",
+      "中枢停止。運転命令が途切れた。たこさんが送った救難信号に、船から応答が返る。\n「帰任票は要りません。そこにいる人、全員乗せます」。三人は、避難していた社員たちを桟橋へ送り出した。",
       (13.6, 2.1, .2),
       (13.6, 1.85, .7),
       (13.6, .95, 6.5),
       cuts: [
-        EventCut(0, image: 'harbor', label: '救難信号　応答あり'),
-        EventCut(.7),
+        EventCut(0, document: 'rescue-radio', label: '救難回線　応答あり'),
+        EventCut(.55, image: 'harbor', label: '救助船　接岸へ'),
       ],
     ),
     EventShot(
@@ -445,6 +506,12 @@ const hazardEvents = <String, List<EventShot>>{
       (11.5, 1.32, 6),
       actor: 'fukuchan',
       fov: .60,
+      readMemo: 'diary_end',
+      unreadText: 'その人も乗れたんですね。よかった。帰ったら、まずはゆっくり食べて休んでほしいです。仕事の話は、そのあとで。',
+      unreadCuts: [
+        EventCut(0, document: 'rescue'),
+        EventCut(.6),
+      ],
       cuts: [
         EventCut(0, document: 'diary', label: '窓際社員の日記　最後のページ'),
         EventCut(.6),
@@ -524,12 +591,17 @@ const hazardEvents = <String, List<EventShot>>{
 
 /// Rendering and input consume the same clock. Pausing never advances a shot.
 class HazardDirector {
-  HazardDirector(this.id, {this.voiceSeconds = const {}})
-    : shots = hazardEvents[id] ?? (throw ArgumentError.value(id));
+  HazardDirector(
+    this.id, {
+    this.voiceSeconds = const {},
+    Set<String> foundMemos = const {},
+  }) : shots = (hazardEvents[id] ?? (throw ArgumentError.value(id)))
+           .map((shot) => shot.resolve(foundMemos))
+           .toList();
   final String id;
   final Map<String, double> voiceSeconds;
   double get duration {
-    final voice = voiceSeconds['event:$id:$index'] ?? 0;
+    final voice = voiceSeconds['event:$id:$index${shot.voiceUseSuffix}'] ?? 0;
     final minimum = shot.isNarration || voice <= 0
         ? math.max(shot.seconds, shot.readingSeconds)
         : shot.seconds;

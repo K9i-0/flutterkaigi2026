@@ -1,4 +1,4 @@
-Built-in Imagegen / 2026-09-06. Reference: `03_SCRIPTS/00_TEMPLATES/characters/character_sobaya_basic_sheet.png` (first two images). Game assets are referenced by relative symlink from LAB/assets/cinematics. All three outputs were visually reviewed for identity, framing and narrative clarity.
+Built-in Imagegen / 2026-09-06. Reference: `03_SCRIPTS/00_TEMPLATES/characters/character_sobaya_basic_sheet.png` (first two images). Game assets are referenced by relative symlink from LAB/assets/cinematics. The original three outputs were visually reviewed for identity, framing and narrative clarity.
 
 ## village-crowd.png
 
@@ -17,3 +17,7 @@ Cinematic diagonal overhead wide view shows the physical strength-to-shaft mecha
 
 Use case: stylized-concept. Asset type: widescreen 16:9 story insert for a third-person survival horror game.
 A weathered wooden jetty on the coast of a deserted Japanese island village. Viewed from the village shore, one small practical workboat in mid-distance on calm sea under clearing overcast skies. Old rope bollards and an empty wooden baggage trolley in foreground, hillside with abandoned timber farm houses at frame edge. No people are visible, no bodies, no readable text. Strong depth leading to the boat, somber yet quiet atmosphere, a pale brighter strip on the horizon. Subdued green grey sea, warm aged timber, PS2-era detailed prerendered 3D cinematic appearance. The same image will establish a departed boat and later a rescue boat, so keep its travel direction ambiguous (three-quarter side view, no visible wake). Boat clearly legible and centered in upper-middle half; game subtitles occupy bottom. No captions, no letterbox, no border, no split panels.
+
+## shelter.png
+
+The fourth insert establishes survivors before the rescue. Built-in Imagegen generation and edit prompts, including removal of exterior locking hardware, are recorded in [SHELTER_PROMPT.md](SHELTER_PROMPT.md). Final image visually reviewed in the game.
