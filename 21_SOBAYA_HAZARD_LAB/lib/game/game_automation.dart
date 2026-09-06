@@ -459,7 +459,7 @@ void attachGameAutomation(HazardGameController game) {
   );
   registerMarionetteExtension(
     name: 'madogiwa.gameAction',
-    description: 'Debug action=viewpoint|soundCue|previewState|simulate|interact|reload|fire|fireAtEnemy|step|move|aim|pause|evade|kick|pose. pose clip and seconds=0..3. step/simulate seconds=0..10. simulate x/y=-1..1 sprint/evade=true uses normal simulation and pauses for inspection.',
+    description: 'Debug action=eventFrame|viewpoint|soundCue|previewState|simulate|interact|reload|fire|fireAtEnemy|step|move|aim|pause|evade|kick|pose. eventFrame shot and progress=0..1 after an event scenario: static art review. pose clip and seconds=0..3. step/simulate seconds=0..10. simulate x/y=-1..1 sprint/evade=true uses normal simulation and pauses for inspection.',
     callback: (p) async {
       final g = _game;
       if (g == null || !g.ready) {
@@ -467,6 +467,30 @@ void attachGameAutomation(HazardGameController game) {
       }
       final s = g.state!;
       switch (p['action']) {
+        case 'eventFrame':
+          final d = g.director;
+          final shot = int.tryParse(p['shot'] ?? '');
+          final progress = double.tryParse(p['progress'] ?? '.5');
+          if (d == null ||
+              shot == null ||
+              shot < 0 ||
+              shot >= d.shots.length ||
+              progress == null ||
+              !progress.isFinite ||
+              progress < 0 ||
+              progress > 1 ||
+              _probeRunning ||
+              _nativeAudit?.status == 'running') {
+            return MarionetteExtensionResult.invalidParams(
+              'Open an event scenario first; shot in range, progress=0..1; no running audit',
+            );
+          }
+          // Static art review only. Do not pretend a background app is active,
+          // advance gameplay time, or treat this as a native playback check.
+          d.index = shot;
+          d.elapsed = d.duration * progress;
+          d.paused = true;
+          g.posePreview = true;
         case 'viewpoint':
           final x = double.tryParse(p['x'] ?? '');
           final y = double.tryParse(p['y'] ?? '0');

@@ -24,6 +24,7 @@ class GameBenchmark {
   bool interrupted = false, heardAmbience = false, heardSpeech = false;
   int windowMotionTicks = 0, completedPassages = 0;
   bool playerWasVaulting = false;
+  final speechMorphTicks = <String, int>{};
   static const cases = [
     (
       name: 'village-four',
@@ -173,10 +174,18 @@ class GameBenchmark {
     }
     if (c.event != null) {
       s.seenEvents.remove(c.event);
+      if (c.event == 'opening') {
+        // Reverse shots are authored at the actual entrance. The generic
+        // crowd staging point left Fukuchan outside his own camera frame.
+        s.x = (s.map['spawn']['x'] as num).toDouble();
+        s.z = (s.map['spawn']['z'] as num).toDouble();
+      }
       game.startEvent(c.event!);
+      if (c.event == 'opening') game.director!.index = 1;
     }
     game.frames.reset();
     heardAmbience = heardSpeech = false;
+    speechMorphTicks.clear();
     interrupted = false;
     watch
       ..reset()
@@ -194,7 +203,9 @@ class GameBenchmark {
         'region': cases[index].region,
         'contactShadows': cases[index].contacts,
         'profile': kProfileMode,
-        'valid': kProfileMode && game.frames.count == 240 && !interrupted && game.foreground && game.state!.phase == expectedPhase && (cases[index].event == null ? game.state!.time >= 6 : heardSpeech) && heardAmbience && game.voice.inspect()['errors'].isEmpty && (!cases[index].name.startsWith('window-') || (windowMotionTicks >= 60 && completedPassages > 0)),
+        'valid': kProfileMode && game.frames.count == 240 && !interrupted && game.foreground && game.state!.phase == expectedPhase && (cases[index].event == null ? game.state!.time >= 6 : heardSpeech) && heardAmbience && game.voice.inspect()['errors'].isEmpty && (!cases[index].name.startsWith('window-') || (windowMotionTicks >= 60 && completedPassages > 0)) && (cases[index].event != 'opening' || ['福ちゃん', 'やめ太郎'].every((name) => (speechMorphTicks[name] ?? 0) > 5)),
+        'speechMorphTicks': speechMorphTicks,
+        'eventShot': game.director?.index,
         'windowMotionTicks': windowMotionTicks,
         'completedWindowPassages': completedPassages,
         'interrupted': interrupted,
@@ -228,6 +239,11 @@ class GameBenchmark {
     observeState();
     heardAmbience |= game.soundscape.ambience.speaking;
     heardSpeech |= game.voice.speaking;
+    for (final entry in game.speechWeights.entries) {
+      if (entry.value > .001) {
+        speechMorphTicks.update(entry.key, (n) => n + 1, ifAbsent: () => 1);
+      }
+    }
     if (index < cases.length) {
       final s = game.state!;
       final name = cases[index].name;

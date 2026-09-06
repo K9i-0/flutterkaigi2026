@@ -1349,7 +1349,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
               ),
             ),
           ),
-          if (d.paused)
+          if (d.paused && !game.posePreview)
             const Center(
               child: Text(
                 'PAUSED',
