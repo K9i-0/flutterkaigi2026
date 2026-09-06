@@ -1,0 +1,81 @@
+{
+  "beforeSha256": "ee23e45beacc9a1983e4751e35a8dea95ff8aba84e43a61a30ddb7537881c13b",
+  "afterSha256": "3ded72a464963fe81e58cc314150ef90b25a0180ce4b57171b28686c772bbd28",
+  "bytesBefore": 5644492,
+  "bytesAfter": 8650248,
+  "trianglesAfter": 25571,
+  "materialsAfter": 5,
+  "animationPayloadIdentical": true,
+  "clips": [
+    "Aim",
+    "AimShotgun",
+    "BreakFree",
+    "Climb",
+    "Evade",
+    "Hit",
+    "Idle",
+    "Kick",
+    "ReloadHandgun",
+    "ReloadShotgun",
+    "Run",
+    "Struggle",
+    "Vault",
+    "Walk"
+  ],
+  "allAccessorsFinite": true,
+  "skinWeightsNormalized": true,
+  "jointCounts": [
+    23
+  ],
+  "date": "2026-09-06",
+  "bodyPoseAudit": {
+    "bodyPoses": 126,
+    "speechPoses": 11,
+    "finite": true,
+    "maximumHeadAxisSpan": 0.3411296606063843
+  },
+  "tripo": {
+    "model": "P2-20260801",
+    "task": "5b707218-e8be-48ef-a9c4-e9c95d962d17",
+    "views": [
+      "front",
+      "left",
+      "back"
+    ],
+    "credits": 120,
+    "balanceBefore": 190,
+    "balanceAfter": 70
+  },
+  "native": {
+    "platform": "macOS debug Flutter Scene",
+    "pid": 12942,
+    "conversationProbe": {
+      "success": true,
+      "durationMs": 2403,
+      "snapshots": 17
+    },
+    "scope": "Real native audio/frame morph synchronization; static opening/Walk/Run art review; not a complete playthrough",
+    "staticPoses": [
+      "Walk 0.4s",
+      "Run 0.3s",
+      "opening shot 2, progress 0.4"
+    ]
+  },
+  "limits": [
+    "No post-change profile performance measurement",
+    "No new release ZIP",
+    "No phoneme-specific expressions or blinking",
+    "Hair remains a rigid generated mesh",
+    "Subjective likeness needs user review"
+  ],
+  "trianglesBefore": 25695,
+  "evidence": [
+    "evidence/fukuchan-head-v2-front.png",
+    "evidence/fukuchan-head-v2-three-quarter.png",
+    "evidence/fukuchan-head-v2-speech.png",
+    "evidence/fukuchan-head-v2-native.png",
+    "evidence/fukuchan-head-v2-walk.png",
+    "evidence/fukuchan-head-v2-run.png",
+    "evidence/fukuchan-head-v2-conversation.json"
+  ]
+}
