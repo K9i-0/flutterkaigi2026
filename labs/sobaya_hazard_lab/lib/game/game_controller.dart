@@ -40,6 +40,9 @@ class CharacterPlayer {
           'Kick',
           'MugAttack',
           'Vault',
+          'Grab',
+          'Release',
+          'BreakFree',
         ].contains(name)
         ..weight = 0;
     }
@@ -87,7 +90,9 @@ class UpperBodyAim extends Component {
   @override
   void update(double deltaSeconds) {
     final s = state();
-    if (!s.aiming || s.reloading > 0 || s.hurtTime > 0) return;
+    if (!s.aiming || s.reloading > 0 || s.hurtTime > 0 || s.actionLocked) {
+      return;
+    }
     final parentRotation = node.parent?.globalTransform.getRotation();
     if (parentRotation == null) return;
     parentRotation.invert();
@@ -315,6 +320,8 @@ class HazardGameController extends ChangeNotifier {
       'Kick',
       'Climb',
       'Vault',
+      'Struggle',
+      'BreakFree',
     ]);
     player.node
         .getChildByName('Spine1')!
@@ -346,6 +353,9 @@ class HazardGameController extends ChangeNotifier {
         'Climb',
         'Vault',
         'MugAttack',
+        'Grab',
+        'Hold',
+        'Release',
       ]);
       for (final finger in fingerPoses.entries) {
         actor.node
@@ -354,6 +364,11 @@ class HazardGameController extends ChangeNotifier {
               HeldFingerPose(
                 finger.value,
                 shouldHold: () =>
+                    ['Grab', 'Hold', 'Release'].every(
+                      (name) =>
+                          actor.current != name &&
+                          actor.clips[name]!.weight < .005,
+                    ) &&
                     actor.current != 'Vault' &&
                     actor.clips['Vault']!.weight < .005 &&
                     actor.current != 'Climb' &&
@@ -835,7 +850,11 @@ class HazardGameController extends ChangeNotifier {
       volume: settings.muted ? 0 : settings.volume * settings.environmentVolume,
     );
     final moved = math.sqrt(math.pow(s.x - bx, 2) + math.pow(s.z - bz, 2));
-    var motion = s.vault != null
+    var motion = s.grapple != null
+        ? 'Struggle'
+        : s.breakFreeTime > 0
+        ? 'BreakFree'
+        : s.vault != null
         ? (s.vault!.crossing ? 'Vault' : 'Walk')
         : s.climb != null
         ? (s.climb!.onRungs ? 'Climb' : 'Walk')
@@ -858,7 +877,10 @@ class HazardGameController extends ChangeNotifier {
         : 'Idle';
     if (director != null) {
       motion = 'Idle';
-    } else if ((!s.running || posePreview) && !s.traversing) {
+    } else if ((!s.running || posePreview) &&
+        !s.traversing &&
+        s.grapple == null &&
+        s.breakFreeTime <= 0) {
       motion = player.current;
     }
     player.setMotion(motion);
@@ -874,6 +896,20 @@ class HazardGameController extends ChangeNotifier {
           ? 2.8 / 2.16571248
           : 1,
     );
+    if (s.grapple != null) {
+      if (posePreview) {
+        for (final clip in player.clips.entries) {
+          clip.value.weight = clip.key == 'Struggle' ? 1 : 0;
+        }
+      }
+      player.clips['Struggle']!
+        ..seek(s.grapple!.elapsed % 1)
+        ..playbackTimeScale = 0;
+    } else if (s.breakFreeTime > 0) {
+      player.clips['BreakFree']!
+        ..seek(.7 - s.breakFreeTime)
+        ..playbackTimeScale = 0;
+    }
     if (s.vault?.crossing ?? false) {
       player.clips['Vault']!
         ..seek(s.vault!.progress * 1.6)
@@ -952,7 +988,13 @@ class HazardGameController extends ChangeNotifier {
       final e = s.enemies[i];
       enemyBeer[i].detail = i == detailedMug;
       enemyMugs[i].visible =
-          e.active && !e.dropped && e.climb == null && e.vault == null;
+          e.active &&
+          !e.dropped &&
+          e.climb == null &&
+          e.vault == null &&
+          !e.grabPending &&
+          s.grapple?.enemyId != e.id &&
+          e.releaseTime <= 0;
       actor.node.visible = e.active && (!e.dropped);
       actor.node.position = vm.Vector3(e.x, e.y, e.z);
       actor.node.rotation = vm.Quaternion.axisAngle(
@@ -969,7 +1011,13 @@ class HazardGameController extends ChangeNotifier {
                   (e.bossAttack == BossMove.swipeWindup ||
                       e.bossAttack == BossMove.slamWindup)));
       actor.setMotion(
-        e.vault != null
+        s.grapple?.enemyId == e.id
+            ? 'Hold'
+            : e.attackPending && e.grabPending
+            ? 'Grab'
+            : e.releaseTime > 0
+            ? 'Release'
+            : e.vault != null
             ? (e.vault!.crossing ? 'Vault' : 'Walk')
             : e.climb != null
             ? (e.climb!.onRungs ? 'Climb' : 'Walk')
@@ -1010,6 +1058,24 @@ class HazardGameController extends ChangeNotifier {
                   .clamp(.1, 3)
             : 1,
       );
+      if (s.grapple?.enemyId == e.id) {
+        if (posePreview) {
+          for (final clip in actor.clips.entries) {
+            clip.value.weight = clip.key == 'Hold' ? 1 : 0;
+          }
+        }
+        actor.clips['Hold']!
+          ..seek(s.grapple!.elapsed % 1)
+          ..playbackTimeScale = 0;
+      } else if (e.attackPending && e.grabPending) {
+        actor.clips['Grab']!
+          ..seek(.9 * (1 - e.windup).clamp(0.0, 1.0))
+          ..playbackTimeScale = 0;
+      } else if (e.releaseTime > 0) {
+        actor.clips['Release']!
+          ..seek(.7 - e.releaseTime)
+          ..playbackTimeScale = 0;
+      }
       if (e.vault?.crossing ?? false) {
         if (posePreview) {
           for (final entry in actor.clips.entries) {

@@ -116,6 +116,10 @@ class _HazardGamePageState extends State<HazardGamePage> {
                 touchY)
             .clamp(-1, 1)
             .toDouble();
+    s.struggling =
+        s.running &&
+        s.grapple != null &&
+        held.contains(LogicalKeyboardKey.keyE);
     s.sprint =
         held.contains(LogicalKeyboardKey.shiftLeft) ||
         held.contains(LogicalKeyboardKey.shiftRight);
@@ -513,6 +517,84 @@ class _HazardGamePageState extends State<HazardGamePage> {
                             ],
                           ),
                         ),
+                        if (s.grapple != null && s.running)
+                          Positioned(
+                            // Damage flashes insert siblings during the hold.
+                            // Preserve the gesture recognizer across that update.
+                            key: const ValueKey('game-grapple-panel'),
+                            bottom: 140,
+                            left: 0,
+                            right: 0,
+                            child: Center(
+                              child: GestureDetector(
+                                key: const ValueKey('game-grapple-escape'),
+                                onTapDown: (_) => s.struggling = true,
+                                onTapUp: (_) => s.struggling = false,
+                                onTapCancel: () => s.struggling = false,
+                                child: Container(
+                                  width: 280,
+                                  padding: const EdgeInsets.all(18),
+                                  decoration: BoxDecoration(
+                                    color: ink,
+                                    border: Border.all(color: gold),
+                                  ),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Text(
+                                        '掴まれた！',
+                                        style: TextStyle(
+                                          color: ivory,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 10),
+                                      const Text(
+                                        'E またはこの枠を長押しして振りほどく',
+                                        style: TextStyle(
+                                          color: ivory,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 12),
+                                      LinearProgressIndicator(
+                                        value: (s.grapple!.effort / 1.2).clamp(
+                                          0.0,
+                                          1.0,
+                                        ),
+                                        color: gold,
+                                        backgroundColor: Colors.white12,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        if (s.grapple == null &&
+                            s.running &&
+                            s.enemies.any(
+                              (e) =>
+                                  e.alive &&
+                                  e.active &&
+                                  e.attackPending &&
+                                  e.grabPending,
+                            ))
+                          const Positioned(
+                            bottom: 175,
+                            left: 0,
+                            right: 0,
+                            child: Center(
+                              child: Text(
+                                'そば屋が掴みかかる — 後ろか横へ回避',
+                                style: TextStyle(
+                                  color: ivory,
+                                  backgroundColor: ink,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                          ),
                         if (s.interaction != null && s.running)
                           Positioned(
                             bottom: 160,
@@ -527,7 +609,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
                               ),
                             ),
                           ),
-                        if (s.toastTime > 0 && s.running)
+                        if (s.toastTime > 0 && s.running && s.grapple == null)
                           Positioned(
                             left: 0,
                             right: 0,

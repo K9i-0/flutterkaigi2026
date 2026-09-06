@@ -72,7 +72,9 @@ void main() {
     'mug contact and damage share one clock, then hold a punishable recovery',
     () {
       final s = arena()..invulnerable = 0;
+      // Exercise the mug branch while the separate grab is on cooldown.
       final e = s.enemies.first
+        ..grabCooldown = 7
         ..x = 0
         ..z = -19.1
         ..active = true

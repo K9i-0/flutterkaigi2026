@@ -1,0 +1,178 @@
+{
+  "date": "2026-09-06",
+  "baseline": "2024c8a",
+  "scope": "Frontal grab, shared paired motion, hold-to-escape, checkpoint and interruption handling",
+  "animationSource": "Authored two-bone IK; not newly captured motion",
+  "gameplay": {
+    "tellSeconds": 1.0,
+    "holdLimitSeconds": 3.4,
+    "holdInputSeconds": 1.2,
+    "damagePerBeatStandard": 8,
+    "maximumBeats": 3,
+    "escapeRecoverySeconds": 0.7,
+    "enemyEscapeStunSeconds": 1.5,
+    "blood": false
+  },
+  "checks": {
+    "flutterTests": 97,
+    "flutterAnalyze": "No issues found",
+    "gitDiffCheck": "pass",
+    "exportedModels": {
+      "sampleHz": 60,
+      "separation": 0.7,
+      "models": {
+        "sobaya": {
+          "source": "04_GAME_ASSETS/3d/characters/sobaya/rig_v3/sobaya_rig.glb",
+          "sha256": "84a7db2a4a3b2f0e3c72500452f149a97a457ccee6f39f4542155a9678816046",
+          "clips": {
+            "Grab": {
+              "poses": 55,
+              "finite": true,
+              "endpointMaxVertexDelta": 0.6532204458871461,
+              "boundsMin": [
+                -0.49486905336380005,
+                -0.6751242876052856,
+                -3.480231214325613e-08
+              ],
+              "boundsMax": [
+                0.49699369072914124,
+                0.2155458927154541,
+                1.7999998331069946
+              ]
+            },
+            "Hold": {
+              "poses": 61,
+              "finite": true,
+              "endpointMaxVertexDelta": 0.0,
+              "boundsMin": [
+                -0.4224461317062378,
+                -0.6751739978790283,
+                -3.480231214325613e-08
+              ],
+              "boundsMax": [
+                0.4233706295490265,
+                0.2024025321006775,
+                1.7817199230194092
+              ]
+            },
+            "Release": {
+              "poses": 43,
+              "finite": true,
+              "endpointMaxVertexDelta": 0.6532204458871461,
+              "boundsMin": [
+                -0.49464160203933716,
+                -0.6751242876052856,
+                -3.480231214325613e-08
+              ],
+              "boundsMax": [
+                0.49668699502944946,
+                0.2155458927154541,
+                1.7999998331069946
+              ]
+            }
+          }
+        },
+        "fukuchan": {
+          "source": "04_GAME_ASSETS/3d/characters/fukuchan/rig_v1/fukuchan.glb",
+          "sha256": "d83fcfd5af3ad3734217c69af1bc4793679158703035425888bf37e3a371fb6e",
+          "clips": {
+            "Struggle": {
+              "poses": 61,
+              "finite": true,
+              "endpointMaxVertexDelta": 0.0,
+              "boundsMin": [
+                -0.3991963863372803,
+                -0.38124191761016846,
+                -8.674575724398892e-08
+              ],
+              "boundsMax": [
+                0.397911012172699,
+                0.18640975654125214,
+                1.6983851194381714
+              ]
+            },
+            "BreakFree": {
+              "poses": 43,
+              "finite": true,
+              "endpointMaxVertexDelta": 0.5518386187577613,
+              "boundsMin": [
+                -0.39596280455589294,
+                -0.5191947817802429,
+                -8.674575724398892e-08
+              ],
+              "boundsMax": [
+                0.40753161907196045,
+                0.18640975654125214,
+                1.700000524520874
+              ]
+            }
+          }
+        }
+      },
+      "holdHandSurfaceGap": {
+        "L": [
+          2.790657617879333e-06,
+          0.001045179320499301
+        ],
+        "R": [
+          1.5520830629611737e-06,
+          0.00020799894991796464
+        ]
+      },
+      "limits": "Surface proximity only; no signed penetration, finger closure, swept collision or subjective motion pass."
+    }
+  },
+  "nativeHud": {
+    "device": "macOS debug via Dart MCP and Marionette",
+    "setup": "grapple scenario, simulate 1.05 seconds through normal rules; paused before UI resume",
+    "actions": [
+      "tap game-resume",
+      "long_press game-grapple-escape 1600ms",
+      "tap game-pause"
+    ],
+    "startingHealth": 100.0,
+    "startingElapsed": 0.03333333333333333,
+    "finalHealth": 92.0,
+    "finalGrapple": null,
+    "finalMessage": "振りほどいた — 反撃か、距離を取れ",
+    "finalBreakFreeTime": 0.26666100000000026,
+    "evidence": "evidence/grapple-hud-*.json",
+    "bugFixed": "Damage flash inserted a Stack sibling and recreated the unkeyed hold panel, cancelling its pointer gesture. A key on the Positioned preserves its recognizer.",
+    "rendering": {
+      "foreground": true,
+      "posePreview": false
+    }
+  },
+  "visualReview": {
+    "exportedPair": "evidence/grapple-pair-exported.png",
+    "flutter": "Direct Marionette screenshot of frozen previewState, shared Struggle/Hold pose and escape HUD; live escape verified separately",
+    "sampledPoses": 263,
+    "limits": "No complete finger closure or signed cloth/hand penetration audit. Imported armature animation must sit below a separate placement node for pair review."
+  },
+  "campaignRules": {
+    "evidence": "evidence/campaign-grapple.json",
+    "mode": "dart rule simulation, known route, --complete",
+    "clear": true,
+    "kills": 20,
+    "beerPickups": 20,
+    "finalBeers": 19,
+    "images": 12,
+    "startingImages": 0,
+    "shots": 69,
+    "hits": 69,
+    "seconds": 451.883333333251,
+    "limits": "No live full-campaign or first-play proof for this revision; the earlier live traversal run predates grabs.",
+    "ammoTrades": 2,
+    "beerTradeSpent": 4,
+    "medallionRewardBeers": 3
+  },
+  "distribution": {
+    "existingZip": "sobaya-hazard-macos-e7726a9.zip",
+    "containsThisChange": false
+  },
+  "remaining": [
+    "Finger closure and larger body reactions need artistic refinement",
+    "No new profile or long-run packaged audit with these models",
+    "First-play duration and human voice listening review remain open"
+  ]
+}
