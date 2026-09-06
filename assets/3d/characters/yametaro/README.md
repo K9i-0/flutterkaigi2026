@@ -1,22 +1,29 @@
 # やめ太郎 — そば屋ハザード用 NPC
 
-正典 `02_CHARACTERS/Yametaro.jpg` と `06_Yametaro.md` の人物同一性を使用。大きなセンター分けの黒髪、台形の輪郭、白いレンズの丸眼鏡、丸いピンクの頬、ラベンダーの柄シャツ、短い体格を維持した。built-in Imagegenで正面・背面Aポーズを制作。入力と正確なプロンプトは `tripo_p2_20260906/` に保存。
+ゲーム正本は `rig_sheet_v2/yametaro.glb`。2026-09-06、`03_SCRIPTS/00_TEMPLATES/characters/character_yametaro_basic_sheet.png` をデザイン正本、同ディレクトリの `character_yametaro_toy_diorama_3d_basic_sheet.png` を立体・背面の補助資料としてTripo P2で再制作した。大きなセンター分け黒髪、台形の輪郭、白いレンズの丸眼鏡、丸いピンクの頬、ラベンダーの柄シャツ、短い体格を維持する。
 
-- Tripo P2 `P2-20260801`、複数画像2枚、quad / face_limit 8000 / 詳細PBR。生成task `e49752eb-b371-4e7e-8bdd-300b12fa1c8a`、120クレジット。
-- biped / Mixamo rig `v1.0-20240301`、task `7a6eeb04-a554-4e45-b392-3b4359be5c0e`、25クレジット。
-- 2026-09-06、開始335 → 残190。新規購入なし。生成・リグとも完了、取得済み。出力実体はFBXのためBlenderで正規化・GLB変換。
-- ゲーム正本 `rig_v1/yametaro.glb`。1.3m、15,423三角面、1材質、23骨、2.23MB。カラー2K／その他PBR1K。`rig.json` に入力SHA256とクリップ由来を記録。
-- Idle / Talk / Wave はBlenderで制作したループ。Waveは大きな頭に手が埋まらないよう肘と手首を外側へ配置。Walk は既存Mixamo歩行から短い脚へ転写し、足元を補正（元の水平速度0.333m/s）。NPCは現在その場で案内するため、歩行は未使用。
+- 1.3m、16,205三角面、23骨、1材質、2,474,204 bytes。カラー2K・その他PBR1K。
+- 自動リグで頬・髪の一部に腕のウェイトが入る問題を修整。頭部の連結パーツをHead骨へまとめ、身振りで輪郭が引き伸ばされないようにした。
+- Idle / Talk / Waveは各3秒のBlender制作ループ。Walkは既存Mixamo `walk_standard.fbx` を短い脚へ転写し足元を補正。1.2333秒、基準速度0.2483m/s。現在NPCの歩行クリップはゲームで未使用。
+- SpeechOpen / SpeechNarrowを新しい口位置へ合わせて再制作。131頂点、最大顎変位0.018m。実ゲームの音声強度に同期する簡易口パクを維持する。
 
-村入口に配置し、近づくと手を振る。Eで会話、行き先・戦闘・収集のヒント、各周回で1回だけ弾10発を受け取れる。会話中は専用カメラとTalk/Idleを使用。敵が近づいている場合は会話を開始しない。
+## 入力と費用
 
-再生成:
+built-in Imagegenのeditモードでキャラシートから正面・背面の単独Aポーズ画像を制作した。[入力画像](tripo_sheet_p2_20260906/inputs/)と[実行プロンプト一式](tripo_sheet_p2_20260906/imagegen_prompts.json)を保存している。
+
+Tripo `P2-20260801`、正面・背面2画像、quad、face_limit 8000、detailed PBR。task `4a23c7b9-a479-4f9b-a579-acc038c5b309`、120クレジット。biped / Mixamo auto rig task `92a00cec-1f61-4960-afc7-5bc12fa7fa2f`、25クレジット。
+
+今回の2体合計は265クレジット（たこさん120＋やめ太郎120＋リグ25）。追加後のavailable 1070 → 完了時805。設定・入力・取得物ハッシュは `tripo_sheet_p2_20260906/` と `rig_sheet_source/` に記録する。
+
+## 再生成と検証
+
+取得済みリグFBXを `rig_sheet_source/raw/output_model_url.fbx`、既存歩行を `.local/mixamo_sobaya/source/walk_standard.fbx` に用意する。元FBX・署名付きURL・APIキー・中間blendはGit対象外。別環境で取得する場合は上記の既存task IDを使用し、新規生成を重複実行しない。
 
 ```sh
-python3 tools/tripo_generate.py download 04_GAME_ASSETS/3d/characters/yametaro/rig_source/config.json
-/Applications/Blender.app/Contents/MacOS/Blender --background --factory-startup --python tools/build_yametaro_game_rig.py
+/Applications/Blender.app/Contents/MacOS/Blender --background --factory-startup --python tools/build_yametaro_game_rig.py -- --sheet
+python3 tools/validate_hazard_npc.py 04_GAME_ASSETS/3d/characters/yametaro/rig_sheet_v2/yametaro.glb
 ```
 
-downloadはローカル `task.json` を参照する。別環境では上記rig task IDを設定し、`.local/mixamo_sobaya/source/walk_standard.fbx` も準備する。新規リグ生成の汎用スクリプトは `tools/tripo_rig_character.py`。提出済みマーカーで重複課金を防ぐ。元FBX・署名URL・APIキー・中間blendはGit対象外。
+GLB構造・ウェイト・ループ端点・口モーフを検査し、BlenderのTalk/Wave/Walkと口開閉を確認。Flutter Scene実画面で登場・会話・音声再生とSpeechOpen約0.99の口パクを確認した。Flutter全140テスト通過。[統合検証記録](../../../../21_SOBAYA_HAZARD_LAB/qa/npc-tripo-sheet-20260906.json)を参照。差し替え後のprofile負荷測定は未実施。
 
-macOSのFlutter Scene実画面で顔・会話画角・選択肢、Dart MCP / MarionetteでE入力と弾の受け取りを確認。口パク・指の個別把持・ボイスは未実装。
+旧 `rig_v1/yametaro.glb` は退避用として保持。ビルダーの `--sheet` を省くと旧ソースから旧版を再生成する。現行ゲームは正本への相対symlinkを利用する。

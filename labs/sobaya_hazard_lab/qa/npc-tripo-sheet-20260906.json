@@ -1,0 +1,210 @@
+{
+  "date": "2026-09-06",
+  "scope": "Canonical character-sheet Tripo P2 NPC replacement",
+  "credits": {
+    "availableBefore": 1070,
+    "generationTakosan": 120,
+    "generationYametaro": 120,
+    "rigYametaro": 25,
+    "totalSpent": 265,
+    "availableAfter": 805
+  },
+  "flutterTests": {
+    "passed": 140,
+    "log": ".local/npc-sheet-tripo-20260906/flutter-tests.log"
+  },
+  "native": {
+    "takosanDialogue": {
+      "phase": "dialogue",
+      "dialogue": {
+        "npc": "takosan",
+        "topic": "intro",
+        "line": 0,
+        "choices": false,
+        "metYametaro": false,
+        "receivedAmmo": false,
+        "metTakosan": true,
+        "tradePurchases": {}
+      },
+      "beers": 8,
+      "reserve": 40,
+      "voice": {
+        "requested": "dialogue:2:1:farm:takosan:intro:0:0:一週間で店らしくなりました。倉庫に残った弾とハーブです。ビールと交換すれば、回収と補給を一度にできます。",
+        "active": "dialogue:2:1:farm:takosan:intro:0:0:一週間で店らしくなりました。倉庫に残った弾とハーブです。ビールと交換すれば、回収と補給を一度にできます。",
+        "playbackSeconds": 0.5147470000000001,
+        "loading": false,
+        "speaking": true,
+        "finished": false,
+        "paused": false,
+        "volume": 1,
+        "errors": [],
+        "backend": {
+          "state": "playing",
+          "positionMs": 320,
+          "durationMs": 9664,
+          "loop": false,
+          "loopCompletions": 0,
+          "playbackRequested": true,
+          "positionUpdateMs": 200
+        }
+      },
+      "speechFaces": {
+        "福ちゃん": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        },
+        "やめ太郎": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        }
+      },
+      "npcMotions": {
+        "yametaro": "Talk",
+        "takosan": "Talk"
+      }
+    },
+    "takosanPurchase": {
+      "phase": "dialogue",
+      "dialogue": {
+        "npc": "takosan",
+        "topic": "trade_result",
+        "line": 0,
+        "choices": true,
+        "metYametaro": false,
+        "receivedAmmo": false,
+        "metTakosan": true,
+        "tradePurchases": {
+          "ammo": 1
+        }
+      },
+      "beers": 6,
+      "reserve": 50,
+      "voice": {
+        "requested": "dialogue:2:1:farm:takosan:trade_result:0:1:ハンドガンの弾、十発です。これでそば屋を蜂の巣にしてください。領収書は研修費で切れます。",
+        "active": "dialogue:2:1:farm:takosan:trade_result:0:1:ハンドガンの弾、十発です。これでそば屋を蜂の巣にしてください。領収書は研修費で切れます。",
+        "playbackSeconds": 0.155008,
+        "loading": false,
+        "speaking": true,
+        "finished": false,
+        "paused": false,
+        "volume": 1,
+        "errors": [],
+        "backend": {
+          "state": "playing",
+          "positionMs": 0,
+          "durationMs": 7829,
+          "loop": false,
+          "loopCompletions": 0,
+          "playbackRequested": true,
+          "positionUpdateMs": 200
+        }
+      },
+      "speechFaces": {
+        "福ちゃん": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        },
+        "やめ太郎": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        }
+      },
+      "npcMotions": {
+        "yametaro": "Talk",
+        "takosan": "Talk"
+      }
+    },
+    "yametaroDialogue": {
+      "phase": "dialogue",
+      "dialogue": {
+        "npc": "yametaro",
+        "topic": "intro",
+        "line": 0,
+        "choices": false,
+        "metYametaro": true,
+        "receivedAmmo": false,
+        "metTakosan": false,
+        "tradePurchases": {}
+      },
+      "beers": 0,
+      "reserve": 40,
+      "voice": {
+        "requested": "dialogue:3:2:village:yametaro:intro:0:0:ワイは未完成の画面を、完成しました言うて納品したんや。そしたら出向の手続きだけ、一日で完成したわ。",
+        "active": "dialogue:3:2:village:yametaro:intro:0:0:ワイは未完成の画面を、完成しました言うて納品したんや。そしたら出向の手続きだけ、一日で完成したわ。",
+        "playbackSeconds": 0.200441,
+        "loading": false,
+        "speaking": true,
+        "finished": false,
+        "paused": false,
+        "volume": 1,
+        "errors": [],
+        "backend": {
+          "state": "playing",
+          "positionMs": 0,
+          "durationMs": 8960,
+          "loop": false,
+          "loopCompletions": 0,
+          "playbackRequested": true,
+          "positionUpdateMs": 200
+        }
+      },
+      "speechFaces": {
+        "福ちゃん": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        },
+        "やめ太郎": {
+          "opening": 0.9926760849999999,
+          "nodes": 1,
+          "weights": [
+            0.9926760792732239,
+            0.19853521883487701
+          ]
+        }
+      },
+      "npcMotions": {
+        "yametaro": "Talk",
+        "takosan": "Talk"
+      }
+    },
+    "finalTakosanReview": {
+      "material": "matte roughness 0.85, metallic 0",
+      "shoulderUnderlap": "lowered inside sleeve socket",
+      "visualResult": "PASS in native merchant dialogue",
+      "nativePid": 50021
+    }
+  },
+  "limitations": [
+    "No new profile benchmark after NPC replacement.",
+    "Authored Idle/Talk/Wave; only Yametaro Walk uses existing Mixamo capture.",
+    "Yametaro speech uses amplitude-driven mouth shapes, not phonemes. Takosan has no mouth.",
+    "Pose review sampled each clip; not an exhaustive combat or playthrough audit."
+  ],
+  "savePreservation": {
+    "keys": [
+      "flutter.hazard.run.v1",
+      "flutter.hazard.collection.v1"
+    ],
+    "restoredAndVerifiedEqual": true
+  }
+}
