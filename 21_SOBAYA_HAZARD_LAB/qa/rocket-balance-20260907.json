@@ -1,0 +1,201 @@
+{
+  "date": "2026-09-07",
+  "checks": {
+    "secretOfferNative10Beer": true,
+    "purchaseNative10BeerAndAutoEquip": true,
+    "voiceNativeErrors": [],
+    "regularRocketNativeSingleKillNoBeer": true,
+    "bossNativeShots": [
+      {
+        "phase": "playing",
+        "shots": 1,
+        "kills": 0,
+        "beers": 0,
+        "loaded": 1,
+        "rocketCount": 0,
+        "boss": {
+          "id": 4,
+          "alive": true,
+          "active": true,
+          "dropped": false,
+          "hp": 600,
+          "maxHp": 900,
+          "suppressBeer": false,
+          "headCentre": [
+            12,
+            2.029961585998535,
+            4.016636848449707
+          ],
+          "mugCentre": [
+            12.65880012512207,
+            0.9958287477493286,
+            4.198696136474609
+          ],
+          "alerted": true,
+          "stun": 27.599964999999784,
+          "attackPending": false,
+          "companionTarget": null,
+          "grabPending": false,
+          "grabCooldown": 0,
+          "releaseTime": 0,
+          "climb": null,
+          "vault": null,
+          "fallingFromLadder": false,
+          "meleeRecovery": 0,
+          "meleeClipTime": null,
+          "approach": "pursue",
+          "bossMove": "ready",
+          "bossTimer": 0,
+          "bossCue": "ラストオーダー",
+          "x": 12,
+          "y": 0,
+          "z": 4
+        }
+      },
+      {
+        "phase": "playing",
+        "shots": 2,
+        "kills": 0,
+        "beers": 0,
+        "loaded": 1,
+        "rocketCount": 0,
+        "boss": {
+          "id": 4,
+          "alive": true,
+          "active": true,
+          "dropped": false,
+          "hp": 300,
+          "maxHp": 900,
+          "suppressBeer": false,
+          "headCentre": [
+            12,
+            2.028749942779541,
+            4.013075828552246
+          ],
+          "mugCentre": [
+            12.65880012512207,
+            0.9962387084960938,
+            4.203095436096191
+          ],
+          "alerted": true,
+          "stun": 25.53326699999958,
+          "attackPending": false,
+          "companionTarget": null,
+          "grabPending": false,
+          "grabCooldown": 0,
+          "releaseTime": 0,
+          "climb": null,
+          "vault": null,
+          "fallingFromLadder": false,
+          "meleeRecovery": 0,
+          "meleeClipTime": null,
+          "approach": "pursue",
+          "bossMove": "ready",
+          "bossTimer": 0,
+          "bossCue": "怒りのラストオーダー",
+          "x": 12,
+          "y": 0,
+          "z": 4
+        }
+      },
+      {
+        "phase": "playing",
+        "shots": 3,
+        "kills": 1,
+        "beers": 0,
+        "loaded": 1,
+        "rocketCount": 0,
+        "boss": {
+          "id": 4,
+          "alive": false,
+          "active": true,
+          "dropped": true,
+          "hp": 0,
+          "maxHp": 900,
+          "suppressBeer": true,
+          "headCentre": [
+            12,
+            0.12191205471754074,
+            4.000022888183594
+          ],
+          "mugCentre": null,
+          "alerted": true,
+          "stun": 24.91659099999952,
+          "attackPending": false,
+          "companionTarget": null,
+          "grabPending": false,
+          "grabCooldown": 0,
+          "releaseTime": 0,
+          "climb": null,
+          "vault": null,
+          "fallingFromLadder": false,
+          "meleeRecovery": 0,
+          "meleeClipTime": null,
+          "approach": "pursue",
+          "bossMove": "ready",
+          "bossTimer": 0,
+          "bossCue": "怒りのラストオーダー",
+          "x": 12,
+          "y": 0,
+          "z": 4
+        }
+      }
+    ],
+    "unitTests": 152,
+    "analyzer": "No issues",
+    "note": "Native boss scenario freezes its attacks temporarily for hit-count verification. Ordinary-movement boss fight covered by deterministic gameplay test. Difficulty economy is a resource calculation, not a full human playthrough.",
+    "secretOfferNative9BeerHidden": true,
+    "finalRegular": {
+      "shots": 1,
+      "kills": 1,
+      "beers": 0,
+      "loaded": 1,
+      "enemy": {
+        "id": 0,
+        "alive": false,
+        "active": true,
+        "dropped": true,
+        "hp": 0,
+        "maxHp": 100,
+        "suppressBeer": true,
+        "headCentre": [
+          -8.656498049926638e-18,
+          0.10159380733966827,
+          -9.999979972839355
+        ],
+        "mugCentre": null,
+        "alerted": true,
+        "stun": 29.38332399999994,
+        "attackPending": false,
+        "companionTarget": null,
+        "grabPending": false,
+        "grabCooldown": 0,
+        "releaseTime": 0,
+        "climb": null,
+        "vault": null,
+        "fallingFromLadder": false,
+        "meleeRecovery": 0,
+        "meleeClipTime": null,
+        "approach": "pursue",
+        "bossMove": "ready",
+        "bossTimer": 0,
+        "x": 0,
+        "y": 0,
+        "z": -10
+      }
+    }
+  },
+  "audio": [
+    {
+      "name": "rocket_launch",
+      "seconds": 0.8,
+      "sha256": "68c2f8992fce7e4c9db5e7e0373be707209e728a6337137122932fb9869cc22f"
+    },
+    {
+      "name": "rocket_blast",
+      "seconds": 1.1499583333333334,
+      "sha256": "d213887c6535f292130f0940675fbd54557f160d04c84960c6a8d86d13bfbd15"
+    }
+  ],
+  "originalProgressCollectionAndSettingsRestored": true
+}

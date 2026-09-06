@@ -1,0 +1,14 @@
+{
+  "model": "openai/whisper-small",
+  "device": "cpu",
+  "note": "Automated transcript screening; not human listening or identity verification.",
+  "clips": [
+    {
+      "id": "fc7a61d856412a06",
+      "speaker": "たこさん",
+      "expected": "お得意様だけに、ロケットランチュアです。弾は無限。そば屋を追いかけて吹き飛ばします。ビールも蒸発するので、返品はお断りです。",
+      "recognized": "お得意様だけにドケットランチウアです 玉は無限素配派を追いかけて吹き飛ばしますビールも上発するので返品はお断りです",
+      "sha256": "c45cca3fe4e978ddcf8144a7695840b32ca9076ffdb6ff811a504d7ec4c3d4bc"
+    }
+  ]
+}

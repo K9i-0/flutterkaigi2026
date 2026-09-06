@@ -1,10 +1,15 @@
 import 'game_checkpoint.dart';
 import 'game_state.dart';
+import 'game_settings.dart';
 
 /// Region-local worlds survive backtracking; only the traveller's inventory,
 /// health, collection and run statistics cross a boundary.
 class HazardCampaign {
-  HazardCampaign(this.maps, {Set<String>? collection}) {
+  HazardCampaign(
+    this.maps, {
+    Set<String>? collection,
+    this.difficulty = HazardDifficulty.standard,
+  }) {
     catalog = [
       for (final map in maps.values)
         ...((map['collection'] as List).cast<Map<String, dynamic>>()),
@@ -12,6 +17,7 @@ class HazardCampaign {
     state = _fresh('village', collection ?? {});
     regions['village'] = state;
   }
+  HazardDifficulty difficulty;
   final Map<String, Map<String, dynamic>> maps;
   late final List<Map<String, dynamic>> catalog;
   final regions = <String, HazardGameState>{};
@@ -21,6 +27,7 @@ class HazardCampaign {
     maps[id] ?? (throw FormatException('Unknown region $id')),
     savedCollection: collection,
     catalog: catalog,
+    difficulty: difficulty,
   );
 
   void resetCollection() {
@@ -40,6 +47,7 @@ class HazardCampaign {
   bool traverse() {
     final from = state, exit = from.exitRequested;
     if (exit == null || from.phase != PlayPhase.transition) return false;
+    if (exit['id'] != 'back' && !from.chapterSecured) return false;
     final id = exit['target'] as String;
     final arrival = exit['arrival'] as Map;
     final to = regions[id] ?? _fresh(id, from.collected);
@@ -60,6 +68,9 @@ class HazardCampaign {
     to.phase = PlayPhase.playing;
     to.say('${to.subtitle}\n${to.objective}');
     to.checkpointRequested = true;
+    from.rockets.clear();
+    from.rocketBlasts.clear();
+    to.rocketLockId = null;
     from.exitRequested = null;
     from.phase = PlayPhase.playing;
     regions[id] = to;
@@ -68,6 +79,7 @@ class HazardCampaign {
   }
 
   void _carry(HazardGameState from, HazardGameState to) {
+    to.difficulty = from.difficulty;
     to.bag
       ..clear()
       ..addAll(

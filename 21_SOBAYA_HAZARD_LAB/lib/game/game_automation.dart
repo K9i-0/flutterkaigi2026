@@ -6,6 +6,7 @@ import 'package:vector_math/vector_math.dart' as vm;
 
 import 'game_controller.dart';
 import 'game_state.dart';
+import 'game_settings.dart';
 import 'game_native_audit.dart';
 import 'game_debug_probe.dart';
 
@@ -209,6 +210,9 @@ void attachGameAutomation(HazardGameController game) {
         'combat',
         'encounter',
         'mugTiming',
+        'secretMerchant',
+        'rocketCombat',
+        'rocketBoss',
         'pickup',
         'collection',
         'gate',
@@ -239,6 +243,7 @@ void attachGameAutomation(HazardGameController game) {
       g.restart();
       if ([
         'merchant',
+        'rocketBoss',
         'companionTakosan',
         'farm',
         'farmEnemyStairs',
@@ -251,6 +256,8 @@ void attachGameAutomation(HazardGameController game) {
         'endingEvent',
       ].contains(name)) {
         final first = g.state!;
+        first.difficulty = HazardDifficulty
+            .standard; // Debug transport bypasses chapter combat.
         first.hasKey = first.gateOpen = true;
         first.exitRequested = Map<String, dynamic>.from(
           (first.map['exits'] as List).first,
@@ -262,9 +269,11 @@ void attachGameAutomation(HazardGameController game) {
           'mountainGate',
           'bossEvent',
           'bossCombat',
+          'rocketBoss',
           'endingEvent',
         ].contains(name)) {
           final farm = g.state!..gateOpen = true;
+          farm.difficulty = HazardDifficulty.standard;
           farm.exitRequested = Map<String, dynamic>.from(
             (farm.map['exits'] as List).last,
           );
@@ -347,6 +356,39 @@ void attachGameAutomation(HazardGameController game) {
           boss.hp = 0;
           boss.alive = false;
           s.kills = 1;
+        case 'secretMerchant':
+          s.beers = int.tryParse(p['beers'] ?? '10') ?? 10;
+          s.x = 4;
+          s.z = -22.8;
+          s.yaw = 3.141592653589793;
+          s.pitch = .12;
+        case 'rocketCombat':
+          s.addItem('rocket', 1);
+          s.equip('rocket');
+          s.x = 0;
+          s.z = -16;
+          s.yaw = 3.141592653589793;
+          s.pitch = 0;
+          s.aiming = true;
+          s.enemies.first
+            ..active = true
+            ..x = 0
+            ..z = -10
+            ..stun = 30;
+        case 'rocketBoss':
+          s.invulnerable = 100;
+          s.seenEvents.add('last_order');
+          s.addItem('rocket', 1);
+          s.equip('rocket');
+          s.x = 6;
+          s.z = 4;
+          s.yaw = -1.5707963267948966;
+          s.pitch = 0;
+          s.aiming = true;
+          s.enemies.firstWhere((e) => e.boss)
+            ..active = true
+            ..alerted = true
+            ..stun = 30;
         case 'merchant':
           s.x = -13;
           s.z = -19.4;

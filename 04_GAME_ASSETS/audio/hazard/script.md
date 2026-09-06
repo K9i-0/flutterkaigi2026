@@ -1,6 +1,6 @@
 # そば屋ハザード — 採用音声台本
 
-全88本、合計655.8秒。正本台詞はゲームのDartコード、生成入力は voice-lines.json、採用条件は voice-manifest.json。
+全89本、合計667.2秒。正本台詞はゲームのDartコード、生成入力は voice-lines.json、採用条件は voice-manifest.json。
 
 福ちゃん・やめ太郎・そば屋・ナレーションは Irodori-TTS v4.1-Small と正典参照音声。たこさんは VOICEVOX:Voidoll（style 89）。24kHz mono PCM16、-18LUFS/-2dBTP。採用seed・caption・参照ハッシュは以下とmanifestに記録。
 
@@ -861,3 +861,9 @@ caption: 焦りを少し抑えて、友人へ道案内する。柔らかい関�
 caption: 焦りを少し抑えて、友人へ道案内する。柔らかい関西イントネーションで、聞き取りやすく自然に話す。
 
 発話本文: 静かになったな。東の門から帰ろう。 福ちゃん、この夜のこと、三人でちゃんと話そうや。
+
+## たこさん — fc7a61d856412a06
+
+お得意様だけに、ロケットランチュアです。弾は無限。そば屋を追いかけて吹き飛ばします。ビールも蒸発するので、返品はお断りです。
+
+11.424秒 / dialogue:purchase:rocket / VOICEVOX:Voidoll（style 89）

@@ -85,6 +85,8 @@ void main() {
     for (final e in s.enemies) {
       e.active = false;
     }
+    s.pistolLoaded =
+        10; // Target geometry test, independent of starting supply.
     for (final t in s.targets) {
       s.x = (t['x'] as num).toDouble();
       s.z = (t['z'] as num).toDouble() - 1;

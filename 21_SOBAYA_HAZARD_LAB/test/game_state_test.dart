@@ -19,8 +19,8 @@ void main() {
     s.reload();
     s.equip('handgun');
     advance(s, 1.4);
-    expect(s.loaded, 10);
-    expect(s.reserve, 30);
+    expect(s.loaded, 8);
+    expect(s.reserve, 0);
   });
 
   test(
@@ -42,16 +42,16 @@ void main() {
         s.advanceDialogue();
       }
       s.chooseDialogue('supplies');
-      expect(s.reserve, 50);
+      expect(s.reserve, 18);
       expect(s.receivedYametaroAmmo, true);
       s.chooseDialogue('supplies');
-      expect(s.reserve, 50);
+      expect(s.reserve, 18);
       s.endDialogue();
       expect(s.inputY, 0);
       s.interact();
       expect(s.dialogueTopic, 'greeting');
       s.chooseDialogue('supplies');
-      expect(s.reserve, 50);
+      expect(s.reserve, 18);
     },
   );
   test('guide keeps supplies until there is space in the case', () {
@@ -142,7 +142,7 @@ void main() {
       ..z = -19.4;
     s.aiming = true;
     s.shoot(vm.Vector3(0, 1.65, -21), vm.Vector3(0, 0, 1));
-    expect(e.hp, 35);
+    expect(e.hp, 40);
     expect(s.kickTarget, e);
     s.kick();
     expect(e.alive, true);
@@ -187,7 +187,7 @@ void main() {
       s.x = 0;
       s.z = -21;
       s.aiming = true;
-      for (var i = 0; i < 3; i++) {
+      for (var i = 0; i < 4; i++) {
         s.shoot(vm.Vector3(0, 1, -21), vm.Vector3(0, 0, 1));
         advance(s, .35);
       }
@@ -212,7 +212,7 @@ void main() {
     s.z = -6;
     s.shoot(vm.Vector3(3, 1, -6), vm.Vector3(1, 0, 0));
     expect(e.hp, 100);
-    expect(s.pistolLoaded, 9);
+    expect(s.pistolLoaded, 5);
     expect(s.hits, 0);
   });
   test('reload transfers only owned ammo and respects magazine capacity', () {
@@ -221,7 +221,7 @@ void main() {
     s.reload();
     advance(s, 1.5);
     expect(s.pistolLoaded, 10);
-    expect(s.reserve, 32);
+    expect(s.reserve, 0);
   });
   test(
     'case rejects overlapping placement and full-case pickups stay on ground',

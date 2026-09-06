@@ -83,7 +83,7 @@ for item in items:
 crates=[{'id':'crate_'+str(i),'x':x,'z':z,'kind':'crate' if i%2 else 'barrel'} for i,(x,z) in enumerate([(-4,-13),(4,-12),(-7,6),(10,11),(18,4),(-16,-1),(4,13)])]
 enemies=[{'id':i,'x':x,'z':z,'active':True} for i,(x,z) in enumerate([(-2,-6),(3,-2),(-5,3),(6,7),(-9,6),(11,11),(-2,14),(17,1)])]
 data={'version':1,'spawn':{'x':0,'z':-21,'yaw':math.pi},'houses':houses,'windows':windows,'solids':solids,'ramps':ramps,'items':items,'crates':crates,'enemies':enemies,'collection':collection,'gate':{'x':11.5,'z':23,'y':0},'tower':{'x':-13.5,'z':-8.8,'top':4.22}}
-data['npcs']=[{'id': 'yametaro', 'x': -2.8, 'z': -21.2}]
+data['npcs']=[{'id': 'yametaro', 'x': -2.8, 'z': -21.2}, {'id': 'takosan', 'x': 4.0, 'z': -21.2}]
 data.update({'id': 'village', 'label': 'CHAPTER 01  /  YUMEMI VILLAGE', 'subtitle': '廃村ゆめみ村。特別研修、帰任日未定。', 'exits': [{'id': 'forward', 'target': 'farm', 'x': 11.5, 'z': 27.2, 'radius': 1.2, 'requiresGate': True, 'arrival': {'x': -19, 'z': -21, 'yaw': 3.141592653589793}}]})
 data['gate'].update(mode='key',label='農場への門')
 (OUT/'village.json').write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')

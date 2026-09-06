@@ -14,7 +14,6 @@ import 'package:flutter_scene/scene.dart' show SceneView;
 
 import 'game_controller.dart';
 import 'game_state.dart';
-import 'game_dialogue.dart';
 import 'game_settings.dart';
 import 'game_automation.dart';
 import 'game_benchmark.dart';
@@ -208,6 +207,8 @@ class _HazardGamePageState extends State<HazardGamePage> {
         s.equip('handgun');
       } else if (k == LogicalKeyboardKey.digit2) {
         s.equip('shotgun');
+      } else if (k == LogicalKeyboardKey.digit3) {
+        s.equip('rocket');
       }
     }
     setState(() {});
@@ -392,40 +393,6 @@ class _HazardGamePageState extends State<HazardGamePage> {
                                         ],
                                       ),
                                     ),
-                                for (final boss in s.enemies.where(
-                                  (e) =>
-                                      e.boss &&
-                                      e.alive &&
-                                      e.active &&
-                                      e.alerted,
-                                ))
-                                  SizedBox(
-                                    width: 300,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const SizedBox(height: 12),
-                                        Text(
-                                          '最終そば屋  —  ${boss.bossCue}',
-                                          style: const TextStyle(
-                                            color: gold,
-                                            fontSize: 13,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 6),
-                                        LinearProgressIndicator(
-                                          value: (boss.hp / 350).clamp(
-                                            0.0,
-                                            1.0,
-                                          ),
-                                          color: gold,
-                                          backgroundColor: ink,
-                                          minHeight: 4,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
                                 const SizedBox(height: 12),
                                 Text(
                                   s.objective,
@@ -468,6 +435,79 @@ class _HazardGamePageState extends State<HazardGamePage> {
                             ],
                           ),
                         ),
+                        for (final boss in s.enemies.where(
+                          (e) => e.boss && e.active && e.alive,
+                        ))
+                          Positioned(
+                            top: 26,
+                            left: MediaQuery.sizeOf(context).width * .32,
+                            right: MediaQuery.sizeOf(context).width * .22,
+                            child: IgnorePointer(
+                              child: Container(
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xdd171610),
+                                  border: Border.all(color: gold),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      '巨大そば屋  —  LAST ORDER',
+                                      style: const TextStyle(
+                                        color: ivory,
+                                        fontSize: 17,
+                                        letterSpacing: 2,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    LinearProgressIndicator(
+                                      key: const ValueKey('boss-health'),
+                                      value: (boss.hp / boss.maxHp).clamp(0, 1),
+                                      color: const Color(0xffc66b39),
+                                      backgroundColor: ink,
+                                      minHeight: 12,
+                                    ),
+                                    const SizedBox(height: 6),
+                                    Text(
+                                      '${boss.hp.ceil()} / ${boss.maxHp.ceil()}  ·  ${boss.bossCue}',
+                                      style: const TextStyle(
+                                        color: gold,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        if (s.aiming &&
+                            s.running &&
+                            game.rocketLockScreen != null)
+                          Positioned(
+                            left: game.rocketLockScreen!.dx - 32,
+                            top: game.rocketLockScreen!.dy - 32,
+                            child: IgnorePointer(
+                              child: Container(
+                                width: 64,
+                                height: 64,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.orangeAccent,
+                                    width: 2,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                alignment: Alignment.topCenter,
+                                child: const Text(
+                                  'LOCK',
+                                  style: TextStyle(
+                                    color: Colors.orangeAccent,
+                                    fontSize: 11,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                         if (s.aiming && s.running)
                           Center(
                             child: CustomPaint(
@@ -831,10 +871,14 @@ class _HazardGamePageState extends State<HazardGamePage> {
                       runSpacing: 8,
                       children: [
                         if (s.talkingTo == 'takosan') ...[
-                          for (final offer in tradeOffers)
+                          for (final offer in s.visibleTradeOffers)
                             action(
                               'trade-${offer.id}',
-                              '${itemNames[offer.kind]} ×${offer.amount}  /  ${offer.price}杯  /  ${s.stockRemaining(offer) == 0 ? '売切' : '残${s.stockRemaining(offer)}'}',
+                              '${itemNames[offer.kind]} ×${offer.amount}  /  ${offer.price}杯  /  ${s.stockRemaining(offer) == 0
+                                  ? '売切'
+                                  : s.stockRemaining(offer) == 999
+                                  ? '補充可'
+                                  : '残${s.stockRemaining(offer)}'}',
                               () => s.chooseDialogue('trade:${offer.id}'),
                             ),
                         ] else ...[
@@ -967,7 +1011,11 @@ class _HazardGamePageState extends State<HazardGamePage> {
               style: TextStyle(color: gold, letterSpacing: 3, fontSize: 10),
             ),
             Text(
-              s.weapon == 'handgun' ? 'HANDGUN' : 'SHOTGUN',
+              s.weapon == 'rocket'
+                  ? 'ロケットランチュア'
+                  : s.weapon == 'handgun'
+                  ? 'HANDGUN'
+                  : 'SHOTGUN',
               style: const TextStyle(
                 color: ivory,
                 fontSize: 13,
@@ -975,7 +1023,9 @@ class _HazardGamePageState extends State<HazardGamePage> {
               ),
             ),
             Text(
-              s.reloading > 0
+              s.weapon == 'rocket'
+                  ? '∞  /  ${s.rocketLockId == null ? 'SEARCH' : 'LOCK ON'}'
+                  : s.reloading > 0
                   ? 'RELOADING…'
                   : '${s.loaded.toString().padLeft(2, '0')} / ${s.reserve}',
               style: TextStyle(
@@ -1388,7 +1438,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
               },
             ),
             const Text(
-              '被ダメージと敵の接近速度を変更します。探索中も切り替えられます。',
+              '最高難度：弾薬は補給・ビール交換が中心。全そば屋撃破で次章へ。頭部・ジョッキが弱点。初期弾数は新しいゲームから適用。',
               style: TextStyle(color: ivory, fontSize: 12),
             ),
             const SizedBox(height: 20),
@@ -1615,7 +1665,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
         ),
         const SizedBox(height: 12),
         const Text(
-          '1 / 2 武器切替     H ハーブを使う\n構え中は移動を止めます。木箱や樽はEでも壊せます。',
+          '1 / 2 / 3 武器切替     H ハーブを使う\n構え中は移動を止めます。木箱や樽はEでも壊せます。',
           style: TextStyle(color: gold, height: 2),
         ),
       ],

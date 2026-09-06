@@ -60,10 +60,10 @@ void main() {
       s.chooseDialogue('trade:ammo');
     }
     expect(s.beers, 2);
-    expect(s.reserve, 70);
+    expect(s.reserve, 38);
     s.chooseDialogue('trade:ammo');
     expect(s.beers, 2);
-    expect(s.reserve, 70);
+    expect(s.reserve, 38);
     expect(s.tradeMessage, contains('売り切れ'));
     s.endDialogue();
     final restored = restoreHazardCheckpoint(s.checkpoint(), farm(), {});
@@ -72,7 +72,7 @@ void main() {
     expect(restored.stockRemaining(tradeOffers.first), 0);
     restored.chooseDialogue('trade:ammo');
     expect(restored.beers, 2);
-    expect(restored.reserve, 70);
+    expect(restored.reserve, 38);
   });
   test(
     'insufficient beer or full case never consumes merchant stock or money',
@@ -115,13 +115,13 @@ void main() {
     expect(restored.health, 65);
     expect(restored.beers, 3);
     expect(restored.pistolLoaded, 6);
-    expect(restored.reserve, 50);
+    expect(restored.reserve, 18);
     expect(restored.bag.first.col, 7);
     expect(restored.collected, {'wanted', 'shark'});
     restored.interact();
     expect(restored.dialogueTopic, 'greeting');
     restored.chooseDialogue('supplies');
-    expect(restored.reserve, 50);
+    expect(restored.reserve, 18);
   });
   test(
     'saving during enemy disappearance neither loses nor duplicates the beer',
