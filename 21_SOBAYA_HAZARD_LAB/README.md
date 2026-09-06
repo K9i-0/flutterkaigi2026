@@ -177,3 +177,7 @@ Macパッケージ作成では3区画、9シーン、各manifestに記載され�
 最終の「ゆめみ村・特別研修」改訂は126テスト・音声60本の整合性・Macアプリ同梱ハッシュを確認済み。台詞とメモ改訂後の前面再生確認はMacのロック解除待ち。被弾声と口パクのネイティブプローブは改訂前に成功し、上記QAには確認した版を明記している。
 
 ポスター・メモは取得直後に自動閲覧し、その間はゲームが停止する。E／Escまたは閉じるボタンで探索へ戻る。ポスター閲覧は元画像・最大6倍ズーム、壁用テクスチャだけ長辺64px。再生成は `tools/hazard_environment_kit.py` の `wall_poster_image` を共用する。
+
+## キャラクターシート準拠のNPC（2026-09-06）
+
+[たこさん](../04_GAME_ASSETS/3d/characters/takosan/README.md)と[やめ太郎](../04_GAME_ASSETS/3d/characters/yametaro/README.md)をキャラシート由来のTripo P2モデルへ差し替えた。正本は各 `rig_sheet_v2/`、ゲーム内は相対symlink。たこさんの6本の触手と袖、やめ太郎の頭部ウェイトと口パクをBlenderで調整。[GLB・ネイティブ会話／商店検証](qa/npc-tripo-sheet-20260906.json)を参照。既存140テストは通過、差し替え後のprofile測定は未実施。

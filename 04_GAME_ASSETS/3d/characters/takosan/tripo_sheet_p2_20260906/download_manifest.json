@@ -1,0 +1,12 @@
+[
+  {
+    "file": "raw/output_model_url.fbx",
+    "bytes": 3484732,
+    "sha256": "649adbb6f1a775d239376588d549eee6ecd92c0589433744df266b03aa691cb8"
+  },
+  {
+    "file": "raw/output_rendered_image_url.webp",
+    "bytes": 21076,
+    "sha256": "7b3d1b40320681536147324145b57528a9c30d131bc8cf78663e7a2e44e418fe"
+  }
+]

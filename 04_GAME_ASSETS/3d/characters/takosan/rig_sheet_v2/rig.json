@@ -1,0 +1,16 @@
+{
+  "source": "Tripo P2 detailed multiview / canonical sheet",
+  "source_sha256": "649adbb6f1a775d239376588d549eee6ecd92c0589433744df266b03aa691cb8",
+  "height_m": 1.433,
+  "triangles": 18325,
+  "bone_count": 27,
+  "tentacles": 6,
+  "arms": 2,
+  "correction": "Removed two separate rear-diagonal duplicate tentacles; retained original closed robe and five-front/one-back six-limb silhouette.",
+  "clips": [
+    "Idle",
+    "Talk",
+    "Wave"
+  ],
+  "texture": "albedo 2048 / normal 1024 / roughness 0.85 / metallic 0"
+}

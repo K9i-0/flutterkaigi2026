@@ -1,12 +1,13 @@
 """Normalize the accepted P2 biped and add NPC idle, talk, wave and captured walk."""
-import bpy,sys,math,json,hashlib
+import bpy,sys,math,json,hashlib,argparse
 from pathlib import Path
 from mathutils import Vector,Matrix,Quaternion
 ROOT=Path(__file__).resolve().parent.parent;sys.path.insert(0,str(ROOT/'tools'))
 import retarget_sobaya_mocap as mocap
 mocap.MAP['Spine1']='Spine1'
-OUT=ROOT/'04_GAME_ASSETS/3d/characters/yametaro/rig_v1';OUT.mkdir(parents=True,exist_ok=True)
-source=OUT.parent/'rig_source/raw/output_model_url.fbx'
+parser=argparse.ArgumentParser();parser.add_argument('--sheet',action='store_true');args=parser.parse_args(sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else [])
+OUT=ROOT/('04_GAME_ASSETS/3d/characters/yametaro/rig_sheet_v2' if args.sheet else '04_GAME_ASSETS/3d/characters/yametaro/rig_v1');OUT.mkdir(parents=True,exist_ok=True)
+source=OUT.parent/('rig_sheet_source/raw/output_model_url.fbx' if args.sheet else 'rig_source/raw/output_model_url.fbx')
 bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False);bpy.ops.import_scene.fbx(filepath=str(source))
 rig=next(o for o in bpy.context.scene.objects if o.type=='ARMATURE');mesh=next(o for o in bpy.context.scene.objects if o.type=='MESH')
 mesh.parent=None;mesh.matrix_world=Matrix.Identity(4)
@@ -14,6 +15,23 @@ transform=Matrix.Scale(1.3/.99951178,4)@Matrix.Rotation(-math.pi/2,4,'Z')
 mesh.data.transform(transform@Matrix.Scale(.99951171875,4));rig.data.transform(transform@rig.matrix_world);rig.matrix_world=Matrix.Identity(4)
 rig.name='YametaroRig';mesh.name='YametaroBody';mesh.parent=rig;mesh.matrix_parent_inverse=Matrix.Identity(4)
 for b in rig.data.bones:b.name=b.name.split(':')[-1]
+if args.sheet:
+ # Tripo's biped weights attach parts of the oversized cheeks/hair to arms.
+ # Keep the entire toy head rigid so hand gestures cannot pull its silhouette.
+ adjacency=[[] for _ in mesh.data.vertices]
+ for edge in mesh.data.edges:
+  a,b=edge.vertices;adjacency[a].append(b);adjacency[b].append(a)
+ remaining=set(range(len(adjacency)));head=mesh.vertex_groups['Head']
+ while remaining:
+  seed=remaining.pop();stack=[seed];part=[seed]
+  while stack:
+   for i in adjacency[stack.pop()]:
+    if i in remaining:remaining.remove(i);stack.append(i);part.append(i)
+  if max(mesh.data.vertices[i].co.z for i in part)>.70:
+   for i in part:
+    for group_index in [g.group for g in mesh.data.vertices[i].groups]:mesh.vertex_groups[group_index].remove([i])
+    head.add([i],1,'REPLACE')
+    assert len(mesh.data.vertices[i].groups)==1
 for im in bpy.data.images:
  if im.size[0] and im.name not in ['Render Result','Viewer Node']:
   im.scale(2048 if im.name=='Color.jpg' else 1024,2048 if im.name=='Color.jpg' else 1024);im.pack()
@@ -67,7 +85,7 @@ for i,sample in enumerate(samples):
 clips.append({'name':'Walk','duration':frames/30,'ground_speed_mps':travel.length*scale/(frames/30),'source':'walk_standard.fbx','sha256':hashlib.sha256(source_motion.read_bytes()).hexdigest()})
 rig.animation_data.action=None;reset();bpy.context.scene.frame_set(0)
 from hazard_face_shapes import add_speech_shapes
-speech_shapes = add_speech_shapes(mesh, 'yametaro')
+speech_shapes = add_speech_shapes(mesh, 'yametaro', landmarks=(.705, .050, .610, -.24, .018) if args.sheet else None)
 (OUT/'.gitignore').write_text('*.blend\n*.blend1\n');(OUT/'rig.json').write_text(json.dumps({'height_m':1.3,'source_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'clips':clips,'speech_shapes':speech_shapes},indent=2)+'\n')
 bpy.ops.object.select_all(action='DESELECT');rig.select_set(True);mesh.select_set(True);bpy.context.view_layer.objects.active=rig
 bpy.ops.wm.save_as_mainfile(filepath=str(OUT/'yametaro.blend'))

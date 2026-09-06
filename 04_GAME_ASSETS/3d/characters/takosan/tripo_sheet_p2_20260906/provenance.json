@@ -1,0 +1,13 @@
+{
+  "model": "P2-20260801",
+  "task_id": "0b7260e5-a9ec-4245-996e-7826cb69a721",
+  "credits_consumed": 120.0,
+  "source_sheets": [
+    "03_SCRIPTS/00_TEMPLATES/characters/character_takosan_basic_sheet.png"
+  ],
+  "input_sha256": {
+    "front": "ad04b27ad58613029a9a5718a90bd3abf24b9e0f93be5a877570d68299fbac5d",
+    "back": "e9f9710ef93f0959cfd95e3857cb5e29e747871264e47e7b0cb27c755455d61c"
+  },
+  "status": "success"
+}

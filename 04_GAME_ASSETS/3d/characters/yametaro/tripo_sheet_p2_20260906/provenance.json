@@ -1,0 +1,14 @@
+{
+  "model": "P2-20260801",
+  "task_id": "4a23c7b9-a479-4f9b-a579-acc038c5b309",
+  "credits_consumed": 120.0,
+  "source_sheets": [
+    "03_SCRIPTS/00_TEMPLATES/characters/character_yametaro_basic_sheet.png",
+    "03_SCRIPTS/00_TEMPLATES/characters/character_yametaro_toy_diorama_3d_basic_sheet.png"
+  ],
+  "input_sha256": {
+    "front": "d4b8dd079dc5d3246c37b418c564ef3b3ea878eb272a984dd64dd7428ce1554b",
+    "back": "06287bab8fed96e08f7a64c195d2deb8cdfdd64f285927308c435c6a1c6cf00f"
+  },
+  "status": "success"
+}

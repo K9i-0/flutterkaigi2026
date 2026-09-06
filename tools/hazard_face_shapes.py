@@ -66,10 +66,10 @@ def prepare_fukuchan_mouth(mesh):
     mesh['speech_seam'] = True
 
 
-def add_speech_shapes(mesh, character):
+def add_speech_shapes(mesh, character, landmarks=None):
     if character == 'fukuchan':
         prepare_fukuchan_mouth(mesh)
-    mouth, half_width, lower, front, opening = {
+    mouth, half_width, lower, front, opening = landmarks or {
         'fukuchan': (1.507, .043, 1.451, -.07, .0075),
         'yametaro': (.684, .068, .585, -.12, .027),
     }[character]

@@ -1,0 +1,10 @@
+{
+  "operation": "animations/rig",
+  "rig": {
+    "input": "4a23c7b9-a479-4f9b-a579-acc038c5b309",
+    "model": "v1.0-20240301",
+    "rig_type": "biped",
+    "spec": "mixamo",
+    "out_format": "glb"
+  }
+}
