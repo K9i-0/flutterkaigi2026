@@ -1,0 +1,440 @@
+{
+  "date": "2026-09-06",
+  "change": "Relax connected waist weights, retain rear hem on pelvis and blend waistband into thighs below the waist.",
+  "modifiedRestVertices": 891,
+  "rigSource": "tools/retarget_sobaya_mocap.py -> tools/sobaya_garment.py:relax_hem_weights",
+  "rebuild": "/Applications/Blender.app/Contents/MacOS/Blender --background --factory-startup --python tools/retarget_sobaya_mocap.py",
+  "auditCommand": "/Applications/Blender.app/Contents/MacOS/Blender --background --factory-startup --python tools/audit_sobaya_garment.py -- --reference .local/sobaya-before-hem-080d3a1.glb",
+  "referenceRecovery": "git show 080d3a1:04_GAME_ASSETS/3d/characters/sobaya/rig_v3/sobaya_rig.glb > .local/sobaya-before-hem-080d3a1.glb",
+  "sampleHz": 60,
+  "posesPerModel": 1167,
+  "region": "rest z .80..1.22 m, abs(x) < .30 m; edges > .1 mm",
+  "stretch": {
+    "candidate": {
+      "source": "04_GAME_ASSETS/3d/characters/sobaya/rig_v3/sobaya_rig.glb",
+      "sha256": "644f7898fad33edb8cbdd4fb1c8dce2a557b6a0147d8beea976feb8316f7ba96",
+      "waistEdges": 3313,
+      "clips": {
+        "Idle": {
+          "poses": 145,
+          "maximumEdgeStretch": 1.0682486300286236,
+          "maximumPoseP95": 1.0219227966712685,
+          "edgeSamplesOver3x": 0
+        },
+        "Walk": {
+          "poses": 75,
+          "maximumEdgeStretch": 2.1833994637341245,
+          "maximumPoseP95": 1.1787432936706732,
+          "edgeSamplesOver3x": 0
+        },
+        "Run": {
+          "poses": 51,
+          "maximumEdgeStretch": 3.548714470232796,
+          "maximumPoseP95": 1.3849363377411525,
+          "edgeSamplesOver3x": 20
+        },
+        "Climb": {
+          "poses": 61,
+          "maximumEdgeStretch": 3.49089217841407,
+          "maximumPoseP95": 1.4870946957792117,
+          "edgeSamplesOver3x": 70
+        },
+        "Vault": {
+          "poses": 97,
+          "maximumEdgeStretch": 4.403310669157287,
+          "maximumPoseP95": 2.0808825616592803,
+          "edgeSamplesOver3x": 243
+        },
+        "Toast": {
+          "poses": 157,
+          "maximumEdgeStretch": 2.866411129996265,
+          "maximumPoseP95": 1.0373943144314035,
+          "edgeSamplesOver3x": 0
+        },
+        "MugAttack": {
+          "poses": 85,
+          "maximumEdgeStretch": 3.574847340165328,
+          "maximumPoseP95": 1.2391822015164662,
+          "edgeSamplesOver3x": 57
+        },
+        "ZombieWalk": {
+          "poses": 109,
+          "maximumEdgeStretch": 4.106322692784615,
+          "maximumPoseP95": 1.293340823854629,
+          "edgeSamplesOver3x": 400
+        },
+        "DanceStep": {
+          "poses": 121,
+          "maximumEdgeStretch": 2.052451659711579,
+          "maximumPoseP95": 1.2311734022471577,
+          "edgeSamplesOver3x": 0
+        },
+        "DanceDisco": {
+          "poses": 145,
+          "maximumEdgeStretch": 3.8170865674189427,
+          "maximumPoseP95": 1.2323254938787522,
+          "edgeSamplesOver3x": 601
+        },
+        "DanceVictory": {
+          "poses": 121,
+          "maximumEdgeStretch": 5.147683502671929,
+          "maximumPoseP95": 1.321772367502361,
+          "edgeSamplesOver3x": 569
+        }
+      }
+    },
+    "reference": {
+      "source": "git 080d3a1:04_GAME_ASSETS/3d/characters/sobaya/rig_v3/sobaya_rig.glb",
+      "sha256": "5c6ed042c027cc4ca14511dddaef07e8dca618f0f263eb8654fcbca552994ee4",
+      "waistEdges": 3313,
+      "clips": {
+        "Idle": {
+          "poses": 145,
+          "maximumEdgeStretch": 1.3345034003993184,
+          "maximumPoseP95": 1.0108965422881635,
+          "edgeSamplesOver3x": 0
+        },
+        "Walk": {
+          "poses": 75,
+          "maximumEdgeStretch": 11.460283907367595,
+          "maximumPoseP95": 1.2087097462267355,
+          "edgeSamplesOver3x": 683
+        },
+        "Run": {
+          "poses": 51,
+          "maximumEdgeStretch": 19.436125773388948,
+          "maximumPoseP95": 1.3656220751077255,
+          "edgeSamplesOver3x": 1066
+        },
+        "Climb": {
+          "poses": 61,
+          "maximumEdgeStretch": 29.02896252135612,
+          "maximumPoseP95": 1.4154179166783307,
+          "edgeSamplesOver3x": 2714
+        },
+        "Vault": {
+          "poses": 97,
+          "maximumEdgeStretch": 52.6106342885491,
+          "maximumPoseP95": 1.8692084508404887,
+          "edgeSamplesOver3x": 3652
+        },
+        "Toast": {
+          "poses": 157,
+          "maximumEdgeStretch": 3.175754168516197,
+          "maximumPoseP95": 1.0350936497281944,
+          "edgeSamplesOver3x": 49
+        },
+        "MugAttack": {
+          "poses": 85,
+          "maximumEdgeStretch": 4.483633953560131,
+          "maximumPoseP95": 1.2729658504656325,
+          "edgeSamplesOver3x": 259
+        },
+        "ZombieWalk": {
+          "poses": 109,
+          "maximumEdgeStretch": 7.4589511947333635,
+          "maximumPoseP95": 1.2777000008795927,
+          "edgeSamplesOver3x": 489
+        },
+        "DanceStep": {
+          "poses": 121,
+          "maximumEdgeStretch": 8.972869980743566,
+          "maximumPoseP95": 1.1836325999546953,
+          "edgeSamplesOver3x": 686
+        },
+        "DanceDisco": {
+          "poses": 145,
+          "maximumEdgeStretch": 5.2953451579615605,
+          "maximumPoseP95": 1.2425593591345931,
+          "edgeSamplesOver3x": 1082
+        },
+        "DanceVictory": {
+          "poses": 121,
+          "maximumEdgeStretch": 8.069945944764967,
+          "maximumPoseP95": 1.3763249214248892,
+          "edgeSamplesOver3x": 893
+        }
+      }
+    }
+  },
+  "windowClearance": {
+    "sampleHz": 60,
+    "wallHalfDepth": 0.175,
+    "apertureHalfWidth": 0.78,
+    "sill": 0.82,
+    "lintel": 2.42,
+    "tolerance": 0.02,
+    "models": {
+      "fukuchan": {
+        "source": "04_GAME_ASSETS/3d/characters/fukuchan/rig_v1/fukuchan.glb",
+        "sha256": "031ddc85939ce56f4562ae1b65f41109a11653a412e948a1db6e82dfe3d15fcc",
+        "samples": 97,
+        "violatingVertexSamples": 0,
+        "supportWristRanges": [
+          [
+            0.7149903774261475,
+            0.7166901230812073
+          ],
+          [
+            0.019886678015744175,
+            0.020727131322578085
+          ],
+          [
+            1.549364146279952,
+            1.5502151958471555
+          ]
+        ],
+        "maximumSupportWristAxisDrift": 0.0016997456550598145,
+        "supportSkinGapToFrame": [
+          -0.0030039906501769797,
+          0.001385474205017112
+        ]
+      },
+      "sobaya": {
+        "source": "04_GAME_ASSETS/3d/characters/sobaya/rig_v3/sobaya_rig.glb",
+        "sha256": "644f7898fad33edb8cbdd4fb1c8dce2a557b6a0147d8beea976feb8316f7ba96",
+        "samples": 97,
+        "violatingVertexSamples": 0,
+        "supportWristRanges": [
+          [
+            0.7149999141693115,
+            0.7160323262214661
+          ],
+          [
+            0.01977702677249904,
+            0.02055985088701595
+          ],
+          [
+            1.5986813869949787,
+            1.6000003386040715
+          ]
+        ],
+        "maximumSupportWristAxisDrift": 0.0013189516090927889,
+        "supportSkinGapToFrame": [
+          0.01599087715148928,
+          0.02726581096649172
+        ]
+      }
+    }
+  },
+  "rigValidation": {
+    "sha256": "644f7898fad33edb8cbdd4fb1c8dce2a557b6a0147d8beea976feb8316f7ba96",
+    "bytes": 12473944,
+    "skin_joints": 45,
+    "exported_vertices": 32378,
+    "triangles": 28576,
+    "max_weight_sum_error": 1.2014061212539673e-07,
+    "clips": [
+      {
+        "name": "Climb",
+        "seconds": 1.0,
+        "loop": true,
+        "endpoint_max_delta": 0
+      },
+      {
+        "name": "DanceDisco",
+        "seconds": 2.4000000953674316,
+        "loop": true,
+        "endpoint_max_delta": 4.050511553770064e-18
+      },
+      {
+        "name": "DanceStep",
+        "seconds": 2.0,
+        "loop": true,
+        "endpoint_max_delta": 1.3877787807814457e-17
+      },
+      {
+        "name": "DanceVictory",
+        "seconds": 2.0,
+        "loop": true,
+        "endpoint_max_delta": 0
+      },
+      {
+        "name": "Idle",
+        "seconds": 2.4000000953674316,
+        "loop": true,
+        "endpoint_max_delta": 0
+      },
+      {
+        "name": "MugAttack",
+        "seconds": 1.399999976158142,
+        "loop": false,
+        "endpoint_max_delta": 0
+      },
+      {
+        "name": "Run",
+        "seconds": 0.8333333134651184,
+        "loop": true,
+        "endpoint_max_delta": 0
+      },
+      {
+        "name": "Toast",
+        "seconds": 2.5999999046325684,
+        "loop": false,
+        "endpoint_max_delta": 0
+      },
+      {
+        "name": "Vault",
+        "seconds": 1.600000023841858,
+        "loop": false,
+        "endpoint_max_delta": 0
+      },
+      {
+        "name": "Walk",
+        "seconds": 1.2333333492279053,
+        "loop": true,
+        "endpoint_max_delta": 0
+      },
+      {
+        "name": "ZombieWalk",
+        "seconds": 1.7999999523162842,
+        "loop": true,
+        "endpoint_max_delta": 8.639736061993863e-20
+      }
+    ],
+    "result": "PASS"
+  },
+  "locomotionValidation": {
+    "result": "PASS",
+    "sha256": "644f7898fad33edb8cbdd4fb1c8dce2a557b6a0147d8beea976feb8316f7ba96",
+    "clips": {
+      "Walk": {
+        "frames": 38,
+        "minimum_sole_height_m": 0.003004668280482292,
+        "maximum_lower_sole_height_m": 0.004569722339510918,
+        "posture_ranges": {
+          "face_pitch_degrees": [
+            -0.28899045113689964,
+            0.312965439778975
+          ],
+          "face_yaw_degrees": [
+            -0.2100249632497773,
+            0.30045386479281927
+          ],
+          "shoulder_width_m": [
+            0.5339081287384033,
+            0.5340277850627899
+          ]
+        }
+      },
+      "Run": {
+        "frames": 26,
+        "minimum_sole_height_m": 0.002631228184327483,
+        "maximum_lower_sole_height_m": 0.01319901179522276,
+        "posture_ranges": {
+          "face_pitch_degrees": [
+            -0.8165776124501398,
+            1.3764194528564522
+          ],
+          "face_yaw_degrees": [
+            -0.7542666206800667,
+            1.2092872866047022
+          ],
+          "shoulder_width_m": [
+            0.5339269936084747,
+            0.5340316593647003
+          ]
+        }
+      }
+    },
+    "rest_shoulder_width_m": 0.5339998713200437,
+    "checks": [
+      "finite deformed vertices",
+      "exported shoes do not penetrate floor beyond 3 mm",
+      "walking always has a sole within 12 mm of floor",
+      "face elevation and yaw within 2 degrees of forward",
+      "chest-local shoulder width within 0.5 percent of authored rest width"
+    ],
+    "limits": "Does not certify all foot sliding, transitions, terrain IK or subjective motion quality."
+  },
+  "visualReview": {
+    "blender": "Round-tripped final GLB: Walk .22, Run .24, Climb .35, Vault .375 and .62. Waist spikes and exposed dark waist gap in prior rear Vault render substantially reduced.",
+    "flutter": "Final debug bundle compiled scene matches the generated scene; the manifest source resolves to the canonical GLB and the generated scene is newer than the changed source. Real rendered enemyWindow simulation: both enemies entered the house, one resumed MugAttack. Separate deterministic pose/viewpoint screenshots inspected the new garment in Flutter; these are visual evidence only.",
+    "nativeSnapshot": {
+      "phase": "paused",
+      "position": {
+        "x": 5.68,
+        "y": 0,
+        "z": -7.550000000000001
+      },
+      "rendering": {
+        "continuous": false,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 979,
+        "simulationSeconds": 16.300244000000045,
+        "playerClipSeconds": 0.3002439999999944
+      },
+      "enemies": [
+        {
+          "id": 0,
+          "alive": true,
+          "active": true,
+          "dropped": false,
+          "hp": 100,
+          "alerted": true,
+          "stun": 0,
+          "attackPending": false,
+          "climb": null,
+          "vault": null,
+          "fallingFromLadder": false,
+          "meleeRecovery": 0.3333300000000002,
+          "meleeClipTime": 0.9650029999999998,
+          "approach": "flank",
+          "bossMove": "ready",
+          "bossTimer": 0,
+          "x": 5.68,
+          "y": 0,
+          "z": -8.496651200000048
+        },
+        {
+          "id": 1,
+          "alive": true,
+          "active": true,
+          "dropped": false,
+          "hp": 100,
+          "alerted": true,
+          "stun": 0,
+          "attackPending": false,
+          "climb": null,
+          "vault": null,
+          "fallingFromLadder": false,
+          "meleeRecovery": 0,
+          "meleeClipTime": null,
+          "approach": "flank",
+          "bossMove": "ready",
+          "bossTimer": 0,
+          "x": 5.68,
+          "y": 0,
+          "z": -8.846651235739612
+        }
+      ],
+      "enemyMotions": [
+        {
+          "motion": "MugAttack",
+          "seconds": 0.9650029999999998
+        },
+        {
+          "motion": "Idle",
+          "seconds": 2.316772809265133
+        }
+      ]
+    },
+    "canonicalGlbSha256": "644f7898fad33edb8cbdd4fb1c8dce2a557b6a0147d8beea976feb8316f7ba96",
+    "bundledSceneSha256": "3f89f3762b85e0632f33b9d164d846f40e41f074864931c2594162bab3bd7619",
+    "manifestEntry": {
+      "family": "scene",
+      "id": "assets/models/sobaya",
+      "file": "scene.sobaya.fd082e41.fsceneb",
+      "stamp": "c78722e5cd00e7a0",
+      "source": "assets/models/sobaya.glb"
+    }
+  },
+  "limits": [
+    "Extreme poses still stretch and compress cloth; the maximum sampled Vault edge ratio remains 4.40.",
+    "Some per-pose 95th-percentile stretch rises as deformation is spread across neighbors (Vault 1.87 to 2.08). This is a tradeoff, not a universal cloth-quality pass.",
+    "The edge audit does not certify triangle self-intersection or continuous cloth collision.",
+    "Palm/frame gap from prior window work remains 16–28 mm for Sobaya.",
+    "No Dart runtime code changed. Full campaign, updated profile and Mac release ZIP after traversal changes remain pending."
+  ]
+}

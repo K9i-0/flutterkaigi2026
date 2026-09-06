@@ -3,6 +3,69 @@ import bpy,numpy as np
 from mathutils import Vector
 
 
+def relax_hem_weights(body):
+    """Blend the generated shirt/pants seam across connected waist vertices.
+
+    Texture thresholding in setup_hem can put adjacent vertices entirely on
+    the hem and thigh respectively. A raised knee then stretches tiny seam
+    edges into spikes. Relax only this waist band, preserving rest geometry,
+    UVs and the weights on the legs, hands and shoulders.
+    Apply once to the rig_v2 baseline before baking the game rig.
+    """
+    count = len(body.data.vertices)
+    weights = np.zeros((count, len(body.vertex_groups)), dtype=np.float64)
+    neighbors = [[] for _ in range(count)]
+    for edge in body.data.edges:
+        a, b = edge.vertices
+        neighbors[a].append(b)
+        neighbors[b].append(a)
+    def smooth(value):
+        v = max(0, min(1, value))
+        return v * v * (3 - 2 * v)
+    amount = {}
+    for vertex in body.data.vertices:
+        for group in vertex.groups:
+            weights[vertex.index, group.group] = group.weight
+        x, y, z = vertex.co
+        # The raised thigh lifts the front cloth. Pulling the rear hem forward
+        # as well exposes the inside of the generated waistband.
+        front = smooth((.08 - y) / .18)
+        for name in ['ShirtHem.L', 'ShirtHem.R']:
+            group = body.vertex_groups[name].index
+            rear = weights[vertex.index, group] * (1 - front)
+            weights[vertex.index, group] -= rear
+            weights[vertex.index, body.vertex_groups['Hips'].index] += rear
+        # Keep the waistband on the pelvis; introduce thigh rotation below
+        # it gradually instead of allowing the raised leg to open the waist.
+        pelvis = smooth((z - .80) / .15) * smooth((.30 - abs(x)) / .035)
+        for name in ['Thigh.L', 'Thigh.R']:
+            group = body.vertex_groups[name].index
+            transferred = weights[vertex.index, group] * pelvis
+            weights[vertex.index, group] -= transferred
+            weights[vertex.index, body.vertex_groups['Hips'].index] += transferred
+        blend = (smooth((z - .80) / .07) * smooth((1.20 - z) / .08)
+                 * smooth((.30 - abs(x)) / .035))
+        if blend and neighbors[vertex.index]:
+            amount[vertex.index] = .55 * blend
+    for _ in range(16):
+        updated = weights.copy()
+        for index, blend in amount.items():
+            updated[index] = ((1 - blend) * weights[index]
+                              + blend * weights[neighbors[index]].mean(axis=0))
+        weights = updated
+    for index in amount:
+        for group in body.vertex_groups:
+            group.remove([index])
+        chosen = np.argsort(weights[index])[-4:]
+        total = weights[index, chosen].sum()
+        for group_index in chosen:
+            weight = weights[index, group_index] / total
+            if weight > 1e-6:
+                body.vertex_groups[int(group_index)].add([index], float(weight), 'REPLACE')
+    return {'method': '16 connected-neighbor relaxation passes on waist weights',
+            'vertices': len(amount), 'maximum_influences': 4}
+
+
 def setup_hem(body,rig):
     bpy.context.view_layer.objects.active=rig
     bpy.ops.object.mode_set(mode='EDIT')

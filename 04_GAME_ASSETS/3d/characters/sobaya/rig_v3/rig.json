@@ -87,7 +87,9 @@
       "duration": 1,
       "vertical_speed_mps": 0.7,
       "rung_spacing_m": 0.35,
-      "source": "authored two-bone IK; distance-synchronized ladder loop"
+      "source": "authored two-bone IK; distance-synchronized ladder loop",
+      "loop": true,
+      "fps": 30
     },
     {
       "name": "Vault",
@@ -104,7 +106,9 @@
         0.715,
         0.02,
         1.6
-      ]
+      ],
+      "loop": false,
+      "fps": 30
     }
   ],
   "mocap": [
@@ -130,5 +134,10 @@
       "source_scale": 0.9260575825786282,
       "posture": "forward gaze; authored shoulder width with 50% captured clavicle variation; body-sized arm clearance"
     }
-  ]
+  ],
+  "garment": {
+    "method": "16 connected-neighbor relaxation passes on waist weights",
+    "vertices": 891,
+    "maximum_influences": 4
+  }
 }

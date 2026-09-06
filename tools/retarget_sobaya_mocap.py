@@ -13,7 +13,7 @@ from mathutils import Vector, Matrix, Quaternion
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / 'tools'))
-from sobaya_garment import animate_hem
+from sobaya_garment import animate_hem, relax_hem_weights
 
 OUT = ROOT / '04_GAME_ASSETS/3d/characters/sobaya/rig_v3'
 INPUT = ROOT / '.local/mixamo_sobaya/source'
@@ -254,8 +254,10 @@ def build():
     if not source.exists():raise RuntimeError('Build rig_v2 first to create the editable baseline')
     bpy.ops.wm.open_mainfile(filepath=str(source))
     rig=bpy.data.objects['SobayaRig'];mesh=bpy.data.objects['SobayaBody']
+    garment = relax_hem_weights(mesh)
     add_toes(rig,mesh)
     report=json.loads((source.parent/'rig.json').read_text());report['rig_version']=3;report['mocap']=[]
+    report['garment'] = garment
     report['bone_count']=len(rig.data.bones);report['deform_bones']=sum(b.use_deform for b in rig.data.bones)
     for name,file in [('Walk','walk_standard.fbx'),('Run','run_weighted.fbx')]:
         path=INPUT/file
@@ -265,9 +267,9 @@ def build():
             for clip in report['clips']:
                 if clip['name']==name:clip.update({k:v for k,v in data.items() if k!='samples'})
     from hazard_climb_motion import bake_climb
-    report['clips'].append(bake_climb(rig, sobaya=True))
+    report['clips'].append({**bake_climb(rig, sobaya=True), 'loop': True, 'fps': 30})
     from hazard_vault_motion import bake_vault
-    report['clips'].append(bake_vault(rig, sobaya=True))
+    report['clips'].append({**bake_vault(rig, sobaya=True), 'loop': False, 'fps': 30})
     rig.animation_data.action=None
     for b in rig.pose.bones:b.location=(0,0,0);b.rotation_quaternion=Quaternion()
     bpy.context.scene.frame_set(0)

@@ -1,11 +1,17 @@
 {
-  "sha256": "439642bede6d6698f8e22aeda00dd8a6d6c614a72e31c3a20923be50c78bf310",
-  "bytes": 12402540,
+  "sha256": "644f7898fad33edb8cbdd4fb1c8dce2a557b6a0147d8beea976feb8316f7ba96",
+  "bytes": 12473944,
   "skin_joints": 45,
   "exported_vertices": 32378,
   "triangles": 28576,
   "max_weight_sum_error": 1.2014061212539673e-07,
   "clips": [
+    {
+      "name": "Climb",
+      "seconds": 1.0,
+      "loop": true,
+      "endpoint_max_delta": 0
+    },
     {
       "name": "DanceDisco",
       "seconds": 2.4000000953674316,
@@ -45,6 +51,12 @@
     {
       "name": "Toast",
       "seconds": 2.5999999046325684,
+      "loop": false,
+      "endpoint_max_delta": 0
+    },
+    {
+      "name": "Vault",
+      "seconds": 1.600000023841858,
       "loop": false,
       "endpoint_max_delta": 0
     },
