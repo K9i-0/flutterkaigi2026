@@ -10,7 +10,7 @@ bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=Fals
 rng=random.Random(4905);groups={};mats={};solids=[];houses=[];ramps=[];windows=[]
 
 # Wall art stays deliberately coarse; the reader loads untouched production PNGs.
-POSTER_WORLD_LONG_EDGE = 256
+POSTER_WORLD_LONG_EDGE = 64
 
 def wall_poster_image(path):
  im=bpy.data.images.load(str(path),check_existing=False)

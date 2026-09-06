@@ -1,0 +1,58 @@
+{
+  "beforeSha256": "3ded72a464963fe81e58cc314150ef90b25a0180ce4b57171b28686c772bbd28",
+  "afterSha256": "d156a86cb6b3148b628a1b1ab24f74a1a5395db936137dedac9ff76172c447c2",
+  "bytesBefore": 8650248,
+  "bytesAfter": 8650048,
+  "trianglesAfter": 25571,
+  "materialsAfter": 5,
+  "animationPayloadIdentical": true,
+  "clips": [
+    "Aim",
+    "AimShotgun",
+    "BreakFree",
+    "Climb",
+    "Evade",
+    "Hit",
+    "Idle",
+    "Kick",
+    "ReloadHandgun",
+    "ReloadShotgun",
+    "Run",
+    "Struggle",
+    "Vault",
+    "Walk"
+  ],
+  "allAccessorsFinite": true,
+  "skinWeightsNormalized": true,
+  "jointCounts": [
+    23
+  ],
+  "cause": "Unbounded neck ray fitting hit jacket shoulders and grew a skin flange driven by Neck rather than the sleeves.",
+  "fix": "Bound the lower-neck overlap to a 55mm by 60mm ellipse inside the collar.",
+  "poseAudit": {
+    "bodyPoses": 126,
+    "speechPoses": 11,
+    "finite": true,
+    "maximumHeadAxisSpan": 0.3411296606063843
+  },
+  "visualReview": {
+    "blender": [
+      "Idle",
+      "Walk",
+      "Run",
+      "Aim",
+      "Climb"
+    ],
+    "views": [
+      "front",
+      "back"
+    ],
+    "native": [
+      "Walk 0.4s",
+      "Run 0.3s",
+      "64px detective wall poster"
+    ],
+    "scope": "Static poses in the native Flutter Scene renderer, not a full playthrough"
+  },
+  "nativePid": 89751
+}
