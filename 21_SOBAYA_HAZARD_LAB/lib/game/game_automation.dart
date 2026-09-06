@@ -172,7 +172,7 @@ void attachGameAutomation(HazardGameController game) {
   );
   registerMarionetteExtension(
     name: 'madogiwa.openGameScenario',
-    description: 'Debug scenario name=combat|stagger|npc|merchant|pickup|collection|gate|stairs|death. Resets run, keeps collection.',
+    description: 'Debug scenario name=combat|stagger|npc|merchant|pickup|collection|gate|stairs|death|companionYametaro|companionTakosan. Resets run, keeps collection.',
     callback: (p) async {
       final g = _game;
       if (g == null || !g.ready) {
@@ -180,6 +180,8 @@ void attachGameAutomation(HazardGameController game) {
       }
       final name = p['name'];
       if (![
+        'companionYametaro',
+        'companionTakosan',
         'combat',
         'encounter',
         'mugTiming',
@@ -212,6 +214,7 @@ void attachGameAutomation(HazardGameController game) {
       }
       g.restart();
       if ([
+        'companionTakosan',
         'farm',
         'farmEnemyStairs',
         'farmGate',
@@ -251,6 +254,21 @@ void attachGameAutomation(HazardGameController game) {
         e.active = false;
       }
       switch (name) {
+        case 'companionYametaro':
+        case 'companionTakosan':
+          final npc = s.npcs.firstWhere(
+            (n) =>
+                n['id'] ==
+                (name == 'companionYametaro' ? 'yametaro' : 'takosan'),
+          );
+          s.x = (npc['x'] as num).toDouble() + 2.5;
+          s.z = (npc['z'] as num).toDouble() - 1.8;
+          s.yaw = -1;
+          s.enemies.first
+            ..active = true
+            ..alerted = true
+            ..x = (npc['x'] as num).toDouble()
+            ..z = (npc['z'] as num).toDouble() + 1;
         case 'bossCombat':
           s.x = 6;
           s.z = 4;
