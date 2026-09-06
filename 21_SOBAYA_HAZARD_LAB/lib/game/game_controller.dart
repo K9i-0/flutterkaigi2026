@@ -980,7 +980,7 @@ class HazardGameController extends ChangeNotifier {
     if (d != null) {
       cue = voiceCatalog.cue(
         'event:$runEpoch:${d.id}:${d.index}',
-        d.shot.speaker,
+        d.shot.voiceSpeaker,
         d.shot.text,
       );
     } else if (dialogue) {

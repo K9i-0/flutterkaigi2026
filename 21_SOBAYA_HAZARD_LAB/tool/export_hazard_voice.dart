@@ -19,7 +19,11 @@ void main(List<String> args) {
 
   for (final event in hazardEvents.entries) {
     for (var i = 0; i < event.value.length; i++) {
-      add(event.value[i].speaker, event.value[i].text, 'event:${event.key}:$i');
+      add(
+        event.value[i].voiceSpeaker,
+        event.value[i].text,
+        'event:${event.key}:$i',
+      );
     }
   }
   for (final owner in {

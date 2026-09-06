@@ -347,7 +347,7 @@ class HazardJournal extends StatelessWidget {
             const Padding(
               padding: EdgeInsets.only(top: 8),
               child: Text(
-                'たこさんの声：VOICEVOX:Voidoll',
+                'たこさんの声：VOICEVOX:Voidoll\nナレーション：ゆめテレアナウンサー / Irodori-TTS',
                 style: TextStyle(color: ivory, fontSize: 11),
               ),
             ),

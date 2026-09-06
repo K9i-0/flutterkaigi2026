@@ -11,9 +11,11 @@ CAST={
  '福ちゃん':('Fukuchan_voice.wav',100,'3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35'),
  'やめ太郎':('Yametaro_voice.wav',7,'ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b'),
  'そば屋':('Sobaya_voice.wav',42,'976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58'),
+ 'ナレーション':('YumeTeleAnchor_voice.wav',2026,'e3cd210adad43fb3338684555e7e066f83cfad2400265c8a73fa55b9f96b753f'),
 }
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 def caption(row):
+ if row['speaker']=='ナレーション':return '落ち着いたアナウンサーの情景ナレーション。標準語で、明瞭に、ゆっくりと文章の区切りに間を取り、最後まで読み上げる。抑制された抑揚で真面目に話す。'
  if any(u.startswith('dialogue:reaction:') for u in row['uses']):return '突然殴られて痛がり、仲間に助けを求める。短く切迫して。声の同一性は保つ。'
  if 'ワイ、二週間ぶりにくつろいだんやけど。' in row['text']:return '関西弁で仲間へ話す。椅子が段ボールだと気づき、そのあと二週間ぶりにくつろいだとぼやく。二つの文を最後まで明瞭に話す。'
  if row['text']=='え、また集まるの？':return '驚いて、短く聞き返す。'
@@ -46,6 +48,8 @@ for index,row in enumerate(rows):
  ref_name,seed,expected=CAST[row['speaker']];ref=ROOT/'02_CHARACTERS'/ref_name
  if sha(ref)!=expected:raise RuntimeError(f'Canonical reference mismatch: {ref.name}')
  speech=row['text'].replace('\n',' ').replace('せやな。……ところで、', 'せやな。ところで、')
+ if row['speaker']=='ナレーション':
+  speech=speech.replace('CHAPTER 02 —', '第二章。').replace('LAST ORDER —', 'ラストオーダー。').replace('撤収対象外 ', '撤収対象外。').replace('そば屋エンジン中枢 ', 'そば屋エンジン中枢。')
  if row['text']=='え、また集まるの？':speech='えっ、また集まるの？'
  for label,spoken in [('Xで','エックスで'),('Fで','エフで'),('Eで','イーで'),('Cで','シーで')]:speech=speech.replace(label,spoken)
  request={'text':speech,'speaker':row['speaker'],'caption':caption(row),'seed':seed,'reference':str(ref.relative_to(ROOT)),'reference_sha256':expected,'model':manifest['model']}

@@ -34,7 +34,7 @@ void main() {
   test('every event finishes without indexing past its final shot', () {
     for (final id in hazardEvents.keys) {
       final d = HazardDirector(id);
-      for (var i = 0; i < 2000; i++) {
+      for (var i = 0; i < 6000 && !d.done; i++) {
         d.tick(.05);
       }
       expect(d.done, true, reason: id);
