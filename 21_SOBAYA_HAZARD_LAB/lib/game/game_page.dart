@@ -1466,7 +1466,29 @@ class _HazardGamePageState extends State<HazardGamePage> {
               onChanged: (v) => game.changeSettings((s) => s.voiceVolume = v),
             ),
             Text(
-              '環境音・緊張時の音楽  ${(options.environmentVolume * 100).round()}%',
+              'BGM  ${(options.musicVolume * 100).round()}%',
+              style: const TextStyle(color: gold),
+            ),
+            Slider(
+              key: const ValueKey('game-music-volume'),
+              value: options.musicVolume,
+              divisions: 10,
+              activeColor: gold,
+              onChanged: (v) => game.changeSettings((s) => s.musicVolume = v),
+            ),
+            Text(
+              '効果音  ${(options.effectsVolume * 100).round()}%',
+              style: const TextStyle(color: gold),
+            ),
+            Slider(
+              key: const ValueKey('game-effects-volume'),
+              value: options.effectsVolume,
+              divisions: 10,
+              activeColor: gold,
+              onChanged: (v) => game.changeSettings((s) => s.effectsVolume = v),
+            ),
+            Text(
+              '環境音  ${(options.environmentVolume * 100).round()}%',
               style: const TextStyle(color: gold),
             ),
             Slider(
@@ -1494,6 +1516,8 @@ class _HazardGamePageState extends State<HazardGamePage> {
                     s.volume = 1;
                     s.voiceVolume = 1;
                     s.environmentVolume = 1;
+                    s.musicVolume = 1;
+                    s.effectsVolume = 1;
                     s.sensitivity = 1;
                     s.renderScale = .85;
                     s.muted = false;

@@ -1,0 +1,21 @@
+{
+  "model": "openai/whisper-small",
+  "note": "Automated speech screening, not human listening or identity approval",
+  "clips": [
+    {
+      "file": "combat/enemy_0.wav",
+      "expected": "ビール！",
+      "recognized": "ビール!"
+    },
+    {
+      "file": "combat/enemy_1.wav",
+      "expected": "ビール、ビール。",
+      "recognized": "ビール!ビール!"
+    },
+    {
+      "file": "combat/enemy_2.wav",
+      "expected": "ビール！",
+      "recognized": "ビール!"
+    }
+  ]
+}

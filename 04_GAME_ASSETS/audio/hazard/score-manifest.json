@@ -1,0 +1,962 @@
+{
+  "version": 2,
+  "generator": "tools/build_hazard_score.py",
+  "seed": 60649,
+  "music": {
+    "bpm": 80,
+    "meter": "4/4",
+    "bars": 16,
+    "seconds": 48,
+    "mode": "D Phrygian",
+    "titles": {
+      "exploration": "閉店後",
+      "pursuit": "ラストオーダー"
+    },
+    "instruments": "Felt piano, bowed partials, sub pedal, struck glass, membrane drum, wood percussion; original DSP synthesis",
+    "loop": "Circular note tails and stereo room; no repeated end fades"
+  },
+  "files": [
+    {
+      "file": "soundscape/exploration.wav",
+      "seconds": 48.0,
+      "channels": 2,
+      "sample_rate": 44100,
+      "loop": true,
+      "peak": 0.2970704028381377,
+      "rms": 0.05446405527645277,
+      "seam_delta": 71,
+      "sha256": "9e05378609505fcc2cadd61cd1487e1dfefdf7196372bfb0f671270efeff00e8",
+      "target_lufs": -24
+    },
+    {
+      "file": "soundscape/tension.wav",
+      "seconds": 48.0,
+      "channels": 2,
+      "sample_rate": 44100,
+      "loop": true,
+      "peak": 0.46738788444447554,
+      "rms": 0.08255083048999093,
+      "seam_delta": 79,
+      "sha256": "b0969a447718c43955a95c15c700baea0fb58211f790ed55e405544d839015de",
+      "target_lufs": -21
+    },
+    {
+      "file": "combat/shot_0.wav",
+      "seconds": 1.1,
+      "channels": 1,
+      "sample_rate": 44100,
+      "loop": false,
+      "peak": 0.6630821452956537,
+      "rms": 0.04089950835223015,
+      "seam_delta": null,
+      "sha256": "42e89cfc05fec70c86886150163fa6a6b7127065cb536a4305052931c7448615",
+      "target_lufs": -17
+    },
+    {
+      "file": "combat/shot_1.wav",
+      "seconds": 1.1,
+      "channels": 1,
+      "sample_rate": 44100,
+      "loop": false,
+      "peak": 0.6257034220532319,
+      "rms": 0.032572415522561245,
+      "seam_delta": null,
+      "sha256": "ba3606eb6e1cf1675bde71abc9f47800b69f04ac4fefa137a229e1c13ead81c8",
+      "target_lufs": -17
+    },
+    {
+      "file": "combat/shot_2.wav",
+      "seconds": 1.1,
+      "channels": 1,
+      "sample_rate": 44100,
+      "loop": false,
+      "peak": 0.6982534604938933,
+      "rms": 0.03717128240292993,
+      "seam_delta": null,
+      "sha256": "50af87516db3264c09b39745afb4434bdc61156248914a804d2afaeac8a042e1",
+      "target_lufs": -17
+    },
+    {
+      "file": "combat/shotgun_0.wav",
+      "seconds": 1.55,
+      "channels": 1,
+      "sample_rate": 44100,
+      "loop": false,
+      "peak": 0.7734944542614929,
+      "rms": 0.03728873719530626,
+      "seam_delta": null,
+      "sha256": "fa53dc7a52ef210b1290074367aa42bd882a935a17b0d4b9cab0aab733c0c28b",
+      "target_lufs": -17
+    },
+    {
+      "file": "combat/shotgun_1.wav",
+      "seconds": 1.55,
+      "channels": 1,
+      "sample_rate": 44100,
+      "loop": false,
+      "peak": 0.88,
+      "rms": 0.036524396146583475,
+      "seam_delta": null,
+      "sha256": "73e2019de43cfe7644f06b7b8e8ae9749e0785d0e4ece33e3853c3b3f740d5c3",
+      "target_lufs": -17
+    },
+    {
+      "file": "combat/shotgun_2.wav",
+      "seconds": 1.55,
+      "channels": 1,
+      "sample_rate": 44100,
+      "loop": false,
+      "peak": 0.7060076045627376,
+      "rms": 0.038313665259225145,
+      "seam_delta": null,
+      "sha256": "bff3622b0248f346eae25b886d2e078fb80362bb98970bf1eb44c0de4b273b47",
+      "target_lufs": -17
+    },
+    {
+      "file": "combat/mug_ready_0.wav",
+      "seconds": 0.36,
+      "channels": 1,
+      "sample_rate": 44100,
+      "loop": false,
+      "peak": 0.88,
+      "rms": 0.13701420866115505,
+      "seam_delta": null,
+      "sha256": "605d39108725a1631621bc05d2292df7e538c353f971899131f7f27a0e64231c",
+      "target_lufs": -23
+    },
+    {
+      "file": "combat/mug_ready_1.wav",
+      "seconds": 0.36,
+      "channels": 1,
+      "sample_rate": 44100,
+      "loop": false,
+      "peak": 0.88,
+      "rms": 0.17710592778519754,
+      "seam_delta": null,
+      "sha256": "de903437d52bf6a18e58e4d903dab33aadf69bbc0a151d4d354afcc9e92a6266",
+      "target_lufs": -23
+    },
+    {
+      "file": "combat/mug_ready_2.wav",
+      "seconds": 0.36,
+      "channels": 1,
+      "sample_rate": 44100,
+      "loop": false,
+      "peak": 0.88,
+      "rms": 0.17749689197273125,
+      "seam_delta": null,
+      "sha256": "87bc7316393dda2b4180d3b27192fd11a3cfef60b5b0bfa2a27fe6a0abf2cf2d",
+      "target_lufs": -23
+    },
+    {
+      "file": "combat/mug_swing_0.wav",
+      "seconds": 0.32,
+      "channels": 1,
+      "sample_rate": 44100,
+      "loop": false,
+      "peak": 0.88,
+      "rms": 0.08636280916517762,
+      "seam_delta": null,
+      "sha256": "74e4ef37fc5c42f0129e7c688fd2bf721336842fbaf33383cf3323c8e0d27b10",
+      "target_lufs": -23
+    },
+    {
+      "file": "combat/mug_swing_1.wav",
+      "seconds": 0.32,
+      "channels": 1,
+      "sample_rate": 44100,
+      "loop": false,
+      "peak": 0.88,
+      "rms": 0.10846151417518646,
+      "seam_delta": null,
+      "sha256": "be2bfd2c3cdc030b326da9ffd83eaef5afa33786446166b9a46c42cde69c404e",
+      "target_lufs": -23
+    },
+    {
+      "file": "combat/mug_swing_2.wav",
+      "seconds": 0.32,
+      "channels": 1,
+      "sample_rate": 44100,
+      "loop": false,
+      "peak": 0.88,
+      "rms": 0.0905941660304183,
+      "seam_delta": null,
+      "sha256": "170e014fb197bf53aad76b2d9e68801064c11c55f2fa3accee6c67e022c28fef",
+      "target_lufs": -23
+    },
+    {
+      "file": "combat/mug_hit_0.wav",
+      "seconds": 0.62,
+      "channels": 1,
+      "sample_rate": 44100,
+      "loop": false,
+      "peak": 0.6106828926309839,
+      "rms": 0.061685192132469334,
+      "seam_delta": null,
+      "sha256": "fad1c318c2f09ac20dceaf41045400332ae6ee01b77675909ae460e5b43ffa6b",
+      "target_lufs": -23
+    },
+    {
+      "file": "combat/mug_hit_1.wav",
+      "seconds": 0.62,
+      "channels": 1,
+      "sample_rate": 44100,
+      "loop": false,
+      "peak": 0.572451026288047,
+      "rms": 0.05578056395446555,
+      "seam_delta": null,
+      "sha256": "5919f4e24705c08505e6488f6eaa93fa2269c9072f2a9abbc76a5fb4dd316d60",
+      "target_lufs": -23
+    },
+    {
+      "file": "combat/mug_hit_2.wav",
+      "seconds": 0.62,
+      "channels": 1,
+      "sample_rate": 44100,
+      "loop": false,
+      "peak": 0.6683191119594992,
+      "rms": 0.06015043093194876,
+      "seam_delta": null,
+      "sha256": "5dc3a84e95a9c9aea4c5c3a4861fdd9d0b9cb8de6a8b243931e96df8063d483e",
+      "target_lufs": -23
+    }
+  ],
+  "score": [
+    {
+      "piece": "exploration",
+      "instrument": "felt piano",
+      "beat": 0,
+      "midi": 62,
+      "velocity": 0.161
+    },
+    {
+      "piece": "exploration",
+      "instrument": "felt piano",
+      "beat": 2.5,
+      "midi": 63,
+      "velocity": 0.184
+    },
+    {
+      "piece": "exploration",
+      "instrument": "felt piano",
+      "beat": 6,
+      "midi": 57,
+      "velocity": 0.136
+    },
+    {
+      "piece": "exploration",
+      "instrument": "felt piano",
+      "beat": 10.5,
+      "midi": 58,
+      "velocity": 0.157
+    },
+    {
+      "piece": "exploration",
+      "instrument": "felt piano",
+      "beat": 16,
+      "midi": 62,
+      "velocity": 0.174
+    },
+    {
+      "piece": "exploration",
+      "instrument": "felt piano",
+      "beat": 19,
+      "midi": 69,
+      "velocity": 0.169
+    },
+    {
+      "piece": "exploration",
+      "instrument": "felt piano",
+      "beat": 22.5,
+      "midi": 63,
+      "velocity": 0.133
+    },
+    {
+      "piece": "exploration",
+      "instrument": "felt piano",
+      "beat": 28,
+      "midi": 60,
+      "velocity": 0.134
+    },
+    {
+      "piece": "exploration",
+      "instrument": "felt piano",
+      "beat": 32,
+      "midi": 62,
+      "velocity": 0.165
+    },
+    {
+      "piece": "exploration",
+      "instrument": "felt piano",
+      "beat": 34.5,
+      "midi": 63,
+      "velocity": 0.187
+    },
+    {
+      "piece": "exploration",
+      "instrument": "felt piano",
+      "beat": 38,
+      "midi": 57,
+      "velocity": 0.153
+    },
+    {
+      "piece": "exploration",
+      "instrument": "felt piano",
+      "beat": 42.5,
+      "midi": 53,
+      "velocity": 0.132
+    },
+    {
+      "piece": "exploration",
+      "instrument": "felt piano",
+      "beat": 48,
+      "midi": 57,
+      "velocity": 0.165
+    },
+    {
+      "piece": "exploration",
+      "instrument": "felt piano",
+      "beat": 52,
+      "midi": 58,
+      "velocity": 0.185
+    },
+    {
+      "piece": "exploration",
+      "instrument": "felt piano",
+      "beat": 56.5,
+      "midi": 63,
+      "velocity": 0.169
+    },
+    {
+      "piece": "exploration",
+      "instrument": "felt piano",
+      "beat": 61,
+      "midi": 62,
+      "velocity": 0.181
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 0,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 0.75,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 1.5,
+      "midi": 39
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 2.5,
+      "midi": 45
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 3,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 3.5,
+      "midi": 45
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 4,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 4.75,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 5.5,
+      "midi": 39
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 6.5,
+      "midi": 45
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 7,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 7.5,
+      "midi": 45
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 8,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 8.75,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 9.5,
+      "midi": 39
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 10.5,
+      "midi": 45
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 11,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 11.5,
+      "midi": 45
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 12,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 12.75,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 13.5,
+      "midi": 39
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 14.5,
+      "midi": 45
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 15,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 15.5,
+      "midi": 46
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 16,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 16.75,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 17.5,
+      "midi": 39
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 18.5,
+      "midi": 45
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 19,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 19.5,
+      "midi": 45
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 20,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 20.75,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 21.5,
+      "midi": 39
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 22.5,
+      "midi": 45
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 23,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 23.5,
+      "midi": 45
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 24,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 24.75,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 25.5,
+      "midi": 39
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 26.5,
+      "midi": 45
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 27,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 27.5,
+      "midi": 45
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 28,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 28.75,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 29.5,
+      "midi": 39
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 30.5,
+      "midi": 45
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 31,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 31.5,
+      "midi": 46
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 32,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 32.75,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 33.5,
+      "midi": 39
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 34.5,
+      "midi": 45
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 35,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 35.5,
+      "midi": 45
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 36,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 36.75,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 37.5,
+      "midi": 39
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 38.5,
+      "midi": 45
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 39,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 39.5,
+      "midi": 45
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 40,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 40.75,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 41.5,
+      "midi": 39
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 42.5,
+      "midi": 45
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 43,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 43.5,
+      "midi": 45
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 44,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 44.75,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 45.5,
+      "midi": 39
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 46.5,
+      "midi": 45
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 47,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 47.5,
+      "midi": 46
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 48,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 48.75,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 49.5,
+      "midi": 39
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 50.5,
+      "midi": 45
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 51,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 51.5,
+      "midi": 45
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 52,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 52.75,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 53.5,
+      "midi": 39
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 54.5,
+      "midi": 45
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 55,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 55.5,
+      "midi": 45
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 56,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 56.75,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 57.5,
+      "midi": 39
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 58.5,
+      "midi": 45
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 59,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 59.5,
+      "midi": 45
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 60,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 60.75,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 61.5,
+      "midi": 39
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 62.5,
+      "midi": 45
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 63,
+      "midi": 38
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "low plucked ostinato",
+      "beat": 63.5,
+      "midi": 46
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "struck glass",
+      "beat": 0,
+      "midi": 74
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "struck glass",
+      "beat": 6.5,
+      "midi": 75
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "struck glass",
+      "beat": 12,
+      "midi": 69
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "struck glass",
+      "beat": 18,
+      "midi": 70
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "struck glass",
+      "beat": 32,
+      "midi": 74
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "struck glass",
+      "beat": 38.5,
+      "midi": 75
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "struck glass",
+      "beat": 44,
+      "midi": 69
+    },
+    {
+      "piece": "pursuit",
+      "instrument": "struck glass",
+      "beat": 58,
+      "midi": 75
+    }
+  ]
+}

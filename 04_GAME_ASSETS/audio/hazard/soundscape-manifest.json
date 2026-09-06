@@ -1,8 +1,7 @@
 {
-  "version": 1,
+  "version": 2,
   "generator": "tools/build_hazard_soundscape.py",
   "seed": 90449,
-  "sample_rate": 24000,
   "files": [
     {
       "file": "soundscape/village.wav",
@@ -11,7 +10,9 @@
       "rms": 0.09341382885506717,
       "loop": true,
       "seam_delta": 476,
-      "sha256": "73ee24e427f71a44c87cd7db267f11164f0a35da22c4f2e4b845f006d4115288"
+      "sha256": "73ee24e427f71a44c87cd7db267f11164f0a35da22c4f2e4b845f006d4115288",
+      "sample_rate": 24000,
+      "channels": 1
     },
     {
       "file": "soundscape/farm.wav",
@@ -20,7 +21,9 @@
       "rms": 0.08190042604610721,
       "loop": true,
       "seam_delta": 767,
-      "sha256": "021897d8dfcb9a59975a111f8535e2c5cf695064d314a25d560dc34fc0390b9e"
+      "sha256": "021897d8dfcb9a59975a111f8535e2c5cf695064d314a25d560dc34fc0390b9e",
+      "sample_rate": 24000,
+      "channels": 1
     },
     {
       "file": "soundscape/mountain.wav",
@@ -29,16 +32,9 @@
       "rms": 0.09889713615775288,
       "loop": true,
       "seam_delta": 17,
-      "sha256": "e397270558998fd6bb94fa63dab597521b3389a25f74c649bced51f96e20788c"
-    },
-    {
-      "file": "soundscape/tension.wav",
-      "seconds": 16.0,
-      "peak": 0.65,
-      "rms": 0.1392086457947153,
-      "loop": true,
-      "seam_delta": 346,
-      "sha256": "89af6e21b272c8907a80455a099b3ab1246ac93cf553fc05a195f2f1ec1d46cf"
+      "sha256": "e397270558998fd6bb94fa63dab597521b3389a25f74c649bced51f96e20788c",
+      "sample_rate": 24000,
+      "channels": 1
     },
     {
       "file": "voice/takosan_response.wav",
@@ -47,7 +43,34 @@
       "rms": 0.12904736453381613,
       "loop": false,
       "seam_delta": null,
-      "sha256": "fec1e6dfdde297b82de951d752cb1df9c2b7e4ba24cb069908e90eb201ae10b5"
+      "sha256": "fec1e6dfdde297b82de951d752cb1df9c2b7e4ba24cb069908e90eb201ae10b5",
+      "sample_rate": 24000,
+      "channels": 1
+    },
+    {
+      "file": "soundscape/exploration.wav",
+      "seconds": 48.0,
+      "channels": 2,
+      "sample_rate": 44100,
+      "loop": true,
+      "peak": 0.2970704028381377,
+      "rms": 0.05446405527645277,
+      "seam_delta": 71,
+      "sha256": "9e05378609505fcc2cadd61cd1487e1dfefdf7196372bfb0f671270efeff00e8",
+      "target_lufs": -24
+    },
+    {
+      "file": "soundscape/tension.wav",
+      "seconds": 48.0,
+      "channels": 2,
+      "sample_rate": 44100,
+      "loop": true,
+      "peak": 0.46738788444447554,
+      "rms": 0.08255083048999093,
+      "seam_delta": 79,
+      "sha256": "b0969a447718c43955a95c15c700baea0fb58211f790ed55e405544d839015de",
+      "target_lufs": -21
     }
-  ]
+  ],
+  "score_manifest": "score-manifest.json"
 }
