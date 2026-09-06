@@ -19,6 +19,7 @@ import 'game_contact_shadows.dart';
 import 'game_campaign.dart';
 import 'game_settings.dart';
 import 'game_lighting.dart';
+import 'game_rocket_visuals.dart';
 import 'game_events.dart';
 import 'game_voice.dart';
 import 'game_voice_player.dart';
@@ -173,7 +174,9 @@ class HazardGameController extends ChangeNotifier {
   final enemies = <CharacterPlayer>[],
       pickupNodes = <String, Node>{},
       crateNodes = <String, Node>{};
-  late Node pistol, shotgun, impact, muzzle;
+  late Node pistol, shotgun, launcher, impact, muzzle;
+  late RocketVisuals rocketVisuals;
+  ui.Offset? rocketLockScreen;
   final fxPools = <String, AudioPool>{};
   final fxPalette = HazardFxPalette();
   final audioPlayback = <Map<String, dynamic>>[];
@@ -249,6 +252,7 @@ class HazardGameController extends ChangeNotifier {
     }
     campaign = HazardCampaign(
       maps,
+      difficulty: settings.difficulty,
       collection: preferences!.getStringList('hazard.collection.v1')?.toSet(),
     );
     for (final entry in maps.entries) {
@@ -432,6 +436,9 @@ class HazardGameController extends ChangeNotifier {
     }
     pistol = _prop('Handgun');
     shotgun = _prop('Shotgun');
+    launcher = buildRocketLauncher();
+    scene.add(launcher);
+    rocketVisuals = RocketVisuals(scene);
     scene.add(pistol);
     scene.add(shotgun);
     final mat = UnlitMaterial()..baseColorFactor = vm.Vector4(1, .82, .4, 1);
@@ -457,6 +464,8 @@ class HazardGameController extends ChangeNotifier {
       'break',
       'step',
       'defeat',
+      'rocket_launch',
+      'rocket_blast',
     ]) {
       fxPools[name] = await AudioPool.createFromAsset(
         path: 'audio/$name.wav',
@@ -571,6 +580,10 @@ class HazardGameController extends ChangeNotifier {
   }
 
   void _applySettings() {
+    campaign.difficulty = settings.difficulty;
+    for (final s in campaign.regions.values) {
+      s.difficulty = settings.difficulty;
+    }
     state?.damageScale = settings.damageScale;
     state?.enemySpeedScale = settings.enemySpeedScale;
     scene.renderScale = settings.renderScale;
@@ -723,6 +736,7 @@ class HazardGameController extends ChangeNotifier {
     runEpoch++;
     posePreview = false;
     director = null;
+    campaign.difficulty = settings.difficulty;
     campaign.restart();
     state = campaign.state;
     _mountRegion();
@@ -894,9 +908,27 @@ class HazardGameController extends ChangeNotifier {
     return playerCamera(s);
   }
 
+  void updateRocketTarget() {
+    final s = state!, c = camera();
+    s.updateRocketLock(
+      c.position,
+      c.target - c.position,
+      fovY: c.fovRadiansY,
+      aspect: viewport.width / math.max(1, viewport.height),
+    );
+    final e = s.enemies.where((e) => e.id == s.rocketLockId).firstOrNull;
+    rocketLockScreen = e == null
+        ? null
+        : c.worldToScreen(
+            vm.Vector3(e.x, e.y + (e.boss ? 1.35 : 1), e.z),
+            viewport,
+          );
+  }
+
   void fire() {
     if (!ready) return;
     final s = state!;
+    updateRocketTarget();
     final ray = camera().screenPointToRay(
       ui.Offset(viewport.width / 2, viewport.height / 2),
       viewport,
@@ -1113,7 +1145,7 @@ class HazardGameController extends ChangeNotifier {
         : s.reloading > 0
         ? (s.weapon == 'shotgun' ? 'ReloadShotgun' : 'ReloadHandgun')
         : s.aiming
-        ? s.weapon == 'shotgun'
+        ? ['shotgun', 'rocket'].contains(s.weapon)
               ? 'AimShotgun'
               : 'Aim'
         : moved > .0001
@@ -1419,6 +1451,17 @@ class HazardGameController extends ChangeNotifier {
           ..playbackTimeScale = 0;
       }
     }
+    for (var i = 0; i < s.enemies.length; i++) {
+      final e = s.enemies[i], actor = enemies[i];
+      final head = actor.node.getChildByName('Head');
+      e.headCentre = head == null
+          ? null
+          : head.globalTransform.getTranslation() +
+                vm.Vector3(0, .10 * (e.boss ? 1.2 : 1), 0);
+      e.mugCentre = enemyMugs[i].visible
+          ? enemyMugs[i].globalTransform.transformed3(vm.Vector3(0, .11, 0))
+          : null;
+    }
     for (final h in s.map['houses']) {
       final inside =
           (s.x - h['x']).abs() < h['w'] / 2 &&
@@ -1469,7 +1512,7 @@ class HazardGameController extends ChangeNotifier {
         scene.add(node);
         return node;
       });
-      n.visible = !p.taken;
+      n.visible = !p.taken && s.pickupAmount(p) > 0;
       n.position = vm.Vector3(
         p.x,
         p.y + math.sin(s.time * 2 + p.x) * .035,
@@ -1549,10 +1592,19 @@ class HazardGameController extends ChangeNotifier {
       pistol.rotation = player.node.rotation;
       shotgun.rotation = player.node.rotation;
     }
+    launcher.localTransform = vm.Matrix4.copy(shotgun.localTransform);
+    s.rocketMuzzle = launcher.globalTransform.transformed3(
+      vm.Vector3(0, .11, -.86),
+    );
+    launcher.visible = s.aiming && s.weapon == 'rocket';
+    rocketVisuals.update(s);
+    updateRocketTarget();
     pistol.visible = (s.aiming || s.reloading > 0) && s.weapon == 'handgun';
     shotgun.visible = (s.aiming || s.reloading > 0) && s.weapon == 'shotgun';
     muzzle.visible =
-        s.fireCooldown > (s.weapon == 'handgun' ? .25 : .83) && s.aiming;
+        s.weapon != 'rocket' &&
+        s.fireCooldown > (s.weapon == 'handgun' ? .25 : .83) &&
+        s.aiming;
     if (muzzle.visible) {
       muzzle.position = (s.weapon == 'handgun' ? pistol : shotgun)
           .globalTransform

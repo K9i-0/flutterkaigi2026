@@ -38,7 +38,7 @@ class HazardSettings {
   String get difficultyLabel => switch (difficulty) {
     HazardDifficulty.casual => '気軽に探索',
     HazardDifficulty.standard => '標準',
-    HazardDifficulty.tense => '緊張感重視',
+    HazardDifficulty.tense => '最高難度・補給必須',
   };
   String encode() => jsonEncode({
     'difficulty': difficulty.name,

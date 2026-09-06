@@ -81,7 +81,7 @@ void main() {
     s.tick(1 / 60);
     s.aiming = true;
     s.shoot(vm.Vector3(8, 1.2, 4), vm.Vector3(0, 0, 1));
-    expect(boss(s).hp, 315);
+    expect(boss(s).hp, 870);
     expect(boss(s).bossMove, BossMove.chargeWindup);
     advance(s, 1.17);
     expect(boss(s).bossMove, BossMove.charging);
@@ -133,7 +133,7 @@ void main() {
     expect(boss(restored).chargeHit, true);
     expect(boss(restored).heading, math.pi);
   });
-  test('mountain encounter can be won with starting ammo and ordinary movement', () {
+  test('mountain encounter can be won with carried merchant ammo and ordinary movement', () {
     final s = HazardGameState(
       jsonDecode(File('assets/mountain.json').readAsStringSync()),
     );
@@ -142,9 +142,10 @@ void main() {
     }
     s.x = 6;
     s.z = 4;
+    s.addItem('ammo', 30);
     final b = boss(s)..alerted = true;
     final moves = <BossMove>{};
-    for (var i = 0; i < 60 * 90 && b.alive && s.running; i++) {
+    for (var i = 0; i < 60 * 150 && b.alive && s.running; i++) {
       moves.add(b.bossMove);
       s.inputX = s.inputY = 0;
       s.aiming = false;
@@ -169,7 +170,7 @@ void main() {
     }
     expect(b.alive, false);
     expect(s.health, greaterThan(0));
-    expect(s.shots, lessThanOrEqualTo(12));
+    expect(s.shots, lessThanOrEqualTo(30));
     expect(
       moves,
       containsAll([
@@ -184,7 +185,7 @@ void main() {
 
   test('defeated boss cancels attacks and produces exactly one beer', () {
     final s = arena();
-    boss(s).hp = 35;
+    boss(s).hp = 30;
     s.tick(1 / 60);
     s.aiming = true;
     s.shoot(vm.Vector3(8, 1.2, 4), vm.Vector3(0, 0, 1));

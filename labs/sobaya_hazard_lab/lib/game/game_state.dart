@@ -6,10 +6,14 @@ import 'package:vector_math/vector_math.dart' as vm;
 
 import 'game_dialogue.dart';
 import 'game_audio.dart';
+import 'game_settings.dart';
 import 'game_navigation.dart';
 import 'game_ladder.dart';
 import 'game_window.dart';
 import 'game_grapple.dart';
+
+part 'game_rockets.dart';
+part 'game_combat_balance.dart';
 
 const minCameraPitch = -.75, maxCameraPitch = .85;
 
@@ -104,8 +108,11 @@ enum BossMove {
 
 class Enemy {
   Enemy(this.id, this.x, this.z, {this.boss = false}) {
-    hp = boss ? 350 : 100;
+    hp = maxHp;
   }
+  double get maxHp => boss ? 900 : 100;
+  bool suppressBeer = false;
+  vm.Vector3? headCentre, mugCentre;
   BossMove bossMove = BossMove.ready;
   BossMove bossAttack = BossMove.ready;
   double bossTimer = 0, bossRecoveryDuration = 0;
@@ -117,7 +124,7 @@ class Enemy {
     BossMove.swipeWindup => 'ジョッキの一撃 — 距離を取れ',
     BossMove.slamWindup => '叩きつけ — 離れろ',
     BossMove.recovery => '反撃のチャンス',
-    BossMove.ready => hp <= 175 ? '怒りのラストオーダー' : 'ラストオーダー',
+    BossMove.ready => hp <= maxHp / 2 ? '怒りのラストオーダー' : 'ラストオーダー',
   };
   static const meleeWindup = .85, meleeFollowThrough = .55;
   double meleeRecovery = 0, approachTimer = 0;
@@ -184,6 +191,7 @@ class BagItem {
 const itemNames = {
   'handgun': 'ハンドガン',
   'shotgun': 'ショットガン',
+  'rocket': 'ロケットランチュア',
   'ammo': 'ハンドガンの弾',
   'shells': 'ショットガンの弾',
   'green': 'グリーンハーブ',
@@ -195,10 +203,15 @@ const itemNames = {
 };
 
 class HazardGameState {
-  HazardGameState(this.map, {Set<String>? savedCollection, this.catalog})
-    : collected = {...?savedCollection} {
+  HazardGameState(
+    this.map, {
+    Set<String>? savedCollection,
+    this.catalog,
+    this.difficulty = HazardDifficulty.standard,
+  }) : collected = {...?savedCollection} {
     restart();
   }
+  HazardDifficulty difficulty;
   final Map<String, dynamic> map;
   final List<Map<String, dynamic>>? catalog;
   List<Map<String, dynamic>> get gallery => catalog ?? images;
@@ -210,8 +223,11 @@ class HazardGameState {
   String get gateMode => gate['mode'] as String? ?? 'key';
   bool get bossAlive => enemies.any((e) => e.boss && e.alive);
   bool get canOpenGate =>
-      gateMode == 'free' || (gateMode == 'boss' ? !bossAlive : hasKey);
-  String get objective => zoneId == 'farm'
+      chapterSecured &&
+      (gateMode == 'free' || (gateMode == 'boss' ? !bossAlive : hasKey));
+  String get objective => hardest && !chapterSecured
+      ? 'この章のそば屋を全員倒せ — 残り $livingEnemies 体 / 補給は仲間から'
+      : zoneId == 'farm'
       ? '納屋で補給し、東の門から山道へ'
       : zoneId == 'mountain'
       ? (bossAlive ? '山の廃屋にいる巨大そば屋を倒せ' : '東の脱出路から村を抜けろ')
@@ -317,7 +333,19 @@ class HazardGameState {
     return result;
   }
 
+  ShotPart? lastShotPart;
   vm.Vector3? shotEnd;
+  final rockets = <HazardRocket>[];
+  final rocketBlasts = <RocketBlast>[];
+  int? rocketLockId;
+  vm.Vector3? rocketMuzzle;
+  bool secretShopVisit = false;
+  bool get hasRocket => bag.any((i) => i.kind == 'rocket');
+  Iterable<TradeOffer> get visibleTradeOffers => [
+    ...tradeOffers,
+    if (secretShopVisit && !hasRocket && stockRemaining(rocketOffer) > 0)
+      rocketOffer,
+  ];
   String? interaction;
   String? talkingTo;
   String dialogueTopic = 'intro';
@@ -376,8 +404,16 @@ class HazardGameState {
   int get reserve => bag
       .where((i) => i.kind == (weapon == 'handgun' ? 'ammo' : 'shells'))
       .fold(0, (n, i) => n + i.count);
-  int get loaded => weapon == 'handgun' ? pistolLoaded : shotgunLoaded;
-  int get capacity => weapon == 'handgun' ? 10 : 5;
+  int get loaded => weapon == 'rocket'
+      ? 1
+      : weapon == 'handgun'
+      ? pistolLoaded
+      : shotgunLoaded;
+  int get capacity => weapon == 'rocket'
+      ? 1
+      : weapon == 'handgun'
+      ? 10
+      : 5;
   bool get hasShotgun => bag.any((i) => i.kind == 'shotgun');
   late final HazardLadder? ladder = map['tower'] == null
       ? null
@@ -444,10 +480,20 @@ class HazardGameState {
     bag.clear();
     nextBagId = 0;
     addItem('handgun', 1);
-    addItem('ammo', 40);
+    if (!hardest) {
+      addItem('ammo', difficulty == HazardDifficulty.casual ? 15 : 8);
+    }
     addItem('green', 1);
-    pistolLoaded = 10;
-    shotgunLoaded = 5;
+    pistolLoaded = hardest
+        ? 2
+        : difficulty == HazardDifficulty.casual
+        ? 10
+        : 6;
+    shotgunLoaded = hardest
+        ? 0
+        : difficulty == HazardDifficulty.casual
+        ? 5
+        : 2;
     beers = 0;
     kills = 0;
     shots = 0;
@@ -467,6 +513,12 @@ class HazardGameState {
     invulnerable = evadeTime = evadeCooldown = kickTime = kickCooldown =
         hurtTime = recoil = 0;
     shotEnd = null;
+    lastShotPart = null;
+    rocketMuzzle = null;
+    rockets.clear();
+    rocketBlasts.clear();
+    rocketLockId = null;
+    secretShopVisit = false;
     interaction = null;
     lastSound = null;
     talkingTo = null;
@@ -553,7 +605,7 @@ class HazardGameState {
       existing.count += count;
       return true;
     }
-    final w = kind == 'shotgun'
+    final w = ['shotgun', 'rocket'].contains(kind)
         ? 7
         : kind == 'handgun'
         ? 3
@@ -602,7 +654,7 @@ class HazardGameState {
     if (actionLocked) return;
     final item = bag.where((i) => i.id == id).firstOrNull;
     if (item == null) return;
-    if (['handgun', 'shotgun'].contains(item.kind)) {
+    if (['handgun', 'shotgun', 'rocket'].contains(item.kind)) {
       equip(item.kind);
       return;
     }
@@ -658,7 +710,11 @@ class HazardGameState {
 
   void equip(String name) {
     if (actionLocked) return;
-    if (name == weapon || !['handgun', 'shotgun'].contains(name)) return;
+    if (name == weapon || !['handgun', 'shotgun', 'rocket'].contains(name)) {
+      return;
+    }
+    if (name == 'rocket' && !hasRocket) return;
+    rocketLockId = null;
     if (name == 'shotgun' && !hasShotgun) {
       say('ショットガンは民家の二階にある。');
       return;
@@ -782,6 +838,7 @@ class HazardGameState {
     }
     if (!running) return;
     final dt = delta.clamp(0.0, .05);
+    tickRockets(dt);
     companionHurt.updateAll((_, value) => math.max(0, value - dt));
     _companionInvulnerable.updateAll((_, value) => math.max(0, value - dt));
     reactionTime = math.max(0, reactionTime - dt);
@@ -879,7 +936,9 @@ class HazardGameState {
               break;
             }
           }
-          pickups.add(Pickup('beer_${e.id}', 'beer', e.x, e.y + .25, dropZ));
+          if (!e.suppressBeer) {
+            pickups.add(Pickup('beer_${e.id}', 'beer', e.x, e.y + .25, dropZ));
+          }
           emitSound('defeat', x: e.x, y: e.y + .25, z: e.z);
         }
         continue;
@@ -1052,14 +1111,16 @@ class HazardGameState {
       if (dist < .95 && (y - e.y).abs() < .8) continue;
       if (dist > 17 && noiseTime <= 0) continue;
       final waypoint = _navigation?.waypoint(e.x, e.y, e.z);
-      if (waypoint == null) continue;
+      // A reachable player can stand just outside a navigation grid cell.
+      // Keep approaching directly instead of stalling during a long boss fight.
+      if (waypoint == null && !_reachable(e.x, e.z)) continue;
       if (e.approachTimer <= 0) {
         e.approachTimer = .3 + (e.id % 3) * .035;
         _planApproach(e, dist);
       }
       final direct = e.approachX != null;
-      final tx = direct ? (dist < 3.2 ? x : e.approachX!) : waypoint.x;
-      final tz = direct ? (dist < 3.2 ? z : e.approachZ!) : waypoint.z;
+      final tx = direct ? (dist < 3.2 ? x : e.approachX!) : (waypoint?.x ?? x);
+      final tz = direct ? (dist < 3.2 ? z : e.approachZ!) : (waypoint?.z ?? z);
       e.runningApproach = direct && e.flankSide != 0 && dist > 5;
 
       var vx = tx - e.x, vz = tz - e.z;
@@ -1098,6 +1159,7 @@ class HazardGameState {
     }
     if (running) {
       for (final exit in map['exits'] as List? ?? const []) {
+        if (exit['id'] != 'back' && !chapterSecured) continue;
         if (exit['requiresGate'] == true && !gateOpen) continue;
         if (y < 1 &&
             math.pow(x - exit['x'], 2) + math.pow(z - exit['z'], 2) <
@@ -1352,8 +1414,8 @@ class HazardGameState {
     if (dist >= 3 && dist <= 9) {
       e.bossMove = BossMove.chargeWindup;
       e.bossTimer = 1.15;
-    } else if (dist < 1.8 || (e.hp <= 175 && dist < 2.5)) {
-      final slam = e.hp <= 175 && e.bossSequence.isOdd;
+    } else if (dist < 1.8 || (e.hp <= e.maxHp / 2 && dist < 2.5)) {
+      final slam = e.hp <= e.maxHp / 2 && e.bossSequence.isOdd;
       e.bossMove = slam ? BossMove.slamWindup : BossMove.swipeWindup;
       e.bossTimer = slam ? 1.25 : .85;
     } else {
@@ -1606,6 +1668,11 @@ class HazardGameState {
         hurtTime > .2) {
       return;
     }
+    lastShotPart = null;
+    if (weapon == 'rocket') {
+      launchRocket();
+      return;
+    }
     if (loaded == 0) {
       lastSound = 'empty';
       say('Rでリロード');
@@ -1627,7 +1694,7 @@ class HazardGameState {
     Enemy? victim;
     Breakable? crate;
     Map<String, dynamic>? medallion;
-    bool head = false;
+    var part = ShotPart.body;
     for (final c in crates.where((c) => !c.broken)) {
       final o = Obstacle({
         'x': c.x,
@@ -1653,11 +1720,35 @@ class HazardGameState {
       if ((at.x - e.x) * (at.x - e.x) + (at.z - e.z) * (at.z - e.z) <
               radius * radius &&
           at.y > e.y + .05 &&
-          at.y < e.y + (e.boss ? 2.22 : 1.85)) {
+          at.y < e.y + (e.boss ? 1.8 : 1.48)) {
         distance = along;
         victim = e;
         crate = null;
-        head = at.y > e.y + 1.48;
+        part = ShotPart.body;
+      }
+    }
+    for (final e in enemies.where((e) => e.alive && e.active)) {
+      final head =
+          e.headCentre ?? vm.Vector3(e.x, e.y + (e.boss ? 2.0 : 1.68), e.z);
+      for (final point in [
+        (part: ShotPart.head, centre: head, radius: e.boss ? .25 : .21),
+        if (e.mugCentre != null &&
+            e.climb == null &&
+            e.vault == null &&
+            !e.grabPending &&
+            grapple?.enemyId != e.id)
+          (
+            part: ShotPart.mug,
+            centre: e.mugCentre!,
+            radius: e.boss ? .17 : .14,
+          ),
+      ]) {
+        final t = _raySphere(origin, dir, point.centre, point.radius, distance);
+        if (t == null) continue;
+        distance = t;
+        victim = e;
+        crate = null;
+        part = point.part;
       }
     }
     for (final target in targets.where((t) => !medallions.contains(t['id']))) {
@@ -1712,18 +1803,18 @@ class HazardGameState {
       hitFlash = .18;
       victim.alerted = true;
       if (!victim.boss) {
-        victim.stun = head ? 1.4 : .5;
+        victim.stun = part != ShotPart.body ? 1.4 : (hardest ? .12 : .5);
         victim.attackPending = false;
         victim.grabPending = false;
         victim.meleeRecovery = 0;
-      } else if (victim.bossMove == BossMove.ready && head) {
+      } else if (victim.bossMove == BossMove.ready && part != ShotPart.body) {
         victim.stun = .35;
       }
-      victim.hp -= weapon == 'shotgun'
-          ? 100
-          : head
-          ? 65
-          : 35;
+      victim.hp = math.max(0, victim.hp - bulletDamage(part));
+      lastShotPart = part;
+      if (part != ShotPart.body) {
+        say(part == ShotPart.head ? 'HEAD SHOT' : 'ジョッキ弱点命中！');
+      }
       if (victim.hp <= 0) {
         _defeat(victim);
       }
@@ -1798,8 +1889,8 @@ class HazardGameState {
           (dx * math.sin(heading) + dz * math.cos(heading)) / dist < .15) {
         continue;
       }
-      e.hp -= 50;
-      e.stun = 1.5;
+      e.hp -= hardest ? 8 : 50;
+      e.stun = hardest ? .25 : 1.5;
       e.meleeRecovery = 0;
       e.alerted = true;
       e.attackPending = false;
@@ -1817,7 +1908,7 @@ class HazardGameState {
     hitFlash = .15;
   }
 
-  void _defeat(Enemy e) {
+  void _defeat(Enemy e, {bool suppressBeer = false}) {
     if (!e.alive) return;
     // Keep the visible actor at the impact position as it disappears.
     final wasVaulting = e.vault != null;
@@ -1825,6 +1916,7 @@ class HazardGameState {
     e.fallingFromLadder = e.y > 0 && (e.climb != null || wasVaulting);
     e.climb = null;
     e.alive = false;
+    e.suppressBeer = suppressBeer;
     e.companionTarget = null;
     e.attackPending = false;
     e.grabPending = false;
@@ -1832,7 +1924,15 @@ class HazardGameState {
     e.bossTimer = 0;
     e.vanish = 0;
     kills++;
-    say(e.boss ? '巨大そば屋を倒した！ エンジン停止。仲間と東の脱出路へ！' : 'そば屋を倒した。ビールを回収しよう。');
+    say(
+      e.boss
+          ? (hardest && livingEnemies > 0
+                ? '巨大そば屋を倒した！ エンジン停止。残るそば屋を倒して脱出路を確保しよう。'
+                : '巨大そば屋を倒した！ エンジン停止。仲間と東の脱出路へ！')
+          : suppressBeer
+          ? 'そば屋を撃破。ビールも蒸発した。'
+          : 'そば屋を倒した。ビールを回収しよう。',
+    );
     if (e.boss) checkpointRequested = true;
   }
 
@@ -1842,11 +1942,13 @@ class HazardGameState {
     pickups.add(
       Pickup(
         '${c.id}_loot',
-        c.id.hashCode.isEven ? 'ammo' : 'green',
+        !hardest && crates.indexOf(c).isEven ? 'ammo' : 'green',
         c.x,
         .2,
         c.z,
-        amount: c.id.hashCode.isEven ? 10 : 1,
+        amount: !hardest && crates.indexOf(c).isEven
+            ? (difficulty == HazardDifficulty.casual ? 5 : 2)
+            : 1,
       ),
     );
     emitSound('break', x: c.x, z: c.z);
@@ -1865,7 +1967,9 @@ class HazardGameState {
       }
     }
     for (final p in pickups) {
-      if (!p.taken && _near(p.x, p.y, p.z, 1.55)) return 'pickup:${p.id}';
+      if (!p.taken && pickupAmount(p) > 0 && _near(p.x, p.y, p.z, 1.55)) {
+        return 'pickup:${p.id}';
+      }
     }
     for (final m in localMemos) {
       if (!foundMemos.contains(m.id) && _near(m.x, m.y, m.z, 1.55)) {
@@ -1962,6 +2066,7 @@ class HazardGameState {
     if (key.startsWith('crate:')) return '木箱・樽を壊す';
     if (key.startsWith('window:')) return '窓を乗り越える';
     if (key == 'tower') return y > 2 ? 'はしごを降りる' : '見張り塔へ登る';
+    if (!chapterSecured) return 'そば屋が残り $livingEnemies 体。全員倒す';
     return gateOpen
         ? '門の先へ進む'
         : canOpenGate
@@ -1998,11 +2103,11 @@ class HazardGameState {
       startDialogue(key.substring(4));
     } else if (key.startsWith('pickup:')) {
       final p = pickups.firstWhere((p) => 'pickup:${p.id}' == key);
-      if (addItem(p.kind, p.amount)) {
+      if (addItem(p.kind, pickupAmount(p))) {
         p.taken = true;
         if (p.kind == 'key' || p.kind == 'shotgun') checkpointRequested = true;
         lastSound = 'pickup';
-        say('${itemNames[p.kind]} ×${p.amount} を入手');
+        say('${itemNames[p.kind]} ×${pickupAmount(p)} を入手');
       } else {
         say('ケースが満杯です。Tabで整理してください。');
       }
@@ -2056,7 +2161,9 @@ class HazardGameState {
         );
       } else {
         say(
-          gateMode == 'boss'
+          !chapterSecured
+              ? 'まだそば屋が $livingEnemies 体残っている。全員倒してから進もう。'
+              : gateMode == 'boss'
               ? '廃屋前のそば屋を撃退して、脱出路を確保しよう。'
               : '紋章の鍵が必要だ。北側の納屋を調べよう。',
         );
@@ -2095,6 +2202,7 @@ class HazardGameState {
       say('そば屋が近い。距離を取ってから話そう。');
       return;
     }
+    secretShopVisit = id == 'takosan' && beers >= 10;
     talkingTo = id;
     dialogueOwner = id;
     dialogueTopic = (id == 'yametaro' ? metYametaro : metTakosan)
@@ -2148,7 +2256,9 @@ class HazardGameState {
   }
 
   int stockRemaining(TradeOffer offer) =>
-      offer.stock - (tradePurchases[offer.id] ?? 0);
+      hardest && ['ammo', 'shells'].contains(offer.id)
+      ? 999
+      : math.max(0, offer.stock - (tradePurchases[offer.id] ?? 0));
 
   void buySupplies(String id) {
     if (phase != PlayPhase.dialogue ||
@@ -2156,7 +2266,7 @@ class HazardGameState {
         !dialogueChoices) {
       return;
     }
-    final offer = tradeOffers.where((o) => o.id == id).firstOrNull;
+    final offer = visibleTradeOffers.where((o) => o.id == id).firstOrNull;
     if (offer == null) return;
     tradeSerial++;
     tradeReplies = const [];
@@ -2171,6 +2281,8 @@ class HazardGameState {
       tradePurchases[id] = (tradePurchases[id] ?? 0) + 1;
       tradeMessage = purchaseLines[id]!.text;
       tradeReplies = purchaseReplies[id] ?? const [];
+      if (offer.kind == 'rocket') equip('rocket');
+      checkpointRequested = true;
       lastSound = 'pickup';
     }
     dialogueTopic = 'trade_result';
@@ -2204,6 +2316,19 @@ class HazardGameState {
       'recoil': recoil,
     },
     'maxHealth': maxHealth,
+    'difficulty': difficulty.name,
+    'lastShotPart': lastShotPart?.name,
+    'chapterSecured': chapterSecured,
+    'livingEnemies': livingEnemies,
+    'rocketLock': rocketLockId,
+    'rockets': [
+      for (final r in rockets)
+        {
+          'target': r.targetId,
+          'position': [r.position.x, r.position.y, r.position.z],
+        },
+    ],
+    'secretShopVisit': secretShopVisit,
     'weapon': weapon,
     'loaded': loaded,
     'reserve': reserve,
@@ -2249,6 +2374,10 @@ class HazardGameState {
             'active': e.active,
             'dropped': e.dropped,
             'hp': e.hp,
+            'maxHp': e.maxHp,
+            'suppressBeer': e.suppressBeer,
+            'headCentre': e.headCentre?.storage.toList(),
+            'mugCentre': e.mugCentre?.storage.toList(),
             'alerted': e.alerted,
             'stun': e.stun,
             'attackPending': e.attackPending,

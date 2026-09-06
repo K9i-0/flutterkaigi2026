@@ -10,6 +10,7 @@ extension HazardCheckpoint on HazardGameState {
   Map<String, dynamic> checkpoint() => {
     'version': 1,
     'encounterVersion': 2,
+    'bossBalanceVersion': 2,
     'map': zoneId,
     'mapVersion': map['version'],
     'savedAt': DateTime.now().toIso8601String(),
@@ -75,6 +76,7 @@ extension HazardCheckpoint on HazardGameState {
             'alive': e.alive,
             'active': e.active,
             'dropped': e.dropped,
+            'suppressBeer': e.suppressBeer,
             'vanish': e.vanish,
             'alerted': e.alerted,
             'notice': e.notice,
@@ -142,7 +144,7 @@ HazardGameState restoreHazardCheckpoint(
   require(s.climb == null || s.vault == null);
   require(s.grapple == null || (!s.traversing && s.breakFreeTime == 0));
   s.weapon = data['weapon'] as String;
-  require(['handgun', 'shotgun'].contains(s.weapon));
+  require(['handgun', 'shotgun', 'rocket'].contains(s.weapon));
   s.pistolLoaded = integer(data['pistolLoaded'], 0, 10);
   s.shotgunLoaded = integer(data['shotgunLoaded'], 0, 5);
   s.beers = integer(data['beers'], 0, 100000);
@@ -173,11 +175,15 @@ HazardGameState restoreHazardCheckpoint(
     }
   }
   for (final entry in ((data['tradePurchases'] as Map?) ?? {}).entries) {
-    require(['ammo', 'herb', 'shells'].contains(entry.key));
+    require(['ammo', 'herb', 'shells', 'rocket'].contains(entry.key));
     s.tradePurchases[entry.key] = integer(
       entry.value,
       0,
-      entry.key == 'ammo' ? 3 : 2,
+      entry.key == 'rocket'
+          ? 1
+          : entry.key == 'herb'
+          ? 2
+          : 100000,
     );
   }
   s.bag.clear();
@@ -188,6 +194,7 @@ HazardGameState restoreHazardCheckpoint(
       [
         'handgun',
         'shotgun',
+        'rocket',
         'ammo',
         'shells',
         'green',
@@ -196,7 +203,7 @@ HazardGameState restoreHazardCheckpoint(
         'mixed',
       ].contains(kind),
     );
-    final w = kind == 'shotgun'
+    final w = ['shotgun', 'rocket'].contains(kind)
         ? 7
         : kind == 'handgun'
         ? 3
@@ -232,6 +239,7 @@ HazardGameState restoreHazardCheckpoint(
   }
   require(s.bag.any((i) => i.kind == 'handgun'));
   require(s.weapon != 'shotgun' || s.hasShotgun);
+  require(s.weapon != 'rocket' || s.hasRocket);
   final broken = (data['crates'] as List).cast<String>().toSet();
   require(broken.every((id) => s.crates.any((c) => c.id == id)));
   for (final c in s.crates) {
@@ -269,10 +277,11 @@ HazardGameState restoreHazardCheckpoint(
       ..y = number(j['y'] ?? 0, 0, 6)
       ..z = number(j['z'], -30, 35)
       ..heading = number(j['heading'], -1e9, 1e9)
-      ..hp = number(j['hp'], -100, e.boss ? 350 : 100)
+      ..hp = number(j['hp'], -100, e.maxHp)
       ..alive = j['alive'] as bool
       ..active = j['active'] as bool
       ..dropped = j['dropped'] as bool
+      ..suppressBeer = j['suppressBeer'] as bool? ?? false
       ..vanish = number(j['vanish'], 0, 1e9)
       ..alerted = j['alerted'] as bool
       ..notice = number(j['notice'], 0, 1e9)
@@ -283,6 +292,9 @@ HazardGameState restoreHazardCheckpoint(
       ..grabCooldown = number(j['grabCooldown'] ?? 0, 0, 30)
       ..releaseTime = number(j['releaseTime'] ?? 0, 0, .7)
       ..windup = number(j['windup'], -.051, 30);
+    if (e.boss && data['bossBalanceVersion'] == null && e.alive) {
+      e.hp = (e.hp / 350 * e.maxHp).clamp(0, e.maxHp);
+    }
     e.climb = LadderTraversal.restore(j['climb'], s.ladder, e.x, e.y, e.z);
     e.vault = WindowTraversal.restore(
       j['vault'],

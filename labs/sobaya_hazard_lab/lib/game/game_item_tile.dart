@@ -172,6 +172,16 @@ class _ItemPainter extends CustomPainter {
         for (var i = 0; i < 4; i++) {
           line(24, 32 + i * 4, 34, 32 + i * 4, metal, .8);
         }
+      case 'rocket':
+        rect(10, 19, 80, 17, const Color(0xff718155), 4);
+        rect(7, 16, 9, 23, metal, 2);
+        rect(84, 16, 9, 23, dark, 2);
+        rect(29, 35, 8, 13, dark, 2);
+        rect(56, 35, 8, 12, dark, 2);
+        rect(36, 10, 25, 7, metal, 2);
+        rect(40, 16, 5, 4, dark);
+        rect(69, 19, 6, 17, const Color(0xffe7bd50));
+        line(18, 23, 80, 23, const Color(0xffa5b282));
       case 'shotgun':
         poly(const [
           Offset(4, 40),

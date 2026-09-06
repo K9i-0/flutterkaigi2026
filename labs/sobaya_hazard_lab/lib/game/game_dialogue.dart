@@ -117,7 +117,13 @@ const unreadKeeperReply = DialogueLine(
   '二十四体の世話を、一人で？ その人も置いていかれたんですか。まだ、この村にいるんでしょうか。',
 );
 
+const rocketOffer = TradeOffer('rocket', 'rocket', 1, 10, 1);
+
 const purchaseLines = <String, DialogueLine>{
+  'rocket': DialogueLine(
+    'たこさん',
+    'お得意様だけに、ロケットランチュアです。弾は無限。そば屋を追いかけて吹き飛ばします。ビールも蒸発するので、返品はお断りです。',
+  ),
   'ammo': DialogueLine('たこさん', 'ハンドガンの弾、十発です。これでそば屋を蜂の巣にしてください。領収書は研修費で切れます。'),
   'shells': DialogueLine('たこさん', 'ショットガンの弾、五発です。そば屋が近づいたら、景気よくどうぞ。壁の修理代は別です。'),
   'herb': DialogueLine(
