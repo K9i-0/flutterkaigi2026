@@ -291,7 +291,14 @@ class HazardGameController extends ChangeNotifier {
     beerTemplate = loaded[2];
     sobayaTemplate = loaded[3];
     fukuTemplate = loaded[4];
-    for (final n in state!.npcs) {
+    // Prepare actors from every region, even when absent from chapter one.
+    final cast = <String, Map<String, dynamic>>{};
+    for (final map in maps.values) {
+      for (final n in map['npcs'] as List) {
+        cast.putIfAbsent(n['id'] as String, () => Map<String, dynamic>.from(n));
+      }
+    }
+    for (final n in cast.values) {
       final actor = CharacterPlayer(loaded[n['id'] == 'yametaro' ? 5 : 6], [
         'Idle',
         'Talk',
@@ -303,6 +310,7 @@ class HazardGameController extends ChangeNotifier {
         0,
         (n['z'] as num).toDouble(),
       );
+      actor.node.visible = state!.npcs.any((row) => row['id'] == n['id']);
       npcs[n['id']] = actor;
       scene.add(actor.node);
     }

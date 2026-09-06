@@ -1,4 +1,5 @@
 import 'game_journal.dart';
+import 'game_item_tile.dart';
 import 'game_cinematic_insert.dart';
 
 import 'dart:math' as math;
@@ -268,10 +269,8 @@ class _HazardGamePageState extends State<HazardGamePage> {
                             rightMouseHeld = true;
                             s.aiming = true;
                           }
-                          if (e.buttons & kPrimaryMouseButton != 0 &&
-                              s.aiming) {
-                            game.fire();
-                          }
+                          // Pointer presses start camera/aim dragging. Firing
+                          // is an explicit Space / fire-button action.
                         },
                         onPointerUp: (e) {
                           if (e.kind == PointerDeviceKind.mouse &&
@@ -1253,47 +1252,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
       ),
     ),
   );
-  Widget itemTile(BagItem i) => Container(
-    decoration: BoxDecoration(
-      color: switch (i.kind) {
-        'green' => const Color(0xff30492c),
-        'red' => const Color(0xff5a342d),
-        'yellow' => const Color(0xff615733),
-        'ammo' => const Color(0xff50332b),
-        _ => const Color(0xff434838),
-      },
-      border: Border.all(color: gold.withValues(alpha: .5)),
-    ),
-    padding: const EdgeInsets.all(5),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(
-          switch (i.kind) {
-            'handgun' || 'shotgun' => Icons.gps_fixed,
-            'ammo' || 'shells' => Icons.view_week,
-            _ => Icons.eco_outlined,
-          },
-          color: ivory,
-          size: 22,
-        ),
-        Flexible(
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Text(
-              itemNames[i.kind]!,
-              style: const TextStyle(color: ivory, fontSize: 11),
-            ),
-          ),
-        ),
-        if (i.count > 1)
-          Text(
-            '×${i.count}',
-            style: const TextStyle(color: gold, fontSize: 11),
-          ),
-      ],
-    ),
-  );
+  Widget itemTile(BagItem i) => GameItemTile(item: i);
   void closeRecord() {
     held.clear();
     touchX = touchY = 0;
