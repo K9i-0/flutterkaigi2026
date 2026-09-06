@@ -66,8 +66,10 @@ for i,sample in enumerate(samples):
  rig.pose.bones['Hips'].location+=rest['Hips'].to_3x3().inverted()@Vector((0,0,.003-low));key(i)
 clips.append({'name':'Walk','duration':frames/30,'ground_speed_mps':travel.length*scale/(frames/30),'source':'walk_standard.fbx','sha256':hashlib.sha256(source_motion.read_bytes()).hexdigest()})
 rig.animation_data.action=None;reset();bpy.context.scene.frame_set(0)
-(OUT/'.gitignore').write_text('*.blend\n*.blend1\n');(OUT/'rig.json').write_text(json.dumps({'height_m':1.3,'source_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'clips':clips},indent=2)+'\n')
+from hazard_face_shapes import add_speech_shapes
+speech_shapes = add_speech_shapes(mesh, 'yametaro')
+(OUT/'.gitignore').write_text('*.blend\n*.blend1\n');(OUT/'rig.json').write_text(json.dumps({'height_m':1.3,'source_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'clips':clips,'speech_shapes':speech_shapes},indent=2)+'\n')
 bpy.ops.object.select_all(action='DESELECT');rig.select_set(True);mesh.select_set(True);bpy.context.view_layer.objects.active=rig
 bpy.ops.wm.save_as_mainfile(filepath=str(OUT/'yametaro.blend'))
-bpy.ops.export_scene.gltf(filepath=str(OUT/'yametaro.glb'),export_format='GLB',use_selection=True,export_animations=True,export_animation_mode='ACTIONS',export_frame_range=False,export_anim_slide_to_zero=True,export_anim_single_armature=True,export_skins=True,export_force_sampling=True)
+bpy.ops.export_scene.gltf(filepath=str(OUT/'yametaro.glb'),export_format='GLB',export_morph_animation=False,use_selection=True,export_animations=True,export_animation_mode='ACTIONS',export_frame_range=False,export_anim_slide_to_zero=True,export_anim_single_armature=True,export_skins=True,export_force_sampling=True)
 print('YAMETARO',clips)

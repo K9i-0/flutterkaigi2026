@@ -133,11 +133,13 @@ socket=bpy.data.objects.new('GunSocket',None);bpy.context.collection.objects.lin
 bpy.context.view_layer.update();desired=Matrix.Translation(rig.pose.bones['RightHand'].head+Vector((0,-.075,-.035)))
 socket.matrix_world=desired;bpy.context.view_layer.update()
 rig.animation_data.action=None;reset();bpy.context.scene.frame_set(0)
+from hazard_face_shapes import add_speech_shapes
+report['speech_shapes'] = add_speech_shapes(mesh, 'fukuchan')
 (OUT/'.gitignore').write_text('*.blend\n*.blend1\n')
 (OUT/'rig.json').write_text(json.dumps(report,indent=2)+'\n')
 bpy.ops.object.select_all(action='DESELECT')
 for o in [rig,mesh,socket]:o.select_set(True)
 bpy.context.view_layer.objects.active=rig
 bpy.ops.wm.save_as_mainfile(filepath=str(OUT/'fukuchan.blend'))
-bpy.ops.export_scene.gltf(filepath=str(OUT/'fukuchan.glb'),export_format='GLB',use_selection=True,export_animations=True,export_animation_mode='ACTIONS',export_frame_range=False,export_anim_slide_to_zero=True,export_anim_single_armature=True,export_skins=True,export_all_influences=False,export_def_bones=False,export_force_sampling=True)
+bpy.ops.export_scene.gltf(filepath=str(OUT/'fukuchan.glb'),export_format='GLB',export_morph_animation=False,use_selection=True,export_animations=True,export_animation_mode='ACTIONS',export_frame_range=False,export_anim_slide_to_zero=True,export_anim_single_armature=True,export_skins=True,export_all_influences=False,export_def_bones=False,export_force_sampling=True)
 print('FUKUCHAN',json.dumps(report),flush=True)

@@ -40,7 +40,7 @@ Flutter 3.47.2 / Dart 3.13.2 / flutter_scene 0.23.0。global Flutterに合わせ
 
 福ちゃんは装填2種・被弾・回避・蹴りを含む10クリップ。構えに上下の照準と反動を加算。これらの追加動作はBlender制作。敵は視界／近距離／銃声で気づき、攻撃前に向きを固定する。同時被弾は短い無敵時間で抑える。[やめ太郎の正本](../04_GAME_ASSETS/3d/characters/yametaro/README.md)は会話・手振りで村入口に登場。
 
-まだ実装していないもの: 掴み、台詞のリップシンク、実時間の足IK。見張り塔は手付けの登攀モーションと連続した登降に対応。屋内では屋根を非表示にする。スマートフォン実機の操作・性能は未検証。
+正面の掴み・抵抗・長押し脱出は追加済み（後述）。福ちゃん・やめ太郎は音声の強弱に合わせた口の同期を追加済み。音素別の口形と実時間の足IKは未実装。見張り塔は手付けの登攀モーションと連続した登降に対応。屋内では屋根を非表示にする。スマートフォン実機の操作・性能は未検証。
 
 ## 検証と描画
 
@@ -62,6 +62,11 @@ mise exec -- flutter run -d macos -t lib/game_main.dart --profile --dart-define=
 このフラグの時だけ7条件（村4体／8体・接触影なし・等倍、農場6体、山道6体・等倍）を自動比較し、`HAZARD_GAME_BENCHMARK`のJSONをログへ出す。
 
 ## 自動操作拡張（debugのみ）
+
+接続と一括検査の手順は [MCP_DEBUGGING.md](MCP_DEBUGGING.md) を参照。
+
+- `madogiwa.debugSession`: ネイティブPID、準備・前面状態、実行中の検査を返す。
+- `madogiwa.runGameProbe`: `name=conversation`。周回をリセットし、実フレームと音声で2人の口の同期・停止再開を検査。終了時は会話を停止する。
 
 - `madogiwa.inspectHazardGame`: 状態、コレクション、骨格クリップ、直近FrameTiming。
 - `madogiwa.openGameScenario`: `name=combat|stagger|npc|merchant|pickup|collection|gate|stairs|death|farm|farmGate|mountain|mountainGate|introEvent|farmEvent|bossEvent|endingEvent`。その周回をリセットし、収集記録は保持。
@@ -216,3 +221,11 @@ Vaultを片手で枠を支える姿勢へ改訂した。腰を支え側へ寄せ
 単独検証は `madogiwa.openGameScenario name=grapple` で停止状態から始める。`gameAction simulate seconds=1.05` で通常の規則を使って拘束開始まで進め、停止する。実UIの再開→ゲージ長押しで確認する。`simulate struggling=true` は規則検査、`previewState` は静止姿勢検査用。実機の入力検証とは分けて扱う。
 
 掴みを含むMac ZIPは `.local/hazard_releases/sobaya-hazard-macos-adf5ea4.zip`。同梱素材・署名・ZIP整合性を確認済み。今回のRelease版の画面操作は未確認で、操作確認はdebug版による。旧ZIP `e7726a9` は掴み追加前。
+
+## 発話に合わせた口の動き
+
+福ちゃん・やめ太郎の正本GLBへ `SpeechOpen` / `SpeechNarrow` を追加。福ちゃんは下唇の境界を分けて口内を追加し、上の歯を引き伸ばさず口を開く。やめ太郎は眼鏡や頭の輪郭を維持し、口の周囲だけを動かす。
+
+同梱の25本の発話WAVをハッシュ照合し、50Hzの音量包絡を生成。ネイティブ音声の再生位置を補間して、話している人物だけに適用する。停止・背景表示・発話終了で閉じ、ミュート時も口の動きは続く。音素解析や精密な歯・舌のリグではない。
+
+[検証記録](qa/speech-mcp-20260906.json): GLB再読込で各11段階の口形を検査し、Mac debugのMCP一括検査で2話者の変化・非話者の停止・音声停止再開を確認。最新モーフを含むprofile、配布ZIP、通しの見た目の仕上げは未完了。

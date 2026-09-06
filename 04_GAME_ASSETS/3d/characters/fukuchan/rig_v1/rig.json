@@ -97,5 +97,15 @@
       "pair_separation_m": 0.7,
       "source": "authored paired upper-body IK; shared hold clock"
     }
-  ]
+  ],
+  "speech_shapes": {
+    "targets": [
+      "SpeechOpen",
+      "SpeechNarrow"
+    ],
+    "affectedVertices": 1316,
+    "maximumJawDisplacement": 0.0075,
+    "mouthHeight": 1.507,
+    "source": "authored localized surface deformation; neutral likeness unchanged"
+  }
 }

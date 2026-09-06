@@ -19,6 +19,7 @@ import 'game_settings.dart';
 import 'game_events.dart';
 import 'game_voice.dart';
 import 'game_voice_player.dart';
+import 'game_speech.dart';
 import 'game_soundscape.dart';
 import '../lab/beer_mug_component.dart';
 import '../lab/simulation.dart' show FrameSamples;
@@ -169,6 +170,17 @@ class HazardGameController extends ChangeNotifier {
   final fxPools = <String, AudioPool>{};
   final audioPlayback = <Map<String, dynamic>>[];
   late VoiceCatalog voiceCatalog;
+  late SpeechEnvelopes speechEnvelopes;
+  final speechWeights = <String, double>{};
+  final _speechNodes = <String, List<Node>>{};
+  Map<String, Object?> inspectSpeechFaces() => {
+    for (final entry in _speechNodes.entries)
+      entry.key: {
+        'opening': speechWeights[entry.key] ?? 0,
+        'nodes': entry.value.length,
+        'weights': entry.value.first.morphWeights?.toList(),
+      },
+  };
   final voice = VoiceSession(AssetVoicePort.new);
   final soundscape = HazardSoundscape();
   int _dialogueVisit = 0;
@@ -440,6 +452,26 @@ class HazardGameController extends ChangeNotifier {
         await rootBundle.loadString('assets/audio/voice-manifest.json'),
       ),
     );
+    speechEnvelopes = SpeechEnvelopes(
+      jsonDecode(
+        await rootBundle.loadString('assets/audio/speech-envelopes.json'),
+      ),
+    );
+    void collect(Node node, List<Node> result) {
+      if (node.morphTargetNames.contains('SpeechOpen')) result.add(node);
+      for (final child in node.children) {
+        collect(child, result);
+      }
+    }
+
+    for (final entry in {'福ちゃん': player, 'やめ太郎': npcs['yametaro']!}.entries) {
+      final nodes = <Node>[];
+      collect(entry.value.node, nodes);
+      if (nodes.isEmpty) {
+        throw StateError('Missing speech shapes: ${entry.key}');
+      }
+      _speechNodes[entry.key] = nodes;
+    }
     ready = true;
     tick(Duration.zero, 0);
     prepareStaticFrame();
@@ -467,6 +499,15 @@ class HazardGameController extends ChangeNotifier {
     }
     if (d.done) _finishEvent();
     _syncVoice();
+    notifyListeners();
+  }
+
+  void setEventPaused(bool paused) {
+    if (director == null) return;
+    director!.paused = paused;
+    // Apply immediately, including when no next SceneView tick is scheduled.
+    _syncVoice();
+    prepareStaticFrame();
     notifyListeners();
   }
 
@@ -803,6 +844,26 @@ class HazardGameController extends ChangeNotifier {
       paused: !foreground || (d?.paused ?? false),
       volume: settings.muted ? 0 : settings.volume * settings.voiceVolume,
     );
+    _syncSpeechFaces();
+  }
+
+  void _syncSpeechFaces() {
+    for (final entry in _speechNodes.entries) {
+      final opening = foreground && !posePreview
+          ? speechEnvelopes.opening(voice, entry.key)
+          : 0.0;
+      speechWeights[entry.key] = opening;
+      for (final node in entry.value) {
+        node.setMorphWeight(
+          node.morphTargetNames.indexOf('SpeechOpen'),
+          opening,
+        );
+        node.setMorphWeight(
+          node.morphTargetNames.indexOf('SpeechNarrow'),
+          opening * .2,
+        );
+      }
+    }
   }
 
   void tick(Duration elapsed, double delta) {

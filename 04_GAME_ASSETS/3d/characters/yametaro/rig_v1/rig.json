@@ -24,5 +24,15 @@
       "source": "walk_standard.fbx",
       "sha256": "dd857d3dfb155642d17f917715f94e2e90c82326b95921274c8c926789c8a0de"
     }
-  ]
+  ],
+  "speech_shapes": {
+    "targets": [
+      "SpeechOpen",
+      "SpeechNarrow"
+    ],
+    "affectedVertices": 85,
+    "maximumJawDisplacement": 0.027,
+    "mouthHeight": 0.684,
+    "source": "authored localized surface deformation; neutral likeness unchanged"
+  }
 }

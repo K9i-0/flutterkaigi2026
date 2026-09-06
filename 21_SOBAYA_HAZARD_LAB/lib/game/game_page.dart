@@ -138,7 +138,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
     final k = e.logicalKey;
     if (s.phase == PlayPhase.cinematic) {
       if (k == LogicalKeyboardKey.escape) {
-        game.director!.paused = !game.director!.paused;
+        game.setEventPaused(!game.director!.paused);
         setState(() {});
       } else if (k == LogicalKeyboardKey.keyE ||
           k == LogicalKeyboardKey.space) {

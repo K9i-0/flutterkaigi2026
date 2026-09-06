@@ -78,6 +78,8 @@ mise exec -- flutter run -d macos --profile --dart-define=LAB_BENCHMARK=true
 
 ## Dart MCP / Marionette
 
+ゲーム本体の接続・一括検査は [MCP_DEBUGGING.md](MCP_DEBUGGING.md) を参照。`madogiwa.debugSession` で接続先を確認し、`madogiwa.runGameProbe` の `name=conversation` で実フレーム上の会話・口の同期・停止再開をまとめて検査できる。
+
 `dart-mcp.launch_app`のrootをこのディレクトリのfile URI、deviceを`macos`としてdebug起動し、返されたApp URIでMarionetteの`connect`を実行する。画面操作・スクリーンショットはMarionetteを使う。ローカル証跡は`evidence/`へ保存しGit管理しない。
 
 debug native限定のカスタムextension（Marionetteの`call_custom_extension`から使用）:
@@ -130,7 +132,7 @@ WalkはMixamo「Walking / Male Standard Walk」、Runは「Running / Male Weight
 
 村・農場・山道の環境音と、敵が近い時に入るオリジナル音楽を追加。会話中は背景音を下げる。設定で全体・台詞・環境音と音楽を調整できる。台詞送りとスキップで旧音声を破棄し、一時停止／非アクティブ化で再生を止める。読み込み中はカットの時計を待機し、音声長＋0.5秒以上を確保する。音声が読み込めない場合は8秒で待機を解除して字幕を継続する。
 
-`madogiwa.inspectHazardGame` の `voice` / `soundscape` は要求中の台詞、読み込み状態、エラー、ネイティブ再生位置／尺／再生状態を返す。[ネイティブ検証記録](qa/voice-native-20260906.json)、[素材検査](qa/voice-assets-20260906.json)、[ローカル文字起こし](qa/voice-transcript-20260906.json)を参照。短い終幕台詞は文字起こしの不一致を受けて再生成した。文字起こしには同音異字や認識誤りが残り、聴感・声の本人らしさの承認ではない。リップシンクは未実装。音声追加後のprofileは下記の9条件で計測済み。
+`madogiwa.inspectHazardGame` の `voice` / `soundscape` は要求中の台詞、読み込み状態、エラー、ネイティブ再生位置／尺／再生状態を返す。[ネイティブ検証記録](qa/voice-native-20260906.json)、[素材検査](qa/voice-assets-20260906.json)、[ローカル文字起こし](qa/voice-transcript-20260906.json)を参照。短い終幕台詞は文字起こしの不一致を受けて再生成した。文字起こしには同音異字や認識誤りが残り、聴感・声の本人らしさの承認ではない。福ちゃん・やめ太郎は音声の強弱に合わせて口を動かす。音素ごとの口形ではなく、停止・再開と話者切り替えを含む簡易同期（[検証記録](qa/speech-mcp-20260906.json)）。音声追加後のprofileは下記の9条件で計測済みだが、口のモーフ追加後は未測定。
 
 塔の登降と敵の追跡検証は `GAMEPLAY.md` の「塔の登り降り」を参照。
 `madogiwa.openGameScenario` の `ladder` / `enemyLadder`、通常UIの再開とEで再現できる。
