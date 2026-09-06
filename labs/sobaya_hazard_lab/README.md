@@ -130,9 +130,28 @@ WalkはMixamo「Walking / Male Standard Walk」、Runは「Running / Male Weight
 
 村・農場・山道の環境音と、敵が近い時に入るオリジナル音楽を追加。会話中は背景音を下げる。設定で全体・台詞・環境音と音楽を調整できる。台詞送りとスキップで旧音声を破棄し、一時停止／非アクティブ化で再生を止める。読み込み中はカットの時計を待機し、音声長＋0.5秒以上を確保する。音声が読み込めない場合は8秒で待機を解除して字幕を継続する。
 
-`madogiwa.inspectHazardGame` の `voice` / `soundscape` は要求中の台詞、読み込み状態、エラー、ネイティブ再生位置／尺／再生状態を返す。[ネイティブ検証記録](qa/voice-native-20260906.json)、[素材検査](qa/voice-assets-20260906.json)、[ローカル文字起こし](qa/voice-transcript-20260906.json)を参照。短い終幕台詞は文字起こしの不一致を受けて再生成した。文字起こしには同音異字や認識誤りが残り、聴感・声の本人らしさの承認ではない。リップシンクは未実装。今回の音声追加後のprofile性能は未計測。
+`madogiwa.inspectHazardGame` の `voice` / `soundscape` は要求中の台詞、読み込み状態、エラー、ネイティブ再生位置／尺／再生状態を返す。[ネイティブ検証記録](qa/voice-native-20260906.json)、[素材検査](qa/voice-assets-20260906.json)、[ローカル文字起こし](qa/voice-transcript-20260906.json)を参照。短い終幕台詞は文字起こしの不一致を受けて再生成した。文字起こしには同音異字や認識誤りが残り、聴感・声の本人らしさの承認ではない。リップシンクは未実装。音声追加後のprofileは下記の9条件で計測済み。
 
 塔の登降と敵の追跡検証は `GAMEPLAY.md` の「塔の登り降り」を参照。
 `madogiwa.openGameScenario` の `ladder` / `enemyLadder`、通常UIの再開とEで再現できる。
 登攀GLBを生成し直した場合はビルドフックのアセット変換を伴う再起動が必要。
 Dartのみのホットリスタートで新しいクリップを読み込めるとは限らない。
+
+
+## 音声を含む本編profileとMacパッケージ
+
+```sh
+# 21_SOBAYA_HAZARD_LABから実行
+mise exec -- flutter run -d macos --profile -t lib/game_main.dart --dart-define=LAB_BENCHMARK=true
+mise exec -- flutter build macos --release -t lib/game_main.dart
+# リポジトリルートから、実際にビルドしたコミットを指定
+python3 tools/package_hazard_macos.py --revision BUILD_COMMIT --output .local/hazard_releases/sobaya-hazard-macos-BUILD_COMMIT
+```
+
+本編のベンチマークは村・農場・山道の7条件と、導入／最終戦の音声付き会話2条件。標準音量を一時適用し、ユーザー設定には保存しない。`HAZARD_GAME_BENCHMARK`も同じ起動フラグとして使える。各条件で実描画240サンプル、前面状態、想定するゲームフェーズ、環境音再生、会話条件では発話開始を検証する。
+
+[2026-09-06の全計測](benchmarks/game-audio-20260906.json)はMac M4、1280×840、DPR 2、別のiOS Simulatorが描画中の結果。最終9条件はすべて有効で、UI P95は4.869〜6.034ms、Raster P95は0.483〜9.304ms。標準85%の条件ではUI／Rasterとも16.7ms超過なし。100%の村8体ではRasterが240サンプル中5回超過した。標準85%を維持し、単独条件や長時間の安定FPSは未確認とする。発話を開始できなかった初回の2条件も無効な記録として残した。
+
+音声の再生位置は200ms間隔で取得する。audioplayers 6.8.1はループ完了時も位置通知を停止するため、再生要求中だけ位置通知を再開する。ネイティブの音源自体を再スタートさせる処理ではない。Darwinで音がループ継続していても、プラグイン由来の`state`は`completed`になり得るため、`positionMs`・`loopCompletions`・セッション状態を併せて確認する。通知頻度の変更によるFPS改善をこの計測からは断定しない。
+
+Macパッケージ作成では3区画、9シーン、31音声キューと収集画像の同梱・ハッシュ一致、内部symlink、署名整合性、ZIPのCRCを検査する。正本GLBや認証情報は同梱しない。出力はローカルの検証用ZIPで、ad hoc署名・未公証。Intel用バイナリは含まれるが実機検証はApple Siliconのみ。公開配布と長時間の最終確認は別途必要。

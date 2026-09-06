@@ -46,7 +46,8 @@ class _HazardGamePageState extends State<HazardGamePage> {
         .then((_) {
           if (!mounted) return;
           attachGameAutomation(game);
-          if (const bool.fromEnvironment('HAZARD_GAME_BENCHMARK')) {
+          if (const bool.fromEnvironment('HAZARD_GAME_BENCHMARK') ||
+              const bool.fromEnvironment('LAB_BENCHMARK')) {
             benchmark = GameBenchmark(game);
           }
           setState(() {});
