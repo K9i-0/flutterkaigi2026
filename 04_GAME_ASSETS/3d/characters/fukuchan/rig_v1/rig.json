@@ -63,6 +63,13 @@
       "vertical_speed_mps": 0.7,
       "rung_spacing_m": 0.35,
       "source": "authored two-bone IK; distance-synchronized ladder loop"
+    },
+    {
+      "name": "Vault",
+      "duration": 1.6,
+      "source": "authored two-bone IK window vault; runtime root synchronized",
+      "passage_m": 1.9,
+      "sill_m": 0.82
     }
   ]
 }

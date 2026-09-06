@@ -38,3 +38,5 @@ python3 tools/validate_sobaya_rig.py rig_v3
 GLBをBlenderへ再インポートして全38/26フレームの有限値と靴底を検査。`validation.json`は骨・ウェイト・9クリップ・7ループ、`locomotion_validation.json`は接地検査結果。Flutter上の結果は`21_SOBAYA_HAZARD_LAB/VALIDATION.md`。
 
 そば屋本人と同じ体格の演者を新規収録したものではない。開始・停止・旋回専用クリップ、地形への実行時IK、全区間の足滑り定量評価は未実装。既存エモートとの遷移、肩や裾、手指の近接品質は引き続き仕上げ対象。今回のTripo利用・クレジット消費は0。
+
+窓越え用に`Vault`（1.6秒、実行時にそば屋は2.1秒へ速度調整）を追加。`tools/hazard_vault_motion.py`の手付けIKで膝を折り畳み、ゲーム側の`WindowTraversal`と同期する。MixamoのWalk／Runは維持する。手の窓台接触は今後の仕上げ対象。

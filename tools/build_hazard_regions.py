@@ -108,7 +108,7 @@ def weeds(name,x,z,count):
 def save(id,label,subtitle,spawn,items,crates,enemies,collection,npcs,exits,gate_data,targets=None):
     out=ROOT/'04_GAME_ASSETS/3d/environments'/id;out.mkdir(parents=True,exist_ok=True)
     data={'version':1,'id':id,'label':label,'subtitle':subtitle,'spawn':spawn,
-        'houses':houses,'solids':solids,'ramps':ramps,'items':items,'crates':crates,
+        'houses':houses,'windows':windows,'solids':solids,'ramps':ramps,'items':items,'crates':crates,
         'enemies':enemies,'collection':collection,'npcs':npcs,'exits':exits,
         'gate':gate_data,'targets':targets or []}
     (out/(id+'.json')).write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')

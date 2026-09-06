@@ -141,6 +141,8 @@ void attachGameAutomation(HazardGameController game) {
         'enemyStairs',
         'ladder',
         'enemyLadder',
+        'window',
+        'enemyWindow',
         'farmEnemyStairs',
         'death',
         'npc',
@@ -289,6 +291,29 @@ void attachGameAutomation(HazardGameController game) {
           s.x = 11.5;
           s.z = 22;
           s.hasKey = true;
+        case 'window':
+          final w = s.windows.first;
+          s.x = w.x;
+          s.y = 0;
+          s.z = w.entryZ(true);
+          s.yaw = 3.141592653589793;
+          s.heading = 0;
+        case 'enemyWindow':
+          final w = s.windows.first;
+          s.x = w.x;
+          s.y = 0;
+          s.z = w.exitZ(true) + 2;
+          s.yaw = 0;
+          s.heading = 3.141592653589793;
+          s.invulnerable = 100;
+          for (var i = 0; i < 2; i++) {
+            s.enemies[i]
+              ..active = true
+              ..alerted = true
+              ..x = w.x
+              ..y = 0
+              ..z = w.entryZ(true) - i;
+          }
         case 'ladder':
           s.x = -13.5;
           s.y = 0;
@@ -341,7 +366,14 @@ void attachGameAutomation(HazardGameController game) {
             ..z = -15.1;
       }
       s.phase =
-          ['bossCombat', 'mugTiming', 'ladder', 'enemyLadder'].contains(name)
+          [
+            'bossCombat',
+            'mugTiming',
+            'ladder',
+            'enemyLadder',
+            'window',
+            'enemyWindow',
+          ].contains(name)
           ? PlayPhase.paused
           : PlayPhase.playing;
       final event = {
@@ -393,6 +425,7 @@ void attachGameAutomation(HazardGameController game) {
           s.phase = PlayPhase.playing;
           s.stopInput();
           s.climb = null;
+          s.vault = null;
           s.x = x;
           s.y = y;
           s.z = z;
@@ -431,6 +464,35 @@ void attachGameAutomation(HazardGameController game) {
           s.stopInput();
           s.phase = PlayPhase.playing;
 
+        case 'windowPose':
+          final seconds = double.tryParse(p['seconds'] ?? '.9');
+          if (seconds == null ||
+              !seconds.isFinite ||
+              seconds < 0 ||
+              seconds > 2.5 ||
+              s.vault != null) {
+            return MarionetteExtensionResult.invalidParams(
+              'Window entry and seconds=0..2.5 required',
+            );
+          }
+          s.phase = PlayPhase.playing;
+          s.interact();
+          if (s.vault == null) {
+            return MarionetteExtensionResult.invalidParams(
+              'Stand at an available window',
+            );
+          }
+          for (var i = 0; i < (seconds * 60).round(); i++) {
+            s.tick(1 / 60);
+          }
+          g.posePreview = true;
+          s.toastTime = 0;
+          s.stopInput();
+          final clip = s.vault?.crossing == true ? 'Vault' : 'Walk';
+          g.player.setMotion(clip);
+          for (final e in g.player.clips.entries) {
+            e.value.weight = e.key == clip ? 1 : 0;
+          }
         case 'simulate':
           final seconds = double.tryParse(p['seconds'] ?? '1');
           final inputX = double.tryParse(p['x'] ?? '0');

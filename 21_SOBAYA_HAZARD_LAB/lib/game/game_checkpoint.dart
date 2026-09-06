@@ -1,5 +1,6 @@
 import 'game_state.dart';
 import 'game_ladder.dart';
+import 'game_window.dart';
 
 /// Progress is independent of the account-wide collection. Loading a checkpoint
 /// never removes images already collected on a later attempt.
@@ -18,6 +19,7 @@ extension HazardCheckpoint on HazardGameState {
       'pitch': pitch,
       'heading': heading,
       'climb': climb?.toJson(),
+      'vault': vault?.toJson(),
       'health': health,
       'maxHealth': maxHealth,
     },
@@ -61,6 +63,7 @@ extension HazardCheckpoint on HazardGameState {
             'z': e.z,
             'heading': e.heading,
             'climb': e.climb?.toJson(),
+            'vault': e.vault?.toJson(),
             'fallingFromLadder': e.fallingFromLadder,
             'hp': e.hp,
             'alive': e.alive,
@@ -123,6 +126,8 @@ HazardGameState restoreHazardCheckpoint(
   s.maxHealth = number(p['maxHealth'], 100, 200);
   s.health = number(p['health'], .001, s.maxHealth);
   s.climb = LadderTraversal.restore(p['climb'], s.ladder, s.x, s.y, s.z);
+  s.vault = WindowTraversal.restore(p['vault'], s.windows, s.x, s.y, s.z);
+  require(s.climb == null || s.vault == null);
   s.weapon = data['weapon'] as String;
   require(['handgun', 'shotgun'].contains(s.weapon));
   s.pistolLoaded = integer(data['pistolLoaded'], 0, 10);
@@ -249,6 +254,17 @@ HazardGameState restoreHazardCheckpoint(
       ..attackPending = j['attackPending'] as bool
       ..windup = number(j['windup'], -.051, 30);
     e.climb = LadderTraversal.restore(j['climb'], s.ladder, e.x, e.y, e.z);
+    e.vault = WindowTraversal.restore(
+      j['vault'],
+      s.windows,
+      e.x,
+      e.y,
+      e.z,
+      enemy: true,
+    );
+    require(
+      e.vault == null || (e.climb == null && e.alive && e.active && !e.boss),
+    );
     e.fallingFromLadder = j['fallingFromLadder'] as bool? ?? false;
     require(e.climb == null || (e.alive && e.active && !e.boss));
     require(!e.fallingFromLadder || (!e.alive && e.climb == null));
@@ -289,7 +305,14 @@ HazardGameState restoreHazardCheckpoint(
             (s.climb == null ? 0 : 1) <=
         1,
   );
-  require(s.climb != null || !s.blocked(s.x, s.z, s.y));
+  for (final w in s.windows) {
+    require(
+      s.enemies.where((e) => e.vault?.window.id == w.id).length +
+              (s.vault?.window.id == w.id ? 1 : 0) <=
+          1,
+    );
+  }
+  require(s.traversing || !s.blocked(s.x, s.z, s.y));
   s.phase = PlayPhase.playing;
   s.invulnerable = .5;
   s.say('チェックポイントから探索を再開した。');
