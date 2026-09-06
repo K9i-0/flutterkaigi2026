@@ -101,7 +101,15 @@ def replace_head(body, rig):
         hit, _, _, _ = old_bvh.ray_cast(origin, direction, .3)
         if hit is not None:
             t = max(0., min(1., (1.440 - z) / .028))
-            vertex.co = vertex.co.lerp(hit - direction * .001, t * t * (3 - 2 * t))
+            # Below the neckline a horizontal ray hits the jacket, not skin.
+            # Unbounded fitting grows a skin flange across both shoulders;
+            # it follows Neck while the sleeves follow Arm and pokes through.
+            # Keep the overlap inside a neck-sized ellipse under the collar.
+            radius = 1 / ((direction.x / .055) ** 2 +
+                          (direction.y / .060) ** 2) ** .5
+            distance = min((hit - origin).length - .001, radius)
+            vertex.co = vertex.co.lerp(origin + direction * distance,
+                                       t * t * (3 - 2 * t))
         if z < 1.410:
             vertex.co.z -= .015 * max(0., min(1., (1.410 - z) / .020))
     head.vertex_groups.clear()
@@ -138,6 +146,7 @@ def replace_head(body, rig):
     return head, {'source_sha256': hashlib.sha256(SOURCE.read_bytes()).hexdigest(),
                   'source_task': '5b707218-e8be-48ef-a9c4-e9c95d962d17',
                   'height_range': [1.375, 1.700], 'body_skin_removal_floor': 1.375,
+                  'neck_overlap_max_radii_m': [.055, .060],
                   'head_triangles': len(head.data.loop_triangles),
                   'speech_shapes': speech,
                   'source': 'P2 separate head; existing body skeleton and animations preserved'}

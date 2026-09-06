@@ -106,6 +106,10 @@
       1.7
     ],
     "body_skin_removal_floor": 1.375,
+    "neck_overlap_max_radii_m": [
+      0.055,
+      0.06
+    ],
     "head_triangles": 11525,
     "speech_shapes": {
       "targets": [
