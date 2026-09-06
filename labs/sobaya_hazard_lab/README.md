@@ -158,4 +158,8 @@ python3 tools/package_hazard_macos.py --revision BUILD_COMMIT --output .local/ha
 
 Macパッケージ作成では3区画、9シーン、31音声キューと収集画像の同梱・ハッシュ一致、内部symlink、署名整合性、ZIPのCRCを検査する。シーンmanifestの一致も検査し、各生成元GLBと変換済みシーンのハッシュを別々に台帳へ記録する。正本GLBや認証情報は同梱しない。出力はローカルの検証用ZIPで、ad hoc署名・未公証。Intel用バイナリは含まれるが実機検証はApple Siliconのみ。公開配布と長時間の最終確認は別途必要。
 
-ローカルMacプレビューのビルド情報と確認範囲は[Mac検証記録](qa/mac-preview-20260906.json)。`19a9d86`のZIPを作成済み。最終パッケージのプロセス起動は確認したが、UIツールのウィンドウ取得エラーにより画面確認は未完了。以前のReleaseの操作確認とは区別する。
+最新のローカルMacプレビューは `.local/hazard_releases/sobaya-hazard-macos-e7726a9.zip`。梯子・窓越え・衣服修正を含み、ビルド情報と確認範囲は[更新版Mac検証記録](qa/mac-traversal-preview-20260906.json)を参照。素材・署名・ZIP整合性とプロセス起動を確認済み。UIツールのウィンドウ取得エラーにより配布版の画面確認は未完了で、debugの全編確認や以前のReleaseの操作確認とは区別する。旧ZIP `19a9d86`の記録は[こちら](qa/mac-preview-20260906.json)。
+
+窓・衣服修正後の[11条件のprofile結果](benchmarks/game-traversal-20260906.json)では全条件が有効。UI P95は4.552〜7.103ms、Raster P95は0.466〜1.011msで、各240フレーム内の16.7ms超過はUI／Rasterとも0。福ちゃんの窓往復は4回、敵の窓通過は2体以上を計測条件内で確認した。Mac M4・32GB・macOS 26.6.2、1280×840・DPR 2、別のiOS Simulator起動中。前回との差の原因や長時間の安定FPSを証明する結果ではない。
+
+[窓追加後の全編検査](qa/campaign-traversal-20260906.json): 規則検査は0枚から全12枚の収集と20ドロップ回収、実描画は20体撃破・20ドロップ回収からクリア画面まで約7分41秒。実描画側は既収集12枚を引き継いだため、新規全収集の証明は規則検査と区別する。既知経路と自動照準であり、初見の尺・難度の評価ではない。
