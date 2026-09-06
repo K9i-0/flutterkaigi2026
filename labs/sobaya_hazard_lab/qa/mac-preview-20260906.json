@@ -1,0 +1,65 @@
+{
+  "date": "2026-09-06T09:08:41.051260+09:00",
+  "sourceRevision": "19a9d86fb123717c25896319ab16ec63a1b0a807",
+  "archive": {
+    "archive": ".local/hazard_releases/sobaya-hazard-macos-19a9d86.zip",
+    "bytes": 174640760,
+    "sha256": "8bbf9ae2529c3b19a95cb1063300255f0ae5680a579c96d2e4ec4260e7692619",
+    "sourceRevision": "19a9d86fb123717c25896319ab16ec63a1b0a807",
+    "sceneCount": 9,
+    "voiceCueCount": 31
+  },
+  "build": {
+    "bundleId": "com.madogiwa.sobayaHazardLab",
+    "version": "0.1.0",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "declaredMinimumMacOS": "12.0",
+    "signatureIntegrity": "codesign --verify --deep --strict passed",
+    "signatureDistribution": "ad hoc; not notarized",
+    "sceneCount": 9,
+    "voiceCueCount": 31,
+    "appBytes": 233782115,
+    "binaryHashes": {
+      "runner": "29e267f5445f2ad84104a5fb0dea083f0bedd9224b650d3f631476286be46497",
+      "dartAot": "9fd1c2022a9272f78580b2ab051a85ff7dbfa123359c89ca04517554d8e978cd"
+    }
+  },
+  "validation": {
+    "flutterTests": {
+      "passed": 80,
+      "log": "evidence/mac-preview-tests.log"
+    },
+    "flutterAnalyze": "No issues found",
+    "releaseBuild": "Flutter 3.47.2 / Dart 3.13.2, lib/game_main.dart, release, 233.8MB",
+    "bundleAssets": "Canonical bytes match all three maps, converted scene manifest entries, audio files and collection images; speech manifest SHA256 matches. Nonverbal cue hashes are compared directly with canonical local files.",
+    "zipIntegrity": "Python zipfile.testzip returned None",
+    "symlinks": "All bundle symlinks resolve within the app",
+    "finalPackagedLaunch": {
+      "processObserved": true,
+      "pidAtObservation": 72244,
+      "executable": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/.local/hazard_releases/sobaya-hazard-macos-19a9d86/そば屋ハザード.app/Contents/MacOS/sobaya_hazard_lab",
+      "uiVerified": false,
+      "reason": "CUA repeatedly returned cgWindowNotFound for the packaged app and Finder. Process existence is not proof of a rendered game."
+    },
+    "earlierReleaseSmoke": {
+      "sourceRevision": "1284a3b",
+      "title3D": true,
+      "openingAndGameplay": true,
+      "shooting": "Q + Space changed 10/40 to 09/40",
+      "inventory": "R then Tab opened attaché case while paused",
+      "gallery": "C opened existing 12/12 collection; not new collection verification",
+      "quit": "Application menu quit, process absence checked"
+    },
+    "audioProfile": "../benchmarks/game-audio-20260906.json"
+  },
+  "limitations": [
+    "Final packaged UI remains unverified; earlier Release smoke predates the audio position updater change.",
+    "Apple Silicon local validation only; Intel binary availability and declared macOS minimum do not establish runtime compatibility.",
+    "Ad hoc signed, not notarized, local preview; no public upload performed.",
+    "Long-run stability, human first-play length and listening approval remain incomplete.",
+    "Lip sync, window vaulting and grabbing remain unimplemented."
+  ]
+}

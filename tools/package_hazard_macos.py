@@ -58,7 +58,15 @@ def audit(app):
         match(LAB / 'flutter_scene_generated' / entry['file'], assets / 'flutter_scene_generated' / entry['file'])
     voice = json.loads((assets / 'assets/audio/voice-manifest.json').read_text())['clips']
     for clip in voice:
-        if sha(assets / 'assets' / clip['asset']) != clip['sha256']:
+        source = LAB / 'assets' / clip['asset']
+        destination = assets / 'assets' / clip['asset']
+        match(source, destination)
+        # Procedural nonverbal cues predate manifest hashes; still compare
+        # their bundled bytes to the canonical local asset above.
+        expected_hash = clip.get('sha256')
+        if expected_hash is None and clip['kind'] != 'nonverbal':
+            raise ValueError(f'Missing speech hash: {clip["id"]}')
+        if expected_hash is not None and sha(destination) != expected_hash:
             raise ValueError(f'Voice manifest mismatch: {clip["id"]}')
     forbidden = [p for p in assets.rglob('*') if p.suffix in ['.glb', '.fbx', '.blend', '.env']]
     if forbidden:
