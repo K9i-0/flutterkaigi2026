@@ -92,9 +92,19 @@
     {
       "name": "Vault",
       "duration": 1.6,
-      "source": "authored two-bone IK window vault; runtime root synchronized",
+      "source": "authored one-hand frame brace and alternating ankle paths; runtime root synchronized",
       "passage_m": 1.9,
-      "sill_m": 0.82
+      "sill_m": 0.82,
+      "support_hand": "left",
+      "support_progress": [
+        0.32,
+        0.48
+      ],
+      "support_wrist_world": [
+        0.715,
+        0.02,
+        1.6
+      ]
     }
   ],
   "mocap": [

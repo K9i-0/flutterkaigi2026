@@ -19,3 +19,5 @@ python3 tools/tripo_generate.py download 04_GAME_ASSETS/3d/characters/fukuchan/r
 上記downloadはローカルのtask.jsonを参照する。別環境では記載のrig task IDをtask.jsonへ設定する。Mixamo元ファイル `.local/mixamo_sobaya/source/walk_standard.fbx` と `run_weighted.fbx` も必要。元FBX・署名URL・APIキーはGitへ含めず、採用GLBと再生成コード・入力画像だけを保持する。
 
 窓越え用に`Vault`（1.6秒、実行時にそば屋は2.1秒へ速度調整）を追加。`tools/hazard_vault_motion.py`の手付けIKで膝を折り畳み、ゲーム側の`WindowTraversal`と同期する。MixamoのWalk／Runは維持する。手の窓台接触は今後の仕上げ対象。
+
+Vaultは片手を窓枠に添え、左右の足を順に抜く軌道へ改訂。書き出し後の97姿勢の検査条件と限界は `21_SOBAYA_HAZARD_LAB/qa/window-contact-20260906.json` を参照。最終版のmacOS debugで、福ちゃんの窓の往復とそば屋の順次追跡を実描画フレームで確認済み。そば屋の掌の隙間と腰・裾の服の変形、全編通し・profileは仕上げ対象。

@@ -1,0 +1,2831 @@
+{
+  "date": "2026-09-06T10:11:01.729155+09:00",
+  "change": "One-hand jamb brace, separate world-space ankle trajectories, pelvis weight shift and forward-facing head correction",
+  "source": "tools/hazard_vault_motion.py",
+  "auditSource": "tools/audit_hazard_window_clearance.py",
+  "exportedAudit": {
+    "sampleHz": 60,
+    "wallHalfDepth": 0.175,
+    "apertureHalfWidth": 0.78,
+    "sill": 0.82,
+    "lintel": 2.42,
+    "tolerance": 0.02,
+    "models": {
+      "fukuchan": {
+        "source": "04_GAME_ASSETS/3d/characters/fukuchan/rig_v1/fukuchan.glb",
+        "sha256": "031ddc85939ce56f4562ae1b65f41109a11653a412e948a1db6e82dfe3d15fcc",
+        "samples": 97,
+        "violatingVertexSamples": 0,
+        "supportWristRanges": [
+          [
+            0.7149903774261475,
+            0.7166901230812073
+          ],
+          [
+            0.019886678015744175,
+            0.020727131322578085
+          ],
+          [
+            1.549364146279952,
+            1.5502151958471555
+          ]
+        ],
+        "maximumSupportWristAxisDrift": 0.0016997456550598145,
+        "supportSkinGapToFrame": [
+          -0.0030039906501769797,
+          0.001385474205017112
+        ],
+        "rows": [
+          {
+            "frame": 0.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.28999900817871094,
+              0.8299794763326644,
+              1.03000807762146
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 0.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.29002439975738525,
+              0.8293888778046324,
+              1.030514857739633
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 1.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.28999918699264526,
+              0.8275398263776743,
+              1.0323603831157935
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 1.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.2900254726409912,
+              0.824573278427124,
+              1.0351791151040775
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 2.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.28999951481819153,
+              0.8203584751045262,
+              1.0393777601362288
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 2.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.2900241017341614,
+              0.8151236339851662,
+              1.0444584063978182
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 3.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.28999972343444824,
+              0.808641555905342,
+              1.0509400140879606
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 3.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.2901417911052704,
+              0.8010231341476793,
+              1.0583418476562696
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 4.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.2902435064315796,
+              0.7921523024086599,
+              1.0671265842488913
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 4.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.29637590050697327,
+              0.7720459073781967,
+              1.0830254821279695
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 5.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.3020588159561157,
+              0.7510754094079688,
+              1.0999789716329231
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 5.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.31678321957588196,
+              0.7161079222405398,
+              1.1245772371855298
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 6.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.32921749353408813,
+              0.6811268061399459,
+              1.151111693332574
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 6.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.3508785665035248,
+              0.6363983308827436,
+              1.180480952940987
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 7.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.3683842122554779,
+              0.5913304849907204,
+              1.213671496724445
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 7.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.39457669854164124,
+              0.5416066169738769,
+              1.2443547787845997
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 8.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.4162243604660034,
+              0.4904630418177004,
+              1.2811219215393066
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 8.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.44461384415626526,
+              0.43904985233589444,
+              1.310968867254594
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 9.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.4694042205810547,
+              0.3867224156856537,
+              1.3476244618765778
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 9.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.49828261137008667,
+              0.33673767005955735,
+              1.37529051789124
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 10.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.5245875716209412,
+              0.28742888216619134,
+              1.4083579819342702
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 10.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.5525819063186646,
+              0.2421634376049041,
+              1.4325092715148395
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 11.0,
+            "slabVertices": 203,
+            "violatingVertices": 0,
+            "minimumHeight": 1.4012097845586142,
+            "maximumHalfWidth": 0.6346402168273926,
+            "supportWrist": [
+              0.5784381031990051,
+              0.1987525856053387,
+              1.4597520361455283
+            ],
+            "supportOuterSkinX": 0.6346402168273926
+          },
+          {
+            "frame": 11.5,
+            "slabVertices": 1736,
+            "violatingVertices": 0,
+            "minimumHeight": 1.368575437832072,
+            "maximumHalfWidth": 0.6624045372009277,
+            "supportWrist": [
+              0.6040287017822266,
+              0.16108131850207286,
+              1.4791575510980632
+            ],
+            "supportOuterSkinX": 0.6624045372009277
+          },
+          {
+            "frame": 12.0,
+            "slabVertices": 1941,
+            "violatingVertices": 0,
+            "minimumHeight": 1.3890413284301757,
+            "maximumHalfWidth": 0.687617301940918,
+            "supportWrist": [
+              0.6276183724403381,
+              0.1254774451255798,
+              1.4996338129043578
+            ],
+            "supportOuterSkinX": 0.687617301940918
+          },
+          {
+            "frame": 12.5,
+            "slabVertices": 2002,
+            "violatingVertices": 0,
+            "minimumHeight": 1.4027385155675862,
+            "maximumHalfWidth": 0.7099109888076782,
+            "supportWrist": [
+              0.6488892436027527,
+              0.09757070497230247,
+              1.51332527799587
+            ],
+            "supportOuterSkinX": 0.7099109888076782
+          },
+          {
+            "frame": 13.0,
+            "slabVertices": 2038,
+            "violatingVertices": 0,
+            "minimumHeight": 1.4166778077570596,
+            "maximumHalfWidth": 0.7304221391677856,
+            "supportWrist": [
+              0.6687913537025452,
+              0.070797038519824,
+              1.5272704114405313
+            ],
+            "supportOuterSkinX": 0.7304221391677856
+          },
+          {
+            "frame": 13.5,
+            "slabVertices": 2265,
+            "violatingVertices": 0,
+            "minimumHeight": 1.4244076806183392,
+            "maximumHalfWidth": 0.7457603216171265,
+            "supportWrist": [
+              0.6840394735336304,
+              0.053612697124481246,
+              1.534998138534599
+            ],
+            "supportOuterSkinX": 0.7457603216171265
+          },
+          {
+            "frame": 14.0,
+            "slabVertices": 5536,
+            "violatingVertices": 0,
+            "minimumHeight": 1.106008036837855,
+            "maximumHalfWidth": 0.7604638338088989,
+            "supportWrist": [
+              0.6986219882965088,
+              0.036142881269808136,
+              1.5433046061852367
+            ],
+            "supportOuterSkinX": 0.7604638338088989
+          },
+          {
+            "frame": 14.5,
+            "slabVertices": 6621,
+            "violatingVertices": 0,
+            "minimumHeight": 1.0034112166516067,
+            "maximumHalfWidth": 0.7694588899612427,
+            "supportWrist": [
+              0.7077324986457825,
+              0.028673883720680582,
+              1.546276135360408
+            ],
+            "supportOuterSkinX": 0.7694588899612427
+          },
+          {
+            "frame": 15.0,
+            "slabVertices": 8356,
+            "violatingVertices": 0,
+            "minimumHeight": 0.9362532565720612,
+            "maximumHalfWidth": 0.7748379111289978,
+            "supportWrist": [
+              0.7137735486030579,
+              0.021047425270080522,
+              1.549598223937326
+            ],
+            "supportOuterSkinX": 0.7748379111289978
+          },
+          {
+            "frame": 15.5,
+            "slabVertices": 10999,
+            "violatingVertices": 0,
+            "minimumHeight": 1.2464051809784382,
+            "maximumHalfWidth": 0.7771110534667969,
+            "supportWrist": [
+              0.7166901230812073,
+              0.020727131322578085,
+              1.549364146279952
+            ],
+            "supportOuterSkinX": 0.7771110534667969
+          },
+          {
+            "frame": 16.0,
+            "slabVertices": 12904,
+            "violatingVertices": 0,
+            "minimumHeight": 0.9688475489616394,
+            "maximumHalfWidth": 0.7742043733596802,
+            "supportWrist": [
+              0.7149916887283325,
+              0.0199894532009407,
+              1.5499971866607667
+            ],
+            "supportOuterSkinX": 0.7742043733596802
+          },
+          {
+            "frame": 16.5,
+            "slabVertices": 14057,
+            "violatingVertices": 0,
+            "minimumHeight": 1.13323163364521,
+            "maximumHalfWidth": 0.775628924369812,
+            "supportWrist": [
+              0.7166526317596436,
+              0.020430058240890503,
+              1.5494593319713208
+            ],
+            "supportOuterSkinX": 0.775628924369812
+          },
+          {
+            "frame": 17.0,
+            "slabVertices": 15556,
+            "violatingVertices": 0,
+            "minimumHeight": 0.9822095004564937,
+            "maximumHalfWidth": 0.7736145257949829,
+            "supportWrist": [
+              0.7149908542633057,
+              0.019991147076641957,
+              1.5499957767969783
+            ],
+            "supportOuterSkinX": 0.7736145257949829
+          },
+          {
+            "frame": 17.5,
+            "slabVertices": 15325,
+            "violatingVertices": 0,
+            "minimumHeight": 0.8458988588227765,
+            "maximumHalfWidth": 0.7752866744995117,
+            "supportWrist": [
+              0.7162989377975464,
+              0.020418531144106855,
+              1.5495671551599042
+            ],
+            "supportOuterSkinX": 0.7752866744995117
+          },
+          {
+            "frame": 18.0,
+            "slabVertices": 16797,
+            "violatingVertices": 0,
+            "minimumHeight": 0.9685065615674047,
+            "maximumHalfWidth": 0.7743250131607056,
+            "supportWrist": [
+              0.7149906158447266,
+              0.019992399215698287,
+              1.5499950218697576
+            ],
+            "supportOuterSkinX": 0.7743250131607056
+          },
+          {
+            "frame": 18.5,
+            "slabVertices": 18003,
+            "violatingVertices": 0,
+            "minimumHeight": 0.950646792832323,
+            "maximumHalfWidth": 0.7761200666427612,
+            "supportWrist": [
+              0.7161040306091309,
+              0.020285113211031325,
+              1.5497284879121265
+            ],
+            "supportOuterSkinX": 0.7761200666427612
+          },
+          {
+            "frame": 19.0,
+            "slabVertices": 18799,
+            "violatingVertices": 0,
+            "minimumHeight": 0.9791167972956047,
+            "maximumHalfWidth": 0.7756421566009521,
+            "supportWrist": [
+              0.7149903774261475,
+              0.019992485090538414,
+              1.5499937532816277
+            ],
+            "supportOuterSkinX": 0.7756421566009521
+          },
+          {
+            "frame": 19.5,
+            "slabVertices": 16667,
+            "violatingVertices": 0,
+            "minimumHeight": 0.9827234359285185,
+            "maximumHalfWidth": 0.7772799730300903,
+            "supportWrist": [
+              0.716003954410553,
+              0.020108085870742864,
+              1.5498923273584198
+            ],
+            "supportOuterSkinX": 0.7772799730300903
+          },
+          {
+            "frame": 20.0,
+            "slabVertices": 16283,
+            "violatingVertices": 0,
+            "minimumHeight": 0.9892479536959026,
+            "maximumHalfWidth": 0.7767772674560547,
+            "supportWrist": [
+              0.7149905562400818,
+              0.019992632225707796,
+              1.5499933717676493
+            ],
+            "supportOuterSkinX": 0.7767772674560547
+          },
+          {
+            "frame": 20.5,
+            "slabVertices": 15184,
+            "violatingVertices": 0,
+            "minimumHeight": 0.9969165337104603,
+            "maximumHalfWidth": 0.778003990650177,
+            "supportWrist": [
+              0.7159740328788757,
+              0.01995886111700973,
+              1.5500319612045095
+            ],
+            "supportOuterSkinX": 0.778003990650177
+          },
+          {
+            "frame": 21.0,
+            "slabVertices": 13825,
+            "violatingVertices": 0,
+            "minimumHeight": 1.0017861831547763,
+            "maximumHalfWidth": 0.7770825624465942,
+            "supportWrist": [
+              0.7149909138679504,
+              0.019991967082023665,
+              1.5499923932911899
+            ],
+            "supportOuterSkinX": 0.7770825624465942
+          },
+          {
+            "frame": 21.5,
+            "slabVertices": 10811,
+            "violatingVertices": 0,
+            "minimumHeight": 1.0079219944982543,
+            "maximumHalfWidth": 0.7777209281921387,
+            "supportWrist": [
+              0.715999960899353,
+              0.019886678015744175,
+              1.5501385040788664
+            ],
+            "supportOuterSkinX": 0.7777209281921387
+          },
+          {
+            "frame": 22.0,
+            "slabVertices": 9233,
+            "violatingVertices": 0,
+            "minimumHeight": 1.0487122900842607,
+            "maximumHalfWidth": 0.7761216759681702,
+            "supportWrist": [
+              0.7149916887283325,
+              0.019991068983519544,
+              1.5499922998308122
+            ],
+            "supportOuterSkinX": 0.7761216759681702
+          },
+          {
+            "frame": 22.5,
+            "slabVertices": 8317,
+            "violatingVertices": 0,
+            "minimumHeight": 1.0552837364202756,
+            "maximumHalfWidth": 0.7762054204940796,
+            "supportWrist": [
+              0.7160941362380981,
+              0.01992302834987636,
+              1.5502151958471555
+            ],
+            "supportOuterSkinX": 0.7762054204940796
+          },
+          {
+            "frame": 23.0,
+            "slabVertices": 7614,
+            "violatingVertices": 0,
+            "minimumHeight": 1.0576059617175806,
+            "maximumHalfWidth": 0.7737748622894287,
+            "supportWrist": [
+              0.7149932980537415,
+              0.019990032966490157,
+              1.549991825975393
+            ],
+            "supportOuterSkinX": 0.7737748622894287
+          },
+          {
+            "frame": 23.5,
+            "slabVertices": 7037,
+            "violatingVertices": 0,
+            "minimumHeight": 1.0604756141002718,
+            "maximumHalfWidth": 0.7658945322036743,
+            "supportWrist": [
+              0.7083900570869446,
+              0.017741616449698183,
+              1.5507889056499544
+            ],
+            "supportOuterSkinX": 0.7658945322036743
+          },
+          {
+            "frame": 24.0,
+            "slabVertices": 6806,
+            "violatingVertices": 0,
+            "minimumHeight": 0.9854602098464966,
+            "maximumHalfWidth": 0.7565144300460815,
+            "supportWrist": [
+              0.700419545173645,
+              0.01518831867724657,
+              1.5510204315185547
+            ],
+            "supportOuterSkinX": 0.7565144300460815
+          },
+          {
+            "frame": 24.5,
+            "slabVertices": 6406,
+            "violatingVertices": 0,
+            "minimumHeight": 0.9836810791786257,
+            "maximumHalfWidth": 0.7365185022354126,
+            "supportWrist": [
+              0.6801947355270386,
+              0.0054132020031966155,
+              1.5526521468456331
+            ],
+            "supportOuterSkinX": 0.7365185022354126
+          },
+          {
+            "frame": 25.0,
+            "slabVertices": 6030,
+            "violatingVertices": 0,
+            "minimumHeight": 0.9829776980056513,
+            "maximumHalfWidth": 0.7157810926437378,
+            "supportWrist": [
+              0.6593021750450134,
+              -0.006131368185634978,
+              1.553613642610525
+            ],
+            "supportOuterSkinX": 0.7157810926437378
+          },
+          {
+            "frame": 25.5,
+            "slabVertices": 5897,
+            "violatingVertices": 0,
+            "minimumHeight": 0.9820022694593687,
+            "maximumHalfWidth": 0.6877419948577881,
+            "supportWrist": [
+              0.6298936009407043,
+              -0.026330184936523393,
+              1.5549114458090085
+            ],
+            "supportOuterSkinX": 0.6877419948577881
+          },
+          {
+            "frame": 26.0,
+            "slabVertices": 5490,
+            "violatingVertices": 0,
+            "minimumHeight": 0.9808377094625415,
+            "maximumHalfWidth": 0.6583454608917236,
+            "supportWrist": [
+              0.5995213985443115,
+              -0.05023421242281234,
+              1.5555946596025407
+            ],
+            "supportOuterSkinX": 0.6583454608917236
+          },
+          {
+            "frame": 26.5,
+            "slabVertices": 5344,
+            "violatingVertices": 0,
+            "minimumHeight": 0.9787655778436675,
+            "maximumHalfWidth": 0.6246967315673828,
+            "supportWrist": [
+              0.5645967125892639,
+              -0.0823968257065173,
+              1.554736167958261
+            ],
+            "supportOuterSkinX": 0.6246967315673828
+          },
+          {
+            "frame": 27.0,
+            "slabVertices": 5134,
+            "violatingVertices": 0,
+            "minimumHeight": 0.977175693547919,
+            "maximumHalfWidth": 0.5898426175117493,
+            "supportWrist": [
+              0.5289877653121948,
+              -0.11882726028561574,
+              1.5539574134709384
+            ],
+            "supportOuterSkinX": 0.5898426175117493
+          },
+          {
+            "frame": 27.5,
+            "slabVertices": 4522,
+            "violatingVertices": 0,
+            "minimumHeight": 0.9737761032600208,
+            "maximumHalfWidth": 0.5539995431900024,
+            "supportWrist": [
+              0.4925927221775055,
+              -0.16237577045405338,
+              1.5485581767577932
+            ],
+            "supportOuterSkinX": 0.5539995431900024
+          },
+          {
+            "frame": 28.0,
+            "slabVertices": 2438,
+            "violatingVertices": 0,
+            "minimumHeight": 0.9763866720625255,
+            "maximumHalfWidth": 0.449821412563324,
+            "supportWrist": [
+              0.45561012625694275,
+              -0.20905187483187082,
+              1.5458150861688944
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 28.5,
+            "slabVertices": 1478,
+            "violatingVertices": 0,
+            "minimumHeight": 0.9876717241308044,
+            "maximumHalfWidth": 0.34606921672821045,
+            "supportWrist": [
+              0.43021872639656067,
+              -0.2552528779953718,
+              1.5269508572122406
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 29.0,
+            "slabVertices": 765,
+            "violatingVertices": 0,
+            "minimumHeight": 0.994826137867962,
+            "maximumHalfWidth": 0.335094690322876,
+            "supportWrist": [
+              0.3873004913330078,
+              -0.3135503282839498,
+              1.5293148754511225
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 29.5,
+            "slabVertices": 393,
+            "violatingVertices": 0,
+            "minimumHeight": 1.0032463421258413,
+            "maximumHalfWidth": 0.3224272131919861,
+            "supportWrist": [
+              0.3665611147880554,
+              -0.36521338527953184,
+              1.489092086735674
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 30.0,
+            "slabVertices": 102,
+            "violatingVertices": 0,
+            "minimumHeight": 1.0356522369881658,
+            "maximumHalfWidth": 0.26849374175071716,
+            "supportWrist": [
+              0.3319622874259949,
+              -0.42058384716510777,
+              1.5044488478203801
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 30.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.3144252300262451,
+              -0.4672973667029978,
+              1.4838227551354901
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 31.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.2974914610385895,
+              -0.5142721112127657,
+              1.4737851587778743
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 31.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.2936331331729889,
+              -0.545185424387455,
+              1.4573931631862256
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 32.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.29000717401504517,
+              -0.5774143710180564,
+              1.4425123691558839
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 32.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.2896035313606262,
+              -0.6032645886694943,
+              1.4261730280395954
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 33.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.2900049090385437,
+              -0.6293331354856491,
+              1.4102519819863373
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 33.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.28961747884750366,
+              -0.6544109100544895,
+              1.3930759858242752
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 34.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.2900031805038452,
+              -0.6793972507671076,
+              1.3761901099541576
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 34.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.28965726494789124,
+              -0.7035702869296072,
+              1.3584297495956952
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 35.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.2900013327598572,
+              -0.72740021839186,
+              1.340910290667216
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 35.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.2897060513496399,
+              -0.7505356769318936,
+              1.3228372971532796
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 36.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.290000319480896,
+              -0.773135495185852,
+              1.3050153493881227
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 36.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.2897554636001587,
+              -0.7951076670929236,
+              1.2869164784433393
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 37.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.2899991273880005,
+              -0.816397066966251,
+              1.2691206465276084
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 37.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.2898019552230835,
+              -0.8370852649211884,
+              1.2512893360976642
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 38.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.28999850153923035,
+              -0.8569784427130662,
+              1.2338393967291923
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 38.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.2898441553115845,
+              -0.8762664571956353,
+              1.216570978248906
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 39.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.2899981737136841,
+              -0.8946733549237249,
+              1.1997759749762482
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 39.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.28988149762153625,
+              -0.9124477033261897,
+              1.1833580646041424
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 40.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.28999802470207214,
+              -0.9292757000084275,
+              1.167513084411621
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 40.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.2899136245250702,
+              -0.9454258129000663,
+              1.1522211375416187
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 41.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.28999799489974976,
+              -0.960579121057634,
+              1.137602856969196
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 41.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.28994059562683105,
+              -0.9749963512575186,
+              1.1236935813055497
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 42.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.28999802470207214,
+              -0.9883776262402535,
+              1.110557527492425
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 42.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.2899627685546875,
+              -1.0009554201806032,
+              1.0982636938658277
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 43.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.2899981141090393,
+              -1.012465044911261,
+              1.0868385316457405
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 43.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.2899806797504425,
+              -1.023098450899124,
+              1.076365616748636
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 44.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.289998322725296,
+              -1.0326351989750508,
+              1.0668532373479513
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 44.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.289995014667511,
+              -1.0412203531022426,
+              1.0583731996994215
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 45.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.28999853134155273,
+              -1.0486819699406624,
+              1.0509427559016202
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 45.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.29000622034072876,
+              -1.0551155596419615,
+              1.044594066569327
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 46.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.28999873995780945,
+              -1.0603993138229404,
+              1.039379548275572
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 46.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.2900148034095764,
+              -1.064577654004097,
+              1.0352641113275272
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 47.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.2899989187717438,
+              -1.0675807470524754,
+              1.0323612175808203
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 47.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.2900208532810211,
+              -1.069399638529177,
+              1.0305438255969939
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 48.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.28999900817871094,
+              -1.0700205236673355,
+              1.03000807762146
+            ],
+            "supportOuterSkinX": null
+          }
+        ]
+      },
+      "sobaya": {
+        "source": "04_GAME_ASSETS/3d/characters/sobaya/rig_v3/sobaya_rig.glb",
+        "sha256": "5c6ed042c027cc4ca14511dddaef07e8dca618f0f263eb8654fcbca552994ee4",
+        "samples": 97,
+        "violatingVertexSamples": 0,
+        "supportWristRanges": [
+          [
+            0.7149999141693115,
+            0.7160323262214661
+          ],
+          [
+            0.01977702677249904,
+            0.02055985088701595
+          ],
+          [
+            1.5986813869949787,
+            1.6000003386040715
+          ]
+        ],
+        "maximumSupportWristAxisDrift": 0.0013189516090927889,
+        "supportSkinGapToFrame": [
+          0.01599087715148928,
+          0.02726581096649172
+        ],
+        "rows": [
+          {
+            "frame": 0.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.3700000047683716,
+              0.8300001144409179,
+              1.029999852180481
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 0.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.37001335620880127,
+              0.829401603396292,
+              1.0305210566226897
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 1.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.3700001537799835,
+              0.8275604495847666,
+              1.0323526345119727
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 1.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.37000954151153564,
+              0.8245784565806389,
+              1.0351924665445071
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 2.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.3700000047683716,
+              0.8203789493000065,
+              1.0393706075788558
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 2.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.37000328302383423,
+              0.8151190816804215,
+              1.0444797448606478
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 3.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.3700001537799835,
+              0.8086621865630149,
+              1.0509330999491666
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 3.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.3700937032699585,
+              0.8010071973557825,
+              1.0583829748611646
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 4.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.37019795179367065,
+              0.7921728064064626,
+              1.0671486379674582
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 4.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.3751051127910614,
+              0.7720182210206985,
+              1.0837142734029939
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 5.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.3797898590564728,
+              0.7510945723012641,
+              1.101389694365467
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 5.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.3915169835090637,
+              0.7159169638598406,
+              1.1277368794050733
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 6.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.40183842182159424,
+              0.6811426609754562,
+              1.155715079257867
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 6.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.41921529173851013,
+              0.635749504522041,
+              1.188032861434029
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 7.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.4336358904838562,
+              0.5913423910185143,
+              1.2228824409001653
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 7.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.4550341069698334,
+              0.540770274400711,
+              1.2575604262531666
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 8.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.4724736511707306,
+              0.49047263816550923,
+              1.2959633588790893
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 8.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.49591925740242004,
+              0.43888295933052335,
+              1.3300018224242718
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 9.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.5156444907188416,
+              0.3867325484752655,
+              1.368725579010672
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 9.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.5393417477607727,
+              0.33733979618107834,
+              1.4000915337451219
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 10.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.5604401230812073,
+              0.28744047526960015,
+              1.4359535019538014
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 10.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.5830495357513428,
+              0.24318494200706475,
+              1.4632067364577717
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 11.0,
+            "slabVertices": 478,
+            "violatingVertices": 0,
+            "minimumHeight": 1.3733570108922324,
+            "maximumHalfWidth": 0.6555900573730469,
+            "supportWrist": [
+              0.6041522026062012,
+              0.19876549001093258,
+              1.4936843643697104
+            ],
+            "supportOuterSkinX": 0.6378509998321533
+          },
+          {
+            "frame": 11.5,
+            "slabVertices": 2489,
+            "violatingVertices": 0,
+            "minimumHeight": 1.3350806077005413,
+            "maximumHalfWidth": 0.6888102293014526,
+            "supportWrist": [
+              0.6245236396789551,
+              0.1622302576347633,
+              1.515679462719157
+            ],
+            "supportOuterSkinX": 0.6626684069633484
+          },
+          {
+            "frame": 12.0,
+            "slabVertices": 4233,
+            "violatingVertices": 0,
+            "minimumHeight": 1.3502815008163451,
+            "maximumHalfWidth": 0.7080971598625183,
+            "supportWrist": [
+              0.644073486328125,
+              0.12549061775207515,
+              1.5393526792526244
+            ],
+            "supportOuterSkinX": 0.680677056312561
+          },
+          {
+            "frame": 12.5,
+            "slabVertices": 4874,
+            "violatingVertices": 0,
+            "minimumHeight": 1.3662170807836507,
+            "maximumHalfWidth": 0.7249305844306946,
+            "supportWrist": [
+              0.6610560417175293,
+              0.09839706376746848,
+              1.5552883784292195
+            ],
+            "supportOuterSkinX": 0.6966408491134644
+          },
+          {
+            "frame": 13.0,
+            "slabVertices": 5293,
+            "violatingVertices": 0,
+            "minimumHeight": 1.3827614535776773,
+            "maximumHalfWidth": 0.7412899136543274,
+            "supportWrist": [
+              0.6774954795837402,
+              0.0708096150998716,
+              1.5718327512232462
+            ],
+            "supportOuterSkinX": 0.7122107148170471
+          },
+          {
+            "frame": 13.5,
+            "slabVertices": 7784,
+            "violatingVertices": 0,
+            "minimumHeight": 1.392322857963615,
+            "maximumHalfWidth": 0.7535251975059509,
+            "supportWrist": [
+              0.6899881362915039,
+              0.05372695922851567,
+              1.581420143234306
+            ],
+            "supportOuterSkinX": 0.7240597009658813
+          },
+          {
+            "frame": 14.0,
+            "slabVertices": 9807,
+            "violatingVertices": 0,
+            "minimumHeight": 0.8699674446442516,
+            "maximumHalfWidth": 0.765095591545105,
+            "supportWrist": [
+              0.7017104625701904,
+              0.03615527903592142,
+              1.591378494010249
+            ],
+            "supportOuterSkinX": 0.7350804805755615
+          },
+          {
+            "frame": 14.5,
+            "slabVertices": 11402,
+            "violatingVertices": 0,
+            "minimumHeight": 0.8841284345738174,
+            "maximumHalfWidth": 0.7717047333717346,
+            "supportWrist": [
+              0.7085931301116943,
+              0.028669353767677652,
+              1.594903631126094
+            ],
+            "supportOuterSkinX": 0.7415957450866699
+          },
+          {
+            "frame": 15.0,
+            "slabVertices": 13203,
+            "violatingVertices": 0,
+            "minimumHeight": 0.9333837101586395,
+            "maximumHalfWidth": 0.7769314050674438,
+            "supportWrist": [
+              0.7140104174613953,
+              0.021059525012969926,
+              1.5994558403618866
+            ],
+            "supportOuterSkinX": 0.7466109991073608
+          },
+          {
+            "frame": 15.5,
+            "slabVertices": 14520,
+            "violatingVertices": 0,
+            "minimumHeight": 0.9091790285583943,
+            "maximumHalfWidth": 0.7785002589225769,
+            "supportWrist": [
+              0.7155616879463196,
+              0.02055985088701595,
+              1.5986813869949787
+            ],
+            "supportOuterSkinX": 0.7482411861419678
+          },
+          {
+            "frame": 16.0,
+            "slabVertices": 16143,
+            "violatingVertices": 0,
+            "minimumHeight": 0.8877598404884338,
+            "maximumHalfWidth": 0.7780771255493164,
+            "supportWrist": [
+              0.7150002121925354,
+              0.02000003302538833,
+              1.599999761581421
+            ],
+            "supportOuterSkinX": 0.7477341890335083
+          },
+          {
+            "frame": 16.5,
+            "slabVertices": 18073,
+            "violatingVertices": 0,
+            "minimumHeight": 0.8822750983058545,
+            "maximumHalfWidth": 0.7795058488845825,
+            "supportWrist": [
+              0.7160323262214661,
+              0.020223647356033325,
+              1.5990353760539624
+            ],
+            "supportOuterSkinX": 0.7490631341934204
+          },
+          {
+            "frame": 17.0,
+            "slabVertices": 19487,
+            "violatingVertices": 0,
+            "minimumHeight": 0.8836170999056514,
+            "maximumHalfWidth": 0.7790753841400146,
+            "supportWrist": [
+              0.7150000333786011,
+              0.019999938761746328,
+              1.5999999014383968
+            ],
+            "supportOuterSkinX": 0.7482526302337646
+          },
+          {
+            "frame": 17.5,
+            "slabVertices": 20396,
+            "violatingVertices": 0,
+            "minimumHeight": 0.8823113065137402,
+            "maximumHalfWidth": 0.7805576324462891,
+            "supportWrist": [
+              0.7160140872001648,
+              0.020305222714388838,
+              1.5992318909539716
+            ],
+            "supportOuterSkinX": 0.7496544718742371
+          },
+          {
+            "frame": 18.0,
+            "slabVertices": 20957,
+            "violatingVertices": 0,
+            "minimumHeight": 0.8844136763115911,
+            "maximumHalfWidth": 0.7802383303642273,
+            "supportWrist": [
+              0.7149999737739563,
+              0.020000058412551924,
+              1.6000003386040715
+            ],
+            "supportOuterSkinX": 0.7499437928199768
+          },
+          {
+            "frame": 18.5,
+            "slabVertices": 21323,
+            "violatingVertices": 0,
+            "minimumHeight": 0.88425061601729,
+            "maximumHalfWidth": 0.7813588380813599,
+            "supportWrist": [
+              0.7160037159919739,
+              0.020258976574297316,
+              1.5994535436067066
+            ],
+            "supportOuterSkinX": 0.7524347305297852
+          },
+          {
+            "frame": 19.0,
+            "slabVertices": 21325,
+            "violatingVertices": 0,
+            "minimumHeight": 0.8867317138586388,
+            "maximumHalfWidth": 0.7807275056838989,
+            "supportWrist": [
+              0.7150000333786011,
+              0.02000005488042489,
+              1.600000023690258
+            ],
+            "supportOuterSkinX": 0.752721905708313
+          },
+          {
+            "frame": 19.5,
+            "slabVertices": 21735,
+            "violatingVertices": 0,
+            "minimumHeight": 0.8874426694413969,
+            "maximumHalfWidth": 0.7813348770141602,
+            "supportWrist": [
+              0.7159900665283203,
+              0.020114985108375616,
+              1.5996532650491546
+            ],
+            "supportOuterSkinX": 0.7549068331718445
+          },
+          {
+            "frame": 20.0,
+            "slabVertices": 21258,
+            "violatingVertices": 0,
+            "minimumHeight": 0.8923333642908428,
+            "maximumHalfWidth": 0.7802199125289917,
+            "supportWrist": [
+              0.7149999737739563,
+              0.02000008280630472,
+              1.5999997613855692
+            ],
+            "supportOuterSkinX": 0.7548856139183044
+          },
+          {
+            "frame": 20.5,
+            "slabVertices": 19466,
+            "violatingVertices": 0,
+            "minimumHeight": 0.9039977502841755,
+            "maximumHalfWidth": 0.7804502844810486,
+            "supportWrist": [
+              0.715968906879425,
+              0.01994530106032333,
+              1.5997903955001638
+            ],
+            "supportOuterSkinX": 0.756800651550293
+          },
+          {
+            "frame": 21.0,
+            "slabVertices": 17956,
+            "violatingVertices": 0,
+            "minimumHeight": 0.9168035495640781,
+            "maximumHalfWidth": 0.7790740728378296,
+            "supportWrist": [
+              0.7149999141693115,
+              0.019999894499778792,
+              1.5999999750020053
+            ],
+            "supportOuterSkinX": 0.7567024827003479
+          },
+          {
+            "frame": 21.5,
+            "slabVertices": 16958,
+            "violatingVertices": 0,
+            "minimumHeight": 0.921946734955789,
+            "maximumHalfWidth": 0.7791674733161926,
+            "supportWrist": [
+              0.7159338593482971,
+              0.0198226775284166,
+              1.5998596258668913
+            ],
+            "supportOuterSkinX": 0.7582572102546692
+          },
+          {
+            "frame": 22.0,
+            "slabVertices": 15707,
+            "violatingVertices": 0,
+            "minimumHeight": 0.9269954331277787,
+            "maximumHalfWidth": 0.7776046991348267,
+            "supportWrist": [
+              0.7149999141693115,
+              0.020000032031977644,
+              1.6000001199602067
+            ],
+            "supportOuterSkinX": 0.7578079700469971
+          },
+          {
+            "frame": 22.5,
+            "slabVertices": 14432,
+            "violatingVertices": 0,
+            "minimumHeight": 0.9990438036447781,
+            "maximumHalfWidth": 0.7776691317558289,
+            "supportWrist": [
+              0.715882420539856,
+              0.01977702677249904,
+              1.5998841039663572
+            ],
+            "supportOuterSkinX": 0.7590091228485107
+          },
+          {
+            "frame": 23.0,
+            "slabVertices": 13566,
+            "violatingVertices": 0,
+            "minimumHeight": 1.1762227810992945,
+            "maximumHalfWidth": 0.7761377096176147,
+            "supportWrist": [
+              0.7150000333786011,
+              0.020000009293909438,
+              1.6000001229419458
+            ],
+            "supportOuterSkinX": 0.7583671808242798
+          },
+          {
+            "frame": 23.5,
+            "slabVertices": 13526,
+            "violatingVertices": 0,
+            "minimumHeight": 1.1734634900386873,
+            "maximumHalfWidth": 0.7699940800666809,
+            "supportWrist": [
+              0.709732174873352,
+              0.017622601806565497,
+              1.599764969378287
+            ],
+            "supportOuterSkinX": 0.7533859014511108
+          },
+          {
+            "frame": 24.0,
+            "slabVertices": 13595,
+            "violatingVertices": 0,
+            "minimumHeight": 0.8968824326992035,
+            "maximumHalfWidth": 0.7626422047615051,
+            "supportWrist": [
+              0.7031687498092651,
+              0.015198832377791405,
+              1.599314022064209
+            ],
+            "supportOuterSkinX": 0.747051477432251
+          },
+          {
+            "frame": 24.5,
+            "slabVertices": 13784,
+            "violatingVertices": 0,
+            "minimumHeight": 0.8779761457737032,
+            "maximumHalfWidth": 0.7450625896453857,
+            "supportWrist": [
+              0.6866957545280457,
+              0.004942232177213568,
+              1.5984138512905184
+            ],
+            "supportOuterSkinX": 0.7309733629226685
+          },
+          {
+            "frame": 25.0,
+            "slabVertices": 12525,
+            "violatingVertices": 0,
+            "minimumHeight": 0.8696941532268274,
+            "maximumHalfWidth": 0.7271007299423218,
+            "supportWrist": [
+              0.6697922348976135,
+              -0.006120844240541823,
+              1.5970711506976831
+            ],
+            "supportOuterSkinX": 0.7143927216529846
+          },
+          {
+            "frame": 25.5,
+            "slabVertices": 10580,
+            "violatingVertices": 0,
+            "minimumHeight": 0.8686209432607909,
+            "maximumHalfWidth": 0.7014049887657166,
+            "supportWrist": [
+              0.6456179022789001,
+              -0.02749043777585025,
+              1.5942030660635251
+            ],
+            "supportOuterSkinX": 0.6907482147216797
+          },
+          {
+            "frame": 26.0,
+            "slabVertices": 10257,
+            "violatingVertices": 0,
+            "minimumHeight": 0.8686374493001879,
+            "maximumHalfWidth": 0.6752564907073975,
+            "supportWrist": [
+              0.6212672591209412,
+              -0.050224832141840814,
+              1.592020369326967
+            ],
+            "supportOuterSkinX": 0.6667714715003967
+          },
+          {
+            "frame": 26.5,
+            "slabVertices": 10073,
+            "violatingVertices": 0,
+            "minimumHeight": 0.8684954948930754,
+            "maximumHalfWidth": 0.6451652646064758,
+            "supportWrist": [
+              0.5936680436134338,
+              -0.08348294154361446,
+              1.5848545141725554
+            ],
+            "supportOuterSkinX": 0.6395690441131592
+          },
+          {
+            "frame": 27.0,
+            "slabVertices": 9686,
+            "violatingVertices": 0,
+            "minimumHeight": 0.8699683058621432,
+            "maximumHalfWidth": 0.6130330562591553,
+            "supportWrist": [
+              0.5640126466751099,
+              -0.11881972774863225,
+              1.5820859182240512
+            ],
+            "supportOuterSkinX": 0.6098862290382385
+          },
+          {
+            "frame": 27.5,
+            "slabVertices": 7983,
+            "violatingVertices": 0,
+            "minimumHeight": 0.8710585546512409,
+            "maximumHalfWidth": 0.584863007068634,
+            "supportWrist": [
+              0.5367133617401123,
+              -0.163793578688745,
+              1.567916692497234
+            ],
+            "supportOuterSkinX": 0.5835847854614258
+          },
+          {
+            "frame": 28.0,
+            "slabVertices": 4110,
+            "violatingVertices": 0,
+            "minimumHeight": 0.8744191585012767,
+            "maximumHalfWidth": 0.5458289384841919,
+            "supportWrist": [
+              0.5044471025466919,
+              -0.20904532577152612,
+              1.5653086660333964
+            ],
+            "supportOuterSkinX": 0.5035706162452698
+          },
+          {
+            "frame": 28.5,
+            "slabVertices": 2585,
+            "violatingVertices": 0,
+            "minimumHeight": 0.8845317872068237,
+            "maximumHalfWidth": 0.5201239585876465,
+            "supportWrist": [
+              0.47740763425827026,
+              -0.2629301099106669,
+              1.54685380177706
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 29.0,
+            "slabVertices": 1560,
+            "violatingVertices": 0,
+            "minimumHeight": 0.9003997145567285,
+            "maximumHalfWidth": 0.5243842005729675,
+            "supportWrist": [
+              0.44898971915245056,
+              -0.313538448333188,
+              1.5407626627359736
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 29.5,
+            "slabVertices": 856,
+            "violatingVertices": 0,
+            "minimumHeight": 0.9234022547635518,
+            "maximumHalfWidth": 0.5215009450912476,
+            "supportWrist": [
+              0.4267750680446625,
+              -0.36675330853020705,
+              1.5211747636231863
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 30.0,
+            "slabVertices": 388,
+            "violatingVertices": 0,
+            "minimumHeight": 0.9402112830182103,
+            "maximumHalfWidth": 0.5124330520629883,
+            "supportWrist": [
+              0.40405935049057007,
+              -0.4205697432160378,
+              1.5093806553383855
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 30.5,
+            "slabVertices": 106,
+            "violatingVertices": 0,
+            "minimumHeight": 0.9569262783898848,
+            "maximumHalfWidth": 0.4710184335708618,
+            "supportWrist": [
+              0.3905012309551239,
+              -0.4662467975859286,
+              1.49013858250518
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 31.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.3760748505592346,
+              -0.5142634759898539,
+              1.4746559826380428
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 31.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.37295329570770264,
+              -0.5456670895218849,
+              1.4584588942348096
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 32.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.37000012397766113,
+              -0.5774072706147475,
+              1.4424999713897706
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 32.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.36980098485946655,
+              -0.6034512629663502,
+              1.4264262285706013
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 33.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.37000006437301636,
+              -0.6293260648846626,
+              1.4102379152901703
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 33.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.3697858452796936,
+              -0.6545122006977047,
+              1.3932227324597122
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 34.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.37000006437301636,
+              -0.6793894500092226,
+              1.3761754472115428
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 34.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.36978399753570557,
+              -0.7036126807332037,
+              1.3585049706574017
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 35.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.37000003457069397,
+              -0.7273911137823705,
+              1.3408945550409952
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 35.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.36979371309280396,
+              -0.750542859291589,
+              1.3228667418477986
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 36.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.37000030279159546,
+              -0.7731249079108238,
+              1.3050000905990602
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 36.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.3698122501373291,
+              -0.7950948595448775,
+              1.2869183857919722
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 37.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.3700001835823059,
+              -0.8163848331129109,
+              1.2691052685292563
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 37.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.3698366582393646,
+              -0.837061907351017,
+              1.2512752694014972
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 38.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.37000009417533875,
+              -0.8569646218860589,
+              1.2338249724051567
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 38.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.3698643445968628,
+              -0.8762377799109178,
+              1.2165485669024705
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 39.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.3700000047683716,
+              -0.8946582302451132,
+              1.1997622659079499
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 39.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.36989298462867737,
+              -0.9124170590881946,
+              1.1833323153975994
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 40.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.3700001537799835,
+              -0.9292591820712441,
+              1.1674999713897705
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 40.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.369920551776886,
+              -0.9453944161534309,
+              1.152194792288628
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 41.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.37000006437301636,
+              -0.9605616568967148,
+              1.1375902207845037
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 41.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.3699454367160797,
+              -0.9749655058538473,
+              1.1236690241919023
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 42.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.3699999451637268,
+              -0.988359521329403,
+              1.1105457257727596
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 42.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.3699668049812317,
+              -1.000925461396023,
+              1.0982422361937085
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 43.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.37000006437301636,
+              -1.0124462992504792,
+              1.08682804122826
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 43.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.3699842393398285,
+              -1.0230694904923439,
+              1.076347854564493
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 44.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.37000012397766113,
+              -1.0326157008056287,
+              1.066843223767629
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 44.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.3699975311756134,
+              -1.041192823206937,
+              1.0583597290497022
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 45.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.37000027298927307,
+              -1.0486620545387269,
+              1.050932980739877
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 45.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.3700067400932312,
+              -1.0550901829644483,
+              1.0445851258726107
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 46.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.37000012397766113,
+              -1.060379100397781,
+              1.0393706075788558
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 46.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.3700122535228729,
+              -1.064555250108242,
+              1.0352599390023929
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 47.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.3700002431869507,
+              -1.0675604293191876,
+              1.0323526345119727
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 47.5,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.37001436948776245,
+              -1.0693813250020698,
+              1.0305441832248625
+            ],
+            "supportOuterSkinX": null
+          },
+          {
+            "frame": 48.0,
+            "slabVertices": 0,
+            "violatingVertices": 0,
+            "minimumHeight": null,
+            "maximumHalfWidth": null,
+            "supportWrist": [
+              0.3700000047683716,
+              -1.069999885559082,
+              1.029999852180481
+            ],
+            "supportOuterSkinX": null
+          }
+        ]
+      }
+    }
+  },
+  "runtime": {
+    "status": "Final native player traversal and enemy sequence verified",
+    "earlierAttempt": "A pre-final-sleeve-correction build displayed the new knee-first/one-hand pose in Flutter. Later final-model real-key attempts had foreground=false and simulationSeconds=0; not a runtime pass.",
+    "method": "Final rebuilt macOS debug app. Player inward/outward via E key; enemies via unpaused rendered simulation. All captured after pausing, foreground=true, posePreview=false.",
+    "observed": "Fukuchan landed on both sides. Sobaya 0 landed inside and resumed Walk while Sobaya 1 used the same window with Vault.",
+    "snapshots": {
+      "inward": {
+        "phase": "paused",
+        "position": {
+          "x": 5.68,
+          "y": 0,
+          "z": -9.55
+        },
+        "vault": null,
+        "rendering": {
+          "continuous": false,
+          "foreground": true,
+          "posePreview": false,
+          "ticks": 552,
+          "simulationSeconds": 9.200136999999994,
+          "playerClipSeconds": 0.3667319999999985
+        },
+        "enemies": [
+          {
+            "id": 0,
+            "alive": true,
+            "active": false,
+            "dropped": false,
+            "hp": 100,
+            "alerted": false,
+            "stun": 0,
+            "attackPending": false,
+            "climb": null,
+            "vault": null,
+            "fallingFromLadder": false,
+            "meleeRecovery": 0,
+            "meleeClipTime": null,
+            "approach": "pursue",
+            "bossMove": "ready",
+            "bossTimer": 0,
+            "x": -2,
+            "y": 0,
+            "z": -6
+          },
+          {
+            "id": 1,
+            "alive": true,
+            "active": false,
+            "dropped": false,
+            "hp": 100,
+            "alerted": false,
+            "stun": 0,
+            "attackPending": false,
+            "climb": null,
+            "vault": null,
+            "fallingFromLadder": false,
+            "meleeRecovery": 0,
+            "meleeClipTime": null,
+            "approach": "pursue",
+            "bossMove": "ready",
+            "bossTimer": 0,
+            "x": 3,
+            "y": 0,
+            "z": -2
+          }
+        ],
+        "enemyMotions": [
+          {
+            "motion": "Idle",
+            "seconds": 0
+          },
+          {
+            "motion": "Idle",
+            "seconds": 0
+          }
+        ]
+      },
+      "outward": {
+        "phase": "paused",
+        "position": {
+          "x": 5.68,
+          "y": 0,
+          "z": -11.45
+        },
+        "vault": null,
+        "rendering": {
+          "continuous": false,
+          "foreground": true,
+          "posePreview": false,
+          "ticks": 964,
+          "simulationSeconds": 16.100239000000027,
+          "playerClipSeconds": 1.7500249999999993
+        },
+        "enemies": [
+          {
+            "id": 0,
+            "alive": true,
+            "active": false,
+            "dropped": false,
+            "hp": 100,
+            "alerted": false,
+            "stun": 0,
+            "attackPending": false,
+            "climb": null,
+            "vault": null,
+            "fallingFromLadder": false,
+            "meleeRecovery": 0,
+            "meleeClipTime": null,
+            "approach": "pursue",
+            "bossMove": "ready",
+            "bossTimer": 0,
+            "x": -2,
+            "y": 0,
+            "z": -6
+          },
+          {
+            "id": 1,
+            "alive": true,
+            "active": false,
+            "dropped": false,
+            "hp": 100,
+            "alerted": false,
+            "stun": 0,
+            "attackPending": false,
+            "climb": null,
+            "vault": null,
+            "fallingFromLadder": false,
+            "meleeRecovery": 0,
+            "meleeClipTime": null,
+            "approach": "pursue",
+            "bossMove": "ready",
+            "bossTimer": 0,
+            "x": 3,
+            "y": 0,
+            "z": -2
+          }
+        ],
+        "enemyMotions": [
+          {
+            "motion": "Idle",
+            "seconds": 0
+          },
+          {
+            "motion": "Idle",
+            "seconds": 0
+          }
+        ]
+      },
+      "enemySequence": {
+        "phase": "paused",
+        "position": {
+          "x": 5.68,
+          "y": 0,
+          "z": -7.550000000000001
+        },
+        "vault": null,
+        "rendering": {
+          "continuous": false,
+          "foreground": true,
+          "posePreview": false,
+          "ticks": 1261,
+          "simulationSeconds": 4.950072999999995,
+          "playerClipSeconds": 0.7000979999999978
+        },
+        "enemies": [
+          {
+            "id": 0,
+            "alive": true,
+            "active": true,
+            "dropped": false,
+            "hp": 100,
+            "alerted": true,
+            "stun": 0,
+            "attackPending": false,
+            "climb": null,
+            "vault": null,
+            "fallingFromLadder": false,
+            "meleeRecovery": 0,
+            "meleeClipTime": null,
+            "approach": "flank",
+            "bossMove": "ready",
+            "bossTimer": 0,
+            "x": 5.68,
+            "y": 0,
+            "z": -8.629986400000043
+          },
+          {
+            "id": 1,
+            "alive": true,
+            "active": true,
+            "dropped": false,
+            "hp": 100,
+            "alerted": true,
+            "stun": 0,
+            "attackPending": false,
+            "climb": null,
+            "vault": {
+              "window": "Shotgun_front",
+              "inward": true,
+              "startX": 5.371489898416838,
+              "startZ": -11.989314220211357,
+              "elapsed": 1.6000239999999992
+            },
+            "fallingFromLadder": false,
+            "meleeRecovery": 0,
+            "meleeClipTime": null,
+            "approach": "pursue",
+            "bossMove": "ready",
+            "bossTimer": 0,
+            "x": 5.68,
+            "y": 0.5362275420993247,
+            "z": -10.356330484220779
+          }
+        ],
+        "enemyMotions": [
+          {
+            "motion": "Walk",
+            "seconds": 0.06617258428398592
+          },
+          {
+            "motion": "Vault",
+            "seconds": 0.8809326728142086
+          }
+        ]
+      }
+    }
+  },
+  "regression": {
+    "sobayaLocomotion": "Exported Walk/Run: finite vertices, soles, face forward and shoulder width checks passed; see canonical locomotion_validation.json",
+    "dartState": "No runtime Dart behavior changed. Previous 86-test suite and final 13 traversal tests belong to 89515f6."
+  },
+  "limits": [
+    "Sobaya hand skin remains 16–28mm away from the side frame while planted. Closer candidates increased sleeve/finger penetration and were not adopted. This remaining visual contact issue is not marked complete.",
+    "60Hz vertex samples with a 20mm boundary tolerance, not continuous swept triangles or cloth self-collision.",
+    "Hand surface distance is the outermost hand-weighted vertex in the wall slab; it does not measure full palm pressure or finger deformation.",
+    "This is authored IK, not new motion capture.",
+    "Full campaign after window changes, long-run/profile and refreshed Mac ZIP remain pending.",
+    "Offline final render shows noticeable Sobaya shirt deformation around the waist and hem in the raised-knee pose; clothing appearance still needs refinement."
+  ]
+}

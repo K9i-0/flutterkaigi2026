@@ -19,7 +19,7 @@ class HazardWindow {
       (pz - entryZ(inward)).abs() < .55;
 }
 
-/// Feet rise while the clip folds the knees and places the hands on the sill.
+/// Feet rise while the clip braces one hand on the jamb and passes each leg.
 /// The same normalized clock drives the root and both rigs' baked Vault clip.
 class WindowTraversal {
   WindowTraversal(
