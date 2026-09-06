@@ -21,6 +21,13 @@ class EventShot {
   final double fov;
   final bool anchorToPlayer;
   final String speaker, text, actor, motion;
+  bool get isNarration => speaker.isEmpty && text.isNotEmpty;
+  String get voiceSpeaker => isNarration ? 'ナレーション' : speaker;
+
+  // Allow time to find the subtitle, read Japanese, then take in the image.
+  // This also protects unvoiced lines when their WAV is missing or unavailable.
+  double get readingSeconds =>
+      math.max(6, text.replaceAll(RegExp(r'\s'), '').runes.length / 6 + 2);
   final (double, double, double) from, to, target;
   vm.Vector3 camera(double t) {
     final u = t.clamp(0.0, 1.0), ease = u * u * (3 - 2 * u);
@@ -521,14 +528,23 @@ class HazardDirector {
     : shots = hazardEvents[id] ?? (throw ArgumentError.value(id));
   final String id;
   final Map<String, double> voiceSeconds;
-  double get duration =>
-      math.max(shot.seconds, (voiceSeconds['event:$id:$index'] ?? 0) + .5);
+  double get duration {
+    final voice = voiceSeconds['event:$id:$index'] ?? 0;
+    final minimum = shot.isNarration || voice <= 0
+        ? math.max(shot.seconds, shot.readingSeconds)
+        : shot.seconds;
+    return math.max(minimum, voice + (shot.isNarration ? 1.5 : .5));
+  }
+
   final List<EventShot> shots;
   int index = 0;
   double elapsed = 0;
   bool paused = false, done = false;
   EventShot get shot => shots[math.min(index, shots.length - 1)];
-  EventCut? get cut => shot.cuts.where((c) => c.at <= progress).lastOrNull;
+  // Compare clock times directly: dividing a fractional duration can round an
+  // exact cut boundary just below its authored normalized position.
+  EventCut? get cut =>
+      shot.cuts.where((c) => c.at * duration <= elapsed).lastOrNull;
   EventShot get view => cut?.framing ?? shot;
   double get visualProgress {
     final c = cut;

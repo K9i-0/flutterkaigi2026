@@ -1,0 +1,510 @@
+{
+  "date": "2026-09-06",
+  "tests": 134,
+  "analyze": "No issues found",
+  "existing69VoiceTakesUnchanged": true,
+  "transcriptReview": "Four local Whisper transcripts cover the complete sentences; recognition contains homophone/name errors. Not a perceptual voice-quality certification.",
+  "nativeScope": "Opening narration observed playing past 12 seconds, farm pause freezes audio and event clock, all four cues loaded by native backend. Last-order/ending snapshots were background-paused; not full playback or manual-next verification.",
+  "snapshots": [
+    {
+      "event": {
+        "id": "opening",
+        "shot": 0,
+        "elapsed": 12.100156000000009,
+        "duration": 16.254791666666666,
+        "visual": {
+          "image": "",
+          "document": "",
+          "progress": 0.2697299441007339
+        },
+        "paused": false
+      },
+      "voice": {
+        "requested": "event:1:opening:0",
+        "active": "event:1:opening:0",
+        "playbackSeconds": 12.124545,
+        "loading": false,
+        "speaking": true,
+        "finished": false,
+        "paused": false,
+        "volume": 1,
+        "errors": [],
+        "backend": {
+          "state": "playing",
+          "positionMs": 11993,
+          "durationMs": 14754,
+          "loop": false,
+          "loopCompletions": 0,
+          "playbackRequested": true,
+          "positionUpdateMs": 200
+        }
+      },
+      "faces": {
+        "福ちゃん": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        },
+        "やめ太郎": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "event": {
+        "id": "farm",
+        "shot": 0,
+        "elapsed": 0,
+        "duration": 14.402208333333334,
+        "visual": {
+          "image": "",
+          "document": "",
+          "progress": 0
+        },
+        "paused": false
+      },
+      "voice": {
+        "requested": "event:2:farm:0",
+        "active": "event:2:farm:0",
+        "playbackSeconds": null,
+        "loading": false,
+        "speaking": false,
+        "finished": false,
+        "paused": true,
+        "volume": 1,
+        "errors": [],
+        "backend": {
+          "state": "paused",
+          "positionMs": 0,
+          "durationMs": 12902,
+          "loop": false,
+          "loopCompletions": 0,
+          "playbackRequested": false,
+          "positionUpdateMs": 200
+        }
+      },
+      "faces": {
+        "福ちゃん": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        },
+        "やめ太郎": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "event": {
+        "id": "farm",
+        "shot": 0,
+        "elapsed": 1.8666909999999992,
+        "duration": 14.402208333333334,
+        "visual": {
+          "image": "",
+          "document": "",
+          "progress": 0.2592228853792675
+        },
+        "paused": true
+      },
+      "voice": {
+        "requested": "event:2:farm:0",
+        "active": "event:2:farm:0",
+        "playbackSeconds": null,
+        "loading": false,
+        "speaking": false,
+        "finished": false,
+        "paused": true,
+        "volume": 1,
+        "errors": [],
+        "backend": {
+          "state": "paused",
+          "positionMs": 1786,
+          "durationMs": 12902,
+          "loop": false,
+          "loopCompletions": 0,
+          "playbackRequested": false,
+          "positionUpdateMs": 200
+        }
+      }
+    },
+    {
+      "event": {
+        "id": "farm",
+        "shot": 0,
+        "elapsed": 1.8666909999999992,
+        "duration": 14.402208333333334,
+        "visual": {
+          "image": "",
+          "document": "",
+          "progress": 0.2592228853792675
+        },
+        "paused": true
+      },
+      "voice": {
+        "requested": "event:2:farm:0",
+        "active": "event:2:farm:0",
+        "playbackSeconds": null,
+        "loading": false,
+        "speaking": false,
+        "finished": false,
+        "paused": true,
+        "volume": 1,
+        "errors": [],
+        "backend": {
+          "state": "paused",
+          "positionMs": 1786,
+          "durationMs": 12902,
+          "loop": false,
+          "loopCompletions": 0,
+          "playbackRequested": false,
+          "positionUpdateMs": 200
+        }
+      },
+      "faces": {
+        "福ちゃん": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        },
+        "やめ太郎": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "event": {
+        "id": "farm",
+        "shot": 0,
+        "elapsed": 1.8666909999999992,
+        "duration": 14.402208333333334,
+        "visual": {
+          "image": "",
+          "document": "",
+          "progress": 0.2592228853792675
+        },
+        "paused": true
+      },
+      "voice": {
+        "requested": "event:2:farm:0",
+        "active": "event:2:farm:0",
+        "playbackSeconds": null,
+        "loading": false,
+        "speaking": false,
+        "finished": false,
+        "paused": true,
+        "volume": 1,
+        "errors": [],
+        "backend": {
+          "state": "paused",
+          "positionMs": 1786,
+          "durationMs": 12902,
+          "loop": false,
+          "loopCompletions": 0,
+          "playbackRequested": false,
+          "positionUpdateMs": 200
+        }
+      },
+      "faces": {
+        "福ちゃん": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        },
+        "やめ太郎": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "event": {
+        "id": "farm",
+        "shot": 0,
+        "elapsed": 1.8666909999999992,
+        "duration": 14.402208333333334,
+        "visual": {
+          "image": "",
+          "document": "",
+          "progress": 0.2592228853792675
+        },
+        "paused": true
+      },
+      "voice": {
+        "requested": "event:2:farm:0",
+        "active": "event:2:farm:0",
+        "playbackSeconds": null,
+        "loading": false,
+        "speaking": false,
+        "finished": false,
+        "paused": true,
+        "volume": 1,
+        "errors": [],
+        "backend": {
+          "state": "paused",
+          "positionMs": 1786,
+          "durationMs": 12902,
+          "loop": false,
+          "loopCompletions": 0,
+          "playbackRequested": false,
+          "positionUpdateMs": 200
+        }
+      },
+      "faces": {
+        "福ちゃん": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        },
+        "やめ太郎": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "event": {
+        "id": "farm",
+        "shot": 0,
+        "elapsed": 1.8666909999999992,
+        "duration": 14.402208333333334,
+        "visual": {
+          "image": "",
+          "document": "",
+          "progress": 0.2592228853792675
+        },
+        "paused": true
+      },
+      "voice": {
+        "requested": "event:2:farm:0",
+        "active": "event:2:farm:0",
+        "playbackSeconds": null,
+        "loading": false,
+        "speaking": false,
+        "finished": false,
+        "paused": true,
+        "volume": 1,
+        "errors": [],
+        "backend": {
+          "state": "paused",
+          "positionMs": 1786,
+          "durationMs": 12902,
+          "loop": false,
+          "loopCompletions": 0,
+          "playbackRequested": false,
+          "positionUpdateMs": 200
+        }
+      }
+    },
+    {
+      "event": {
+        "id": "farm",
+        "shot": 0,
+        "elapsed": 1.8666909999999992,
+        "duration": 14.402208333333334,
+        "visual": {
+          "image": "",
+          "document": "",
+          "progress": 0.2592228853792675
+        },
+        "paused": true
+      },
+      "voice": {
+        "requested": "event:2:farm:0",
+        "active": "event:2:farm:0",
+        "playbackSeconds": null,
+        "loading": false,
+        "speaking": false,
+        "finished": false,
+        "paused": true,
+        "volume": 1,
+        "errors": [],
+        "backend": {
+          "state": "paused",
+          "positionMs": 1786,
+          "durationMs": 12902,
+          "loop": false,
+          "loopCompletions": 0,
+          "playbackRequested": false,
+          "positionUpdateMs": 200
+        }
+      }
+    },
+    {
+      "event": {
+        "id": "farm",
+        "shot": 0,
+        "elapsed": 1.8666909999999992,
+        "duration": 14.402208333333334,
+        "visual": {
+          "image": "",
+          "document": "",
+          "progress": 0.2592228853792675
+        },
+        "paused": true
+      },
+      "voice": {
+        "requested": "event:2:farm:0",
+        "active": "event:2:farm:0",
+        "playbackSeconds": null,
+        "loading": false,
+        "speaking": false,
+        "finished": false,
+        "paused": true,
+        "volume": 1,
+        "errors": [],
+        "backend": {
+          "state": "paused",
+          "positionMs": 1786,
+          "durationMs": 12902,
+          "loop": false,
+          "loopCompletions": 0,
+          "playbackRequested": false,
+          "positionUpdateMs": 200
+        }
+      }
+    },
+    {
+      "event": {
+        "id": "last_order",
+        "shot": 0,
+        "elapsed": 0,
+        "duration": 14.052708333333333,
+        "visual": {
+          "image": "engine-archive",
+          "document": "",
+          "progress": 0
+        },
+        "paused": false
+      },
+      "voice": {
+        "requested": "event:3:last_order:0",
+        "active": "event:3:last_order:0",
+        "playbackSeconds": null,
+        "loading": false,
+        "speaking": false,
+        "finished": false,
+        "paused": true,
+        "volume": 1,
+        "errors": [],
+        "backend": {
+          "state": "paused",
+          "positionMs": 0,
+          "durationMs": 12552,
+          "loop": false,
+          "loopCompletions": 0,
+          "playbackRequested": false,
+          "positionUpdateMs": 200
+        }
+      },
+      "faces": {
+        "福ちゃん": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        },
+        "やめ太郎": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "event": {
+        "id": "ending",
+        "shot": 0,
+        "elapsed": 0,
+        "duration": 17.30125,
+        "visual": {
+          "image": "harbor",
+          "document": "",
+          "progress": 0
+        },
+        "paused": false
+      },
+      "voice": {
+        "requested": "event:4:ending:0",
+        "active": "event:4:ending:0",
+        "playbackSeconds": null,
+        "loading": false,
+        "speaking": false,
+        "finished": false,
+        "paused": true,
+        "volume": 1,
+        "errors": [],
+        "backend": {
+          "state": "paused",
+          "positionMs": 0,
+          "durationMs": 15801,
+          "loop": false,
+          "loopCompletions": 0,
+          "playbackRequested": false,
+          "positionUpdateMs": 200
+        }
+      },
+      "faces": {
+        "福ちゃん": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        },
+        "やめ太郎": {
+          "opening": 0,
+          "nodes": 1,
+          "weights": [
+            0,
+            0
+          ]
+        }
+      }
+    }
+  ]
+}

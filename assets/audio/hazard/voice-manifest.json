@@ -4,6 +4,25 @@
   "engine_revision": "8224dafb46d0aba89209a8f905f1cb7e3299d9c1",
   "clips": [
     {
+      "speaker": "ナレーション",
+      "text": "アクシデンチュアからの辞令。赴任先は、廃村ゆめみ村。\n福ちゃんを降ろすと、船はすぐに岸を離れた。迎えに立っていたのは、やめ太郎だった。",
+      "uses": [
+        "event:opening:0"
+      ],
+      "caption": "落ち着いたアナウンサーの情景ナレーション。標準語で、明瞭に、ゆっくりと文章の区切りに間を取り、最後まで読み上げる。抑制された抑揚で真面目に話す。",
+      "seed": 2026,
+      "reference": "02_CHARACTERS/YumeTeleAnchor_voice.wav",
+      "reference_sha256": "e3cd210adad43fb3338684555e7e066f83cfad2400265c8a73fa55b9f96b753f",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "アクシデンチュアからの辞令。赴任先は、廃村ゆめみ村。 福ちゃんを降ろすと、船はすぐに岸を離れた。迎えに立っていたのは、やめ太郎だった。",
+      "id": "139f0c8d3089726f",
+      "asset": "audio/voice/139f0c8d3089726f.wav",
+      "seconds": 14.754791666666666,
+      "kind": "speech",
+      "sha256": "cf4a562b2cec96e82f6dec91ea67008848a8ff56efc783df3fea49f37b9d8217",
+      "raw_sha256": "431882187bba6ce7aa396aa52def6409bca25df73363e60527bb3ad7b78caa13"
+    },
+    {
       "speaker": "やめ太郎",
       "text": "福ちゃんまで送られてきたんか。ワイは二週間前や。迎えの担当者はおらんから、今はワイが案内しとる。",
       "uses": [
@@ -175,6 +194,25 @@
       "raw_sha256": "30fde39e7335f7413ab4b2a34669b666e5a0ab2394a62dcee03361b10468f8cf"
     },
     {
+      "speaker": "ナレーション",
+      "text": "CHAPTER 02 — 撤収対象外\n農場の補給所には、たこさんがいた。棚に並ぶ物資の奥で、封をしたビール箱が積み上がっている。",
+      "uses": [
+        "event:farm:0"
+      ],
+      "caption": "落ち着いたアナウンサーの情景ナレーション。標準語で、明瞭に、ゆっくりと文章の区切りに間を取り、最後まで読み上げる。抑制された抑揚で真面目に話す。",
+      "seed": 2026,
+      "reference": "02_CHARACTERS/YumeTeleAnchor_voice.wav",
+      "reference_sha256": "e3cd210adad43fb3338684555e7e066f83cfad2400265c8a73fa55b9f96b753f",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "第二章。 撤収対象外。農場の補給所には、たこさんがいた。棚に並ぶ物資の奥で、封をしたビール箱が積み上がっている。",
+      "id": "b2c09db6affb6543",
+      "asset": "audio/voice/b2c09db6affb6543.wav",
+      "seconds": 12.902208333333334,
+      "kind": "speech",
+      "sha256": "c8479f03353c036c74660a233d9c90ec2ff38210a895f06ce4cfd1e47fd9432b",
+      "raw_sha256": "09d987a799f01b14214af62c6c9e40151ab13955438db6331277725650eb1e6f"
+    },
+    {
       "speaker": "たこさん",
       "text": "いらっしゃいませ。私も一週間前に送られてきました。待つだけでは帰れないので、ここで物資を集めています。",
       "uses": [
@@ -327,6 +365,25 @@
       "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
     },
     {
+      "speaker": "ナレーション",
+      "text": "LAST ORDER — そば屋エンジン中枢\n「検収まで運転継続」。誰もいない監督席に向けて、録音された命令が繰り返される。",
+      "uses": [
+        "event:last_order:0"
+      ],
+      "caption": "落ち着いたアナウンサーの情景ナレーション。標準語で、明瞭に、ゆっくりと文章の区切りに間を取り、最後まで読み上げる。抑制された抑揚で真面目に話す。",
+      "seed": 2026,
+      "reference": "02_CHARACTERS/YumeTeleAnchor_voice.wav",
+      "reference_sha256": "e3cd210adad43fb3338684555e7e066f83cfad2400265c8a73fa55b9f96b753f",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "ラストオーダー。 そば屋エンジン中枢。「検収まで運転継続」。誰もいない監督席に向けて、録音された命令が繰り返される。",
+      "id": "f21a97236bba4424",
+      "asset": "audio/voice/f21a97236bba4424.wav",
+      "seconds": 12.552708333333333,
+      "kind": "speech",
+      "sha256": "9fc1ce8b299216ec7f6ad8c5d3b06d16f97a5a0d7d3f0a945e8d7f6b808485e4",
+      "raw_sha256": "18a0c210468842c88dadff5a3d7a7a043a17fa6f0dc60086b8df0565c447e239"
+    },
+    {
       "speaker": "そば屋",
       "text": "ビール……最後の一杯だ。乾杯！",
       "uses": [
@@ -382,6 +439,25 @@
       "kind": "speech",
       "sha256": "726b061a74e11d959a792b545673608b0796ba9381eaeb2a02a7febb76d19237",
       "raw_sha256": "aed8699bab6ac6bcdd6f84d6694da13a843fa5c6cfaff1c7c9bed5a24f4b4d60"
+    },
+    {
+      "speaker": "ナレーション",
+      "text": "中枢停止。運転命令が途切れ、非常無線から救難信号が届いた。\n救助の船が来る。避難していた社員たちを桟橋へ送り、三人も帰り支度を始める。",
+      "uses": [
+        "event:ending:0"
+      ],
+      "caption": "落ち着いたアナウンサーの情景ナレーション。標準語で、明瞭に、ゆっくりと文章の区切りに間を取り、最後まで読み上げる。抑制された抑揚で真面目に話す。",
+      "seed": 2026,
+      "reference": "02_CHARACTERS/YumeTeleAnchor_voice.wav",
+      "reference_sha256": "e3cd210adad43fb3338684555e7e066f83cfad2400265c8a73fa55b9f96b753f",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "speechText": "中枢停止。運転命令が途切れ、非常無線から救難信号が届いた。 救助の船が来る。避難していた社員たちを桟橋へ送り、三人も帰り支度を始める。",
+      "id": "bfa065ec8239abd8",
+      "asset": "audio/voice/bfa065ec8239abd8.wav",
+      "seconds": 15.80125,
+      "kind": "speech",
+      "sha256": "fcd4a7abf97caf2d2d31c03a3cfac3370190b99de46bb4f4f0d133f90c0cfd7c",
+      "raw_sha256": "5b077abbaa7d2bfeb1dc4286a986f73b5dc34474d73364c5385aa0f8745facab"
     },
     {
       "speaker": "やめ太郎",
