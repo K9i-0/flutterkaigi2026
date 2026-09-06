@@ -732,7 +732,7 @@ void attachGameAutomation(HazardGameController game) {
         case 'kick':
           s.kick();
         case 'interact':
-          s.interact();
+          g.interact();
         case 'reload':
           s.reload();
         case 'aim':

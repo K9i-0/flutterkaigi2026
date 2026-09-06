@@ -9,6 +9,17 @@ OUT.mkdir(parents=True,exist_ok=True);PROPS.mkdir(parents=True,exist_ok=True)
 bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False)
 rng=random.Random(4905);groups={};mats={};solids=[];houses=[];ramps=[];windows=[]
 
+# Wall art stays deliberately coarse; the reader loads untouched production PNGs.
+POSTER_WORLD_LONG_EDGE = 256
+
+def wall_poster_image(path):
+ im=bpy.data.images.load(str(path),check_existing=False)
+ w,h=im.size
+ scale=POSTER_WORLD_LONG_EDGE/max(w,h)
+ im.scale(max(1,round(w*scale)),max(1,round(h*scale)))
+ im.pack()
+ return im
+
 def material(name,color,rough=.9,metal=0,pattern=None):
  m=bpy.data.materials.new(name);m.diffuse_color=(*color,1);m.use_nodes=True;p=m.node_tree.nodes.get('Principled BSDF');p.inputs['Base Color'].default_value=(*color,1);p.inputs['Roughness'].default_value=rough;p.inputs['Metallic'].default_value=metal
  if pattern:

@@ -45,7 +45,7 @@ def fence(name,x,z,length,axis='x',gap=None):
 
 def poster(id,title,source,x,z,h,inside=False):
     mat=material('Poster_'+id,(1,1,1),1)
-    im=bpy.data.images.load(str(ROOT/source));height=round(768*im.size[1]/im.size[0]);im.scale(768,height);im.pack()
+    im=wall_poster_image(ROOT/source)
     tex=mats[mat].node_tree.nodes.new('ShaderNodeTexImage');tex.image=im
     mats[mat].node_tree.links.new(tex.outputs['Color'],mats[mat].node_tree.nodes.get('Principled BSDF').inputs['Base Color'])
     sign=-1 if inside else 1;w=.85;hh=1.28

@@ -175,3 +175,5 @@ Macパッケージ作成では3区画、9シーン、各manifestに記載され�
 `madogiwa.runGameProbe` は `conversation`、`companionYametaro`、`companionTakosan` を受け付ける。被弾プローブは本物のフレームで被弾声→倒れる台詞→ゲームオーバーを観測し、テスト中のセーブを書き込まない。`madogiwa.openGameScenario(name=storyMemo)` は最初のメモ前へ移動する。[今回の実機記録](qa/story-native-20260906.json)を参照。
 
 最終の「ゆめみ村・特別研修」改訂は126テスト・音声60本の整合性・Macアプリ同梱ハッシュを確認済み。台詞とメモ改訂後の前面再生確認はMacのロック解除待ち。被弾声と口パクのネイティブプローブは改訂前に成功し、上記QAには確認した版を明記している。
+
+ポスター・メモは取得直後に自動閲覧し、その間はゲームが停止する。E／Escまたは閉じるボタンで探索へ戻る。ポスター閲覧は元画像・最大6倍ズーム、壁用テクスチャだけ長辺256px。再生成は `tools/hazard_environment_kit.py` の `wall_poster_image` を共用する。

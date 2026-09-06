@@ -807,6 +807,13 @@ class HazardGameController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void interact() {
+    state!.interact();
+    // A pickup can stop the SceneView ticker. Apply visibility, pickup sound
+    // and pending saves now instead of relying on another gameplay frame.
+    refreshView();
+  }
+
   void toggle(PlayPhase phase) {
     state!.toggle(phase);
     notifyListeners();
@@ -995,6 +1002,7 @@ class HazardGameController extends ChangeNotifier {
             s.phase == PlayPhase.paused ||
             s.phase == PlayPhase.inventory ||
             s.phase == PlayPhase.collection ||
+            s.phase == PlayPhase.reading ||
             s.phase == PlayPhase.mapView ||
             s.phase == PlayPhase.settings)) {
       final identity = 'reaction:$runEpoch:${s.zoneId}:${s.reactionSerial}';

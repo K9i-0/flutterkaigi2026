@@ -157,6 +157,12 @@ class _HazardGamePageState extends State<HazardGamePage> {
       }
       return KeyEventResult.handled;
     }
+    if (s.phase == PlayPhase.reading) {
+      if (k == LogicalKeyboardKey.escape || k == LogicalKeyboardKey.keyE) {
+        closeRecord();
+      }
+      return KeyEventResult.handled;
+    }
     if (s.phase == PlayPhase.settings) {
       if (k == LogicalKeyboardKey.escape) game.closeSettings();
       return KeyEventResult.handled;
@@ -190,7 +196,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
       } else if (k == LogicalKeyboardKey.keyR) {
         s.reload();
       } else if (k == LogicalKeyboardKey.keyE) {
-        s.interact();
+        game.interact();
       } else if (k == LogicalKeyboardKey.keyH) {
         s.heal();
       } else if (k == LogicalKeyboardKey.keyX) {
@@ -650,7 +656,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
                             child: Center(
                               child: FilledButton.icon(
                                 key: const ValueKey('game-interact'),
-                                onPressed: s.interact,
+                                onPressed: game.interact,
                                 icon: const Icon(Icons.touch_app_outlined),
                                 label: Text('E  ${s.interactionLabel}'),
                               ),
@@ -708,6 +714,18 @@ class _HazardGamePageState extends State<HazardGamePage> {
                       if (s.phase == PlayPhase.inventory) inventory(s),
                       if (s.phase == PlayPhase.mapView) fullMap(s),
                       if (s.phase == PlayPhase.collection) collection(s),
+                      if (s.phase == PlayPhase.reading)
+                        Positioned.fill(
+                          child: ColoredBox(
+                            color: Colors.black54,
+                            child: Center(
+                              child: JournalRecordReader(
+                                record: journalRecord(s, s.readingRecord!),
+                                onClose: closeRecord,
+                              ),
+                            ),
+                          ),
+                        ),
                       if (s.phase == PlayPhase.paused) pause(s),
                       if (s.phase == PlayPhase.dead ||
                           s.phase == PlayPhase.clear)
@@ -1276,6 +1294,15 @@ class _HazardGamePageState extends State<HazardGamePage> {
       ],
     ),
   );
+  void closeRecord() {
+    held.clear();
+    touchX = touchY = 0;
+    rightMouseHeld = false;
+    game.state!.closeCollectedRecord();
+    game.refreshView();
+    focus.requestFocus();
+  }
+
   Widget collection(HazardGameState s) => modal('村の記録', HazardJournal(s));
   Widget eventOverlay() {
     final d = game.director!;

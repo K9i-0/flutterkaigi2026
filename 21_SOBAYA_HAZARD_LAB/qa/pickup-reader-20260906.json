@@ -1,0 +1,48 @@
+{
+  "tests": 132,
+  "analyzer": "No issues found",
+  "runtimeErrors": 0,
+  "memoPickup": {
+    "phase": "reading",
+    "memos": [
+      "proposal"
+    ],
+    "checkpoint": {
+      "exists": true,
+      "saving": false,
+      "status": "チェックポイントを保存しました。"
+    },
+    "rendering": {
+      "continuous": false,
+      "foreground": true,
+      "posePreview": false,
+      "ticks": 7,
+      "simulationSeconds": 0.100001,
+      "playerClipSeconds": 0
+    }
+  },
+  "memoClose": {
+    "phase": "playing",
+    "rendering": {
+      "continuous": true,
+      "foreground": true,
+      "posePreview": false,
+      "ticks": 15,
+      "simulationSeconds": 0.21666899999999994,
+      "playerClipSeconds": 0
+    }
+  },
+  "posterPickup": {
+    "id": "bug",
+    "originalImage": "assets/collection/bug.png",
+    "zoom": 2.25,
+    "backNotesViewed": true,
+    "phaseAfterClose": "playing"
+  },
+  "sourceTextures": {
+    "worldLongEdge": 256,
+    "originalReaderPNGsUnchanged": 12,
+    "geometryBytesUnchanged": true
+  },
+  "notes": "Native E-key pickup and close, zoom buttons and notes tab verified through Marionette. Poster test placement used the static viewpoint harness; natural resume was verified with the memo scenario."
+}
