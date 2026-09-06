@@ -71,7 +71,7 @@ posters=[
 ]
 collection=[]
 for id,title,path,x,z,h in posters:
- m=material('Poster_'+id,(1,1,1),1);im=bpy.data.images.load(str(ROOT/path));im.scale(768,round(768*im.size[1]/im.size[0]));im.pack();p=mats[m].node_tree.nodes.get('Principled BSDF');tex=mats[m].node_tree.nodes.new('ShaderNodeTexImage');tex.image=im;mats[m].node_tree.links.new(tex.outputs['Color'],p.inputs['Base Color']);w=.85;hh=1.28;g='Poster_'+id
+ m=material('Poster_'+id,(1,1,1),1);im=wall_poster_image(ROOT/path);p=mats[m].node_tree.nodes.get('Principled BSDF');tex=mats[m].node_tree.nodes.new('ShaderNodeTexImage');tex.image=im;mats[m].node_tree.links.new(tex.outputs['Color'],p.inputs['Base Color']);w=.85;hh=1.28;g='Poster_'+id
  sign=-1 if id=='beer' else 1
  box(g,wood,(x,z+sign*.012,h),(w+.12,.04,hh+.12));face(g,m,[(x-sign*w/2,z-sign*.018,h-hh/2),(x+sign*w/2,z-sign*.018,h-hh/2),(x+sign*w/2,z-sign*.018,h+hh/2),(x-sign*w/2,z-sign*.018,h+hh/2)])
  collection.append({'id':id,'title':title,'source':path,'x':x,'z':z,'y':h-1.0,'node':g})

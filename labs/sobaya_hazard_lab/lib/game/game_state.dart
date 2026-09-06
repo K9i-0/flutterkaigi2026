@@ -24,6 +24,7 @@ enum PlayPhase {
   inventory,
   mapView,
   collection,
+  reading,
   companionDown,
   dead,
   clear,
@@ -223,6 +224,7 @@ class HazardGameState {
   final medallions = <String>{};
   final seenEvents = <String>{};
   final foundMemos = <String>{};
+  String? readingRecord;
   Iterable<VillageMemo> get localMemos =>
       villageMemos.where((m) => m.zone == zoneId);
   bool get knowsEngine =>
@@ -467,6 +469,7 @@ class HazardGameState {
     medallions.clear();
     seenEvents.clear();
     foundMemos.clear();
+    readingRecord = null;
     reaction = null;
     reactionTime = 0;
     dialogueTopic = 'intro';
@@ -503,6 +506,7 @@ class HazardGameState {
       PlayPhase.title,
       PlayPhase.settings,
       PlayPhase.cinematic,
+      PlayPhase.reading,
     ].contains(phase)) {
       return;
     }
@@ -1949,6 +1953,23 @@ class HazardGameState {
         : '紋章の鍵が必要';
   }
 
+  void openCollectedRecord(String key) {
+    final valid = key.startsWith('memo:')
+        ? foundMemos.contains(key.substring(5))
+        : key.startsWith('poster:') && collected.contains(key.substring(7));
+    if (!valid || !running) return;
+    readingRecord = key;
+    phase = PlayPhase.reading;
+    stopInput();
+  }
+
+  void closeCollectedRecord() {
+    if (phase != PlayPhase.reading) return;
+    readingRecord = null;
+    phase = PlayPhase.playing;
+    stopInput();
+  }
+
   void interact() {
     if (actionLocked) return;
     if (!running) return;
@@ -1972,13 +1993,13 @@ class HazardGameState {
       foundMemos.add(id);
       checkpointRequested = true;
       lastSound = 'collect';
-      say('${villageMemos.firstWhere((m) => m.id == id).title} — Cで記録を読む');
+      openCollectedRecord('memo:$id');
     } else if (key.startsWith('poster:')) {
       final id = key.substring(7);
       collected.add(id);
       collectionDirty = true;
       lastSound = 'collect';
-      say('ポスターの裏に書き込みを発見 — Cで読む（${collected.length}/${gallery.length}）');
+      openCollectedRecord('poster:$id');
     } else if (key.startsWith('crate:')) {
       breakCrate(crates.firstWhere((c) => 'crate:${c.id}' == key));
     } else if (key.startsWith('window:')) {

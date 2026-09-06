@@ -42,9 +42,10 @@ void main() {
       expect(s.checkpointRequested, true);
       expect(
         s.phase,
-        PlayPhase.playing,
-        reason: 'Reading must be optional during combat',
+        PlayPhase.reading,
+        reason: 'A collected memo opens immediately and pauses combat',
       );
+      expect(s.readingRecord, 'memo:${m.id}');
     }
   });
   test('notes survive round trip and save, reset posters independently, support legacy saves', () {

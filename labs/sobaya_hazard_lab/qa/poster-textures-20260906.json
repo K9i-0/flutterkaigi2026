@@ -1,0 +1,102 @@
+{
+  "worldLongEdge": 256,
+  "geometryBytesUnchanged": true,
+  "posters": [
+    {
+      "region": "pueblo/village",
+      "material": "Poster_shark",
+      "wallPixels": [
+        171,
+        256
+      ]
+    },
+    {
+      "region": "pueblo/village",
+      "material": "Poster_bug",
+      "wallPixels": [
+        171,
+        256
+      ]
+    },
+    {
+      "region": "pueblo/village",
+      "material": "Poster_debug",
+      "wallPixels": [
+        171,
+        256
+      ]
+    },
+    {
+      "region": "pueblo/village",
+      "material": "Poster_detective",
+      "wallPixels": [
+        171,
+        256
+      ]
+    },
+    {
+      "region": "pueblo/village",
+      "material": "Poster_wanted",
+      "wallPixels": [
+        171,
+        256
+      ]
+    },
+    {
+      "region": "pueblo/village",
+      "material": "Poster_beer",
+      "wallPixels": [
+        171,
+        256
+      ]
+    },
+    {
+      "region": "farm/farm",
+      "material": "Poster_work",
+      "wallPixels": [
+        256,
+        181
+      ]
+    },
+    {
+      "region": "farm/farm",
+      "material": "Poster_alcohol",
+      "wallPixels": [
+        256,
+        181
+      ]
+    },
+    {
+      "region": "farm/farm",
+      "material": "Poster_recruit",
+      "wallPixels": [
+        256,
+        144
+      ]
+    },
+    {
+      "region": "mountain/mountain",
+      "material": "Poster_watch",
+      "wallPixels": [
+        171,
+        256
+      ]
+    },
+    {
+      "region": "mountain/mountain",
+      "material": "Poster_drybeer",
+      "wallPixels": [
+        256,
+        256
+      ]
+    },
+    {
+      "region": "mountain/mountain",
+      "material": "Poster_chair",
+      "wallPixels": [
+        256,
+        144
+      ]
+    }
+  ]
+}

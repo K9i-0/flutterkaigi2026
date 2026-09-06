@@ -272,11 +272,19 @@ class CampaignAudit {
     s.stopInput();
   }
 
+  void interactAndCloseReader() {
+    s.interact();
+    if (s.phase == PlayPhase.reading) {
+      record('read:${s.readingRecord}');
+      s.closeCollectedRecord();
+    }
+  }
+
   Future<void> pickup(String id) async {
     final p = s.pickups.firstWhere((p) => p.id == id);
     await walk(p.x, p.z, y: p.y, radius: 1.0, reach: true);
     for (var i = 0; i < 8 && !p.taken; i++) {
-      s.interact();
+      interactAndCloseReader();
       await frame();
     }
     if (!p.taken) throw StateError('Cannot collect $id ${s.inspect()}');
@@ -293,7 +301,7 @@ class CampaignAudit {
         reach: true,
       );
       for (var i = 0; i < 12 && !s.collected.contains(image['id']); i++) {
-        s.interact();
+        interactAndCloseReader();
         await frame();
       }
       if (!s.collected.contains(image['id'])) {
@@ -324,7 +332,7 @@ class CampaignAudit {
       radius: 1.3,
       reach: true,
     );
-    s.interact();
+    interactAndCloseReader();
     if (s.phase != PlayPhase.dialogue) {
       throw StateError('Could not talk to Takosan');
     }
@@ -415,7 +423,7 @@ class CampaignAudit {
       (s.gate['z'] as num).toDouble(),
       radius: 1.7,
     );
-    s.interact();
+    interactAndCloseReader();
     await frame();
     if (!s.gateOpen) throw StateError('Gate did not open ${s.inspect()}');
     record('gate');
@@ -443,7 +451,7 @@ class CampaignAudit {
     await frame();
     record('start');
     await walk(-2.8, -22.5);
-    s.interact();
+    interactAndCloseReader();
     while (!s.dialogueChoices) {
       s.advanceDialogue();
     }
