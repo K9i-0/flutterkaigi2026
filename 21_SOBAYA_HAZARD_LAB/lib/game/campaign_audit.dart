@@ -466,7 +466,6 @@ class CampaignAudit {
     if (completionist) {
       await collectImages();
       await collectBeer();
-      await merchant();
     }
     await gate();
     await exit();

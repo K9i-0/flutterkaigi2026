@@ -235,6 +235,7 @@ void attachGameAutomation(HazardGameController game) {
       }
       g.restart();
       if ([
+        'merchant',
         'companionTakosan',
         'farm',
         'farmEnemyStairs',
@@ -344,7 +345,7 @@ void attachGameAutomation(HazardGameController game) {
           s.kills = 1;
         case 'merchant':
           s.x = -13;
-          s.z = -19.8;
+          s.z = -19.4;
           s.beers = 8;
           s.pitch = .12;
         case 'npc':

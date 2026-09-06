@@ -1,0 +1,17 @@
+{
+  "date": "2026-09-06",
+  "tests": 136,
+  "inventory": "Native case inspected: handgun illustration, ammunition illustration/count, green 草. All ten kinds verified to fit 40px cells by widget test.",
+  "input": {
+    "pointerTap": {
+      "shots": 0,
+      "loaded": 10
+    },
+    "space": {
+      "shots": 1,
+      "loaded": 9
+    }
+  },
+  "story": "Chapter one village contains only Yametaro; farm merchant dialogue inspected in native app. NPC actors prepared across all regions.",
+  "scope": "Native static poses, pointer tap, Space shot, case UI and farm dialogue; not a complete campaign playthrough."
+}
