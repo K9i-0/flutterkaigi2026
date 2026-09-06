@@ -215,4 +215,4 @@ Vaultを片手で枠を支える姿勢へ改訂した。腰を支え側へ寄せ
 
 単独検証は `madogiwa.openGameScenario name=grapple` で停止状態から始める。`gameAction simulate seconds=1.05` で通常の規則を使って拘束開始まで進め、停止する。実UIの再開→ゲージ長押しで確認する。`simulate struggling=true` は規則検査、`previewState` は静止姿勢検査用。実機の入力検証とは分けて扱う。
 
-既存のMac ZIP `e7726a9` は掴み追加前のビルド。今回の変更はソースからdebug起動して確認する。
+掴みを含むMac ZIPは `.local/hazard_releases/sobaya-hazard-macos-adf5ea4.zip`。同梱素材・署名・ZIP整合性を確認済み。今回のRelease版の画面操作は未確認で、操作確認はdebug版による。旧ZIP `e7726a9` は掴み追加前。

@@ -167,12 +167,102 @@
     "medallionRewardBeers": 3
   },
   "distribution": {
-    "existingZip": "sobaya-hazard-macos-e7726a9.zip",
-    "containsThisChange": false
+    "archive": {
+      "archive": ".local/hazard_releases/sobaya-hazard-macos-adf5ea4.zip",
+      "bytes": 174737657,
+      "sha256": "d1d00b2c10ac0d1a09d5992282710cf5d03659f21815a00de254d1e6760bd470",
+      "sourceRevision": "adf5ea4",
+      "sceneCount": 9,
+      "voiceCueCount": 31
+    },
+    "checks": [
+      "Release build succeeded",
+      "Bundle manifest and canonical source model hashes matched",
+      "9 compiled scenes and 31 voice cues matched",
+      "codesign --verify --deep --strict passed",
+      "ZIP CRC passed"
+    ],
+    "sceneSources": [
+      {
+        "id": "assets/models/beer_mug",
+        "source": "04_GAME_ASSETS/3d/props/beer_mug_v2/beer_mug.glb",
+        "sourceSha256": "3456dcd7a79ec55936e6141a2b51432d51f38084d62a636368216530de2972f4",
+        "compiledFile": "scene.beer_mug.1e79f718.fsceneb",
+        "compiledSha256": "2251af923f238395819fe44cd0f23d4e3282b52b1cd8549467a0ccb01a83bb8c",
+        "importStamp": "c87e4829c1c7dce7"
+      },
+      {
+        "id": "assets/models/farm",
+        "source": "04_GAME_ASSETS/3d/environments/farm/farm.glb",
+        "sourceSha256": "e4d696a760171615744bca3841f74c509f0f0bed56ed4186b159d2118355032c",
+        "compiledFile": "scene.farm.df7fa6b4.fsceneb",
+        "compiledSha256": "b04821c9e828bb06aa00dc11eebe65ca798a7f48ab18fac69c5f083fc84e7350",
+        "importStamp": "ec1d1ccbf702f424"
+      },
+      {
+        "id": "assets/models/fukuchan",
+        "source": "04_GAME_ASSETS/3d/characters/fukuchan/rig_v1/fukuchan.glb",
+        "sourceSha256": "d83fcfd5af3ad3734217c69af1bc4793679158703035425888bf37e3a371fb6e",
+        "compiledFile": "scene.fukuchan.c0d54c25.fsceneb",
+        "compiledSha256": "638834831c5ad0cec40bd9b827d015753cf72c51a3679790deb93c0b0048fbca",
+        "importStamp": "6683c65cc696adb3"
+      },
+      {
+        "id": "assets/models/items",
+        "source": "04_GAME_ASSETS/3d/props/hazard_kit/items.glb",
+        "sourceSha256": "6ed27a4efb14863e54fc177ef8db88d195ee5c0436f98cddccb635244b2840eb",
+        "compiledFile": "scene.items.79a2d4bf.fsceneb",
+        "compiledSha256": "872c39c2988ad5725b32ce045cb5095deb0a424ef76a06433b14bc182ba419de",
+        "importStamp": "4abc4d9372c91875"
+      },
+      {
+        "id": "assets/models/mountain",
+        "source": "04_GAME_ASSETS/3d/environments/mountain/mountain.glb",
+        "sourceSha256": "c41adc03e32c0a8e42517c075092b559a7f4334575aa962b8f615a3e664c7a40",
+        "compiledFile": "scene.mountain.551294d6.fsceneb",
+        "compiledSha256": "637d54654c84ca0a6f6eb2b472a4154b57e047e78597005cf6435efe12fa5fb4",
+        "importStamp": "2696fb47fbfaf1eb"
+      },
+      {
+        "id": "assets/models/sobaya",
+        "source": "04_GAME_ASSETS/3d/characters/sobaya/rig_v3/sobaya_rig.glb",
+        "sourceSha256": "84a7db2a4a3b2f0e3c72500452f149a97a457ccee6f39f4542155a9678816046",
+        "compiledFile": "scene.sobaya.fd082e41.fsceneb",
+        "compiledSha256": "637ae30ec154e11b38c658c363d66b03f40b5041d7ad135756eec278ce34f5f9",
+        "importStamp": "2f3fe9c912ac001c"
+      },
+      {
+        "id": "assets/models/takosan",
+        "source": "04_GAME_ASSETS/3d/characters/takosan/rig_v1/takosan.glb",
+        "sourceSha256": "97040f7eecf665c83720ae918c15ea80c4688d0e3ef5ce2f49e27969353ab361",
+        "compiledFile": "scene.takosan.744cfef3.fsceneb",
+        "compiledSha256": "1926f02304166ff009e26f074570f4d45c85f76afe051494d63d68981953de49",
+        "importStamp": "ea9b8aaa51470ccf"
+      },
+      {
+        "id": "assets/models/village",
+        "source": "04_GAME_ASSETS/3d/environments/pueblo/village.glb",
+        "sourceSha256": "742c8566c0811fbba22f384cb58daf7a20894cf1cc26a97b52703d7129a94307",
+        "compiledFile": "scene.village.c8a19c1a.fsceneb",
+        "compiledSha256": "1aa6fc1eb260e117f394f92e6ff03a9d3dde694a6396163d1e7bc27872a2afdc",
+        "importStamp": "cd57b57444e021a0"
+      },
+      {
+        "id": "assets/models/yametaro",
+        "source": "04_GAME_ASSETS/3d/characters/yametaro/rig_v1/yametaro.glb",
+        "sourceSha256": "fc42ebf1ec1391132ab5bd9c29cbd3c7a0476068cb7e78f17d41914d9641e522",
+        "compiledFile": "scene.yametaro.349b9361.fsceneb",
+        "compiledSha256": "f78b727c3075cfcd06d70197dc19cc1325faa36f1fa83dc163763780ff5e57b3",
+        "importStamp": "f7ed8493ae814bb1"
+      }
+    ],
+    "ui": "Not verified for this Release build; native long-press test used debug",
+    "signing": "Local ad hoc, not notarized"
   },
   "remaining": [
     "Finger closure and larger body reactions need artistic refinement",
     "No new profile or long-run packaged audit with these models",
     "First-play duration and human voice listening review remain open"
-  ]
+  ],
+  "sourceRevision": "adf5ea4"
 }
