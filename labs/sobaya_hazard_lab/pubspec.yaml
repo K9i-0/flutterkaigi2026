@@ -28,6 +28,7 @@ flutter:
     - assets/mountain.json
     - assets/village.json
     - assets/collection/
+    - assets/cinematics/
     - assets/audio/
     - assets/audio/voice/
     - assets/audio/soundscape/

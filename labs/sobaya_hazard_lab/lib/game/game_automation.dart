@@ -141,6 +141,11 @@ void attachGameAutomation(HazardGameController game) {
                     'shot': _game!.director!.index,
                     'elapsed': _game!.director!.elapsed,
                     'duration': _game!.director!.duration,
+                    'visual': {
+                      'image': _game!.director!.cut?.image,
+                      'document': _game!.director!.cut?.document,
+                      'progress': _game!.director!.visualProgress,
+                    },
                     'paused': _game!.director!.paused,
                   },
             'seenEvents': _game!.state!.seenEvents.toList(),
@@ -733,8 +738,12 @@ void attachGameAutomation(HazardGameController game) {
         case 'aim':
           s.aiming = true;
         case 'pause':
-          s.phase = PlayPhase.paused;
-          s.stopInput();
+          if (g.director != null) {
+            g.setEventPaused(true);
+          } else {
+            s.phase = PlayPhase.paused;
+            s.stopInput();
+          }
         case 'fireAtEnemy':
           final e = s.enemies.where((e) => e.alive && e.active).firstOrNull;
           if (e == null) return MarionetteExtensionResult.error(2, 'No enemy');
