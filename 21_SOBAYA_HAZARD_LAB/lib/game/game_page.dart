@@ -1,4 +1,5 @@
 import 'game_journal.dart';
+import 'game_cinematic_insert.dart';
 
 import 'dart:math' as math;
 import 'dart:ui' as ui;
@@ -77,6 +78,14 @@ class _HazardGamePageState extends State<HazardGamePage> {
         t.buildDuration.inMicroseconds / 1000,
         t.rasterDuration.inMicroseconds / 1000,
       );
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    for (final image in cinematicImages) {
+      precacheImage(AssetImage('assets/cinematics/$image.png'), context);
     }
   }
 
@@ -729,6 +738,15 @@ class _HazardGamePageState extends State<HazardGamePage> {
   Widget dialogue(HazardGameState s) => Positioned.fill(
     child: Stack(
       children: [
+        if (dialogueInsert(s.dialogueOwner, s.dialogueTopic, s.dialogueIndex)
+            case final cut?)
+          Positioned(
+            top: 82,
+            bottom: 280,
+            left: 0,
+            right: 0,
+            child: CinematicInsert(cut: cut),
+          ),
         const Positioned(
           top: 0,
           left: 0,
@@ -1262,42 +1280,28 @@ class _HazardGamePageState extends State<HazardGamePage> {
   Widget eventOverlay() {
     final d = game.director!;
     return Positioned.fill(
-      child: Stack(
-        children: [
-          const Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 66,
-            child: ColoredBox(color: Colors.black),
-          ),
-          Positioned(
-            top: 22,
-            left: 30,
-            child: Text(
-              d.id == 'opening' ? 'SOBAYA HAZARD' : game.state!.chapterLabel,
-              style: const TextStyle(
-                color: gold,
-                letterSpacing: 4,
-                fontSize: 14,
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              constraints: const BoxConstraints(minHeight: 158),
-              padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
-              color: const Color(0xf5000000),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
+      child: LayoutBuilder(
+        builder: (context, constraints) => Stack(
+          children: [
+            Column(
+              children: [
+                Container(height: 66, color: Colors.black),
+                Expanded(
+                  child: d.cut?.isInsert == true
+                      ? CinematicInsert(cut: d.cut!, progress: d.visualProgress)
+                      : const SizedBox.expand(),
+                ),
+                Container(
+                  width: double.infinity,
+                  constraints: BoxConstraints(
+                    maxHeight: constraints.maxHeight * .43,
+                  ),
+                  padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
+                  color: const Color(0xf5000000),
+                  child: SingleChildScrollView(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         if (d.shot.speaker.isNotEmpty)
                           Text(
@@ -1311,44 +1315,61 @@ class _HazardGamePageState extends State<HazardGamePage> {
                         const SizedBox(height: 7),
                         Text(
                           d.shot.text,
+                          key: const ValueKey('event-subtitle'),
                           style: const TextStyle(
                             color: ivory,
                             fontSize: 20,
-                            height: 1.65,
+                            height: 1.6,
                           ),
+                        ),
+                        const SizedBox(height: 12),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            action(
+                              'event-next',
+                              d.paused ? '再開  E' : '次へ  E',
+                              () => game.advanceEvent(),
+                            ),
+                            const SizedBox(width: 12),
+                            action(
+                              'event-skip',
+                              'スキップ',
+                              () => game.advanceEvent(skip: true),
+                            ),
+                          ],
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(width: 24),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      action(
-                        'event-next',
-                        d.paused ? '再開  E' : '次へ  E',
-                        () => game.advanceEvent(),
-                      ),
-                      const SizedBox(height: 8),
-                      action(
-                        'event-skip',
-                        'スキップ',
-                        () => game.advanceEvent(skip: true),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ),
-          if (d.paused && !game.posePreview)
-            const Center(
+            Positioned(
+              top: 22,
+              left: 30,
               child: Text(
-                'PAUSED',
-                style: TextStyle(color: ivory, fontSize: 32, letterSpacing: 5),
+                d.id == 'opening' ? 'SOBAYA HAZARD' : game.state!.chapterLabel,
+                style: const TextStyle(
+                  color: gold,
+                  letterSpacing: 4,
+                  fontSize: 14,
+                ),
               ),
             ),
-        ],
+            if (d.paused && !game.posePreview)
+              const Center(
+                child: Text(
+                  'PAUSED',
+                  style: TextStyle(
+                    color: ivory,
+                    fontSize: 32,
+                    letterSpacing: 5,
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

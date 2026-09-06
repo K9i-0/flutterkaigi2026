@@ -226,7 +226,7 @@ class HazardGameState {
   Iterable<VillageMemo> get localMemos =>
       villageMemos.where((m) => m.zone == zoneId);
   bool get knowsEngine =>
-      foundMemos.contains('proposal') ||
+      foundMemos.contains('night_shift') ||
       seenEvents.contains('farm') ||
       zoneId != 'village';
   bool get hasStoryEvidence => dialogueOwner == 'takosan'

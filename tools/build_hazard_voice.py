@@ -15,6 +15,7 @@ CAST={
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 def caption(row):
  if any(u.startswith('dialogue:reaction:') for u in row['uses']):return '突然殴られて痛がり、仲間に助けを求める。短く切迫して。声の同一性は保つ。'
+ if 'ワイ、二週間ぶりにくつろいだんやけど。' in row['text']:return '関西弁で仲間へ話す。椅子が段ボールだと気づき、そのあと二週間ぶりにくつろいだとぼやく。二つの文を最後まで明瞭に話す。'
  if row['text']=='え、また集まるの？':return '驚いて、短く聞き返す。'
  if row['speaker']=='そば屋':return '相手を誘うように、堂々と。最後の乾杯を呼びかける。'
  if any(u.startswith('event:ending') for u in row['uses']):return 'ほっとして、親しい仲間に軽い冗談を交えながら自然に話す。'
@@ -44,7 +45,7 @@ for index,row in enumerate(rows):
   continue
  ref_name,seed,expected=CAST[row['speaker']];ref=ROOT/'02_CHARACTERS'/ref_name
  if sha(ref)!=expected:raise RuntimeError(f'Canonical reference mismatch: {ref.name}')
- speech=row['text'].replace('\n',' ')
+ speech=row['text'].replace('\n',' ').replace('せやな。……ところで、', 'せやな。ところで、')
  if row['text']=='え、また集まるの？':speech='えっ、また集まるの？'
  for label,spoken in [('Xで','エックスで'),('Fで','エフで'),('Eで','イーで'),('Cで','シーで')]:speech=speech.replace(label,spoken)
  request={'text':speech,'speaker':row['speaker'],'caption':caption(row),'seed':seed,'reference':str(ref.relative_to(ROOT)),'reference_sha256':expected,'model':manifest['model']}

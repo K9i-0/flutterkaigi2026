@@ -119,7 +119,7 @@ void main() {
       expect(s.knowsEngine, false);
       s.chooseDialogue('engine');
       expect(s.dialogueTopic, 'greeting');
-      s.foundMemos.add('proposal');
+      s.foundMemos.add('night_shift');
       s.chooseDialogue('engine');
       expect(s.dialogueTopic, 'engine');
       s.foundMemos.clear();

@@ -113,6 +113,7 @@ class HazardGameController extends ChangeNotifier {
   HazardGameState? state;
   late HazardCampaign campaign;
   final environments = <String, Node>{};
+  final endingChairs = <Node>[];
   final _navigationGeometry = <String, EnemyNavigation>{};
   bool ready = false, disposed = false;
   HazardSettings settings = HazardSettings();
@@ -442,6 +443,13 @@ class HazardGameController extends ChangeNotifier {
       enemies.add(actor);
       scene.add(actor.node);
     }
+    for (final x in [11.5, 14.0, 16.2]) {
+      final chair = _cardboardChair()
+        ..position = vm.Vector3(x, 0, 8.2)
+        ..visible = false;
+      endingChairs.add(chair);
+      scene.add(chair);
+    }
     pistol = _prop('Handgun');
     shotgun = _prop('Shotgun');
     scene.add(pistol);
@@ -629,6 +637,35 @@ class HazardGameController extends ChangeNotifier {
     return template.clone();
   }
 
+  Node _cardboardChair() {
+    final board = UnlitMaterial()
+      ..baseColorFactor = vm.Vector4(.55, .39, .21, 1);
+    final edge = UnlitMaterial()
+      ..baseColorFactor = vm.Vector4(.31, .22, .12, 1);
+    final tape = UnlitMaterial()
+      ..baseColorFactor = vm.Vector4(.71, .58, .37, 1);
+    final root = Node();
+    void box(vm.Vector3 size, vm.Vector3 position, UnlitMaterial material) {
+      root.add(
+        Node(mesh: Mesh(CuboidGeometry(size), material))..position = position,
+      );
+    }
+
+    // A folded cardboard seat: thick side supports, back, corrugated rim and packing tape.
+    box(vm.Vector3(.7, .1, .65), vm.Vector3(0, .48, 0), board);
+    for (final x in [-.29, .29]) {
+      box(vm.Vector3(.12, .44, .57), vm.Vector3(x, .22, 0), board);
+      box(vm.Vector3(.13, .025, .59), vm.Vector3(x, .025, 0), edge);
+    }
+    box(vm.Vector3(.7, .64, .095), vm.Vector3(0, .79, .28), board);
+    box(vm.Vector3(.7, .025, .1), vm.Vector3(0, 1.12, .28), edge);
+    for (final x in [-.21, .21]) {
+      box(vm.Vector3(.055, .004, .65), vm.Vector3(x, .532, 0), tape);
+      box(vm.Vector3(.055, .6, .006), vm.Vector3(x, .81, .228), tape);
+    }
+    return root;
+  }
+
   Node _memoProp() {
     final paper = UnlitMaterial()
       ..baseColorFactor = vm.Vector4(.92, .83, .60, 1);
@@ -783,12 +820,12 @@ class HazardGameController extends ChangeNotifier {
     final s = state!;
     final d = director;
     if (d != null) {
-      final anchor = d.shot.anchorToPlayer
+      final anchor = d.view.anchorToPlayer
           ? vm.Vector3(s.x, s.y, s.z)
           : vm.Vector3.zero();
-      final target = d.shot.aim + anchor;
-      var position = d.shot.camera(d.progress) + anchor;
-      if (d.shot.anchorToPlayer) {
+      final target = d.view.aim + anchor;
+      var position = d.view.camera(d.visualProgress) + anchor;
+      if (d.view.anchorToPlayer) {
         final offset = position - target;
         final clearance = cameraCollisionDistance(
           s,
@@ -804,7 +841,7 @@ class HazardGameController extends ChangeNotifier {
       return PerspectiveCamera(
         position: position,
         target: target,
-        fovRadiansY: d.shot.fov,
+        fovRadiansY: d.view.fov,
         fovNear: .07,
         fovFar: 85,
       );
@@ -1122,6 +1159,9 @@ class HazardGameController extends ChangeNotifier {
         ..seek(s.climb!.clipTime)
         ..playbackTimeScale = 0;
     }
+    for (final chair in endingChairs) {
+      chair.visible = director?.id == 'ending';
+    }
     player.node.position = vm.Vector3(s.x, s.y, s.z);
     if (director?.id == 'ending') {
       // Render-only gathering outside the house; restore normal placement on
@@ -1438,6 +1478,15 @@ class HazardGameController extends ChangeNotifier {
           (friend, player),
           (merchant, player),
         ]) {
+          final delta = pair.$2.node.position - pair.$1.node.position;
+          pair.$1.node.rotation = vm.Quaternion.axisAngle(
+            vm.Vector3(0, 1, 0),
+            math.atan2(delta.x, delta.z) + math.pi,
+          );
+        }
+      } else if (d.id == 'farm') {
+        final friend = npcs['takosan']!;
+        for (final pair in [(player, friend), (friend, player)]) {
           final delta = pair.$2.node.position - pair.$1.node.position;
           pair.$1.node.rotation = vm.Quaternion.axisAngle(
             vm.Vector3(0, 1, 0),
