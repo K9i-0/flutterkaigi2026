@@ -1,0 +1,88 @@
+{
+  "scope": "Native macOS debug rendered frames; debug scenario setup and exact controller shooting, not human aiming difficulty. Collection reset dialog cancelled to preserve real progress.",
+  "phase": "dead",
+  "position": {
+    "x": -10.5,
+    "y": 0,
+    "z": -19.6
+  },
+  "health": 100,
+  "zone": "farm",
+  "companions": {
+    "yametaro": 60,
+    "takosan": 0
+  },
+  "fallenCompanion": "takosan",
+  "companionFallTime": 1.2000139999999992,
+  "collected": [
+    "wanted",
+    "shark",
+    "bug",
+    "debug",
+    "detective",
+    "beer",
+    "work",
+    "alcohol",
+    "recruit",
+    "watch",
+    "drybeer",
+    "chair"
+  ],
+  "kills": 0,
+  "shots": 0,
+  "rendering": {
+    "continuous": false,
+    "foreground": true,
+    "posePreview": false,
+    "ticks": 809,
+    "simulationSeconds": 5.550072999999993,
+    "playerClipSeconds": 1.3218119999999962
+  },
+  "checkpoint": {
+    "exists": true,
+    "saving": false,
+    "status": ""
+  },
+  "npcMotions": {
+    "yametaro": "Idle",
+    "takosan": "Idle"
+  },
+  "voice": {
+    "requested": null,
+    "active": null,
+    "playbackSeconds": null,
+    "loading": false,
+    "speaking": false,
+    "finished": false,
+    "paused": false,
+    "volume": 1,
+    "errors": []
+  },
+  "activeEnemies": [
+    {
+      "id": 0,
+      "alive": true,
+      "active": true,
+      "dropped": false,
+      "hp": 100,
+      "alerted": true,
+      "stun": 0,
+      "attackPending": false,
+      "companionTarget": "takosan",
+      "grabPending": false,
+      "grabCooldown": 0,
+      "releaseTime": 0,
+      "climb": null,
+      "vault": null,
+      "fallingFromLadder": false,
+      "meleeRecovery": 0.55,
+      "meleeClipTime": 0.77,
+      "approach": "pursue",
+      "bossMove": "ready",
+      "bossTimer": 0,
+      "x": -13,
+      "y": 0,
+      "z": -16.8
+    }
+  ]
+}

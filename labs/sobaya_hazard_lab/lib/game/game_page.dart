@@ -340,6 +340,42 @@ class _HazardGamePageState extends State<HazardGamePage> {
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
+                                for (final npc in s.npcs)
+                                  if (s.companionThreatened(npc['id']) ||
+                                      (s.x - (npc['x'] as num)).abs() < 6 &&
+                                          (s.z - (npc['z'] as num)).abs() < 6)
+                                    SizedBox(
+                                      width: 220,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const SizedBox(height: 12),
+                                          Text(
+                                            '${HazardGameState.companionNames[npc['id']]}${s.companionThreatened(npc['id']) ? '  ⚠ 襲われている！' : ''}',
+                                            style: const TextStyle(
+                                              color: ivory,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 5),
+                                          LinearProgressIndicator(
+                                            key: ValueKey(
+                                              'companion-health-${npc['id']}',
+                                            ),
+                                            value:
+                                                (s.companionHealth[npc['id']] ??
+                                                    0) /
+                                                HazardGameState
+                                                    .companionMaxHealth,
+                                            color:
+                                                s.companionThreatened(npc['id'])
+                                                ? Colors.orange
+                                                : gold,
+                                            backgroundColor: ink,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                 for (final boss in s.enemies.where(
                                   (e) =>
                                       e.boss &&
@@ -1481,6 +1517,46 @@ class _HazardGamePageState extends State<HazardGamePage> {
               ],
             ),
             const SizedBox(height: 20),
+            Text(
+              'ポスター収集  ${game.state!.collected.length}/${game.state!.gallery.length}',
+              style: const TextStyle(color: gold),
+            ),
+            const SizedBox(height: 8),
+            action(
+              'reset-collection',
+              game.collectionResetBusy ? 'リセット中…' : 'ポスター収集をリセット',
+              () async {
+                if (game.collectionResetBusy) return;
+                final confirmed = await showDialog<bool>(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('ポスター収集をリセットしますか？'),
+                    content: const Text(
+                      '収集済みのポスターを未収集に戻します。\n探索の進行・装備・設定はそのままです。',
+                    ),
+                    actions: [
+                      TextButton(
+                        key: const ValueKey('collection-reset-cancel'),
+                        onPressed: () => Navigator.pop(context, false),
+                        child: const Text('キャンセル'),
+                      ),
+                      TextButton(
+                        key: const ValueKey('collection-reset-confirm'),
+                        onPressed: () => Navigator.pop(context, true),
+                        child: const Text('リセットする'),
+                      ),
+                    ],
+                  ),
+                );
+                if (confirmed == true) await game.resetCollection();
+              },
+            ),
+            if (game.collectionResetMessage.isNotEmpty)
+              Text(
+                game.collectionResetMessage,
+                style: const TextStyle(color: ivory),
+              ),
+            const SizedBox(height: 20),
             action('settings-back', '戻る', game.closeSettings),
           ],
         ),
@@ -1559,7 +1635,11 @@ class _HazardGamePageState extends State<HazardGamePage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              s.phase == PlayPhase.clear ? 'DEMO COMPLETE' : 'YOU ARE DOWN',
+              s.phase == PlayPhase.clear
+                  ? 'DEMO COMPLETE'
+                  : s.fallenCompanion != null
+                  ? 'GAME OVER'
+                  : 'YOU ARE DOWN',
               style: const TextStyle(
                 color: gold,
                 fontSize: 38,
@@ -1570,6 +1650,8 @@ class _HazardGamePageState extends State<HazardGamePage> {
             Text(
               s.phase == PlayPhase.clear
                   ? '最後の一杯を断り、村を抜けた。'
+                  : s.fallenCompanion != null
+                  ? '${HazardGameState.companionNames[s.fallenCompanion]}を守れなかった。'
                   : 'ビールの包囲網を抜けられなかった。',
               style: const TextStyle(color: ivory, fontSize: 18),
             ),

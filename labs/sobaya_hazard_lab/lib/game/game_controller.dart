@@ -11,6 +11,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:vector_math/vector_math.dart' as vm;
 
 import 'game_state.dart';
+import 'game_collection.dart';
 import 'game_navigation.dart';
 import 'game_camera.dart';
 import 'game_contact_shadows.dart';
@@ -117,6 +118,7 @@ class HazardGameController extends ChangeNotifier {
   HazardDirector? director;
   bool foreground = true;
   int renderedTicks = 0;
+  final _npcHeadings = <String, double>{};
   bool get animateScene =>
       ready &&
       !disposed &&
@@ -124,6 +126,7 @@ class HazardGameController extends ChangeNotifier {
       !posePreview &&
       (state!.running ||
           state!.phase == PlayPhase.dialogue ||
+          state!.phase == PlayPhase.companionDown ||
           (director != null && !director!.paused));
 
   /// A static SceneView still repaints on UI changes. Freeze animation clocks
@@ -186,6 +189,31 @@ class HazardGameController extends ChangeNotifier {
   int _dialogueVisit = 0;
   bool _wasDialogue = false;
   SharedPreferences? preferences;
+  late HazardCollectionStore collectionStore;
+  bool collectionResetBusy = false;
+  String collectionResetMessage = "";
+
+  Future<bool> resetCollection() async {
+    if (!ready || collectionResetBusy || state!.phase != PlayPhase.settings) {
+      return false;
+    }
+    collectionResetBusy = true;
+    notifyListeners();
+    var ok = false;
+    try {
+      ok = await collectionStore.reset(campaign);
+    } catch (_) {
+      ok = false;
+    } finally {
+      collectionResetBusy = false;
+      collectionResetMessage = ok
+          ? "ポスター収集をリセットしました。"
+          : "リセットに失敗しました。もう一度お試しください。";
+      if (!disposed) notifyListeners();
+    }
+    return ok;
+  }
+
   String? _checkpointJson;
   String saveStatus = '';
   Future<void> _saveQueue = Future.value();
@@ -202,6 +230,9 @@ class HazardGameController extends ChangeNotifier {
   ContactShadows? contactShadows;
   Future<void> load() async {
     preferences = await SharedPreferences.getInstance();
+    collectionStore = HazardCollectionStore(
+      (ids) => preferences!.setStringList("hazard.collection.v1", ids),
+    );
     settings = HazardSettings.decode(
       preferences!.getString('hazard.settings.v1'),
     );
@@ -571,6 +602,7 @@ class HazardGameController extends ChangeNotifier {
   }
 
   void closeSettings() {
+    if (collectionResetBusy) return;
     state!.phase = settingsReturn;
     notifyListeners();
   }
@@ -664,6 +696,7 @@ class HazardGameController extends ChangeNotifier {
         [
           PlayPhase.title,
           PlayPhase.dead,
+          PlayPhase.companionDown,
           PlayPhase.clear,
           PlayPhase.dialogue,
           PlayPhase.cinematic,
@@ -729,6 +762,31 @@ class HazardGameController extends ChangeNotifier {
         position: d.shot.camera(d.progress),
         target: d.shot.aim,
         fovRadiansY: d.shot.fov,
+        fovNear: .07,
+        fovFar: 85,
+      );
+    }
+    if (s.fallenCompanion != null) {
+      final npc = s.npcs.firstWhere((n) => n["id"] == s.fallenCompanion);
+      final target = vm.Vector3(
+        (npc["x"] as num).toDouble(),
+        .45,
+        (npc["z"] as num).toDouble(),
+      );
+      final offset = vm.Vector3(2.2, 1.5, 2.5);
+      final distance = cameraCollisionDistance(
+        s,
+        target,
+        offset.normalized(),
+        offset.length,
+      );
+      return PerspectiveCamera(
+        position:
+            target +
+            offset.normalized() *
+                math.max(.1, math.min(offset.length, distance - .02)),
+        target: target,
+        fovRadiansY: .8,
         fovNear: .07,
         fovFar: 85,
       );
@@ -988,7 +1046,28 @@ class HazardGameController extends ChangeNotifier {
       s.heading + math.pi,
     );
     for (final entry in npcs.entries) {
-      final actor = entry.value, n = entry.value.node.position;
+      final actor = entry.value;
+      final authored = s.npcs.where((n) => n['id'] == entry.key).firstOrNull;
+      if (authored != null && director?.id != 'ending') {
+        actor.node.position = vm.Vector3(
+          (authored['x'] as num).toDouble(),
+          0,
+          (authored['z'] as num).toDouble(),
+        );
+      }
+      final n = actor.node.position;
+      if (s.fallenCompanion == entry.key) {
+        final t = (s.companionFallTime / .9).clamp(0.0, 1.0);
+        final bend = t * t * (3 - 2 * t);
+        actor.setMotion('Idle');
+        actor.update(dt, false);
+        actor.node.rotation = vm.Quaternion.axisAngle(
+          vm.Vector3(1, 0, 0),
+          bend * math.pi / 2,
+        );
+        actor.node.position = vm.Vector3(n.x, .36 * bend, n.z);
+        continue;
+      }
       if (!actor.node.visible) {
         actor.update(dt, false);
         continue;
@@ -997,13 +1076,17 @@ class HazardGameController extends ChangeNotifier {
       final cinematicTalk = director?.shot.actor == entry.key;
       final talking = s.phase == PlayPhase.dialogue && s.talkingTo == entry.key;
       if (near) {
-        actor.node.rotation = vm.Quaternion.axisAngle(
-          vm.Vector3(0, 1, 0),
-          math.atan2(s.x - n.x, s.z - n.z) + math.pi,
-        );
+        _npcHeadings[entry.key] = math.atan2(s.x - n.x, s.z - n.z) + math.pi;
       }
+      // Rebuild the base orientation before recoil; never accumulate tilt.
+      actor.node.rotation = vm.Quaternion.axisAngle(
+        vm.Vector3(0, 1, 0),
+        _npcHeadings[entry.key] ?? 0,
+      );
       actor.setMotion(
-        cinematicTalk
+        s.companionThreatened(entry.key)
+            ? 'Idle'
+            : cinematicTalk
             ? director!.shot.motion
             : talking &&
                   s.dialogueLine.speaker ==
@@ -1019,6 +1102,15 @@ class HazardGameController extends ChangeNotifier {
             talking ||
             (director != null && !director!.paused && foreground),
       );
+    }
+    for (final entry in npcs.entries) {
+      final hurt = s.companionHurt[entry.key] ?? 0;
+      if (hurt > 0 && s.fallenCompanion != entry.key) {
+        entry.value.node.rotation *= vm.Quaternion.axisAngle(
+          vm.Vector3(1, 0, 0),
+          -.14 * math.sin(hurt / .5 * math.pi),
+        );
+      }
     }
     final mugCamera =
         director?.shot.camera(director!.progress) ??
@@ -1146,7 +1238,9 @@ class HazardGameController extends ChangeNotifier {
         actor.clips['Climb']!
           ..seek(e.climb!.clipTime)
           ..playbackTimeScale = 0;
-      } else if (director == null && !e.boss && e.meleeClipTime != null) {
+      } else if (director == null &&
+          (!e.boss || e.companionTarget != null) &&
+          e.meleeClipTime != null) {
         actor.clips['MugAttack']!
           ..seek(e.meleeClipTime!)
           ..playbackTimeScale = 0;
@@ -1305,11 +1399,16 @@ class HazardGameController extends ChangeNotifier {
     if (s.collectionDirty) {
       s.collectionDirty = false;
       unawaited(
-        preferences!
-            .setStringList('hazard.collection.v1', s.collected.toList())
-            .then((ok) {
-              if (!ok) s.say('記録の保存に失敗しました。');
-            }),
+        collectionStore
+            .save(s.collected)
+            .then(
+              (ok) {
+                if (!ok) s.say('記録の保存に失敗しました。');
+              },
+              onError: (Object error, StackTrace stack) {
+                s.say('記録の保存に失敗しました。');
+              },
+            ),
       );
     }
     if (s.checkpointRequested) {

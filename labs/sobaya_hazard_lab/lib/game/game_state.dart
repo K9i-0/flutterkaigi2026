@@ -22,6 +22,7 @@ enum PlayPhase {
   inventory,
   mapView,
   collection,
+  companionDown,
   dead,
   clear,
 }
@@ -118,6 +119,7 @@ class Enemy {
   static const meleeWindup = .85, meleeFollowThrough = .55;
   double meleeRecovery = 0, approachTimer = 0;
   bool grabPending = false;
+  String? companionTarget;
   double grabCooldown = 0, releaseTime = 0;
   double? approachHeading, approachX, approachZ;
   bool runningApproach = false;
@@ -296,6 +298,15 @@ class HazardGameState {
   bool metYametaro = false, receivedYametaroAmmo = false;
   bool metTakosan = false;
   final tradePurchases = <String, int>{};
+  static const companionMaxHealth = 60.0;
+  static const companionNames = {'yametaro': 'やめ太郎', 'takosan': 'たこさん'};
+  final companionHealth = <String, double>{'yametaro': 60, 'takosan': 60};
+  final companionHurt = <String, double>{};
+  final _companionInvulnerable = <String, double>{};
+  String? fallenCompanion;
+  double companionFallTime = 0;
+  bool companionThreatened(String id) =>
+      enemies.any((e) => e.alive && e.active && e.companionTarget == id);
   bool checkpointRequested = false;
   List<Map<String, dynamic>> get npcs =>
       (map['npcs'] as List? ?? const []).cast<Map<String, dynamic>>();
@@ -418,6 +429,11 @@ class HazardGameState {
     metYametaro = receivedYametaroAmmo = false;
     metTakosan = false;
     tradePurchases.clear();
+    companionHealth.updateAll((_, _) => companionMaxHealth);
+    companionHurt.clear();
+    _companionInvulnerable.clear();
+    fallenCompanion = null;
+    companionFallTime = 0;
     dialogueOwner = 'yametaro';
     tradeMessage = '';
     checkpointRequested = false;
@@ -453,6 +469,7 @@ class HazardGameState {
     }
     if ([
       PlayPhase.dead,
+      PlayPhase.companionDown,
       PlayPhase.clear,
       PlayPhase.title,
       PlayPhase.settings,
@@ -707,8 +724,15 @@ class HazardGameState {
   }
 
   void tick(double delta) {
+    if (phase == PlayPhase.companionDown) {
+      companionFallTime += delta.clamp(0.0, .05);
+      if (companionFallTime >= 1.2) phase = PlayPhase.dead;
+      return;
+    }
     if (!running) return;
     final dt = delta.clamp(0.0, .05);
+    companionHurt.updateAll((_, value) => math.max(0, value - dt));
+    _companionInvulnerable.updateAll((_, value) => math.max(0, value - dt));
     time += dt;
     fireCooldown = math.max(0, fireCooldown - dt);
     hitFlash = math.max(0, hitFlash - dt);
@@ -785,6 +809,7 @@ class HazardGameState {
       _buildFlow();
     }
     for (final e in enemies) {
+      if (!running) break;
       e.moved = 0;
       e.runningApproach = false;
       if (!e.alive) {
@@ -863,6 +888,7 @@ class HazardGameState {
         }
         continue;
       }
+      if (_tickCompanionCombat(e, dt, dist)) continue;
       if (e.boss && _tickBoss(e, dt, dx, dz, dist)) continue;
       if (!e.boss && e.attackPending) {
         e.windup -= dt;
@@ -1029,6 +1055,126 @@ class HazardGameState {
   }
 
   // Heading locks at the start of a tell: the player can step out of the path.
+  bool _companionVisible(Enemy enemy, Map<String, dynamic> npc) {
+    final dx = (npc['x'] as num).toDouble() - enemy.x;
+    final dz = (npc['z'] as num).toDouble() - enemy.z;
+    final distance = math.sqrt(dx * dx + dz * dz);
+    return enemy.y < .8 &&
+        (distance < .01 ||
+            wallDistance(
+                  vm.Vector3(enemy.x, .75, enemy.z),
+                  vm.Vector3(dx, 0, dz).normalized(),
+                  distance,
+                ) >=
+                distance - .05);
+  }
+
+  /// An alerted pursuer may be led onto a closer, exposed companion. A swing
+  /// never changes victims halfway through its windup.
+  bool _tickCompanionCombat(Enemy e, double dt, double playerDistance) {
+    if (e.companionTarget == null) {
+      if (e.attackPending ||
+          e.stun > 0 ||
+          e.meleeRecovery > 0 ||
+          (e.boss && e.bossMove != BossMove.ready)) {
+        return false;
+      }
+      var best = math.min(5.0, playerDistance + .75);
+      for (final npc in npcs) {
+        final id = npc['id'] as String;
+        if ((companionHealth[id] ?? 0) <= 0) continue;
+        final nx = (npc['x'] as num).toDouble(),
+            nz = (npc['z'] as num).toDouble();
+        final distance = math.sqrt(
+          math.pow(nx - e.x, 2) + math.pow(nz - e.z, 2),
+        );
+        if (distance >= best ||
+            math.pow(nx - x, 2) + math.pow(nz - z, 2) > 64 ||
+            !_companionVisible(e, npc)) {
+          continue;
+        }
+        best = distance;
+        e.companionTarget = id;
+      }
+      if (e.companionTarget != null) {
+        say('${companionNames[e.companionTarget]}が狙われている！ そば屋を止めろ！');
+        e.approachX = e.approachZ = null;
+      }
+    }
+    final id = e.companionTarget;
+    if (id == null) return false;
+    final npc = npcs.where((n) => n['id'] == id).firstOrNull;
+    if (npc == null || (companionHealth[id] ?? 0) <= 0) {
+      e.companionTarget = null;
+      e.attackPending = e.grabPending = false;
+      return false;
+    }
+    final dx = (npc['x'] as num).toDouble() - e.x;
+    final dz = (npc['z'] as num).toDouble() - e.z;
+    final distance = math.sqrt(dx * dx + dz * dz);
+    if (e.attackPending) {
+      e.windup -= dt;
+      if (e.windup <= 0) {
+        e.attackPending = false;
+        e.cooldown = 1.5;
+        e.meleeRecovery = Enemy.meleeFollowThrough;
+        if (distance < 1.65 &&
+            _companionVisible(e, npc) &&
+            (distance < .01 ||
+                (dx * math.sin(e.heading) + dz * math.cos(e.heading)) /
+                        distance >
+                    .35) &&
+            (_companionInvulnerable[id] ?? 0) <= 0) {
+          companionHealth[id] = math.max(
+            0,
+            companionHealth[id]! - 20 * damageScale,
+          );
+          _companionInvulnerable[id] = 1;
+          companionHurt[id] = .5;
+          emitSound(
+            'hurt',
+            x: (npc['x'] as num).toDouble(),
+            z: (npc['z'] as num).toDouble(),
+            y: .7,
+          );
+          if (companionHealth[id] == 0) {
+            fallenCompanion = id;
+            companionFallTime = 0;
+            phase = PlayPhase.companionDown;
+            talkingTo = null;
+            grapple = null;
+            breakFreeTime = 0;
+            reloading = 0;
+            checkpointRequested = false;
+            stopInput();
+            say('${companionNames[id]}が倒れた。守り切れなかった。');
+          }
+        }
+      }
+      return true;
+    }
+    if (e.stun > 0 || e.meleeRecovery > 0 || e.releaseTime > 0) return true;
+    if (distance > 7 || !_companionVisible(e, npc)) {
+      e.companionTarget = null;
+      return false;
+    }
+    e.heading = math.atan2(dx, dz);
+    if (distance < 1.15) {
+      if (e.cooldown <= 0) {
+        e.attackPending = true;
+        e.grabPending = false;
+        e.windup = Enemy.meleeWindup;
+        emitSound('enemy', x: e.x, z: e.z);
+      }
+      return true;
+    }
+    final step = math.min(distance - 1.05, .8 * enemySpeedScale * dt);
+    final ox = e.x, oz = e.z;
+    _moveEnemy(e, dx / distance * step, dz / distance * step);
+    e.moved = math.sqrt(math.pow(e.x - ox, 2) + math.pow(e.z - oz, 2));
+    return true;
+  }
+
   // Committed attacks take damage but cannot be held still by repeated bullets.
   bool _tickBoss(Enemy e, double dt, double dx, double dz, double dist) {
     void recover(double seconds) {
@@ -1601,6 +1747,7 @@ class HazardGameState {
     e.fallingFromLadder = e.y > 0 && (e.climb != null || wasVaulting);
     e.climb = null;
     e.alive = false;
+    e.companionTarget = null;
     e.attackPending = false;
     e.grabPending = false;
     e.bossMove = BossMove.ready;
@@ -1833,9 +1980,10 @@ class HazardGameState {
           e.alive &&
           e.active &&
           e.alerted &&
-          (e.y - y).abs() < 1 &&
-          math.pow(e.x - x, 2) + math.pow(e.z - z, 2) < 49 &&
-          _reachable(e.x, e.z),
+          (e.companionTarget != null ||
+              ((e.y - y).abs() < 1 &&
+                  math.pow(e.x - x, 2) + math.pow(e.z - z, 2) < 49 &&
+                  _reachable(e.x, e.z))),
     )) {
       say('そば屋が近い。距離を取ってから話そう。');
       return;
@@ -1952,6 +2100,9 @@ class HazardGameState {
     'gateOpen': gateOpen,
     'hasKey': hasKey,
     'collected': collected.toList(),
+    'companions': Map<String, double>.of(companionHealth),
+    'fallenCompanion': fallenCompanion,
+    'companionFallTime': companionFallTime,
     'interaction': interaction,
     'dialogue': {
       'npc': talkingTo,
@@ -1975,6 +2126,7 @@ class HazardGameState {
             'alerted': e.alerted,
             'stun': e.stun,
             'attackPending': e.attackPending,
+            'companionTarget': e.companionTarget,
             'grabPending': e.grabPending,
             'grabCooldown': e.grabCooldown,
             'releaseTime': e.releaseTime,

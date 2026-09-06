@@ -42,6 +42,7 @@ extension HazardCheckpoint on HazardGameState {
     'receivedYametaroAmmo': receivedYametaroAmmo,
     'metTakosan': metTakosan,
     'tradePurchases': Map<String, int>.of(tradePurchases),
+    'companionHealth': Map<String, double>.of(companionHealth),
     'bag': bag.map((i) => i.toJson()).toList(),
     'crates': crates.where((c) => c.broken).map((c) => c.id).toList(),
     'pickups': pickups
@@ -79,6 +80,7 @@ extension HazardCheckpoint on HazardGameState {
             'cooldown': e.cooldown,
             'attackPending': e.attackPending,
             'grabPending': e.grabPending,
+            'companionTarget': e.companionTarget,
             'grabCooldown': e.grabCooldown,
             'releaseTime': e.releaseTime,
             'windup': e.windup,
@@ -154,6 +156,17 @@ HazardGameState restoreHazardCheckpoint(
   s.metYametaro = data['metYametaro'] as bool;
   s.receivedYametaroAmmo = data['receivedYametaroAmmo'] as bool;
   s.metTakosan = data['metTakosan'] as bool? ?? false;
+  final companions = data['companionHealth'] as Map?;
+  if (companions != null) {
+    require(companions.length == s.companionHealth.length);
+    for (final id in s.companionHealth.keys) {
+      s.companionHealth[id] = number(
+        companions[id],
+        .001,
+        HazardGameState.companionMaxHealth,
+      );
+    }
+  }
   for (final entry in ((data['tradePurchases'] as Map?) ?? {}).entries) {
     require(['ammo', 'herb', 'shells'].contains(entry.key));
     s.tradePurchases[entry.key] = integer(
@@ -308,6 +321,19 @@ HazardGameState restoreHazardCheckpoint(
       // Older checkpoints used the generic melee state.
       e.attackPending = false;
       e.windup = 0;
+    }
+    e.companionTarget = j['companionTarget'] as String?;
+    if (e.companionTarget != null) {
+      require(
+        s.npcs.any((n) => n['id'] == e.companionTarget) &&
+            e.alive &&
+            e.active &&
+            e.alerted &&
+            !e.grabPending &&
+            e.climb == null &&
+            e.vault == null &&
+            s.grapple?.enemyId != e.id,
+      );
     }
     require(e.alive == (e.hp > 0) && (!e.dropped || !e.alive));
   }

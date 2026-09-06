@@ -23,6 +23,13 @@ class HazardCampaign {
     catalog: catalog,
   );
 
+  void resetCollection() {
+    for (final region in regions.values) {
+      region.collected.clear();
+      region.collectionDirty = false;
+    }
+  }
+
   void restart() {
     final collection = state.collected;
     regions.clear();
@@ -67,6 +74,9 @@ class HazardCampaign {
         ),
       );
     to.nextBagId = from.nextBagId;
+    to.companionHealth
+      ..clear()
+      ..addAll(from.companionHealth);
     to.health = from.health;
     to.maxHealth = from.maxHealth;
     to.weapon = from.weapon;
