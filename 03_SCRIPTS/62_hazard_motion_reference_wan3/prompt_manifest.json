@@ -1,0 +1,150 @@
+{
+  "status": "prompts_prepared_not_generated",
+  "purpose": "12 independent motion-reference videos; not segments of one film",
+  "clips": [
+    {
+      "id": "01_walk",
+      "label": "歩行",
+      "character": "fukuchan",
+      "prompt": "prompt_01_walk.txt",
+      "reference_image": "character_fukuchan_basic_sheet.png",
+      "duration_seconds": 6,
+      "audio_source": "wan3",
+      "audio_sync_strategy": "no_visible_speech",
+      "generation_mode": "single",
+      "review": "定速区間の歩幅・接地・骨盤移動。"
+    },
+    {
+      "id": "02_dash",
+      "label": "ダッシュ",
+      "character": "fukuchan",
+      "prompt": "prompt_02_dash.txt",
+      "reference_image": "character_fukuchan_basic_sheet.png",
+      "duration_seconds": 6,
+      "audio_source": "wan3",
+      "audio_sync_strategy": "no_visible_speech",
+      "generation_mode": "single",
+      "review": "毎秒2.8mの前進に合うテンポ。足の軌跡だけで速さを表現しない。"
+    },
+    {
+      "id": "03_crouch_walk",
+      "label": "しゃがみ移動",
+      "character": "fukuchan",
+      "prompt": "prompt_03_crouch_walk.txt",
+      "reference_image": "character_fukuchan_basic_sheet.png",
+      "duration_seconds": 6,
+      "audio_source": "wan3",
+      "audio_sync_strategy": "no_visible_speech",
+      "generation_mode": "single",
+      "review": "しゃがみ中にも前方を見る頭。腰の高さと左右の支持の移り変わり。"
+    },
+    {
+      "id": "04_forward_roll",
+      "label": "前転回避",
+      "character": "fukuchan",
+      "prompt": "prompt_04_forward_roll.txt",
+      "reference_image": "character_fukuchan_basic_sheet.png",
+      "duration_seconds": 6,
+      "audio_source": "wan3",
+      "audio_sync_strategy": "no_visible_speech",
+      "generation_mode": "single",
+      "review": "実動作約1.8秒。踏切、背中の接地、足の復帰を個別に確認する。"
+    },
+    {
+      "id": "05_window_vault",
+      "label": "窓を乗り越える",
+      "character": "fukuchan",
+      "prompt": "prompt_05_window_vault.txt",
+      "reference_image": "character_fukuchan_basic_sheet.png",
+      "duration_seconds": 6,
+      "audio_source": "wan3",
+      "audio_sync_strategy": "no_visible_speech",
+      "generation_mode": "single",
+      "review": "手・枠の接触位置、腰の経路、脚を抜く順序、向こう側の着地。"
+    },
+    {
+      "id": "06_handgun_fire",
+      "label": "拳銃を撃つ",
+      "character": "fukuchan",
+      "prompt": "prompt_06_handgun_fire.txt",
+      "reference_image": "character_fukuchan_basic_sheet.png",
+      "duration_seconds": 6,
+      "audio_source": "wan3",
+      "audio_sync_strategy": "no_visible_speech",
+      "generation_mode": "single",
+      "review": "拳銃用の一発射撃。ショットガンと共用せず別途作る。"
+    },
+    {
+      "id": "07_listening_nod",
+      "label": "会話中の相槌",
+      "character": "fukuchan",
+      "prompt": "prompt_07_listening_nod.txt",
+      "reference_image": "character_fukuchan_basic_sheet.png",
+      "duration_seconds": 6,
+      "audio_source": "wan3",
+      "audio_sync_strategy": "no_visible_speech",
+      "generation_mode": "single",
+      "review": "相槌は二回だけ、間隔と深さに自然な違い。無言の聞き手。"
+    },
+    {
+      "id": "08_mug_smash",
+      "label": "ジョッキ振り下ろし攻撃",
+      "character": "sobaya",
+      "prompt": "prompt_08_mug_smash.txt",
+      "reference_image": "character_sobaya_basic_sheet.png",
+      "duration_seconds": 6,
+      "audio_source": "wan3",
+      "audio_sync_strategy": "no_visible_speech",
+      "generation_mode": "single",
+      "review": "打点は軌道上の通過点として確認。ゲーム側で命中と空振りを作り分ける。"
+    },
+    {
+      "id": "09_idle",
+      "label": "自然な立ち待機",
+      "character": "fukuchan",
+      "prompt": "prompt_09_idle.txt",
+      "reference_image": "character_fukuchan_basic_sheet.png",
+      "duration_seconds": 6,
+      "audio_source": "wan3",
+      "audio_sync_strategy": "no_visible_speech",
+      "generation_mode": "single",
+      "review": "呼吸と微小な重心移動。完全ループ化は採用後にリグ上で調整。"
+    },
+    {
+      "id": "10_run_stop",
+      "label": "走行から停止",
+      "character": "fukuchan",
+      "prompt": "prompt_10_run_stop.txt",
+      "reference_image": "character_fukuchan_basic_sheet.png",
+      "duration_seconds": 6,
+      "audio_source": "wan3",
+      "audio_sync_strategy": "no_visible_speech",
+      "generation_mode": "single",
+      "review": "走行からIdleへの移行。減速開始から静止までの重心と接地。"
+    },
+    {
+      "id": "11_mug_hold",
+      "label": "正典のジョッキ保持",
+      "character": "sobaya",
+      "prompt": "prompt_11_mug_hold.txt",
+      "reference_image": "character_sobaya_basic_sheet.png",
+      "duration_seconds": 6,
+      "audio_source": "wan3",
+      "audio_sync_strategy": "no_visible_speech",
+      "generation_mode": "single",
+      "review": "保持時の右手とソケット、胴体との離隔。"
+    },
+    {
+      "id": "12_mug_dash",
+      "label": "ジョッキを持ったダッシュ",
+      "character": "sobaya",
+      "prompt": "prompt_12_mug_dash.txt",
+      "reference_image": "character_sobaya_basic_sheet.png",
+      "duration_seconds": 6,
+      "audio_source": "wan3",
+      "audio_sync_strategy": "no_visible_speech",
+      "generation_mode": "single",
+      "review": "胴体の厚さに合う保持位置と左右非対称。移動速度と足運びの同期。"
+    }
+  ]
+}
