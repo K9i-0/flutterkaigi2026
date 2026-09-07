@@ -80,6 +80,8 @@ extension HazardCheckpoint on HazardGameState {
             'suppressBeer': e.suppressBeer,
             'vanish': e.vanish,
             'alerted': e.alerted,
+            'hasBeenAlerted': e.hasBeenAlerted,
+            'ambientDance': e.ambientDance,
             'notice': e.notice,
             'stun': e.stun,
             'cooldown': e.cooldown,
@@ -310,6 +312,18 @@ HazardGameState restoreHazardCheckpoint(
     if (e.boss && data['bossBalanceVersion'] == null && e.alive) {
       e.hp = (e.hp / 350 * e.maxHp).clamp(0, e.maxHp);
     }
+    if (j.containsKey('ambientDance')) {
+      require(
+        const [
+          null,
+          'DanceStep',
+          'DanceDisco',
+          'DanceVictory',
+        ].contains(j['ambientDance']),
+      );
+      e.ambientDance = e.boss ? null : j['ambientDance'] as String?;
+    }
+    e.hasBeenAlerted = e.alerted || (j['hasBeenAlerted'] as bool? ?? false);
     e.climb = LadderTraversal.restore(j['climb'], s.ladder, e.x, e.y, e.z);
     e.vault = WindowTraversal.restore(
       j['vault'],

@@ -1,0 +1,20 @@
+[
+  {
+    "name": "sobaya",
+    "gltfErrors": 0,
+    "gameClips": 98,
+    "retainedSourceClips": 86,
+    "samples": 561,
+    "maxPositionError": 0.0000027436870690207443,
+    "maxRotationError": 0.002533760235081996
+  },
+  {
+    "name": "fukuchan",
+    "gltfErrors": 0,
+    "gameClips": 93,
+    "retainedSourceClips": 81,
+    "samples": 561,
+    "maxPositionError": 0.000001428546075766258,
+    "maxRotationError": 0.0031640231538896772
+  }
+]

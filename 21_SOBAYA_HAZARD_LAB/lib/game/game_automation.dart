@@ -220,6 +220,7 @@ void attachGameAutomation(HazardGameController game) {
         'companionTakosan',
         'combat',
         'encounter',
+        'ambientDance',
         'mugTiming',
         'secretMerchant',
         'rocketCombat',
@@ -468,6 +469,24 @@ void attachGameAutomation(HazardGameController game) {
             ..grabCooldown = 30
             ..x = .25
             ..z = -15.1;
+        case 'ambientDance':
+          g.posePreview = false;
+          s.x = 0;
+          s.z = -16;
+          s.yaw = 3.141592653589793;
+          s.invulnerable = 100;
+          for (var i = 0; i < 3; i++) {
+            s.enemies[i]
+              ..active = true
+              ..ambientDance = const [
+                'DanceStep',
+                'DanceDisco',
+                'DanceVictory',
+              ][i]
+              ..x = (i - 1) * 2.0
+              ..z = -10
+              ..heading = 0;
+          }
         case 'encounter':
           s.x = 0;
           s.z = -14;

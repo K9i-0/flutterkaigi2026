@@ -17,6 +17,20 @@ void advance(HazardGameState s, double seconds) {
 }
 
 void main() {
+  test('ambient dance and prior awareness survive a checkpoint', () {
+    final world = map();
+    final s = HazardGameState(world);
+    s.enemies.first
+      ..ambientDance = 'DanceVictory'
+      ..alerted = true
+      ..alerted = false;
+    final data = jsonDecode(jsonEncode(s.checkpoint())) as Map<String, dynamic>;
+    final restored = restoreHazardCheckpoint(data, world, {}).enemies.first;
+    expect(restored.ambientDance, 'DanceVictory');
+    expect(restored.hasBeenAlerted, isTrue);
+    expect(restored.idleDance, isNull);
+  });
+
   test('enemy floor height survives save and old saves default to ground', () {
     final world = map();
     final s = HazardGameState(world);

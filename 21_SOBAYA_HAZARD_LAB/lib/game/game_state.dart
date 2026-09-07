@@ -111,7 +111,29 @@ enum BossMove {
 class Enemy {
   Enemy(this.id, this.x, this.z, {this.boss = false}) {
     hp = maxHp;
+    ambientDance = chooseAmbientDance(
+      _ambientRandom.nextDouble(),
+      _ambientRandom.nextInt(3),
+      boss: boss,
+    );
   }
+  static final _ambientRandom = math.Random();
+  String? ambientDance;
+  bool hasBeenAlerted = false;
+  String? get idleDance =>
+      active &&
+          alive &&
+          !dropped &&
+          !hasBeenAlerted &&
+          !alerted &&
+          notice == 0 &&
+          stun <= 0 &&
+          hp == maxHp &&
+          !attackPending &&
+          climb == null &&
+          vault == null
+      ? ambientDance
+      : null;
   double get modelScale => boss ? 3.0 : 1.0;
   double get collisionRadius => .37 * modelScale;
   double get targetHeight => modelScale;
@@ -168,7 +190,13 @@ class Enemy {
       vanish = 0,
       notice = 0,
       moved = 0;
-  bool alerted = false;
+  bool _alerted = false;
+  bool get alerted => _alerted;
+  set alerted(bool value) {
+    _alerted = value;
+    if (value) hasBeenAlerted = true;
+  }
+
   bool alive = true, dropped = false, active = false, attackPending = false;
 }
 
@@ -2533,6 +2561,8 @@ class HazardGameState {
             'headCentre': e.headCentre?.storage.toList(),
             'mugCentre': e.mugCentre?.storage.toList(),
             'alerted': e.alerted,
+            'idleDance': e.idleDance,
+            'ambientDance': e.ambientDance,
             'stun': e.stun,
             'attackPending': e.attackPending,
             'companionTarget': e.companionTarget,

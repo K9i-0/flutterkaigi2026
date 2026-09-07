@@ -9,15 +9,23 @@ void main() {
     'game walk uses the measured shared clip and its exact ground speed',
     () {
       final catalog = jsonDecode(
-        File('../04_GAME_ASSETS/3d/motion_library/fukuchan/profile.json')
+        File('../04_GAME_ASSETS/3d/hazard_adopted/manifest.json')
             .readAsStringSync(),
       ) as Map<String, dynamic>;
-      final clip = (catalog['clips'] as List)
-          .cast<Map<String, dynamic>>()
-          .singleWhere((e) => e['name'] == playerMotionSources['Walk']);
-      expect(clip['method'], 'video');
-      expect(fukuchanWalkSpeed, closeTo(clip['groundSpeedMps'] as num, 1e-10));
-      expect(clip['loop'], isTrue);
+      for (final name in ['sobaya', 'fukuchan']) {
+        final row = catalog[name] as Map<String, dynamic>;
+        final sources = name == 'sobaya'
+            ? sobayaMotionSources
+            : playerMotionSources;
+        for (final role in ['Walk', 'Run']) {
+          expect(sources[role], row['sources'][role]);
+          expect(row['clips'], contains(sources[role]));
+        }
+      }
+      expect(fukuchanWalkSpeed, catalog['fukuchan']['groundSpeedMps']['Walk']);
+      expect(fukuchanRunSpeed, catalog['fukuchan']['groundSpeedMps']['Run']);
+      expect(sobayaWalkSpeed, catalog['sobaya']['groundSpeedMps']['Walk']);
+      expect(sobayaMugRunSpeed, catalog['sobaya']['groundSpeedMps']['Run']);
     },
   );
   test(

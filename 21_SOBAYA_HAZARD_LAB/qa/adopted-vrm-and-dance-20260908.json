@@ -1,0 +1,136 @@
+{
+  "date": "2026-09-08",
+  "scope": "Mac debug native game; adopted VRM motions and ambient dances",
+  "flutterTests": 196,
+  "analysis": "No issues found",
+  "danceProbability": 0.2,
+  "dancePlaying": {
+    "enemyMotions": [
+      {
+        "motion": "DanceStep",
+        "sourceMotion": "DanceStep",
+        "seconds": 0.2800003183441152
+      },
+      {
+        "motion": "DanceDisco",
+        "sourceMotion": "DanceDisco",
+        "seconds": 1.6133340490417392
+      },
+      {
+        "motion": "DanceVictory",
+        "sourceMotion": "DanceVictory",
+        "seconds": 0.4799994123535315
+      }
+    ],
+    "enemies": [
+      {
+        "id": 0,
+        "alerted": false,
+        "idleDance": "DanceStep"
+      },
+      {
+        "id": 1,
+        "alerted": false,
+        "idleDance": "DanceDisco"
+      },
+      {
+        "id": 2,
+        "alerted": false,
+        "idleDance": "DanceVictory"
+      }
+    ],
+    "gripErrors": [
+      0,
+      0,
+      0
+    ]
+  },
+  "danceAfterGunshot": {
+    "enemyMotions": [
+      {
+        "motion": "MugPunch",
+        "sourceMotion": "Hybrid_MugPunch",
+        "seconds": 0.21333311850404194
+      },
+      {
+        "motion": "Idle",
+        "sourceMotion": "Hybrid_MugHold",
+        "seconds": 0.083333
+      },
+      {
+        "motion": "MugAttack",
+        "sourceMotion": "Hybrid_MugSmash",
+        "seconds": 0.052705581961845
+      }
+    ],
+    "enemies": [
+      {
+        "id": 0,
+        "alerted": true,
+        "idleDance": null
+      },
+      {
+        "id": 1,
+        "alerted": true,
+        "idleDance": null
+      },
+      {
+        "id": 2,
+        "alerted": true,
+        "idleDance": null
+      }
+    ],
+    "gripErrors": [
+      0,
+      0,
+      0
+    ]
+  },
+  "chase": {
+    "enemyMotions": [
+      {
+        "motion": "Walk",
+        "sourceMotion": "Adopted_Library_Walk",
+        "seconds": 0.47023340747553144
+      },
+      {
+        "motion": "Run",
+        "sourceMotion": "Adopted_Candidate_Chase_Run",
+        "seconds": 0.14540958571953616
+      },
+      {
+        "motion": "Run",
+        "sourceMotion": "Adopted_Candidate_Chase_Run",
+        "seconds": 0.14409051716388452
+      }
+    ],
+    "enemies": [
+      {
+        "id": 0,
+        "alerted": true,
+        "idleDance": null
+      },
+      {
+        "id": 1,
+        "alerted": true,
+        "idleDance": null
+      },
+      {
+        "id": 2,
+        "alerted": true,
+        "idleDance": null
+      }
+    ],
+    "gripErrors": [
+      0,
+      0,
+      0
+    ]
+  },
+  "playerRun": {
+    "motion": "Run",
+    "source": "Adopted_Candidate_Mixamo_Run",
+    "seconds": 0.3
+  },
+  "conversation": true
+}
