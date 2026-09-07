@@ -33,9 +33,10 @@ EnemyNavigation _buildEnemyNavigation(Map<String, dynamic> map) =>
     HazardGameState(map).prepareNavigation();
 
 class CharacterPlayer {
-  CharacterPlayer(Node template, this.names) : node = template.clone() {
+  CharacterPlayer(Node template, this.names, {this.sources = const {}})
+    : node = template.clone() {
     for (final name in names) {
-      final animation = node.findAnimationByName(name);
+      final animation = node.findAnimationByName(sources[name] ?? name);
       if (animation == null) throw StateError('Missing $name');
       durations[name] = animation.endTime;
       clips[name] = node.createAnimationClip(animation)
@@ -46,6 +47,8 @@ class CharacterPlayer {
           'Evade',
           'Kick',
           'MugAttack',
+          'MugPunch',
+          'MugHook',
           'Vault',
           'Grab',
           'Release',
@@ -58,6 +61,8 @@ class CharacterPlayer {
   }
   final Node node;
   final List<String> names;
+  final Map<String, String> sources;
+  String get sourceMotion => sources[current] ?? current;
   final clips = <String, AnimationClip>{};
   final durations = <String, double>{};
   String current = '';
@@ -108,7 +113,11 @@ class UpperBodyAim extends Component {
   @override
   void update(double deltaSeconds) {
     final s = state();
-    if (!s.aiming || s.reloading > 0 || s.hurtTime > 0 || s.actionLocked) {
+    if (!s.aiming ||
+        s.reloading > 0 ||
+        s.hurtTime > 0 ||
+        s.evadeTime > 0 ||
+        s.actionLocked) {
       return;
     }
     final parentRotation = node.parent?.globalTransform.getRotation();
@@ -371,7 +380,7 @@ class HazardGameController extends ChangeNotifier {
       'Vault',
       'Struggle',
       'BreakFree',
-    ]);
+    ], sources: playerMotionSources);
     player.node
         .getChildByName('Spine1')!
         .addComponent(UpperBodyAim(() => state!));
@@ -402,10 +411,12 @@ class HazardGameController extends ChangeNotifier {
         'Climb',
         'Vault',
         'MugAttack',
+        'MugPunch',
+        'MugHook',
         'Grab',
         'Hold',
         'Release',
-      ]);
+      ], sources: sobayaMotionSources);
       for (final finger in fingerPoses.entries) {
         actor.node
             .getChildByName(finger.key)!
@@ -413,7 +424,15 @@ class HazardGameController extends ChangeNotifier {
               HeldFingerPose(
                 finger.value,
                 shouldHold: () =>
-                    ['Grab', 'Hold', 'Release'].every(
+                    [
+                      'Idle',
+                      'Run',
+                      'MugPunch',
+                      'MugHook',
+                      'Grab',
+                      'Hold',
+                      'Release',
+                    ].every(
                       (name) =>
                           actor.current != name &&
                           actor.clips[name]!.weight < .005,
@@ -1297,13 +1316,18 @@ class HazardGameController extends ChangeNotifier {
       (s.running || (director != null && !director!.paused && foreground)) &&
           !posePreview,
       speed: s.climb != null && motion == 'Walk'
-          ? (s.climb!.up ? 1 : -1) * 1.4 / .91610738
+          ? (s.climb!.up ? 1 : -1) * 1.4 / fukuchanWalkSpeed
           : motion == 'Walk'
-          ? locomotionPlaybackRate(moved, dt, .91610738)
+          ? locomotionPlaybackRate(moved, dt, fukuchanWalkSpeed)
           : motion == 'Run'
-          ? locomotionPlaybackRate(moved, dt, 2.16571248)
+          ? locomotionPlaybackRate(moved, dt, fukuchanRunSpeed)
           : 1,
     );
+    if (motion == 'Evade' && s.evadeTime > 0 && !posePreview) {
+      player.clips['Evade']!
+        ..seek((1 - s.evadeTime / evadeDuration) * player.durations['Evade']!)
+        ..playbackTimeScale = 0;
+    }
     if (s.grapple != null) {
       if (posePreview) {
         for (final clip in player.clips.entries) {
@@ -1357,7 +1381,7 @@ class HazardGameController extends ChangeNotifier {
         : !closeCamera;
     player.node.rotation = vm.Quaternion.axisAngle(
       vm.Vector3(0, 1, 0),
-      s.heading + math.pi,
+      (s.evadeTime > 0 ? s.evadeHeading : s.heading) + math.pi,
     );
     if (s.phase == PlayPhase.dialogue && npcs.containsKey(s.talkingTo)) {
       final friend = npcs[s.talkingTo]!.node.position;
@@ -1480,6 +1504,9 @@ class HazardGameController extends ChangeNotifier {
               (e.bossMove == BossMove.recovery &&
                   (e.bossAttack == BossMove.swipeWindup ||
                       e.bossAttack == BossMove.slamWindup)));
+      final mugMotion = e.boss
+          ? (e.bossAttack == BossMove.slamWindup ? 'MugAttack' : 'MugHook')
+          : ['MugPunch', 'MugHook', 'MugAttack'][e.id % 3];
       actor.setMotion(
         s.grapple?.enemyId == e.id
             ? 'Hold'
@@ -1500,7 +1527,7 @@ class HazardGameController extends ChangeNotifier {
             : e.runningApproach && e.moved > .0001
             ? 'Run'
             : bossMelee || e.attackPending || e.meleeRecovery > 0
-            ? 'MugAttack'
+            ? mugMotion
             : e.stun > 0
             ? 'Idle'
             : e.moved > .0001
@@ -1525,7 +1552,7 @@ class HazardGameController extends ChangeNotifier {
             ? (e.moved /
                       dt /
                       ((e.bossMove == BossMove.charging || e.runningApproach)
-                          ? 2.381708109
+                          ? sobayaMugRunSpeed
                           : 1.007474632) /
                       e.modelScale)
                   .clamp(.1, 3)
@@ -1566,8 +1593,14 @@ class HazardGameController extends ChangeNotifier {
       } else if (director == null &&
           (!e.boss || e.companionTarget != null) &&
           e.meleeClipTime != null) {
-        actor.clips['MugAttack']!
-          ..seek(e.meleeClipTime!)
+        actor.clips[mugMotion]!
+          ..seek(
+            mugAttackTime(
+              e.meleeClipTime!,
+              actor.durations[mugMotion]!,
+              recoveryClockDuration: Enemy.meleeFollowThrough * .9,
+            ),
+          )
           ..playbackTimeScale = 0;
       } else if (director == null && bossMelee) {
         final attackSeconds = e.bossAttack == BossMove.slamWindup
@@ -1576,8 +1609,14 @@ class HazardGameController extends ChangeNotifier {
         final time = e.bossMove == BossMove.recovery
             ? .77 + (e.bossRecoveryDuration - e.bossTimer) * .8
             : .77 * (1 - e.bossTimer / attackSeconds);
-        actor.clips['MugAttack']!
-          ..seek(time.clamp(0.0, 1.4))
+        actor.clips[mugMotion]!
+          ..seek(
+            mugAttackTime(
+              time,
+              actor.durations[mugMotion]!,
+              recoveryClockDuration: e.bossRecoveryDuration * .8,
+            ),
+          )
           ..playbackTimeScale = 0;
       } else if (director == null && e.bossMove == BossMove.chargeWindup) {
         // A forward-weighted stance distinguishes the rush from a raised mug.

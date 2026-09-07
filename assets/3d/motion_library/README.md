@@ -22,7 +22,7 @@
 - `Hybrid_MugRun`：右手を保持し、左腕と脚を使って走る。
 - `Hybrid_MugPunch` / `Hybrid_MugHook` / `Hybrid_MugSmash`：正面パンチ、横フック、重い打ち下ろし。予備動作・打点・復帰の位相を `events` に記録。腰・胸の回転と支持脚IKを含む。
 - ジョッキ5本はそば屋用。既存の `PropSocket.R` と指の接触IKを使い、モデルを外付けする。比較アプリはゲームと同じ `props/beer_mug_v2/beer_mug.glb` を相対symlinkで参照する。
-- ゲーム側の旧クリップ名と戦闘の当たり判定タイミングは保持する。新クリップは共通GLBと比較アプリへ収録し、ローリングの移動量・攻撃の打点はゲーム側で明示的に同期して使う。
+- ゲーム側の旧クリップ名と戦闘の当たり判定タイミングは保持する。新クリップは共通GLB・比較アプリに加え、ゲーム本編にも割り当て済み。ローリングの移動量・攻撃の打点をゲーム側で同期する。詳細は[本編仕様](../../../21_SOBAYA_HAZARD_LAB/GAMEPLAY.md)を参照。
 
 再生成本体が `tools/humanoid_action_refinement.py` を呼び出す。既存の全ライブラリへの差分ベイクは `blender -b --factory-startup --python tools/humanoid_action_refinement.py`。再実行で視線補正を重ねない。姿勢画像の再検査は `blender -b --factory-startup --python tools/review_humanoid_actions.py`。
 

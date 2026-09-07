@@ -18,7 +18,7 @@ Flutter 3.47.2 / Dart 3.13.2 / flutter_scene 0.23.0。global Flutterに合わせ
 - 右マウスボタン長押し／Qで構える。Space／画面の射撃ボタンで発砲（左クリック・ドラッグは照準調整のみ）、Rで装填。構え中は立ち止まる。
 - Eで拾う・調べる・話す・木箱を壊す・はしごを使う。1／2で武器切替、Hでハーブ回復。
 - 正面のそば屋が掴む予備動作を見せたら回避する。掴まれた場合はEまたは画面の脱出ゲージを長押しして振りほどく。連打は不要。拘束中もEscで停止・保存できる。
-- Xで方向入力への回避（無入力なら後退）。頭を撃ってひるませたそば屋に近づき、Fで蹴る。回避は壁を通り抜けない。
+- Xで方向入力へローリング回避（無入力なら後方へ向き直って回転）。頭を撃ってひるませたそば屋に近づき、Fで蹴る。回避は壁を通り抜けない。
 - 村入口のやめ太郎にEで話しかける。Eで台詞を進め、ボタンで話題を選ぶ。各周回で弾10発を一度だけ受け取れる。Escで会話を終える。
 - Tabで10×6のアタッシュケース。ドラッグで配置、クリックで装備・使用・ハーブ調合。
 - Mで現在区画の全体マップ。門・出口・仲間・現在地を確認する。
@@ -263,3 +263,14 @@ MCP: `madogiwa.openGameScenario` の `name=companionYametaro|companionTakosan` �
 検証: analyze指摘0、119テスト通過。20音源のハッシュ/PCMピーク/尺/ループ端点検査を通過。macOS debug実描画で探索→警戒（探索0/追跡0.46）→解除（探索0.4/追跡0）、48秒ループ後も再生位置が進むこと、6種類の効果音のネイティブ開始、設定のBGM/効果音スライダーを確認。audioplayersのループ後state表示はcompletedになるが、ネイティブ位置更新とループ回数は継続した。主観的な音質や物理出力の無音ギャップ測定とは区別する。音楽追加後のprofile、全編通し、配布ZIPは未実施。
 
 MCP検証は `openGameScenario name=audioExplore|audioThreat`、`gameAction action=audioThreatOff`、`gameAction action=soundCue cue=shot|shotgun|enemy|mug_ready|mug_swing|mug_hit x=0 z=-18`。前面の実描画で観測し、終了時にpauseする。状態は `soundscape.exploration` / `tension` / `intensity`、`audioPlayback.variant` で取得。[探索](qa/score-explore-20260906.json)・[警戒](qa/score-threat-20260906.json)・[解除とループ](qa/score-return-loop-20260906.json)・[音源検査](qa/score-assets-20260906.json)。
+
+
+## 2026-09-07 共通モデルと新モーションの本編反映
+
+- 福ちゃん: `Hybrid_Idle_A` / `Hybrid_Walk` / `Hybrid_Jog`。脚長に合わせた基準速度は歩行0.6621m/s・走行3.7409m/s。実移動量から再生速度を決める。
+- X回避: `Procedural_RollForward` を1秒で再生。従来の移動距離1.554m、無敵0.32秒、クールダウン1.45秒は維持する。移動方向へモデルだけを回し、カメラの向きは維持。0.77秒で移動を終え、最後は起き上がる。壁の分割衝突判定を通す。
+- そば屋: 待機 `Hybrid_MugHold`、走行 `Hybrid_MugRun`（基準4.1140m/s）。歩行・掴み・はしご・窓越えは既存の専用クリップ。新ジョッキ動作の指を旧握り補正で上書きしない。
+- 通常敵はIDによりパンチ／フック／叩きつけを使い分け、強敵は横攻撃にフック・重攻撃に叩きつけを使う。新クリップ48%の打点を、既存の攻撃時計0.77秒へ合わせる。予備動作と後隙を別々に時間変換し、ダメージ量・発生時刻は変更しない。
+- そば屋72・福ちゃん67の共通モーションGLB、やめ太郎／たこさんの `rig_sheet_v2`、共通ジョッキを相対symlinkから再ビルドする。銃・掴み・はしごなどゲーム専用動作と発話モーフを維持する。
+
+`madogiwa.inspectHazardGame` の `sourceMotion` / `motionSources` / `enemyMotions[].sourceMotion` で実際のクリップを確認できる。`openGameScenario name=mugTiming enemy=0|1|2` は掴みを抑え、各ジョッキ攻撃の打点を実際の戦闘で確認する。通常プレイの掴み確率は変更しない。

@@ -154,6 +154,13 @@ void attachGameAutomation(HazardGameController game) {
                   },
             'seenEvents': _game!.state!.seenEvents.toList(),
             'motion': _game!.player.current,
+            'sourceMotion': _game!.player.sourceMotion,
+            'motionSeconds':
+                _game!.player.clips[_game!.player.current]!.playbackTime,
+            'motionSources': {
+              'player': _game!.player.sources,
+              'sobaya': _game!.enemies.first.sources,
+            },
             'checkpoint': {
               'exists': _game!.hasCheckpoint,
               'saving': _game!.saving,
@@ -163,6 +170,7 @@ void attachGameAutomation(HazardGameController game) {
                 .map(
                   (a) => {
                     'motion': a.current,
+                    'sourceMotion': a.sourceMotion,
                     'seconds': a.clips[a.current]!.playbackTime,
                   },
                 )
@@ -453,9 +461,11 @@ void attachGameAutomation(HazardGameController game) {
           s.x = 0;
           s.z = -16;
           s.yaw = 3.141592653589793;
-          s.enemies.first
+          final enemyIndex = (int.tryParse(p['enemy'] ?? '0') ?? 0).clamp(0, 2);
+          s.enemies[enemyIndex]
             ..active = true
             ..alerted = true
+            ..grabCooldown = 30
             ..x = .25
             ..z = -15.1;
         case 'encounter':

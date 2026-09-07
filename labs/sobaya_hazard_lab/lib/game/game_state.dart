@@ -1,4 +1,5 @@
 import 'game_story.dart';
+import 'game_motion_blend.dart';
 
 import 'dart:math' as math;
 
@@ -306,6 +307,7 @@ class HazardGameState {
       hurtTime = 0,
       recoil = 0;
   double _evadeX = 0, _evadeZ = 0;
+  double get evadeHeading => math.atan2(_evadeX, _evadeZ);
   double damageScale = 1, enemySpeedScale = 1;
   bool sprint = false,
       aiming = false,
@@ -969,7 +971,9 @@ class HazardGameState {
       }
     } else if (evadeTime > 0) {
       final oldHeading = heading;
-      move(_evadeX, _evadeZ, dt, speed: 3.7);
+      final elapsed = evadeDuration - evadeTime;
+      final distance = evadeTravel(elapsed + dt) - evadeTravel(elapsed);
+      move(_evadeX, _evadeZ, dt, speed: dt > 0 ? distance / dt : 0);
       heading = oldHeading;
       evadeTime = math.max(0, evadeTime - dt);
     } else if (kickTime > 0 || hurtTime > .2 || reloading > 0) {
@@ -1928,7 +1932,7 @@ class HazardGameState {
       _evadeX /= length;
       _evadeZ /= length;
     }
-    evadeTime = .42;
+    evadeTime = evadeDuration;
     evadeCooldown = 1.45;
     invulnerable = .32;
     aiming = false;
