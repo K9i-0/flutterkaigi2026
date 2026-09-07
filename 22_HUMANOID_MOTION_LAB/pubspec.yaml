@@ -1,0 +1,23 @@
+name: humanoid_motion_lab
+description: Body-aware animation comparison for Sobaya Hazard.
+publish_to: none
+version: 1.0.0+1
+environment:
+  sdk: ^3.13.2
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_scene:
+    path: ../21_SOBAYA_HAZARD_LAB/vendor/flutter_scene
+  hooks: ^2.0.2
+  marionette_flutter: ^0.6.0
+  vector_math: ^2.4.2
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+flutter:
+  uses-material-design: true
+  assets:
+    - flutter_scene_generated/
+    - assets/catalog.json

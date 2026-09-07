@@ -1,0 +1,1080 @@
+{
+  "date": "2026-09-07",
+  "platform": "macOS",
+  "mode": "debug",
+  "clipsChecked": 132,
+  "failures": [],
+  "passed": true,
+  "cases": [
+    {
+      "method": "captured",
+      "action": "Walk",
+      "clip": "Walk",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.45633333333333337
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.45633333333333337
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "captured",
+      "action": "Run",
+      "clip": "Run",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.30833333333333335
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.30833333333333335
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Idle_A",
+      "clip": "Library_Idle_A",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 1.1593333333333333
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 1.1593333333333333
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "hybrid",
+      "action": "Idle_A",
+      "clip": "Hybrid_Idle_A",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 1.1593333333333333
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 1.1593333333333333
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Walk",
+      "clip": "Library_Walk",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.6166666666666667
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.6166666666666667
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "hybrid",
+      "action": "Walk",
+      "clip": "Hybrid_Walk",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.6166666666666667
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.6166666666666667
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Jog",
+      "clip": "Library_Jog",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.4316666666666667
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.4316666666666667
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "hybrid",
+      "action": "Jog",
+      "clip": "Hybrid_Jog",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.4316666666666667
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.4316666666666667
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Run",
+      "clip": "Library_Sprint",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.30833333333333335
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.30833333333333335
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "hybrid",
+      "action": "Run",
+      "clip": "Hybrid_Sprint",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.30833333333333335
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.30833333333333335
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Crouch_Idle",
+      "clip": "Library_Crouch_Idle",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 1.3566666666666667
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 1.3566666666666667
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "hybrid",
+      "action": "Crouch_Idle",
+      "clip": "Hybrid_Crouch_Idle",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 1.3566666666666667
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 1.3566666666666667
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Crouch_Walk",
+      "clip": "Library_Crouch_Walk",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.925
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.925
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "hybrid",
+      "action": "Crouch_Walk",
+      "clip": "Hybrid_Crouch_Walk",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.925
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.925
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Walk_Carry",
+      "clip": "Library_Walk_Carry",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.74
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.74
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Zombie_Walk",
+      "clip": "Library_Zombie_Walk",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.4933333333333333
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.4933333333333333
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "hybrid",
+      "action": "Zombie_Walk",
+      "clip": "Hybrid_Zombie_Walk",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.4933333333333333
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.4933333333333333
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Jump_Start",
+      "clip": "Library_Jump_Start",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.6166666666666667
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.6166666666666667
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Jump_air",
+      "clip": "Library_Jump_air",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 1.1593333333333333
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 1.1593333333333333
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Jump_Land",
+      "clip": "Library_Jump_Land",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.592
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.592
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Punch_Jab",
+      "clip": "Library_Punch_Jab",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.39466666666666667
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.39466666666666667
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "hybrid",
+      "action": "Punch_Jab",
+      "clip": "Hybrid_Punch_Jab",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.39466666666666667
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.39466666666666667
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Punch_Cross",
+      "clip": "Library_Punch_Cross",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.4686666666666666
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.4686666666666666
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Melee_Hook",
+      "clip": "Library_Melee_Hook",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.17266666666666666
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.17266666666666666
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Hit_Chest",
+      "clip": "Library_Hit_Chest",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.148
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.148
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Hit_Head",
+      "clip": "Library_Hit_Head",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.19733333333333333
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.19733333333333333
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Pistol_Aim_Neutral",
+      "clip": "Library_Pistol_Aim_Neutral",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.074
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.074
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "hybrid",
+      "action": "Pistol_Aim_Neutral",
+      "clip": "Hybrid_Pistol_Aim_Neutral",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.074
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.074
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Pistol_Reload",
+      "clip": "Library_Pistol_Reload",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.7646666666666667
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.7646666666666667
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Pistol_Shoot",
+      "clip": "Library_Pistol_Shoot",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.296
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.296
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Sitting_Enter",
+      "clip": "Library_Sitting_Enter",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.6043333333333333
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.6043333333333333
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "hybrid",
+      "action": "Sitting_Enter",
+      "clip": "Hybrid_Sitting_Enter",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.6043333333333333
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.6043333333333333
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Sitting_Idle",
+      "clip": "Library_Sitting_Idle",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.7646666666666667
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.7646666666666667
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "hybrid",
+      "action": "Sitting_Idle",
+      "clip": "Hybrid_Sitting_Idle",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.7646666666666667
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.7646666666666667
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Sitting_Exit",
+      "clip": "Library_Sitting_Exit",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.481
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.481
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "hybrid",
+      "action": "Sitting_Exit",
+      "clip": "Hybrid_Sitting_Exit",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.481
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.481
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "PickUp_Table",
+      "clip": "Library_PickUp_Table",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.38233333333333336
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.38233333333333336
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Interact",
+      "clip": "Library_Interact",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.925
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.925
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Idle_Talking",
+      "clip": "Library_Idle_Talking",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 1.3566666666666667
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 1.3566666666666667
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "hybrid",
+      "action": "Idle_Talking",
+      "clip": "Hybrid_Idle_Talking",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 1.3566666666666667
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 1.3566666666666667
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Idle_FoldArms",
+      "clip": "Library_Idle_FoldArms",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.925
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.925
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Consume",
+      "clip": "Library_Consume",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.4933333333333333
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.4933333333333333
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Push",
+      "clip": "Library_Push",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 1.2333333333333334
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 1.2333333333333334
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Strafe_left",
+      "clip": "Library_Strafe_left",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.3576666666666667
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.3576666666666667
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "hybrid",
+      "action": "Strafe_left",
+      "clip": "Hybrid_Strafe_left",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.3576666666666667
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.3576666666666667
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Strafe_right",
+      "clip": "Library_Strafe_right",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.3576666666666667
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.3576666666666667
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "hybrid",
+      "action": "Strafe_right",
+      "clip": "Hybrid_Strafe_right",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.3576666666666667
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.3576666666666667
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Walk_Backwards",
+      "clip": "Library_Walk_Backwards",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.3576666666666667
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.3576666666666667
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "hybrid",
+      "action": "Walk_Backwards",
+      "clip": "Hybrid_Walk_Backwards",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.3576666666666667
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.3576666666666667
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Dodge_back",
+      "clip": "Library_Dodge_back",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.3576666666666667
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.3576666666666667
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Dodge_left",
+      "clip": "Library_Dodge_left",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.296
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.296
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Dodge_right",
+      "clip": "Library_Dodge_right",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.296
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.296
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Greeting",
+      "clip": "Library_Greeting",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 1.776
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 1.776
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Idle_Listening",
+      "clip": "Library_Idle_Listening",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.6166666666666667
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.6166666666666667
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Bow",
+      "clip": "Library_Bow",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 1.369
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 1.369
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "hybrid",
+      "action": "Bow",
+      "clip": "Hybrid_Bow",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 1.369
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 1.369
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Kneeling_Tired",
+      "clip": "Library_Kneeling_Tired",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.296
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.296
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "library",
+      "action": "Victory",
+      "clip": "Library_Victory",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.6043333333333333
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.6043333333333333
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "procedural",
+      "action": "Idle_A",
+      "clip": "Procedural_Breathing",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 1.184
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 1.184
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "procedural",
+      "action": "Walk",
+      "clip": "Procedural_Walk",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.481
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.481
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "procedural",
+      "action": "Run",
+      "clip": "Procedural_Jog",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.32066666666666666
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.32066666666666666
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "procedural",
+      "action": "Crouch",
+      "clip": "Procedural_Crouch",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 1.1099999999999999
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 1.1099999999999999
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "procedural",
+      "action": "SideStep",
+      "clip": "Procedural_SideStep",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 0.592
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 0.592
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "procedural",
+      "action": "Reach",
+      "clip": "Procedural_Reach",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 1.1099999999999999
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 1.1099999999999999
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "procedural",
+      "action": "LookAround",
+      "clip": "Procedural_LookAround",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 1.48
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 1.48
+        }
+      ],
+      "passed": true
+    },
+    {
+      "method": "procedural",
+      "action": "StepUp",
+      "clip": "Procedural_StepUp",
+      "actors": [
+        {
+          "character": "sobaya",
+          "seconds": 1.036
+        },
+        {
+          "character": "fukuchan",
+          "seconds": 1.036
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "controls": {
+    "frameStep": true,
+    "playAdvances": true,
+    "pauseHolds": true,
+    "fourMethodsWalkAndRun": true,
+    "skeletonAndSideView": "visually inspected"
+  },
+  "runtimeErrorsAfterFinalReload": [],
+  "release": {
+    "build": "macOS release, 166.9 MB",
+    "codeSignatureVerified": true,
+    "standaloneLaunch": true,
+    "fourMethodPlayback": "visually verified via native app UI"
+  }
+}

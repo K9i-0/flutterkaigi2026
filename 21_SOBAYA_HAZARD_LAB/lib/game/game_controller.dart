@@ -24,6 +24,7 @@ import 'game_events.dart';
 import 'game_voice.dart';
 import 'game_voice_player.dart';
 import 'game_speech.dart';
+import 'game_motion_blend.dart';
 import 'game_soundscape.dart';
 import '../lab/beer_mug_component.dart';
 import '../lab/simulation.dart' show FrameSamples;
@@ -36,6 +37,7 @@ class CharacterPlayer {
     for (final name in names) {
       final animation = node.findAnimationByName(name);
       if (animation == null) throw StateError('Missing $name');
+      durations[name] = animation.endTime;
       clips[name] = node.createAnimationClip(animation)
         ..loop = ![
           'ReloadHandgun',
@@ -57,18 +59,29 @@ class CharacterPlayer {
   final Node node;
   final List<String> names;
   final clips = <String, AnimationClip>{};
+  final durations = <String, double>{};
   String current = '';
   void setMotion(String name) {
     if (current == name) return;
+    final seconds = transitionMotionTime(
+      current,
+      name,
+      clips[current]?.playbackTime ?? 0,
+      durations[current] ?? 0,
+      durations[name]!,
+    );
     current = name;
-    clips[name]!.seek(0);
+    clips[name]!.seek(seconds);
     clips[name]!.play();
   }
 
   void update(double dt, bool playing, {double speed = 1}) {
     for (final e in clips.entries) {
-      final target = e.key == current ? 1.0 : 0.0;
-      e.value.weight += (target - e.value.weight) * (dt * 12).clamp(0, 1);
+      e.value.weight = advanceMotionWeight(
+        e.value.weight,
+        e.key == current,
+        dt,
+      );
       e.value.playbackTimeScale = speed;
       if (playing && (e.key == current || e.value.weight > .005)) {
         e.value.play();
@@ -1286,9 +1299,9 @@ class HazardGameController extends ChangeNotifier {
       speed: s.climb != null && motion == 'Walk'
           ? (s.climb!.up ? 1 : -1) * 1.4 / .91610738
           : motion == 'Walk'
-          ? 1.25 / .91610738
+          ? locomotionPlaybackRate(moved, dt, .91610738)
           : motion == 'Run'
-          ? 2.8 / 2.16571248
+          ? locomotionPlaybackRate(moved, dt, 2.16571248)
           : 1,
     );
     if (s.grapple != null) {
