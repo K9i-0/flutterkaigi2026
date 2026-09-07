@@ -11,12 +11,18 @@ import bpy
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'tools'))
 from build_humanoid_motion import Body, use_action, clear_pose, FPS
+from humanoid_action_refinement import forward, skin_points, minimum_skin
 
 OUT=ROOT/'04_GAME_ASSETS/3d/motion_library'
 report={'roundTrip':True,'fps':FPS,'characters':[],'failures':[]}
 def glb_animation_names(path):
     data=path.read_bytes();size=struct.unpack_from('<I',data,12)[0]
     return {a['name'] for a in json.loads(data[20:20+size]).get('animations',[])}
+def glb_animation_durations(path):
+    data=path.read_bytes();size=struct.unpack_from('<I',data,12)[0]
+    doc=json.loads(data[20:20+size])
+    return {a['name']:max(doc['accessors'][s['input']]['max'][0] for s in a['samplers'])
+            for a in doc.get('animations',[])}
 for name in ['sobaya','fukuchan']:
     profile=json.loads((OUT/name/'profile.json').read_text())
     bpy.ops.wm.read_factory_settings(use_empty=True);bpy.context.scene.render.fps=FPS
@@ -26,6 +32,7 @@ for name in ['sobaya','fukuchan']:
     for track in list(rig.animation_data.nla_tracks):rig.animation_data.nla_tracks.remove(track)
     use_action(rig,None);clear_pose(rig)
     body=Body(rig,meshes,name)
+    skin=skin_points(body)
     max_weights=0;max_error=0;unweighted=0;finite=True
     shapes=[]
     for mesh in meshes:
@@ -41,6 +48,10 @@ for name in ['sobaya','fukuchan']:
     char['originalGameClips']=len(required)
     char['deliveredGlbClips']=len(delivered)
     char['missingGameClips']=sorted(required-delivered)
+    old_times=glb_animation_durations(ROOT/profile['source'])
+    new_times=glb_animation_durations(OUT/name/f'{name}.glb')
+    char['maxGameClipDurationErrorSeconds']=max(abs(v-new_times.get(k,-1)) for k,v in old_times.items())
+    if char['maxGameClipDurationErrorSeconds']>1e-5:report['failures'].append(name+': original game timing changed')
     if required-delivered:report['failures'].append(name+': lost original game clips')
     if max_weights>4 or max_error>1e-4 or unweighted or not finite: report['failures'].append(name+': skin weights/finite')
     if name=='fukuchan' and not {'SpeechOpen','SpeechNarrow'}<=set(shapes): report['failures'].append(name+': speech morphs lost')
@@ -49,12 +60,14 @@ for name in ['sobaya','fukuchan']:
         if not action:
             report['failures'].append(name+': missing '+spec['name']);continue
         use_action(rig,None);clear_pose(rig);use_action(rig,action);start,end=action.frame_range
-        floors=[];nonfinite=False;first=None;last=None
+        floors=[];pitches=[];body_floors=[];nonfinite=False;first=None;last=None
         # Nine poses per clip, including loop boundary and subframe interpolation.
         for step in range(9):
             f=start+(end-start)*step/8
             bpy.context.scene.frame_set(int(f),subframe=f-int(f))
             floors.append(min(body.skin_floor('l'),body.skin_floor('r')))
+            pitches.append(math.degrees(math.asin(max(-1,min(1,forward(body).z)))))
+            if spec.get('support')=='body':body_floors.append(minimum_skin(body,skin))
             poses={b.name:(b.location.copy(),b.rotation_quaternion.copy()) for b in rig.pose.bones}
             nonfinite |= any(not math.isfinite(v) for p,q in poses.values() for v in [*p,*q])
             if step==0:first=poses
@@ -67,10 +80,18 @@ for name in ['sobaya','fukuchan']:
             maxLowestSoleM=max(floors),
             loop=spec['loop'],seamRadians=seam_angle,seamTranslationM=seam_translation,finite=not nonfinite)
         char['clips'].append(record)
+        record['gazePitchRangeDeg']=[min(pitches),max(pitches)]
+        if spec.get('gazePitchRangeDeg'):
+            low,high=spec['gazePitchRangeDeg']
+            if min(pitches)<low-1 or max(pitches)>high+1:
+                report['failures'].append(name+': gaze pitch '+spec['name'])
+        if body_floors:
+            record['minBodyM']=min(body_floors)
+            if min(body_floors)<-.006:report['failures'].append(name+': roll body penetration')
         if nonfinite:report['failures'].append(name+': nonfinite '+spec['name'])
         if spec['method'] in ['hybrid','procedural'] and min(floors)<-.002:
             report['failures'].append(name+': ground penetration '+spec['name'])
-        if spec['method']=='hybrid' and spec.get('sourceClip',spec['action']) not in ['Jog','Sprint'] and max(floors)>.04:
+        if spec['method']=='hybrid' and spec.get('support')!='flight' and spec.get('sourceClip',spec['action']) not in ['Jog','Sprint'] and max(floors)>.04:
             report['failures'].append(name+': floating support '+spec['name'])
         if spec['loop'] and spec['method'] in ['hybrid','procedural'] and (seam_angle>.12 or seam_translation>.012):
             report['failures'].append(name+': loop seam '+spec['name'])

@@ -512,6 +512,8 @@ def build_character(name,sources,preview,hybrid_only=False):
     for kind,label,duration in PROCEDURAL:
         result=procedural(body,kind,label,duration);profile['clips'].append(result)
         print('BAKED',name,result['name'],round(result['minSoleM'],4),flush=True)
+    from humanoid_action_refinement import refine
+    refine(body,profile)
     use_action(rig,None);clear_pose(rig)
     folder=OUT/name;folder.mkdir(parents=True,exist_ok=True)
     (folder/'.gitignore').write_text('*.blend\n*.blend1\n')

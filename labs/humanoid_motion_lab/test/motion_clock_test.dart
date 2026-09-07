@@ -57,6 +57,21 @@ void main() {
     }
     final sobaya = bodies.firstWhere((b) => b.id == 'sobaya');
     final fuku = bodies.firstWhere((b) => b.id == 'fukuchan');
+    for (final body in bodies) {
+      final roll = body.find(MotionMethod.procedural, 'RollForward')!;
+      expect(roll.loop, isFalse);
+      expect(roll.rootTravel, greaterThan(1));
+    }
+    for (final action in [
+      'MugHold',
+      'MugRun',
+      'MugPunch',
+      'MugHook',
+      'MugSmash',
+    ]) {
+      expect(sobaya.find(MotionMethod.hybrid, action)!.prop, 'beer_mug');
+      expect(fuku.find(MotionMethod.hybrid, action), isNull);
+    }
     expect(sobaya.leg, greaterThan(fuku.leg));
     expect(sobaya.shoulder, greaterThan(fuku.shoulder * 1.4));
     // Height scaling alone must not be used for limb retargeting.
