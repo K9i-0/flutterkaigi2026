@@ -69,6 +69,39 @@
       "maxRotationError": 0.0018586353997229637
     },
     {
+      "character": "sobaya",
+      "motion": "Jog",
+      "duration": 1.1666666269302368,
+      "sampledPoses": 36,
+      "unchangedLocomotion": null,
+      "tracks": 42,
+      "gltfErrors": 0,
+      "maxPositionError": 6.549057236992816e-7,
+      "maxRotationError": 0.0007766912953472115
+    },
+    {
+      "character": "sobaya",
+      "motion": "Candidate_Mixamo_Run",
+      "duration": 0.8333333134651184,
+      "sampledPoses": 26,
+      "unchangedLocomotion": null,
+      "tracks": 42,
+      "gltfErrors": 0,
+      "maxPositionError": 0.0000032334594922787387,
+      "maxRotationError": 0.0017380150355548888
+    },
+    {
+      "character": "sobaya",
+      "motion": "Candidate_Chase_Run",
+      "duration": 0.9666666388511658,
+      "sampledPoses": 30,
+      "unchangedLocomotion": null,
+      "tracks": 42,
+      "gltfErrors": 0,
+      "maxPositionError": 0.0000010577838541728828,
+      "maxRotationError": 0.0005097197722194845
+    },
+    {
       "character": "fukuchan",
       "motion": "Idle_A",
       "duration": 3.133333444595337,
@@ -133,6 +166,39 @@
       "gltfErrors": 0,
       "maxPositionError": 0.0000012106518460033396,
       "maxRotationError": 0.0013875799274893328
+    },
+    {
+      "character": "fukuchan",
+      "motion": "Jog",
+      "duration": 1.1666666269302368,
+      "sampledPoses": 36,
+      "unchangedLocomotion": null,
+      "tracks": 23,
+      "gltfErrors": 0,
+      "maxPositionError": 8.935736963367972e-7,
+      "maxRotationError": 0.0012722168068838718
+    },
+    {
+      "character": "fukuchan",
+      "motion": "Candidate_Mixamo_Run",
+      "duration": 0.8333333134651184,
+      "sampledPoses": 26,
+      "unchangedLocomotion": null,
+      "tracks": 23,
+      "gltfErrors": 0,
+      "maxPositionError": 0.00002155451174773245,
+      "maxRotationError": 0.00230310546615825
+    },
+    {
+      "character": "fukuchan",
+      "motion": "Candidate_Chase_Run",
+      "duration": 0.9666666388511658,
+      "sampledPoses": 30,
+      "unchangedLocomotion": null,
+      "tracks": 23,
+      "gltfErrors": 0,
+      "maxPositionError": 9.399217223005999e-7,
+      "maxRotationError": 0.0013244407428993955
     }
   ]
 }

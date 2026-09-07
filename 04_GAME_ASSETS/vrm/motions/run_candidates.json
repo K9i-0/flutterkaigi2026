@@ -1,0 +1,98 @@
+{
+  "license": "Per-entry; CC0 or existing licensed Mixamo",
+  "sourceRevision": "2d3d1ff03247d9e7e830d1ae375653da4e2146e2",
+  "characters": {
+    "sobaya": [
+      {
+        "name": "Library_Jog",
+        "action": "Jog",
+        "label": "Jog（公開ライブラリ）",
+        "method": "library",
+        "category": "VRM",
+        "loop": true,
+        "duration": 1.1666666666666667,
+        "source": "human-base-animations.glb",
+        "sourceClip": "Jog",
+        "legScale": 0.9921277486920957,
+        "minSoleM": -0.06294240057468414,
+        "contactSamples": 0,
+        "floor": "unconstrained",
+        "groundSpeedMps": 4.11396170763206,
+        "contactAnkleSlipRmsMps": 0.28223191000596476,
+        "license": "CC0-1.0",
+        "validationSource": ".local/vrm-validation/sobaya_run_candidates.glb",
+        "file": "sobaya/Jog.vrma",
+        "sha256": "bd5d66f4a0e1f09463d2f615d85a72bb143fe19e3e5332a1f9957d78ecd0e2c1"
+      },
+      {
+        "name": "Candidate_Mixamo_Run",
+        "sourceClip": "Candidate_Mixamo_Run",
+        "label": "Run（既存Mixamo）",
+        "license": "Existing licensed Mixamo; not CC0",
+        "source": "Shared game GLB Run",
+        "duration": 0.8333333333333334,
+        "validationSource": ".local/vrm-validation/sobaya_run_candidates.glb",
+        "file": "sobaya/Candidate_Mixamo_Run.vrma",
+        "sha256": "76a5baae663ea4a87d5917474447611d74f08b43f3f3814184d3364c67ba0f41"
+      },
+      {
+        "name": "Candidate_Chase_Run",
+        "sourceClip": "Candidate_Chase_Run",
+        "label": "逃走・追跡（調整版）",
+        "license": "CC0-1.0",
+        "source": "Jog with authored torso lean, arm amplitude and 1.2x cadence",
+        "duration": 0.9722222222222223,
+        "characterDirection": "重さのある追跡",
+        "validationSource": ".local/vrm-validation/sobaya_run_candidates.glb",
+        "file": "sobaya/Candidate_Chase_Run.vrma",
+        "sha256": "782895666994f308872ba234ea74b590250d07abb23436e091bfde54d5f00a34"
+      }
+    ],
+    "fukuchan": [
+      {
+        "name": "Library_Jog",
+        "action": "Jog",
+        "label": "Jog（公開ライブラリ）",
+        "method": "library",
+        "category": "VRM",
+        "loop": true,
+        "duration": 1.1666666666666667,
+        "source": "human-base-animations.glb",
+        "sourceClip": "Jog",
+        "legScale": 0.9021529436915028,
+        "minSoleM": 0.012002888942950207,
+        "contactSamples": 0,
+        "floor": "unconstrained",
+        "groundSpeedMps": 3.7408715233152625,
+        "contactAnkleSlipRmsMps": 0.19607500280760534,
+        "license": "CC0-1.0",
+        "validationSource": ".local/vrm-validation/fukuchan_run_candidates.glb",
+        "file": "fukuchan/Jog.vrma",
+        "sha256": "fff90dbd923c994a9044ca2e891ecd5213db44a8ed9e56ac012a9571c8001e3b"
+      },
+      {
+        "name": "Candidate_Mixamo_Run",
+        "sourceClip": "Candidate_Mixamo_Run",
+        "label": "Run（既存Mixamo）",
+        "license": "Existing licensed Mixamo; not CC0",
+        "source": "Shared game GLB Run",
+        "duration": 0.8333333333333334,
+        "validationSource": ".local/vrm-validation/fukuchan_run_candidates.glb",
+        "file": "fukuchan/Candidate_Mixamo_Run.vrma",
+        "sha256": "a72ac85a1bb2f072adccb078a441ca21c8ef27c0480a695cb29717bf13398464"
+      },
+      {
+        "name": "Candidate_Chase_Run",
+        "sourceClip": "Candidate_Chase_Run",
+        "label": "逃走・追跡（調整版）",
+        "license": "CC0-1.0",
+        "source": "Jog with authored torso lean, arm amplitude and 1.2x cadence",
+        "duration": 0.9722222222222223,
+        "characterDirection": "前傾して逃走",
+        "validationSource": ".local/vrm-validation/fukuchan_run_candidates.glb",
+        "file": "fukuchan/Candidate_Chase_Run.vrma",
+        "sha256": "3a819bc4d93bff955a0bcce126093ce5ab3c8854f73e241a8852f6a1c54f7ea9"
+      }
+    ]
+  }
+}

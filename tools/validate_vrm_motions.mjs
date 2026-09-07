@@ -9,12 +9,15 @@ const ajv=new Ajv({strict:false,allErrors:true});for(const dir of ['.local/vrm-s
 const schema=ajv.getSchema('VRMC_vrm_animation.schema.json');
 function buffer(file){const b=fs.readFileSync(root+'/'+file);return b.buffer.slice(b.byteOffset,b.byteOffset+b.byteLength)}
 const catalog=JSON.parse(fs.readFileSync(root+'/04_GAME_ASSETS/vrm/motions/catalog.json'));const results=[];
+const candidates=JSON.parse(fs.readFileSync(root+'/04_GAME_ASSETS/vrm/motions/run_candidates.json'));for(const name of ['sobaya','fukuchan'])catalog.characters[name].push(...candidates.characters[name]);
 for(const name of ['sobaya','fukuchan']){
  const loader=new GLTFLoader();loader.register(p=>new VRMLoaderPlugin(p));loader.register(()=>({name:'TestTextures',loadTexture:()=>Promise.resolve(new THREE.Texture())}));
  const {userData:{vrm}}=await loader.parseAsync(buffer(`04_GAME_ASSETS/vrm/characters/${name}.vrm`),'');
- const source=await new GLTFLoader().parseAsync(buffer(`.local/vrm-validation/${name}_motions.glb`),'');
+ let source=await new GLTFLoader().parseAsync(buffer(`.local/vrm-validation/${name}_motions.glb`),'');
  const manifest=JSON.parse(fs.readFileSync(root+`/04_GAME_ASSETS/vrm/characters/${name}.manifest.json`));
+ const originalSource=source;const candidateSource=await new GLTFLoader().parseAsync(buffer(`.local/vrm-validation/${name}_run_candidates.glb`),'');
  for(const entry of catalog.characters[name]){
+  source=entry.validationSource?candidateSource:originalSource;
   const b=buffer('04_GAME_ASSETS/vrm/motions/'+entry.file);const json=JSON.parse(Buffer.from(b).subarray(20,20+new DataView(b).getUint32(12,true)));
   if(!schema(json.extensions.VRMC_vrm_animation))throw Error(JSON.stringify(schema.errors));
   const report=await validateBytes(new Uint8Array(b),{maxIssues:1000});if(report.issues.numErrors)throw Error(JSON.stringify(report.issues));

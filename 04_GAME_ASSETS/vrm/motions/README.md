@@ -61,3 +61,22 @@ VRMAは回転とhipsの平行移動を格納し、非対応のscaleやhips以外
 ```
 
 [変形の比較検証](../DEFORMATION_REVIEW.md) に候補ごとの観察と再現手順を記録。足IK・演技のタイミング・歩行とダッシュの駆動は今回のねじれ補正の対象外。
+
+## ダッシュ候補の比較
+
+`run_candidates.json` に両キャラ各3候補を追加。現行Sprintと合わせて確認ページのモーション選択から比較できる。
+
+| 候補 | 内容 | 素材条件 |
+| --- | --- | --- |
+| Jog（公開ライブラリ） | 既存CC0 Jogを体格別に移植 | CC0 |
+| Run（既存Mixamo） | ゲーム共通GLBの既存RunをVRMA化 | 既存ライセンス済みMixamo。CC0ではない |
+| 逃走・追跡（調整版） | Jogの周期を約1/1.2倍にし、上腕の動きをそば屋72%・福ちゃん88%へ調整。腰上の前傾をそれぞれ0.10/0.15 rad追加 | CC0ベースの調整 |
+
+調整版は新しい収録素材ではなく、既存Jogの演出候補。前傾以外の頭の向きや接地IKは追加していない。その場での見た目を選ぶ段階で、ゲーム本編の移動速度との一致は未調整。既存のSprint・ダンスファイルは変更しない。
+
+```sh
+/Applications/Blender.app/Contents/MacOS/Blender -b --factory-startup --python tools/build_vrm_run_candidates.py
+node tools/validate_vrm_motions.mjs
+```
+
+比較用中間ファイルは `.local/vrm-validation/*_run_candidates.glb`。VRMAは1ファイルに当該モーションで使用するバッファだけを格納し、他候補の未参照データを混在させない。検証は既存12件と候補6件の計18件。
