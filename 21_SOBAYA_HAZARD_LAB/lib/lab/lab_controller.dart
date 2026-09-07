@@ -579,7 +579,7 @@ class LabController extends ChangeNotifier {
     'availableMotions': motions.map((m) => m.name).toList(),
     'propAsset': propAsset,
     'count': count,
-    'placedTriangles': (34355 + (mugEquipped ? 8276 : 0)) * count,
+    'placedTriangles': (28576 + (mugEquipped ? 8276 : 0)) * count,
     'sourceTextureSize': 4096,
     'loadMs': loadMs,
     'position': {'x': simulation.x, 'z': simulation.z},
