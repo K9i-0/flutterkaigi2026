@@ -2,6 +2,36 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sobaya_hazard_lab/game/game_motion_blend.dart';
 
 void main() {
+  test(
+    'all mug variants contact exactly on the damage beat and finish recovery',
+    () {
+      for (final duration in [1.1333333333, 1.3333333333, 1.6]) {
+        for (final recovery in [.55 * .9, 1.2 * .8, 1.8 * .8]) {
+          expect(
+            mugAttackTime(0, duration, recoveryClockDuration: recovery),
+            0,
+          );
+          expect(
+            mugAttackTime(.77, duration, recoveryClockDuration: recovery),
+            closeTo(duration * .48, 1e-9),
+          );
+          expect(
+            mugAttackTime(
+              .77 + recovery,
+              duration,
+              recoveryClockDuration: recovery,
+            ),
+            closeTo(duration, 1e-9),
+          );
+          expect(
+            mugAttackTime(.4, duration, recoveryClockDuration: recovery),
+            lessThan(duration * .48),
+          );
+        }
+      }
+    },
+  );
+
   test('actual motion after collision drives the animation clock', () {
     expect(locomotionPlaybackRate(0, 1 / 60, 1), 0);
     expect(locomotionPlaybackRate(.02, .02, 1), 1);

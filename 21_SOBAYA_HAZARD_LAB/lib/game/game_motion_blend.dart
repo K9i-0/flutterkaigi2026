@@ -35,3 +35,43 @@ double locomotionPlaybackRate(double distance, double dt, double groundSpeed) {
   }
   return (distance / dt / groundSpeed).clamp(0.0, 3.0);
 }
+
+// Source names and fitted foot speeds from the shared motion catalog.
+const playerMotionSources = {
+  'Idle': 'Hybrid_Idle_A',
+  'Walk': 'Hybrid_Walk',
+  'Run': 'Hybrid_Jog',
+  'Evade': 'Procedural_RollForward',
+};
+const sobayaMotionSources = {
+  'Idle': 'Hybrid_MugHold',
+  'Run': 'Hybrid_MugRun',
+  'MugAttack': 'Hybrid_MugSmash',
+  'MugPunch': 'Hybrid_MugPunch',
+  'MugHook': 'Hybrid_MugHook',
+};
+const fukuchanWalkSpeed = .6621424407221252;
+const fukuchanRunSpeed = 3.7408731803841153;
+const sobayaMugRunSpeed = 4.113966343911378;
+
+/// The gameplay clock strikes at .77; every new mug clip contacts at 48%.
+/// Map anticipation and recovery separately, keeping hit damage on its existing
+/// clock even when the selected punch, hook and smash have different lengths.
+double mugAttackTime(
+  double clock,
+  double duration, {
+  required double recoveryClockDuration,
+}) {
+  final phase = clock <= .77
+      ? .48 * (clock / .77).clamp(0.0, 1.0)
+      : .48 + .52 * ((clock - .77) / recoveryClockDuration).clamp(0.0, 1.0);
+  return duration * phase;
+}
+
+// Retain the former dodge distance and invulnerability; allow a full recovery.
+const evadeDuration = 1.0;
+const evadeDistance = 3.7 * .42;
+double evadeTravel(double elapsed) {
+  final u = (elapsed / .77).clamp(0.0, 1.0);
+  return evadeDistance * u * u * (3 - 2 * u);
+}

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vector_math/vector_math.dart' as vm;
 import 'package:sobaya_hazard_lab/game/game_state.dart';
+import 'package:sobaya_hazard_lab/game/game_motion_blend.dart';
 
 HazardGameState game() =>
     HazardGameState(jsonDecode(File('assets/village.json').readAsStringSync()));
@@ -14,6 +15,32 @@ void advance(HazardGameState s, double seconds) {
 }
 
 void main() {
+  test('roll finishes at the same distance across frame rates with a vulnerable recovery', () {
+    for (final hz in [30, 60, 120]) {
+      final s = game();
+      for (final e in s.enemies) {
+        e.active = false;
+      }
+      final start = vm.Vector2(s.x, s.z);
+      s.evade();
+      final direction = s.evadeHeading;
+      for (var i = 0; i < hz ~/ 2; i++) {
+        s.tick(1 / hz);
+      }
+      expect(s.evadeTime, greaterThan(0));
+      expect(s.invulnerable, 0);
+      expect(s.evadeHeading, direction);
+      for (var i = 0; i < hz; i++) {
+        s.tick(1 / hz);
+      }
+      expect(s.evadeTime, 0);
+      expect(
+        (vm.Vector2(s.x, s.z) - start).length,
+        closeTo(evadeDistance, 1e-6),
+      );
+    }
+  });
+
   test('selecting the equipped weapon does not cancel an ongoing reload', () {
     final s = game()..pistolLoaded = 0;
     s.reload();

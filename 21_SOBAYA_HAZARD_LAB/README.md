@@ -1,6 +1,6 @@
 # そば屋ハザード · 村・農場・山道と3D検証室
 
-**人型アニメーション比較アプリを追加。** [そば屋モーションラボ](../22_HUMANOID_MOTION_LAB/README.md)でそば屋・福ちゃん各66クリップを4手法で比較できる。ゲームの2モデルも[体格対応モーション正本](../04_GAME_ASSETS/3d/motion_library/README.md)を共有する。従来のゲーム用クリップを保持し、歩行⇄走行の位相、衝突後の移動量と足運びの同期、使い終えたクリップの評価停止を改善した。以下のv1〜v3の項目は既存モデルの制作履歴。
+**人型アニメーション比較アプリを追加。** [そば屋モーションラボ](../22_HUMANOID_MOTION_LAB/README.md)でそば屋72・福ちゃん67クリップを4手法で比較できる。ゲームの2モデルも[体格対応モーション正本](../04_GAME_ASSETS/3d/motion_library/README.md)を共有する。ゲーム本編にも新モーションを割り当てた。福ちゃんは体格補正済みの待機・歩行・走行とXキーのローリング。そば屋は正典のジョッキ保持、ジョッキを持つ走行、パンチ・フック・叩きつけを使用する。攻撃は既存の命中タイミングに同期し、歩行⇄走行の位相、衝突後の移動量と足運びの同期も維持する。以下のv1〜v3の項目は既存モデルの制作履歴。
 
 **本編が追加されました。** 福ちゃんで探索・射撃・ビール回収・画像収集を行う3区画の制作中体験版は `mise exec -- flutter run -d macos -t lib/game_main.dart` で起動します。[本編の操作・範囲・検証結果](GAMEPLAY.md)を参照してください。
 
@@ -40,9 +40,9 @@ mise exec -- flutter run -d macos
 
 肩・顔・握り・ガラス／液体表現と、Tripo複数画像入力の調査は[品質改善方針](ASSET_QUALITY_PLAN.md)を参照。
 
-`assets/models/sobaya.glb`は[GLB正本](../04_GAME_ASSETS/3d/characters/sobaya/rig_v3/sobaya_rig.glb)への相対symlink。ゲーム側へコピーしない。採用したGLBをGit管理対象にし、Tripo生レスポンス・署名付きURL・APIキーは含めない。
+`assets/models/sobaya.glb`は[モーション追加済みGLB正本](../04_GAME_ASSETS/3d/motion_library/sobaya/sobaya.glb)への相対symlink。ゲーム側へコピーしない。採用したGLBをGit管理対象にし、Tripo生レスポンス・署名付きURL・APIキーは含めない。
 
-現行版は身長1.8m、28,576三角面、4材質、4K PBRテクスチャ、45ボーン／最大4ウェイト。歩行・走行・ゾンビ歩行・ダンス3種・乾杯・ジョッキ攻撃・待機の9クリップを持つ。[リグ仕様・再生成](../04_GAME_ASSETS/3d/characters/sobaya/rig_v3/README.md)を参照。
+ベースとなるrig_v3は身長1.8m、28,576三角面、4材質、4K PBRテクスチャ、45ボーン／最大4ウェイト。歩行・走行・ゾンビ歩行・ダンス3種・乾杯・ジョッキ攻撃・待機の9クリップを持つ。[リグ仕様・再生成](../04_GAME_ASSETS/3d/characters/sobaya/rig_v3/README.md)を参照。
 
 `assets/models/beer_mug.glb`も[共通小道具の正本](../04_GAME_ASSETS/3d/props/beer_mug_v2/beer_mug.glb)への相対symlink。8,276三角面・4材質で、右手のソケットに取り付ける。
 

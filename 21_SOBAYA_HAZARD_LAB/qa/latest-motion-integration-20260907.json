@@ -1,0 +1,86 @@
+{
+  "date": "2026-09-07",
+  "tests": {
+    "flutterAnalyze": "passed",
+    "flutterTest": 193
+  },
+  "native": {
+    "app": "lib/game_main.dart",
+    "pid": 72226,
+    "conversation": true,
+    "companionTakosan": true,
+    "roll": {
+      "input": "Marionette press_key x",
+      "motion": "Procedural_RollForward",
+      "seconds": 0.5833323900659089
+    },
+    "mugAttacks": [
+      {
+        "enemy": 0,
+        "motion": {
+          "motion": "MugPunch",
+          "sourceMotion": "Hybrid_MugPunch",
+          "seconds": 0.5529289318802659
+        },
+        "health": 85,
+        "clock": 0.7774997,
+        "gripErrorM": 0
+      },
+      {
+        "enemy": 1,
+        "motion": {
+          "motion": "MugHook",
+          "sourceMotion": "Hybrid_MugHook",
+          "seconds": 0.6400000190734864
+        },
+        "health": 85,
+        "clock": 0.77,
+        "gripErrorM": 0
+      },
+      {
+        "enemy": 2,
+        "motion": {
+          "motion": "MugAttack",
+          "sourceMotion": "Hybrid_MugSmash",
+          "seconds": 0.8310308196560514
+        },
+        "health": 85,
+        "clock": 0.8075003000000001,
+        "gripErrorM": 0
+      }
+    ],
+    "run": [
+      {
+        "motion": "Walk",
+        "sourceMotion": "Walk",
+        "seconds": 0.33085974516129846
+      },
+      {
+        "motion": "Run",
+        "sourceMotion": "Hybrid_MugRun",
+        "seconds": 0.17133194227357854
+      },
+      {
+        "motion": "Run",
+        "sourceMotion": "Hybrid_MugRun",
+        "seconds": 0.17004663917070187
+      }
+    ],
+    "sources": {
+      "player": {
+        "Idle": "Hybrid_Idle_A",
+        "Walk": "Hybrid_Walk",
+        "Run": "Hybrid_Jog",
+        "Evade": "Procedural_RollForward"
+      },
+      "sobaya": {
+        "Idle": "Hybrid_MugHold",
+        "Run": "Hybrid_MugRun",
+        "MugAttack": "Hybrid_MugSmash",
+        "MugPunch": "Hybrid_MugPunch",
+        "MugHook": "Hybrid_MugHook"
+      }
+    }
+  },
+  "scope": "Native debug rendering, keyboard roll, real combat clocks and voice probes. Unit tests cover roll distance, collision, i-frames, and all attack contact/recovery remaps; not a complete campaign playthrough."
+}

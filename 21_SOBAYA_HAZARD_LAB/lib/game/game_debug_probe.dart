@@ -1,4 +1,5 @@
 import 'game_state.dart';
+import 'game_settings.dart';
 
 import 'dart:async';
 
@@ -169,7 +170,20 @@ Future<Map<String, Object?>> probeCompanionVoice(
     game.benchmarkMode = true;
     game.restart();
     epoch = game.runEpoch;
-    // Both companions are present in the village; no region transition needed.
+    // Takosan now lives in the farm. Follow the same region transport used
+    // by the deterministic companion scenario before looking up its node.
+    if (id == 'takosan') {
+      final village = game.state!;
+      village.difficulty = HazardDifficulty.standard;
+      village.hasKey = village.gateOpen = true;
+      village.exitRequested = Map<String, dynamic>.from(
+        (village.map['exits'] as List).first,
+      );
+      village.phase = PlayPhase.transition;
+      game.transitionRegion();
+      game.director = null;
+      game.state!.phase = PlayPhase.playing;
+    }
     final s = game.state!;
     final npc = s.npcs.firstWhere((n) => n['id'] == id);
     s.x = (npc['x'] as num).toDouble() + 2.5;
