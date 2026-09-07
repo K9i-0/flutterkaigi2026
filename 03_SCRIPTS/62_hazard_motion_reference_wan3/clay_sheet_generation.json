@@ -25,5 +25,19 @@
     "surface": "uniform matte clay over fitted full-body suit; loose fabric removed",
     "identity": "Fukuchan face retained, Sobaya mask retained",
     "limitations": "Reference illustrations, not dimensionally calibrated renders of the game mesh. Side view lowers the arms relative to front/back; use front/back as the A-pose reference."
-  }
+  },
+  "current_sobaya_sheet": "character_sobaya_motion_clay_sheet_v2.png",
+  "body_reference_priority": "User correction: prioritize original character-sheet silhouette over numerical height/weight interpretations.",
+  "revisions": [
+    {
+      "file": "character_sobaya_motion_clay_sheet_v2.png",
+      "generator": "built-in image_gen",
+      "prompt_file": "prompt_sobaya_clay_v2.txt",
+      "references": [
+        "character_sobaya_basic_sheet.png",
+        "character_sobaya_motion_clay_sheet_v1.png"
+      ],
+      "change": "Reduce abdomen protrusion, waist/hip and leg bulk while retaining muscular shoulders and arms. Remove numeric title labels."
+    }
+  ]
 }
