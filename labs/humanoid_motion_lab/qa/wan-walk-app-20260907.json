@@ -1,0 +1,600 @@
+{
+  "date": "2026-09-07",
+  "app": "22_HUMANOID_MOTION_LAB",
+  "poseViews": [
+    "front",
+    "side",
+    "back"
+  ],
+  "poses": [
+    {
+      "ready": true,
+      "motionMethod": "video",
+      "action": "Walk",
+      "seconds": 0.6666667,
+      "duration": 1.3333333333333333,
+      "paused": true,
+      "repeat": true,
+      "speed": 1,
+      "compareMethods": false,
+      "syncPhase": true,
+      "walkingTravel": false,
+      "comparisonSpeedMps": null,
+      "skeleton": true,
+      "actors": [
+        {
+          "character": "sobaya",
+          "method": "video",
+          "clip": "Wan_Walk",
+          "hasMug": false,
+          "rootPosition": [
+            0.8500000238418579,
+            0,
+            0
+          ],
+          "sampleSeconds": 0.6666667,
+          "bones": 45,
+          "legM": 0.8232581878427264,
+          "armM": 0.5820987214108657,
+          "shoulderM": 0.5339998713200437,
+          "ankles": {
+            "l": [
+              0.6420000791549683,
+              0.11927734315395355,
+              -0.2990841567516327
+            ],
+            "r": [
+              1.0578492879867554,
+              0.14630226790905,
+              0.33022382855415344
+            ]
+          }
+        },
+        {
+          "character": "fukuchan",
+          "method": "video",
+          "clip": "Wan_Walk",
+          "hasMug": false,
+          "rootPosition": [
+            -0.8500000238418579,
+            0,
+            0
+          ],
+          "sampleSeconds": 0.6666667,
+          "bones": 23,
+          "legM": 0.7485974070387418,
+          "armM": 0.5114795003193976,
+          "shoulderM": 0.34459808278129744,
+          "ankles": {
+            "l": [
+              -1.0000523328781128,
+              0.035039447247982025,
+              -0.2695011794567108
+            ],
+            "r": [
+              -0.7267168164253235,
+              0.04386293515563011,
+              0.2929399013519287
+            ]
+          }
+        }
+      ],
+      "counts": {
+        "captured": 2,
+        "library": 39,
+        "procedural": 9,
+        "hybrid": 17,
+        "video": 1
+      },
+      "type": "_extensionType",
+      "method": "ext.flutter.madogiwa.setMotionLab",
+      "status": "Success"
+    },
+    {
+      "ready": true,
+      "motionMethod": "video",
+      "action": "Walk",
+      "seconds": 0.6666667,
+      "duration": 1.3333333333333333,
+      "paused": true,
+      "repeat": true,
+      "speed": 1,
+      "compareMethods": false,
+      "syncPhase": true,
+      "walkingTravel": false,
+      "comparisonSpeedMps": null,
+      "skeleton": true,
+      "actors": [
+        {
+          "character": "sobaya",
+          "method": "video",
+          "clip": "Wan_Walk",
+          "hasMug": false,
+          "rootPosition": [
+            0.8500000238418579,
+            0,
+            0
+          ],
+          "sampleSeconds": 0.6666667,
+          "bones": 45,
+          "legM": 0.8232581878427264,
+          "armM": 0.5820987214108657,
+          "shoulderM": 0.5339998713200437,
+          "ankles": {
+            "l": [
+              0.5509158968925476,
+              0.11927734315395355,
+              0.20799994468688965
+            ],
+            "r": [
+              1.1802239418029785,
+              0.14630226790905,
+              -0.20784924924373627
+            ]
+          }
+        },
+        {
+          "character": "fukuchan",
+          "method": "video",
+          "clip": "Wan_Walk",
+          "hasMug": false,
+          "rootPosition": [
+            -0.8500000238418579,
+            0,
+            0
+          ],
+          "sampleSeconds": 0.6666667,
+          "bones": 23,
+          "legM": 0.7485974070387418,
+          "armM": 0.5114795003193976,
+          "shoulderM": 0.34459808278129744,
+          "ankles": {
+            "l": [
+              -1.1195012331008911,
+              0.035039447247982025,
+              0.1500522494316101
+            ],
+            "r": [
+              -0.5570601224899292,
+              0.04386293515563011,
+              -0.12328317761421204
+            ]
+          }
+        }
+      ],
+      "counts": {
+        "captured": 2,
+        "library": 39,
+        "procedural": 9,
+        "hybrid": 17,
+        "video": 1
+      },
+      "type": "_extensionType",
+      "method": "ext.flutter.madogiwa.setMotionLab",
+      "status": "Success"
+    },
+    {
+      "ready": true,
+      "motionMethod": "video",
+      "action": "Walk",
+      "seconds": 0.6666667,
+      "duration": 1.3333333333333333,
+      "paused": true,
+      "repeat": true,
+      "speed": 1,
+      "compareMethods": false,
+      "syncPhase": true,
+      "walkingTravel": false,
+      "comparisonSpeedMps": null,
+      "skeleton": true,
+      "actors": [
+        {
+          "character": "sobaya",
+          "method": "video",
+          "clip": "Wan_Walk",
+          "hasMug": false,
+          "rootPosition": [
+            0.8500000238418579,
+            0,
+            0
+          ],
+          "sampleSeconds": 0.6666667,
+          "bones": 45,
+          "legM": 0.8232581878427264,
+          "armM": 0.5820987214108657,
+          "shoulderM": 0.5339998713200437,
+          "ankles": {
+            "l": [
+              1.058000087738037,
+              0.11927734315395355,
+              0.2990841567516327
+            ],
+            "r": [
+              0.6421507596969604,
+              0.14630226790905,
+              -0.33022382855415344
+            ]
+          }
+        },
+        {
+          "character": "fukuchan",
+          "method": "video",
+          "clip": "Wan_Walk",
+          "hasMug": false,
+          "rootPosition": [
+            -0.8500000238418579,
+            0,
+            0
+          ],
+          "sampleSeconds": 0.6666667,
+          "bones": 23,
+          "legM": 0.7485974070387418,
+          "armM": 0.5114795003193976,
+          "shoulderM": 0.34459808278129744,
+          "ankles": {
+            "l": [
+              -0.6999477744102478,
+              0.035039447247982025,
+              0.2695011794567108
+            ],
+            "r": [
+              -0.9732832312583923,
+              0.04386293515563011,
+              -0.2929399013519287
+            ]
+          }
+        }
+      ],
+      "counts": {
+        "captured": 2,
+        "library": 39,
+        "procedural": 9,
+        "hybrid": 17,
+        "video": 1
+      },
+      "type": "_extensionType",
+      "method": "ext.flutter.madogiwa.setMotionLab",
+      "status": "Success"
+    }
+  ],
+  "commonSpeedSequence": [
+    {
+      "ready": true,
+      "motionMethod": "video",
+      "action": "Walk",
+      "seconds": 1.6,
+      "duration": 8,
+      "paused": true,
+      "repeat": true,
+      "speed": 1,
+      "compareMethods": true,
+      "syncPhase": true,
+      "walkingTravel": true,
+      "comparisonSpeedMps": 1.25,
+      "skeleton": false,
+      "actors": [
+        {
+          "character": "fukuchan",
+          "method": "captured",
+          "clip": "Walk",
+          "hasMug": false,
+          "rootPosition": [
+            4.900000095367432,
+            0,
+            1.2246468525851679e-16
+          ],
+          "sampleSeconds": 1.0465789271185222,
+          "bones": 23,
+          "legM": 0.7485974070387418,
+          "armM": 0.5114795003193976,
+          "shoulderM": 0.34459808278129744,
+          "ankles": {
+            "l": [
+              4.609683990478516,
+              0.1869758665561676,
+              0.13430282473564148
+            ],
+            "r": [
+              5.001435279846191,
+              0.06424777954816818,
+              -0.09953216463327408
+            ]
+          }
+        },
+        {
+          "character": "fukuchan",
+          "method": "library",
+          "clip": "Library_Walk",
+          "hasMug": false,
+          "rootPosition": [
+            3.450000047683716,
+            0,
+            1.2246468525851679e-16
+          ],
+          "sampleSeconds": 1.3538314573001673,
+          "bones": 23,
+          "legM": 0.7485974070387418,
+          "armM": 0.5114795003193976,
+          "shoulderM": 0.34459808278129744,
+          "ankles": {
+            "l": [
+              3.441586494445801,
+              0.23422527313232422,
+              0.14872920513153076
+            ],
+            "r": [
+              3.3218295574188232,
+              0.0641244426369667,
+              -0.12823940813541412
+            ]
+          }
+        },
+        {
+          "character": "fukuchan",
+          "method": "procedural",
+          "clip": "Procedural_Walk",
+          "hasMug": false,
+          "rootPosition": [
+            2,
+            0,
+            1.2246468525851679e-16
+          ],
+          "sampleSeconds": 0.6302111868663982,
+          "bones": 23,
+          "legM": 0.7485974070387418,
+          "armM": 0.5114795003193976,
+          "shoulderM": 0.34459808278129744,
+          "ankles": {
+            "l": [
+              1.8536796569824219,
+              0.034362249076366425,
+              0.1500418335199356
+            ],
+            "r": [
+              2.1195034980773926,
+              0.03401828929781914,
+              -0.12328562885522842
+            ]
+          }
+        },
+        {
+          "character": "fukuchan",
+          "method": "hybrid",
+          "clip": "Hybrid_Walk",
+          "hasMug": false,
+          "rootPosition": [
+            0.550000011920929,
+            0,
+            1.2246468525851679e-16
+          ],
+          "sampleSeconds": 1.3538314573001673,
+          "bones": 23,
+          "legM": 0.7485974070387418,
+          "armM": 0.5114795003193976,
+          "shoulderM": 0.34459808278129744,
+          "ankles": {
+            "l": [
+              0.5582761764526367,
+              0.21911510825157166,
+              0.1497620940208435
+            ],
+            "r": [
+              0.43034449219703674,
+              0.047957245260477066,
+              -0.12529303133487701
+            ]
+          }
+        },
+        {
+          "character": "fukuchan",
+          "method": "video",
+          "clip": "Wan_Walk",
+          "hasMug": false,
+          "rootPosition": [
+            -0.8999999761581421,
+            0,
+            1.2246468525851679e-16
+          ],
+          "sampleSeconds": 0.9933677690213696,
+          "bones": 23,
+          "legM": 0.7485974070387418,
+          "armM": 0.5114795003193976,
+          "shoulderM": 0.34459808278129744,
+          "ankles": {
+            "l": [
+              -1.1358948945999146,
+              0.15066860616207123,
+              0.15008395910263062
+            ],
+            "r": [
+              -0.8878438472747803,
+              0.03372194990515709,
+              -0.12328905612230301
+            ]
+          }
+        }
+      ],
+      "counts": {
+        "captured": 2,
+        "library": 39,
+        "procedural": 9,
+        "hybrid": 17,
+        "video": 1
+      },
+      "type": "_extensionType",
+      "method": "ext.flutter.madogiwa.setMotionLab",
+      "status": "Success"
+    },
+    {
+      "ready": true,
+      "motionMethod": "video",
+      "action": "Walk",
+      "seconds": 1.7,
+      "duration": 8,
+      "paused": true,
+      "repeat": true,
+      "speed": 1,
+      "compareMethods": true,
+      "syncPhase": true,
+      "walkingTravel": true,
+      "comparisonSpeedMps": 1.25,
+      "skeleton": false,
+      "actors": [
+        {
+          "character": "fukuchan",
+          "method": "captured",
+          "clip": "Walk",
+          "hasMug": false,
+          "rootPosition": [
+            5.025000095367432,
+            0,
+            1.3011872643281286e-16
+          ],
+          "sampleSeconds": 1.1890734433967634,
+          "bones": 23,
+          "legM": 0.7485974070387418,
+          "armM": 0.5114795003193976,
+          "shoulderM": 0.34459808278129744,
+          "ankles": {
+            "l": [
+              4.90313196182251,
+              0.14940431714057922,
+              0.14119024574756622
+            ],
+            "r": [
+              4.9936418533325195,
+              0.05082973092794418,
+              -0.09989827126264572
+            ]
+          }
+        },
+        {
+          "character": "fukuchan",
+          "method": "library",
+          "clip": "Library_Walk",
+          "hasMug": false,
+          "rootPosition": [
+            3.575000047683716,
+            0,
+            1.3011872643281286e-16
+          ],
+          "sampleSeconds": 1.5426125900480947,
+          "bones": 23,
+          "legM": 0.7485974070387418,
+          "armM": 0.5114795003193976,
+          "shoulderM": 0.34459808278129744,
+          "ankles": {
+            "l": [
+              3.753671169281006,
+              0.09348982572555542,
+              0.14744597673416138
+            ],
+            "r": [
+              3.324195146560669,
+              0.07412894070148468,
+              -0.13218656182289124
+            ]
+          }
+        },
+        {
+          "character": "fukuchan",
+          "method": "procedural",
+          "clip": "Procedural_Walk",
+          "hasMug": false,
+          "rootPosition": [
+            2.125,
+            0,
+            1.3011872643281286e-16
+          ],
+          "sampleSeconds": 0.9133493860455479,
+          "bones": 23,
+          "legM": 0.7485974070387418,
+          "armM": 0.5114795003193976,
+          "shoulderM": 0.34459808278129744,
+          "ankles": {
+            "l": [
+              1.9694437980651855,
+              0.061524178832769394,
+              0.1500585675239563
+            ],
+            "r": [
+              2.1300063133239746,
+              0.033788297325372696,
+              -0.12329111993312836
+            ]
+          }
+        },
+        {
+          "character": "fukuchan",
+          "method": "hybrid",
+          "clip": "Hybrid_Walk",
+          "hasMug": false,
+          "rootPosition": [
+            0.675000011920929,
+            0,
+            1.3011872643281286e-16
+          ],
+          "sampleSeconds": 1.5426125900480947,
+          "bones": 23,
+          "legM": 0.7485974070387418,
+          "armM": 0.5114795003193976,
+          "shoulderM": 0.34459808278129744,
+          "ankles": {
+            "l": [
+              0.8748982548713684,
+              0.0812310129404068,
+              0.14989414811134338
+            ],
+            "r": [
+              0.4303220510482788,
+              0.052810944616794586,
+              -0.12537799775600433
+            ]
+          }
+        },
+        {
+          "character": "fukuchan",
+          "method": "video",
+          "clip": "Wan_Walk",
+          "hasMug": false,
+          "rootPosition": [
+            -0.7749999761581421,
+            0,
+            1.3011872643281286e-16
+          ],
+          "sampleSeconds": 1.1387865879185386,
+          "bones": 23,
+          "legM": 0.7485974070387418,
+          "armM": 0.5114795003193976,
+          "shoulderM": 0.34459808278129744,
+          "ankles": {
+            "l": [
+              -0.7001489400863647,
+              0.12736506760120392,
+              0.1501070261001587
+            ],
+            "r": [
+              -0.8878752589225769,
+              0.033738113939762115,
+              -0.12327790260314941
+            ]
+          }
+        }
+      ],
+      "counts": {
+        "captured": 2,
+        "library": 39,
+        "procedural": 9,
+        "hybrid": 17,
+        "video": 1
+      },
+      "type": "_extensionType",
+      "method": "ext.flutter.madogiwa.setMotionLab",
+      "status": "Success"
+    }
+  ],
+  "notes": [
+    "Metal GPU rendering observed in Marionette screenshots for both bodies and five-method side comparison.",
+    "At 1.6 and 1.7 seconds, every root advances 0.125 m; clips use their individual calibrated ground speeds."
+  ]
+}

@@ -89,11 +89,11 @@ for name in ['sobaya','fukuchan']:
             record['minBodyM']=min(body_floors)
             if min(body_floors)<-.006:report['failures'].append(name+': roll body penetration')
         if nonfinite:report['failures'].append(name+': nonfinite '+spec['name'])
-        if spec['method'] in ['hybrid','procedural'] and min(floors)<-.002:
+        if spec['method'] in ['hybrid','procedural','video'] and min(floors)<-.002:
             report['failures'].append(name+': ground penetration '+spec['name'])
         if spec['method']=='hybrid' and spec.get('support')!='flight' and spec.get('sourceClip',spec['action']) not in ['Jog','Sprint'] and max(floors)>.04:
             report['failures'].append(name+': floating support '+spec['name'])
-        if spec['loop'] and spec['method'] in ['hybrid','procedural'] and (seam_angle>.12 or seam_translation>.012):
+        if spec['loop'] and spec['method'] in ['hybrid','procedural','video'] and (seam_angle>.12 or seam_translation>.012):
             report['failures'].append(name+': loop seam '+spec['name'])
     report['characters'].append(char)
 report['passed']=not report['failures']

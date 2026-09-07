@@ -1,0 +1,39 @@
+{
+  "date": "2026-09-07",
+  "check": "Dart MCP debug launch and Marionette pose inspection",
+  "game": {
+    "motion": "Walk",
+    "sourceMotion": "Wan_Walk",
+    "motionSeconds": 0.35,
+    "position": {
+      "x": 0,
+      "y": 0,
+      "z": -18
+    },
+    "weights": {
+      "Idle": 0,
+      "Walk": 1,
+      "Run": 0,
+      "Aim": 0,
+      "AimShotgun": 0,
+      "ReloadHandgun": 0,
+      "ReloadShotgun": 0,
+      "Hit": 0,
+      "Evade": 0,
+      "Kick": 0,
+      "Climb": 0,
+      "Vault": 0,
+      "Struggle": 0,
+      "BreakFree": 0
+    },
+    "rendering": {
+      "continuous": false,
+      "foreground": true,
+      "posePreview": true,
+      "ticks": 3,
+      "simulationSeconds": 0,
+      "playerClipSeconds": 0.35
+    }
+  },
+  "note": "Walk alias resolves to Wan_Walk in the actual game renderer; screenshot visually reviewed. Deterministic pose inspection, not keyboard traversal."
+}

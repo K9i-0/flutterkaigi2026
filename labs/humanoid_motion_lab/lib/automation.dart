@@ -24,7 +24,7 @@ void attachMotionAutomation(MotionController lab) {
   );
   registerMarionetteExtension(
     name: 'madogiwa.setMotionLab',
-    description: 'method=captured|library|procedural|hybrid, action=Walk etc, optional character=sobaya|fukuchan, compare=true|false, seek=seconds, speed=.25..2, view=front|side|back, skeleton=true|false.',
+    description: 'method=captured|library|procedural|hybrid|video, action=Walk etc, optional character=sobaya|fukuchan, compare=true|false, seek=seconds, speed=.25..2, view=front|side|back, skeleton=true|false.',
     callback: (p) async {
       final l = _lab;
       if (l == null || !l.ready) {
@@ -45,7 +45,7 @@ void attachMotionAutomation(MotionController lab) {
           (p['seek'] != null && (seek == null || !seek.isFinite || seek < 0)) ||
           (p['view'] != null &&
               !['front', 'side', 'back'].contains('${p['view']}')) ||
-          ['compare', 'skeleton'].any(
+          ['compare', 'skeleton', 'travel'].any(
             (k) => p[k] != null && !['true', 'false'].contains('${p[k]}'),
           )) {
         return MarionetteExtensionResult.invalidParams('Invalid option');
@@ -63,6 +63,10 @@ void attachMotionAutomation(MotionController lab) {
       if (p['compare'] != null) l.layout('${p['compare']}' == 'true');
       if (p['view'] != null) l.setView('${p['view']}');
       if (p['skeleton'] != null) l.setSkeleton('${p['skeleton']}' == 'true');
+      if (p['travel'] != null) {
+        l.compareTravel = '${p['travel']}' == 'true';
+        l.replay();
+      }
       l.clock.speed = speed;
       if (seek != null) l.seek(seek);
       await SchedulerBinding.instance.endOfFrame.timeout(
