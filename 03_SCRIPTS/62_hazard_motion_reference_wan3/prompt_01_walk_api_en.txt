@@ -1,0 +1,18 @@
+Create one 6-second, 16:9 live-action walking reference video for a realistic humanoid game animation. A real adult performs an ordinary, relaxed walk at normal speed. Prioritize natural weight transfer, inertia, grounded foot contacts and coordinated body motion. No cinematic exaggeration, game-animation acting or slow motion.
+
+Reference:
+Image 1 (Image1) is the character sheet for Fukuchan. Preserve the same identifiable face shown in its face close-ups, black hair and slender adult male build, approximately 170 cm tall. Black jacket and trousers, white inner shirt and white shoes. Show exactly one complete living person, including his head and feet. The headless clothing panels are clothing references, not headless anatomy. Omit the badge and neck strap for this motion study. Use only the identity, body proportions and specified clothing. Do not copy panel borders, labels, multiple views or duplicate people from the sheet.
+
+Camera and environment:
+A plain light-gray practice studio with a matte floor, subtle straight fixed floor seams, even soft lighting and a small contact shadow. Locked tripod camera, almost side-on but slightly toward the subject's right front, seeing him travel from screen left to screen right along a straight line. Frame the complete path with space before and after the movement. Keep head, hands and both feet entirely inside the frame. Keep floor and foot contacts sharp and readable. No tracking, panning, zooming, camera shake or cuts. No other people or props.
+
+Shot 1 [0.0-6.0 s] — one continuous shot:
+0.0-0.7 s: Stand naturally and look ahead.
+0.7-1.3 s: Initiate walking with a small first step and gently accelerate.
+1.3-4.8 s: Walk comfortably at a target speed of about 1.25 meters per second. Aim for about 0.65 meters per individual step and about 1.9 individual steps per second. Count each left or right foot contact as one step, not a complete two-step cycle. Show approximately 4.4 meters of forward travel during this steady interval. Arms swing modestly opposite the legs. Pelvis and chest counter-rotate slightly. Each supporting shoe stays planted against the floor while the body advances and the opposite leg passes it. Feet roll naturally from landing to toe-off. Keep the face looking forward, with small natural head movement. No deliberately enlarged strides.
+4.8-5.5 s: Shorten the steps, gradually decelerate and stop naturally.
+5.5-6.0 s: Settle into a relaxed standing posture.
+
+Audio: Quiet synchronized footsteps, clothing movement and contact sounds only. No dialogue, vocalizations, narration or music. He does not speak or mime speech.
+
+Hard constraints: Exactly one person, empty hands, same identity, body size and clothing throughout. Real-time natural motion. No runway strut, racewalking, walking in place, sliding feet, floating, reversed joints, implausibly crossing legs, extra limbs or morphing anatomy. Preserve small natural asymmetries rather than robotic mirror-symmetric motion. No subtitles, title cards, timestamps, measurements or watermark. The full walk occurs in a single fixed shot.
