@@ -21,7 +21,7 @@ const cinematicDocuments = <String, (String, String, String)>{
     '帰任便への乗船には帰任票が必要\n帰任票の発行担当者：当便に乗船していません',
     '現地案件の完了後に申請してください',
   ),
-  'engine-link': ('村から帰るために', '山の廃屋にいる巨大そば屋を倒す', 'エンジン停止 → 家で合流 → 東の門へ'),
+  'engine-link': ('村から帰るために', '山の廃屋にいる巨大そば屋を倒す', '玄関が開いたら家へ → 二人と話して帰還'),
   'shelter': (
     '宿舎　閉じた扉の向こう',
     '扉を二度たたく。\n内側から、二度返事があった。',
@@ -51,7 +51,7 @@ const cinematicDocuments = <String, (String, String, String)>{
   'radio': (
     'そば屋エンジンの止め方',
     '山の廃屋にいる巨大そば屋を倒す\nそれでエンジンは停止します',
-    '救難回線の督促放送も止まります\n救助船はたこさんが呼びます。合流は廃屋の中',
+    '救難回線の督促放送も止まります\n救助船はたこさんが呼びます。玄関が開いたら中で二人と話す',
   ),
   'diary': (
     '窓際社員の日記',
@@ -238,7 +238,7 @@ class EngineLinkDiagram extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                stopped ? '停止したら、家で合流' : 'エンジンを止める方法',
+                stopped ? '玄関が開いたら、二人の無事を確認' : 'エンジンを止める方法',
                 style: TextStyle(color: color, fontSize: 26),
               ),
               const SizedBox(height: 20),
@@ -262,7 +262,9 @@ class EngineLinkDiagram extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Text(
-                stopped ? '家の東の門へ。最高難度は残るそば屋も全員撃退' : '山の廃屋にいる、一番でかいそば屋が目印',
+                stopped
+                    ? '最高難度は全そば屋撃退。家でやめ太郎とたこさんに話しかけよう'
+                    : '山の廃屋にいる、一番でかいそば屋が目印',
                 style: TextStyle(color: color, fontSize: 21),
               ),
             ],

@@ -75,7 +75,23 @@ class HazardCampaign {
     from.phase = PlayPhase.playing;
     regions[id] = to;
     state = to;
+    syncRefuge();
     return true;
+  }
+
+  void syncRefuge() {
+    final mountain = regions['mountain'];
+    if (mountain == null) return;
+    mountain.refreshRefuge();
+    for (final region in regions.values) {
+      if (!mountain.bossAlive) region.seenEvents.add('giant_defeated');
+      if (mountain.refugeUnlocked) {
+        region.seenEvents.add('refuge_ready');
+      } else {
+        region.seenEvents.remove('refuge_ready');
+      }
+      region.clearAbsentCompanionTargets();
+    }
   }
 
   void _carry(HazardGameState from, HazardGameState to) {
@@ -132,15 +148,21 @@ class HazardCampaign {
   static HazardCampaign restore(
     Map<String, dynamic> data,
     Map<String, Map<String, dynamic>> maps,
-    Set<String> collection,
-  ) {
-    final campaign = HazardCampaign(maps, collection: collection);
+    Set<String> collection, {
+    HazardDifficulty difficulty = HazardDifficulty.standard,
+  }) {
+    final campaign = HazardCampaign(
+      maps,
+      collection: collection,
+      difficulty: difficulty,
+    );
     if (data['version'] == 1) {
       campaign.state = restoreHazardCheckpoint(
         data,
         maps['village']!,
         collection,
         catalog: campaign.catalog,
+        difficulty: difficulty,
       );
       campaign.regions['village'] = campaign.state;
       return campaign;
@@ -153,7 +175,19 @@ class HazardCampaign {
       throw const FormatException('Incomplete campaign');
     }
     campaign.regions.clear();
+    // Resolve the actual final-house status before validating NPC collisions
+    // in old village/farm checkpoints, whose relocation flags may be stale.
+    if (regionData.containsKey('mountain')) {
+      campaign.regions['mountain'] = restoreHazardCheckpoint(
+        regionData['mountain'],
+        maps['mountain']!,
+        collection,
+        catalog: campaign.catalog,
+        difficulty: difficulty,
+      );
+    }
     for (final entry in regionData.entries) {
+      if (entry.key == 'mountain') continue;
       final map = maps[entry.key];
       if (map == null) throw const FormatException('Unknown region');
       campaign.regions[entry.key] = restoreHazardCheckpoint(
@@ -161,16 +195,12 @@ class HazardCampaign {
         map,
         collection,
         catalog: campaign.catalog,
+        difficulty: difficulty,
+        refugeReady: campaign.regions['mountain']?.refugeUnlocked,
       );
     }
     campaign.state = campaign.regions[data['region']]!;
-    // Old saves derive the new relocation flag from the actual defeated boss.
-    if (campaign.regions['mountain']?.bossAlive == false) {
-      for (final region in campaign.regions.values) {
-        region.seenEvents.add('giant_defeated');
-        region.clearAbsentCompanionTargets();
-      }
-    }
+    campaign.syncRefuge();
     final kills = campaign.regions.values.fold<int>(
       0,
       (n, s) => n + s.enemies.where((e) => !e.alive).length,

@@ -1,0 +1,285 @@
+{
+  "scope": "Native macOS Flutter debug app. Deterministic boss/death fixtures followed by normal collision movement and Marionette UI dialogue taps; not a human complete playthrough.",
+  "checks": [
+    {
+      "step": "entrance-unlocked",
+      "phase": "playing",
+      "position": {
+        "x": 13,
+        "y": 0,
+        "z": 7.7
+      },
+      "difficulty": "standard",
+      "refuge": {
+        "unlocked": true,
+        "inside": false,
+        "reports": [],
+        "complete": false
+      },
+      "livingEnemies": 5,
+      "dialogue": {
+        "npc": null,
+        "topic": "intro",
+        "line": 0,
+        "choices": true,
+        "metYametaro": false,
+        "receivedAmmo": false,
+        "metTakosan": false,
+        "tradePurchases": {}
+      }
+    },
+    {
+      "step": "walk-through-front-door",
+      "phase": "paused",
+      "position": {
+        "x": 13,
+        "y": 0,
+        "z": 15.450000000000207
+      },
+      "difficulty": "standard",
+      "refuge": {
+        "unlocked": true,
+        "inside": true,
+        "reports": [],
+        "complete": false
+      },
+      "livingEnemies": 5,
+      "dialogue": {
+        "npc": null,
+        "topic": "intro",
+        "line": 0,
+        "choices": true,
+        "metYametaro": false,
+        "receivedAmmo": false,
+        "metTakosan": false,
+        "tradePurchases": {}
+      }
+    },
+    {
+      "step": "takosan-completed-first",
+      "phase": "playing",
+      "position": {
+        "x": 13,
+        "y": 0,
+        "z": 15.450000000000207
+      },
+      "difficulty": "standard",
+      "refuge": {
+        "unlocked": true,
+        "inside": true,
+        "reports": [
+          "takosan"
+        ],
+        "complete": false
+      },
+      "livingEnemies": 5,
+      "event": null,
+      "dialogue": {
+        "npc": null,
+        "topic": "reunion",
+        "line": 3,
+        "choices": true,
+        "metYametaro": false,
+        "receivedAmmo": false,
+        "metTakosan": true,
+        "tradePurchases": {}
+      }
+    },
+    {
+      "step": "second-dialogue-starts-ending",
+      "phase": "cinematic",
+      "position": {
+        "x": 16.000000000000085,
+        "y": 0,
+        "z": 16.304166666666873
+      },
+      "difficulty": "standard",
+      "refuge": {
+        "unlocked": true,
+        "inside": true,
+        "reports": [
+          "yametaro",
+          "takosan"
+        ],
+        "complete": true
+      },
+      "livingEnemies": 5,
+      "event": {
+        "id": "ending",
+        "shot": 0,
+        "elapsed": 0.8833320000000002,
+        "duration": 21.015166666666666,
+        "visual": {
+          "image": "",
+          "document": "rescue-radio",
+          "progress": 0.07642376609678005
+        },
+        "paused": false
+      },
+      "dialogue": {
+        "npc": null,
+        "topic": "reunion",
+        "line": 3,
+        "choices": true,
+        "metYametaro": true,
+        "receivedAmmo": false,
+        "metTakosan": true,
+        "tradePurchases": {}
+      }
+    },
+    {
+      "step": "ending-complete",
+      "phase": "clear",
+      "position": {
+        "x": 16.000000000000085,
+        "y": 0,
+        "z": 16.304166666666873
+      },
+      "difficulty": "standard",
+      "refuge": {
+        "unlocked": true,
+        "inside": true,
+        "reports": [
+          "yametaro",
+          "takosan"
+        ],
+        "complete": true
+      },
+      "livingEnemies": 5,
+      "event": null,
+      "dialogue": {
+        "npc": null,
+        "topic": "reunion",
+        "line": 3,
+        "choices": true,
+        "metYametaro": true,
+        "receivedAmmo": false,
+        "metTakosan": true,
+        "tradePurchases": {}
+      }
+    },
+    {
+      "step": "boss-alive-locked",
+      "phase": "playing",
+      "position": {
+        "x": 13,
+        "y": 0,
+        "z": 7.7
+      },
+      "difficulty": "standard",
+      "refuge": {
+        "unlocked": false,
+        "inside": false,
+        "reports": [],
+        "complete": false
+      },
+      "livingEnemies": 6,
+      "dialogue": {
+        "npc": null,
+        "topic": "intro",
+        "line": 0,
+        "choices": true,
+        "metYametaro": false,
+        "receivedAmmo": false,
+        "metTakosan": false,
+        "tradePurchases": {}
+      }
+    },
+    {
+      "step": "locked-door-collision",
+      "phase": "paused",
+      "position": {
+        "x": 13,
+        "y": 0,
+        "z": 9.075000000000026
+      },
+      "difficulty": "standard",
+      "refuge": {
+        "unlocked": false,
+        "inside": false,
+        "reports": [],
+        "complete": false
+      },
+      "livingEnemies": 6,
+      "dialogue": {
+        "npc": null,
+        "topic": "intro",
+        "line": 0,
+        "choices": true,
+        "metYametaro": false,
+        "receivedAmmo": false,
+        "metTakosan": false,
+        "tradePurchases": {}
+      }
+    },
+    {
+      "step": "highest-boss-dead",
+      "phase": "playing",
+      "position": {
+        "x": 13,
+        "y": 0,
+        "z": 7.7
+      },
+      "difficulty": "tense",
+      "refuge": {
+        "unlocked": false,
+        "inside": false,
+        "reports": [],
+        "complete": false
+      },
+      "livingEnemies": 5,
+      "dialogue": {
+        "npc": null,
+        "topic": "intro",
+        "line": 0,
+        "choices": true,
+        "metYametaro": false,
+        "receivedAmmo": false,
+        "metTakosan": false,
+        "tradePurchases": {}
+      }
+    },
+    {
+      "step": "highest-locked-door-collision",
+      "phase": "paused",
+      "position": {
+        "x": 13,
+        "y": 0,
+        "z": 9.075000000000026
+      },
+      "difficulty": "tense",
+      "refuge": {
+        "unlocked": false,
+        "inside": false,
+        "reports": [],
+        "complete": false
+      },
+      "livingEnemies": 5,
+      "dialogue": {
+        "npc": null,
+        "topic": "intro",
+        "line": 0,
+        "choices": true,
+        "metYametaro": false,
+        "receivedAmmo": false,
+        "metTakosan": false,
+        "tradePurchases": {}
+      }
+    }
+  ],
+  "saveCheck": "Both refuge_report flags and refuge_complete persisted before the ending; result reached clear; runtime errors zero.",
+  "preferencesRestored": true,
+  "finalAppState": "title",
+  "finalNativePid": 22536,
+  "tests": {
+    "fullSuite": {
+      "passed": 186,
+      "failed": 0
+    },
+    "finalCheckpointCampaignRefuge": {
+      "passed": 33,
+      "failed": 0
+    },
+    "analyze": "No issues found"
+  }
+}

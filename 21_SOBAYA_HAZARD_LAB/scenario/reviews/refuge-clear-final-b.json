@@ -1,0 +1,131 @@
+{
+  "reviewer": "B",
+  "revision": "家内の両NPCとの会話でクリアする仕様への変更後・独立最終レビュー",
+  "rubric": "scenario/REVIEW_RUBRIC.md",
+  "independence": "本文改稿は担当していない。他レビュアーの評文は参照せず、主担当の自己採点も評価根拠に使用していない。新ルールの回帰テストは本レビュアーが担当した。",
+  "scope": [
+    "scenario/game_text.json",
+    "STORY.md",
+    "lib/game/game_dialogue.dart",
+    "lib/game/game_events.dart",
+    "lib/game/game_story.dart",
+    "lib/game/game_cinematic_insert.dart",
+    "lib/game/game_state.dart",
+    "lib/game/game_refuge.dart",
+    "lib/game/game_campaign.dart",
+    "lib/game/game_checkpoint.dart",
+    "lib/game/game_controller.dart",
+    "lib/game/game_page.dart",
+    "assets/mountain.json"
+  ],
+  "scores": [
+    {
+      "criterion": "窓際族物語としての面白さ",
+      "score": 9.0,
+      "weight": 25,
+      "weightedScore": 22.5,
+      "evidence": [
+        "mountainYametaroAfter/reunion：生還を打ち上げの人数で喜び、経費で停止ボタンを押したという福ちゃんへ「会社ごと止めたみたい」と返す。クリア前の最後の会話が人物の応酬になっている。",
+        "mountainTakosanAfter/reunion：お店ごと避難し、船が無料な理由を「私も乗るので」と説明する。",
+        "event:ending:2-3：打ち上げの全員返信から新たな出向先予約の危機へ、導入の誤送信を回収する。"
+      ]
+    },
+    {
+      "criterion": "日本語の自然さ",
+      "score": 9.0,
+      "weight": 20,
+      "weightedScore": 18.0,
+      "evidence": [
+        "両者の再会会話末尾に「二人に声をかける」という自然な出発確認を置き、どちらから話しても成立する。",
+        "やめ太郎はワイ・関西弁を維持。「既読だけつけて帰るんはなし」がルール説明と人物のぼやきを兼ねる。",
+        "家へ入る、二人と話す、会話を終えるというUIと本文の言葉が揃い、東門へ進む旧案内を要求しない。"
+      ]
+    },
+    {
+      "criterion": "わかりやすさ",
+      "score": 9.0,
+      "weight": 20,
+      "weightedScore": 18.0,
+      "evidence": [
+        "event:farm:9 / memo:stop / memo:reservation / document:engine-link：玄関解放→入室→二人への声かけが一致。任意メモを読まなくても必須会話とHUDで進める。",
+        "game_refuge.refugeObjective / dialogueLeaveLabel：解放前、屋外、屋内の0/2・1/2、二人目を閉じる段階を区別する。入室のみや一人だけではクリアしない。",
+        "最高難度は全員撃破まで家を閉じ、農場のたこさんで補給できる。ボス先撃破/最後撃破の両方を回帰確認。",
+        "旧reunionフラグと新refuge_reportを分離。保存で片方の報告を保持し、標準完了データの最高難度復元も全滅条件を迂回しない。"
+      ]
+    },
+    {
+      "criterion": "各キャラクターの特徴",
+      "score": 9.0,
+      "weight": 20,
+      "weightedScore": 18.0,
+      "evidence": [
+        "福ちゃんは実技研修・志望動機・経費・全員返信という天然な受け取り方を保ち、終幕だけ一般的な正義の説明役にならない。",
+        "やめ太郎は手配書・打ち上げ・捜索担当への再出向を恐れる保身を残しつつ、帰還時の生存確認を担う。",
+        "たこさんは無断画像配布・避難先営業・物騒な弾とハーブを淡々と扱う。",
+        "そば屋の怪力・ビール・「メリットです」、よーたんの雑な銃撃許可を維持。"
+      ]
+    },
+    {
+      "criterion": "ブラックジョーク",
+      "score": 9.0,
+      "weight": 15,
+      "weightedScore": 13.5,
+      "evidence": [
+        "交換部品ではなく追加だけの人事、機材優先撤収、飲料在庫を理由にした食料申請却下など、具体的な理不尽を保つ。",
+        "家で無事を確認しても、窓際配属はそのまま連れ帰る。惨事を解決して待遇まで良くなる話にはしていない。",
+        "日記の飢えと崩れる文章は怖さを維持し、最後のおにぎりの報告を人物の笑いへ戻す。"
+      ]
+    }
+  ],
+  "total": 90.0,
+  "majorIssueCount": 0,
+  "majorIssues": [],
+  "minorIssues": [
+    {
+      "id": "RF-B-L1",
+      "source": "mountainTakosanAfter/evidence",
+      "observation": "農場の任意紹介を聞いた場合、福ちゃんの「社員の画像、ネットで配ってたんですか」は二度目の驚きにも聞こえる。事情を説明し直す会話なので再確認として成立し、進行の理解を妨げない。",
+      "suggestion": "将来調整するなら「配った社員画像で安否確認まで。フリー素材、意外な使い道がありますね」のような再確認に寄せる。",
+      "blocking": false
+    },
+    {
+      "id": "RF-B-L2",
+      "source": "memo:stop / 操作案内",
+      "observation": "メモ中の「最高難度」はゲームルールへの直接言及。操作キーもNPCが教える作風なので許容範囲。",
+      "suggestion": "現在は明快さを優先して維持してよい。世界内の理由を足して手順を複雑にしない。",
+      "blocking": false
+    }
+  ],
+  "verifiedBranches": [
+    "標準ボス撃破→通常移動で玄関通過→入室だけでは未クリア",
+    "最高難度のボス先撃破/ボス最後撃破→最終撃破は実際のshoot経由で解放",
+    "家閉鎖中の農場ビール交換→解放時の旧NPC配置非表示",
+    "歩行/既存窓越えでの早期侵入禁止と屋内への敵侵入禁止",
+    "やめ太郎→たこさん、たこさん→やめ太郎の両順",
+    "会話途中離脱・同じNPCとの反復・購入成功/失敗・追加トピック",
+    "一人後の保存復元・旧任意reunion既読の無効化・旧屋内/窓途中セーブ移行",
+    "標準と最高難度の復元差、途中難度変更、標準完了後の最高難度復元",
+    "旧東門座標とgateOpen保存値ではクリア不可",
+    "日記既読/未読の終幕、家内待機→家外荷造り→避難者先行乗船の時系列"
+  ],
+  "exportAudit": {
+    "sourceTextEntries": 682,
+    "lockedHouseContextsWithNpcOrSelectableTopic": 0,
+    "notes": "branchNotesがgiant_defeatedとrefuge_readyを区別し、conditionSourcesに家の解放・入室・報告・完了とendDialogueが追加されている。閉鎖中の家の会話表は比較用としてNPC不在/選択不可を明示。"
+  },
+  "testEvidence": {
+    "files": [
+      "test/game_refuge_test.dart",
+      "test/game_reunion_test.dart",
+      "test/game_campaign_test.dart"
+    ],
+    "result": "29件の限定回帰スイート通過後、標準完了→最高難度復元の追加1件も通過。計30件。",
+    "logs": [
+      "/tmp/hazard-refuge-agent-tests2.log",
+      "/tmp/hazard-refuge-difficulty-regression.log"
+    ],
+    "excluded": "生成中のvoice-assetsタグの既存音声資産テスト。音声が完成した後に主担当が別途検証。"
+  },
+  "pass": true,
+  "qualification": "固定基準で合計90以上、全項目8以上、重大0件を満たす。本文と進行分岐の独立評価。主担当の実機確認とは別に採点した。画像OCRは未校正の補助資料として扱う。"
+}

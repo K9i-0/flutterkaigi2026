@@ -266,7 +266,12 @@ class HazardGameController extends ChangeNotifier {
     final savedRun = preferences!.getString('hazard.run.v1');
     if (savedRun != null) {
       try {
-        HazardCampaign.restore(jsonDecode(savedRun), maps, state!.collected);
+        HazardCampaign.restore(
+          jsonDecode(savedRun),
+          maps,
+          state!.collected,
+          difficulty: settings.difficulty,
+        );
         _checkpointJson = savedRun;
       } catch (_) {
         saveStatus = '保存データを読み込めませんでした。新しく探索を始められます。';
@@ -323,6 +328,7 @@ class HazardGameController extends ChangeNotifier {
     for (final entry in environments.entries) {
       final environment = entry.value, map = maps[entry.key]!;
       _static(environment);
+      if (entry.key == 'mountain') _addRefugeDoor(environment);
       for (final h in map['houses']) {
         final roof = environment.getChildByName('Roof_${h['id']}');
         if (roof != null) _static(roof, value: false);
@@ -583,6 +589,7 @@ class HazardGameController extends ChangeNotifier {
         );
       }
     }
+    if (id == 'ending' && state!.refugeComplete) unawaited(saveCheckpoint());
     if (id != 'ending') {
       state!.invulnerable = 1;
       state!.say(state!.objective);
@@ -594,7 +601,9 @@ class HazardGameController extends ChangeNotifier {
     campaign.difficulty = settings.difficulty;
     for (final s in campaign.regions.values) {
       s.difficulty = settings.difficulty;
+      s.normalizeRefugeOccupants();
     }
+    campaign.syncRefuge();
     state?.damageScale = settings.damageScale;
     state?.enemySpeedScale = settings.enemySpeedScale;
     scene.renderScale = settings.renderScale;
@@ -644,6 +653,45 @@ class HazardGameController extends ChangeNotifier {
     final template = itemsTemplate.getChildByName(name);
     if (template == null) throw StateError('Missing prop $name');
     return template.clone();
+  }
+
+  void _addRefugeDoor(Node environment) {
+    final wood = PhysicallyBasedMaterial()
+      ..metallicFactor = 0
+      ..roughnessFactor = .95
+      ..baseColorFactor = vm.Vector4(.29, .19, .10, 1);
+    final brace = PhysicallyBasedMaterial()
+      ..metallicFactor = .15
+      ..roughnessFactor = .8
+      ..baseColorFactor = vm.Vector4(.55, .42, .23, 1);
+    final light = UnlitMaterial()..baseColorFactor = vm.Vector4(.35, 1, .6, 1);
+    Node box(
+      String name,
+      double x,
+      double y,
+      double z,
+      double w,
+      double h,
+      double d,
+      Material material,
+    ) {
+      final node = Node(
+        name: name,
+        mesh: Mesh(CuboidGeometry(vm.Vector3(w, h, d)), material),
+      )..position = vm.Vector3(x, y, z);
+      environment.add(node);
+      return node;
+    }
+
+    final door = box('RefugeDoor', 13, 1.1, 9.5, 1.72, 2.2, .18, wood);
+    for (final y in [-.65, .65]) {
+      door.add(
+        Node(mesh: Mesh(CuboidGeometry(vm.Vector3(1.7, .16, .21)), brace))
+          ..position = vm.Vector3(0, y, 0),
+      );
+    }
+    box('RefugeShutter', 9.52, 1.62, 9.5, 1.56, 1.6, .18, wood);
+    box('RefugeReady', 13, 2.45, 9.24, 1.5, .16, .18, light);
   }
 
   Node _cardboardChair() {
@@ -775,7 +823,7 @@ class HazardGameController extends ChangeNotifier {
           PlayPhase.title,
           PlayPhase.dead,
           PlayPhase.companionDown,
-          PlayPhase.clear,
+          if (!s.refugeComplete) PlayPhase.clear,
           PlayPhase.dialogue,
           PlayPhase.cinematic,
           PlayPhase.settings,
@@ -811,6 +859,7 @@ class HazardGameController extends ChangeNotifier {
         jsonDecode(_checkpointJson!),
         campaign.maps,
         state!.collected,
+        difficulty: settings.difficulty,
       );
       state = campaign.state;
       director = null;
@@ -941,6 +990,19 @@ class HazardGameController extends ChangeNotifier {
       );
     }
     return playerCamera(s);
+  }
+
+  ui.Offset? get refugeMarker {
+    final s = state;
+    if (s == null ||
+        !s.running ||
+        !s.refugeUnlocked ||
+        s.insideRefuge ||
+        s.z > 10 ||
+        s.x < -3) {
+      return null;
+    }
+    return camera().worldToScreen(vm.Vector3(13, 2.8, 9.2), viewport);
   }
 
   void updateRocketTarget() {
@@ -1130,6 +1192,19 @@ class HazardGameController extends ChangeNotifier {
     if (director != null) {
       if (foreground && !voice.loading) director!.tick(dt);
       if (director!.done) _finishEvent();
+    }
+    if (!posePreview &&
+        director == null &&
+        s.running &&
+        s.insideRefuge &&
+        s.refugeComplete) {
+      // Capture the completed reports while saving is allowed, before cinematic.
+      unawaited(saveCheckpoint());
+      if (s.seenEvents.contains('ending')) {
+        s.phase = PlayPhase.clear;
+      } else {
+        startEvent('ending');
+      }
     }
     if (!posePreview) s.tick(dt);
     if (!posePreview && director == null) {
@@ -1516,7 +1591,9 @@ class HazardGameController extends ChangeNotifier {
           (s.z - h['z']).abs() < h['d'] / 2;
       village.getChildByName('Roof_${h['id']}')!.visible = !inside;
     }
-    village.getChildByName('FarmGate')!.visible = !s.gateOpen;
+    village.getChildByName('FarmGate')!.visible = !s.hasRefuge && !s.gateOpen;
+    village.getChildByName('RefugeDoor')?.visible = !s.refugeUnlocked;
+    village.getChildByName('RefugeReady')?.visible = s.refugeUnlocked;
     for (final p in s.images) {
       village.getChildByName(p['node'])!.visible = !s.collected.contains(
         p['id'],

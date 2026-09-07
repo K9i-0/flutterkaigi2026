@@ -28,43 +28,40 @@ void advance(HazardGameState s, double seconds) {
 }
 
 void main() {
-  test(
-    'every authored opening blocks walking and supports both directions',
-    () {
-      for (final region in ['village', 'farm', 'mountain']) {
-        final s = game(region);
-        for (final c in s.crates) {
-          c.broken = true;
-        }
-        for (final w in s.windows) {
-          s.x = w.x;
-          s.z = w.entryZ(true);
-          s.y = 0;
-          expect(s.blocked(w.x, w.z, 0), true);
-          expect(s.blocked(w.x, w.entryZ(true), 0), false);
-          expect(s.blocked(w.x, w.exitZ(true), 0), false);
-          s.interact();
-          expect(s.vault, isNotNull, reason: w.id);
-          var height = 0.0;
-          for (var i = 0; i < 140; i++) {
-            final before = vm.Vector3(s.x, s.y, s.z);
-            s.tick(1 / 60);
-            expect((vm.Vector3(s.x, s.y, s.z) - before).length, lessThan(.05));
-            if (s.y > height) height = s.y;
-          }
-          expect(height, greaterThan(.5));
-          expect(s.vault, isNull);
-          expect(s.z, closeTo(w.exitZ(true), .001));
-          expect(s.y, 0);
-          s.interact();
-          expect(s.vault?.inward, false, reason: w.id);
-          advance(s, 2.5);
-          expect(s.z, closeTo(w.entryZ(true), .001));
-          expect(s.y, 0);
-        }
+  test('every usable opening blocks walking and supports both directions', () {
+    for (final region in ['village', 'farm', 'mountain']) {
+      final s = game(region);
+      for (final c in s.crates) {
+        c.broken = true;
       }
-    },
-  );
+      for (final w in s.usableWindows) {
+        s.x = w.x;
+        s.z = w.entryZ(true);
+        s.y = 0;
+        expect(s.blocked(w.x, w.z, 0), true);
+        expect(s.blocked(w.x, w.entryZ(true), 0), false);
+        expect(s.blocked(w.x, w.exitZ(true), 0), false);
+        s.interact();
+        expect(s.vault, isNotNull, reason: w.id);
+        var height = 0.0;
+        for (var i = 0; i < 140; i++) {
+          final before = vm.Vector3(s.x, s.y, s.z);
+          s.tick(1 / 60);
+          expect((vm.Vector3(s.x, s.y, s.z) - before).length, lessThan(.05));
+          if (s.y > height) height = s.y;
+        }
+        expect(height, greaterThan(.5));
+        expect(s.vault, isNull);
+        expect(s.z, closeTo(w.exitZ(true), .001));
+        expect(s.y, 0);
+        s.interact();
+        expect(s.vault?.inward, false, reason: w.id);
+        advance(s, 2.5);
+        expect(s.z, closeTo(w.entryZ(true), .001));
+        expect(s.y, 0);
+      }
+    }
+  });
   test('vault pauses, resumes saved root and blocks other actions', () {
     final s = game()..interact();
     advance(s, .9);

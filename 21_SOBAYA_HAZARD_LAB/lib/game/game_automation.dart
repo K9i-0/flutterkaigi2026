@@ -362,9 +362,9 @@ void attachGameAutomation(HazardGameController game) {
           s.z = -10;
           s.yaw = -1.5707963267948966;
         case 'mountainGate':
-          s.x = 19.5;
-          s.z = 15;
-          s.yaw = -1.5707963267948966;
+          s.x = 13;
+          s.z = 7.7;
+          s.yaw = 3.141592653589793;
           final boss = s.enemies.firstWhere((e) => e.boss);
           boss.hp = 0;
           boss.alive = false;
@@ -423,9 +423,10 @@ void attachGameAutomation(HazardGameController game) {
           final owner = p['npc'] == 'yametaro' || name == 'reunionBefore'
               ? 'yametaro'
               : 'takosan';
-          final npc = s.npcs.singleWhere((n) => n['id'] == owner);
-          s.x = (npc['x'] as num).toDouble();
-          s.z = (npc['z'] as num).toDouble() - 1.2;
+          s.refreshRefuge();
+          final npc = s.npcs.where((n) => n['id'] == owner).firstOrNull;
+          s.x = npc == null ? 13 : (npc['x'] as num).toDouble();
+          s.z = npc == null ? 7.7 : (npc['z'] as num).toDouble() - 1.2;
           s.yaw = 3.141592653589793;
           s.pitch = .1;
         case 'merchant':
