@@ -49,6 +49,8 @@ for index,row in enumerate(rows):
  ref_name,seed,expected=CAST[row['speaker']];ref=ROOT/'02_CHARACTERS'/ref_name
  if sha(ref)!=expected:raise RuntimeError(f'Canonical reference mismatch: {ref.name}')
  speech=row['text'].replace('\n',' ').replace('せやな。……ところで、', 'せやな。ところで、')
+ # Isolated stamp text needs an explicit reading, without altering subtitles.
+ speech=speech.replace('済って書いておきます', 'すみって書いておきます')
  if row['speaker']=='ナレーション':
   speech=speech.replace('CHAPTER 02 —', '第二章。').replace('LAST ORDER —', 'ラストオーダー。').replace('CHAPTER 03 —', '第三章。').replace('撤収対象外 ', '撤収対象外。').replace('そば屋エンジン中枢 ', 'そば屋エンジン中枢。')
  if row['text']=='え、また集まるの？':speech='えっ、また集まるの？'
@@ -73,4 +75,17 @@ for index,row in enumerate(rows):
 pending=OUT/'voice-manifest.pending.json'
 pending.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
 pending.replace(OUT/'voice-manifest.json')
+script=['# そば屋ハザード — 採用音声台本', '',
+ f'全{len(manifest["clips"])}本、合計{sum(c["seconds"] for c in manifest["clips"]):.1f}秒。正本台詞はゲームのDartコード、生成入力は voice-lines.json、採用条件は voice-manifest.json。', '',
+ '福ちゃん・やめ太郎・そば屋・ナレーションは Irodori-TTS v4.1-Small と正典参照音声。たこさんは VOICEVOX:Voidoll（style 89）。24kHz mono PCM16、-18LUFS/-2dBTP。', '',
+ 'この台本は build_hazard_voice.py が採用manifestから生成する。使用箇所には章・話題・既読分岐を記録する。購入失敗時の文言は字幕と返答音。', '']
+for clip in manifest['clips']:
+ script += [f'## {clip["speaker"]} — {clip["id"]}', '', clip['text'], '', f'{clip["seconds"]:.3f}秒 / {", ".join(clip["uses"])}', '']
+ if 'reference' in clip:
+  script += [f'参照 `{clip["reference"]}` / seed {clip["seed"]}', '', 'caption: '+clip['caption'], '']
+ else:
+  script += [f'VOICEVOX:Voidoll / style {clip["style"]} / speed {clip["speedScale"]}', '']
+ if clip['speechText'] != clip['text']:
+  script += ['発話本文: '+clip['speechText'], '']
+(OUT/'script.md').write_text('\n'.join(script))
 print(f'COMPLETE {len(manifest["clips"])} cues',flush=True)

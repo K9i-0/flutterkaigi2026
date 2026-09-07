@@ -795,7 +795,12 @@ class _HazardGamePageState extends State<HazardGamePage> {
   Widget dialogue(HazardGameState s) => Positioned.fill(
     child: Stack(
       children: [
-        if (dialogueInsert(s.dialogueOwner, s.dialogueTopic, s.dialogueIndex)
+        if (dialogueInsert(
+              s.dialogueOwner,
+              s.dialogueTopic,
+              s.dialogueIndex,
+              postBoss: s.postBossReunion,
+            )
             case final cut?)
           Positioned(
             top: 82,
@@ -881,40 +886,12 @@ class _HazardGamePageState extends State<HazardGamePage> {
                                   : '残${s.stockRemaining(offer)}'}',
                               () => s.chooseDialogue('trade:${offer.id}'),
                             ),
-                        ] else ...[
-                          action(
-                            'dialogue-route',
-                            s.zoneId == 'mountain' ? '脱出路について' : '農場への道',
-                            () => s.chooseDialogue('route'),
-                          ),
-                          action(
-                            'dialogue-combat',
-                            'そば屋への対処',
-                            () => s.chooseDialogue('combat'),
-                          ),
-                          action(
-                            'dialogue-records',
-                            '壁の貼り紙',
-                            () => s.chooseDialogue('records'),
-                          ),
-                          if (!s.receivedYametaroAmmo)
-                            action(
-                              'dialogue-supplies',
-                              '予備弾をもらう',
-                              () => s.chooseDialogue('supplies'),
-                            ),
                         ],
-                        if (s.knowsEngine)
+                        for (final topic in s.availableDialogueTopics)
                           action(
-                            'dialogue-engine',
-                            'そば屋エンジンについて',
-                            () => s.chooseDialogue('engine'),
-                          ),
-                        if (s.hasStoryEvidence)
-                          action(
-                            'dialogue-evidence',
-                            '拾った記録について',
-                            () => s.chooseDialogue('evidence'),
+                            'dialogue-$topic',
+                            s.dialogueTopicLabel(topic),
+                            () => s.chooseDialogue(topic),
                           ),
                         action('dialogue-leave', 'E  探索へ戻る', s.endDialogue),
                       ],

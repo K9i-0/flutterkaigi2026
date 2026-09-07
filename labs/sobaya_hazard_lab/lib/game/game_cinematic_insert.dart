@@ -21,7 +21,7 @@ const cinematicDocuments = <String, (String, String, String)>{
     '帰任便への乗船には帰任票が必要\n帰任票の発行担当者：当便に乗船していません',
     '現地案件の完了後に申請してください',
   ),
-  'engine-link': ('村から帰るために', '山の廃屋にいる巨大そば屋を倒す', 'エンジン停止 → たこさんが救助船を呼ぶ'),
+  'engine-link': ('村から帰るために', '山の廃屋にいる巨大そば屋を倒す', 'エンジン停止 → 家で合流 → 東の門へ'),
   'shelter': (
     '宿舎　閉じた扉の向こう',
     '扉を二度たたく。\n内側から、二度返事があった。',
@@ -51,7 +51,7 @@ const cinematicDocuments = <String, (String, String, String)>{
   'radio': (
     'そば屋エンジンの止め方',
     '山の廃屋にいる巨大そば屋を倒す\nそれでエンジンは停止します',
-    '救助船はたこさんが呼びます\n難しい操作はありません',
+    '救難回線の督促放送も止まります\n救助船はたこさんが呼びます。合流は廃屋の中',
   ),
   'diary': (
     '窓際社員の日記',
@@ -60,12 +60,18 @@ const cinematicDocuments = <String, (String, String, String)>{
   ),
   'rescue': (
     '避難者名簿　照合済み',
-    '宿舎の社員　桟橋へ誘導\n前任の世話係　乗船確認\n福ちゃん・やめ太郎・たこさん　帰還',
-    '食事と水を配布\n取り残しなし　／　たこさん',
+    '宿舎の社員　桟橋へ誘導\n前任の世話係　乗船確認\n福ちゃん・やめ太郎・たこさん　最終乗船の準備中',
+    '食事と水を配布\n待機中の三名を確認　／　たこさん',
   ),
 };
 
-EventCut? dialogueInsert(String owner, String topic, int index) {
+EventCut? dialogueInsert(
+  String owner,
+  String topic,
+  int index, {
+  bool postBoss = false,
+}) {
+  if (postBoss) return null;
   if (topic == 'engine' && index == 0) {
     return const EventCut(0, image: 'engine-archive', label: 'そば屋エンジン　開発記録');
   }
@@ -232,7 +238,7 @@ class EngineLinkDiagram extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                stopped ? 'あとは、みんなで帰る' : 'やることは、ひとつ',
+                stopped ? '停止したら、家で合流' : 'エンジンを止める方法',
                 style: TextStyle(color: color, fontSize: 26),
               ),
               const SizedBox(height: 20),
@@ -256,7 +262,7 @@ class EngineLinkDiagram extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Text(
-                stopped ? '東の脱出路で仲間と合流しよう' : '山の廃屋にいる、一番でかいそば屋が目印',
+                stopped ? '家の東の門へ。最高難度は残るそば屋も全員撃退' : '山の廃屋にいる、一番でかいそば屋が目印',
                 style: TextStyle(color: color, fontSize: 21),
               ),
             ],

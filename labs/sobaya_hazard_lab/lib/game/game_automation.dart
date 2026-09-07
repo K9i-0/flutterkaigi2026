@@ -216,6 +216,9 @@ void attachGameAutomation(HazardGameController game) {
         'secretMerchant',
         'rocketCombat',
         'rocketBoss',
+        'reunion',
+        'reunionRemaining',
+        'reunionBefore',
         'pickup',
         'collection',
         'gate',
@@ -248,6 +251,9 @@ void attachGameAutomation(HazardGameController game) {
         'merchant',
         'secretMerchant',
         'rocketBoss',
+        'reunion',
+        'reunionRemaining',
+        'reunionBefore',
         'companionTakosan',
         'farm',
         'farmEnemyStairs',
@@ -274,6 +280,9 @@ void attachGameAutomation(HazardGameController game) {
           'bossEvent',
           'bossCombat',
           'rocketBoss',
+          'reunion',
+          'reunionRemaining',
+          'reunionBefore',
           'endingEvent',
         ].contains(name)) {
           final farm = g.state!..gateOpen = true;
@@ -393,6 +402,32 @@ void attachGameAutomation(HazardGameController game) {
             ..active = true
             ..alerted = true
             ..stun = 30;
+        case 'reunion':
+        case 'reunionRemaining':
+        case 'reunionBefore':
+          // Dialogue/audio QA at the normal house position, with enemies
+          // disabled. This fixture is not evidence of traversing the level.
+          s.seenEvents.addAll(['opening', 'farm', 'last_order']);
+          if (name != 'reunionBefore') {
+            s.enemies.firstWhere((e) => e.boss)
+              ..alive = false
+              ..hp = 0
+              ..dropped = true;
+            s.seenEvents.add('giant_defeated');
+            s.kills = 1;
+          }
+          if (name == 'reunionRemaining') {
+            s.difficulty = HazardDifficulty.tense;
+          }
+          s.beers = 12;
+          final owner = p['npc'] == 'yametaro' || name == 'reunionBefore'
+              ? 'yametaro'
+              : 'takosan';
+          final npc = s.npcs.singleWhere((n) => n['id'] == owner);
+          s.x = (npc['x'] as num).toDouble();
+          s.z = (npc['z'] as num).toDouble() - 1.2;
+          s.yaw = 3.141592653589793;
+          s.pitch = .1;
         case 'merchant':
           s.x = -13;
           s.z = -19.4;

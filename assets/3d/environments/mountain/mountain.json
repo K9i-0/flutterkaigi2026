@@ -359,6 +359,12 @@
       "id": "yametaro",
       "x": 16,
       "z": 17.5
+    },
+    {
+      "id": "takosan",
+      "x": 13.6,
+      "z": 17.1,
+      "afterBoss": true
     }
   ],
   "exits": [

@@ -116,6 +116,8 @@ class HazardCampaign {
     to.seenEvents
       ..clear()
       ..addAll(from.seenEvents);
+    if (from.evacuationStarted) to.seenEvents.add('giant_defeated');
+    to.clearAbsentCompanionTargets();
     to.medallions
       ..clear()
       ..addAll(from.medallions);
@@ -162,6 +164,13 @@ class HazardCampaign {
       );
     }
     campaign.state = campaign.regions[data['region']]!;
+    // Old saves derive the new relocation flag from the actual defeated boss.
+    if (campaign.regions['mountain']?.bossAlive == false) {
+      for (final region in campaign.regions.values) {
+        region.seenEvents.add('giant_defeated');
+        region.clearAbsentCompanionTargets();
+      }
+    }
     final kills = campaign.regions.values.fold<int>(
       0,
       (n, s) => n + s.enemies.where((e) => !e.alive).length,

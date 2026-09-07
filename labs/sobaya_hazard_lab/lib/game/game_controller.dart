@@ -1281,6 +1281,7 @@ class HazardGameController extends ChangeNotifier {
     for (final entry in npcs.entries) {
       final actor = entry.value;
       final authored = s.npcs.where((n) => n['id'] == entry.key).firstOrNull;
+      if (director?.id != 'ending') actor.node.visible = authored != null;
       if (authored != null && director?.id != 'ending') {
         actor.node.position = vm.Vector3(
           (authored['x'] as num).toDouble(),
