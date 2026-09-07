@@ -1,0 +1,45 @@
+{
+  "task_id": "1f6cea78-d856-41ae-9adb-94c06842fc07",
+  "status": "SUCCEEDED",
+  "model": "wan3.0-video",
+  "resolution_requested": "480P",
+  "seed": 620101,
+  "config": "wan3_config_01_walk.json",
+  "prompt": "prompt_01_walk_api_en.txt",
+  "output": "wan3_01_walk_seed620101_480p.mp4",
+  "sha256": "4ec8fdd63effc07cb5b0f195fad47dfb2650408bc5a1b14d1020489e7f5efa89",
+  "probe": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_type": "video",
+        "width": 832,
+        "height": 480,
+        "r_frame_rate": "30/1",
+        "duration": "6.000000"
+      },
+      {
+        "codec_type": "audio",
+        "r_frame_rate": "0/0",
+        "duration": "6.037007"
+      }
+    ],
+    "format": {
+      "duration": "6.037007"
+    }
+  },
+  "estimated_cost_usd": 0.21,
+  "cost_note": "Estimate from displayed per-second price; billing total not queried.",
+  "review": {
+    "method": "24 contact-sheet samples at 4 Hz and full-resolution frame at 2 seconds; not a frame-by-frame motion-capture audit.",
+    "resolution": "sufficient for whole-body pose reference",
+    "identity": "single complete Fukuchan, consistent outfit; no obvious duplicate or missing limbs in sampled frames",
+    "gaze": "forward gaze maintained in sampled frames",
+    "camera": "fails fixed-camera requirement: floor lines move relative to frame while subject remains near center",
+    "timing": "requested final standing hold is not evident in final sampled frames; subject still in gait near end",
+    "foot_contact": "feet and alternating gait visible; no calibrated foot-slide measurement yet",
+    "decision": "Useful visual pose reference; not accepted as calibrated displacement reference. 3D reconstruction and comparison are not yet performed.",
+    "next_step": "Account for camera motion before extracting displacement, or revise camera/start-frame design for a separately authorized regeneration. Higher resolution alone will not fix camera motion."
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "status": "prompts_prepared_not_generated",
+  "status": "01_walk_generated_reviewed_other_prompts_prepared",
   "purpose": "12 independent motion-reference videos; not segments of one film",
   "clips": [
     {
@@ -12,7 +12,8 @@
       "audio_source": "wan3",
       "audio_sync_strategy": "no_visible_speech",
       "generation_mode": "single",
-      "review": "定速区間の歩幅・接地・骨盤移動。"
+      "review": "定速区間の歩幅・接地・骨盤移動。",
+      "generation_review": "walk_generation_review.json"
     },
     {
       "id": "02_dash",
@@ -146,5 +147,7 @@
       "generation_mode": "single",
       "review": "胴体の厚さに合う保持位置と左右非対称。移動速度と足運びの同期。"
     }
-  ]
+  ],
+  "default_resolution": "480P",
+  "resolution_policy": "User preference: retain 480P unless motion-reference readability proves insufficient."
 }

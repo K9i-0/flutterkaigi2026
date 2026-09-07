@@ -12,7 +12,7 @@
     }
   ],
   "parameters": {
-    "resolution": "720P",
+    "resolution": "480P",
     "ratio": "16:9",
     "duration": 6,
     "audio": true,
@@ -20,5 +20,5 @@
     "watermark": false,
     "prompt_extend": false
   },
-  "output": "wan3_01_walk_seed620101_720p.mp4"
+  "output": "wan3_01_walk_seed620101_480p.mp4"
 }
