@@ -1,0 +1,45 @@
+One continuous 6-second 16:9 motion-study video. Animate the single fully clothed gray clay actor in the supplied first frame with the natural movement of a real adult walking, at normal speed. Preserve his slim Fukuchan body proportions, face, hair, opaque neutral-gray clay game-model surface and closed shoes. Keep matte clay appearance, including the identity and shape of the actual Fukuchan game mesh. No loose fabric or added accessories. Empty hands.
+
+The camera is absolutely LOCKED on a tripod for the entire video. Preserve the exact first-frame composition, floor, wall seams and three black wall markers at exactly the same screen coordinates in every frame. These are stationary physical objects. NEVER pan, track, zoom, rotate, reframe or follow the actor. Let the person travel across the empty space from the LEFT side to the RIGHT side and become off-center. Preserve the input slightly oblique side view so BOTH elbows and wrists can be distinguished. Walk along the character's initial forward direction toward screen right; do not change body orientation or camera position. Full body and feet visible at all times. No cuts.
+
+Shot 1 [0.0-6.0 s]:
+0.0-0.7: Relaxed standing pose from the input, looking horizontally right.
+0.7-1.2: Begin walking to the right, initiating weight transfer smoothly.
+1.2-4.7: Continue an ordinary comfortable adult walk across the empty floor, roughly 1.0-1.2 meters per second with moderate steps around 0.6 meters, roughly 1.5-2 individual footfalls per second. Each shoe remains fixed to the FLOOR during its supporting phase while the pelvis moves over it. Heel contact, weight transfer, toe-off and swing form a smooth human gait. Arms swing gently opposite the legs; shoulders and pelvis counter-rotate slightly. Natural small knee bend and vertical pelvis motion. Head upright, face and gaze forward. No marching, exaggerated stride, skipping, slow motion or walking in place. Maintain the SAME lateral walking direction. Do not turn toward the camera.
+4.7-5.4: Reduce stride over the last steps and come to a stable stop before the right margin, around 80-85 percent of frame width. Do not walk out of frame.
+5.4-6.0: Hold a relaxed standing pose at the new location, all limbs settled.
+
+Exactly one actor throughout. Keep the floor and three black background markers perfectly static. No morphing or resizing the person, extra limbs, sliding shoes, reverse joints or floating feet. Quiet synchronized footsteps and clothing movement only, no dialogue, vocals, narration or music. No subtitles, labels or watermark.
+
+RIG-HIGHLIGHT EXPERIMENT — These are visible motion-study graphics, not a robot or an external exoskeleton. The first frame was rendered directly from the actual Fukuchan game mesh and its actual skeleton. Animate the BODY like a living relaxed human, while preserving the exact colored joint-marker topology and the links shown in the first frame throughout the six seconds. The glowing stick skeleton is an x-ray visualization registered to the anatomical joint centers, including occluded joints, and must move WITH the body. It must not remain frozen, float independently, trail behind, slide over the skin, disappear, change color, or acquire extra joints. Anatomical LEFT stays CYAN; anatomical RIGHT stays MAGENTA; central torso chain stays YELLOW. No swapping left and right when limbs overlap. Keep round joint dots and thin simple connecting segments readable at 480P, without bloom. No labels or text in the generated image.
+
+Pay special attention to the shoulder-elbow-wrist chain: a relaxed slight elbow flexion, modest upper-arm swing opposite the advancing leg, the forearm following smoothly, relaxed wrists and gently curved hands. Shoulders and chest counter-rotate subtly with the pelvis. Avoid straight rigid pendulum arms, elbows bent sideways, T-pose arms, bent-back wrists, stiff open fingers or exaggerated marching. Let the far arm remain distinguishable by its x-ray color even when the body occludes it.
+
+ACTUAL GAME RIG FACTS, supplied as text guidance (not an instruction to add joints):
+There are 23 bones in total, including a non-anatomical floor Root controller. Root is NOT drawn and must NOT become a third leg. The actual rig has no individual finger bones. Do not draw finger skeletons. The hand node represents the wrist pivot; the toe-base node represents the forefoot pivot. Bone visualization connects each parent joint origin to its child's joint origin; arbitrary software leaf-bone display tails are not body segments.
+Measured left hip-knee-ankle chain = 0.748597 m; shoulder-elbow-wrist chain = 0.511479 m; shoulder joint spacing = 0.344598 m. Preserve these proportions and fixed segment lengths, without stretching limbs.
+Actual bind-pose joint origins in meters, Blender coordinates: +Z up, forward -Y. These describe the rig proportions; start from the relaxed posed first frame, NOT from the bind pose.
+name | parent | x y z
+Root | none | 0.00771 0.01555 -0.00000
+Hips | Root | 0.00771 0.01555 0.77483
+Spine | Hips | 0.00766 0.01622 0.87972
+Spine1 | Spine | 0.00760 0.01717 1.02855
+Spine2 | Spine1 | 0.00753 0.01812 1.17739
+Neck | Spine2 | 0.00747 0.01907 1.32614
+Head | Neck | 0.00744 0.01948 1.38914
+LeftShoulder | Spine2 | 0.00764 0.01906 1.32608
+LeftArm | LeftShoulder | 0.17903 0.00316 1.32582
+LeftForeArm | LeftArm | 0.26859 0.04182 1.06372
+LeftHand | LeftForeArm | 0.32875 0.05668 0.84034
+RightShoulder | Spine2 | 0.00729 0.01909 1.32608
+RightArm | RightShoulder | -0.16410 0.03502 1.32582
+RightForeArm | RightArm | -0.25366 0.02640 1.06372
+RightHand | RightForeArm | -0.31382 0.04911 0.84034
+LeftUpLeg | Hips | 0.10481 0.01933 0.77448
+LeftLeg | LeftUpLeg | 0.15005 0.00369 0.42364
+LeftFoot | LeftLeg | 0.15005 0.04028 0.03083
+LeftToeBase | LeftFoot | 0.15439 -0.02317 0.02388
+RightUpLeg | Hips | -0.08936 0.01175 0.77448
+RightLeg | RightUpLeg | -0.10478 -0.00387 0.42364
+RightFoot | RightLeg | -0.12328 0.05089 0.03083
+RightToeBase | RightFoot | -0.13552 -0.00200 0.02504

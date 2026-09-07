@@ -1,0 +1,24 @@
+{
+  "model": "wan3.0-video",
+  "audio_source": "wan3",
+  "audio_sync_strategy": "no_visible_speech",
+  "project_duration": 6,
+  "generation_mode": "single",
+  "prompt_file": "prompt_01_walk_clay_rig.txt",
+  "media": [
+    {
+      "type": "first_frame",
+      "path": "walk_clay_rig_start_v1.png"
+    }
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 6,
+    "audio": true,
+    "seed": 620102,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_01_walk_clay_rig_seed620102_480p.mp4"
+}

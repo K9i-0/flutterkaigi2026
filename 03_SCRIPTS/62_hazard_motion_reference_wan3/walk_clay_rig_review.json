@@ -1,0 +1,46 @@
+{
+  "taskId": "b70461e5-53e7-49ef-bec3-d15bb2f54637",
+  "status": "SUCCEEDED",
+  "video": "wan3_01_walk_clay_rig_seed620102_480p.mp4",
+  "sha256": "b90ec77a3e9cf161c3fd8aa40f982653977c5e6f4884ffefe0aef2c4bcfec0b9",
+  "resolutionRequested": "480P",
+  "width": 842,
+  "height": 474,
+  "fps": 30.0,
+  "frames": 180,
+  "videoSeconds": 6.0,
+  "seed": 620102,
+  "estimatedCostUsd": 0.21,
+  "costNote": "Estimate, not billing query",
+  "threeMarkersDetectedFrames": 180,
+  "maxBackgroundMarkerDisplacementPx": 0.3544790333924462,
+  "colorPresence": {
+    "cyan": {
+      "minPixels": 451,
+      "framesWithAtLeast10Pixels": 180
+    },
+    "magenta": {
+      "minPixels": 297,
+      "framesWithAtLeast10Pixels": 180
+    },
+    "yellow": {
+      "minPixels": 169,
+      "framesWithAtLeast10Pixels": 180
+    }
+  },
+  "limitation": "Color presence does not validate bone count, anatomical registration, left/right identity, bone lengths or 3D pose. See visual review.",
+  "visualReview": {
+    "method": "18 full-body frames and 18 enlarged upper-body crops at 3 Hz; color and background-marker detection on all 180 frames. Not an exact 3D reconstruction audit.",
+    "identity": "Single gray Fukuchan game-style actor; recognizable face and original clothing geometry remain.",
+    "camera": "Three fixed markers tracked through all 180 frames, maximum displacement 0.355 px.",
+    "coloredOverlay": "Three color families remain present in all frames, but this is not left/right or topology preservation.",
+    "leftRight": "FAIL: initial magenta arm becomes cyan; both arms appear cyan by 0.33 s and in subsequent sampled poses.",
+    "topology": "FAIL: extra cyan finger/hand line segments and a yellow loop around the pelvis appear, despite explicit no-finger and no-extra-node instructions.",
+    "registration": "The overlay follows the broad body movement, but it is a generated reinterpretation, not the supplied exact game-rig projection after the first frame.",
+    "arms": "Upper arms spread away from the torso in several swing poses. The result does not establish a natural relaxed arm reference.",
+    "gaze": "Generally upright and forward in sampled poses.",
+    "timing": "Walking and final standing visible. The actor becomes more frontal than the initial oblique side pose.",
+    "decision": "Keep as an exploratory Wan capability sample. Reject as accurate skeleton ground truth or direct replacement for the game walking clip.",
+    "interpretation": "In this single first-frame-plus-text trial, visual skeleton styling persisted but explicit rig topology and left/right colors did not. This does not establish the limits of every Wan conditioning approach."
+  }
+}

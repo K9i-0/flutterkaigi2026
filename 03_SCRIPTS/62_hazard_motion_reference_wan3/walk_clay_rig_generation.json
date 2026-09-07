@@ -1,0 +1,26 @@
+{
+  "taskId": "b70461e5-53e7-49ef-bec3-d15bb2f54637",
+  "status": "SUCCEEDED",
+  "model": "wan3.0-video",
+  "seed": 620102,
+  "resolutionRequested": "480P",
+  "durationSeconds": 6,
+  "estimatedCostUsd": 0.21,
+  "input": {
+    "firstFrame": "walk_clay_rig_start_v1.png",
+    "sha256": "f6d33ea427520046c81a40554de57382ad91777c63a5fa0171a7042115355fd6",
+    "rig": "fukuchan_rig_input.json",
+    "prompt": "prompt_01_walk_clay_rig.txt"
+  },
+  "config": "wan3_config_01_walk_clay_rig.json",
+  "output": "wan3_01_walk_clay_rig_seed620102_480p.mp4",
+  "outputSha256": "b90ec77a3e9cf161c3fd8aa40f982653977c5e6f4884ffefe0aef2c4bcfec0b9",
+  "actualVideo": {
+    "width": 842,
+    "height": 474,
+    "fps": 30.0,
+    "frames": 180,
+    "videoSeconds": 6.0
+  },
+  "review": "walk_clay_rig_review.json"
+}
