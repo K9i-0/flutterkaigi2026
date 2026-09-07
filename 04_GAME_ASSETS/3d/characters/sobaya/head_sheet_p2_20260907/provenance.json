@@ -1,0 +1,34 @@
+{
+  "canonical": "03_SCRIPTS/00_TEMPLATES/characters/character_sobaya_basic_sheet.png",
+  "image_generation": "built-in image_gen",
+  "inputs": {
+    "front": {
+      "file": "inputs/front.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "8febd58a2ec1736ce192a3a1b80cca70748ca6f536eb64581841f13502402c8d",
+      "bytes": 1294754
+    },
+    "left": {
+      "file": "inputs/left.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "e39bc9e05746117588d33a901f9c57577988e4244d7352f39278bb0210a5014d",
+      "bytes": 1336760
+    },
+    "back": {
+      "file": "inputs/back.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "af45bac6c2806fe01748517d10b5e9d4676dcc0196ca3754345b19561d01b80f",
+      "bytes": 1521907
+    }
+  },
+  "canonical_sha256": "6de96b8fe2ebf1ce88c2f966d77a1abd7f0c2632322dfe4c527135de67494def"
+}

@@ -40,9 +40,9 @@ mise exec -- flutter run -d macos
 
 肩・顔・握り・ガラス／液体表現と、Tripo複数画像入力の調査は[品質改善方針](ASSET_QUALITY_PLAN.md)を参照。
 
-`assets/models/sobaya.glb`は[GLB正本](../04_GAME_ASSETS/3d/characters/sobaya/rig_v3/sobaya_rig.glb)への相対symlink。ゲーム側へコピーしない。採用したGLBをGit管理対象にし、Tripo生レスポンス・署名付きURL・APIキーは含めない。
+`assets/models/sobaya.glb`は[GLB正本](../04_GAME_ASSETS/3d/motion_library/sobaya/sobaya.glb)への相対symlink。ゲーム側へコピーしない。採用したGLBをGit管理対象にし、Tripo生レスポンス・署名付きURL・APIキーは含めない。
 
-現行版は身長1.8m、28,576三角面、4材質、4K PBRテクスチャ、45ボーン／最大4ウェイト。歩行・走行・ゾンビ歩行・ダンス3種・乾杯・ジョッキ攻撃・待機の9クリップを持つ。[リグ仕様・再生成](../04_GAME_ASSETS/3d/characters/sobaya/rig_v3/README.md)を参照。
+現行版は身長1.8m、34,355三角面、5材質、4K PBRテクスチャ、45ボーン／最大4ウェイト、78クリップ。正典シートから生成した頭部を拡幅し、太い首で胴体へ接続した。[リグ仕様・再生成](../04_GAME_ASSETS/3d/characters/sobaya/rig_v3/README.md)を参照。
 
 `assets/models/beer_mug.glb`も[共通小道具の正本](../04_GAME_ASSETS/3d/props/beer_mug_v2/beer_mug.glb)への相対symlink。8,276三角面・4材質で、右手のソケットに取り付ける。
 
