@@ -82,5 +82,95 @@
       }
     }
   },
-  "scope": "Native debug rendering, keyboard roll, real combat clocks and voice probes. Unit tests cover roll distance, collision, i-frames, and all attack contact/recovery remaps; not a complete campaign playthrough."
+  "scope": "Native debug rendering, keyboard roll, real combat clocks and voice probes. Unit tests cover roll distance, collision, i-frames, and all attack contact/recovery remaps; not a complete campaign playthrough.",
+  "release": {
+    "sourceRevision": "873fb48",
+    "app": ".local/hazard_releases/sobaya-hazard-macos-873fb48/そば屋ハザード.app",
+    "archive": {
+      "archive": ".local/hazard_releases/sobaya-hazard-macos-873fb48.zip",
+      "bytes": 258160607,
+      "sha256": "997a3093e4279b3faa17472ee08c9f9eee934c1c55cf87777bf977811ca65ede",
+      "sourceRevision": "873fb48",
+      "sceneCount": 9,
+      "voiceCueCount": 126
+    },
+    "signature": "codesign --verify --deep --strict passed",
+    "sceneCount": 9,
+    "voiceCueCount": 126,
+    "sceneSources": [
+      {
+        "id": "assets/models/beer_mug",
+        "source": "04_GAME_ASSETS/3d/props/beer_mug_v2/beer_mug.glb",
+        "sourceSha256": "3456dcd7a79ec55936e6141a2b51432d51f38084d62a636368216530de2972f4",
+        "compiledFile": "scene.beer_mug.1e79f718.fsceneb",
+        "compiledSha256": "2251af923f238395819fe44cd0f23d4e3282b52b1cd8549467a0ccb01a83bb8c",
+        "importStamp": "c87e4829c1c7dce7"
+      },
+      {
+        "id": "assets/models/farm",
+        "source": "04_GAME_ASSETS/3d/environments/farm/farm.glb",
+        "sourceSha256": "f6c7dd27a37f8fa3fb187b2fec815ed8e1acbfb794780ed7cfb06d8b1b3d46c6",
+        "compiledFile": "scene.farm.df7fa6b4.fsceneb",
+        "compiledSha256": "caaa8f0c8abdca8dfe631f3e149ebdb891dc80c8420dde0e5281e4cc27da1941",
+        "importStamp": "8657623d3fe8da2d"
+      },
+      {
+        "id": "assets/models/fukuchan",
+        "source": "04_GAME_ASSETS/3d/motion_library/fukuchan/fukuchan.glb",
+        "sourceSha256": "e4029c1baf909faaa5313186fe1307175cae626103c887bbc92f565354cfa0c6",
+        "compiledFile": "scene.fukuchan.c0d54c25.fsceneb",
+        "compiledSha256": "01c111d31c75c89d812107ff1a484e24cd843aa8956278e7ba1c997182978d62",
+        "importStamp": "d28bca8dcebd7072"
+      },
+      {
+        "id": "assets/models/items",
+        "source": "04_GAME_ASSETS/3d/props/hazard_kit/items.glb",
+        "sourceSha256": "6ed27a4efb14863e54fc177ef8db88d195ee5c0436f98cddccb635244b2840eb",
+        "compiledFile": "scene.items.79a2d4bf.fsceneb",
+        "compiledSha256": "872c39c2988ad5725b32ce045cb5095deb0a424ef76a06433b14bc182ba419de",
+        "importStamp": "60fc41555bb71553"
+      },
+      {
+        "id": "assets/models/mountain",
+        "source": "04_GAME_ASSETS/3d/environments/mountain/mountain.glb",
+        "sourceSha256": "4342619129b792b189ee5d586c2a79c2e368c4b00202c162504c966fb313d358",
+        "compiledFile": "scene.mountain.551294d6.fsceneb",
+        "compiledSha256": "90b68f1b8788ccf820a5d3de835c2525e19225a0a180dcb4ecfa5cc30eb6f3d4",
+        "importStamp": "97e6a785c22dc058"
+      },
+      {
+        "id": "assets/models/sobaya",
+        "source": "04_GAME_ASSETS/3d/motion_library/sobaya/sobaya.glb",
+        "sourceSha256": "4862be635adad5696fd9d24067d92b0fc6f47097e8fd0df85aab79cb4de2a660",
+        "compiledFile": "scene.sobaya.fd082e41.fsceneb",
+        "compiledSha256": "8a42d929f959e1227eeac9ec80dd12ae967bad7a2cf8338d5a6bd72e2acefc09",
+        "importStamp": "3e5440907ca5cf6d"
+      },
+      {
+        "id": "assets/models/takosan",
+        "source": "04_GAME_ASSETS/3d/characters/takosan/rig_sheet_v2/takosan.glb",
+        "sourceSha256": "aae590ad14daedc9f24b0c9749d533646b8930c139357539822e1f88a2f92469",
+        "compiledFile": "scene.takosan.744cfef3.fsceneb",
+        "compiledSha256": "e446bdc6ea844016c3422b5387eb06b6dc152ac49484a048fde4b78e9b99d3a2",
+        "importStamp": "6862946761c23a74"
+      },
+      {
+        "id": "assets/models/village",
+        "source": "04_GAME_ASSETS/3d/environments/pueblo/village.glb",
+        "sourceSha256": "f2e01128d3a29253f449ef278e6f31b8b0a72aa674494ef733617a2a93a24672",
+        "compiledFile": "scene.village.c8a19c1a.fsceneb",
+        "compiledSha256": "03290751fc5c6103f6bcbb438d45245bd6e24099f531559bedd865bbd6ebdd6a",
+        "importStamp": "ea0b2dfe772e853c"
+      },
+      {
+        "id": "assets/models/yametaro",
+        "source": "04_GAME_ASSETS/3d/characters/yametaro/rig_sheet_v2/yametaro.glb",
+        "sourceSha256": "78189559825840993d3392a59a187438f3589f651d92fd9a6a13f97197704cd0",
+        "compiledFile": "scene.yametaro.349b9361.fsceneb",
+        "compiledSha256": "3b9b034fe8a5713a96a2e23862ee303becdb7f67d0dfc2d88b872c09a31fb181",
+        "importStamp": "4e880177e06374c4"
+      }
+    ],
+    "nativeStartup": "Packaged release launched in CUA; title and Continue / New Game visible. Gameplay actions verified in debug; not a full release playthrough."
+  }
 }
