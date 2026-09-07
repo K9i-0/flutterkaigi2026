@@ -10,10 +10,17 @@ import 'package:vector_math/vector_math.dart' as vm;
 import 'catalog.dart';
 
 class MotionSlot {
-  MotionSlot(this.profile, this.method, this.entry, Node template, double x)
-    : root = Node(name: '${profile.id}-${method.name}'),
+  MotionSlot(
+    this.profile,
+    this.method,
+    this.entry,
+    Node template,
+    double x,
+    Node mugTemplate,
+  ) : root = Node(name: '${profile.id}-${method.name}'),
       model = template.clone() {
     root.position = vm.Vector3(x, 0, 0);
+    originX = x;
     root.add(model);
     // The imported characters face -Z; turn toward the front camera.
     model.rotation = vm.Quaternion.axisAngle(vm.Vector3(0, 1, 0), math.pi);
@@ -27,6 +34,16 @@ class MotionSlot {
       }
       clip = model.createAnimationClip(animation)..loop = false;
       clip!.pause();
+      if (entry!.prop == 'beer_mug') {
+        final mug = mugTemplate.clone();
+        final grip = mug.getChildByName('Grip')!;
+        final inverseGrip = vm.Matrix4.copy(grip.globalTransform)
+          ..invert()
+          ..multiply(mug.globalTransform);
+        mug.localTransform = vm.Matrix4.rotationX(-math.pi / 2)
+          ..multiply(inverseGrip);
+        model.getChildByName('PropSocket.R')!.add(mug);
+      }
     } else {
       model.visible = false;
     }
@@ -35,6 +52,7 @@ class MotionSlot {
   final MotionMethod method;
   final MotionEntry? entry;
   final Node root, model;
+  late final double originX;
   AnimationClip? clip;
   final List<(Node, Node)> boneLines = [];
 }
@@ -45,6 +63,7 @@ class MotionController extends ChangeNotifier {
   final poseSignal = ChangeNotifier();
   final clock = MotionClock();
   final templates = <String, Node>{};
+  late Node mugTemplate;
   final List<String> _claimed = [];
   List<BodyProfile> profiles = [];
   List<MotionSlot> slots = [];
@@ -60,8 +79,12 @@ class MotionController extends ChangeNotifier {
   BodyProfile get selectedBody => profiles.firstWhere((p) => p.id == character);
   MotionEntry get selected => selectedBody.find(method, action)!;
   double get duration => ready ? selected.duration : 1;
-  List<MotionEntry> get entries =>
-      ready ? selectedBody.clips.where((e) => e.method == method).toList() : [];
+  List<MotionEntry> get entries {
+    if (!ready) return [];
+    final clips = selectedBody.clips.where((e) => e.method == method).toList();
+    bool featured(MotionEntry e) => e.prop != null || e.action == 'RollForward';
+    return [...clips.where(featured), ...clips.where((e) => !featured(e))];
+  }
 
   Future<void> load() async {
     final raw = jsonDecode(
@@ -82,6 +105,13 @@ class MotionController extends ChangeNotifier {
       templates[profile.id] = node;
     }
     if (disposed) return;
+    const mugAsset = 'assets/models/beer_mug.glb';
+    mugTemplate = await loadScene(mugAsset);
+    if (disposed) {
+      await releaseScene(mugAsset);
+      return;
+    }
+    _claimed.add(mugAsset);
     scene.environmentSettings = EnvironmentSettings(
       exposure: 1.05,
       ambientOcclusionEnabled: false,
@@ -149,6 +179,7 @@ class MotionController extends ChangeNotifier {
         body.find(m, action),
         templates[body.id]!,
         ((choices.length - 1) / 2 - i) * (compareMethods ? 1.45 : 1.7),
+        mugTemplate,
       );
       slot.model.rotation = vm.Quaternion.axisAngle(
         vm.Vector3(0, 1, 0),
@@ -219,6 +250,13 @@ class MotionController extends ChangeNotifier {
     for (final slot in slots) {
       final entry = slot.entry;
       if (entry != null) {
+        final phase = ((clock.seconds / duration - .13) / .77).clamp(0.0, 1.0);
+        final travel = entry.rootTravel * phase * phase * (3 - 2 * phase);
+        slot.root.position = vm.Vector3(
+          slot.originX + math.sin(viewAngle) * travel,
+          0,
+          math.cos(viewAngle) * travel,
+        );
         slot.clip!.seek(
           syncPhase ? clock.seconds / duration * entry.duration : clock.seconds,
         );
@@ -318,6 +356,8 @@ class MotionController extends ChangeNotifier {
           'character': s.profile.id,
           'method': s.method.name,
           'clip': s.entry?.name,
+          'hasMug': s.model.getChildByName('Grip') != null,
+          'rootPosition': s.root.position.storage.toList(),
           'sampleSeconds': s.clip?.playbackTime,
           'bones': s.profile.bones,
           'legM': s.profile.leg,

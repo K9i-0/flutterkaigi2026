@@ -1,0 +1,928 @@
+{
+  "date": "2026-09-07",
+  "cases": [
+    {
+      "character": "sobaya",
+      "clip": "Library_Crouch_Idle",
+      "phase": 0,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Library_Crouch_Idle",
+      "phase": 0.18,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Library_Crouch_Idle",
+      "phase": 0.48,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Library_Crouch_Idle",
+      "phase": 0.85,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Library_Crouch_Idle",
+      "phase": 1,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_Crouch_Idle",
+      "phase": 0,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_Crouch_Idle",
+      "phase": 0.18,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_Crouch_Idle",
+      "phase": 0.48,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_Crouch_Idle",
+      "phase": 0.85,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_Crouch_Idle",
+      "phase": 1,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Library_Crouch_Walk",
+      "phase": 0,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Library_Crouch_Walk",
+      "phase": 0.18,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Library_Crouch_Walk",
+      "phase": 0.48,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Library_Crouch_Walk",
+      "phase": 0.85,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Library_Crouch_Walk",
+      "phase": 1,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_Crouch_Walk",
+      "phase": 0,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_Crouch_Walk",
+      "phase": 0.18,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_Crouch_Walk",
+      "phase": 0.48,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_Crouch_Walk",
+      "phase": 0.85,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_Crouch_Walk",
+      "phase": 1,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Procedural_RollForward",
+      "phase": 0,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Procedural_RollForward",
+      "phase": 0.18,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0.01992625743150711
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Procedural_RollForward",
+      "phase": 0.48,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0.711304247379303
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Procedural_RollForward",
+      "phase": 0.85,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        1.6265884637832642
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Procedural_RollForward",
+      "phase": 1,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        1.6465147733688354
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_MugHold",
+      "phase": 0,
+      "passed": true,
+      "hasMug": true,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_MugHold",
+      "phase": 0.18,
+      "passed": true,
+      "hasMug": true,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_MugHold",
+      "phase": 0.48,
+      "passed": true,
+      "hasMug": true,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_MugHold",
+      "phase": 0.85,
+      "passed": true,
+      "hasMug": true,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_MugHold",
+      "phase": 1,
+      "passed": true,
+      "hasMug": true,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_MugRun",
+      "phase": 0,
+      "passed": true,
+      "hasMug": true,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_MugRun",
+      "phase": 0.18,
+      "passed": true,
+      "hasMug": true,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_MugRun",
+      "phase": 0.48,
+      "passed": true,
+      "hasMug": true,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_MugRun",
+      "phase": 0.85,
+      "passed": true,
+      "hasMug": true,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_MugRun",
+      "phase": 1,
+      "passed": true,
+      "hasMug": true,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_MugPunch",
+      "phase": 0,
+      "passed": true,
+      "hasMug": true,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_MugPunch",
+      "phase": 0.18,
+      "passed": true,
+      "hasMug": true,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_MugPunch",
+      "phase": 0.48,
+      "passed": true,
+      "hasMug": true,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_MugPunch",
+      "phase": 0.85,
+      "passed": true,
+      "hasMug": true,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_MugPunch",
+      "phase": 1,
+      "passed": true,
+      "hasMug": true,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_MugHook",
+      "phase": 0,
+      "passed": true,
+      "hasMug": true,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_MugHook",
+      "phase": 0.18,
+      "passed": true,
+      "hasMug": true,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_MugHook",
+      "phase": 0.48,
+      "passed": true,
+      "hasMug": true,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_MugHook",
+      "phase": 0.85,
+      "passed": true,
+      "hasMug": true,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_MugHook",
+      "phase": 1,
+      "passed": true,
+      "hasMug": true,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_MugSmash",
+      "phase": 0,
+      "passed": true,
+      "hasMug": true,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_MugSmash",
+      "phase": 0.18,
+      "passed": true,
+      "hasMug": true,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_MugSmash",
+      "phase": 0.48,
+      "passed": true,
+      "hasMug": true,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_MugSmash",
+      "phase": 0.85,
+      "passed": true,
+      "hasMug": true,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "sobaya",
+      "clip": "Hybrid_MugSmash",
+      "phase": 1,
+      "passed": true,
+      "hasMug": true,
+      "rootPosition": [
+        0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Library_Crouch_Idle",
+      "phase": 0,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        -0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Library_Crouch_Idle",
+      "phase": 0.18,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        -0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Library_Crouch_Idle",
+      "phase": 0.48,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        -0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Library_Crouch_Idle",
+      "phase": 0.85,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        -0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Library_Crouch_Idle",
+      "phase": 1,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        -0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Hybrid_Crouch_Idle",
+      "phase": 0,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        -0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Hybrid_Crouch_Idle",
+      "phase": 0.18,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        -0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Hybrid_Crouch_Idle",
+      "phase": 0.48,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        -0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Hybrid_Crouch_Idle",
+      "phase": 0.85,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        -0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Hybrid_Crouch_Idle",
+      "phase": 1,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        -0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Library_Crouch_Walk",
+      "phase": 0,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        -0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Library_Crouch_Walk",
+      "phase": 0.18,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        -0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Library_Crouch_Walk",
+      "phase": 0.48,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        -0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Library_Crouch_Walk",
+      "phase": 0.85,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        -0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Library_Crouch_Walk",
+      "phase": 1,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        -0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Hybrid_Crouch_Walk",
+      "phase": 0,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        -0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Hybrid_Crouch_Walk",
+      "phase": 0.18,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        -0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Hybrid_Crouch_Walk",
+      "phase": 0.48,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        -0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Hybrid_Crouch_Walk",
+      "phase": 0.85,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        -0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Hybrid_Crouch_Walk",
+      "phase": 1,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        -0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Procedural_RollForward",
+      "phase": 0,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        -0.8500000238418579,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Procedural_RollForward",
+      "phase": 0.18,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        -0.8500000238418579,
+        0,
+        0.018119169399142265
+      ]
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Procedural_RollForward",
+      "phase": 0.48,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        -0.8500000238418579,
+        0,
+        0.6467970013618469
+      ]
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Procedural_RollForward",
+      "phase": 0.85,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        -0.8500000238418579,
+        0,
+        1.4790751934051514
+      ]
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Procedural_RollForward",
+      "phase": 1,
+      "passed": true,
+      "hasMug": false,
+      "rootPosition": [
+        -0.8500000238418579,
+        0,
+        1.4971944093704224
+      ]
+    }
+  ],
+  "failures": [],
+  "passed": true,
+  "checks": {
+    "roundTrip139Clips": true,
+    "originalGameClipDurationsUnchanged": true,
+    "visual": [
+      "crouch gaze on both bodies",
+      "roll tuck and contact on both bodies",
+      "canonical mug pose",
+      "mug run",
+      "mug straight punch side view",
+      "hook",
+      "smash anticipation and contact"
+    ],
+    "runtimeErrorsAfterRestart": [],
+    "release": {
+      "buildMB": 167.6,
+      "signatureVerified": true,
+      "newClipListVisible": true,
+      "canonicalMugVisible": true,
+      "foregroundPlaybackVerified": true
+    }
+  }
+}

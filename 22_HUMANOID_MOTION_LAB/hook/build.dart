@@ -9,6 +9,7 @@ void main(List<String> args) async {
       inputFilePaths: [
         'assets/models/sobaya_motion.glb',
         'assets/models/fukuchan_motion.glb',
+        'assets/models/beer_mug.glb',
       ],
       compressTextures: true,
     );

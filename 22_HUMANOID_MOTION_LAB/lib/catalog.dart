@@ -18,11 +18,15 @@ class MotionEntry {
       duration = (json['duration'] as num).toDouble(),
       loop = json['loop'] as bool,
       source = json['source'] as String,
+      prop = json['prop'] as String?,
+      rootTravel = (json['rootTravelM'] as num?)?.toDouble() ?? 0,
       minSole = (json['minSoleM'] as num?)?.toDouble();
   final String name, action, label, category, source;
   final MotionMethod method;
   final double duration;
   final double? minSole;
+  final String? prop;
+  final double rootTravel;
   final bool loop;
 }
 

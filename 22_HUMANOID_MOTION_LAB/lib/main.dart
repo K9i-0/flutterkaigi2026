@@ -62,23 +62,22 @@ class _MotionPageState extends State<MotionPage> {
   Timer? timer;
   AppLifecycleListener? lifecycle;
   String? error;
-  bool resumeOnFocus = false;
+  bool foreground = true;
   @override
   void initState() {
     super.initState();
     lab.addListener(changed);
     attachMotionAutomation(lab);
     timer = Timer.periodic(const Duration(milliseconds: 100), (_) {
-      if (mounted && !lab.clock.paused) setState(() {});
+      if (mounted && foreground && !lab.clock.paused) setState(() {});
     });
     lifecycle = AppLifecycleListener(
       onInactive: () {
-        resumeOnFocus = !lab.clock.paused;
-        lab.clock.paused = true;
+        foreground = false;
         changed();
       },
       onResume: () {
-        if (resumeOnFocus) lab.clock.paused = false;
+        foreground = true;
         changed();
       },
     );
@@ -417,7 +416,7 @@ class _MotionPageState extends State<MotionPage> {
               child: SceneView(
                 lab.scene,
                 key: const ValueKey('motion-viewport'),
-                autoTick: !lab.clock.paused,
+                autoTick: foreground && !lab.clock.paused,
                 cameraBuilder: (_) => lab.camera(),
                 onTick: lab.tick,
                 warmUp: true,

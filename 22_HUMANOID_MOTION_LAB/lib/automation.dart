@@ -65,7 +65,10 @@ void attachMotionAutomation(MotionController lab) {
       if (p['skeleton'] != null) l.setSkeleton('${p['skeleton']}' == 'true');
       l.clock.speed = speed;
       if (seek != null) l.seek(seek);
-      await SchedulerBinding.instance.endOfFrame;
+      await SchedulerBinding.instance.endOfFrame.timeout(
+        const Duration(seconds: 2),
+        onTimeout: () {},
+      );
       return MarionetteExtensionResult.success(l.inspect());
     },
   );

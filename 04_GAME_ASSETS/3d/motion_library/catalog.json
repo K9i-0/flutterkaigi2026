@@ -80,7 +80,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.01290006691580201
+          "contactAnkleSlipRmsMps": 0.01290006691580201,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Idle_A",
@@ -97,7 +102,12 @@
           "contactSamples": 190,
           "floor": "flat",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 6.950946162507545e-06
+          "contactAnkleSlipRmsMps": 6.950946162507545e-06,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Walk",
@@ -114,7 +124,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.7281806964899415,
-          "contactAnkleSlipRmsMps": 0.2796576911770913
+          "contactAnkleSlipRmsMps": 0.2796576911770913,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Walk",
@@ -131,7 +146,12 @@
           "contactSamples": 68,
           "floor": "flat",
           "groundSpeedMps": 0.7281806964899415,
-          "contactAnkleSlipRmsMps": 0.015950056684805133
+          "contactAnkleSlipRmsMps": 0.015950056684805133,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Jog",
@@ -148,7 +168,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 4.113966343911378,
-          "contactAnkleSlipRmsMps": 0.2822273461240297
+          "contactAnkleSlipRmsMps": 0.2822273461240297,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Jog",
@@ -165,7 +190,12 @@
           "contactSamples": 13,
           "floor": "flat",
           "groundSpeedMps": 4.113966343911378,
-          "contactAnkleSlipRmsMps": 1.0464488318416375e-05
+          "contactAnkleSlipRmsMps": 1.0464488318416375e-05,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Sprint",
@@ -182,7 +212,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 6.344168173700712,
-          "contactAnkleSlipRmsMps": 2.3646316320963385
+          "contactAnkleSlipRmsMps": 2.3646316320963385,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Sprint",
@@ -199,7 +234,12 @@
           "contactSamples": 13,
           "floor": "flat",
           "groundSpeedMps": 6.344168173700712,
-          "contactAnkleSlipRmsMps": 1.0453852331052953
+          "contactAnkleSlipRmsMps": 1.0453852331052953,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Crouch_Idle",
@@ -216,7 +256,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.0069084612839331715
+          "contactAnkleSlipRmsMps": 0.0069084612839331715,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Crouch_Idle",
@@ -233,7 +278,12 @@
           "contactSamples": 222,
           "floor": "flat",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 6.641442113506977e-06
+          "contactAnkleSlipRmsMps": 6.641442113506977e-06,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Crouch_Walk",
@@ -250,7 +300,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.4842278937156527,
-          "contactAnkleSlipRmsMps": 0.664366230864804
+          "contactAnkleSlipRmsMps": 0.664366230864804,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Crouch_Walk",
@@ -267,7 +322,12 @@
           "contactSamples": 119,
           "floor": "flat",
           "groundSpeedMps": 0.4842278937156527,
-          "contactAnkleSlipRmsMps": 0.06736379267275597
+          "contactAnkleSlipRmsMps": 0.06736379267275597,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Walk_Carry",
@@ -284,7 +344,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.5556106292144761
+          "contactAnkleSlipRmsMps": 0.5556106292144761,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Zombie_Walk",
@@ -301,7 +366,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.8679979328661769,
-          "contactAnkleSlipRmsMps": 0.20038290323116276
+          "contactAnkleSlipRmsMps": 0.20038290323116276,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Zombie_Walk",
@@ -318,7 +388,12 @@
           "contactSamples": 51,
           "floor": "flat",
           "groundSpeedMps": 0.8679979328661769,
-          "contactAnkleSlipRmsMps": 0.0033165566138326948
+          "contactAnkleSlipRmsMps": 0.0033165566138326948,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Jump_Start",
@@ -335,7 +410,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.5968283046678867
+          "contactAnkleSlipRmsMps": 0.5968283046678867,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Jump_air",
@@ -352,7 +432,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.016658537398294582
+          "contactAnkleSlipRmsMps": 0.016658537398294582,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Jump_Land",
@@ -369,7 +454,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.09699666349879198
+          "contactAnkleSlipRmsMps": 0.09699666349879198,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Punch_Jab",
@@ -386,7 +476,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.10114216886550459
+          "contactAnkleSlipRmsMps": 0.10114216886550459,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Punch_Jab",
@@ -403,7 +498,12 @@
           "contactSamples": 66,
           "floor": "flat",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 5.329832583644357e-06
+          "contactAnkleSlipRmsMps": 5.329832583644357e-06,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Punch_Cross",
@@ -420,7 +520,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.3609499946144353
+          "contactAnkleSlipRmsMps": 0.3609499946144353,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Melee_Hook",
@@ -437,7 +542,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 1.63965403755701
+          "contactAnkleSlipRmsMps": 1.63965403755701,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Hit_Chest",
@@ -454,7 +564,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": null
+          "contactAnkleSlipRmsMps": null,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Hit_Head",
@@ -471,7 +586,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.01120601503033645
+          "contactAnkleSlipRmsMps": 0.01120601503033645,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Pistol_Aim_Neutral",
@@ -488,7 +608,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.0
+          "contactAnkleSlipRmsMps": 0.0,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Pistol_Aim_Neutral",
@@ -505,7 +630,12 @@
           "contactSamples": 14,
           "floor": "flat",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.0
+          "contactAnkleSlipRmsMps": 0.0,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Pistol_Reload",
@@ -522,7 +652,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.00671374889627579
+          "contactAnkleSlipRmsMps": 0.00671374889627579,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Pistol_Shoot",
@@ -539,7 +674,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.0
+          "contactAnkleSlipRmsMps": 0.0,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Sitting_Enter",
@@ -556,7 +696,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.1510419078688319
+          "contactAnkleSlipRmsMps": 0.1510419078688319,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Sitting_Enter",
@@ -573,7 +718,12 @@
           "contactSamples": 94,
           "floor": "flat",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.004381740904201313
+          "contactAnkleSlipRmsMps": 0.004381740904201313,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Sitting_Idle",
@@ -590,7 +740,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.0
+          "contactAnkleSlipRmsMps": 0.0,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Sitting_Idle",
@@ -607,7 +762,12 @@
           "contactSamples": 126,
           "floor": "flat",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.0
+          "contactAnkleSlipRmsMps": 0.0,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Sitting_Exit",
@@ -624,7 +784,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.19649837567268186
+          "contactAnkleSlipRmsMps": 0.19649837567268186,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Sitting_Exit",
@@ -641,7 +806,12 @@
           "contactSamples": 75,
           "floor": "flat",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.0018810416801179597
+          "contactAnkleSlipRmsMps": 0.0018810416801179597,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_PickUp_Table",
@@ -675,7 +845,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.003424288840374605
+          "contactAnkleSlipRmsMps": 0.003424288840374605,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Idle_Talking",
@@ -692,7 +867,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.0021335260500757046
+          "contactAnkleSlipRmsMps": 0.0021335260500757046,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Idle_Talking",
@@ -709,7 +889,12 @@
           "contactSamples": 222,
           "floor": "flat",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 6.9027620543159645e-06
+          "contactAnkleSlipRmsMps": 6.9027620543159645e-06,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Idle_FoldArms",
@@ -726,7 +911,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.0410794612342126
+          "contactAnkleSlipRmsMps": 0.0410794612342126,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Consume",
@@ -743,7 +933,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.039362428560265346
+          "contactAnkleSlipRmsMps": 0.039362428560265346,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -25,
+            16
+          ]
         },
         {
           "name": "Library_Push",
@@ -760,7 +955,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.2628360512737541
+          "contactAnkleSlipRmsMps": 0.2628360512737541,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Strafe_left",
@@ -777,7 +977,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.47382665316346445,
-          "contactAnkleSlipRmsMps": 0.5805654364228148
+          "contactAnkleSlipRmsMps": 0.5805654364228148,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Strafe_left",
@@ -794,7 +999,12 @@
           "contactSamples": 45,
           "floor": "flat",
           "groundSpeedMps": 0.47382665316346445,
-          "contactAnkleSlipRmsMps": 0.015089514050883698
+          "contactAnkleSlipRmsMps": 0.015089514050883698,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Strafe_right",
@@ -811,7 +1021,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.2838362380707747,
-          "contactAnkleSlipRmsMps": 0.7079810884587863
+          "contactAnkleSlipRmsMps": 0.7079810884587863,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Strafe_right",
@@ -828,7 +1043,12 @@
           "contactSamples": 45,
           "floor": "flat",
           "groundSpeedMps": 0.2838362380707747,
-          "contactAnkleSlipRmsMps": 0.011333060190785019
+          "contactAnkleSlipRmsMps": 0.011333060190785019,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Walk_Backwards",
@@ -845,7 +1065,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.8991443616749307,
-          "contactAnkleSlipRmsMps": 0.7623059338771007
+          "contactAnkleSlipRmsMps": 0.7623059338771007,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Walk_Backwards",
@@ -862,7 +1087,12 @@
           "contactSamples": 42,
           "floor": "flat",
           "groundSpeedMps": 0.8991443616749307,
-          "contactAnkleSlipRmsMps": 0.0073454864530777255
+          "contactAnkleSlipRmsMps": 0.0073454864530777255,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Dodge_back",
@@ -879,7 +1109,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 1.815264812710283
+          "contactAnkleSlipRmsMps": 1.815264812710283,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Dodge_left",
@@ -896,7 +1131,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 1.1270364777305477
+          "contactAnkleSlipRmsMps": 1.1270364777305477,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Dodge_right",
@@ -913,7 +1153,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 1.1270365335136745
+          "contactAnkleSlipRmsMps": 1.1270365335136745,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Greeting",
@@ -930,7 +1175,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.006602536632988129
+          "contactAnkleSlipRmsMps": 0.006602536632988129,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Idle_Listening",
@@ -947,7 +1197,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.0011407951004366631
+          "contactAnkleSlipRmsMps": 0.0011407951004366631,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Bow",
@@ -998,7 +1253,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.0013895477613791148
+          "contactAnkleSlipRmsMps": 0.0013895477613791148,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -25,
+            16
+          ]
         },
         {
           "name": "Library_Victory",
@@ -1015,7 +1275,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.16074092493223488
+          "contactAnkleSlipRmsMps": 0.16074092493223488,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Procedural_Breathing",
@@ -1028,7 +1293,12 @@
           "source": "tools/build_humanoid_motion.py",
           "minSoleM": 0.002987014717658977,
           "floor": "flat",
-          "groundSpeedMps": 0.0
+          "groundSpeedMps": 0.0,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Procedural_Walk",
@@ -1041,7 +1311,12 @@
           "source": "tools/build_humanoid_motion.py",
           "minSoleM": 0.002660373175894036,
           "floor": "flat",
-          "groundSpeedMps": 0.485511238984172
+          "groundSpeedMps": 0.485511238984172,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Procedural_Jog",
@@ -1054,7 +1329,12 @@
           "source": "tools/build_humanoid_motion.py",
           "minSoleM": 0.002738027993030065,
           "floor": "flat",
-          "groundSpeedMps": 1.4635701117204025
+          "groundSpeedMps": 1.4635701117204025,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Procedural_Crouch",
@@ -1067,7 +1347,12 @@
           "source": "tools/build_humanoid_motion.py",
           "minSoleM": 0.002987014717658977,
           "floor": "flat",
-          "groundSpeedMps": 0.0
+          "groundSpeedMps": 0.0,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Procedural_SideStep",
@@ -1080,7 +1365,12 @@
           "source": "tools/build_humanoid_motion.py",
           "minSoleM": 0.002757231588126135,
           "floor": "flat",
-          "groundSpeedMps": 0.2744193959475755
+          "groundSpeedMps": 0.2744193959475755,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Procedural_Reach",
@@ -1093,7 +1383,12 @@
           "source": "tools/build_humanoid_motion.py",
           "minSoleM": 0.002987014717658977,
           "floor": "flat",
-          "groundSpeedMps": 0.0
+          "groundSpeedMps": 0.0,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Procedural_LookAround",
@@ -1106,7 +1401,12 @@
           "source": "tools/build_humanoid_motion.py",
           "minSoleM": 0.0029869749015840434,
           "floor": "flat",
-          "groundSpeedMps": 0.0
+          "groundSpeedMps": 0.0,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Procedural_StepUp",
@@ -1119,10 +1419,149 @@
           "source": "tools/build_humanoid_motion.py",
           "minSoleM": 0.002987014717658977,
           "floor": "authored 20cm step",
-          "groundSpeedMps": 0.0
+          "groundSpeedMps": 0.0,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
+        },
+        {
+          "name": "Procedural_RollForward",
+          "action": "RollForward",
+          "label": "前方ローリング回避",
+          "method": "procedural",
+          "category": "回避",
+          "loop": false,
+          "duration": 1.4,
+          "source": "authored tuck / shoulder roll / recovery; body-sized",
+          "minSoleM": 0.011999855749309063,
+          "minBodyM": 0.011999645307873008,
+          "floor": "body contact",
+          "support": "body",
+          "rootTravelM": 1.6465147575812602,
+          "gazeRevision": 2,
+          "events": {
+            "tuck": 0.13,
+            "rollEnd": 0.8,
+            "recovered": 1.0
+          }
+        },
+        {
+          "name": "Hybrid_MugHold",
+          "action": "MugHold",
+          "label": "正典のジョッキ構え",
+          "method": "hybrid",
+          "category": "ジョッキ",
+          "loop": true,
+          "duration": 3.2,
+          "source": "Sobaya.jpg / existing grip IK / Hybrid_Idle_A",
+          "prop": "beer_mug",
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ],
+          "minSoleM": 0.0035301017672700608,
+          "floor": "flat",
+          "support": "feet",
+          "events": {}
+        },
+        {
+          "name": "Hybrid_MugRun",
+          "action": "MugRun",
+          "label": "ジョッキを持って走る",
+          "method": "hybrid",
+          "category": "ジョッキ",
+          "loop": true,
+          "duration": 1.1666666666666667,
+          "source": "Sobaya.jpg / existing grip IK / Hybrid_Jog",
+          "prop": "beer_mug",
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ],
+          "minSoleM": 0.003851864724026585,
+          "floor": "flat",
+          "support": "flight",
+          "events": {}
+        },
+        {
+          "name": "Hybrid_MugPunch",
+          "action": "MugPunch",
+          "label": "ジョッキ・正面パンチ",
+          "method": "hybrid",
+          "category": "ジョッキ",
+          "loop": false,
+          "duration": 1.1333333333333333,
+          "source": "Sobaya.jpg / existing grip IK / Hybrid_Idle_A",
+          "prop": "beer_mug",
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ],
+          "minSoleM": 0.0038271214128630104,
+          "floor": "flat",
+          "support": "feet",
+          "events": {
+            "anticipation": 0.18,
+            "contact": 0.48,
+            "recovery": 0.85
+          }
+        },
+        {
+          "name": "Hybrid_MugHook",
+          "action": "MugHook",
+          "label": "ジョッキ・横フック",
+          "method": "hybrid",
+          "category": "ジョッキ",
+          "loop": false,
+          "duration": 1.3333333333333333,
+          "source": "Sobaya.jpg / existing grip IK / Hybrid_Idle_A",
+          "prop": "beer_mug",
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ],
+          "minSoleM": 0.0036110929317011153,
+          "floor": "flat",
+          "support": "feet",
+          "events": {
+            "anticipation": 0.18,
+            "contact": 0.48,
+            "recovery": 0.85
+          }
+        },
+        {
+          "name": "Hybrid_MugSmash",
+          "action": "MugSmash",
+          "label": "ジョッキ・重い打ち下ろし",
+          "method": "hybrid",
+          "category": "ジョッキ",
+          "loop": false,
+          "duration": 1.6,
+          "source": "Sobaya.jpg / existing grip IK / Hybrid_Idle_A",
+          "prop": "beer_mug",
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ],
+          "minSoleM": 0.0038288446111231222,
+          "floor": "flat",
+          "support": "feet",
+          "events": {
+            "anticipation": 0.18,
+            "contact": 0.48,
+            "recovery": 0.85
+          }
         }
       ],
-      "glbBytes": 15207484
+      "glbBytes": 15621908,
+      "actionRefinementRevision": 2
     },
     {
       "id": "fukuchan",
@@ -1201,7 +1640,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.011235060999652416
+          "contactAnkleSlipRmsMps": 0.011235060999652416,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Idle_A",
@@ -1218,7 +1662,12 @@
           "contactSamples": 190,
           "floor": "flat",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 3.7857029336798926e-06
+          "contactAnkleSlipRmsMps": 3.7857029336798926e-06,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Walk",
@@ -1235,7 +1684,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.6621424407221252,
-          "contactAnkleSlipRmsMps": 0.23966069767348502
+          "contactAnkleSlipRmsMps": 0.23966069767348502,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Walk",
@@ -1252,7 +1706,12 @@
           "contactSamples": 68,
           "floor": "flat",
           "groundSpeedMps": 0.6621424407221252,
-          "contactAnkleSlipRmsMps": 0.027603487780249476
+          "contactAnkleSlipRmsMps": 0.027603487780249476,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Jog",
@@ -1269,7 +1728,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 3.7408731803841153,
-          "contactAnkleSlipRmsMps": 0.19606771753228147
+          "contactAnkleSlipRmsMps": 0.19606771753228147,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Jog",
@@ -1286,7 +1750,12 @@
           "contactSamples": 13,
           "floor": "flat",
           "groundSpeedMps": 3.7408731803841153,
-          "contactAnkleSlipRmsMps": 4.0651230771448486e-06
+          "contactAnkleSlipRmsMps": 4.0651230771448486e-06,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Sprint",
@@ -1303,7 +1772,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 5.7688192964158,
-          "contactAnkleSlipRmsMps": 1.8521057774014011
+          "contactAnkleSlipRmsMps": 1.8521057774014011,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Sprint",
@@ -1320,7 +1794,12 @@
           "contactSamples": 13,
           "floor": "flat",
           "groundSpeedMps": 5.7688192964158,
-          "contactAnkleSlipRmsMps": 1.2353412918121776
+          "contactAnkleSlipRmsMps": 1.2353412918121776,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Crouch_Idle",
@@ -1337,7 +1816,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.0053248591529135745
+          "contactAnkleSlipRmsMps": 0.0053248591529135745,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Crouch_Idle",
@@ -1354,7 +1838,12 @@
           "contactSamples": 222,
           "floor": "flat",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 7.057533631017445e-06
+          "contactAnkleSlipRmsMps": 7.057533631017445e-06,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Crouch_Walk",
@@ -1371,7 +1860,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.4403136278590577,
-          "contactAnkleSlipRmsMps": 0.5729074895827406
+          "contactAnkleSlipRmsMps": 0.5729074895827406,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Crouch_Walk",
@@ -1388,7 +1882,12 @@
           "contactSamples": 119,
           "floor": "flat",
           "groundSpeedMps": 0.4403136278590577,
-          "contactAnkleSlipRmsMps": 0.05396277694211197
+          "contactAnkleSlipRmsMps": 0.05396277694211197,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Walk_Carry",
@@ -1405,7 +1904,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.49604411576789803
+          "contactAnkleSlipRmsMps": 0.49604411576789803,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Zombie_Walk",
@@ -1422,7 +1926,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.7892790767311637,
-          "contactAnkleSlipRmsMps": 0.17409961169507557
+          "contactAnkleSlipRmsMps": 0.17409961169507557,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Zombie_Walk",
@@ -1439,7 +1948,12 @@
           "contactSamples": 51,
           "floor": "flat",
           "groundSpeedMps": 0.7892790767311637,
-          "contactAnkleSlipRmsMps": 0.003015388677328898
+          "contactAnkleSlipRmsMps": 0.003015388677328898,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Jump_Start",
@@ -1456,7 +1970,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.539130497683381
+          "contactAnkleSlipRmsMps": 0.539130497683381,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Jump_air",
@@ -1473,7 +1992,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.005141790673821696
+          "contactAnkleSlipRmsMps": 0.005141790673821696,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Jump_Land",
@@ -1490,7 +2014,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.1819436941129758
+          "contactAnkleSlipRmsMps": 0.1819436941129758,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Punch_Jab",
@@ -1507,7 +2036,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.043251957094809994
+          "contactAnkleSlipRmsMps": 0.043251957094809994,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Punch_Jab",
@@ -1524,7 +2058,12 @@
           "contactSamples": 66,
           "floor": "flat",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 4.585754699758108e-06
+          "contactAnkleSlipRmsMps": 4.585754699758108e-06,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Punch_Cross",
@@ -1541,7 +2080,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.2998798251330743
+          "contactAnkleSlipRmsMps": 0.2998798251330743,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Melee_Hook",
@@ -1558,7 +2102,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 1.3954768650957858
+          "contactAnkleSlipRmsMps": 1.3954768650957858,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Hit_Chest",
@@ -1575,7 +2124,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": null
+          "contactAnkleSlipRmsMps": null,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Hit_Head",
@@ -1592,7 +2146,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.004834582970789975
+          "contactAnkleSlipRmsMps": 0.004834582970789975,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Pistol_Aim_Neutral",
@@ -1609,7 +2168,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.0
+          "contactAnkleSlipRmsMps": 0.0,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Pistol_Aim_Neutral",
@@ -1626,7 +2190,12 @@
           "contactSamples": 14,
           "floor": "flat",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.0
+          "contactAnkleSlipRmsMps": 0.0,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Pistol_Reload",
@@ -1643,7 +2212,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.003969617452757222
+          "contactAnkleSlipRmsMps": 0.003969617452757222,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Pistol_Shoot",
@@ -1660,7 +2234,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.0
+          "contactAnkleSlipRmsMps": 0.0,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Sitting_Enter",
@@ -1677,7 +2256,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.11101901106335621
+          "contactAnkleSlipRmsMps": 0.11101901106335621,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Sitting_Enter",
@@ -1694,7 +2278,12 @@
           "contactSamples": 94,
           "floor": "flat",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.003984188712878807
+          "contactAnkleSlipRmsMps": 0.003984188712878807,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Sitting_Idle",
@@ -1711,7 +2300,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.0
+          "contactAnkleSlipRmsMps": 0.0,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Sitting_Idle",
@@ -1728,7 +2322,12 @@
           "contactSamples": 126,
           "floor": "flat",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.0
+          "contactAnkleSlipRmsMps": 0.0,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Sitting_Exit",
@@ -1745,7 +2344,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.15699485680456557
+          "contactAnkleSlipRmsMps": 0.15699485680456557,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Sitting_Exit",
@@ -1762,7 +2366,12 @@
           "contactSamples": 75,
           "floor": "flat",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.001711841933102445
+          "contactAnkleSlipRmsMps": 0.001711841933102445,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_PickUp_Table",
@@ -1796,7 +2405,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.0023966152068849657
+          "contactAnkleSlipRmsMps": 0.0023966152068849657,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Idle_Talking",
@@ -1813,7 +2427,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.0013956580056877276
+          "contactAnkleSlipRmsMps": 0.0013956580056877276,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Idle_Talking",
@@ -1830,7 +2449,12 @@
           "contactSamples": 222,
           "floor": "flat",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 3.854051710679206e-06
+          "contactAnkleSlipRmsMps": 3.854051710679206e-06,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Idle_FoldArms",
@@ -1847,7 +2471,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.038957622678912236
+          "contactAnkleSlipRmsMps": 0.038957622678912236,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Consume",
@@ -1864,7 +2493,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.02729041655708648
+          "contactAnkleSlipRmsMps": 0.02729041655708648,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -25,
+            16
+          ]
         },
         {
           "name": "Library_Push",
@@ -1881,7 +2515,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.22128477068083408
+          "contactAnkleSlipRmsMps": 0.22128477068083408,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Strafe_left",
@@ -1898,7 +2537,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.4308556417107505,
-          "contactAnkleSlipRmsMps": 0.5283884617707343
+          "contactAnkleSlipRmsMps": 0.5283884617707343,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Strafe_left",
@@ -1915,7 +2559,12 @@
           "contactSamples": 45,
           "floor": "flat",
           "groundSpeedMps": 0.4308556417107505,
-          "contactAnkleSlipRmsMps": 0.013722239739602671
+          "contactAnkleSlipRmsMps": 0.013722239739602671,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Strafe_right",
@@ -1932,7 +2581,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.25809584852256157,
-          "contactAnkleSlipRmsMps": 0.6518762141999916
+          "contactAnkleSlipRmsMps": 0.6518762141999916,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Strafe_right",
@@ -1949,7 +2603,12 @@
           "contactSamples": 45,
           "floor": "flat",
           "groundSpeedMps": 0.25809584852256157,
-          "contactAnkleSlipRmsMps": 0.010306968174503382
+          "contactAnkleSlipRmsMps": 0.010306968174503382,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Walk_Backwards",
@@ -1966,7 +2625,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.8176017782912348,
-          "contactAnkleSlipRmsMps": 0.6551048077014991
+          "contactAnkleSlipRmsMps": 0.6551048077014991,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Hybrid_Walk_Backwards",
@@ -1983,7 +2647,12 @@
           "contactSamples": 42,
           "floor": "flat",
           "groundSpeedMps": 0.8176017782912348,
-          "contactAnkleSlipRmsMps": 0.006679982001081293
+          "contactAnkleSlipRmsMps": 0.006679982001081293,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Dodge_back",
@@ -2000,7 +2669,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 1.6732748980459713
+          "contactAnkleSlipRmsMps": 1.6732748980459713,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Dodge_left",
@@ -2017,7 +2691,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.9424461100699495
+          "contactAnkleSlipRmsMps": 0.9424461100699495,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Dodge_right",
@@ -2034,7 +2713,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.9325524645366721
+          "contactAnkleSlipRmsMps": 0.9325524645366721,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Greeting",
@@ -2051,7 +2735,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.0043143764395701355
+          "contactAnkleSlipRmsMps": 0.0043143764395701355,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Idle_Listening",
@@ -2068,7 +2757,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.0006078073612738143
+          "contactAnkleSlipRmsMps": 0.0006078073612738143,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Library_Bow",
@@ -2119,7 +2813,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.0010347644590108901
+          "contactAnkleSlipRmsMps": 0.0010347644590108901,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -25,
+            16
+          ]
         },
         {
           "name": "Library_Victory",
@@ -2136,7 +2835,12 @@
           "contactSamples": 0,
           "floor": "unconstrained",
           "groundSpeedMps": 0.0,
-          "contactAnkleSlipRmsMps": 0.14879201221239519
+          "contactAnkleSlipRmsMps": 0.14879201221239519,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Procedural_Breathing",
@@ -2149,7 +2853,12 @@
           "source": "tools/build_humanoid_motion.py",
           "minSoleM": 0.0029760866277963455,
           "floor": "flat",
-          "groundSpeedMps": 0.0
+          "groundSpeedMps": 0.0,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Procedural_Walk",
@@ -2162,7 +2871,12 @@
           "source": "tools/build_humanoid_motion.py",
           "minSoleM": 0.002890330506488681,
           "floor": "flat",
-          "groundSpeedMps": 0.44148052209977084
+          "groundSpeedMps": 0.44148052209977084,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Procedural_Jog",
@@ -2175,7 +2889,12 @@
           "source": "tools/build_humanoid_motion.py",
           "minSoleM": 0.002959076036576011,
           "floor": "flat",
-          "groundSpeedMps": 1.3308398347355408
+          "groundSpeedMps": 1.3308398347355408,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Procedural_Crouch",
@@ -2188,7 +2907,12 @@
           "source": "tools/build_humanoid_motion.py",
           "minSoleM": 0.0029760866277963455,
           "floor": "flat",
-          "groundSpeedMps": 0.0
+          "groundSpeedMps": 0.0,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Procedural_SideStep",
@@ -2201,7 +2925,12 @@
           "source": "tools/build_humanoid_motion.py",
           "minSoleM": 0.0029602924277784687,
           "floor": "flat",
-          "groundSpeedMps": 0.24953246901291393
+          "groundSpeedMps": 0.24953246901291393,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Procedural_Reach",
@@ -2214,7 +2943,12 @@
           "source": "tools/build_humanoid_motion.py",
           "minSoleM": 0.0029760866277963455,
           "floor": "flat",
-          "groundSpeedMps": 0.0
+          "groundSpeedMps": 0.0,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Procedural_LookAround",
@@ -2227,7 +2961,12 @@
           "source": "tools/build_humanoid_motion.py",
           "minSoleM": 0.002975977886203171,
           "floor": "flat",
-          "groundSpeedMps": 0.0
+          "groundSpeedMps": 0.0,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
         },
         {
           "name": "Procedural_StepUp",
@@ -2240,10 +2979,37 @@
           "source": "tools/build_humanoid_motion.py",
           "minSoleM": 0.0029760866277963455,
           "floor": "authored 20cm step",
-          "groundSpeedMps": 0.0
+          "groundSpeedMps": 0.0,
+          "gazeRevision": 2,
+          "gazePitchRangeDeg": [
+            -10,
+            16
+          ]
+        },
+        {
+          "name": "Procedural_RollForward",
+          "action": "RollForward",
+          "label": "前方ローリング回避",
+          "method": "procedural",
+          "category": "回避",
+          "loop": false,
+          "duration": 1.4,
+          "source": "authored tuck / shoulder roll / recovery; body-sized",
+          "minSoleM": 0.011999907903373241,
+          "minBodyM": 0.011999798938632011,
+          "floor": "body contact",
+          "support": "body",
+          "rootTravelM": 1.4971944056521391,
+          "gazeRevision": 2,
+          "events": {
+            "tuck": 0.13,
+            "rollEnd": 0.8,
+            "recovered": 1.0
+          }
         }
       ],
-      "glbBytes": 10389604
+      "glbBytes": 10499840,
+      "actionRefinementRevision": 2
     }
   ]
 }
