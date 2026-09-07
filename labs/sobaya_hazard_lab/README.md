@@ -4,7 +4,7 @@
 
 **人型アニメーション比較アプリを追加。** [そば屋モーションラボ](../22_HUMANOID_MOTION_LAB/README.md)でそば屋72・福ちゃん67クリップを4手法で比較できる。ゲームの2モデルも[体格対応モーション正本](../04_GAME_ASSETS/3d/motion_library/README.md)を共有する。ゲーム本編にも新モーションを割り当てた。福ちゃんは体格補正済みの待機・歩行・走行とXキーのローリング。そば屋は正典のジョッキ保持、ジョッキを持つ走行、パンチ・フック・叩きつけを使用する。攻撃は既存の命中タイミングに同期し、歩行⇄走行の位相、衝突後の移動量と足運びの同期も維持する。この段落と以下のv1〜v3は以前の採用・モデル制作履歴。
 
-更新版Macアプリ（ビルド `873fb48`）: [そば屋ハザード.app](../.local/hazard_releases/sobaya-hazard-macos-873fb48/そば屋ハザード.app) / [ZIP](../.local/hazard_releases/sobaya-hazard-macos-873fb48.zip)。193テスト、ゲーム本体でのローリング入力・ジョッキ3攻撃・走行・会話を確認し、Release起動と9シーン／126音声の同梱照合・署名・ZIP検査に合格。[検証記録](qa/latest-motion-integration-20260907.json)。
+更新版Macアプリ（ビルド `6b2073e`）: [そば屋ハザード.app](../.local/hazard_releases/sobaya-hazard-macos-6b2073e/そば屋ハザード.app) / [ZIP](../.local/hazard_releases/sobaya-hazard-macos-6b2073e.zip)。196テスト、debug本編での採用走行・3ダンス・発見時中断・口パクを確認。Releaseの起動、9シーン／126音声の同梱照合・署名・ZIP検査に合格。[同梱検査](qa/adopted-vrm-release-20260908.json)。
 
 **本編が追加されました。** 福ちゃんで探索・射撃・ビール回収・画像収集を行う3区画の制作中体験版は `mise exec -- flutter run -d macos -t lib/game_main.dart` で起動します。[本編の操作・範囲・検証結果](GAMEPLAY.md)を参照してください。
 

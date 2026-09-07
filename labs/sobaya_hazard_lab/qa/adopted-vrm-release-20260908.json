@@ -1,0 +1,9 @@
+{
+  "archive": ".local/hazard_releases/sobaya-hazard-macos-6b2073e.zip",
+  "bytes": 258948877,
+  "sha256": "792b0aa65622c1054184d008e83b4fe92d4a894a52f060b09c6035e48269775a",
+  "sourceRevision": "6b2073e",
+  "sceneCount": 9,
+  "voiceCueCount": 126,
+  "releaseLaunch": "Title screen confirmed in packaged app"
+}
