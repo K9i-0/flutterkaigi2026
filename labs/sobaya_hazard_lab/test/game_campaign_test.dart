@@ -112,32 +112,28 @@ void main() {
     expect(restored.beers, 3);
   });
 
-  test(
-    'final gate needs boss defeat, ending cannot trigger through closed gate',
-    () {
-      final s = HazardGameState(maps()['mountain']!);
-      for (final e in s.enemies) {
-        e.active = false;
-      }
-      s.x = 19.2;
-      s.z = 15;
-      s.interact();
-      expect(s.gateOpen, false);
-      s.x = 21.2;
+  test('the old eastern exit never clears, even with a saved open gate', () {
+    final s = HazardGameState(maps()['mountain']!);
+    for (final e in s.enemies) {
+      e.active = false;
+    }
+    expect((s.map['exits'] as List).any((e) => e['target'] == 'ending'), false);
+    for (final defeated in [false, true]) {
+      final boss = s.enemies.firstWhere((e) => e.boss);
+      boss
+        ..hp = defeated ? 0 : boss.maxHp
+        ..alive = !defeated;
+      s
+        ..kills = defeated ? 1 : 0
+        ..gateOpen = true
+        ..x = 21.2
+        ..z = 15;
       s.tick(.01);
       expect(s.phase, PlayPhase.playing);
-      final boss = s.enemies.firstWhere((e) => e.boss);
-      boss.hp = 0;
-      boss.alive = false;
-      s.kills = 1;
-      s.x = 19.2;
-      s.interact();
-      expect(s.gateOpen, true);
-      s.x = 21.2;
-      s.tick(.01);
-      expect(s.phase, PlayPhase.clear);
-    },
-  );
+      expect(s.exitRequested, isNull);
+      expect(s.refugeComplete, false);
+    }
+  });
 
   test(
     'boss telegraph allows movement to evade and heavy hit has recovery',
@@ -173,6 +169,16 @@ void main() {
     // This detects sealing a doorway/corridor when shared geometry changes.
     for (final entry in maps().entries) {
       final s = HazardGameState(entry.value)..gateOpen = true;
+      // This audit measures post-combat access; the closed house is tested
+      // separately and must not be treated as a permanently broken route.
+      if (s.hasRefuge) {
+        final boss = s.enemies.singleWhere((e) => e.boss);
+        boss
+          ..alive = false
+          ..hp = 0;
+        s.kills = 1;
+        s.refreshRefuge();
+      }
       final reached = <(int, int)>{};
       final queue = <(int, int)>[((s.x * 2).round(), (s.z * 2).round())];
       reached.add(queue.first);

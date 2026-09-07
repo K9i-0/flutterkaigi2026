@@ -14,6 +14,7 @@ import 'game_grapple.dart';
 
 part 'game_rockets.dart';
 part 'game_combat_balance.dart';
+part 'game_refuge.dart';
 
 const minCameraPitch = -.75, maxCameraPitch = .85;
 
@@ -230,12 +231,14 @@ class HazardGameState {
   bool get canOpenGate =>
       chapterSecured &&
       (gateMode == 'free' || (gateMode == 'boss' ? !bossAlive : hasKey));
-  String get objective => hardest && !chapterSecured
+  String get objective => hasRefuge
+      ? refugeObjective
+      : hardest && !chapterSecured
       ? 'この章のそば屋を全員倒せ — 残り $livingEnemies 体 / 補給は仲間から'
       : zoneId == 'farm'
       ? '納屋で補給し、東の門から山道へ'
       : zoneId == 'mountain'
-      ? (bossAlive ? '山の廃屋にいる巨大そば屋を倒せ' : '東の門から脱出 — 家の中で仲間と話せる')
+      ? refugeObjective
       : gateOpen
       ? '農場への門をくぐれ'
       : hasKey
@@ -353,6 +356,7 @@ class HazardGameState {
   ];
   String? interaction;
   String? talkingTo;
+  bool _refugeReportPending = false;
   String dialogueTopic = 'intro';
   String dialogueOwner = 'yametaro', tradeMessage = '';
   List<DialogueLine> tradeReplies = const [];
@@ -372,14 +376,13 @@ class HazardGameState {
       enemies.any((e) => e.alive && e.active && e.companionTarget == id);
   bool checkpointRequested = false;
   bool get evacuationStarted =>
-      seenEvents.contains('giant_defeated') ||
-      (zoneId == 'mountain' && !bossAlive);
-  bool get postBossReunion => zoneId == 'mountain' && evacuationStarted;
+      hasRefuge ? refugeUnlocked : seenEvents.contains('refuge_ready');
+  bool get postBossReunion => hasRefuge && refugeUnlocked;
   List<Map<String, dynamic>> get npcs => [
-    if (zoneId == 'mountain' || !evacuationStarted)
+    if (hasRefuge ? refugeUnlocked : !evacuationStarted)
       for (final row
           in (map['npcs'] as List? ?? const []).cast<Map<String, dynamic>>())
-        if (row['afterBoss'] != true || postBossReunion) row,
+        row,
   ];
   List<DialogueLine> get dialogueLines {
     if (dialogueOwner == 'takosan' && dialogueTopic == 'trade_result') {
@@ -436,7 +439,7 @@ class HazardGameState {
     'reunion' => 'さっきの戦い',
     'route' =>
       postBossReunion
-          ? '東の脱出路と救助船'
+          ? '集合と救助船'
           : zoneId == 'mountain'
           ? '巨大そば屋と帰り道'
           : '農場への道',
@@ -586,6 +589,7 @@ class HazardGameState {
     interaction = null;
     lastSound = null;
     talkingTo = null;
+    _refugeReportPending = false;
     metYametaro = receivedYametaroAmmo = false;
     metTakosan = false;
     tradePurchases.clear();
@@ -826,7 +830,12 @@ class HazardGameState {
 
   bool blocked(double px, double pz, double py, {double radius = .29}) {
     if (px.abs() > 22.3 || pz < -24.4 || pz > 30) return true;
-    if (obstacles.any(
+    if (hasRefuge &&
+        !refugeUnlocked &&
+        refugeContains(px, pz, padding: radius)) {
+      return true;
+    }
+    if (collisionObstacles.any(
       (o) => !(o.id == 'gate' && gateOpen) && o.overlaps(px, pz, radius, py),
     )) {
       return true;
@@ -902,6 +911,10 @@ class HazardGameState {
     }
     if (!running) return;
     final dt = delta.clamp(0.0, .05);
+    refreshRefuge();
+    if (insideRefuge && seenEvents.add('refuge_entered')) {
+      checkpointRequested = true;
+    }
     tickRockets(dt);
     companionHurt.updateAll((_, value) => math.max(0, value - dt));
     _companionInvulnerable.updateAll((_, value) => math.max(0, value - dt));
@@ -994,7 +1007,7 @@ class HazardGameState {
         if (e.vanish >= .65 && !e.dropped) {
           e.dropped = true;
           var dropZ = e.z;
-          for (final w in windows) {
+          for (final w in usableWindows) {
             if ((e.x - w.x).abs() < .78 && (e.z - w.z).abs() < .55 && e.y < 1) {
               dropZ = e.z < w.z ? w.entryZ(true) : w.exitZ(true);
               break;
@@ -1008,6 +1021,13 @@ class HazardGameState {
         continue;
       }
       if (!e.active) continue;
+      if (insideRefuge) {
+        e.alerted = false;
+        e.attackPending = e.grabPending = false;
+        e.companionTarget = null;
+        e.windup = 0;
+        continue;
+      }
       if (e.boss && x < 1 && !e.alerted) continue;
       e.cooldown = math.max(0, e.cooldown - dt);
       e.stun = math.max(0, e.stun - dt);
@@ -1134,7 +1154,7 @@ class HazardGameState {
       }
       var waitingForWindow = false;
       if (!e.boss) {
-        for (final w in windows) {
+        for (final w in usableWindows) {
           final inward = e.z < w.z;
           if (!w.atEntry(e.x, e.y, e.z, inward) ||
               !(_navigation?.transitionLeadsCloser(
@@ -1223,6 +1243,7 @@ class HazardGameState {
     }
     if (running) {
       for (final exit in map['exits'] as List? ?? const []) {
+        if (hasRefuge && exit['target'] == 'ending') continue;
         if (exit['id'] != 'back' && !chapterSecured) continue;
         if (exit['requiresGate'] == true && !gateOpen) continue;
         if (y < 1 &&
@@ -1243,6 +1264,7 @@ class HazardGameState {
 
   // Heading locks at the start of a tell: the player can step out of the path.
   bool _companionVisible(Enemy enemy, Map<String, dynamic> npc) {
+    if (hasRefuge) return false;
     final dx = (npc['x'] as num).toDouble() - enemy.x;
     final dz = (npc['z'] as num).toDouble() - enemy.z;
     final distance = math.sqrt(dx * dx + dz * dz);
@@ -1291,7 +1313,9 @@ class HazardGameState {
     final id = e.companionTarget;
     if (id == null) return false;
     final npc = npcs.where((n) => n['id'] == id).firstOrNull;
-    if (npc == null || (companionHealth[id] ?? 0) <= 0) {
+    if ((hasRefuge && !insideRefuge) ||
+        npc == null ||
+        (companionHealth[id] ?? 0) <= 0) {
       e.companionTarget = null;
       e.attackPending = e.grabPending = false;
       return false;
@@ -1636,6 +1660,7 @@ class HazardGameState {
       final nx = e.x + dx / steps;
       var floor = floorHeight(nx, e.z, e.y);
       if ((floor - e.y).abs() <= .34 &&
+          !refugeContains(nx, e.z, padding: e.collisionRadius) &&
           !blocked(nx, e.z, floor, radius: e.collisionRadius)) {
         e.x = nx;
         e.y = floor;
@@ -1643,6 +1668,7 @@ class HazardGameState {
       final nz = e.z + dz / steps;
       floor = floorHeight(e.x, nz, e.y);
       if ((floor - e.y).abs() <= .34 &&
+          !refugeContains(e.x, nz, padding: e.collisionRadius) &&
           !blocked(e.x, nz, floor, radius: e.collisionRadius)) {
         e.z = nz;
         e.y = floor;
@@ -1651,6 +1677,7 @@ class HazardGameState {
   }
 
   bool _staticNavigationBlocked(double px, double pz, double py) {
+    if (refugeContains(px, pz, padding: .37)) return true;
     if (px.abs() > 22.3 || pz < -24.4 || pz > 30) return true;
     return obstacles.any(
           (o) => o.id != 'gate' && o.overlaps(px, pz, .37, py),
@@ -1668,7 +1695,7 @@ class HazardGameState {
     floorHeight,
     _staticNavigationBlocked,
     transitions: [
-      for (final w in windows)
+      for (final w in usableWindows)
         NavigationTransition((w.x, 0, w.entryZ(true)), (w.x, 0, w.exitZ(true))),
       if (ladder != null)
         NavigationTransition(
@@ -1686,7 +1713,7 @@ class HazardGameState {
   void _buildFlow() {
     prepareNavigation();
     // Static walls/floors are already encoded in the immutable graph.
-    final gates = gateOpen
+    final gates = gateOpen || hasRefuge
         ? <Obstacle>[]
         : obstacles.where((o) => o.id == 'gate').toList();
     final intact = crates.where((c) => !c.broken).toList();
@@ -1715,7 +1742,7 @@ class HazardGameState {
     bool ignoreGate = false,
   }) {
     var limit = maxDistance;
-    for (final o in obstacles) {
+    for (final o in collisionObstacles) {
       if (o.id == 'gate' && (gateOpen || ignoreGate)) continue;
       final t = o.ray(origin, direction, limit);
       if (t != null) limit = math.min(limit, t);
@@ -1994,8 +2021,8 @@ class HazardGameState {
     say(
       e.boss
           ? (hardest && livingEnemies > 0
-                ? '巨大そば屋を倒した！ エンジン停止。家で仲間と合流し、残るそば屋を倒して東の門へ。'
-                : '巨大そば屋を倒した！ エンジン停止。家の中に仲間が集合している。東の門へ向かう前に寄ってみよう。')
+                ? '巨大そば屋を倒した！ 残るそば屋を全員倒すと家が開く。補給は農場のたこさんへ。'
+                : '巨大そば屋を倒した！ 集合場所の家が開いた。中に入って二人と話そう。')
           : suppressBeer
           ? 'そば屋を撃破。ビールも蒸発した。'
           : 'そば屋を倒した。ビールを回収しよう。',
@@ -2004,6 +2031,7 @@ class HazardGameState {
       seenEvents.add('giant_defeated');
       checkpointRequested = true;
     }
+    refreshRefuge();
   }
 
   void breakCrate(Breakable c) {
@@ -2026,6 +2054,12 @@ class HazardGameState {
 
   String? _nearestInteraction() {
     if (actionLocked) return null;
+    if (hasRefuge &&
+        (x - 13).abs() < 1 &&
+        (z - 9.5).abs() < 2.4 &&
+        !insideRefuge) {
+      return 'refuge';
+    }
     for (final n in npcs) {
       if (_near(
         (n['x'] as num).toDouble(),
@@ -2060,16 +2094,17 @@ class HazardGameState {
     for (final c in crates) {
       if (!c.broken && _near(c.x, 0, c.z, 1.6)) return 'crate:${c.id}';
     }
-    if (_near(
-      (gate['x'] as num).toDouble(),
-      0,
-      (gate['z'] as num).toDouble(),
-      2.4,
-      ignoreGate: true,
-    )) {
+    if (!hasRefuge &&
+        _near(
+          (gate['x'] as num).toDouble(),
+          0,
+          (gate['z'] as num).toDouble(),
+          2.4,
+          ignoreGate: true,
+        )) {
       return 'gate';
     }
-    for (final w in windows) {
+    for (final w in usableWindows) {
       if (w.atEntry(x, y, z, z < w.z)) {
         return 'window:${w.id}';
       }
@@ -2125,6 +2160,9 @@ class HazardGameState {
   String get interactionLabel {
     final key = interaction;
     if (key == null) return '';
+    if (key == 'refuge') {
+      return refugeUnlocked ? '集合場所 — 玄関から中へ' : refugeObjective;
+    }
     if (key == 'npc:yametaro') return 'やめ太郎と話す';
     if (key == 'npc:takosan') {
       return postBossReunion ? 'たこさんの出張補給所' : 'たこさんの補給所';
@@ -2171,7 +2209,9 @@ class HazardGameState {
     interaction = _nearestInteraction();
     final key = interaction;
     if (key == null) return;
-    if (key.startsWith('npc:')) {
+    if (key == 'refuge') {
+      say(refugeObjective);
+    } else if (key.startsWith('npc:')) {
       startDialogue(key.substring(4));
     } else if (key.startsWith('pickup:')) {
       final p = pickups.firstWhere((p) => 'pickup:${p.id}' == key);
@@ -2252,7 +2292,8 @@ class HazardGameState {
       return;
     }
     final npc = npcs.where((n) => n['id'] == id).firstOrNull;
-    if (npc == null ||
+    if ((hasRefuge && !insideRefuge) ||
+        npc == null ||
         !_near(
           (npc['x'] as num).toDouble(),
           0,
@@ -2261,24 +2302,26 @@ class HazardGameState {
         )) {
       return;
     }
-    if (enemies.any(
-      (e) =>
-          e.alive &&
-          e.active &&
-          e.alerted &&
-          (e.companionTarget != null ||
-              ((e.y - y).abs() < 1 &&
-                  math.pow(e.x - x, 2) + math.pow(e.z - z, 2) < 49 &&
-                  _reachable(e.x, e.z))),
-    )) {
+    if (!insideRefuge &&
+        enemies.any(
+          (e) =>
+              e.alive &&
+              e.active &&
+              e.alerted &&
+              (e.companionTarget != null ||
+                  ((e.y - y).abs() < 1 &&
+                      math.pow(e.x - x, 2) + math.pow(e.z - z, 2) < 49 &&
+                      _reachable(e.x, e.z))),
+        )) {
       say('そば屋が近い。距離を取ってから話そう。');
       return;
     }
+    _refugeReportPending = false;
     secretShopVisit = id == 'takosan' && beers >= 10;
     talkingTo = id;
     dialogueOwner = id;
     dialogueTopic = postBossReunion
-        ? (seenEvents.contains('reunion_$id') ? 'greeting' : 'reunion')
+        ? (refugeReports.contains(id) ? 'greeting' : 'reunion')
         : (id == 'yametaro' ? metYametaro : metTakosan)
         ? 'greeting'
         : 'intro';
@@ -2306,6 +2349,7 @@ class HazardGameState {
         !availableDialogueTopics.contains(topic)) {
       return;
     }
+    _rememberRefugeReport();
     if (postBossReunion) seenEvents.add('reunion_$dialogueOwner');
     if (topic == 'leave') {
       endDialogue();
@@ -2356,6 +2400,7 @@ class HazardGameState {
     }
     final offer = visibleTradeOffers.where((o) => o.id == id).firstOrNull;
     if (offer == null) return;
+    _rememberRefugeReport();
     tradeSerial++;
     tradeReplies = const [];
     if (stockRemaining(offer) <= 0) {
@@ -2382,6 +2427,13 @@ class HazardGameState {
     if (postBossReunion && dialogueChoices) {
       seenEvents.add('reunion_$dialogueOwner');
     }
+    _rememberRefugeReport();
+    if (_refugeReportPending && insideRefuge) {
+      seenEvents.add('refuge_report_$dialogueOwner');
+      if (refugeReports.length == 2) seenEvents.add('refuge_complete');
+      say(refugeObjective);
+    }
+    _refugeReportPending = false;
     talkingTo = null;
     phase = PlayPhase.playing;
     checkpointRequested = true;
@@ -2410,6 +2462,12 @@ class HazardGameState {
     'difficulty': difficulty.name,
     'lastShotPart': lastShotPart?.name,
     'chapterSecured': chapterSecured,
+    'refuge': {
+      'unlocked': refugeUnlocked,
+      'inside': insideRefuge,
+      'reports': refugeReports.toList(),
+      'complete': refugeComplete,
+    },
     'livingEnemies': livingEnemies,
     'rocketLock': rocketLockId,
     'rockets': [

@@ -22,12 +22,27 @@ Map<String, Object?> cut(EventCut value) => {
 
 // bossAlive describes the giant's campaign-wide state, including when this
 // region has no boss of its own. Campaign traversal carries this event flag.
-void setCampaignBossState(HazardGameState state, bool bossAlive) {
+void setCampaignBossState(
+  HazardGameState state,
+  bool bossAlive,
+  bool otherEnemiesDefeated,
+) {
   for (final enemy in state.enemies.where((e) => e.boss)) {
     enemy.alive = bossAlive;
   }
   if (!bossAlive) state.seenEvents.add('giant_defeated');
+  if (!bossAlive && (!state.hardest || otherEnemiesDefeated)) {
+    state.seenEvents.add('refuge_ready');
+  }
 }
+
+Map<String, Object?> refugeState(HazardGameState state) => {
+  'hasRefuge': state.hasRefuge,
+  'refugeUnlocked': state.refugeUnlocked,
+  'insideRefuge': state.insideRefuge,
+  'refugeReports': state.refugeReports.toList()..sort(),
+  'refugeComplete': state.refugeComplete,
+};
 
 void main() {
   final maps = <String, Map<String, dynamic>>{
@@ -55,15 +70,12 @@ void main() {
         HazardDifficulty.tense,
       ]) {
         for (final readEvidence in [false, true]) {
-          for (final otherEnemiesDefeated in [
-            false,
-            if (region == 'mountain' && !bossAlive) true,
-          ]) {
+          for (final otherEnemiesDefeated in [false, if (!bossAlive) true]) {
             final state = HazardGameState(
               maps[region]!,
               difficulty: difficulty,
             );
-            setCampaignBossState(state, bossAlive);
+            setCampaignBossState(state, bossAlive, otherEnemiesDefeated);
             if (otherEnemiesDefeated) {
               for (final enemy in state.enemies.where((e) => !e.boss)) {
                 enemy.alive = false;
@@ -72,16 +84,24 @@ void main() {
             if (readEvidence) {
               state.foundMemos.addAll(villageMemos.map((m) => m.id));
             }
+            state.refreshRefuge();
+            final arrival = (state.x, state.y, state.z);
             for (final owner in ['yametaro', 'takosan']) {
+              final npc = state.npcs.where((n) => n['id'] == owner).firstOrNull;
+              state.x = npc == null ? arrival.$1 : (npc['x'] as num).toDouble();
+              state.y = npc == null ? arrival.$2 : 0;
+              state.z = npc == null ? arrival.$3 : (npc['z'] as num).toDouble();
               final topics = {
                 ...(owner == 'yametaro' ? yametaroDialogue : takosanDialogue)
                     .keys,
-                if (region == 'mountain' && !bossAlive)
+                if (state.postBossReunion)
                   ...(owner == 'yametaro'
                           ? mountainYametaroAfter
                           : mountainTakosanAfter)
                       .keys,
-                if (region == 'mountain' && bossAlive && owner == 'yametaro')
+                if (region == 'mountain' &&
+                    !state.postBossReunion &&
+                    owner == 'yametaro')
                   ...mountainYametaroBefore.keys,
               };
               for (final topic in topics) {
@@ -106,21 +126,32 @@ void main() {
                   'zone': region,
                   'bossAlive': bossAlive,
                   'evacuationStarted': state.evacuationStarted,
+                  ...refugeState(state),
                   'difficulty': difficulty.name,
                   'allMemosFound': readEvidence,
                   'otherEnemiesDefeated': otherEnemiesDefeated,
                   'npcPresent': npcPresent,
+                  'evaluationPosition': npcPresent
+                      ? 'visible_npc'
+                      : 'region_arrival',
                   'topicUnlockedByDialogueState': topicUnlocked,
-                  'topicSelectable': npcPresent && topicUnlocked,
+                  'topicSelectable':
+                      npcPresent &&
+                      topicUnlocked &&
+                      (!state.hasRefuge || state.insideRefuge),
                   'topicLabel': state.dialogueTopicLabel(topic),
                 });
               }
             }
+            state.x = arrival.$1;
+            state.y = arrival.$2;
+            state.z = arrival.$3;
             if (readEvidence) continue;
             objectives.add({
               'zone': region,
               'bossAlive': bossAlive,
               'evacuationStarted': state.evacuationStarted,
+              ...refugeState(state),
               'difficulty': difficulty.name,
               'otherEnemiesDefeated': otherEnemiesDefeated,
               'text': state.objective,
@@ -131,46 +162,98 @@ void main() {
     }
   }
   final starts = <Map<String, Object?>>[];
+  final attempts = <Map<String, Object?>>[];
   for (final region in maps.keys) {
     for (final bossAlive in [true, false]) {
-      for (final previouslyMet in [false, true]) {
-        for (final reunionSeen in [false, true]) {
-          for (final owner in ['yametaro', 'takosan']) {
-            final state = HazardGameState(maps[region]!);
-            for (final enemy in state.enemies) {
-              enemy.alerted = false;
+      for (final difficulty in [
+        HazardDifficulty.standard,
+        HazardDifficulty.tense,
+      ]) {
+        for (final otherEnemiesDefeated in [false, if (!bossAlive) true]) {
+          for (final previouslyMet in [false, true]) {
+            for (final priorProgress in [
+              'none',
+              'legacyReunion',
+              'refugeReport',
+            ]) {
+              for (final owner in ['yametaro', 'takosan']) {
+                final state = HazardGameState(
+                  maps[region]!,
+                  difficulty: difficulty,
+                );
+                for (final enemy in state.enemies) {
+                  enemy.alerted = false;
+                  if (otherEnemiesDefeated && !enemy.boss) enemy.alive = false;
+                }
+                setCampaignBossState(state, bossAlive, otherEnemiesDefeated);
+                state.refreshRefuge();
+                final npc = state.npcs
+                    .where((n) => n['id'] == owner)
+                    .firstOrNull;
+                state.phase = PlayPhase.playing;
+                if (npc != null) {
+                  state.x = (npc['x'] as num).toDouble();
+                  state.z = (npc['z'] as num).toDouble();
+                } else if (state.hasRefuge) {
+                  state.x = 13;
+                  state.z = 7.7;
+                }
+                state.y = 0;
+                state.metYametaro = state.metTakosan = previouslyMet;
+                if (priorProgress == 'legacyReunion') {
+                  state.seenEvents.add('reunion_$owner');
+                }
+                if (priorProgress == 'refugeReport') {
+                  state.seenEvents.add('refuge_report_$owner');
+                }
+                state.startDialogue(owner);
+                final opened = state.phase == PlayPhase.dialogue;
+                final row = <String, Object?>{
+                  'id':
+                      'dialogue-start:$region:$owner:$bossAlive:${difficulty.name}:$otherEnemiesDefeated:$previouslyMet:$priorProgress',
+                  'context': {
+                    'zone': region,
+                    'owner': owner,
+                    'bossAlive': bossAlive,
+                    'evacuationStarted': state.evacuationStarted,
+                    'npcPresent': npc != null,
+                    'evaluationPosition': npc != null
+                        ? 'visible_npc'
+                        : state.hasRefuge
+                        ? 'refuge_front'
+                        : 'region_arrival',
+                    ...refugeState(state),
+                    'difficulty': difficulty.name,
+                    'otherEnemiesDefeated': otherEnemiesDefeated,
+                    'previouslyMet': previouslyMet,
+                    'priorConversationProgress': priorProgress,
+                    'legacyReunionSeen': state.seenEvents.contains(
+                      'reunion_$owner',
+                    ),
+                  },
+                  'opened': opened,
+                  if (!opened)
+                    'rejectionReason': npc == null
+                        ? 'npc_not_present'
+                        : state.hasRefuge && !state.insideRefuge
+                        ? 'refuge_not_entered'
+                        : 'startDialogue_guard',
+                  if (!opened) 'stateMessage': state.message,
+                  if (opened) 'topic': state.dialogueTopic,
+                  if (opened) 'lines': state.dialogueLines.map(line).toList(),
+                  if (opened)
+                    'choices': [
+                      for (final topic in state.availableDialogueTopics)
+                        {
+                          'topic': topic,
+                          'label': state.dialogueTopicLabel(topic),
+                        },
+                    ],
+                };
+                attempts.add(row);
+                if (opened) starts.add(row);
+              }
             }
-            setCampaignBossState(state, bossAlive);
-            final npc = state.npcs.where((n) => n['id'] == owner).firstOrNull;
-            if (npc == null) continue;
-            state.phase = PlayPhase.playing;
-            state.x = (npc['x'] as num).toDouble();
-            state.z = (npc['z'] as num).toDouble();
-            state.y = 0;
-            state.metYametaro = state.metTakosan = previouslyMet;
-            if (reunionSeen) state.seenEvents.add('reunion_$owner');
-            state.startDialogue(owner);
-            if (state.phase != PlayPhase.dialogue) {
-              throw StateError('Dialogue setup did not open: $region/$owner');
-            }
-            starts.add({
-              'id':
-                  'dialogue-start:$region:$owner:$bossAlive:$previouslyMet:$reunionSeen',
-              'context': {
-                'zone': region,
-                'owner': owner,
-                'bossAlive': bossAlive,
-                'evacuationStarted': state.evacuationStarted,
-                'previouslyMet': previouslyMet,
-                'reunionSeen': reunionSeen,
-              },
-              'topic': state.dialogueTopic,
-              'lines': state.dialogueLines.map(line).toList(),
-              'choices': [
-                for (final topic in state.availableDialogueTopics)
-                  {'topic': topic, 'label': state.dialogueTopicLabel(topic)},
-              ],
-            });
           }
         }
       }
@@ -219,6 +302,7 @@ void main() {
       },
       'resolvedDialogueVariants': variants.values.toList(),
       'dialogueStarts': starts,
+      'dialogueStartAttempts': attempts,
       'specialDialogue': {
         'hardSuppliesLine': line(hardSuppliesLine),
         'unreadKeeperReply': line(unreadKeeperReply),

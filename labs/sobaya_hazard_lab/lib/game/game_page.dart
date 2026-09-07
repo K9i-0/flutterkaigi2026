@@ -259,6 +259,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
                 builder: (context, bounds) {
                   game.viewport = Size(bounds.maxWidth, bounds.maxHeight);
                   game.devicePixelRatio = View.of(context).devicePixelRatio;
+                  final refugeMarker = game.refugeMarker;
                   return Stack(
                     children: [
                       Listener(
@@ -329,6 +330,36 @@ class _HazardGamePageState extends State<HazardGamePage> {
                           ),
                         ),
                       ),
+                      if (refugeMarker != null &&
+                          refugeMarker.dx > 70 &&
+                          refugeMarker.dx < bounds.maxWidth - 70 &&
+                          refugeMarker.dy > 90 &&
+                          refugeMarker.dy < bounds.maxHeight - 80)
+                        Positioned(
+                          left: refugeMarker.dx - 70,
+                          top: refugeMarker.dy - 32,
+                          child: IgnorePointer(
+                            child: Container(
+                              width: 140,
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: ink,
+                                border: Border.all(
+                                  color: const Color(0xff8de5a8),
+                                ),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: const Text(
+                                '集合場所\n▼  玄関から中へ',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Color(0xff8de5a8),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       if (s.phase != PlayPhase.title &&
                           s.phase != PlayPhase.dialogue &&
                           s.phase != PlayPhase.settings &&
@@ -893,7 +924,11 @@ class _HazardGamePageState extends State<HazardGamePage> {
                             s.dialogueTopicLabel(topic),
                             () => s.chooseDialogue(topic),
                           ),
-                        action('dialogue-leave', 'E  探索へ戻る', s.endDialogue),
+                        action(
+                          'dialogue-leave',
+                          s.dialogueLeaveLabel,
+                          s.endDialogue,
+                        ),
                       ],
                     )
                   else
@@ -1026,108 +1061,110 @@ class _HazardGamePageState extends State<HazardGamePage> {
       padding: const EdgeInsets.all(64),
       child: Align(
         alignment: Alignment.centerLeft,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              '窓 際 族 物 語',
-              style: TextStyle(color: gold, fontSize: 15, letterSpacing: 7),
-            ),
-            const SizedBox(height: 24),
-            ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 820),
-              child: Image.asset(
-                'assets/cinematics/title_logo.png',
-                key: const ValueKey('game-title-logo'),
-                fit: BoxFit.contain,
-                cacheWidth: 1640,
-                semanticLabel: 'そば屋ハザード',
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                '窓 際 族 物 語',
+                style: TextStyle(color: gold, fontSize: 15, letterSpacing: 7),
               ),
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              '窓際社員の島流し先、廃村ゆめみ村。\n炎上して捨てられた秘密案件が、まだ動いている。',
-              style: TextStyle(
-                color: Color(0xffb6bda9),
-                height: 1.9,
-                fontSize: 15,
+              const SizedBox(height: 24),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 820),
+                child: Image.asset(
+                  'assets/cinematics/title_logo.png',
+                  key: const ValueKey('game-title-logo'),
+                  fit: BoxFit.contain,
+                  cacheWidth: 1640,
+                  semanticLabel: 'そば屋ハザード',
+                ),
               ),
-            ),
-            const SizedBox(height: 36),
-            if (game.hasCheckpoint) ...[
+              const SizedBox(height: 24),
+              const Text(
+                '窓際社員の島流し先、廃村ゆめみ村。\n炎上して捨てられた秘密案件が、まだ動いている。',
+                style: TextStyle(
+                  color: Color(0xffb6bda9),
+                  height: 1.9,
+                  fontSize: 15,
+                ),
+              ),
+              const SizedBox(height: 36),
+              if (game.hasCheckpoint) ...[
+                FilledButton(
+                  key: const ValueKey('game-continue'),
+                  style: FilledButton.styleFrom(
+                    backgroundColor: gold,
+                    foregroundColor: ink,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 45,
+                      vertical: 18,
+                    ),
+                  ),
+                  onPressed: () {
+                    game.continueRun();
+                    focus.requestFocus();
+                  },
+                  child: const Text(
+                    '続きから',
+                    style: TextStyle(fontSize: 17, letterSpacing: 3),
+                  ),
+                ),
+                const SizedBox(height: 12),
+              ],
               FilledButton(
-                key: const ValueKey('game-continue'),
+                key: const ValueKey('game-start'),
                 style: FilledButton.styleFrom(
                   backgroundColor: gold,
-                  foregroundColor: ink,
+                  foregroundColor: const Color(0xff1a1f16),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 45,
-                    vertical: 18,
+                    vertical: 23,
                   ),
                 ),
                 onPressed: () {
-                  game.continueRun();
+                  game.startRun();
                   focus.requestFocus();
+                  setState(() {});
                 },
-                child: const Text(
-                  '続きから',
-                  style: TextStyle(fontSize: 17, letterSpacing: 3),
+                child: Text(
+                  game.hasCheckpoint ? '新しく始める' : '村へ入る',
+                  style: const TextStyle(fontSize: 17, letterSpacing: 3),
                 ),
               ),
-              const SizedBox(height: 12),
+              TextButton(
+                key: const ValueKey('game-title-settings'),
+                onPressed: game.openSettings,
+                child: const Text('設定', style: TextStyle(color: ivory)),
+              ),
+              if (game.hasCheckpoint)
+                const Padding(
+                  padding: EdgeInsets.only(top: 8),
+                  child: Text(
+                    '新しく始めると進行の記録を上書きします。収集画像は残ります。',
+                    style: TextStyle(color: ivory, fontSize: 11),
+                  ),
+                ),
+              if (game.saveStatus.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: Text(
+                    game.saveStatus,
+                    style: const TextStyle(color: gold, fontSize: 11),
+                  ),
+                ),
+              const SizedBox(height: 18),
+              Text(
+                'COLLECTION  ${s.collected.length} / ${s.gallery.length}',
+                style: const TextStyle(
+                  color: gold,
+                  letterSpacing: 2,
+                  fontSize: 11,
+                ),
+              ),
             ],
-            FilledButton(
-              key: const ValueKey('game-start'),
-              style: FilledButton.styleFrom(
-                backgroundColor: gold,
-                foregroundColor: const Color(0xff1a1f16),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 45,
-                  vertical: 23,
-                ),
-              ),
-              onPressed: () {
-                game.startRun();
-                focus.requestFocus();
-                setState(() {});
-              },
-              child: Text(
-                game.hasCheckpoint ? '新しく始める' : '村へ入る',
-                style: const TextStyle(fontSize: 17, letterSpacing: 3),
-              ),
-            ),
-            TextButton(
-              key: const ValueKey('game-title-settings'),
-              onPressed: game.openSettings,
-              child: const Text('設定', style: TextStyle(color: ivory)),
-            ),
-            if (game.hasCheckpoint)
-              const Padding(
-                padding: EdgeInsets.only(top: 8),
-                child: Text(
-                  '新しく始めると進行の記録を上書きします。収集画像は残ります。',
-                  style: TextStyle(color: ivory, fontSize: 11),
-                ),
-              ),
-            if (game.saveStatus.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: Text(
-                  game.saveStatus,
-                  style: const TextStyle(color: gold, fontSize: 11),
-                ),
-              ),
-            const SizedBox(height: 18),
-            Text(
-              'COLLECTION  ${s.collected.length} / ${s.gallery.length}',
-              style: const TextStyle(
-                color: gold,
-                letterSpacing: 2,
-                fontSize: 11,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     ),
@@ -1616,7 +1653,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
         ),
         const SizedBox(height: 12),
         const Text(
-          '白：現在地  金丸：門・出口  金の紙：メモ  水色：仲間\n明るい壁：建物  暗い壁：岩壁・柵',
+          '白：現在地  金丸：門・集合場所  金の紙：メモ  水色：仲間\n明るい壁：建物  暗い壁：岩壁・柵',
           style: TextStyle(color: ivory, height: 1.6),
         ),
         const SizedBox(height: 12),

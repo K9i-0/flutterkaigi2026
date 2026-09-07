@@ -18,7 +18,7 @@ Python標準ライブラリ、プロジェクトのDart（`mise exec -- dart`）
 ## AIレビューで読む順序
 
 1. `runtimeStory.events`: 会話シーンの順番、話者、字幕、既読/未読分岐、映像の切替と資料ID。
-2. `runtimeStory.dialogueTrees`: 章と話題ごとの会話正本、購入後の掛け合い、被弾時の声。第3章は撃破前のやめ太郎、撃破後のやめ太郎/たこさんをそれぞれ分けています。
+2. `runtimeStory.dialogueTrees`: 章と話題ごとの会話定数、購入後の掛け合い、被弾時の声。第3章は撃破前用のやめ太郎、撃破後のやめ太郎/たこさんの定数をそれぞれ分けています。玄関変更後はNPCが家の解放まで不在のため、撃破前用など実プレイで選べない定数も比較用に残ります。実際の会話可否は `dialogueStarts` / `dialogueStartAttempts` で確認してください。
 3. `runtimeStory.dialogueStarts` と `resolvedDialogueVariants`: 前者は実際にNPCの場所で `startDialogue` を実行した初回/再訪/撃破後再会の冒頭と選択肢。後者は本物の `HazardGameState.dialogueLines` が返す会話で、地域、ボス生存、難易度、残敵、資料所持の入力と、NPCの存在/選択肢の表示条件を併記します。到達不可の入力も比較用に含まれます。全イベント既視聴や各メモ単独所持まで総当たりした一覧ではありません。
 4. `runtimeStory.memos` と `posterEvidence`: メモ本文とポスター裏面の書き込み。
 5. `cinematicDocuments` と `maps`: カットシーン資料の見出し・本文・脚注、章名、ポスター名、配置されたNPCの条件。
@@ -27,7 +27,11 @@ Python標準ライブラリ、プロジェクトのDart（`mise exec -- dart`）
 
 `conditionSources` は会話の解禁条件やイベント発火箇所のソース抜粋です。`contexts` だけから「この話題が常に選択できる」と推測せず、この条件を確認してください。`sourceManifest` は入力ソースのSHA-256一覧です。
 
-`bossAlive` はその地域にボスがいるかではなく、キャンペーン全体の巨大そば屋の生存状態です。`false` のサンプルでは地域移動時に引き継がれる `giant_defeated` も設定し、`evacuationStarted` を併記します。そのため、撃破後の1・2面では `npcPresent=false` となり、そこへ戻って旧会話を開始することはできません。`topicUnlockedByDialogueState` は会話getterだけの解禁状態、`topicSelectable` はNPCの存在条件も満たした表示可否です。`dialogueStarts` は実際に存在するNPCの開始例だけを含みます。
+`bossAlive` はその地域にボスがいるかではなく、キャンペーン全体の巨大そば屋の生存状態です。`false` のサンプルでは地域移動時に引き継がれる `giant_defeated` も設定します。さらに標準ではボス撃破、最高難度では残敵全撃破で `refuge_ready` を設定し、`evacuationStarted` を併記します。家が解放された後の1・2面では `npcPresent=false` となり、そこへ戻って旧会話は開始できません。最高難度で残敵がいる間は農場の補給を利用できます。`topicUnlockedByDialogueState` は会話getterだけの解禁状態、`topicSelectable` はNPCの存在・必要な入室条件も満たした表示可否です。評価位置は `evaluationPosition` を参照し、NPCが存在する場合はその近くで会話を評価します。
+
+最終章は「巨大そば屋を倒す → 玄関が自動で開く → 家へ入る → やめ太郎とたこさんの再会会話を両方最後まで読み、会話を終える → 保存してエンディング」の順です。最高難度だけは、通常個体も全員倒してから玄関が開きます。東の脱出門を歩いて踏む旧判定はありません。
+
+会話の評価例には `hasRefuge` / `refugeUnlocked` / `insideRefuge` / `refugeReports` / `refugeComplete` も含めます。玄関が閉じているサンプルでは屋外の集合案内位置から開始を試し、拒否された例は `dialogueStartAttempts` に理由と状態を記録します。`dialogueStarts` はそのうち実際に会話が開いた例です。旧 `reunion_*` の既読と、新しい `refuge_report_yametaro` / `refuge_report_takosan` の完読報告を区別し、前者だけで完了したとは扱いません。
 
 ## 収録範囲と限界
 
@@ -40,3 +44,8 @@ Python標準ライブラリ、プロジェクトのDart（`mise exec -- dart`）
 ## 追加実装時の確認
 
 新たな会話テーブルを追加したら、`tool/export_hazard_text_runtime.dart` の `dialogueTrees` と `dialogueTableSourceNames` にも登録してください。独立した条件付き `DialogueLine` 定数は `specialDialogue` に登録します。ソースの定数一覧と登録が異なる場合は生成エラーになります。第3章の条件付き会話も、実状態のgetterで解決した結果を確認します。資料の `(見出し, 本文, 脚注)` 形式を変えた場合は、Pythonの `documents()` も合わせます。未対応の構造は黙って欠落させず生成エラーにします。
+
+
+## 最新の検証
+
+玄関解放と二人への報告によるクリアに更新済み。全文の生成一致、全体186テスト、旧セーブ互換追補後の関連33テスト、実機での入室・会話・保存・エンディング・クリアを確認した。本文の独立レビューは2名とも90点、全項目9点、重大0件。採否と残る軽微指摘は [EDIT_HISTORY.md](EDIT_HISTORY.md)、実装の確認結果は `../qa/refuge-*-20260907.json` を参照。

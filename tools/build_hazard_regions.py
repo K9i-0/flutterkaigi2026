@@ -208,9 +208,8 @@ items=[{'id':'mountain_'+id,'kind':kind,'x':x,'z':z,'y':y,'amount':n} for id,kin
 crates=[{'id':'mountain_crate_'+str(i),'x':x,'z':z,'kind':'crate'}
     for i,(x,z) in enumerate([(-20,-6),(-9,5),(7,7),(18,18)])]
 enemies=[{'id':i,'x':x,'z':z,'active':True,'boss':i==4} for i,(x,z) in enumerate([
-    (-19,-5),(-1,4),(6,5),(15,7),(12,4),(10,13)])]
+    (-19,-5),(-1,4),(6,5),(15,7),(12,4),(11,7)])]
 save('mountain','CHAPTER 03  /  LAST ORDER','誰も終わらせに来ない仕事。',{'x':-19,'z':-21,'yaw':math.pi},items,crates,enemies,collection,
     [{'id':'yametaro','x':16,'z':17.5}, {'id':'takosan','x':13.6,'z':17.1,'afterBoss':True}],
-    [{'id':'back','target':'farm','x':-19,'z':-23.5,'radius':1,'arrival':{'x':18,'z':-10,'yaw':math.pi/2}},
-     {'id':'escape','target':'ending','x':21.2,'z':15,'radius':.9,'requiresGate':True}],
-    {'x':20,'z':15,'y':0,'mode':'boss','label':'脱出路の門'})
+    [{'id':'back','target':'farm','x':-19,'z':-23.5,'radius':1,'arrival':{'x':18,'z':-10,'yaw':math.pi/2}}],
+    {'x':13,'z':9.5,'y':0,'mode':'boss','label':'集合場所の家'})

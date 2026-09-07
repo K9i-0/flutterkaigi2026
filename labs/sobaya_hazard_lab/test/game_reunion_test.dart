@@ -76,11 +76,12 @@ void main() {
         expect(File('assets/${cue.asset}').existsSync(), true);
       }
     },
+    tags: ['voice-assets'],
   );
 
   test('Takosan appears inside the house only after the real boss kill', () {
     final s = mountain(defeated: false);
-    expect(s.npcs.map((n) => n['id']), ['yametaro']);
+    expect(s.npcs, isEmpty);
     final boss = s.enemies.singleWhere((e) => e.boss);
     boss
       ..active = true
@@ -122,20 +123,20 @@ void main() {
       false,
     );
     expect(s.objective, contains('家'));
-    expect(s.canOpenGate, true); // Reunion remains optional.
+    expect(s.refugeUnlocked, true);
+    expect(s.refugeComplete, false); // Both reports are still required.
   });
 
   test(
     'all mountain choices stay in their chapter before and after the boss',
     () {
-      final before = mountain(defeated: false);
-      talk(before, 'yametaro');
-      expect(before.availableDialogueTopics, isNot(contains('supplies')));
-      for (final topic in before.availableDialogueTopics) {
-        finishLines(before);
-        before.chooseDialogue(topic);
-        expect(before.dialogueLines, mountainYametaroBefore[topic]);
-      }
+      final before = mountain(defeated: false)
+        ..x = 16
+        ..z = 16.3;
+      before.startDialogue('yametaro');
+      expect(before.npcs, isEmpty);
+      expect(before.phase, PlayPhase.playing);
+      expect(before.refugeReports, isEmpty);
       for (final who in ['yametaro', 'takosan']) {
         final s = mountain();
         talk(s, who);
@@ -158,25 +159,25 @@ void main() {
     },
   );
 
-  test('highest difficulty explains remaining enemies to both companions', () {
-    for (final who in ['yametaro', 'takosan']) {
-      final s = mountain(hardest: true);
-      talk(s, who);
-      finishLines(s);
-      s.chooseDialogue('route');
-      expect(s.dialogueLine.text, contains('全員倒すまで'));
-      expect(s.dialogueLine.text, contains('ビール'));
-      expect(s.canOpenGate, false);
-      for (final e in s.enemies) {
-        e
-          ..alive = false
-          ..hp = 0;
-      }
-      s.dialogueIndex = 0;
-      expect(s.dialogueLine.text, contains('東の門'));
-      expect(s.dialogueLine.text, isNot(contains('全員倒すまで')));
-      expect(s.canOpenGate, true);
+  test('highest difficulty keeps the house closed until all enemies fall', () {
+    final s = mountain(hardest: true);
+    s.refreshRefuge();
+    expect(s.refugeUnlocked, false);
+    expect(s.npcs, isEmpty);
+    expect(s.objective, contains('農場'));
+    for (final e in s.enemies) {
+      e
+        ..alive = false
+        ..hp = 0;
     }
+    s.refreshRefuge();
+    expect(s.refugeUnlocked, true);
+    expect(s.npcs.map((n) => n['id']), containsAll(['yametaro', 'takosan']));
+    talk(s, 'takosan');
+    finishLines(s);
+    s.chooseDialogue('route');
+    expect(s.dialogueLines, mountainTakosanAfter['route']);
+    expect(s.dialogueLine.text, isNot(contains('東の門')));
   });
 
   test(

@@ -27,6 +27,8 @@ class CampaignAudit {
   final weaponsUsed = <String>{};
   bool completionist = false;
   int frames = 0;
+  List<vm.Vector3>? _bossApproach;
+  int _bossApproachFrame = -60;
   void record(String event) {
     final row = {
       'event': event,
@@ -43,6 +45,10 @@ class CampaignAudit {
       'reserve': s.reserve,
       'beers': s.beers,
       'collection': s.collected.length,
+      'refugeUnlocked': s.refugeUnlocked,
+      'insideRefuge': s.insideRefuge,
+      'refugeReports': s.refugeReports.toList()..sort(),
+      'refugeComplete': s.refugeComplete,
     };
     events.add(row);
     onRecord?.call(row);
@@ -57,6 +63,9 @@ class CampaignAudit {
     }
     frames++;
     if (s.phase == PlayPhase.dead) throw StateError('Died ${s.inspect()}');
+    if (s.phase == PlayPhase.companionDown) {
+      throw StateError('Companion was defeated ${s.inspect()}');
+    }
     if (frames > 60 * 1800) {
       throw StateError('Audit exceeded 30 simulated minutes');
     }
@@ -79,6 +88,10 @@ class CampaignAudit {
     final d = vm.Vector3(x, y, z) - origin;
     return s.wallDistance(origin, d.normalized(), d.length) >= d.length - .1;
   }
+
+  vm.Vector3 headTarget(Enemy enemy) =>
+      enemy.headCentre ??
+      vm.Vector3(enemy.x, enemy.y + enemy.headHeight, enemy.z);
 
   void sidestep(double dx, double dz) {
     final len = math.sqrt(dx * dx + dz * dz);
@@ -109,7 +122,7 @@ class CampaignAudit {
                   e.active &&
                   !(e.boss && s.x < 1 && !e.alerted) &&
                   math.pow(e.x - s.x, 2) + math.pow(e.z - s.z, 2) < 12 * 12 &&
-                  visible(e.x, e.y + 1.1, e.z),
+                  visible(headTarget(e).x, headTarget(e).y, headTarget(e).z),
             )
             .toList()
           ..sort(
@@ -118,6 +131,7 @@ class CampaignAudit {
           );
     if (enemies.isEmpty) return false;
     final e = enemies.first;
+    if (!e.boss || e.bossMove != BossMove.ready) _bossApproach = null;
     s.stopInput();
     if (s.health < 60) {
       final herb = s.bag
@@ -136,10 +150,28 @@ class CampaignAudit {
     } else if (e.bossMove == BossMove.charging) {
       // Let the locked charge pass; do not chase its moving center.
     } else if (e.boss && e.bossMove != BossMove.recovery) {
-      // Observe the tell, then punish the recovery instead of racing its HP.
+      // A visible 5m head can be above a wall while the boss cannot approach.
+      // Walk around the obstruction to provoke a tell instead of waiting for
+      // recovery forever. This remains ordinary input through the real map.
+      if (e.bossMove == BossMove.ready) {
+        if (_bossApproach == null || frames - _bossApproachFrame >= 30) {
+          _bossApproach = path(e.x, e.z, e.y, 2.8, true);
+          _bossApproachFrame = frames;
+        }
+        while (_bossApproach!.isNotEmpty &&
+            math.pow(_bossApproach!.first.x - s.x, 2) +
+                    math.pow(_bossApproach!.first.z - s.z, 2) <
+                .0225) {
+          _bossApproach!.removeAt(0);
+        }
+        final next = _bossApproach!.firstOrNull;
+        if (next != null) {
+          final delta = vm.Vector2(next.x - s.x, next.z - s.z)..normalize();
+          input(delta.x, delta.y);
+        }
+      }
     } else {
       if (s.hasShotgun &&
-          !e.boss &&
           (e.x - s.x).abs() + (e.z - s.z).abs() < (completionist ? 10 : 6) &&
           (s.shotgunLoaded > 0 || s.bag.any((i) => i.kind == 'shells'))) {
         s.equip('shotgun');
@@ -158,10 +190,11 @@ class CampaignAudit {
       s.aiming = true;
       final before = s.shots;
       final origin = vm.Vector3(s.x, s.y + 1.25, s.z);
+      final target = headTarget(e);
       if (aimAndFire != null) {
-        aimAndFire!(vm.Vector3(e.x, e.y + 1.1, e.z));
+        aimAndFire!(target);
       } else {
-        s.shoot(origin, vm.Vector3(e.x, e.y + 1.1, e.z) - origin);
+        s.shoot(origin, target - origin);
       }
       if (s.shots > before) weaponsUsed.add(s.weapon);
     }
@@ -447,6 +480,59 @@ class CampaignAudit {
     }
   }
 
+  Future<void> clearRefugeApproach() async {
+    while (s.hardest && !s.chapterSecured) {
+      final enemy = s.enemies.firstWhere((e) => e.alive);
+      // Approach every remaining enemy through the collision map. Combat,
+      // ammunition expenditure and damage use the same driver as the route.
+      await walk(enemy.x, enemy.z, y: enemy.y, radius: 4);
+      if (!(await combat())) {
+        await walk(enemy.x, enemy.z, y: enemy.y, radius: .8);
+        await frame();
+      }
+    }
+    s.refreshRefuge();
+    if (!s.hasRefuge || !s.refugeUnlocked) {
+      throw StateError('Refuge entrance did not unlock ${s.inspect()}');
+    }
+    record('refuge-unlocked');
+  }
+
+  Future<void> reuniteInRefuge() async {
+    // Enter through the front door, not the removed eastern escape trigger.
+    await walk(13, 10.6, radius: .4);
+    if (!s.insideRefuge) {
+      throw StateError('Did not enter the refuge ${s.inspect()}');
+    }
+    record('refuge-entered');
+    for (final owner in ['yametaro', 'takosan']) {
+      final npc = s.npcs.firstWhere((n) => n['id'] == owner);
+      await walk(
+        (npc['x'] as num).toDouble(),
+        (npc['z'] as num).toDouble(),
+        radius: 1.3,
+        reach: true,
+      );
+      s.startDialogue(owner);
+      if (s.phase != PlayPhase.dialogue || s.dialogueTopic != 'reunion') {
+        throw StateError('Reunion did not start for $owner ${s.inspect()}');
+      }
+      while (!s.dialogueChoices) {
+        s.advanceDialogue();
+      }
+      s.endDialogue();
+      if (!s.refugeReports.contains(owner)) {
+        throw StateError('Reunion report was not recorded for $owner');
+      }
+      record('refuge-report:$owner');
+    }
+    if (!s.refugeComplete) {
+      throw StateError('Both refuge conversations did not complete the run');
+    }
+    // The controller saves this flag before starting the ending. A pure state
+    // audit therefore verifies refugeComplete rather than forcing phase=clear.
+  }
+
   Future<void> run() async {
     await frame();
     record('start');
@@ -490,12 +576,12 @@ class CampaignAudit {
       }
     }
     record('boss-defeated');
+    await clearRefugeApproach();
     if (completionist) {
       await collectImages();
       await collectBeer();
     }
-    await gate();
-    await exit();
+    await reuniteInRefuge();
     record('clear');
     if (completionist) {
       final expectedKills = campaign.maps.values.fold<int>(

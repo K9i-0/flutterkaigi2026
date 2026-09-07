@@ -1,0 +1,160 @@
+{
+  "reviewId": "refuge-author-review",
+  "date": "2026-09-07",
+  "reviewType": "author_self_review",
+  "independent": false,
+  "conflictDisclosure": "レビュアーA自身が今回の本文5ファイルを編集したため、作者自己レビューである。REVIEW_RUBRICの独立レビュー2名という最終合格条件をこのレビューで満たしたとは扱わない。",
+  "rubric": "scenario/REVIEW_RUBRIC.md",
+  "scope": "新導線の本文・メモ・図・UI文言・game_refugeおよび会話状態と遷移のコードを照合。実機の見やすさ、声の演技、音声生成完了についての確認ではない。",
+  "sourceSha256": {
+    "lib/game/game_dialogue.dart": "38c863f16ba9e9d8dc0e7835a6fa74e7675e478c2686fa61c983961c683ac84c",
+    "lib/game/game_events.dart": "0580248af1a01aff3a66a7f07a52d176f79ec1193164d42735680cb2a5650ec5",
+    "lib/game/game_story.dart": "4b3c574b47e42457a13476dac5d414c8304538eb1123fb68dd69b5bc2eded5b1",
+    "lib/game/game_cinematic_insert.dart": "7cd86978ed87746c22f58bfe4a2b342566281294c31e3c2b9c6e4ff8be708854",
+    "lib/game/game_refuge.dart": "5ebc5492ba75f27e41fc5bb9f2a01f33ada7a2cada30e4111b53a2b1fb181284",
+    "lib/game/game_state.dart": "5e8641f79e0b23e4e7f6a1ac0b8e5d2fb50844c7026770e93912173a37ec15f9",
+    "lib/game/game_page.dart": "bf9df5f4340e713c4722352f2d122380d75c42527b8cd9a56eb932d651fc2e67",
+    "lib/game/game_campaign.dart": "571991ffc108344c1a636b0e0ec2bf4a52d9473331bef2f9b116157dd31e1897",
+    "lib/game/game_controller.dart": "8f0fe735e621ad2075fd8b15d4986fbf3a59f4a39b8c25d65d1f0d26b051497e",
+    "STORY.md": "47d6a5f05642be2d4830045a9ff1e5331eccdf0db5a8b1b2f13a0062e97d830d"
+  },
+  "scores": [
+    {
+      "criterion": "窓際族物語としての面白さ",
+      "score": 9,
+      "weight": 25,
+      "weighted": 22.5,
+      "evidence": [
+        "game_dialogue.dart: mountainYametaroAfter.reunion — 経費で停止／会社ごと停止の応酬を維持。",
+        "game_dialogue.dart: mountainTakosanAfter.reunion — 出張営業と「私も乗るので」から安否確認へ進む。",
+        "game_events.dart: ending — 全社員への再通知、アーロンチュア、お茶で乾杯の回収を維持。"
+      ]
+    },
+    {
+      "criterion": "日本語の自然さ",
+      "score": 9,
+      "weight": 20,
+      "weighted": 18,
+      "evidence": [
+        "両reunionに足した案内は主語と目的が明確。やめ太郎はワイと関西弁を維持。",
+        "ending冒頭の「家の中で互いの無事を確かめた三人は、外へ出て…」で映像の外観ショットへ自然につなぐ。",
+        "game_story.dart: memo.stopは引用内を『』にし、最高難度の例外と移動順を段階的に書く。"
+      ]
+    },
+    {
+      "criterion": "わかりやすさ",
+      "score": 9,
+      "weight": 20,
+      "weighted": 18,
+      "evidence": [
+        "game_refuge.dart: refugeObjectiveは施錠・残敵・補給場所・解錠・玄関位置・二人の未報告名を状態別に表示。",
+        "game_refuge.dart: dialogueLeaveLabelとgame_page.dartのボタンが、閉じるとクリアすることを二人目に明示。",
+        "game_state.dart: _rememberRefugeReport/endDialogueはreunion最終行から会話を閉じた時だけ報告し、二人分でrefuge_complete。",
+        "農場イベント、メモ06/08、図から第3章東門の案内を取り除き、屋内合流に統一。"
+      ]
+    },
+    {
+      "criterion": "各キャラクターの特徴",
+      "score": 9,
+      "weight": 20,
+      "weighted": 18,
+      "evidence": [
+        "やめ太郎の「既読だけつけて帰るんはなし」は軽口で新しいクリア条件を案内。",
+        "たこさんは営業・無料船という利己的な落ちを残しつつ名簿と避難を担当。",
+        "福ちゃんの明るい珍説、そば屋のメリット、よーたんの雑な銃撃許可に変更なし。"
+      ]
+    },
+    {
+      "criterion": "ブラックジョーク",
+      "score": 9,
+      "weight": 15,
+      "weighted": 13.5,
+      "evidence": [
+        "救難回線を督促放送が占領する設定を維持し、ボス撃破と救助船の因果を一本化。",
+        "最高難度の補給台詞に「追加のお仕事」を残し、残敵撃退を商売の機会として受け取る。",
+        "日記とポスターの陰惨さを薄めず、救出後の全社員返信や出向先の予約で締める。"
+      ]
+    }
+  ],
+  "total": 90,
+  "allCriteriaAtLeast8": true,
+  "majorFindings": [],
+  "numericalThresholdMet": true,
+  "independentAcceptance": "未判定。この自己レビューは独立最終採点の代用ではない。",
+  "flowChecks": [
+    {
+      "case": "やめ太郎→たこさん",
+      "result": "成立",
+      "reason": "各reunionは同じ二人への声かけを順番指定なしで案内。最初のendDialogueで1/2、後のendDialogueでrefuge_complete。"
+    },
+    {
+      "case": "たこさん→やめ太郎",
+      "result": "成立",
+      "reason": "本文の前提は相手に話し終えたことを要求しない。集合者と避難者の位置は最初のたこさんで説明できる。"
+    },
+    {
+      "case": "会話途中で閉じる",
+      "result": "成立",
+      "reason": "reunion最終行でなければ_pendingを立てず、report未登録。次回はgreetingでなくreunionから再開する。"
+    },
+    {
+      "case": "reunion完了後に別話題・購入へ進む",
+      "result": "成立",
+      "reason": "chooseDialogueが最終reunionの完了をpendingへ保持。別話題/購入後も閉じるまでクリアを発火しない。任意追加話題の読了は条件にしない。"
+    },
+    {
+      "case": "標準/気軽に探索",
+      "result": "成立",
+      "reason": "!bossAliveかつchapterSecuredにより玄関が自動解放。残った通常個体の全滅は要求しない。"
+    },
+    {
+      "case": "最高難度でボスを先に倒す",
+      "result": "成立",
+      "reason": "chapterSecured=falseの間はrefugeUnlocked=false。UIは残敵と農場補給を示し、campaign側refuge_ready=falseにより農場商人を残す。"
+    },
+    {
+      "case": "最高難度で全員撃破",
+      "result": "成立",
+      "reason": "最後の個体撃破後refreshRefugeが解錠を通知し、家内NPCとマーカー・生還報告に移る。"
+    },
+    {
+      "case": "メモ未読/農場任意自己紹介省略",
+      "result": "成立",
+      "reason": "農場必須イベントとHUDで目的が分かり、家内画像配布の話題は前提をたこさん側から説明。endingの日記応答は未読分岐を保持。"
+    },
+    {
+      "case": "船と無線の因果",
+      "result": "成立",
+      "reason": "巨大そば屋撃破で督促放送停止→たこさんが農場または合流後に救難連絡→玄関条件後に避難者が移動→二人の報告後、外で荷造りしつつ先行乗船を確認。無線連絡と移動を同一瞬間の必須条件にしていない。"
+    },
+    {
+      "case": "旧セーブの任意会話記録",
+      "result": "成立",
+      "reason": "新しいrefuge_report_*を利用するため、旧reunion_*既読だけで自動クリアしない。"
+    }
+  ],
+  "minorSuggestions": [
+    {
+      "id": "RA-L1",
+      "location": "game_dialogue.dart: 両reunion末尾、game_story.dart: memo.reservation",
+      "finding": "二人への声かけ案内と「既読だけつけて」の軽口が会話・メモで反復する。実際の新規進行条件なので現稿では必要な再提示の範囲。",
+      "proposal": "将来テンポを詰める場合は、任意メモ側の既読の一文から削る。必須reunionとHUDの完了条件は残す。",
+      "blocksAcceptance": false
+    },
+    {
+      "id": "RA-L2",
+      "location": "game_dialogue.dart: mountainTakosanAfter.evidence",
+      "finding": "農場の画像配布会話を聞いていた場合、福ちゃんの「ネットで配ってたんですか」が再驚愕になる。既知の軽微指摘。",
+      "proposal": "次回音声改訂時に「社員の画像、安否確認にも使うんですね」へ変えれば既知/未知の両方で自然。今回の声生成は止めない。",
+      "blocksAcceptance": false
+    },
+    {
+      "id": "RA-L3",
+      "location": "game_story.dart: memo.stop / game_dialogue.dart: mountainRemainingLine,mountainRemainingTakoLine",
+      "finding": "「最高難度」「この難度」というUI側の概念を登場人物も述べる。説明として正確だが、現実の会話への没入は少し薄くなる。",
+      "proposal": "仕様変更が落ち着いたら条件付き文面と画面上の難度表示に任せる選択肢がある。現稿では例外の明確さを優先して許容。",
+      "blocksAcceptance": false
+    }
+  ],
+  "conclusion": "作者自己レビューでは90点・重大0件。新しい終了条件は本文とUIに明示され、順不同・途中終了・最高難度補給の経路も一致する。本文をさらに増やす必要はない。独立レビュアーBと実行検証の結果を別途合わせて判断する。"
+}

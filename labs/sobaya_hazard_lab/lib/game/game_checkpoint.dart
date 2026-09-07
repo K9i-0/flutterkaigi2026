@@ -1,4 +1,5 @@
 import 'game_story.dart';
+import 'game_settings.dart';
 import 'game_state.dart';
 import 'game_ladder.dart';
 import 'game_window.dart';
@@ -107,6 +108,8 @@ HazardGameState restoreHazardCheckpoint(
   Map<String, dynamic> map,
   Set<String> collection, {
   List<Map<String, dynamic>>? catalog,
+  HazardDifficulty difficulty = HazardDifficulty.standard,
+  bool? refugeReady,
 }) {
   void require(bool valid) {
     if (!valid) throw const FormatException('Invalid checkpoint');
@@ -127,7 +130,12 @@ HazardGameState restoreHazardCheckpoint(
         data['map'] == (map['id'] ?? 'village') &&
         data['mapVersion'] == map['version'],
   );
-  final s = HazardGameState(map, savedCollection: collection, catalog: catalog);
+  final s = HazardGameState(
+    map,
+    savedCollection: collection,
+    catalog: catalog,
+    difficulty: difficulty,
+  );
   final p = data['player'] as Map<String, dynamic>;
   s.x = number(p['x'], -22.3, 22.3);
   s.y = number(p['y'], 0, 6);
@@ -156,6 +164,13 @@ HazardGameState restoreHazardCheckpoint(
   s.gateOpen = data['gateOpen'] as bool;
   require(!s.gateOpen || s.gateMode != 'key' || s.hasKey);
   s.seenEvents.addAll((data['seenEvents'] as List? ?? const []).cast<String>());
+  if (refugeReady != null) {
+    if (refugeReady) {
+      s.seenEvents.add('refuge_ready');
+    } else {
+      s.seenEvents.remove('refuge_ready');
+    }
+  }
   final notes = (data['foundMemos'] as List? ?? const []).cast<String>();
   require(notes.every((id) => villageMemos.any((m) => m.id == id)));
   s.foundMemos.addAll(notes);
@@ -342,7 +357,7 @@ HazardGameState restoreHazardCheckpoint(
     e.companionTarget = j['companionTarget'] as String?;
     if (e.companionTarget != null) {
       require(
-        s.npcs.any((n) => n['id'] == e.companionTarget) &&
+        (map['npcs'] as List).any((n) => n['id'] == e.companionTarget) &&
             e.alive &&
             e.active &&
             e.alerted &&
@@ -389,6 +404,29 @@ HazardGameState restoreHazardCheckpoint(
           1,
     );
   }
+  s.normalizeRefugeOccupants();
+  // A newly restored supply NPC may stand where an older evacuated save put
+  // the player. Move only that overlap to a nearby valid approach position.
+  if (refugeReady == false &&
+      !s.hasRefuge &&
+      !s.traversing &&
+      s.y < 1.3 &&
+      s.npcs.any((n) {
+        final dx = s.x - (n['x'] as num), dz = s.z - (n['z'] as num);
+        return dx * dx + dz * dz < .61 * .61;
+      })) {
+    final oldX = s.x, oldZ = s.z;
+    for (final offset in [(0.0, -1.3), (-1.3, 0.0), (1.3, 0.0), (0.0, 1.3)]) {
+      if (!s.blocked(oldX + offset.$1, oldZ + offset.$2, s.y)) {
+        s.x = oldX + offset.$1;
+        s.z = oldZ + offset.$2;
+        s.grapple = null;
+        s.breakFreeTime = 0;
+        break;
+      }
+    }
+  }
+
   require(s.traversing || !s.blocked(s.x, s.z, s.y));
   s.phase = PlayPhase.playing;
   s.invulnerable = .5;

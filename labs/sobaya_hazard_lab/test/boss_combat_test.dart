@@ -11,6 +11,8 @@ HazardGameState arena() {
   final s = HazardGameState(
     jsonDecode(File('assets/mountain.json').readAsStringSync()),
   );
+  // This fixture is an isolated combat arena, without the final refuge.
+  s.map['id'] = 'boss_arena';
   s.obstacles.clear();
   s.crates.clear();
   for (final e in s.enemies) {

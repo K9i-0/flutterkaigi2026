@@ -319,8 +319,8 @@
     },
     {
       "id": 5,
-      "x": 10,
-      "z": 13,
+      "x": 11,
+      "z": 7,
       "active": true,
       "boss": false
     }
@@ -379,22 +379,14 @@
         "z": -10,
         "yaw": 1.5707963267948966
       }
-    },
-    {
-      "id": "escape",
-      "target": "ending",
-      "x": 21.2,
-      "z": 15,
-      "radius": 0.9,
-      "requiresGate": true
     }
   ],
   "gate": {
-    "x": 20,
-    "z": 15,
+    "x": 13,
+    "z": 9.5,
     "y": 0,
     "mode": "boss",
-    "label": "脱出路の門"
+    "label": "集合場所の家"
   },
   "targets": []
 }

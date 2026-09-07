@@ -1,0 +1,334 @@
+{
+  "schemaVersion": 1,
+  "reviewId": "refuge-review-export",
+  "reviewer": "text_export agent",
+  "date": "2026-09-07",
+  "independence": {
+    "storyAuthor": false,
+    "priorImplementationRole": "全文exporter・キャンペーン監査・説明資料を担当。今回評価する本編台詞・メモの執筆は担当していない。",
+    "otherCurrentReviewScoresConsulted": false,
+    "note": "本レビューでは他レビュアーのレビュー結果ファイルを開かず、固定基準と現在本文・実装を確認して採点した。過去の編集履歴の存在は知っているが、今回の採点根拠にはしていない。"
+  },
+  "scope": {
+    "included": [
+      "全文JSONの構造化会話・メモ・裏書き・資料・UI候補",
+      "現行Dart本文と家の解放/入室/報告ルール",
+      "必須進行・任意メモ未読・難度・撃破順・会話順・途中終了/再訪"
+    ],
+    "limitations": [
+      "感性に関する点数はAIの編集評価であり、プレイヤー調査ではない。",
+      "生成音声の声質や新ムービーの画角は今回の本文採点対象外。",
+      "画像内OCRは未校正の転記として読み、OCRの誤読を本文の誤字と認定していない。",
+      "ソースに残る到達不可の旧会話定数は、現行プレイでの発話として加点・減点していない。"
+    ]
+  },
+  "criteria": [
+    {
+      "id": "madogiwa_fun",
+      "name": "窓際族物語としての面白さ",
+      "score": 9,
+      "weight": 25,
+      "evidence": [
+        {
+          "id": "event:farm:6 / event:farm:7",
+          "quote": "僕、受講者じゃなくて交換部品だったという説が濃厚です。／交換なら、古い人を帰します。ここは追加です。",
+          "assessment": "福ちゃんの誤った納得を、たこさんがさらに悪い現実へ訂正する。説明そのものが応酬になり、単に説明の後へギャグを足していない。"
+        },
+        {
+          "id": "event:ending:2 / event:ending:3",
+          "quote": "今度は間違えないように、全員返信で。／ワイ、店の予約より先に出向先の予約したないねん。",
+          "assessment": "冒頭の全社員配属事故を再発寸前の落ちとして回収し、帰還しても人物の危うさを失わない。"
+        },
+        {
+          "id": "dialogue:mountainYametaroAfter:evidence:0..2",
+          "quote": "賞金のところに、済って書いておきます？／ワイが換金されたことになるやろ！",
+          "assessment": "指名手配という固有の過去と、福ちゃんの親切の方向のずれが結びついている。"
+        }
+      ],
+      "why_not_10": "二人への報告説明が連続し、再会の勢いを少し止める。終盤の任意話題には同じ人物紹介の言い直しも残る。"
+    },
+    {
+      "id": "japanese",
+      "name": "日本語の自然さ",
+      "score": 9,
+      "weight": 20,
+      "evidence": [
+        {
+          "id": "dialogue:yametaro:intro:0",
+          "quote": "そしたら出向の手続きだけ、一日で完成したわ。",
+          "assessment": "仕事の失敗と人事の速さを一息で対比でき、話し言葉として読みやすい。やめ太郎の一人称ワイ・関西弁も全体で統一される。"
+        },
+        {
+          "id": "dialogue:mountainTakosanAfter:reunion:1..2",
+          "quote": "たこさんも来てたんですね。お店ごと？／避難先でも営業します。",
+          "assessment": "短い問い返しに対して直接返答し、映像を見ながらでも会話の向きが分かる。"
+        },
+        {
+          "id": "memo:diary_mid / memo:diary_end",
+          "quote": "紙ならある。まだ書ける。／まど　ない\nびーる　うま",
+          "assessment": "通常文から語彙と文法が崩れる推移に意図がある。単なる日本語の誤りとは扱わない。"
+        }
+      ],
+      "why_not_10": "停止手順メモ後半は操作・最高難度・補給・避難・報告を一段落に詰めており、情報の切れ目をもう少し増やせる。"
+    },
+    {
+      "id": "clarity",
+      "name": "わかりやすさ",
+      "score": 9,
+      "weight": 20,
+      "evidence": [
+        {
+          "id": "event:opening:5..8 / document:gun-receipt / document:decree",
+          "quote": "船長に…この銃を渡された／村のそば屋は銃で撃ってOK。よーたん",
+          "assessment": "福ちゃんが銃を持つ理由と銃撃の雑な許可を必須会話で解決しており、任意メモに前提を預けない。"
+        },
+        {
+          "id": "event:farm:9 / source:game_refuge:refugeObjective",
+          "quote": "玄関が開いたら中へ。私とやめ太郎、二人に声をかけてください。／生還報告 …/2",
+          "assessment": "ボス→玄関→入室→二人との会話という次の行動が、会話とHUDの両方で一致する。残敵がいる最高難度では施錠と農場補給をHUDが示す。"
+        },
+        {
+          "id": "event:ending:5:unread / unreadKeeperReply",
+          "quote": "二つも食べたなら、研修で一番いい成果ですね。",
+          "assessment": "日記未読で「あの日記」を既知として扱わない。必須映像で避難者の存在も提示されるため、メモを読まずに救助の結末へ進める。"
+        }
+      ],
+      "why_not_10": "最高難度でボスを先に倒して農場へ戻ると、任意の台帳会話に撃破前の未来形が一行残る。現在のHUDと進行を覆すものではないが、時点の精度をさらに上げられる。"
+    },
+    {
+      "id": "character",
+      "name": "各キャラクターの特徴",
+      "score": 9,
+      "weight": 20,
+      "evidence": [
+        {
+          "id": "event:last_order:1",
+          "quote": "ビールが飲めて、仕事も終わらない。メリットです！ 乾杯！",
+          "assessment": "巨大そば屋が汎用の悪役ではなく、待遇を肯定へ変換するそば屋の延長として成立している。"
+        },
+        {
+          "id": "dialogue:takosan:intro:2..5 / purchase:ammo / purchaseReply:herb",
+          "quote": "背景透過版が人気でした。／領収書は研修費で切れます。／ギュンギュンです。",
+          "assessment": "無断配布、無表情な商売、薬物を匂わせる受け答えが同じ人物の態度として揃う。"
+        },
+        {
+          "id": "memo:reservation / dialogue:mountainYametaroAfter:greeting:0",
+          "quote": "捜索担当で送り返されるやろ。／店から会社に通報されへんかな。",
+          "assessment": "全員救助を目指しても、やめ太郎の保身・逃げ腰・指名手配の心配を残し、急に立派な英雄へ変えていない。"
+        }
+      ],
+      "why_not_10": "たこさんの画像配布を以前に聞いた場合も福ちゃんが再び初耳の形で反応する。天然さとしては収まるが、訪問履歴への反応はまだ改善できる。"
+    },
+    {
+      "id": "black_humor",
+      "name": "ブラックジョーク",
+      "score": 9,
+      "weight": 15,
+      "evidence": [
+        {
+          "id": "memo:campaign",
+          "quote": "案件は止まった。社員を送り込む手続きだけが止まっていない。",
+          "assessment": "部署間の断絶を舞台と主人公の到着理由そのものにし、抽象的な会社批判に終わらない。"
+        },
+        {
+          "id": "posterEvidence:shark",
+          "quote": "業務終了の見込みが立ちません／では業務中に上映します",
+          "assessment": "暗い労働状況を、窓際社員側の勝手な解決へひっくり返す。苦境の説明だけで終わらない。"
+        },
+        {
+          "id": "dialogue:mountainYametaroAfter:route:2 / purchase:ammo",
+          "quote": "差し戻される前に圏外へ出るで。／これでそば屋を蜂の巣にしてください。",
+          "assessment": "救助の達成と会社への不信、商売の物騒さが同居する。世話係の日記の悲惨さを笑い潰さず、会話側で黒い笑いを担当できている。"
+        }
+      ],
+      "why_not_10": "世話係一名・追加要員・撤収対象外の資料は意図的な反復でもあり、全収集を続けて読むと一部の圧迫感は重なる。"
+    }
+  ],
+  "weightedTotal": 90.0,
+  "majorFindings": [],
+  "minorFindings": [
+    {
+      "id": "REFUGE-MINOR-01",
+      "severity": "minor",
+      "title": "ボス先撃破後の農場で、台帳会話だけ撃破前の未来形になる",
+      "source": {
+        "path": "lib/game/game_dialogue.dart",
+        "line": 85
+      },
+      "textIds": [
+        "dialogue:takosan:evidence:2",
+        "resolved-dialogue:takosan:evidence:1"
+      ],
+      "quote": "巨大そば屋を倒したら、私が桟橋まで連れていきます。",
+      "condition": "最高難度で巨大そば屋を先に撃破し、通常個体が残る間に農場へ戻る。returnsメモを持ち「拾った記録について」を選ぶ。",
+      "finding": "NPCと補給は正しく農場に残るが、この一行だけはすでに倒した巨大そば屋を今後倒す話になる。新しい「玄関が開くまで農場に残る」という説明との時点が少しずれる。",
+      "why_non_blocking": "目的HUDと撃破通知は残敵の全撃破・農場補給を明示し、門やNPCの実挙動も一致している。この任意の計画説明だけで現在の目標が置き換わるわけではなく、進行や主筋の理解を妨げる重大な矛盾とは判定しない。",
+      "suggestion": "次回の音声更新時、この一行を「家の玄関が開いたら、宿舎の皆さんを連れて合流します」など撃破順に依存しない条件へ置き換える。",
+      "required_for_this_release": false
+    },
+    {
+      "id": "REFUGE-MINOR-02",
+      "severity": "minor",
+      "title": "二人目の再会で、すでに済んだ一人目への報告も再度案内される",
+      "sources": [
+        {
+          "path": "lib/game/game_dialogue.dart",
+          "line": 196
+        },
+        {
+          "path": "lib/game/game_dialogue.dart",
+          "line": 223
+        }
+      ],
+      "textIds": [
+        "dialogue:mountainYametaroAfter:reunion:3",
+        "dialogue:mountainTakosanAfter:reunion:3"
+      ],
+      "quote": "出発前に、私とやめ太郎の二人に声をかけてください。",
+      "condition": "どちらの順でも一人目の報告を済ませ、二人目の再会会話を読む。",
+      "finding": "同じ二人確認の案内を続けて聞くため、再会の掛け合いのテンポがわずかに落ちる。",
+      "why_non_blocking": "生還報告1/2と「会話を終えてクリア」が未完了の相手を正しく示し、二人への再訪ループは要求されない。文自体は一般的な出発条件なので両順とも矛盾ではない。",
+      "suggestion": "将来の演出改善なら、二人目だけ「これで全員そろいました」など短い反応にする。現在の固定音声を差し替える必須理由ではない。",
+      "required_for_this_release": false
+    },
+    {
+      "id": "REFUGE-MINOR-03",
+      "severity": "minor",
+      "title": "画像配布を聞き直す福ちゃんの初耳表現",
+      "source": {
+        "path": "lib/game/game_dialogue.dart",
+        "line": 244
+      },
+      "textIds": [
+        "dialogue:takosan:intro:2",
+        "dialogue:mountainTakosanAfter:evidence:1"
+      ],
+      "quote": "社員の画像、ネットで配ってたんですか。",
+      "condition": "農場の任意自己紹介を既に聞いてから、山の「避難した社員」を読む。",
+      "finding": "既に無断配布と本人の背景透過版を聞いた場合、初耳の疑問形が少し重なる。",
+      "why_non_blocking": "人物の天然さの範囲で理解でき、安否確認に転用したという新情報とジョークは成立する。未読者には必要な前提も補われる。",
+      "suggestion": "次の文章・音声更新で「社員の画像をネットで配って、安否確認にも使うんですね」等にすると既読・未読双方へ自然につながる。",
+      "required_for_this_release": false
+    }
+  ],
+  "branchChecks": [
+    {
+      "case": "通常難度・ボス撃破後",
+      "result": "pass",
+      "evidence": [
+        "game_refuge.dart:refugeUnlocked",
+        "game_refuge.dart:refugeObjective",
+        "event:farm:9",
+        "event:ending:0"
+      ],
+      "assessment": "巨大個体を倒すと玄関が開く。入室だけでは終わらず、二人への報告後に家を出て乗船する映像へつながる。旧東門を目指す必須台詞はない。"
+    },
+    {
+      "case": "最高難度・ボス先撃破",
+      "result": "pass_with_minor_note",
+      "evidence": [
+        "game_refuge.dart:refugeUnlocked",
+        "game_state.dart:_defeat",
+        "game_campaign.dart:refuge_readyの伝播",
+        "REFUGE-MINOR-01"
+      ],
+      "assessment": "残敵がいれば玄関は閉じ、農場補給が利用可能。残り人数と補給先を通知する。全員撃破で解放・NPC移動へ進む。任意台帳会話の未来形だけ軽微な時点ずれが残る。"
+    },
+    {
+      "case": "最高難度・ボスを最後に撃破",
+      "result": "pass",
+      "evidence": [
+        "test/game_refuge_test.dart:highest difficulty unlocks on the final kill"
+      ],
+      "assessment": "最後の撃破で同じ解放条件へ到達し、敵を倒す順序により結末の台詞が破綻しない。"
+    },
+    {
+      "case": "やめ太郎→たこさん / たこさん→やめ太郎",
+      "result": "pass",
+      "evidence": [
+        "test/game_refuge_test.dart:both report orders complete after leaving the second conversation",
+        "dialogue:mountainYametaroAfter:reunion",
+        "dialogue:mountainTakosanAfter:reunion"
+      ],
+      "assessment": "両会話とも別の再会会話を既に聞いたことを前提にしていない。最後の一人の会話を終えたときだけ完了する。案内の繰返しは軽微。"
+    },
+    {
+      "case": "任意メモを未読",
+      "result": "pass",
+      "evidence": [
+        "event:farm:4..9",
+        "event:ending:5:unread",
+        "unreadKeeperReply"
+      ],
+      "assessment": "クローンとエンジン、帰還方法、避難者の存在は必須会話で伝わる。日記未読の台詞差分は日記を既知として扱わない。資料で追加されるのは背景の厚みであり、脱出条件ではない。"
+    },
+    {
+      "case": "会話途中で終了→再訪",
+      "result": "pass",
+      "evidence": [
+        "game_refuge.dart:_rememberRefugeReport",
+        "game_state.dart:endDialogue",
+        "test/game_refuge_test.dart:early exit and repeat NPC visits cannot count as two reports"
+      ],
+      "assessment": "途中終了では報告フラグが付かず、再訪して再会会話を完読できる。二人への報告を促す台詞と、既読だけでは終わらない実装が一致する。"
+    },
+    {
+      "case": "同じNPCの繰返し・旧reunion既読・途中セーブ",
+      "result": "pass",
+      "evidence": [
+        "test/game_refuge_test.dart:old optional reunion flags do not satisfy the new clear requirement",
+        "test/game_refuge_test.dart:one report survives save without repeating it"
+      ],
+      "assessment": "人物別の新報告フラグを用い、一人を二回数えない。既に報告した人物は挨拶となり、旧任意会話フラグだけで新しい完了条件を満たさない。"
+    }
+  ],
+  "validation": {
+    "sourceJsonMatchesReviewedDialogueEventsStoryRefuge": true,
+    "command": "mise exec -- flutter test test/game_refuge_test.dart test/game_reunion_test.dart --reporter expanded",
+    "result": "25 tests passed",
+    "log": "/tmp/hazard-refuge-independent-review-tests.log",
+    "method": "本文の精読とソース条件の照合、exportの実行例確認、関連テストを再実行。採点に合わせた本文・コード編集はしていない。"
+  },
+  "verdict": {
+    "thisReviewerPass": true,
+    "majorCount": 0,
+    "allCriteriaAtLeast8": true,
+    "thresholdUnchanged": true,
+    "requiredImmediateChanges": [],
+    "summary": "各項目9点、合計90点。人物の受け違いとブラックジョークが主筋に組み込まれ、新しい入室・二人への報告という進行も理解できる。軽微な時点表現と反復は残るが、現稿で合格と判定する。独立2名の最終合否の照合は主担当が行う。"
+  },
+  "sourceHashes": [
+    {
+      "path": "scenario/game_text.json",
+      "sha256": "e8a846c93acb62784fd29ee41c659c72f321efb162260e227b531ded822b73be"
+    },
+    {
+      "path": "scenario/REVIEW_RUBRIC.md",
+      "sha256": "2ded8ebcaf99982dc94a7fbd14e3ee79aa93459c0d3f04f4c0487f369bcd2aab"
+    },
+    {
+      "path": "lib/game/game_dialogue.dart",
+      "sha256": "38c863f16ba9e9d8dc0e7835a6fa74e7675e478c2686fa61c983961c683ac84c"
+    },
+    {
+      "path": "lib/game/game_events.dart",
+      "sha256": "0580248af1a01aff3a66a7f07a52d176f79ec1193164d42735680cb2a5650ec5"
+    },
+    {
+      "path": "lib/game/game_story.dart",
+      "sha256": "4b3c574b47e42457a13476dac5d414c8304538eb1123fb68dd69b5bc2eded5b1"
+    },
+    {
+      "path": "lib/game/game_refuge.dart",
+      "sha256": "d253a2b99af20344483e5b5bce42b6b64fa771666529d7b25a1d195b09cf97ff"
+    },
+    {
+      "path": "lib/game/game_state.dart",
+      "sha256": "aa5a75ef138db4b0c43df2223a09d08f7b7a1f9c06576d7a86dcdece07fadfef"
+    },
+    {
+      "path": "lib/game/game_cinematic_insert.dart",
+      "sha256": "7cd86978ed87746c22f58bfe4a2b342566281294c31e3c2b9c6e4ff8be708854"
+    }
+  ]
+}

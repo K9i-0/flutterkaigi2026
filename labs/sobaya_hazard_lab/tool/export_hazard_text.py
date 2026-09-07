@@ -326,7 +326,7 @@ def build(previous, force_ocr):
             "authoritativeText": "Dart台詞・分岐・資料・メモ・ポスター裏面・UI・操作文・通知・マップの文字列。runtimeStoryは実際のDart定数/getterから評価。sourceTextは本編ソースの網羅的な文字列候補抽出。",
             "readOrder": ["runtimeStory.events", "runtimeStory.dialogueTrees", "runtimeStory.dialogueStarts", "runtimeStory.resolvedDialogueVariants",
                           "runtimeStory.memos", "runtimeStory.posterEvidence", "cinematicDocuments", "maps", "sourceText", "imageText"],
-            "branchNotes": "bossAliveはキャンペーン全体の巨大そば屋の生存状態。falseではgiant_defeatedを設定し、地域移動後と同じ避難開始状態を再現する。evacuationStartedを各contexts/objectiveExamples/dialogueStarts.contextへ明示。resolvedDialogueVariantsのcontextsはgetterの評価入力で、npcPresent=falseの旧会話も比較用に収録するが実プレイでは開始不可。topicUnlockedByDialogueStateは会話getterの解禁状態、topicSelectableはNPCの存在も満たした選択肢表示可否（intro/greetingは自動会話なのでfalse）。dialogueStartsは実際に存在するNPCの場所でstartDialogueを実行した初回/再訪/撃破後再会の冒頭と選択肢。未受領/受領、各メモ単独所持、全イベント既視聴などの完全な状態空間は列挙していない。解禁・発火条件はconditionSourcesを参照。",
+            "branchNotes": "bossAliveはキャンペーン全体の巨大そば屋の生存状態。falseではgiant_defeatedを設定する。移動フラグrefuge_readyは標準のボス撃破／最高難度の全員撃破で設定し、家解放まで農場の商人を残す。evacuationStartedを各contexts/objectiveExamples/dialogueStarts.contextへ明示。resolvedDialogueVariantsのcontextsはgetterの評価入力で、npcPresent=falseの旧会話も比較用に収録するが実プレイでは開始不可。topicUnlockedByDialogueStateは会話getterの解禁状態、topicSelectableはNPCの存在も満たした選択肢表示可否（intro/greetingは自動会話なのでfalse）。dialogueStartsは初回/再訪/撃破後再会をstartDialogueで実行した結果。閉鎖中の家は玄関外からの拒否例を含む。旧reunion既読と新refuge_reportを区別する。未受領/受領、各メモ単独所持、全イベント既視聴などの完全な状態空間は列挙していない。解禁・発火条件はconditionSourcesを参照。",
             "imageText": "ポスター原本とカットシーン画像・ロゴの焼き込み文字をApple Visionで転記。座標・confidence付き。OCRは未校正で、装飾文字や細字の欠落・誤読・読む順の誤りがあり得る。画像の全文を完全に保証する正本ではなく、レビュー補助。ゲーム側の題名と裏書きは別途正確に収録。",
             "excluded": ["vendor/flutter_sceneおよびFlutter/OS自体の文言", "旧モデル検証ラボなどlib/game以外のUI（game_main.dartのみ含む）",
                          "自動化・ベンチマーク専用のエラー/検証用シナリオ", "ソースコメント、保存キー、内部ID、アセットパスだけの文字列",
@@ -350,7 +350,8 @@ def condition_sources():
     """Full source excerpts make inferred trigger notes auditable, not invented."""
     result = []
     targets = {
-        "game_state.dart": ["get knowsEngine", "get hasStoryEvidence", "get npcs", "get postBossReunion", "get evacuationStarted", "get dialogueLines", "get availableDialogueTopics", "String dialogueTopicLabel", "get visibleTradeOffers", "int stockRemaining", "void startDialogue", "void chooseDialogue", "void buySupplies"],
+        "game_state.dart": ["get knowsEngine", "get hasStoryEvidence", "get npcs", "get postBossReunion", "get evacuationStarted", "get dialogueLines", "get availableDialogueTopics", "String dialogueTopicLabel", "get visibleTradeOffers", "int stockRemaining", "void startDialogue", "void chooseDialogue", "void buySupplies", "void endDialogue"],
+        "game_refuge.dart": ["get refugeUnlocked", "get insideRefuge", "get refugeReports", "get refugeComplete", "void _rememberRefugeReport", "void normalizeRefugeOccupants"],
         "game_controller.dart": ["void _finishEvent", "void startEvent", "bool transitionRegion"],
         "game_page.dart": ["Widget dialogue"],
     }

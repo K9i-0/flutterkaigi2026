@@ -21,7 +21,7 @@ Future<void> main(List<String> args) async {
   String? error;
   try {
     await audit.run();
-    success = audit.s.phase == PlayPhase.clear;
+    success = audit.s.refugeComplete;
   } catch (e, st) {
     error = '$e\n$st';
     stderr.writeln(error);

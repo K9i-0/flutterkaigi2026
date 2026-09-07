@@ -23,6 +23,15 @@ void main() {
       for (final e in s.enemies) {
         e.active = false;
       }
+      // The final house's indoor note is collected after its door unlocks.
+      if (s.hasRefuge) {
+        for (final e in s.enemies.where((e) => e.boss)) {
+          e.alive = false;
+          e.hp = 0;
+        }
+        s.kills = 1;
+        s.refreshRefuge();
+      }
       var found = false;
       for (var dx = -1.0; dx <= 1; dx += .25) {
         for (var dz = -1.0; dz <= 1; dz += .25) {
