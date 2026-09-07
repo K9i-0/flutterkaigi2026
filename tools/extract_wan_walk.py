@@ -4,15 +4,19 @@ Raw observations/overlay are local QA, not an assertion of accurate 3D capture.
 """
 from pathlib import Path
 import json
+import argparse
 import cv2
 import numpy as np
 import mediapipe as mp
 ROOT=Path(__file__).resolve().parents[1]
-folder=ROOT/'.local/wan_motion'
-video=ROOT/'03_SCRIPTS/62_hazard_motion_reference_wan3/wan3_01_walk_clay_seed620102_480p.mp4'
+parser=argparse.ArgumentParser()
+parser.add_argument('--rig-highlight',action='store_true')
+args=parser.parse_args()
+folder=ROOT/('.local/wan_rig_motion' if args.rig_highlight else '.local/wan_motion');folder.mkdir(parents=True,exist_ok=True)
+video=ROOT/'03_SCRIPTS/62_hazard_motion_reference_wan3'/('wan3_01_walk_clay_rig_seed620102_480p.mp4' if args.rig_highlight else 'wan3_01_walk_clay_seed620102_480p.mp4')
 cap=cv2.VideoCapture(str(video));fps=cap.get(cv2.CAP_PROP_FPS)
 w,h=[int(cap.get(p)) for p in [cv2.CAP_PROP_FRAME_WIDTH,cv2.CAP_PROP_FRAME_HEIGHT]]
-options=mp.tasks.vision.PoseLandmarkerOptions(base_options=mp.tasks.BaseOptions(model_asset_path=str(folder/'pose_landmarker_full.task')),running_mode=mp.tasks.vision.RunningMode.VIDEO,min_pose_detection_confidence=.35,min_tracking_confidence=.4)
+options=mp.tasks.vision.PoseLandmarkerOptions(base_options=mp.tasks.BaseOptions(model_asset_path=str(ROOT/'.local/wan_motion/pose_landmarker_full.task')),running_mode=mp.tasks.vision.RunningMode.VIDEO,min_pose_detection_confidence=.35,min_tracking_confidence=.4)
 frames=[]; tiles=[]
 with mp.tasks.vision.PoseLandmarker.create_from_options(options) as landmarker:
     i=0
@@ -26,6 +30,7 @@ with mp.tasks.vision.PoseLandmarker.create_from_options(options) as landmarker:
         row={'frame':i,'time':i/fps,'markers':markers}
         if result.pose_landmarks:
             row['points']=[[p.x*w,p.y*h,p.z*w,p.visibility] for p in result.pose_landmarks[0]]
+            row['worldPoints']=[[p.x,p.y,p.z,p.visibility] for p in result.pose_world_landmarks[0]]
             for p in row['points']:cv2.circle(frame,(round(p[0]),round(p[1])),2,(0,0,255),-1)
             for a,b in [(11,13),(13,15),(12,14),(14,16),(23,25),(25,27),(24,26),(26,28),(11,23),(12,24),(27,31),(28,32)]:
                 cv2.line(frame,tuple(np.round(row['points'][a][:2]).astype(int)),tuple(np.round(row['points'][b][:2]).astype(int)),(0,200,0),1)

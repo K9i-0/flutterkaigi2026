@@ -24,7 +24,7 @@ void attachMotionAutomation(MotionController lab) {
   );
   registerMarionetteExtension(
     name: 'madogiwa.setMotionLab',
-    description: 'method=captured|library|procedural|hybrid|video, action=Walk etc, optional character=sobaya|fukuchan, compare=true|false, seek=seconds, speed=.25..2, view=front|side|back, skeleton=true|false.',
+    description: 'method=captured|library|procedural|hybrid|video|videoRig, action=Walk etc, optional character=sobaya|fukuchan, compare=true|false, seek=seconds, speed=.25..2, view=front|side|back, skeleton=true|false.',
     callback: (p) async {
       final l = _lab;
       if (l == null || !l.ready) {

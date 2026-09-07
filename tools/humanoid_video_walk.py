@@ -15,11 +15,18 @@ def evaluate(c,p):
     return c[0]+sum(c[2*n-1]*math.sin(math.tau*n*p)+c[2*n]*math.cos(math.tau*n*p) for n in range(1,4))
 
 def add_video_walk(body,profile):
-    if not SOURCE.exists():return
-    data=json.loads(SOURCE.read_text());c=data['coefficients'];frames=data['periodFrames'];duration=frames/FPS
+    bake_video_walk(body,profile,SOURCE,'Wan_Walk','video','クレイ動画からの歩行')
+    add_rig_video_walk(body,profile)
+
+def add_rig_video_walk(body,profile):
+    bake_video_walk(body,profile,OUT/'source/wan_walk_clay_rig.json','WanRig_Walk','videoRig','骨格ハイライト動画からの歩行・試作')
+
+def bake_video_walk(body,profile,source,clip,method,label):
+    if not source.exists():return
+    data=json.loads(source.read_text());c=data['coefficients'];frames=data['periodFrames'];duration=frames/FPS
     duty=data['stanceFraction'];speed=data['rootLegsPerSecond']*body.leg
     span=speed*duration*duty;rig=body.rig
-    body.action('Wan_Walk',frames);floors=[];ankles={s:[] for s in ['l','r']};phases={s:[] for s in ['l','r']}
+    body.action(clip,frames);floors=[];ankles={s:[] for s in ['l','r']};phases={s:[] for s in ['l','r']}
     for frame in range(frames+1):
         bpy.context.scene.frame_set(frame);clear_pose(rig);p=(frame%frames)/frames
         pelvis=body.bone('pelvis');position=body.point('pelvis')
@@ -47,9 +54,19 @@ def add_video_walk(body,profile):
             rotation=Quaternion((1,0,0),-angle).to_matrix()@body.rest[body.inverse['foot_'+side]].to_3x3()
             body.leg_ik(side,ankle,rotation)
             if phase<duty or body.skin_floor(side)<.003:body.ground_leg(side)
-            shoulder=body.bone('upperarm_'+side).head.copy()
-            wrist=shoulder+Vector((sign*body.arm*.13,-body.arm*max(-.38,min(.38,evaluate(c['wristForward'],phase))),body.arm*max(-.975,min(-.78,evaluate(c['wristUp'],phase)))))
-            body.ik(['upperarm_'+side,'lowerarm_'+side,'hand_'+side],wrist,Vector((sign*.18,-1,-.1)))
+            if 'armDirections' in data:
+                for part,a,b in [('upper','upperarm_','lowerarm_'),('lower','lowerarm_','hand_')]:
+                    curves=data['armDirections'][part]
+                    outward=max(.04,min(.35,evaluate(curves['out'],phase))) if part=='upper' else max(-.25,min(.35,evaluate(curves['out'],phase)))
+                    direction=Vector((sign*outward,-max(-.65,min(.65,evaluate(curves['forward'],phase))),max(-1,min(-.35,evaluate(curves['up'],phase))))).normalized()
+                    bone=body.bone(a+side);child=body.bone(b+side)
+                    rotation=(child.head-bone.head).rotation_difference(direction)
+                    bone.matrix=Matrix.Translation(bone.head)@rotation.to_matrix().to_4x4()@bone.matrix.to_3x3().to_4x4()
+                    bpy.context.view_layer.update()
+            else:
+                shoulder=body.bone('upperarm_'+side).head.copy()
+                wrist=shoulder+Vector((sign*body.arm*.13,-body.arm*max(-.38,min(.38,evaluate(c['wristForward'],phase))),body.arm*max(-.975,min(-.78,evaluate(c['wristUp'],phase)))))
+                body.ik(['upperarm_'+side,'lowerarm_'+side,'hand_'+side],wrist,Vector((sign*.18,-1,-.1)))
         stabilize_gaze(body,-3,5,heading=(0,-1,0));body.key(frame)
         floors.append(min(body.skin_floor('l'),body.skin_floor('r')))
         for s in ['l','r']:ankles[s].append(body.bone('foot_'+s).head.copy())
@@ -58,8 +75,8 @@ def add_video_walk(body,profile):
         for i in range(1,frames):
             if .12<phases[s][i-1]<phases[s][i]<.48:
                 v=(ankles[s][i]-ankles[s][i-1])*FPS-Vector((0,speed,0));errors.append(math.hypot(v.x,v.y))
-    entry=dict(name='Wan_Walk',action='Walk',label='クレイ動画からの歩行',method='video',category='移動',loop=True,duration=duration,source='wan_walk_clay.json / Wan 3.0 + MediaPipe + anatomical IK',sourceClip='01_walk',floor='flat',minSoleM=min(floors),groundSpeedMps=speed,contactAnkleSlipRmsMps=math.sqrt(sum(x*x for x in errors)/len(errors)),contactSamples=len(errors),gazePitchRangeDeg=[-3,5],referenceVideoSha256=data['videoSha256'])
-    profile['clips']=[e for e in profile['clips'] if e['name']!='Wan_Walk']+[entry]
+    entry=dict(name=clip,action='Walk',label=label,method=method,category='移動',loop=True,duration=duration,source=source.name+' / Wan 3.0 + MediaPipe + anatomical IK',sourceClip='01_walk',floor='flat',minSoleM=min(floors),groundSpeedMps=speed,contactAnkleSlipRmsMps=math.sqrt(sum(x*x for x in errors)/len(errors)),contactSamples=len(errors),gazePitchRangeDeg=[-3,5],referenceVideoSha256=data['videoSha256'])
+    profile['clips']=[e for e in profile['clips'] if e['name']!=clip]+[entry]
     print('VIDEO_WALK',body.name,json.dumps(entry),flush=True)
 
 
@@ -88,7 +105,8 @@ def main():
         meshes=[o for o in bpy.context.scene.objects if o.type=='MESH' and any(m.type=='ARMATURE' for m in o.modifiers)]
         for track in list(rig.animation_data.nla_tracks):rig.animation_data.nla_tracks.remove(track)
         use_action(rig,None);clear_pose(rig);body=Body(rig,meshes,name)
-        measure_captured_walk(body,profile);add_video_walk(body,profile)
+        if '--rig-highlight' in sys.argv:add_rig_video_walk(body,profile)
+        else:measure_captured_walk(body,profile);add_video_walk(body,profile)
         use_action(rig,None);clear_pose(rig)
         bpy.ops.object.select_all(action='DESELECT');rig.select_set(True)
         for mesh in meshes:mesh.select_set(True)

@@ -3,7 +3,12 @@ enum MotionMethod {
   library('公開ライブラリ', 'CC0の手付け動作を骨格へ移植。接地補正前の状態も比較できます。', 'CC0 / FK'),
   procedural('体格からIK生成', '実測した脚長・腕長から足と手の軌道を解き、動きを生成。', 'PROCEDURAL'),
   hybrid('公開動作 + IK', '公開動作の演技を使い、脚長・肩幅・靴底に合わせて補正。', 'CC0 + IK'),
-  video('Wan見本 + IK', 'クレイ動画から歩行周期・手足の軌道を観測。隠れた奥行きを補完し、体格別に接地を補正。', 'WAN + IK');
+  video('Wan見本 + IK', 'クレイ動画から歩行周期・手足の軌道を観測。隠れた奥行きを補完し、体格別に接地を補正。', 'WAN + IK'),
+  videoRig(
+    'Wan骨格見本',
+    '骨格ハイライト動画から身体の動きを再構成した試作。生成された骨格線は正解として使っていません。',
+    'WAN RIG / 試作',
+  );
 
   const MotionMethod(this.label, this.description, this.badge);
   final String label, description, badge;

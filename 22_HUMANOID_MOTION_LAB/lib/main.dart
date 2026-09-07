@@ -715,6 +715,8 @@ class _MotionPageState extends State<MotionPage> {
             ? '既存のMixamo収録動作'
             : lab.method == MotionMethod.procedural
             ? '独自の数式・2ボーンIK'
+            : lab.method == MotionMethod.videoRig
+            ? 'Wan 3.0 · 骨格ハイライト 480P\n身体の姿勢推定 + 体格別IK\n色の変化や余分な指骨は転用していません。'
             : lab.method == MotionMethod.video
             ? 'Wan 3.0 · クレイ歩行 480P\nMediaPipe観測 + 体格別IK\n単眼の奥行きは補完しています。'
             : 'Mesh2Motion / Quaternius\nCC0 1.0 · 改変・商用利用可',

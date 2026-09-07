@@ -1463,8 +1463,29 @@
         5
       ],
       "referenceVideoSha256": "551ec6598b1de184731c83de497ab4a88f27d6c5dfa928da48ae2c7314aa79c3"
+    },
+    {
+      "name": "WanRig_Walk",
+      "action": "Walk",
+      "label": "骨格ハイライト動画からの歩行・試作",
+      "method": "videoRig",
+      "category": "移動",
+      "loop": true,
+      "duration": 1.4,
+      "source": "wan_walk_clay_rig.json / Wan 3.0 + MediaPipe + anatomical IK",
+      "sourceClip": "01_walk",
+      "floor": "flat",
+      "minSoleM": 0.0026819429864104287,
+      "groundSpeedMps": 0.7087699618199412,
+      "contactAnkleSlipRmsMps": 3.4545555177402346e-06,
+      "contactSamples": 28,
+      "gazePitchRangeDeg": [
+        -3,
+        5
+      ],
+      "referenceVideoSha256": "b90ec77a3e9cf161c3fd8aa40f982653977c5e6f4884ffefe0aef2c4bcfec0b9"
     }
   ],
-  "glbBytes": 10524928,
+  "glbBytes": 10553004,
   "actionRefinementRevision": 2
 }

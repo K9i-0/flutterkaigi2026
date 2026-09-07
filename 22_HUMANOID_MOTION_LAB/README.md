@@ -1,6 +1,6 @@
 # そば屋モーションラボ
 
-そば屋ハザードのリアル頭身モデルを使う独立したmacOSアニメーション比較アプリ。**そば屋73・福ちゃん68クリップ、5手法**を収録。
+そば屋ハザードのリアル頭身モデルを使う独立したmacOSアニメーション比較アプリ。**そば屋74・福ちゃん69クリップ、6手法**を収録。
 
 ## 起動
 
@@ -17,7 +17,7 @@ Flutter 3.47.2 / Dart 3.13.2。ゲームと同じFlutter Scene 0.23.0のvendored
 ## 比較
 
 - **体格を比較**：同じ動作をそば屋・福ちゃんで同時再生。各自の脚長・腕長・肩幅を使う。
-- **手法を比較**：選んだ人物を5手法で並べる。共通の「歩行」で違いを見られる。選んだ動作のない手法は「未収録」と明示する。
+- **手法を比較**：選んだ人物を6手法で並べる。共通の「歩行」で違いを見られる。選んだ動作のない手法は「未収録」と明示する。
 - 左の手法は、実演収録の比較基準2本、CC0ライブラリ39本、体格から作るIK9本、公開動作＋IKはそば屋22本・福ちゃん17本。
 - 再生速度0.25〜2倍、一時停止、タイムライン、コマ送り、ループ、再開。
 - 位相同期ONは各クリップの同じ周期位置、OFFは同じ経過秒。手法によって元の演技・周期は異なる。
@@ -48,10 +48,14 @@ Dart MCPの `roots` にリポジトリを登録し、`launch_app(root=file:///�
 | extension | 引数 |
 | --- | --- |
 | `madogiwa.inspectMotionLab` | 状態、各個体の実クリップ名・時間・骨格・足首位置・クリップ数 |
-| `madogiwa.setMotionLab` | `method=captured|library|procedural|hybrid|video`, `action=Walk` 等。任意で `character=sobaya|fukuchan`, `compare=true|false`, `seek=秒`, `speed=.25..2`, `view=front|side|back`, `skeleton=true|false` |
+| `madogiwa.setMotionLab` | `method=captured|library|procedural|hybrid|video|videoRig`, `action=Walk` 等。任意で `character=sobaya|fukuchan`, `compare=true|false`, `seek=秒`, `speed=.25..2`, `view=front|side|back`, `skeleton=true|false` |
 
 GLBの数値監査は共通ライブラリの `validation.json`。追加動作としゃがみの75姿勢の実アプリ検査は `qa/action-refinement-20260907.json`。macOSでGPU描画、両体格、4手法比較、側面表示、骨格表示、停止・コマ送りを検証。iOS/Android/Web版はこのアプリの対象外。
 
 ## Wanクレイ歩行
 
-「Wan見本 + IK」を起動時に表示。両体格の歩行を追加。右パネルの「1.25 m/s で歩行比較」で同じ速度の移動を比較できる（各クリップの歩幅に合わせて再生速度を調整、8秒ごとに区間リセット）。生成動画の全身3D自動キャプチャではなく、側面の観測軌道と接地IKによる再構成。詳細は [01_walkの記録](../03_SCRIPTS/62_hazard_motion_reference_wan3/WALK_CLAY_RESULT.md)。
+「Wan見本 + IK」に収録。両体格の歩行を追加。右パネルの「1.25 m/s で歩行比較」で同じ速度の移動を比較できる（各クリップの歩幅に合わせて再生速度を調整、8秒ごとに区間リセット）。生成動画の全身3D自動キャプチャではなく、側面の観測軌道と接地IKによる再構成。詳細は [01_walkの記録](../03_SCRIPTS/62_hazard_motion_reference_wan3/WALK_CLAY_RESULT.md)。
+
+## 骨格ハイライト動画の試作
+
+起動時は「Wan骨格見本」を表示。`WanRig_Walk` を両体格で再生でき、「Wan見本 + IK」の前回版も残す。肩→肘→手首の推定方向と体格別の脚IKから再構成。生成動画の骨格線自体は正解として使用しない。1.4秒ループで、同速度比較にも対応する。腕の遮蔽・単眼奥行きの補完を含む試作として評価する。

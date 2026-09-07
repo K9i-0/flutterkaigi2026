@@ -1,0 +1,145 @@
+{
+  "schema": 2,
+  "videoSha256": "b90ec77a3e9cf161c3fd8aa40f982653977c5e6f4884ffefe0aef2c4bcfec0b9",
+  "taskId": "b70461e5-53e7-49ef-bec3-d15bb2f54637",
+  "model": "wan3.0-video",
+  "poseModel": "MediaPipe pose_landmarker_full float16 v1",
+  "posePackage": "mediapipe==0.10.32",
+  "fps": 30.0,
+  "size": [
+    842,
+    474
+  ],
+  "trackedFrames": 180,
+  "fittedFrames": [
+    40,
+    139
+  ],
+  "leftPeakFrames": [
+    58,
+    100
+  ],
+  "rightPeakFrames": [
+    79,
+    120
+  ],
+  "periodFrames": 42,
+  "duration": 1.4,
+  "legPixels": 112.42625921791395,
+  "rootPixelsPerSecond": 106.4448829502028,
+  "rootLegsPerSecond": 0.9467973380123095,
+  "stanceFraction": 0.6,
+  "armMedianVisibility": {
+    "leftShoulder": 0.9992736279964447,
+    "rightShoulder": 0.9999581873416901,
+    "leftElbow": 0.4181055277585983,
+    "rightElbow": 0.991352379322052,
+    "leftWrist": 0.5095265209674835,
+    "rightWrist": 0.9697389006614685
+  },
+  "coefficients": {
+    "ankleForward": [
+      -0.05706704882342762,
+      0.19143186361272582,
+      0.22557305272265465,
+      -0.036691087362343854,
+      0.10229583277391432,
+      0.03311812260052032,
+      -0.0015938992094396216
+    ],
+    "ankleLift": [
+      0.05987916641587685,
+      -0.07143423851235178,
+      -0.024799747741469324,
+      -0.007735923697397176,
+      -0.04949948714626859,
+      0.033423452904887144,
+      0.004864726821682164
+    ],
+    "footPitch": [
+      -0.23666575579587767,
+      0.3062850840865955,
+      0.1762893799552594,
+      -0.003190175235949867,
+      0.30255142606430685,
+      -0.11666632525800887,
+      0.004766659663712966
+    ],
+    "pelvisUp": [
+      0.0023894113863563732,
+      0.015441532662275539,
+      0.017706753388209606,
+      -0.023738834192939925,
+      0.010558042757509859,
+      -0.0008148797273701627,
+      -0.002327211883723147
+    ]
+  },
+  "armDirections": {
+    "upper": {
+      "out": [
+        0.19183192741201155,
+        0.033494614351123116,
+        0.10359427100489174,
+        0.04908513906403923,
+        0.03386299409690863,
+        0.007474183488810541,
+        0.012367186334354753
+      ],
+      "forward": [
+        -0.028840605767836962,
+        -0.05902749922859325,
+        -0.22261370039666695,
+        0.003223924019561778,
+        0.006210994123304363,
+        -0.003084385285488225,
+        -0.004389620731598491
+      ],
+      "up": [
+        -0.9570665627062263,
+        0.006161012906102719,
+        0.024733161360963863,
+        0.02285185075261725,
+        0.025456629593188975,
+        0.00010873002698898129,
+        0.0015236617407069332
+      ]
+    },
+    "lower": {
+      "out": [
+        0.05807273541160556,
+        0.10682273153217796,
+        0.1971625065758629,
+        0.06232606045767871,
+        0.026912780290629705,
+        0.01901346876978426,
+        0.008084724805273901
+      ],
+      "forward": [
+        0.2412227594374467,
+        -0.14135702869050715,
+        -0.3133247839267755,
+        0.030067485032060016,
+        0.050473241990160796,
+        0.006910766942083324,
+        -0.006072629899232711
+      ],
+      "up": [
+        -0.9025972080080907,
+        -0.037475800223314,
+        -0.07675918355121483,
+        0.05150803277906442,
+        0.055231645423732455,
+        -0.008968749552651523,
+        -0.011630997866951385
+      ]
+    }
+  },
+  "limitations": [
+    "Exploratory body-pose reconstruction, not exact tracking of the generated colored skeleton.",
+    "Single-camera depth, source yaw changes and occlusion limit accuracy; arm observations are confidence-weighted and symmetrized.",
+    "Oblique image-floor drift removed; absolute scale is uncalibrated and is normalized by projected leg chain length.",
+    "Foot support regularized by IK. No start or stop reconstruction. Lateral arm range is bounded and hand orientation is completed from the rest rig.",
+    "This trial changes both source video and arm reconstruction, so it does not isolate the causal benefit of skeleton highlights."
+  ]
+}

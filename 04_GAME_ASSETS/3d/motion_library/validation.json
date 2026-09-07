@@ -6,7 +6,7 @@
       "id": "sobaya",
       "bones": 45,
       "maxInfluences": 4,
-      "maxWeightError": 1.2014061212539673e-07,
+      "maxWeightError": 9.936047717928886e-08,
       "unweightedVertices": 0,
       "finite": true,
       "morphTargets": [],
@@ -15,299 +15,299 @@
           "name": "Walk",
           "method": "captured",
           "poses": 9,
-          "minSoleM": 0.0031059041395370968,
-          "maxLowestSoleM": 0.004632585089795582,
+          "minSoleM": 0.0031057219735663236,
+          "maxLowestSoleM": 0.004632527728943077,
           "loop": true,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -0.23027783313928837,
-            0.29850607025628506
+            -0.23027439133647934,
+            0.29850636374495904
           ]
         },
         {
           "name": "Run",
           "method": "captured",
           "poses": 9,
-          "minSoleM": 0.002402805596336585,
-          "maxLowestSoleM": 0.010790929435049751,
+          "minSoleM": 0.002401618204542752,
+          "maxLowestSoleM": 0.010791441048946332,
           "loop": true,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -0.7282511227537707,
-            1.2945705859303478
+            -0.7282504823718087,
+            1.2945680239554782
           ]
         },
         {
           "name": "Library_Idle_A",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.005081308979364604,
-          "maxLowestSoleM": 0.009198615970788304,
+          "minSoleM": 0.005081471193546011,
+          "maxLowestSoleM": 0.009198510857625755,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 5.214422901483146e-07,
+          "seamTranslationM": 5.14090056656747e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -7.291561679384449,
-            -4.4658853143224295
+            -7.291555654244535,
+            -4.465884457948724
           ]
         },
         {
           "name": "Hybrid_Idle_A",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.0040297118927137415,
-          "maxLowestSoleM": 0.004052301730974053,
+          "minSoleM": 0.00402968699370506,
+          "maxLowestSoleM": 0.004052341206604609,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 6.197775517816653e-07,
+          "seamTranslationM": 6.39948133114157e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -7.291561679384449,
-            -4.4658853143224295
+            -7.291555654244535,
+            -4.465884457948724
           ]
         },
         {
           "name": "Library_Walk",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.043794918805360794,
-          "maxLowestSoleM": -0.00433937555831676,
+          "minSoleM": -0.04379471018910408,
+          "maxLowestSoleM": -0.00433882287118359,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 9.916463892445236e-07,
+          "seamTranslationM": 1.2040680178994933e-06,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000100618547524,
-            -10.000001786861125
+            -10.000101485492275,
+            -10.000000052972158
           ]
         },
         {
           "name": "Hybrid_Walk",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.0030183549970388412,
-          "maxLowestSoleM": 0.00400229422048113,
+          "minSoleM": 0.003018398303538561,
+          "maxLowestSoleM": 0.004002823225943794,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 1.016730477338875e-06,
+          "seamTranslationM": 1.221236532279733e-06,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000100618547524,
-            -10.000001786861125
+            -10.000101485492275,
+            -10.000000052972158
           ]
         },
         {
           "name": "Library_Jog",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.038414156160699625,
-          "maxLowestSoleM": 0.18652164936065674,
+          "minSoleM": -0.03841542315917123,
+          "maxLowestSoleM": 0.18652258813381195,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 6.229327305604958e-07,
+          "seamTranslationM": 6.503618196958835e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.090179164434304,
-            -10.000000052972158
+            -10.090171359758411,
+            -9.999996585194252
           ]
         },
         {
           "name": "Hybrid_Jog",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": -0.0005647399379382273,
-          "maxLowestSoleM": 0.21459472179412842,
+          "minSoleM": -0.0005637370694932197,
+          "maxLowestSoleM": 0.2145959436893463,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 7.298219791464281e-07,
+          "seamTranslationM": 7.28327608478132e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.090179164434304,
-            -10.000000052972158
+            -10.090171359758411,
+            -9.999996585194252
           ]
         },
         {
           "name": "Library_Sprint",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.022126763581363687,
-          "maxLowestSoleM": 0.21735338866710663,
+          "minSoleM": -0.022126206124596703,
+          "maxLowestSoleM": 0.21735312044620514,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 6.993311864187004e-07,
+          "seamTranslationM": 7.787494831360174e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.120624911984402,
-            -10.000011323250607
+            -10.120617973837666,
+            -10.000020859640369
           ]
         },
         {
           "name": "Hybrid_Sprint",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.003765385893288727,
-          "maxLowestSoleM": 0.17050332031356064,
+          "minSoleM": 0.0037639295713784247,
+          "maxLowestSoleM": 0.17050299582299067,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 7.078144690943923e-07,
+          "seamTranslationM": 8.091795664614262e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.120624911984402,
-            -10.000011323250607
+            -10.120617973837666,
+            -10.000020859640369
           ]
         },
         {
           "name": "Library_Crouch_Idle",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.009204488779751214,
-          "maxLowestSoleM": -0.0063209040383818745,
+          "minSoleM": -0.009207217952897367,
+          "maxLowestSoleM": -0.0063232204439008935,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 3.974059737934514e-07,
+          "seamTranslationM": 3.847882763836355e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000046001032903,
-            -9.999955838806631
+            -10.000054670479056,
+            -9.999941967697117
           ]
         },
         {
           "name": "Hybrid_Crouch_Idle",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.0036768108196867932,
-          "maxLowestSoleM": 0.0037684717981048554,
+          "minSoleM": 0.003679059855921707,
+          "maxLowestSoleM": 0.0037706285420973373,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 3.556132363771554e-07,
+          "seamTranslationM": 4.0595713766944906e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000046001032903,
-            -9.999955838806631
+            -10.000054670479056,
+            -9.999941967697117
           ]
         },
         {
           "name": "Library_Crouch_Walk",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.041136592626571655,
-          "maxLowestSoleM": 0.05682398682725433,
+          "minSoleM": -0.04113583266735077,
+          "maxLowestSoleM": 0.05682126251204728,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 4.2876380635952004e-07,
+          "seamTranslationM": 3.993903540150166e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000579172401586,
-            -9.999950637140493
+            -10.000567035157447,
+            -9.99994543547444
           ]
         },
         {
           "name": "Hybrid_Crouch_Walk",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.0037001833879068136,
-          "maxLowestSoleM": 0.003968592226534673,
+          "minSoleM": 0.003701990525585397,
+          "maxLowestSoleM": 0.003969297441971248,
           "loop": true,
           "seamRadians": 3.0199159795074593e-07,
-          "seamTranslationM": 4.89921205574464e-07,
+          "seamTranslationM": 5.516492044661234e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000579172401586,
-            -9.999950637140493
+            -10.000567035157447,
+            -9.99994543547444
           ]
         },
         {
           "name": "Library_Walk_Carry",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.0755557268857956,
-          "maxLowestSoleM": -0.028989648555952208,
+          "minSoleM": -0.07555758208036423,
+          "maxLowestSoleM": -0.02899059520917202,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 6.416757256304425e-07,
+          "seamTranslationM": 8.814777993768218e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            15.32184951966741,
-            16.00004634094932
+            15.321844208240059,
+            16.000042788227557
           ]
         },
         {
           "name": "Library_Zombie_Walk",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.04002915322780609,
-          "maxLowestSoleM": 0.03187067544636302,
+          "minSoleM": -0.04002918675541878,
+          "maxLowestSoleM": 0.03186986049496926,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 4.5320105352531143e-07,
+          "seamTranslationM": 6.396769065775219e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000079811874206,
-            -9.99993243130967
+            -10.000081545763598,
+            -9.99992549575534
           ]
         },
         {
           "name": "Hybrid_Zombie_Walk",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.003964797308388099,
-          "maxLowestSoleM": 0.004111013200788569,
+          "minSoleM": 0.003966681675475578,
+          "maxLowestSoleM": 0.004112429379948022,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 5.917597818218148e-07,
+          "seamTranslationM": 6.396769065775219e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000079811874206,
-            -9.99993243130967
+            -10.000081545763598,
+            -9.99992549575534
           ]
         },
         {
           "name": "Library_Jump_Start",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.1589771807193756,
-          "maxLowestSoleM": 0.3204993692267103,
+          "minSoleM": -0.15897680819034576,
+          "maxLowestSoleM": 0.3204960909711593,
           "loop": false,
-          "seamRadians": 1.5765084028244019,
-          "seamTranslationM": 0.352758691028542,
+          "seamRadians": 1.5765092372894287,
+          "seamTranslationM": 0.3527585791537637,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.0000442671437,
-            -1.4889764751392789
+            -10.00005813825758,
+            -1.4889668669415028
           ]
         },
         {
           "name": "Library_Jump_air",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.1599063277244568,
-          "maxLowestSoleM": -0.10543602705001831,
+          "minSoleM": -0.15990620851516724,
+          "maxLowestSoleM": -0.10543663799762726,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 9.534615863830676e-07,
+          "seamTranslationM": 1.1014588365256957e-06,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000069408538044,
-            -9.999967976027943
+            -10.000052936589807,
+            -9.99995410491791
           ]
         },
         {
           "name": "Library_Jump_Land",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.01760059206991442,
-          "maxLowestSoleM": 0.043079081079276715,
+          "minSoleM": -0.017599807270969083,
+          "maxLowestSoleM": 0.0430759958606957,
           "loop": false,
           "seamRadians": 0.9328817129135132,
-          "seamTranslationM": 0.057394698615334944,
+          "seamTranslationM": 0.057394696587006085,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000110154939907,
+            -10.00011448966381,
             -4.048911886529653
           ]
         },
@@ -315,74 +315,74 @@
           "name": "Library_Punch_Jab",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.005020348902105398,
-          "maxLowestSoleM": -0.002607425984091083,
+          "minSoleM": -0.005019820850078294,
+          "maxLowestSoleM": -0.002607139365612507,
           "loop": false,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000050335755951,
-            -9.999968842972338
+            -10.000059005202218,
+            -9.999961040472853
           ]
         },
         {
           "name": "Hybrid_Punch_Jab",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.0037405778388153923,
-          "maxLowestSoleM": 0.004096950072024565,
+          "minSoleM": 0.00374089067582631,
+          "maxLowestSoleM": 0.0040970434534839065,
           "loop": false,
           "seamRadians": 0.0,
-          "seamTranslationM": 8.02322371285726e-07,
+          "seamTranslationM": 8.654387320821857e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000050335755951,
-            -9.999968842972338
+            -10.000059005202218,
+            -9.999961040472853
           ]
         },
         {
           "name": "Library_Punch_Cross",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.04615846895334137,
-          "maxLowestSoleM": -0.005020348902105398,
+          "minSoleM": -0.04615785067887844,
+          "maxLowestSoleM": -0.005019820850078294,
           "loop": false,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.003354278483478,
-            -10.000014791028672
+            -10.003351677623192,
+            -10.000001786861125
           ]
         },
         {
           "name": "Library_Melee_Hook",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.029469720438812,
-          "maxLowestSoleM": 0.02455806616538364,
+          "minSoleM": -0.029469720576822785,
+          "maxLowestSoleM": 0.024556054909879332,
           "loop": false,
-          "seamRadians": 1.8953478336334229,
-          "seamTranslationM": 0.3548220860943222,
+          "seamRadians": 1.8953477144241333,
+          "seamTranslationM": 0.3548221307152277,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.024277139957324,
-            7.689057958949281
+            -10.024269336873402,
+            7.689070020226219
           ]
         },
         {
           "name": "Library_Hit_Chest",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.5690081834135423,
-          "maxLowestSoleM": 0.5755385795319938,
+          "minSoleM": 0.5690086134561643,
+          "maxLowestSoleM": 0.5755388435708078,
           "loop": false,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -1.2083228160528787,
+            -1.2083262319070465,
             16.000701819195488
           ]
         },
@@ -390,726 +390,741 @@
           "name": "Library_Hit_Head",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.005384104411271172,
-          "maxLowestSoleM": 0.007826090307211007,
+          "minSoleM": 0.005384204086195062,
+          "maxLowestSoleM": 0.00782618060901518,
           "loop": false,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -4.654888987520992,
-            13.86052214140757
+            -4.654883847926649,
+            13.86052741768536
           ]
         },
         {
           "name": "Library_Pistol_Aim_Neutral",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.005038597565080811,
-          "maxLowestSoleM": 0.005039261503849608,
+          "minSoleM": 0.0050388849081358204,
+          "maxLowestSoleM": 0.005039551473699399,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 7.449496195687946e-07,
+          "seamTranslationM": 6.762632979898348e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000007855472582,
-            -10.00000265380561
+            -10.00000698852808,
+            -10.000000052972158
           ]
         },
         {
           "name": "Hybrid_Pistol_Aim_Neutral",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.0040512428184400415,
-          "maxLowestSoleM": 0.004051729648141954,
+          "minSoleM": 0.004051434983647413,
+          "maxLowestSoleM": 0.004051932899900669,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 8.154579627176331e-07,
+          "seamTranslationM": 8.539551246940418e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000007855472582,
-            -10.00000265380561
+            -10.00000698852808,
+            -10.000000052972158
           ]
         },
         {
           "name": "Library_Pistol_Reload",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.005038597565080811,
-          "maxLowestSoleM": 0.005546290895289904,
+          "minSoleM": 0.0050388849081358204,
+          "maxLowestSoleM": 0.005546590348333597,
           "loop": false,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000059872146858,
-            -9.999986181860757
+            -10.000059005202218,
+            -9.999983581027436
           ]
         },
         {
           "name": "Library_Pistol_Shoot",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.005038597565080811,
-          "maxLowestSoleM": 0.005038597565080811,
+          "minSoleM": 0.0050388849081358204,
+          "maxLowestSoleM": 0.0050388849081358204,
           "loop": false,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000005254639085,
-            -10.000005254639085
+            -10.00000091991664,
+            -10.00000091991664
           ]
         },
         {
           "name": "Library_Sitting_Enter",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.005384104411271172,
-          "maxLowestSoleM": 0.052292238569970895,
+          "minSoleM": 0.005384204086195062,
+          "maxLowestSoleM": 0.05228945513834793,
           "loop": false,
-          "seamRadians": 1.7152236700057983,
-          "seamTranslationM": 0.41227302748031497,
+          "seamRadians": 1.7152234315872192,
+          "seamTranslationM": 0.4122730274775574,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000433525501826,
-            -5.199242146842616
+            -10.000442194958318,
+            -5.19924128954169
           ]
         },
         {
           "name": "Hybrid_Sitting_Enter",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.003486702480853439,
-          "maxLowestSoleM": 0.004105546530265347,
+          "minSoleM": 0.003487958665902632,
+          "maxLowestSoleM": 0.004105079728698696,
           "loop": false,
-          "seamRadians": 1.2500711679458618,
-          "seamTranslationM": 0.41227302748031497,
+          "seamRadians": 1.25007164478302,
+          "seamTranslationM": 0.4122730274775574,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000433525501826,
-            -5.199242146842616
+            -10.000442194958318,
+            -5.19924128954169
           ]
         },
         {
           "name": "Library_Sitting_Idle",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.044331508434847844,
-          "maxLowestSoleM": 0.04433178239623092,
+          "minSoleM": 0.04432893506399277,
+          "maxLowestSoleM": 0.04432912827673674,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 5.659119875962526e-07,
+          "seamTranslationM": 6.208422571077473e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000040799365323,
-            -9.999995718249782
+            -10.000037331586983,
+            -9.999987048805203
           ]
         },
         {
           "name": "Hybrid_Sitting_Idle",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.0035765574903470904,
-          "maxLowestSoleM": 0.003576803597562031,
+          "minSoleM": 0.0035791337484385316,
+          "maxLowestSoleM": 0.003579458453268472,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 4.457805093823732e-07,
+          "seamTranslationM": 5.236580958302066e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000040799365323,
-            -9.999995718249782
+            -10.000037331586983,
+            -9.999987048805203
           ]
         },
         {
           "name": "Library_Sitting_Exit",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.005384104411271172,
-          "maxLowestSoleM": 0.06295434843197256,
+          "minSoleM": 0.005384204086195062,
+          "maxLowestSoleM": 0.06295202525944987,
           "loop": false,
-          "seamRadians": 1.7152239084243774,
-          "seamTranslationM": 0.41227302748031497,
+          "seamRadians": 1.7152235507965088,
+          "seamTranslationM": 0.4122730274775574,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.001577895758745,
-            -5.199242146842616
+            -10.00159523473303,
+            -5.19924128954169
           ]
         },
         {
           "name": "Hybrid_Sitting_Exit",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.003506302992263982,
-          "maxLowestSoleM": 0.00440489513641671,
+          "minSoleM": 0.0035088688012813174,
+          "maxLowestSoleM": 0.004405610185581724,
           "loop": false,
-          "seamRadians": 1.4653342962265015,
-          "seamTranslationM": 0.41227302748031497,
+          "seamRadians": 1.4653347730636597,
+          "seamTranslationM": 0.4122730274775574,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.001577895758745,
-            -5.199242146842616
+            -10.00159523473303,
+            -5.19924128954169
           ]
         },
         {
           "name": "Library_PickUp_Table",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.0053841720534762594,
-          "maxLowestSoleM": 0.021274022978596333,
+          "minSoleM": 0.005384448810374039,
+          "maxLowestSoleM": 0.0212748577267904,
           "loop": false,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
             -14.774582619392017,
-            -6.222977115867071
+            -6.222969815775877
           ]
         },
         {
           "name": "Library_Interact",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.005126395738756377,
-          "maxLowestSoleM": 0.008825086993573455,
+          "minSoleM": 0.005126686726591526,
+          "maxLowestSoleM": 0.008825086172751587,
           "loop": false,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -7.350741943016048,
-            -4.3669683536385815
+            -7.350739360470526,
+            -4.366963644211206
           ]
         },
         {
           "name": "Library_Idle_Talking",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.005995857991216385,
-          "maxLowestSoleM": 0.008390946722539802,
+          "minSoleM": 0.005996009798221289,
+          "maxLowestSoleM": 0.00839103334028539,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 6.288585198823232e-07,
+          "seamTranslationM": 6.865154701496643e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -6.668690062550307,
-            -3.5689160998377862
+            -6.668691781729124,
+            -3.5689120365327907
           ]
         },
         {
           "name": "Hybrid_Idle_Talking",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.004028190500463005,
-          "maxLowestSoleM": 0.004051965894501339,
+          "minSoleM": 0.00402834731236601,
+          "maxLowestSoleM": 0.004052199218233472,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 1.2220442818388094e-06,
+          "seamTranslationM": 1.1707608767705582e-06,
           "finite": true,
           "gazePitchRangeDeg": [
-            -6.668690062550307,
-            -3.5689160998377862
+            -6.668691781729124,
+            -3.5689120365327907
           ]
         },
         {
           "name": "Library_Idle_FoldArms",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.00042035204939341875,
-          "maxLowestSoleM": 0.009440881228760273,
+          "minSoleM": 0.0004207942020676772,
+          "maxLowestSoleM": 0.00944090082337777,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 5.825156469189351e-07,
+          "seamTranslationM": 5.827653800218553e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000353766512955,
-            -9.30556911280428
+            -10.000352032622109,
+            -9.305566517326877
           ]
         },
         {
           "name": "Library_Consume",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.005368597063703672,
-          "maxLowestSoleM": 0.008275630298821703,
+          "minSoleM": 0.005368854593676094,
+          "maxLowestSoleM": 0.008275914024580666,
           "loop": false,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -13.911542323805548,
-            -0.6627114795665642
+            -13.911533528073427,
+            -0.6627124934905918
           ]
         },
         {
           "name": "Library_Push",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.04465991751390759,
-          "maxLowestSoleM": 0.037062819713175495,
+          "minSoleM": -0.04466026222032814,
+          "maxLowestSoleM": 0.03706193686695441,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 1.2025707830143747e-06,
+          "seamTranslationM": 1.1298444821094785e-06,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000771634476408,
-            -9.999995718249782
+            -10.00078810646108,
+            -10.0000035207501
           ]
         },
         {
           "name": "Library_Strafe_left",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.013141679276620494,
-          "maxLowestSoleM": 0.010336264868703315,
+          "minSoleM": -0.01314184079001171,
+          "maxLowestSoleM": 0.010336383963474138,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 8.014675957217421e-07,
+          "seamTranslationM": 7.300540516499343e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -2.7700915111320263,
-            0.44615582712836466
+            -2.7700880920422426,
+            0.4461549466475979
           ]
         },
         {
           "name": "Hybrid_Strafe_left",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.003037736738734642,
-          "maxLowestSoleM": 0.004250482582037238,
+          "minSoleM": 0.0030381169968326516,
+          "maxLowestSoleM": 0.004251167225544014,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 1.0643483694755348e-06,
+          "seamTranslationM": 1.1134061860931774e-06,
           "finite": true,
           "gazePitchRangeDeg": [
-            -2.7700915111320263,
-            0.44615582712836466
+            -2.7700880920422426,
+            0.4461549466475979
           ]
         },
         {
           "name": "Library_Strafe_right",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.018927983939647675,
-          "maxLowestSoleM": 0.007479759571690003,
+          "minSoleM": -0.018927568569779396,
+          "maxLowestSoleM": 0.007479963193580574,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 9.959072518197568e-07,
+          "seamTranslationM": 9.818166459406248e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -2.7700797580109375,
-            0.44617890639698554
+            -2.770082322328256,
+            0.4461776523789199
           ]
         },
         {
           "name": "Hybrid_Strafe_right",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.0006621978220641908,
-          "maxLowestSoleM": 0.004128733649849892,
+          "minSoleM": 0.0006619904887474048,
+          "maxLowestSoleM": 0.004128833767026663,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 9.959072518197568e-07,
+          "seamTranslationM": 9.800514097270515e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -2.7700797580109375,
-            0.44617890639698554
+            -2.770082322328256,
+            0.4461776523789199
           ]
         },
         {
           "name": "Library_Walk_Backwards",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.02209261626778075,
-          "maxLowestSoleM": -0.0032607420586137914,
+          "minSoleM": -0.022092365754912552,
+          "maxLowestSoleM": -0.0032608981808703134,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 8.109907095790372e-07,
+          "seamTranslationM": 7.881450796168318e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -6.440226885909263,
-            -6.2968558180613154
+            -6.440224308322243,
+            -6.296849805371121
           ]
         },
         {
           "name": "Hybrid_Walk_Backwards",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.00037938589230179787,
-          "maxLowestSoleM": 0.0040004258044064045,
+          "minSoleM": 0.00038090767338871956,
+          "maxLowestSoleM": 0.0040006405258077755,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 8.109907095790372e-07,
+          "seamTranslationM": 7.881450796168318e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -6.440226885909263,
-            -6.2968558180613154
+            -6.440224308322243,
+            -6.296849805371121
           ]
         },
         {
           "name": "Library_Dodge_back",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.05316578884818563,
-          "maxLowestSoleM": 0.009096226662401286,
+          "minSoleM": -0.053165356895423864,
+          "maxLowestSoleM": 0.009097704841871224,
           "loop": false,
-          "seamRadians": 0.1909736543893814,
-          "seamTranslationM": 0.016509874910980403,
+          "seamRadians": 0.1909749060869217,
+          "seamTranslationM": 0.016509850231573725,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.001493801746589,
-            15.845599749434369
+            -10.001497269540474,
+            15.84559797443902
           ]
         },
         {
           "name": "Library_Dodge_left",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.0636588036580551,
-          "maxLowestSoleM": 0.13529101014137268,
+          "minSoleM": -0.0636601094087404,
+          "maxLowestSoleM": 0.13529254496097565,
           "loop": false,
-          "seamRadians": 1.0449309349060059,
-          "seamTranslationM": 0.053226709895013526,
+          "seamRadians": 1.044931173324585,
+          "seamTranslationM": 0.053226697592238054,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000028662141293,
-            -6.435206200803875
+            -10.00002346047399,
+            -6.435201475274405
           ]
         },
         {
           "name": "Library_Dodge_right",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.0570456380819806,
-          "maxLowestSoleM": 0.14867787063121796,
+          "minSoleM": -0.05704439550549445,
+          "maxLowestSoleM": 0.14867670834064484,
           "loop": false,
-          "seamRadians": 1.0449321269989014,
-          "seamTranslationM": 0.053226717003282506,
+          "seamRadians": 1.0449323654174805,
+          "seamTranslationM": 0.05322670463215992,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000048601866725,
-            -6.435181713969827
+            -10.000046867977508,
+            -6.435176988440586
           ]
         },
         {
           "name": "Library_Greeting",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.004614193243170098,
-          "maxLowestSoleM": -0.0003907681293016385,
+          "minSoleM": -0.004614282318708057,
+          "maxLowestSoleM": -0.00039095034234285994,
           "loop": false,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -9.070554277712569,
-            5.673752105310047
+            -9.070551683956612,
+            5.673750818344692
           ]
         },
         {
           "name": "Library_Idle_Listening",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.018253841727012637,
-          "maxLowestSoleM": -0.017741572700089983,
+          "minSoleM": -0.018253182163581405,
+          "maxLowestSoleM": -0.01774089310721575,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 1.1092559296330144e-06,
+          "seamTranslationM": 1.2443504275771273e-06,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.00001219019512,
-            -8.232922457436029
+            -10.000029529085852,
+            -8.232923320100197
           ]
         },
         {
           "name": "Library_Bow",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.001875055347260731,
-          "maxLowestSoleM": -0.001875055347260731,
+          "minSoleM": -0.0018750048250588593,
+          "maxLowestSoleM": -0.0018750048250588593,
           "loop": false,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -61.96504880000057,
-            1.1952860359514345e-05
+            -61.96507059801668,
+            1.024530003945915e-05
           ]
         },
         {
           "name": "Hybrid_Bow",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.003990556595491253,
-          "maxLowestSoleM": 0.0039906574806844106,
+          "minSoleM": 0.00399055206147509,
+          "maxLowestSoleM": 0.003990668786627884,
           "loop": false,
           "seamRadians": 0.0,
-          "seamTranslationM": 1.7894392688482797e-07,
+          "seamTranslationM": 2.283029789643044e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -61.96504880000057,
-            1.1952860359514345e-05
+            -61.96507059801668,
+            1.024530003945915e-05
           ]
         },
         {
           "name": "Library_Kneeling_Tired",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.00190742127597332,
-          "maxLowestSoleM": -0.000801868736743927,
+          "minSoleM": -0.0019082408398389816,
+          "maxLowestSoleM": -0.0008025113493204117,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 4.942386763887874e-07,
+          "seamTranslationM": 5.905737787915101e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -25.000057039221023,
-            -24.999976024201064
+            -25.000064575504663,
+            -24.99997037199236
           ]
         },
         {
           "name": "Library_Victory",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.06704132771891254,
-          "maxLowestSoleM": 0.31329771876335144,
+          "minSoleM": -0.06704117360762195,
+          "maxLowestSoleM": 0.31329789757728577,
           "loop": false,
-          "seamRadians": 0.36267173290252686,
-          "seamTranslationM": 6.725113336668985e-07,
+          "seamRadians": 0.3626710772514343,
+          "seamTranslationM": 6.759491883497999e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.0075850387862,
-            4.808580255303634
+            -10.007589373609859,
+            4.808585824433932
           ]
         },
         {
           "name": "Procedural_Breathing",
           "method": "procedural",
           "poses": 9,
-          "minSoleM": 0.0029883370640120116,
-          "maxLowestSoleM": 0.0029937997089280917,
+          "minSoleM": 0.002987894487488752,
+          "maxLowestSoleM": 0.00299340589426492,
           "loop": true,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -1.3660360427141666e-05,
-            -3.4150693441244252e-06
+            -5.122629257068594e-06,
+            3.415117790333334e-06
           ]
         },
         {
           "name": "Procedural_Walk",
           "method": "procedural",
           "poses": 9,
-          "minSoleM": 0.0026655572422669103,
-          "maxLowestSoleM": 0.0029655260513491094,
+          "minSoleM": 0.0026654781777954266,
+          "maxLowestSoleM": 0.00296607058524088,
           "loop": true,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -1.1952812320416436e-05,
-            1.3660422308013549e-05
+            -3.4150807432324037e-06,
+            1.878306255707932e-05
           ]
         },
         {
           "name": "Procedural_Jog",
           "method": "procedural",
           "poses": 9,
-          "minSoleM": 0.002115668795412449,
-          "maxLowestSoleM": 0.008692828464938601,
+          "minSoleM": 0.0021153224476879832,
+          "maxLowestSoleM": 0.008693112537269912,
           "loop": true,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -1.0245261771025223e-05,
-            1.7075788436056283e-06
+            -5.122629257068594e-06,
+            8.537766588729913e-06
           ]
         },
         {
           "name": "Procedural_Crouch",
           "method": "procedural",
           "poses": 9,
-          "minSoleM": 0.0029817302940356484,
-          "maxLowestSoleM": 0.0030035152062486145,
+          "minSoleM": 0.002980926536828424,
+          "maxLowestSoleM": 0.003004804157677556,
           "loop": true,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -5.1226154152946205e-06,
-            5.729579083598416
+            1.707568869386147e-06,
+            5.729588093232433
           ]
         },
         {
           "name": "Procedural_SideStep",
           "method": "procedural",
           "poses": 9,
-          "minSoleM": 0.0029845942911565226,
-          "maxLowestSoleM": 0.0030205164100407383,
+          "minSoleM": 0.0029839758885590803,
+          "maxLowestSoleM": 0.0030207600266640763,
           "loop": true,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -1.3660360427141666e-05,
-            -3.4150693441244252e-06
+            -5.122629257068594e-06,
+            3.415117790333334e-06
           ]
         },
         {
           "name": "Procedural_Reach",
           "method": "procedural",
           "poses": 9,
-          "minSoleM": 0.0029883370640120116,
-          "maxLowestSoleM": 0.002994008758237056,
+          "minSoleM": 0.002987894487488752,
+          "maxLowestSoleM": 0.0029933354324636514,
           "loop": true,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -1.1952809063528443e-05,
-            -1.7075198125107402e-06
+            -3.4150803361214043e-06,
+            5.122667118391522e-06
           ]
         },
         {
           "name": "Procedural_LookAround",
           "method": "procedural",
           "poses": 9,
-          "minSoleM": 0.0029883370640120116,
-          "maxLowestSoleM": 0.0029937997089280917,
+          "minSoleM": 0.002987894487488752,
+          "maxLowestSoleM": 0.00299340589426492,
           "loop": true,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -0.21304356268149421,
-            -5.1226154152946205e-06
+            -0.21303491816356956,
+            1.707568869386147e-06
           ]
         },
         {
           "name": "Procedural_StepUp",
           "method": "procedural",
           "poses": 9,
-          "minSoleM": 0.0029883370640120116,
-          "maxLowestSoleM": 0.0029937997089280917,
+          "minSoleM": 0.002987894487488752,
+          "maxLowestSoleM": 0.00299340589426492,
           "loop": true,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -8.537713664300014e-06,
-            -3.4150693441244252e-06
+            -3.4150803361214043e-06,
+            3.415117790333334e-06
           ]
         },
         {
           "name": "Procedural_RollForward",
           "method": "procedural",
           "poses": 9,
-          "minSoleM": 0.01113608130574735,
-          "maxLowestSoleM": 0.39717998988818337,
+          "minSoleM": 0.01113388344714937,
+          "maxLowestSoleM": 0.3971800215606045,
           "loop": false,
           "seamRadians": 3.0199159795074593e-07,
-          "seamTranslationM": 4.5692165737253475e-07,
+          "seamTranslationM": 7.12994028204498e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -80.00829508722785,
-            45.896442214946106
+            -80.00827540433991,
+            45.89641277268075
           ],
-          "minBodyM": 0.005841288715600967
+          "minBodyM": 0.005840964615345001
         },
         {
           "name": "Hybrid_MugHold",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.004051346919530671,
-          "maxLowestSoleM": 0.008051295273628554,
+          "minSoleM": 0.00405169569982447,
+          "maxLowestSoleM": 0.008051650089459106,
           "loop": true,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -5.285364804449203,
-            -5.285364804449203
+            -5.28536051735337,
+            -5.28536051735337
           ]
         },
         {
           "name": "Hybrid_MugRun",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": -0.000565094366340896,
-          "maxLowestSoleM": 0.21459494531154633,
+          "minSoleM": -0.0005639708507955881,
+          "maxLowestSoleM": 0.21459601819515228,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 7.377708483094487e-07,
+          "seamTranslationM": 8.093852511894223e-07,
           "finite": true,
           "gazePitchRangeDeg": [
             -10.09161869677922,
-            -9.9999489032518
+            -9.999928096588196
           ]
         },
         {
           "name": "Hybrid_MugPunch",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.0038741119891688852,
-          "maxLowestSoleM": 0.004318323450888201,
+          "minSoleM": 0.003874351520508579,
+          "maxLowestSoleM": 0.0043187569221644975,
           "loop": false,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -5.292757087955181,
-            -5.285343368970335
+            -5.2927472275170375,
+            -5.285349799613917
           ]
         },
         {
           "name": "Hybrid_MugHook",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.0037188209653532117,
-          "maxLowestSoleM": 0.004688678633890105,
+          "minSoleM": 0.003719048547429965,
+          "maxLowestSoleM": 0.0046892021466327025,
           "loop": false,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -5.2853716638025965,
-            -5.285350657033067
+            -5.285366090577958,
+            -5.285338653165084
           ]
         },
         {
           "name": "Hybrid_MugSmash",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.003884521583854092,
-          "maxLowestSoleM": 0.004321187297589048,
+          "minSoleM": 0.003884689261395069,
+          "maxLowestSoleM": 0.0043215136272899135,
           "loop": false,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -5.2853716638025965,
-            -5.285342082841627
+            -5.285364804449203,
+            -5.2853373670363855
           ]
         },
         {
           "name": "Wan_Walk",
           "method": "video",
           "poses": 9,
-          "minSoleM": 0.002570916200056672,
-          "maxLowestSoleM": 0.002997442746209944,
+          "minSoleM": 0.002569495467469096,
+          "maxLowestSoleM": 0.0029970397374241634,
           "loop": true,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -6.869814097789562e-06,
-            5.1226430988425675e-06
+            -4.165560380204978e-08,
+            1.8812639985395186e-05
+          ]
+        },
+        {
+          "name": "WanRig_Walk",
+          "method": "videoRig",
+          "poses": 9,
+          "minSoleM": 0.0026636836002902065,
+          "maxLowestSoleM": 0.002915915228384954,
+          "loop": true,
+          "seamRadians": 0.0,
+          "seamTranslationM": 0.0,
+          "finite": true,
+          "gazePitchRangeDeg": [
+            6.830181842014781e-06,
+            8.577883306593775e-06
           ]
         }
       ],
       "originalGameClips": 14,
-      "deliveredGlbClips": 85,
+      "deliveredGlbClips": 86,
       "missingGameClips": [],
       "maxGameClipDurationErrorSeconds": 0
     },
@@ -1117,7 +1132,7 @@
       "id": "fukuchan",
       "bones": 23,
       "maxInfluences": 4,
-      "maxWeightError": 1.30385160446167e-07,
+      "maxWeightError": 9.452924132347107e-08,
       "unweightedVertices": 0,
       "finite": true,
       "morphTargets": [
@@ -1129,389 +1144,389 @@
           "name": "Walk",
           "method": "captured",
           "poses": 9,
-          "minSoleM": 0.0015102219767868519,
-          "maxLowestSoleM": 0.0030057872645556927,
+          "minSoleM": 0.001509777968749404,
+          "maxLowestSoleM": 0.0030064857564866543,
           "loop": true,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            1.66956986151809e-05,
-            0.0012882588673408272
+            2.996974652982476e-05,
+            0.001288166006950324
           ]
         },
         {
           "name": "Run",
           "method": "captured",
           "poses": 9,
-          "minSoleM": 0.0016571534797549248,
-          "maxLowestSoleM": 0.003416743827983737,
+          "minSoleM": 0.0016573888715356588,
+          "maxLowestSoleM": 0.003417015541344881,
           "loop": true,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -0.00979976487061835,
-            0.001927707710228224
+            -0.009794078604649056,
+            0.0019478009895247158
           ]
         },
         {
           "name": "Library_Idle_A",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.004492858424782753,
-          "maxLowestSoleM": 0.009433296509087086,
+          "minSoleM": 0.0044923219829797745,
+          "maxLowestSoleM": 0.009432937949895859,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 4.861416439228271e-07,
+          "seamTranslationM": 4.5444583769158624e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -7.291540161027986,
-            -4.465837785583291
+            -7.291537578825279,
+            -4.465831790967763
           ]
         },
         {
           "name": "Hybrid_Idle_A",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.003941559652067683,
-          "maxLowestSoleM": 0.0039495499548712525,
+          "minSoleM": 0.003941925183177777,
+          "maxLowestSoleM": 0.003949861368575771,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 8.552594219257611e-07,
+          "seamTranslationM": 1.1262817176645121e-06,
           "finite": true,
           "gazePitchRangeDeg": [
-            -7.291540161027986,
-            -4.465837785583291
+            -7.291537578825279,
+            -4.465831790967763
           ]
         },
         {
           "name": "Library_Walk",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.03635747358202934,
-          "maxLowestSoleM": 0.023393549025058746,
+          "minSoleM": -0.036357201635837555,
+          "maxLowestSoleM": 0.023393096402287483,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 6.204491575839425e-07,
+          "seamTranslationM": 6.33343987967887e-07,
           "finite": true,
           "gazePitchRangeDeg": [
             -10.000283543941134,
-            -9.999979246305278
+            -9.999968842972338
           ]
         },
         {
           "name": "Hybrid_Walk",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.003098501591011882,
-          "maxLowestSoleM": 0.003930419683456421,
+          "minSoleM": 0.00309907179325819,
+          "maxLowestSoleM": 0.003930112812668085,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 7.359685685436561e-07,
+          "seamTranslationM": 7.541466571906848e-07,
           "finite": true,
           "gazePitchRangeDeg": [
             -10.000283543941134,
-            -9.999979246305278
+            -9.999968842972338
           ]
         },
         {
           "name": "Library_Jog",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.028985643280396545,
-          "maxLowestSoleM": 0.12502890825271606,
+          "minSoleM": 0.0289850989987972,
+          "maxLowestSoleM": 0.1250298023223877,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 5.460455799486046e-07,
+          "seamTranslationM": 4.98145225156537e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.059775315229242,
-            -9.999973177694356
+            -10.05978485337848,
+            -9.999964508250379
           ]
         },
         {
           "name": "Hybrid_Jog",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.00014530211743027377,
-          "maxLowestSoleM": 0.12144950777292252,
+          "minSoleM": 0.00014597530001539405,
+          "maxLowestSoleM": 0.12144988030195236,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 4.5486689883035224e-07,
+          "seamTranslationM": 4.98145225156537e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.059775315229242,
-            -9.999973177694356
+            -10.05978485337848,
+            -9.999964508250379
           ]
         },
         {
           "name": "Library_Sprint",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.007769349905844228,
-          "maxLowestSoleM": 0.1717989444732666,
+          "minSoleM": 0.007768806158972907,
+          "maxLowestSoleM": 0.1717999279499054,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 6.745408742274376e-07,
+          "seamTranslationM": 8.250482538757532e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.10930032154707,
-            -9.999993117416384
+            -10.109285578505286,
+            -9.999993984360847
           ]
         },
         {
           "name": "Hybrid_Sprint",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.006248160583958875,
-          "maxLowestSoleM": 0.14989283680915833,
+          "minSoleM": 0.00624754163755065,
+          "maxLowestSoleM": 0.149893656373024,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 6.406724417992468e-07,
+          "seamTranslationM": 8.151715288452791e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.10930032154707,
-            -9.999993117416384
+            -10.109285578505286,
+            -9.999993984360847
           ]
         },
         {
           "name": "Library_Crouch_Idle",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.018868366251871715,
-          "maxLowestSoleM": 0.020499883588194656,
+          "minSoleM": 0.01886847728155011,
+          "maxLowestSoleM": 0.020500131482235118,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 4.119282009509041e-07,
+          "seamTranslationM": 3.3212031102813113e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -9.999980113249705,
-            -9.999938499919832
+            -9.999995718249782,
+            -9.999930697421073
           ]
         },
         {
           "name": "Hybrid_Crouch_Idle",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.003984175737540729,
-          "maxLowestSoleM": 0.00399189974408265,
+          "minSoleM": 0.003984525896406854,
+          "maxLowestSoleM": 0.003992468562866391,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 2.4136205179736083e-07,
+          "seamTranslationM": 2.8858975375217423e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -9.999980113249705,
-            -9.999938499919832
+            -9.999995718249782,
+            -9.999930697421073
           ]
         },
         {
           "name": "Library_Crouch_Walk",
           "method": "library",
           "poses": 9,
-          "minSoleM": 3.911418726281618e-05,
-          "maxLowestSoleM": 0.0448961229632632,
+          "minSoleM": 3.7600758377984156e-05,
+          "maxLowestSoleM": 0.04489640056827776,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 3.0076376594386644e-07,
+          "seamTranslationM": 3.1963765653665995e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000389311277315,
-            -9.999968842972338
+            -10.000371105421914,
+            -9.999941967697117
           ]
         },
         {
           "name": "Hybrid_Crouch_Walk",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.003842235520115353,
-          "maxLowestSoleM": 0.004109377446337742,
+          "minSoleM": 0.0038428070843889994,
+          "maxLowestSoleM": 0.004109502426321507,
           "loop": true,
           "seamRadians": 3.0199159795074593e-07,
-          "seamTranslationM": 3.0076376594386644e-07,
+          "seamTranslationM": 3.1963765653665995e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000389311277315,
-            -9.999968842972338
+            -10.000371105421914,
+            -9.999941967697117
           ]
         },
         {
           "name": "Library_Walk_Carry",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.059985123574733734,
-          "maxLowestSoleM": 0.003245919244363904,
+          "minSoleM": -0.059986259788274765,
+          "maxLowestSoleM": 0.003245397936552763,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 4.311303859257113e-07,
+          "seamTranslationM": 6.470207023866709e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            15.32184951966741,
-            16.000072986364554
+            15.321851290143227,
+            16.000104960867525
           ]
         },
         {
           "name": "Library_Zombie_Walk",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.01474233902990818,
-          "maxLowestSoleM": 0.05673157180547084,
+          "minSoleM": -0.01474185474216938,
+          "maxLowestSoleM": 0.05673138477720008,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 5.680982552608867e-07,
+          "seamTranslationM": 6.820841677676129e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000004387694592,
-            -9.999902955204785
+            -10.000010456306098,
+            -9.999890817985904
           ]
         },
         {
           "name": "Hybrid_Zombie_Walk",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.003955591113887186,
-          "maxLowestSoleM": 0.0044419290497899055,
+          "minSoleM": 0.003955039202226958,
+          "maxLowestSoleM": 0.00444191787391901,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 7.130260035367983e-07,
+          "seamTranslationM": 7.830651722248634e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000004387694592,
-            -9.999902955204785
+            -10.000010456306098,
+            -9.999890817985904
           ]
         },
         {
           "name": "Library_Jump_Start",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.1796969175338745,
-          "maxLowestSoleM": 0.288400262594223,
+          "minSoleM": -0.1796969771385193,
+          "maxLowestSoleM": 0.28839951753616333,
           "loop": false,
           "seamRadians": 1.5765080451965332,
-          "seamTranslationM": 0.3207674264079191,
+          "seamTranslationM": 0.32076757611548007,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000247999188344,
-            -1.4891287117007446
+            -10.00023239417615,
+            -1.4891252954524057
           ]
         },
         {
           "name": "Library_Jump_air",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.1675323098897934,
-          "maxLowestSoleM": -0.11298997700214386,
+          "minSoleM": -0.16753250360488892,
+          "maxLowestSoleM": -0.11299015581607819,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 6.776426021445121e-07,
+          "seamTranslationM": 8.661977376992021e-07,
           "finite": true,
           "gazePitchRangeDeg": [
             -10.000048601866725,
-            -9.999935032142583
+            -9.999936766031203
           ]
         },
         {
           "name": "Library_Jump_Land",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.0043123699724674225,
-          "maxLowestSoleM": 0.041294779628515244,
+          "minSoleM": 0.0043121022172272205,
+          "maxLowestSoleM": 0.041294846683740616,
           "loop": false,
-          "seamRadians": 0.9328817129135132,
-          "seamTranslationM": 0.05218961709556712,
+          "seamRadians": 0.9328819513320923,
+          "seamTranslationM": 0.05218962378743348,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000046001032903,
-            -4.048872514676148
+            -10.000050335755951,
+            -4.048857536254123
           ]
         },
         {
           "name": "Library_Punch_Jab",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.002889340410111574,
-          "maxLowestSoleM": -0.001828654552809894,
+          "minSoleM": -0.0028892504464141655,
+          "maxLowestSoleM": -0.0018290821462869644,
           "loop": false,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000020859640369,
-            -9.999935032142583
+            -10.00000698852808,
+            -9.999904689093233
           ]
         },
         {
           "name": "Hybrid_Punch_Jab",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.003951297016792546,
-          "maxLowestSoleM": 0.004001247696578503,
+          "minSoleM": 0.00395134726149754,
+          "maxLowestSoleM": 0.004000733606517315,
           "loop": false,
           "seamRadians": 0.0,
-          "seamTranslationM": 2.923249664048858e-07,
+          "seamTranslationM": 2.918380377019249e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000020859640369,
-            -9.999935032142583
+            -10.00000698852808,
+            -9.999904689093233
           ]
         },
         {
           "name": "Library_Punch_Cross",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.0028656298400128177,
-          "maxLowestSoleM": -0.00026518661027832326,
+          "minSoleM": -0.0028655635843723715,
+          "maxLowestSoleM": -0.00026507742494278307,
           "loop": false,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.002192562962216,
-            -9.999886483264985
+            -10.002191696011886,
+            -9.999859607996576
           ]
         },
         {
           "name": "Library_Melee_Hook",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.0030398986171108477,
-          "maxLowestSoleM": 0.04371502250432968,
+          "minSoleM": 0.0030403579044100126,
+          "maxLowestSoleM": 0.04371633008122444,
           "loop": false,
-          "seamRadians": 1.8953477144241333,
-          "seamTranslationM": 0.32264390079255145,
+          "seamRadians": 1.8953479528427124,
+          "seamTranslationM": 0.3226439783681421,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.033104282228,
-            7.687819956846911
+            -10.033106883326882,
+            7.68781220319168
           ]
         },
         {
           "name": "Library_Hit_Chest",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.5202344655990601,
-          "maxLowestSoleM": 0.5234726071357727,
+          "minSoleM": 0.5202339291572571,
+          "maxLowestSoleM": 0.5234721302986145,
           "loop": false,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -1.2082011262509513,
-            16.000746228368534
+            -1.2081946147792475,
+            16.00075333383714
           ]
         },
         {
           "name": "Library_Hit_Head",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.0045090289786458015,
-          "maxLowestSoleM": 0.0070449309423565865,
+          "minSoleM": 0.00450876634567976,
+          "maxLowestSoleM": 0.007044738624244928,
           "loop": false,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -4.654851725462856,
+            -4.654858149955498,
             13.860564351633258
           ]
         },
@@ -1519,636 +1534,651 @@
           "name": "Library_Pistol_Aim_Neutral",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.0043126256205141544,
-          "maxLowestSoleM": 0.004313316196203232,
+          "minSoleM": 0.004312287084758282,
+          "maxLowestSoleM": 0.004312925040721893,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 7.152653248211597e-07,
+          "seamTranslationM": 7.074490360319423e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -9.999980980194133,
-            -9.999976645472012
+            -9.999975778527595,
+            -9.999968842972338
           ]
         },
         {
           "name": "Hybrid_Pistol_Aim_Neutral",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.003942465566221564,
-          "maxLowestSoleM": 0.003942670842240285,
+          "minSoleM": 0.003942798938865187,
+          "maxLowestSoleM": 0.0039429515773623134,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 7.990649812256692e-07,
+          "seamTranslationM": 8.817848897545195e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -9.999980980194133,
-            -9.999976645472012
+            -9.999975778527595,
+            -9.999968842972338
           ]
         },
         {
           "name": "Library_Pistol_Reload",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.0043126256205141544,
-          "maxLowestSoleM": 0.004735852591693401,
+          "minSoleM": 0.004312287084758282,
+          "maxLowestSoleM": 0.004735490307211876,
           "loop": false,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000049468811335,
-            -9.999963641305994
+            -10.000042533254506,
+            -9.999955838806631
           ]
         },
         {
           "name": "Library_Pistol_Shoot",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.0043126256205141544,
-          "maxLowestSoleM": 0.0043126256205141544,
+          "minSoleM": 0.004312287084758282,
+          "maxLowestSoleM": 0.004312287084758282,
           "loop": false,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -9.999980113249705,
-            -9.999980113249705
+            -9.999975778527595,
+            -9.999975778527595
           ]
         },
         {
           "name": "Library_Sitting_Enter",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.0045090289786458015,
-          "maxLowestSoleM": 0.02912042910698104,
+          "minSoleM": 0.00450876634567976,
+          "maxLowestSoleM": 0.029120316618978653,
           "loop": false,
-          "seamRadians": 1.7152153253555298,
-          "seamTranslationM": 0.3748843732945604,
+          "seamRadians": 1.715214729309082,
+          "seamTranslationM": 0.37488458192597535,
           "finite": true,
           "gazePitchRangeDeg": [
             -10.000476872786598,
-            -5.199199281797702
+            -5.199196281244667
           ]
         },
         {
           "name": "Hybrid_Sitting_Enter",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.003685013042689124,
-          "maxLowestSoleM": 0.003987918647636618,
+          "minSoleM": 0.0036855590760975915,
+          "maxLowestSoleM": 0.0039888168685138226,
           "loop": false,
-          "seamRadians": 1.210059404373169,
-          "seamTranslationM": 0.3748843732945604,
+          "seamRadians": 1.2100597620010376,
+          "seamTranslationM": 0.37488458192597535,
           "finite": true,
           "gazePitchRangeDeg": [
             -10.000476872786598,
-            -5.199199281797702
+            -5.199196281244667
           ]
         },
         {
           "name": "Library_Sitting_Idle",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.009967230260372162,
-          "maxLowestSoleM": 0.00996782910078764,
+          "minSoleM": 0.009965079836547375,
+          "maxLowestSoleM": 0.009965854696929455,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 3.6637874044368757e-07,
+          "seamTranslationM": 4.109044040578893e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -9.9999887826941,
-            -9.999944568530106
+            -9.999982714083,
+            -9.999936766031203
           ]
         },
         {
           "name": "Hybrid_Sitting_Idle",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.003988115975859671,
-          "maxLowestSoleM": 0.0039881909299491584,
+          "minSoleM": 0.0039884960278868675,
+          "maxLowestSoleM": 0.003988781478255987,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 2.6911597810953924e-07,
+          "seamTranslationM": 3.6611748922211623e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -9.9999887826941,
-            -9.999944568530106
+            -9.999982714083,
+            -9.999936766031203
           ]
         },
         {
           "name": "Library_Sitting_Exit",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.0045090289786458015,
-          "maxLowestSoleM": 0.02871897293003245,
+          "minSoleM": 0.00450876634567976,
+          "maxLowestSoleM": 0.02871889128701205,
           "loop": false,
-          "seamRadians": 1.7152155637741089,
-          "seamTranslationM": 0.3748843732945604,
+          "seamRadians": 1.7152146100997925,
+          "seamTranslationM": 0.37488458192597535,
           "finite": true,
           "gazePitchRangeDeg": [
             -10.001605638118045,
-            -5.199199281797702
+            -5.199196281244667
           ]
         },
         {
           "name": "Hybrid_Sitting_Exit",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.0036756406863873506,
-          "maxLowestSoleM": 0.003983682487159967,
+          "minSoleM": 0.003675995378739118,
+          "maxLowestSoleM": 0.003981287591159344,
           "loop": false,
-          "seamRadians": 1.642406702041626,
-          "seamTranslationM": 0.3748843732945604,
+          "seamRadians": 1.6424057483673096,
+          "seamTranslationM": 0.37488458192597535,
           "finite": true,
           "gazePitchRangeDeg": [
             -10.001605638118045,
-            -5.199199281797702
+            -5.199196281244667
           ]
         },
         {
           "name": "Library_PickUp_Table",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.003986741416156292,
-          "maxLowestSoleM": 0.018094906583428383,
+          "minSoleM": 0.003986452240496874,
+          "maxLowestSoleM": 0.018094733357429504,
           "loop": false,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -14.775045294877433,
-            -6.222984845375504
+            -14.775034699244607,
+            -6.222985704209782
           ]
         },
         {
           "name": "Library_Interact",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.0045090289786458015,
-          "maxLowestSoleM": 0.008945656009018421,
+          "minSoleM": 0.00450876634567976,
+          "maxLowestSoleM": 0.008945218287408352,
           "loop": false,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -7.35072300434924,
-            -4.3668874371178035
+            -7.350716117561511,
+            -4.366879302653235
           ]
         },
         {
           "name": "Library_Idle_Talking",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.00536766042932868,
-          "maxLowestSoleM": 0.008195377886295319,
+          "minSoleM": 0.0053671980276703835,
+          "maxLowestSoleM": 0.008195159025490284,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 7.139584865416553e-07,
+          "seamTranslationM": 7.804885037049735e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -6.668623874170438,
-            -3.5688560056973135
+            -6.668626452938318,
+            -3.568846595939019
           ]
         },
         {
           "name": "Hybrid_Idle_Talking",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.003943651466804883,
-          "maxLowestSoleM": 0.00394782265298553,
+          "minSoleM": 0.003943941724813109,
+          "maxLowestSoleM": 0.003948288417658312,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 6.933052342956245e-07,
+          "seamTranslationM": 7.769805469435685e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -6.668623874170438,
-            -3.5688560056973135
+            -6.668626452938318,
+            -3.568846595939019
           ]
         },
         {
           "name": "Library_Idle_FoldArms",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.0042548514902591705,
-          "maxLowestSoleM": 0.009417747147381306,
+          "minSoleM": 0.004254554398357868,
+          "maxLowestSoleM": 0.009417482651770115,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 3.3015152636204386e-07,
+          "seamTranslationM": 4.269741571614097e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000319955643148,
-            -9.305505091033996
+            -10.000313020080544,
+            -9.305489518172728
           ]
         },
         {
           "name": "Library_Consume",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.004492858424782753,
-          "maxLowestSoleM": 0.006945342756807804,
+          "minSoleM": 0.0044923219829797745,
+          "maxLowestSoleM": 0.006945024710148573,
           "loop": false,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -13.911443811624903,
-            -0.6626963774350197
+            -13.911422701877365,
+            -0.662682395956387
           ]
         },
         {
           "name": "Library_Push",
           "method": "library",
           "poses": 9,
-          "minSoleM": 0.05336264199426008,
-          "maxLowestSoleM": 0.06706716865301132,
+          "minSoleM": 0.05336199240600581,
+          "maxLowestSoleM": 0.06706640869379044,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 5.709688921195789e-07,
+          "seamTranslationM": 7.525353415894901e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.00090254343028,
-            -9.999973177694356
+            -10.000898208695864,
+            -9.999977512416432
           ]
         },
         {
           "name": "Library_Strafe_left",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.0032852983567863703,
-          "maxLowestSoleM": 0.007727125193923712,
+          "minSoleM": -0.003285694634541869,
+          "maxLowestSoleM": 0.007726836483925581,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 6.051086831237527e-07,
+          "seamTranslationM": 7.076529220376697e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -2.77003595092427,
-            0.4462172206511796
+            -2.7700233430313346,
+            0.44623312266760284
           ]
         },
         {
           "name": "Hybrid_Strafe_left",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.002503121969856706,
-          "maxLowestSoleM": 0.004020978189582428,
+          "minSoleM": 0.0025034715402890567,
+          "maxLowestSoleM": 0.004021255197469334,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 6.051086831237527e-07,
+          "seamTranslationM": 5.4242088037512e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -2.77003595092427,
-            0.4462172206511796
+            -2.7700233430313346,
+            0.44623312266760284
           ]
         },
         {
           "name": "Library_Strafe_right",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.011444670148193836,
-          "maxLowestSoleM": 0.004334683064371347,
+          "minSoleM": -0.01144441869109869,
+          "maxLowestSoleM": 0.004334305413067341,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 8.746554999751422e-07,
+          "seamTranslationM": 9.954925587127544e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -2.7700197102486492,
-            0.44626756814289253
+            -2.7700145816142885,
+            0.4462885129129965
           ]
         },
         {
           "name": "Hybrid_Strafe_right",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.0024999540764838457,
-          "maxLowestSoleM": 0.004020830150693655,
+          "minSoleM": 0.002499662572517991,
+          "maxLowestSoleM": 0.004020554479211569,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 6.051097654220274e-07,
+          "seamTranslationM": 6.245963515022e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -2.7700197102486492,
-            0.44626756814289253
+            -2.7700145816142885,
+            0.4462885129129965
           ]
         },
         {
           "name": "Library_Walk_Backwards",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.00996077372331619,
-          "maxLowestSoleM": -0.00029842465301044285,
+          "minSoleM": -0.00996060903187232,
+          "maxLowestSoleM": -0.00029874019674025476,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 5.501587332330041e-07,
+          "seamTranslationM": 4.711674842667698e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -6.4406294192428275,
-            -6.296816735576294
+            -6.440613524110476,
+            -6.296805569152543
           ]
         },
         {
           "name": "Hybrid_Walk_Backwards",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.0037222167011350393,
-          "maxLowestSoleM": 0.00399647260952711,
+          "minSoleM": 0.003723334288224578,
+          "maxLowestSoleM": 0.003996114130321485,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 5.113052529377863e-07,
+          "seamTranslationM": 5.510857752852416e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -6.4406294192428275,
-            -6.296816735576294
+            -6.440613524110476,
+            -6.296805569152543
           ]
         },
         {
           "name": "Library_Dodge_back",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.0082745586399698,
-          "maxLowestSoleM": 0.04947327085711084,
+          "minSoleM": -0.008274300067360296,
+          "maxLowestSoleM": 0.049474105322137696,
           "loop": false,
           "seamRadians": 0.1909736543893814,
-          "seamTranslationM": 0.012883083732704873,
+          "seamTranslationM": 0.012883140933019755,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.001966289004525,
-            15.845338825285317
+            -10.001968022903986,
+            15.845342375271478
           ]
         },
         {
           "name": "Library_Dodge_left",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.024525901302695274,
-          "maxLowestSoleM": 0.14108213782310486,
+          "minSoleM": -0.024526290595531464,
+          "maxLowestSoleM": 0.14108231663703918,
           "loop": false,
-          "seamRadians": 1.0449304580688477,
-          "seamTranslationM": 0.048399797780167765,
+          "seamRadians": 1.0449309349060059,
+          "seamTranslationM": 0.04839992557957157,
           "finite": true,
           "gazePitchRangeDeg": [
             -10.000069408538044,
-            -6.435148205672517
+            -6.435138325021168
           ]
         },
         {
           "name": "Library_Dodge_right",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.021365411579608917,
-          "maxLowestSoleM": 0.13902166485786438,
+          "minSoleM": -0.021364906802773476,
+          "maxLowestSoleM": 0.13902068138122559,
           "loop": false,
           "seamRadians": 1.044931173324585,
-          "seamTranslationM": 0.048399816289586214,
+          "seamTranslationM": 0.04839993396046466,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.000004387694592,
-            -6.435116415751471
+            -10.000009589361591,
+            -6.435108683068274
           ]
         },
         {
           "name": "Library_Greeting",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.001060529612004757,
-          "maxLowestSoleM": 0.0004899450577795506,
+          "minSoleM": -0.0010610850295051932,
+          "maxLowestSoleM": 0.0004891672870144248,
           "loop": false,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -9.07052228805707,
-            5.673788998318144
+            -9.070496350500651,
+            5.67379843606478
           ]
         },
         {
           "name": "Library_Idle_Listening",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.00358145744805749,
-          "maxLowestSoleM": -0.0032630186183301713,
+          "minSoleM": -0.003581517333709733,
+          "maxLowestSoleM": -0.0032630983744278974,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 8.903325567599129e-07,
+          "seamTranslationM": 1.1028553195604305e-06,
           "finite": true,
           "gazePitchRangeDeg": [
-            -9.999971443805542,
-            -8.232870697589428
+            -9.999967109083547,
+            -8.232855169636768
           ]
         },
         {
           "name": "Library_Bow",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.000892192532774061,
-          "maxLowestSoleM": -0.000892192532774061,
+          "minSoleM": -0.0008924056310206652,
+          "maxLowestSoleM": -0.0008924056310206652,
           "loop": false,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -61.964976140059335,
-            5.5075656529686516e-05
+            -61.96496887407472,
+            6.873531835436139e-05
           ]
         },
         {
           "name": "Hybrid_Bow",
           "method": "hybrid",
           "poses": 9,
-          "minSoleM": 0.0039026626645826965,
-          "maxLowestSoleM": 0.0039027603680857736,
+          "minSoleM": 0.0039028231830477555,
+          "maxLowestSoleM": 0.003902915697783206,
           "loop": false,
           "seamRadians": 0.0,
-          "seamTranslationM": 2.719618036181926e-07,
+          "seamTranslationM": 1.9374408390459193e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -61.964976140059335,
-            5.5075656529686516e-05
+            -61.96496887407472,
+            6.873531835436139e-05
           ]
         },
         {
           "name": "Library_Kneeling_Tired",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.07980182766914368,
-          "maxLowestSoleM": -0.07854437083005905,
+          "minSoleM": -0.07980164885520935,
+          "maxLowestSoleM": -0.07854385673999786,
           "loop": true,
           "seamRadians": 0.0,
-          "seamTranslationM": 2.775999662319796e-07,
+          "seamTranslationM": 3.4047243405156373e-07,
           "finite": true,
           "gazePitchRangeDeg": [
             -25.000021241880034,
-            -24.999977908270687
+            -24.999959067575737
           ]
         },
         {
           "name": "Library_Victory",
           "method": "library",
           "poses": 9,
-          "minSoleM": -0.014025656506419182,
-          "maxLowestSoleM": 0.26387476921081543,
+          "minSoleM": -0.014025984331965446,
+          "maxLowestSoleM": 0.2638757824897766,
           "loop": false,
-          "seamRadians": 0.36267173290252686,
-          "seamTranslationM": 6.339518632560914e-07,
+          "seamRadians": 0.3626710772514343,
+          "seamTranslationM": 5.612884179864555e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -10.006994636344595,
-            4.808659079921301
+            -10.006995503307746,
+            4.808674073735476
           ]
         },
         {
           "name": "Procedural_Breathing",
           "method": "procedural",
           "poses": 9,
-          "minSoleM": 0.002979203826420432,
-          "maxLowestSoleM": 0.002982294468709748,
+          "minSoleM": 0.00297956093435775,
+          "maxLowestSoleM": 0.002982712002773752,
           "loop": true,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            3.8065506905360424e-07,
-            7.476574610861676e-05
+            -7.784313234907911e-06,
+            8.677117589725119e-05
           ]
         },
         {
           "name": "Procedural_Walk",
           "method": "procedural",
           "poses": 9,
-          "minSoleM": 0.0028266841545701027,
-          "maxLowestSoleM": 0.0029976554214954376,
+          "minSoleM": 0.0028260082472115755,
+          "maxLowestSoleM": 0.002997051225975156,
           "loop": true,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            5.36993778999122e-06,
-            6.033164191544167e-05
+            5.4003986491754e-07,
+            7.062953092534369e-05
           ]
         },
         {
           "name": "Procedural_Jog",
           "method": "procedural",
           "poses": 9,
-          "minSoleM": 0.0018145374488085508,
-          "maxLowestSoleM": 0.007142110226243059,
+          "minSoleM": 0.0018139323219656944,
+          "maxLowestSoleM": 0.007142257937776092,
           "loop": true,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            6.357132295575595e-06,
-            6.516077304695119e-05
+            3.208102050781735e-06,
+            7.049610925178882e-05
           ]
         },
         {
           "name": "Procedural_Crouch",
           "method": "procedural",
           "poses": 9,
-          "minSoleM": 0.0029714450251351887,
-          "maxLowestSoleM": 0.0029955110512673855,
+          "minSoleM": 0.0029720421991654283,
+          "maxLowestSoleM": 0.002994703594595194,
           "loop": true,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            2.417964291219335e-05,
-            5.729592383534396
+            2.615325027024376e-05,
+            5.729593241594792
           ]
         },
         {
           "name": "Procedural_SideStep",
           "method": "procedural",
           "poses": 9,
-          "minSoleM": 0.0029638148907248085,
-          "maxLowestSoleM": 0.0029980666004121304,
+          "minSoleM": 0.0029638256139983277,
+          "maxLowestSoleM": 0.002997608622536063,
           "loop": true,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            3.8065506905360424e-07,
-            7.476574610861676e-05
+            -7.784313234907911e-06,
+            8.677117589725119e-05
           ]
         },
         {
           "name": "Procedural_Reach",
           "method": "procedural",
           "poses": 9,
-          "minSoleM": 0.002979203826420432,
-          "maxLowestSoleM": 0.002982323007883439,
+          "minSoleM": 0.00297956093435775,
+          "maxLowestSoleM": 0.0029826916904572287,
           "loop": true,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            4.222694923058607e-06,
-            6.900279353774193e-05
+            1.1270246151557315e-06,
+            7.863367188651117e-05
           ]
         },
         {
           "name": "Procedural_LookAround",
           "method": "procedural",
           "poses": 9,
-          "minSoleM": 0.002979203826420432,
-          "maxLowestSoleM": 0.002982294468709748,
+          "minSoleM": 0.00297956093435775,
+          "maxLowestSoleM": 0.002982712002773752,
           "loop": true,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            -0.12080597886475195,
-            2.417964291219335e-05
+            -0.12080543191479405,
+            2.615325027024376e-05
           ]
         },
         {
           "name": "Procedural_StepUp",
           "method": "procedural",
           "poses": 9,
-          "minSoleM": 0.002979203826420432,
-          "maxLowestSoleM": 0.002997849602252245,
+          "minSoleM": 0.00297956093435775,
+          "maxLowestSoleM": 0.0029973876662552357,
           "loop": true,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            7.531077980058532e-06,
-            7.476574610861676e-05
+            6.1429516059930944e-06,
+            8.677117589725119e-05
           ]
         },
         {
           "name": "Procedural_RollForward",
           "method": "procedural",
           "poses": 9,
-          "minSoleM": 0.011834888039251354,
-          "maxLowestSoleM": 0.42322257705698263,
+          "minSoleM": 0.011835685443464916,
+          "maxLowestSoleM": 0.4232224522315029,
           "loop": false,
           "seamRadians": 3.0199159795074593e-07,
-          "seamTranslationM": 2.981986422004763e-07,
+          "seamTranslationM": 7.041953151762101e-07,
           "finite": true,
           "gazePitchRangeDeg": [
-            -80.00831477015416,
-            45.89650600657461
+            -80.00829508722785,
+            45.89649619247315
           ],
-          "minBodyM": 0.006869426928460598
+          "minBodyM": 0.006869532633572817
         },
         {
           "name": "Wan_Walk",
           "method": "video",
           "poses": 9,
-          "minSoleM": 0.0025523093760692894,
-          "maxLowestSoleM": 0.0029993606731295586,
+          "minSoleM": 0.0025528720208116695,
+          "maxLowestSoleM": 0.002999095479026437,
           "loop": true,
           "seamRadians": 0.0,
           "seamTranslationM": 0.0,
           "finite": true,
           "gazePitchRangeDeg": [
-            1.0209553047505442e-06,
-            1.5962012943037356e-05
+            7.90377100118919e-06,
+            3.3090102522055004e-05
+          ]
+        },
+        {
+          "name": "WanRig_Walk",
+          "method": "videoRig",
+          "poses": 9,
+          "minSoleM": 0.0028696078066114267,
+          "maxLowestSoleM": 0.0029995981603860855,
+          "loop": true,
+          "seamRadians": 0.0,
+          "seamTranslationM": 0.0,
+          "finite": true,
+          "gazePitchRangeDeg": [
+            6.43634754669425e-06,
+            2.4045424929524074e-05
           ]
         }
       ],
       "originalGameClips": 14,
-      "deliveredGlbClips": 80,
+      "deliveredGlbClips": 81,
       "missingGameClips": [],
       "maxGameClipDurationErrorSeconds": 0
     }

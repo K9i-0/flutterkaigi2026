@@ -1,0 +1,599 @@
+{
+  "passed": true,
+  "checks": [
+    "both measured bodies play WanRig_Walk",
+    "six methods visible without overflow",
+    "all six advance 0.125m in 0.1s at matched travel speed",
+    "macOS Metal debug screenshot inspected"
+  ],
+  "states": [
+    {
+      "ready": true,
+      "motionMethod": "videoRig",
+      "action": "Walk",
+      "seconds": 0.7,
+      "duration": 1.4,
+      "paused": true,
+      "repeat": true,
+      "speed": 1,
+      "compareMethods": true,
+      "syncPhase": true,
+      "walkingTravel": false,
+      "comparisonSpeedMps": null,
+      "skeleton": false,
+      "actors": [
+        {
+          "character": "sobaya",
+          "method": "captured",
+          "clip": "Walk",
+          "hasMug": false,
+          "rootPosition": [
+            3.625,
+            0,
+            0
+          ],
+          "sampleSeconds": 0.6166666666666667,
+          "bones": 45,
+          "legM": 0.8232581878427264,
+          "armM": 0.5820987214108657,
+          "shoulderM": 0.5339998713200437,
+          "ankles": {
+            "l": [
+              3.5032148361206055,
+              0.11940442770719528,
+              -0.052041150629520416
+            ],
+            "r": [
+              3.7667434215545654,
+              0.21305473148822784,
+              -0.045705024152994156
+            ]
+          }
+        },
+        {
+          "character": "sobaya",
+          "method": "library",
+          "clip": "Library_Walk",
+          "hasMug": false,
+          "rootPosition": [
+            2.174999952316284,
+            0,
+            0
+          ],
+          "sampleSeconds": 0.8333333333333334,
+          "bones": 45,
+          "legM": 0.8232581878427264,
+          "armM": 0.5820987214108657,
+          "shoulderM": 0.5339998713200437,
+          "ankles": {
+            "l": [
+              1.9594889879226685,
+              0.15994372963905334,
+              -0.3294653296470642
+            ],
+            "r": [
+              2.382272720336914,
+              0.12515044212341309,
+              0.25075972080230713
+            ]
+          }
+        },
+        {
+          "character": "sobaya",
+          "method": "procedural",
+          "clip": "Procedural_Walk",
+          "hasMug": false,
+          "rootPosition": [
+            0.7250000238418579,
+            0,
+            0
+          ],
+          "sampleSeconds": 0.65,
+          "bones": 45,
+          "legM": 0.8232581878427264,
+          "armM": 0.5820987214108657,
+          "shoulderM": 0.5339998713200437,
+          "ankles": {
+            "l": [
+              0.5170182585716248,
+              0.11817289888858795,
+              -0.17323412001132965
+            ],
+            "r": [
+              0.9330087900161743,
+              0.12063927948474884,
+              0.1377284973859787
+            ]
+          }
+        },
+        {
+          "character": "sobaya",
+          "method": "hybrid",
+          "clip": "Hybrid_Walk",
+          "hasMug": false,
+          "rootPosition": [
+            -0.7250000238418579,
+            0,
+            0
+          ],
+          "sampleSeconds": 0.8333333333333334,
+          "bones": 45,
+          "legM": 0.8232581878427264,
+          "armM": 0.5820987214108657,
+          "shoulderM": 0.5339998713200437,
+          "ankles": {
+            "l": [
+              -0.9340431690216064,
+              0.2043168693780899,
+              -0.3504752218723297
+            ],
+            "r": [
+              -0.5155077576637268,
+              0.15388841927051544,
+              0.254618763923645
+            ]
+          }
+        },
+        {
+          "character": "sobaya",
+          "method": "video",
+          "clip": "Wan_Walk",
+          "hasMug": false,
+          "rootPosition": [
+            -2.174999952316284,
+            0,
+            0
+          ],
+          "sampleSeconds": 0.6666666666666666,
+          "bones": 45,
+          "legM": 0.8232581878427264,
+          "armM": 0.5820987214108657,
+          "shoulderM": 0.5339998713200437,
+          "ankles": {
+            "l": [
+              -2.383000612258911,
+              0.11927749961614609,
+              -0.2990834712982178
+            ],
+            "r": [
+              -1.9671506881713867,
+              0.146301731467247,
+              0.33022353053092957
+            ]
+          }
+        },
+        {
+          "character": "sobaya",
+          "method": "videoRig",
+          "clip": "WanRig_Walk",
+          "hasMug": false,
+          "rootPosition": [
+            -3.625,
+            0,
+            0
+          ],
+          "sampleSeconds": 0.7,
+          "bones": 45,
+          "legM": 0.8232581878427264,
+          "armM": 0.5820987214108657,
+          "shoulderM": 0.5339998713200437,
+          "ankles": {
+            "l": [
+              -3.833000421524048,
+              0.120005764067173,
+              -0.26524707674980164
+            ],
+            "r": [
+              -3.416999340057373,
+              0.14179526269435883,
+              0.2803688943386078
+            ]
+          }
+        }
+      ],
+      "counts": {
+        "captured": 2,
+        "library": 39,
+        "procedural": 9,
+        "hybrid": 22,
+        "video": 1,
+        "videoRig": 1
+      },
+      "type": "_extensionType",
+      "method": "ext.flutter.madogiwa.setMotionLab",
+      "status": "Success"
+    },
+    {
+      "ready": true,
+      "motionMethod": "videoRig",
+      "action": "Walk",
+      "seconds": 1.6,
+      "duration": 8,
+      "paused": true,
+      "repeat": true,
+      "speed": 1,
+      "compareMethods": true,
+      "syncPhase": true,
+      "walkingTravel": true,
+      "comparisonSpeedMps": 1.25,
+      "skeleton": false,
+      "actors": [
+        {
+          "character": "sobaya",
+          "method": "captured",
+          "clip": "Walk",
+          "hasMug": false,
+          "rootPosition": [
+            5.625,
+            0,
+            1.2246468525851679e-16
+          ],
+          "sampleSeconds": 0.7773084478120493,
+          "bones": 45,
+          "legM": 0.8232581878427264,
+          "armM": 0.5820987214108657,
+          "shoulderM": 0.5339998713200437,
+          "ankles": {
+            "l": [
+              5.410837173461914,
+              0.12173254787921906,
+              0.12204400449991226
+            ],
+            "r": [
+              5.886715412139893,
+              0.15049129724502563,
+              -0.15656304359436035
+            ]
+          }
+        },
+        {
+          "character": "sobaya",
+          "method": "library",
+          "clip": "Library_Walk",
+          "hasMug": false,
+          "rootPosition": [
+            4.175000190734863,
+            0,
+            1.2246468525851679e-16
+          ],
+          "sampleSeconds": 1.0799043556642258,
+          "bones": 45,
+          "legM": 0.8232581878427264,
+          "armM": 0.5820987214108657,
+          "shoulderM": 0.5339998713200437,
+          "ankles": {
+            "l": [
+              3.8335695266723633,
+              0.2591359317302704,
+              0.20933794975280762
+            ],
+            "r": [
+              4.253267765045166,
+              0.13005881011486053,
+              -0.2076808512210846
+            ]
+          }
+        },
+        {
+          "character": "sobaya",
+          "method": "procedural",
+          "clip": "Procedural_Walk",
+          "hasMug": false,
+          "rootPosition": [
+            2.7249999046325684,
+            0,
+            1.2246468525851679e-16
+          ],
+          "sampleSeconds": 0.21936910911593022,
+          "bones": 45,
+          "legM": 0.8232581878427264,
+          "armM": 0.5820987214108657,
+          "shoulderM": 0.5339998713200437,
+          "ankles": {
+            "l": [
+              2.7608249187469482,
+              0.1181134581565857,
+              0.20801226794719696
+            ],
+            "r": [
+              2.5190625190734863,
+              0.13215161859989166,
+              -0.2081041783094406
+            ]
+          }
+        },
+        {
+          "character": "sobaya",
+          "method": "hybrid",
+          "clip": "Hybrid_Walk",
+          "hasMug": false,
+          "rootPosition": [
+            1.274999976158142,
+            0,
+            1.2246468525851679e-16
+          ],
+          "sampleSeconds": 1.0799043556642258,
+          "bones": 45,
+          "legM": 0.8232581878427264,
+          "armM": 0.5820987214108657,
+          "shoulderM": 0.5339998713200437,
+          "ankles": {
+            "l": [
+              0.9101381301879883,
+              0.2871067225933075,
+              0.20826245844364166
+            ],
+            "r": [
+              1.3518680334091187,
+              0.13150937855243683,
+              -0.21010726690292358
+            ]
+          }
+        },
+        {
+          "character": "sobaya",
+          "method": "video",
+          "clip": "Wan_Walk",
+          "hasMug": false,
+          "rootPosition": [
+            -0.17499999701976776,
+            0,
+            1.2246468525851679e-16
+          ],
+          "sampleSeconds": 0.7823621942852867,
+          "bones": 45,
+          "legM": 0.8232581878427264,
+          "armM": 0.5820987214108657,
+          "shoulderM": 0.5339998713200437,
+          "ankles": {
+            "l": [
+              -0.580932080745697,
+              0.17635241150856018,
+              0.20752793550491333
+            ],
+            "r": [
+              0.046775855123996735,
+              0.12269838899374008,
+              -0.20803257822990417
+            ]
+          }
+        },
+        {
+          "character": "sobaya",
+          "method": "videoRig",
+          "clip": "WanRig_Walk",
+          "hasMug": false,
+          "rootPosition": [
+            -1.625,
+            0,
+            1.2246468525851679e-16
+          ],
+          "sampleSeconds": 1.1658865559835565,
+          "bones": 45,
+          "legM": 0.8232581878427264,
+          "armM": 0.5820987214108657,
+          "shoulderM": 0.5339998713200437,
+          "ankles": {
+            "l": [
+              -1.641510009765625,
+              0.2274276167154312,
+              0.2080179899930954
+            ],
+            "r": [
+              -1.707762360572815,
+              0.11849528551101685,
+              -0.20800088346004486
+            ]
+          }
+        }
+      ],
+      "counts": {
+        "captured": 2,
+        "library": 39,
+        "procedural": 9,
+        "hybrid": 22,
+        "video": 1,
+        "videoRig": 1
+      },
+      "type": "_extensionType",
+      "method": "ext.flutter.madogiwa.setMotionLab",
+      "status": "Success"
+    },
+    {
+      "ready": true,
+      "motionMethod": "videoRig",
+      "action": "Walk",
+      "seconds": 1.7,
+      "duration": 8,
+      "paused": true,
+      "repeat": true,
+      "speed": 1,
+      "compareMethods": true,
+      "syncPhase": true,
+      "walkingTravel": true,
+      "comparisonSpeedMps": 1.25,
+      "skeleton": false,
+      "actors": [
+        {
+          "character": "sobaya",
+          "method": "captured",
+          "clip": "Walk",
+          "hasMug": false,
+          "rootPosition": [
+            5.75,
+            0,
+            1.3011872643281286e-16
+          ],
+          "sampleSeconds": 0.9029735591336356,
+          "bones": 45,
+          "legM": 0.8232581878427264,
+          "armM": 0.5820987214108657,
+          "shoulderM": 0.5339998713200437,
+          "ankles": {
+            "l": [
+              5.432754039764404,
+              0.17125524580478668,
+              0.11982907354831696
+            ],
+            "r": [
+              6.016753673553467,
+              0.1410312056541443,
+              -0.14062578976154327
+            ]
+          }
+        },
+        {
+          "character": "sobaya",
+          "method": "library",
+          "clip": "Library_Walk",
+          "hasMug": false,
+          "rootPosition": [
+            4.300000190734863,
+            0,
+            1.3011872643281286e-16
+          ],
+          "sampleSeconds": 1.2515650445599065,
+          "bones": 45,
+          "legM": 0.8232581878427264,
+          "armM": 0.5820987214108657,
+          "shoulderM": 0.5339998713200437,
+          "ankles": {
+            "l": [
+              4.18105936050415,
+              0.3474731743335724,
+              0.20787562429904938
+            ],
+            "r": [
+              4.253915309906006,
+              0.13596424460411072,
+              -0.2108936905860901
+            ]
+          }
+        },
+        {
+          "character": "sobaya",
+          "method": "procedural",
+          "clip": "Procedural_Walk",
+          "hasMug": false,
+          "rootPosition": [
+            2.8499999046325684,
+            0,
+            1.3011872643281286e-16
+          ],
+          "sampleSeconds": 0.47682967843567536,
+          "bones": 45,
+          "legM": 0.8232581878427264,
+          "armM": 0.5820987214108657,
+          "shoulderM": 0.5339998713200437,
+          "ankles": {
+            "l": [
+              2.760859251022339,
+              0.11817086488008499,
+              0.2079893797636032
+            ],
+            "r": [
+              2.8938424587249756,
+              0.16371051967144012,
+              -0.20804500579833984
+            ]
+          }
+        },
+        {
+          "character": "sobaya",
+          "method": "hybrid",
+          "clip": "Hybrid_Walk",
+          "hasMug": false,
+          "rootPosition": [
+            1.399999976158142,
+            0,
+            1.3011872643281286e-16
+          ],
+          "sampleSeconds": 1.2515650445599065,
+          "bones": 45,
+          "legM": 0.8232581878427264,
+          "armM": 0.5820987214108657,
+          "shoulderM": 0.5339998713200437,
+          "ankles": {
+            "l": [
+              1.2480812072753906,
+              0.3508923053741455,
+              0.2078881561756134
+            ],
+            "r": [
+              1.3518670797348022,
+              0.1481665074825287,
+              -0.21016192436218262
+            ]
+          }
+        },
+        {
+          "character": "sobaya",
+          "method": "video",
+          "clip": "Wan_Walk",
+          "hasMug": false,
+          "rootPosition": [
+            -0.05000000074505806,
+            0,
+            1.3011872643281286e-16
+          ],
+          "sampleSeconds": 0.9145931647614505,
+          "bones": 45,
+          "legM": 0.8232581878427264,
+          "armM": 0.5820987214108657,
+          "shoulderM": 0.5339998713200437,
+          "ankles": {
+            "l": [
+              -0.43609973788261414,
+              0.2255440652370453,
+              0.20808954536914825
+            ],
+            "r": [
+              0.04673295095562935,
+              0.1182100921869278,
+              -0.20802053809165955
+            ]
+          }
+        },
+        {
+          "character": "sobaya",
+          "method": "videoRig",
+          "clip": "WanRig_Walk",
+          "hasMug": false,
+          "rootPosition": [
+            -1.5,
+            0,
+            1.3011872643281286e-16
+          ],
+          "sampleSeconds": 1.326254465732529,
+          "bones": 45,
+          "legM": 0.8232581878427264,
+          "armM": 0.5820987214108657,
+          "shoulderM": 0.5339998713200437,
+          "ankles": {
+            "l": [
+              -1.228711485862732,
+              0.1353846937417984,
+              0.20759187638759613
+            ],
+            "r": [
+              -1.7077609300613403,
+              0.11843041330575943,
+              -0.20799414813518524
+            ]
+          }
+        }
+      ],
+      "counts": {
+        "captured": 2,
+        "library": 39,
+        "procedural": 9,
+        "hybrid": 22,
+        "video": 1,
+        "videoRig": 1
+      },
+      "type": "_extensionType",
+      "method": "ext.flutter.madogiwa.setMotionLab",
+      "status": "Success"
+    }
+  ]
+}
