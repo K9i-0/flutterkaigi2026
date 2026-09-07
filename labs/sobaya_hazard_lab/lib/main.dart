@@ -765,7 +765,7 @@ class _LabPageState extends State<LabPage> {
             ),
             const SizedBox(height: 6),
             const Text(
-              '45 bones / 28,576 triangles\n4Kの質感を保持したスキンモデル。',
+              '45 bones / 34,355 triangles\n4Kの質感を保持したスキンモデル。',
               style: TextStyle(fontSize: 12, color: muted, height: 1.7),
             ),
           ],
@@ -811,7 +811,7 @@ class _LabPageState extends State<LabPage> {
             ),
             const SizedBox(height: 6),
             Text(
-              '本体三角面 ${(28576 * lab.count / 1000).toStringAsFixed(1)}K（概算）\nメッシュ・材質は共有。骨格と再生位置は各体で独立。',
+              '本体三角面 ${(34355 * lab.count / 1000).toStringAsFixed(1)}K（概算）\nメッシュ・材質は共有。骨格と再生位置は各体で独立。',
               style: const TextStyle(fontSize: 11, color: muted, height: 1.7),
             ),
             toggle('motion', '群集の配置を動かす', lab.crowdMotion),
