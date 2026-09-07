@@ -1,114 +1,138 @@
 {
   "passed": true,
-  "comparedPosesPerClip": 5,
+  "sampleRateHz": 30,
   "results": [
     {
       "character": "sobaya",
       "motion": "Idle_A",
       "duration": 3.133333444595337,
+      "sampledPoses": 96,
+      "unchangedLocomotion": true,
       "tracks": 42,
       "gltfErrors": 0,
-      "maxPositionError": 9.860945583362076e-7,
-      "maxRotationError": 0.00012191665308388504
+      "maxPositionError": 7.120240165163194e-7,
+      "maxRotationError": 0.00011724238174343768
     },
     {
       "character": "sobaya",
       "motion": "Walk",
       "duration": 1.6666666269302368,
+      "sampledPoses": 51,
+      "unchangedLocomotion": true,
       "tracks": 42,
       "gltfErrors": 0,
-      "maxPositionError": 0.0000014142612798202758,
-      "maxRotationError": 0.00023928110759254716
+      "maxPositionError": 5.198451666922224e-7,
+      "maxRotationError": 0.00020850471947344638
     },
     {
       "character": "sobaya",
       "motion": "Sprint",
       "duration": 0.8333333134651184,
+      "sampledPoses": 26,
+      "unchangedLocomotion": true,
       "tracks": 42,
       "gltfErrors": 0,
-      "maxPositionError": 0.0000018434434696334058,
-      "maxRotationError": 0.0005845303948859124
+      "maxPositionError": 9.55327654767713e-7,
+      "maxRotationError": 0.0006693360363736009
     },
     {
       "character": "sobaya",
       "motion": "Dance_Simple",
       "duration": 1.2666666507720947,
+      "sampledPoses": 39,
+      "unchangedLocomotion": null,
       "tracks": 42,
       "gltfErrors": 0,
-      "maxPositionError": 0.0000011516994656589323,
-      "maxRotationError": 0.0007244615534718657
+      "maxPositionError": 0.000001329970626475204,
+      "maxRotationError": 0.0006775464536312455
     },
     {
       "character": "sobaya",
       "motion": "Dance Charleston",
       "duration": 2.299999952316284,
+      "sampledPoses": 70,
+      "unchangedLocomotion": null,
       "tracks": 42,
       "gltfErrors": 0,
-      "maxPositionError": 0.0000013854412638052196,
-      "maxRotationError": 0.0007147921417801753
+      "maxPositionError": 0.0000011715629118973162,
+      "maxRotationError": 0.0010967110926288924
     },
     {
       "character": "sobaya",
       "motion": "Dance Body Roll",
       "duration": 6.4666666984558105,
+      "sampledPoses": 196,
+      "unchangedLocomotion": null,
       "tracks": 42,
       "gltfErrors": 0,
-      "maxPositionError": 0.0000015153923371896265,
-      "maxRotationError": 0.001987358859530156
+      "maxPositionError": 0.00000141020677779142,
+      "maxRotationError": 0.0018586353997229637
     },
     {
       "character": "fukuchan",
       "motion": "Idle_A",
       "duration": 3.133333444595337,
+      "sampledPoses": 96,
+      "unchangedLocomotion": true,
       "tracks": 23,
       "gltfErrors": 0,
-      "maxPositionError": 0.0000013200347979790314,
-      "maxRotationError": 0.0010303341842555199
+      "maxPositionError": 0.0000010609211931909947,
+      "maxRotationError": 0.0009979627778890087
     },
     {
       "character": "fukuchan",
       "motion": "Walk",
       "duration": 1.6666666269302368,
+      "sampledPoses": 51,
+      "unchangedLocomotion": true,
       "tracks": 23,
       "gltfErrors": 0,
-      "maxPositionError": 0.0000017203399117196963,
-      "maxRotationError": 0.0012167547421779684
+      "maxPositionError": 7.660794142574957e-7,
+      "maxRotationError": 0.0012989694173374323
     },
     {
       "character": "fukuchan",
       "motion": "Sprint",
       "duration": 0.8333333134651184,
+      "sampledPoses": 26,
+      "unchangedLocomotion": true,
       "tracks": 23,
       "gltfErrors": 0,
-      "maxPositionError": 0.0000018560600755693866,
-      "maxRotationError": 0.0006343294200964495
+      "maxPositionError": 7.182942281813698e-7,
+      "maxRotationError": 0.0010103105787860806
     },
     {
       "character": "fukuchan",
       "motion": "Dance_Simple",
       "duration": 1.2666666507720947,
+      "sampledPoses": 39,
+      "unchangedLocomotion": null,
       "tracks": 23,
       "gltfErrors": 0,
-      "maxPositionError": 0.0000015052371457982171,
-      "maxRotationError": 0.0007445123701928448
+      "maxPositionError": 0.0000014173534180422978,
+      "maxRotationError": 0.000997433299369762
     },
     {
       "character": "fukuchan",
       "motion": "Dance Charleston",
       "duration": 2.299999952316284,
+      "sampledPoses": 70,
+      "unchangedLocomotion": null,
       "tracks": 23,
       "gltfErrors": 0,
-      "maxPositionError": 0.0000015569891638757434,
-      "maxRotationError": 0.0007465685780998649
+      "maxPositionError": 0.0000014529190308778701,
+      "maxRotationError": 0.0011786402444766391
     },
     {
       "character": "fukuchan",
       "motion": "Dance Body Roll",
       "duration": 6.4666666984558105,
+      "sampledPoses": 196,
+      "unchangedLocomotion": null,
       "tracks": 23,
       "gltfErrors": 0,
-      "maxPositionError": 0.0000019720285388075704,
-      "maxRotationError": 0.0012567710095048941
+      "maxPositionError": 0.0000012106518460033396,
+      "maxRotationError": 0.0013875799274893328
     }
   ]
 }

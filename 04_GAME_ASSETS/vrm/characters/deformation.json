@@ -1,0 +1,18 @@
+[
+  {
+    "character": "sobaya",
+    "changedWeightVertices": 1675,
+    "smoothingIterations": 3,
+    "jointPositionsChanged": false,
+    "geometryChanged": false,
+    "shapeAndBindSha256": "f5fd2f9213b3036bb691442c764a647442670ff6ab2e0d5afe26dcceaee3afb9"
+  },
+  {
+    "character": "fukuchan",
+    "changedWeightVertices": 587,
+    "smoothingIterations": 3,
+    "jointPositionsChanged": false,
+    "geometryChanged": false,
+    "shapeAndBindSha256": "15d3a81263f9f4c4723c38755cb6092a11e9f95e10fd33ed4cfe0ade4181a3ca"
+  }
+]

@@ -15,8 +15,8 @@ def read_glb(path):
     return json.loads(data[20:20 + length]), data[20 + length:]
 
 
-def export(name):
-    source = LIB / name / f'{name}.glb'
+def export(name, source_override=None):
+    source = source_override or LIB / name / f'{name}.glb'
     gltf, binary_chunk = read_glb(source)
     profile = json.loads((LIB / name / 'profile.json').read_text())
     nodes = {node.get('name'): i for i, node in enumerate(gltf['nodes'])}
@@ -76,7 +76,8 @@ def export(name):
     report = {'source': str(source.relative_to(ROOT)), 'sourceSha256': hashlib.sha256(source.read_bytes()).hexdigest(),
               'output': str(target.relative_to(ROOT)), 'sha256': hashlib.sha256(result).hexdigest(),
               'humanoidBones': {role: gltf['nodes'][value['node']]['name'] for role, value in bones.items()},
-              'expressions': list(presets), 'gameClipsKeptInSourceGlb': clips,
+              'expressions': list(presets), 'gameClipsKeptInSourceGlb': ([a['name'] for a in read_glb(LIB / name / f'{name}.glb')[0].get('animations', [])] if source_override else clips),
+              'upstreamGameGlb': str((LIB / name / f'{name}.glb').relative_to(ROOT)),
               'geometryAndSkinBinaryUnchanged': True,
               'limitations': ['Original rest pose and local bone axes retained; use a VRM humanoid retargeter.',
                               'Optional eye, blink and complete finger articulation are not synthesized.',
@@ -86,5 +87,4 @@ def export(name):
 
 
 if __name__ == '__main__':
-    for character in ['sobaya', 'fukuchan']:
-        export(character)
+    raise SystemExit('Rebuild canonical VRMs with Blender --python tools/improve_vrm_deformation.py; export() is the VRM packaging helper.')

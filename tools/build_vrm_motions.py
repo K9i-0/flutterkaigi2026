@@ -5,7 +5,9 @@ import bpy
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT/'tools'))
 import build_humanoid_motion as motion
 from export_humanoid_vrm import read_glb
-OUT=ROOT/'04_GAME_ASSETS/vrm/motions';OUT.mkdir(parents=True,exist_ok=True)
+from humanoid_deformation import stabilize_arm_twist
+BASELINE='--baseline' in sys.argv
+OUT=ROOT/('.local/dance_deformation/baseline/motions' if BASELINE else '04_GAME_ASSETS/vrm/motions');OUT.mkdir(parents=True,exist_ok=True)
 motion.BASE=[(s,l,'VRM',True,False) for s,l in [('Idle_A','待機'),('Walk','歩行'),('Sprint','ダッシュ'),('Dance_Simple','ダンス：シンプル')]]
 motion.ADDON=[(s,l,'VRM',True,False) for s,l in [('Dance Charleston','ダンス：チャールストン'),('Dance Body Roll','ダンス：ボディロール')]]
 sources=motion.read_sources(False);catalog={'license':'CC0-1.0','sourceRevision':motion.REVISION,'characters':{}}
@@ -19,10 +21,17 @@ for name in ['sobaya','fukuchan']:
  motion.use_action(rig,None);motion.clear_pose(rig)
  for a in list(bpy.data.actions):bpy.data.actions.remove(a)
  body=motion.Body(rig,meshes,name);entries=[]
- for spec in sources.values():entries.append(motion.retarget(body,spec,False))
+ for spec in sources.values():
+  entry=motion.retarget(body,spec,False)
+  if spec['source'].startswith('Dance') and not BASELINE:
+   action=bpy.data.actions[entry['name']];frames=round(action.frame_range[1]);checks=[]
+   for frame in range(frames+1):
+    bpy.context.scene.frame_set(frame);checks.append(stabilize_arm_twist(body));body.key(frame)
+   entry['deformationCorrection']={'axialRollLimitsDeg':[10,45,60],'maxJointDriftM':max(x['maxJointDriftM'] for x in checks),'maxRotationCorrectionDeg':max(x['maxRotationCorrectionDeg'] for x in checks)}
+  entries.append(entry)
  motion.use_action(rig,None);motion.clear_pose(rig)
  bpy.ops.object.select_all(action='DESELECT');rig.select_set(True);bpy.context.view_layer.objects.active=rig
- temp=ROOT/'.local/vrm-validation'/f'{name}_motions.glb'
+ temp=ROOT/'.local/vrm-validation'/(f'{name}_baseline_motions.glb' if BASELINE else f'{name}_motions.glb')
  bpy.ops.export_scene.gltf(filepath=str(temp),export_format='GLB',use_selection=True,export_animations=True,export_animation_mode='ACTIONS',export_frame_range=False,export_anim_slide_to_zero=True,export_anim_single_armature=True,export_skins=True,export_def_bones=False,export_force_sampling=True,export_optimize_animation_size=True)
  gltf,binary=read_glb(temp);nodes={n.get('name'):i for i,n in enumerate(gltf['nodes'])}
  manifest=json.loads((ROOT/f'04_GAME_ASSETS/vrm/characters/{name}.manifest.json').read_text())

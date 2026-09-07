@@ -1,8 +1,8 @@
 {
-  "source": "04_GAME_ASSETS/3d/motion_library/sobaya/sobaya.glb",
-  "sourceSha256": "d1ce073f0deb2082acbea7cac45862d9242a10951ae7dfe294c4ef515d8ff172",
+  "source": ".local/vrm-validation/sobaya_deformation.glb",
+  "sourceSha256": "e15ec76ebdbba0eadb3c1802d03dd1ff8b656d3cc314c6a5bbcecb18a954bd1d",
   "output": "04_GAME_ASSETS/vrm/characters/sobaya.vrm",
-  "sha256": "2610a228ae7b9a24fb111676f53f5115c083c2f643751f6ae055f735704c2c21",
+  "sha256": "94c8d9a6f28c642a60efb39235c6e8cdfdc6a77bf051e1a35f6879253b426c6c",
   "humanoidBones": {
     "hips": "Hips",
     "spine": "Spine",
@@ -135,6 +135,7 @@
     "WanRig_Walk",
     "ZombieWalk"
   ],
+  "upstreamGameGlb": "04_GAME_ASSETS/3d/motion_library/sobaya/sobaya.glb",
   "geometryAndSkinBinaryUnchanged": true,
   "limitations": [
     "Original rest pose and local bone axes retained; use a VRM humanoid retargeter.",

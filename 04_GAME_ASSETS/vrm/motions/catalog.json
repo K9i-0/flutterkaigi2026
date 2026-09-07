@@ -20,7 +20,7 @@
         "groundSpeedMps": 0.0,
         "contactAnkleSlipRmsMps": 0.012900079971259165,
         "file": "sobaya/Idle_A.vrma",
-        "sha256": "28ae84b6e0a7af996096a64fcb8ae37f1e5142f07505e3a395befc3e874e0241"
+        "sha256": "ea4ce11d342ddec03bcf673e7e8afc8abe9606fd7dcd597f4a20cb45206e8c8f"
       },
       {
         "name": "Library_Walk",
@@ -39,7 +39,7 @@
         "groundSpeedMps": 0.7281798778272173,
         "contactAnkleSlipRmsMps": 0.2796581081301057,
         "file": "sobaya/Walk.vrma",
-        "sha256": "4503a97f3d0475cb61fb1d5eded94ff8ff7de8be94251e2ecc2857b6b056b8cb"
+        "sha256": "99fabedb97f6e261d384fd9be4567a28e5a0759c49a299eeab56519b570e2e4f"
       },
       {
         "name": "Library_Sprint",
@@ -58,7 +58,7 @@
         "groundSpeedMps": 6.344159755607798,
         "contactAnkleSlipRmsMps": 2.3646337310141425,
         "file": "sobaya/Sprint.vrma",
-        "sha256": "8421bd2e71d3fd97a06c88303c4ba917a9f4fe0c43c33179453f2278070a95da"
+        "sha256": "90d0390ee10032b0296d7d12af19e5c6c7aa5ec444955c39e7c3fb45042e1dda"
       },
       {
         "name": "Library_Dance_Simple",
@@ -76,8 +76,17 @@
         "floor": "unconstrained",
         "groundSpeedMps": 0.0,
         "contactAnkleSlipRmsMps": 0.13134612184812153,
+        "deformationCorrection": {
+          "axialRollLimitsDeg": [
+            10,
+            45,
+            60
+          ],
+          "maxJointDriftM": 3.885747435809761e-07,
+          "maxRotationCorrectionDeg": 0.0
+        },
         "file": "sobaya/Dance_Simple.vrma",
-        "sha256": "151d6df4db300cedaa8fede2b8d4c350a98ce62f62761cc4eb6f7e7ccf7bc156"
+        "sha256": "acea3c36ce7e54f61c66c48c47ce260b3341414a5502ea1cf3ee64a0d0cd3011"
       },
       {
         "name": "Library_Dance_Charleston",
@@ -95,8 +104,17 @@
         "floor": "unconstrained",
         "groundSpeedMps": 0.0,
         "contactAnkleSlipRmsMps": 0.7669506940117944,
+        "deformationCorrection": {
+          "axialRollLimitsDeg": [
+            10,
+            45,
+            60
+          ],
+          "maxJointDriftM": 3.625656844801649e-07,
+          "maxRotationCorrectionDeg": 52.183130202328485
+        },
         "file": "sobaya/Dance_Charleston.vrma",
-        "sha256": "ca61ea9889dc26f0ae446f29f2781641328c4e22bd434d5b4eeca3380c3937c6"
+        "sha256": "a062238901c66abb8273c990fd8d2298aecbeb52166fa28225370e4de31fb132"
       },
       {
         "name": "Library_Dance_Body_Roll",
@@ -114,8 +132,17 @@
         "floor": "unconstrained",
         "groundSpeedMps": 0.0,
         "contactAnkleSlipRmsMps": 0.19045558743062804,
+        "deformationCorrection": {
+          "axialRollLimitsDeg": [
+            10,
+            45,
+            60
+          ],
+          "maxJointDriftM": 3.7814907850174666e-07,
+          "maxRotationCorrectionDeg": 55.926784207169156
+        },
         "file": "sobaya/Dance_Body_Roll.vrma",
-        "sha256": "c77c30a82699f6519713fc984cb59929ee404e163299c6264c2bf77ce6c997f6"
+        "sha256": "6e342efea8bb708080f034e02d0b83a17871fb60691195167778fb5eef1baffa"
       }
     ],
     "fukuchan": [
@@ -136,7 +163,7 @@
         "groundSpeedMps": 0.0,
         "contactAnkleSlipRmsMps": 0.011235095159704162,
         "file": "fukuchan/Idle_A.vrma",
-        "sha256": "90debf912f58a157c246df4bb97899ff5d8c057684162c15ac21cafc37008743"
+        "sha256": "17d26a2e0edcb9c61694f4ceca751a9f25727d6685cf6bcc10aca8f61b7fdf54"
       },
       {
         "name": "Library_Walk",
@@ -155,7 +182,7 @@
         "groundSpeedMps": 0.6621420806505919,
         "contactAnkleSlipRmsMps": 0.2396610820140495,
         "file": "fukuchan/Walk.vrma",
-        "sha256": "3150bfe39c54055a25e90546d0c1bdd9e4c5af0eedb45035b4bbfbd1c678aecf"
+        "sha256": "c7be2bb3dbc83c7cb56950ff07e3aac3b90a17e208423289d0f7dcc9c2a5aeb4"
       },
       {
         "name": "Library_Sprint",
@@ -174,7 +201,7 @@
         "groundSpeedMps": 5.768816651463894,
         "contactAnkleSlipRmsMps": 1.8520793746819784,
         "file": "fukuchan/Sprint.vrma",
-        "sha256": "ce9a36afad39d0eaf0b81994c41915b944fb58ef903513ad862c83f00a67742b"
+        "sha256": "dafb693d16ab57597c31beb6aacb821e0be970ccc7ca3b3623c1cf7c3e07ed43"
       },
       {
         "name": "Library_Dance_Simple",
@@ -192,8 +219,17 @@
         "floor": "unconstrained",
         "groundSpeedMps": 0.0,
         "contactAnkleSlipRmsMps": 0.09720215040873101,
+        "deformationCorrection": {
+          "axialRollLimitsDeg": [
+            10,
+            45,
+            60
+          ],
+          "maxJointDriftM": 2.54658403407225e-07,
+          "maxRotationCorrectionDeg": 0.0
+        },
         "file": "fukuchan/Dance_Simple.vrma",
-        "sha256": "14da5566ccedf22f6177e51e6ed8afcc903db96f1589c134f327b5c7db17f020"
+        "sha256": "0feb0654e528d75a085089831d96bd519b490a275ea573b2692f77e5f58ef452"
       },
       {
         "name": "Library_Dance_Charleston",
@@ -211,8 +247,17 @@
         "floor": "unconstrained",
         "groundSpeedMps": 0.0,
         "contactAnkleSlipRmsMps": 0.7128927103025663,
+        "deformationCorrection": {
+          "axialRollLimitsDeg": [
+            10,
+            45,
+            60
+          ],
+          "maxJointDriftM": 2.81549150164294e-07,
+          "maxRotationCorrectionDeg": 119.21841113220133
+        },
         "file": "fukuchan/Dance_Charleston.vrma",
-        "sha256": "4b888552df994250bff317335c44f0e58a83c8debed1f2db560158d7f919a104"
+        "sha256": "2da108b93d39ad6b0b982f13ad251f36352ed11f7bfb3bc5553625dc5bd4260f"
       },
       {
         "name": "Library_Dance_Body_Roll",
@@ -230,8 +275,17 @@
         "floor": "unconstrained",
         "groundSpeedMps": 0.0,
         "contactAnkleSlipRmsMps": 0.17033182256900675,
+        "deformationCorrection": {
+          "axialRollLimitsDeg": [
+            10,
+            45,
+            60
+          ],
+          "maxJointDriftM": 3.7089095728799976e-07,
+          "maxRotationCorrectionDeg": 100.64106840114285
+        },
         "file": "fukuchan/Dance_Body_Roll.vrma",
-        "sha256": "5b8eb2bcabe6bf75bbbea4f13c2edd14a8462751b48edf898461c6601581dbd8"
+        "sha256": "78e543ad335fc5819c06c60fa80eed088cbafc2aa0997ed1f5f36a7180fb9bd2"
       }
     ]
   }

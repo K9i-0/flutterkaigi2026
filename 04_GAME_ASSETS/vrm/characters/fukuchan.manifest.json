@@ -1,8 +1,8 @@
 {
-  "source": "04_GAME_ASSETS/3d/motion_library/fukuchan/fukuchan.glb",
-  "sourceSha256": "2f1825b598883d99677646fb26bdb934029b3dd63bc40460520f3d0c95302d53",
+  "source": ".local/vrm-validation/fukuchan_deformation.glb",
+  "sourceSha256": "a5b712beb550ccad82fd98519a4df594ad6c86fa0b37aaa9f268ce7260a18e73",
   "output": "04_GAME_ASSETS/vrm/characters/fukuchan.vrm",
-  "sha256": "72a4764d679da32714ab2f481fe59b03e1689cca1bc4c6d2bc4d7299232fdcf8",
+  "sha256": "d2e9a5afe1682fb9b894cc7712462fbf43a1a5a78ebddf802add374641272600",
   "humanoidBones": {
     "hips": "Hips",
     "spine": "Spine",
@@ -114,6 +114,7 @@
     "Wan_Walk",
     "WanRig_Walk"
   ],
+  "upstreamGameGlb": "04_GAME_ASSETS/3d/motion_library/fukuchan/fukuchan.glb",
   "geometryAndSkinBinaryUnchanged": true,
   "limitations": [
     "Original rest pose and local bone axes retained; use a VRM humanoid retargeter.",

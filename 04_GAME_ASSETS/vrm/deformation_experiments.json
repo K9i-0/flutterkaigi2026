@@ -1,0 +1,411 @@
+{
+  "input": "Unmodified shared game GLB packaged as baseline VRM; baseline VRMA bake without twist correction",
+  "fixedView": {
+    "position": [
+      3,
+      -5,
+      3.6
+    ],
+    "target": [
+      0,
+      0,
+      1.25
+    ]
+  },
+  "evaluatedVariants": [
+    "baseline",
+    "dual_quaternion",
+    "smooth_weights",
+    "swing_only",
+    "clavicle_twist",
+    "pivot_offset",
+    "adopted",
+    "strong_weights"
+  ],
+  "samples": [
+    {
+      "character": "sobaya",
+      "clip": "Dance_Charleston",
+      "seconds": 0,
+      "variant": "baseline",
+      "image": ".local/dance_deformation/sobaya_Dance_Charleston_0.00_baseline.png",
+      "jointDriftM": 2.4049479009185677e-07
+    },
+    {
+      "character": "sobaya",
+      "clip": "Dance_Charleston",
+      "seconds": 0,
+      "variant": "dual_quaternion",
+      "image": ".local/dance_deformation/sobaya_Dance_Charleston_0.00_dual_quaternion.png",
+      "jointDriftM": 2.4049479009185677e-07
+    },
+    {
+      "character": "sobaya",
+      "clip": "Dance_Charleston",
+      "seconds": 0,
+      "variant": "smooth_weights",
+      "image": ".local/dance_deformation/sobaya_Dance_Charleston_0.00_smooth_weights.png",
+      "jointDriftM": 2.4049479009185677e-07
+    },
+    {
+      "character": "sobaya",
+      "clip": "Dance_Charleston",
+      "seconds": 0,
+      "variant": "swing_only",
+      "image": ".local/dance_deformation/sobaya_Dance_Charleston_0.00_swing_only.png",
+      "jointDriftM": 2.4049479009185677e-07
+    },
+    {
+      "character": "sobaya",
+      "clip": "Dance_Charleston",
+      "seconds": 0,
+      "variant": "clavicle_twist",
+      "image": ".local/dance_deformation/sobaya_Dance_Charleston_0.00_clavicle_twist.png",
+      "jointDriftM": 2.4620758953479386e-07
+    },
+    {
+      "character": "sobaya",
+      "clip": "Dance_Charleston",
+      "seconds": 0,
+      "variant": "pivot_offset",
+      "image": ".local/dance_deformation/sobaya_Dance_Charleston_0.00_pivot_offset.png",
+      "jointDriftM": 0.04322594341785416
+    },
+    {
+      "character": "sobaya",
+      "clip": "Dance_Charleston",
+      "seconds": 0,
+      "variant": "adopted",
+      "image": ".local/dance_deformation/sobaya_Dance_Charleston_0.00_adopted.png",
+      "jointDriftM": 2.7028258364226004e-07
+    },
+    {
+      "character": "sobaya",
+      "clip": "Dance_Charleston",
+      "seconds": 0,
+      "variant": "strong_weights",
+      "image": ".local/dance_deformation/sobaya_Dance_Charleston_0.00_strong_weights.png",
+      "jointDriftM": 2.7028258364226004e-07
+    },
+    {
+      "character": "sobaya",
+      "clip": "Dance_Body_Roll",
+      "seconds": 2.37,
+      "variant": "baseline",
+      "image": ".local/dance_deformation/sobaya_Dance_Body_Roll_2.37_baseline.png",
+      "jointDriftM": 1.6049041769309353e-07
+    },
+    {
+      "character": "sobaya",
+      "clip": "Dance_Body_Roll",
+      "seconds": 2.37,
+      "variant": "dual_quaternion",
+      "image": ".local/dance_deformation/sobaya_Dance_Body_Roll_2.37_dual_quaternion.png",
+      "jointDriftM": 1.6049041769309353e-07
+    },
+    {
+      "character": "sobaya",
+      "clip": "Dance_Body_Roll",
+      "seconds": 2.37,
+      "variant": "smooth_weights",
+      "image": ".local/dance_deformation/sobaya_Dance_Body_Roll_2.37_smooth_weights.png",
+      "jointDriftM": 1.6049041769309353e-07
+    },
+    {
+      "character": "sobaya",
+      "clip": "Dance_Body_Roll",
+      "seconds": 2.37,
+      "variant": "swing_only",
+      "image": ".local/dance_deformation/sobaya_Dance_Body_Roll_2.37_swing_only.png",
+      "jointDriftM": 1.6049041769309353e-07
+    },
+    {
+      "character": "sobaya",
+      "clip": "Dance_Body_Roll",
+      "seconds": 2.37,
+      "variant": "clavicle_twist",
+      "image": ".local/dance_deformation/sobaya_Dance_Body_Roll_2.37_clavicle_twist.png",
+      "jointDriftM": 1.4600096599955427e-07
+    },
+    {
+      "character": "sobaya",
+      "clip": "Dance_Body_Roll",
+      "seconds": 2.37,
+      "variant": "pivot_offset",
+      "image": ".local/dance_deformation/sobaya_Dance_Body_Roll_2.37_pivot_offset.png",
+      "jointDriftM": 0.04158079750611931
+    },
+    {
+      "character": "sobaya",
+      "clip": "Dance_Body_Roll",
+      "seconds": 2.37,
+      "variant": "adopted",
+      "image": ".local/dance_deformation/sobaya_Dance_Body_Roll_2.37_adopted.png",
+      "jointDriftM": 2.457562461863554e-07
+    },
+    {
+      "character": "sobaya",
+      "clip": "Dance_Body_Roll",
+      "seconds": 2.37,
+      "variant": "strong_weights",
+      "image": ".local/dance_deformation/sobaya_Dance_Body_Roll_2.37_strong_weights.png",
+      "jointDriftM": 2.457562461863554e-07
+    },
+    {
+      "character": "sobaya",
+      "clip": "Dance_Body_Roll",
+      "seconds": 0.84,
+      "variant": "baseline",
+      "image": ".local/dance_deformation/sobaya_Dance_Body_Roll_0.84_baseline.png",
+      "jointDriftM": 2.699743350147223e-07
+    },
+    {
+      "character": "sobaya",
+      "clip": "Dance_Body_Roll",
+      "seconds": 0.84,
+      "variant": "dual_quaternion",
+      "image": ".local/dance_deformation/sobaya_Dance_Body_Roll_0.84_dual_quaternion.png",
+      "jointDriftM": 2.699743350147223e-07
+    },
+    {
+      "character": "sobaya",
+      "clip": "Dance_Body_Roll",
+      "seconds": 0.84,
+      "variant": "smooth_weights",
+      "image": ".local/dance_deformation/sobaya_Dance_Body_Roll_0.84_smooth_weights.png",
+      "jointDriftM": 2.699743350147223e-07
+    },
+    {
+      "character": "sobaya",
+      "clip": "Dance_Body_Roll",
+      "seconds": 0.84,
+      "variant": "swing_only",
+      "image": ".local/dance_deformation/sobaya_Dance_Body_Roll_0.84_swing_only.png",
+      "jointDriftM": 2.5506679368948475e-07
+    },
+    {
+      "character": "sobaya",
+      "clip": "Dance_Body_Roll",
+      "seconds": 0.84,
+      "variant": "clavicle_twist",
+      "image": ".local/dance_deformation/sobaya_Dance_Body_Roll_0.84_clavicle_twist.png",
+      "jointDriftM": 2.715376338979888e-07
+    },
+    {
+      "character": "sobaya",
+      "clip": "Dance_Body_Roll",
+      "seconds": 0.84,
+      "variant": "pivot_offset",
+      "image": ".local/dance_deformation/sobaya_Dance_Body_Roll_0.84_pivot_offset.png",
+      "jointDriftM": 0.058015634209294134
+    },
+    {
+      "character": "sobaya",
+      "clip": "Dance_Body_Roll",
+      "seconds": 0.84,
+      "variant": "adopted",
+      "image": ".local/dance_deformation/sobaya_Dance_Body_Roll_0.84_adopted.png",
+      "jointDriftM": 4.290557717484509e-07
+    },
+    {
+      "character": "sobaya",
+      "clip": "Dance_Body_Roll",
+      "seconds": 0.84,
+      "variant": "strong_weights",
+      "image": ".local/dance_deformation/sobaya_Dance_Body_Roll_0.84_strong_weights.png",
+      "jointDriftM": 4.290557717484509e-07
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Dance_Charleston",
+      "seconds": 0,
+      "variant": "baseline",
+      "image": ".local/dance_deformation/fukuchan_Dance_Charleston_0.00_baseline.png",
+      "jointDriftM": 1.7120130796843852e-07
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Dance_Charleston",
+      "seconds": 0,
+      "variant": "dual_quaternion",
+      "image": ".local/dance_deformation/fukuchan_Dance_Charleston_0.00_dual_quaternion.png",
+      "jointDriftM": 1.7120130796843852e-07
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Dance_Charleston",
+      "seconds": 0,
+      "variant": "smooth_weights",
+      "image": ".local/dance_deformation/fukuchan_Dance_Charleston_0.00_smooth_weights.png",
+      "jointDriftM": 1.7120130796843852e-07
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Dance_Charleston",
+      "seconds": 0,
+      "variant": "swing_only",
+      "image": ".local/dance_deformation/fukuchan_Dance_Charleston_0.00_swing_only.png",
+      "jointDriftM": 1.2078503397757914e-07
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Dance_Charleston",
+      "seconds": 0,
+      "variant": "clavicle_twist",
+      "image": ".local/dance_deformation/fukuchan_Dance_Charleston_0.00_clavicle_twist.png",
+      "jointDriftM": 2.602375924076584e-07
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Dance_Charleston",
+      "seconds": 0,
+      "variant": "pivot_offset",
+      "image": ".local/dance_deformation/fukuchan_Dance_Charleston_0.00_pivot_offset.png",
+      "jointDriftM": 0.051721470147597884
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Dance_Charleston",
+      "seconds": 0,
+      "variant": "adopted",
+      "image": ".local/dance_deformation/fukuchan_Dance_Charleston_0.00_adopted.png",
+      "jointDriftM": 3.616458789310275e-07
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Dance_Charleston",
+      "seconds": 0,
+      "variant": "strong_weights",
+      "image": ".local/dance_deformation/fukuchan_Dance_Charleston_0.00_strong_weights.png",
+      "jointDriftM": 3.616458789310275e-07
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Dance_Body_Roll",
+      "seconds": 2.37,
+      "variant": "baseline",
+      "image": ".local/dance_deformation/fukuchan_Dance_Body_Roll_2.37_baseline.png",
+      "jointDriftM": 1.3698992139247726e-07
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Dance_Body_Roll",
+      "seconds": 2.37,
+      "variant": "dual_quaternion",
+      "image": ".local/dance_deformation/fukuchan_Dance_Body_Roll_2.37_dual_quaternion.png",
+      "jointDriftM": 1.3698992139247726e-07
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Dance_Body_Roll",
+      "seconds": 2.37,
+      "variant": "smooth_weights",
+      "image": ".local/dance_deformation/fukuchan_Dance_Body_Roll_2.37_smooth_weights.png",
+      "jointDriftM": 1.3698992139247726e-07
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Dance_Body_Roll",
+      "seconds": 2.37,
+      "variant": "swing_only",
+      "image": ".local/dance_deformation/fukuchan_Dance_Body_Roll_2.37_swing_only.png",
+      "jointDriftM": 1.3698992139247726e-07
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Dance_Body_Roll",
+      "seconds": 2.37,
+      "variant": "clavicle_twist",
+      "image": ".local/dance_deformation/fukuchan_Dance_Body_Roll_2.37_clavicle_twist.png",
+      "jointDriftM": 1.3075715880680267e-07
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Dance_Body_Roll",
+      "seconds": 2.37,
+      "variant": "pivot_offset",
+      "image": ".local/dance_deformation/fukuchan_Dance_Body_Roll_2.37_pivot_offset.png",
+      "jointDriftM": 0.054047898380846345
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Dance_Body_Roll",
+      "seconds": 2.37,
+      "variant": "adopted",
+      "image": ".local/dance_deformation/fukuchan_Dance_Body_Roll_2.37_adopted.png",
+      "jointDriftM": 2.3976085282405765e-07
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Dance_Body_Roll",
+      "seconds": 2.37,
+      "variant": "strong_weights",
+      "image": ".local/dance_deformation/fukuchan_Dance_Body_Roll_2.37_strong_weights.png",
+      "jointDriftM": 2.3976085282405765e-07
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Dance_Body_Roll",
+      "seconds": 0.84,
+      "variant": "baseline",
+      "image": ".local/dance_deformation/fukuchan_Dance_Body_Roll_0.84_baseline.png",
+      "jointDriftM": 1.4600096599955427e-07
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Dance_Body_Roll",
+      "seconds": 0.84,
+      "variant": "dual_quaternion",
+      "image": ".local/dance_deformation/fukuchan_Dance_Body_Roll_0.84_dual_quaternion.png",
+      "jointDriftM": 1.4600096599955427e-07
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Dance_Body_Roll",
+      "seconds": 0.84,
+      "variant": "smooth_weights",
+      "image": ".local/dance_deformation/fukuchan_Dance_Body_Roll_0.84_smooth_weights.png",
+      "jointDriftM": 1.4600096599955427e-07
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Dance_Body_Roll",
+      "seconds": 0.84,
+      "variant": "swing_only",
+      "image": ".local/dance_deformation/fukuchan_Dance_Body_Roll_0.84_swing_only.png",
+      "jointDriftM": 1.4336318824361158e-07
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Dance_Body_Roll",
+      "seconds": 0.84,
+      "variant": "clavicle_twist",
+      "image": ".local/dance_deformation/fukuchan_Dance_Body_Roll_0.84_clavicle_twist.png",
+      "jointDriftM": 1.6563932653826258e-07
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Dance_Body_Roll",
+      "seconds": 0.84,
+      "variant": "pivot_offset",
+      "image": ".local/dance_deformation/fukuchan_Dance_Body_Roll_0.84_pivot_offset.png",
+      "jointDriftM": 0.06341905556520852
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Dance_Body_Roll",
+      "seconds": 0.84,
+      "variant": "adopted",
+      "image": ".local/dance_deformation/fukuchan_Dance_Body_Roll_0.84_adopted.png",
+      "jointDriftM": 4.017963483760219e-07
+    },
+    {
+      "character": "fukuchan",
+      "clip": "Dance_Body_Roll",
+      "seconds": 0.84,
+      "variant": "strong_weights",
+      "image": ".local/dance_deformation/fukuchan_Dance_Body_Roll_0.84_strong_weights.png",
+      "jointDriftM": 4.017963483760219e-07
+    }
+  ]
+}
