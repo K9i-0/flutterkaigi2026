@@ -408,6 +408,9 @@ class HazardGameController extends ChangeNotifier {
         'Walk',
         'Run',
         'ZombieWalk',
+        'DanceStep',
+        'DanceDisco',
+        'DanceVictory',
         'Climb',
         'Vault',
         'MugAttack',
@@ -426,7 +429,6 @@ class HazardGameController extends ChangeNotifier {
                 shouldHold: () =>
                     [
                       'Idle',
-                      'Run',
                       'MugPunch',
                       'MugHook',
                       'Grab',
@@ -1532,7 +1534,7 @@ class HazardGameController extends ChangeNotifier {
             ? 'Idle'
             : e.moved > .0001
             ? 'Walk'
-            : 'Idle',
+            : (e.idleDance ?? 'Idle'),
       );
       actor.update(
         dt,
@@ -1540,7 +1542,7 @@ class HazardGameController extends ChangeNotifier {
             e.alive &&
             e.active,
         speed: e.climb != null && !e.climb!.onRungs
-            ? (e.climb!.up ? 1 : -1) * 1.4 / 1.007474632
+            ? (e.climb!.up ? 1 : -1) * 1.4 / sobayaWalkSpeed
             : e.attackPending
             ? (e.boss
                   ? 1.05 /
@@ -1553,7 +1555,7 @@ class HazardGameController extends ChangeNotifier {
                       dt /
                       ((e.bossMove == BossMove.charging || e.runningApproach)
                           ? sobayaMugRunSpeed
-                          : 1.007474632) /
+                          : sobayaWalkSpeed) /
                       e.modelScale)
                   .clamp(.1, 3)
             : 1,

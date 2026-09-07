@@ -48,3 +48,7 @@ Dartコード変更後はDTDへ接続してhot reloadする。extension登録の
 生ログ・画像はGit対象外の `evidence/`、軽量な採用検証記録は `qa/` に保存する。
 
 会話の構図確認は `openGameScenario name=introEvent`（または `farmEvent` / `bossEvent` / `endingEvent`）のあと、`gameAction action=eventFrame shot=2 progress=0.5` のように呼ぶ。音声と連続描画を止め、指定カットのカメラ位置と人物の向きを描画する。背景表示でも静止画は取得できるが、これは発話・実時間モーションの検証には使わない。画面の「再開」から通常の再生へ戻れる。
+
+## 未発見ダンスの再現
+
+`openGameScenario name=ambientDance` は未発見の通常そば屋3体へ3ダンスを割り当てるdebug専用シナリオ。通常プレイの抽選は20%。背を向けて配置するため気づかず踊る。`gameAction action=aim`、`action=fire` で銃声を出すと気づき、ダンスが止まる。`inspectHazardGame` の `enemies[].idleDance` と `enemyMotions` を確認する。
