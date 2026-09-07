@@ -1,7 +1,25 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sobaya_hazard_lab/game/game_motion_blend.dart';
 
 void main() {
+  test(
+    'game walk uses the measured shared clip and its exact ground speed',
+    () {
+      final catalog = jsonDecode(
+        File('../04_GAME_ASSETS/3d/motion_library/fukuchan/profile.json')
+            .readAsStringSync(),
+      ) as Map<String, dynamic>;
+      final clip = (catalog['clips'] as List)
+          .cast<Map<String, dynamic>>()
+          .singleWhere((e) => e['name'] == playerMotionSources['Walk']);
+      expect(clip['method'], 'video');
+      expect(fukuchanWalkSpeed, closeTo(clip['groundSpeedMps'] as num, 1e-10));
+      expect(clip['loop'], isTrue);
+    },
+  );
   test(
     'all mug variants contact exactly on the damage beat and finish recovery',
     () {

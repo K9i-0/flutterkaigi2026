@@ -514,6 +514,9 @@ def build_character(name,sources,preview,hybrid_only=False):
         print('BAKED',name,result['name'],round(result['minSoleM'],4),flush=True)
     from humanoid_action_refinement import refine
     refine(body,profile)
+    from humanoid_video_walk import add_video_walk, measure_captured_walk
+    measure_captured_walk(body,profile)
+    add_video_walk(body,profile)
     use_action(rig,None);clear_pose(rig)
     folder=OUT/name;folder.mkdir(parents=True,exist_ok=True)
     (folder/'.gitignore').write_text('*.blend\n*.blend1\n')

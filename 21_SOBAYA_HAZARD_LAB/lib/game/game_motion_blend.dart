@@ -39,7 +39,7 @@ double locomotionPlaybackRate(double distance, double dt, double groundSpeed) {
 // Source names and fitted foot speeds from the shared motion catalog.
 const playerMotionSources = {
   'Idle': 'Hybrid_Idle_A',
-  'Walk': 'Hybrid_Walk',
+  'Walk': 'Wan_Walk',
   'Run': 'Hybrid_Jog',
   'Evade': 'Procedural_RollForward',
 };
@@ -50,7 +50,7 @@ const sobayaMotionSources = {
   'MugPunch': 'Hybrid_MugPunch',
   'MugHook': 'Hybrid_MugHook',
 };
-const fukuchanWalkSpeed = .6621424407221252;
+const fukuchanWalkSpeed = .8595861316161023;
 const fukuchanRunSpeed = 3.7408731803841153;
 const sobayaMugRunSpeed = 4.113966343911378;
 

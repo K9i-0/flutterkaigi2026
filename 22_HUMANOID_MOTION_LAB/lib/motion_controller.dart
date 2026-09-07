@@ -67,18 +67,25 @@ class MotionController extends ChangeNotifier {
   final List<String> _claimed = [];
   List<BodyProfile> profiles = [];
   List<MotionSlot> slots = [];
-  MotionMethod method = MotionMethod.hybrid;
+  MotionMethod method = MotionMethod.video;
   String action = 'Walk', character = 'sobaya';
   bool compareMethods = false,
       skeleton = false,
       ready = false,
       disposed = false;
   bool syncPhase = true;
+  bool compareTravel = false;
+  bool get walkingTravel => compareTravel && action == 'Walk';
+  double get travelMeters => walkingTravel ? clock.seconds * 1.25 : 0;
   double yaw = 0, pitch = .13, distance = 4.4, viewAngle = 0;
 
   BodyProfile get selectedBody => profiles.firstWhere((p) => p.id == character);
   MotionEntry get selected => selectedBody.find(method, action)!;
-  double get duration => ready ? selected.duration : 1;
+  double get duration => walkingTravel
+      ? 8
+      : ready
+      ? selected.duration
+      : 1;
   List<MotionEntry> get entries {
     if (!ready) return [];
     final clips = selectedBody.clips.where((e) => e.method == method).toList();
@@ -221,7 +228,7 @@ class MotionController extends ChangeNotifier {
 
   void layout(bool value) {
     compareMethods = value;
-    distance = value ? 6.5 : 4.4;
+    distance = value ? 7.8 : 4.4;
     rebuild();
   }
 
@@ -251,14 +258,20 @@ class MotionController extends ChangeNotifier {
       final entry = slot.entry;
       if (entry != null) {
         final phase = ((clock.seconds / duration - .13) / .77).clamp(0.0, 1.0);
-        final travel = entry.rootTravel * phase * phase * (3 - 2 * phase);
+        final travel = walkingTravel
+            ? travelMeters
+            : entry.rootTravel * phase * phase * (3 - 2 * phase);
         slot.root.position = vm.Vector3(
           slot.originX + math.sin(viewAngle) * travel,
           0,
           math.cos(viewAngle) * travel,
         );
         slot.clip!.seek(
-          syncPhase ? clock.seconds / duration * entry.duration : clock.seconds,
+          walkingTravel && entry.groundSpeed != null
+              ? (clock.seconds * 1.25 / entry.groundSpeed!) % entry.duration
+              : syncPhase
+              ? clock.seconds / duration * entry.duration
+              : clock.seconds,
         );
       }
     }
@@ -328,11 +341,17 @@ class MotionController extends ChangeNotifier {
 
   PerspectiveCamera camera() => PerspectiveCamera(
     position: vm.Vector3(
-      math.sin(yaw) * math.cos(pitch) * distance,
+      math.sin(yaw) * math.cos(pitch) * distance +
+          math.sin(viewAngle) * travelMeters,
       1 + math.sin(pitch) * distance,
-      math.cos(yaw) * math.cos(pitch) * distance,
+      math.cos(yaw) * math.cos(pitch) * distance +
+          math.cos(viewAngle) * travelMeters,
     ),
-    target: vm.Vector3(0, .95, 0),
+    target: vm.Vector3(
+      math.sin(viewAngle) * travelMeters,
+      .95,
+      math.cos(viewAngle) * travelMeters,
+    ),
     fovRadiansY: math.pi / 4,
     fovNear: .04,
     fovFar: 60,
@@ -349,6 +368,8 @@ class MotionController extends ChangeNotifier {
     'speed': clock.speed,
     'compareMethods': compareMethods,
     'syncPhase': syncPhase,
+    'walkingTravel': walkingTravel,
+    'comparisonSpeedMps': walkingTravel ? 1.25 : null,
     'skeleton': skeleton,
     'actors': [
       for (final s in slots)

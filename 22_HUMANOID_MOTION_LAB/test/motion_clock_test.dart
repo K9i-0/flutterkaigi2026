@@ -30,7 +30,7 @@ void main() {
     },
   );
 
-  test('catalog supports four methods on both measured skeletons', () {
+  test('catalog supports five walking methods on both measured skeletons', () {
     final json = jsonDecode(
       File('assets/catalog.json').readAsStringSync(),
     ) as Map<String, dynamic>;
@@ -45,11 +45,19 @@ void main() {
           isNotNull,
           reason: '${body.id}/${method.name}',
         );
-        expect(
-          body.find(method, 'Run'),
-          isNotNull,
-          reason: '${body.id}/${method.name}',
-        );
+        if (method != MotionMethod.video) {
+          expect(
+            body.find(method, 'Run'),
+            isNotNull,
+            reason: '${body.id}/${method.name}',
+          );
+        } else {
+          expect(body.find(method, 'Walk')!.groundSpeed, greaterThan(.5));
+          expect(
+            body.find(method, 'Walk')!.minSole,
+            greaterThanOrEqualTo(-.002),
+          );
+        }
       }
       for (final role in ['pelvis', 'foot_l', 'foot_r', 'hand_l', 'hand_r']) {
         expect(body.boneMap[role], isNotNull);

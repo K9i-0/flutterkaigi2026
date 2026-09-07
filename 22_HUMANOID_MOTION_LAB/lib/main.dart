@@ -455,7 +455,7 @@ class _MotionPageState extends State<MotionPage> {
                 const SizedBox(height: 5),
                 Text(
                   lab.compareMethods
-                      ? '同じ動作を、4つの手法で並べて確認'
+                      ? '同じ動作を、${MotionMethod.values.length}つの手法で並べて確認'
                       : '同じ動作を、それぞれの身体に合わせて再生',
                   style: const TextStyle(color: muted, fontSize: 12),
                 ),
@@ -613,14 +613,18 @@ class _MotionPageState extends State<MotionPage> {
             ),
             const SizedBox(width: 8),
             Tooltip(
-              message: 'ON: 同じ周期の位置。OFF: 同じ経過秒数。',
+              message: lab.walkingTravel
+                  ? '移動速度の比較中は各クリップの周期で再生します。'
+                  : 'ON: 同じ周期の位置。OFF: 同じ経過秒数。',
               child: FilterChip(
                 label: const Text('位相を同期'),
-                selected: lab.syncPhase,
-                onSelected: (v) => setState(() {
-                  lab.syncPhase = v;
-                  lab.pose();
-                }),
+                selected: lab.syncPhase && !lab.walkingTravel,
+                onSelected: lab.walkingTravel
+                    ? null
+                    : (v) => setState(() {
+                        lab.syncPhase = v;
+                        lab.pose();
+                      }),
               ),
             ),
           ],
@@ -637,6 +641,21 @@ class _MotionPageState extends State<MotionPage> {
         style: TextStyle(color: muted, fontSize: 10, letterSpacing: 1.6),
       ),
       const SizedBox(height: 18),
+      if (lab.action == 'Walk') ...[
+        SwitchListTile.adaptive(
+          contentPadding: EdgeInsets.zero,
+          title: const Text('1.25 m/s で歩行比較', style: TextStyle(fontSize: 12)),
+          subtitle: const Text(
+            '各方式の歩幅に合わせて再生速度を調整',
+            style: TextStyle(fontSize: 10),
+          ),
+          value: lab.compareTravel,
+          onChanged: (v) => setState(() {
+            lab.compareTravel = v;
+            lab.replay();
+          }),
+        ),
+      ],
       Text(
         lab.method.label,
         style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
@@ -696,6 +715,8 @@ class _MotionPageState extends State<MotionPage> {
             ? '既存のMixamo収録動作'
             : lab.method == MotionMethod.procedural
             ? '独自の数式・2ボーンIK'
+            : lab.method == MotionMethod.video
+            ? 'Wan 3.0 · クレイ歩行 480P\nMediaPipe観測 + 体格別IK\n単眼の奥行きは補完しています。'
             : 'Mesh2Motion / Quaternius\nCC0 1.0 · 改変・商用利用可',
         style: const TextStyle(color: muted, fontSize: 11, height: 1.7),
       ),

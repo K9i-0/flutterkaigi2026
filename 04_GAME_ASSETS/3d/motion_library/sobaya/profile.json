@@ -47,7 +47,8 @@
       "category": "収録動作",
       "loop": true,
       "duration": 1.2333333333333334,
-      "source": "existing licensed Mixamo retarget; raw FBX not redistributed"
+      "source": "existing licensed Mixamo retarget; raw FBX not redistributed",
+      "groundSpeedMps": 0.9947072714567184
     },
     {
       "name": "Run",
@@ -1552,8 +1553,29 @@
         "contact": 0.48,
         "recovery": 0.85
       }
+    },
+    {
+      "name": "Wan_Walk",
+      "action": "Walk",
+      "label": "クレイ動画からの歩行",
+      "method": "video",
+      "category": "移動",
+      "loop": true,
+      "duration": 1.3333333333333333,
+      "source": "wan_walk_clay.json / Wan 3.0 + MediaPipe + anatomical IK",
+      "sourceClip": "01_walk",
+      "floor": "flat",
+      "minSoleM": 0.0025683653075248003,
+      "groundSpeedMps": 0.9453156060934512,
+      "contactAnkleSlipRmsMps": 5.344886788365557e-06,
+      "contactSamples": 28,
+      "gazePitchRangeDeg": [
+        -3,
+        5
+      ],
+      "referenceVideoSha256": "551ec6598b1de184731c83de497ab4a88f27d6c5dfa928da48ae2c7314aa79c3"
     }
   ],
-  "glbBytes": 15621908,
+  "glbBytes": 15669160,
   "actionRefinementRevision": 2
 }

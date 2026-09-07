@@ -2,7 +2,8 @@ enum MotionMethod {
   captured('収録動作', '既存のMixamo歩行・走行。人が演じた重心移動とタイミング。', 'MOCAP'),
   library('公開ライブラリ', 'CC0の手付け動作を骨格へ移植。接地補正前の状態も比較できます。', 'CC0 / FK'),
   procedural('体格からIK生成', '実測した脚長・腕長から足と手の軌道を解き、動きを生成。', 'PROCEDURAL'),
-  hybrid('公開動作 + IK', '公開動作の演技を使い、脚長・肩幅・靴底に合わせて補正。', 'CC0 + IK');
+  hybrid('公開動作 + IK', '公開動作の演技を使い、脚長・肩幅・靴底に合わせて補正。', 'CC0 + IK'),
+  video('Wan見本 + IK', 'クレイ動画から歩行周期・手足の軌道を観測。隠れた奥行きを補完し、体格別に接地を補正。', 'WAN + IK');
 
   const MotionMethod(this.label, this.description, this.badge);
   final String label, description, badge;
@@ -20,6 +21,7 @@ class MotionEntry {
       source = json['source'] as String,
       prop = json['prop'] as String?,
       rootTravel = (json['rootTravelM'] as num?)?.toDouble() ?? 0,
+      groundSpeed = (json['groundSpeedMps'] as num?)?.toDouble(),
       minSole = (json['minSoleM'] as num?)?.toDouble();
   final String name, action, label, category, source;
   final MotionMethod method;
@@ -27,6 +29,7 @@ class MotionEntry {
   final double? minSole;
   final String? prop;
   final double rootTravel;
+  final double? groundSpeed;
   final bool loop;
 }
 

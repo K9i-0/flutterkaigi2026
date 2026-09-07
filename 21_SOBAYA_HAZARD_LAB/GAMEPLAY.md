@@ -267,10 +267,10 @@ MCP検証は `openGameScenario name=audioExplore|audioThreat`、`gameAction acti
 
 ## 2026-09-07 共通モデルと新モーションの本編反映
 
-- 福ちゃん: `Hybrid_Idle_A` / `Hybrid_Walk` / `Hybrid_Jog`。脚長に合わせた基準速度は歩行0.6621m/s・走行3.7409m/s。実移動量から再生速度を決める。
+- 福ちゃん: `Hybrid_Idle_A` / `Wan_Walk` / `Hybrid_Jog`。脚長に合わせた基準速度は歩行0.8596m/s・走行3.7409m/s。実移動量から再生速度を決める。
 - X回避: `Procedural_RollForward` を1秒で再生。従来の移動距離1.554m、無敵0.32秒、クールダウン1.45秒は維持する。移動方向へモデルだけを回し、カメラの向きは維持。0.77秒で移動を終え、最後は起き上がる。壁の分割衝突判定を通す。
 - そば屋: 待機 `Hybrid_MugHold`、走行 `Hybrid_MugRun`（基準4.1140m/s）。歩行・掴み・はしご・窓越えは既存の専用クリップ。新ジョッキ動作の指を旧握り補正で上書きしない。
 - 通常敵はIDによりパンチ／フック／叩きつけを使い分け、強敵は横攻撃にフック・重攻撃に叩きつけを使う。新クリップ48%の打点を、既存の攻撃時計0.77秒へ合わせる。予備動作と後隙を別々に時間変換し、ダメージ量・発生時刻は変更しない。
-- そば屋72・福ちゃん67の共通モーションGLB、やめ太郎／たこさんの `rig_sheet_v2`、共通ジョッキを相対symlinkから再ビルドする。銃・掴み・はしごなどゲーム専用動作と発話モーフを維持する。
+- そば屋73・福ちゃん68の共通モーションGLB、やめ太郎／たこさんの `rig_sheet_v2`、共通ジョッキを相対symlinkから再ビルドする。銃・掴み・はしごなどゲーム専用動作と発話モーフを維持する。
 
 `madogiwa.inspectHazardGame` の `sourceMotion` / `motionSources` / `enemyMotions[].sourceMotion` で実際のクリップを確認できる。`openGameScenario name=mugTiming enemy=0|1|2` は掴みを抑え、各ジョッキ攻撃の打点を実際の戦闘で確認する。通常プレイの掴み確率は変更しない。

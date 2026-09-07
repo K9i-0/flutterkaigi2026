@@ -1,0 +1,92 @@
+{
+  "schema": 1,
+  "videoSha256": "551ec6598b1de184731c83de497ab4a88f27d6c5dfa928da48ae2c7314aa79c3",
+  "taskId": "364a188a-4a1d-4468-85bb-86384b1c938d",
+  "model": "wan3.0-video",
+  "poseModel": "MediaPipe pose_landmarker_full float16 v1",
+  "posePackage": "mediapipe==0.10.32",
+  "fps": 30.0,
+  "size": [
+    842,
+    474
+  ],
+  "trackedFrames": 178,
+  "fittedFrames": [
+    45,
+    134
+  ],
+  "leftPeakFrames": [
+    81,
+    121
+  ],
+  "periodFrames": 40,
+  "duration": 1.3333333333333333,
+  "legPixels": 109.48032814494272,
+  "rootPixelsPerSecond": 125.71215831517719,
+  "rootLegsPerSecond": 1.148262527572487,
+  "markerTrackedFrames": 180,
+  "maxMarkerDisplacementPx": 0.1915949382290891,
+  "stanceFraction": 0.6,
+  "stanceNote": "Regularized from observed ankle forward maxima and following backward extrema; 60% support, symmetric left/right reconstruction.",
+  "coefficients": {
+    "ankleForward": [
+      -0.06753107368517394,
+      0.17654484938385787,
+      0.31889267440233304,
+      -0.04111321605699661,
+      0.09225885933880874,
+      -0.010133140071350745,
+      0.011792759019219558
+    ],
+    "ankleLift": [
+      0.04417870759951553,
+      -0.06589636086800027,
+      0.004309061681351319,
+      -0.007762194552752217,
+      -0.031554016208414186,
+      0.020878478449645365,
+      -0.002215135425651841
+    ],
+    "wristForward": [
+      0.09014204094548348,
+      -0.04851612143374003,
+      -0.23596670800250633,
+      -0.0003226658161524801,
+      0.04292573886747328,
+      -0.014717696190325456,
+      -0.010654311724883176
+    ],
+    "wristUp": [
+      -0.9584516986785776,
+      -0.021694584897028548,
+      -0.0342863976186375,
+      0.019180393147003337,
+      0.017267309357071454,
+      -0.005326486047759898,
+      -0.0014760879441623475
+    ],
+    "footPitch": [
+      -0.20636344472293558,
+      0.38865436668509346,
+      0.15575802711968897,
+      0.0284565806151135,
+      0.30975284789252494,
+      -0.10287161627945277,
+      0.020913356265049733
+    ],
+    "pelvisUp": [
+      -0.0007414045238543753,
+      0.006916051041922468,
+      0.00678130276844763,
+      -0.02748295891426806,
+      -0.009404352858068036,
+      -0.007346396965886663,
+      -0.0005715408007787419
+    ]
+  },
+  "limitations": [
+    "No calibrated absolute scene scale: displacement is normalized by observed hip-knee-ankle chain length, then scaled to target skeleton.",
+    "Lateral sway, pelvis yaw, hidden-side depth and hand orientation are authored constraints, not captured measurements.",
+    "A periodic fit and a linear stance trajectory remove tracking noise and source foot drift. Only steady walking is reconstructed; start/stop is not included."
+  ]
+}
