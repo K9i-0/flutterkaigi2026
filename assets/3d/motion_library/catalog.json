@@ -1122,16 +1122,7 @@
           "groundSpeedMps": 0.0
         }
       ],
-      "glbBytes": 25327320,
-      "headAssembly": {
-        "head_width_scale": 1.15,
-        "head_depth_scale": 1.05,
-        "head_height_scale": 1.02,
-        "neck_connection": "smooth replacement neck ending inside the original shirt collar",
-        "fitted_neck_vertices": 1536,
-        "removed_old_head_faces": 8734,
-        "triangles": 34355
-      }
+      "glbBytes": 15207484
     },
     {
       "id": "fukuchan",

@@ -524,17 +524,6 @@ def build_character(name,sources,preview,hybrid_only=False):
         export_anim_slide_to_zero=True,export_anim_single_armature=True,export_skins=True,
         export_all_influences=False,export_def_bones=False,export_force_sampling=True,export_extras=True,
         export_optimize_animation_size=True)
-    if name == 'sobaya' and not hybrid_only:
-        import subprocess, tempfile
-        from replace_glb_skinned_mesh import replace
-        with tempfile.TemporaryDirectory(prefix='sobaya-head-') as temp:
-            work = Path(temp)
-            subprocess.run([bpy.app.binary_path, '--background', '--factory-startup',
-                '--python', str(ROOT/'tools/build_sobaya_head_assembly.py'), '--',
-                '--source', str(folder/f'{name}.glb'), '--work', str(work),
-                '--skip-preview'], check=True)
-            replace(folder/f'{name}.glb', work/'mesh.glb', folder/f'{name}.glb')
-            profile['headAssembly'] = json.loads((work/'fit.json').read_text())
     profile['glbBytes']=(folder/f'{name}.glb').stat().st_size
     (folder/'profile.json').write_text(json.dumps(profile,ensure_ascii=False,indent=2)+'\n')
     return profile
