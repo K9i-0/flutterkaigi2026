@@ -1,11 +1,11 @@
 {
   "result": "PASS",
-  "sha256": "f2ef555ebc674b940bf200da983c37c9450af0d88a4c923a28ee507d02d2492c",
-  "bytes": 2474204,
-  "triangles": 16205,
-  "vertices": 13609,
+  "sha256": "78189559825840993d3392a59a187438f3589f651d92fd9a6a13f97197704cd0",
+  "bytes": 2599288,
+  "triangles": 15299,
+  "vertices": 13060,
   "joints": 23,
-  "materials": 1,
+  "materials": 3,
   "maxWeightError": 1.341104507446289e-07,
   "clips": [
     {

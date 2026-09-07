@@ -34,5 +34,13 @@
     "maximumJawDisplacement": 0.018,
     "mouthHeight": 0.705,
     "source": "authored localized surface deformation; neutral likeness unchanged"
+  },
+  "surface_cleanup": {
+    "removedJawVertices": 510,
+    "removedJawFaces": 906,
+    "skinFaces": 1580,
+    "earVertices": 424,
+    "collarVertices": 845,
+    "sourceTexturesUnchanged": true
   }
 }

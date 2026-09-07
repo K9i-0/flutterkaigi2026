@@ -1,0 +1,87 @@
+{
+  "date": "2026-09-07",
+  "model": "04_GAME_ASSETS/3d/characters/yametaro/rig_sheet_v2/yametaro.glb",
+  "beforeSha256": "f2ef555ebc674b940bf200da983c37c9450af0d88a4c923a28ee507d02d2492c",
+  "afterSha256": "78189559825840993d3392a59a187438f3589f651d92fd9a6a13f97197704cd0",
+  "animationChannelsByteIdentical": true,
+  "restSkeletonByteIdentical": true,
+  "sourceTexturePayloadsByteIdentical": true,
+  "skinVertexColorsExported": true,
+  "skinNormalMapRemoved": true,
+  "speechTargets": [
+    "SpeechOpen",
+    "SpeechNarrow"
+  ],
+  "structure": {
+    "result": "PASS",
+    "sha256": "78189559825840993d3392a59a187438f3589f651d92fd9a6a13f97197704cd0",
+    "bytes": 2599288,
+    "triangles": 15299,
+    "vertices": 13060,
+    "joints": 23,
+    "materials": 3,
+    "maxWeightError": 1.341104507446289e-07,
+    "clips": [
+      {
+        "name": "Idle",
+        "seconds": 3.0,
+        "loopSeam": 0
+      },
+      {
+        "name": "Talk",
+        "seconds": 3.0,
+        "loopSeam": 0
+      },
+      {
+        "name": "Walk",
+        "seconds": 1.2333333492279053,
+        "loopSeam": 0
+      },
+      {
+        "name": "Wave",
+        "seconds": 3.0,
+        "loopSeam": 0
+      }
+    ],
+    "scope": "GLB structural checks; visual deformation review is separate"
+  },
+  "surfaceCleanup": {
+    "removedJawVertices": 510,
+    "removedJawFaces": 906,
+    "skinFaces": 1580,
+    "earVertices": 424,
+    "collarVertices": 845,
+    "sourceTexturesUnchanged": true
+  },
+  "visualReview": {
+    "blender": [
+      "front",
+      "three-quarter",
+      "side",
+      "back",
+      "face"
+    ],
+    "native": "Opening shot 1 at progress 0.5; jaw and ear ink absent, likeness retained",
+    "localEvidence": "21_SOBAYA_HAZARD_LAB/evidence/yametaro-no-outline-20260907/"
+  },
+  "native": {
+    "mode": "macOS debug",
+    "pid": 35462,
+    "assetRefresh": "Flutter Scene build hook regenerated bundled scene, then Dart MCP hot_restart; Marionette reconnected to the new isolate",
+    "launchAttempt": "Dart MCP launch_app timed out after 180s; existing debug app successfully refreshed and verified",
+    "conversationProbe": {
+      "success": true,
+      "durationMs": 2883,
+      "snapshots": 17,
+      "yametaroObservedOpeningRange": [
+        0.316944595,
+        0.9535696
+      ],
+      "pauseAndResumePassed": true,
+      "nonSpeakerMouthClosed": true
+    },
+    "runtimeErrors": [],
+    "scope": "Actual native frames/audio and controller transitions; static screenshot; not a performance measurement"
+  },
+  "profileMeasured": false
+}
