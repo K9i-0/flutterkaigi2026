@@ -1,0 +1,30 @@
+{
+  "characters": [
+    {
+      "character": "sobaya",
+      "samples": 169,
+      "clip": "WanRig_Walk",
+      "minSoleM": 0.002236799104139209,
+      "maxLowestSoleM": 0.0030110581427264006,
+      "gazePitchRangeDeg": [
+        -1.36836308918575e-05,
+        1.8764955888277686e-05
+      ],
+      "midStanceAnkleSlipRmsMps": 0.0020481624413727336,
+      "groundSpeedMps": 0.7794576869877863
+    },
+    {
+      "character": "fukuchan",
+      "samples": 169,
+      "clip": "WanRig_Walk",
+      "minSoleM": 0.0016459422186017036,
+      "maxLowestSoleM": 0.0030261643696576357,
+      "gazePitchRangeDeg": [
+        -3.7822496752145423e-06,
+        2.4045424929524074e-05
+      ],
+      "midStanceAnkleSlipRmsMps": 0.001985952890847297,
+      "groundSpeedMps": 0.7087699618199412
+    }
+  ]
+}

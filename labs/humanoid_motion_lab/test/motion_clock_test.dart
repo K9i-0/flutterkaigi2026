@@ -30,7 +30,7 @@ void main() {
     },
   );
 
-  test('catalog supports five walking methods on both measured skeletons', () {
+  test('catalog supports six walking methods on both measured skeletons', () {
     final json = jsonDecode(
       File('assets/catalog.json').readAsStringSync(),
     ) as Map<String, dynamic>;
@@ -45,7 +45,7 @@ void main() {
           isNotNull,
           reason: '${body.id}/${method.name}',
         );
-        if (method != MotionMethod.video) {
+        if (method != MotionMethod.video && method != MotionMethod.videoRig) {
           expect(
             body.find(method, 'Run'),
             isNotNull,

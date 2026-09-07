@@ -67,7 +67,7 @@ class MotionController extends ChangeNotifier {
   final List<String> _claimed = [];
   List<BodyProfile> profiles = [];
   List<MotionSlot> slots = [];
-  MotionMethod method = MotionMethod.video;
+  MotionMethod method = MotionMethod.videoRig;
   String action = 'Walk', character = 'sobaya';
   bool compareMethods = false,
       skeleton = false,
@@ -228,7 +228,7 @@ class MotionController extends ChangeNotifier {
 
   void layout(bool value) {
     compareMethods = value;
-    distance = value ? 7.8 : 4.4;
+    distance = value ? 9.2 : 4.4;
     rebuild();
   }
 

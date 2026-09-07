@@ -2,7 +2,7 @@
 
 そば屋ハザードと[そば屋モーションラボ](../../../22_HUMANOID_MOTION_LAB/README.md)が共有するGLB正本。そば屋の人物同一性、福ちゃんの正典頭部、既存ゲームのクリップ名・骨名・発話モーフを維持する。
 
-**そば屋73・福ちゃん68比較クリップ**。このほか従来ゲーム用の動作もGLB内に保持する。すべてが別々の行動という意味ではなく、同じ歩行などを異なる手法で作ったバリエーションを含む。
+**そば屋74・福ちゃん69比較クリップ**。このほか従来ゲーム用の動作もGLB内に保持する。すべてが別々の行動という意味ではなく、同じ歩行などを異なる手法で作ったバリエーションを含む。
 
 | 手法 | 数 / 人 | 内容 |
 | --- | ---: | --- |
@@ -10,8 +10,9 @@
 | `library` | 39 | Mesh2Motion / QuaterniusのCC0手付け動作。バインド姿勢の差を補正したFKリターゲット。接地拘束なしの比較基準 |
 | `procedural` | 9 | 呼吸、歩行、走行、しゃがみ、横移動、リーチ、見回し、段差への足上げ、前方ローリング。関節長と2ボーンIKから生成 |
 | `hybrid` | そば屋22 / 福ちゃん17 | 公開動作の演技を保ち、接地中の水平軌道、靴底高さ、腕の長さと体幹付近の手の通過位置を補正 |
-
 | `video` | 1 | Wan 3.0クレイ見本の周期・側面軌道をMediaPipeで観測し、体格別IKで歩行を再構成 |
+
+| `videoRig` | 1 | 骨格ハイライト版の身体姿勢から再構成。肩・肘・手首の方向を信頼度で補完した比較用試作 |
 
 移動、しゃがみ、左右回避、パンチ、被弾、拳銃、座る・立つ、会話、飲食、挨拶など。GLB内は `Library_Walk` / `Hybrid_Walk` / `Procedural_Walk` のように接頭辞を分ける。名前・秒数・出典・適用手法は `catalog.json` を正本とする。
 
@@ -64,7 +65,7 @@ blender -b --factory-startup --python tools/audit_humanoid_motion.py
 
 入力は以前の正本 `characters/sobaya/rig_v3/sobaya_rig.glb` と `characters/fukuchan/rig_v1/fukuchan.glb`。未追跡のblendは必要ない。出力blendは編集・調査用のローカルファイル。`--preview` は開発用の小規模版、`--hybrid-only` は既存出力からIK群を再ベイクする開発用オプション。正式再生成はオプションなしで行う。
 
-`validation.json` は**書き出したGLBを再インポート**して生成する。全141クリップについて各9姿勢・補間途中・ループ端・有限値、スキンウェイト、福ちゃんの `SpeechOpen` / `SpeechNarrow` を検査する。IK版は床へのめり込みと不自然な浮きを検査する。Sprintのみ、30 Hzのキー間で靴底が回転するため14 mmの接地余裕を設けた。他のIK版は4 mm程度。台帳の `minSoleM` は全キー、監査の値は9姿勢の補間も含むため一致しないことがある。
+`validation.json` は**書き出したGLBを再インポート**して生成する。全143クリップについて各9姿勢・補間途中・ループ端・有限値、スキンウェイト、福ちゃんの `SpeechOpen` / `SpeechNarrow` を検査する。IK版は床へのめり込みと不自然な浮きを検査する。Sprintのみ、30 Hzのキー間で靴底が回転するため14 mmの接地余裕を設けた。他のIK版は4 mm程度。台帳の `minSoleM` は全キー、監査の値は9姿勢の補間も含むため一致しないことがある。
 
 ## 適用範囲
 
@@ -77,3 +78,11 @@ blender -b --factory-startup --python tools/audit_humanoid_motion.py
 `source/wan_walk_clay.json` は追跡する再生成入力。`tools/humanoid_video_walk.py` で差分再生成。`tools/extract_wan_walk.py` / `tools/fit_wan_walk.py` がローカル動画からの観測・周期フィット。新クリップは `tools/audit_wan_walk.py` で161時刻/人の接地・視線・支持中盤の足首滑りを監査する。支持中盤の値は踵の着地とつま先の離地を含む足裏全体の誤差ではない。
 
 [生成・解析記録](../../../03_SCRIPTS/62_hazard_motion_reference_wan3/WALK_CLAY_RESULT.md)。動画生成は承認済みWan API、姿勢推定はローカルMediaPipe。既存CC0素材の出典とは区別する。
+
+## 骨格ハイライト動画の試作歩行
+
+`WanRig_Walk` は42フレーム / 1.4秒。福ちゃん0.708770 m/s、そば屋0.779458 m/s。実際の各モデルの関節長に合わせて再構成し、`Wan_Walk` と別に保持する。ゲーム本編の歩行割り当ては従来の `Wan_Walk` を維持。
+
+入力は `source/wan_walk_clay_rig.json`。再観測は `tools/extract_wan_walk.py --rig-highlight` と `tools/fit_wan_rig_walk.py`、差分ベイクは `blender -b --factory-startup --python tools/humanoid_video_walk.py -- --rig-highlight`。全生成からも再現できる。監査は `tools/audit_wan_walk.py -- --rig-highlight` で169時刻/人。
+
+色付き骨格線を直接追跡せず、MediaPipe 0.10.32による身体姿勢を使う。隠れる左肘の信頼度中央値は0.418、右肘は0.991。左右を半周期ずらして補完し、腕の横への広がりを制限する。単眼の奥行きと手首の向きは正確に復元できず、手指は既存リグの姿勢を保つ。動画と再構成方式の両方が変わっているので、骨格表示だけの効果を判定する比較ではない。
