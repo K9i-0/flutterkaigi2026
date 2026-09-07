@@ -3,7 +3,9 @@ import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {VRMLoaderPlugin} from '@pixiv/three-vrm';
 import {createVRMAnimationClip,VRMAnimationLoaderPlugin} from '@pixiv/three-vrm-animation';
+import {createBoneOverlay} from './vrm_bone_overlay.mjs';
 const $=id=>document.getElementById(id);
+const drawBones=createBoneOverlay($('bones-overlay'));
 const scene=new THREE.Scene();scene.background=new THREE.Color('#405364');
 const camera=new THREE.PerspectiveCamera(35,innerWidth/innerHeight,.01,100);camera.position.set(0,1.4,5.7);
 const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));document.body.append(renderer.domElement);
@@ -12,7 +14,7 @@ scene.add(new THREE.HemisphereLight(0xffffff,0x808080,3));const sun=new THREE.Di
 const actors=[];let paused=false,seconds=0,duration=1,previous=null,ready=false;
 function place(){for(const [i,a] of actors.entries()){a.vrm.scene.visible=$('character').value==='both'||$('character').value===a.name;a.vrm.scene.position.x=$('character').value==='both'?(i?-.55:.95):.25;}}
 function select(){for(const a of actors){a.mixer.stopAllAction();a.vrm.humanoid.resetNormalizedPose();a.action=a.mixer.clipAction(a.clips.get($('motion').value));a.action.reset().play();}duration=actors[0].action.getClip().duration;seconds=0;sample();$('status').textContent='VRMA適用済み · '+$('motion').selectedOptions[0].textContent+'\n体格別の初期姿勢補正 / 元の演技を保持';}
-function sample(){for(const a of actors){a.mixer.setTime(seconds);a.vrm.expressionManager?.setValue('aa',$('mouth').checked?(1+Math.sin(seconds*12))*.4:0);a.vrm.update(0);a.vrm.scene.updateMatrixWorld(true);} $('seek').value=seconds/duration;$('time').textContent=`${seconds.toFixed(2)} / ${duration.toFixed(2)} 秒`;}
+function sample(){for(const a of actors){a.mixer.setTime(seconds);if($('rest').checked)a.vrm.humanoid.resetNormalizedPose();a.vrm.expressionManager?.setValue('aa',$('mouth').checked?(1+Math.sin(seconds*12))*.4:0);a.vrm.update(0);a.vrm.scene.updateMatrixWorld(true);} $('seek').value=seconds/duration;$('time').textContent=`${seconds.toFixed(2)} / ${duration.toFixed(2)} 秒`;}
 try{
 const catalog=await(await fetch('/04_GAME_ASSETS/vrm/motions/catalog.json')).json();
 for(const name of ['sobaya','fukuchan']){
@@ -28,4 +30,4 @@ $('play').onclick=()=>{paused=!paused;$('play').textContent=paused?'再生':'一
 $('reset').onclick=()=>{seconds=0;sample()};$('seek').oninput=()=>{paused=true;$('play').textContent='再生';seconds=Number($('seek').value)*duration;sample()};
 $('front').onclick=()=>{for(const a of actors)a.vrm.scene.rotation.y=0};$('side').onclick=()=>{for(const a of actors)a.vrm.scene.rotation.y=Math.PI/2};
 window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
-renderer.setAnimationLoop(t=>{const dt=previous===null?0:Math.min((t-previous)/1000,.1);previous=t;if(ready){if(!paused)seconds=(seconds+dt*Number($('speed').value))%duration;sample();}renderer.render(scene,camera)});
+renderer.setAnimationLoop(t=>{const dt=previous===null?0:Math.min((t-previous)/1000,.1);previous=t;if(ready){if(!paused)seconds=(seconds+dt*Number($('speed').value))%duration;sample();}renderer.render(scene,camera);drawBones(actors,camera,$('bones').checked,$('axes').checked)});
