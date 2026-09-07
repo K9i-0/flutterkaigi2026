@@ -1,0 +1,338 @@
+{
+  "date": "2026-09-07",
+  "scope": "Chapter-three reunion, conditional dialogue, voices and full-text export",
+  "reviews": {
+    "rounds": [
+      [
+        78,
+        75.75
+      ],
+      [
+        88,
+        88
+      ],
+      [
+        90,
+        90
+      ]
+    ],
+    "rubric": "scenario/REVIEW_RUBRIC.md",
+    "majorIssuesFinal": 0
+  },
+  "tests": {
+    "flutterTestPassed": 167,
+    "flutterAnalyze": "No issues found",
+    "newReunionTests": 6,
+    "afterReadingChangeFocusedTestsPassed": 18
+  },
+  "audio": {
+    "adoptedCues": 124,
+    "newOrEditedCues": 57,
+    "asr": "Whisper-small screening. Kanji/homophone recognition errors remain; this is not a human listening approval.",
+    "transcript": "scenario-voice-transcript-20260907.json",
+    "assets": "scenario-voice-assets-20260907.json",
+    "manifestSha256": "9134e3dcd7ba970532b3a449d624138a02e7b1558e688da62243ab5a4d6d9202"
+  },
+  "native": {
+    "actualBossKill": {
+      "shots": 3,
+      "kills": 1,
+      "npcs": {
+        "yametaro": true,
+        "takosan": true
+      },
+      "bossAlive": false
+    },
+    "shop": {
+      "beers": 10,
+      "purchases": {
+        "ammo": 1
+      },
+      "topic": "trade_result"
+    },
+    "beforeBoss": {
+      "npcs": {
+        "yametaro": true,
+        "takosan": false
+      },
+      "dialogue": {
+        "npc": "yametaro",
+        "topic": "intro",
+        "line": 0,
+        "choices": true,
+        "metYametaro": true,
+        "receivedAmmo": false,
+        "metTakosan": false,
+        "tradePurchases": {}
+      }
+    },
+    "voices": [
+      {
+        "npc": "takosan",
+        "voice": {
+          "requested": "dialogue:1:1:mountain:takosan:reunion:0:0:お疲れさまです。静かになったので、宿舎の人たちと裏道を通ってきました。皆さんはこの家の裏で待っています。",
+          "active": "dialogue:1:1:mountain:takosan:reunion:0:0:お疲れさまです。静かになったので、宿舎の人たちと裏道を通ってきました。皆さんはこの家の裏で待っています。",
+          "playbackSeconds": 1.495032,
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 1,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 1353,
+            "durationMs": 9088,
+            "loop": false,
+            "loopCompletions": 0,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        },
+        "speechFaces": {
+          "福ちゃん": {
+            "opening": 0,
+            "nodes": 1,
+            "weights": [
+              0,
+              0
+            ]
+          },
+          "やめ太郎": {
+            "opening": 0,
+            "nodes": 1,
+            "weights": [
+              0,
+              0
+            ]
+          }
+        },
+        "dialogue": {
+          "npc": "takosan",
+          "topic": "reunion",
+          "line": 0,
+          "choices": false,
+          "metYametaro": false,
+          "receivedAmmo": false,
+          "metTakosan": true,
+          "tradePurchases": {}
+        },
+        "npcs": {
+          "yametaro": true,
+          "takosan": true
+        }
+      },
+      {
+        "npc": "fukuchan-with-takosan",
+        "voice": {
+          "requested": "dialogue:1:1:mountain:takosan:reunion:1:0:たこさんも来てたんですね。お店ごと？",
+          "active": "dialogue:1:1:mountain:takosan:reunion:1:0:たこさんも来てたんですね。お店ごと？",
+          "playbackSeconds": 1.3867,
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 1,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 1336,
+            "durationMs": 3040,
+            "loop": false,
+            "loopCompletions": 0,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        },
+        "speechFaces": {
+          "福ちゃん": {
+            "opening": 0.37902714999999954,
+            "nodes": 1,
+            "weights": [
+              0.3790271580219269,
+              0.0758054330945015
+            ]
+          },
+          "やめ太郎": {
+            "opening": 0,
+            "nodes": 1,
+            "weights": [
+              0,
+              0
+            ]
+          }
+        },
+        "dialogue": {
+          "npc": "takosan",
+          "topic": "reunion",
+          "line": 1,
+          "choices": false,
+          "metYametaro": false,
+          "receivedAmmo": false,
+          "metTakosan": true,
+          "tradePurchases": {}
+        },
+        "npcs": {
+          "yametaro": true,
+          "takosan": true
+        }
+      },
+      {
+        "npc": "yametaro",
+        "voice": {
+          "requested": "dialogue:2:2:mountain:yametaro:reunion:0:0:福ちゃん、生きとった！ ワイ、打ち上げの人数、減らさんと待ってたで。",
+          "active": "dialogue:2:2:mountain:yametaro:reunion:0:0:福ちゃん、生きとった！ ワイ、打ち上げの人数、減らさんと待ってたで。",
+          "playbackSeconds": 1.493204,
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 1,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 1336,
+            "durationMs": 5080,
+            "loop": false,
+            "loopCompletions": 0,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        },
+        "speechFaces": {
+          "福ちゃん": {
+            "opening": 0,
+            "nodes": 1,
+            "weights": [
+              0,
+              0
+            ]
+          },
+          "やめ太郎": {
+            "opening": 0.2947070750000001,
+            "nodes": 1,
+            "weights": [
+              0.2947070896625519,
+              0.05894141644239426
+            ]
+          }
+        },
+        "dialogue": {
+          "npc": "yametaro",
+          "topic": "reunion",
+          "line": 0,
+          "choices": false,
+          "metYametaro": true,
+          "receivedAmmo": false,
+          "metTakosan": false,
+          "tradePurchases": {}
+        },
+        "npcs": {
+          "yametaro": true,
+          "takosan": true
+        }
+      },
+      {
+        "npc": "fukuchan-with-yametaro",
+        "voice": {
+          "requested": "dialogue:2:2:mountain:yametaro:reunion:1:0:あんな大きな停止ボタン、初めて押しました。指じゃなくて経費で。",
+          "active": "dialogue:2:2:mountain:yametaro:reunion:1:0:あんな大きな停止ボタン、初めて押しました。指じゃなくて経費で。",
+          "playbackSeconds": 1.359861,
+          "loading": false,
+          "speaking": true,
+          "finished": false,
+          "paused": false,
+          "volume": 1,
+          "errors": [],
+          "backend": {
+            "state": "playing",
+            "positionMs": 1347,
+            "durationMs": 4760,
+            "loop": false,
+            "loopCompletions": 0,
+            "playbackRequested": true,
+            "positionUpdateMs": 200
+          }
+        },
+        "speechFaces": {
+          "福ちゃん": {
+            "opening": 0.5924073199999983,
+            "nodes": 1,
+            "weights": [
+              0.5924073457717896,
+              0.11848146468400955
+            ]
+          },
+          "やめ太郎": {
+            "opening": 0,
+            "nodes": 1,
+            "weights": [
+              0,
+              0
+            ]
+          }
+        },
+        "dialogue": {
+          "npc": "yametaro",
+          "topic": "reunion",
+          "line": 1,
+          "choices": false,
+          "metYametaro": true,
+          "receivedAmmo": false,
+          "metTakosan": false,
+          "tradePurchases": {}
+        },
+        "npcs": {
+          "yametaro": true,
+          "takosan": true
+        }
+      }
+    ],
+    "highestDifficulty": {
+      "difficulty": "tense",
+      "remaining": 5,
+      "dialogue": {
+        "npc": "yametaro",
+        "topic": "route",
+        "line": 0,
+        "choices": true,
+        "metYametaro": true,
+        "receivedAmmo": false,
+        "metTakosan": false,
+        "tradePurchases": {}
+      },
+      "voice": {
+        "requested": "dialogue:3:3:mountain:yametaro:route:0:0:エンジンは止まったけど、まだそば屋さんが残っとる。この難度では全員倒すまで東の門は開かへん。弾が足りんかったら、この家のたこさんにビールを渡すんや。",
+        "active": "dialogue:3:3:mountain:yametaro:route:0:0:エンジンは止まったけど、まだそば屋さんが残っとる。この難度では全員倒すまで東の門は開かへん。弾が足りんかったら、この家のたこさんにビールを渡すんや。",
+        "playbackSeconds": 1.543764,
+        "loading": false,
+        "speaking": true,
+        "finished": false,
+        "paused": false,
+        "volume": 1,
+        "errors": [],
+        "backend": {
+          "state": "playing",
+          "positionMs": 1535,
+          "durationMs": 11760,
+          "loop": false,
+          "loopCompletions": 0,
+          "playbackRequested": true,
+          "positionUpdateMs": 200
+        }
+      }
+    },
+    "runtimeErrors": [],
+    "finalPhase": "title"
+  },
+  "limitations": [
+    "Reunion debug fixtures disable enemies and teleport to the house. They verify UI/audio, not route traversal.",
+    "Legacy-save relocation and backtracking were verified with campaign state tests.",
+    "Image text in game_text.json is uncorrected OCR; original images remain authoritative."
+  ],
+  "preferences": {
+    "originalRunCollectionSettingsRestored": true,
+    "verifiedAfterFinalAppLaunch": true
+  },
+  "textSha256": "c24a337d15ceec3954f9d44420b4afd12cf5ee34ede897a10f0516e86489122f"
+}

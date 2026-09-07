@@ -229,3 +229,15 @@ Imagegenで生成したRGBAロゴは `04_GAME_ASSETS/3d/ui/hazard/` が正本。
 ロケットの発射と爆発は各3種類。噴射・圧力・低音・残響を分けた合成音に更新し、遠距離の爆発も届く減衰へ変更。発射・着弾直後のBGMと会話中の背景／効果音を下げ、足音の音量も整理。正典の台詞・声質は維持する。[作曲と再生成条件](../04_GAME_ASSETS/audio/hazard/SCORE.md)。
 
 検証は `qa/audio-polish-assets-20260907.json`（27素材のハッシュ・ループ境界・真のピーク）、`qa/audio-polish-mix-20260907.json`（背景＋発射＋着弾の105組み合わせ）、`qa/audio-polish-native-20260907.json`（ネイティブ切り替え・再生）に記録。音楽の好みや、全ての音が同時に鳴る状況まで保証する検査ではない。
+
+
+## シナリオ全文と第3章の再会
+
+巨大そば屋撃破後は廃屋の中でやめ太郎・たこさんと話せる。たこさんは出張補給所を開き、ビール交換も継続する。第3章の全話題は撃破前後の専用台詞に切り替わる。古い撃破済みセーブにも反映し、撃破後の旧地域にはNPCを重複配置しない。
+
+- AIへ渡す全テキスト：[scenario/game_text.json](scenario/game_text.json)
+- 再生成・収録範囲：[scenario/README.md](scenario/README.md)
+- 採点基準：[scenario/REVIEW_RUBRIC.md](scenario/REVIEW_RUBRIC.md)
+- 3回の独立レビュー・採否：[scenario/EDIT_HISTORY.md](scenario/EDIT_HISTORY.md)
+
+`madogiwa.openGameScenario(name=reunion, npc=takosan|yametaro)` は撃破後の家、`reunionBefore` は撃破前のやめ太郎、`reunionRemaining` は最高難度で通常そば屋が残る状態を再現する。会話は通常のE操作で開く。音声・字幕・選択肢の検証用であり、敵を無効にした配置なので攻略経路の証明には使わない。`game_reunion_test.dart` は本物のロケット撃破による出現切替、全話題、取引、最高難度、旧セーブ・往復を検証する。

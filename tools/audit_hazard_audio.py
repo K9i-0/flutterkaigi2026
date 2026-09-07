@@ -1,9 +1,12 @@
 """Validate final game audio against canonical manifests (standard library)."""
 from pathlib import Path
 from array import array
-import hashlib,json,math,sys,wave
+import argparse,hashlib,json,math,sys,wave
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'04_GAME_ASSETS/audio/hazard'
+parser=argparse.ArgumentParser()
+parser.add_argument('--report',type=Path,default=ROOT/'21_SOBAYA_HAZARD_LAB/qa/voice-assets-20260906.json')
+args=parser.parse_args()
 manifest=json.loads((OUT/'voice-manifest.json').read_text())
 lines=json.loads((OUT/'voice-lines.json').read_text())
 assert {(c['speaker'],c['text']) for c in manifest['clips']}=={(c['speaker'],c['text']) for c in lines}
@@ -29,6 +32,6 @@ for row in json.loads((OUT/'soundscape-manifest.json').read_text())['files']:
 result={'cues':len(checks),'speech':sum(c['kind']=='speech' for c in manifest['clips']),
  'nonverbal':sum(c['kind']=='nonverbal' for c in manifest['clips']),
  'checks':checks,'note':'File integrity, waveform range and duration checks only; not perceptual audio approval.'}
-p=ROOT/'21_SOBAYA_HAZARD_LAB/qa/voice-assets-20260906.json'
+p=args.report
 p.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
 print('PASS',len(checks),'cues')

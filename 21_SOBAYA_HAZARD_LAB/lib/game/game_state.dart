@@ -235,7 +235,7 @@ class HazardGameState {
       : zoneId == 'farm'
       ? '納屋で補給し、東の門から山道へ'
       : zoneId == 'mountain'
-      ? (bossAlive ? '山の廃屋にいる巨大そば屋を倒せ' : '東の脱出路から村を抜けろ')
+      ? (bossAlive ? '山の廃屋にいる巨大そば屋を倒せ' : '東の門から脱出 — 家の中で仲間と話せる')
       : gateOpen
       ? '農場への門をくぐれ'
       : hasKey
@@ -371,39 +371,96 @@ class HazardGameState {
   bool companionThreatened(String id) =>
       enemies.any((e) => e.alive && e.active && e.companionTarget == id);
   bool checkpointRequested = false;
-  List<Map<String, dynamic>> get npcs =>
-      (map['npcs'] as List? ?? const []).cast<Map<String, dynamic>>();
-  List<DialogueLine> get dialogueLines => dialogueOwner == 'takosan'
-      ? dialogueTopic == 'trade_result'
-            ? [DialogueLine('たこさん', tradeMessage), ...tradeReplies]
-            : [
-                for (final line in takosanDialogue[dialogueTopic]!)
-                  if (dialogueTopic == 'evidence' &&
-                      line.speaker == '福ちゃん' &&
-                      !foundMemos.any(
-                        (id) => [
-                          'night_shift',
-                          'diary_mid',
-                          'diary_end',
-                        ].contains(id),
-                      ))
-                    unreadKeeperReply
-                  else
-                    line,
-              ]
-      : zoneId == 'mountain' &&
-            ['intro', 'greeting', 'route'].contains(dialogueTopic)
-      ? [
-          DialogueLine(
-            'やめ太郎',
-            bossAlive
-                ? '廃屋の前のでっかいそば屋を倒せば、エンジンも止まるんやな。\n振り上げたら横へ。振り終わりを狙うんや。ワイ、帰り道を開けとく。'
-                : '静かになったな。東の門から帰ろう。\n福ちゃん、この夜のこと、三人でちゃんと話そうや。',
-          ),
-        ]
-      : hardest && dialogueTopic == 'supplies'
-      ? [hardSuppliesLine]
-      : yametaroDialogue[dialogueTopic]!;
+  bool get evacuationStarted =>
+      seenEvents.contains('giant_defeated') ||
+      (zoneId == 'mountain' && !bossAlive);
+  bool get postBossReunion => zoneId == 'mountain' && evacuationStarted;
+  List<Map<String, dynamic>> get npcs => [
+    if (zoneId == 'mountain' || !evacuationStarted)
+      for (final row
+          in (map['npcs'] as List? ?? const []).cast<Map<String, dynamic>>())
+        if (row['afterBoss'] != true || postBossReunion) row,
+  ];
+  List<DialogueLine> get dialogueLines {
+    if (dialogueOwner == 'takosan' && dialogueTopic == 'trade_result') {
+      return [DialogueLine('たこさん', tradeMessage), ...tradeReplies];
+    }
+    if (postBossReunion) {
+      if (dialogueTopic == 'route' && hardest && !chapterSecured) {
+        return [
+          dialogueOwner == 'takosan'
+              ? mountainRemainingTakoLine
+              : mountainRemainingLine,
+        ];
+      }
+      final lines = dialogueOwner == 'takosan'
+          ? mountainTakosanAfter
+          : mountainYametaroAfter;
+      return lines[dialogueTopic] ?? lines['greeting']!;
+    }
+    if (zoneId == 'mountain' && dialogueOwner == 'yametaro') {
+      return mountainYametaroBefore[dialogueTopic] ??
+          mountainYametaroBefore['greeting']!;
+    }
+    if (dialogueOwner == 'takosan') {
+      return [
+        for (final line in takosanDialogue[dialogueTopic]!)
+          if (dialogueTopic == 'evidence' &&
+              line.speaker == '福ちゃん' &&
+              !foundMemos.any(
+                (id) => ['night_shift', 'diary_mid', 'diary_end'].contains(id),
+              ))
+            unreadKeeperReply
+          else
+            line,
+      ];
+    }
+    return hardest && dialogueTopic == 'supplies'
+        ? [hardSuppliesLine]
+        : yametaroDialogue[dialogueTopic]!;
+  }
+
+  List<String> get availableDialogueTopics => postBossReunion
+      ? ['reunion', 'route', 'engine', 'evidence']
+      : [
+          if (dialogueOwner == 'yametaro') ...[
+            'route',
+            'combat',
+            'records',
+            if (zoneId != 'mountain' && !receivedYametaroAmmo) 'supplies',
+          ],
+          if (knowsEngine) 'engine',
+          if (hasStoryEvidence) 'evidence',
+        ];
+  String dialogueTopicLabel(String topic) => switch (topic) {
+    'reunion' => 'さっきの戦い',
+    'route' =>
+      postBossReunion
+          ? '東の脱出路と救助船'
+          : zoneId == 'mountain'
+          ? '巨大そば屋と帰り道'
+          : '農場への道',
+    'combat' => zoneId == 'mountain' ? '巨大そば屋の倒し方' : 'そば屋への対処',
+    'records' => '壁の貼り紙',
+    'supplies' => '予備弾をもらう',
+    'engine' => postBossReunion ? '止まったエンジン' : 'そば屋エンジンについて',
+    'evidence' =>
+      postBossReunion
+          ? (dialogueOwner == 'takosan' ? '避難した社員' : '持ち帰る記録')
+          : '拾った記録について',
+    _ => topic,
+  };
+  void clearAbsentCompanionTargets() {
+    final present = npcs.map((n) => n['id']).toSet();
+    for (final e in enemies) {
+      if (e.companionTarget != null && !present.contains(e.companionTarget)) {
+        e.companionTarget = null;
+        e.attackPending = e.grabPending = false;
+        e.windup = 0;
+      }
+    }
+  }
+
   DialogueLine get dialogueLine => dialogueLines[dialogueIndex];
   bool get dialogueChoices => dialogueIndex == dialogueLines.length - 1;
   EnemyNavigation? _navigation;
@@ -1937,13 +1994,16 @@ class HazardGameState {
     say(
       e.boss
           ? (hardest && livingEnemies > 0
-                ? '巨大そば屋を倒した！ エンジン停止。残るそば屋を倒して脱出路を確保しよう。'
-                : '巨大そば屋を倒した！ エンジン停止。仲間と東の脱出路へ！')
+                ? '巨大そば屋を倒した！ エンジン停止。家で仲間と合流し、残るそば屋を倒して東の門へ。'
+                : '巨大そば屋を倒した！ エンジン停止。家の中に仲間が集合している。東の門へ向かう前に寄ってみよう。')
           : suppressBeer
           ? 'そば屋を撃破。ビールも蒸発した。'
           : 'そば屋を倒した。ビールを回収しよう。',
     );
-    if (e.boss) checkpointRequested = true;
+    if (e.boss) {
+      seenEvents.add('giant_defeated');
+      checkpointRequested = true;
+    }
   }
 
   void breakCrate(Breakable c) {
@@ -2066,7 +2126,9 @@ class HazardGameState {
     final key = interaction;
     if (key == null) return '';
     if (key == 'npc:yametaro') return 'やめ太郎と話す';
-    if (key == 'npc:takosan') return 'たこさんの補給所';
+    if (key == 'npc:takosan') {
+      return postBossReunion ? 'たこさんの出張補給所' : 'たこさんの補給所';
+    }
     if (key.startsWith('pickup:')) {
       final p = pickups.firstWhere((p) => 'pickup:${p.id}' == key);
       return '${itemNames[p.kind]}を拾う';
@@ -2215,7 +2277,9 @@ class HazardGameState {
     secretShopVisit = id == 'takosan' && beers >= 10;
     talkingTo = id;
     dialogueOwner = id;
-    dialogueTopic = (id == 'yametaro' ? metYametaro : metTakosan)
+    dialogueTopic = postBossReunion
+        ? (seenEvents.contains('reunion_$id') ? 'greeting' : 'reunion')
+        : (id == 'yametaro' ? metYametaro : metTakosan)
         ? 'greeting'
         : 'intro';
     dialogueIndex = 0;
@@ -2237,10 +2301,24 @@ class HazardGameState {
 
   void chooseDialogue(String topic) {
     if (phase != PlayPhase.dialogue || !dialogueChoices) return;
+    if (topic != 'leave' &&
+        !topic.startsWith('trade:') &&
+        !availableDialogueTopics.contains(topic)) {
+      return;
+    }
+    if (postBossReunion) seenEvents.add('reunion_$dialogueOwner');
     if (topic == 'leave') {
       endDialogue();
       return;
     }
+    if (postBossReunion &&
+        ['reunion', 'route', 'engine', 'evidence'].contains(topic)) {
+      dialogueTopic = topic;
+      dialogueIndex = 0;
+      return;
+    }
+    if (postBossReunion && !topic.startsWith('trade:')) return;
+    if (zoneId == 'mountain' && topic == 'supplies') return;
     if ((topic == 'engine' && knowsEngine) ||
         (topic == 'evidence' && hasStoryEvidence)) {
       dialogueTopic = topic;
@@ -2301,6 +2379,9 @@ class HazardGameState {
 
   void endDialogue() {
     if (phase != PlayPhase.dialogue) return;
+    if (postBossReunion && dialogueChoices) {
+      seenEvents.add('reunion_$dialogueOwner');
+    }
     talkingTo = null;
     phase = PlayPhase.playing;
     checkpointRequested = true;

@@ -39,6 +39,9 @@ void main(List<String> args) {
     'yametaro': yametaroDialogue,
     'takosan': takosanDialogue,
     'reaction': companionReactions,
+    'mountain_yametaro_before': mountainYametaroBefore,
+    'mountain_yametaro_after': mountainYametaroAfter,
+    'mountain_takosan_after': mountainTakosanAfter,
   }.entries) {
     for (final topic in owner.value.entries) {
       for (var i = 0; i < topic.value.length; i++) {
@@ -49,6 +52,9 @@ void main(List<String> args) {
         );
       }
     }
+  }
+  for (final line in [mountainRemainingLine, mountainRemainingTakoLine]) {
+    add(line.speaker, line.text, 'dialogue:mountain:after:remaining');
   }
   final mountain = HazardGameState(
     jsonDecode(File('assets/mountain.json').readAsStringSync()),
