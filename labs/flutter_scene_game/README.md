@@ -56,8 +56,8 @@ Flutter Sceneを、窓際族物語の正典ボクセル素材で実ゲームへ�
 
 ## Flutter Scene検証項目
 
-- Flutter `3.47.1 stable` + Dart `3.13.1`
-- Flutter Scene `0.22.2`
+- Flutter `3.47.2 stable` + Dart `3.13.2`
+- Flutter Scene `0.23.0`
 - 正典GLBから生成したモバイルGLB 4体の同時ロード（152→22 mesh nodes）
 - GLBのPBRマテリアル、ノード階層、`Idle`アニメーション
 - 256×256マス、16×16チャンクの決定論的なプロシージャル島生成
@@ -159,7 +159,7 @@ flutter run --profile \
 
 ## 実行
 
-miseのグローバル設定とモノレポの`.mise.toml`はFlutter 3.47.1に揃えています。
+miseのグローバル設定とモノレポの`.mise.toml`はFlutter 3.47.2に揃えています。
 
 ```bash
 cd 17_FLUTTER_SCENE_GAME
@@ -170,13 +170,13 @@ mise exec -- flutter run --enable-flutter-gpu
 ## Dart MCP / Marionette MCP
 
 ルートの`.mcp.json`と`.codex/config.toml`は、どちらのMCPも必ず
-Flutter 3.47.1のDartを経由して起動します。Marionetteのグローバル実行ファイルが
+Flutter 3.47.2のDartを経由して起動します。Marionetteのグローバル実行ファイルが
 別バージョンのDartで作られていても、Kernel snapshotの互換エラーを避けられます。
 
-初回だけMarionette MCP bridgeをFlutter 3.47.1で有効化します。
+初回だけMarionette MCP bridgeをFlutter 3.47.2で有効化します。
 
 ```bash
-mise exec flutter@3.47.1 -- dart pub global activate marionette_mcp
+mise exec flutter@3.47.2 -- dart pub global activate marionette_mcp
 ```
 
 ネイティブdebugビルドは`MarionetteBinding`を初期化し、次の専用extensionを登録します。
