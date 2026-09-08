@@ -1,0 +1,42 @@
+{
+  "date": "2026-09-08",
+  "selection": "C: 暗闇からの視線, explicitly selected by the user",
+  "displayName": "そば屋ハザード",
+  "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+  "exports": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/adopted-C-exports.json",
+  "exportValidation": "28 size-only sips exports; PNG dimensions and recorded SHA256 verified; no corner masks or frames baked in.",
+  "ios": {
+    "device": "iPhone 17 Pro simulator, iOS 26.5",
+    "buildInstall": "Dart MCP full launch/build/install passed",
+    "nativeReady": true,
+    "homeScreen": "Stopped both debug launcher and native process; home screen displays approved C icon and Japanese app name.",
+    "collectionShown": 1,
+    "evidence": "evidence/icon-ios-home.png"
+  },
+  "macos": {
+    "builds": ["debug", "release"],
+    "nativeReady": true,
+    "iconVerification": "Extracted compiled AppIcon.icns using iconutil and visually confirmed C. Debug and release compiled icon hashes match.",
+    "compiledIconSha256": "47c0d20dd29f7c83ab166f791e3aca9466aca9ed70fb7698c2fe137d3a0ed04f",
+    "releaseSignature": "codesign --verify --deep --strict passed",
+    "evidence": "evidence/icon-macos-installed.iconset/icon_128x128@2x.png"
+  },
+  "android": {
+    "build": "flutter build apk --debug -t lib/game_main.dart --target-platform android-arm64 passed",
+    "device": "Dedicated codex_hazard_icon_20260908 emulator, Android API 36, arm64-v8a",
+    "install": "Passed. Existing shared AVD lacked space, so a dedicated 8 GB AVD was created without deleting existing app data.",
+    "adaptiveResources": "API 26 background and foreground; API 33 adds a dedicated monochrome VectorDrawable. XML parsing and compiled APK resource references verified.",
+    "colorArtwork": "C-adaptive.png extends the approved image's background so face and hair remain inside the central safe area. Opaque artwork layer over a background color; no independently moving subject depth.",
+    "circularLauncher": "Native launcher displayed the selected C portrait without face/hair clipping.",
+    "themedLauncher": "Enabled themed icons on the dedicated test AVD, pinned the app, and verified the dedicated mask glyph tinted by the launcher.",
+    "coldLaunch": "am start -W returned Status ok, LaunchState COLD, MainActivity",
+    "evidence": ["evidence/icon-android-home.png", "evidence/icon-android-themed.png", "evidence/icon-android-launch.png", "evidence/icon-android-build-final.log"]
+  },
+  "generation": {
+    "tool": "built-in image_gen",
+    "adoptedOutput": "C-adaptive.png",
+    "prompt": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/prompt-C-adaptive.txt",
+    "discardedAttempts": "Two transparent extraction attempts returned opaque RGB checkerboard artwork; neither was added to the app or tracked as a production asset."
+  },
+  "limitations": ["No physical iOS or Android device checks", "Launcher/icon verification does not establish Android gameplay or GPU performance"]
+}

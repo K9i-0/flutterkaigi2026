@@ -86,6 +86,8 @@ def audit(app):
     return {
         'date': datetime.datetime.now().astimezone().isoformat(),
         'bundleId': info['CFBundleIdentifier'],
+        'displayName': info.get('CFBundleDisplayName', info['CFBundleName']),
+        'appIconSha256': sha(app / 'Contents/Resources/AppIcon.icns'),
         'version': info['CFBundleShortVersionString'],
         'architectures': checked(['lipo', '-archs', str(exe)]).split(),
         'declaredMinimumMacOS': info['LSMinimumSystemVersion'],
@@ -131,7 +133,7 @@ Rで早めに手動リロードすることもできます。回避と蹴りは�
 MacのCtrl＋矢印はOSの画面切り替えと競合するため、忍び足はZを使ってください。
 背後から静かに近づくとEでビールを壊してステルス撃破できます。
 4でビールを選び、Qで構えて軌道と着地点を確認し、Spaceで1杯投げます。
-スマホ操作では「武器」でビールへ切り替え、「構え」→「投げる」。ボタンは増やしていません。
+スマホ操作では下部の装備表示からビールを選び、「構える」→「投げる」。操作ボタンはモードに合わせて切り替わります。
 ビールは補給所で払う分と同じ所持数を消費します。未警戒なら一体が調べに行き、目視追跡中は福ちゃんを優先します。
 村入口と道中で戦わずビールを拾えます。最高難度でも村・農場は全員を倒さずに通過できます。
 目視した敵を地図に記録します。追跡は赤、捜索は橙、帰還は灰緑、その他は黄です。見失った敵の点は最後に見た場所に残ります。
