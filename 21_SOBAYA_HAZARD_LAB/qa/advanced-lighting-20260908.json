@@ -1,0 +1,454 @@
+{
+  "date": "2026-09-08",
+  "platform": "macOS native profile",
+  "comparison": "HAZARD_ADVANCED_LIGHTING=false versus true; cinematicLighting=true",
+  "results": {
+    "baseline": [
+      {
+        "case": "village-four",
+        "valid": true,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "renderScale": 0.85,
+        "samples": 240,
+        "uiP95Ms": 13.313,
+        "rasterP95Ms": 13.74,
+        "uiOver16_7Ms": 0,
+        "rasterOver16_7Ms": 0
+      },
+      {
+        "case": "village-eight",
+        "valid": true,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "renderScale": 0.85,
+        "samples": 240,
+        "uiP95Ms": 11.121,
+        "rasterP95Ms": 3.843,
+        "uiOver16_7Ms": 4,
+        "rasterOver16_7Ms": 0
+      },
+      {
+        "case": "village-eight-no-contact",
+        "valid": true,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "renderScale": 0.85,
+        "samples": 240,
+        "uiP95Ms": 11.376,
+        "rasterP95Ms": 3.95,
+        "uiOver16_7Ms": 4,
+        "rasterOver16_7Ms": 0
+      },
+      {
+        "case": "village-eight-full",
+        "valid": true,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "renderScale": 1.0,
+        "samples": 240,
+        "uiP95Ms": 14.134,
+        "rasterP95Ms": 11.182,
+        "uiOver16_7Ms": 10,
+        "rasterOver16_7Ms": 7
+      },
+      {
+        "case": "farm-six",
+        "valid": true,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "renderScale": 0.85,
+        "samples": 240,
+        "uiP95Ms": 11.029,
+        "rasterP95Ms": 4.509,
+        "uiOver16_7Ms": 3,
+        "rasterOver16_7Ms": 0
+      },
+      {
+        "case": "mountain-six",
+        "valid": true,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "renderScale": 0.85,
+        "samples": 240,
+        "uiP95Ms": 12.396,
+        "rasterP95Ms": 9.697,
+        "uiOver16_7Ms": 2,
+        "rasterOver16_7Ms": 0
+      },
+      {
+        "case": "mountain-six-full",
+        "valid": true,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "renderScale": 1.0,
+        "samples": 240,
+        "uiP95Ms": 13.246,
+        "rasterP95Ms": 13.13,
+        "uiOver16_7Ms": 1,
+        "rasterOver16_7Ms": 0
+      },
+      {
+        "case": "window-player",
+        "valid": true,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "renderScale": 0.85,
+        "samples": 240,
+        "uiP95Ms": 8.092,
+        "rasterP95Ms": 9.113,
+        "uiOver16_7Ms": 0,
+        "rasterOver16_7Ms": 0
+      },
+      {
+        "case": "window-enemies",
+        "valid": true,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "renderScale": 0.85,
+        "samples": 240,
+        "uiP95Ms": 10.477,
+        "rasterP95Ms": 14.544,
+        "uiOver16_7Ms": 0,
+        "rasterOver16_7Ms": 2
+      },
+      {
+        "case": "opening-voice",
+        "valid": true,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "renderScale": 0.85,
+        "samples": 240,
+        "uiP95Ms": 8.182,
+        "rasterP95Ms": 12.192,
+        "uiOver16_7Ms": 0,
+        "rasterOver16_7Ms": 0
+      },
+      {
+        "case": "boss-voice",
+        "valid": true,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "renderScale": 0.85,
+        "samples": 240,
+        "uiP95Ms": 2.711,
+        "rasterP95Ms": 0.329,
+        "uiOver16_7Ms": 0,
+        "rasterOver16_7Ms": 0
+      }
+    ],
+    "advanced": [
+      {
+        "case": "village-four",
+        "valid": true,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "renderScale": 0.85,
+        "samples": 240,
+        "uiP95Ms": 17.318,
+        "rasterP95Ms": 9.925,
+        "uiOver16_7Ms": 41,
+        "rasterOver16_7Ms": 0,
+        "lighting": {
+          "advanced": true,
+          "antiAliasing": "taa",
+          "globalIllumination": true,
+          "shadowFilter": "bilinearPcf",
+          "depthOfField": false,
+          "focusDistance": 3.406212070187356,
+          "zone": "village"
+        }
+      },
+      {
+        "case": "village-eight",
+        "valid": true,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "renderScale": 0.85,
+        "samples": 240,
+        "uiP95Ms": 19.088,
+        "rasterP95Ms": 6.625,
+        "uiOver16_7Ms": 119,
+        "rasterOver16_7Ms": 0,
+        "lighting": {
+          "advanced": true,
+          "antiAliasing": "taa",
+          "globalIllumination": true,
+          "shadowFilter": "bilinearPcf",
+          "depthOfField": false,
+          "focusDistance": 3.4062114176975182,
+          "zone": "village"
+        }
+      },
+      {
+        "case": "village-eight-no-contact",
+        "valid": true,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "renderScale": 0.85,
+        "samples": 240,
+        "uiP95Ms": 19.401,
+        "rasterP95Ms": 6.814,
+        "uiOver16_7Ms": 125,
+        "rasterOver16_7Ms": 0,
+        "lighting": {
+          "advanced": true,
+          "antiAliasing": "taa",
+          "globalIllumination": true,
+          "shadowFilter": "bilinearPcf",
+          "depthOfField": false,
+          "focusDistance": 3.406212358549312,
+          "zone": "village"
+        }
+      },
+      {
+        "case": "village-eight-full",
+        "valid": true,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "renderScale": 1.0,
+        "samples": 240,
+        "uiP95Ms": 25.158,
+        "rasterP95Ms": 9.358,
+        "uiOver16_7Ms": 203,
+        "rasterOver16_7Ms": 0,
+        "lighting": {
+          "advanced": true,
+          "antiAliasing": "taa",
+          "globalIllumination": true,
+          "shadowFilter": "bilinearPcf",
+          "depthOfField": false,
+          "focusDistance": 3.4062120830215967,
+          "zone": "village"
+        }
+      },
+      {
+        "case": "farm-six",
+        "valid": true,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "renderScale": 0.85,
+        "samples": 240,
+        "uiP95Ms": 18.884,
+        "rasterP95Ms": 7.69,
+        "uiOver16_7Ms": 86,
+        "rasterOver16_7Ms": 0,
+        "lighting": {
+          "advanced": true,
+          "antiAliasing": "taa",
+          "globalIllumination": true,
+          "shadowFilter": "bilinearPcf",
+          "depthOfField": false,
+          "focusDistance": 3.406211716402979,
+          "zone": "farm"
+        }
+      },
+      {
+        "case": "mountain-six",
+        "valid": true,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "renderScale": 0.85,
+        "samples": 240,
+        "uiP95Ms": 19.589,
+        "rasterP95Ms": 10.408,
+        "uiOver16_7Ms": 148,
+        "rasterOver16_7Ms": 1,
+        "lighting": {
+          "advanced": true,
+          "antiAliasing": "taa",
+          "globalIllumination": true,
+          "shadowFilter": "bilinearPcf",
+          "depthOfField": false,
+          "focusDistance": 1.881309638128841,
+          "zone": "mountain"
+        }
+      },
+      {
+        "case": "mountain-six-full",
+        "valid": true,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "renderScale": 1.0,
+        "samples": 240,
+        "uiP95Ms": 25.308,
+        "rasterP95Ms": 13.613,
+        "uiOver16_7Ms": 224,
+        "rasterOver16_7Ms": 1,
+        "lighting": {
+          "advanced": true,
+          "antiAliasing": "taa",
+          "globalIllumination": true,
+          "shadowFilter": "bilinearPcf",
+          "depthOfField": false,
+          "focusDistance": 1.8785617177755922,
+          "zone": "mountain"
+        }
+      },
+      {
+        "case": "window-player",
+        "valid": true,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "renderScale": 0.85,
+        "samples": 240,
+        "uiP95Ms": 18.805,
+        "rasterP95Ms": 19.332,
+        "uiOver16_7Ms": 69,
+        "rasterOver16_7Ms": 120,
+        "lighting": {
+          "advanced": true,
+          "antiAliasing": "taa",
+          "globalIllumination": true,
+          "shadowFilter": "bilinearPcf",
+          "depthOfField": false,
+          "focusDistance": 3.40621220461211,
+          "zone": "village"
+        }
+      },
+      {
+        "case": "window-enemies",
+        "valid": true,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "renderScale": 0.85,
+        "samples": 240,
+        "uiP95Ms": 20.762,
+        "rasterP95Ms": 21.138,
+        "uiOver16_7Ms": 154,
+        "rasterOver16_7Ms": 102,
+        "lighting": {
+          "advanced": true,
+          "antiAliasing": "taa",
+          "globalIllumination": true,
+          "shadowFilter": "bilinearPcf",
+          "depthOfField": false,
+          "focusDistance": 3.4062122250365356,
+          "zone": "village"
+        }
+      },
+      {
+        "case": "opening-voice",
+        "valid": true,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "renderScale": 0.85,
+        "samples": 240,
+        "uiP95Ms": 22.557,
+        "rasterP95Ms": 11.865,
+        "uiOver16_7Ms": 174,
+        "rasterOver16_7Ms": 0,
+        "lighting": {
+          "advanced": true,
+          "antiAliasing": "taa",
+          "globalIllumination": true,
+          "shadowFilter": "pcss",
+          "depthOfField": true,
+          "focusDistance": 2.6983888778673517,
+          "zone": "village"
+        }
+      },
+      {
+        "case": "boss-voice",
+        "valid": true,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "devicePixelRatio": 2.0,
+        "renderScale": 0.85,
+        "samples": 240,
+        "uiP95Ms": 13.933,
+        "rasterP95Ms": 13.547,
+        "uiOver16_7Ms": 0,
+        "rasterOver16_7Ms": 0,
+        "lighting": {
+          "advanced": true,
+          "antiAliasing": "taa",
+          "globalIllumination": true,
+          "shadowFilter": "pcss",
+          "depthOfField": true,
+          "focusDistance": 8.286382991911726,
+          "zone": "mountain"
+        }
+      }
+    ]
+  },
+  "validation": {
+    "existingTests": 270,
+    "targetedTestsAfterVelocityFix": 4,
+    "analysis": "passed",
+    "native": "Marionette boss event and gameplay viewpoint; runtime errors absent after hot reload",
+    "headAnimationChannels": 294
+  },
+  "limitations": [
+    "Flutter UI/Raster FrameTiming is not GPU completion timing or a stable FPS guarantee.",
+    "The profile comparison precedes the final skinned velocity matrix/winding fix; final patch validated by targeted tests and native hot reload.",
+    "User-reported intermittent giant face corruption was not reproduced; TAA double transform is a separately confirmed defect fixed here.",
+    "Dynamic GI uses visible surfaces; not an offline irradiance bake.",
+    "Other user applications were left running; no mobile device validation."
+  ]
+}
