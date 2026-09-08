@@ -156,5 +156,58 @@
     },
     "signature": "Ad hoc. App.framework verified; stale incremental outer signature renewed; deep strict verification of original and packaged copy passed.",
     "smoke": "Passed on the exact packaged Mac app: native startup, updated title actions, existing-save new-game confirmation and cancellation back to title. Left at the title screen; no saved progress overwritten."
+  },
+  "coldLaunchFollowup": {
+    "date": "2026-09-08",
+    "reportedFailure": "After exiting the debug session, launching the installed iPhone simulator app in landscape restored the old scrolling title, with actions below the viewport.",
+    "rootCause": "Previous checks used hot reload/restart. The persisted iOS kernel still contained the pre-redesign title. The new layout source was correct, but had not been installed for subsequent ordinary launches.",
+    "oldInstalledKernel": {
+      "sha256": "da18bbbafc28bc3bf22039b10e5e17023de52e5f9c8b3775b2083760aec99d06",
+      "mtime": "2026-09-08T18:57:48",
+      "newTitleClassPresent": false,
+      "newTitleLandscapeKeyPresent": false,
+      "oldInlineSaveWarningPresent": true
+    },
+    "resolution": "Dart MCP full launch/build/install of lib/game_main.dart to the same simulator and bundle ID. No app uninstall or data deletion. No additional layout code changes were necessary.",
+    "sourceRevision": "49bcf96",
+    "installedKernel": {
+      "sha256": "68b39548a0a7420fb911a226126a91b9b501f9911522fa75a41a05f40a694ad9",
+      "bytes": 69985656,
+      "mtime": "2026-09-08T19:43:44",
+      "newTitleClassPresent": true,
+      "newTitleLandscapeKeyPresent": true,
+      "oldInlineSaveWarningPresent": false
+    },
+    "device": "iPhone 17 Pro simulator, iOS 26.5",
+    "bundleId": "com.madogiwa.sobayaHazardLab",
+    "ordinaryLaunch": {
+      "debugLaunchPid": 57256,
+      "debugNativePid": 58232,
+      "debugAndNativeProcessesFullyStopped": true,
+      "launchMethod": "Clicked the app icon on the simulator home screen while already in landscape, with no flutter run session.",
+      "nativePidAfterLaunch": 58730,
+      "titleActionsVisibleWithoutScroll": [
+        "continue",
+        "new game",
+        "settings"
+      ],
+      "settingsTappedAndReturned": true,
+      "rotationChecks": [
+        "landscape with notch at right",
+        "landscape with notch at left",
+        "upright portrait",
+        "return to landscape"
+      ],
+      "collectionBefore": 1,
+      "collectionAfter": 1,
+      "checkpointAvailableBeforeAndAfter": true,
+      "leftRunning": "landscape title"
+    },
+    "evidence": [
+      "evidence/mobile-cold-start-install.json",
+      "evidence/mobile-title-cold-launch-landscape.png",
+      "evidence/mobile-title-cold-launch-portrait.png"
+    ],
+    "validationScope": "Installed-app and ordinary-launch correction; no gameplay source changes. Previous widget suite results above were not rerun for this installation-only correction."
   }
 }
