@@ -13,7 +13,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 LAB = ROOT / '21_SOBAYA_HAZARD_LAB'
-DEFAULT_APP = LAB / 'build/macos/Build/Products/Release/sobaya_hazard_lab.app'
+DEFAULT_APP = LAB / 'build/macos/Build/Products/Release/そば屋ハザード.app'
 
 
 def sha(path):

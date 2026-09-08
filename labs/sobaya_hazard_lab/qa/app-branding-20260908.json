@@ -1,0 +1,26 @@
+{
+  "date": "2026-09-08",
+  "displayName": "そば屋ハザード",
+  "scope": "Application naming and three source-icon proposals; no icon proposal selected or installed.",
+  "naming": {
+    "ios": "CFBundleDisplayName and CFBundleName updated. Full Dart MCP launch/build/install passed. Installed Info.plist verified; home-screen label confirmed through native accessibility. Debug and native processes terminated, home icon launched again successfully to the responsive landscape title.",
+    "macos": "PRODUCT_NAME, CFBundleName and CFBundleDisplayName updated, with app product references, scheme and package tool aligned. Full debug build and launch passed. Native window, application and menu title all displayed そば屋ハザード.",
+    "android": "Application manifest label updated and XML parsed successfully. Android build and device launch were not performed in this change.",
+    "bundleId": "com.madogiwa.sobayaHazardLab",
+    "bundleIdUnchanged": true,
+    "macTechnicalExecutableAndModule": "sobaya_hazard_lab",
+    "collectionShown": {"ios": 1, "macos": 6},
+    "saveActions": "No new-game confirmation, debug scenario reset or app-data deletion performed. Continue remained available on both platforms."
+  },
+  "icons": {
+    "directory": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908",
+    "generator": "built-in image_gen",
+    "reference": "02_CHARACTERS/Sobaya.jpg",
+    "variants": ["A-mask.png", "B-beer-fire.png", "C-stalker.png"],
+    "dimensions": [1254, 1254],
+    "format": "opaque RGB PNG, full-bleed, no baked-in corner mask or app frame",
+    "status": "Concept masters only. Adaptive foreground/background and themed monochrome layers require export after selection; raw master must not be used as an unscaled adaptive foreground.",
+    "promptsAndHashes": "Saved beside the three originals."
+  },
+  "checks": ["git diff --check", "plutil Info.plist and project.pbxproj lint", "Xcode scheme XML parse", "iOS installed bundle metadata", "macOS built bundle metadata", "iOS home-screen cold launch", "macOS native title and menu", "PNG square dimensions and RGB format"]
+}

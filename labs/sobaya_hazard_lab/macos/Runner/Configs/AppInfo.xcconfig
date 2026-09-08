@@ -5,7 +5,10 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = sobaya_hazard_lab
+PRODUCT_NAME = そば屋ハザード
+// Keep technical module and executable identifiers stable when the display name changes.
+PRODUCT_MODULE_NAME = sobaya_hazard_lab
+EXECUTABLE_NAME = sobaya_hazard_lab
 
 // The application's bundle identifier
 PRODUCT_BUNDLE_IDENTIFIER = com.madogiwa.sobayaHazardLab
