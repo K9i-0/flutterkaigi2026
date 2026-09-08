@@ -1177,8 +1177,8 @@ class _HazardGamePageState extends State<HazardGamePage> {
     final short = bounds.maxHeight - safe.vertical < 440;
     final mapSize = short ? 80.0 : 96.0;
     final availableWidth = bounds.maxWidth - safe.horizontal;
-    // Narrow phones keep a readable health panel below the utility button row.
-    final lowerStatus = availableWidth - mapSize - 94 < 220;
+    // Portrait keeps utility controls in the map column.
+    final pauseBelowMap = bounds.maxHeight >= bounds.maxWidth;
     final healCount = s.bag
         .where((i) => i.kind == 'green' || i.kind == 'mixed')
         .length;
@@ -1194,10 +1194,13 @@ class _HazardGamePageState extends State<HazardGamePage> {
           children: [
             Positioned(
               left: 12,
-              top: lowerStatus ? 66 : 10,
+              top: 10,
               width: math.min(
                 300,
-                math.max(0, availableWidth - mapSize - (lowerStatus ? 40 : 94)),
+                math.max(
+                  0,
+                  availableWidth - mapSize - (pauseBelowMap ? 40 : 94),
+                ),
               ),
               child: IgnorePointer(
                 ignoring: !canHeal,
@@ -1332,8 +1335,8 @@ class _HazardGamePageState extends State<HazardGamePage> {
               ),
             ),
             Positioned(
-              right: mapSize + 18,
-              top: 10,
+              right: pauseBelowMap ? 12 : mapSize + 18,
+              top: pauseBelowMap ? mapSize + 16 : 10,
               child: SizedBox(
                 width: 48,
                 height: 48,

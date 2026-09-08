@@ -26835,7 +26835,7 @@
       "id": "condition:game_page:Widget_dialogue",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1371
+        "line": 1374
       },
       "code": "Widget dialogue(HazardGameState s) => Positioned.fill(\n    child: Stack(\n      children: [\n        if (dialogueInsert(\n              s.dialogueOwner,\n              s.dialogueTopic,\n              s.dialogueIndex,\n              postBoss: s.postBossReunion,\n            )\n            case final cut?)\n          Positioned(\n            top: MediaQuery.paddingOf(context).top + 48,\n            bottom:\n                (MediaQuery.sizeOf(context).height -\n                        MediaQuery.paddingOf(context).vertical) *\n                    .48 +\n                MediaQuery.paddingOf(context).bottom,\n            left: 0,\n            right: 0,\n            child: CinematicInsert(cut: cut),\n          ),\n        const Positioned(\n          top: 0,\n          left: 0,\n          right: 0,\n          height: 34,\n          child: ColoredBox(color: Color(0xff0c100c)),\n        ),\n        Positioned(\n          top: MediaQuery.paddingOf(context).top + 14,\n          left: MediaQuery.paddingOf(context).left + 20,\n          child: Text(\n            s.talkingTo == 'takosan' ? '補給所  /  たこさん' : '道案内  /  やめ太郎',\n            style: TextStyle(\n              color: ivory.withValues(alpha: .8),\n              fontSize: 12,\n              letterSpacing: 2,\n            ),\n          ),\n        ),\n        Align(\n          alignment: Alignment.bottomCenter,\n          child: Container(\n            width: double.infinity,\n            constraints: BoxConstraints(\n              maxHeight:\n                  (MediaQuery.sizeOf(context).height -\n                          MediaQuery.paddingOf(context).vertical) *\n                      .48 +\n                  MediaQuery.paddingOf(context).bottom,\n            ),\n            padding: EdgeInsets.fromLTRB(\n              MediaQuery.paddingOf(context).left + 18,\n              10,\n              MediaQuery.paddingOf(context).right + 18,\n              MediaQuery.paddingOf(context).bottom + 10,\n            ),\n            decoration: const BoxDecoration(\n              color: Color(0xf00d130e),\n              border: Border(top: BorderSide(color: Color(0xff727155))),\n            ),\n            child: SingleChildScrollView(\n              child: Column(\n                mainAxisSize: MainAxisSize.min,\n                crossAxisAlignment: CrossAxisAlignment.start,\n                children: [\n                  Text(\n                    s.dialogueLine.speaker,\n                    style: const TextStyle(\n                      color: gold,\n                      fontSize: 14,\n                      letterSpacing: 3,\n                    ),\n                  ),\n                  const SizedBox(height: 10),\n                  Text(\n                    s.dialogueLine.text,\n                    key: const ValueKey('game-dialogue-text'),\n                    style: const TextStyle(\n                      color: ivory,\n                      fontSize: 17,\n                      height: 1.65,\n                    ),\n                  ),\n                  const SizedBox(height: 16),\n                  if (s.talkingTo == 'takosan' && s.dialogueChoices)\n                    Padding(\n                      padding: const EdgeInsets.only(bottom: 12),\n                      child: Text(\n                        '所持ビール  ${s.beers}杯',\n                        style: const TextStyle(color: gold),\n                      ),\n                    ),\n                  if (s.dialogueChoices)\n                    Wrap(\n                      spacing: 8,\n                      runSpacing: 8,\n                      children: [\n                        if (s.talkingTo == 'takosan') ...[\n                          for (final offer in s.visibleTradeOffers)\n                            action(\n                              'trade-${offer.id}',\n                              '${itemNames[offer.kind]} ×${offer.amount}  /  ${offer.price}杯  /  ${s.stockRemaining(offer) == 0\n                                  ? '売切'\n                                  : s.stockRemaining(offer) == 999\n                                  ? '補充可'\n                                  : '残${s.stockRemaining(offer)}'}',\n                              () => s.chooseDialogue('trade:${offer.id}'),\n                            ),\n                        ],\n                        for (final topic in s.availableDialogueTopics)\n                          action(\n                            'dialogue-$topic',\n                            s.dialogueTopicLabel(topic),\n                            () => s.chooseDialogue(topic),\n                          ),\n                        action(\n                          'dialogue-leave',\n                          s.dialogueLeaveLabel,\n                          s.endDialogue,\n                        ),\n                      ],\n                    )\n                  else\n                    Align(\n                      alignment: Alignment.centerRight,\n                      child: action(\n                        'dialogue-next',\n                        'E  次へ',\n                        s.advanceDialogue,\n                      ),\n                    ),\n                ],\n              ),\n            ),\n          ),\n        ),\n      ],\n    ),\n  );"
     }
@@ -33539,7 +33539,7 @@
       "scope": "mobileHud",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1243
+        "line": 1246
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33555,7 +33555,7 @@
       "scope": "mobileHud",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1266
+        "line": 1269
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33571,7 +33571,7 @@
       "scope": "mobileHud",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1281
+        "line": 1284
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33587,7 +33587,7 @@
       "scope": "mobileHud",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1282
+        "line": 1285
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33602,7 +33602,7 @@
       "scope": "mobileHud",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1284
+        "line": 1287
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33617,7 +33617,7 @@
       "scope": "mobileHud",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1286
+        "line": 1289
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33632,7 +33632,7 @@
       "scope": "mobileHud",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1287
+        "line": 1290
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33647,7 +33647,7 @@
       "scope": "mobileHud",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1303
+        "line": 1306
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33663,7 +33663,7 @@
       "scope": "mobileHud",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1321
+        "line": 1324
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33677,7 +33677,7 @@
       "scope": "mobileHud",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1342
+        "line": 1345
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33691,7 +33691,7 @@
       "scope": "action",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1358
+        "line": 1361
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33707,7 +33707,7 @@
       "scope": "dialogue",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1403
+        "line": 1406
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33721,7 +33721,7 @@
       "scope": "dialogue",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1403
+        "line": 1406
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33735,7 +33735,7 @@
       "scope": "dialogue",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1460
+        "line": 1463
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33751,7 +33751,7 @@
       "scope": "dialogue",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1472
+        "line": 1475
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33767,7 +33767,7 @@
       "scope": "dialogue",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1473
+        "line": 1476
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33783,7 +33783,7 @@
       "scope": "dialogue",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1474
+        "line": 1477
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33798,7 +33798,7 @@
       "scope": "dialogue",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1476
+        "line": 1479
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33813,7 +33813,7 @@
       "scope": "dialogue",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1477
+        "line": 1480
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33830,7 +33830,7 @@
       "scope": "dialogue",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1478
+        "line": 1481
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33846,7 +33846,7 @@
       "scope": "dialogue",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1483
+        "line": 1486
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33862,7 +33862,7 @@
       "scope": "dialogue",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1499
+        "line": 1502
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33876,7 +33876,7 @@
       "scope": "pad",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1528
+        "line": 1531
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33892,7 +33892,7 @@
       "scope": "healthHud",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1567
+        "line": 1570
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33908,7 +33908,7 @@
       "scope": "healthHud",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1582
+        "line": 1585
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33922,7 +33922,7 @@
       "scope": "healthHud",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1595
+        "line": 1598
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33938,7 +33938,7 @@
       "scope": "healthHud",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1595
+        "line": 1598
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33953,7 +33953,7 @@
       "scope": "healthHud",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1595
+        "line": 1598
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33968,7 +33968,7 @@
       "scope": "healthHud",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1597
+        "line": 1600
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33984,7 +33984,7 @@
       "scope": "healthHud",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1599
+        "line": 1602
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -33998,7 +33998,7 @@
       "scope": "healthHud",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1600
+        "line": 1603
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34014,7 +34014,7 @@
       "scope": "inventory",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1661
+        "line": 1664
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34028,7 +34028,7 @@
       "scope": "inventory",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1666
+        "line": 1669
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34044,7 +34044,7 @@
       "scope": "inventory",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1666
+        "line": 1669
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34059,7 +34059,7 @@
       "scope": "inventory",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1666
+        "line": 1669
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34074,7 +34074,7 @@
       "scope": "collection",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1764
+        "line": 1767
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34088,7 +34088,7 @@
       "scope": "eventOverlay",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1780
+        "line": 1783
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34102,7 +34102,7 @@
       "scope": "eventOverlay",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1848
+        "line": 1851
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34116,7 +34116,7 @@
       "scope": "eventOverlay",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1848
+        "line": 1851
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34130,7 +34130,7 @@
       "scope": "eventOverlay",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1854
+        "line": 1857
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34144,7 +34144,7 @@
       "scope": "eventOverlay",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1869
+        "line": 1872
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34158,7 +34158,7 @@
       "scope": "eventOverlay",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1880
+        "line": 1883
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34172,7 +34172,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1897
+        "line": 1900
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34186,7 +34186,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1903
+        "line": 1906
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34200,7 +34200,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1922
+        "line": 1925
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34214,7 +34214,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1927
+        "line": 1930
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34230,7 +34230,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1941
+        "line": 1944
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34246,7 +34246,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1957
+        "line": 1960
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34260,7 +34260,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1959
+        "line": 1962
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34274,7 +34274,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1966
+        "line": 1969
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34290,7 +34290,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1977
+        "line": 1980
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34306,7 +34306,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1988
+        "line": 1991
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34322,7 +34322,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 1999
+        "line": 2002
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34338,7 +34338,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2010
+        "line": 2013
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34354,7 +34354,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2022
+        "line": 2025
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34370,7 +34370,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2038
+        "line": 2041
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34384,7 +34384,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2038
+        "line": 2041
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34398,7 +34398,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2043
+        "line": 2046
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34412,7 +34412,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2062
+        "line": 2065
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34426,7 +34426,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2062
+        "line": 2065
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34440,7 +34440,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2069
+        "line": 2072
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34456,7 +34456,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2070
+        "line": 2073
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34471,7 +34471,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2072
+        "line": 2075
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34486,7 +34486,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2073
+        "line": 2076
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34501,7 +34501,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2086
+        "line": 2089
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34517,7 +34517,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2092
+        "line": 2095
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34531,7 +34531,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2092
+        "line": 2095
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34545,7 +34545,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2098
+        "line": 2101
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34559,7 +34559,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2100
+        "line": 2103
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34573,7 +34573,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2106
+        "line": 2109
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34587,7 +34587,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2111
+        "line": 2114
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34601,7 +34601,7 @@
       "scope": "settingsPanel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2125
+        "line": 2128
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34615,7 +34615,7 @@
       "scope": "fullMap",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2134
+        "line": 2137
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34631,7 +34631,7 @@
       "scope": "fullMap",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2153
+        "line": 2156
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34645,7 +34645,7 @@
       "scope": "fullMap",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2159
+        "line": 2162
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34659,7 +34659,7 @@
       "scope": "pause",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2186
+        "line": 2189
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34673,7 +34673,7 @@
       "scope": "pause",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2192
+        "line": 2195
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34687,7 +34687,7 @@
       "scope": "pause",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2197
+        "line": 2200
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34701,7 +34701,7 @@
       "scope": "pause",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2198
+        "line": 2201
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34715,7 +34715,7 @@
       "scope": "pause",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2198
+        "line": 2201
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34729,7 +34729,7 @@
       "scope": "pause",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2202
+        "line": 2205
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34743,7 +34743,7 @@
       "scope": "pause",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2205
+        "line": 2208
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34757,7 +34757,7 @@
       "scope": "pause",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2205
+        "line": 2208
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34771,7 +34771,7 @@
       "scope": "pause",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2209
+        "line": 2212
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34785,7 +34785,7 @@
       "scope": "pause",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2210
+        "line": 2213
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34799,7 +34799,7 @@
       "scope": "pause",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2213
+        "line": 2216
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34813,7 +34813,7 @@
       "scope": "pause",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2223
+        "line": 2226
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34827,7 +34827,7 @@
       "scope": "pause",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2228
+        "line": 2231
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34841,7 +34841,7 @@
       "scope": "ending",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2248
+        "line": 2251
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34855,7 +34855,7 @@
       "scope": "ending",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2250
+        "line": 2253
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34869,7 +34869,7 @@
       "scope": "ending",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2251
+        "line": 2254
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34883,7 +34883,7 @@
       "scope": "ending",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2261
+        "line": 2264
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34897,7 +34897,7 @@
       "scope": "ending",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2263
+        "line": 2266
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34913,7 +34913,7 @@
       "scope": "ending",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2264
+        "line": 2267
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34927,7 +34927,7 @@
       "scope": "ending",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2269
+        "line": 2272
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34943,7 +34943,7 @@
       "scope": "ending",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2269
+        "line": 2272
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34960,7 +34960,7 @@
       "scope": "ending",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2280
+        "line": 2283
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34974,7 +34974,7 @@
       "scope": "ending",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-        "line": 2281
+        "line": 2284
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -39072,7 +39072,7 @@
     },
     {
       "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-      "sha256": "f705ee5355cd90042b26f57f69cff79a63efc3a33bb451f05b95b3de471a3945"
+      "sha256": "f085924c260578312484c9f50d55288f60e1aa2129f5f204b240fba68e126c9a"
     },
     {
       "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_perception_geometry.dart",
