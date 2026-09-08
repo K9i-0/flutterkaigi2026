@@ -2,6 +2,8 @@
 
 **操作を簡素化（2026-09-08）。** 忍び足はZを標準キーとし、Ctrlも互換操作として残す。macOSのCtrl＋矢印との競合を避けられる。MacのCtrl＋クリックでは照準に入らず視点を動かせる。回避と蹴りを廃止し、タッチ画面の操作を減らした。装填弾が0の時に射撃を押すと予備弾を通常の速度でリロードする。装填後は再度射撃を押して発砲し、R／タッチ「装填」の手動リロードも使える。[操作修正の検証記録](qa/controls-feedback-20260908.json)。
 
+最新Macアプリ（ビルド `2c7d626`）: [そば屋ハザード.app](../.local/hazard_releases/sobaya-hazard-macos-2c7d626/そば屋ハザード.app) / [ZIP](../.local/hazard_releases/sobaya-hazard-macos-2c7d626.zip)。270テスト・静的解析、Mac／iPhoneシミュレーターの空撃ちリロードとタッチ操作、配布版の起動を確認。[Release同梱検査](qa/controls-feedback-release-20260908.json)。
+
 **モバイル・世界観・ステルスを更新（2026-09-08）。** スマホ向けの同時タッチ操作、縦横対応のHUD・地図・持ち物、忍び足と移動音、壁・床・向きを使った視認／聴取、最後の情報地点の捜索と敵対解除、目視した敵と視界の地図表示、背後からEでビールを壊すステルス撃破を追加した。ショットガンは単体攻撃と通常敵へのヘッドショット一発を維持し、大きい発砲音でリスクを持たせる。炎・煙・火の粉・局所光、屋内外の環境音、補給所の物資と会話カメラ・資料画面も調整。[最新の操作と仕様](GAMEPLAY.md#モバイル世界観ステルスの更新2026-09-08)と[検証記録](qa/mobile-world-stealth-20260908.json)を参照。
 
 操作簡素化前のMacアプリ（ビルド `9492ff0`）: [そば屋ハザード.app](../.local/hazard_releases/sobaya-hazard-macos-9492ff0/そば屋ハザード.app) / [ZIP](../.local/hazard_releases/sobaya-hazard-macos-9492ff0.zip)。全体245テストと追加5件の回帰テスト、Mac debug／iPhoneシミュレーターの縦横UI・操作、11条件のprofileを確認。[Release同梱検査](qa/mobile-world-stealth-release-20260908.json)。スマートフォン実機の操作感・長時間性能は未検証。

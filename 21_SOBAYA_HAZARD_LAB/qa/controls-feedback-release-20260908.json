@@ -1,0 +1,40 @@
+{
+  "date": "2026-09-08",
+  "sourceRevision": "2c7d626",
+  "scope": "Mac Release: Z sneak, remove evade/kick, empty-trigger timed reload",
+  "archive": {
+    "archive": ".local/hazard_releases/sobaya-hazard-macos-2c7d626.zip",
+    "bytes": 259705876,
+    "sha256": "5e99ef6ca9d53b07a1601fd90395e5294620641953628abf0d325149bba8d0de",
+    "sourceRevision": "2c7d626",
+    "sceneCount": 9,
+    "voiceCueCount": 126
+  },
+  "bundle": {
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "signatureIntegrity": "codesign --verify --deep --strict passed",
+    "signatureDistribution": "ad hoc; not notarized",
+    "sceneCount": 9,
+    "voiceCueCount": 126,
+    "binaryHashes": {
+      "runner": "84f1ea90a42ad813e2c9d2d310b11c8b6e3c6c8e843b48264da26a69204b9da0",
+      "dartAot": "7550fbf60bf7655129982bfdf22e90b08656741f9bb9aa6772c2d71b6a96f33e"
+    }
+  },
+  "validation": {
+    "canonicalAssetHashes": "all matched",
+    "internalSymlinks": "all remain inside app",
+    "zipCrc": "passed",
+    "releaseUi": "Packaged app launched and loaded the 3D title. Opened Settings and verified touch controls and sensitivity. Returned to title without starting a new game or changing settings.",
+    "signingRepair": "Incremental Flutter release build left the outer application signature stale while App.framework verified independently. Refreshed only the outer local ad hoc signature with identifier, entitlements, requirements and flags preserved; deep strict verification then passed."
+  },
+  "related": [
+    "controls-feedback-20260908.json"
+  ],
+  "limitations": [
+    "Release campaign and Intel Mac not rerun; gameplay changes verified in Mac debug and iPhone simulator."
+  ]
+}
