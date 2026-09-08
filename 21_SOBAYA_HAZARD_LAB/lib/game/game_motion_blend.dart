@@ -41,7 +41,6 @@ const playerMotionSources = {
   'Idle': 'Adopted_Library_Idle_A',
   'Walk': 'Adopted_Library_Walk',
   'Run': 'Adopted_Candidate_Mixamo_Run',
-  'Evade': 'Procedural_RollForward',
 };
 const sobayaMotionSources = {
   'Idle': 'Hybrid_MugHold',
@@ -67,14 +66,6 @@ double mugAttackTime(
       ? .48 * (clock / .77).clamp(0.0, 1.0)
       : .48 + .52 * ((clock - .77) / recoveryClockDuration).clamp(0.0, 1.0);
   return duration * phase;
-}
-
-// Retain the former dodge distance and invulnerability; allow a full recovery.
-const evadeDuration = 1.0;
-const evadeDistance = 3.7 * .42;
-double evadeTravel(double elapsed) {
-  final u = (elapsed / .77).clamp(0.0, 1.0);
-  return evadeDistance * u * u * (3 - 2 * u);
 }
 
 /// One cosmetic choice per spawn, independent of frame rate and AI detection.

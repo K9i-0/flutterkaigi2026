@@ -1,0 +1,183 @@
+{
+  "date": "2026-09-08",
+  "sourceBase": "7869e3a",
+  "scope": "Feedback: Mac sneak key conflicts, remove evade/kick, empty-trigger timed reload",
+  "tests": {
+    "fullSuite": 270,
+    "result": "passed",
+    "log": "evidence/feedback-controls-tests-final.log",
+    "analysis": "No issues found"
+  },
+  "keyboard": {
+    "primarySneak": "Z (hold with WASD/arrows)",
+    "compatibility": "Ctrl + WASD retained; macOS Control-arrow shortcuts remain OS-owned",
+    "macMouse": "Control-secondary click no longer enters aim, preserving camera drag while Control sneaking; Q remains available for aim",
+    "verified": [
+      "Z-first and movement-first with actual Flutter Focus",
+      "Control-first and movement-first with actual Flutter Focus",
+      "Z + all arrow keys while child button focused",
+      "release modifier restores walk/sprint",
+      "focus loss clears all held input",
+      "macOS Control-secondary versus unmodified right button on touch look overlay"
+    ],
+    "nativeToolLimitation": "CUA cannot hold two non-modifier keys (Z+arrow); key-order validation uses actual Flutter Focus widget events, not a macOS OS-level Z+arrow injection"
+  },
+  "actions": {
+    "removed": [
+      "evade/roll",
+      "kick"
+    ],
+    "remainingMobileActions": [
+      "aim",
+      "fire",
+      "reload",
+      "interact",
+      "heal",
+      "weapon"
+    ],
+    "landscapeButtonPixels": {
+      "width": 59.3,
+      "height": 50
+    },
+    "mobileViewportsTested": [
+      [
+        320,
+        568
+      ],
+      [
+        390,
+        844
+      ],
+      [
+        568,
+        320
+      ],
+      [
+        844,
+        390
+      ]
+    ],
+    "sharedCharacterAssets": "unchanged"
+  },
+  "reload": {
+    "trigger": "shoot while aimed, unlocked and empty with reserve ammunition",
+    "handgunSeconds": 1.3,
+    "shotgunSeconds": 2,
+    "manual": "R / 装填 retained, including partially filled magazine",
+    "noReserve": "empty feedback without reload",
+    "autoFireAfterReload": false,
+    "damageAndSingleTargetShotgun": "unchanged"
+  },
+  "nativeMac": {
+    "empty": {
+      "phase": "playing",
+      "weapon": "handgun",
+      "loaded": 0,
+      "reserve": 8,
+      "shots": 6,
+      "reloading": 0,
+      "rendering": {
+        "continuous": true,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 10777,
+        "simulationSeconds": 2.533327999999996,
+        "playerClipSeconds": 0.5333279999999977
+      }
+    },
+    "autoReload": {
+      "phase": "playing",
+      "weapon": "handgun",
+      "loaded": 0,
+      "reserve": 8,
+      "shots": 6,
+      "reloading": 1.2750000000000001,
+      "rendering": {
+        "continuous": true,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 10779,
+        "simulationSeconds": 2.566661999999996,
+        "playerClipSeconds": 0.025
+      }
+    },
+    "completed": {
+      "phase": "playing",
+      "weapon": "handgun",
+      "loaded": 8,
+      "reserve": 0,
+      "shots": 6,
+      "reloading": 0,
+      "rendering": {
+        "continuous": true,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 12323,
+        "simulationSeconds": 19.616629000000373,
+        "playerClipSeconds": 1.7749699999999842
+      }
+    },
+    "runtimeErrors": 0
+  },
+  "nativeIOS": {
+    "device": "iPhone17Pro simulator / iOS26.5",
+    "viewport": [
+      874,
+      402
+    ],
+    "manualReload": {
+      "phase": "playing",
+      "weapon": "handgun",
+      "loaded": 5,
+      "reserve": 8,
+      "shots": 1,
+      "reloading": 1.283333,
+      "rendering": {
+        "continuous": true,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 1248,
+        "simulationSeconds": 21.222917000000518,
+        "playerClipSeconds": 0.016667
+      }
+    },
+    "autoReload": {
+      "phase": "playing",
+      "weapon": "handgun",
+      "loaded": 0,
+      "reserve": 8,
+      "shots": 6,
+      "reloading": 1.283333,
+      "rendering": {
+        "continuous": true,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 4166,
+        "simulationSeconds": 2.8499999999999974,
+        "playerClipSeconds": 0.016667
+      }
+    },
+    "completed": {
+      "phase": "playing",
+      "weapon": "handgun",
+      "loaded": 8,
+      "reserve": 0,
+      "shots": 6,
+      "reloading": 0,
+      "rendering": {
+        "continuous": true,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 6447,
+        "simulationSeconds": 40.91666600000095,
+        "playerClipSeconds": 0.7833330000000072
+      }
+    },
+    "runtimeErrors": 0,
+    "screenshot": "evidence/feedback-ios-controls.png"
+  },
+  "limitations": [
+    "No physical phone performance or OS-level two-non-modifier-key injection",
+    "Full campaign/performance benchmark not repeated for control changes; existing normal-sprint boss/attack avoidance regressions pass"
+  ]
+}

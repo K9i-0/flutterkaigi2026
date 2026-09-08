@@ -12,9 +12,7 @@ class HazardNoise {
 }
 
 extension HazardStealth on HazardGameState {
-  double get movementNoiseRadius => evadeTime > 0
-      ? 7
-      : sneaking
+  double get movementNoiseRadius => sneaking
       ? .7
       : sprint
       ? 9
@@ -152,13 +150,11 @@ extension HazardStealth on HazardGameState {
   void _emitMovementNoise(double distance) {
     if (distance < .0001) return;
     _noiseFootDistance += distance;
-    final stride = sneaking && evadeTime <= 0 ? .35 : .55;
+    final stride = sneaking ? .35 : .55;
     if (_noiseFootDistance < stride) return;
     _noiseFootDistance %= stride;
     emitNoise(
-      evadeTime > 0
-          ? 'roll'
-          : sneaking
+      sneaking
           ? 'sneak'
           : sprint
           ? 'sprint'
@@ -334,13 +330,7 @@ extension HazardStealth on HazardGameState {
   }
 
   Enemy? get stealthTarget {
-    if (!running ||
-        actionLocked ||
-        aiming ||
-        reloading > 0 ||
-        evadeTime > 0 ||
-        kickTime > 0 ||
-        hurtTime > .2) {
+    if (!running || actionLocked || aiming || reloading > 0 || hurtTime > .2) {
       return null;
     }
     Enemy? nearest;

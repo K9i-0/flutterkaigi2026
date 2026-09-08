@@ -661,7 +661,7 @@ void attachGameAutomation(HazardGameController game) {
   );
   registerMarionetteExtension(
     name: 'madogiwa.gameAction',
-    description: 'Debug action=eventFrame|viewpoint|soundCue|previewState|simulate|interact|reload|fire|fireAtEnemy|step|move|aim|pause|evade|kick|pose. eventFrame shot and progress=0..1 after an event scenario: static art review. pose clip and seconds=0..3. step/simulate seconds=0..10. simulate x/y=-1..1 sprint/evade=true uses normal simulation and pauses for inspection.',
+    description: 'Debug action=eventFrame|viewpoint|soundCue|previewState|simulate|interact|reload|fire|fireAtEnemy|step|move|aim|pause|pose. eventFrame shot and progress=0..1 after an event scenario: static art review. pose clip and seconds=0..3. step/simulate seconds=0..10. simulate x/y=-1..1 sprint/sneaking=true uses normal simulation and pauses for inspection.',
     callback: (p) async {
       final g = _game;
       if (g == null || !g.ready) {
@@ -831,7 +831,6 @@ void attachGameAutomation(HazardGameController game) {
           s.sprint = p['sprint'] == 'true';
           s.sneaking = p['sneaking'] == 'true';
           s.struggling = p['struggling'] == 'true';
-          if (p['evade'] == 'true') s.evade();
           for (var i = 0; i < (seconds * 60).round(); i++) {
             s.tick(1 / 60);
           }
@@ -871,10 +870,6 @@ void attachGameAutomation(HazardGameController game) {
             e.value.pause();
           }
           g.player.clips[name]!.seek(seconds);
-        case 'evade':
-          s.evade();
-        case 'kick':
-          s.kick();
         case 'interact':
           g.interact();
         case 'reload':

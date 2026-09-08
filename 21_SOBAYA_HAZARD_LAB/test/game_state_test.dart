@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vector_math/vector_math.dart' as vm;
 import 'package:sobaya_hazard_lab/game/game_state.dart';
-import 'package:sobaya_hazard_lab/game/game_motion_blend.dart';
 
 HazardGameState game() =>
     HazardGameState(jsonDecode(File('assets/village.json').readAsStringSync()));
@@ -15,29 +14,25 @@ void advance(HazardGameState s, double seconds) {
 }
 
 void main() {
-  test('roll finishes at the same distance across frame rates with a vulnerable recovery', () {
-    for (final hz in [30, 60, 120]) {
-      final s = game();
-      for (final e in s.enemies) {
-        e.active = false;
+  test('walk and sprint keep their speed across frame rates without invulnerability', () {
+    for (final sprint in [false, true]) {
+      for (final hz in [30, 60, 120]) {
+        final s = game()
+          ..inputY = -1
+          ..sprint = sprint;
+        for (final e in s.enemies) {
+          e.active = false;
+        }
+        final start = vm.Vector2(s.x, s.z);
+        for (var i = 0; i < hz; i++) {
+          s.tick(1 / hz);
+        }
+        expect(
+          (vm.Vector2(s.x, s.z) - start).length,
+          closeTo(sprint ? 2.8 : 1.25, 1e-6),
+        );
+        expect(s.invulnerable, 0);
       }
-      final start = vm.Vector2(s.x, s.z);
-      s.evade();
-      final direction = s.evadeHeading;
-      for (var i = 0; i < hz ~/ 2; i++) {
-        s.tick(1 / hz);
-      }
-      expect(s.evadeTime, greaterThan(0));
-      expect(s.invulnerable, 0);
-      expect(s.evadeHeading, direction);
-      for (var i = 0; i < hz; i++) {
-        s.tick(1 / hz);
-      }
-      expect(s.evadeTime, 0);
-      expect(
-        (vm.Vector2(s.x, s.z) - start).length,
-        closeTo(evadeDistance, 1e-6),
-      );
     }
   });
 
@@ -130,7 +125,7 @@ void main() {
     expect(s.health, 85);
     expect(s.phase, PlayPhase.playing);
   });
-  test('evasion avoids a committed swing and still respects a solid wall', () {
+  test('running avoids a committed swing and still respects a solid wall', () {
     final s = game();
     for (final e in s.enemies) {
       e.active = false;
@@ -142,7 +137,8 @@ void main() {
       ..z = -20.1;
     advance(s, .6);
     expect(e.attackPending, true);
-    s.evade();
+    s.inputY = -1;
+    s.sprint = true;
     advance(s, .4);
     expect(s.health, 100);
     expect(s.z, lessThan(-21.8));
@@ -153,34 +149,10 @@ void main() {
     s.x = 3;
     s.z = -6;
     s.inputX = 1;
-    s.evade();
+    s.sprint = true;
     advance(s, .42);
     expect(s.x, lessThan(3.55));
     expect(s.blocked(s.x, s.z, s.y), false);
-  });
-  test('stagger then kick defeats an enemy and leaves exactly one beer', () {
-    final s = game();
-    for (final e in s.enemies) {
-      e.active = false;
-    }
-    final e = s.enemies.first
-      ..active = true
-      ..x = 0
-      ..z = -19.4;
-    s.aiming = true;
-    s.shoot(vm.Vector3(0, 1.65, -21), vm.Vector3(0, 0, 1));
-    expect(e.hp, 40);
-    expect(s.kickTarget, e);
-    s.kick();
-    expect(e.alive, true);
-    advance(s, .45);
-    expect(e.alive, false);
-    advance(s, 1);
-    expect(s.kills, 1);
-    expect(s.pickups.where((p) => p.id == 'beer_0').length, 1);
-    s.kick();
-    advance(s, 1);
-    expect(s.kills, 1);
   });
   test('enemy cannot see through a house wall but can hear a nearby shot', () {
     final s = game();

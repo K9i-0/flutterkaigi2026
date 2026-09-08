@@ -8,11 +8,13 @@ import 'dart:ui' as ui;
 import 'package:flutter/scheduler.dart';
 
 import 'package:flutter/gestures.dart';
+import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_scene/scene.dart' show SceneView;
 
 import 'game_controller.dart';
+import 'game_input.dart';
 import 'game_state.dart';
 import 'game_settings.dart';
 import 'game_mobile.dart';
@@ -32,7 +34,7 @@ class HazardGamePage extends StatefulWidget {
 class _HazardGamePageState extends State<HazardGamePage> {
   final game = HazardGameController();
   final focus = FocusNode();
-  final held = <LogicalKeyboardKey>{};
+  final keyboard = HazardMovementKeys();
   GameBenchmark? benchmark;
   String? error;
   AppLifecycleListener? lifecycle;
@@ -111,7 +113,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
   }
 
   void clearInput() {
-    held.clear();
+    keyboard.clear();
     touchX = touchY = 0;
     touchSprint = touchSneak = touchStruggling = rightMouseHeld = false;
     touchEpoch++;
@@ -133,47 +135,21 @@ class _HazardGamePageState extends State<HazardGamePage> {
       s.stopInput();
       return;
     }
-    bool has(LogicalKeyboardKey a, LogicalKeyboardKey b) =>
-        held.contains(a) || held.contains(b);
-    s.inputX =
-        ((has(LogicalKeyboardKey.keyD, LogicalKeyboardKey.arrowRight) ? 1 : 0) -
-                (has(LogicalKeyboardKey.keyA, LogicalKeyboardKey.arrowLeft)
-                    ? 1
-                    : 0) +
-                touchX)
-            .clamp(-1, 1)
-            .toDouble();
-    s.inputY =
-        ((has(LogicalKeyboardKey.keyW, LogicalKeyboardKey.arrowUp) ? 1 : 0) -
-                (has(LogicalKeyboardKey.keyS, LogicalKeyboardKey.arrowDown)
-                    ? 1
-                    : 0) +
-                touchY)
-            .clamp(-1, 1)
-            .toDouble();
+    s.inputX = (keyboard.x + touchX).clamp(-1.0, 1.0);
+    s.inputY = (keyboard.y + touchY).clamp(-1.0, 1.0);
     s.struggling =
-        s.running &&
-        s.grapple != null &&
-        (touchStruggling || held.contains(LogicalKeyboardKey.keyE));
-    s.sneaking =
-        touchSneak ||
-        held.contains(LogicalKeyboardKey.controlLeft) ||
-        held.contains(LogicalKeyboardKey.controlRight);
-    s.sprint =
-        !s.sneaking &&
-        (touchSprint ||
-            held.contains(LogicalKeyboardKey.shiftLeft) ||
-            held.contains(LogicalKeyboardKey.shiftRight));
+        s.grapple != null && (touchStruggling || keyboard.interacting);
+    s.sneaking = touchSneak || keyboard.sneaking;
+    s.sprint = !s.sneaking && (touchSprint || keyboard.sprinting);
   }
 
   KeyEventResult onKey(FocusNode node, KeyEvent e) {
     final s = game.state!;
+    keyboard.handle(e);
     if (e is KeyUpEvent) {
-      held.remove(e.logicalKey);
       updateInput();
       return KeyEventResult.handled;
     }
-    held.add(e.logicalKey);
     updateInput();
     if (e is KeyRepeatEvent) return KeyEventResult.handled;
     final k = e.logicalKey;
@@ -229,10 +205,6 @@ class _HazardGamePageState extends State<HazardGamePage> {
         game.interact();
       } else if (k == LogicalKeyboardKey.keyH) {
         s.heal();
-      } else if (k == LogicalKeyboardKey.keyX) {
-        s.evade();
-      } else if (k == LogicalKeyboardKey.keyF) {
-        s.kick();
       } else if (k == LogicalKeyboardKey.digit1) {
         s.equip('handgun');
       } else if (k == LogicalKeyboardKey.digit2) {
@@ -307,7 +279,12 @@ class _HazardGamePageState extends State<HazardGamePage> {
                         onPointerDown: (e) {
                           focus.requestFocus();
                           if (!s.running) return;
-                          if (e.buttons & kSecondaryMouseButton != 0) {
+                          if (hazardMouseAims(
+                            buttons: e.buttons,
+                            controlPressed:
+                                HardwareKeyboard.instance.isControlPressed,
+                            platform: defaultTargetPlatform,
+                          )) {
                             rightMouseHeld = true;
                             s.aiming = true;
                           }
@@ -629,29 +606,6 @@ class _HazardGamePageState extends State<HazardGamePage> {
                               painter: ReticlePainter(s.hitFlash > 0),
                             ),
                           ),
-                        if (!mobile &&
-                            s.running &&
-                            s.kickTarget != null &&
-                            s.kickTime <= 0)
-                          Positioned(
-                            bottom: 175,
-                            left: 0,
-                            right: 0,
-                            child: Center(
-                              child: FilledButton(
-                                key: const ValueKey('game-kick'),
-                                onPressed: () {
-                                  s.kick();
-                                  focus.requestFocus();
-                                },
-                                style: FilledButton.styleFrom(
-                                  backgroundColor: gold,
-                                  foregroundColor: ink,
-                                ),
-                                child: const Text('F  蹴りで押し返す'),
-                              ),
-                            ),
-                          ),
                         if (s.damageFlash > 0)
                           Positioned.fill(
                             child: IgnorePointer(
@@ -704,8 +658,6 @@ class _HazardGamePageState extends State<HazardGamePage> {
                               onFire: game.fire,
                               onReload: s.reload,
                               onInteract: game.interact,
-                              onEvade: s.evade,
-                              onKick: s.kick,
                               onHeal: s.heal,
                               onWeapon: () {
                                 final weapons = ['handgun', 'shotgun', 'rocket']
@@ -762,7 +714,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
                                 ),
                                 const SizedBox(height: 9),
                                 const Text(
-                                  'WASD 移動   SHIFT 走る   CTRL 忍び足   ドラッグ 視点   R 装填   E 調べる   X 回避   F 蹴り',
+                                  'WASD 移動   SHIFT 走る   Z 忍び足   ドラッグ 視点   R 装填   E 調べる',
                                   style: TextStyle(
                                     color: Color(0xffb8bdac),
                                     fontSize: 11,
@@ -883,7 +835,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
                             right: 0,
                             child: Center(
                               child: Text(
-                                'そば屋が掴みかかる — 後ろか横へ回避',
+                                'そば屋が掴みかかる — 後ろか横へ移動',
                                 style: TextStyle(
                                   color: ivory,
                                   backgroundColor: ink,
@@ -2137,7 +2089,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
           ),
           const SizedBox(height: 12),
           const Text(
-            '忍び足で音を抑え、背後から近づくとビールを破壊できます。\n敵対したら遮蔽物で視界を切り、距離を離して逃走。\nショットガンの発砲音は遠くまで届きます。\n1 / 2 / 3 武器切替  H 回復  CTRL 忍び足  E 調べる\nスマホ：左スティックで移動、右の空いている画面で視点操作。',
+            '忍び足で音を抑え、背後から近づくとビールを破壊できます。\n敵対したら遮蔽物で視界を切り、距離を離して逃走。\nショットガンの発砲音は遠くまで届きます。\n弾倉が空なら射撃操作で装填。Rでも事前に装填できます。\nZ（またはCtrl）を押しながら移動で忍び足。MacではZを推奨。\n1 / 2 / 3 武器切替  H 回復  Z 忍び足  E 調べる\nスマホ：左スティックで移動、右の空いている画面で視点操作。',
             style: TextStyle(color: gold, height: 2),
           ),
         ],

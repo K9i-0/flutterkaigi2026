@@ -81,14 +81,14 @@ void main() {
     }
   });
 
-  test('grab warns before contact and can be evaded', () {
+  test('grab warns before contact and can be escaped by running', () {
     final s = game();
     advance(s, .3);
     expect(s.enemies.first.grabPending, true);
     expect(s.grapple, isNull);
     expect(s.health, 100);
     s.inputY = -1;
-    s.evade();
+    s.sprint = true;
     advance(s, 1.1);
     expect(s.grapple, isNull);
     expect(s.health, 100);
@@ -102,8 +102,6 @@ void main() {
     s.inputX = s.inputY = 1;
     s.shoot(vm.Vector3(0, 1.3, -21), vm.Vector3(0, 0, 1));
     s.reload();
-    s.evade();
-    s.kick();
     s.interact();
     s.health = 90;
     final herbs = s.bag.where((i) => i.kind == 'green').length;
@@ -115,8 +113,6 @@ void main() {
     expect(s.phase, PlayPhase.playing);
     expect(s.shots, 0);
     expect(s.reloading, 0);
-    expect(s.evadeTime, 0);
-    expect(s.kickTime, 0);
     advance(s, 1.25);
     expect(s.grapple, isNull);
     expect((s.x, s.y, s.z), anchor);
