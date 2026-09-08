@@ -1,0 +1,37 @@
+{
+  "date": "2026-09-08",
+  "sourceRevision": "9492ff0",
+  "scope": "Mac Release package of mobile, world and stealth update",
+  "archive": {
+    "archive": ".local/hazard_releases/sobaya-hazard-macos-9492ff0.zip",
+    "bytes": 259717207,
+    "sha256": "d5f364da23c0d2b765426cf4348e73a49390e13fdc83ded28d9489576d7e2778",
+    "sourceRevision": "9492ff0",
+    "sceneCount": 9,
+    "voiceCueCount": 126
+  },
+  "bundle": {
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "signatureIntegrity": "codesign --verify --deep --strict passed",
+    "signatureDistribution": "ad hoc; not notarized",
+    "sceneCount": 9,
+    "voiceCueCount": 126,
+    "binaryHashes": {
+      "runner": "9b56b61a8d742204382faee52b01a64a5d52f4cf0ada736891aaea49a59225cb",
+      "dartAot": "e9b4da126837762b2a585e6530bd8c2c32f52e18a0f4a68fab8670d715331b74"
+    }
+  },
+  "validation": {
+    "canonicalAssetHashes": "all matched",
+    "internalSymlinks": "all remain inside app",
+    "zipCrc": "passed",
+    "releaseUi": "Packaged app launched; loading completed to title with3D world. Opened Settings and verified touch sensitivity, touch UI option and quality controls; returned to title. Full Release campaign was not repeated."
+  },
+  "related": [
+    "mobile-world-stealth-20260908.json",
+    "mobile-world-stealth-profile-20260908.json"
+  ]
+}
