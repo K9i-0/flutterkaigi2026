@@ -156,7 +156,7 @@ void main() {
   });
 
   test(
-    'a lure recruits one investigator while the others only turn toward it',
+    'a lure recruits all nearby enemies and releases them after a finite hold',
     () {
       final s = fixture.arena()..z = -20;
       final a = s.enemies.single;
@@ -165,8 +165,8 @@ void main() {
       s.emitNoise('beer_lure', radius: 8, sourceX: 2, sourceZ: 0);
       s.tick(.05);
       expect(a.investigationTarget, isNotNull);
-      expect(a.lureAttention, 4);
-      expect(b.investigationTarget, isNull);
+      expect(a.lureAttention, 5);
+      expect(b.investigationTarget, isNotNull);
       expect(b.alerted, false);
       fixture.advance(s, 4);
       expect(a.lureHold, greaterThan(0));
@@ -176,22 +176,73 @@ void main() {
     },
   );
 
+  test('beer interrupts visible pursuit, but gunfire cancels distraction', () {
+    final s = fixture.arena()..z = 6;
+    final e = s.enemies.single..stun = 30;
+    fixture.advance(s, .7);
+    expect(e.alerted, true);
+    s.emitNoise('beer_lure', radius: 14, sourceX: 2, sourceZ: 0);
+    s.tick(.05);
+    expect(e.investigationTarget, isNotNull);
+    expect(e.lureAttention, 5);
+    expect(e.seesPlayer, false);
+    expect(e.alerted, true);
+    s.emitNoise('handgun', radius: 22);
+    s.tick(.05);
+    expect(e.investigationTarget, isNull);
+    expect(e.seesPlayer, true);
+  });
+
   test(
-    'visual pursuit ignores beer while lost pursuers only inspect it briefly',
+    'a crowd of visible pursuers diverts together, distant enemies do not',
+    () {
+      final s = fixture.arena()..z = 6;
+      s.enemies.add(Enemy(1, 2, 0)..active = true);
+      s.enemies.add(Enemy(2, 25, 0)..active = true);
+      for (final e in s.enemies) {
+        e.stun = 30;
+      }
+      fixture.advance(s, .7);
+      expect(s.enemies.take(2).every((e) => e.alerted), true);
+      s.emitNoise('beer_lure', radius: 14, sourceX: 3, sourceZ: 0);
+      s.tick(.05);
+      expect(
+        s.enemies.take(2).every((e) => e.lureAttention == 5 && !e.seesPlayer),
+        true,
+      );
+      expect(s.enemies.last.lureAttention, 0);
+    },
+  );
+
+  test('hidden player escapes even when beer cannot be reached', () {
+    final s = fixture.arena()..z = 6;
+    final e = s.enemies.single..stun = 30;
+    fixture.advance(s, .7);
+    s.emitNoise('beer_lure', radius: 14, sourceX: 5, sourceZ: 0);
+    s.tick(.05);
+    s.z = -20;
+    fixture.advance(s, 10.2);
+    expect(e.alerted, false);
+    expect(e.investigationTarget, isNull);
+  });
+
+  test(
+    'visible player is reacquired after distraction, close approach breaks it',
     () {
       final s = fixture.arena()..z = 6;
       final e = s.enemies.single..stun = 30;
       fixture.advance(s, .7);
-      s.emitNoise('beer_lure', radius: 8, sourceX: 2, sourceZ: 0);
+      s.emitNoise('beer_lure', radius: 14, sourceX: 5, sourceZ: 0);
+      s.tick(.05);
+      fixture.advance(s, 10.2);
+      expect(e.seesPlayer, true);
+      expect(e.alerted, true);
+      s.emitNoise('beer_lure', radius: 14, sourceX: 5, sourceZ: 0);
+      s.tick(.05);
+      s.z = 1;
       s.tick(.05);
       expect(e.investigationTarget, isNull);
-      expect(e.knowledgeSource, 'sight');
-      s.z = -20;
-      s.emitNoise('beer_lure', radius: 8, sourceX: 2, sourceZ: 0);
-      s.tick(.05);
-      expect(e.investigationTarget, isNotNull);
-      expect(e.lureAttention, lessThan(1.5));
-      expect(e.alerted, true);
+      expect(e.seesPlayer, true);
     },
   );
 

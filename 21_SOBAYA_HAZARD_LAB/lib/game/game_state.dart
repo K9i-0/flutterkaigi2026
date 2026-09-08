@@ -1371,11 +1371,15 @@ class HazardGameState {
               dt * (e.alerted ? 4.0 : 2.2),
             );
       if (!e.boss && math.cos(e.heading - desiredHeading) < .35) continue;
-      e.runningApproach = !e.boss && e.awareness == EnemyAwareness.chasing;
+      e.runningApproach =
+          !e.boss &&
+          (e.awareness == EnemyAwareness.chasing || e.lureAttention > 0);
       final speed = math.min(
         len,
         (e.boss
                 ? 1.15
+                : e.lureAttention > 0
+                ? 2.2
                 : e.awareness == EnemyAwareness.chasing
                 ? 2.5
                 : e.awareness == EnemyAwareness.searching

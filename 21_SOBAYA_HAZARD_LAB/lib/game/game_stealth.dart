@@ -262,6 +262,8 @@ extension HazardStealth on HazardGameState {
   }
 
   void _rememberAttack(Enemy e) {
+    e.investigationTarget = null;
+    e.lureAttention = e.lureHold = 0;
     e.alerted = true;
     // Being hit provides the attack origin once. It is not a persistent beacon.
     _rememberPosition(e, x, y, z);
@@ -450,60 +452,27 @@ extension HazardStealth on HazardGameState {
   bool _isGunfire(String kind) =>
       const ['handgun', 'shotgun', 'rocket', 'explosion'].contains(kind);
 
-  bool _handlesLure(Enemy e, HazardNoise noise) {
-    if (!noise.lureAssigned) {
-      noise.lureAssigned = true;
-      var nearest = double.infinity;
-      for (final other in enemies) {
-        if (!other.active ||
-            !other.alive ||
-            other.boss ||
-            (other.alerted && enemyCanSeePlayer(other)) ||
-            _perceivedNoiseStrength(other, noise) <= 0) {
-          continue;
-        }
-        final d =
-            math.pow(other.x - noise.x, 2) + math.pow(other.z - noise.z, 2);
-        if (d < nearest ||
-            d == nearest && other.id < (noise.lureInvestigator ?? 999)) {
-          nearest = d.toDouble();
-          noise.lureInvestigator = other.id;
-        }
-      }
-    }
-    if (noise.lureInvestigator == e.id) return true;
-    if (!e.alerted && e.awareness != EnemyAwareness.returning) {
-      e.heading = _turnTowards(
-        e.heading,
-        math.atan2(noise.x - e.x, noise.z - e.z),
-        .35,
-      );
-    }
-    return false;
-  }
-
   void _hearNoise(Enemy e, HazardNoise heard, double strength) {
     if (heard.kind == 'beer_lure') {
-      if (!_handlesLure(e, heard)) return;
+      if (e.boss) return;
       // A bottle visibly landing is a real object, not knowledge of its thrower.
       e.investigationTarget = vm.Vector3(
         heard.x,
         floorHeight(heard.x, heard.z, heard.y),
         heard.z,
       );
-      e.lureAttention = e.alerted || e.awareness == EnemyAwareness.returning
-          ? 1.1
-          : 4;
+      e.lureAttention = 5;
       e.lureHold = 0;
       e.memoryFlowTime = 0;
-      if (!e.alerted) {
-        _rememberPosition(e, heard.x, e.investigationTarget!.y, heard.z);
-        e.awareness = EnemyAwareness.investigating;
-        _startSearchClock(e);
-      }
+      e.searchRemaining = e.searchDuration = 10;
+      e.pursuitRemaining = 0;
+      e.awareness = EnemyAwareness.investigating;
+      e.attackPending = e.grabPending = false;
+      e.companionTarget = null;
+      e.windup = 0;
       e.knowledgeSource = 'beer_lure';
       e.knowledgeTime = heard.time;
-      e.feedbackReason = 'ビールの音を調べている';
+      e.feedbackReason = 'ビールに夢中 — 今のうちに隠れろ';
       e.hasBeenAlerted = true;
       return;
     }
@@ -595,7 +564,11 @@ extension HazardStealth on HazardGameState {
     // relay it and a repeated timestamp cannot extend anybody's search.
     if (peers.isEmpty) return;
     final peer = peers.first;
-    if (peer.seesPlayer || peer.lastSharedTime >= e.knowledgeTime) return;
+    if (peer.seesPlayer ||
+        peer.lureAttention > 0 ||
+        peer.lastSharedTime >= e.knowledgeTime) {
+      return;
+    }
     peer.lastSharedTime = e.knowledgeTime;
     peer.alerted = true;
     _rememberPosition(peer, e.lastKnownX!, e.lastKnownY!, e.lastKnownZ!);
@@ -666,15 +639,45 @@ extension HazardStealth on HazardGameState {
     e.seesPlayer = enemyCanSeePlayer(e);
     HazardNoise? heard;
     var strongest = 0.0;
+    HazardNoise? beer;
+    var gunfire = false;
     for (final noise in _noiseEvents) {
       if (noise.serial <= e.heardNoiseSerial) continue;
       final strength = _perceivedNoiseStrength(e, noise);
+      if (strength > 0) {
+        if (noise.kind == 'beer_lure') beer = noise;
+        if (_isGunfire(noise.kind)) gunfire = true;
+      }
       if (strength > strongest) {
         heard = noise;
         strongest = strength;
       }
     }
     e.heardNoiseSerial = _noiseSerial;
+    // Beer wins over pursuit and footsteps, but never over nearby danger.
+    if (beer != null && !gunfire) _hearNoise(e, beer, 1);
+    if (e.lureAttention > 0 && e.investigationTarget != null) {
+      final danger = gunfire || (distance < 1.8 && e.seesPlayer);
+      final p = e.investigationTarget!;
+      e.searchRemaining = math.max(0, e.searchRemaining - dt);
+      if (math.pow(p.x - e.x, 2) + math.pow(p.z - e.z, 2) < 1 &&
+          (p.y - e.y).abs() < .8) {
+        e.lureHold += dt;
+      }
+      if (!danger && e.searchRemaining > 0 && e.lureHold < e.lureAttention) {
+        e.seesPlayer = false;
+        e.awareness = EnemyAwareness.investigating;
+        return true;
+      }
+      e.investigationTarget = null;
+      e.lureAttention = e.lureHold = 0;
+      if (!danger && !e.seesPlayer) {
+        _returnHome(e);
+        return _tickHomeOrPatrol(e, dt);
+      }
+    }
+    // A consumed lure must not restart later in this same perception tick.
+    if (heard?.kind == 'beer_lure') heard = null;
     if (e.seesPlayer) {
       if (e.lastKnownX != null && previouslySeeing) {
         final dx = x - e.lastKnownX!, dz = z - e.lastKnownZ!;
