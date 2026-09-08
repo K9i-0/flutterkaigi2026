@@ -1,0 +1,17 @@
+{
+  "composition": {
+    "id": "SuperTryCM",
+    "width": 832,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 900
+  },
+  "inputVideo": "input.mp4",
+  "endcard": {
+    "from": 780,
+    "to": 900,
+    "copy": "席に着くまでが、ミッション。",
+    "productName": "窓際スーパーつらい",
+    "englishName": "Madogiwa Super TRY"
+  }
+}

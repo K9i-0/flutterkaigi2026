@@ -1,0 +1,21 @@
+{
+  "task_id": "d5230d58-5ba9-4832-abe1-16062e1c2689",
+  "model": "wan3.0-video",
+  "resolution": "480P",
+  "duration": 30,
+  "seed": 630030,
+  "generation_mode": "single",
+  "status": "SUCCEEDED",
+  "authorization": "ユーザーが人物画像・声質参照音声の外部送信、約$1.05課金、480P30秒1回の実行を明示許可",
+  "price_estimate_usd": 1.05,
+  "last_recorded_at": "2026-09-08T05:45:10.549639+00:00",
+  "width": 832,
+  "height": 480,
+  "fps": 30,
+  "video_duration": 30,
+  "output": "wan3_result_seed630030_480p.mp4",
+  "sha256": "5634eceecb93daeccfa7dccfd61122843285dc15275592a8bef53d64010e4766",
+  "final_output": "final_remotion_cm.mp4",
+  "final_sha256": "49f900dd6321413fab8fa3ee7bafb5d1c5355409e968cc6871186bc91faabf11",
+  "audio_review": "ASR screening complete; 待遇も requires listening verification; original audio retained"
+}

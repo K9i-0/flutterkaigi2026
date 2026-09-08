@@ -1,0 +1,20 @@
+{
+  "name": "madogiwa-super-try-cm",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "preview:endcard": "remotion still src/index.ts SuperTryCM out/endcard_preview.png --frame=810 --props=preview-props.json",
+    "render": "remotion render src/index.ts SuperTryCM ../final_remotion_cm.mp4"
+  },
+  "dependencies": {
+    "remotion": "4.0.522",
+    "@remotion/cli": "4.0.522",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  },
+  "devDependencies": {
+    "typescript": "5.8.3",
+    "@types/react": "19.1.0"
+  }
+}

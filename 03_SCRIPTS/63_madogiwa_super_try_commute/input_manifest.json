@@ -1,0 +1,44 @@
+{
+  "files": [
+    {
+      "file": "balcony_episode03_reference.png",
+      "sha256": "e8ae2e01865d5918e4e886ff6c16fdb6650f6b910bd39d9646bab92668eb2dce"
+    },
+    {
+      "file": "character_fukuchan_basic_sheet.png",
+      "sha256": "a3e1f8f9feff43bf501617818f6e8652c2b6b39d72f7982716cbc550cb3b5866"
+    },
+    {
+      "file": "character_sobaya_basic_sheet.png",
+      "sha256": "6de96b8fe2ebf1ce88c2f966d77a1abd7f0c2632322dfe4c527135de67494def"
+    },
+    {
+      "file": "voice_ref_fukuchan_9s.wav",
+      "sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "duration": 9.0
+    },
+    {
+      "file": "voice_ref_sobaya_5_24s.wav",
+      "sha256": "e77f8d2123491c9de64deeedab6966c2014f2b1570027699418a6f96185cfe0f",
+      "duration": 5.24
+    },
+    {
+      "file": "product_super_try.png",
+      "sha256": "bc64d24db15c6ac1945a7ff221264de8a555be014aadda407440672bd7999104"
+    }
+  ],
+  "voice_sources": {
+    "voice_ref_sobaya_5_24s.wav": {
+      "source": "02_CHARACTERS/Sobaya_voice.wav",
+      "start": 0,
+      "end": 5.24,
+      "usage": "voice-timbre only; adopted silence-boundary clip from episode54"
+    },
+    "voice_ref_fukuchan_9s.wav": {
+      "source": "02_CHARACTERS/Fukuchan_voice.wav",
+      "start": 0,
+      "end": 9,
+      "usage": "voice-timbre only"
+    }
+  }
+}

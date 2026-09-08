@@ -1,0 +1,5 @@
+remotion/node_modules/
+remotion/out/
+remotion/public/input.mp4
+*.mp4
+remotion/public/endcard_background.png

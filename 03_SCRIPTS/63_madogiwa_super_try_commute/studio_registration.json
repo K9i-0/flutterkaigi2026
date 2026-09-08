@@ -1,0 +1,28 @@
+{
+  "studio_id": "MS-YHXU7YEX",
+  "slug": "madogiwa-super-try-commute",
+  "url": "https://madogiwa-studio.madogiwa-studio.workers.dev/episodes/madogiwa-super-try-commute",
+  "version": 1,
+  "model": "wan3.0-video",
+  "video_id": "f3139b70-f378-446c-87aa-56317908c439",
+  "video_file": "final_remotion_cm.mp4",
+  "video_status": "READY",
+  "poster_uploaded": true,
+  "featured": true,
+  "prompt_file": "prompt_wan3.txt",
+  "prompt_revision": 1,
+  "inputs": [
+    "character_sobaya_basic_sheet.png",
+    "character_fukuchan_basic_sheet.png",
+    "balcony_episode03_reference.png",
+    "product_super_try.png",
+    "voice_ref_sobaya_5_24s.wav",
+    "voice_ref_fukuchan_9s.wav",
+    "script.md",
+    "wan3_config.json",
+    "remotion/src/edit-manifest.json"
+  ],
+  "verification": "Admin confirmed video, poster and all 9 inputs READY. Episode page displays video, prompt revision 1 and all 9 inputs.",
+  "registered_via": "Studio admin browser UI",
+  "date": "2026-09-08"
+}
