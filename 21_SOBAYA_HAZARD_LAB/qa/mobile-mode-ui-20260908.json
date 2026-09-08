@@ -14,25 +14,114 @@
     "fullSuite": 362,
     "optionalSkipped": 1,
     "staticAnalysis": "No issues found",
-    "titleSizes": [[568,320],[844,390],[320,568],[390,844],[1280,800]],
-    "titleTextScales": [1,2],
-    "controlsSizes": [[320,568],[390,844],[568,320],[844,390]],
-    "controlsModes": ["exploration","interaction","gun","beer"],
+    "titleSizes": [
+      [
+        568,
+        320
+      ],
+      [
+        844,
+        390
+      ],
+      [
+        320,
+        568
+      ],
+      [
+        390,
+        844
+      ],
+      [
+        1280,
+        800
+      ]
+    ],
+    "titleTextScales": [
+      1,
+      2
+    ],
+    "controlsSizes": [
+      [
+        320,
+        568
+      ],
+      [
+        390,
+        844
+      ],
+      [
+        568,
+        320
+      ],
+      [
+        844,
+        390
+      ]
+    ],
+    "controlsModes": [
+      "exploration",
+      "interaction",
+      "gun",
+      "beer"
+    ],
     "minimumControlTarget": 48,
     "mainActionTarget": 72,
-    "coverage": ["safe-area bounds","target separation","fixed action positions","three independent fingers","mode-change press cancellation","removed-widget pointer cancellation","Mac Control and secondary mouse compatibility","equipment selection and accessible actions"]
+    "coverage": [
+      "safe-area bounds",
+      "target separation",
+      "fixed action positions",
+      "three independent fingers",
+      "mode-change press cancellation",
+      "removed-widget pointer cancellation",
+      "Mac Control and secondary mouse compatibility",
+      "equipment selection and accessible actions"
+    ]
   },
   "nativeChecks": {
     "device": "iPhone 17 Pro simulator, iOS 26.5",
-    "logicalSizes": [[874,402],[402,874]],
-    "tools": ["Dart MCP launch/hot reload/hot restart","Marionette gestures/screenshots/custom extensions","Simulator rotation"],
+    "logicalSizes": [
+      [
+        874,
+        402
+      ],
+      [
+        402,
+        874
+      ]
+    ],
+    "tools": [
+      "Dart MCP launch/hot reload/hot restart",
+      "Marionette gestures/screenshots/custom extensions",
+      "Simulator rotation"
+    ],
     "title": "All actions visible in landscape and portrait. New-game confirmation canceled, then existing game continued successfully.",
     "equipment": "Owned handgun/shotgun and beer selectable; no shot or beer consumed by selection.",
     "sneakAfterSelection": true,
-    "beerThrow": {"landscapeBefore":3,"landscapeAfter":2,"portraitBefore":3,"portraitAfter":2,"gunShots":0},
-    "manualReload": {"loadedBefore":6,"reserveBefore":8,"observedRemainingSeconds":1.254231,"loadedAfter":10,"reserveAfter":4,"shotsDuringReload":0},
-    "singleFire": {"shots":1,"loadedAfter":9},
-    "heal": {"healthBefore":65,"healthAfter":100,"usableHerbsBefore":1,"usableHerbsAfter":0},
+    "beerThrow": {
+      "landscapeBefore": 3,
+      "landscapeAfter": 2,
+      "portraitBefore": 3,
+      "portraitAfter": 2,
+      "gunShots": 0
+    },
+    "manualReload": {
+      "loadedBefore": 6,
+      "reserveBefore": 8,
+      "observedRemainingSeconds": 1.254231,
+      "loadedAfter": 10,
+      "reserveAfter": 4,
+      "shotsDuringReload": 0
+    },
+    "singleFire": {
+      "shots": 1,
+      "loadedAfter": 9
+    },
+    "heal": {
+      "healthBefore": 65,
+      "healthAfter": 100,
+      "usableHerbsBefore": 1,
+      "usableHerbsAfter": 0
+    },
     "systemBack": "Flutter back-route dispatch on the iOS simulator closed the equipment overlay, restored playing and preserved sneak. Not an Android hardware-button test.",
     "inventoryFromPause": true,
     "stealthInteraction": "The context appears as a noninteractive label with a single 72px destroy button. A native tap defeated one enemy, with zero shots.",
@@ -49,5 +138,23 @@
     "evidence/mobile-controls-portrait.png",
     "evidence/mobile-beer-portrait.png"
   ],
-  "limitations": ["Physical iOS/Android touch feel and long-session performance have not been tested in this change.","Mac release uses the same responsive UI; simulator screenshots do not establish physical-device performance."]
+  "limitations": [
+    "Physical iOS/Android touch feel and long-session performance have not been tested in this change.",
+    "Mac release uses the same responsive UI; simulator screenshots do not establish physical-device performance."
+  ],
+  "release": {
+    "sourceRevision": "d008dac",
+    "sceneCount": 9,
+    "voiceCueCount": 126,
+    "archive": {
+      "archive": ".local/hazard_releases/sobaya-hazard-macos-d008dac.zip",
+      "bytes": 267512478,
+      "sha256": "7599a1835bc4addb0cbdc51808deb455c06ffa0f2ebdc62c1d0dd125dea5e9e2",
+      "sourceRevision": "d008dac",
+      "sceneCount": 9,
+      "voiceCueCount": 126
+    },
+    "signature": "Ad hoc. App.framework verified; stale incremental outer signature renewed; deep strict verification of original and packaged copy passed.",
+    "smoke": "Passed on the exact packaged Mac app: native startup, updated title actions, existing-save new-game confirmation and cancellation back to title. Left at the title screen; no saved progress overwritten."
+  }
 }
