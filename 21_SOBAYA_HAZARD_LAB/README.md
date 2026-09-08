@@ -8,6 +8,8 @@
 
 [ネイティブ確認](qa/stealth-native-20260908.json)／[実入力比較](qa/stealth-routes-comparison-20260908.json)／[経路探索の判定回数](qa/stealth-navigation-cost-20260908.json)／[13条件のprofile](qa/stealth-profile-20260908.json)。profileの条件は全て成立したが、この環境では高いフレーム時間が残り、60fps達成の判定ではない。画質・照明設定を含む性能調整は今後の課題とする。
 
+今回のMac版（ソース `7403570`）: [そば屋ハザード.app](../.local/hazard_releases/sobaya-hazard-macos-7403570/そば屋ハザード.app) / [ZIP](../.local/hazard_releases/sobaya-hazard-macos-7403570.zip)。9シーンと正典126音声、新しい捜索曲・足音・投擲音を同梱。[配布版検査](qa/stealth-release-20260908.json)。
+
 以下は更新前の配布版と制作履歴。今回の統合検証結果とは分けて記録する。
 
 **操作を簡素化（2026-09-08）。** 忍び足はZを標準キーとし、Ctrlも互換操作として残す。macOSのCtrl＋矢印との競合を避けられる。MacのCtrl＋クリックでは照準に入らず視点を動かせる。回避と蹴りを廃止し、タッチ画面の操作を減らした。装填弾が0の時に射撃を押すと予備弾を通常の速度でリロードする。装填後は再度射撃を押して発砲し、R／タッチ「装填」の手動リロードも使える。[操作修正の検証記録](qa/controls-feedback-20260908.json)。

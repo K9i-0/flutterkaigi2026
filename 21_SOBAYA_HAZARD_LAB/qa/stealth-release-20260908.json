@@ -1,0 +1,119 @@
+{
+  "date": "2026-09-08T18:32:36.328330+09:00",
+  "bundleId": "com.madogiwa.sobayaHazardLab",
+  "version": "0.1.0",
+  "architectures": [
+    "x86_64",
+    "arm64"
+  ],
+  "declaredMinimumMacOS": "12.0",
+  "signatureIntegrity": "codesign --verify --deep --strict passed",
+  "signatureDistribution": "ad hoc; not notarized",
+  "sceneCount": 9,
+  "voiceCueCount": 126,
+  "sceneSources": [
+    {
+      "id": "assets/models/beer_mug",
+      "source": "04_GAME_ASSETS/3d/props/beer_mug_v2/beer_mug.glb",
+      "sourceSha256": "3456dcd7a79ec55936e6141a2b51432d51f38084d62a636368216530de2972f4",
+      "compiledFile": "scene.beer_mug.1e79f718.fsceneb",
+      "compiledSha256": "2251af923f238395819fe44cd0f23d4e3282b52b1cd8549467a0ccb01a83bb8c",
+      "importStamp": "c87e4829c1c7dce7"
+    },
+    {
+      "id": "assets/models/farm",
+      "source": "04_GAME_ASSETS/3d/environments/farm/farm.glb",
+      "sourceSha256": "f92843d1c3731c2c498e87f1e60203b2aa0b1aef0dad25cbd907d34be0663eea",
+      "compiledFile": "scene.farm.df7fa6b4.fsceneb",
+      "compiledSha256": "dfcf0106841aa17bf1f097db0339c65259d4b67a15789a88f950e06ea9f1418d",
+      "importStamp": "650d5055c3c6fdd4"
+    },
+    {
+      "id": "assets/models/fukuchan",
+      "source": "04_GAME_ASSETS/3d/hazard_adopted/fukuchan.glb",
+      "sourceSha256": "6d8254a05ff43a87801f6f7e6eb4dbbd2750752f839129b408a0ad347affda03",
+      "compiledFile": "scene.fukuchan.c0d54c25.fsceneb",
+      "compiledSha256": "0fb0a44924977dc4347139190fa3f9734498ffe74b9890fd398cc6b737f7ae02",
+      "importStamp": "24d7e233b555e4ac"
+    },
+    {
+      "id": "assets/models/items",
+      "source": "04_GAME_ASSETS/3d/props/hazard_kit/items.glb",
+      "sourceSha256": "6ed27a4efb14863e54fc177ef8db88d195ee5c0436f98cddccb635244b2840eb",
+      "compiledFile": "scene.items.79a2d4bf.fsceneb",
+      "compiledSha256": "872c39c2988ad5725b32ce045cb5095deb0a424ef76a06433b14bc182ba419de",
+      "importStamp": "60fc41555bb71553"
+    },
+    {
+      "id": "assets/models/mountain",
+      "source": "04_GAME_ASSETS/3d/environments/mountain/mountain.glb",
+      "sourceSha256": "4342619129b792b189ee5d586c2a79c2e368c4b00202c162504c966fb313d358",
+      "compiledFile": "scene.mountain.551294d6.fsceneb",
+      "compiledSha256": "90b68f1b8788ccf820a5d3de835c2525e19225a0a180dcb4ecfa5cc30eb6f3d4",
+      "importStamp": "97e6a785c22dc058"
+    },
+    {
+      "id": "assets/models/sobaya",
+      "source": "04_GAME_ASSETS/3d/hazard_adopted/sobaya.glb",
+      "sourceSha256": "e8df48deafb162543e07c46f3e839b5b8c71c0316352880af46b2b12a7147d6e",
+      "compiledFile": "scene.sobaya.fd082e41.fsceneb",
+      "compiledSha256": "5521d69297ea7da3b7cc25f3fd74906dd7af4a25f6aebad1f35af02e76e8ee6b",
+      "importStamp": "83dde67da7da70ea"
+    },
+    {
+      "id": "assets/models/takosan",
+      "source": "04_GAME_ASSETS/3d/characters/takosan/rig_sheet_v2/takosan.glb",
+      "sourceSha256": "aae590ad14daedc9f24b0c9749d533646b8930c139357539822e1f88a2f92469",
+      "compiledFile": "scene.takosan.744cfef3.fsceneb",
+      "compiledSha256": "e446bdc6ea844016c3422b5387eb06b6dc152ac49484a048fde4b78e9b99d3a2",
+      "importStamp": "6862946761c23a74"
+    },
+    {
+      "id": "assets/models/village",
+      "source": "04_GAME_ASSETS/3d/environments/pueblo/village.glb",
+      "sourceSha256": "d31457d58decd7e58582adc61bbee5d0f3e685b38263df22e8ef3527847b00a4",
+      "compiledFile": "scene.village.c8a19c1a.fsceneb",
+      "compiledSha256": "d09d2b6d080a19b49770c6046593d2a2a4be4f19c4a3f51b6ca732cfb875e26a",
+      "importStamp": "11b2ec09f082b6b7"
+    },
+    {
+      "id": "assets/models/yametaro",
+      "source": "04_GAME_ASSETS/3d/characters/yametaro/rig_sheet_v2/yametaro.glb",
+      "sourceSha256": "78189559825840993d3392a59a187438f3589f651d92fd9a6a13f97197704cd0",
+      "compiledFile": "scene.yametaro.349b9361.fsceneb",
+      "compiledSha256": "3b9b034fe8a5713a96a2e23862ee303becdb7f67d0dfc2d88b872c09a31fb181",
+      "importStamp": "4e880177e06374c4"
+    }
+  ],
+  "appBytes": 354771650,
+  "binaryHashes": {
+    "runner": "0c8915dedde3aed3e34851b574ed6534c5a163f7b9e568c2e364f775e4a39058",
+    "dartAot": "5faf622261728d532eaa2d5dc87438d285fba6f62641469aec355f7860e5e428"
+  },
+  "sourceRevision": "7403570",
+  "matchedAssets": 238,
+  "archive": {
+    "archive": ".local/hazard_releases/sobaya-hazard-macos-7403570.zip",
+    "bytes": 267490000,
+    "sha256": "92c3e92bdd323ccff7947f4a0df2ffa39e42af71e92c25f5a76a00cb68412e94",
+    "sourceRevision": "7403570",
+    "sceneCount": 9,
+    "voiceCueCount": 126
+  },
+  "checks": {
+    "fullTests": 324,
+    "fullRouteAndComparisonTests": 2,
+    "beerRegressionTests": 10,
+    "staticAnalysis": "No issues found",
+    "textCatalog": "752 entries; source and image hashes match",
+    "signature": "ad hoc; deep strict verification of original and packaged copy passed",
+    "signatureNote": "Incremental final build retained an outdated outer signature; App.framework verified, outer ad hoc signature renewed, then deep strict verification passed."
+  },
+  "nativeSmoke": {
+    "launchedPackage": true,
+    "titleRendered": true,
+    "continueAndPause": true,
+    "verified": "Packaged app opened title, continued the saved village game through title_call, rendered the world and paused menu with return-to-post, beer throw and Z sneak instructions. Left paused for play.",
+    "coverage": "Basic release launch and continue/pause smoke on this Apple Silicon Mac. Full native stealth and mobile checks are recorded in stealth-native-20260908.json; physical phone and Intel Mac remain untested."
+  }
+}
