@@ -2,6 +2,8 @@ import { ArrowLeft, CalendarDays, FileText, Film, ImageIcon, Music2, Paperclip, 
 import { Link } from "@tanstack/react-router";
 import { MovieCard } from "@/components/movie-card";
 import { ShareActions } from "@/components/share-actions";
+import { DocumentPreview } from "@/components/document-preview";
+import { ZoomableImage } from "@/components/image-lightbox";
 import {
   absoluteUrl,
   episodePoster,
@@ -117,13 +119,9 @@ function ProductionSection({ productions, videos }: { productions: PublicProduct
 function InputAssetPreview({ asset }: { asset: PublicInputAsset }) {
   const metadata = [asset.group_label, asset.reference_label, asset.filename].filter(Boolean).join(" · ");
   return <article className="episode-input-asset">
-    {asset.kind === "image" ? <a href={asset.url} target="_blank" rel="noreferrer" className="episode-input-preview">
-      <img src={asset.url} alt={asset.label} loading="lazy" />
-    </a> : null}
+    {asset.kind === "image" ? <ZoomableImage src={asset.url} alt={asset.label} caption={asset.label} loading="lazy" buttonClassName="episode-input-preview episode-input-image-trigger" /> : null}
     {asset.kind === "audio" ? <div className="episode-input-audio"><Music2 /><audio src={asset.url} controls preload="none" /></div> : null}
-    {asset.kind === "document" || asset.kind === "other" ? <a href={asset.url} target="_blank" rel="noreferrer" className="episode-input-file">
-      {asset.kind === "document" ? <FileText /> : <Paperclip />}<span>ファイルを開く</span>
-    </a> : null}
+    {asset.kind === "document" || asset.kind === "other" ? <DocumentPreview asset={asset} /> : null}
     <div className="episode-input-copy">
       <span>{asset.kind === "image" ? <ImageIcon /> : asset.kind === "audio" ? <Music2 /> : <Paperclip />}{asset.kind.toUpperCase()}</span>
       <h3>{asset.label}</h3>

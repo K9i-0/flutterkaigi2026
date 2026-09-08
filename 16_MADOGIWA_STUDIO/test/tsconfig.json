@@ -1,7 +1,8 @@
 {
   "extends": "../tsconfig.worker.json",
   "compilerOptions": {
+    "jsx": "react-jsx",
     "types": ["@cloudflare/vitest-pool-workers/types", "../worker-configuration.d.ts"]
   },
-  "include": ["./**/*.ts", "./env.d.ts"]
+  "include": ["./**/*.ts", "./**/*.tsx", "./env.d.ts"]
 }

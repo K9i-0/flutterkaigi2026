@@ -2,6 +2,7 @@ import { HttpError, json } from "./http";
 import { createInputAsset, getInputAsset, type CreateInputAssetInput } from "./repository";
 import { serveR2Object } from "./r2-response";
 import { requireAdmin } from "./auth";
+import { inputPreviewFormat, MAX_TEXT_PREVIEW_BYTES } from "../src/lib/input-preview";
 
 type InputUploadTicketRow = {
   id: string;
@@ -113,7 +114,23 @@ export async function serveInputAsset(request: Request, env: Env, ctx: Execution
   await requireInputAccess(request, env, ctx, assetId);
   const asset = await getInputAsset(env.DB, assetId);
   if (!asset || asset.status !== "ready") throw new HttpError(404, "入力アセットが見つかりません");
-  const safeFilename = asset.filename.replaceAll('"', "");
-  const disposition = `${asset.kind === "document" || asset.kind === "other" ? "attachment" : "inline"}; filename="${safeFilename}"`;
-  return serveR2Object(request, env.MEDIA, asset.r2_key, disposition);
+  const params = new URL(request.url).searchParams;
+  const preview = params.get("preview") === "1";
+  const download = params.get("download") === "1";
+  const format = inputPreviewFormat(asset.filename, asset.content_type);
+  if (preview && !format) throw new HttpError(415, "この形式はプレビューに対応していません");
+  if (preview) {
+    const object = await env.MEDIA.head(asset.r2_key);
+    if (!object) throw new HttpError(404, "ファイルが見つかりません");
+    if (object.size > MAX_TEXT_PREVIEW_BYTES) throw new HttpError(413, "プレビューできるサイズを超えています");
+  }
+  const safeFilename = asset.filename.replace(/[^\x20-\x7e]|["\\]/g, "_");
+  const encodedFilename = encodeURIComponent(asset.filename).replace(/[!'()*]/g, (character) => `%${character.charCodeAt(0).toString(16).toUpperCase()}`);
+  const attachment = download || (!format && (asset.kind === "document" || asset.kind === "other"));
+  const disposition = `${attachment ? "attachment" : "inline"}; filename="${safeFilename}"; filename*=UTF-8''${encodedFilename}`;
+  // Recheck visibility on every request, including downloads and authenticated previews.
+  const response = await serveR2Object(request, env.MEDIA, asset.r2_key, disposition, "private, no-store");
+  if (format) response.headers.set("content-type", `${format === "json" ? "application/json" : "text/plain"}; charset=utf-8`);
+  response.headers.set("x-content-type-options", "nosniff");
+  return response;
 }

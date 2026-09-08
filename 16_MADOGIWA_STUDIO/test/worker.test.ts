@@ -192,6 +192,72 @@ describe("Madogiwa Studio Worker", () => {
     })).status).toBe(200);
   }, 15_000);
 
+  it("previews UTF-8 documents, downloads original bytes and preserves input access in every mode", async () => {
+    const slug = `preview-${crypto.randomUUID()}`;
+    await adminFetch("http://localhost/admin-api/episodes", {
+      method: "POST", headers: { "content-type": "application/json" },
+      body: JSON.stringify({ slug, title: "資料プレビュー検証", memberIds: [] }),
+    });
+    const detail = await (await adminFetch(`http://localhost/admin-api/episodes/${slug}`)).json<{ generations: Array<{ id: string }> }>();
+    const generationId = detail.generations[0].id;
+    async function upload(filename: string, contentType: string, text: string) {
+      const ticket = await (await adminFetch(`http://localhost/admin-api/generations/${generationId}/input-uploads`, {
+        method: "POST", headers: { "content-type": "application/json" },
+        body: JSON.stringify({ filename, label: filename, kind: "document", contentType }),
+      })).json<{ assetId: string; uploadUrl: string }>();
+      const bytes = new TextEncoder().encode(text);
+      expect((await SELF.fetch(ticket.uploadUrl, { method: "PUT", body: bytes })).status).toBe(201);
+      return `http://localhost/inputs/${ticket.assetId}`;
+    }
+    const markdown = "# 採用台本\n\nそば屋「冷えてる。待遇も。」\n";
+    const markdownUrl = await upload("採用台本.md", "text/markdown", markdown);
+    // Even a published episode cannot expose inputs before a video is ready.
+    for (const query of ["", "?preview=1", "?download=1"]) {
+      expect((await SELF.fetch(markdownUrl + query)).status).toBe(401);
+      const adminResponse = await adminFetch(markdownUrl + query);
+      expect(adminResponse.status).toBe(200);
+      expect(adminResponse.headers.get("cache-control")).toBe("private, no-store");
+      expect(await adminResponse.text()).toBe(markdown);
+    }
+    const videoTicket = await (await adminFetch(`http://localhost/admin-api/generations/${generationId}/uploads`, {
+      method: "POST", headers: { "content-type": "application/json" },
+      body: JSON.stringify({ filename: "test.mp4", label: "Test", contentType: "video/mp4" }),
+    })).json<{ uploadUrl: string; posterUploadUrl: string }>();
+    expect((await SELF.fetch(videoTicket.posterUploadUrl, { method: "PUT", headers: { "content-type": "image/jpeg" }, body: new Uint8Array([255, 216, 255, 217]) })).status).toBe(201);
+    expect((await SELF.fetch(videoTicket.uploadUrl, { method: "PUT", body: new Uint8Array([1, 2, 3, 4]) })).status).toBe(201);
+
+    for (const query of ["", "?preview=1", "?download=1"]) {
+      const response = await SELF.fetch(markdownUrl + query);
+      expect(response.status).toBe(200);
+      expect(response.headers.get("content-type")).toBe("text/plain; charset=utf-8");
+      expect(response.headers.get("content-disposition")).toMatch(query.includes("download") ? /^attachment;/ : /^inline;/);
+      expect(response.headers.get("content-disposition")).toContain(`filename*=UTF-8''${encodeURIComponent("採用台本.md")}`);
+      expect(response.headers.get("x-content-type-options")).toBe("nosniff");
+      expect(await response.text()).toBe(markdown);
+    }
+    const jsonUrl = await upload("config.json", "application/octet-stream", '{"台詞":"冷えてる。"}');
+    const jsonResponse = await SELF.fetch(jsonUrl + "?preview=1");
+    expect(jsonResponse.headers.get("content-type")).toBe("application/json; charset=utf-8");
+    expect(await jsonResponse.json()).toEqual({ 台詞: "冷えてる。" });
+    const unknownUrl = await upload("source.html", "text/html", "<script>alert(1)</script>");
+    expect((await SELF.fetch(unknownUrl + "?preview=1")).status).toBe(415);
+    const unknownResponse = await SELF.fetch(unknownUrl);
+    expect(unknownResponse.headers.get("content-disposition")).toMatch(/^attachment;/);
+    await unknownResponse.arrayBuffer();
+    const largeUrl = await upload("large.txt", "text/plain", "a".repeat(1024 * 1024 + 1));
+    expect((await SELF.fetch(largeUrl + "?preview=1")).status).toBe(413);
+    const largeDownload = await SELF.fetch(largeUrl + "?download=1");
+    expect(largeDownload.status).toBe(200);
+    expect((await largeDownload.arrayBuffer()).byteLength).toBe(1024 * 1024 + 1);
+    const range = await SELF.fetch(jsonUrl, { headers: { range: "bytes=0-3" } });
+    expect(range.status).toBe(206);
+    expect((await range.arrayBuffer()).byteLength).toBe(4);
+    await adminFetch(`http://localhost/admin-api/episodes/${slug}`, {
+      method: "PATCH", headers: { "content-type": "application/json" }, body: JSON.stringify({ status: "archived" }),
+    });
+    for (const query of ["", "?preview=1", "?download=1"]) expect((await SELF.fetch(markdownUrl + query)).status).toBe(401);
+  }, 15_000);
+
   it("publishes the episode page without exposing production data through the list or private detail API", async () => {
     const publicList = await (await SELF.fetch("http://localhost/api/episodes")).json<{
       episodes: Array<{ slug: string; input_count: number; prompt_label: string | null }>;
