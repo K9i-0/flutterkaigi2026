@@ -1,1 +1,21 @@
-{"name":"madogiwa-super-try-cm","version":"1.0.0","private":true,"scripts":{"typecheck":"tsc --noEmit","render":"remotion render src/index.ts HudTest out/hud_test.mp4"},"dependencies":{"remotion":"4.0.522","@remotion/cli":"4.0.522","react":"19.1.0","react-dom":"19.1.0"},"devDependencies":{"typescript":"5.8.3","@types/react":"19.1.0"}}
+{
+  "name": "madogiwa-super-try-cm",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "render": "remotion render src/index.ts HudTest out/hud_test.mp4",
+    "audio": "python3 scripts/build_hud_audio.py",
+    "render:audio": "npm run audio && remotion render src/index.ts HudTest out/hud_test_audio.mp4"
+  },
+  "dependencies": {
+    "remotion": "4.0.522",
+    "@remotion/cli": "4.0.522",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  },
+  "devDependencies": {
+    "typescript": "5.8.3",
+    "@types/react": "19.1.0"
+  }
+}

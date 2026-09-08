@@ -1,1 +1,39 @@
-{"composition":{"width":832,"height":480,"fps":30,"durationInFrames":240},"events":{"alert":75,"identified":180},"captions":[{"start":0,"end":75,"text":"命綱を固定。アンテナへ進め。"},{"start":85,"end":170,"text":"その場で待機。接触するな。"},{"start":185,"end":240,"text":"宇宙服を着てないぞ。"}]}
+{
+  "composition": {
+    "width": 832,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 240
+  },
+  "events": {
+    "alert": 75,
+    "identified": 180
+  },
+  "captions": [
+    {
+      "start": 0,
+      "end": 75,
+      "text": "命綱を固定。アンテナへ進め。"
+    },
+    {
+      "start": 85,
+      "end": 170,
+      "text": "その場で待機。接触するな。"
+    },
+    {
+      "start": 185,
+      "end": 240,
+      "text": "宇宙服を着てないぞ。"
+    }
+  ],
+  "audio": {
+    "file": "hud_sfx.wav",
+    "pulses": [
+      75,
+      108,
+      135,
+      157
+    ],
+    "type": "original procedural SFX, no speech"
+  }
+}

@@ -1,15 +1,18 @@
 import React from 'react';
-import {AbsoluteFill,Composition,Img,staticFile,useCurrentFrame,interpolate} from 'remotion';
+import {AbsoluteFill,Audio,Composition,Img,staticFile,useCurrentFrame,interpolate} from 'remotion';
 import m from './edit-manifest.json';
 const mono='"SFMono-Regular", Menlo, monospace';
 const Hud:React.FC=()=>{
  const f=useCurrentFrame(), alert=f>=m.events.alert, identified=f>=m.events.identified;
  const col=alert&&!identified?'#ffbf77':'#c5e8df';
  const x=610-Math.min(130,Math.max(0,f-75)*.8),y=214+Math.sin(f/48)*13;
+ const pulse=Math.max(0,...m.audio.pulses.map(p=>f>=p&&f<p+9?1-(f-p)/9:0));
  const caption=m.captions.find(c=>f>=c.start&&f<c.end);
  return <AbsoluteFill style={{background:'#020507',color:'#d0e4e6',fontFamily:mono,overflow:'hidden'}}>
+ <Audio src={staticFile(m.audio.file)}/>
  <Img src={staticFile('space_plate.png')} style={{position:'absolute',width:'104%',height:'104%',objectFit:'cover',left:-10+f*.015,top:-8,transform:`rotate(${-.35+f*.002}deg)`,filter:'brightness(.72) saturate(.7)'}}/>
  <AbsoluteFill style={{background:'radial-gradient(ellipse at 54% 48%,transparent 34%,rgba(0,8,12,.26) 65%,rgba(0,0,0,.85) 100%)'}}/>
+ <AbsoluteFill style={{pointerEvents:'none',boxShadow:`inset 0 0 85px rgba(228,139,49,${pulse*.13})`}}/>
  <div style={{position:'absolute',inset:'30px 38px 63px',transform:`perspective(950px) rotateY(-2deg) rotateZ(${Math.sin(f/60)*.14}deg)`,textShadow:'0 0 4px #9dd9e54d'}}>
  <svg width="756" height="387" style={{position:'absolute',opacity:.42}}><path d="M 0 46 L 0 0 L 62 0 M 695 0 L 756 0 L 756 46 M 0 301 L 0 338 L 58 338 M 700 338 L 756 338 L 756 302" fill="none" stroke="#c6e3e9" strokeWidth=".7"/>
  {Array.from({length:29},(_,i)=><g key={i}><path d={`M ${190+i*13} 12 v ${i%5===0?8:3}`} stroke="#abc8d2" strokeWidth=".6"/>{i%5===0&&<text x={185+i*13} y={32} fill="#c2dce0" fontSize="8">{(i*2+240)%360}</text>}</g>)}
@@ -29,7 +32,7 @@ const Hud:React.FC=()=>{
  <div style={{fontSize:8,opacity:.6}}>UPLINK  02 / ENCRYPTED</div>
  </div>
  <div style={{position:'absolute',left:14,top:290,fontSize:9,lineHeight:1.9,opacity:.72}}>O₂&nbsp; 098% &nbsp; ╱ &nbsp; 06:42<br/>PRES&nbsp; 4.3 PSI <span style={{color:'#acc7a4'}}>NOMINAL</span></div>
- {alert&&<><div style={{position:'absolute',left:231,top:60,color:col,opacity:Math.min(1,(f-74)/5)}}>
+ {alert&&<><div style={{position:'absolute',left:231,top:60,color:col,filter:`brightness(${1+pulse*.6})`,opacity:Math.min(1,(f-74)/5)}}>
  <div style={{fontSize:9,letterSpacing:2,marginBottom:7}}>△ {identified?'CONTACT RESOLVED':'PROXIMITY CAUTION'} / 01</div>
  <div style={{fontSize:18,fontFamily:'"Hiragino Kaku Gothic ProN",sans-serif',letterSpacing:1,borderLeft:`2px solid ${col}`,paddingLeft:10}}>{identified?'そば屋と確認':'未確認窓際族 接近'}</div>
  <div style={{fontSize:9,letterSpacing:1,marginTop:7,opacity:.8}}>{identified?'IDENTIFIED: SOBAYA':'UNKNOWN MADOGIWA APPROACHING'}</div></div>

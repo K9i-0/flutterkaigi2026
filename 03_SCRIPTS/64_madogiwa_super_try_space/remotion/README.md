@@ -25,3 +25,10 @@ TypeScript合格。ffprobeで832×480、30fps、8.000秒、240フレーム確認
 推奨分担: Wanに宇宙・船外作業・普段着のそば屋・通信人物の演技・照明を担当させ、Remotionで字幕、警告、数値、細いHUD、商品コピーを合成。
 HUDはヘルメット内の主観カット限定。外からヘルメット曲面越しに見るHUDはWanの光・反射と設計を合わせる必要あり。
 今回の試作はRemotion実装可能性の確認であり、Wanとの実生成A/B比較ではない。Wan APIは未実行。
+
+## 音付き試作
+
+`npm run render:audio` → `out/hud_test_audio.mp4`。旧無音版は保持。
+独自の電子効果音をscripts/build_hud_audio.pyでPCM合成。外部音源・TTS・読み上げなし。
+タイミング正本のaudio.pulsesで二連警告音と淡いHUD発光を同期。警告間隔を短縮し、識別時に確認音へ切替。静かな機器低音と短い検知低音を追加。
+再生成可能な試作WAVはGit除外。原音ピーク-11.17 dBFS、48kHz stereo。TypeScript合格、H.264 832×480/30fps/8秒とAAC 48kHz stereoを確認、終端デコード合格。警告開始直後のPNGを目視確認。直接試聴は未実施、聴感の最終判断はユーザー試聴で行う。
