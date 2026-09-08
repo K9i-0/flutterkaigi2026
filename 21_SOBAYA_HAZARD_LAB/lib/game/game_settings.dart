@@ -12,6 +12,8 @@ class HazardSettings {
     this.musicVolume = 1,
     this.effectsVolume = 1,
     this.sensitivity = 1,
+    this.touchSensitivity = 1,
+    this.touchControls = false,
     this.renderScale = .85,
     this.muted = false,
     this.cinematicLighting = true,
@@ -23,8 +25,9 @@ class HazardSettings {
       musicVolume,
       effectsVolume,
       sensitivity,
+      touchSensitivity,
       renderScale;
-  bool muted, cinematicLighting;
+  bool muted, cinematicLighting, touchControls;
   double get damageScale => switch (difficulty) {
     HazardDifficulty.casual => .65,
     HazardDifficulty.standard => 1,
@@ -48,12 +51,17 @@ class HazardSettings {
     'musicVolume': musicVolume,
     'effectsVolume': effectsVolume,
     'sensitivity': sensitivity,
+    'touchSensitivity': touchSensitivity,
+    'touchControls': touchControls,
     'renderScale': renderScale,
     'muted': muted,
     'cinematicLighting': cinematicLighting,
   });
-  factory HazardSettings.decode(String? encoded) {
-    final s = HazardSettings();
+  factory HazardSettings.decode(String? encoded, {bool mobileDevice = false}) {
+    // Only the caller's native device class selects first-launch quality;
+    // saved choices and desktop window resizing never change the preference.
+    final defaultRenderScale = mobileDevice ? .65 : .85;
+    final s = HazardSettings(renderScale: defaultRenderScale);
     if (encoded == null) return s;
     try {
       final j = jsonDecode(encoded) as Map;
@@ -75,9 +83,11 @@ class HazardSettings {
       s.musicVolume = bounded('musicVolume', 0, 1, s.environmentVolume);
       s.effectsVolume = bounded('effectsVolume', 0, 1, 1);
       s.sensitivity = bounded('sensitivity', .5, 2, 1);
+      s.touchSensitivity = bounded('touchSensitivity', .5, 2, 1);
+      s.touchControls = j['touchControls'] == true;
       s.renderScale = [.65, .85, 1.0].contains(j['renderScale'])
           ? (j['renderScale'] as num).toDouble()
-          : .85;
+          : defaultRenderScale;
       s.muted = j['muted'] == true;
       s.cinematicLighting = j['cinematicLighting'] != false;
     } catch (_) {

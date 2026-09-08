@@ -296,8 +296,10 @@ class HazardJournal extends StatelessWidget {
                     ],
                   ),
                   GridView.count(
-                    crossAxisCount: 3,
-                    childAspectRatio: .8,
+                    crossAxisCount: MediaQuery.sizeOf(context).width < 600
+                        ? 2
+                        : 3,
+                    childAspectRatio: .72,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
                     children: [
@@ -333,6 +335,8 @@ class HazardJournal extends StatelessWidget {
                                   state.collected.contains(row['id'])
                                       ? row['title']
                                       : '未発見',
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(color: ivory),
                                 ),
                               ),

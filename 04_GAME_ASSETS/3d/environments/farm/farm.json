@@ -645,37 +645,43 @@
       "id": 0,
       "x": -5,
       "z": -3,
-      "active": true
+      "active": true,
+      "heading": 1.5707963267948966
     },
     {
       "id": 1,
       "x": 0,
       "z": 2,
-      "active": true
+      "active": true,
+      "heading": 3.141592653589793
     },
     {
       "id": 2,
       "x": 8,
       "z": -5,
-      "active": true
+      "active": true,
+      "heading": 3.141592653589793
     },
     {
       "id": 3,
       "x": 14,
       "z": 10,
-      "active": true
+      "active": true,
+      "heading": -1.5707963267948966
     },
     {
       "id": 4,
       "x": -11,
       "z": 12,
-      "active": true
+      "active": true,
+      "heading": 3.141592653589793
     },
     {
       "id": 5,
       "x": -9,
       "z": 3,
-      "active": true
+      "active": true,
+      "heading": 3.141592653589793
     }
   ],
   "collection": [

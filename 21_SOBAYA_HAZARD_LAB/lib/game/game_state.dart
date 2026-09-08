@@ -16,6 +16,7 @@ import 'game_grapple.dart';
 part 'game_rockets.dart';
 part 'game_combat_balance.dart';
 part 'game_refuge.dart';
+part 'game_stealth.dart';
 
 const minCameraPitch = -.75, maxCameraPitch = .85;
 
@@ -120,12 +121,24 @@ class Enemy {
   static final _ambientRandom = math.Random();
   String? ambientDance;
   bool hasBeenAlerted = false;
+  EnemyAwareness awareness = EnemyAwareness.idle;
+  bool seesPlayer = false, discovered = false, visibleToPlayer = false;
+  double? lastKnownX, lastKnownY, lastKnownZ;
+  double? lastSeenByPlayerX,
+      lastSeenByPlayerY,
+      lastSeenByPlayerZ,
+      lastSeenByPlayerHeading;
+  double contactAge = 0, searchTime = 0;
+  int heardNoiseSerial = 0;
+  EnemyNavigation? memoryNavigation;
+  double memoryFlowTime = 0;
   String? get idleDance =>
       active &&
           alive &&
           !dropped &&
           !hasBeenAlerted &&
           !alerted &&
+          awareness == EnemyAwareness.idle &&
           notice == 0 &&
           stun <= 0 &&
           hp == maxHp &&
@@ -194,7 +207,14 @@ class Enemy {
   bool get alerted => _alerted;
   set alerted(bool value) {
     _alerted = value;
-    if (value) hasBeenAlerted = true;
+    if (value) {
+      hasBeenAlerted = true;
+      if (awareness != EnemyAwareness.searching) {
+        awareness = EnemyAwareness.chasing;
+      }
+    } else {
+      awareness = EnemyAwareness.idle;
+    }
   }
 
   bool alive = true, dropped = false, active = false, attackPending = false;
@@ -338,6 +358,7 @@ class HazardGameState {
   double get evadeHeading => math.atan2(_evadeX, _evadeZ);
   double damageScale = 1, enemySpeedScale = 1;
   bool sprint = false,
+      sneaking = false,
       aiming = false,
       gateOpen = false,
       hasKey = false,
@@ -351,6 +372,14 @@ class HazardGameState {
       hits = 0,
       nextBagId = 0;
   final _sounds = <HazardSound>[];
+  final _noiseEvents = <HazardNoise>[];
+  int _noiseSerial = 0;
+  double _noiseFootDistance = 0;
+  double playerNoiseRadius = 0, playerNoiseTime = 0;
+  double viewAspect = 1.6;
+
+  /// Frustum inclusion is evaluated for each body/head sample independently.
+  bool Function(vm.Vector3)? enemyVisibleInView;
   String? get lastSound => _sounds.lastOrNull?.name;
   set lastSound(String? name) {
     if (name == null) {
@@ -360,9 +389,15 @@ class HazardGameState {
     }
   }
 
-  void emitSound(String name, {double? x, double? z, double y = 1.2}) {
+  void emitSound(
+    String name, {
+    double? x,
+    double? z,
+    double y = 1.2,
+    double loudness = 1,
+  }) {
     if (_sounds.length == 32) _sounds.removeAt(0);
-    _sounds.add(HazardSound(name, x: x, y: y, z: z));
+    _sounds.add(HazardSound(name, x: x, y: y, z: z, loudness: loudness));
   }
 
   List<HazardSound> drainSounds() {
@@ -552,11 +587,13 @@ class HazardGameState {
     for (final j in map['enemies']) {
       enemies.add(
         Enemy(
-          j['id'],
-          (j['x'] as num).toDouble(),
-          (j['z'] as num).toDouble(),
-          boss: j['boss'] == true,
-        )..active = j['active'] as bool? ?? true,
+            j['id'],
+            (j['x'] as num).toDouble(),
+            (j['z'] as num).toDouble(),
+            boss: j['boss'] == true,
+          )
+          ..active = j['active'] as bool? ?? true
+          ..heading = (j['heading'] as num? ?? 0).toDouble(),
       );
     }
     pickups
@@ -607,6 +644,7 @@ class HazardGameState {
     reloading = 0;
     fireCooldown = 0;
     hitFlash = damageFlash = noiseTime = footDistance = 0;
+    clearStealthNoise();
     invulnerable = evadeTime = evadeCooldown = kickTime = kickCooldown =
         hurtTime = recoil = 0;
     shotEnd = null;
@@ -643,6 +681,7 @@ class HazardGameState {
     dialogueTopic = 'intro';
     dialogueIndex = 0;
     sprint = false;
+    sneaking = false;
     pitch = .12;
     inputX = 0;
     inputY = 0;
@@ -658,6 +697,7 @@ class HazardGameState {
     inputX = 0;
     inputY = 0;
     sprint = false;
+    sneaking = false;
     aiming = false;
   }
 
@@ -914,7 +954,14 @@ class HazardGameState {
   void move(double dx, double dz, double dt, {double? speed}) {
     final magnitude = math.sqrt(dx * dx + dz * dz);
     if (magnitude < 1e-5) return;
-    final length = (speed ?? (sprint ? 2.8 : 1.25)) * dt;
+    final length =
+        (speed ??
+            (sneaking
+                ? .62
+                : sprint
+                ? 2.8
+                : 1.25)) *
+        dt;
     dx /= math.max(1, magnitude);
     dz /= math.max(1, magnitude);
     final steps = math.max(1, (length / .05).ceil());
@@ -930,6 +977,7 @@ class HazardGameState {
     }
     final distance = math.sqrt(math.pow(x - oldX, 2) + math.pow(z - oldZ, 2));
     footDistance += distance;
+    _emitMovementNoise(distance);
     if (distance > .0001) heading = math.atan2(dx, dz);
   }
 
@@ -955,6 +1003,7 @@ class HazardGameState {
     damageFlash = math.max(0, damageFlash - dt);
     toastTime = math.max(0, toastTime - dt);
     noiseTime = math.max(0, noiseTime - dt);
+    _tickNoise(dt);
     invulnerable = math.max(0, invulnerable - dt);
     evadeCooldown = math.max(0, evadeCooldown - dt);
     kickCooldown = math.max(0, kickCooldown - dt);
@@ -984,6 +1033,7 @@ class HazardGameState {
         vault = null;
         y = 0;
         _flowTimer = 0;
+        emitNoise('landing', radius: 6);
         lastSound = 'step';
       }
     } else if (climb != null) {
@@ -1053,8 +1103,9 @@ class HazardGameState {
         continue;
       }
       if (!e.active) continue;
+      _updatePlayerDiscovery(e);
       if (insideRefuge) {
-        e.alerted = false;
+        _disengage(e);
         e.attackPending = e.grabPending = false;
         e.companionTarget = null;
         e.windup = 0;
@@ -1069,27 +1120,9 @@ class HazardGameState {
       if (grapple?.enemyId == e.id) continue;
       e.approachTimer -= dt;
       final dx = x - e.x, dz = z - e.z, dist = math.sqrt(dx * dx + dz * dz);
-      if (!e.alerted) {
-        final facing = dist < .01
-            ? 1.0
-            : (dx * math.sin(e.heading) + dz * math.cos(e.heading)) / dist;
-        final sees =
-            dist < 13 &&
-            (dist < 5 || facing > -.2) &&
-            wallDistance(
-                  vm.Vector3(e.x, e.y + 1.3, e.z),
-                  vm.Vector3(dx, y - e.y, dz).normalized(),
-                  math.sqrt(dist * dist + math.pow(y - e.y, 2)),
-                ) >=
-                math.sqrt(dist * dist + math.pow(y - e.y, 2)) - .1;
-        e.notice = sees ? e.notice + dt : math.max(0, e.notice - dt * 2);
-        if (dist < 2.5 || e.notice > .45 || (noiseTime > 0 && dist < 20)) {
-          e.alerted = true;
-        }
-        if (!e.alerted) continue;
-      }
+      if (!_updateEnemyPerception(e, dt, dist)) continue;
       e.vocalCooldown = math.max(0, e.vocalCooldown - dt);
-      if (e.vocalCooldown <= 0 && dist < 16 && e.stun <= 0) {
+      if (e.alerted && e.vocalCooldown <= 0 && dist < 16 && e.stun <= 0) {
         emitSound('enemy', x: e.x, y: e.y + 1.2, z: e.z);
         e.vocalCooldown = 5.5 + (e.id % 4) * .73;
       }
@@ -1120,7 +1153,7 @@ class HazardGameState {
         }
         continue;
       }
-      if (_tickCompanionCombat(e, dt, dist)) continue;
+      if (e.alerted && _tickCompanionCombat(e, dt, dist)) continue;
       if (e.boss && _tickBoss(e, dt, dx, dz, dist)) continue;
       if (!e.boss && e.attackPending) {
         if (!e.grabPending && e.windup > .12 && e.windup - dt <= .12) {
@@ -1166,7 +1199,13 @@ class HazardGameState {
         continue;
       }
       if (e.stun > 0 || e.meleeRecovery > 0 || e.releaseTime > 0) continue;
-      if (!e.boss && dist < 1.15 && (y - e.y).abs() < .8 && e.cooldown <= 0) {
+      if (!e.boss &&
+          e.alerted &&
+          e.seesPlayer &&
+          dist < 1.15 &&
+          _enemyPlayerLineClear(e) &&
+          (y - e.y).abs() < .8 &&
+          e.cooldown <= 0) {
         e.attackPending = true;
         e.heading = math.atan2(dx, dz);
         // Frontal grapplers alternate with mug attacks; misses retain the
@@ -1185,11 +1224,14 @@ class HazardGameState {
         continue;
       }
       var waitingForWindow = false;
+      final navigation = e.boss || e.seesPlayer
+          ? _navigation
+          : _memoryNavigation(e, dt);
       if (!e.boss) {
         for (final w in usableWindows) {
           final inward = e.z < w.z;
           if (!w.atEntry(e.x, e.y, e.z, inward) ||
-              !(_navigation?.transitionLeadsCloser(
+              !(navigation?.transitionLeadsCloser(
                     (w.x, 0, w.entryZ(inward)),
                     (w.x, 0, w.exitZ(inward)),
                   ) ??
@@ -1209,7 +1251,9 @@ class HazardGameState {
       }
       if (waitingForWindow) continue;
       final tower = ladder;
-      final wantsUp = climb?.up ?? (y > 3.8);
+      final wantsUp = e.boss || e.seesPlayer
+          ? climb?.up ?? (y > 3.8)
+          : (e.lastKnownY ?? 0) > 3.8;
       if (!e.boss &&
           tower != null &&
           e.stun <= 0 &&
@@ -1224,19 +1268,43 @@ class HazardGameState {
         }
         continue;
       }
-      if (dist < .95 && (y - e.y).abs() < .8) continue;
-      if (dist > 17 && noiseTime <= 0) continue;
-      final waypoint = _navigation?.waypoint(e.x, e.y, e.z);
+      if (e.alerted && e.seesPlayer && dist < .95 && (y - e.y).abs() < .8) {
+        continue;
+      }
+      final targetX = e.boss || e.seesPlayer ? x : (e.lastKnownX ?? e.x);
+      final targetZ = e.boss || e.seesPlayer ? z : (e.lastKnownZ ?? e.z);
+      final targetDistance = math.sqrt(
+        math.pow(targetX - e.x, 2) + math.pow(targetZ - e.z, 2),
+      );
+      if (!e.seesPlayer &&
+          !e.boss &&
+          targetDistance < .65 &&
+          ((e.lastKnownY ?? e.y) - e.y).abs() < .8) {
+        e.awareness = EnemyAwareness.searching;
+        e.heading += dt * .85;
+        continue;
+      }
+      final waypoint = navigation?.waypoint(e.x, e.y, e.z);
       // A reachable player can stand just outside a navigation grid cell.
       // Keep approaching directly instead of stalling during a long boss fight.
-      if (waypoint == null && !_reachable(e.x, e.z)) continue;
-      if (e.approachTimer <= 0) {
+      if (waypoint == null &&
+          !_sightLineClear(
+            vm.Vector3(e.x, e.y + 1, e.z),
+            vm.Vector3(targetX, (e.lastKnownY ?? y) + 1, targetZ),
+          )) {
+        continue;
+      }
+      if (e.approachTimer <= 0 && (e.seesPlayer || e.boss)) {
         e.approachTimer = .3 + (e.id % 3) * .035;
         _planApproach(e, dist);
       }
-      final direct = e.approachX != null;
-      final tx = direct ? (dist < 3.2 ? x : e.approachX!) : (waypoint?.x ?? x);
-      final tz = direct ? (dist < 3.2 ? z : e.approachZ!) : (waypoint?.z ?? z);
+      final direct = (e.seesPlayer || e.boss) && e.approachX != null;
+      final tx = direct
+          ? (dist < 3.2 ? x : e.approachX!)
+          : (waypoint?.x ?? targetX);
+      final tz = direct
+          ? (dist < 3.2 ? z : e.approachZ!)
+          : (waypoint?.z ?? targetZ);
       e.runningApproach = direct && e.flankSide != 0 && dist > 5;
 
       var vx = tx - e.x, vz = tz - e.z;
@@ -1265,7 +1333,9 @@ class HazardGameState {
                 ? 1.15
                 : e.runningApproach
                 ? 1.7
-                : .8) *
+                : e.alerted
+                ? 1.05
+                : .65) *
             enemySpeedScale *
             dt,
       );
@@ -1811,6 +1881,10 @@ class HazardGameState {
     }
     shots++;
     noiseTime = 4;
+    emitNoise(
+      weapon == 'handgun' ? 'handgun' : 'shotgun',
+      radius: weapon == 'handgun' ? 22 : 34,
+    );
     fireCooldown = weapon == 'handgun' ? .32 : .9;
     recoil = weapon == 'handgun' ? .065 : .15;
     lastSound = weapon == 'handgun' ? 'shot' : 'shotgun';
@@ -1927,7 +2001,7 @@ class HazardGameState {
     if (victim != null) {
       hits++;
       hitFlash = .18;
-      victim.alerted = true;
+      _rememberAttack(victim);
       if (!victim.boss) {
         victim.stun = part != ShotPart.body ? 1.4 : (hardest ? .12 : .5);
         victim.attackPending = false;
@@ -2018,7 +2092,7 @@ class HazardGameState {
       e.hp -= hardest ? 8 : 50;
       e.stun = hardest ? .25 : 1.5;
       e.meleeRecovery = 0;
-      e.alerted = true;
+      _rememberAttack(e);
       e.attackPending = false;
       e.grabPending = false;
       if (e.boss) {
@@ -2030,6 +2104,7 @@ class HazardGameState {
       }
       if (e.hp <= 0) _defeat(e);
     }
+    emitNoise('kick', radius: 6);
     lastSound = 'hurt';
     hitFlash = .15;
   }
@@ -2081,11 +2156,14 @@ class HazardGameState {
             : 1,
       ),
     );
+    emitNoise('break', radius: 7, sourceX: c.x, sourceZ: c.z, sourceY: .6);
     emitSound('break', x: c.x, z: c.z);
   }
 
   String? _nearestInteraction() {
     if (actionLocked) return null;
+    final stealth = stealthTarget;
+    if (stealth != null) return 'stealth:${stealth.id}';
     if (hasRefuge &&
         (x - 13).abs() < 1 &&
         (z - 9.5).abs() < 2.4 &&
@@ -2192,6 +2270,7 @@ class HazardGameState {
   String get interactionLabel {
     final key = interaction;
     if (key == null) return '';
+    if (key.startsWith('stealth:')) return 'ビールを破壊する';
     if (key == 'refuge') {
       return refugeUnlocked ? '集合場所 — 玄関から中へ' : refugeObjective;
     }
@@ -2241,7 +2320,9 @@ class HazardGameState {
     interaction = _nearestInteraction();
     final key = interaction;
     if (key == null) return;
-    if (key == 'refuge') {
+    if (key.startsWith('stealth:')) {
+      stealthKill();
+    } else if (key == 'refuge') {
       say(refugeObjective);
     } else if (key.startsWith('npc:')) {
       startDialogue(key.substring(4));
@@ -2278,6 +2359,7 @@ class HazardGameState {
       }
       if (evadeTime > 0 || kickTime > 0 || hurtTime > .2) return;
       vault = WindowTraversal(w, inward, x, z);
+      emitNoise('vault', radius: 5);
       aiming = false;
       reloading = 0;
       interaction = null;
@@ -2289,6 +2371,7 @@ class HazardGameState {
       }
       if (evadeTime > 0 || kickTime > 0 || hurtTime > .2) return;
       climb = LadderTraversal(ladder!, y < 2, x, z);
+      emitNoise('ladder', radius: 4);
       aiming = false;
       reloading = 0;
       interaction = null;
@@ -2492,6 +2575,7 @@ class HazardGameState {
     },
     'maxHealth': maxHealth,
     'difficulty': difficulty.name,
+    'stealth': inspectStealth(),
     'lastShotPart': lastShotPart?.name,
     'chapterSecured': chapterSecured,
     'refuge': {
@@ -2561,6 +2645,7 @@ class HazardGameState {
             'headCentre': e.headCentre?.storage.toList(),
             'mugCentre': e.mugCentre?.storage.toList(),
             'alerted': e.alerted,
+            ...inspectEnemyPerception(e),
             'idleDance': e.idleDance,
             'ambientDance': e.ambientDance,
             'stun': e.stun,

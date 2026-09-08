@@ -1,9 +1,45 @@
 import 'dart:math' as math;
+import 'dart:ui' as ui;
 
-import 'package:flutter_scene/scene.dart' show PerspectiveCamera;
+import 'package:flutter_scene/scene.dart'
+    show CameraProjection, PerspectiveCamera;
 import 'package:vector_math/vector_math.dart' as vm;
 
 import 'game_state.dart';
+
+/// Keep cinematic subjects above the subtitle panel on short landscape phones.
+/// A lens shift preserves the authored eye position, sight lines and lighting;
+/// moving the camera down would introduce walls and table occlusion.
+PerspectiveCamera frameAboveCaptions(PerspectiveCamera camera, ui.Size size) =>
+    size.height < 500 && size.width > size.height
+    ? _CaptionCamera(camera)
+    : camera;
+
+class _CaptionCamera extends PerspectiveCamera {
+  _CaptionCamera(PerspectiveCamera source)
+    : super(
+        position: source.position,
+        target: source.target,
+        up: source.up,
+        fovRadiansY: source.fovRadiansY,
+        fovNear: source.fovNear,
+        fovFar: source.fovFar,
+      );
+  @override
+  CameraProjection get projection => _CaptionProjection(super.projection);
+}
+
+class _CaptionProjection extends CameraProjection {
+  _CaptionProjection(this.base);
+  final CameraProjection base;
+  @override
+  vm.Matrix4 getProjectionMatrix(double aspectRatio, {vm.Vector2? jitter}) {
+    final matrix = base.getProjectionMatrix(aspectRatio, jitter: jitter);
+    // Target at 35% of screen height instead of 50%; near/far depths unchanged.
+    matrix.setRow(1, matrix.getRow(1) + matrix.getRow(3) * .30);
+    return matrix;
+  }
+}
 
 /// Pointer deltas steer the viewing direction, rather than dragging the world.
 void rotatePlayerView(

@@ -200,7 +200,11 @@ class GameBenchmark {
 
   void poll() {
     if (watch.elapsedMilliseconds < 8000) return;
-    if (game.frames.count < 240 && watch.elapsedMilliseconds < 30000) return;
+    final ready = semanticReady;
+    if ((game.frames.count < 240 || !ready) &&
+        watch.elapsedMilliseconds < 30000) {
+      return;
+    }
     debugPrintSynchronously(
       'HAZARD_GAME_BENCHMARK ${jsonEncode({
         'case': cases[index].name,
@@ -209,7 +213,7 @@ class GameBenchmark {
         'region': cases[index].region,
         'contactShadows': cases[index].contacts,
         'profile': kProfileMode,
-        'valid': kProfileMode && game.frames.count == 240 && !interrupted && game.foreground && game.state!.phase == expectedPhase && (cases[index].event == null ? game.state!.time >= 6 : heardSpeech) && heardAmbience && game.voice.inspect()['errors'].isEmpty && (!cases[index].name.startsWith('window-') || (windowMotionTicks >= 60 && completedPassages > 0)) && (cases[index].event != 'opening' || ['福ちゃん', 'やめ太郎'].every((name) => (speechMorphTicks[name] ?? 0) > 5)),
+        'valid': kProfileMode && game.frames.count == 240 && !interrupted && game.foreground && game.state!.phase == expectedPhase && ready && game.voice.inspect()['errors'].isEmpty,
         'speechMorphTicks': speechMorphTicks,
         'eventShot': game.director?.index,
         'windowMotionTicks': windowMotionTicks,
@@ -230,6 +234,22 @@ class GameBenchmark {
 
   PlayPhase get expectedPhase =>
       cases[index].event == null ? PlayPhase.playing : PlayPhase.cinematic;
+
+  // Fast rendering can fill the frame buffer before a voiced shot or window
+  // traversal finishes. Reuse the actual workload requirements for waiting
+  // and validity, while poll's 30-second deadline still reports failures.
+  bool get semanticReady {
+    final c = cases[index];
+    return heardAmbience &&
+        (c.event == null ? game.state!.time >= 6 : heardSpeech) &&
+        (!c.name.startsWith('window-') ||
+            (windowMotionTicks >= 60 && completedPassages > 0)) &&
+        (c.event != 'opening' ||
+            [
+              '福ちゃん',
+              'やめ太郎',
+            ].every((name) => (speechMorphTicks[name] ?? 0) > 5));
+  }
 
   // A paused SceneView has no tick callbacks. Observe UI/lifecycle changes too
   // so a pause cannot disappear from the benchmark's interruption history.

@@ -15,6 +15,7 @@ class HazardSoundscape {
   final VoiceSession ambience, exploration, tension;
   double intensity = 0, duck = 1, impactDuck = 1, _hold = 0;
   double _impactHold = 0, _alertCooldown = 0;
+  double shelterMix = 0;
   String _zone = 'village';
 
   /// Clear encounter pressure on a fresh run without reloading the loops.
@@ -22,6 +23,7 @@ class HazardSoundscape {
     intensity = 0;
     duck = impactDuck = 1;
     _hold = _impactHold = _alertCooldown = 0;
+    shelterMix = 0;
   }
 
   /// Briefly make room for a loud weapon's attack, then recover smoothly.
@@ -58,6 +60,8 @@ class HazardSoundscape {
     required bool speaking,
     required double volume,
     double musicVolume = 1,
+    double suspicion = 0,
+    double shelter = 0,
   }) {
     _zone = zone;
     final step = active ? dt.clamp(0.0, .05) : 0.0;
@@ -66,13 +70,18 @@ class HazardSoundscape {
         active &&
         threat &&
         _hold <= 0 &&
-        intensity < .15 &&
+        intensity < .35 &&
         _alertCooldown <= 0;
     if (newAlert) _alertCooldown = 10;
     _hold = active && threat ? 3.5 : math.max(0, _hold - step);
     final alerted = threat || _hold > 0;
+    // Suspicion quietly introduces the tension layer; only actual hostility
+    // receives the encounter accent. Hiding indoors also softens outdoor wind.
+    final pressure = suspicion.isFinite ? suspicion.clamp(0.0, 1.0) : 0.0;
+    final enclosed = shelter.isFinite ? shelter.clamp(0.0, 1.0) : 0.0;
+    shelterMix += (enclosed - shelterMix) * (1 - math.exp(-step / .55));
     intensity +=
-        ((alerted ? 1.0 : 0.0) - intensity) *
+        ((alerted ? 1.0 : pressure * .28) - intensity) *
         (1 - math.exp(-step / (alerted ? .28 : 2.4)));
     duck +=
         ((speaking ? .26 : 1) - duck) *
@@ -85,7 +94,7 @@ class HazardSoundscape {
     ambience.sync(
       VoiceCue(zone, 'audio/soundscape/$zone.wav'),
       paused: !active,
-      volume: gain(.20 * volume * duck),
+      volume: gain(.20 * volume * duck * (1 - .62 * shelterMix)),
     );
     exploration.sync(
       const VoiceCue('exploration', 'audio/soundscape/exploration.wav'),
@@ -123,6 +132,7 @@ class HazardSoundscape {
     'impactDuck': impactDuck,
     'alertCooldown': _alertCooldown,
     'releaseHold': _hold,
+    'shelterMix': shelterMix,
     'ambience': ambience.inspect(),
     'exploration': exploration.inspect(),
     'tension': tension.inspect(),

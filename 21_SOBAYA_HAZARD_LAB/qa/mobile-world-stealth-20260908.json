@@ -1,0 +1,395 @@
+{
+  "date": "2026-09-08",
+  "scope": "そば屋ハザード本編 lib/game_main.dart: mobile UI, world/audio/cinematics, directional vision and hearing, minimap memory, rear beer takedown",
+  "sourceBase": "63e79c2",
+  "flutterTests": 245,
+  "analysis": "No issues found; final review analysis also clean",
+  "shotgun": {
+    "targeting": "single target retained",
+    "ordinaryEnemyHeadshot": "one shot on casual, standard, tense",
+    "noiseRadius": 34,
+    "damageChanged": false
+  },
+  "automatedCoverage": [
+    "320x568,390x844,568x320,844x390 layouts",
+    "48px action controls and safe areas",
+    "simultaneous move/look/fire and pointer cancellation",
+    "mouse right aim/look while touch overlay enabled",
+    "directional LOS, occlusion, head above low cover, offscreen sample rejection",
+    "investigate strongest audible source with wall/floor attenuation",
+    "search last known location, disengage, unknown rear player does not acquire melee",
+    "rear beer destruction, no beer drop, checkpoint roundtrip and legacy save defaults",
+    "single target shotgun headshots on every difficulty",
+    "all region spawns and arrivals safe against initial guard facing",
+    "caption camera projection, movie inserts, bounded VFX and light fade"
+  ],
+  "nativeMac": {
+    "method": "Dart MCP debug launch + Marionette; actual E key and real rendered frames",
+    "rearKill": {
+      "phase": "playing",
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": -16.25
+      },
+      "kills": 1,
+      "beers": 0,
+      "shots": 0,
+      "weapon": "handgun",
+      "loaded": 6,
+      "stealth": {
+        "sneaking": false,
+        "movementNoiseRadius": 4,
+        "playerNoiseRadius": 2.4,
+        "playerNoiseTime": 0.75,
+        "target": null,
+        "sounds": [
+          {
+            "kind": "beer_break",
+            "position": [
+              0,
+              1,
+              -15
+            ],
+            "radius": 2.4
+          }
+        ]
+      },
+      "enemy": {
+        "id": 0,
+        "alive": false,
+        "hp": 0,
+        "alerted": false,
+        "awareness": "idle",
+        "seesPlayer": false,
+        "discovered": true,
+        "notice": 0,
+        "lastKnown": null,
+        "suppressBeer": true
+      }
+    },
+    "visionScenario": {
+      "phase": "paused",
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": -20
+      },
+      "kills": 0,
+      "beers": 0,
+      "shots": 0,
+      "weapon": "handgun",
+      "loaded": 6,
+      "stealth": {
+        "sneaking": false,
+        "movementNoiseRadius": 4,
+        "playerNoiseRadius": 0,
+        "playerNoiseTime": 0,
+        "target": null,
+        "sounds": []
+      },
+      "enemy": {
+        "id": 0,
+        "alive": true,
+        "hp": 100,
+        "alerted": true,
+        "awareness": "chasing",
+        "seesPlayer": true,
+        "discovered": true,
+        "notice": 1,
+        "lastKnown": [
+          0,
+          0,
+          -20
+        ],
+        "suppressBeer": false
+      }
+    },
+    "conversationProbe": {
+      "passed": true,
+      "elapsedMs": 3179,
+      "snapshots": 17,
+      "checks": "Post zero-weight animation optimization: native speech playback, speaker/non-speaker morphs, paused and resumed clocks"
+    },
+    "world": "Visual flame, smoke, ember inspection; old cone flames hidden. Farm establishing shot and props inspected."
+  },
+  "iOS": {
+    "device": "iPhone 17 Pro simulator, iOS 26.5",
+    "viewports": [
+      [
+        402,
+        874
+      ],
+      [
+        874,
+        402
+      ]
+    ],
+    "method": "Dart MCP debug launch + Marionette touch inputs and screenshots",
+    "build": "flutter build ios --simulator --debug -t lib/game_main.dart passed",
+    "layouts": [
+      "portrait title and play HUD",
+      "landscape play HUD",
+      "landscape complete 10x6 inventory grid",
+      "landscape complete map and independent scroll legend",
+      "farm establishing movie: Takosan and sealed beer crates above readable captions"
+    ],
+    "touchSneak": {
+      "phase": "playing",
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": -16.25
+      },
+      "kills": 0,
+      "beers": 0,
+      "shots": 0,
+      "weapon": "handgun",
+      "loaded": 6,
+      "stealth": {
+        "sneaking": true,
+        "movementNoiseRadius": 0.7,
+        "playerNoiseRadius": 0,
+        "playerNoiseTime": 0,
+        "target": 0,
+        "sounds": []
+      },
+      "enemy": {
+        "id": 0,
+        "alive": true,
+        "hp": 100,
+        "alerted": false,
+        "awareness": "idle",
+        "seesPlayer": false,
+        "discovered": true,
+        "notice": 0,
+        "lastKnown": null,
+        "suppressBeer": false
+      },
+      "worldEffects": {
+        "zone": "village",
+        "clock": 20.65402300000011,
+        "flameSprites": 18,
+        "smokeSprites": 7,
+        "glowSprites": 22,
+        "localLights": 3,
+        "batchBudget": 3,
+        "shadowLights": 0
+      }
+    },
+    "touchMove": {
+      "phase": "playing",
+      "position": {
+        "x": -2.8988448245895485e-18,
+        "y": 0,
+        "z": -16.22632913566093
+      },
+      "kills": 0,
+      "beers": 0,
+      "shots": 0,
+      "weapon": "handgun",
+      "loaded": 6,
+      "stealth": {
+        "sneaking": true,
+        "movementNoiseRadius": 0.7,
+        "playerNoiseRadius": 0,
+        "playerNoiseTime": 0,
+        "target": 0,
+        "sounds": []
+      },
+      "enemy": {
+        "id": 0,
+        "alive": true,
+        "hp": 100,
+        "alerted": false,
+        "awareness": "idle",
+        "seesPlayer": false,
+        "discovered": true,
+        "notice": 0,
+        "lastKnown": null,
+        "suppressBeer": false
+      },
+      "worldEffects": {
+        "zone": "village",
+        "clock": 21.096659000000116,
+        "flameSprites": 18,
+        "smokeSprites": 7,
+        "glowSprites": 22,
+        "localLights": 3,
+        "batchBudget": 3,
+        "shadowLights": 0
+      }
+    },
+    "rearKill": {
+      "phase": "playing",
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": -16.25
+      },
+      "kills": 1,
+      "beers": 0,
+      "shots": 0,
+      "weapon": "handgun",
+      "loaded": 6,
+      "stealth": {
+        "sneaking": false,
+        "movementNoiseRadius": 4,
+        "playerNoiseRadius": 2.4,
+        "playerNoiseTime": 0.5698199999999999,
+        "target": null,
+        "sounds": [
+          {
+            "kind": "beer_break",
+            "position": [
+              0,
+              1,
+              -15
+            ],
+            "radius": 2.4
+          }
+        ]
+      },
+      "enemy": {
+        "id": 0,
+        "alive": false,
+        "hp": 0,
+        "alerted": false,
+        "awareness": "idle",
+        "seesPlayer": false,
+        "discovered": true,
+        "notice": 0,
+        "lastKnown": null,
+        "suppressBeer": true
+      },
+      "worldEffects": {
+        "zone": "village",
+        "clock": 154.59036199999835,
+        "flameSprites": 18,
+        "smokeSprites": 7,
+        "glowSprites": 34,
+        "localLights": 2,
+        "batchBudget": 3,
+        "shadowLights": 0
+      }
+    },
+    "shotNoise": {
+      "phase": "playing",
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": -20
+      },
+      "kills": 0,
+      "beers": 0,
+      "shots": 1,
+      "weapon": "shotgun",
+      "loaded": 1,
+      "stealth": {
+        "sneaking": false,
+        "movementNoiseRadius": 4,
+        "playerNoiseRadius": 34,
+        "playerNoiseTime": 0.8,
+        "target": null,
+        "sounds": [
+          {
+            "kind": "shotgun",
+            "position": [
+              0,
+              0.6,
+              -20
+            ],
+            "radius": 34
+          },
+          {
+            "kind": "break",
+            "position": [
+              -4,
+              0.6,
+              -13
+            ],
+            "radius": 7
+          }
+        ]
+      },
+      "enemy": {
+        "id": 0,
+        "alive": true,
+        "hp": 100,
+        "alerted": false,
+        "awareness": "idle",
+        "seesPlayer": false,
+        "discovered": true,
+        "notice": 0,
+        "lastKnown": null,
+        "suppressBeer": false
+      },
+      "worldEffects": {
+        "zone": "village",
+        "clock": 45.99747799999975,
+        "flameSprites": 18,
+        "smokeSprites": 7,
+        "glowSprites": 22,
+        "localLights": 3,
+        "batchBudget": 3,
+        "shadowLights": 0
+      }
+    },
+    "toolingNote": "An immediate tap after scenario transition occurred before the widget frame; element lookup failed. Retried after querying the current UI; tap succeeded. No game runtime exception observed."
+  },
+  "screenshots": [
+    "evidence/iphoneTitleScreenshot.png",
+    "evidence/iphonePortraitScreenshot.png",
+    "evidence/iphoneLandscapeScreenshot.png",
+    "evidence/iphoneMapScreenshot.png",
+    "evidence/iphoneInventoryScreenshot.png",
+    "evidence/iphoneFarmScreenshot.png",
+    "evidence/fireScreenshot.png"
+  ],
+  "profile": {
+    "record": "mobile-world-stealth-profile-20260908.json",
+    "validCases": 11,
+    "uiP95MsRange": [
+      7.026,
+      16.629
+    ],
+    "rasterP95MsRange": [
+      0.714,
+      19.862
+    ],
+    "note": "All11 cases meet benchmark validity. Individual slow frames still occur; window-enemies and opening-voice raster P95 exceed16.7ms. This is not a steady60FPS guarantee or mobile device benchmark."
+  },
+  "limitations": [
+    "iPhone physical-device feel, thermal behavior and sustained performance not measured",
+    "Android device and web rendering not exercised",
+    "Cinematic changes reuse existing canonical voice audio; no new generated voice",
+    "Native checks use deterministic individual scenarios; not a new human blind full-campaign playthrough"
+  ],
+  "mobileQuality": {
+    "firstLaunch": 0.65,
+    "desktopDefault": 0.85,
+    "preservesSavedQuality": [
+      0.65,
+      0.85,
+      1.0
+    ],
+    "coverage": "2 additional settings regression tests; existing full245 test pass precedes this isolated default change"
+  },
+  "cpuSampling": {
+    "samples": 22394,
+    "windowSeconds": 118.5,
+    "scope": "Before zero-weight clip evaluation optimization; profile renderer samples",
+    "animationUpdateInclusivePercent": 21.47,
+    "skinJointsTextureInclusivePercent": 11.26,
+    "semaphoreWaitExclusivePercent": 23.46,
+    "stateTickInclusivePercent": 1.5,
+    "worldEffectsInclusivePercent": 0.085,
+    "note": "Inclusive categories overlap. Zero-weight clips no longer evaluate bound animation channels; clocks and nonzero paused poses are retained. GPU queue waits remain a measured limit."
+  },
+  "additionalRegressionTests": {
+    "mobileDefaultQuality": 2,
+    "zeroWeightAnimation": 3,
+    "allPassed": true,
+    "note": "Full245 suite followed by focused final regressions;250 distinct test cases passed across these runs."
+  }
+}

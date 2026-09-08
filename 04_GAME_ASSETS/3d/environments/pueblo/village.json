@@ -771,49 +771,57 @@
       "id": 0,
       "x": -2,
       "z": -6,
-      "active": true
+      "active": true,
+      "heading": 1.5707963267948966
     },
     {
       "id": 1,
       "x": 3,
       "z": -2,
-      "active": true
+      "active": true,
+      "heading": -1.5707963267948966
     },
     {
       "id": 2,
       "x": -5,
       "z": 3,
-      "active": true
+      "active": true,
+      "heading": 0
     },
     {
       "id": 3,
       "x": 6,
       "z": 7,
-      "active": true
+      "active": true,
+      "heading": 3.141592653589793
     },
     {
       "id": 4,
       "x": -9,
       "z": 6,
-      "active": true
+      "active": true,
+      "heading": 1.5707963267948966
     },
     {
       "id": 5,
       "x": 11,
       "z": 11,
-      "active": true
+      "active": true,
+      "heading": -1.5707963267948966
     },
     {
       "id": 6,
       "x": -2,
       "z": 14,
-      "active": true
+      "active": true,
+      "heading": 3.141592653589793
     },
     {
       "id": 7,
       "x": 17,
       "z": 1,
-      "active": true
+      "active": true,
+      "heading": 1.5707963267948966
     }
   ],
   "collection": [

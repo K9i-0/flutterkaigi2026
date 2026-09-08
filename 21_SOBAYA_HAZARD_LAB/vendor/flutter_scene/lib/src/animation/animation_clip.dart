@@ -208,6 +208,9 @@ class AnimationClip {
     Map<Node, AnimationTransforms> transformDecomps,
     double weightMultiplier,
   ) {
+    // Playback still advances in AnimationPlayer.update. A zero contribution
+    // needs no channel evaluation; paused clips with weight retain their pose.
+    if (_weight == 0 || weightMultiplier == 0) return;
     for (var binding in _bindings) {
       final transforms = transformDecomps[binding.node];
       if (transforms == null) {

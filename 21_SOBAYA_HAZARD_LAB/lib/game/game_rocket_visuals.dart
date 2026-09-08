@@ -4,6 +4,7 @@ import 'package:flutter_scene/scene.dart';
 import 'package:vector_math/vector_math.dart' as vm;
 
 import 'game_state.dart';
+import 'game_world_effects.dart';
 
 /// Reusable low-poly prop in GunSocket coordinates (barrel points along -Z).
 Node buildRocketLauncher() {
@@ -57,68 +58,141 @@ Node buildRocketLauncher() {
   return root;
 }
 
+/// Three shared batches replace per-sphere scene nodes. Residual smoke outlives
+/// the damaging .55 s blast without extending damage or AI noise.
 class RocketVisuals {
-  RocketVisuals(this.scene);
+  RocketVisuals(this.scene) {
+    for (final batch in [_fire, _glow, _smoke]) {
+      scene.add(batch.node);
+    }
+    scene.add(_lightNode);
+  }
   final Scene scene;
-  final _missiles = <HazardRocket, Node>{};
-  final _blasts = <RocketBlast, Node>{};
-  final _fire = UnlitMaterial()..baseColorFactor = vm.Vector4(1, .45, .045, 1);
-  final _core = UnlitMaterial()..baseColorFactor = vm.Vector4(1, .88, .35, 1);
-  void update(HazardGameState s) {
-    for (final r in _missiles.keys.toList()) {
-      if (!s.rockets.contains(r)) {
-        scene.remove(_missiles.remove(r)!);
-      }
-    }
-    for (final b in _blasts.keys.toList()) {
-      if (!s.rocketBlasts.contains(b)) {
-        scene.remove(_blasts.remove(b)!);
-      }
-    }
-    for (final r in s.rockets) {
-      final n = _missiles.putIfAbsent(r, () {
-        final node = Node(mesh: Mesh(SphereGeometry(radius: .065), _core))
-          ..castsShadows = false;
-        for (var i = 1; i <= 5; i++) {
-          node.add(
-            Node(mesh: Mesh(SphereGeometry(radius: .05 - i * .005), _fire))
-              ..position = vm.Vector3(0, 0, i * .12)
-              ..castsShadows = false,
-          );
-        }
-        scene.add(node);
-        return node;
-      });
-      n.position = r.position;
-      n.rotation = vm.Quaternion.fromTwoVectors(
-        vm.Vector3(0, 0, -1),
-        r.direction,
-      );
-    }
+  final _fire = HazardSpriteBatch(capacity: 80, flame: true);
+  final _glow = HazardSpriteBatch(capacity: 80);
+  final _smoke = HazardSpriteBatch(capacity: 32, smoke: true);
+  final _blasts = <RocketBlast, double>{};
+  final _flash = PointLight(color: vm.Vector3(1, .43, .12), range: 9);
+  late final _lightNode = Node()
+    ..visible = false
+    ..addComponent(PointLightComponent(_flash));
+  String _zone = '';
+  double _lastClock = 0;
+
+  void update(HazardGameState s, {bool enhanced = true}) {
+    // A new game or region discards the old render-only aftermath.
+    if (_zone != s.zoneId || s.time < _lastClock) _blasts.clear();
+    _zone = s.zoneId;
+    _lastClock = s.time;
     for (final b in s.rocketBlasts) {
-      final n = _blasts.putIfAbsent(b, () {
-        final node = Node();
-        for (var i = 0; i < 9; i++) {
-          node.add(
-            Node(
-                mesh: Mesh(
-                  SphereGeometry(radius: .16),
-                  i.isEven ? _fire : _core,
+      _blasts.putIfAbsent(b, () => s.time - b.age);
+    }
+    _blasts.removeWhere((_, start) => s.time - start > 1.65);
+    while (_blasts.length > 4) {
+      _blasts.remove(_blasts.keys.first);
+    }
+    for (final batch in [_fire, _glow, _smoke]) {
+      batch.begin();
+    }
+    _flash.intensity = 0;
+    for (final r in s.rockets.take(4)) {
+      final flicker = hazardFireIntensity(r.age);
+      _glow.add(
+        position: r.position,
+        width: .23,
+        height: .23,
+        color: vm.Vector4(3.5, 2.4, .75, .9),
+      );
+      for (var i = 1; i <= 8; i++) {
+        final age = i / 8;
+        _glow.add(
+          position: r.position - r.direction * (i * .085),
+          width: (.17 - age * .11) * flicker,
+          height: .18 - age * .10,
+          color: vm.Vector4(2.5, 1 - age * .7, .06, 1 - age * .75),
+        );
+      }
+    }
+    for (final entry in _blasts.entries) {
+      final b = entry.key;
+      final age = (s.time - entry.value).clamp(0.0, 1.65);
+      final heat = (1 - age / .65).clamp(0.0, 1.0);
+      final shock = math.sin((age / .24).clamp(0.0, 1.0) * math.pi);
+      if (heat > 0) {
+        _glow.add(
+          position: b.position,
+          width: .5 + age * 6,
+          height: .5 + age * 6,
+          color: vm.Vector4(3.8, 2.0, .5, heat * .65),
+        );
+        _glow.add(
+          position: b.position,
+          width: 1 + age * 12,
+          height: .18 + age * .5,
+          color: vm.Vector4(2, .9, .23, shock * .4),
+        );
+        for (var i = 0; i < (enhanced ? 16 : 9); i++) {
+          final angle = i * 2.399;
+          final spread = .15 + age * (1.6 + i % 3 * .3);
+          _fire.add(
+            position:
+                b.position +
+                vm.Vector3(
+                  math.cos(angle) * spread,
+                  math.sin(i * 1.7) * spread * .5 + age * 1.5,
+                  math.sin(angle) * spread,
                 ),
-              )
-              ..position = vm.Vector3(
-                math.cos(i * 2.4) * .4,
-                math.sin(i * 1.7) * .35,
-                math.sin(i * 2.4) * .4,
-              )
-              ..castsShadows = false,
+            width: (.55 + age * .75) * heat,
+            height: (.8 + age) * heat,
+            color: vm.Vector4(3, .2 + heat * 1.1, .06, heat * .9),
           );
         }
-        scene.add(node);
-        return node;
-      });
-      n.position = b.position;
-      n.scale = vm.Vector3.all((.4 + b.age * 4) * (1 - b.age / .55));
+      }
+      for (var i = 0; i < (enhanced ? 12 : 6); i++) {
+        final angle = i * 2.399;
+        final life = (1 - age / (1 + i % 3 * .2)).clamp(0.0, 1.0);
+        final speed = 2.4 + i % 4 * .5;
+        _glow.add(
+          position:
+              b.position +
+              vm.Vector3(
+                math.cos(angle) * age * speed,
+                (.8 + i % 3 * .5) * age - age * age * 1.7,
+                math.sin(angle) * age * speed,
+              ),
+          width: .025,
+          height: .08,
+          color: vm.Vector4(3, .75, .05, life),
+          rotation: angle,
+        );
+      }
+      for (var i = 0; i < (enhanced ? 7 : 4); i++) {
+        final angle = i * 2.399;
+        final opacity = math.sin(age / 1.65 * math.pi) * .4;
+        final size = .6 + age * 1.1;
+        _smoke.add(
+          position:
+              b.position +
+              vm.Vector3(
+                math.cos(angle) * age * .7,
+                age * (1 + i % 3 * .2),
+                math.sin(angle) * age * .7,
+              ),
+          width: size,
+          height: size,
+          color: vm.Vector4(.21, .20, .18, opacity),
+          rotation: angle + age * .12,
+        );
+      }
+      final intensity = enhanced ? 18 * math.pow(heat, 3) : 0.0;
+      if (intensity > _flash.intensity) {
+        _flash.intensity = intensity.toDouble();
+        _lightNode.position = b.position;
+      }
+    }
+    _lightNode.visible = _flash.intensity > .001;
+    for (final batch in [_fire, _glow, _smoke]) {
+      batch.end();
     }
   }
 }

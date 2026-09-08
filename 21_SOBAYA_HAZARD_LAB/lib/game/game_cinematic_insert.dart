@@ -73,18 +73,23 @@ EventCut? dialogueInsert(
 }) {
   if (postBoss) return null;
   if (topic == 'engine' && index == 0) {
-    return const EventCut(0, image: 'engine-archive', label: 'そば屋エンジン　開発記録');
+    return owner == 'takosan'
+        ? const EventCut(0, document: 'decree', label: '特別研修への辞令')
+        : const EventCut(0, image: 'engine-archive', label: 'そば屋エンジン　開発記録');
   }
   if (topic == 'evidence' && index < 2) {
     return EventCut(
       0,
       document: owner == 'takosan'
-          ? 'ledger'
+          ? (index == 0 ? 'ledger' : 'diary')
           : index == 0
           ? 'withdrawal'
           : 'arrivals',
       label: '拾った記録',
     );
+  }
+  if (owner == 'takosan' && topic == 'evidence' && index == 2) {
+    return const EventCut(0, image: 'shelter', label: '宿舎で待つ避難者');
   }
   if (owner == 'yametaro' && topic == 'combat' && index == 2) {
     return const EventCut(0, document: 'decree', label: 'よーたんの追記');
@@ -121,60 +126,12 @@ class CinematicInsert extends StatelessWidget {
           if (cut.document == 'engine-link')
             EngineLinkDiagram(progress: progress),
           if (document != null && cut.document != 'engine-link')
-            Padding(
-              padding: const EdgeInsets.fromLTRB(40, 46, 40, 14),
-              child: FittedBox(
-                fit: BoxFit.contain,
-                child: Transform.rotate(
-                  angle: -.013,
-                  child: Container(
-                    key: ValueKey('cinematic-document-${cut.document}'),
-                    width: 660,
-                    padding: const EdgeInsets.fromLTRB(38, 24, 38, 24),
-                    decoration: const BoxDecoration(
-                      color: Color(0xffded5b9),
-                      boxShadow: [
-                        BoxShadow(color: Colors.black, blurRadius: 20),
-                      ],
-                    ),
-                    child: DefaultTextStyle(
-                      style: const TextStyle(
-                        color: Color(0xff25271f),
-                        fontSize: 22,
-                        height: 1.55,
-                        fontFamily: 'serif',
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            document.$1,
-                            style: const TextStyle(
-                              fontSize: 26,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const Divider(color: Color(0xff77765c), height: 26),
-                          Text(document.$2),
-                          const SizedBox(height: 18),
-                          Text(
-                            document.$3,
-                            style: const TextStyle(
-                              color: Color(0xff853329),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            _CinematicDocument(id: cut.document, document: document),
           if (cut.label.isNotEmpty)
             Positioned(
               top: 12,
-              left: 24,
+              left: 16,
+              right: 16,
               child: Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 12,
@@ -183,6 +140,8 @@ class CinematicInsert extends StatelessWidget {
                 color: const Color(0xcc090b09),
                 child: Text(
                   cut.label,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     color: Color(0xffe6dec6),
                     fontSize: 13,
@@ -197,80 +156,180 @@ class CinematicInsert extends StatelessWidget {
   }
 }
 
+/// Preserve readable type on phones. A long document scrolls within the shot
+/// instead of shrinking the Japanese text to fit a desktop-sized sheet.
+class _CinematicDocument extends StatelessWidget {
+  const _CinematicDocument({required this.id, required this.document});
+  final String id;
+  final (String, String, String) document;
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, constraints) {
+      final compact = constraints.maxWidth < 700;
+      return Padding(
+        padding: EdgeInsets.fromLTRB(
+          compact ? 16 : 40,
+          46,
+          compact ? 16 : 40,
+          12,
+        ),
+        child: SingleChildScrollView(
+          key: ValueKey('cinematic-document-scroll-$id'),
+          child: Center(
+            child: Container(
+              key: ValueKey('cinematic-document-$id'),
+              constraints: const BoxConstraints(maxWidth: 660),
+              width: double.infinity,
+              padding: EdgeInsets.all(compact ? 18 : 30),
+              decoration: const BoxDecoration(
+                color: Color(0xffded5b9),
+                boxShadow: [BoxShadow(color: Colors.black, blurRadius: 20)],
+              ),
+              child: DefaultTextStyle(
+                style: TextStyle(
+                  color: const Color(0xff25271f),
+                  fontSize: compact ? 16 : 22,
+                  height: 1.55,
+                  fontFamily: 'serif',
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      document.$1,
+                      style: TextStyle(
+                        fontSize: compact ? 19 : 26,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Divider(color: Color(0xff77765c), height: 24),
+                    Text(document.$2),
+                    const SizedBox(height: 16),
+                    Text(
+                      document.$3,
+                      style: const TextStyle(
+                        color: Color(0xff853329),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
+
 class EngineLinkDiagram extends StatelessWidget {
   const EngineLinkDiagram({super.key, required this.progress});
   final double progress;
   @override
-  Widget build(BuildContext context) {
-    final stopped = progress >= .6;
-    final color = stopped ? const Color(0xff82ba92) : const Color(0xffd6ab70);
-    Widget part(IconData icon, String title, String detail) => Container(
-      width: 195,
-      height: 160,
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: const Color(0xff232b29),
-        border: Border.all(color: color),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, size: 46, color: color),
-          const SizedBox(height: 12),
-          Text(
-            title,
-            style: const TextStyle(color: Color(0xffe6dec6), fontSize: 18),
-          ),
-          const SizedBox(height: 8),
-          Text(detail, style: TextStyle(color: color, fontSize: 16)),
-        ],
-      ),
-    );
-    return Padding(
-      key: const ValueKey('cinematic-document-engine-link'),
-      padding: const EdgeInsets.fromLTRB(30, 42, 30, 12),
-      child: FittedBox(
-        fit: BoxFit.contain,
-        child: SizedBox(
-          width: 700,
-          height: 310,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                stopped ? '玄関が開いたら、二人の無事を確認' : 'エンジンを止める方法',
-                style: TextStyle(color: color, fontSize: 26),
-              ),
-              const SizedBox(height: 20),
-              Row(
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, constraints) {
+      final after = progress >= .6;
+      final compact = constraints.maxWidth < 720;
+      final color = after ? const Color(0xff82ba92) : const Color(0xffd6ab70);
+      Widget part(IconData icon, String title, String detail) => Container(
+        width: compact ? double.infinity : 195,
+        height: compact ? 68 : 160,
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: const Color(0xff232b29),
+          border: Border.all(color: color),
+        ),
+        child: compact
+            ? Row(
+                children: [
+                  Icon(icon, size: 32, color: color),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: const TextStyle(
+                        color: Color(0xffe6dec6),
+                        fontSize: 17,
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    child: Text(
+                      detail,
+                      style: TextStyle(color: color, fontSize: 15),
+                    ),
+                  ),
+                ],
+              )
+            : Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  part(
-                    Icons.fitness_center,
-                    '巨大そば屋',
-                    stopped ? '撃退！' : 'こいつを倒す',
+                  Icon(icon, size: 46, color: color),
+                  const SizedBox(height: 12),
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      color: Color(0xffe6dec6),
+                      fontSize: 18,
+                    ),
                   ),
-                  Icon(Icons.arrow_forward, color: color, size: 40),
-                  part(Icons.settings, 'そば屋エンジン', stopped ? '停止！' : '倒せば止まる'),
-                  Icon(Icons.arrow_forward, color: color, size: 40),
-                  part(
-                    Icons.settings_input_antenna,
-                    '救助船',
-                    stopped ? 'たこさんが呼ぶ' : '手配はたこさん',
+                  const SizedBox(height: 8),
+                  Text(detail, style: TextStyle(color: color, fontSize: 16)),
+                ],
+              ),
+      );
+      final parts = [
+        part(Icons.fitness_center, '巨大そば屋', after ? '撃退したら' : 'こいつを倒す'),
+        Icon(
+          compact ? Icons.arrow_downward : Icons.arrow_forward,
+          color: color,
+          size: compact ? 22 : 40,
+        ),
+        part(Icons.settings, 'そば屋エンジン', after ? '停止する' : '倒せば止まる'),
+        Icon(
+          compact ? Icons.arrow_downward : Icons.arrow_forward,
+          color: color,
+          size: compact ? 22 : 40,
+        ),
+        part(Icons.settings_input_antenna, '救助船', 'たこさんが呼ぶ'),
+      ];
+      return Padding(
+        key: const ValueKey('cinematic-document-engine-link'),
+        padding: const EdgeInsets.fromLTRB(20, 42, 20, 12),
+        child: SingleChildScrollView(
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 700),
+              child: Column(
+                children: [
+                  Text(
+                    after ? '撃退後、玄関が開いたら家へ' : 'エンジンを止める方法',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: color, fontSize: compact ? 20 : 26),
+                  ),
+                  const SizedBox(height: 16),
+                  if (compact)
+                    Column(children: parts)
+                  else
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: parts,
+                    ),
+                  const SizedBox(height: 16),
+                  Text(
+                    after
+                        ? '最高難度は全そば屋撃退。家でやめ太郎とたこさんに話しかけよう'
+                        : '山の廃屋にいる、一番でかいそば屋が目印',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: color, fontSize: compact ? 16 : 21),
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
-              Text(
-                stopped
-                    ? '最高難度は全そば屋撃退。家でやめ太郎とたこさんに話しかけよう'
-                    : '山の廃屋にいる、一番でかいそば屋が目印',
-                style: TextStyle(color: color, fontSize: 21),
-              ),
-            ],
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
+    },
+  );
 }

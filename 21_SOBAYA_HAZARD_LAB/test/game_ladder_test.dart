@@ -114,6 +114,7 @@ void main() {
     other.climb = null;
     s.y = 0;
     s.z = -12;
+    s.emitNoise('handgun', radius: 40);
     advance(s, 30);
     expect(e.y, 0);
   });

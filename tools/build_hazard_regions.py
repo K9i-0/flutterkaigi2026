@@ -168,7 +168,9 @@ for item in items:
     if item['y']<2:item['y']=.28
 crates=[{'id':'farm_crate_'+str(i),'x':x,'z':z,'kind':'crate' if i%2 else 'barrel'}
     for i,(x,z) in enumerate([(-17,-17.7),(-8,6),(0,9),(18,16),(7,-14.8),(15,-5)])]
-enemies=[{'id':i,'x':x,'z':z,'active':True} for i,(x,z) in enumerate([(-5,-3),(0,2),(8,-5),(14,10),(-11,12),(-9,3)])]
+# Watch barn/field approaches while preserving the southwest supply route.
+farm_guard_headings=[math.pi/2,math.pi,math.pi,-math.pi/2,math.pi,math.pi]
+enemies=[{'id':i,'x':x,'z':z,'active':True,'heading':farm_guard_headings[i]} for i,(x,z) in enumerate([(-5,-3),(0,2),(8,-5),(14,10),(-11,12),(-9,3)])]
 save('farm','CHAPTER 02  /  ABANDONED PROJECT','秘密案件の補給施設。撤収対象外。',{'x':-19,'z':-21,'yaw':math.pi},items,crates,enemies,collection,
     [{'id':'takosan','x':-13,'z':-17.8}],
     [{'id':'back','target':'village','x':-19,'z':-23.5,'radius':1.0,'arrival':{'x':11.5,'z':25.2,'yaw':0}},
@@ -207,7 +209,10 @@ items=[{'id':'mountain_'+id,'kind':kind,'x':x,'z':z,'y':y,'amount':n} for id,kin
     ('ammo','ammo',-18,-1,.3,15),('green','green',3,5,.25,1),('shells','shells',16,16,.9,5),('red','red',9,16,.85,1)]]
 crates=[{'id':'mountain_crate_'+str(i),'x':x,'z':z,'kind':'crate'}
     for i,(x,z) in enumerate([(-20,-6),(-9,5),(7,7),(18,18)])]
-enemies=[{'id':i,'x':x,'z':z,'active':True,'boss':i==4} for i,(x,z) in enumerate([
+# The entry lookout watches the corridor; the tunnel/yard guards watch its
+# exits. Keep the boss's original north-facing introduction intact.
+mountain_guard_headings=[math.pi,-math.pi/2,math.pi,math.pi,0,0]
+enemies=[{'id':i,'x':x,'z':z,'active':True,'boss':i==4,'heading':mountain_guard_headings[i]} for i,(x,z) in enumerate([
     (-19,-5),(-1,4),(6,5),(15,7),(12,4),(11,7)])]
 save('mountain','CHAPTER 03  /  LAST ORDER','誰も終わらせに来ない仕事。',{'x':-19,'z':-21,'yaw':math.pi},items,crates,enemies,collection,
     [{'id':'yametaro','x':16,'z':17.5}, {'id':'takosan','x':13.6,'z':17.1,'afterBoss':True}],
