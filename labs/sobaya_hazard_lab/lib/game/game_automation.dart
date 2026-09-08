@@ -253,6 +253,7 @@ void attachGameAutomation(HazardGameController game) {
         'stealthVision',
         'stealthNoise',
         'beerThrow',
+        'mobileControls',
         'mugTiming',
         'secretMerchant',
         'rocketCombat',
@@ -567,6 +568,19 @@ void attachGameAutomation(HazardGameController game) {
             s.addItem('shells', 10);
             s.equip('shotgun');
           }
+        case 'mobileControls':
+          // Stable UI fixture. Enemies remain disabled by scenario setup;
+          // this checks touch controls, not stealth or campaign difficulty.
+          s.seenEvents.addAll(['opening', 'farm', 'last_order']);
+          s.x = 0;
+          s.z = -20;
+          s.yaw = 3.141592653589793;
+          s.health = 65;
+          s.beers = 3;
+          s.pistolLoaded = 6;
+          s.shotgunLoaded = 2;
+          s.addItem('shotgun', 1);
+          s.addItem('shells', 10);
         case 'combat':
           s.x = 0;
           s.z = -16;

@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
-import 'package:flutter/gestures.dart' show PointerDeviceKind;
+import 'package:flutter/gestures.dart'
+    show PointerDeviceKind, kPrimaryButton, kTouchSlop;
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 import 'package:flutter/services.dart' show HardwareKeyboard;
@@ -32,8 +33,16 @@ class _HazardTouchLookSurfaceState extends State<HazardTouchLookSurface> {
   int? mousePointer;
   bool mouseAiming = false;
 
+  @override
+  void dispose() {
+    pointer = null;
+    mousePointer = null;
+    mouseAiming = false;
+    super.dispose();
+  }
+
   void releaseMouse(int id) {
-    if (mousePointer != id) return;
+    if (!mounted || mousePointer != id) return;
     mousePointer = null;
     if (mouseAiming) widget.onMouseAim?.call(false);
     mouseAiming = false;
@@ -44,6 +53,7 @@ class _HazardTouchLookSurfaceState extends State<HazardTouchLookSurface> {
     key: const ValueKey('game-look-surface'),
     behavior: HitTestBehavior.opaque,
     onPointerDown: (event) {
+      if (!mounted) return;
       if (event.kind == PointerDeviceKind.mouse) {
         mousePointer = event.pointer;
         widget.onStart?.call();
@@ -62,6 +72,7 @@ class _HazardTouchLookSurfaceState extends State<HazardTouchLookSurface> {
       widget.onStart?.call();
     },
     onPointerMove: (event) {
+      if (!mounted) return;
       if (event.kind == PointerDeviceKind.mouse) {
         if (mousePointer == event.pointer) {
           (widget.onMouseLook ?? widget.onLook)(event.delta);
@@ -71,6 +82,7 @@ class _HazardTouchLookSurfaceState extends State<HazardTouchLookSurface> {
       if (pointer == event.pointer) widget.onLook(event.delta);
     },
     onPointerUp: (event) {
+      if (!mounted) return;
       if (event.kind == PointerDeviceKind.mouse) {
         releaseMouse(event.pointer);
         return;
@@ -78,6 +90,7 @@ class _HazardTouchLookSurfaceState extends State<HazardTouchLookSurface> {
       if (pointer == event.pointer) pointer = null;
     },
     onPointerCancel: (event) {
+      if (!mounted) return;
       if (event.kind == PointerDeviceKind.mouse) {
         releaseMouse(event.pointer);
         return;
@@ -102,7 +115,15 @@ class _HazardThumbstickState extends State<HazardThumbstick> {
   int? pointer;
   Offset displacement = Offset.zero;
 
+  @override
+  void dispose() {
+    pointer = null;
+    displacement = Offset.zero;
+    super.dispose();
+  }
+
   void update(Offset position) {
+    if (!mounted) return;
     final radius = widget.size * .33;
     final delta = position - Offset(widget.size / 2, widget.size / 2);
     final length = delta.distance;
@@ -110,15 +131,15 @@ class _HazardThumbstickState extends State<HazardThumbstick> {
     final amount = ((length / radius - .14) / .86).clamp(0.0, 1.0);
     final value = length > 0 ? delta / length * amount : Offset.zero;
     widget.onMove(Offset(value.dx, -value.dy));
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   void release(int id) {
-    if (id != pointer) return;
+    if (!mounted || id != pointer) return;
     pointer = null;
     displacement = Offset.zero;
     widget.onMove(Offset.zero);
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   @override
@@ -128,7 +149,7 @@ class _HazardThumbstickState extends State<HazardThumbstick> {
       key: const ValueKey('game-thumbstick'),
       behavior: HitTestBehavior.opaque,
       onPointerDown: (event) {
-        if (pointer != null) return;
+        if (!mounted || pointer != null) return;
         pointer = event.pointer;
         update(event.localPosition);
       },
@@ -171,7 +192,10 @@ class _HazardThumbstickState extends State<HazardThumbstick> {
   );
 }
 
-class HazardTouchButton extends StatelessWidget {
+/// Keep a press attached to the action that was visible when the finger landed.
+/// New closures are common during a game tick; only semantic action changes
+/// cancel the press, and an unchanged action invokes its captured callback.
+class HazardTouchButton extends StatefulWidget {
   const HazardTouchButton({
     super.key,
     required this.id,
@@ -181,134 +205,187 @@ class HazardTouchButton extends StatelessWidget {
     this.active = false,
     this.emphasized = false,
     this.enabled = true,
+    this.actionIdentity,
+    this.horizontal = false,
+    this.maxLabelLines = 1,
   });
   final String id, label;
+  final int maxLabelLines;
   final IconData icon;
   final VoidCallback onPressed;
-  final bool active, emphasized, enabled;
+  final bool active, emphasized, enabled, horizontal;
+  final Object? actionIdentity;
+
   @override
-  Widget build(BuildContext context) => Semantics(
-    button: true,
-    enabled: enabled,
-    selected: active,
-    label: label,
-    child: GestureDetector(
-      key: ValueKey('game-$id'),
-      behavior: HitTestBehavior.opaque,
-      onTap: enabled ? onPressed : null,
-      child: Container(
-        constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
-        padding: const EdgeInsets.symmetric(horizontal: 3),
-        decoration: BoxDecoration(
-          color: active
-              ? const Color(0xe3707850)
-              : emphasized
-              ? const Color(0xdd695335)
-              : const Color(0xc018211b),
-          border: Border.all(
-            color: active || emphasized ? _gold : const Color(0x887a836d),
+  State<HazardTouchButton> createState() => _HazardTouchButtonState();
+}
+
+class _HazardTouchButtonState extends State<HazardTouchButton> {
+  int? pointer;
+  Offset? origin;
+  VoidCallback? pendingAction;
+
+  @override
+  void didUpdateWidget(covariant HazardTouchButton oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.id != widget.id ||
+        oldWidget.actionIdentity != widget.actionIdentity ||
+        oldWidget.active != widget.active ||
+        !widget.enabled) {
+      pendingAction = null;
+    }
+  }
+
+  @override
+  void dispose() {
+    pointer = null;
+    pendingAction = null;
+    super.dispose();
+  }
+
+  void release(PointerEvent event, {bool canceled = false}) {
+    if (event.pointer != pointer) return;
+    final action = pendingAction;
+    pointer = null;
+    origin = null;
+    pendingAction = null;
+    final box = context.findRenderObject() as RenderBox?;
+    if (!canceled &&
+        widget.enabled &&
+        box != null &&
+        (Offset.zero & box.size).contains(event.localPosition)) {
+      action?.call();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final icon = Icon(widget.icon, color: _ivory, size: 20);
+    final label = Text(
+      widget.label,
+      maxLines: widget.maxLabelLines,
+      overflow: TextOverflow.ellipsis,
+      style: TextStyle(
+        color: _ivory,
+        fontSize: widget.maxLabelLines > 1 ? 10 : (widget.horizontal ? 11 : 10),
+      ),
+    );
+    return Semantics(
+      button: true,
+      enabled: widget.enabled,
+      selected: widget.active,
+      label: widget.label,
+      onTap: widget.enabled ? widget.onPressed : null,
+      excludeSemantics: true,
+      child: Listener(
+        key: ValueKey('game-${widget.id}'),
+        behavior: HitTestBehavior.opaque,
+        onPointerDown: (event) {
+          if (!widget.enabled || pointer != null) return;
+          if (event.kind == PointerDeviceKind.mouse &&
+              event.buttons & kPrimaryButton == 0) {
+            return;
+          }
+          pointer = event.pointer;
+          origin = event.position;
+          pendingAction = widget.onPressed;
+        },
+        onPointerMove: (event) {
+          if (event.pointer == pointer &&
+              origin != null &&
+              (event.position - origin!).distance > kTouchSlop) {
+            pendingAction = null;
+          }
+        },
+        onPointerUp: release,
+        onPointerCancel: (event) => release(event, canceled: true),
+        child: Container(
+          constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+          padding: EdgeInsets.symmetric(horizontal: widget.horizontal ? 8 : 3),
+          decoration: BoxDecoration(
+            color: widget.active
+                ? const Color(0xe3707850)
+                : widget.emphasized
+                ? const Color(0xdd695335)
+                : const Color(0xc018211b),
+            border: Border.all(
+              color: widget.active || widget.emphasized
+                  ? _gold
+                  : const Color(0x887a836d),
+            ),
+            borderRadius: BorderRadius.circular(12),
           ),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Opacity(
-          opacity: enabled ? 1 : .4,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(icon, color: _ivory, size: 20),
-              const SizedBox(height: 1),
-              Text(
-                label,
-                maxLines: 1,
-                style: const TextStyle(color: _ivory, fontSize: 10),
-              ),
-            ],
+          child: Opacity(
+            opacity: widget.enabled ? 1 : .4,
+            child: widget.horizontal
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      icon,
+                      const SizedBox(width: 6),
+                      Flexible(child: label),
+                    ],
+                  )
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [icon, const SizedBox(height: 1), label],
+                  ),
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 class HazardTouchControls extends StatelessWidget {
+  static double heightFor({required double width, required bool landscape}) =>
+      landscape && width >= 480 ? 128 : 186;
+
   const HazardTouchControls({
     super.key,
     required this.onMove,
     required this.sneaking,
     required this.sprinting,
     required this.aiming,
+    required this.weaponLabel,
+    required this.ammoLabel,
     required this.onSneak,
     required this.onSprint,
     required this.onAim,
     required this.onFire,
     required this.onReload,
     required this.onInteract,
-    required this.onHeal,
     required this.onWeapon,
     this.canInteract = false,
+    this.canReload = true,
+    this.showReload = true,
     this.stealthReady = false,
     this.throwingBeer = false,
   });
   final ValueChanged<Offset> onMove;
   final bool sneaking, sprinting, aiming, canInteract, stealthReady;
-  final bool throwingBeer;
+  final bool throwingBeer, canReload, showReload;
+  final String weaponLabel, ammoLabel;
   final VoidCallback onSneak,
       onSprint,
       onAim,
       onFire,
       onReload,
       onInteract,
-      onHeal,
       onWeapon;
 
   @override
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) {
-      final landscape = constraints.maxWidth > 500;
-      final actions = [
-        HazardTouchButton(
-          id: 'aim',
-          label: '構え',
-          icon: Icons.center_focus_strong,
-          active: aiming,
-          onPressed: onAim,
-        ),
-        HazardTouchButton(
-          id: 'fire',
-          label: throwingBeer ? '投げる' : '射撃',
-          icon: throwingBeer ? Icons.sports_bar : Icons.flash_on,
-          emphasized: true,
-          onPressed: onFire,
-        ),
-        HazardTouchButton(
-          id: 'reload',
-          label: '装填',
-          icon: Icons.sync,
-          enabled: !throwingBeer,
-          onPressed: onReload,
-        ),
-        HazardTouchButton(
-          id: 'interact',
-          label: stealthReady ? '破壊' : '調べる',
-          icon: stealthReady ? Icons.sports_bar : Icons.touch_app_outlined,
-          emphasized: stealthReady,
-          enabled: canInteract,
-          onPressed: onInteract,
-        ),
-        HazardTouchButton(
-          id: 'heal',
-          label: '回復',
-          icon: Icons.healing,
-          onPressed: onHeal,
-        ),
-        HazardTouchButton(
-          id: 'weapon',
-          label: '武器',
-          icon: Icons.swap_horiz,
-          onPressed: onWeapon,
-        ),
-      ];
+      final height = heightFor(
+        width: constraints.maxWidth,
+        landscape: MediaQuery.orientationOf(context) == Orientation.landscape,
+      );
+      final landscape = height == 128;
+      // Both slots stay fixed when the available actions change. In particular,
+      // revealing fire never moves it underneath the finger pressing aim.
+      final actionIdentity = (aiming, throwingBeer, weaponLabel);
       final modes = [
         HazardTouchButton(
           id: 'sneak',
@@ -326,7 +403,7 @@ class HazardTouchControls extends StatelessWidget {
         ),
       ];
       return SizedBox(
-        height: landscape ? 112 : 168,
+        height: height,
         child: Stack(
           children: [
             Positioned(
@@ -364,23 +441,87 @@ class HazardTouchControls extends StatelessWidget {
                 ),
               ),
             Positioned(
-              right: 0,
-              bottom: 0,
-              child: SizedBox(
-                width: landscape ? 190 : 160,
-                child: Wrap(
-                  alignment: WrapAlignment.end,
-                  spacing: 6,
-                  runSpacing: 6,
-                  children: [
-                    for (final action in actions)
-                      SizedBox(
-                        width: landscape ? 59.3 : 49.3,
-                        height: 50,
-                        child: action,
-                      ),
-                  ],
+              right: 80,
+              bottom: landscape ? 0 : 58,
+              width: 56,
+              height: 56,
+              child: HazardTouchButton(
+                key: const ValueKey('mobile-aim-action'),
+                id: 'aim',
+                label: aiming ? '戻す' : '構える',
+                icon: aiming
+                    ? Icons.keyboard_arrow_down
+                    : Icons.center_focus_strong,
+                active: aiming,
+                actionIdentity: actionIdentity,
+                onPressed: onAim,
+              ),
+            ),
+            if (aiming)
+              Positioned(
+                key: const ValueKey('mobile-fire-slot'),
+                right: 0,
+                bottom: landscape ? 0 : 58,
+                width: 72,
+                height: 72,
+                child: HazardTouchButton(
+                  id: 'fire',
+                  label: throwingBeer ? '投げる' : '撃つ',
+                  icon: throwingBeer ? Icons.sports_bar : Icons.flash_on,
+                  emphasized: true,
+                  actionIdentity: actionIdentity,
+                  onPressed: onFire,
                 ),
+              )
+            else if (canInteract)
+              Positioned(
+                key: const ValueKey('mobile-interact-slot'),
+                right: 0,
+                bottom: landscape ? 0 : 58,
+                width: 72,
+                height: 72,
+                child: HazardTouchButton(
+                  id: 'interact',
+                  label: stealthReady ? '破壊' : '調べる',
+                  icon: stealthReady
+                      ? Icons.sports_bar
+                      : Icons.touch_app_outlined,
+                  emphasized: stealthReady,
+                  actionIdentity: (actionIdentity, stealthReady),
+                  onPressed: onInteract,
+                ),
+              ),
+            if (aiming && !throwingBeer && showReload)
+              Positioned(
+                key: const ValueKey('mobile-reload-slot'),
+                right: 0,
+                bottom: landscape ? 80 : 138,
+                width: 136,
+                height: 48,
+                child: HazardTouchButton(
+                  id: 'reload',
+                  label: '$ammoLabel  装填',
+                  icon: Icons.sync,
+                  horizontal: true,
+                  enabled: canReload,
+                  actionIdentity: actionIdentity,
+                  onPressed: onReload,
+                ),
+              ),
+            Positioned(
+              right: landscape ? (constraints.maxWidth - 136) / 2 : 0,
+              bottom: 0,
+              width: 136,
+              height: 48,
+              child: HazardTouchButton(
+                key: const ValueKey('mobile-weapon-action'),
+                id: 'weapon',
+                label: '$weaponLabel\n$ammoLabel ▾',
+                maxLabelLines: 2,
+                icon: throwingBeer ? Icons.sports_bar : Icons.swap_horiz,
+                horizontal: true,
+                actionIdentity: actionIdentity,
+                onPressed: onWeapon,
               ),
             ),
           ],

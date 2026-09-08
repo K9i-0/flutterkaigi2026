@@ -1,0 +1,53 @@
+{
+  "date": "2026-09-08",
+  "entrypoint": "lib/game_main.dart",
+  "implementation": {
+    "title": "Safe-area-aware landscape two-column layout; portrait and desktop adapt without a title ScrollView. Existing saves require new-game confirmation.",
+    "exploration": "Fixed aim slot plus interaction only when a target is available.",
+    "aiming": "Fixed fire and lower-weapon slots; gun ammo doubles as manual reload. Beer and rocket do not show reload.",
+    "equipment": "Direct selection of owned weapons and beer, with current counts. Pauses play and cancels input; resumes exploration with the touch sneak toggle restored.",
+    "healing": "Shortcut beside HP only while injured and holding a usable herb. Inventory is accessible from pause.",
+    "input": "A press belongs to the action present at pointer down. Mode/weapon changes, drag, cancel and disposal invalidate it. Removed stick/look surfaces cannot replay old pointer input."
+  },
+  "widgetChecks": {
+    "focusedSuite": 59,
+    "fullSuite": 362,
+    "optionalSkipped": 1,
+    "staticAnalysis": "No issues found",
+    "titleSizes": [[568,320],[844,390],[320,568],[390,844],[1280,800]],
+    "titleTextScales": [1,2],
+    "controlsSizes": [[320,568],[390,844],[568,320],[844,390]],
+    "controlsModes": ["exploration","interaction","gun","beer"],
+    "minimumControlTarget": 48,
+    "mainActionTarget": 72,
+    "coverage": ["safe-area bounds","target separation","fixed action positions","three independent fingers","mode-change press cancellation","removed-widget pointer cancellation","Mac Control and secondary mouse compatibility","equipment selection and accessible actions"]
+  },
+  "nativeChecks": {
+    "device": "iPhone 17 Pro simulator, iOS 26.5",
+    "logicalSizes": [[874,402],[402,874]],
+    "tools": ["Dart MCP launch/hot reload/hot restart","Marionette gestures/screenshots/custom extensions","Simulator rotation"],
+    "title": "All actions visible in landscape and portrait. New-game confirmation canceled, then existing game continued successfully.",
+    "equipment": "Owned handgun/shotgun and beer selectable; no shot or beer consumed by selection.",
+    "sneakAfterSelection": true,
+    "beerThrow": {"landscapeBefore":3,"landscapeAfter":2,"portraitBefore":3,"portraitAfter":2,"gunShots":0},
+    "manualReload": {"loadedBefore":6,"reserveBefore":8,"observedRemainingSeconds":1.254231,"loadedAfter":10,"reserveAfter":4,"shotsDuringReload":0},
+    "singleFire": {"shots":1,"loadedAfter":9},
+    "heal": {"healthBefore":65,"healthAfter":100,"usableHerbsBefore":1,"usableHerbsAfter":0},
+    "systemBack": "Flutter back-route dispatch on the iOS simulator closed the equipment overlay, restored playing and preserved sneak. Not an Android hardware-button test.",
+    "inventoryFromPause": true,
+    "stealthInteraction": "The context appears as a noninteractive label with a single 72px destroy button. A native tap defeated one enemy, with zero shots.",
+    "finalRuntimeErrors": 0,
+    "harnessNote": "Two taps sent before the next widget frame reported missing targets. Re-queried live elements and completed the checks. Final reload reported no runtime errors.",
+    "fixture": "mobileControls disables enemies and seeds items for stable UI verification; it does not validate difficulty or campaign traversal."
+  },
+  "localEvidence": [
+    "evidence/mobile-mode-final-tests.log",
+    "evidence/mobile-mode-final-ui-tests.log",
+    "evidence/mobile-mode-final-analyze.log",
+    "evidence/mobile-title-landscape.png",
+    "evidence/mobile-title-portrait.png",
+    "evidence/mobile-controls-portrait.png",
+    "evidence/mobile-beer-portrait.png"
+  ],
+  "limitations": ["Physical iOS/Android touch feel and long-session performance have not been tested in this change.","Mac release uses the same responsive UI; simulator screenshots do not establish physical-device performance."]
+}
