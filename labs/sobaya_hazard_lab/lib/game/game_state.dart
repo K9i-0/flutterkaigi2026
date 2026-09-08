@@ -347,15 +347,7 @@ class HazardGameState {
       toastTime = 0,
       footDistance = 0,
       noiseTime = 0;
-  double invulnerable = 0,
-      evadeTime = 0,
-      evadeCooldown = 0,
-      kickTime = 0,
-      kickCooldown = 0,
-      hurtTime = 0,
-      recoil = 0;
-  double _evadeX = 0, _evadeZ = 0;
-  double get evadeHeading => math.atan2(_evadeX, _evadeZ);
+  double invulnerable = 0, hurtTime = 0, recoil = 0;
   double damageScale = 1, enemySpeedScale = 1;
   bool sprint = false,
       sneaking = false,
@@ -645,8 +637,7 @@ class HazardGameState {
     fireCooldown = 0;
     hitFlash = damageFlash = noiseTime = footDistance = 0;
     clearStealthNoise();
-    invulnerable = evadeTime = evadeCooldown = kickTime = kickCooldown =
-        hurtTime = recoil = 0;
+    invulnerable = hurtTime = recoil = 0;
     shotEnd = null;
     lastShotPart = null;
     rocketMuzzle = null;
@@ -864,11 +855,7 @@ class HazardGameState {
 
   void reload() {
     if (actionLocked) return;
-    if (!running ||
-        reloading > 0 ||
-        loaded >= capacity ||
-        evadeTime > 0 ||
-        kickTime > 0) {
+    if (!running || reloading > 0 || loaded >= capacity) {
       return;
     }
     if (reserve == 0) {
@@ -880,6 +867,7 @@ class HazardGameState {
   }
 
   void _finishReload() {
+    reloading = 0;
     var needed = capacity - loaded;
     var moved = 0;
     for (final i in bag.where(
@@ -1005,13 +993,8 @@ class HazardGameState {
     noiseTime = math.max(0, noiseTime - dt);
     _tickNoise(dt);
     invulnerable = math.max(0, invulnerable - dt);
-    evadeCooldown = math.max(0, evadeCooldown - dt);
-    kickCooldown = math.max(0, kickCooldown - dt);
     hurtTime = math.max(0, hurtTime - dt);
     recoil *= math.exp(-dt * 15);
-    final oldKick = kickTime;
-    kickTime = math.max(0, kickTime - dt);
-    if (oldKick > .42 && kickTime <= .42) _kickImpact();
     if (reloading > 0) {
       reloading -= dt;
       if (reloading <= 0) _finishReload();
@@ -1047,14 +1030,7 @@ class HazardGameState {
         climb = null;
         _flowTimer = 0;
       }
-    } else if (evadeTime > 0) {
-      final oldHeading = heading;
-      final elapsed = evadeDuration - evadeTime;
-      final distance = evadeTravel(elapsed + dt) - evadeTravel(elapsed);
-      move(_evadeX, _evadeZ, dt, speed: dt > 0 ? distance / dt : 0);
-      heading = oldHeading;
-      evadeTime = math.max(0, evadeTime - dt);
-    } else if (kickTime > 0 || hurtTime > .2 || reloading > 0) {
+    } else if (hurtTime > .2 || reloading > 0) {
       // Authored actions hold the feet; their hit moments use the same clock.
     } else if (!aiming) {
       move(
@@ -1647,7 +1623,6 @@ class HazardGameState {
   bool _beginGrapple(Enemy e, double dx, double dz, double dist) {
     if (actionLocked ||
         invulnerable > 0 ||
-        evadeTime > 0 ||
         e.stun > 0 ||
         e.climb != null ||
         e.vault != null ||
@@ -1858,8 +1833,6 @@ class HazardGameState {
         !aiming ||
         fireCooldown > 0 ||
         reloading > 0 ||
-        evadeTime > 0 ||
-        kickTime > 0 ||
         hurtTime > .2) {
       return;
     }
@@ -1869,9 +1842,15 @@ class HazardGameState {
       return;
     }
     if (loaded == 0) {
-      lastSound = 'empty';
-      say('Rでリロード');
-      fireCooldown = .25;
+      if (reserve > 0) {
+        // An empty trigger starts the same timed action as a manual reload.
+        // Ammunition is transferred only when that action completes.
+        reload();
+      } else {
+        lastSound = 'empty';
+        say('予備の弾がない。');
+        fireCooldown = .25;
+      }
       return;
     }
     if (weapon == 'handgun') {
@@ -2019,94 +1998,6 @@ class HazardGameState {
         _defeat(victim);
       }
     }
-  }
-
-  void evade() {
-    if (actionLocked) return;
-    if (!running || evadeCooldown > 0 || kickTime > 0 || hurtTime > .2) return;
-    _evadeX = -inputY * math.sin(yaw) - inputX * math.cos(yaw);
-    _evadeZ = -inputY * math.cos(yaw) + inputX * math.sin(yaw);
-    final length = math.sqrt(_evadeX * _evadeX + _evadeZ * _evadeZ);
-    if (length < .01) {
-      _evadeX = -math.sin(heading);
-      _evadeZ = -math.cos(heading);
-    } else {
-      _evadeX /= length;
-      _evadeZ /= length;
-    }
-    evadeTime = evadeDuration;
-    evadeCooldown = 1.45;
-    invulnerable = .32;
-    aiming = false;
-    reloading = 0;
-    lastSound = 'step';
-  }
-
-  Enemy? get kickTarget => enemies
-      .where(
-        (e) =>
-            e.alive &&
-            e.active &&
-            e.stun > 0 &&
-            (y - e.y).abs() < 1 &&
-            math.pow(e.x - x, 2) + math.pow(e.z - z, 2) < 3.24 &&
-            _reachable(e.x, e.z),
-      )
-      .firstOrNull;
-
-  void kick() {
-    if (actionLocked) return;
-    if (!running ||
-        kickTime > 0 ||
-        kickCooldown > 0 ||
-        evadeTime > 0 ||
-        hurtTime > .2) {
-      return;
-    }
-    final target = kickTarget;
-    if (target == null) {
-      say('ひるんだそば屋に近づくと蹴りを出せる。');
-      return;
-    }
-    heading = math.atan2(target.x - x, target.z - z);
-    kickTime = .78;
-    kickCooldown = 1.1;
-    aiming = false;
-    reloading = 0;
-  }
-
-  void _kickImpact() {
-    for (final e in enemies) {
-      final dx = e.x - x, dz = e.z - z, dist = math.sqrt(dx * dx + dz * dz);
-      if (!e.alive ||
-          !e.active ||
-          dist > 2.05 ||
-          (y - e.y).abs() > 1 ||
-          !_reachable(e.x, e.z)) {
-        continue;
-      }
-      if (dist > .01 &&
-          (dx * math.sin(heading) + dz * math.cos(heading)) / dist < .15) {
-        continue;
-      }
-      e.hp -= hardest ? 8 : 50;
-      e.stun = hardest ? .25 : 1.5;
-      e.meleeRecovery = 0;
-      _rememberAttack(e);
-      e.attackPending = false;
-      e.grabPending = false;
-      if (e.boss) {
-        e.bossMove = BossMove.recovery;
-        e.bossTimer = 1.5;
-      }
-      if (dist > .01) {
-        _moveEnemy(e, dx / dist * .66, dz / dist * .66);
-      }
-      if (e.hp <= 0) _defeat(e);
-    }
-    emitNoise('kick', radius: 6);
-    lastSound = 'hurt';
-    hitFlash = .15;
   }
 
   void _defeat(Enemy e, {bool suppressBeer = false}) {
@@ -2357,7 +2248,7 @@ class HazardGameState {
         say('窓の向こうが塞がっている。');
         return;
       }
-      if (evadeTime > 0 || kickTime > 0 || hurtTime > .2) return;
+      if (hurtTime > .2) return;
       vault = WindowTraversal(w, inward, x, z);
       emitNoise('vault', radius: 5);
       aiming = false;
@@ -2369,7 +2260,7 @@ class HazardGameState {
         say('そば屋がはしごを使っている。');
         return;
       }
-      if (evadeTime > 0 || kickTime > 0 || hurtTime > .2) return;
+      if (hurtTime > .2) return;
       climb = LadderTraversal(ladder!, y < 2, x, z);
       emitNoise('ladder', radius: 4);
       aiming = false;
@@ -2399,11 +2290,7 @@ class HazardGameState {
   }
 
   void startDialogue(String id) {
-    if (!running ||
-        !['yametaro', 'takosan'].contains(id) ||
-        evadeTime > 0 ||
-        kickTime > 0 ||
-        hurtTime > 0) {
+    if (!running || !['yametaro', 'takosan'].contains(id) || hurtTime > 0) {
       return;
     }
     final npc = npcs.where((n) => n['id'] == id).firstOrNull;
@@ -2566,9 +2453,6 @@ class HazardGameState {
     'yaw': yaw,
     'health': health,
     'combat': {
-      'evadeTime': evadeTime,
-      'evadeCooldown': evadeCooldown,
-      'kickTime': kickTime,
       'invulnerable': invulnerable,
       'reloading': reloading,
       'recoil': recoil,

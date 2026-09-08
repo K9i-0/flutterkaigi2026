@@ -41,11 +41,8 @@ void main() {
     s.shoot(vm.Vector3.zero(), vm.Vector3(0, 0, 1));
     s.pistolLoaded = 1;
     s.reload();
-    s.evade();
-    s.kick();
     expect(s.shots, 0);
     expect(s.reloading, 0);
-    expect(s.evadeTime, 0);
     for (var i = 0; i < 600 && s.climb != null; i++) {
       final previous = vm.Vector3(s.x, s.y, s.z);
       s.tick(1 / 60);

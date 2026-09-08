@@ -1,8 +1,11 @@
 import 'dart:math' as math;
 
-import 'package:flutter/gestures.dart'
-    show PointerDeviceKind, kSecondaryMouseButton;
+import 'package:flutter/gestures.dart' show PointerDeviceKind;
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show defaultTargetPlatform;
+import 'package:flutter/services.dart' show HardwareKeyboard;
+
+import 'game_input.dart';
 
 const _ivory = Color(0xffe6dec6), _gold = Color(0xffc8b077);
 
@@ -44,7 +47,11 @@ class _HazardTouchLookSurfaceState extends State<HazardTouchLookSurface> {
       if (event.kind == PointerDeviceKind.mouse) {
         mousePointer = event.pointer;
         widget.onStart?.call();
-        if (event.buttons & kSecondaryMouseButton != 0) {
+        if (hazardMouseAims(
+          buttons: event.buttons,
+          controlPressed: HardwareKeyboard.instance.isControlPressed,
+          platform: defaultTargetPlatform,
+        )) {
           mouseAiming = true;
           widget.onMouseAim?.call(true);
         }
@@ -237,8 +244,6 @@ class HazardTouchControls extends StatelessWidget {
     required this.onFire,
     required this.onReload,
     required this.onInteract,
-    required this.onEvade,
-    required this.onKick,
     required this.onHeal,
     required this.onWeapon,
     this.canInteract = false,
@@ -252,8 +257,6 @@ class HazardTouchControls extends StatelessWidget {
       onFire,
       onReload,
       onInteract,
-      onEvade,
-      onKick,
       onHeal,
       onWeapon;
 
@@ -289,18 +292,6 @@ class HazardTouchControls extends StatelessWidget {
           emphasized: stealthReady,
           enabled: canInteract,
           onPressed: onInteract,
-        ),
-        HazardTouchButton(
-          id: 'evade',
-          label: '回避',
-          icon: Icons.swipe,
-          onPressed: onEvade,
-        ),
-        HazardTouchButton(
-          id: 'kick',
-          label: '蹴り',
-          icon: Icons.sports_martial_arts,
-          onPressed: onKick,
         ),
         HazardTouchButton(
           id: 'heal',
@@ -373,7 +364,7 @@ class HazardTouchControls extends StatelessWidget {
               right: 0,
               bottom: 0,
               child: SizedBox(
-                width: landscape ? 214 : 160,
+                width: landscape ? 190 : 160,
                 child: Wrap(
                   alignment: WrapAlignment.end,
                   spacing: 6,
@@ -381,7 +372,7 @@ class HazardTouchControls extends StatelessWidget {
                   children: [
                     for (final action in actions)
                       SizedBox(
-                        width: landscape ? 49 : 49.3,
+                        width: landscape ? 59.3 : 49.3,
                         height: 50,
                         child: action,
                       ),

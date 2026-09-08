@@ -45,8 +45,6 @@ class CharacterPlayer {
           'ReloadHandgun',
           'ReloadShotgun',
           'Hit',
-          'Evade',
-          'Kick',
           'MugAttack',
           'MugPunch',
           'MugHook',
@@ -114,11 +112,7 @@ class UpperBodyAim extends Component {
   @override
   void update(double deltaSeconds) {
     final s = state();
-    if (!s.aiming ||
-        s.reloading > 0 ||
-        s.hurtTime > 0 ||
-        s.evadeTime > 0 ||
-        s.actionLocked) {
+    if (!s.aiming || s.reloading > 0 || s.hurtTime > 0 || s.actionLocked) {
       return;
     }
     final parentRotation = node.parent?.globalTransform.getRotation();
@@ -380,8 +374,6 @@ class HazardGameController extends ChangeNotifier {
       'ReloadHandgun',
       'ReloadShotgun',
       'Hit',
-      'Evade',
-      'Kick',
       'Climb',
       'Vault',
       'Struggle',
@@ -1343,10 +1335,6 @@ class HazardGameController extends ChangeNotifier {
         ? (s.climb!.onRungs ? 'Climb' : 'Walk')
         : s.hurtTime > 0
         ? 'Hit'
-        : s.evadeTime > 0
-        ? 'Evade'
-        : s.kickTime > 0
-        ? 'Kick'
         : s.reloading > 0
         ? (s.weapon == 'shotgun' ? 'ReloadShotgun' : 'ReloadHandgun')
         : s.aiming
@@ -1379,11 +1367,6 @@ class HazardGameController extends ChangeNotifier {
           ? locomotionPlaybackRate(moved, dt, fukuchanRunSpeed)
           : 1,
     );
-    if (motion == 'Evade' && s.evadeTime > 0 && !posePreview) {
-      player.clips['Evade']!
-        ..seek((1 - s.evadeTime / evadeDuration) * player.durations['Evade']!)
-        ..playbackTimeScale = 0;
-    }
     if (s.grapple != null) {
       if (posePreview) {
         for (final clip in player.clips.entries) {
@@ -1437,7 +1420,7 @@ class HazardGameController extends ChangeNotifier {
         : !closeCamera;
     player.node.rotation = vm.Quaternion.axisAngle(
       vm.Vector3(0, 1, 0),
-      (s.evadeTime > 0 ? s.evadeHeading : s.heading) + math.pi,
+      s.heading + math.pi,
     );
     if (s.phase == PlayPhase.dialogue && npcs.containsKey(s.talkingTo)) {
       final friend = npcs[s.talkingTo]!.node.position;

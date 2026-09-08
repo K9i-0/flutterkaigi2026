@@ -67,7 +67,7 @@ void main() {
   test('walk/run keeps foot phase while actions start at the beginning', () {
     expect(transitionMotionTime('Walk', 'Run', .9, 1.2, .8), closeTo(.6, 1e-9));
     expect(transitionMotionTime('Run', 'Walk', .6, .8, 1.2), closeTo(.9, 1e-9));
-    expect(transitionMotionTime('Walk', 'Kick', .9, 1.2, .8), 0);
+    expect(transitionMotionTime('Walk', 'ReloadHandgun', .9, 1.2, .8), 0);
     expect(transitionMotionTime('Idle', 'Walk', .9, 2, 1.2), 0);
   });
   test(

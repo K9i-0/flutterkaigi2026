@@ -81,12 +81,8 @@ void main() {
     restored.shoot(vm.Vector3.zero(), vm.Vector3(0, 0, 1));
     restored.pistolLoaded = 1;
     restored.reload();
-    restored.evade();
-    restored.kick();
     expect(restored.shots, 0);
     expect(restored.reloading, 0);
-    expect(restored.evadeTime, 0);
-    expect(restored.kickTime, 0);
     advance(restored, 2);
     expect(restored.vault, isNull);
     expect(restored.y, 0);

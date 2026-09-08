@@ -59,7 +59,7 @@ class HazardCampaign {
     to.heading = to.yaw + 3.141592653589793;
     if (to.blocked(to.x, to.z, to.y)) throw StateError('Blocked arrival: $id');
     to.stopInput();
-    to.reloading = to.hurtTime = to.evadeTime = to.kickTime = 0;
+    to.reloading = to.hurtTime = 0;
     to.fireCooldown = to.recoil = to.damageFlash = to.noiseTime = 0;
     to.clearStealthNoise();
     from.clearStealthNoise();

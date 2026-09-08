@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/gestures.dart'
     show PointerDeviceKind, kSecondaryMouseButton;
 import 'package:flutter_test/flutter_test.dart';
@@ -6,6 +7,38 @@ import 'package:sobaya_hazard_lab/game/game_mobile.dart';
 import 'package:sobaya_hazard_lab/game/game_settings.dart';
 
 void main() {
+  testWidgets('Mac control-drag looks without entering aim on the overlay', (
+    tester,
+  ) async {
+    final aims = <bool>[], looks = <Offset>[];
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: HazardTouchLookSurface(onLook: looks.add, onMouseAim: aims.add),
+        ),
+      ),
+    );
+    await tester.sendKeyDownEvent(LogicalKeyboardKey.controlLeft);
+    final mouse = await tester.startGesture(
+      const Offset(200, 120),
+      kind: PointerDeviceKind.mouse,
+      buttons: kSecondaryMouseButton,
+    );
+    await mouse.moveBy(const Offset(12, 8));
+    expect(looks, [const Offset(12, 8)]);
+    expect(aims, isEmpty);
+    await mouse.up();
+    await tester.sendKeyUpEvent(LogicalKeyboardKey.controlLeft);
+    final right = await tester.startGesture(
+      const Offset(200, 120),
+      kind: PointerDeviceKind.mouse,
+      buttons: kSecondaryMouseButton,
+    );
+    expect(aims, [true]);
+    await right.up();
+    expect(aims, [true, false]);
+  }, variant: TargetPlatformVariant.only(TargetPlatform.macOS));
+
   testWidgets(
     'mouse secondary aim and normal look remain independent from touch look',
     (tester) async {
@@ -94,14 +127,14 @@ void main() {
         size.width - safe.right - 12,
         size.height - safe.bottom - 12,
       );
+      expect(find.byKey(const ValueKey('game-evade')), findsNothing);
+      expect(find.byKey(const ValueKey('game-kick')), findsNothing);
       final rects = <Rect>[];
       for (final id in [
         'aim',
         'fire',
         'reload',
         'interact',
-        'evade',
-        'kick',
         'heal',
         'weapon',
         'sneak',
@@ -303,8 +336,6 @@ HazardTouchControls controls({
   onFire: onFire ?? () {},
   onReload: () {},
   onInteract: () {},
-  onEvade: () {},
-  onKick: () {},
   onHeal: () {},
   onWeapon: () {},
 );
