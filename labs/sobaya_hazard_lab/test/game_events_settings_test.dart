@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math' as math;
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sobaya_hazard_lab/game/game_events.dart';
@@ -111,6 +112,7 @@ void main() {
       difficulty: HazardDifficulty.tense,
       volume: .3,
       sensitivity: 1.7,
+      threatEffects: .25,
       renderScale: .65,
       muted: true,
       cinematicLighting: false,
@@ -151,6 +153,8 @@ void main() {
               7 // This case measures the mug base damage.
           ..active = true
           ..alerted = true
+          ..heading = math
+              .pi // Face the player; hostility conveys no hidden position.
           ..x = 0
           ..z = -15.1;
         for (var i = 0; i < 60; i++) {
@@ -158,6 +162,30 @@ void main() {
         }
         expect(s.health, closeTo(100 - 15 * settings.damageScale, .001));
         expect(s.enemies.first.hp, 100);
+      }
+    },
+  );
+  test(
+    'threat effects support zero and legacy saves without resetting audio',
+    () {
+      for (final encoded in <String?>[
+        null,
+        '{}',
+        'corrupt',
+        '{"threatEffects":"bad"}',
+      ]) {
+        expect(HazardSettings.decode(encoded).threatEffects, .7);
+      }
+      expect(HazardSettings.decode('{"threatEffects":-2}').threatEffects, 0);
+      expect(HazardSettings.decode('{"threatEffects":8}').threatEffects, 1);
+      for (final effects in [0.0, .25, .7, 1.0]) {
+        final settings = HazardSettings(
+          threatEffects: effects,
+          musicVolume: .4,
+        );
+        final restored = HazardSettings.decode(settings.encode());
+        expect(restored.threatEffects, effects);
+        expect(restored.musicVolume, .4);
       }
     },
   );

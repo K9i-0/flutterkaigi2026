@@ -30,7 +30,11 @@ void main() {
           ..z = bottom + .35
           ..y = s.floorHeight(rx, bottom + .35, 0)
           ..active = true
-          ..alerted = true;
+          ..alerted = true
+          // Navigation starts with an actual remembered observation upstairs.
+          ..lastKnownX = s.x
+          ..lastKnownY = s.y
+          ..lastKnownZ = s.z;
         var previousY = e.y;
         for (var i = 0; i < 2400 && e.y < 3; i++) {
           s.tick(1 / 60);

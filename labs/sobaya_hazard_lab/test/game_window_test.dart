@@ -146,6 +146,10 @@ void main() {
       ..alerted = true
       ..x = w.x
       ..z = w.entryZ(true)
+      ..heading = 0
+      ..lastKnownX = s.x
+      ..lastKnownY = s.y
+      ..lastKnownZ = s.z
       ..hp = 1;
     advance(s, 1.0);
     expect(e.vault, isNotNull);

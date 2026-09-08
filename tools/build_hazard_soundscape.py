@@ -59,5 +59,8 @@ save('voice/takosan_response.wav',response,.55)
 score=OUT/'score-manifest.json'
 if score.exists():
     rows += [r for r in json.loads(score.read_text())['files'] if r['loop']]
-(OUT/'soundscape-manifest.json').write_text(json.dumps({'version':2,'generator':'tools/build_hazard_soundscape.py','score_manifest':'score-manifest.json','seed':90449,'files':rows},ensure_ascii=False,indent=2)+'\n')
+search_score=OUT/'search-score-manifest.json'
+if search_score.exists():
+    rows += json.loads(search_score.read_text())['files']
+(OUT/'soundscape-manifest.json').write_text(json.dumps({'version':2,'generator':'tools/build_hazard_soundscape.py','score_manifest':'score-manifest.json','search_score_manifest':'search-score-manifest.json','seed':90449,'files':rows},ensure_ascii=False,indent=2)+'\n')
 print(json.dumps(rows,indent=2))

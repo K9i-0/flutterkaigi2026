@@ -34,7 +34,8 @@ void main() {
         ..x = 0
         ..z = -12
         ..active = true
-        ..alerted = true;
+        ..alerted = true
+        ..heading = 3.141592653589793;
     }
     advance(s, 1.5);
     final a = s.enemies[1], b = s.enemies[2];
@@ -61,7 +62,8 @@ void main() {
       ..x = 0
       ..z = -12
       ..active = true
-      ..alerted = true;
+      ..alerted = true
+      ..heading = 3.141592653589793;
     advance(s, 1);
     expect(e.approachX, isNull);
     expect(e.runningApproach, false);
@@ -78,7 +80,8 @@ void main() {
         ..x = 0
         ..z = -19.1
         ..active = true
-        ..alerted = true;
+        ..alerted = true
+        ..heading = 3.141592653589793;
       s.tick(1 / 60);
       advance(s, .8);
       expect(s.health, 100);

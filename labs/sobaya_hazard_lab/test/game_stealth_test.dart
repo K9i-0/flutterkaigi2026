@@ -114,11 +114,13 @@ void main() {
     s.z = -12;
     s.tick(.01);
     expect(enemy.awareness, EnemyAwareness.investigating);
-    expect(enemy.lastKnownX, 0);
-    expect(enemy.lastKnownZ, -8);
+    expect(enemy.knowledgeSource, 'shotgun');
+    expect(enemy.lastKnownX, closeTo(0, 2));
+    expect(enemy.lastKnownZ, closeTo(-8, 2));
+    final heardZ = enemy.lastKnownZ;
     expect(enemy.heardNoiseSerial, 2);
     s.tick(.01);
-    expect(enemy.lastKnownZ, -8);
+    expect(enemy.lastKnownZ, heardZ);
     expect(enemy.contactAge, closeTo(.01, .00001));
   });
 
@@ -134,7 +136,8 @@ void main() {
     s.emitNoise('shotgun', radius: 34, sourceX: 0, sourceZ: -8);
     s.tick(.01);
     expect(enemy.awareness, EnemyAwareness.investigating);
-    expect(enemy.lastKnownZ, -3);
+    expect(enemy.knowledgeSource, 'break');
+    expect(enemy.lastKnownZ, closeTo(-3, 2));
     expect(enemy.heardNoiseSerial, 2);
   });
 
@@ -262,8 +265,9 @@ void main() {
     advance(s, .1);
     expect(e.alerted, false);
     expect(e.awareness, EnemyAwareness.investigating);
-    expect(e.lastKnownX, 0);
-    expect(e.lastKnownZ, -4);
+    expect(e.lastKnownX, closeTo(0, 4));
+    expect(e.lastKnownZ, closeTo(-4, 4));
+    expect(e.uncertainty, greaterThan(2));
     expect(e.seesPlayer, false);
   });
 
@@ -285,11 +289,11 @@ void main() {
       expect(s.playerNoiseRadius, 34);
       expect(e.awareness, EnemyAwareness.investigating);
       expect(e.alerted, false);
-      expect(e.lastKnownZ, -22);
+      expect(e.lastKnownZ, closeTo(-22, 2));
     },
   );
 
-  test('losing contact pursues last sight position then drops hostility at distance', () {
+  test('losing contact searches recorded area before returning home', () {
     final s = arena()..z = 6;
     final e = s.enemies.single;
     advance(s, .7);
@@ -302,9 +306,9 @@ void main() {
     expect(e.awareness, EnemyAwareness.searching);
     expect(e.lastKnownX, 0);
     expect(e.lastKnownZ, 6);
-    advance(s, 1);
+    advance(s, 13);
     expect(e.alerted, false);
-    expect(e.awareness, EnemyAwareness.idle);
+    expect(e.awareness, EnemyAwareness.returning);
     expect(e.lastKnownX, isNull);
   });
 
@@ -377,13 +381,14 @@ void main() {
     s.emitNoise('handgun', radius: 22);
     advance(s, .1);
     s.x = 14;
+    final rememberedX = s.enemies.single.lastKnownX;
     final saved = s.checkpoint();
     final restored = restoreHazardCheckpoint(saved, s.map, {});
     final e = restored.enemies.single;
     expect(e.awareness, EnemyAwareness.investigating);
-    expect(e.lastKnownX, 0);
+    expect(e.lastKnownX, rememberedX);
     advance(restored, .1);
-    expect(e.lastKnownX, 0);
+    expect(e.lastKnownX, rememberedX);
     saved['enemies'][0]['lastKnown'][0] = double.nan;
     expect(
       () => restoreHazardCheckpoint(saved, s.map, {}),

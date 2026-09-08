@@ -6,7 +6,15 @@ from hazard_environment_kit import *
 from hazard_entrance_backdrop import build_entrance_backdrop
 # Plaza and approach. World layout is authored in meters, Blender Y = game Z.
 box('Ground',dirt,(0,0,-.16),(62,66,.3))
-for h in [('Shotgun',8,-6,8,9,True),('Barn',-4,11,11,7,False),('West',-11,1,7,7,False),('East',14,6,6,7,False),('Entrance',-8,-15,5.5,5,False)]:house(*h)
+for h in [('Shotgun',8,-6,8,9,True),('Barn',-4,11,11,7,False),('West',-11,1,7,7,False),('East',14,6,6,7,False),('Entrance',-8,-15,5.5,5,False)]:house(*h,rear_door=h[0] in ['Barn','Entrance'])
+# Rear routes cross the key barn and offer a second corner after the first
+# building. Screens are solid plank structures, visually distinct from fences.
+cover_screen('entrance',-15,-11.3,3.8)
+cover_screen('entrance_return',-16.8,-12.4,2.2,axis='z')
+cover_screen('west',-17,11,3.6)
+cover_screen('west_return',-15.3,12.1,2.2,axis='z')
+cover_screen('barn_rear',-7,17.3,5.0)
+cover_screen('barn_return',-9.4,18.3,2.0,axis='z')
 # Boundary masonry and uneven cliff silhouettes.
 for sign in [-1,1]:
  wall('Perimeter',sign*23,1,1.2,52,2.5)
@@ -77,6 +85,11 @@ for id,title,path,x,z,h in posters:
  collection.append({'id':id,'title':title,'source':path,'x':x,'z':z,'y':h-1.0,'node':g})
 
 items=[{'id':'ammo_entry','kind':'ammo','x':-8,'z':-14,'y':.9,'amount':20}, {'id':'herb_west','kind':'green','x':-13,'z':3,'y':.9,'amount':1},{'id':'shotgun','kind':'shotgun','x':6,'z':-3,'y':3.4,'amount':1},{'id':'shells_up','kind':'shells','x':7,'z':-3,'y':3.4,'amount':10},{'id':'key','kind':'key','x':-5,'z':12,'y':.95,'amount':1},{'id':'herb_red','kind':'red','x':14,'z':7,'y':.95,'amount':1},{'id':'ammo_square','kind':'ammo','x':3,'z':4,'y':.85,'amount':20},{'id':'yellow_up','kind':'yellow','x':5,'z':-8,'y':3.35,'amount':1}]
+items.extend([
+ {'id':'beer_entry','kind':'beer','x':-7.8,'z':-19.4,'y':.28,'amount':2},
+ {'id':'beer_west','kind':'beer','x':-18.4,'z':9.5,'y':.28,'amount':1},
+ {'id':'beer_barn_rear','kind':'beer','x':-7.8,'z':16,'y':.28,'amount':1},
+])
 # These supplies lie on the floor; only the upstairs set has an elevated floor.
 for item in items:
  if item['y']<2:item['y']=.28
@@ -85,6 +98,8 @@ crates=[{'id':'crate_'+str(i),'x':x,'z':z,'kind':'crate' if i%2 else 'barrel'} f
 # along the entrance hut, west tower and east wall. Zero faces game +Z.
 village_guard_headings=[math.pi/2,-math.pi/2,0,math.pi,math.pi/2,-math.pi/2,math.pi,math.pi/2]
 enemies=[{'id':i,'x':x,'z':z,'active':True,'heading':village_guard_headings[i]} for i,(x,z) in enumerate([(-2,-6),(3,-2),(-5,3),(6,7),(-9,6),(11,11),(-2,14),(17,1)])]
+enemies[4].update(x=-10.5,z=6,patrol=[[-10.5,6],[-8.4,6],[-8.4,5.2]])
+enemies[6].update(x=3,z=17,heading=-math.pi/2,patrol=[[3,17],[-1,17],[3,17],[3,13.5]])
 data={'version':1,'spawn':{'x':0,'z':-21,'yaw':math.pi},'houses':houses,'windows':windows,'solids':solids,'ramps':ramps,'items':items,'crates':crates,'enemies':enemies,'collection':collection,'gate':{'x':11.5,'z':23,'y':0},'tower':{'x':-13.5,'z':-8.8,'top':4.22}}
 data['npcs']=[{'id': 'yametaro', 'x': -2.8, 'z': -21.2}]
 data.update({'id': 'village', 'label': 'CHAPTER 01  /  YUMEMI VILLAGE', 'subtitle': '廃村ゆめみ村。特別研修、帰任日未定。', 'exits': [{'id': 'forward', 'target': 'farm', 'x': 11.5, 'z': 27.2, 'radius': 1.2, 'requiresGate': True, 'arrival': {'x': -19, 'z': -21, 'yaw': 3.141592653589793}}]})
@@ -92,6 +107,10 @@ data['gate'].update(mode='key',label='農場への門')
 (OUT/'village.json').write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
 
 export(OUT/'village.glb')
+# Environment-only rebuilds leave already-adopted shared prop GLBs untouched.
+if '--environment-only' in sys.argv:
+ print('VILLAGE',len(solids),'colliders',len(houses),'houses',len(collection),'posters')
+ sys.exit(0)
 bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False);groups.clear()
 # Shared pickup and weapon meshes. Gun points toward Blender -Y, grip at origin.
 for name,long in [('Handgun',False),('Shotgun',True)]:

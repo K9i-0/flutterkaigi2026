@@ -13,6 +13,7 @@ class HazardSettings {
     this.effectsVolume = 1,
     this.sensitivity = 1,
     this.touchSensitivity = 1,
+    this.threatEffects = .7,
     this.touchControls = false,
     this.renderScale = .85,
     this.muted = false,
@@ -26,6 +27,7 @@ class HazardSettings {
       effectsVolume,
       sensitivity,
       touchSensitivity,
+      threatEffects,
       renderScale;
   bool muted, cinematicLighting, touchControls;
   double get damageScale => switch (difficulty) {
@@ -52,6 +54,7 @@ class HazardSettings {
     'effectsVolume': effectsVolume,
     'sensitivity': sensitivity,
     'touchSensitivity': touchSensitivity,
+    'threatEffects': threatEffects,
     'touchControls': touchControls,
     'renderScale': renderScale,
     'muted': muted,
@@ -84,6 +87,7 @@ class HazardSettings {
       s.effectsVolume = bounded('effectsVolume', 0, 1, 1);
       s.sensitivity = bounded('sensitivity', .5, 2, 1);
       s.touchSensitivity = bounded('touchSensitivity', .5, 2, 1);
+      s.threatEffects = bounded('threatEffects', 0, 1, .7);
       s.touchControls = j['touchControls'] == true;
       s.renderScale = [.65, .85, 1.0].contains(j['renderScale'])
           ? (j['renderScale'] as num).toDouble()

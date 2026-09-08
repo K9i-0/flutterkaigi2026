@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "generator": "tools/build_hazard_search_score.py",
+  "seed": 90608,
+  "music": {
+    "title": "戸口の向こう",
+    "mode": "D Phrygian",
+    "seconds": 48,
+    "meter": "unmetered",
+    "percussion": false,
+    "instruments": "Sustained detuned harmonic strings, sub pedal and quiet periodic bow air; original DSP synthesis",
+    "voices_midi": [
+      38,
+      50,
+      51,
+      57,
+      62,
+      75
+    ],
+    "loop": "Integer-period oscillators, cyclic grain and slow periodic swells"
+  },
+  "files": [
+    {
+      "file": "soundscape/searching.wav",
+      "seconds": 48,
+      "sample_rate": 44100,
+      "channels": 2,
+      "loop": true,
+      "peak": 0.2975144725433684,
+      "rms": 0.07100000000000006,
+      "seam_delta": 63,
+      "sha256": "1a39c84e398dcc643caee723fc76e133fab650a651bbec109f70970928f99b2e"
+    }
+  ]
+}

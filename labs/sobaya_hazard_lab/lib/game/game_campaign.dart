@@ -115,6 +115,7 @@ class HazardCampaign {
     to.pistolLoaded = from.pistolLoaded;
     to.shotgunLoaded = from.shotgunLoaded;
     to.beers = from.beers;
+    to.beersThrown = from.beersThrown;
     to.kills = from.kills;
     to.shots = from.shots;
     to.hits = from.hits;

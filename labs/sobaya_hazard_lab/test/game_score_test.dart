@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math' as math;
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sobaya_hazard_lab/game/game_soundscape.dart';
@@ -33,7 +34,7 @@ class LoopPort implements VoicePort {
 
 void main() {
   test(
-    'alert crossfade holds briefly, fades back and never reloads the score',
+    'pursuit holds across brief occlusion, fades back and never reloads layers',
     () async {
       final ports = <LoopPort>[];
       final music = HazardSoundscape(
@@ -54,7 +55,7 @@ void main() {
             .02,
             zone: 'village',
             active: active,
-            threat: threat,
+            phase: threat ? 'chasing' : 'calm',
             speaking: speaking,
             volume: 1,
             musicVolume: 1,
@@ -67,12 +68,13 @@ void main() {
         music.ambience.idle,
         music.exploration.idle,
         music.tension.idle,
+        music.searching.idle,
       ]);
       expect(music.exploration.inspect()['volume'], .4);
       expect(music.tension.inspect()['paused'], false);
       advance(4, threat: true);
       expect(music.intensity, greaterThan(.98));
-      advance(3);
+      advance(.4);
       expect(music.intensity, greaterThan(.98));
       advance(12);
       expect(music.intensity, lessThan(.015));
@@ -87,8 +89,9 @@ void main() {
         music.ambience.idle,
         music.exploration.idle,
         music.tension.idle,
+        music.searching.idle,
       ]);
-      expect(ports.length, 3);
+      expect(ports.length, 4);
       expect(
         ports.every(
           (p) => p.calls.where((c) => c.startsWith('load:')).length == 1,
@@ -134,6 +137,8 @@ void main() {
       s.enemies[1]
         ..active = true
         ..alerted = true
+        ..heading = math
+            .pi // Face the player; hostility conveys no hidden position.
         ..x = 0
         ..z = -20;
       s.drainSounds();

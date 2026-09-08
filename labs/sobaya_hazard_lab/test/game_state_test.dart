@@ -172,8 +172,9 @@ void main() {
     advance(s, .1);
     expect(e.alerted, false);
     expect(e.awareness, EnemyAwareness.investigating);
-    expect(e.lastKnownX, 3);
-    expect(e.lastKnownZ, -6);
+    expect(e.knowledgeSource, 'handgun');
+    expect(e.lastKnownX, closeTo(3, 4));
+    expect(e.lastKnownZ, closeTo(-6, 4));
   });
   test(
     'lethal shots remove an enemy and create exactly one beer without blood',
@@ -241,8 +242,8 @@ void main() {
   );
   test('collection is idempotent and preserved across a run restart', () {
     final s = game();
-    s.x = -8;
-    s.z = -18.8;
+    s.x = -8.9;
+    s.z = -18.1;
     s.interact();
     expect(s.collected, contains('wanted'));
     s.interact();
@@ -289,7 +290,8 @@ void main() {
       ..active = true
       ..x = 7
       ..z = -4.1
-      ..alerted = true;
+      ..alerted = true
+      ..heading = 3.141592653589793;
     advance(s, .2);
     expect(e.attackPending, true);
     expect(s.health, 100);

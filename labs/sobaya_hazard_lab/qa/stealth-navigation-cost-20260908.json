@@ -1,0 +1,44 @@
+{
+  "date": "2026-09-08",
+  "method": "360 real state ticks on village collision/nav graph, count full static collision checks; CPU timings omitted because workloads differed",
+  "before": [
+    {
+      "enemies": 4,
+      "frames": 360,
+      "staticObstacles": 73,
+      "navigationPoints": 8643,
+      "fullCollisionChecks": 114075,
+      "checksP95": 10,
+      "checksMax": 17329
+    },
+    {
+      "enemies": 8,
+      "frames": 360,
+      "staticObstacles": 73,
+      "navigationPoints": 8643,
+      "fullCollisionChecks": 280826,
+      "checksP95": 168,
+      "checksMax": 51874
+    }
+  ],
+  "after": [
+    {
+      "enemies": 4,
+      "frames": 360,
+      "staticObstacles": 73,
+      "navigationPoints": 8643,
+      "fullCollisionChecks": 1830,
+      "checksP95": 10,
+      "checksMax": 168
+    },
+    {
+      "enemies": 8,
+      "frames": 360,
+      "staticObstacles": 73,
+      "navigationPoints": 8643,
+      "fullCollisionChecks": 4526,
+      "checksP95": 18,
+      "checksMax": 180
+    }
+  ]
+}
