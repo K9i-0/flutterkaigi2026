@@ -23,7 +23,7 @@ void main() {
           .02,
           zone: 'village',
           active: active,
-          threat: threat,
+          phase: threat ? 'chasing' : 'suspicious',
           speaking: false,
           volume: 1,
           suspicion: 1,
@@ -38,7 +38,7 @@ void main() {
       }
       expect(alerts, 0);
       expect(music.intensity, closeTo(.28, .005));
-      expect(music.ambience.inspect()['volume'], closeTo(.08, .01));
+      expect(music.ambience.inspect()['volume'], closeTo(.07, .01));
       final shelter = music.shelterMix;
       for (var i = 0; i < 50; i++) {
         advance(active: false, shelter: 0);
@@ -49,7 +49,7 @@ void main() {
       for (var i = 0; i < 300; i++) {
         advance(shelter: 0);
       }
-      expect(music.ambience.inspect()['volume'], closeTo(.20, .01));
+      expect(music.ambience.inspect()['volume'], closeTo(.18, .01));
       await music.dispose();
     },
   );
@@ -72,7 +72,7 @@ void main() {
           .02,
           zone: 'village',
           active: active,
-          threat: threat,
+          phase: threat ? 'chasing' : 'calm',
           speaking: false,
           volume: 1,
         )) {
@@ -105,7 +105,7 @@ void main() {
       .02,
       zone: 'village',
       active: active,
-      threat: true,
+      phase: 'chasing',
       speaking: speaking,
       volume: 1,
     );

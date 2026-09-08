@@ -83,13 +83,19 @@ void main() {
       ..y = 0
       ..z = -12
       ..active = true
-      ..alerted = true;
+      ..alerted = true
+      ..lastKnownX = s.x
+      ..lastKnownY = s.y
+      ..lastKnownZ = s.z;
     final other = s.enemies[1]
       ..x = -12.6
       ..y = 0
       ..z = -12
       ..active = true
-      ..alerted = true;
+      ..alerted = true
+      ..lastKnownX = s.x
+      ..lastKnownY = s.y
+      ..lastKnownZ = s.z;
     var climbed = false, attacked = false;
     for (var i = 0; i < 2400; i++) {
       s.tick(1 / 60);
@@ -170,12 +176,15 @@ void main() {
       ..y = 0
       ..z = -9.1
       ..active = true
-      ..alerted = true;
+      ..alerted = true
+      ..lastKnownX = s.x
+      ..lastKnownY = s.y
+      ..lastKnownZ = s.z;
     advance(s, 3);
     expect(e.climb, isNotNull);
     s.x = -13.5;
     s.y = 0;
-    s.z = -11;
+    s.z = -10.7; // Clear of the new entrance cover beside the tower.
     s.aiming = true;
     e.hp = 1;
     final origin = vm.Vector3(s.x, 1.1, s.z);

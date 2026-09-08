@@ -15,8 +15,8 @@ void main() {
         File('assets/village.json').readAsStringSync(),
       ) as Map<String, dynamic>;
       final s = HazardGameState(map)
-        ..x = -8
-        ..z = -18.8
+        ..x = -8.9
+        ..z = -18.1
         ..inputY = 1;
       s.interact();
       expect(s.phase, PlayPhase.reading);

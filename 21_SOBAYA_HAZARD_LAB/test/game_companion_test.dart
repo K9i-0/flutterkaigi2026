@@ -31,7 +31,9 @@ HazardGameState encounter(String region) {
     ..active = true
     ..alerted = true
     ..x = (n['x'] as num).toDouble()
-    ..z = (n['z'] as num).toDouble() + 1;
+    ..z = (n['z'] as num).toDouble() + 1
+    ..heading =
+        2.412; // Face the nearby visible player before targeting a companion.
   return s;
 }
 

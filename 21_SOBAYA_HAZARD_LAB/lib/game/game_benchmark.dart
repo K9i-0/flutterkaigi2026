@@ -30,8 +30,20 @@ class GameBenchmark {
   bool interrupted = false, heardAmbience = false, heardSpeech = false;
   int windowMotionTicks = 0, completedPassages = 0;
   bool playerWasVaulting = false;
+  int pursuitTicks = 0, searchTicks = 0, beerPreviewTicks = 0;
+  int maxConcurrentSearchers = 0, maxBeerGuideSprites = 0;
+  final observedPursuers = <int>{},
+      movingSearchers = <int>{},
+      advancedSearchers = <int>{};
   final speechMorphTicks = <String, int>{};
-  static const cases = [
+  static final cases = allCases
+      .where(
+        (c) =>
+            const String.fromEnvironment('HAZARD_BENCHMARK_CASE').isEmpty ||
+            c.name == const String.fromEnvironment('HAZARD_BENCHMARK_CASE'),
+      )
+      .toList();
+  static const allCases = [
     (
       name: 'village-four',
       region: 'village',
@@ -105,6 +117,22 @@ class GameBenchmark {
       event: null,
     ),
     (
+      name: 'stealth-search',
+      region: 'village',
+      count: 6,
+      scale: .85,
+      contacts: true,
+      event: null,
+    ),
+    (
+      name: 'beer-preview',
+      region: 'village',
+      count: 0,
+      scale: .85,
+      contacts: true,
+      event: null,
+    ),
+    (
       name: 'opening-voice',
       region: 'village',
       count: 8,
@@ -155,14 +183,50 @@ class GameBenchmark {
     s.health = 100000;
     for (final e in s.enemies) {
       e.active = e.id < c.count;
-      e.alerted = true;
+      e.alerted = false;
       e.x = baseX + (e.id % 4 - 1.5) * 1.5;
       e.z = baseZ + 6 + (e.id ~/ 4) * 2;
+      e.heading = math.atan2(s.x - e.x, s.z - e.z);
+      e.ambientDance = null;
     }
     game.scene.renderScale = c.scale;
     game.contactShadows?.node.visible = c.contacts;
     windowMotionTicks = completedPassages = 0;
     playerWasVaulting = false;
+    pursuitTicks = searchTicks = beerPreviewTicks = 0;
+    maxConcurrentSearchers = maxBeerGuideSprites = 0;
+    observedPursuers.clear();
+    movingSearchers.clear();
+    advancedSearchers.clear();
+    if (c.name == 'stealth-search') {
+      // A recorded sighting outside the barn, followed by the player hiding
+      // inside its real west wall. AI must generate and visit its own guesses.
+      s.x = -7.8;
+      s.z = 11;
+      s.yaw = math.pi / 2;
+      s.invulnerable = 100000;
+      for (final e in s.enemies.where((e) => e.active)) {
+        e
+          ..x = -10.8
+          ..z = 6.5 + e.id * 1.2
+          ..heading = 0
+          ..alerted = true
+          ..lastKnownX = -10.5
+          ..lastKnownY = 0
+          ..lastKnownZ = 11
+          ..knowledgeSource = 'sight'
+          ..knowledgeTime = s.time
+          ..observedHeading = 0;
+      }
+    } else if (c.name == 'beer-preview') {
+      s.beers = 10;
+      s.equip('beer');
+      s.aiming = true;
+      s.pitch = -.15;
+      s.invulnerable = 100000;
+    } else if (c.event == null && !c.name.startsWith('window-')) {
+      stageVisiblePursuers(baseX, baseZ);
+    }
     if (c.name.startsWith('window-')) {
       final w = s.windows.first;
       s.x = w.x;
@@ -219,6 +283,7 @@ class GameBenchmark {
         'eventShot': game.director?.index,
         'windowMotionTicks': windowMotionTicks,
         'completedWindowPassages': completedPassages,
+        'workload': {'observedVisualPursuers': observedPursuers.toList()..sort(), 'pursuitTicks': pursuitTicks, 'searchTicks': searchTicks, 'maxConcurrentSearchers': maxConcurrentSearchers, 'movingSearchers': movingSearchers.toList()..sort(), 'advancedSearchers': advancedSearchers.toList()..sort(), 'beerPreviewTicks': beerPreviewTicks, 'maxBeerGuideSprites': maxBeerGuideSprites, 'activeEnemies': game.state!.enemies.where((e) => e.active && e.alive).length, 'currentSearchingEnemies': currentSearchers.length, 'beerGuideVisible': game.beerVisuals.dots.node.visible, 'semanticReady': ready},
         'interrupted': interrupted,
         'foreground': game.foreground,
         'gamePhase': game.state!.phase.name,
@@ -241,8 +306,30 @@ class GameBenchmark {
   // and validity, while poll's 30-second deadline still reports failures.
   bool get semanticReady {
     final c = cases[index];
+    final ordinaryPursuit =
+        c.event == null &&
+        !c.name.startsWith('window-') &&
+        c.name != 'stealth-search' &&
+        c.name != 'beer-preview';
     return heardAmbience &&
         (c.event == null ? game.state!.time >= 6 : heardSpeech) &&
+        (!ordinaryPursuit ||
+            (pursuitTicks >= 60 &&
+                game.state!.enemies
+                    .where((e) => e.active)
+                    .every((e) => observedPursuers.contains(e.id)))) &&
+        (c.name != 'stealth-search' ||
+            (searchTicks >= 120 &&
+                movingSearchers.length >= 3 &&
+                advancedSearchers.length >= 2 &&
+                currentSearchers.length >= 2)) &&
+        (c.name != 'beer-preview' ||
+            (beerPreviewTicks >= 120 &&
+                game.state!.aiming &&
+                game.state!.weapon == 'beer' &&
+                game.state!.beerPreview != null &&
+                game.beerVisuals.dots.node.visible &&
+                game.beerVisuals.held.visible)) &&
         (!c.name.startsWith('window-') ||
             (windowMotionTicks >= 60 && completedPassages > 0)) &&
         (c.event != 'opening' ||
@@ -274,6 +361,36 @@ class GameBenchmark {
     if (index < cases.length) {
       final s = game.state!;
       final name = cases[index].name;
+      final visualPursuers = s.enemies
+          .where((e) => e.active && e.alive && e.alerted && e.seesPlayer)
+          .toList();
+      observedPursuers.addAll(visualPursuers.map((e) => e.id));
+      if (visualPursuers.any((e) => e.moved > .00001)) pursuitTicks++;
+      final searchers = currentSearchers;
+      maxConcurrentSearchers = math.max(
+        maxConcurrentSearchers,
+        searchers.length,
+      );
+      if (searchers.length >= 2) searchTicks++;
+      movingSearchers.addAll(
+        searchers.where((e) => e.moved > .00001).map((e) => e.id),
+      );
+      advancedSearchers.addAll(
+        searchers.where((e) => e.searchIndex > 0).map((e) => e.id),
+      );
+      if (name == 'beer-preview' &&
+          s.aiming &&
+          s.weapon == 'beer' &&
+          (s.beerPreview?.points.length ?? 0) > 3 &&
+          game.beerVisuals.held.visible &&
+          game.beerVisuals.dots.node.visible &&
+          game.beerVisuals.dots.geometry.instanceCount > 20) {
+        beerPreviewTicks++;
+        maxBeerGuideSprites = math.max(
+          maxBeerGuideSprites,
+          game.beerVisuals.dots.geometry.instanceCount,
+        );
+      }
       if (name == 'window-player') {
         if (s.vault?.crossing ?? false) windowMotionTicks++;
         if (playerWasVaulting && s.vault == null) completedPassages++;
@@ -293,6 +410,8 @@ class GameBenchmark {
           completedPassages += 2;
           resetWindowEnemies();
         }
+      } else if (name == 'stealth-search') {
+        s.yaw = math.pi / 2 + math.sin(s.time * .3) * .15;
       } else {
         s.yaw = math.pi + math.sin(s.time * .3) * .25;
       }
@@ -315,7 +434,63 @@ class GameBenchmark {
         ..meleeRecovery = 0
         ..approachX = null
         ..approachZ = null
-        ..approachTimer = 0;
+        ..approachTimer = 0
+        ..alerted = true
+        // This traversal workload has a real last sighting on the far side.
+        ..lastKnownX = s.x
+        ..lastKnownY = s.y
+        ..lastKnownZ = s.z
+        ..knowledgeSource = 'sight'
+        ..knowledgeTime = s.time
+        ..searchDuration = 0
+        ..searchRemaining = 0
+        ..pursuitRemaining = 0
+        ..memoryFlowTime = 0
+        ..investigationTarget = null
+        ..searchIndex = 0;
+      s.enemies[i].searchPoints.clear();
+    }
+  }
+
+  List<Enemy> get currentSearchers => game.state!.enemies
+      .where(
+        (e) =>
+            e.active &&
+            e.alive &&
+            !e.boss &&
+            e.alerted &&
+            !e.seesPlayer &&
+            e.awareness == EnemyAwareness.searching &&
+            e.searchRemaining > 0 &&
+            e.searchPoints.isNotEmpty &&
+            e.memoryNavigation != null,
+      )
+      .toList();
+
+  // Preserve the authored collision map. If a tree or new cover occupies an
+  // old crowd slot, use a nearby free, genuinely visible staging slot.
+  void stageVisiblePursuers(double baseX, double baseZ) {
+    final s = game.state!;
+    final placed = <Enemy>[];
+    for (final e in s.enemies.where((e) => e.active)) {
+      bool usable() =>
+          !s.blocked(e.x, e.z, e.y, radius: e.collisionRadius) &&
+          s.enemyCanSeePlayer(e) &&
+          placed.every(
+            (other) =>
+                math.pow(other.x - e.x, 2) + math.pow(other.z - e.z, 2) >
+                math.pow(other.collisionRadius + e.collisionRadius + .15, 2),
+          );
+      if (!usable()) {
+        for (var i = 0; i < 60; i++) {
+          e.x = baseX + (i % 7 - 3) * 1.5;
+          e.z = baseZ + 4 + (i ~/ 7) * 1.2;
+          e.y = s.floorHeight(e.x, e.z, 0);
+          e.heading = math.atan2(s.x - e.x, s.z - e.z);
+          if (usable()) break;
+        }
+      }
+      placed.add(e);
     }
   }
 

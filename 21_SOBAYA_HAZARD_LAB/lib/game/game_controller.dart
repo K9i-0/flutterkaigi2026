@@ -21,6 +21,7 @@ import 'game_settings.dart';
 import 'game_lighting.dart';
 import 'game_world_effects.dart';
 import 'game_rocket_visuals.dart';
+import 'game_beer_visuals.dart';
 import 'game_events.dart';
 import 'game_voice.dart';
 import 'game_voice_player.dart';
@@ -122,7 +123,15 @@ class UpperBodyAim extends Component {
       vm.Vector3(math.cos(s.heading), 0, -math.sin(s.heading)),
     );
     node.rotation =
-        vm.Quaternion.axisAngle(axis, s.pitch - s.recoil) * node.rotation;
+        vm.Quaternion.axisAngle(
+          axis,
+          s.pitch -
+              s.recoil -
+              (s.weapon == 'beer'
+                  ? .16 * math.sin(s.beerThrowTime / .45 * math.pi)
+                  : 0),
+        ) *
+        node.rotation;
   }
 }
 
@@ -193,6 +202,7 @@ class HazardGameController extends ChangeNotifier {
       crateNodes = <String, Node>{};
   late Node pistol, shotgun, launcher, impact, muzzle;
   late RocketVisuals rocketVisuals;
+  late BeerThrowVisuals beerVisuals;
   late HazardWorldEffects worldEffects;
   ui.Offset? rocketLockScreen;
   final fxPools = <String, AudioPool>{};
@@ -477,6 +487,11 @@ class HazardGameController extends ChangeNotifier {
     launcher = buildRocketLauncher();
     scene.add(launcher);
     rocketVisuals = RocketVisuals(scene);
+    beerVisuals = BeerThrowVisuals(
+      scene,
+      beerTemplate,
+      player.node.getChildByName('RightHand')!,
+    );
     worldEffects = HazardWorldEffects(scene, environments: environments);
     scene.add(pistol);
     scene.add(shotgun);
@@ -509,10 +524,12 @@ class HazardGameController extends ChangeNotifier {
         maxPlayers: 3,
       );
     }
-    fxPools['alert'] = await AudioPool.createFromAsset(
-      path: 'audio/combat/alert.wav',
-      maxPlayers: 1,
-    );
+    for (final cue in ['alert', 'enemy_step', 'beer_throw', 'beer_land']) {
+      fxPools[cue] = await AudioPool.createFromAsset(
+        path: 'audio/combat/$cue.wav',
+        maxPlayers: cue == 'enemy_step' ? 3 : 1,
+      );
+    }
     for (final name in HazardFxPalette.variants) {
       for (var i = 0; i < 3; i++) {
         fxPools['${name}_$i'] = await AudioPool.createFromAsset(
@@ -1136,7 +1153,7 @@ class HazardGameController extends ChangeNotifier {
           settings.effectsVolume *
           entry.value;
       if (pool != null && volume > .001) {
-        if (entry.key.startsWith('rocket_')) {
+        if (entry.key.startsWith('rocket_') || entry.key == 'shotgun') {
           soundscape.accentImpact(entry.value * settings.effectsVolume);
         }
         final record = <String, dynamic>{
@@ -1281,6 +1298,7 @@ class HazardGameController extends ChangeNotifier {
     }
     if (s.phase == PlayPhase.transition && transitionRegion()) return;
     _syncVoice();
+    final stealthAudio = s.stealthFeedback;
     final newAlert = soundscape.tick(
       dt,
       zone: s.zoneId,
@@ -1289,31 +1307,11 @@ class HazardGameController extends ChangeNotifier {
           (s.running ||
               s.phase == PlayPhase.dialogue ||
               (director != null && !director!.paused)),
-      threat:
-          s.running &&
-          s.enemies.any(
-            (e) =>
-                e.alive &&
-                e.active &&
-                e.alerted &&
-                (e.companionTarget != null ||
-                    (e.x - s.x) * (e.x - s.x) + (e.z - s.z) * (e.z - s.z) <
-                        144),
-          ),
+      phase: s.running ? stealthAudio.phase : 'calm',
       speaking: voice.speaking && settings.voiceVolume > 0,
       volume: settings.muted ? 0 : settings.volume * settings.environmentVolume,
       musicVolume: settings.muted ? 0 : settings.volume * settings.musicVolume,
-      suspicion: s.running
-          ? s.enemies
-                .where((e) => e.alive && e.active)
-                .fold<double>(
-                  0,
-                  (value, e) => math.max(
-                    value,
-                    e.discovered && !e.alerted ? e.notice.clamp(0.0, 1.0) : 0,
-                  ),
-                )
-          : 0,
+      suspicion: s.running ? stealthAudio.suspicion : 0,
       shelter:
           s.map['houses'].any(
             (h) =>
@@ -1817,6 +1815,10 @@ class HazardGameController extends ChangeNotifier {
     );
     launcher.visible = s.aiming && s.weapon == 'rocket';
     rocketVisuals.update(s, enhanced: settings.cinematicLighting);
+    s.beerPreview = s.aiming && s.weapon == 'beer'
+        ? s.planBeerThrow((camera().target - camera().position).normalized())
+        : null;
+    beerVisuals.update(s);
     worldEffects.update(
       s,
       dt: dt,
@@ -1833,6 +1835,7 @@ class HazardGameController extends ChangeNotifier {
     shotgun.visible = (s.aiming || s.reloading > 0) && s.weapon == 'shotgun';
     muzzle.visible =
         s.weapon != 'rocket' &&
+        s.weapon != 'beer' &&
         s.fireCooldown > (s.weapon == 'handgun' ? .25 : .83) &&
         s.aiming;
     if (muzzle.visible) {

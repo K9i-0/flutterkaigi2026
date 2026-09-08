@@ -65,7 +65,26 @@ def cylinder(g,m,c,r,h,n=12,axis=None,r2=None):
   face(g,m,[p(a,-h/2,r),p(b,-h/2,r),p(b,h/2,r2),p(a,h/2,r2)])
   face(g,m,[tuple(Vector(c)+(q@Vector((0,0,h/2)) if q else Vector((0,0,h/2)))),p(a,h/2,r2),p(b,h/2,r2)],[(.5,.5),(0,0),(1,0)])
 def solid(cx,cz,w,d,h,bottom=0,id=None):solids.append({'x':cx,'z':cz,'w':w,'d':d,'bottom':bottom,'top':bottom+h,'id':id})
-def wall(g,cx,cy,w,d,h,bottom=0,mat=None):box(g,mat or stone,(cx,cy,bottom+h/2),(w,d,h));solid(cx,cy,w,d,h,bottom)
+def wall(g,cx,cy,w,d,h,bottom=0,mat=None,id=None):box(g,mat or stone,(cx,cy,bottom+h/2),(w,d,h));solid(cx,cy,w,d,h,bottom,id)
+
+def cover_screen(id,x,z,length,axis='x',height=2.25):
+ # Full-height weathered timber, not a visually porous fence: its opaque mesh
+ # and collider share one footprint. Group names make round-trip audits easy.
+ w,d=(length,.22) if axis=='x' else (.22,length)
+ wall('Cover_'+id,x,z,w,d,height,mat=boards,id='cover_'+id)
+ for t in [-length/2+.10,length/2-.10]:
+  box('Cover_'+id,wood,(x+t if axis=='x' else x,z if axis=='x' else z+t,height/2),(.20,.20,height))
+ for h in [.24,height-.24]:
+  box('Cover_'+id,wood,(x,z,h),(w,d,.12))
+
+def playable_trunk(group,x,z,height,radius,top_radius):
+ cylinder(group,wood,(x,z,height/2),radius,height,10,r2=top_radius)
+ # Inscribed slabs stay inside the tapered visible trunk. Branches and distant
+ # alpha cards do not grant an invisible wall of cover around sparse foliage.
+ for i in range(3):
+  r=radius+(top_radius-radius)*(i+1)/3
+  width=r*math.sqrt(2)
+  solid(x,z,width,width,height/3,bottom=height*i/3,id='trunk')
 
 def backdrop_pine(x,z,height,base=0):
  # Three alpha-tested cards (6 triangles), grouped spatially for culling. These
@@ -122,7 +141,7 @@ def interior_details(g,id,x,z,w,d):
  for dx in [-.5,0,.5]:
   cylinder(g,paper,(tx+dx,z+d/2-.28,2.16),.16,.045,12,axis=(0,1,0))
 
-def facade_details(g,id,x,z,w,d,h,two):
+def facade_details(g,id,x,z,w,d,h,two,rear_door=False):
  # Plaster upper storeys and selected cottages distinguish rooms at a distance.
  if two or id in ['Entrance','SaveHut','Ruins']:
   low=3.12 if two else 2.30;hh=h-low
@@ -134,9 +153,9 @@ def facade_details(g,id,x,z,w,d,h,two):
   box(g,wood,(x+side*(w/2+.19),z,h-.12),(.17,d+.25,.22))
   box(g,wood,(x,z+side*(d/2+.19),h-.12),(w+.35,.17,.22))
   box(g,stone,(x+side*(w/2+.19),z,.25),(.12,d,.25))
-  if side==1:box(g,stone,(x,z+d/2+.19,.25),(w,.12,.25))
+  if side==1 and not rear_door:box(g,stone,(x,z+d/2+.19,.25),(w,.12,.25))
   else:
-   for s in [-1,1]:box(g,stone,(x+s*(w/4+.48),z-d/2-.19,.25),(w/2-.96,.12,.25))
+   for s in [-1,1]:box(g,stone,(x+s*(w/4+.48),z+side*(d/2+.19),.25),(w/2-.96,.12,.25))
  for zz in [z-d/2+.3,z+d/2-.3]:
   for xx in [x-w/2+.3,x+w/2-.3]:box(g,wood,(xx,zz,h-.24),(.15,.65,.16))
  # A small caged oil lantern marks the usable entrance without another light.
@@ -149,12 +168,19 @@ def facade_details(g,id,x,z,w,d,h,two):
  for hh in [1.85,2.21]:box(g,metal,(lx,lz,hh),(.25,.25,.06))
  cylinder(g,metal,(lx,lz,2.28),.19,.10,4,r2=.055)
 
-def house(id,x,z,w,d,two=False):
+def house(id,x,z,w,d,two=False,rear_door=False):
  h=5.8 if two else 3.1;g='House_'+id;rg='Roof_'+id;houses.append({'id':id,'x':x,'z':z,'w':w,'d':d,'height':h,'two':two})
+ if rear_door:houses[-1]['rearDoor']={'x':x,'z':z+d/2,'width':1.72,'top':2.2}
  # The walking plane is game Y=0. Keep boards at that height so feet and
  # contact shadows do not disappear 22 cm into the visible indoor floor.
  box(g,stone,(x,z,-.14),(w,d,.16));box(g,boards,(x,z,-.04),(w-.5,d-.5,.08))
- wall(g,x-w/2,z,.35,d,h);wall(g,x+w/2,z,.35,d,h);wall(g,x,z+d/2,w,.35,h)
+ wall(g,x-w/2,z,.35,d,h);wall(g,x+w/2,z,.35,d,h)
+ if rear_door:
+  for sign in [-1,1]:wall(g,x+sign*(w/4+.43),z+d/2,w/2-.86,.35,h)
+  wall(g,x,z+d/2,1.72,.35,h-2.2,2.2)
+  for sign in [-1,1]:box(g,wood,(x+sign*.9,z+d/2+.08,1.15),(.16,.25,2.3))
+  box(g,wood,(x,z+d/2+.08,2.25),(1.96,.25,.10))
+ else:wall(g,x,z+d/2,w,.35,h)
  # Selected front windows are real openings, with identical mesh/collider cuts.
  vaultable = w >= 7
  wx=x-w*.29;wz=z-d/2;half=.78;sill=.82;lintel=2.42
@@ -168,13 +194,15 @@ def house(id,x,z,w,d,two=False):
    windows.append({'id':id+'_front','x':wx,'z':wz,'sill':sill,'top':lintel,'width':half*2})
   else:wall(g,x+sign*(w/4+.43),wz,w/2-.86,.35,h)
  wall(g,x,z-d/2,1.72,.35,h-2.2,2.2)
- facade_details(g,id,x,z,w,d,h,two)
+ facade_details(g,id,x,z,w,d,h,two,rear_door)
  for sign in [-1,1]:
   box(g,wood,(x+sign*.9,z-d/2-.08,1.15),(.16,.25,2.3))
   for zz in [z-d/2,z+d/2]:box(g,wood,(x+sign*(w/2-.1),zz,h/2),(.18,.23,h))
  for zz in [z-d/2-.23,z+d/2+.23]:
   for i,xx in enumerate([x-w*.29,x+w*.29]):
    for yy in [1.55]+([4.25] if two else []):
+    # Tools keeps its readable notice on the rear wall beside the new exit.
+    if rear_door and id=='Tools' and zz>z and i==0 and yy==1.55:continue
     if vaultable and zz<z and i==0 and yy==1.55:
      # Open frame and outward-folded shutters; no glass or center crossbar.
      for sign in [-1,1]:

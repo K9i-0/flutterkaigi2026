@@ -9,6 +9,7 @@ import 'game_state.dart';
 import 'game_settings.dart';
 import 'game_native_audit.dart';
 import 'game_debug_probe.dart';
+import 'game_native_stealth_probe.dart';
 
 import 'dart:io' show pid;
 
@@ -40,18 +41,24 @@ void attachGameAutomation(HazardGameController game) {
       'ticks': _game?.renderedTicks,
       'probeRunning': _probeRunning,
       'campaignAudit': _nativeAudit?.status,
-      'probes': ['conversation', 'companionYametaro', 'companionTakosan'],
+      'probes': [
+        'conversation',
+        'companionYametaro',
+        'companionTakosan',
+        'stealthHorror',
+      ],
     }),
   );
   registerMarionetteExtension(
     name: 'madogiwa.runGameProbe',
-    description: 'name=conversation|companionYametaro|companionTakosan. Resets the test run, keeps saved collection; observes real frames/audio, pauses at the end. Foreground required, 15s deadline. Controller test, not keyboard/pointer input.',
+    description: 'name=conversation|companionYametaro|companionTakosan|stealthHorror. Resets the test run, keeps saved collection; observes real frames/audio, pauses at the end. Foreground required, stealth 55s / dialogue 15s deadline. Controller test, not keyboard/pointer input.',
     callback: (p) async {
       final g = _game;
       if (![
         'conversation',
         'companionYametaro',
         'companionTakosan',
+        'stealthHorror',
       ].contains(p['name'])) {
         return MarionetteExtensionResult.invalidParams('name=conversation');
       }
@@ -67,7 +74,9 @@ void attachGameAutomation(HazardGameController game) {
       _probeRunning = true;
       try {
         return MarionetteExtensionResult.success(
-          p['name'] == 'conversation'
+          p['name'] == 'stealthHorror'
+              ? await probeStealthHorror(g)
+              : p['name'] == 'conversation'
               ? await probeConversation(g)
               : await probeCompanionVoice(
                   g,
@@ -138,6 +147,23 @@ void attachGameAutomation(HazardGameController game) {
             'beerLiquids': [
               for (final beer in _game!.enemyBeer) beer.inspect(),
             ],
+            'beerThrow': {
+              'flights': _game!.state!.beerFlights.length,
+              'splashes': _game!.state!.beerSplashes.length,
+              'thrown': _game!.state!.beersThrown,
+              'heldVisible': _game!.beerVisuals.held.visible,
+              'gripError':
+                  (_game!.beerVisuals.held
+                              .getChildByName('Grip')!
+                              .globalTransform
+                              .getTranslation() -
+                          _game!.player.node
+                              .getChildByName('RightHand')!
+                              .globalTransform
+                              .getTranslation())
+                      .length,
+              'landing': _game!.state!.beerPreview?.landing.storage.toList(),
+            },
             'soundscape': _game!.soundscape.inspect(),
             'worldEffects': _game!.worldEffects.inspect(),
             'event': _game!.director == null
@@ -226,6 +252,7 @@ void attachGameAutomation(HazardGameController game) {
         'stealthRear',
         'stealthVision',
         'stealthNoise',
+        'beerThrow',
         'mugTiming',
         'secretMerchant',
         'rocketCombat',
@@ -504,6 +531,22 @@ void attachGameAutomation(HazardGameController game) {
               ..x = (e.id - 1) * 1.2
               ..z = -6;
           }
+        case 'beerThrow':
+          s.x = 0;
+          s.z = -20;
+          s.yaw = 3.141592653589793;
+          s.heading = 0;
+          s.pitch = 0;
+          s.seenEvents.addAll(['opening', 'farm', 'last_order', 'ending']);
+          s.addItem('beer', 3);
+          s.equip('beer');
+          s.aiming = true;
+          s.enemies.first
+            ..active = true
+            ..ambientDance = null
+            ..x = 3
+            ..z = -11
+            ..heading = 0;
         case 'stealthRear':
         case 'stealthVision':
         case 'stealthNoise':

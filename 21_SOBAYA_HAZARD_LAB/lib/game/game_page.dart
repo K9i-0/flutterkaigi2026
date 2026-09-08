@@ -18,6 +18,7 @@ import 'game_input.dart';
 import 'game_state.dart';
 import 'game_settings.dart';
 import 'game_mobile.dart';
+import 'game_threat_hud.dart';
 import 'game_automation.dart';
 import 'game_benchmark.dart';
 
@@ -211,6 +212,8 @@ class _HazardGamePageState extends State<HazardGamePage> {
         s.equip('shotgun');
       } else if (k == LogicalKeyboardKey.digit3) {
         s.equip('rocket');
+      } else if (k == LogicalKeyboardKey.digit4) {
+        s.equip('beer');
       }
     }
     setState(() {});
@@ -427,7 +430,27 @@ class _HazardGamePageState extends State<HazardGamePage> {
                           s.phase != PlayPhase.dialogue &&
                           s.phase != PlayPhase.settings &&
                           s.phase != PlayPhase.cinematic) ...[
+                        if (s.running)
+                          Positioned.fill(
+                            child: HazardThreatOverlay(
+                              feedback: s.stealthFeedback,
+                              time: s.time,
+                              yaw: s.yaw,
+                              strength: game.settings.threatEffects,
+                            ),
+                          ),
                         if (mobile) mobileHud(s, safe, bounds),
+                        if (!mobile && s.running)
+                          Positioned(
+                            top: safe.top + 26,
+                            left: (bounds.maxWidth - 280) / 2,
+                            width: 280,
+                            child: IgnorePointer(
+                              child: HazardThreatStatus(
+                                feedback: s.stealthFeedback,
+                              ),
+                            ),
+                          ),
                         if (!mobile)
                           Positioned(
                             left: 28,
@@ -659,6 +682,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
                               sneaking: s.sneaking,
                               sprinting: s.sprint,
                               aiming: s.aiming,
+                              throwingBeer: s.weapon == 'beer',
                               canInteract: s.interaction != null,
                               stealthReady: s.stealthTarget != null,
                               onSneak: () {
@@ -678,21 +702,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
                               onReload: s.reload,
                               onInteract: game.interact,
                               onHeal: s.heal,
-                              onWeapon: () {
-                                final weapons = ['handgun', 'shotgun', 'rocket']
-                                    .where(
-                                      (kind) => s.bag.any(
-                                        (item) => item.kind == kind,
-                                      ),
-                                    )
-                                    .toList();
-                                if (weapons.isNotEmpty) {
-                                  s.equip(
-                                    weapons[(weapons.indexOf(s.weapon) + 1) %
-                                        weapons.length],
-                                  );
-                                }
-                              },
+                              onWeapon: s.cycleWeapon,
                             ),
                           ),
                         if (!mobile)
@@ -728,7 +738,13 @@ class _HazardGamePageState extends State<HazardGamePage> {
                                       s.aiming = !s.aiming;
                                     }),
                                     const SizedBox(width: 6),
-                                    action('fire', '撃つ SPACE', game.fire),
+                                    action(
+                                      'fire',
+                                      s.weapon == 'beer'
+                                          ? '投げる SPACE'
+                                          : '撃つ SPACE',
+                                      game.fire,
+                                    ),
                                   ],
                                 ),
                                 const SizedBox(height: 9),
@@ -974,7 +990,11 @@ class _HazardGamePageState extends State<HazardGamePage> {
   Widget mobileHud(HazardGameState s, EdgeInsets safe, BoxConstraints bounds) {
     final short = bounds.maxHeight - safe.vertical < 440;
     final mapSize = short ? 80.0 : 96.0;
-    final ammo = s.weapon == 'rocket' ? '∞' : '${s.loaded} / ${s.reserve}';
+    final ammo = s.weapon == 'rocket'
+        ? '∞'
+        : s.weapon == 'beer'
+        ? '${s.beers}杯'
+        : '${s.loaded} / ${s.reserve}';
     final noise = s.playerNoiseTime > 0
         ? s.playerNoiseRadius
         : s.movementNoiseRadius;
@@ -1045,11 +1065,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        '${s.weapon == 'handgun'
-                            ? '拳銃'
-                            : s.weapon == 'shotgun'
-                            ? '散弾銃'
-                            : 'ロケット'}  ${s.reloading > 0 ? '装填中' : ammo}  ·  ${s.beers}杯',
+                        '${s.weaponLabel}  ${s.reloading > 0 ? '装填中' : ammo}${s.weapon == 'beer' ? '' : '  ·  ${s.beers}杯'}',
                         maxLines: 1,
                         style: const TextStyle(color: ivory, fontSize: 12),
                       ),
@@ -1067,6 +1083,10 @@ class _HazardGamePageState extends State<HazardGamePage> {
                           color: hostile ? const Color(0xffff9283) : gold,
                           fontSize: 11,
                         ),
+                      ),
+                      HazardThreatStatus(
+                        feedback: s.stealthFeedback,
+                        compact: true,
                       ),
                       for (final npc in s.npcs.where(
                         (npc) => s.companionThreatened(npc['id']),
@@ -1368,11 +1388,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
               style: TextStyle(color: gold, letterSpacing: 3, fontSize: 10),
             ),
             Text(
-              s.weapon == 'rocket'
-                  ? 'ロケットランチュア'
-                  : s.weapon == 'handgun'
-                  ? 'HANDGUN'
-                  : 'SHOTGUN',
+              s.weaponLabel,
               style: const TextStyle(
                 color: ivory,
                 fontSize: 13,
@@ -1382,6 +1398,8 @@ class _HazardGamePageState extends State<HazardGamePage> {
             Text(
               s.weapon == 'rocket'
                   ? '∞  /  ${s.rocketLockId == null ? 'SEARCH' : 'LOCK ON'}'
+                  : s.weapon == 'beer'
+                  ? '${s.beers} 杯'
                   : s.reloading > 0
                   ? 'RELOADING…'
                   : '${s.loaded.toString().padLeft(2, '0')} / ${s.reserve}',
@@ -1816,7 +1834,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
               },
             ),
             const Text(
-              '最高難度：弾薬は補給・ビール交換が中心。全そば屋撃破で次章へ。頭部・ジョッキが弱点。初期弾数は新しいゲームから適用。',
+              '最高難度：弾薬は補給・ビール交換が中心。村・農場は隠密突破も可能。山道は全そば屋を撃破。頭部・ジョッキが弱点。初期弾数は新しいゲームから適用。',
               style: TextStyle(color: ivory, fontSize: 12),
             ),
             const SizedBox(height: 20),
@@ -1915,6 +1933,17 @@ class _HazardGamePageState extends State<HazardGamePage> {
               onChanged: (v) =>
                   game.changeSettings((s) => s.environmentVolume = v),
             ),
+            Text(
+              '緊張感の画面演出  ${(options.threatEffects * 100).round()}%',
+              style: const TextStyle(color: gold),
+            ),
+            Slider(
+              key: const ValueKey('game-threat-effects'),
+              value: options.threatEffects,
+              divisions: 10,
+              activeColor: gold,
+              onChanged: (v) => game.changeSettings((s) => s.threatEffects = v),
+            ),
             Wrap(
               spacing: 12,
               runSpacing: 12,
@@ -1940,6 +1969,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
                     s.renderScale = .85;
                     s.muted = false;
                     s.cinematicLighting = true;
+                    s.threatEffects = .7;
                   }),
                 ),
                 action(
@@ -2108,7 +2138,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
           ),
           const SizedBox(height: 12),
           const Text(
-            '忍び足で音を抑え、背後から近づくとビールを破壊できます。\n敵対したら遮蔽物で視界を切り、距離を離して逃走。\nショットガンの発砲音は遠くまで届きます。\n弾倉が空なら射撃操作で装填。Rでも事前に装填できます。\nZ（またはCtrl）を押しながら移動で忍び足。MacではZを推奨。\n1 / 2 / 3 武器切替  H 回復  Z 忍び足  E 調べる\nスマホ：左スティックで移動、右の空いている画面で視点操作。',
+            '忍び足で音を抑え、背後から近づくとビールを破壊できます。\n見つかったら建物で視界を切り、忍び足で別の死角へ。\n捜索ゲージがなくなると、そば屋は持ち場へ戻ります。\nショットガンの発砲音は遠くまで届きます。\n弾倉が空なら射撃操作で装填。Rでも事前に装填できます。\nZ（またはCtrl）を押しながら移動で忍び足。MacではZを推奨。\n1 / 2 / 3 武器切替  4 ビール  H 回復  E 調べる\nビールを選び、構えて投げると着地点の音で誘導できます。\nスマホ：左スティックで移動、右の空いている画面で視点操作。',
             style: TextStyle(color: gold, height: 2),
           ),
         ],
@@ -2278,9 +2308,12 @@ class VillageMapPainter extends CustomPainter {
       final ex = visible ? enemy.x : enemy.lastSeenByPlayerX;
       final ez = visible ? enemy.z : enemy.lastSeenByPlayerZ;
       if (ex == null || ez == null) continue;
-      final color = enemy.alerted
-          ? const Color(0xffff5f52)
-          : const Color(0xffe5c66a);
+      final color = switch (enemy.awareness) {
+        EnemyAwareness.chasing => const Color(0xffff5f52),
+        EnemyAwareness.searching => const Color(0xffffbd70),
+        EnemyAwareness.returning => const Color(0xffadbd9b),
+        _ => const Color(0xffe5c66a),
+      };
       final point = at(ex, ez);
       if (visible) {
         final cone = state.enemySightPolygon(enemy);
@@ -2300,6 +2333,20 @@ class VillageMapPainter extends CustomPainter {
         ..strokeWidth = 1.5;
       c.drawCircle(point, detailed ? 4 : 2.8, p);
       p.style = PaintingStyle.fill;
+    }
+    for (final splash in state.beerSplashes.where((s) => s.age < .8)) {
+      c.drawOval(
+        Rect.fromCenter(
+          center: at(splash.position.x, splash.position.z),
+          width: 16 / 48 * size.width,
+          height: 16 / 54 * size.height,
+        ),
+        Paint()
+          ..color = const Color(0xffffbd70)
+              .withValues(alpha: .4 * (1 - splash.age / .8))
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1,
+      );
     }
     if (state.playerNoiseTime > 0) {
       c.drawOval(

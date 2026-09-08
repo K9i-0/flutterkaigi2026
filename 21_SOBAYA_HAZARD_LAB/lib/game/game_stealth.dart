@@ -1,13 +1,45 @@
 part of 'game_state.dart';
 
 /// Suspicion and sound investigation do not grant knowledge of the player.
-enum EnemyAwareness { idle, suspicious, investigating, chasing, searching }
+enum EnemyAwareness {
+  idle,
+  suspicious,
+  investigating,
+  chasing,
+  searching,
+  returning,
+}
+
+/// One contract shared by the HUD, music and inspection harness.
+class StealthFeedback {
+  const StealthFeedback({
+    required this.phase,
+    this.remaining = 0,
+    this.duration = 0,
+    this.suspicion = 0,
+    this.bearing,
+    this.reason = '',
+  });
+  final String phase, reason;
+  final double remaining, duration, suspicion;
+  final double? bearing;
+}
 
 class HazardNoise {
-  HazardNoise(this.serial, this.kind, this.x, this.y, this.z, this.radius);
+  HazardNoise(
+    this.serial,
+    this.kind,
+    this.x,
+    this.y,
+    this.z,
+    this.radius,
+    this.time,
+  );
   final int serial;
   final String kind;
-  final double x, y, z, radius;
+  final double x, y, z, radius, time;
+  int? lureInvestigator;
+  bool lureAssigned = false;
   double remaining = .65;
 }
 
@@ -38,7 +70,7 @@ extension HazardStealth on HazardGameState {
     for (var i = 0; i <= 14; i++) {
       final angle = e.heading - half + half * 2 * i / 14;
       final direction = vm.Vector3(math.sin(angle), 0, math.cos(angle));
-      final distance = wallDistance(origin, direction, range);
+      final distance = sightDistance(origin, direction, range);
       result.add(
         vm.Vector2(e.x + direction.x * distance, e.z + direction.z * distance),
       );
@@ -49,7 +81,7 @@ extension HazardStealth on HazardGameState {
   bool _sightLineClear(vm.Vector3 from, vm.Vector3 to) {
     final delta = to - from;
     return delta.length < .01 ||
-        wallDistance(from, delta.normalized(), delta.length) >=
+        sightDistance(from, delta.normalized(), delta.length) >=
             delta.length - .08;
   }
 
@@ -128,9 +160,12 @@ extension HazardStealth on HazardGameState {
         sourceY ?? y + .6,
         sourceZ ?? z,
         radius,
+        time,
       ),
     );
     if (_noiseEvents.length > 24) _noiseEvents.removeAt(0);
+    // A thrown mug makes noise at its landing, not around the player's feet.
+    if (kind == 'beer_lure') return;
     playerNoiseRadius = math.max(
       playerNoiseTime > 0 ? playerNoiseRadius : 0,
       radius,
@@ -171,7 +206,7 @@ extension HazardStealth on HazardGameState {
     if ((noise.y - (e.y + .6)).abs() > 2) radius *= .6;
     if (distance < .01) return radius / .01;
     var walls = 0;
-    for (final obstacle in collisionObstacles) {
+    for (final obstacle in perceptionObstacles) {
       if (obstacle.id == 'gate' && gateOpen) continue;
       if (obstacle.ray(from, delta.normalized(), distance) != null) walls++;
     }
@@ -188,17 +223,55 @@ extension HazardStealth on HazardGameState {
             .25 ||
         (py - e.lastKnownY!).abs() > .3) {
       e.memoryFlowTime = 0;
+      e.searchPlanRetry = 0;
     }
     e.lastKnownX = px;
     e.lastKnownY = py;
     e.lastKnownZ = pz;
     e.contactAge = 0;
-    e.searchTime = 0;
+  }
+
+  void _emitEnemyFootstep(Enemy e) {
+    e.footDistance += e.moved;
+    final stride = e.awareness == EnemyAwareness.chasing ? .75 : .6;
+    if (e.footDistance < stride) return;
+    e.footDistance %= stride;
+    emitSound(
+      'enemy_step',
+      x: e.x,
+      y: e.y + .1,
+      z: e.z,
+      loudness: e.awareness == EnemyAwareness.chasing ? 1 : .7,
+    );
+  }
+
+  double _searchLength(Enemy e, {bool gunfire = false}) =>
+      (gunfire ? 20.0 : 14.0) + (e.id % 3 - 1);
+
+  void _startSearchClock(Enemy e, {bool gunfire = false}) {
+    e.searchDuration =
+        1.8 +
+        _searchLength(
+          e,
+          gunfire: gunfire || e.alerted && e.searchDuration > 18,
+        );
+    e.searchRemaining = e.searchDuration;
+    e.pursuitRemaining = e.alerted ? 1.8 : 0;
+    e.searchTime = e.weakNoiseExtension = 0;
+    e.returnRemaining = 0;
   }
 
   void _rememberAttack(Enemy e) {
     e.alerted = true;
+    // Being hit provides the attack origin once. It is not a persistent beacon.
     _rememberPosition(e, x, y, z);
+    e.knowledgeSource = 'attack';
+    e.knowledgeTime = time;
+    e.uncertainty = 0;
+    e.hadVisualContact = true;
+    e.feedbackReason = '攻撃で気づかれた';
+    _startSearchClock(e, gunfire: weapon != 'beer');
+    e.searchPoints.clear();
   }
 
   void _disengage(Enemy e) {
@@ -207,15 +280,500 @@ extension HazardStealth on HazardGameState {
     e.seesPlayer = false;
     e.lastKnownX = e.lastKnownY = e.lastKnownZ = null;
     e.memoryNavigation = null;
-    e.contactAge = e.searchTime = 0;
+    e.contactAge = e.searchTime = e.searchRemaining = e.searchDuration = 0;
     e.approachX = e.approachZ = null;
     e.approachHeading = null;
     e.attackPending = e.grabPending = false;
     e.companionTarget = null;
     e.windup = 0;
+    e.searchPoints.clear();
+    e.investigationTarget = null;
+    e.lureAttention = e.lureHold = 0;
+    e.hadVisualContact = false;
+    e.returnRemaining = 0;
+    e.returnTarget = null;
+  }
+
+  void _returnHome(Enemy e) {
+    _disengage(e);
+    e.awareness = EnemyAwareness.returning;
+    e.returnRemaining = 8;
+    e.feedbackReason = '追跡を振り切った';
+    e.patrolIndex = 0;
+    e.patrolWait = 3;
+    e.memoryFlowTime = 0;
+  }
+
+  vm.Vector3 _navigationTarget(Enemy e) {
+    if (e.awareness == EnemyAwareness.returning) {
+      if (e.returnTarget != null) return e.returnTarget!;
+      final homeY = floorHeight(e.homeX, e.homeZ, 0);
+      if (blocked(e.homeX, e.homeZ, homeY, radius: e.collisionRadius)) {
+        final nearby = prepareNavigation().nearest(
+          e.homeX,
+          homeY,
+          e.homeZ,
+          blocked: (px, pz, py) =>
+              blocked(px, pz, py, radius: e.collisionRadius),
+        );
+        if (nearby != null) return vm.Vector3(nearby.x, nearby.y, nearby.z);
+      }
+      return vm.Vector3(e.homeX, homeY, e.homeZ);
+    }
+    if (e.seesPlayer && e.searchRole != 'pursuer' && e.lastKnownX != null) {
+      final side = e.searchRole == 'flanker' ? 3.0 : -4.0;
+      final angle = math.atan2(e.lastKnownX! - e.x, e.lastKnownZ! - e.z);
+      final px = e.lastKnownX! + math.cos(angle) * side;
+      final pz = e.lastKnownZ! - math.sin(angle) * side;
+      final p = prepareNavigation().nearest(px, e.lastKnownY!, pz);
+      if (p != null) return vm.Vector3(p.x, p.y, p.z);
+    }
+    if (e.investigationTarget != null) return e.investigationTarget!;
+    if (e.searchPoints.isNotEmpty &&
+        e.searchIndex < e.searchPoints.length &&
+        e.pursuitRemaining <= 0) {
+      return e.searchPoints[e.searchIndex];
+    }
+    return vm.Vector3(
+      e.lastKnownX ?? e.x,
+      e.lastKnownY ?? e.y,
+      e.lastKnownZ ?? e.z,
+    );
+  }
+
+  void _buildSearchPoints(Enemy e) {
+    if (e.lastKnownX == null) return;
+    final centre = vm.Vector3(e.lastKnownX!, e.lastKnownY!, e.lastKnownZ!);
+    final candidates = <vm.Vector3>[centre];
+    final radius = math.max(2.5, e.uncertainty + 1);
+    // The previous observed direction and known geometry determine these
+    // guesses; none is based on the hidden player's current position.
+    for (final turn in [0.0, -.85, .85, -1.8, 1.8]) {
+      final a = e.observedHeading + turn;
+      candidates.add(
+        vm.Vector3(
+          centre.x + math.sin(a) * radius,
+          centre.y,
+          centre.z + math.cos(a) * radius,
+        ),
+      );
+    }
+    final nearbyCorners = <vm.Vector3>[];
+    for (final o in perceptionObstacles) {
+      if (o.top < centre.y + 1.2 || o.bottom > centre.y + 1.5) continue;
+      for (final sx in [-1.0, 1.0]) {
+        for (final sz in [-1.0, 1.0]) {
+          final p = vm.Vector3(
+            o.x + sx * (o.w / 2 + .7),
+            centre.y,
+            o.z + sz * (o.d / 2 + .7),
+          );
+          if ((p - centre).length < 5.5) nearbyCorners.add(p);
+        }
+      }
+    }
+    nearbyCorners.sort(
+      (a, b) => (a - centre).length2.compareTo((b - centre).length2),
+    );
+    candidates.insertAll(1, nearbyCorners.take(3));
+    e.searchPoints.clear();
+    final nav = prepareNavigation();
+    for (final c in candidates) {
+      final p = nav.nearest(
+        c.x,
+        c.y,
+        c.z,
+        blocked: (px, pz, py) => blocked(px, pz, py, radius: .4),
+      );
+      if (p == null) continue;
+      final point = vm.Vector3(p.x, p.y, p.z);
+      if (e.searchPoints.any((other) => (other - point).length < 1)) continue;
+      e.searchPoints.add(point);
+      if (e.searchPoints.length == 6) break;
+    }
+    e.searchIndex = 0;
+    e.pointTime = e.lookTime = 0;
+    e.memoryFlowTime = 0;
+    // An unreachable or boxed-in cue may have no usable candidates. Do not
+    // rebuild its geometry every frame; retry after changes can have occurred.
+    e.searchPlanRetry = e.searchPoints.isEmpty ? 1 : 0;
+  }
+
+  void _advanceSearchPoint(Enemy e, double dt) {
+    if (e.pursuitRemaining > 0 || e.lastKnownX == null) return;
+    e.searchPlanRetry = math.max(0, e.searchPlanRetry - dt);
+    if (e.searchPoints.isEmpty && e.searchPlanRetry == 0) _buildSearchPoints(e);
+    if (e.searchPoints.isEmpty) return;
+    e.pointTime += dt;
+    final target = _navigationTarget(e);
+    final reached =
+        math.pow(target.x - e.x, 2) + math.pow(target.z - e.z, 2) < .75 * .75 &&
+        (target.y - e.y).abs() < .8;
+    if (reached) e.lookTime += dt;
+    // A blocked candidate is abandoned. Arrival never controls the expiry clock.
+    if (e.lookTime > 1.1 || e.pointTime > 3.5) {
+      e.searchIndex++;
+      e.pointTime = e.lookTime = 0;
+      e.memoryFlowTime = 0;
+      if (e.searchIndex >= e.searchPoints.length) {
+        e.searchIndex = e.searchPoints.length - 1;
+        e.lookTime = 1.2;
+      }
+    }
+  }
+
+  vm.Vector3 _heardLocation(Enemy e, HazardNoise sound, double strength) {
+    final clear = _sightLineClear(
+      vm.Vector3(sound.x, sound.y, sound.z),
+      vm.Vector3(e.x, e.y + 1.2, e.z),
+    );
+    e.uncertainty = clear ? (strength > 4 ? .75 : 1.8) : 3.2;
+    // Quantized acoustic regions retain one stable biased estimate per listener.
+    // Repeated footsteps cannot be averaged into a precise hidden location.
+    final cell = e.uncertainty;
+    final cx = (sound.x / cell).floor(), cz = (sound.z / cell).floor();
+    final angle = ((e.id * 97 + cx * 31 + cz * 17) % 360) * math.pi / 180;
+    var px = (cx + .5) * cell + math.sin(angle) * cell * .3;
+    var pz = (cz + .5) * cell + math.cos(angle) * cell * .3;
+    px = px.clamp(-22.0, 22.0);
+    pz = pz.clamp(-24.0, 29.5);
+    final py = floorHeight(px, pz, sound.y);
+    final p = prepareNavigation().nearest(
+      px,
+      py,
+      pz,
+      blocked: (px, pz, py) => blocked(px, pz, py, radius: .4),
+    );
+    return p == null ? vm.Vector3(px, py, pz) : vm.Vector3(p.x, p.y, p.z);
+  }
+
+  bool _isGunfire(String kind) =>
+      const ['handgun', 'shotgun', 'rocket', 'explosion'].contains(kind);
+
+  bool _handlesLure(Enemy e, HazardNoise noise) {
+    if (!noise.lureAssigned) {
+      noise.lureAssigned = true;
+      var nearest = double.infinity;
+      for (final other in enemies) {
+        if (!other.active ||
+            !other.alive ||
+            other.boss ||
+            (other.alerted && enemyCanSeePlayer(other)) ||
+            _perceivedNoiseStrength(other, noise) <= 0) {
+          continue;
+        }
+        final d =
+            math.pow(other.x - noise.x, 2) + math.pow(other.z - noise.z, 2);
+        if (d < nearest ||
+            d == nearest && other.id < (noise.lureInvestigator ?? 999)) {
+          nearest = d.toDouble();
+          noise.lureInvestigator = other.id;
+        }
+      }
+    }
+    if (noise.lureInvestigator == e.id) return true;
+    if (!e.alerted && e.awareness != EnemyAwareness.returning) {
+      e.heading = _turnTowards(
+        e.heading,
+        math.atan2(noise.x - e.x, noise.z - e.z),
+        .35,
+      );
+    }
+    return false;
+  }
+
+  void _hearNoise(Enemy e, HazardNoise heard, double strength) {
+    if (heard.kind == 'beer_lure') {
+      if (!_handlesLure(e, heard)) return;
+      // A bottle visibly landing is a real object, not knowledge of its thrower.
+      e.investigationTarget = vm.Vector3(
+        heard.x,
+        floorHeight(heard.x, heard.z, heard.y),
+        heard.z,
+      );
+      e.lureAttention = e.alerted || e.awareness == EnemyAwareness.returning
+          ? 1.1
+          : 4;
+      e.lureHold = 0;
+      e.memoryFlowTime = 0;
+      if (!e.alerted) {
+        _rememberPosition(e, heard.x, e.investigationTarget!.y, heard.z);
+        e.awareness = EnemyAwareness.investigating;
+        _startSearchClock(e);
+      }
+      e.knowledgeSource = 'beer_lure';
+      e.knowledgeTime = heard.time;
+      e.feedbackReason = 'ビールの音を調べている';
+      e.hasBeenAlerted = true;
+      return;
+    }
+    final gunfire = _isGunfire(heard.kind);
+    final continuing =
+        e.searchRemaining > 0 && e.awareness != EnemyAwareness.returning;
+    final p = _heardLocation(e, heard, strength);
+    final changedRegion =
+        e.lastKnownX == null ||
+        math.pow(p.x - e.lastKnownX!, 2) + math.pow(p.z - e.lastKnownZ!, 2) >
+            .5;
+    _rememberPosition(e, p.x, p.y, p.z);
+    e.knowledgeSource = heard.kind;
+    e.knowledgeTime = heard.time;
+    e.investigationTarget = null;
+    e.lureAttention = e.lureHold = 0;
+    if (changedRegion) e.searchPoints.clear();
+    if (!continuing || gunfire) {
+      _startSearchClock(e, gunfire: gunfire);
+    } else {
+      final strongStep = heard.kind == 'sprint';
+      final extension = strongStep
+          ? 1.0
+          : math.min(.65, 4 - e.weakNoiseExtension);
+      if (!strongStep) e.weakNoiseExtension += extension;
+      e.searchRemaining = math.min(
+        e.searchDuration + 4,
+        e.searchRemaining + extension,
+      );
+    }
+    e.awareness = e.alerted
+        ? EnemyAwareness.searching
+        : EnemyAwareness.investigating;
+    e.hasBeenAlerted = true;
+    e.notice = math.max(e.notice, .15);
+    e.feedbackReason = gunfire ? '新しい銃声' : '足音を聞かれた';
+  }
+
+  void _assignPursuitRole(Enemy e) {
+    final peers = enemies
+        .where(
+          (other) =>
+              other.active &&
+              other.alive &&
+              !other.boss &&
+              other.alerted &&
+              other.lastKnownX != null &&
+              math.pow(other.lastKnownX! - e.lastKnownX!, 2) +
+                      math.pow(other.lastKnownZ! - e.lastKnownZ!, 2) <
+                  16 &&
+              math.pow(other.x - e.x, 2) + math.pow(other.z - e.z, 2) < 100,
+        )
+        .toList();
+    peers.sort((a, b) {
+      final da =
+          math.pow(a.x - a.lastKnownX!, 2) + math.pow(a.z - a.lastKnownZ!, 2);
+      final db =
+          math.pow(b.x - b.lastKnownX!, 2) + math.pow(b.z - b.lastKnownZ!, 2);
+      return da == db ? a.id.compareTo(b.id) : da.compareTo(db);
+    });
+    for (var i = 0; i < peers.length; i++) {
+      peers[i].searchRole = i == 0
+          ? 'pursuer'
+          : i == 1
+          ? 'flanker'
+          : 'watcher';
+    }
+  }
+
+  void _shareVisualContact(Enemy e) {
+    if (e.shareCooldown > 0 || !e.alerted || !e.seesPlayer) return;
+    e.shareCooldown = 1;
+    final peers =
+        enemies
+            .where(
+              (other) =>
+                  other != e &&
+                  !other.boss &&
+                  other.active &&
+                  other.alive &&
+                  math.pow(other.x - e.x, 2) + math.pow(other.z - e.z, 2) <= 64,
+            )
+            .toList()
+          ..sort(
+            (a, b) => (math.pow(a.x - e.x, 2) + math.pow(a.z - e.z, 2))
+                .compareTo(math.pow(b.x - e.x, 2) + math.pow(b.z - e.z, 2)),
+          );
+    // One nearby partner receives the original observation. Recipients never
+    // relay it and a repeated timestamp cannot extend anybody's search.
+    if (peers.isEmpty) return;
+    final peer = peers.first;
+    if (peer.seesPlayer || peer.lastSharedTime >= e.knowledgeTime) return;
+    peer.lastSharedTime = e.knowledgeTime;
+    peer.alerted = true;
+    _rememberPosition(peer, e.lastKnownX!, e.lastKnownY!, e.lastKnownZ!);
+    peer.knowledgeSource = 'shared_sight';
+    peer.knowledgeTime = e.knowledgeTime;
+    peer.uncertainty = e.uncertainty;
+    peer.observedHeading = e.observedHeading;
+    peer.searchRole = 'flanker';
+    peer.feedbackReason = '近くのそば屋が呼びかけた';
+    _startSearchClock(peer);
+    peer.pursuitRemaining = 0;
+    _buildSearchPoints(peer);
+    if (peer.searchPoints.length > 1) peer.searchIndex = 1;
+    peer.awareness = EnemyAwareness.searching;
+  }
+
+  double _turnTowards(double from, double to, double maximum) {
+    var delta = (to - from + math.pi) % (math.pi * 2) - math.pi;
+    return from + delta.clamp(-maximum, maximum);
+  }
+
+  bool _tickHomeOrPatrol(Enemy e, double dt) {
+    if (e.awareness == EnemyAwareness.returning) {
+      e.returnRemaining = math.max(0, e.returnRemaining - dt);
+      final target = _navigationTarget(e);
+      if (math.pow(e.x - target.x, 2) + math.pow(e.z - target.z, 2) < .8 * .8 &&
+          (e.y - target.y).abs() < .8) {
+        e.awareness = EnemyAwareness.idle;
+        e.returnRemaining = 0;
+        e.heading = e.homeHeading ?? e.heading;
+        e.memoryNavigation = null;
+        return false;
+      }
+      return true;
+    }
+    if (e.awareness != EnemyAwareness.idle) return false;
+    final authored = (map['enemies'] as List)
+        .where((j) => j['id'] == e.id)
+        .firstOrNull;
+    final patrol = authored?['patrol'] as List?;
+    if (patrol == null || patrol.isEmpty || e.stun > 0) return false;
+    e.patrolWait = math.max(0, e.patrolWait - dt);
+    if (e.patrolWait > 0) return false;
+    final p = patrol[e.patrolIndex % patrol.length] as List;
+    final tx = (p[0] as num).toDouble(), tz = (p[1] as num).toDouble();
+    final dx = tx - e.x, dz = tz - e.z, distance = math.sqrt(dx * dx + dz * dz);
+    if (distance < .4) {
+      e.patrolIndex = (e.patrolIndex + 1) % patrol.length;
+      e.patrolWait = 4 + e.id % 3;
+      return false;
+    }
+    final wanted = math.atan2(dx, dz);
+    e.heading = _turnTowards(e.heading, wanted, dt * 1.5);
+    if (math.cos(e.heading - wanted) < .85) return false;
+    final oldX = e.x, oldZ = e.z;
+    _moveEnemy(e, dx / distance * .65 * dt, dz / distance * .65 * dt);
+    e.moved = math.sqrt(math.pow(e.x - oldX, 2) + math.pow(e.z - oldZ, 2));
+    _emitEnemyFootstep(e);
+    return false;
   }
 
   bool _updateEnemyPerception(Enemy e, double dt, double distance) {
+    if (e.boss) return _updateBossPerception(e, dt, distance);
+    e.homeHeading ??= e.heading;
+    e.contactAge += dt;
+    e.shareCooldown = math.max(0, e.shareCooldown - dt);
+    final previouslySeeing = e.seesPlayer;
+    e.seesPlayer = enemyCanSeePlayer(e);
+    HazardNoise? heard;
+    var strongest = 0.0;
+    for (final noise in _noiseEvents) {
+      if (noise.serial <= e.heardNoiseSerial) continue;
+      final strength = _perceivedNoiseStrength(e, noise);
+      if (strength > strongest) {
+        heard = noise;
+        strongest = strength;
+      }
+    }
+    e.heardNoiseSerial = _noiseSerial;
+    if (e.seesPlayer) {
+      if (e.lastKnownX != null && previouslySeeing) {
+        final dx = x - e.lastKnownX!, dz = z - e.lastKnownZ!;
+        if (dx * dx + dz * dz > .0001) e.observedHeading = math.atan2(dx, dz);
+      } else {
+        e.observedHeading = e.heading;
+      }
+      _rememberPosition(e, x, y, z);
+      e.knowledgeSource = 'sight';
+      e.knowledgeTime = e.lastVisualTime = time;
+      e.uncertainty = 0;
+      e.investigationTarget = null;
+      e.lureAttention = e.lureHold = 0;
+      final facing = distance < .01
+          ? 1.0
+          : ((x - e.x) * math.sin(e.heading) +
+                    (z - e.z) * math.cos(e.heading)) /
+                distance;
+      final peripheral = facing < .72;
+      final rate = distance < 3
+          ? 3.6
+          : sprint && !sneaking
+          ? 2.8
+          : sneaking || peripheral
+          ? .7
+          : 1.6;
+      e.notice = (e.notice + dt * rate).clamp(0.0, 1.0);
+      if (!e.alerted && e.notice < 1) {
+        e.awareness = EnemyAwareness.suspicious;
+        return false;
+      }
+      e.alerted = true;
+      e.awareness = EnemyAwareness.chasing;
+      e.hadVisualContact = true;
+      _assignPursuitRole(e);
+      _startSearchClock(e);
+      e.searchPoints.clear();
+      e.searchPlanRetry = 0;
+      e.feedbackReason = '見つかっている';
+      _shareVisualContact(e);
+      return true;
+    }
+    // Legacy alerted saves without a memory investigate their own location;
+    // they cannot initialize knowledge from a player hidden behind geometry.
+    if (e.alerted && e.lastKnownX == null) {
+      _rememberPosition(e, e.x, e.y, e.z);
+      _startSearchClock(e);
+    }
+    if (e.alerted && e.searchDuration == 0) _startSearchClock(e);
+    if (heard != null) _hearNoise(e, heard, strongest);
+    e.notice = math.max(0, e.notice - dt * .5);
+    if (e.searchRemaining <= 0 &&
+        e.lastKnownX != null &&
+        e.awareness == EnemyAwareness.suspicious) {
+      _startSearchClock(e);
+    }
+    if (e.searchRemaining > 0) {
+      e.searchRemaining = math.max(0, e.searchRemaining - dt);
+      e.pursuitRemaining = math.max(0, e.pursuitRemaining - dt);
+      e.searchTime += dt;
+      if (e.alerted) {
+        e.awareness = e.pursuitRemaining > 0
+            ? EnemyAwareness.chasing
+            : EnemyAwareness.searching;
+      } else {
+        e.awareness = EnemyAwareness.investigating;
+      }
+      if (e.searchRemaining == 0 && e.companionTarget == null) {
+        _returnHome(e);
+      } else {
+        if (e.investigationTarget != null) {
+          final p = e.investigationTarget!;
+          final arrived = math.pow(p.x - e.x, 2) + math.pow(p.z - e.z, 2) < 1.0;
+          if (arrived) {
+            e.lureHold += dt;
+            if (e.lureHold >= e.lureAttention) {
+              e.investigationTarget = null;
+              e.lureAttention = e.lureHold = 0;
+              if (!e.alerted) _returnHome(e);
+            }
+          }
+        } else {
+          _advanceSearchPoint(e, dt);
+        }
+      }
+    }
+    if (e.alerted && e.searchRemaining <= 0 && e.companionTarget == null) {
+      _returnHome(e);
+    }
+    if (e.awareness == EnemyAwareness.idle ||
+        e.awareness == EnemyAwareness.returning) {
+      return _tickHomeOrPatrol(e, dt);
+    }
+    return e.alerted ||
+        e.awareness == EnemyAwareness.investigating ||
+        e.awareness == EnemyAwareness.searching;
+  }
+
+  bool _updateBossPerception(Enemy e, double dt, double distance) {
     // Existing encounter/scenario initialization and old checkpoints use alerted.
     if (e.alerted && e.lastKnownX == null) {
       _rememberPosition(e, x, y, z);
@@ -302,31 +860,120 @@ extension HazardStealth on HazardGameState {
         e.awareness == EnemyAwareness.searching;
   }
 
+  NavigationCollision _dynamicNavigationCollision() {
+    // EnemyNavigation already rejects immutable walls, floors, refuge and NPC
+    // footprints. Rechecking all of them at every BFS node multiplies work by
+    // the number of guards. Only the gate and intact crates can change here.
+    final gates = gateOpen || hasRefuge
+        ? <Obstacle>[]
+        : obstacles.where((o) => o.id == 'gate').toList();
+    final intact = crates.where((c) => !c.broken).toList();
+    return (px, pz, py) =>
+        gates.any((o) => o.overlaps(px, pz, .37, py)) ||
+        intact.any(
+          (c) => py < 1 && (c.x - px).abs() < .82 && (c.z - pz).abs() < .82,
+        );
+  }
+
   EnemyNavigation? _memoryNavigation(Enemy e, double dt) {
-    if (e.lastKnownX == null) return null;
+    final target = _navigationTarget(e);
     e.memoryFlowTime -= dt;
     final flow = e.memoryNavigation ??= prepareNavigation().fork();
     if (e.memoryFlowTime <= 0) {
       e.memoryFlowTime = 1.2;
-      flow.update(
-        e.lastKnownX!,
-        e.lastKnownY!,
-        e.lastKnownZ!,
-        (px, pz, py) =>
-            (!gateOpen &&
-                collisionObstacles.any(
-                  (o) => o.id == 'gate' && o.overlaps(px, pz, .37, py),
-                )) ||
-            crates.any(
-              (c) =>
-                  !c.broken &&
-                  py < 1 &&
-                  (c.x - px).abs() < .82 &&
-                  (c.z - pz).abs() < .82,
-            ),
-      );
+      final dynamicBlocked = _dynamicNavigationCollision();
+      flow.update(target.x, target.y, target.z, dynamicBlocked);
+      if (e.awareness == EnemyAwareness.returning &&
+          flow.waypoint(e.x, e.y, e.z) == null) {
+        // A closed gate or a new obstacle can disconnect the post. Search only
+        // the guard's reachable component and choose its closest point to home.
+        // This fallback never uses the last search spot as a new home.
+        final origin = flow.nearest(e.x, e.y, e.z, blocked: dynamicBlocked);
+        if (origin != null) {
+          var best = origin;
+          var score =
+              math.pow(origin.x - e.homeX, 2) + math.pow(origin.z - e.homeZ, 2);
+          final pending = <int>[origin.id], visited = <int>{origin.id};
+          for (var i = 0; i < pending.length; i++) {
+            final p = flow.points[pending[i]]!;
+            final d = math.pow(p.x - e.homeX, 2) + math.pow(p.z - e.homeZ, 2);
+            if (d < score) {
+              best = p;
+              score = d;
+            }
+            for (final id in p.links) {
+              if (visited.contains(id)) continue;
+              final q = flow.points[id]!;
+              if (dynamicBlocked(q.x, q.z, q.y)) continue;
+              visited.add(id);
+              pending.add(id);
+            }
+          }
+          e.returnTarget = vm.Vector3(best.x, best.y, best.z);
+          flow.update(best.x, best.y, best.z, dynamicBlocked);
+        }
+      }
     }
     return flow;
+  }
+
+  StealthFeedback get stealthFeedback {
+    final engaged = enemies.where((e) => e.alive && e.active).toList();
+    final chasing = engaged
+        .where((e) => e.alerted && (e.seesPlayer || e.boss && e.hasBeenAlerted))
+        .toList();
+    final searching = engaged
+        .where((e) => !e.boss && e.alerted && e.searchRemaining > 0)
+        .toList();
+    final suspicious = engaged
+        .where(
+          (e) =>
+              !e.alerted && e.notice > 0 && (e.visibleToPlayer || e.discovered),
+        )
+        .toList();
+    final returning = engaged
+        .where(
+          (e) =>
+              e.awareness == EnemyAwareness.returning && e.returnRemaining > 0,
+        )
+        .toList();
+    Enemy? cue;
+    String phase = 'calm';
+    double remaining = 0, duration = 0, suspicion = 0;
+    if (chasing.isNotEmpty) {
+      phase = 'chasing';
+      cue = chasing.first;
+    } else if (searching.isNotEmpty) {
+      searching.sort((a, b) => b.searchRemaining.compareTo(a.searchRemaining));
+      phase = 'searching';
+      cue = searching.first;
+      remaining = cue.searchRemaining;
+      duration = math.max(cue.searchDuration, remaining + cue.searchTime);
+    } else if (suspicious.isNotEmpty) {
+      suspicious.sort((a, b) => b.notice.compareTo(a.notice));
+      phase = 'suspicious';
+      cue = suspicious.first;
+      suspicion = cue.notice;
+    } else if (returning.isNotEmpty) {
+      returning.sort((a, b) => b.returnRemaining.compareTo(a.returnRemaining));
+      phase = 'returning';
+      cue = returning.first;
+      remaining = cue.returnRemaining;
+      duration = 8;
+    }
+    final bearing = cue?.visibleToPlayer == true
+        ? math.atan2(cue!.x - x, cue.z - z)
+        : cue?.discovered == true && cue?.lastSeenByPlayerX != null
+        ? math.atan2(cue!.lastSeenByPlayerX! - x, cue.lastSeenByPlayerZ! - z)
+        : null;
+    return StealthFeedback(
+      phase: phase,
+      remaining: remaining,
+      duration: duration,
+      suspicion: suspicion,
+      bearing: bearing,
+      reason: cue?.feedbackReason ?? '',
+    );
   }
 
   Enemy? get stealthTarget {
@@ -390,6 +1037,25 @@ extension HazardStealth on HazardGameState {
     'visibleToPlayer': e.visibleToPlayer,
     'notice': e.notice,
     'contactAge': e.contactAge,
+    'knowledgeSource': e.knowledgeSource,
+    'knowledgeTime': e.knowledgeTime,
+    'uncertainty': e.uncertainty,
+    'searchRemaining': e.searchRemaining,
+    'searchDuration': e.searchDuration,
+    'searchRole': e.searchRole,
+    'searchIndex': e.searchIndex,
+    'searchPoints': [
+      for (final p in e.searchPoints) [p.x, p.y, p.z],
+    ],
+    'navigationTarget': [
+      _navigationTarget(e).x,
+      _navigationTarget(e).y,
+      _navigationTarget(e).z,
+    ],
+    'home': [e.homeX, e.homeZ],
+    'returnRemaining': e.returnRemaining,
+    'lureAttention': e.lureAttention,
+    'lureHold': e.lureHold,
     'lastKnown': e.lastKnownX == null
         ? null
         : [e.lastKnownX, e.lastKnownY, e.lastKnownZ],
@@ -407,6 +1073,12 @@ extension HazardStealth on HazardGameState {
     'playerNoiseRadius': playerNoiseRadius,
     'playerNoiseTime': playerNoiseTime,
     'target': stealthTarget?.id,
+    'feedback': {
+      'phase': stealthFeedback.phase,
+      'remaining': stealthFeedback.remaining,
+      'duration': stealthFeedback.duration,
+      'reason': stealthFeedback.reason,
+    },
     'sounds': [
       for (final n in _noiseEvents)
         {

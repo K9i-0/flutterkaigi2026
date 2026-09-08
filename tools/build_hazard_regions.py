@@ -120,9 +120,18 @@ box('Ground',dirt,(0,0,-.16),(52,58,.3))
 # Original farm relationships: approach/save hut southwest; shed in middle;
 # animal pen northeast; two-storey barn southeast and exit just beyond it.
 house('SaveHut',-16,-14,5,5)
-house('Tools',-9,3,7,4)
+house('Tools',-9,3,7,4,rear_door=True)
 house('NorthShed',-10,17,4,5)
-house('Barn',8,-9,9,10,True)
+house('Barn',8,-9,9,10,True,rear_door=True)
+# Two turns of opaque cover along the southern supply approach and barn flank.
+# The barn remains an optional upstairs ammunition/collection risk; its rear
+# doorway lets a discovered player cross the building and change exit choice.
+cover_screen('farm_approach',-8,-18,4.0)
+cover_screen('farm_approach_return',-6.1,-16.9,2.2,axis='z')
+cover_screen('farm_barn_flank',14.5,-18,4.0)
+cover_screen('farm_barn_return',16.4,-16.9,2.2,axis='z')
+cover_screen('farm_tools',-15,7.8,4.0)
+cover_screen('farm_tools_return',-16.9,8.9,2.2,axis='z')
 fence('Animal pen',12,5,15,'x',(-3,2.2))
 fence('Animal pen',19,12,14,'z')
 fence('Animal pen',12,19,14,'x')
@@ -135,9 +144,9 @@ for x,z in [(13,11),(15,14),(8,16)]:
 cylinder('Old well',stone,(-20,-11,.45),.65,.9,16)
 cylinder('Old well water',glass,(-20,-11,.85),.48,.015,16)
 solid(-20,-11,1.3,1.3,.9)
-cylinder('Notice tree',wood,(-11,-16,2),.23,4,10,r2=.08)
+playable_trunk('Notice tree',-11,-16,4,.23,.08)
 for x,z in [(-20,8),(-18,17),(0,19),(19,21),(-21,-3)]:
-    cylinder('Bare trunks',wood,(x,z,2.8),.18,5.6,9,r2=.055)
+    playable_trunk('Bare trunks',x,z,5.6,.18,.055)
     for i in range(5):
         a=i*2.399;axis=(math.cos(a),math.sin(a),.5)
         cylinder('Bare branches',wood,(x+axis[0]*.65,z+axis[1]*.65,3.5+i*.35),.065,1.8,7,axis=axis,r2=.013)
@@ -158,12 +167,14 @@ targets=[medallion('farm_'+str(i),x,z,h) for i,(x,z,h) in enumerate([
     (12,5.15,1.8),(6,-14.22,4.6),(11,19,2.1)])]
 collection=[
     poster('work','労働時間のお知らせ','03_SCRIPTS/19_liveaction_tako_room_escape/prop_notice_work_8_hours_production.png',-16,-11.72,1.55),
-    poster('alcohol','禁酒のお知らせ','03_SCRIPTS/19_liveaction_tako_room_escape/prop_notice_no_alcohol_twitter_production.png',-9,4.78,1.5),
+    poster('alcohol','禁酒のお知らせ','03_SCRIPTS/19_liveaction_tako_room_escape/prop_notice_no_alcohol_twitter_production.png',-11.03,4.78,1.5),
     poster('recruit','FDE募集','03_SCRIPTS/15_yumemi_island_manmonth_mystery/prop_fde_recruitment_flyer_production.png',5,-13.78,4.45,True)]
 items=[{'id':'farm_'+id,'kind':kind,'x':x,'z':z,'y':y,'amount':n} for id,kind,x,z,y,n in [
     ('herb','green',-17,-13,.8,1),('barn_ammo','ammo',6,-7,3.35,15),
     ('barn_shells','shells',8,-6,3.35,5),('field_ammo','ammo',-10,17,.85,15),
-    ('red','red',-9,3,.85,1),('yellow','yellow',10,-12,3.35,1)]]
+    ('red','red',-9,3,.85,1),('yellow','yellow',10,-12,3.35,1),
+    ('beer_entry','beer',-18,-19,.28,2),('beer_approach','beer',-10,-18.8,.28,1),
+    ('beer_tools','beer',-14,6.8,.28,1),('beer_barn','beer',9,-6,3.35,1)]]
 for item in items:
     if item['y']<2:item['y']=.28
 crates=[{'id':'farm_crate_'+str(i),'x':x,'z':z,'kind':'crate' if i%2 else 'barrel'}
@@ -171,11 +182,16 @@ crates=[{'id':'farm_crate_'+str(i),'x':x,'z':z,'kind':'crate' if i%2 else 'barre
 # Watch barn/field approaches while preserving the southwest supply route.
 farm_guard_headings=[math.pi/2,math.pi,math.pi,-math.pi/2,math.pi,math.pi]
 enemies=[{'id':i,'x':x,'z':z,'active':True,'heading':farm_guard_headings[i]} for i,(x,z) in enumerate([(-5,-3),(0,2),(8,-5),(14,10),(-11,12),(-9,3)])]
+enemies[0].update(x=-3,z=-15.5,heading=-math.pi/2,patrol=[[-3,-15.5],[2,-15.5],[2,-18.5],[-3,-18.5]])
+enemies[2].update(x=14.2,z=-6,heading=math.pi,patrol=[[14.2,-6],[14.2,-13.5]])
 save('farm','CHAPTER 02  /  ABANDONED PROJECT','秘密案件の補給施設。撤収対象外。',{'x':-19,'z':-21,'yaw':math.pi},items,crates,enemies,collection,
     [{'id':'takosan','x':-13,'z':-17.8}],
     [{'id':'back','target':'village','x':-19,'z':-23.5,'radius':1.0,'arrival':{'x':11.5,'z':25.2,'yaw':0}},
      {'id':'forward','target':'mountain','x':21.2,'z':-10,'radius':.9,'requiresGate':True,'arrival':{'x':-19,'z':-21,'yaw':math.pi}}],
     {'x':20,'z':-10,'y':0,'mode':'free','label':'山道への門'},targets)
+
+# Rebuild this chapter without rewriting the adopted mountain environment.
+if '--farm-only' in sys.argv:sys.exit(0)
 
 reset_world();rng.seed(4907)
 box('Ground',dirt,(0,0,-.16),(52,58,.3))

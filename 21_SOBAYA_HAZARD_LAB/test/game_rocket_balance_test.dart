@@ -261,23 +261,31 @@ void main() {
     }
     expect(s.pickups.any((p) => p.id == 'beer_${e.id}'), true);
   });
-  test('highest difficulty blocks next chapter even with an open gate', () {
+  test('highest difficulty allows stealth exits in village and farm', () {
     final maps = {
       for (final id in ['village', 'farm', 'mountain']) id: world(id),
     };
     final c = HazardCampaign(maps, difficulty: HazardDifficulty.tense);
-    final s = c.state
-      ..hasKey = true
-      ..gateOpen = true;
-    s.exitRequested = Map<String, dynamic>.from((s.map['exits'] as List).first);
-    s.phase = PlayPhase.transition;
-    expect(c.traverse(), false);
-    for (final e in s.enemies) {
+    for (final id in ['village', 'farm']) {
+      final s = c.state
+        ..hasKey = true
+        ..gateOpen = true;
+      expect(s.zoneId, id);
+      expect(s.livingEnemies, greaterThan(0));
+      s.exitRequested = Map<String, dynamic>.from(
+        (s.map['exits'] as List).firstWhere((e) => e['target'] != 'village'),
+      );
+      s.phase = PlayPhase.transition;
+      expect(c.traverse(), true);
+      expect(c.state.difficulty, HazardDifficulty.tense);
+    }
+    final mountain = c.state;
+    expect(mountain.chapterSecured, false);
+    for (final e in mountain.enemies) {
       e.alive = false;
       e.hp = 0;
     }
-    expect(c.traverse(), true);
-    expect(c.state.difficulty, HazardDifficulty.tense);
+    expect(mountain.chapterSecured, true);
   });
   test('hard ammunition exchange can replenish beyond old global stock cap and restore', () {
     final s = state(hard: true, id: 'farm')..beers = 30;

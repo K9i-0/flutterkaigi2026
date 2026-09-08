@@ -1,0 +1,1038 @@
+{
+  "date": "2026-09-08",
+  "platform": "macOS native profile, 1280x840, DPR 2",
+  "baseCommit": "4cc66b9",
+  "meaningOfValid": "240 rendered samples and case-specific real workload observed. This does not indicate a 60 FPS pass.",
+  "conditions": [
+    "The initial run overlapped iOS Simulator rendering and an iOS build.",
+    "The optimized run stopped the iOS application. Desktop capture and other user applications remained active.",
+    "There is no controlled pre-stealth code baseline on the same final machine state; do not infer all timing differences were caused by AI.",
+    "The navigation collision count comparison separately isolates the removed redundant work."
+  ],
+  "initialMixed": [
+    {
+      "case": "village-four",
+      "valid": true,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 11016,
+      "samples": 240,
+      "uiP95Ms": 56.17,
+      "rasterP95Ms": 33.716,
+      "uiOver16_7Ms": 216,
+      "rasterOver16_7Ms": 70,
+      "workload": {
+        "observedVisualPursuers": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "pursuitTicks": 116,
+        "searchTicks": 0,
+        "maxConcurrentSearchers": 0,
+        "movingSearchers": [],
+        "advancedSearchers": [],
+        "beerPreviewTicks": 0,
+        "maxBeerGuideSprites": 0,
+        "activeEnemies": 4,
+        "currentSearchingEnemies": 0,
+        "beerGuideVisible": false,
+        "semanticReady": true
+      }
+    },
+    {
+      "case": "village-eight",
+      "valid": true,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 13112,
+      "samples": 240,
+      "uiP95Ms": 132.937,
+      "rasterP95Ms": 37.204,
+      "uiOver16_7Ms": 233,
+      "rasterOver16_7Ms": 57,
+      "workload": {
+        "observedVisualPursuers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "pursuitTicks": 189,
+        "searchTicks": 5,
+        "maxConcurrentSearchers": 2,
+        "movingSearchers": [
+          6,
+          7
+        ],
+        "advancedSearchers": [
+          5,
+          6,
+          7
+        ],
+        "beerPreviewTicks": 0,
+        "maxBeerGuideSprites": 0,
+        "activeEnemies": 8,
+        "currentSearchingEnemies": 1,
+        "beerGuideVisible": false,
+        "semanticReady": true
+      }
+    },
+    {
+      "case": "village-eight-no-contact",
+      "valid": true,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 13885,
+      "samples": 240,
+      "uiP95Ms": 159.53,
+      "rasterP95Ms": 17.344,
+      "uiOver16_7Ms": 234,
+      "rasterOver16_7Ms": 13,
+      "workload": {
+        "observedVisualPursuers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "pursuitTicks": 183,
+        "searchTicks": 0,
+        "maxConcurrentSearchers": 1,
+        "movingSearchers": [
+          0,
+          2,
+          4,
+          6
+        ],
+        "advancedSearchers": [
+          0,
+          2,
+          4,
+          5
+        ],
+        "beerPreviewTicks": 0,
+        "maxBeerGuideSprites": 0,
+        "activeEnemies": 8,
+        "currentSearchingEnemies": 0,
+        "beerGuideVisible": false,
+        "semanticReady": true
+      }
+    },
+    {
+      "case": "village-eight-full",
+      "valid": true,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 15986,
+      "samples": 240,
+      "uiP95Ms": 158.344,
+      "rasterP95Ms": 24.388,
+      "uiOver16_7Ms": 236,
+      "rasterOver16_7Ms": 34,
+      "workload": {
+        "observedVisualPursuers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "pursuitTicks": 169,
+        "searchTicks": 30,
+        "maxConcurrentSearchers": 2,
+        "movingSearchers": [
+          2,
+          6,
+          7
+        ],
+        "advancedSearchers": [
+          2,
+          5,
+          6,
+          7
+        ],
+        "beerPreviewTicks": 0,
+        "maxBeerGuideSprites": 0,
+        "activeEnemies": 8,
+        "currentSearchingEnemies": 1,
+        "beerGuideVisible": false,
+        "semanticReady": true
+      }
+    },
+    {
+      "case": "farm-six",
+      "valid": true,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 12508,
+      "samples": 240,
+      "uiP95Ms": 146.392,
+      "rasterP95Ms": 29.418,
+      "uiOver16_7Ms": 215,
+      "rasterOver16_7Ms": 37,
+      "workload": {
+        "observedVisualPursuers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "pursuitTicks": 155,
+        "searchTicks": 94,
+        "maxConcurrentSearchers": 2,
+        "movingSearchers": [
+          2,
+          5
+        ],
+        "advancedSearchers": [
+          2,
+          5
+        ],
+        "beerPreviewTicks": 0,
+        "maxBeerGuideSprites": 0,
+        "activeEnemies": 6,
+        "currentSearchingEnemies": 2,
+        "beerGuideVisible": false,
+        "semanticReady": true
+      }
+    },
+    {
+      "case": "mountain-six",
+      "valid": true,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8507,
+      "samples": 240,
+      "uiP95Ms": 40.68,
+      "rasterP95Ms": 29.74,
+      "uiOver16_7Ms": 215,
+      "rasterOver16_7Ms": 60,
+      "workload": {
+        "observedVisualPursuers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "pursuitTicks": 141,
+        "searchTicks": 3,
+        "maxConcurrentSearchers": 2,
+        "movingSearchers": [
+          0,
+          2,
+          3
+        ],
+        "advancedSearchers": [
+          0,
+          2,
+          3
+        ],
+        "beerPreviewTicks": 0,
+        "maxBeerGuideSprites": 0,
+        "activeEnemies": 6,
+        "currentSearchingEnemies": 1,
+        "beerGuideVisible": false,
+        "semanticReady": true
+      }
+    },
+    {
+      "case": "mountain-six-full",
+      "valid": true,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 11513,
+      "samples": 240,
+      "uiP95Ms": 61.283,
+      "rasterP95Ms": 47.823,
+      "uiOver16_7Ms": 233,
+      "rasterOver16_7Ms": 154,
+      "workload": {
+        "observedVisualPursuers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "pursuitTicks": 138,
+        "searchTicks": 7,
+        "maxConcurrentSearchers": 2,
+        "movingSearchers": [
+          0,
+          2
+        ],
+        "advancedSearchers": [
+          0,
+          2,
+          3
+        ],
+        "beerPreviewTicks": 0,
+        "maxBeerGuideSprites": 0,
+        "activeEnemies": 6,
+        "currentSearchingEnemies": 1,
+        "beerGuideVisible": false,
+        "semanticReady": true
+      }
+    },
+    {
+      "case": "window-player",
+      "valid": true,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8963,
+      "samples": 240,
+      "uiP95Ms": 48.336,
+      "rasterP95Ms": 48.582,
+      "uiOver16_7Ms": 230,
+      "rasterOver16_7Ms": 232,
+      "workload": {
+        "observedVisualPursuers": [],
+        "pursuitTicks": 0,
+        "searchTicks": 0,
+        "maxConcurrentSearchers": 0,
+        "movingSearchers": [],
+        "advancedSearchers": [],
+        "beerPreviewTicks": 0,
+        "maxBeerGuideSprites": 0,
+        "activeEnemies": 0,
+        "currentSearchingEnemies": 0,
+        "beerGuideVisible": false,
+        "semanticReady": true
+      }
+    },
+    {
+      "case": "window-enemies",
+      "valid": true,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 12510,
+      "samples": 240,
+      "uiP95Ms": 68.516,
+      "rasterP95Ms": 59.127,
+      "uiOver16_7Ms": 234,
+      "rasterOver16_7Ms": 229,
+      "workload": {
+        "observedVisualPursuers": [
+          0,
+          1
+        ],
+        "pursuitTicks": 33,
+        "searchTicks": 0,
+        "maxConcurrentSearchers": 0,
+        "movingSearchers": [],
+        "advancedSearchers": [],
+        "beerPreviewTicks": 0,
+        "maxBeerGuideSprites": 0,
+        "activeEnemies": 2,
+        "currentSearchingEnemies": 0,
+        "beerGuideVisible": false,
+        "semanticReady": true
+      }
+    },
+    {
+      "case": "stealth-search",
+      "valid": true,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 13996,
+      "samples": 240,
+      "uiP95Ms": 49.432,
+      "rasterP95Ms": 15.726,
+      "uiOver16_7Ms": 227,
+      "rasterOver16_7Ms": 6,
+      "workload": {
+        "observedVisualPursuers": [],
+        "pursuitTicks": 0,
+        "searchTicks": 184,
+        "maxConcurrentSearchers": 6,
+        "movingSearchers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "advancedSearchers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "beerPreviewTicks": 0,
+        "maxBeerGuideSprites": 0,
+        "activeEnemies": 6,
+        "currentSearchingEnemies": 6,
+        "beerGuideVisible": false,
+        "semanticReady": true
+      }
+    },
+    {
+      "case": "beer-preview",
+      "valid": true,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8516,
+      "samples": 240,
+      "uiP95Ms": 34.403,
+      "rasterP95Ms": 36.546,
+      "uiOver16_7Ms": 206,
+      "rasterOver16_7Ms": 212,
+      "workload": {
+        "observedVisualPursuers": [],
+        "pursuitTicks": 0,
+        "searchTicks": 0,
+        "maxConcurrentSearchers": 0,
+        "movingSearchers": [],
+        "advancedSearchers": [],
+        "beerPreviewTicks": 341,
+        "maxBeerGuideSprites": 35,
+        "activeEnemies": 0,
+        "currentSearchingEnemies": 0,
+        "beerGuideVisible": true,
+        "semanticReady": true
+      }
+    },
+    {
+      "case": "opening-voice",
+      "valid": true,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 20042,
+      "samples": 240,
+      "uiP95Ms": 104.696,
+      "rasterP95Ms": 51.748,
+      "uiOver16_7Ms": 240,
+      "rasterOver16_7Ms": 179,
+      "workload": {
+        "observedVisualPursuers": [],
+        "pursuitTicks": 0,
+        "searchTicks": 0,
+        "maxConcurrentSearchers": 0,
+        "movingSearchers": [],
+        "advancedSearchers": [],
+        "beerPreviewTicks": 0,
+        "maxBeerGuideSprites": 0,
+        "activeEnemies": 8,
+        "currentSearchingEnemies": 0,
+        "beerGuideVisible": false,
+        "semanticReady": true
+      }
+    },
+    {
+      "case": "boss-voice",
+      "valid": true,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 10446,
+      "samples": 240,
+      "uiP95Ms": 64.85,
+      "rasterP95Ms": 57.785,
+      "uiOver16_7Ms": 228,
+      "rasterOver16_7Ms": 193,
+      "workload": {
+        "observedVisualPursuers": [],
+        "pursuitTicks": 0,
+        "searchTicks": 0,
+        "maxConcurrentSearchers": 0,
+        "movingSearchers": [],
+        "advancedSearchers": [],
+        "beerPreviewTicks": 0,
+        "maxBeerGuideSprites": 0,
+        "activeEnemies": 6,
+        "currentSearchingEnemies": 0,
+        "beerGuideVisible": false,
+        "semanticReady": true
+      }
+    }
+  ],
+  "optimized": [
+    {
+      "case": "village-four",
+      "valid": true,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 12036,
+      "samples": 240,
+      "uiP95Ms": 64.332,
+      "rasterP95Ms": 49.318,
+      "uiOver16_7Ms": 227,
+      "rasterOver16_7Ms": 111,
+      "workload": {
+        "observedVisualPursuers": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "pursuitTicks": 113,
+        "searchTicks": 0,
+        "maxConcurrentSearchers": 0,
+        "movingSearchers": [],
+        "advancedSearchers": [],
+        "beerPreviewTicks": 0,
+        "maxBeerGuideSprites": 0,
+        "activeEnemies": 4,
+        "currentSearchingEnemies": 0,
+        "beerGuideVisible": false,
+        "semanticReady": true
+      }
+    },
+    {
+      "case": "village-eight",
+      "valid": true,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 14509,
+      "samples": 240,
+      "uiP95Ms": 74.562,
+      "rasterP95Ms": 43.063,
+      "uiOver16_7Ms": 231,
+      "rasterOver16_7Ms": 113,
+      "workload": {
+        "observedVisualPursuers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "pursuitTicks": 189,
+        "searchTicks": 4,
+        "maxConcurrentSearchers": 2,
+        "movingSearchers": [
+          2,
+          3,
+          5
+        ],
+        "advancedSearchers": [
+          2,
+          3,
+          5
+        ],
+        "beerPreviewTicks": 0,
+        "maxBeerGuideSprites": 0,
+        "activeEnemies": 8,
+        "currentSearchingEnemies": 0,
+        "beerGuideVisible": false,
+        "semanticReady": true
+      }
+    },
+    {
+      "case": "village-eight-no-contact",
+      "valid": true,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 14487,
+      "samples": 240,
+      "uiP95Ms": 75.956,
+      "rasterP95Ms": 44.501,
+      "uiOver16_7Ms": 234,
+      "rasterOver16_7Ms": 112,
+      "workload": {
+        "observedVisualPursuers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "pursuitTicks": 201,
+        "searchTicks": 75,
+        "maxConcurrentSearchers": 3,
+        "movingSearchers": [
+          2,
+          3,
+          6,
+          7
+        ],
+        "advancedSearchers": [
+          2,
+          3,
+          6,
+          7
+        ],
+        "beerPreviewTicks": 0,
+        "maxBeerGuideSprites": 0,
+        "activeEnemies": 8,
+        "currentSearchingEnemies": 1,
+        "beerGuideVisible": false,
+        "semanticReady": true
+      }
+    },
+    {
+      "case": "village-eight-full",
+      "valid": true,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 18478,
+      "samples": 240,
+      "uiP95Ms": 106.674,
+      "rasterP95Ms": 59.895,
+      "uiOver16_7Ms": 236,
+      "rasterOver16_7Ms": 180,
+      "workload": {
+        "observedVisualPursuers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "pursuitTicks": 189,
+        "searchTicks": 0,
+        "maxConcurrentSearchers": 1,
+        "movingSearchers": [
+          7
+        ],
+        "advancedSearchers": [
+          7
+        ],
+        "beerPreviewTicks": 0,
+        "maxBeerGuideSprites": 0,
+        "activeEnemies": 8,
+        "currentSearchingEnemies": 0,
+        "beerGuideVisible": false,
+        "semanticReady": true
+      }
+    },
+    {
+      "case": "farm-six",
+      "valid": true,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 15007,
+      "samples": 240,
+      "uiP95Ms": 76.821,
+      "rasterP95Ms": 40.367,
+      "uiOver16_7Ms": 235,
+      "rasterOver16_7Ms": 139,
+      "workload": {
+        "observedVisualPursuers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "pursuitTicks": 183,
+        "searchTicks": 11,
+        "maxConcurrentSearchers": 2,
+        "movingSearchers": [
+          2,
+          3,
+          4
+        ],
+        "advancedSearchers": [
+          2,
+          3,
+          4
+        ],
+        "beerPreviewTicks": 0,
+        "maxBeerGuideSprites": 0,
+        "activeEnemies": 6,
+        "currentSearchingEnemies": 1,
+        "beerGuideVisible": false,
+        "semanticReady": true
+      }
+    },
+    {
+      "case": "mountain-six",
+      "valid": true,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 15006,
+      "samples": 240,
+      "uiP95Ms": 77.864,
+      "rasterP95Ms": 53.51,
+      "uiOver16_7Ms": 237,
+      "rasterOver16_7Ms": 184,
+      "workload": {
+        "observedVisualPursuers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "pursuitTicks": 144,
+        "searchTicks": 6,
+        "maxConcurrentSearchers": 2,
+        "movingSearchers": [
+          0,
+          2
+        ],
+        "advancedSearchers": [
+          0,
+          2,
+          3
+        ],
+        "beerPreviewTicks": 0,
+        "maxBeerGuideSprites": 0,
+        "activeEnemies": 6,
+        "currentSearchingEnemies": 1,
+        "beerGuideVisible": false,
+        "semanticReady": true
+      }
+    },
+    {
+      "case": "mountain-six-full",
+      "valid": true,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 18468,
+      "samples": 240,
+      "uiP95Ms": 104.033,
+      "rasterP95Ms": 69.612,
+      "uiOver16_7Ms": 238,
+      "rasterOver16_7Ms": 217,
+      "workload": {
+        "observedVisualPursuers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "pursuitTicks": 131,
+        "searchTicks": 2,
+        "maxConcurrentSearchers": 2,
+        "movingSearchers": [
+          0,
+          2
+        ],
+        "advancedSearchers": [
+          0,
+          2,
+          3
+        ],
+        "beerPreviewTicks": 0,
+        "maxBeerGuideSprites": 0,
+        "activeEnemies": 6,
+        "currentSearchingEnemies": 0,
+        "beerGuideVisible": false,
+        "semanticReady": true
+      }
+    },
+    {
+      "case": "window-player",
+      "valid": true,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8517,
+      "samples": 240,
+      "uiP95Ms": 39.746,
+      "rasterP95Ms": 42.785,
+      "uiOver16_7Ms": 236,
+      "rasterOver16_7Ms": 240,
+      "workload": {
+        "observedVisualPursuers": [],
+        "pursuitTicks": 0,
+        "searchTicks": 0,
+        "maxConcurrentSearchers": 0,
+        "movingSearchers": [],
+        "advancedSearchers": [],
+        "beerPreviewTicks": 0,
+        "maxBeerGuideSprites": 0,
+        "activeEnemies": 0,
+        "currentSearchingEnemies": 0,
+        "beerGuideVisible": false,
+        "semanticReady": true
+      }
+    },
+    {
+      "case": "window-enemies",
+      "valid": true,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 12005,
+      "samples": 240,
+      "uiP95Ms": 69.696,
+      "rasterP95Ms": 60.883,
+      "uiOver16_7Ms": 239,
+      "rasterOver16_7Ms": 238,
+      "workload": {
+        "observedVisualPursuers": [
+          0,
+          1
+        ],
+        "pursuitTicks": 34,
+        "searchTicks": 0,
+        "maxConcurrentSearchers": 0,
+        "movingSearchers": [],
+        "advancedSearchers": [],
+        "beerPreviewTicks": 0,
+        "maxBeerGuideSprites": 0,
+        "activeEnemies": 2,
+        "currentSearchingEnemies": 0,
+        "beerGuideVisible": false,
+        "semanticReady": true
+      }
+    },
+    {
+      "case": "stealth-search",
+      "valid": true,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 17536,
+      "samples": 240,
+      "uiP95Ms": 85.312,
+      "rasterP95Ms": 28.969,
+      "uiOver16_7Ms": 240,
+      "rasterOver16_7Ms": 154,
+      "workload": {
+        "observedVisualPursuers": [],
+        "pursuitTicks": 0,
+        "searchTicks": 183,
+        "maxConcurrentSearchers": 6,
+        "movingSearchers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "advancedSearchers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "beerPreviewTicks": 0,
+        "maxBeerGuideSprites": 0,
+        "activeEnemies": 6,
+        "currentSearchingEnemies": 6,
+        "beerGuideVisible": false,
+        "semanticReady": true
+      }
+    },
+    {
+      "case": "beer-preview",
+      "valid": true,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8455,
+      "samples": 240,
+      "uiP95Ms": 37.141,
+      "rasterP95Ms": 38.001,
+      "uiOver16_7Ms": 240,
+      "rasterOver16_7Ms": 240,
+      "workload": {
+        "observedVisualPursuers": [],
+        "pursuitTicks": 0,
+        "searchTicks": 0,
+        "maxConcurrentSearchers": 0,
+        "movingSearchers": [],
+        "advancedSearchers": [],
+        "beerPreviewTicks": 268,
+        "maxBeerGuideSprites": 35,
+        "activeEnemies": 0,
+        "currentSearchingEnemies": 0,
+        "beerGuideVisible": true,
+        "semanticReady": true
+      }
+    },
+    {
+      "case": "opening-voice",
+      "valid": true,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 18024,
+      "samples": 240,
+      "uiP95Ms": 68.672,
+      "rasterP95Ms": 28.906,
+      "uiOver16_7Ms": 240,
+      "rasterOver16_7Ms": 177,
+      "workload": {
+        "observedVisualPursuers": [],
+        "pursuitTicks": 0,
+        "searchTicks": 0,
+        "maxConcurrentSearchers": 0,
+        "movingSearchers": [],
+        "advancedSearchers": [],
+        "beerPreviewTicks": 0,
+        "maxBeerGuideSprites": 0,
+        "activeEnemies": 8,
+        "currentSearchingEnemies": 0,
+        "beerGuideVisible": false,
+        "semanticReady": true
+      }
+    },
+    {
+      "case": "boss-voice",
+      "valid": true,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8956,
+      "samples": 240,
+      "uiP95Ms": 40.959,
+      "rasterP95Ms": 37.749,
+      "uiOver16_7Ms": 240,
+      "rasterOver16_7Ms": 240,
+      "workload": {
+        "observedVisualPursuers": [],
+        "pursuitTicks": 0,
+        "searchTicks": 0,
+        "maxConcurrentSearchers": 0,
+        "movingSearchers": [],
+        "advancedSearchers": [],
+        "beerPreviewTicks": 0,
+        "maxBeerGuideSprites": 0,
+        "activeEnemies": 6,
+        "currentSearchingEnemies": 0,
+        "beerGuideVisible": false,
+        "semanticReady": true
+      }
+    }
+  ],
+  "lightingControl": [
+    {
+      "case": "village-four",
+      "valid": true,
+      "viewport": [
+        1280.0,
+        840.0
+      ],
+      "devicePixelRatio": 2.0,
+      "elapsedMs": 8519,
+      "samples": 240,
+      "uiP95Ms": 42.476,
+      "rasterP95Ms": 32.264,
+      "uiOver16_7Ms": 199,
+      "rasterOver16_7Ms": 46,
+      "workload": {
+        "observedVisualPursuers": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "pursuitTicks": 122,
+        "searchTicks": 0,
+        "maxConcurrentSearchers": 0,
+        "movingSearchers": [],
+        "advancedSearchers": [],
+        "beerPreviewTicks": 0,
+        "maxBeerGuideSprites": 0,
+        "activeEnemies": 4,
+        "currentSearchingEnemies": 0,
+        "beerGuideVisible": false,
+        "semanticReady": true
+      }
+    }
+  ],
+  "conclusion": "All 13 workloads completed, but frame times remain high on this machine. No sustained 60 FPS or physical-phone performance claim. Advanced lighting remains user-configurable; the control run does not change shipping settings."
+}

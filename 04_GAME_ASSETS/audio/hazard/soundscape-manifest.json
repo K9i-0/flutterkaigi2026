@@ -70,7 +70,19 @@
       "seam_delta": 65,
       "sha256": "549f87da7049cb60f6f84abe79e8411fc0ab609109ed5ea1e2124feab4cdf69b",
       "target_lufs": -19
+    },
+    {
+      "file": "soundscape/searching.wav",
+      "seconds": 48,
+      "sample_rate": 44100,
+      "channels": 2,
+      "loop": true,
+      "peak": 0.2975144725433684,
+      "rms": 0.07100000000000006,
+      "seam_delta": 63,
+      "sha256": "1a39c84e398dcc643caee723fc76e133fab650a651bbec109f70970928f99b2e"
     }
   ],
-  "score_manifest": "score-manifest.json"
+  "score_manifest": "score-manifest.json",
+  "search_score_manifest": "search-score-manifest.json"
 }

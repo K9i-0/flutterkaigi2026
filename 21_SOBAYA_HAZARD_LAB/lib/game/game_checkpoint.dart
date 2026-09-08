@@ -1,3 +1,5 @@
+import 'package:vector_math/vector_math.dart' as vm;
+
 import 'game_story.dart';
 import 'game_settings.dart';
 import 'game_state.dart';
@@ -12,7 +14,7 @@ extension HazardCheckpoint on HazardGameState {
     'version': 1,
     'encounterVersion': 2,
     'bossBalanceVersion': 2,
-    'stealthVersion': 1,
+    'stealthVersion': 2,
     'map': zoneId,
     'mapVersion': map['version'],
     'savedAt': DateTime.now().toIso8601String(),
@@ -34,6 +36,20 @@ extension HazardCheckpoint on HazardGameState {
     'pistolLoaded': pistolLoaded,
     'shotgunLoaded': shotgunLoaded,
     'beers': beers,
+    'beersThrown': beersThrown,
+    'beerThrowTime': beerThrowTime,
+    // Preserve the action interval while an adopted throw is still in flight.
+    'beerThrowCooldown': weapon == 'beer' || beerFlights.isNotEmpty
+        ? fireCooldown
+        : 0,
+    'beerFlights': [
+      for (final b in beerFlights)
+        {
+          'origin': b.origin.storage.toList(),
+          'velocity': b.velocity.storage.toList(),
+          'age': b.age,
+        },
+    ],
     'kills': kills,
     'shots': shots,
     'hits': hits,
@@ -98,6 +114,43 @@ extension HazardCheckpoint on HazardGameState {
             'lastSeenByPlayerHeading': e.lastSeenByPlayerHeading,
             'contactAge': e.contactAge,
             'searchTime': e.searchTime,
+            'stealthMemory': {
+              'source': e.knowledgeSource,
+              'time': e.knowledgeTime,
+              'visualTime': e.lastVisualTime,
+              'sharedTime': e.lastSharedTime,
+              'uncertainty': e.uncertainty,
+              'remaining': e.searchRemaining,
+              'duration': e.searchDuration,
+              'pursuit': e.pursuitRemaining,
+              'extension': e.weakNoiseExtension,
+              'returnRemaining': e.returnRemaining,
+              'role': e.searchRole,
+              'reason': e.feedbackReason,
+              'observedHeading': e.observedHeading,
+              'hadVisualContact': e.hadVisualContact,
+              'homeHeading': e.homeHeading,
+              'returnTarget': e.returnTarget == null
+                  ? null
+                  : [e.returnTarget!.x, e.returnTarget!.y, e.returnTarget!.z],
+              'searchIndex': e.searchIndex,
+              'pointTime': e.pointTime,
+              'lookTime': e.lookTime,
+              'patrolIndex': e.patrolIndex,
+              'patrolWait': e.patrolWait,
+              'lureAttention': e.lureAttention,
+              'lureHold': e.lureHold,
+              'target': e.investigationTarget == null
+                  ? null
+                  : [
+                      e.investigationTarget!.x,
+                      e.investigationTarget!.y,
+                      e.investigationTarget!.z,
+                    ],
+              'points': [
+                for (final p in e.searchPoints) [p.x, p.y, p.z],
+              ],
+            },
             'notice': e.notice,
             'stun': e.stun,
             'cooldown': e.cooldown,
@@ -170,10 +223,14 @@ HazardGameState restoreHazardCheckpoint(
   require(s.climb == null || s.vault == null);
   require(s.grapple == null || (!s.traversing && s.breakFreeTime == 0));
   s.weapon = data['weapon'] as String;
-  require(['handgun', 'shotgun', 'rocket'].contains(s.weapon));
+  require(['handgun', 'shotgun', 'rocket', 'beer'].contains(s.weapon));
   s.pistolLoaded = integer(data['pistolLoaded'], 0, 10);
   s.shotgunLoaded = integer(data['shotgunLoaded'], 0, 5);
   s.beers = integer(data['beers'], 0, 100000);
+  s.beersThrown = integer(data['beersThrown'] ?? 0, 0, 1000000);
+  s.beerThrowTime = number(data['beerThrowTime'] ?? 0, 0, .45);
+  s.fireCooldown = number(data['beerThrowCooldown'] ?? 0, 0, 1.25);
+  s.restoreBeerFlights((data['beerFlights'] as List?) ?? const []);
   s.kills = integer(data['kills'], 0, 100000);
   s.shots = integer(data['shots'], 0, 1000000);
   s.hits = integer(data['hits'], 0, s.shots);
@@ -300,6 +357,11 @@ HazardGameState restoreHazardCheckpoint(
     )..taken = j['taken'] as bool;
     s.pickups.add(p);
   }
+  // New authored supplies become available to existing saves once; taken IDs
+  // remain in the checkpoint so revisiting/reloading cannot duplicate them.
+  for (final entry in authoredPickups.entries) {
+    if (!pickupIds.contains(entry.key)) s.pickups.add(entry.value);
+  }
   final enemies = data['enemies'] as List;
   require(enemies.length == s.enemies.length);
   for (var i = 0; i < enemies.length; i++) {
@@ -366,6 +428,73 @@ HazardGameState restoreHazardCheckpoint(
       require(!e.discovered || seen != null);
       e.contactAge = number(j['contactAge'] ?? 0, 0, 1e9);
       e.searchTime = number(j['searchTime'] ?? 0, 0, 1e9);
+      final memory = j['stealthMemory'];
+      if (memory != null) {
+        require(memory is Map);
+        require(
+          memory['source'] is String &&
+              (memory['source'] as String).length < 40,
+        );
+        require(
+          const ['pursuer', 'flanker', 'watcher'].contains(memory['role']),
+        );
+        require(
+          memory['reason'] is String &&
+              (memory['reason'] as String).length < 100,
+        );
+        e.knowledgeSource = memory['source'];
+        e.knowledgeTime = number(memory['time'], -1, s.time);
+        e.lastVisualTime = number(memory['visualTime'], -1, s.time);
+        e.lastSharedTime = number(memory['sharedTime'], -1, s.time);
+        e.uncertainty = number(memory['uncertainty'], 0, 10);
+        e.searchRemaining = number(memory['remaining'], 0, 30);
+        e.searchDuration = number(memory['duration'], 0, 30);
+        e.pursuitRemaining = number(memory['pursuit'], 0, 2);
+        e.weakNoiseExtension = number(memory['extension'], 0, 4.001);
+        e.returnRemaining = number(memory['returnRemaining'], 0, 10);
+        e.searchRole = memory['role'];
+        e.feedbackReason = memory['reason'];
+        e.observedHeading = number(memory['observedHeading'], -1e9, 1e9);
+        e.hadVisualContact = memory['hadVisualContact'] as bool;
+        e.homeHeading = memory['homeHeading'] == null
+            ? null
+            : number(memory['homeHeading'], -1e9, 1e9);
+        e.searchIndex = integer(memory['searchIndex'], 0, 6);
+        e.pointTime = number(memory['pointTime'], 0, 4);
+        e.lookTime = number(memory['lookTime'], 0, 4);
+        e.patrolIndex = integer(memory['patrolIndex'], 0, 100);
+        e.patrolWait = number(memory['patrolWait'], 0, 10);
+        e.lureAttention = number(memory['lureAttention'], 0, 5);
+        e.lureHold = number(memory['lureHold'], 0, 5);
+        vm.Vector3 point(dynamic p) {
+          require(p is List && p.length == 3);
+          return vm.Vector3(
+            number(p[0], -30, 30),
+            number(p[1], 0, 6),
+            number(p[2], -30, 35),
+          );
+        }
+
+        if (memory['returnTarget'] != null) {
+          e.returnTarget = point(memory['returnTarget']);
+        }
+        if (memory['target'] != null) {
+          e.investigationTarget = point(memory['target']);
+        }
+        require(
+          memory['points'] is List && (memory['points'] as List).length <= 6,
+        );
+        e.searchPoints.addAll((memory['points'] as List).map(point));
+        require(
+          e.searchPoints.isEmpty || e.searchIndex < e.searchPoints.length,
+        );
+      } else if (e.lastKnownX != null && !e.boss) {
+        // Old saves preserve their recorded cue without re-reading the player.
+        e.searchDuration = 15.8;
+        e.searchRemaining = (15.8 - e.contactAge).clamp(.1, 15.8);
+        e.pursuitRemaining = (1.8 - e.contactAge).clamp(0, 1.8);
+        e.knowledgeSource = 'legacy';
+      }
     }
     e.climb = LadderTraversal.restore(j['climb'], s.ladder, e.x, e.y, e.z);
     e.vault = WindowTraversal.restore(

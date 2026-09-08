@@ -248,9 +248,11 @@ class HazardTouchControls extends StatelessWidget {
     required this.onWeapon,
     this.canInteract = false,
     this.stealthReady = false,
+    this.throwingBeer = false,
   });
   final ValueChanged<Offset> onMove;
   final bool sneaking, sprinting, aiming, canInteract, stealthReady;
+  final bool throwingBeer;
   final VoidCallback onSneak,
       onSprint,
       onAim,
@@ -274,8 +276,8 @@ class HazardTouchControls extends StatelessWidget {
         ),
         HazardTouchButton(
           id: 'fire',
-          label: '射撃',
-          icon: Icons.flash_on,
+          label: throwingBeer ? '投げる' : '射撃',
+          icon: throwingBeer ? Icons.sports_bar : Icons.flash_on,
           emphasized: true,
           onPressed: onFire,
         ),
@@ -283,6 +285,7 @@ class HazardTouchControls extends StatelessWidget {
           id: 'reload',
           label: '装填',
           icon: Icons.sync,
+          enabled: !throwingBeer,
           onPressed: onReload,
         ),
         HazardTouchButton(

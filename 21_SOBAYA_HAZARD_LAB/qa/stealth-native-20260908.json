@@ -1,0 +1,165 @@
+{
+  "date": "2026-09-08",
+  "platform": "macOS debug",
+  "limitations": [
+    "Debug frame times are not release performance; iOS Simulator was also rendering.",
+    "Single-enemy staged fixture on the production village map, using controller input and real elapsed frames.",
+    "Initial audit deadline failed because the harness required 0.65m instead of the AI arrival tolerance of 0.8m; game had already returned and become idle. Corrected harness and repeated."
+  ],
+  "nativeEscape": {
+    "success": true,
+    "probe": "stealthHorror",
+    "mode": "native rendered controller input",
+    "wallMs": 34742,
+    "health": 100,
+    "phases": [
+      "calm",
+      "suspicious",
+      "chasing",
+      "searching",
+      "returning"
+    ],
+    "musicPhases": [
+      "calm",
+      "suspicious",
+      "chasing",
+      "searching",
+      "returning"
+    ],
+    "lostAt": 2.1666609999999995,
+    "releasedAt": 16.92497300000014,
+    "homeDistance": 0.7919633435645548,
+    "maxPursuitMix": 0.9999096270189464,
+    "maxSearchVolume": 0.16,
+    "snapshots": [
+      {
+        "time": 0,
+        "phase": "calm",
+        "remaining": 0,
+        "audio": "calm",
+        "player": [
+          -10.5,
+          12.5
+        ],
+        "enemy": [
+          -10.5,
+          6.5
+        ],
+        "health": 100,
+        "ticks": 1264
+      },
+      {
+        "time": 0.058333,
+        "phase": "suspicious",
+        "remaining": 0,
+        "audio": "suspicious",
+        "player": [
+          -10.5,
+          12.5
+        ],
+        "enemy": [
+          -10.5,
+          6.5
+        ],
+        "health": 100,
+        "ticks": 1267
+      },
+      {
+        "time": 0.6583320000000001,
+        "phase": "chasing",
+        "remaining": 0,
+        "audio": "chasing",
+        "player": [
+          -10.5,
+          12.5
+        ],
+        "enemy": [
+          -10.5,
+          6.625000000000001
+        ],
+        "health": 100,
+        "ticks": 1291
+      },
+      {
+        "time": 2.1666609999999995,
+        "phase": "searching",
+        "remaining": 14.750001000000001,
+        "audio": "searching",
+        "player": [
+          -9.450369064101494,
+          15.677619360383252
+        ],
+        "enemy": [
+          -10.52374980494501,
+          10.376150059114662
+        ],
+        "health": 100,
+        "ticks": 1345
+      },
+      {
+        "time": 16.92497300000014,
+        "phase": "returning",
+        "remaining": 7.983333,
+        "audio": "returning",
+        "player": [
+          -6.251241092921171,
+          12.208715363622646
+        ],
+        "enemy": [
+          -8.070011029866029,
+          15.348249073002826
+        ],
+        "health": 100,
+        "ticks": 1855
+      },
+      {
+        "time": 24.95829600000032,
+        "phase": "calm",
+        "remaining": 0,
+        "audio": "calm",
+        "player": [
+          -6.251241092921171,
+          12.208715363622646
+        ],
+        "enemy": [
+          -14.006703983385256,
+          10.913999880835815
+        ],
+        "health": 100,
+        "ticks": 2131
+      }
+    ],
+    "frames": {
+      "samples": 240,
+      "window": "last 240 Flutter frames",
+      "uiP95Ms": 36.509,
+      "rasterP95Ms": 37.565,
+      "uiMaxMs": 78.5,
+      "rasterMaxMs": 41.215,
+      "uiOver16_7Ms": 231,
+      "rasterOver16_7Ms": 233
+    }
+  },
+  "mobile": {
+    "device": "iPhone 17 Pro simulator, iOS 26.5",
+    "landscape": [
+      874,
+      402
+    ],
+    "portrait": [
+      402,
+      874
+    ],
+    "checks": [
+      "Native portrait and landscape HUD and six action controls rendered without overflow",
+      "Touch fire with beer equipped consumed exactly one cup and launched one projectile",
+      "Reload disabled for beer; sneak toggle retained",
+      "Native RightHand-to-mug Grip error: 0",
+      "Dart MCP runtime errors: none"
+    ],
+    "limitations": [
+      "No physical-phone performance or ergonomics claim",
+      "Simulator orientation needed process restart to receive portrait layout; first rotation changed the device frame while content kept its previous size"
+    ]
+  }
+}

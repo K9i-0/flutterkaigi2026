@@ -5,7 +5,7 @@ enum ShotPart { body, head, mug }
 extension HazardCombatBalance on HazardGameState {
   bool get hardest => difficulty == HazardDifficulty.tense;
   int get livingEnemies => enemies.where((e) => e.alive).length;
-  bool get chapterSecured => !hardest || livingEnemies == 0;
+  bool get chapterSecured => zoneId != 'mountain' || !hardest || livingEnemies == 0;
 
   int pickupAmount(Pickup p) {
     if (!['ammo', 'shells'].contains(p.kind)) return p.amount;

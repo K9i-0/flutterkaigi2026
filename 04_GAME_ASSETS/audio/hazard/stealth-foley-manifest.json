@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "generator": "tools/build_hazard_stealth_foley.py",
+  "seed": 90609,
+  "files": [
+    {
+      "file": "combat/enemy_step.wav",
+      "sample_rate": 24000,
+      "channels": 1,
+      "seconds": 0.42,
+      "loop": false,
+      "rms": 0.08199999996242703,
+      "peak": 0.6812663360545702,
+      "sha256": "5517c3ecbb03dedc71eff35629768c6acd59a2159709dc186dc3e07510fbe507"
+    },
+    {
+      "file": "combat/beer_throw.wav",
+      "sample_rate": 24000,
+      "channels": 1,
+      "seconds": 0.38,
+      "loop": false,
+      "rms": 0.05199982858490837,
+      "peak": 0.37721683624316077,
+      "sha256": "f1baeb670c477b9d4b9462636c0f44e015de84c96426bac7169f6705c53d57bf"
+    },
+    {
+      "file": "combat/beer_land.wav",
+      "sample_rate": 24000,
+      "channels": 1,
+      "seconds": 0.75,
+      "loop": false,
+      "rms": 0.0570792224562104,
+      "peak": 0.8000000000000002,
+      "sha256": "81b080e82dd50c9f2bf48c62b05cd51c18d10e3e7c5196be5c5bc6d86f6321af"
+    }
+  ],
+  "note": "Original DSP synthesis only. These effects do not replace character voices."
+}

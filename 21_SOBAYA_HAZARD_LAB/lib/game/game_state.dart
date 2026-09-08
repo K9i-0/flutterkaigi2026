@@ -17,6 +17,8 @@ part 'game_rockets.dart';
 part 'game_combat_balance.dart';
 part 'game_refuge.dart';
 part 'game_stealth.dart';
+part 'game_beer_throw.dart';
+part 'game_perception_geometry.dart';
 
 const minCameraPitch = -.75, maxCameraPitch = .85;
 
@@ -111,6 +113,8 @@ enum BossMove {
 
 class Enemy {
   Enemy(this.id, this.x, this.z, {this.boss = false}) {
+    homeX = x;
+    homeZ = z;
     hp = maxHp;
     ambientDance = chooseAmbientDance(
       _ambientRandom.nextDouble(),
@@ -129,6 +133,20 @@ class Enemy {
       lastSeenByPlayerZ,
       lastSeenByPlayerHeading;
   double contactAge = 0, searchTime = 0;
+  late final double homeX, homeZ;
+  double? homeHeading;
+  String knowledgeSource = 'none', searchRole = 'pursuer', feedbackReason = '';
+  double knowledgeTime = -1, lastVisualTime = -1, lastSharedTime = -1;
+  double uncertainty = 0, searchRemaining = 0, searchDuration = 0;
+  double pursuitRemaining = 0, weakNoiseExtension = 0, returnRemaining = 0;
+  double shareCooldown = 0, pointTime = 0, lookTime = 0, patrolWait = 4;
+  double searchPlanRetry = 0;
+  double lureAttention = 0, lureHold = 0, observedHeading = 0, footDistance = 0;
+  int searchIndex = 0, patrolIndex = 0;
+  final searchPoints = <vm.Vector3>[];
+  vm.Vector3? investigationTarget, returnTarget;
+  bool hadVisualContact = false;
+
   int heardNoiseSerial = 0;
   EnemyNavigation? memoryNavigation;
   double memoryFlowTime = 0;
@@ -225,6 +243,14 @@ class Breakable {
   final String id, kind;
   final double x, z;
   bool broken = false;
+  late final sightObstacle = Obstacle({
+    'x': x,
+    'z': z,
+    'w': .85,
+    'd': .85,
+    'bottom': 0,
+    'top': kind == 'barrel' ? 1.0 : .9,
+  });
 }
 
 class BagItem {
@@ -402,6 +428,11 @@ class HazardGameState {
   vm.Vector3? shotEnd;
   final rockets = <HazardRocket>[];
   final rocketBlasts = <RocketBlast>[];
+  final beerFlights = <HazardThrownBeer>[];
+  final beerSplashes = <BeerSplash>[];
+  double beerThrowTime = 0;
+  int beersThrown = 0;
+  BeerThrowPlan? beerPreview;
   int? rocketLockId;
   vm.Vector3? rocketMuzzle;
   bool secretShopVisit = false;
@@ -525,15 +556,21 @@ class HazardGameState {
   bool get dialogueChoices => dialogueIndex == dialogueLines.length - 1;
   EnemyNavigation? _navigation;
   double _flowTimer = 0;
-  int get reserve => bag
-      .where((i) => i.kind == (weapon == 'handgun' ? 'ammo' : 'shells'))
-      .fold(0, (n, i) => n + i.count);
-  int get loaded => weapon == 'rocket'
+  int get reserve => weapon == 'beer'
+      ? 0
+      : bag
+            .where((i) => i.kind == (weapon == 'handgun' ? 'ammo' : 'shells'))
+            .fold(0, (n, i) => n + i.count);
+  int get loaded => weapon == 'beer'
+      ? beers
+      : weapon == 'rocket'
       ? 1
       : weapon == 'handgun'
       ? pistolLoaded
       : shotgunLoaded;
-  int get capacity => weapon == 'rocket'
+  int get capacity => weapon == 'beer'
+      ? 0
+      : weapon == 'rocket'
       ? 1
       : weapon == 'handgun'
       ? 10
@@ -643,6 +680,11 @@ class HazardGameState {
     rocketMuzzle = null;
     rockets.clear();
     rocketBlasts.clear();
+    beerFlights.clear();
+    beerSplashes.clear();
+    beerThrowTime = 0;
+    beersThrown = 0;
+    beerPreview = null;
     rocketLockId = null;
     secretShopVisit = false;
     interaction = null;
@@ -839,10 +881,15 @@ class HazardGameState {
 
   void equip(String name) {
     if (actionLocked) return;
-    if (name == weapon || !['handgun', 'shotgun', 'rocket'].contains(name)) {
+    if (name == weapon ||
+        !['handgun', 'shotgun', 'rocket', 'beer'].contains(name)) {
       return;
     }
     if (name == 'rocket' && !hasRocket) return;
+    if (name == 'beer' && beers == 0) {
+      say('投げるビールを拾おう。');
+      return;
+    }
     rocketLockId = null;
     if (name == 'shotgun' && !hasShotgun) {
       say('ショットガンは民家の二階にある。');
@@ -854,6 +901,7 @@ class HazardGameState {
   }
 
   void reload() {
+    if (weapon == 'beer') return;
     if (actionLocked) return;
     if (!running || reloading > 0 || loaded >= capacity) {
       return;
@@ -992,6 +1040,7 @@ class HazardGameState {
     toastTime = math.max(0, toastTime - dt);
     noiseTime = math.max(0, noiseTime - dt);
     _tickNoise(dt);
+    tickThrownBeer(dt);
     invulnerable = math.max(0, invulnerable - dt);
     hurtTime = math.max(0, hurtTime - dt);
     recoil *= math.exp(-dt * 15);
@@ -1129,7 +1178,11 @@ class HazardGameState {
         }
         continue;
       }
-      if (e.alerted && _tickCompanionCombat(e, dt, dist)) continue;
+      if (e.alerted &&
+          (e.seesPlayer || e.companionTarget != null) &&
+          _tickCompanionCombat(e, dt, dist)) {
+        continue;
+      }
       if (e.boss && _tickBoss(e, dt, dx, dz, dist)) continue;
       if (!e.boss && e.attackPending) {
         if (!e.grabPending && e.windup > .12 && e.windup - dt <= .12) {
@@ -1200,9 +1253,9 @@ class HazardGameState {
         continue;
       }
       var waitingForWindow = false;
-      final navigation = e.boss || e.seesPlayer
-          ? _navigation
-          : _memoryNavigation(e, dt);
+      final directPursuit = e.boss || e.seesPlayer && e.searchRole == 'pursuer';
+      final memoryTarget = _navigationTarget(e);
+      final navigation = directPursuit ? _navigation : _memoryNavigation(e, dt);
       if (!e.boss) {
         for (final w in usableWindows) {
           final inward = e.z < w.z;
@@ -1229,7 +1282,7 @@ class HazardGameState {
       final tower = ladder;
       final wantsUp = e.boss || e.seesPlayer
           ? climb?.up ?? (y > 3.8)
-          : (e.lastKnownY ?? 0) > 3.8;
+          : memoryTarget.y > 3.8;
       if (!e.boss &&
           tower != null &&
           e.stun <= 0 &&
@@ -1247,17 +1300,20 @@ class HazardGameState {
       if (e.alerted && e.seesPlayer && dist < .95 && (y - e.y).abs() < .8) {
         continue;
       }
-      final targetX = e.boss || e.seesPlayer ? x : (e.lastKnownX ?? e.x);
-      final targetZ = e.boss || e.seesPlayer ? z : (e.lastKnownZ ?? e.z);
+      final targetX = directPursuit ? x : memoryTarget.x;
+      final targetZ = directPursuit ? z : memoryTarget.z;
       final targetDistance = math.sqrt(
         math.pow(targetX - e.x, 2) + math.pow(targetZ - e.z, 2),
       );
       if (!e.seesPlayer &&
           !e.boss &&
           targetDistance < .65 &&
-          ((e.lastKnownY ?? e.y) - e.y).abs() < .8) {
-        e.awareness = EnemyAwareness.searching;
-        e.heading += dt * .85;
+          (memoryTarget.y - e.y).abs() < .8) {
+        if (e.investigationTarget != null && e.lureHold < e.lureAttention) {
+          if (e.alerted) e.heading += dt * .55;
+        } else {
+          e.heading += dt * .65;
+        }
         continue;
       }
       final waypoint = navigation?.waypoint(e.x, e.y, e.z);
@@ -1266,15 +1322,19 @@ class HazardGameState {
       if (waypoint == null &&
           !_sightLineClear(
             vm.Vector3(e.x, e.y + 1, e.z),
-            vm.Vector3(targetX, (e.lastKnownY ?? y) + 1, targetZ),
+            vm.Vector3(
+              targetX,
+              (directPursuit ? y : memoryTarget.y) + 1,
+              targetZ,
+            ),
           )) {
         continue;
       }
-      if (e.approachTimer <= 0 && (e.seesPlayer || e.boss)) {
+      if (e.approachTimer <= 0 && directPursuit) {
         e.approachTimer = .3 + (e.id % 3) * .035;
         _planApproach(e, dist);
       }
-      final direct = (e.seesPlayer || e.boss) && e.approachX != null;
+      final direct = directPursuit && e.approachX != null;
       final tx = direct
           ? (dist < 3.2 ? x : e.approachX!)
           : (waypoint?.x ?? targetX);
@@ -1302,22 +1362,34 @@ class HazardGameState {
           vz += oz / sep * (.85 - sep) * 2;
         }
       }
-      e.heading = math.atan2(vx, vz);
+      final desiredHeading = math.atan2(vx, vz);
+      e.heading = e.boss
+          ? desiredHeading
+          : _turnTowards(
+              e.heading,
+              desiredHeading,
+              dt * (e.alerted ? 4.0 : 2.2),
+            );
+      if (!e.boss && math.cos(e.heading - desiredHeading) < .35) continue;
+      e.runningApproach = !e.boss && e.awareness == EnemyAwareness.chasing;
       final speed = math.min(
         len,
         (e.boss
                 ? 1.15
-                : e.runningApproach
-                ? 1.7
-                : e.alerted
+                : e.awareness == EnemyAwareness.chasing
+                ? 2.5
+                : e.awareness == EnemyAwareness.searching
+                ? 1.2
+                : e.awareness == EnemyAwareness.returning
                 ? 1.05
-                : .65) *
+                : .85) *
             enemySpeedScale *
             dt,
       );
       final oldX = e.x, oldZ = e.z;
       _moveEnemy(e, vx * speed, vz * speed);
       e.moved = math.sqrt(math.pow(e.x - oldX, 2) + math.pow(e.z - oldZ, 2));
+      _emitEnemyFootstep(e);
     }
     if (running) {
       for (final exit in map['exits'] as List? ?? const []) {
@@ -1837,6 +1909,10 @@ class HazardGameState {
       return;
     }
     lastShotPart = null;
+    if (weapon == 'beer') {
+      throwBeer(direction);
+      return;
+    }
     if (weapon == 'rocket') {
       launchRocket();
       return;
