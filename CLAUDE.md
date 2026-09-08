@@ -29,6 +29,8 @@ Gitでは、Seedanceの再生成と同じ声の継続利用に必要な最小限
 ## スキル（制作ワークフロー）
 制作物ごとのワークフローはスキルに分離している。該当する作業ではスキルを呼び出して従うこと。
 
+- **人型モーション** (`humanoid-motion`): リアル頭身のGLB/VRMへの動作適用、ローカルプレビュー、体格別比較、肩・腕のスキニング診断、そば屋ハザードへの採用時に使用する。詳細: `.claude/skills/humanoid-motion/SKILL.md`
+
 - **Seedance動画制作** (`/seedance`): ユーザーからストーリー（あらすじ）を渡されたら、このスキルに従って台本＋Seedanceプロンプト＋Codex参考画像を作成する。詳細: `.claude/skills/seedance/SKILL.md`
 - **Wan動画制作** (`wan-video`): Wan 3.0、Qwen Cloud、Alibaba Cloud Model Studioで動画を新規制作・改修・生成・監査するときに使用する。台本、参照素材、プロンプト、従量課金API設定、生成結果を一体で管理する。詳細: `.claude/skills/wan-video/SKILL.md`
 - **Remotion動画編集** (`remotion-video`): Wan・Seedance等の生成済み動画へ、正確な字幕、ニューステロップ、局ロゴ、ティッカー、音声差し替え、UI、効果音を再現可能なReactコードで合成し、レンダリング・監査するときに使用する。詳細: `.claude/skills/remotion-video/SKILL.md`
