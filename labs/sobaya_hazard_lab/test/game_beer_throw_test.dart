@@ -207,7 +207,7 @@ void main() {
           expect(where[0], closeTo(plan.landing.x, .001));
           expect(where[1], closeTo(plan.landing.y + .15, .001));
           expect(where[2], closeTo(plan.landing.z, .001));
-          expect(lure['radius'], 8);
+          expect(lure['radius'], 14);
           expect(lureSounds(s), hasLength(1));
         }
       }

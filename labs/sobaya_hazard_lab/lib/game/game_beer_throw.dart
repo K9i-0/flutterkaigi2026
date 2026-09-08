@@ -93,7 +93,7 @@ extension HazardBeerThrow on HazardGameState {
       horizontal.setValues(-math.sin(yaw), 0, -math.cos(yaw));
     }
     horizontal.normalize();
-    return horizontal * 6.2 +
+    return horizontal * 7.2 +
         vm.Vector3(0, (2.8 + direction.y * 5).clamp(.8, 5.2), 0);
   }
 
@@ -210,7 +210,7 @@ extension HazardBeerThrow on HazardGameState {
       beerSplashes.add(BeerSplash(flight.position.clone()));
       emitNoise(
         'beer_lure',
-        radius: 8,
+        radius: 14,
         sourceX: flight.position.x,
         sourceY: flight.position.y + .15,
         sourceZ: flight.position.z,
