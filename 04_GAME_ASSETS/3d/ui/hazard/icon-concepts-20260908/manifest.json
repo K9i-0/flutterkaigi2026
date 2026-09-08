@@ -1,0 +1,27 @@
+{
+  "tool": "built-in image_gen",
+  "status": "three concepts; no launcher icon selected or installed",
+  "images": [
+    {
+      "file": "A-mask.png",
+      "width": 1254,
+      "height": 1254,
+      "pngColorType": 2,
+      "sha256": "39ba5f0dfd2d68e35179a24f538374f1e5b596dfe62f0144851441fd57963591"
+    },
+    {
+      "file": "B-beer-fire.png",
+      "width": 1254,
+      "height": 1254,
+      "pngColorType": 2,
+      "sha256": "d72286300637fbef75df31082703b703155c4999ac6986a107e675735516163d"
+    },
+    {
+      "file": "C-stalker.png",
+      "width": 1254,
+      "height": 1254,
+      "pngColorType": 2,
+      "sha256": "a7eaa213ddb58dfef9221eafb57ec5b13f29717054299bd9a7ebbf820535d725"
+    }
+  ]
+}
