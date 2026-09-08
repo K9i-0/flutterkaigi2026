@@ -69,6 +69,7 @@ extension HazardRocketCombat on HazardGameState {
     rockets.add(HazardRocket(target.id, start, direction));
     shots++;
     noiseTime = 4;
+    emitNoise('rocket_launch', radius: 38);
     fireCooldown = 1.25;
     recoil = .22;
     emitSound('rocket_launch');
@@ -98,6 +99,13 @@ extension HazardRocketCombat on HazardGameState {
       if (hitWall || hitTarget || r.age > 5) {
         rockets.remove(r);
         rocketBlasts.add(RocketBlast(r.position.clone()));
+        emitNoise(
+          'rocket_blast',
+          radius: 42,
+          sourceX: r.position.x,
+          sourceY: r.position.y,
+          sourceZ: r.position.z,
+        );
         emitSound(
           'rocket_blast',
           x: r.position.x,
@@ -108,7 +116,7 @@ extension HazardRocketCombat on HazardGameState {
           hits++;
           hitFlash = .2;
           shotEnd = r.position.clone();
-          target.alerted = true;
+          _rememberAttack(target);
           target.hp = math.max(
             0,
             target.hp - (target.boss ? 300 : target.maxHp),

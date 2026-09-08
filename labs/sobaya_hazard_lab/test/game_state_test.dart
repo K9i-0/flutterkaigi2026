@@ -198,7 +198,10 @@ void main() {
     s.aiming = true;
     s.shoot(vm.Vector3(3, 1, -6), vm.Vector3(-1, 0, 0));
     advance(s, .1);
-    expect(e.alerted, true);
+    expect(e.alerted, false);
+    expect(e.awareness, EnemyAwareness.investigating);
+    expect(e.lastKnownX, 3);
+    expect(e.lastKnownZ, -6);
   });
   test(
     'lethal shots remove an enemy and create exactly one beer without blood',
@@ -313,7 +316,8 @@ void main() {
     final e = s.enemies.first
       ..active = true
       ..x = 7
-      ..z = -4.1;
+      ..z = -4.1
+      ..alerted = true;
     advance(s, .2);
     expect(e.attackPending, true);
     expect(s.health, 100);

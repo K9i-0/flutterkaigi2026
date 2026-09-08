@@ -2,10 +2,20 @@ import 'dart:math' as math;
 
 /// A world sound has a position; UI and player sounds stay at listener level.
 class HazardSound {
-  const HazardSound(this.name, {this.x, this.z, this.y = 1.2});
+  const HazardSound(
+    this.name, {
+    this.x,
+    this.z,
+    this.y = 1.2,
+    this.loudness = 1,
+  });
   final String name;
   final double? x, z;
   final double y;
+
+  /// Source strength is separate from distance attenuation. Quiet footwork
+  /// should also sound quiet to the player, including non-spatial own steps.
+  final double loudness;
   bool get spatial => x != null && z != null;
   double gain(
     double listenerX,
@@ -13,7 +23,8 @@ class HazardSound {
     bool occluded = false,
     double listenerY = 1.2,
   }) {
-    if (!spatial) return 1;
+    final strength = loudness.isFinite ? loudness.clamp(0.0, 1.0) : 0.0;
+    if (!spatial) return strength;
     final distance = math.sqrt(
       math.pow(x! - listenerX, 2) +
           math.pow(z! - listenerZ, 2) +
@@ -24,6 +35,6 @@ class HazardSound {
     if (distance >= range) return 0;
     final rolloff = 1 / (1 + math.pow(distance / (blast ? 10 : 4), 2));
     final edge = ((range - distance) / 4).clamp(0.0, 1.0);
-    return rolloff * edge * (occluded ? (blast ? .55 : .35) : 1);
+    return strength * rolloff * edge * (occluded ? (blast ? .55 : .35) : 1);
   }
 }

@@ -48,6 +48,9 @@ void main() {
         s.x = rx - 2;
         s.z = bottom + .35;
         s.y = s.floorHeight(s.x, s.z, 0);
+        // The destination changed out of view: a fresh report gives the
+        // pursuer a real reason to descend, without omniscient tracking.
+        s.emitNoise('handgun', radius: 40);
         for (var i = 0; i < 2400 && e.y > .2; i++) {
           s.tick(1 / 60);
         }

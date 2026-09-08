@@ -239,13 +239,10 @@ const hazardEvents = <String, List<EventShot>>{
       5,
       "",
       "CHAPTER 02 — 撤収対象外\n農場の補給所には、たこさんがいた。棚に並ぶ物資の奥で、封をしたビール箱が積み上がっている。",
-      (-4, 7, -21),
-      (-2, 5.8, -19),
-      (6, 2, -9),
-      cuts: [
-        EventCut(0),
-        EventCut(.5, document: 'ledger', label: '管理棟に残された台帳'),
-      ],
+      (-18, 3.4, -23),
+      (-16.5, 2.7, -22),
+      (-13, 1.05, -17.8),
+      fov: .84,
     ),
     EventShot(
       7,
@@ -298,8 +295,9 @@ const hazardEvents = <String, List<EventShot>>{
       actor: 'takosan',
       motion: 'Talk',
       cuts: [
-        EventCut(0, document: 'withdrawal', label: '案件凍結通知'),
-        EventCut(.65, image: 'village-crowd'),
+        EventCut(0, document: 'ledger', label: '増えたのは台数だけ'),
+        EventCut(.27, document: 'withdrawal', label: '案件凍結通知'),
+        EventCut(.70, image: 'village-crowd', label: '補給を失ったクローン'),
       ],
     ),
     EventShot(
@@ -455,7 +453,7 @@ const hazardEvents = <String, List<EventShot>>{
           .62,
           framing: EventShot(1, '', '', (5.0, 2.5, -.5), (5.7, 2.6, 0), (
             12,
-            1.45,
+            3.5,
             4,
           ), fov: .66),
         ),

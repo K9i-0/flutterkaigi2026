@@ -138,6 +138,7 @@ void attachGameAutomation(HazardGameController game) {
               for (final beer in _game!.enemyBeer) beer.inspect(),
             ],
             'soundscape': _game!.soundscape.inspect(),
+            'worldEffects': _game!.worldEffects.inspect(),
             'event': _game!.director == null
                 ? null
                 : {
@@ -221,6 +222,9 @@ void attachGameAutomation(HazardGameController game) {
         'combat',
         'encounter',
         'ambientDance',
+        'stealthRear',
+        'stealthVision',
+        'stealthNoise',
         'mugTiming',
         'secretMerchant',
         'rocketCombat',
@@ -498,6 +502,26 @@ void attachGameAutomation(HazardGameController game) {
               ..alerted = true
               ..x = (e.id - 1) * 1.2
               ..z = -6;
+          }
+        case 'stealthRear':
+        case 'stealthVision':
+        case 'stealthNoise':
+          s.x = 0;
+          s.z = name == 'stealthRear' ? -16.25 : -20;
+          s.yaw = 3.141592653589793;
+          s.heading = 0;
+          s.pitch = 0;
+          s.seenEvents.addAll(['opening', 'farm', 'last_order', 'ending']);
+          s.enemies.first
+            ..active = true
+            ..ambientDance = null
+            ..x = 0
+            ..z = -15
+            ..heading = name == 'stealthVision' ? 3.141592653589793 : 0;
+          if (name == 'stealthNoise') {
+            s.addItem('shotgun', 1);
+            s.addItem('shells', 10);
+            s.equip('shotgun');
           }
         case 'combat':
           s.x = 0;
@@ -805,6 +829,7 @@ void attachGameAutomation(HazardGameController game) {
           s.inputX = inputX;
           s.inputY = inputY;
           s.sprint = p['sprint'] == 'true';
+          s.sneaking = p['sneaking'] == 'true';
           s.struggling = p['struggling'] == 'true';
           if (p['evade'] == 'true') s.evade();
           for (var i = 0; i < (seconds * 60).round(); i++) {

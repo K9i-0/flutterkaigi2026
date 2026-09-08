@@ -137,6 +137,7 @@ void main() {
     other.active = false;
     other.vault = null;
     s.z = w.entryZ(true) - 2;
+    s.emitNoise('handgun', radius: 40);
     advance(s, 15);
     expect(e.z, lessThan(w.z));
   });

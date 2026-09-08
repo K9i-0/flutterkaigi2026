@@ -9,6 +9,60 @@ import 'package:sobaya_hazard_lab/game/game_soundscape.dart';
 import 'game_score_test.dart' show LoopPort;
 
 void main() {
+  test(
+    'suspicion and indoor shelter blend without a false detection cue',
+    () async {
+      final music = HazardSoundscape(createPort: (_) => LoopPort());
+      var alerts = 0;
+      void advance({
+        bool active = true,
+        bool threat = false,
+        double shelter = 1,
+      }) {
+        if (music.tick(
+          .02,
+          zone: 'village',
+          active: active,
+          threat: threat,
+          speaking: false,
+          volume: 1,
+          suspicion: 1,
+          shelter: shelter,
+        )) {
+          alerts++;
+        }
+      }
+
+      for (var i = 0; i < 600; i++) {
+        advance();
+      }
+      expect(alerts, 0);
+      expect(music.intensity, closeTo(.28, .005));
+      expect(music.ambience.inspect()['volume'], closeTo(.08, .01));
+      final shelter = music.shelterMix;
+      for (var i = 0; i < 50; i++) {
+        advance(active: false, shelter: 0);
+      }
+      expect(music.shelterMix, shelter);
+      advance(threat: true);
+      expect(alerts, 1);
+      for (var i = 0; i < 300; i++) {
+        advance(shelter: 0);
+      }
+      expect(music.ambience.inspect()['volume'], closeTo(.20, .01));
+      await music.dispose();
+    },
+  );
+
+  test('slow footsteps stay quiet after source and cover attenuation', () {
+    const slow = HazardSound('step', x: 0, z: 0, loudness: .16);
+    const run = HazardSound('step', x: 0, z: 0);
+    expect(slow.gain(4, 0), closeTo(run.gain(4, 0) * .16, .0001));
+    expect(slow.gain(4, 0, occluded: true), lessThan(slow.gain(4, 0)));
+    expect(const HazardSound('step', loudness: .16).gain(0, 0), .16);
+    expect(const HazardSound('step', loudness: double.nan).gain(0, 0), 0);
+  });
+
   test('fresh detection accents once; pauses and short threat gaps do not repeat it', () async {
     final music = HazardSoundscape(createPort: (_) => LoopPort());
     int advance(double seconds, {bool threat = true, bool active = true}) {

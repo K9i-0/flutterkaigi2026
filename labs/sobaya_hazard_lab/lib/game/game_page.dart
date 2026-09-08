@@ -15,6 +15,7 @@ import 'package:flutter_scene/scene.dart' show SceneView;
 import 'game_controller.dart';
 import 'game_state.dart';
 import 'game_settings.dart';
+import 'game_mobile.dart';
 import 'game_automation.dart';
 import 'game_benchmark.dart';
 
@@ -37,6 +38,9 @@ class _HazardGamePageState extends State<HazardGamePage> {
   AppLifecycleListener? lifecycle;
   double touchX = 0, touchY = 0;
   bool rightMouseHeld = false;
+  bool touchSprint = false, touchSneak = false, touchStruggling = false;
+  int touchEpoch = 0;
+  PlayPhase? inputPhase;
   bool? sceneTicking;
   bool resetSceneClock = true;
   @override
@@ -64,8 +68,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
       },
       onInactive: () {
         game.setForeground(false);
-        held.clear();
-        game.state?.stopInput();
+        clearInput();
         if (game.state?.running ?? false) game.toggle(PlayPhase.paused);
       },
     );
@@ -90,6 +93,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
   }
 
   void changed() {
+    syncInputPhase();
     benchmark?.observeState();
     if (mounted) setState(() {});
   }
@@ -106,9 +110,29 @@ class _HazardGamePageState extends State<HazardGamePage> {
     super.dispose();
   }
 
+  void clearInput() {
+    held.clear();
+    touchX = touchY = 0;
+    touchSprint = touchSneak = touchStruggling = rightMouseHeld = false;
+    touchEpoch++;
+    game.state?.stopInput();
+  }
+
+  void syncInputPhase() {
+    final phase = game.state?.phase;
+    if (inputPhase != phase) {
+      clearInput();
+      inputPhase = phase;
+    }
+  }
+
   void updateInput() {
     final s = game.state;
     if (s == null) return;
+    if (!s.running) {
+      s.stopInput();
+      return;
+    }
     bool has(LogicalKeyboardKey a, LogicalKeyboardKey b) =>
         held.contains(a) || held.contains(b);
     s.inputX =
@@ -130,10 +154,16 @@ class _HazardGamePageState extends State<HazardGamePage> {
     s.struggling =
         s.running &&
         s.grapple != null &&
-        held.contains(LogicalKeyboardKey.keyE);
+        (touchStruggling || held.contains(LogicalKeyboardKey.keyE));
+    s.sneaking =
+        touchSneak ||
+        held.contains(LogicalKeyboardKey.controlLeft) ||
+        held.contains(LogicalKeyboardKey.controlRight);
     s.sprint =
-        held.contains(LogicalKeyboardKey.shiftLeft) ||
-        held.contains(LogicalKeyboardKey.shiftRight);
+        !s.sneaking &&
+        (touchSprint ||
+            held.contains(LogicalKeyboardKey.shiftLeft) ||
+            held.contains(LogicalKeyboardKey.shiftRight));
   }
 
   KeyEventResult onKey(FocusNode node, KeyEvent e) {
@@ -218,6 +248,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
   @override
   Widget build(BuildContext context) {
     final s = game.state;
+    syncInputPhase();
     game.prepareStaticFrame();
     final tickScene = game.animateScene || game.renderedTicks == 0;
     if (sceneTicking != tickScene) {
@@ -249,10 +280,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
               onKeyEvent: onKey,
               onFocusChange: (value) {
                 if (!value) {
-                  held.clear();
-                  touchX = 0;
-                  touchY = 0;
-                  s.stopInput();
+                  clearInput();
                 }
               },
               child: LayoutBuilder(
@@ -260,6 +288,18 @@ class _HazardGamePageState extends State<HazardGamePage> {
                   game.viewport = Size(bounds.maxWidth, bounds.maxHeight);
                   game.devicePixelRatio = View.of(context).devicePixelRatio;
                   final refugeMarker = game.refugeMarker;
+                  final safe = MediaQuery.paddingOf(context);
+                  final mobile =
+                      game.settings.touchControls ||
+                      bounds.biggest.shortestSide < 700 ||
+                      Theme.of(context).platform == TargetPlatform.android ||
+                      Theme.of(context).platform == TargetPlatform.iOS;
+                  final controlHeight = bounds.maxWidth - safe.horizontal > 500
+                      ? 112.0
+                      : 168.0;
+                  final promptBottom = mobile
+                      ? safe.bottom + controlHeight + 24
+                      : 160.0;
                   return Stack(
                     children: [
                       Listener(
@@ -282,8 +322,14 @@ class _HazardGamePageState extends State<HazardGamePage> {
                             s.aiming = false;
                           }
                         },
+                        onPointerCancel: (_) {
+                          rightMouseHeld = false;
+                          if (s.running) s.aiming = false;
+                        },
                         onPointerMove: (e) {
-                          if (s.running) game.rotate(e.delta.dx, e.delta.dy);
+                          if (s.running && e.kind == PointerDeviceKind.mouse) {
+                            game.rotate(e.delta.dx, e.delta.dy);
+                          }
                         },
                         child: RepaintBoundary(
                           child: TickerMode(
@@ -311,6 +357,27 @@ class _HazardGamePageState extends State<HazardGamePage> {
                           ),
                         ),
                       ),
+                      if (mobile && s.running)
+                        Positioned(
+                          left: bounds.maxWidth * .43,
+                          right: 0,
+                          top: 0,
+                          bottom: 0,
+                          child: HazardTouchLookSurface(
+                            key: ValueKey('look-$touchEpoch'),
+                            onStart: focus.requestFocus,
+                            onMouseLook: (delta) =>
+                                game.rotate(delta.dx, delta.dy),
+                            onMouseAim: (value) {
+                              rightMouseHeld = value;
+                              s.aiming = value;
+                            },
+                            onLook: (delta) => game.rotate(
+                              delta.dx * game.settings.touchSensitivity,
+                              delta.dy * game.settings.touchSensitivity,
+                            ),
+                          ),
+                        ),
                       const Positioned.fill(
                         child: IgnorePointer(
                           child: DecoratedBox(
@@ -364,69 +431,105 @@ class _HazardGamePageState extends State<HazardGamePage> {
                           s.phase != PlayPhase.dialogue &&
                           s.phase != PlayPhase.settings &&
                           s.phase != PlayPhase.cinematic) ...[
-                        Positioned(
-                          left: 28,
-                          top: 26,
-                          child: IgnorePointer(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  s.chapterLabel,
-                                  style: TextStyle(
-                                    color: gold,
-                                    fontSize: 12,
-                                    letterSpacing: 3,
-                                  ),
-                                ),
-                                const SizedBox(height: 7),
-                                Text(
-                                  s.subtitle,
-                                  style: TextStyle(
-                                    color: ivory,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                for (final npc in s.npcs)
-                                  if (s.companionThreatened(npc['id']) ||
-                                      (s.x - (npc['x'] as num)).abs() < 6 &&
-                                          (s.z - (npc['z'] as num)).abs() < 6)
-                                    SizedBox(
-                                      width: 220,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const SizedBox(height: 12),
-                                          Text(
-                                            '${HazardGameState.companionNames[npc['id']]}${s.companionThreatened(npc['id']) ? '  ⚠ 襲われている！' : ''}',
-                                            style: const TextStyle(
-                                              color: ivory,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          LinearProgressIndicator(
-                                            key: ValueKey(
-                                              'companion-health-${npc['id']}',
-                                            ),
-                                            value:
-                                                (s.companionHealth[npc['id']] ??
-                                                    0) /
-                                                HazardGameState
-                                                    .companionMaxHealth,
-                                            color:
-                                                s.companionThreatened(npc['id'])
-                                                ? Colors.orange
-                                                : gold,
-                                            backgroundColor: ink,
-                                          ),
-                                        ],
-                                      ),
+                        if (mobile) mobileHud(s, safe, bounds),
+                        if (!mobile)
+                          Positioned(
+                            left: 28,
+                            top: 26,
+                            child: IgnorePointer(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    s.chapterLabel,
+                                    style: TextStyle(
+                                      color: gold,
+                                      fontSize: 12,
+                                      letterSpacing: 3,
                                     ),
-                                const SizedBox(height: 12),
+                                  ),
+                                  const SizedBox(height: 7),
+                                  Text(
+                                    s.subtitle,
+                                    style: TextStyle(
+                                      color: ivory,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  for (final npc in s.npcs)
+                                    if (s.companionThreatened(npc['id']) ||
+                                        (s.x - (npc['x'] as num)).abs() < 6 &&
+                                            (s.z - (npc['z'] as num)).abs() < 6)
+                                      SizedBox(
+                                        width: 220,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const SizedBox(height: 12),
+                                            Text(
+                                              '${HazardGameState.companionNames[npc['id']]}${s.companionThreatened(npc['id']) ? '  ⚠ 襲われている！' : ''}',
+                                              style: const TextStyle(
+                                                color: ivory,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 5),
+                                            LinearProgressIndicator(
+                                              key: ValueKey(
+                                                'companion-health-${npc['id']}',
+                                              ),
+                                              value:
+                                                  (s.companionHealth[npc['id']] ??
+                                                      0) /
+                                                  HazardGameState
+                                                      .companionMaxHealth,
+                                              color:
+                                                  s.companionThreatened(
+                                                    npc['id'],
+                                                  )
+                                                  ? Colors.orange
+                                                  : gold,
+                                              backgroundColor: ink,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                  const SizedBox(height: 12),
+                                  Text(
+                                    s.objective,
+                                    style: const TextStyle(
+                                      color: ivory,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        if (!mobile)
+                          Positioned(
+                            right: 24 + safe.right,
+                            top: 24 + safe.top,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Container(
+                                  width: 140,
+                                  height: 140,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xbb151a15),
+                                    border: Border.all(
+                                      color: const Color(0x558f947d),
+                                    ),
+                                  ),
+                                  child: CustomPaint(
+                                    painter: VillageMapPainter(s),
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
                                 Text(
-                                  s.objective,
+                                  '記録 ${s.collected.length} / ${s.gallery.length}    ビール ${s.beers}${s.zoneId == 'farm' ? '\n青いメダリオン ${s.medallions.length} / 7' : ''}',
                                   style: const TextStyle(
                                     color: ivory,
                                     fontSize: 13,
@@ -435,47 +538,27 @@ class _HazardGamePageState extends State<HazardGamePage> {
                               ],
                             ),
                           ),
-                        ),
-                        Positioned(
-                          right: 24,
-                          top: 24,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Container(
-                                width: 140,
-                                height: 140,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xbb151a15),
-                                  border: Border.all(
-                                    color: const Color(0x558f947d),
-                                  ),
-                                ),
-                                child: CustomPaint(
-                                  painter: VillageMapPainter(s),
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                '記録 ${s.collected.length} / ${s.gallery.length}    ビール ${s.beers}${s.zoneId == 'farm' ? '\n青いメダリオン ${s.medallions.length} / 7' : ''}',
-                                style: const TextStyle(
-                                  color: ivory,
-                                  fontSize: 13,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
                         for (final boss in s.enemies.where(
                           (e) => e.boss && e.active && e.alive,
                         ))
                           Positioned(
-                            top: 26,
-                            left: MediaQuery.sizeOf(context).width * .32,
-                            right: MediaQuery.sizeOf(context).width * .22,
+                            top: mobile
+                                ? safe.top +
+                                      (bounds.maxHeight < 500 ? 118 : 164)
+                                : 26,
+                            left: mobile
+                                ? (bounds.maxHeight < 500
+                                      ? bounds.maxWidth / 2 - 120
+                                      : safe.left + 12)
+                                : MediaQuery.sizeOf(context).width * .32,
+                            right: mobile
+                                ? (bounds.maxHeight < 500
+                                      ? bounds.maxWidth / 2 - 120
+                                      : safe.right + 12)
+                                : MediaQuery.sizeOf(context).width * .22,
                             child: IgnorePointer(
                               child: Container(
-                                padding: const EdgeInsets.all(12),
+                                padding: EdgeInsets.all(mobile ? 6 : 12),
                                 decoration: BoxDecoration(
                                   color: const Color(0xdd171610),
                                   border: Border.all(color: gold),
@@ -484,26 +567,26 @@ class _HazardGamePageState extends State<HazardGamePage> {
                                   children: [
                                     Text(
                                       '巨大そば屋  —  LAST ORDER',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         color: ivory,
-                                        fontSize: 17,
+                                        fontSize: mobile ? 11 : 17,
                                         letterSpacing: 2,
                                       ),
                                     ),
-                                    const SizedBox(height: 8),
+                                    SizedBox(height: mobile ? 4 : 8),
                                     LinearProgressIndicator(
                                       key: const ValueKey('boss-health'),
                                       value: (boss.hp / boss.maxHp).clamp(0, 1),
                                       color: const Color(0xffc66b39),
                                       backgroundColor: ink,
-                                      minHeight: 12,
+                                      minHeight: mobile ? 5 : 12,
                                     ),
-                                    const SizedBox(height: 6),
+                                    SizedBox(height: mobile ? 3 : 6),
                                     Text(
                                       '${boss.hp.ceil()} / ${boss.maxHp.ceil()}  ·  ${boss.bossCue}',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         color: gold,
-                                        fontSize: 12,
+                                        fontSize: mobile ? 10 : 12,
                                       ),
                                     ),
                                   ],
@@ -546,7 +629,8 @@ class _HazardGamePageState extends State<HazardGamePage> {
                               painter: ReticlePainter(s.hitFlash > 0),
                             ),
                           ),
-                        if (s.running &&
+                        if (!mobile &&
+                            s.running &&
                             s.kickTarget != null &&
                             s.kickTime <= 0)
                           Positioned(
@@ -581,79 +665,169 @@ class _HazardGamePageState extends State<HazardGamePage> {
                               ),
                             ),
                           ),
-                        Positioned(right: 28, bottom: 28, child: healthHud(s)),
-                        Positioned(
-                          left: 26,
-                          bottom: 24,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  pad('up', Icons.keyboard_arrow_up, 0, 1),
-                                  pad('left', Icons.keyboard_arrow_left, -1, 0),
-                                  pad('down', Icons.keyboard_arrow_down, 0, -1),
-                                  pad(
-                                    'right',
-                                    Icons.keyboard_arrow_right,
-                                    1,
-                                    0,
-                                  ),
-                                  const SizedBox(width: 12),
-                                  action('aim', '構える Q', () {
-                                    s.aiming = !s.aiming;
-                                  }),
-                                  const SizedBox(width: 6),
-                                  action('fire', '撃つ SPACE', game.fire),
-                                ],
-                              ),
-                              const SizedBox(height: 9),
-                              const Text(
-                                'WASD 移動   SHIFT 走る   ドラッグ 視点   R 装填   E 調べる   X 回避   F 蹴り',
-                                style: TextStyle(
-                                  color: Color(0xffb8bdac),
-                                  fontSize: 11,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Row(
-                                children: [
-                                  action(
-                                    'bag',
-                                    '持ち物 TAB',
-                                    () => game.toggle(PlayPhase.inventory),
-                                  ),
-                                  const SizedBox(width: 6),
-                                  action(
-                                    'collection',
-                                    '記録 C',
-                                    () => game.toggle(PlayPhase.collection),
-                                  ),
-                                  const SizedBox(width: 6),
-                                  action(
-                                    'pause',
-                                    '休止 ESC',
-                                    () => game.toggle(PlayPhase.paused),
-                                  ),
-                                ],
-                              ),
-                            ],
+                        if (!mobile)
+                          Positioned(
+                            right: 28 + safe.right,
+                            bottom: 28 + safe.bottom,
+                            child: healthHud(s),
                           ),
-                        ),
+                        if (mobile && s.running)
+                          Positioned(
+                            left: safe.left + 12,
+                            right: safe.right + 12,
+                            bottom: safe.bottom + 12,
+                            child: HazardTouchControls(
+                              key: ValueKey('controls-$touchEpoch'),
+                              onMove: (value) {
+                                touchX = value.dx;
+                                touchY = value.dy;
+                                updateInput();
+                              },
+                              sneaking: s.sneaking,
+                              sprinting: s.sprint,
+                              aiming: s.aiming,
+                              canInteract: s.interaction != null,
+                              stealthReady: s.stealthTarget != null,
+                              onSneak: () {
+                                touchSneak = !touchSneak;
+                                if (touchSneak) touchSprint = false;
+                                updateInput();
+                                setState(() {});
+                              },
+                              onSprint: () {
+                                touchSprint = !touchSprint;
+                                if (touchSprint) touchSneak = false;
+                                updateInput();
+                                setState(() {});
+                              },
+                              onAim: () => setState(() => s.aiming = !s.aiming),
+                              onFire: game.fire,
+                              onReload: s.reload,
+                              onInteract: game.interact,
+                              onEvade: s.evade,
+                              onKick: s.kick,
+                              onHeal: s.heal,
+                              onWeapon: () {
+                                final weapons = ['handgun', 'shotgun', 'rocket']
+                                    .where(
+                                      (kind) => s.bag.any(
+                                        (item) => item.kind == kind,
+                                      ),
+                                    )
+                                    .toList();
+                                if (weapons.isNotEmpty) {
+                                  s.equip(
+                                    weapons[(weapons.indexOf(s.weapon) + 1) %
+                                        weapons.length],
+                                  );
+                                }
+                              },
+                            ),
+                          ),
+                        if (!mobile)
+                          Positioned(
+                            left: 26,
+                            bottom: 24,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    pad('up', Icons.keyboard_arrow_up, 0, 1),
+                                    pad(
+                                      'left',
+                                      Icons.keyboard_arrow_left,
+                                      -1,
+                                      0,
+                                    ),
+                                    pad(
+                                      'down',
+                                      Icons.keyboard_arrow_down,
+                                      0,
+                                      -1,
+                                    ),
+                                    pad(
+                                      'right',
+                                      Icons.keyboard_arrow_right,
+                                      1,
+                                      0,
+                                    ),
+                                    const SizedBox(width: 12),
+                                    action('aim', '構える Q', () {
+                                      s.aiming = !s.aiming;
+                                    }),
+                                    const SizedBox(width: 6),
+                                    action('fire', '撃つ SPACE', game.fire),
+                                  ],
+                                ),
+                                const SizedBox(height: 9),
+                                const Text(
+                                  'WASD 移動   SHIFT 走る   CTRL 忍び足   ドラッグ 視点   R 装填   E 調べる   X 回避   F 蹴り',
+                                  style: TextStyle(
+                                    color: Color(0xffb8bdac),
+                                    fontSize: 11,
+                                  ),
+                                ),
+                                Text(
+                                  '${s.sneaking
+                                      ? '忍び足'
+                                      : s.sprint
+                                      ? '走行'
+                                      : '歩行'}  ·  音の範囲 ${(s.playerNoiseTime > 0 ? s.playerNoiseRadius : s.movementNoiseRadius).toStringAsFixed(1)}m',
+                                  key: const ValueKey('game-noise-status'),
+                                  style: const TextStyle(
+                                    color: gold,
+                                    fontSize: 11,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Row(
+                                  children: [
+                                    action(
+                                      'bag',
+                                      '持ち物 TAB',
+                                      () => game.toggle(PlayPhase.inventory),
+                                    ),
+                                    const SizedBox(width: 6),
+                                    action(
+                                      'collection',
+                                      '記録 C',
+                                      () => game.toggle(PlayPhase.collection),
+                                    ),
+                                    const SizedBox(width: 6),
+                                    action(
+                                      'pause',
+                                      '休止 ESC',
+                                      () => game.toggle(PlayPhase.paused),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
                         if (s.grapple != null && s.running)
                           Positioned(
                             // Damage flashes insert siblings during the hold.
                             // Preserve the gesture recognizer across that update.
                             key: const ValueKey('game-grapple-panel'),
-                            bottom: 140,
-                            left: 0,
+                            bottom: mobile ? promptBottom : 140,
+                            left: 12 + safe.left,
                             right: 0,
                             child: Center(
                               child: GestureDetector(
                                 key: const ValueKey('game-grapple-escape'),
-                                onTapDown: (_) => s.struggling = true,
-                                onTapUp: (_) => s.struggling = false,
-                                onTapCancel: () => s.struggling = false,
+                                onTapDown: (_) {
+                                  touchStruggling = true;
+                                  updateInput();
+                                },
+                                onTapUp: (_) {
+                                  touchStruggling = false;
+                                  updateInput();
+                                },
+                                onTapCancel: () {
+                                  touchStruggling = false;
+                                  updateInput();
+                                },
                                 child: Container(
                                   width: 280,
                                   padding: const EdgeInsets.all(18),
@@ -703,8 +877,8 @@ class _HazardGamePageState extends State<HazardGamePage> {
                                   e.attackPending &&
                                   e.grabPending,
                             ))
-                          const Positioned(
-                            bottom: 175,
+                          Positioned(
+                            bottom: mobile ? promptBottom : 175,
                             left: 0,
                             right: 0,
                             child: Center(
@@ -720,28 +894,44 @@ class _HazardGamePageState extends State<HazardGamePage> {
                           ),
                         if (s.interaction != null && s.running)
                           Positioned(
-                            bottom: 160,
+                            bottom: promptBottom,
                             left: 0,
                             right: 0,
                             child: Center(
                               child: FilledButton.icon(
-                                key: const ValueKey('game-interact'),
+                                key: ValueKey(
+                                  mobile
+                                      ? 'game-interact-prompt'
+                                      : 'game-interact',
+                                ),
                                 onPressed: game.interact,
                                 icon: const Icon(Icons.touch_app_outlined),
-                                label: Text('E  ${s.interactionLabel}'),
+                                label: Text(
+                                  mobile
+                                      ? s.interactionLabel
+                                      : 'E  ${s.interactionLabel}',
+                                  maxLines: 2,
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                             ),
                           ),
-                        if (s.toastTime > 0 && s.running && s.grapple == null)
+                        if (s.toastTime > 0 &&
+                            s.running &&
+                            s.grapple == null &&
+                            (!mobile || s.message != s.objective))
                           Positioned(
                             left: 0,
                             right: 0,
-                            bottom: 220,
+                            bottom: mobile
+                                ? promptBottom +
+                                      (s.interaction != null ? 52 : 0)
+                                : 220,
                             child: Center(
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: 24,
-                                  vertical: 12,
+                                  horizontal: 16,
+                                  vertical: 8,
                                 ),
                                 color: ink,
                                 child: Text(
@@ -761,7 +951,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
                         Positioned(
                           left: 30,
                           right: 30,
-                          bottom: 145,
+                          bottom: mobile ? promptBottom + 52 : 145,
                           child: Center(
                             child: Container(
                               padding: const EdgeInsets.all(12),
@@ -788,10 +978,12 @@ class _HazardGamePageState extends State<HazardGamePage> {
                         Positioned.fill(
                           child: ColoredBox(
                             color: Colors.black54,
-                            child: Center(
-                              child: JournalRecordReader(
-                                record: journalRecord(s, s.readingRecord!),
-                                onClose: closeRecord,
+                            child: SafeArea(
+                              child: Center(
+                                child: JournalRecordReader(
+                                  record: journalRecord(s, s.readingRecord!),
+                                  onClose: closeRecord,
+                                ),
                               ),
                             ),
                           ),
@@ -805,6 +997,173 @@ class _HazardGamePageState extends State<HazardGamePage> {
                 },
               ),
             ),
+    );
+  }
+
+  Widget mobileHud(HazardGameState s, EdgeInsets safe, BoxConstraints bounds) {
+    final short = bounds.maxHeight - safe.vertical < 440;
+    final mapSize = short ? 80.0 : 96.0;
+    final ammo = s.weapon == 'rocket' ? '∞' : '${s.loaded} / ${s.reserve}';
+    final noise = s.playerNoiseTime > 0
+        ? s.playerNoiseRadius
+        : s.movementNoiseRadius;
+    final hostile = s.enemies.any((e) => e.alive && e.discovered && e.alerted);
+    return Positioned.fill(
+      child: SafeArea(
+        child: Stack(
+          children: [
+            Positioned(
+              left: 12,
+              top: 10,
+              width: math.min(
+                300,
+                math.max(0, bounds.maxWidth - safe.horizontal - mapSize - 40),
+              ),
+              child: IgnorePointer(
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: const Color(0x99182018),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        s.chapterLabel,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: gold,
+                          fontSize: 10,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                      Text(
+                        s.objective,
+                        maxLines: short ? 1 : 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(color: ivory, fontSize: 12),
+                      ),
+                      const SizedBox(height: 5),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.favorite,
+                            size: 12,
+                            color: s.health < 35
+                                ? Colors.orange
+                                : const Color(0xff90ac72),
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            '${s.health.ceil()}',
+                            style: const TextStyle(color: ivory, fontSize: 12),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: LinearProgressIndicator(
+                              value: (s.health / s.maxHealth).clamp(0.0, 1.0),
+                              color: s.health < 35
+                                  ? Colors.orange
+                                  : const Color(0xff90ac72),
+                              backgroundColor: Colors.white12,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '${s.weapon == 'handgun'
+                            ? '拳銃'
+                            : s.weapon == 'shotgun'
+                            ? '散弾銃'
+                            : 'ロケット'}  ${s.reloading > 0 ? '装填中' : ammo}  ·  ${s.beers}杯',
+                        maxLines: 1,
+                        style: const TextStyle(color: ivory, fontSize: 12),
+                      ),
+                      Text(
+                        '${hostile
+                            ? '● 敵対中'
+                            : s.sneaking
+                            ? '忍び足'
+                            : s.sprint
+                            ? '走行'
+                            : '歩行'}  音 ${noise.toStringAsFixed(1)}m',
+                        key: const ValueKey('game-noise-status'),
+                        maxLines: 1,
+                        style: TextStyle(
+                          color: hostile ? const Color(0xffff9283) : gold,
+                          fontSize: 11,
+                        ),
+                      ),
+                      for (final npc in s.npcs.where(
+                        (npc) => s.companionThreatened(npc['id']),
+                      ))
+                        Text(
+                          '⚠ ${HazardGameState.companionNames[npc['id']]} ${s.companionHealth[npc['id']]?.ceil() ?? 0}',
+                          style: const TextStyle(
+                            color: Colors.orange,
+                            fontSize: 11,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              right: 12,
+              top: 10,
+              child: GestureDetector(
+                key: const ValueKey('game-minimap'),
+                onTap: () => game.toggle(PlayPhase.mapView),
+                child: Semantics(
+                  label: 'ミニマップ。タップで地図を開く',
+                  button: true,
+                  child: Container(
+                    width: mapSize,
+                    height: mapSize,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: const Color(0x998f947d)),
+                    ),
+                    child: CustomPaint(painter: VillageMapPainter(s)),
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              right: 12,
+              top: mapSize + 16,
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 48,
+                    height: 48,
+                    child: HazardTouchButton(
+                      id: 'bag',
+                      label: '持ち物',
+                      icon: Icons.backpack_outlined,
+                      onPressed: () => game.toggle(PlayPhase.inventory),
+                    ),
+                  ),
+                  const SizedBox(width: 6),
+                  SizedBox(
+                    width: 48,
+                    height: 48,
+                    child: HazardTouchButton(
+                      id: 'pause',
+                      label: '休止',
+                      icon: Icons.pause,
+                      onPressed: () => game.toggle(PlayPhase.paused),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -834,8 +1193,12 @@ class _HazardGamePageState extends State<HazardGamePage> {
             )
             case final cut?)
           Positioned(
-            top: 82,
-            bottom: 280,
+            top: MediaQuery.paddingOf(context).top + 48,
+            bottom:
+                (MediaQuery.sizeOf(context).height -
+                        MediaQuery.paddingOf(context).vertical) *
+                    .48 +
+                MediaQuery.paddingOf(context).bottom,
             left: 0,
             right: 0,
             child: CinematicInsert(cut: cut),
@@ -848,8 +1211,8 @@ class _HazardGamePageState extends State<HazardGamePage> {
           child: ColoredBox(color: Color(0xff0c100c)),
         ),
         Positioned(
-          top: 51,
-          left: 30,
+          top: MediaQuery.paddingOf(context).top + 14,
+          left: MediaQuery.paddingOf(context).left + 20,
           child: Text(
             s.talkingTo == 'takosan' ? '補給所  /  たこさん' : '道案内  /  やめ太郎',
             style: TextStyle(
@@ -863,8 +1226,19 @@ class _HazardGamePageState extends State<HazardGamePage> {
           alignment: Alignment.bottomCenter,
           child: Container(
             width: double.infinity,
-            constraints: const BoxConstraints(maxHeight: 280),
-            padding: const EdgeInsets.fromLTRB(32, 20, 32, 20),
+            constraints: BoxConstraints(
+              maxHeight:
+                  (MediaQuery.sizeOf(context).height -
+                          MediaQuery.paddingOf(context).vertical) *
+                      .48 +
+                  MediaQuery.paddingOf(context).bottom,
+            ),
+            padding: EdgeInsets.fromLTRB(
+              MediaQuery.paddingOf(context).left + 18,
+              10,
+              MediaQuery.paddingOf(context).right + 18,
+              MediaQuery.paddingOf(context).bottom + 10,
+            ),
             decoration: const BoxDecoration(
               color: Color(0xf00d130e),
               border: Border(top: BorderSide(color: Color(0xff727155))),
@@ -1058,7 +1432,13 @@ class _HazardGamePageState extends State<HazardGamePage> {
           colors: [Color(0xf010140f), Color(0x5510140f)],
         ),
       ),
-      padding: const EdgeInsets.all(64),
+      padding: EdgeInsets.fromLTRB(
+        MediaQuery.paddingOf(context).left +
+            (MediaQuery.sizeOf(context).shortestSide < 700 ? 24 : 64),
+        MediaQuery.paddingOf(context).top + 24,
+        MediaQuery.paddingOf(context).right + 24,
+        MediaQuery.paddingOf(context).bottom + 24,
+      ),
       child: Align(
         alignment: Alignment.centerLeft,
         child: SingleChildScrollView(
@@ -1171,151 +1551,137 @@ class _HazardGamePageState extends State<HazardGamePage> {
   );
   Widget modal(String heading, Widget body, {double width = 850}) =>
       Positioned.fill(
-        child: Container(
-          color: const Color(0xe810130f),
-          child: Center(
-            child: Container(
-              width: width,
-              margin: const EdgeInsets.all(30),
-              padding: const EdgeInsets.all(26),
-              decoration: BoxDecoration(
-                color: ink,
-                border: Border.all(color: const Color(0xff60654f)),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          heading,
-                          style: const TextStyle(
-                            color: ivory,
-                            fontSize: 24,
-                            letterSpacing: 3,
-                          ),
-                        ),
-                      ),
-                      IconButton(
-                        key: const ValueKey('game-modal-close'),
-                        onPressed: () {
-                          if (game.state!.phase == PlayPhase.settings) {
-                            game.closeSettings();
-                          } else {
-                            game.state!.phase = PlayPhase.playing;
-                          }
-                          focus.requestFocus();
-                          setState(() {});
-                        },
-                        icon: const Icon(Icons.close, color: ivory),
-                      ),
-                    ],
-                  ),
-                  const Divider(color: Color(0xff484e3d)),
-                  Flexible(child: body),
-                ],
-              ),
-            ),
-          ),
+        child: HazardAdaptivePanel(
+          heading: heading,
+          body: body,
+          width: width,
+          onClose: () {
+            clearInput();
+            if (game.state!.phase == PlayPhase.settings) {
+              game.closeSettings();
+            } else {
+              game.state!.phase = PlayPhase.playing;
+            }
+            focus.requestFocus();
+            setState(() {});
+          },
         ),
       );
   Widget inventory(HazardGameState s) => modal(
     'ATTACHÉ CASE',
-    SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'ドラッグして整理 ／ クリックして装備・使用・調合',
-            style: TextStyle(color: gold, fontSize: 12),
-          ),
-          const SizedBox(height: 20),
-          LayoutBuilder(
-            builder: (context, b) {
-              final cell = math.min(66.0, b.maxWidth / 10);
-              return SizedBox(
-                width: cell * 10,
-                height: cell * 6,
-                child: Stack(
-                  children: [
-                    for (var row = 0; row < 6; row++)
-                      for (var col = 0; col < 10; col++)
-                        Positioned(
-                          left: col * cell,
-                          top: row * cell,
-                          width: cell,
-                          height: cell,
-                          child: DragTarget<int>(
-                            onWillAcceptWithDetails: (_) => true,
-                            onAcceptWithDetails: (d) {
-                              s.moveBag(d.data, col, row);
-                              setState(() {});
-                            },
-                            builder: (context, candidate, rejected) =>
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: candidate.isEmpty
-                                        ? const Color(0xff24291f)
-                                        : const Color(0xff596248),
-                                    border: Border.all(
-                                      color: const Color(0xff3d4534),
-                                    ),
-                                  ),
-                                ),
-                          ),
-                        ),
-                    for (final item in s.bag)
-                      Positioned(
-                        left: item.col * cell + 2,
-                        top: item.row * cell + 2,
-                        width: item.w * cell - 4,
-                        height: item.h * cell - 4,
-                        child: Draggable<int>(
-                          data: item.id,
-                          feedback: Material(
-                            color: Colors.transparent,
-                            child: SizedBox(
-                              width: item.w * cell - 4,
-                              height: item.h * cell - 4,
-                              child: itemTile(item),
-                            ),
-                          ),
-                          childWhenDragging: const SizedBox(),
-                          child: GestureDetector(
-                            onTap: () {
-                              s.useBag(item.id);
-                              setState(() {});
-                            },
-                            child: itemTile(item),
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-              );
-            },
-          ),
-          const SizedBox(height: 18),
-          Text(
-            'ビール  ${s.beers}    ｜    ${s.hasKey ? '紋章の鍵：入手済み' : '紋章の鍵：未入手'}',
-            style: const TextStyle(color: ivory),
-          ),
-          if (s.toastTime > 0)
-            Padding(
-              padding: const EdgeInsets.only(top: 12),
-              child: Text(s.message, style: const TextStyle(color: gold)),
+    LayoutBuilder(
+      builder: (context, bounds) {
+        final landscape = bounds.maxHeight < 420 && bounds.maxWidth > 400;
+        final cell = landscape
+            ? math.min(
+                66.0,
+                math.min(bounds.maxHeight / 6, bounds.maxWidth * .68 / 10),
+              )
+            : math.min(66.0, bounds.maxWidth / 10);
+        final grid = inventoryGrid(s, cell);
+        final details = Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'ドラッグして整理 ／ タップ・クリックで装備・使用・調合',
+              style: TextStyle(color: gold, fontSize: 12),
             ),
-        ],
-      ),
+            const SizedBox(height: 18),
+            Text(
+              'ビール  ${s.beers}    ｜    ${s.hasKey ? '紋章の鍵：入手済み' : '紋章の鍵：未入手'}',
+              style: const TextStyle(color: ivory),
+            ),
+            if (s.toastTime > 0)
+              Padding(
+                padding: const EdgeInsets.only(top: 12),
+                child: Text(s.message, style: const TextStyle(color: gold)),
+              ),
+          ],
+        );
+        if (landscape) {
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              grid,
+              const SizedBox(width: 16),
+              Expanded(child: SingleChildScrollView(child: details)),
+            ],
+          );
+        }
+        return SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [grid, const SizedBox(height: 18), details],
+          ),
+        );
+      },
     ),
   );
+
+  Widget inventoryGrid(HazardGameState s, double cell) => SizedBox(
+    key: const ValueKey('game-inventory-grid'),
+    width: cell * 10,
+    height: cell * 6,
+    child: Stack(
+      children: [
+        for (var row = 0; row < 6; row++)
+          for (var col = 0; col < 10; col++)
+            Positioned(
+              left: col * cell,
+              top: row * cell,
+              width: cell,
+              height: cell,
+              child: DragTarget<int>(
+                onWillAcceptWithDetails: (_) => true,
+                onAcceptWithDetails: (d) {
+                  s.moveBag(d.data, col, row);
+                  setState(() {});
+                },
+                builder: (context, candidate, rejected) => Container(
+                  decoration: BoxDecoration(
+                    color: candidate.isEmpty
+                        ? const Color(0xff24291f)
+                        : const Color(0xff596248),
+                    border: Border.all(color: const Color(0xff3d4534)),
+                  ),
+                ),
+              ),
+            ),
+        for (final item in s.bag)
+          Positioned(
+            left: item.col * cell + 2,
+            top: item.row * cell + 2,
+            width: item.w * cell - 4,
+            height: item.h * cell - 4,
+            child: Draggable<int>(
+              data: item.id,
+              feedback: Material(
+                color: Colors.transparent,
+                child: SizedBox(
+                  width: item.w * cell - 4,
+                  height: item.h * cell - 4,
+                  child: itemTile(item),
+                ),
+              ),
+              childWhenDragging: const SizedBox(),
+              child: GestureDetector(
+                onTap: () {
+                  s.useBag(item.id);
+                  setState(() {});
+                },
+                child: itemTile(item),
+              ),
+            ),
+          ),
+      ],
+    ),
+  );
+
   Widget itemTile(BagItem i) => GameItemTile(item: i);
   void closeRecord() {
-    held.clear();
-    touchX = touchY = 0;
-    rightMouseHeld = false;
+    clearInput();
     game.state!.closeCollectedRecord();
     game.refreshView();
     focus.requestFocus();
@@ -1350,7 +1716,12 @@ class _HazardGamePageState extends State<HazardGamePage> {
           children: [
             Column(
               children: [
-                Container(height: 66, color: Colors.black),
+                Container(
+                  height:
+                      MediaQuery.paddingOf(context).top +
+                      (constraints.maxHeight < 500 ? 36 : 58),
+                  color: Colors.black,
+                ),
                 Expanded(
                   child: d.cut?.isInsert == true
                       ? CinematicInsert(cut: d.cut!, progress: d.visualProgress)
@@ -1359,9 +1730,16 @@ class _HazardGamePageState extends State<HazardGamePage> {
                 Container(
                   width: double.infinity,
                   constraints: BoxConstraints(
-                    maxHeight: constraints.maxHeight * .43,
+                    maxHeight:
+                        constraints.maxHeight *
+                        (constraints.maxHeight < 500 ? .48 : .43),
                   ),
-                  padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
+                  padding: EdgeInsets.fromLTRB(
+                    MediaQuery.paddingOf(context).left + 18,
+                    8,
+                    MediaQuery.paddingOf(context).right + 18,
+                    MediaQuery.paddingOf(context).bottom + 8,
+                  ),
                   color: const Color(0xf5000000),
                   child: SingleChildScrollView(
                     child: Column(
@@ -1383,8 +1761,8 @@ class _HazardGamePageState extends State<HazardGamePage> {
                           key: const ValueKey('event-subtitle'),
                           style: const TextStyle(
                             color: ivory,
-                            fontSize: 20,
-                            height: 1.6,
+                            fontSize: 17,
+                            height: 1.45,
                           ),
                         ),
                         const SizedBox(height: 12),
@@ -1411,8 +1789,8 @@ class _HazardGamePageState extends State<HazardGamePage> {
               ],
             ),
             Positioned(
-              top: 22,
-              left: 30,
+              top: MediaQuery.paddingOf(context).top + 12,
+              left: MediaQuery.paddingOf(context).left + 18,
               child: Text(
                 d.id == 'opening' ? 'SOBAYA HAZARD' : game.state!.chapterLabel,
                 style: const TextStyle(
@@ -1484,6 +1862,31 @@ class _HazardGamePageState extends State<HazardGamePage> {
               label: options.sensitivity.toStringAsFixed(1),
               activeColor: gold,
               onChanged: (v) => game.changeSettings((s) => s.sensitivity = v),
+            ),
+            Text(
+              'タッチ視点感度  ×${options.touchSensitivity.toStringAsFixed(1)}',
+              style: const TextStyle(color: gold),
+            ),
+            Slider(
+              key: const ValueKey('game-touch-sensitivity'),
+              value: options.touchSensitivity,
+              min: .5,
+              max: 2,
+              divisions: 15,
+              activeColor: gold,
+              onChanged: (v) =>
+                  game.changeSettings((s) => s.touchSensitivity = v),
+            ),
+            SwitchListTile.adaptive(
+              key: const ValueKey('game-touch-controls'),
+              contentPadding: EdgeInsets.zero,
+              title: const Text('タッチ操作を常に表示', style: TextStyle(color: ivory)),
+              subtitle: const Text(
+                'スマホ・小さい画面では自動で表示します。',
+                style: TextStyle(color: gold, fontSize: 12),
+              ),
+              value: options.touchControls,
+              onChanged: (v) => game.changeSettings((s) => s.touchControls = v),
             ),
             Text(
               '全体音量  ${(options.volume * 100).round()}%',
@@ -1561,6 +1964,8 @@ class _HazardGamePageState extends State<HazardGamePage> {
                     s.musicVolume = 1;
                     s.effectsVolume = 1;
                     s.sensitivity = 1;
+                    s.touchSensitivity = 1;
+                    s.touchControls = false;
                     s.renderScale = .85;
                     s.muted = false;
                     s.cinematicLighting = true;
@@ -1641,116 +2046,156 @@ class _HazardGamePageState extends State<HazardGamePage> {
 
   Widget fullMap(HazardGameState s) => modal(
     '${s.chapterLabel}  /  MAP',
-    Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(s.objective, style: const TextStyle(color: ivory)),
-        const SizedBox(height: 12),
-        SizedBox(
-          height: 300,
-          width: 300,
+    LayoutBuilder(
+      builder: (context, bounds) {
+        final landscape = bounds.maxHeight < 420 && bounds.maxWidth > 400;
+        final side = landscape
+            ? math.min(300.0, math.min(bounds.maxHeight, bounds.maxWidth * .52))
+            : math.min(300.0, bounds.maxWidth);
+        final map = SizedBox.square(
+          key: const ValueKey('game-full-map'),
+          dimension: side,
           child: CustomPaint(painter: VillageMapPainter(s, detailed: true)),
-        ),
-        const SizedBox(height: 12),
-        const Text(
-          '白：現在地  金丸：門・集合場所  金の紙：メモ  水色：仲間\n明るい壁：建物  暗い壁：岩壁・柵',
-          style: TextStyle(color: ivory, height: 1.6),
-        ),
-        const SizedBox(height: 12),
-        action('close-map', '探索に戻る  M', () => game.toggle(PlayPhase.mapView)),
-      ],
+        );
+        final details = Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(s.objective, style: const TextStyle(color: ivory)),
+            const SizedBox(height: 12),
+            const Text(
+              '白：現在地  金丸：門・集合場所  金の紙：メモ  水色：仲間\n黄：目視済みのそば屋  赤：敵対中  扇形：視界\n薄い印：最後に見た位置  明るい壁：建物',
+              style: TextStyle(color: ivory, height: 1.6),
+            ),
+            const SizedBox(height: 12),
+            action(
+              'close-map',
+              '探索に戻る  M',
+              () => game.toggle(PlayPhase.mapView),
+            ),
+          ],
+        );
+        if (landscape) {
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              map,
+              const SizedBox(width: 16),
+              Expanded(child: SingleChildScrollView(child: details)),
+            ],
+          );
+        }
+        return SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [map, const SizedBox(height: 12), details],
+          ),
+        );
+      },
     ),
     width: 600,
   );
 
   Widget pause(HazardGameState s) => modal(
     'PAUSED',
-    Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text('探索を再開する準備ができたら、戻ってください。', style: TextStyle(color: ivory)),
-        const SizedBox(height: 20),
-        Wrap(
-          spacing: 12,
-          children: [
-            action('resume', '探索に戻る', () => game.toggle(PlayPhase.paused)),
-            action('save', game.saving ? '記録中…' : 'チェックポイントを保存', () {
-              game.saveCheckpoint(announce: true);
-            }),
-            if (game.hasCheckpoint)
-              action('load', 'チェックポイントへ戻る', game.continueRun),
-            action(
-              'title',
-              game.saving ? '記録中…' : '保存してタイトルへ',
-              game.returnToTitle,
-            ),
-            action('settings', '設定', game.openSettings),
-          ],
-        ),
-        const SizedBox(height: 20),
-        if (game.saveStatus.isNotEmpty)
-          Text(game.saveStatus, style: const TextStyle(color: gold)),
-        const SizedBox(height: 8),
-        const Text(
-          '案内役・補給所での会話後、武器・鍵の取得時、門を開けた時にも自動保存します。',
-          style: TextStyle(color: ivory, fontSize: 12),
-        ),
-        const SizedBox(height: 12),
-        const Text(
-          '1 / 2 / 3 武器切替     H ハーブを使う\n構え中は移動を止めます。木箱や樽はEでも壊せます。',
-          style: TextStyle(color: gold, height: 2),
-        ),
-      ],
+    SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('探索を再開する準備ができたら、戻ってください。', style: TextStyle(color: ivory)),
+          const SizedBox(height: 20),
+          Wrap(
+            spacing: 12,
+            children: [
+              action('resume', '探索に戻る', () => game.toggle(PlayPhase.paused)),
+              action('save', game.saving ? '記録中…' : 'チェックポイントを保存', () {
+                game.saveCheckpoint(announce: true);
+              }),
+              if (game.hasCheckpoint)
+                action('load', 'チェックポイントへ戻る', game.continueRun),
+              action(
+                'title',
+                game.saving ? '記録中…' : '保存してタイトルへ',
+                game.returnToTitle,
+              ),
+              action('settings', '設定', game.openSettings),
+              action(
+                'collection',
+                '村の記録',
+                () => game.toggle(PlayPhase.collection),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          if (game.saveStatus.isNotEmpty)
+            Text(game.saveStatus, style: const TextStyle(color: gold)),
+          const SizedBox(height: 8),
+          const Text(
+            '案内役・補給所での会話後、武器・鍵の取得時、門を開けた時にも自動保存します。',
+            style: TextStyle(color: ivory, fontSize: 12),
+          ),
+          const SizedBox(height: 12),
+          const Text(
+            '忍び足で音を抑え、背後から近づくとビールを破壊できます。\n敵対したら遮蔽物で視界を切り、距離を離して逃走。\nショットガンの発砲音は遠くまで届きます。\n1 / 2 / 3 武器切替  H 回復  CTRL 忍び足  E 調べる\nスマホ：左スティックで移動、右の空いている画面で視点操作。',
+            style: TextStyle(color: gold, height: 2),
+          ),
+        ],
+      ),
     ),
     width: 700,
   );
   Widget ending(HazardGameState s) => Positioned.fill(
     child: Container(
       color: const Color(0xe810130f),
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              s.phase == PlayPhase.clear
-                  ? 'DEMO COMPLETE'
-                  : s.fallenCompanion != null
-                  ? 'GAME OVER'
-                  : 'YOU ARE DOWN',
-              style: const TextStyle(
-                color: gold,
-                fontSize: 38,
-                letterSpacing: 5,
-              ),
+      child: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  s.phase == PlayPhase.clear
+                      ? 'DEMO COMPLETE'
+                      : s.fallenCompanion != null
+                      ? 'GAME OVER'
+                      : 'YOU ARE DOWN',
+                  style: const TextStyle(
+                    color: gold,
+                    fontSize: 30,
+                    letterSpacing: 3,
+                  ),
+                ),
+                const SizedBox(height: 18),
+                Text(
+                  s.phase == PlayPhase.clear
+                      ? '最後の一杯を断り、村を抜けた。'
+                      : s.fallenCompanion != null
+                      ? '${HazardGameState.companionNames[s.fallenCompanion]}を守れなかった。'
+                      : 'ビールの包囲網を抜けられなかった。',
+                  style: const TextStyle(color: ivory, fontSize: 18),
+                ),
+                const SizedBox(height: 25),
+                Text(
+                  '撃退 ${s.kills}    ビール ${s.beers}    記録 ${s.collected.length}/${s.gallery.length}\n探索 ${(s.time / 60).floor()}分 ${(s.time % 60).floor()}秒    命中率 ${s.shots == 0 ? '—' : '${(s.hits / s.shots * 100).round()}%'}    ${game.settings.difficultyLabel}',
+                  style: const TextStyle(color: ivory),
+                ),
+                const SizedBox(height: 28),
+                FilledButton(
+                  key: const ValueKey('game-retry'),
+                  onPressed: s.phase == PlayPhase.dead && game.hasCheckpoint
+                      ? game.continueRun
+                      : game.startRun,
+                  child: Text(
+                    s.phase == PlayPhase.dead && game.hasCheckpoint
+                        ? 'チェックポイントから再開'
+                        : 'もう一度探索する',
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 18),
-            Text(
-              s.phase == PlayPhase.clear
-                  ? '最後の一杯を断り、村を抜けた。'
-                  : s.fallenCompanion != null
-                  ? '${HazardGameState.companionNames[s.fallenCompanion]}を守れなかった。'
-                  : 'ビールの包囲網を抜けられなかった。',
-              style: const TextStyle(color: ivory, fontSize: 18),
-            ),
-            const SizedBox(height: 25),
-            Text(
-              '撃退 ${s.kills}    ビール ${s.beers}    記録 ${s.collected.length}/${s.gallery.length}\n探索 ${(s.time / 60).floor()}分 ${(s.time % 60).floor()}秒    命中率 ${s.shots == 0 ? '—' : '${(s.hits / s.shots * 100).round()}%'}    ${game.settings.difficultyLabel}',
-              style: const TextStyle(color: ivory),
-            ),
-            const SizedBox(height: 28),
-            FilledButton(
-              key: const ValueKey('game-retry'),
-              onPressed: s.phase == PlayPhase.dead && game.hasCheckpoint
-                  ? game.continueRun
-                  : game.startRun,
-              child: Text(
-                s.phase == PlayPhase.dead && game.hasCheckpoint
-                    ? 'チェックポイントから再開'
-                    : 'もう一度探索する',
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     ),
@@ -1855,6 +2300,47 @@ class VillageMapPainter extends CustomPainter {
           height: detailed ? 8 : 4,
         ),
         p,
+      );
+    }
+    for (final enemy in state.enemies.where((e) => e.alive && e.discovered)) {
+      final visible = enemy.visibleToPlayer;
+      final ex = visible ? enemy.x : enemy.lastSeenByPlayerX;
+      final ez = visible ? enemy.z : enemy.lastSeenByPlayerZ;
+      if (ex == null || ez == null) continue;
+      final color = enemy.alerted
+          ? const Color(0xffff5f52)
+          : const Color(0xffe5c66a);
+      final point = at(ex, ez);
+      if (visible) {
+        final cone = state.enemySightPolygon(enemy);
+        if (cone.isNotEmpty) {
+          final path = Path()..moveTo(point.dx, point.dy);
+          for (final vertex in cone) {
+            final projected = at(vertex.x, vertex.y);
+            path.lineTo(projected.dx, projected.dy);
+          }
+          path.close();
+          c.drawPath(path, Paint()..color = color.withValues(alpha: .17));
+        }
+      }
+      p
+        ..color = color.withValues(alpha: visible ? 1 : .45)
+        ..style = visible ? PaintingStyle.fill : PaintingStyle.stroke
+        ..strokeWidth = 1.5;
+      c.drawCircle(point, detailed ? 4 : 2.8, p);
+      p.style = PaintingStyle.fill;
+    }
+    if (state.playerNoiseTime > 0) {
+      c.drawOval(
+        Rect.fromCenter(
+          center: at(state.x, state.z),
+          width: state.playerNoiseRadius / 48 * size.width * 2,
+          height: state.playerNoiseRadius / 54 * size.height * 2,
+        ),
+        Paint()
+          ..color = const Color(0x77f0d497)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1,
       );
     }
     p.color = ivory;

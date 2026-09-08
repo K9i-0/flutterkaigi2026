@@ -69,6 +69,43 @@ void main() {
     restored.traverse();
     expect(restored.state.seenEvents, {'opening', 'farm'});
   });
+  test('native phone defaults use 65% only for missing or corrupt quality preferences', () {
+    for (final encoded in <String?>[
+      null,
+      '{}',
+      'corrupt',
+      '[]',
+      '{"renderScale":null}',
+      '{"renderScale":0}',
+      '{"renderScale":0.8}',
+      '{"renderScale":"1"}',
+    ]) {
+      expect(
+        HazardSettings.decode(encoded, mobileDevice: true).renderScale,
+        .65,
+        reason: '$encoded on mobile',
+      );
+      expect(
+        HazardSettings.decode(encoded).renderScale,
+        .85,
+        reason: '$encoded on desktop',
+      );
+    }
+  });
+  test(
+    'all valid saved quality choices override both native device defaults',
+    () {
+      for (final scale in [.65, .85, 1.0]) {
+        final saved = HazardSettings(renderScale: scale, volume: .4).encode();
+        for (final mobile in [false, true]) {
+          final restored = HazardSettings.decode(saved, mobileDevice: mobile);
+          expect(restored.renderScale, scale);
+          expect(restored.volume, .4);
+          expect(restored.encode(), saved);
+        }
+      }
+    },
+  );
   test('preferences round trip and recover safely from invalid values', () {
     final p = HazardSettings(
       difficulty: HazardDifficulty.tense,

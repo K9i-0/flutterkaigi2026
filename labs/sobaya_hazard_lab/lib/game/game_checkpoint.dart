@@ -12,6 +12,7 @@ extension HazardCheckpoint on HazardGameState {
     'version': 1,
     'encounterVersion': 2,
     'bossBalanceVersion': 2,
+    'stealthVersion': 1,
     'map': zoneId,
     'mapVersion': map['version'],
     'savedAt': DateTime.now().toIso8601String(),
@@ -82,6 +83,21 @@ extension HazardCheckpoint on HazardGameState {
             'alerted': e.alerted,
             'hasBeenAlerted': e.hasBeenAlerted,
             'ambientDance': e.ambientDance,
+            'awareness': e.awareness.name,
+            'discovered': e.discovered,
+            'lastKnown': e.lastKnownX == null
+                ? null
+                : [e.lastKnownX, e.lastKnownY, e.lastKnownZ],
+            'lastSeenByPlayer': e.lastSeenByPlayerX == null
+                ? null
+                : [
+                    e.lastSeenByPlayerX,
+                    e.lastSeenByPlayerY,
+                    e.lastSeenByPlayerZ,
+                  ],
+            'lastSeenByPlayerHeading': e.lastSeenByPlayerHeading,
+            'contactAge': e.contactAge,
+            'searchTime': e.searchTime,
             'notice': e.notice,
             'stun': e.stun,
             'cooldown': e.cooldown,
@@ -324,6 +340,33 @@ HazardGameState restoreHazardCheckpoint(
       e.ambientDance = e.boss ? null : j['ambientDance'] as String?;
     }
     e.hasBeenAlerted = e.alerted || (j['hasBeenAlerted'] as bool? ?? false);
+    if (j.containsKey('awareness')) {
+      require(EnemyAwareness.values.any((a) => a.name == j['awareness']));
+      e.awareness = EnemyAwareness.values.byName(j['awareness']);
+      e.discovered = j['discovered'] as bool? ?? false;
+      final known = j['lastKnown'];
+      if (known != null) {
+        require(known is List && known.length == 3);
+        e.lastKnownX = number(known[0], -30, 30);
+        e.lastKnownY = number(known[1], 0, 6);
+        e.lastKnownZ = number(known[2], -30, 35);
+      }
+      final seen = j['lastSeenByPlayer'];
+      if (seen != null) {
+        require(seen is List && seen.length == 3);
+        e.lastSeenByPlayerX = number(seen[0], -30, 30);
+        e.lastSeenByPlayerY = number(seen[1], 0, 6);
+        e.lastSeenByPlayerZ = number(seen[2], -30, 35);
+        e.lastSeenByPlayerHeading = number(
+          j['lastSeenByPlayerHeading'],
+          -1e9,
+          1e9,
+        );
+      }
+      require(!e.discovered || seen != null);
+      e.contactAge = number(j['contactAge'] ?? 0, 0, 1e9);
+      e.searchTime = number(j['searchTime'] ?? 0, 0, 1e9);
+    }
     e.climb = LadderTraversal.restore(j['climb'], s.ladder, e.x, e.y, e.z);
     e.vault = WindowTraversal.restore(
       j['vault'],

@@ -104,10 +104,80 @@ void main() {
     expect(d.done, true);
   });
 
+  test(
+    'shop and giant reveal frame the place or person described by the voice',
+    () {
+      final farm = jsonDecode(File('assets/farm.json').readAsStringSync());
+      final merchant = (farm['npcs'] as List).firstWhere(
+        (n) => n['id'] == 'takosan',
+      );
+      final shop = hazardEvents['farm']!.first;
+      expect(shop.target.$1, closeTo(merchant['x'], .3));
+      expect(shop.target.$3, closeTo(merchant['z'], .3));
+      expect(shop.cuts.where((cut) => cut.document == 'ledger'), isEmpty);
+      final giant = HazardDirector('last_order')..index = 2;
+      giant.elapsed = giant.duration * .8;
+      expect(giant.view.target.$2, greaterThan(3));
+      for (final event in hazardEvents.entries.where(
+        (e) => e.key != 'title_call',
+      )) {
+        for (final shot in event.value.where((s) => s.speaker.isNotEmpty)) {
+          expect(
+            shot.actor,
+            {
+              '福ちゃん': 'fukuchan',
+              'やめ太郎': 'yametaro',
+              'たこさん': 'takosan',
+              'そば屋': 'sobaya',
+            }[shot.speaker],
+            reason: '${event.key}: ${shot.text}',
+          );
+        }
+      }
+    },
+  );
+
+  test('evidence inserts match the document mentioned by each speaker', () {
+    expect(dialogueInsert('takosan', 'engine', 0)?.document, 'decree');
+    expect(dialogueInsert('takosan', 'evidence', 0)?.document, 'ledger');
+    expect(dialogueInsert('takosan', 'evidence', 1)?.document, 'diary');
+    expect(dialogueInsert('takosan', 'evidence', 2)?.image, 'shelter');
+    expect(dialogueInsert('yametaro', 'evidence', 0)?.document, 'withdrawal');
+    expect(dialogueInsert('yametaro', 'evidence', 1)?.document, 'arrivals');
+    expect(dialogueInsert('takosan', 'evidence', 1, postBoss: true), isNull);
+  });
+
+  testWidgets(
+    'phone document keeps readable type and scrolls to the last line',
+    (tester) async {
+      tester.view.physicalSize = const Size(360, 220);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: CinematicInsert(cut: EventCut(0, document: 'rescue-radio')),
+        ),
+      );
+      final copy = cinematicDocuments['rescue-radio']!;
+      final body = find.text(copy.$2);
+      expect(DefaultTextStyle.of(tester.element(body)).style.fontSize, 16);
+      await tester.ensureVisible(find.text(copy.$3));
+      await tester.pump();
+      final scroll = tester.state<ScrollableState>(find.byType(Scrollable));
+      expect(scroll.position.pixels, greaterThan(0));
+      expect(tester.takeException(), isNull);
+    },
+  );
+
   testWidgets('documents and images fit compact and desktop cinematic areas', (
     tester,
   ) async {
-    for (final size in [const Size(640, 230), const Size(1280, 520)]) {
+    for (final size in [
+      const Size(360, 220),
+      const Size(640, 230),
+      const Size(1280, 520),
+    ]) {
       tester.view.physicalSize = size;
       tester.view.devicePixelRatio = 1;
       for (final id in cinematicDocuments.keys) {

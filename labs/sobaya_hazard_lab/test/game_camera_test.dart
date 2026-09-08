@@ -12,6 +12,42 @@ import 'package:sobaya_hazard_lab/game/game_checkpoint.dart';
 
 void main() {
   test(
+    'short landscape captions keep the subject visible without moving the lens',
+    () {
+      final s = HazardGameState(
+        jsonDecode(File('assets/village.json').readAsStringSync()),
+      );
+      final original = playerCamera(s);
+      const phone = ui.Size(874, 402);
+      final shifted = frameAboveCaptions(original, phone);
+      expect(shifted.position, original.position);
+      expect(shifted.target, original.target);
+      final projected = shifted.worldToScreen(original.target, phone)!;
+      expect(projected.dx, closeTo(phone.width * .5, .001));
+      expect(projected.dy, closeTo(phone.height * .35, .001));
+      final ray = shifted.screenPointToRay(projected, phone);
+      expect(
+        ray.direction.normalized().dot(original.forward),
+        closeTo(1, .0001),
+      );
+      expect(
+        identical(
+          frameAboveCaptions(original, const ui.Size(402, 874)),
+          original,
+        ),
+        true,
+      );
+      expect(
+        identical(
+          frameAboveCaptions(original, const ui.Size(1280, 840)),
+          original,
+        ),
+        true,
+      );
+    },
+  );
+
+  test(
     'pointer movement turns the center ray toward that screen direction',
     () {
       final map = jsonDecode(File('assets/village.json').readAsStringSync());

@@ -61,6 +61,8 @@ class HazardCampaign {
     to.stopInput();
     to.reloading = to.hurtTime = to.evadeTime = to.kickTime = 0;
     to.fireCooldown = to.recoil = to.damageFlash = to.noiseTime = 0;
+    to.clearStealthNoise();
+    from.clearStealthNoise();
     to.invulnerable = 1;
     to.reaction = null;
     to.reactionTime = 0;

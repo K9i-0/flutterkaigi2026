@@ -19,6 +19,7 @@ import 'game_contact_shadows.dart';
 import 'game_campaign.dart';
 import 'game_settings.dart';
 import 'game_lighting.dart';
+import 'game_world_effects.dart';
 import 'game_rocket_visuals.dart';
 import 'game_events.dart';
 import 'game_voice.dart';
@@ -198,6 +199,7 @@ class HazardGameController extends ChangeNotifier {
       crateNodes = <String, Node>{};
   late Node pistol, shotgun, launcher, impact, muzzle;
   late RocketVisuals rocketVisuals;
+  late HazardWorldEffects worldEffects;
   ui.Offset? rocketLockScreen;
   final fxPools = <String, AudioPool>{};
   final fxPalette = HazardFxPalette();
@@ -265,6 +267,10 @@ class HazardGameController extends ChangeNotifier {
     );
     settings = HazardSettings.decode(
       preferences!.getString('hazard.settings.v1'),
+      mobileDevice:
+          !kIsWeb &&
+          (defaultTargetPlatform == TargetPlatform.iOS ||
+              defaultTargetPlatform == TargetPlatform.android),
     );
     final maps = <String, Map<String, dynamic>>{};
     for (final id in ['village', 'farm', 'mountain']) {
@@ -479,6 +485,7 @@ class HazardGameController extends ChangeNotifier {
     launcher = buildRocketLauncher();
     scene.add(launcher);
     rocketVisuals = RocketVisuals(scene);
+    worldEffects = HazardWorldEffects(scene, environments: environments);
     scene.add(pistol);
     scene.add(shotgun);
     final mat = UnlitMaterial()..baseColorFactor = vm.Vector4(1, .82, .4, 1);
@@ -640,8 +647,13 @@ class HazardGameController extends ChangeNotifier {
     campaign.syncRefuge();
     state?.damageScale = settings.damageScale;
     state?.enemySpeedScale = settings.enemySpeedScale;
+    state?.enemyVisibleInView = _enemyInPlayerView;
     scene.renderScale = settings.renderScale;
-    lighting.apply(scene, enabled: settings.cinematicLighting);
+    lighting.apply(
+      scene,
+      enabled: settings.cinematicLighting,
+      zone: state?.zoneId ?? 'village',
+    );
   }
 
   void changeSettings(void Function(HazardSettings) change) {
@@ -942,6 +954,15 @@ class HazardGameController extends ChangeNotifier {
     rotatePlayerView(state!, dx, dy, sensitivity: settings.sensitivity);
   }
 
+  bool _enemyInPlayerView(vm.Vector3 point) {
+    final projected = playerCamera(state!).worldToScreen(point, viewport);
+    return projected != null &&
+        projected.dx >= 0 &&
+        projected.dx <= viewport.width &&
+        projected.dy >= 0 &&
+        projected.dy <= viewport.height;
+  }
+
   PerspectiveCamera camera() {
     final s = state!;
     final d = director;
@@ -964,12 +985,15 @@ class HazardGameController extends ChangeNotifier {
             offset.normalized() *
                 math.max(.01, math.min(offset.length, clearance - .02));
       }
-      return PerspectiveCamera(
-        position: position,
-        target: target,
-        fovRadiansY: d.view.fov,
-        fovNear: .07,
-        fovFar: 85,
+      return frameAboveCaptions(
+        PerspectiveCamera(
+          position: position,
+          target: target,
+          fovRadiansY: d.view.fov,
+          fovNear: .07,
+          fovFar: 85,
+        ),
+        viewport,
       );
     }
     if (s.fallenCompanion != null) {
@@ -1002,25 +1026,35 @@ class HazardGameController extends ChangeNotifier {
       if (s.dialogueLine.speaker == '福ちゃん') {
         final position = vm.Vector3(s.x, s.y, s.z);
         final angle = math.atan2(n.x - s.x, n.z - s.z) - .2;
-        return PerspectiveCamera(
-          position:
-              position +
-              vm.Vector3(math.sin(angle) * 2.15, 1.65, math.cos(angle) * 2.15),
-          target: position + vm.Vector3(0, 1.36, 0),
-          fovRadiansY: .68,
-          fovNear: .07,
-          fovFar: 85,
+        return frameAboveCaptions(
+          PerspectiveCamera(
+            position:
+                position +
+                vm.Vector3(
+                  math.sin(angle) * 2.15,
+                  1.65,
+                  math.cos(angle) * 2.15,
+                ),
+            target: position + vm.Vector3(0, 1.36, 0),
+            fovRadiansY: .68,
+            fovNear: .07,
+            fovFar: 85,
+          ),
+          viewport,
         );
       }
       final angle = math.atan2(s.x - n.x, s.z - n.z) + .2;
-      return PerspectiveCamera(
-        position:
-            n +
-            vm.Vector3(math.sin(angle) * 2.25, 1.25, math.cos(angle) * 2.25),
-        target: n + vm.Vector3(0, .94, 0),
-        fovRadiansY: .68,
-        fovNear: .07,
-        fovFar: 85,
+      return frameAboveCaptions(
+        PerspectiveCamera(
+          position:
+              n +
+              vm.Vector3(math.sin(angle) * 2.25, 1.25, math.cos(angle) * 2.25),
+          target: n + vm.Vector3(0, .94, 0),
+          fovRadiansY: .68,
+          fovNear: .07,
+          fovFar: 85,
+        ),
+        viewport,
       );
     }
     return playerCamera(s);
@@ -1221,6 +1255,7 @@ class HazardGameController extends ChangeNotifier {
   void tick(Duration elapsed, double delta) {
     if (!ready || disposed) return;
     final s = state!, dt = delta.clamp(0.0, .05);
+    s.viewAspect = viewport.width / math.max(1, viewport.height);
     _syncVoice();
     final bx = s.x, bz = s.z;
     if (director != null) {
@@ -1276,6 +1311,25 @@ class HazardGameController extends ChangeNotifier {
       speaking: voice.speaking && settings.voiceVolume > 0,
       volume: settings.muted ? 0 : settings.volume * settings.environmentVolume,
       musicVolume: settings.muted ? 0 : settings.volume * settings.musicVolume,
+      suspicion: s.running
+          ? s.enemies
+                .where((e) => e.alive && e.active)
+                .fold<double>(
+                  0,
+                  (value, e) => math.max(
+                    value,
+                    e.discovered && !e.alerted ? e.notice.clamp(0.0, 1.0) : 0,
+                  ),
+                )
+          : 0,
+      shelter:
+          s.map['houses'].any(
+            (h) =>
+                (s.x - h['x']).abs() < h['w'] / 2 - .3 &&
+                (s.z - h['z']).abs() < h['d'] / 2 - .3,
+          )
+          ? 1
+          : 0,
     );
     if (newAlert) s.emitSound('alert');
     final moved = math.sqrt(math.pow(s.x - bx, 2) + math.pow(s.z - bz, 2));
@@ -1485,6 +1539,7 @@ class HazardGameController extends ChangeNotifier {
       enemyBeer[i].detail = i == detailedMug;
       enemyMugs[i].visible =
           e.active &&
+          (e.alive || !e.suppressBeer) &&
           !e.dropped &&
           e.climb == null &&
           e.vault == null &&
@@ -1637,6 +1692,8 @@ class HazardGameController extends ChangeNotifier {
                 vm.Vector3(0, .10 * e.modelScale, 0);
       e.mugCentre = enemyMugs[i].visible
           ? enemyMugs[i].globalTransform.transformed3(vm.Vector3(0, .11, 0))
+          : !e.alive && e.suppressBeer
+          ? e.mugCentre
           : null;
     }
     for (final h in s.map['houses']) {
@@ -1776,7 +1833,18 @@ class HazardGameController extends ChangeNotifier {
       vm.Vector3(0, .11, -.86),
     );
     launcher.visible = s.aiming && s.weapon == 'rocket';
-    rocketVisuals.update(s);
+    rocketVisuals.update(s, enhanced: settings.cinematicLighting);
+    worldEffects.update(
+      s,
+      dt: dt,
+      active:
+          foreground &&
+          !posePreview &&
+          (s.running ||
+              s.phase == PlayPhase.dialogue ||
+              (director != null && !director!.paused)),
+      enhanced: settings.cinematicLighting,
+    );
     updateRocketTarget();
     pistol.visible = (s.aiming || s.reloading > 0) && s.weapon == 'handgun';
     shotgun.visible = (s.aiming || s.reloading > 0) && s.weapon == 'shotgun';
@@ -1794,9 +1862,16 @@ class HazardGameController extends ChangeNotifier {
     impact.visible = s.hitFlash > 0 && s.shotEnd != null;
     if (impact.visible) impact.position = s.shotEnd!;
     _stepDistance += moved;
-    if (_stepDistance > .9) {
+    if (_stepDistance > (s.sneaking ? .62 : .9)) {
       _stepDistance = 0;
-      s.lastSound ??= 'step';
+      s.emitSound(
+        'step',
+        loudness: s.sneaking
+            ? .16
+            : s.sprint
+            ? 1
+            : .55,
+      );
     }
     contactShadows?.update([
       (actor: player.node, width: .46, depth: .32),
