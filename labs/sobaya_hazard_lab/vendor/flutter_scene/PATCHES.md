@@ -22,3 +22,9 @@ Regression: `flutter test --no-pub test/game_animation_zero_weight_test.dart` pa
 
 Upstream animation clip SHA256 before patch: `b65ed806dd1b388c1da4f82c2ea6e23dc44d3b172d1394ed825c0aa916af6881`.
 Patched animation clip SHA256: `a82d6d0beee68ac9e047e403dd9e8b6f2d1e410392c7732390d678a7e6a6b3f5`.
+
+## Skinned TAA velocity world transforms (2026-09-08)
+
+`lib/src/render/velocity_pass.dart`: the joints textures already hold full world transforms, including the character's root scale. The velocity pass additionally multiplied both current and previous mesh world matrices, unlike the color pass's identity matrices. Use identity model matrices for skinned velocity and match each draw's winding to the color/depth passes. This prevents the 3x boss's velocity coverage from being translated/scaled a second time. `test/game_giant_velocity_test.dart` checks current/previous head positions and displacement with a translated, rotated, 3x rig. Native boss event frames render without runtime errors after hot reload.
+
+This is a confirmed defect in the newly enabled TAA path, not proof that it caused the user's older intermittent face corruption. The reported older symptom has not yet been reproduced.

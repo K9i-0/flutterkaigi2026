@@ -122,6 +122,7 @@ void attachGameAutomation(HazardGameController game) {
             ..._game!.state!.inspect(),
             'frames': _game!.frames.toJson(),
             'settings': _game!.settings.encode(),
+            'lighting': _game!.lighting.inspect(_game!.scene),
             'audioPlayback': _game!.audioPlayback,
             'rendering': {
               'continuous': _game!.animateScene,

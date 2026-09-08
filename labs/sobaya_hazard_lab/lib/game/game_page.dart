@@ -315,7 +315,26 @@ class _HazardGamePageState extends State<HazardGamePage> {
                               game.scene,
                               // SceneView 0.23 uses SingleTickerProviderStateMixin.
                               // Keep its ticker alive and mute it through TickerMode.
-                              cameraBuilder: (_) => game.camera(),
+                              cameraBuilder: (_) {
+                                final camera = game.camera();
+                                game.lighting.prepareCamera(
+                                  game.scene,
+                                  camera,
+                                  conversation:
+                                      s.phase == PlayPhase.dialogue ||
+                                      game.director != null,
+                                  shot: (
+                                    s.zoneId,
+                                    s.phase,
+                                    s.talkingTo,
+                                    game.director?.shot,
+                                    s.phase == PlayPhase.dialogue
+                                        ? s.dialogueLine.speaker
+                                        : null,
+                                  ),
+                                );
+                                return camera;
+                              },
                               onTick: (elapsed, delta) {
                                 game.renderedTicks++;
                                 final step = resetSceneClock

@@ -23,6 +23,16 @@ import 'package:vector_math/vector_math.dart';
 /// Render-graph blackboard key for the screen-space velocity buffer.
 const String kVelocityBlackboardKey = 'velocity';
 
+/// Joint textures already contain world transforms, including root scale.
+/// Match the color/depth passes instead of applying the mesh transform twice.
+Float32List createSkinnedVelocityModelInfo() {
+  final data = Float32List(36);
+  data.setRange(0, 16, Matrix4.identity().storage);
+  data.setRange(16, 32, Matrix4.identity().storage);
+  data[34] = 1;
+  return data;
+}
+
 final gpu.SamplerOptions _nearestClamp = gpu.SamplerOptions(
   minFilter: gpu.MinMagFilter.nearest,
   magFilter: gpu.MinMagFilter.nearest,
@@ -155,7 +165,7 @@ class VelocityPass extends RenderGraphPass {
       ByteData.sublistView(frameInfoData),
     );
 
-    final skinnedModelInfo = Float32List(36);
+    final skinnedModelInfo = createSkinnedVelocityModelInfo();
     final unskinnedModelInfo = Float32List(32);
 
     final frustum = Frustum.matrix(_currentViewProjection);
@@ -186,6 +196,11 @@ class VelocityPass extends RenderGraphPass {
       renderPass.clearBindings();
       renderPass.bindPipeline(pipeline);
       renderPass.setPrimitiveType(item.geometry.primitiveType);
+      renderPass.setWindingOrder(
+        item.windingFlipped
+            ? gpu.WindingOrder.counterClockwise
+            : gpu.WindingOrder.clockwise,
+      );
       renderPass.bindUniform(
         vertexShader.getUniformSlot('VelocityFrameInfo'),
         frameInfoView,
@@ -196,8 +211,6 @@ class VelocityPass extends RenderGraphPass {
       );
 
       if (isSkinned) {
-        skinnedModelInfo.setRange(0, 16, item.worldTransform.storage);
-        skinnedModelInfo.setRange(16, 32, item.previousWorldTransform.storage);
         skinnedModelInfo[32] = item.jointsTextureWidth.toDouble();
         skinnedModelInfo[33] = item.jointsTextureWidth.toDouble();
         skinnedModelInfo[34] = 1.0;

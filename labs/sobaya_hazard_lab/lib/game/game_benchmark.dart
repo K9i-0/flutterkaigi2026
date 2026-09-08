@@ -209,6 +209,7 @@ class GameBenchmark {
       'HAZARD_GAME_BENCHMARK ${jsonEncode({
         'case': cases[index].name,
         'settings': jsonDecode(game.settings.encode()),
+        'lighting': game.lighting.inspect(game.scene),
         'audio': {'observedAmbience': heardAmbience, 'observedSpeech': heardSpeech, 'voice': game.voice.inspect(), 'soundscape': game.soundscape.inspect()},
         'region': cases[index].region,
         'contactShadows': cases[index].contacts,
