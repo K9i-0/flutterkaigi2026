@@ -14,12 +14,25 @@
     "evidence": "evidence/icon-ios-home.png"
   },
   "macos": {
-    "builds": ["debug", "release"],
+    "builds": [
+      "debug",
+      "release"
+    ],
     "nativeReady": true,
     "iconVerification": "Extracted compiled AppIcon.icns using iconutil and visually confirmed C. Debug and release compiled icon hashes match.",
     "compiledIconSha256": "47c0d20dd29f7c83ab166f791e3aca9466aca9ed70fb7698c2fe137d3a0ed04f",
     "releaseSignature": "codesign --verify --deep --strict passed",
-    "evidence": "evidence/icon-macos-installed.iconset/icon_128x128@2x.png"
+    "evidence": "evidence/icon-macos-installed.iconset/icon_128x128@2x.png",
+    "releasePackage": {
+      "archive": ".local/hazard_releases/sobaya-hazard-macos-091fbbc.zip",
+      "bytes": 272254948,
+      "sha256": "c4c91324f189da3428183c7446f59d7e653ce796b2b65916612d1523430baefd",
+      "sourceRevision": "091fbbc",
+      "sceneCount": 9,
+      "voiceCueCount": 126
+    },
+    "packagedIconSha256": "47c0d20dd29f7c83ab166f791e3aca9466aca9ed70fb7698c2fe137d3a0ed04f",
+    "packagedColdLaunch": "Opened the exact packaged app via open -n. Native title, Japanese application/menu/window name, continue/new game/settings and existing collection 6 / 12 confirmed. Left at title."
   },
   "android": {
     "build": "flutter build apk --debug -t lib/game_main.dart --target-platform android-arm64 passed",
@@ -29,8 +42,14 @@
     "colorArtwork": "C-adaptive.png extends the approved image's background so face and hair remain inside the central safe area. Opaque artwork layer over a background color; no independently moving subject depth.",
     "circularLauncher": "Native launcher displayed the selected C portrait without face/hair clipping.",
     "themedLauncher": "Enabled themed icons on the dedicated test AVD, pinned the app, and verified the dedicated mask glyph tinted by the launcher.",
-    "coldLaunch": "am start -W returned Status ok, LaunchState COLD, MainActivity",
-    "evidence": ["evidence/icon-android-home.png", "evidence/icon-android-themed.png", "evidence/icon-android-launch.png", "evidence/icon-android-build-final.log"]
+    "coldLaunch": "am start -W returned Status ok, LaunchState COLD, MainActivity; native accessibility subsequently confirmed title, new game, settings and collection 0 / 12.",
+    "evidence": [
+      "evidence/icon-android-home.png",
+      "evidence/icon-android-themed.png",
+      "evidence/icon-android-launch.png",
+      "evidence/icon-android-build-final.log"
+    ],
+    "cleanup": "Dedicated QA emulator stopped after validation; its installed app is retained for future checks."
   },
   "generation": {
     "tool": "built-in image_gen",
@@ -38,5 +57,8 @@
     "prompt": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/prompt-C-adaptive.txt",
     "discardedAttempts": "Two transparent extraction attempts returned opaque RGB checkerboard artwork; neither was added to the app or tracked as a production asset."
   },
-  "limitations": ["No physical iOS or Android device checks", "Launcher/icon verification does not establish Android gameplay or GPU performance"]
+  "limitations": [
+    "No physical iOS or Android device checks",
+    "Launcher/icon verification does not establish Android gameplay or GPU performance"
+  ]
 }
