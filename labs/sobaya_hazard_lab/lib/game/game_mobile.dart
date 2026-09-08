@@ -208,12 +208,13 @@ class HazardTouchButton extends StatefulWidget {
     this.actionIdentity,
     this.horizontal = false,
     this.maxLabelLines = 1,
+    this.quiet = false,
   });
   final String id, label;
   final int maxLabelLines;
   final IconData icon;
   final VoidCallback onPressed;
-  final bool active, emphasized, enabled, horizontal;
+  final bool active, emphasized, enabled, horizontal, quiet;
   final Object? actionIdentity;
 
   @override
@@ -260,7 +261,7 @@ class _HazardTouchButtonState extends State<HazardTouchButton> {
 
   @override
   Widget build(BuildContext context) {
-    final icon = Icon(widget.icon, color: _ivory, size: 20);
+    final icon = Icon(widget.icon, color: _ivory, size: widget.quiet ? 18 : 20);
     final label = Text(
       widget.label,
       maxLines: widget.maxLabelLines,
@@ -307,17 +308,23 @@ class _HazardTouchButtonState extends State<HazardTouchButton> {
                 ? const Color(0xe3707850)
                 : widget.emphasized
                 ? const Color(0xdd695335)
+                : widget.quiet
+                ? const Color(0x4018211b)
                 : const Color(0xc018211b),
             border: Border.all(
               color: widget.active || widget.emphasized
                   ? _gold
+                  : widget.quiet
+                  ? Colors.transparent
                   : const Color(0x887a836d),
             ),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Opacity(
             opacity: widget.enabled ? 1 : .4,
-            child: widget.horizontal
+            child: widget.quiet
+                ? Center(child: icon)
+                : widget.horizontal
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

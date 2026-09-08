@@ -1012,14 +1012,19 @@ class _HazardGamePageState extends State<HazardGamePage> {
                                           horizontal: 12,
                                           vertical: 6,
                                         ),
-                                        color: ink,
+                                        decoration: BoxDecoration(
+                                          color: const Color(0x66181b17),
+                                          borderRadius: BorderRadius.circular(
+                                            6,
+                                          ),
+                                        ),
                                         child: Text(
                                           s.interactionLabel,
                                           maxLines: 2,
                                           textAlign: TextAlign.center,
                                           style: const TextStyle(
                                             color: ivory,
-                                            fontSize: 12,
+                                            fontSize: 11,
                                           ),
                                         ),
                                       ),
@@ -1041,7 +1046,8 @@ class _HazardGamePageState extends State<HazardGamePage> {
                         if (s.toastTime > 0 &&
                             s.running &&
                             s.grapple == null &&
-                            (!mobile || s.message != s.objective))
+                            (!mobile ||
+                                (!s.aiming && s.message != s.objective)))
                           Positioned(
                             left: 0,
                             right: 0,
@@ -1050,17 +1056,40 @@ class _HazardGamePageState extends State<HazardGamePage> {
                                       (s.interaction != null ? 52 : 0)
                                 : 220,
                             child: Center(
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 8,
-                                ),
-                                color: ink,
-                                child: Text(
-                                  s.message,
-                                  style: const TextStyle(
-                                    color: ivory,
-                                    fontSize: 14,
+                              child: IgnorePointer(
+                                child: Container(
+                                  key: const ValueKey('game-toast'),
+                                  constraints: BoxConstraints(
+                                    maxWidth: mobile
+                                        ? math.min(
+                                            280,
+                                            bounds.maxWidth -
+                                                safe.horizontal -
+                                                32,
+                                          )
+                                        : bounds.maxWidth - 32,
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 8,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: mobile
+                                        ? const Color(0x66181b17)
+                                        : ink,
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  child: Text(
+                                    s.message,
+                                    maxLines: mobile ? 2 : null,
+                                    overflow: mobile
+                                        ? TextOverflow.ellipsis
+                                        : null,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: ivory,
+                                      fontSize: mobile ? 11 : 14,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -1147,6 +1176,9 @@ class _HazardGamePageState extends State<HazardGamePage> {
   Widget mobileHud(HazardGameState s, EdgeInsets safe, BoxConstraints bounds) {
     final short = bounds.maxHeight - safe.vertical < 440;
     final mapSize = short ? 80.0 : 96.0;
+    final availableWidth = bounds.maxWidth - safe.horizontal;
+    // Narrow phones keep a readable health panel below the utility button row.
+    final lowerStatus = availableWidth - mapSize - 94 < 220;
     final healCount = s.bag
         .where((i) => i.kind == 'green' || i.kind == 'mixed')
         .length;
@@ -1162,10 +1194,10 @@ class _HazardGamePageState extends State<HazardGamePage> {
           children: [
             Positioned(
               left: 12,
-              top: 10,
+              top: lowerStatus ? 66 : 10,
               width: math.min(
                 300,
-                math.max(0, bounds.maxWidth - safe.horizontal - mapSize - 40),
+                math.max(0, availableWidth - mapSize - (lowerStatus ? 40 : 94)),
               ),
               child: IgnorePointer(
                 ignoring: !canHeal,
@@ -1300,8 +1332,8 @@ class _HazardGamePageState extends State<HazardGamePage> {
               ),
             ),
             Positioned(
-              right: 12,
-              top: mapSize + 16,
+              right: mapSize + 18,
+              top: 10,
               child: SizedBox(
                 width: 48,
                 height: 48,
@@ -1309,6 +1341,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
                   id: 'pause',
                   label: '休止',
                   icon: Icons.pause,
+                  quiet: true,
                   enabled: s.running,
                   onPressed: () => game.toggle(PlayPhase.paused),
                 ),
