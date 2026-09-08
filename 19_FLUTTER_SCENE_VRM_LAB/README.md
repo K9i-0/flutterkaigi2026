@@ -32,8 +32,8 @@ MediaPipeへ検出器を差し替えられる。
 ## 実行
 
 ```bash
-mise exec flutter@3.47.1 -- flutter pub get
-mise exec flutter@3.47.1 -- flutter run -d macos --debug
+mise exec flutter@3.47.2 -- flutter pub get
+mise exec flutter@3.47.2 -- flutter run -d macos --debug
 ```
 
 macOSでは「追跡開始」でカメラ権限を許可すると、内蔵または接続中のカメラを使用する。
@@ -107,3 +107,12 @@ macOSがContinuity Cameraとして認識するiPhoneも「使用カメラ」か�
 - カメラ映像をアップロード・保存する処理はない。
 
 詳細な結果と残課題は[VALIDATION_REPORT.md](VALIDATION_REPORT.md)を参照。
+
+## 依存バージョン確認（2026-09-08）
+
+共通SDKは `.mise.toml` のFlutter 3.47.2 / Dart 3.13.2（最新stable）。
+公式flutter_sceneの最新公開版は0.23.0だが、この検証室と
+`packages/flutter_scene_vrm` は `GltfSourceComponent` /
+`MorphTargetController` に依存するため、`vrm-runtime-support` の最新コミット
+`8d340138f80d1fb5d09d163f62ab836be9379e2e`（0.22.2ベース）を維持する。
+公式版への切り替えには、元glTFノード番号の対応とノード単位のモーフAPIへの移行・描画検証が必要。
