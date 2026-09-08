@@ -1,0 +1,176 @@
+{
+  "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+  "sourceSha256": "a7eaa213ddb58dfef9221eafb57ec5b13f29717054299bd9a7ebbf820535d725",
+  "adaptiveSourceSha256": "489432c108c416c67f01ee67ec3468d1707a05fe1083d4d467d94867c199d3b8",
+  "operation": "Size-only native sips export; approved artwork unchanged, no corner masks.",
+  "outputs": [
+    {
+      "path": "21_SOBAYA_HAZARD_LAB/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@2x.png",
+      "size": 40,
+      "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+      "sha256": "ae5d471122d505292106dc8507e0ff07d2ef932ad92ca8f332ed25d1d654e09a"
+    },
+    {
+      "path": "21_SOBAYA_HAZARD_LAB/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@3x.png",
+      "size": 60,
+      "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+      "sha256": "afe81f9e6bb66673192d4fbd82c86d7903d897d971489d31225b7664f6ac3aa6"
+    },
+    {
+      "path": "21_SOBAYA_HAZARD_LAB/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@1x.png",
+      "size": 29,
+      "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+      "sha256": "eb07108640d615d411c3c07083c910e3d8cff09d9b550b359840956924613d92"
+    },
+    {
+      "path": "21_SOBAYA_HAZARD_LAB/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@2x.png",
+      "size": 58,
+      "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+      "sha256": "24dec7bd9b66e8e7f732acb68aee97ba037e0438f884b25b29d11963f686df7d"
+    },
+    {
+      "path": "21_SOBAYA_HAZARD_LAB/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@3x.png",
+      "size": 87,
+      "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+      "sha256": "e4e07532e601c856433b31fa2742e03b7884ab99760efdf69981e5c314d2c575"
+    },
+    {
+      "path": "21_SOBAYA_HAZARD_LAB/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@2x.png",
+      "size": 80,
+      "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+      "sha256": "c61c65391cf8e595f4c264c4597fbca23d5700e92d0be48fd3f4057fd99fe4f9"
+    },
+    {
+      "path": "21_SOBAYA_HAZARD_LAB/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@3x.png",
+      "size": 120,
+      "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+      "sha256": "1fc5faa24a17daadb7225fe55d8b362ea4d04923f69376faa0c345ccf33e695c"
+    },
+    {
+      "path": "21_SOBAYA_HAZARD_LAB/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@2x.png",
+      "size": 120,
+      "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+      "sha256": "1fc5faa24a17daadb7225fe55d8b362ea4d04923f69376faa0c345ccf33e695c"
+    },
+    {
+      "path": "21_SOBAYA_HAZARD_LAB/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@3x.png",
+      "size": 180,
+      "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+      "sha256": "3e5ce7a1e21c064f41874e48e1bf4dcd4d14511fe77c9b20f52a4ae067c29808"
+    },
+    {
+      "path": "21_SOBAYA_HAZARD_LAB/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@1x.png",
+      "size": 20,
+      "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+      "sha256": "d08f890296ab2a8e766979bb6c5297f2530532e2b7ba9ae00c58e81844eff8c3"
+    },
+    {
+      "path": "21_SOBAYA_HAZARD_LAB/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@1x.png",
+      "size": 40,
+      "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+      "sha256": "ae5d471122d505292106dc8507e0ff07d2ef932ad92ca8f332ed25d1d654e09a"
+    },
+    {
+      "path": "21_SOBAYA_HAZARD_LAB/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@1x.png",
+      "size": 76,
+      "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+      "sha256": "a1936de4b394485f20fe596edeb7044b3b39f1c6519c7e5ec2281ef196d1358e"
+    },
+    {
+      "path": "21_SOBAYA_HAZARD_LAB/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@2x.png",
+      "size": 152,
+      "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+      "sha256": "fdd2a791e15ad7ba6b8eb1aafe51d8186d966d5c2af6bee604325fed0a3af1c1"
+    },
+    {
+      "path": "21_SOBAYA_HAZARD_LAB/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-83.5x83.5@2x.png",
+      "size": 167,
+      "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+      "sha256": "06e20d06e8744fbc32ef775582f100572c8636f5e9148cc2c90efcb4b8311aa2"
+    },
+    {
+      "path": "21_SOBAYA_HAZARD_LAB/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png",
+      "size": 1024,
+      "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+      "sha256": "b048d309fefc799fb4058e4a50021a0095b678beff1354c4e436cfefab7d15a7"
+    },
+    {
+      "path": "21_SOBAYA_HAZARD_LAB/macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_16.png",
+      "size": 16,
+      "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+      "sha256": "cb6261a68cb9790f6261d17072040616092b9ab2db50b8e5f6e351711c071bad"
+    },
+    {
+      "path": "21_SOBAYA_HAZARD_LAB/macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_32.png",
+      "size": 32,
+      "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+      "sha256": "3659b8e6b6b0cdbd7a71b0e5c160fc4d725bafa6210095c1e0d7b5b90d61ee5f"
+    },
+    {
+      "path": "21_SOBAYA_HAZARD_LAB/macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_64.png",
+      "size": 64,
+      "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+      "sha256": "6ffa8bc9864a0d76dbca7793e8b8429f80c632c93b21992f48081e867b656839"
+    },
+    {
+      "path": "21_SOBAYA_HAZARD_LAB/macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_128.png",
+      "size": 128,
+      "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+      "sha256": "c3b88007b2d43bd9b11356744fef54044d87fbba4d8847243cfed0158488cef3"
+    },
+    {
+      "path": "21_SOBAYA_HAZARD_LAB/macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_256.png",
+      "size": 256,
+      "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+      "sha256": "d1eb2f741faa986a989870d5cd5e667c600c25c5cd1ce738031ffbb2855b16b0"
+    },
+    {
+      "path": "21_SOBAYA_HAZARD_LAB/macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_512.png",
+      "size": 512,
+      "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+      "sha256": "f4b06e4e1bbe3af4eb0aafb3296bccd588a1c415cb70d500433bc74ac9612a27"
+    },
+    {
+      "path": "21_SOBAYA_HAZARD_LAB/macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_1024.png",
+      "size": 1024,
+      "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+      "sha256": "b048d309fefc799fb4058e4a50021a0095b678beff1354c4e436cfefab7d15a7"
+    },
+    {
+      "path": "21_SOBAYA_HAZARD_LAB/android/app/src/main/res/mipmap-mdpi/ic_launcher.png",
+      "size": 48,
+      "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+      "sha256": "0365f8192d054ec7cb1c41bf1f43a6ee32b3c3c3c8d712b547eb15b34d761566"
+    },
+    {
+      "path": "21_SOBAYA_HAZARD_LAB/android/app/src/main/res/mipmap-hdpi/ic_launcher.png",
+      "size": 72,
+      "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+      "sha256": "4b759d3c74ab035bd781538e20790e28e1c8d4234eb046dd879638ad310d80cb"
+    },
+    {
+      "path": "21_SOBAYA_HAZARD_LAB/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png",
+      "size": 96,
+      "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+      "sha256": "0c57aa6e134b105166fa5652c91421a2a352b9ff913c0662a7d576cb0d94ed76"
+    },
+    {
+      "path": "21_SOBAYA_HAZARD_LAB/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png",
+      "size": 144,
+      "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+      "sha256": "6b60771e2562d246aaeca3512e2058b1f66c729b4f53862429d67d400999b648"
+    },
+    {
+      "path": "21_SOBAYA_HAZARD_LAB/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png",
+      "size": 192,
+      "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+      "sha256": "803413845c94658ff962b06cb47eb11b456a141336b7f68bb44c8032f5975a3d"
+    },
+    {
+      "path": "21_SOBAYA_HAZARD_LAB/android/app/src/main/res/drawable-nodpi/ic_launcher_art.png",
+      "size": 864,
+      "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-adaptive.png",
+      "sha256": "898d640be767f793da27be403c300138cbe3dc4e81b3d1ecfb8c85cd84de8846"
+    }
+  ]
+}

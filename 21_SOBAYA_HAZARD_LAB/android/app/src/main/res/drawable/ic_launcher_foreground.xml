@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Preserve the approved painted portrait. The OS supplies all clipping.
+     This opaque art layer does not provide independently moving subject depth. -->
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+    android:src="@drawable/ic_launcher_art"
+    android:gravity="fill"
+    android:filter="true" />

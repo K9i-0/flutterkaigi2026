@@ -1,6 +1,6 @@
 {
   "tool": "built-in image_gen",
-  "status": "three concepts; no launcher icon selected or installed",
+  "status": "C selected by user and installed in native icon catalogs",
   "images": [
     {
       "file": "A-mask.png",
@@ -23,5 +23,7 @@
       "pngColorType": 2,
       "sha256": "a7eaa213ddb58dfef9221eafb57ec5b13f29717054299bd9a7ebbf820535d725"
     }
-  ]
+  ],
+  "selected": "C-stalker.png",
+  "androidAdaptive": "C-adaptive.png"
 }
