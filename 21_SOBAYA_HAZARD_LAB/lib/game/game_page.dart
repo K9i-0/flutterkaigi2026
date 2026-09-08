@@ -18,6 +18,8 @@ import 'game_input.dart';
 import 'game_state.dart';
 import 'game_settings.dart';
 import 'game_mobile.dart';
+import 'game_title.dart';
+import 'game_equipment.dart';
 import 'game_threat_hud.dart';
 import 'game_automation.dart';
 import 'game_benchmark.dart';
@@ -42,6 +44,8 @@ class _HazardGamePageState extends State<HazardGamePage> {
   double touchX = 0, touchY = 0;
   bool rightMouseHeld = false;
   bool touchSprint = false, touchSneak = false, touchStruggling = false;
+  bool equipmentOpen = false, equipmentSneak = false;
+  int equipmentEpoch = -1;
   int touchEpoch = 0;
   PlayPhase? inputPhase;
   bool? sceneTicking;
@@ -71,6 +75,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
       },
       onInactive: () {
         game.setForeground(false);
+        equipmentOpen = false;
         clearInput();
         if (game.state?.running ?? false) game.toggle(PlayPhase.paused);
       },
@@ -96,6 +101,11 @@ class _HazardGamePageState extends State<HazardGamePage> {
   }
 
   void changed() {
+    if (equipmentOpen &&
+        (game.state?.phase != PlayPhase.paused ||
+            equipmentEpoch != game.runEpoch)) {
+      equipmentOpen = false;
+    }
     syncInputPhase();
     benchmark?.observeState();
     if (mounted) setState(() {});
@@ -144,6 +154,70 @@ class _HazardGamePageState extends State<HazardGamePage> {
     s.sprint = !s.sneaking && (touchSprint || keyboard.sprinting);
   }
 
+  void openEquipment() {
+    final s = game.state!;
+    if (!s.running || s.actionLocked) return;
+    equipmentSneak = touchSneak;
+    equipmentEpoch = game.runEpoch;
+    equipmentOpen = true;
+    game.toggle(PlayPhase.paused);
+  }
+
+  void closeEquipment({String? weapon}) {
+    final s = game.state!;
+    if (!equipmentOpen ||
+        s.phase != PlayPhase.paused ||
+        equipmentEpoch != game.runEpoch) {
+      return;
+    }
+    final restoreSneak = equipmentSneak;
+    equipmentOpen = false;
+    if (weapon != null) s.equip(weapon);
+    game.toggle(PlayPhase.paused);
+    focus.requestFocus();
+    touchSneak = restoreSneak;
+    updateInput();
+    game.refreshView();
+  }
+
+  Future<void> startNewGame() async {
+    if (game.hasCheckpoint) {
+      final confirmed = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          key: const ValueKey('game-new-confirmation'),
+          backgroundColor: const Color(0xff20271f),
+          title: const Text('新しく始める', style: TextStyle(color: ivory)),
+          content: const Text(
+            '進行の記録を上書きします。収集画像は残ります。',
+            style: TextStyle(color: ivory),
+          ),
+          actions: [
+            TextButton(
+              key: const ValueKey('game-new-cancel'),
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('戻る', style: TextStyle(color: ivory)),
+            ),
+            FilledButton(
+              key: const ValueKey('game-new-confirm'),
+              style: FilledButton.styleFrom(
+                backgroundColor: gold,
+                foregroundColor: const Color(0xff1a1f16),
+              ),
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('はじめる'),
+            ),
+          ],
+        ),
+      );
+      if (!mounted) return;
+      focus.requestFocus();
+      if (confirmed != true || game.state?.phase != PlayPhase.title) return;
+    }
+    game.startRun();
+    focus.requestFocus();
+  }
+
   KeyEventResult onKey(FocusNode node, KeyEvent e) {
     final s = game.state!;
     keyboard.handle(e);
@@ -154,6 +228,10 @@ class _HazardGamePageState extends State<HazardGamePage> {
     updateInput();
     if (e is KeyRepeatEvent) return KeyEventResult.handled;
     final k = e.logicalKey;
+    if (equipmentOpen) {
+      if (k == LogicalKeyboardKey.escape) closeEquipment();
+      return KeyEventResult.handled;
+    }
     if (s.phase == PlayPhase.cinematic) {
       if (k == LogicalKeyboardKey.escape) {
         game.setEventPaused(!game.director!.paused);
@@ -264,14 +342,21 @@ class _HazardGamePageState extends State<HazardGamePage> {
                   game.devicePixelRatio = View.of(context).devicePixelRatio;
                   final refugeMarker = game.refugeMarker;
                   final safe = MediaQuery.paddingOf(context);
+                  final renderedInputEpoch = touchEpoch;
+                  bool acceptsTouch() =>
+                      mounted &&
+                      renderedInputEpoch == touchEpoch &&
+                      identical(s, game.state) &&
+                      s.running;
                   final mobile =
                       game.settings.touchControls ||
                       bounds.biggest.shortestSide < 700 ||
                       Theme.of(context).platform == TargetPlatform.android ||
                       Theme.of(context).platform == TargetPlatform.iOS;
-                  final controlHeight = bounds.maxWidth - safe.horizontal > 500
-                      ? 112.0
-                      : 168.0;
+                  final controlHeight = HazardTouchControls.heightFor(
+                    width: bounds.maxWidth - safe.horizontal - 24,
+                    landscape: bounds.maxWidth > bounds.maxHeight,
+                  );
                   final promptBottom = mobile
                       ? safe.bottom + controlHeight + 24
                       : 160.0;
@@ -365,16 +450,23 @@ class _HazardGamePageState extends State<HazardGamePage> {
                           child: HazardTouchLookSurface(
                             key: ValueKey('look-$touchEpoch'),
                             onStart: focus.requestFocus,
-                            onMouseLook: (delta) =>
-                                game.rotate(delta.dx, delta.dy),
+                            onMouseLook: (delta) {
+                              if (acceptsTouch()) {
+                                game.rotate(delta.dx, delta.dy);
+                              }
+                            },
                             onMouseAim: (value) {
+                              if (!acceptsTouch()) return;
                               rightMouseHeld = value;
                               s.aiming = value;
                             },
-                            onLook: (delta) => game.rotate(
-                              delta.dx * game.settings.touchSensitivity,
-                              delta.dy * game.settings.touchSensitivity,
-                            ),
+                            onLook: (delta) {
+                              if (!acceptsTouch()) return;
+                              game.rotate(
+                                delta.dx * game.settings.touchSensitivity,
+                                delta.dy * game.settings.touchSensitivity,
+                              );
+                            },
                           ),
                         ),
                       const Positioned.fill(
@@ -675,6 +767,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
                             child: HazardTouchControls(
                               key: ValueKey('controls-$touchEpoch'),
                               onMove: (value) {
+                                if (!acceptsTouch()) return;
                                 touchX = value.dx;
                                 touchY = value.dy;
                                 updateInput();
@@ -683,6 +776,23 @@ class _HazardGamePageState extends State<HazardGamePage> {
                               sprinting: s.sprint,
                               aiming: s.aiming,
                               throwingBeer: s.weapon == 'beer',
+                              weaponLabel: s.weaponLabel,
+                              ammoLabel: s.weapon == 'rocket'
+                                  ? '∞'
+                                  : s.weapon == 'beer'
+                                  ? '${s.beers} 杯'
+                                  : s.reloading > 0
+                                  ? '装填中'
+                                  : '${s.loaded} / ${s.reserve}',
+                              canReload:
+                                  !s.actionLocked &&
+                                  s.weapon != 'rocket' &&
+                                  s.reloading <= 0 &&
+                                  s.loaded < s.capacity &&
+                                  s.reserve > 0,
+                              showReload:
+                                  s.weapon == 'handgun' ||
+                                  s.weapon == 'shotgun',
                               canInteract: s.interaction != null,
                               stealthReady: s.stealthTarget != null,
                               onSneak: () {
@@ -699,10 +809,12 @@ class _HazardGamePageState extends State<HazardGamePage> {
                               },
                               onAim: () => setState(() => s.aiming = !s.aiming),
                               onFire: game.fire,
-                              onReload: s.reload,
+                              onReload: () {
+                                s.reload();
+                                game.refreshView();
+                              },
                               onInteract: game.interact,
-                              onHeal: s.heal,
-                              onWeapon: s.cycleWeapon,
+                              onWeapon: openEquipment,
                             ),
                           ),
                         if (!mobile)
@@ -879,28 +991,51 @@ class _HazardGamePageState extends State<HazardGamePage> {
                               ),
                             ),
                           ),
-                        if (s.interaction != null && s.running)
+                        if (s.interaction != null &&
+                            s.running &&
+                            (!mobile || !s.aiming))
                           Positioned(
                             bottom: promptBottom,
                             left: 0,
                             right: 0,
                             child: Center(
-                              child: FilledButton.icon(
-                                key: ValueKey(
-                                  mobile
-                                      ? 'game-interact-prompt'
-                                      : 'game-interact',
-                                ),
-                                onPressed: game.interact,
-                                icon: const Icon(Icons.touch_app_outlined),
-                                label: Text(
-                                  mobile
-                                      ? s.interactionLabel
-                                      : 'E  ${s.interactionLabel}',
-                                  maxLines: 2,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
+                              child: mobile
+                                  ? IgnorePointer(
+                                      child: Container(
+                                        key: const ValueKey(
+                                          'game-context-label',
+                                        ),
+                                        constraints: const BoxConstraints(
+                                          maxWidth: 280,
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                          vertical: 6,
+                                        ),
+                                        color: ink,
+                                        child: Text(
+                                          s.interactionLabel,
+                                          maxLines: 2,
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                            color: ivory,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : FilledButton.icon(
+                                      key: const ValueKey('game-interact'),
+                                      onPressed: game.interact,
+                                      icon: const Icon(
+                                        Icons.touch_app_outlined,
+                                      ),
+                                      label: Text(
+                                        'E  ${s.interactionLabel}',
+                                        maxLines: 2,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
                             ),
                           ),
                         if (s.toastTime > 0 &&
@@ -975,7 +1110,29 @@ class _HazardGamePageState extends State<HazardGamePage> {
                             ),
                           ),
                         ),
-                      if (s.phase == PlayPhase.paused) pause(s),
+                      if (s.phase == PlayPhase.paused)
+                        if (equipmentOpen)
+                          Positioned.fill(
+                            child: PopScope<Object?>(
+                              canPop: false,
+                              onPopInvokedWithResult: (didPop, result) {
+                                if (!didPop) closeEquipment();
+                              },
+                              child: HazardQuickEquipment(
+                                currentWeapon: s.weapon,
+                                hasShotgun: s.hasShotgun,
+                                hasRocket: s.hasRocket,
+                                beers: s.beers,
+                                pistolLoaded: s.pistolLoaded,
+                                shotgunLoaded: s.shotgunLoaded,
+                                onSelect: (weapon) =>
+                                    closeEquipment(weapon: weapon),
+                                onClose: closeEquipment,
+                              ),
+                            ),
+                          )
+                        else
+                          pause(s),
                       if (s.phase == PlayPhase.dead ||
                           s.phase == PlayPhase.clear)
                         ending(s),
@@ -990,11 +1147,11 @@ class _HazardGamePageState extends State<HazardGamePage> {
   Widget mobileHud(HazardGameState s, EdgeInsets safe, BoxConstraints bounds) {
     final short = bounds.maxHeight - safe.vertical < 440;
     final mapSize = short ? 80.0 : 96.0;
-    final ammo = s.weapon == 'rocket'
-        ? '∞'
-        : s.weapon == 'beer'
-        ? '${s.beers}杯'
-        : '${s.loaded} / ${s.reserve}';
+    final healCount = s.bag
+        .where((i) => i.kind == 'green' || i.kind == 'mixed')
+        .length;
+    final canHeal =
+        s.running && !s.actionLocked && s.health < s.maxHealth && healCount > 0;
     final noise = s.playerNoiseTime > 0
         ? s.playerNoiseRadius
         : s.movementNoiseRadius;
@@ -1011,6 +1168,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
                 math.max(0, bounds.maxWidth - safe.horizontal - mapSize - 40),
               ),
               child: IgnorePointer(
+                ignoring: !canHeal,
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
@@ -1037,38 +1195,56 @@ class _HazardGamePageState extends State<HazardGamePage> {
                         style: const TextStyle(color: ivory, fontSize: 12),
                       ),
                       const SizedBox(height: 5),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.favorite,
-                            size: 12,
-                            color: s.health < 35
-                                ? Colors.orange
-                                : const Color(0xff90ac72),
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            '${s.health.ceil()}',
-                            style: const TextStyle(color: ivory, fontSize: 12),
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: LinearProgressIndicator(
-                              value: (s.health / s.maxHealth).clamp(0.0, 1.0),
+                      SizedBox(
+                        height: canHeal ? 48 : 18,
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.favorite,
+                              size: 14,
                               color: s.health < 35
                                   ? Colors.orange
                                   : const Color(0xff90ac72),
-                              backgroundColor: Colors.white12,
                             ),
-                          ),
-                        ],
+                            const SizedBox(width: 4),
+                            Text(
+                              '${s.health.ceil()}',
+                              style: const TextStyle(
+                                color: ivory,
+                                fontSize: 12,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: LinearProgressIndicator(
+                                value: (s.health / s.maxHealth).clamp(0.0, 1.0),
+                                color: s.health < 35
+                                    ? Colors.orange
+                                    : const Color(0xff90ac72),
+                                backgroundColor: Colors.white12,
+                              ),
+                            ),
+                            if (canHeal) ...[
+                              const SizedBox(width: 8),
+                              SizedBox(
+                                width: 64,
+                                height: 48,
+                                child: HazardTouchButton(
+                                  id: 'heal',
+                                  label: '回復 $healCount',
+                                  icon: Icons.healing,
+                                  onPressed: () {
+                                    if (!s.running || s.actionLocked) return;
+                                    s.heal();
+                                    game.refreshView();
+                                  },
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
                       ),
                       const SizedBox(height: 4),
-                      Text(
-                        '${s.weaponLabel}  ${s.reloading > 0 ? '装填中' : ammo}${s.weapon == 'beer' ? '' : '  ·  ${s.beers}杯'}',
-                        maxLines: 1,
-                        style: const TextStyle(color: ivory, fontSize: 12),
-                      ),
                       Text(
                         '${hostile
                             ? '● 敵対中'
@@ -1126,30 +1302,16 @@ class _HazardGamePageState extends State<HazardGamePage> {
             Positioned(
               right: 12,
               top: mapSize + 16,
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 48,
-                    height: 48,
-                    child: HazardTouchButton(
-                      id: 'bag',
-                      label: '持ち物',
-                      icon: Icons.backpack_outlined,
-                      onPressed: () => game.toggle(PlayPhase.inventory),
-                    ),
-                  ),
-                  const SizedBox(width: 6),
-                  SizedBox(
-                    width: 48,
-                    height: 48,
-                    child: HazardTouchButton(
-                      id: 'pause',
-                      label: '休止',
-                      icon: Icons.pause,
-                      onPressed: () => game.toggle(PlayPhase.paused),
-                    ),
-                  ),
-                ],
+              child: SizedBox(
+                width: 48,
+                height: 48,
+                child: HazardTouchButton(
+                  id: 'pause',
+                  label: '休止',
+                  icon: Icons.pause,
+                  enabled: s.running,
+                  onPressed: () => game.toggle(PlayPhase.paused),
+                ),
               ),
             ),
           ],
@@ -1415,127 +1577,17 @@ class _HazardGamePageState extends State<HazardGamePage> {
     ),
   );
   Widget title(HazardGameState s) => Positioned.fill(
-    child: Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xf010140f), Color(0x5510140f)],
-        ),
-      ),
-      padding: EdgeInsets.fromLTRB(
-        MediaQuery.paddingOf(context).left +
-            (MediaQuery.sizeOf(context).shortestSide < 700 ? 24 : 64),
-        MediaQuery.paddingOf(context).top + 24,
-        MediaQuery.paddingOf(context).right + 24,
-        MediaQuery.paddingOf(context).bottom + 24,
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                '窓 際 族 物 語',
-                style: TextStyle(color: gold, fontSize: 15, letterSpacing: 7),
-              ),
-              const SizedBox(height: 24),
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 820),
-                child: Image.asset(
-                  'assets/cinematics/title_logo.png',
-                  key: const ValueKey('game-title-logo'),
-                  fit: BoxFit.contain,
-                  cacheWidth: 1640,
-                  semanticLabel: 'そば屋ハザード',
-                ),
-              ),
-              const SizedBox(height: 24),
-              const Text(
-                '窓際社員の島流し先、廃村ゆめみ村。\n炎上して捨てられた秘密案件が、まだ動いている。',
-                style: TextStyle(
-                  color: Color(0xffb6bda9),
-                  height: 1.9,
-                  fontSize: 15,
-                ),
-              ),
-              const SizedBox(height: 36),
-              if (game.hasCheckpoint) ...[
-                FilledButton(
-                  key: const ValueKey('game-continue'),
-                  style: FilledButton.styleFrom(
-                    backgroundColor: gold,
-                    foregroundColor: ink,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 45,
-                      vertical: 18,
-                    ),
-                  ),
-                  onPressed: () {
-                    game.continueRun();
-                    focus.requestFocus();
-                  },
-                  child: const Text(
-                    '続きから',
-                    style: TextStyle(fontSize: 17, letterSpacing: 3),
-                  ),
-                ),
-                const SizedBox(height: 12),
-              ],
-              FilledButton(
-                key: const ValueKey('game-start'),
-                style: FilledButton.styleFrom(
-                  backgroundColor: gold,
-                  foregroundColor: const Color(0xff1a1f16),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 45,
-                    vertical: 23,
-                  ),
-                ),
-                onPressed: () {
-                  game.startRun();
-                  focus.requestFocus();
-                  setState(() {});
-                },
-                child: Text(
-                  game.hasCheckpoint ? '新しく始める' : '村へ入る',
-                  style: const TextStyle(fontSize: 17, letterSpacing: 3),
-                ),
-              ),
-              TextButton(
-                key: const ValueKey('game-title-settings'),
-                onPressed: game.openSettings,
-                child: const Text('設定', style: TextStyle(color: ivory)),
-              ),
-              if (game.hasCheckpoint)
-                const Padding(
-                  padding: EdgeInsets.only(top: 8),
-                  child: Text(
-                    '新しく始めると進行の記録を上書きします。収集画像は残ります。',
-                    style: TextStyle(color: ivory, fontSize: 11),
-                  ),
-                ),
-              if (game.saveStatus.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: Text(
-                    game.saveStatus,
-                    style: const TextStyle(color: gold, fontSize: 11),
-                  ),
-                ),
-              const SizedBox(height: 18),
-              Text(
-                'COLLECTION  ${s.collected.length} / ${s.gallery.length}',
-                style: const TextStyle(
-                  color: gold,
-                  letterSpacing: 2,
-                  fontSize: 11,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+    child: HazardTitleScreen(
+      hasCheckpoint: game.hasCheckpoint,
+      collectedCount: s.collected.length,
+      galleryCount: s.gallery.length,
+      saveStatus: game.saveStatus,
+      onContinue: () {
+        game.continueRun();
+        focus.requestFocus();
+      },
+      onNewGame: startNewGame,
+      onSettings: game.openSettings,
     ),
   );
   Widget modal(String heading, Widget body, {double width = 850}) =>
@@ -2120,6 +2172,8 @@ class _HazardGamePageState extends State<HazardGamePage> {
                 game.saving ? '記録中…' : '保存してタイトルへ',
                 game.returnToTitle,
               ),
+              if (!s.actionLocked)
+                action('bag', '持ち物', () => game.toggle(PlayPhase.inventory)),
               action('settings', '設定', game.openSettings),
               action(
                 'collection',
@@ -2138,7 +2192,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
           ),
           const SizedBox(height: 12),
           const Text(
-            '忍び足で音を抑え、背後から近づくとビールを破壊できます。\n見つかったら建物で視界を切り、忍び足で別の死角へ。\n捜索ゲージがなくなると、そば屋は持ち場へ戻ります。\nショットガンの発砲音は遠くまで届きます。\n弾倉が空なら射撃操作で装填。Rでも事前に装填できます。\nZ（またはCtrl）を押しながら移動で忍び足。MacではZを推奨。\n1 / 2 / 3 武器切替  4 ビール  H 回復  E 調べる\nビールを選び、構えて投げると着地点の音で誘導できます。\nスマホ：左スティックで移動、右の空いている画面で視点操作。',
+            '忍び足で音を抑え、背後から近づくとビールを破壊できます。\n見つかったら建物で視界を切り、忍び足で別の死角へ。\n捜索ゲージがなくなると、そば屋は持ち場へ戻ります。\nショットガンの発砲音は遠くまで届きます。\n弾倉が空なら射撃操作で装填。Rでも事前に装填できます。\nZ（またはCtrl）を押しながら移動で忍び足。MacではZを推奨。\n1 / 2 / 3 武器切替  4 ビール  H 回復  E 調べる\nビールを選び、構えて投げると着地点の音で誘導できます。\nスマホ：左スティックで移動、右の空いている画面で視点操作。\n下の装備表示から武器・ビールを選択。構えると射撃・投擲に切り替わります。\n弾数の「装填」で手動リロード。回復は体力の横、持ち物は休止メニュー。',
             style: TextStyle(color: gold, height: 2),
           ),
         ],

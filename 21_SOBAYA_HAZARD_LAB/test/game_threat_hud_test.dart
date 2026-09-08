@@ -229,83 +229,65 @@ void main() {
     );
   });
 
-  testWidgets(
-    'beer uses the existing six action buttons, disables reload and restores it on weapon change',
-    (tester) async {
-      await tester.binding.setSurfaceSize(const Size(390, 844));
-      addTearDown(() => tester.binding.setSurfaceSize(null));
-      var throwingBeer = true, aiming = false, fires = 0, reloads = 0;
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: StatefulBuilder(
-              builder: (context, setState) => Padding(
-                padding: const EdgeInsets.all(12),
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: HazardTouchControls(
-                    onMove: (_) {},
-                    sneaking: false,
-                    sprinting: false,
-                    aiming: aiming,
-                    throwingBeer: throwingBeer,
-                    onSneak: () {},
-                    onSprint: () {},
-                    onAim: () => setState(() => aiming = !aiming),
-                    onFire: () => fires++,
-                    onReload: () => reloads++,
-                    onInteract: () {},
-                    onHeal: () {},
-                    onWeapon: () =>
-                        setState(() => throwingBeer = !throwingBeer),
-                  ),
+  testWidgets('beer and gun modes reveal only their available actions', (
+    tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    var throwingBeer = true, aiming = false, fires = 0, reloads = 0;
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: StatefulBuilder(
+            builder: (context, setState) => Padding(
+              padding: const EdgeInsets.all(12),
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: HazardTouchControls(
+                  onMove: (_) {},
+                  sneaking: false,
+                  sprinting: false,
+                  aiming: aiming,
+                  throwingBeer: throwingBeer,
+                  weaponLabel: throwingBeer ? 'ビール' : '拳銃',
+                  ammoLabel: throwingBeer ? '3 杯' : '8 / 24',
+                  onSneak: () {},
+                  onSprint: () {},
+                  onAim: () => setState(() => aiming = !aiming),
+                  onFire: () => fires++,
+                  onReload: () => reloads++,
+                  onInteract: () {},
+                  onWeapon: () => setState(() {
+                    throwingBeer = !throwingBeer;
+                    aiming = false;
+                  }),
                 ),
               ),
             ),
           ),
         ),
-      );
-      final before = tester
-          .widgetList<HazardTouchButton>(find.byType(HazardTouchButton))
-          .map((button) => button.id)
-          .toSet();
-      expect(before, {
-        'aim',
-        'fire',
-        'reload',
-        'interact',
-        'heal',
-        'weapon',
-        'sneak',
-        'sprint',
-      });
-      expect(find.text('投げる'), findsOneWidget);
-      expect(find.text('射撃'), findsNothing);
-      await tester.tap(find.byKey(const ValueKey('game-aim')));
-      await tester.pump();
-      expect(aiming, true);
-      await tester.tap(find.byKey(const ValueKey('game-fire')));
-      expect(fires, 1);
-      final reload = tester
-          .widgetList<HazardTouchButton>(find.byType(HazardTouchButton))
-          .singleWhere((button) => button.id == 'reload');
-      expect(reload.enabled, false);
-      await tester.tap(find.byKey(const ValueKey('game-reload')));
-      expect(reloads, 0);
-      await tester.tap(find.byKey(const ValueKey('game-weapon')));
-      await tester.pump();
-      expect(find.text('射撃'), findsOneWidget);
-      expect(find.text('投げる'), findsNothing);
-      expect(
-        tester
-            .widgetList<HazardTouchButton>(find.byType(HazardTouchButton))
-            .map((button) => button.id)
-            .toSet(),
-        before,
-      );
-      await tester.tap(find.byKey(const ValueKey('game-reload')));
-      expect(reloads, 1);
-      expect(tester.takeException(), isNull);
-    },
-  );
+      ),
+    );
+    expect(find.byKey(const ValueKey('game-fire')), findsNothing);
+    expect(find.byKey(const ValueKey('game-reload')), findsNothing);
+    expect(find.byKey(const ValueKey('game-heal')), findsNothing);
+    await tester.tap(find.byKey(const ValueKey('game-aim')));
+    await tester.pump();
+    expect(aiming, true);
+    expect(find.text('投げる'), findsOneWidget);
+    expect(find.byKey(const ValueKey('game-reload')), findsNothing);
+    await tester.tap(find.byKey(const ValueKey('game-fire')));
+    expect(fires, 1);
+    await tester.tap(find.byKey(const ValueKey('game-weapon')));
+    await tester.pump();
+    expect(aiming, false);
+    expect(find.byKey(const ValueKey('game-fire')), findsNothing);
+    expect(find.text('投げる'), findsNothing);
+    await tester.tap(find.byKey(const ValueKey('game-aim')));
+    await tester.pump();
+    expect(find.text('撃つ'), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('game-reload')));
+    expect(reloads, 1);
+    expect(tester.takeException(), isNull);
+  });
 }
