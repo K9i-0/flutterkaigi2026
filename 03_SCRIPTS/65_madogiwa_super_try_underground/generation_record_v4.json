@@ -1,0 +1,48 @@
+{
+  "version": "v4",
+  "model": "wan3.0-video",
+  "estimated_cost_usd": 1.575,
+  "billing_verified": false,
+  "price_source": "https://www.qwencloud.com/models/wan3.0-video",
+  "price_checked_date": "2026-09-09",
+  "resubmissions": 0,
+  "tasks": [
+    {
+      "part": 1,
+      "task_id": "ad52bcae-7767-4f92-a84f-c7c894a43f98",
+      "status": "SUCCEEDED",
+      "duration": 15,
+      "seed": 650041,
+      "prompt_sha256": "01afb94bab623da6ed76a453a0c6cf5c33ce167b2f2902f3d66da10768f6883b"
+    },
+    {
+      "part": 2,
+      "task_id": "c713c5a8-ec0e-4540-996a-224c50e9cf2c",
+      "status": "SUCCEEDED",
+      "duration": 30,
+      "seed": 650042,
+      "prompt_sha256": "c295fcda09bf20db76970b3c15a93ab09058173e2e7f51d096701fe831ed296b"
+    }
+  ],
+  "audit": {
+    "method": "4 fps mouth samples in labor and dorm; 1 fps full part2 contact sheet; offline ASR",
+    "mouth_animation": "Visible alternating closed, open, round and wide mouth shapes in Yametaro dialogue; v3 fixed smile improved",
+    "drinking": "Visible sustained sip then can lowered before dialogue",
+    "audio": "Native Wan audio retained. ASR matches key phrases ためるんや / キンキンに冷えてやがる / 売店. Direct listening unavailable; precise phoneme sync not certified. Silent drinking ASR repeats beyond clip duration and is unreliable, not confirmed added speech."
+  },
+  "postproduction": {
+    "tool": "remotion",
+    "composition": "SuperTryCMv4",
+    "output": "final_remotion_cm_v4.mp4",
+    "audio_replacements": []
+  },
+  "final_validation": {
+    "duration_seconds": 45,
+    "width": 854,
+    "height": 480,
+    "fps": 30,
+    "audio": "AAC 48000 Hz",
+    "full_decode": "passed",
+    "endcard": "visually checked at 43s"
+  }
+}
