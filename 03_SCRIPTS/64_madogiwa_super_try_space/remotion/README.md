@@ -41,3 +41,10 @@ B_critical_alarm.wav: 中域の荒い二連警報、緊急事態の切迫感。
 C_unknown_presence.wav: 微小にずれた音程と変調、正体不明の接近。
 全て8秒、検知2.5秒、識別6秒。独自合成効果音のみ。会話・音声モデル未使用。比較ファイルABC_comparison.wavはA/B/C各8秒の間に1秒の無音、合計26秒。
 二段階loudnormで-20 LUFSへ揃え、最終WAVを再測定: A -20.00 LUFS/-8.58 dBTP、B -20.00/-7.78、C -20.00/-8.60。全ファイル48kHz/16-bit/stereo、384000サンプル、ffmpegデコード成功。直接の聴感監査は未実施。ユーザー比較後に採用案をHUDへ適用する。既存HUD音声は変更していない。
+
+## 本番30秒編集の準備
+
+SpaceCM / src/Production.tsx / src/production-manifest.json。原動画未生成。Wan映像ができたらpublic/input.mp4へhardlink、カットと発話・追跡座標を確認してproduction-manifestを更新しnpm run render:production。
+再セットアップでは../space_comms_background.png→public/space_plate.png、../alert_B_critical.wav→public/alert_B_critical.wavをコピー。試作のokayaman.jpgは02_CHARACTERS/Okayaman.jpgからコピー。本番通信映像はWan素材の該当区間を同じ時刻で縮小する。
+Bは選択済み8秒WAVから警告部分2.5–6秒を2回配置し、9–16秒の警告に使用。16秒で同じBの識別音へ。未採用のA/Cは使用しない。字幕・警報・通信窓・商品コピーを後付けする。
+TypeScript合格、frame340の警告＋通信窓＋字幕の480pPNGに文字切れなし。現段階は静止背景と写真によるプレビューであり、完成映像や口パクの監査ではない。

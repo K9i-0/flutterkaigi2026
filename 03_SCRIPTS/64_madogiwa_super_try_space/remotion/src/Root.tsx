@@ -1,6 +1,8 @@
 import React from 'react';
 import {AbsoluteFill,Audio,Composition,Img,staticFile,useCurrentFrame,interpolate} from 'remotion';
 import m from './edit-manifest.json';
+import production from './production-manifest.json';
+import {Production} from './Production';
 const mono='"SFMono-Regular", Menlo, monospace';
 const Hud:React.FC=()=>{
  const f=useCurrentFrame(), alert=f>=m.events.alert, identified=f>=m.events.identified;
@@ -43,4 +45,4 @@ const Hud:React.FC=()=>{
  {caption&&<div style={{position:'absolute',bottom:35,width:'100%',textAlign:'center',fontFamily:'"Hiragino Kaku Gothic ProN",sans-serif',fontSize:21,color:'#f6f4ee',textShadow:'0 2px 4px #000, 1px 0 2px #000,-1px 0 2px #000'}}>{caption.text}</div>}
  </AbsoluteFill>;
 };
-export const Root=()=> <Composition id="HudTest" component={Hud} {...m.composition}/>;
+export const Root=()=> <><Composition id="HudTest" component={Hud} {...m.composition}/><Composition id="SpaceCM" component={Production} defaultProps={{preview:false}} {...production.composition}/></>;

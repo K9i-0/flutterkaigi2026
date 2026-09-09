@@ -1,0 +1,113 @@
+{
+  "composition": {
+    "width": 832,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 900
+  },
+  "inputVideo": "input.mp4",
+  "background": "space_plate.png",
+  "alertAudio": "alert_B_critical.wav",
+  "events": {
+    "alert": 270,
+    "identified": 480,
+    "hudEnd": 585,
+    "brand": 795
+  },
+  "comms": [
+    {
+      "start": 0,
+      "end": 105
+    },
+    {
+      "start": 300,
+      "end": 390
+    }
+  ],
+  "hud": [
+    {
+      "start": 0,
+      "end": 105
+    },
+    {
+      "start": 300,
+      "end": 585
+    }
+  ],
+  "captions": [
+    {
+      "start": 10,
+      "end": 95,
+      "text": "命綱を固定。アンテナへ進め。"
+    },
+    {
+      "start": 225,
+      "end": 291,
+      "text": "管制、何かが接近している。"
+    },
+    {
+      "start": 313,
+      "end": 376,
+      "text": "その場で待機。接触するな。"
+    },
+    {
+      "start": 486,
+      "end": 558,
+      "text": "宇宙服を着てないぞ。"
+    },
+    {
+      "start": 603,
+      "end": 675,
+      "text": "冷えたの、いります？"
+    }
+  ],
+  "trackingStatus": "placeholder: update from generated footage before final render",
+  "tracking": [
+    {
+      "frame": 390,
+      "x": 588,
+      "y": 207,
+      "size": 36
+    },
+    {
+      "frame": 450,
+      "x": 535,
+      "y": 219,
+      "size": 83
+    },
+    {
+      "frame": 510,
+      "x": 451,
+      "y": 237,
+      "size": 143
+    },
+    {
+      "frame": 584,
+      "x": 389,
+      "y": 251,
+      "size": 180
+    }
+  ],
+  "audioSegments": [
+    {
+      "from": 270,
+      "duration": 105,
+      "startFrom": 75
+    },
+    {
+      "from": 375,
+      "duration": 105,
+      "startFrom": 75
+    },
+    {
+      "from": 480,
+      "duration": 50,
+      "startFrom": 180
+    }
+  ],
+  "brandCopy": [
+    "宇宙でも、息抜き。",
+    "窓際スーパーつらい",
+    "Madogiwa Super TRY"
+  ]
+}

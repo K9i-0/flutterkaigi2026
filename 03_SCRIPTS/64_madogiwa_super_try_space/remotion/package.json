@@ -6,7 +6,9 @@
     "typecheck": "tsc --noEmit",
     "render": "remotion render src/index.ts HudTest out/hud_test.mp4",
     "audio": "python3 scripts/build_hud_audio.py",
-    "render:audio": "npm run audio && remotion render src/index.ts HudTest out/hud_test_audio.mp4"
+    "render:audio": "npm run audio && remotion render src/index.ts HudTest out/hud_test_audio.mp4",
+    "render:production": "remotion render src/index.ts SpaceCM ../final_remotion_cm.mp4",
+    "preview:production": "remotion still src/index.ts SpaceCM out/production_alert.png --frame=340 --props=production-preview.json"
   },
   "dependencies": {
     "remotion": "4.0.522",

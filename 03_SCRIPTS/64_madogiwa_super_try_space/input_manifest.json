@@ -1,0 +1,42 @@
+[
+  {
+    "path": "character_yotan_basic_sheet.png",
+    "sha256": "a5fcff5308da91a9690426b6a4028a0fdf537cf362b6fb1438fdf14c51878e5a"
+  },
+  {
+    "path": "character_fukuchan_basic_sheet.png",
+    "sha256": "a3e1f8f9feff43bf501617818f6e8652c2b6b39d72f7982716cbc550cb3b5866"
+  },
+  {
+    "path": "character_okayaman_basic_sheet.png",
+    "sha256": "fa257d0f3873525e61af40b2316992393a1aa57c4b1558112e366a7fe35fa72f"
+  },
+  {
+    "path": "character_sobaya_basic_sheet.png",
+    "sha256": "6de96b8fe2ebf1ce88c2f966d77a1abd7f0c2632322dfe4c527135de67494def"
+  },
+  {
+    "path": "product_super_try.png",
+    "sha256": "bc64d24db15c6ac1945a7ff221264de8a555be014aadda407440672bd7999104"
+  },
+  {
+    "path": "voice_ref_yotan.wav",
+    "sha256": "9bd48c5577f5c70c7ed1ff7d684cca3f98ed23f24e89a02eee20907b47c1ec0c",
+    "duration": 5.0
+  },
+  {
+    "path": "voice_ref_okayaman.wav",
+    "sha256": "6939d8da2ce43a33ad672610fb9843481220b37010a968d76a98a0cbaf1ee357",
+    "duration": 3.5
+  },
+  {
+    "path": "voice_ref_sobaya.wav",
+    "sha256": "e77f8d2123491c9de64deeedab6966c2014f2b1570027699418a6f96185cfe0f",
+    "duration": 5.24
+  },
+  {
+    "path": "alert_B_critical.wav",
+    "sha256": "85b79d6972cbadc9568fe6b23382ea8fc297c41c0c1455c3c253938a47e822dc",
+    "duration": 8.0
+  }
+]
