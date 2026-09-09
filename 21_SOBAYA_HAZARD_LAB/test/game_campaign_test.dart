@@ -37,7 +37,7 @@ void main() {
     expect(c.state.zoneId, 'farm');
     expect(c.state.hasKey, false);
     expect(c.state.beers, 4);
-    expect(c.state.health, 73);
+    expect(c.state.health, c.state.maxHealth);
     expect(c.state.pistolLoaded, 3);
     expect(c.state.gallery.length, 12);
     c.state.pickups.first.taken = true;
@@ -71,6 +71,43 @@ void main() {
     expect(restored.state.pickups.first.taken, true);
     expect(restored.state.medallions, {'farm_0'});
     expect(restored.state.beers, 2);
+  });
+
+  test('first entry heals but returning cannot be used to heal again', () {
+    final c = HazardCampaign(maps());
+    c.state.hasKey = c.state.gateOpen = true;
+    c.state.health = 1;
+    cross(c, 'forward');
+    expect(c.state.health, c.state.maxHealth);
+    final entry =
+        jsonDecode(jsonEncode(c.checkpoint())) as Map<String, dynamic>;
+    c.state.health = 2;
+    c.state.beers = 99;
+    cross(c, 'back');
+    expect(c.state.health, 2);
+    cross(c, 'forward');
+    expect(c.state.health, 2);
+    final retry = HazardCampaign.restore(entry, maps(), {'wanted'});
+    expect(retry.state.zoneId, 'farm');
+    expect(retry.state.health, retry.state.maxHealth);
+    expect(retry.state.beers, isNot(99));
+    expect(retry.state.collected, contains('wanted'));
+    expect(retry.state.enemies.every((e) => !e.alerted), true);
+  });
+
+  test('legacy recovery resets dangerous stage while retaining inventory and gallery', () {
+    final c = HazardCampaign(maps());
+    c.state.health = 1;
+    c.state.beers = 7;
+    c.state.collected.add('wanted');
+    c.state.enemies.first.alerted = true;
+    c.state.x = c.state.enemies.first.x;
+    c.recoverLegacyStage();
+    expect(c.state.health, c.state.maxHealth);
+    expect(c.state.beers, 7);
+    expect(c.state.collected, contains('wanted'));
+    expect(c.state.enemies.every((e) => !e.alerted), true);
+    expect(c.state.x, c.state.map['spawn']['x']);
   });
 
   test('old village checkpoint remains loadable', () {

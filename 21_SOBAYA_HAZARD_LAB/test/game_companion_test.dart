@@ -176,7 +176,7 @@ void main() {
       );
     },
   );
-  test('travel carries injuries; reset clears every cached region and survives restore', () async {
+  test('new stage heals companions; reset clears cached regions and survives restore', () async {
     final c = HazardCampaign(maps(), collection: {'wanted'});
     c.state.companionHealth['yametaro'] = 40;
     c.state.exitRequested = Map<String, dynamic>.from(
@@ -184,7 +184,7 @@ void main() {
     );
     c.state.phase = PlayPhase.transition;
     expect(c.traverse(), true);
-    expect(c.state.companionHealth['yametaro'], 40);
+    expect(c.state.companionHealth['yametaro'], 60);
     c.state.beers = 5;
     final store = HazardCollectionStore((ids) async => true);
     expect(await store.reset(c), true);
@@ -192,7 +192,7 @@ void main() {
     expect(c.state.beers, 5);
     final restored = HazardCampaign.restore(c.checkpoint(), maps(), {});
     expect(restored.state.collected, isEmpty);
-    expect(restored.state.companionHealth['yametaro'], 40);
+    expect(restored.state.companionHealth['yametaro'], 60);
   });
   test('reset queues after an in-flight pickup write', () async {
     final gate = Completer<bool>(), writes = <List<String>>[];

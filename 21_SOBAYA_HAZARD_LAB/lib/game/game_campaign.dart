@@ -50,8 +50,13 @@ class HazardCampaign {
     if (exit['id'] != 'back' && !from.chapterSecured) return false;
     final id = exit['target'] as String;
     final arrival = exit['arrival'] as Map;
+    final firstVisit = !regions.containsKey(id);
     final to = regions[id] ?? _fresh(id, from.collected);
     _carry(from, to);
+    if (firstVisit) {
+      to.health = to.maxHealth;
+      to.companionHealth.updateAll((_, _) => 60);
+    }
     to.x = (arrival['x'] as num).toDouble();
     to.z = (arrival['z'] as num).toDouble();
     to.y = 0;
@@ -79,6 +84,20 @@ class HazardCampaign {
     state = to;
     syncRefuge();
     return true;
+  }
+
+  /// Old saves have no recoverable entry snapshot. Keep their inventory and
+  /// earlier regions, but rebuild this stage at its safe authored spawn.
+  void recoverLegacyStage() {
+    final old = state;
+    final fresh = _fresh(old.zoneId, old.collected);
+    _carry(old, fresh);
+    fresh.health = fresh.maxHealth;
+    fresh.companionHealth.updateAll((_, _) => 60);
+    fresh.invulnerable = 1;
+    fresh.seenEvents.removeAll(['title_call', 'ending']);
+    state = fresh;
+    regions[old.zoneId] = fresh;
   }
 
   void syncRefuge() {

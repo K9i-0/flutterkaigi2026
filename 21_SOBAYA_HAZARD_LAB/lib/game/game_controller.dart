@@ -298,13 +298,25 @@ class HazardGameController extends ChangeNotifier {
     final savedRun = preferences!.getString('hazard.run.v1');
     if (savedRun != null) {
       try {
-        HazardCampaign.restore(
+        final restored = HazardCampaign.restore(
           jsonDecode(savedRun),
           maps,
           state!.collected,
           difficulty: settings.difficulty,
         );
-        _checkpointJson = savedRun;
+        if (jsonDecode(savedRun)['savePolicy'] != 'stage-start') {
+          if (!preferences!.containsKey('hazard.run.legacy.backup')) {
+            await preferences!.setString('hazard.run.legacy.backup', savedRun);
+          }
+          restored.recoverLegacyStage();
+          _checkpointJson = jsonEncode({
+            ...restored.checkpoint(),
+            'savePolicy': 'stage-start',
+          });
+          await preferences!.setString('hazard.run.v1', _checkpointJson!);
+        } else {
+          _checkpointJson = savedRun;
+        }
       } catch (_) {
         saveStatus = '保存データを読み込めませんでした。新しく探索を始められます。';
       }
@@ -639,11 +651,9 @@ class HazardGameController extends ChangeNotifier {
         );
       }
     }
-    if (id == 'ending' && state!.refugeComplete) unawaited(saveCheckpoint());
     if (id != 'ending') {
       state!.invulnerable = 1;
       state!.say(state!.objective);
-      unawaited(saveCheckpoint());
     }
   }
 
@@ -834,9 +844,12 @@ class HazardGameController extends ChangeNotifier {
   }
 
   bool transitionRegion() {
+    final target = state?.exitRequested?['target'];
+    final firstVisit = target != null && !campaign.regions.containsKey(target);
     if (!campaign.traverse()) return false;
     state = campaign.state;
     _mountRegion();
+    if (firstVisit) unawaited(saveCheckpoint(stageStart: true));
     if (state!.zoneId == 'farm' && !state!.seenEvents.contains('farm')) {
       startEvent('farm');
     } else if (state!.zoneId == 'mountain' && state!.bossAlive) {
@@ -862,14 +875,18 @@ class HazardGameController extends ChangeNotifier {
 
   void startRun() {
     restart();
-    unawaited(saveCheckpoint());
+    unawaited(saveCheckpoint(stageStart: true));
     _openingAfterTitle = true;
     startEvent('title_call');
   }
 
-  Future<void> saveCheckpoint({bool announce = false}) {
+  Future<void> saveCheckpoint({
+    bool announce = false,
+    bool stageStart = false,
+  }) {
     final s = state;
-    if (!ready ||
+    if (!stageStart ||
+        !ready ||
         s == null ||
         posePreview ||
         benchmarkMode ||
@@ -885,7 +902,10 @@ class HazardGameController extends ChangeNotifier {
         ].contains(s.phase)) {
       return Future.value();
     }
-    final encoded = jsonEncode(campaign.checkpoint());
+    final encoded = jsonEncode({
+      ...campaign.checkpoint(),
+      'savePolicy': 'stage-start',
+    });
     _pendingSaves++;
     saveStatus = '記録中…';
     _saveQueue = _saveQueue.then((_) async {
@@ -893,7 +913,7 @@ class HazardGameController extends ChangeNotifier {
         final ok = await preferences!.setString('hazard.run.v1', encoded);
         if (!ok) throw StateError('Save failed');
         _checkpointJson = encoded;
-        saveStatus = 'チェックポイントを保存しました。';
+        saveStatus = 'ステージ開始時点を保存しました。';
         if (announce && identical(s, state)) s.say(saveStatus);
       } catch (_) {
         saveStatus = '保存に失敗しました。もう一度お試しください。';
@@ -934,10 +954,17 @@ class HazardGameController extends ChangeNotifier {
   }
 
   Future<void> returnToTitle() async {
-    if (state?.phase != PlayPhase.paused || saving) return;
+    if (![
+          PlayPhase.paused,
+          PlayPhase.dead,
+          PlayPhase.companionDown,
+          PlayPhase.clear,
+        ].contains(state?.phase) ||
+        saving) {
+      return;
+    }
     state!.stopInput();
-    await saveCheckpoint();
-    if (disposed || saveStatus.startsWith('保存に失敗')) return;
+    if (disposed) return;
     director = null;
     posePreview = false;
     state!
@@ -1276,8 +1303,7 @@ class HazardGameController extends ChangeNotifier {
         s.running &&
         s.insideRefuge &&
         s.refugeComplete) {
-      // Capture the completed reports while saving is allowed, before cinematic.
-      unawaited(saveCheckpoint());
+      // Completion does not replace the safe stage-entry checkpoint.
       if (s.seenEvents.contains('ending')) {
         s.phase = PlayPhase.clear;
       } else {
@@ -1887,7 +1913,6 @@ class HazardGameController extends ChangeNotifier {
     }
     if (s.checkpointRequested) {
       s.checkpointRequested = false;
-      unawaited(saveCheckpoint());
     }
     _notifyTime += dt;
     if (_notifyTime > .07) {
