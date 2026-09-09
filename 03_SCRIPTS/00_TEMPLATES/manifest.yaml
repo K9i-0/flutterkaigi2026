@@ -74,7 +74,7 @@ character_sheets:
     file: characters/character_yametaro_basic_sheet.png
     prompt: characters/source_prompts/character_yametaro_basic_sheet.md
     canon: 02_CHARACTERS/06_Yametaro.md
-    sheet_layout: 正面・斜め・横・背面＋閉じ口とA/I/U/E/Oの発話用顔アップ6種。黒い輪郭線なし、頬・耳・顎・うなじは連続した肌色の立体。口は開閉する立体構造
+    sheet_layout: 正面・斜め・横・背面＋閉じ口とA/I/U/E/Oの発話用顔アップ6種。黒い輪郭線なし、頬・耳・顎・うなじは連続した肌色の立体。口は開閉する立体構造。鼻は採用案Cの肌色の低いなだらかな突起
     media_variants:
       liveaction:
         file: characters/character_yametaro_liveaction_basic_sheet.png
