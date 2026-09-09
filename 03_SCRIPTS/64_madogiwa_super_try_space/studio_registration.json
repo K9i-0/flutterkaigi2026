@@ -1,0 +1,111 @@
+{
+  "studio_id": "MS-M5PWMBM6",
+  "slug": "madogiwa-super-try-space-casual",
+  "generation_id": "c594ea19-59d4-4473-aeed-36417e5061c8",
+  "version": 1,
+  "model": "wan3.0-video",
+  "inputs": [
+    {
+      "id": "fc6d318c-0213-450d-838a-57821ed07e29",
+      "filename": "character_yotan_basic_sheet.png",
+      "status": "ready",
+      "size_bytes": 2194921
+    },
+    {
+      "id": "23c79766-a8b3-44bc-9e73-6d29f7056541",
+      "filename": "character_fukuchan_basic_sheet.png",
+      "status": "ready",
+      "size_bytes": 1982927
+    },
+    {
+      "id": "c18adc52-aeeb-4b19-a7d0-53ad8c6a35f0",
+      "filename": "character_okayaman_basic_sheet.png",
+      "status": "ready",
+      "size_bytes": 2132320
+    },
+    {
+      "id": "f76ee02f-28ee-465b-bad4-4b5c023db78d",
+      "filename": "character_sobaya_basic_sheet.png",
+      "status": "ready",
+      "size_bytes": 2019627
+    },
+    {
+      "id": "47ec00b0-4c2b-46f1-bed5-d4093fbac7c7",
+      "filename": "product_super_try.png",
+      "status": "ready",
+      "size_bytes": 1486765
+    },
+    {
+      "id": "f60fc605-464b-4982-8f2d-af72b65bd402",
+      "filename": "voice_ref_yotan.wav",
+      "status": "ready",
+      "size_bytes": 441078
+    },
+    {
+      "id": "6e3fe7d1-ca0d-49e7-9a86-4bb13ceb181e",
+      "filename": "voice_ref_okayaman.wav",
+      "status": "ready",
+      "size_bytes": 308778
+    },
+    {
+      "id": "e2bc1518-9650-4ec5-a778-339656936b31",
+      "filename": "voice_ref_sobaya.wav",
+      "status": "ready",
+      "size_bytes": 462246
+    },
+    {
+      "id": "8669ce35-aa04-4a9b-ae1b-5a7df4bbf63b",
+      "filename": "script.md",
+      "status": "ready",
+      "size_bytes": 8278
+    },
+    {
+      "id": "a2958d58-3e4c-4b83-b7e1-6824086c4210",
+      "filename": "wan3_config.json",
+      "status": "ready",
+      "size_bytes": 1373
+    },
+    {
+      "id": "2186d071-f52d-46d0-b5ed-7291c22a264e",
+      "filename": "input_manifest.json",
+      "status": "ready",
+      "size_bytes": 1275
+    },
+    {
+      "id": "baa891dd-4873-4960-a406-9395069cfac2",
+      "filename": "generation_record.json",
+      "status": "ready",
+      "size_bytes": 1169
+    },
+    {
+      "id": "225c9b0a-697b-4d35-8be7-6f6cd5060f7e",
+      "filename": "production-manifest.json",
+      "status": "ready",
+      "size_bytes": 2376
+    },
+    {
+      "id": "991fcf8e-9b51-45dc-8d02-d7599f6759ab",
+      "filename": "alert_B_critical.wav",
+      "status": "ready",
+      "size_bytes": 1536078
+    },
+    {
+      "id": "7820d033-ea4f-4a2a-8767-07c77f71067d",
+      "filename": "space_comms_background.png",
+      "status": "ready",
+      "size_bytes": 2105000
+    }
+  ],
+  "videos": [
+    {
+      "id": "95b2542c-5127-408f-9f3a-501f3bc348a5",
+      "status": "ready",
+      "size_bytes": 9704449,
+      "poster_r2_key": "episodes/4353816d-bd30-44e7-a22c-ee22c1a29021/generations/c594ea19-59d4-4473-aeed-36417e5061c8/videos/95b2542c-5127-408f-9f3a-501f3bc348a5/poster.jpg"
+    }
+  ],
+  "prompt_matches": true,
+  "verified_at": "2026-09-09",
+  "registration_method": "Remote Web MCP + one-time binary PUT",
+  "featured": false
+}
