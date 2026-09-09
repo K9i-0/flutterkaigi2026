@@ -1,0 +1,37 @@
+[
+  {
+    "type": "reference_image",
+    "path": "character_yametaro_basic_sheet.png",
+    "sha256": "4ec4f5288f0a9ff1d16da56c668251af608ddde8e6e847c481234ce81f8a5277"
+  },
+  {
+    "type": "reference_image",
+    "path": "character_yotan_basic_sheet.png",
+    "sha256": "a5fcff5308da91a9690426b6a4028a0fdf537cf362b6fb1438fdf14c51878e5a"
+  },
+  {
+    "type": "reference_image",
+    "path": "character_sobaya_basic_sheet.png",
+    "sha256": "6de96b8fe2ebf1ce88c2f966d77a1abd7f0c2632322dfe4c527135de67494def"
+  },
+  {
+    "type": "reference_image",
+    "path": "prop_yume_points_review_v1.png",
+    "sha256": "80a9ff72c8ca819a7f9b158e32174e4765ac6ce357e9f0d62adbc8428a506085"
+  },
+  {
+    "type": "reference_image",
+    "path": "product_super_try.png",
+    "sha256": "bc64d24db15c6ac1945a7ff221264de8a555be014aadda407440672bd7999104"
+  },
+  {
+    "type": "reference_audio",
+    "path": "voice_ref_yametaro.wav",
+    "sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b"
+  },
+  {
+    "type": "reference_audio",
+    "path": "voice_ref_yotan.wav",
+    "sha256": "9bd48c5577f5c70c7ed1ff7d684cca3f98ed23f24e89a02eee20907b47c1ec0c"
+  }
+]
