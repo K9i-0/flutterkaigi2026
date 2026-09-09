@@ -1,0 +1,15 @@
+{
+  "character_fukuchan_basic_sheet.png": "reference_image",
+  "character_yotan_basic_sheet.png": "reference_image",
+  "character_okayaman_invasion_fullbody_sheet.png": "reference_image",
+  "scene_tripod_clay_layout_v3.png": "reference_image",
+  "character_takosan_basic_sheet.png": "reference_image",
+  "prop_server_standalone_v3.png": "reference_image",
+  "voice_ref_fukuchan.wav": "reference_audio",
+  "voice_ref_yotan.wav": "reference_audio",
+  "voice_ref_okayaman.wav": "reference_audio",
+  "character_sobaya_basic_sheet.png": "reference_image",
+  "scene_hangar_clay_layout_v1.png": "reference_image",
+  "product_super_try.png": "reference_image",
+  "voice_ref_sobaya.wav": "reference_audio"
+}

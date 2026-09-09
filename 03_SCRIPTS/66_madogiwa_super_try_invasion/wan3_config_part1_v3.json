@@ -1,0 +1,57 @@
+{
+  "model": "wan3.0-video",
+  "audio_source": "wan3",
+  "audio_sync_strategy": "wan_generated_lip_sync",
+  "reference_audio_usage": "voice_timbre_only",
+  "project_duration": 40,
+  "generation_mode": "segmented_over_30",
+  "prompt_file": "prompt_wan3_part1_v3.txt",
+  "media": [
+    {
+      "type": "reference_image",
+      "path": "character_fukuchan_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_yotan_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_okayaman_invasion_fullbody_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "scene_tripod_clay_layout_v3.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_takosan_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "prop_server_standalone_v3.png"
+    },
+    {
+      "type": "reference_audio",
+      "path": "voice_ref_fukuchan.wav"
+    },
+    {
+      "type": "reference_audio",
+      "path": "voice_ref_yotan.wav"
+    },
+    {
+      "type": "reference_audio",
+      "path": "voice_ref_okayaman.wav"
+    }
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 20,
+    "audio": true,
+    "seed": 660041,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_part1_v3_480p.mp4"
+}

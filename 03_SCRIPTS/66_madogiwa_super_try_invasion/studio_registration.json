@@ -1,0 +1,69 @@
+{
+  "title": "窓際スーパーつらい — そば屋襲来篇",
+  "studio_id": "MS-GCH4HZGE",
+  "episodeId": "a50dfe42-76b1-4a2f-9d00-f674bc8dc07c",
+  "slug": "madogiwa-super-try-sobaya-invasion",
+  "generationId": "6fa0810d-de56-482c-98d5-f514533bef3d",
+  "videoId": "0ac20e15-2532-419e-80a0-3a0bcae964b1",
+  "video_status": "ready",
+  "model": "Wan 3.0",
+  "assets": [
+    {
+      "filename": "character_fukuchan_basic_sheet.png",
+      "assetId": "11a2466a-e326-4650-99e1-1e660d633d51"
+    },
+    {
+      "filename": "character_yotan_basic_sheet.png",
+      "assetId": "12c50cb4-03d0-49db-9b1b-1b4ee7d0a18f"
+    },
+    {
+      "filename": "character_okayaman_invasion_fullbody_sheet.png",
+      "assetId": "08c98572-6900-41ea-9f3c-e446fd8f604d"
+    },
+    {
+      "filename": "scene_tripod_clay_layout_v3.png",
+      "assetId": "9d1e43a0-c77d-48e7-9910-8447ab4d105a"
+    },
+    {
+      "filename": "character_takosan_basic_sheet.png",
+      "assetId": "4380b371-d460-47e7-aef2-7a9418062e80"
+    },
+    {
+      "filename": "prop_server_standalone_v3.png",
+      "assetId": "19dd77d4-5340-41b8-96da-e250b5830678"
+    },
+    {
+      "filename": "voice_ref_fukuchan.wav",
+      "assetId": "9696bad3-63d2-4546-ba0b-0f0fa208e550"
+    },
+    {
+      "filename": "voice_ref_yotan.wav",
+      "assetId": "cee787dd-17db-4565-813a-04817245352c"
+    },
+    {
+      "filename": "voice_ref_okayaman.wav",
+      "assetId": "9bbce656-364a-4579-8437-9dad4f10408f"
+    },
+    {
+      "filename": "character_sobaya_basic_sheet.png",
+      "assetId": "9941fae1-e0db-4ab6-95bc-c3e357473980"
+    },
+    {
+      "filename": "scene_hangar_clay_layout_v1.png",
+      "assetId": "24a99217-05a3-446f-ab02-531b2d66ad65"
+    },
+    {
+      "filename": "product_super_try.png",
+      "assetId": "5a7f48fc-aacb-4fcf-bdbb-877aab064496"
+    },
+    {
+      "filename": "voice_ref_sobaya.wav",
+      "assetId": "d311dd40-00a7-406e-a946-ce55465c7682"
+    },
+    {
+      "filename": "studio_production_documents.zip",
+      "assetId": "fbce1157-f26d-4c3c-8424-2a9590e18dd5"
+    }
+  ],
+  "url": "https://madogiwa-studio.madogiwa-studio.workers.dev/episodes/madogiwa-super-try-sobaya-invasion"
+}

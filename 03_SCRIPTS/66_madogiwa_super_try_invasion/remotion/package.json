@@ -1,0 +1,20 @@
+{
+  "name": "madogiwa-super-try-cm",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "render": "remotion render src/index.tsx InvasionPart1 out/picture.mp4 && ffmpeg -v error -i out/picture.mp4 -i public/input.mp4 -map 0:v:0 -map 1:a:0 -c copy -movflags +faststart ../final_remotion_part1_subtitles.mp4 -y",
+    "render:full": "remotion render src/index.tsx InvasionFull out/full_picture.mp4 && python3 scripts/mux_full.py"
+  },
+  "dependencies": {
+    "remotion": "4.0.522",
+    "@remotion/cli": "4.0.522",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  },
+  "devDependencies": {
+    "typescript": "5.8.3",
+    "@types/react": "19.1.0"
+  }
+}

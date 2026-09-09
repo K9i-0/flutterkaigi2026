@@ -1,0 +1,47 @@
+[
+  {
+    "type": "reference_image",
+    "path": "character_fukuchan_basic_sheet.png",
+    "sha256": "a3e1f8f9feff43bf501617818f6e8652c2b6b39d72f7982716cbc550cb3b5866"
+  },
+  {
+    "type": "reference_image",
+    "path": "character_yotan_basic_sheet.png",
+    "sha256": "a5fcff5308da91a9690426b6a4028a0fdf537cf362b6fb1438fdf14c51878e5a"
+  },
+  {
+    "type": "reference_image",
+    "path": "character_okayaman_invasion_fullbody_sheet.png",
+    "sha256": "11c650a0a5983d818cf7e41217f142fd11bbc84dbb56b6f4eceae71f21d1d79b"
+  },
+  {
+    "type": "reference_image",
+    "path": "scene_tripod_tokyo_scale_v2.png",
+    "sha256": "8e7ac5d241875edb7c74c20e790b072283a0af071f83693e57def47d1dad1eec"
+  },
+  {
+    "type": "reference_image",
+    "path": "character_takosan_basic_sheet.png",
+    "sha256": "527c6eabf2e50e8e82f825916d31bb4835ceb3750255f8fe9aac0cc9c9682d7f"
+  },
+  {
+    "type": "reference_image",
+    "path": "prop_server_connected_v2.png",
+    "sha256": "9aaa467c741e3255e4ed77e3369d30ae572ce0042bae7b75e7da70d32bd249ee"
+  },
+  {
+    "type": "reference_audio",
+    "path": "voice_ref_fukuchan.wav",
+    "sha256": "06ca82308f7b581a0ed77a51f729cc8cb68af0693d21d3f03aee25fca5f7bd3c"
+  },
+  {
+    "type": "reference_audio",
+    "path": "voice_ref_yotan.wav",
+    "sha256": "9bd48c5577f5c70c7ed1ff7d684cca3f98ed23f24e89a02eee20907b47c1ec0c"
+  },
+  {
+    "type": "reference_audio",
+    "path": "voice_ref_okayaman.wav",
+    "sha256": "6939d8da2ce43a33ad672610fb9843481220b37010a968d76a98a0cbaf1ee357"
+  }
+]
