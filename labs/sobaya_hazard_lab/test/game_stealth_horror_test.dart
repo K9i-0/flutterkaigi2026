@@ -214,6 +214,40 @@ void main() {
     },
   );
 
+  test(
+    'beer interrupts a melee impact already winding up at point blank range',
+    () {
+      final s = fixture.arena()..z = .8;
+      final e = s.enemies.single
+        ..alerted = true
+        ..attackPending = true
+        ..windup = .01;
+      final health = s.health;
+      s.emitNoise('beer_lure', radius: 18, sourceX: 8, sourceZ: 0);
+      s.tick(.05);
+      expect(e.lureAttention, 5);
+      expect(e.attackPending, false);
+      expect(e.seesPlayer, false);
+      expect(s.health, health);
+      fixture.advance(s, 1);
+      expect(s.health, health);
+      expect(e.investigationTarget, isNotNull);
+    },
+  );
+
+  test('beer reaches across one wall at twelve metres while footsteps remain muffled', () {
+    final s = fixture.arena()..z = -20;
+    s.obstacles.add(fixture.wall(z: 6));
+    s.emitNoise(
+      'beer_lure',
+      radius: hazardBeerLureRadius,
+      sourceX: 0,
+      sourceZ: 12,
+    );
+    s.tick(.05);
+    expect(s.enemies.single.investigationTarget, isNotNull);
+  });
+
   test('hidden player escapes even when beer cannot be reached', () {
     final s = fixture.arena()..z = 6;
     final e = s.enemies.single..stun = 30;
@@ -226,25 +260,22 @@ void main() {
     expect(e.investigationTarget, isNull);
   });
 
-  test(
-    'visible player is reacquired after distraction, close approach breaks it',
-    () {
-      final s = fixture.arena()..z = 6;
-      final e = s.enemies.single..stun = 30;
-      fixture.advance(s, .7);
-      s.emitNoise('beer_lure', radius: 14, sourceX: 5, sourceZ: 0);
-      s.tick(.05);
-      fixture.advance(s, 10.2);
-      expect(e.seesPlayer, true);
-      expect(e.alerted, true);
-      s.emitNoise('beer_lure', radius: 14, sourceX: 5, sourceZ: 0);
-      s.tick(.05);
-      s.z = 1;
-      s.tick(.05);
-      expect(e.investigationTarget, isNull);
-      expect(e.seesPlayer, true);
-    },
-  );
+  test('visible player is reacquired after distraction, close approach does not break it', () {
+    final s = fixture.arena()..z = 6;
+    final e = s.enemies.single..stun = 30;
+    fixture.advance(s, .7);
+    s.emitNoise('beer_lure', radius: 14, sourceX: 5, sourceZ: 0);
+    s.tick(.05);
+    fixture.advance(s, 10.2);
+    expect(e.seesPlayer, true);
+    expect(e.alerted, true);
+    s.emitNoise('beer_lure', radius: 14, sourceX: 5, sourceZ: 0);
+    s.tick(.05);
+    s.z = 1;
+    s.tick(.05);
+    expect(e.investigationTarget, isNotNull);
+    expect(e.seesPlayer, false);
+  });
 
   test('returning navigates around a wall to the original post instead of camping at cover', () {
     final s = fixture.arena()

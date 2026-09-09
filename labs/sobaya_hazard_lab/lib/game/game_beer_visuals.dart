@@ -29,7 +29,7 @@ class BeerThrowVisuals {
     held.localTransform = inverseGrip;
     handSocket.add(held);
   }
-  final dots = HazardSpriteBatch(capacity: 128);
+  final dots = HazardSpriteBatch(capacity: 384);
   final flying = <Node>[];
   late final Node held;
   bool _paused = true;
@@ -64,6 +64,18 @@ class BeerThrowVisuals {
           color: vm.Vector4(.8, .9, .7, .75),
         );
       }
+      // The ground ring is the unobstructed maximum, not an enemy detector.
+      for (var i = 0; i < 192; i++) {
+        final angle = i * math.pi * 2 / 192;
+        final x = plan.landing.x + math.sin(angle) * hazardBeerLureRadius;
+        final z = plan.landing.z + math.cos(angle) * hazardBeerLureRadius;
+        dots.add(
+          position: vm.Vector3(x, s.floorHeight(x, z, plan.landing.y) + .08, z),
+          width: .16,
+          height: .10,
+          color: vm.Vector4(1.2, 1.0, .08, .65),
+        );
+      }
       for (var i = 0; i < 20; i++) {
         final angle = i * math.pi / 10;
         dots.add(
@@ -72,7 +84,7 @@ class BeerThrowVisuals {
               vm.Vector3(math.sin(angle) * .28, .025, math.cos(angle) * .28),
           width: .055,
           height: .055,
-          color: vm.Vector4(1.4, 1.1, .3, .9),
+          color: vm.Vector4(1.4, .08, .05, .95),
         );
       }
     }

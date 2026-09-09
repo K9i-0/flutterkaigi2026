@@ -1,5 +1,7 @@
 part of 'game_state.dart';
 
+const double hazardBeerLureRadius = 18;
+
 class HazardThrownBeer {
   HazardThrownBeer(this.origin, this.velocity, {this.age = 0})
     : position = origin.clone();
@@ -210,7 +212,7 @@ extension HazardBeerThrow on HazardGameState {
       beerSplashes.add(BeerSplash(flight.position.clone()));
       emitNoise(
         'beer_lure',
-        radius: 14,
+        radius: hazardBeerLureRadius,
         sourceX: flight.position.x,
         sourceY: flight.position.y + .15,
         sourceZ: flight.position.z,
