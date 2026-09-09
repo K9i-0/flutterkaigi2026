@@ -1,6 +1,6 @@
 {
   "composition": {
-    "width": 832,
+    "width": 854,
     "height": 480,
     "fps": 30,
     "durationInFrames": 900
@@ -11,8 +11,9 @@
   "events": {
     "alert": 270,
     "identified": 480,
-    "hudEnd": 585,
-    "brand": 795
+    "hudEnd": 584,
+    "brand": 787,
+    "trackEnd": 565
   },
   "comms": [
     {
@@ -20,8 +21,8 @@
       "end": 105
     },
     {
-      "start": 300,
-      "end": 390
+      "start": 299,
+      "end": 389
     }
   ],
   "hud": [
@@ -30,23 +31,23 @@
       "end": 105
     },
     {
-      "start": 300,
-      "end": 585
+      "start": 299,
+      "end": 584
     }
   ],
   "captions": [
     {
-      "start": 10,
+      "start": 0,
       "end": 95,
       "text": "命綱を固定。アンテナへ進め。"
     },
     {
-      "start": 225,
+      "start": 209,
       "end": 291,
       "text": "管制、何かが接近している。"
     },
     {
-      "start": 313,
+      "start": 299,
       "end": 376,
       "text": "その場で待機。接触するな。"
     },
@@ -61,31 +62,55 @@
       "text": "冷えたの、いります？"
     }
   ],
-  "trackingStatus": "placeholder: update from generated footage before final render",
+  "trackingStatus": "Manual mask/upper-body keyframes inspected at 13.5,15,16,17,18,19 s; brackets end before near-camera pass.",
   "tracking": [
     {
       "frame": 390,
-      "x": 588,
-      "y": 207,
-      "size": 36
+      "x": 581,
+      "y": 196,
+      "size": 32
+    },
+    {
+      "frame": 405,
+      "x": 574,
+      "y": 196,
+      "size": 45
+    },
+    {
+      "frame": 420,
+      "x": 561,
+      "y": 203,
+      "size": 58
     },
     {
       "frame": 450,
-      "x": 535,
-      "y": 219,
-      "size": 83
+      "x": 531,
+      "y": 208,
+      "size": 80
+    },
+    {
+      "frame": 480,
+      "x": 489,
+      "y": 216,
+      "size": 103
     },
     {
       "frame": 510,
-      "x": 451,
-      "y": 237,
-      "size": 143
+      "x": 433,
+      "y": 218,
+      "size": 127
     },
     {
-      "frame": 584,
-      "x": 389,
-      "y": 251,
-      "size": 180
+      "frame": 540,
+      "x": 346,
+      "y": 203,
+      "size": 155
+    },
+    {
+      "frame": 564,
+      "x": 201,
+      "y": 190,
+      "size": 192
     }
   ],
   "audioSegments": [
@@ -109,5 +134,15 @@
     "宇宙でも、息抜き。",
     "窓際スーパーつらい",
     "Madogiwa Super TRY"
+  ],
+  "alertPulseFrames": [
+    270,
+    303,
+    330,
+    352,
+    375,
+    408,
+    435,
+    457
   ]
 }

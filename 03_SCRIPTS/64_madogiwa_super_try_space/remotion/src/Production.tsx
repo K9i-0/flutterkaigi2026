@@ -12,7 +12,7 @@ export const Production:React.FC<{preview:boolean}>=({preview})=>{
  const times=m.tracking.map(k=>k.frame);
  const at=(key:'x'|'y'|'size')=>interpolate(f,times,m.tracking.map(k=>k[key]),{extrapolateLeft:'clamp',extrapolateRight:'clamp'});
  const x=at('x'),y=at('y'),s=at('size');
- const peaks=[270,303,330,352,375,408,435,457];
+ const peaks=m.alertPulseFrames;
  const pulse=Math.max(0,...peaks.map(p=>f>=p&&f<p+9?1-(f-p)/9:0));
  return <AbsoluteFill style={{background:'#020507',color:'#c9e1e3',fontFamily:mono}}>
  {preview?<Img src={staticFile(m.background)} style={{width:'100%',height:'100%',objectFit:'cover'}}/>:<><OffthreadVideo muted src={staticFile(m.inputVideo)} style={{width:'100%',height:'100%'}}/><Audio src={staticFile(m.inputVideo)}/></>}
@@ -26,7 +26,7 @@ export const Production:React.FC<{preview:boolean}>=({preview})=>{
  <path d="M 407 220 h 7 M 418 220 h 7 M 416 210 v 7 M 416 224 v 7" stroke="#c6e3e9"/>
  </svg><div style={{position:'absolute',left:52,top:45,fontSize:10,letterSpacing:2}}>EVA / 02 ●</div><div style={{position:'absolute',left:52,top:325,fontSize:9,lineHeight:1.8,opacity:.65}}>O₂ 098% / PRES 4.3 PSI<br/>TETHER SECURED</div>
  {alert&&<><div style={{position:'absolute',left:265,top:87,color:col,filter:`brightness(${1+pulse*.6})`}}><div style={{fontSize:9,letterSpacing:2,marginBottom:8}}>△ {identified?'CONTACT RESOLVED':'PROXIMITY CAUTION'} / 01</div><div style={{fontSize:19,fontFamily:'"Hiragino Kaku Gothic ProN",sans-serif',borderLeft:`2px solid ${col}`,paddingLeft:10}}>{identified?'そば屋と確認':'未確認窓際族 接近'}</div><div style={{fontSize:9,marginTop:8,letterSpacing:1}}>{identified?'IDENTIFIED: SOBAYA':'UNKNOWN MADOGIWA APPROACHING'}</div></div>
- {f>=390&&<svg width="832" height="480" style={{position:'absolute',color:col}}><g transform={`translate(${x} ${y})`} stroke="currentColor" fill="none" strokeWidth=".8"><path d={`M ${-s/2} ${-s/2+12} v -12 h 12 M ${s/2-12} ${-s/2} h 12 v 12 M ${s/2} ${s/2-12} v 12 h -12 M ${-s/2+12} ${s/2} h -12 v -12`}/></g><text x={Math.min(620,x+s/2+10)} y={y+15} fontSize="10" fill="currentColor">{identified?'NO SUIT':`${Math.max(9,Math.round(190-(f-390)*1.7))} M`}</text></svg>}</>}
+ {f>=m.tracking[0].frame&&f<m.events.trackEnd&&<svg width="832" height="480" style={{position:'absolute',color:col}}><g transform={`translate(${x} ${y})`} stroke="currentColor" fill="none" strokeWidth=".8"><path d={`M ${-s/2} ${-s/2+12} v -12 h 12 M ${s/2-12} ${-s/2} h 12 v 12 M ${s/2} ${s/2-12} v 12 h -12 M ${-s/2+12} ${s/2} h -12 v -12`}/></g><text x={Math.min(620,x+s/2+10)} y={y+15} fontSize="10" fill="currentColor">{identified?'NO SUIT':`${Math.max(9,Math.round(190-(f-m.tracking[0].frame)*1.7))} M`}</text></svg>}</>}
  </AbsoluteFill>}
  {m.audioSegments.map((s,i)=><Sequence key={i} from={s.from} durationInFrames={s.duration}><Audio src={staticFile(m.alertAudio)} startFrom={s.startFrom} volume={t=>Math.min(1,t/2,(s.duration-1-t)/3)*.8}/></Sequence>)}
  {cap&&<div style={{position:'absolute',bottom:36,width:'100%',textAlign:'center',fontFamily:'"Hiragino Kaku Gothic ProN",sans-serif',fontSize:21,color:'#f6f4ee',textShadow:'0 2px 4px #000, 1px 0 2px #000,-1px 0 2px #000'}}>{cap.text}</div>}

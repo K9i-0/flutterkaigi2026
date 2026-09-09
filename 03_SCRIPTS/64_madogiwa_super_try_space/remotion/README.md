@@ -48,3 +48,9 @@ SpaceCM / src/Production.tsx / src/production-manifest.json。原動画未生成
 再セットアップでは../space_comms_background.png→public/space_plate.png、../alert_B_critical.wav→public/alert_B_critical.wavをコピー。試作のokayaman.jpgは02_CHARACTERS/Okayaman.jpgからコピー。本番通信映像はWan素材の該当区間を同じ時刻で縮小する。
 Bは選択済み8秒WAVから警告部分2.5–6秒を2回配置し、9–16秒の警告に使用。16秒で同じBの識別音へ。未採用のA/Cは使用しない。字幕・警報・通信窓・商品コピーを後付けする。
 TypeScript合格、frame340の警告＋通信窓＋字幕の480pPNGに文字切れなし。現段階は静止背景と写真によるプレビューであり、完成映像や口パクの監査ではない。
+
+## 完成版の再レンダー
+
+`npm run render:production` はout/production_picture.mp4へ映像をレンダー後、scripts/mix_production_audio.pyで元Wan音声とBを合成し../final_remotion_cm.mp4へ保存する。Remotion内の音声はプレビュー用、完成muxでは元動画の音声を直接参照して遅延を避ける。
+本番は854×480。実カット境界と追跡座標をproduction-manifestに反映済み。フレーム検証: python3 scripts/validate_production.py。
+音声監査: 元音声との相互相関で遅延0サンプル。非警報区間の相関0.9995以上、AAC後のピーク-1.0dBFS。直接試聴は未実施。

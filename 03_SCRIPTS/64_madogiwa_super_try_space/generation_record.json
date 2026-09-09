@@ -1,0 +1,34 @@
+{
+  "task_id": "3255edbd-7f93-481d-8b96-1a1fdb30cf79",
+  "status": "SUCCEEDED",
+  "submitted_at": "2026-09-09T00:13:55.087972+00:00",
+  "model": "wan3.0-video",
+  "seed": 640030,
+  "resolution": "480P",
+  "duration": 30,
+  "estimated_cost_usd": 1.05,
+  "attempts": 1,
+  "authorization": "User explicitly approved Qwen Cloud upload of 5 images and 3 voice reference WAV files and one paid generation ($1.05 estimate) with ok.",
+  "prompt_sha256": "e237d6abb0b3197a23d176d98fd57c7317b9055f38c65f8ea90457d199ae8ed0",
+  "output": "wan3_result_seed640030_480p.mp4",
+  "actual": {
+    "width": 854,
+    "height": 480,
+    "fps": 30,
+    "video_seconds": 30,
+    "frames": 900
+  },
+  "final_output": "final_remotion_cm.mp4",
+  "final_sha256": "e91709a21e220bcd24ba6a25614fc21d07c0ccaa044bc7adadff8d90b3dd1a66",
+  "qa": {
+    "video_frames": 900,
+    "video_seconds": 30,
+    "final_audio_delay_samples": 0,
+    "peak_dbfs": -1.0,
+    "decode": "passed",
+    "english_asr": "5 lines match",
+    "japanese_asr": "窓際スーパーツライ",
+    "direct_listening": "not performed",
+    "visual_sampling": "1fps full, 2fps action and selected original-resolution frames"
+  }
+}
