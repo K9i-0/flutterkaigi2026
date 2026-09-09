@@ -5,6 +5,16 @@
 
 ## 発話口形追加（2026-09-09）
 
+### 採用案Cの鼻を標準へ反映（2026-09-09）
+
+ユーザーが`nose_review/nose_C.png`を採用。眼鏡の下の黒点鼻を、肌色の低くなだらかな突起に変更。全身4方向とREST/A/I/U/E/Oの6口形へ反映し、鼻の黒点がないこと、口形・髪・眼鏡・頭身・衣装の維持を目視確認。額の黒い印は別要素として保持。built-in image_gen使用。完成v4とその入力シートは更新しない。
+
+今回の編集入力：更新前の発話差分付き標準シート、および採用鼻参照`nose_review/nose_C.png`。以下の過去生成プロンプト内のtiny noseは履歴であり、以後は採用案Cを優先する。
+
+生成プロンプト：
+
+Edit Image 1, the complete Yametaro turnaround and speaking-mouth sheet, by changing ONLY his nose in every visible face. Image 2 is the user-approved nose design C: copy its small subtle skin-colored softly sloping nose with a low rounded tip, blended into the face, matching its relative size and projection exactly. Replace the black nose dot BELOW the glasses with that nose. Preserve the forehead black mark ABOVE the glasses unchanged. No black nostril dot, no black nose outline, no spherical button attached to face, no enlargement beyond Image 2. Front view nose understated, side view a low natural projection. Keep Image 1 layout, four full-body views, six REST A I U E O expression closeups, exact open mouth shapes and interiors, head proportions, glasses, hair, pink cheeks, purple leaf shirt, pants/shoes, lighting and background completely unchanged. Do not copy Image 2's two-panel layout, only its approved nose geometry. Output the full standard sheet, all panels uncropped.
+
 v3は口が動かない点以外、ユーザーが満足する品質と評価。静的な閉じ口しかなかったことが原因の可能性として挙げられたため、標準シートにREST/A/I/U/E/Oの6種を追加。上段の全身4方向、頭身・髪・眼鏡・頬・衣装・輪郭線なしの肌色構造は維持。口内・舌・開口幅の違いを目視確認。動画での口パク改善は未検証であり、原因の断定はしない。
 
 今回の編集入力は輪郭線なし版。エピソード65の`character_yametaro_no_outline_v3_sheet.png`に保存されており、v3の設定・入力manifestは変更しない。built-in image_gen使用。
