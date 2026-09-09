@@ -11,6 +11,7 @@
 作中の手配書表記は「YAMETARO」「やめ太郎」のことがある。
 人物同一性（唯一のハード条件）: `Yametaro.jpg`と同じキャラクター。顔、頭部形状、丸メガネ、デフォルメされた体格比率を識別基準にする。衣装、持ち物、表情、性格、口調、能力、役割、手配状況は固定しない。
 画像ファイル：Yametaro.jpg
+動画用通常シート：`03_SCRIPTS/00_TEMPLATES/characters/character_yametaro_basic_sheet.png`。2026-09-09更新の輪郭線なし版を使う。原画の黒い輪郭線を立体の黒い帯・板として再現せず、頬・耳・顎・うなじは肌色の連続した面として描く。黒髪と黒い丸眼鏡は維持し、シート以上に可愛さや頭身を誇張しない。過去制作の入力画像は履歴として維持する。
 声ファイル：Yametaro_voice.wav（Irodori-TTSの正典参照音声。既定seedは`VOICE_CAST.md`を参照）
 参照音源集：`02_CHARACTERS/voice_references/`（`Yametaro_ref_intro_mid.wav`、`Yametaro_ref_intro_short.wav`など）
 社内指名手配書：`../01_WORLD/props/yametaro_wanted_poster.png`

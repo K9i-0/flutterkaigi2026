@@ -72,7 +72,9 @@ character_sheets:
     sheet_layout: 正面の首なし全身／自然な黒髪後頭部を含む背面全身／無表情と笑顔の大きな3/4顔アップ
   yametaro:
     file: characters/character_yametaro_basic_sheet.png
+    prompt: characters/source_prompts/character_yametaro_basic_sheet.md
     canon: 02_CHARACTERS/06_Yametaro.md
+    sheet_layout: 正面・斜め・横・背面と顔アップ。黒い輪郭線なし、頬・耳・顎・うなじは連続した肌色の立体
     media_variants:
       liveaction:
         file: characters/character_yametaro_liveaction_basic_sheet.png
