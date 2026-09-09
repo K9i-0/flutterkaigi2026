@@ -1,0 +1,266 @@
+// 手動確認:「実行とデバッグ」で対象を選択 → ステータスバーでデバイスを選択 → F5。
+// 通常確認・iOSシミュレーターは debug。profile / release は対応する実機・デスクトップで使用。
+// そば屋ハザード本編は game_main.dart。main.dart は独立した3D検証室。
+// 退勤作戦: iOS / Android、GRID: iOS / Android / Web、モーションラボ: macOS専用。
+// 共有ライブラリ packages/flutter_scene_vrm は19の検証室から確認する。
+// 計測専用の dart-define は通常起動に含めない。
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "そば屋ハザード / 本編 (debug)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/21_SOBAYA_HAZARD_LAB",
+      "program": "${workspaceFolder}/21_SOBAYA_HAZARD_LAB/lib/game_main.dart",
+      "flutterMode": "debug",
+      "presentation": {
+        "group": "01 ゲーム",
+        "order": 1
+      }
+    },
+    {
+      "name": "MADOGIWA GRID (debug)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/14_MADOGIWA_CARD_GAME",
+      "program": "${workspaceFolder}/14_MADOGIWA_CARD_GAME/lib/main.dart",
+      "flutterMode": "debug",
+      "presentation": {
+        "group": "01 ゲーム",
+        "order": 2
+      }
+    },
+    {
+      "name": "窓際族・無人島クラフト (debug)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/17_FLUTTER_SCENE_GAME",
+      "program": "${workspaceFolder}/17_FLUTTER_SCENE_GAME/lib/main.dart",
+      "flutterMode": "debug",
+      "presentation": {
+        "group": "01 ゲーム",
+        "order": 3
+      }
+    },
+    {
+      "name": "窓際ボクセル・退勤作戦 (debug)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/08_FLUTTER_VOXEL_GAME",
+      "program": "${workspaceFolder}/08_FLUTTER_VOXEL_GAME/lib/main.dart",
+      "flutterMode": "debug",
+      "presentation": {
+        "group": "01 ゲーム",
+        "order": 4
+      }
+    },
+    {
+      "name": "そば屋ハザード / 3D検証室 (debug)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/21_SOBAYA_HAZARD_LAB",
+      "program": "${workspaceFolder}/21_SOBAYA_HAZARD_LAB/lib/main.dart",
+      "flutterMode": "debug",
+      "presentation": {
+        "group": "02 検証室",
+        "order": 5
+      }
+    },
+    {
+      "name": "VRM・顔トラッキング検証室 (debug)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/19_FLUTTER_SCENE_VRM_LAB",
+      "program": "${workspaceFolder}/19_FLUTTER_SCENE_VRM_LAB/lib/main.dart",
+      "flutterMode": "debug",
+      "presentation": {
+        "group": "02 検証室",
+        "order": 6
+      }
+    },
+    {
+      "name": "そば屋モーションラボ / macOS (debug)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/22_HUMANOID_MOTION_LAB",
+      "program": "${workspaceFolder}/22_HUMANOID_MOTION_LAB/lib/main.dart",
+      "flutterMode": "debug",
+      "presentation": {
+        "group": "02 検証室",
+        "order": 7
+      },
+      "deviceId": "macos"
+    },
+    {
+      "name": "そば屋ハザード / 本編 (profile)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/21_SOBAYA_HAZARD_LAB",
+      "program": "${workspaceFolder}/21_SOBAYA_HAZARD_LAB/lib/game_main.dart",
+      "flutterMode": "profile",
+      "presentation": {
+        "group": "03 性能確認 (profile)",
+        "order": 1
+      }
+    },
+    {
+      "name": "MADOGIWA GRID (profile)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/14_MADOGIWA_CARD_GAME",
+      "program": "${workspaceFolder}/14_MADOGIWA_CARD_GAME/lib/main.dart",
+      "flutterMode": "profile",
+      "presentation": {
+        "group": "03 性能確認 (profile)",
+        "order": 2
+      }
+    },
+    {
+      "name": "窓際族・無人島クラフト (profile)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/17_FLUTTER_SCENE_GAME",
+      "program": "${workspaceFolder}/17_FLUTTER_SCENE_GAME/lib/main.dart",
+      "flutterMode": "profile",
+      "presentation": {
+        "group": "03 性能確認 (profile)",
+        "order": 3
+      }
+    },
+    {
+      "name": "窓際ボクセル・退勤作戦 (profile)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/08_FLUTTER_VOXEL_GAME",
+      "program": "${workspaceFolder}/08_FLUTTER_VOXEL_GAME/lib/main.dart",
+      "flutterMode": "profile",
+      "presentation": {
+        "group": "03 性能確認 (profile)",
+        "order": 4
+      }
+    },
+    {
+      "name": "そば屋ハザード / 3D検証室 (profile)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/21_SOBAYA_HAZARD_LAB",
+      "program": "${workspaceFolder}/21_SOBAYA_HAZARD_LAB/lib/main.dart",
+      "flutterMode": "profile",
+      "presentation": {
+        "group": "03 性能確認 (profile)",
+        "order": 5
+      }
+    },
+    {
+      "name": "VRM・顔トラッキング検証室 (profile)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/19_FLUTTER_SCENE_VRM_LAB",
+      "program": "${workspaceFolder}/19_FLUTTER_SCENE_VRM_LAB/lib/main.dart",
+      "flutterMode": "profile",
+      "presentation": {
+        "group": "03 性能確認 (profile)",
+        "order": 6
+      }
+    },
+    {
+      "name": "そば屋モーションラボ / macOS (profile)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/22_HUMANOID_MOTION_LAB",
+      "program": "${workspaceFolder}/22_HUMANOID_MOTION_LAB/lib/main.dart",
+      "flutterMode": "profile",
+      "presentation": {
+        "group": "03 性能確認 (profile)",
+        "order": 7
+      },
+      "deviceId": "macos"
+    },
+    {
+      "name": "そば屋ハザード / 本編 (release)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/21_SOBAYA_HAZARD_LAB",
+      "program": "${workspaceFolder}/21_SOBAYA_HAZARD_LAB/lib/game_main.dart",
+      "flutterMode": "release",
+      "presentation": {
+        "group": "04 配布相当 (release)",
+        "order": 1
+      }
+    },
+    {
+      "name": "MADOGIWA GRID (release)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/14_MADOGIWA_CARD_GAME",
+      "program": "${workspaceFolder}/14_MADOGIWA_CARD_GAME/lib/main.dart",
+      "flutterMode": "release",
+      "presentation": {
+        "group": "04 配布相当 (release)",
+        "order": 2
+      }
+    },
+    {
+      "name": "窓際族・無人島クラフト (release)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/17_FLUTTER_SCENE_GAME",
+      "program": "${workspaceFolder}/17_FLUTTER_SCENE_GAME/lib/main.dart",
+      "flutterMode": "release",
+      "presentation": {
+        "group": "04 配布相当 (release)",
+        "order": 3
+      }
+    },
+    {
+      "name": "窓際ボクセル・退勤作戦 (release)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/08_FLUTTER_VOXEL_GAME",
+      "program": "${workspaceFolder}/08_FLUTTER_VOXEL_GAME/lib/main.dart",
+      "flutterMode": "release",
+      "presentation": {
+        "group": "04 配布相当 (release)",
+        "order": 4
+      }
+    },
+    {
+      "name": "そば屋ハザード / 3D検証室 (release)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/21_SOBAYA_HAZARD_LAB",
+      "program": "${workspaceFolder}/21_SOBAYA_HAZARD_LAB/lib/main.dart",
+      "flutterMode": "release",
+      "presentation": {
+        "group": "04 配布相当 (release)",
+        "order": 5
+      }
+    },
+    {
+      "name": "VRM・顔トラッキング検証室 (release)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/19_FLUTTER_SCENE_VRM_LAB",
+      "program": "${workspaceFolder}/19_FLUTTER_SCENE_VRM_LAB/lib/main.dart",
+      "flutterMode": "release",
+      "presentation": {
+        "group": "04 配布相当 (release)",
+        "order": 6
+      }
+    },
+    {
+      "name": "そば屋モーションラボ / macOS (release)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/22_HUMANOID_MOTION_LAB",
+      "program": "${workspaceFolder}/22_HUMANOID_MOTION_LAB/lib/main.dart",
+      "flutterMode": "release",
+      "presentation": {
+        "group": "04 配布相当 (release)",
+        "order": 7
+      },
+      "deviceId": "macos"
+    }
+  ]
+}
