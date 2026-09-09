@@ -32,3 +32,12 @@ HUDはヘルメット内の主観カット限定。外からヘルメット曲�
 独自の電子効果音をscripts/build_hud_audio.pyでPCM合成。外部音源・TTS・読み上げなし。
 タイミング正本のaudio.pulsesで二連警告音と淡いHUD発光を同期。警告間隔を短縮し、識別時に確認音へ切替。静かな機器低音と短い検知低音を追加。
 再生成可能な試作WAVはGit除外。原音ピーク-11.17 dBFS、48kHz stereo。TypeScript合格、H.264 832×480/30fps/8秒とAAC 48kHz stereoを確認、終端デコード合格。警告開始直後のPNGを目視確認。直接試聴は未実施、聴感の最終判断はユーザー試聴で行う。
+
+## 怖いアラート3案（音のみ）
+
+生成: `python3 scripts/build_scary_alerts.py`。出力out/audio_candidates/は未採用ローカル候補。
+A_deep_pressure.wav: 低音の圧迫感、下降する重いパルス。
+B_critical_alarm.wav: 中域の荒い二連警報、緊急事態の切迫感。
+C_unknown_presence.wav: 微小にずれた音程と変調、正体不明の接近。
+全て8秒、検知2.5秒、識別6秒。独自合成効果音のみ。会話・音声モデル未使用。比較ファイルABC_comparison.wavはA/B/C各8秒の間に1秒の無音、合計26秒。
+二段階loudnormで-20 LUFSへ揃え、最終WAVを再測定: A -20.00 LUFS/-8.58 dBTP、B -20.00/-7.78、C -20.00/-8.60。全ファイル48kHz/16-bit/stereo、384000サンプル、ffmpegデコード成功。直接の聴感監査は未実施。ユーザー比較後に採用案をHUDへ適用する。既存HUD音声は変更していない。
