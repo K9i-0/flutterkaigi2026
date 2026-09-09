@@ -1,0 +1,361 @@
+{
+  "studio_id": "MS-A245SGQM",
+  "episode_id": "c3ee3978-4b6b-4b86-8307-67c5f4fbe341",
+  "slug": "madogiwa-super-try-underground",
+  "url": "https://madogiwa-studio.madogiwa-studio.workers.dev/episodes/madogiwa-super-try-underground",
+  "registered_date": "2026-09-09",
+  "model": "wan3.0-video",
+  "status": "registered_and_verified",
+  "video_status": "ready",
+  "completed_video_id": "717ee648-a9f2-4932-9dfe-98a3fbf0dd1a",
+  "counts": {
+    "generations": 4,
+    "videos": 12,
+    "ready_inputs": 34
+  },
+  "generations": [
+    {
+      "version": 4,
+      "id": "833c15e1-a0bd-46f2-bd64-70ff6b369d1c",
+      "label": "v4 — 完成採用・発話口形差分",
+      "videos": [
+        {
+          "id": "55ee40a0-8312-4701-94d4-69012881abca",
+          "filename": "wan3_part1_v4_480p.mp4",
+          "status": "ready",
+          "size": 10508005,
+          "featured": false,
+          "poster_verified": true
+        },
+        {
+          "id": "717ee648-a9f2-4932-9dfe-98a3fbf0dd1a",
+          "filename": "final_remotion_cm_v4.mp4",
+          "status": "ready",
+          "size": 11679499,
+          "featured": true,
+          "poster_verified": true
+        },
+        {
+          "id": "3962e373-622f-4e90-9eb4-910c231e63b0",
+          "filename": "wan3_part2_v4_480p.mp4",
+          "status": "ready",
+          "size": 16488431,
+          "featured": false,
+          "poster_verified": true
+        }
+      ],
+      "inputs": [
+        {
+          "id": "3181389b-9038-4f8d-b066-f39b640fcfd3",
+          "filename": "production_v4.zip",
+          "size": 48226,
+          "sha256": "70e7dfa8f6a964943bda3cd8129afe28f535ec23468ea84b212390df061873a7"
+        },
+        {
+          "id": "805c3214-7c3b-4b2f-af88-3fc9b0642fd7",
+          "filename": "character_yametaro_speech_v4_sheet.png",
+          "size": 1490294,
+          "sha256": "7ad189a9b022087c24ea46f98e9d18c94d7215437e04c1b6b86a4d4244f954ea"
+        },
+        {
+          "id": "3e65f685-b880-47b0-8fc9-7fd845625f45",
+          "filename": "character_sobaya_basic_sheet.png",
+          "size": 2019627,
+          "sha256": "6de96b8fe2ebf1ce88c2f966d77a1abd7f0c2632322dfe4c527135de67494def"
+        },
+        {
+          "id": "f22332be-3f79-4a63-a09a-909aa3d03074",
+          "filename": "prop_yume_points_review_v1.png",
+          "size": 2637750,
+          "sha256": "80a9ff72c8ca819a7f9b158e32174e4765ac6ce357e9f0d62adbc8428a506085"
+        },
+        {
+          "id": "2afc075a-4d2e-4264-a01c-c243d048b8da",
+          "filename": "product_super_try.png",
+          "size": 1486765,
+          "sha256": "bc64d24db15c6ac1945a7ff221264de8a555be014aadda407440672bd7999104"
+        },
+        {
+          "id": "94e2bd74-3b2d-484d-8562-fa33a113c315",
+          "filename": "voice_ref_yametaro.wav",
+          "size": 617478,
+          "sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b"
+        },
+        {
+          "id": "a85d4845-2e97-45f3-9664-f83911927a1f",
+          "filename": "character_yotan_basic_sheet.png",
+          "size": 2194921,
+          "sha256": "a5fcff5308da91a9690426b6a4028a0fdf537cf362b6fb1438fdf14c51878e5a"
+        },
+        {
+          "id": "f3badcc8-89e9-45a4-a80d-e4ee8590e3a5",
+          "filename": "voice_ref_yotan.wav",
+          "size": 441078,
+          "sha256": "9bd48c5577f5c70c7ed1ff7d684cca3f98ed23f24e89a02eee20907b47c1ec0c"
+        }
+      ]
+    },
+    {
+      "version": 3,
+      "id": "683fdea3-b4d0-4091-af44-bfa97fa1e319",
+      "label": "v3 — 口パク固定・改善途中",
+      "videos": [
+        {
+          "id": "3569acad-1421-4a72-be92-fe449f92e57f",
+          "filename": "wan3_part1_v3_480p.mp4",
+          "status": "ready",
+          "size": 10567481,
+          "featured": false,
+          "poster_verified": true
+        },
+        {
+          "id": "8937c43c-f5cd-4d2e-997f-b513dd9c6344",
+          "filename": "final_remotion_cm_v3.mp4",
+          "status": "ready",
+          "size": 11880320,
+          "featured": false,
+          "poster_verified": true
+        },
+        {
+          "id": "c0ab48d8-934a-4f0d-9126-8ba087657525",
+          "filename": "wan3_part2_v3_480p.mp4",
+          "status": "ready",
+          "size": 17144144,
+          "featured": false,
+          "poster_verified": true
+        }
+      ],
+      "inputs": [
+        {
+          "id": "3a63121a-1bd7-4de4-8da0-f727ba7f3648",
+          "filename": "production_v3.zip",
+          "size": 49833,
+          "sha256": "edfcf3b0db76d0ac8fa00b5222d712130af06faf700e313f5e52e108a0e0fb1b"
+        },
+        {
+          "id": "53b3d56b-779d-434f-8b16-46f56558c2d4",
+          "filename": "character_yametaro_no_outline_v3_sheet.png",
+          "size": 1470226,
+          "sha256": "3689847e71c2fcaa9489f6ba97a2db360c971aa2bf8867e6fbf07831789ced08"
+        },
+        {
+          "id": "62c59d28-76cf-453c-995c-96eb54f6ce8c",
+          "filename": "character_sobaya_basic_sheet.png",
+          "size": 2019627,
+          "sha256": "6de96b8fe2ebf1ce88c2f966d77a1abd7f0c2632322dfe4c527135de67494def"
+        },
+        {
+          "id": "4f32a34c-d73f-4df9-92a6-e12ecae83e1b",
+          "filename": "prop_yume_points_review_v1.png",
+          "size": 2637750,
+          "sha256": "80a9ff72c8ca819a7f9b158e32174e4765ac6ce357e9f0d62adbc8428a506085"
+        },
+        {
+          "id": "64d4ca5b-295c-4a08-a970-c8dc0eefc216",
+          "filename": "product_super_try.png",
+          "size": 1486765,
+          "sha256": "bc64d24db15c6ac1945a7ff221264de8a555be014aadda407440672bd7999104"
+        },
+        {
+          "id": "04a9b745-f127-42fd-9a42-5174638e4889",
+          "filename": "voice_ref_yametaro.wav",
+          "size": 617478,
+          "sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b"
+        },
+        {
+          "id": "a56e7bf3-9193-43c0-ac3e-2ef63c90bba1",
+          "filename": "character_yotan_basic_sheet.png",
+          "size": 2194921,
+          "sha256": "a5fcff5308da91a9690426b6a4028a0fdf537cf362b6fb1438fdf14c51878e5a"
+        },
+        {
+          "id": "50e77d2a-667c-4f9b-8e65-cee5f10f6c2a",
+          "filename": "voice_ref_yotan.wav",
+          "size": 441078,
+          "sha256": "9bd48c5577f5c70c7ed1ff7d684cca3f98ed23f24e89a02eee20907b47c1ec0c"
+        }
+      ]
+    },
+    {
+      "version": 2,
+      "id": "2a92e9bd-3435-4d6f-9a7c-49e4589eaf27",
+      "label": "v2 — 失敗テイク・邦画演出",
+      "videos": [
+        {
+          "id": "819838a8-375c-4a76-88eb-54c31483c389",
+          "filename": "wan3_part1_v2_480p.mp4",
+          "status": "ready",
+          "size": 7838378,
+          "featured": false,
+          "poster_verified": true
+        },
+        {
+          "id": "2df0e28f-e20a-4030-b2bf-b8b367648807",
+          "filename": "final_remotion_cm_v2.mp4",
+          "status": "ready",
+          "size": 10910456,
+          "featured": false,
+          "poster_verified": true
+        },
+        {
+          "id": "477db09a-53ec-4cc5-9714-f24e868b9d62",
+          "filename": "wan3_part2_v2_480p.mp4",
+          "status": "ready",
+          "size": 18716882,
+          "featured": false,
+          "poster_verified": true
+        }
+      ],
+      "inputs": [
+        {
+          "id": "56ca4250-ec9b-4803-99b8-faf050d32a23",
+          "filename": "production_v2.zip",
+          "size": 50166,
+          "sha256": "b420dfd46ce3189ed97a266eb437926dec3a7ef8ad979f5a035ed5ed76e70d35"
+        },
+        {
+          "id": "cc4195ed-826a-4aff-bada-c8611be62ca9",
+          "filename": "character_yametaro_basic_sheet.png",
+          "size": 1714728,
+          "sha256": "4ec4f5288f0a9ff1d16da56c668251af608ddde8e6e847c481234ce81f8a5277"
+        },
+        {
+          "id": "0a6495d3-05eb-4cf3-a557-c91b17440c0c",
+          "filename": "character_yotan_basic_sheet.png",
+          "size": 2194921,
+          "sha256": "a5fcff5308da91a9690426b6a4028a0fdf537cf362b6fb1438fdf14c51878e5a"
+        },
+        {
+          "id": "8ee2618c-bd5a-473a-ad45-4fb907f9d1c2",
+          "filename": "character_sobaya_basic_sheet.png",
+          "size": 2019627,
+          "sha256": "6de96b8fe2ebf1ce88c2f966d77a1abd7f0c2632322dfe4c527135de67494def"
+        },
+        {
+          "id": "923077e1-c2d6-4bf8-8307-47ddae3a9d0f",
+          "filename": "prop_yume_points_review_v1.png",
+          "size": 2637750,
+          "sha256": "80a9ff72c8ca819a7f9b158e32174e4765ac6ce357e9f0d62adbc8428a506085"
+        },
+        {
+          "id": "beda5870-8ace-42b1-8ef4-c475ef20c5ff",
+          "filename": "product_super_try.png",
+          "size": 1486765,
+          "sha256": "bc64d24db15c6ac1945a7ff221264de8a555be014aadda407440672bd7999104"
+        },
+        {
+          "id": "aecc899e-9d37-4a49-99e7-67f0c22c0761",
+          "filename": "voice_ref_yametaro.wav",
+          "size": 617478,
+          "sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b"
+        },
+        {
+          "id": "a14d1daf-b072-4a1a-be2e-eb4fd8a94ede",
+          "filename": "voice_ref_yotan.wav",
+          "size": 441078,
+          "sha256": "9bd48c5577f5c70c7ed1ff7d684cca3f98ed23f24e89a02eee20907b47c1ec0c"
+        }
+      ]
+    },
+    {
+      "version": 1,
+      "id": "a68a1da2-616f-4238-a049-f11d421b37af",
+      "label": "v1 — 失敗テイク・場面画像参照",
+      "videos": [
+        {
+          "id": "ff61cc07-3f53-46f8-ab3d-b8dd258d7fdc",
+          "filename": "wan3_part1_480p.mp4",
+          "status": "ready",
+          "size": 11332909,
+          "featured": false,
+          "poster_verified": true
+        },
+        {
+          "id": "7f6ddbc2-a276-4ced-86e1-f2802a83713b",
+          "filename": "final_remotion_cm.mp4",
+          "status": "ready",
+          "size": 12905888,
+          "featured": false,
+          "poster_verified": true
+        },
+        {
+          "id": "5bb65233-4689-4750-bfe2-cbeec430ba85",
+          "filename": "wan3_part2_480p.mp4",
+          "status": "ready",
+          "size": 20991437,
+          "featured": false,
+          "poster_verified": true
+        }
+      ],
+      "inputs": [
+        {
+          "id": "69baa3dd-73d7-4e10-bb0d-946466676b71",
+          "filename": "character_yametaro_basic_sheet.png",
+          "size": 1714728,
+          "sha256": "4ec4f5288f0a9ff1d16da56c668251af608ddde8e6e847c481234ce81f8a5277"
+        },
+        {
+          "id": "a3eb70e8-59cb-43cc-a766-4ba6a014c032",
+          "filename": "production_v1.zip",
+          "size": 2616429,
+          "sha256": "895da119f9acdf097bfa1d9325adffbee7e5000e152c8cae9a1181c0d43635ef"
+        },
+        {
+          "id": "6dc03a35-9655-44a3-bb62-f5e68e1a0f73",
+          "filename": "character_yotan_basic_sheet.png",
+          "size": 2194921,
+          "sha256": "a5fcff5308da91a9690426b6a4028a0fdf537cf362b6fb1438fdf14c51878e5a"
+        },
+        {
+          "id": "6d40711a-44a0-46ba-af05-8425564d7d90",
+          "filename": "character_sobaya_basic_sheet.png",
+          "size": 2019627,
+          "sha256": "6de96b8fe2ebf1ce88c2f966d77a1abd7f0c2632322dfe4c527135de67494def"
+        },
+        {
+          "id": "8e13bbd8-7ff6-4a20-8be6-443f645822c6",
+          "filename": "scene_01_labor_review_v2.png",
+          "size": 2669030,
+          "sha256": "30e21aff87b5766e03bb4ac2e2edbbff5ff10f64f90a751c0815d0fbbb5630c1"
+        },
+        {
+          "id": "4111f1ff-6fc2-4ef3-900a-de580a1244ed",
+          "filename": "scene_02_dorm_review_v1.png",
+          "size": 2340108,
+          "sha256": "f28a2a6fd3fc3be8029cadd24a098de7f6e257336692376e08406461cfa1a464"
+        },
+        {
+          "id": "dee50d04-80b6-43ca-b87b-5198e325325c",
+          "filename": "prop_yume_points_review_v1.png",
+          "size": 2637750,
+          "sha256": "80a9ff72c8ca819a7f9b158e32174e4765ac6ce357e9f0d62adbc8428a506085"
+        },
+        {
+          "id": "b0a12669-e759-4119-b525-9890a388eb85",
+          "filename": "product_super_try.png",
+          "size": 1486765,
+          "sha256": "bc64d24db15c6ac1945a7ff221264de8a555be014aadda407440672bd7999104"
+        },
+        {
+          "id": "3cbe8abf-eb9d-403e-9a81-fce68ebddaab",
+          "filename": "voice_ref_yametaro.wav",
+          "size": 617478,
+          "sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b"
+        },
+        {
+          "id": "e4087e7d-e82b-46ee-9988-5184b5c627a0",
+          "filename": "voice_ref_yotan.wav",
+          "size": 441078,
+          "sha256": "9bd48c5577f5c70c7ed1ff7d684cca3f98ed23f24e89a02eee20907b47c1ec0c"
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "v1-v3 are explicitly authorized failed/review takes; v4 is user-approved final.",
+    "All reference images/audio are actual episode-local generation inputs; later standard nose revision is excluded.",
+    "Each generation has combined exact part1/part2 prompt and production ZIP containing original prompt files, config, manifests, script, records and editing sources.",
+    "Public detail page returned HTTP 200.",
+    "One initial input ticket failed with HTTP 403 via urllib. New ticket PUT via documented curl succeeded. Orphan upload_pending asset ec18a282-2638-4fde-bc36-a40b63ec3b16 remains; MCP has no input archive operation. No missing required asset."
+  ]
+}
