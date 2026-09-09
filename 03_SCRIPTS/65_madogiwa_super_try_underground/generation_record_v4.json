@@ -44,5 +44,12 @@
     "audio": "AAC 48000 Hz",
     "full_decode": "passed",
     "endcard": "visually checked at 43s"
+  },
+  "acceptance": {
+    "status": "completed_user_approved",
+    "date": "2026-09-09",
+    "statement": "いい感じ。この動画はこれで完成としよう",
+    "final_file": "final_remotion_cm_v4.mp4",
+    "later_sheet_changes": "Future productions only; preserve v4 video, input sheet and manifests."
   }
 }

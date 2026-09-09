@@ -10,3 +10,7 @@ v3の口が動かない点以外はユーザーが満足する品質と評価。
 
 生成記録：`generation_record_v4.json`。結合素材：`joined_wan_v4_480p.mp4`。商品テロップ付き：`final_remotion_cm_v4.mp4`。Wan音声を保持。
 再現：`python3 remotion/scripts/assemble_v4.py`、remotion内で`npx remotion render src/index_v4.ts SuperTryCMv4 out/visual_v4.mp4`、`python3 scripts/assemble_v4.py --mux-final`。
+
+## 完成承認
+
+2026-09-09、ユーザーがv4を完成として承認。完成動画は`final_remotion_cm_v4.mp4`。以後の標準シートの鼻修正は次回制作向けとし、この完成動画・入力シート・生成設定を変更しない。
