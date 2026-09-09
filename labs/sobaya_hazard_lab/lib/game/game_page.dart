@@ -2198,14 +2198,11 @@ class _HazardGamePageState extends State<HazardGamePage> {
             spacing: 12,
             children: [
               action('resume', '探索に戻る', () => game.toggle(PlayPhase.paused)),
-              action('save', game.saving ? '記録中…' : 'チェックポイントを保存', () {
-                game.saveCheckpoint(announce: true);
-              }),
               if (game.hasCheckpoint)
-                action('load', 'チェックポイントへ戻る', game.continueRun),
+                action('load', 'ステージ開始からやり直す', game.continueRun),
               action(
                 'title',
-                game.saving ? '記録中…' : '保存してタイトルへ',
+                game.saving ? '記録中…' : 'タイトルへ戻る',
                 game.returnToTitle,
               ),
               if (!s.actionLocked)
@@ -2223,7 +2220,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
             Text(game.saveStatus, style: const TextStyle(color: gold)),
           const SizedBox(height: 8),
           const Text(
-            '案内役・補給所での会話後、武器・鍵の取得時、門を開けた時にも自動保存します。',
+            '新しいステージの開始時に自動保存します。タイトルへ戻ると、このステージでの進行は戻ります。収集ギャラリーは維持されます。',
             style: TextStyle(color: ivory, fontSize: 12),
           ),
           const SizedBox(height: 12),
@@ -2275,15 +2272,22 @@ class _HazardGamePageState extends State<HazardGamePage> {
                 const SizedBox(height: 28),
                 FilledButton(
                   key: const ValueKey('game-retry'),
-                  onPressed: s.phase == PlayPhase.dead && game.hasCheckpoint
+                  onPressed:
+                      (s.phase == PlayPhase.dead ||
+                              s.phase == PlayPhase.companionDown) &&
+                          game.hasCheckpoint
                       ? game.continueRun
                       : game.startRun,
                   child: Text(
-                    s.phase == PlayPhase.dead && game.hasCheckpoint
-                        ? 'チェックポイントから再開'
+                    (s.phase == PlayPhase.dead ||
+                                s.phase == PlayPhase.companionDown) &&
+                            game.hasCheckpoint
+                        ? 'このステージをやり直す'
                         : 'もう一度探索する',
                   ),
                 ),
+                const SizedBox(height: 12),
+                action('gameover-title', 'タイトルへ戻る', game.returnToTitle),
               ],
             ),
           ),
