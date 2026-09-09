@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "render": "remotion render src/index.ts SuperTryCM out/visual.mp4 && python3 scripts/mux_audio.py"
+    "render": "remotion render src/index.ts SuperTryCM out/visual.mp4 && python3 scripts/mux_audio.py",
+    "render:v2": "remotion render src/index_v2.ts SuperTryCMv2 out/visual_v2.mp4 && python3 scripts/assemble_v2.py --mux-final",
+    "assemble:v2": "python3 scripts/assemble_v2.py"
   },
   "dependencies": {
     "remotion": "4.0.522",

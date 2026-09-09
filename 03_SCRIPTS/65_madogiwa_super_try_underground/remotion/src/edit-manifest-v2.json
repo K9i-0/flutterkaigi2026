@@ -1,0 +1,18 @@
+{
+  "composition": {
+    "id": "SuperTryCMv2",
+    "width": 854,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 1200
+  },
+  "inputVideo": "input_v2.mp4",
+  "endcard": {
+    "from": 1085,
+    "to": 1200,
+    "coverGeneratedText": true,
+    "copy": "今日の労働が、泡になる。",
+    "productName": "窓際スーパーつらい",
+    "englishName": "Madogiwa Super TRY"
+  }
+}

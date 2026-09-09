@@ -1,0 +1,29 @@
+{
+  "version": "v2",
+  "authorization": "User requested v2 generation after explicit approval of Qwen Cloud destination, canonical image/audio payload and paid generation in this session. V2 removes both scene images.",
+  "model": "wan3.0-video",
+  "resolution": "480P",
+  "ratio": "16:9",
+  "estimated_cost_usd": 1.4,
+  "billing_verified": false,
+  "submitted_at_utc": "2026-09-09 02:37 UTC",
+  "tasks": [
+    {
+      "part": 1,
+      "duration": 10,
+      "seed": 650041,
+      "task_id": "a414e242-5d21-4456-acd4-0af97b07fe85",
+      "status": "SUCCEEDED",
+      "prompt_sha256": "1f1be8d43582081722ca4b097e6f088dc7a0c8963dec510377a3a09796973d3e"
+    },
+    {
+      "part": 2,
+      "duration": 30,
+      "seed": 650042,
+      "task_id": "706a7e18-cc50-41d3-8226-6e44bfba97af",
+      "status": "SUCCEEDED",
+      "prompt_sha256": "68e4ba8d6b55deaf57417ad82edc815140b02efaa26724318e4c368c03b1f26d"
+    }
+  ],
+  "resubmissions": 0
+}
