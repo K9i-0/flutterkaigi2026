@@ -1,0 +1,22 @@
+{
+  "authorization": "User explicitly approved 7 images and 2 canonical voice references to Qwen Cloud, 40 seconds, estimated USD 1.40, with OK.",
+  "tasks": [
+    {
+      "part": 1,
+      "duration": 10,
+      "seed": 650041,
+      "task_id": "710eb115-a269-4fbf-8157-acd09b564c25",
+      "status": "SUCCEEDED"
+    },
+    {
+      "part": 2,
+      "duration": 30,
+      "seed": 650042,
+      "task_id": "8237c798-77ce-4a00-9121-fb3f055df91b",
+      "status": "SUCCEEDED"
+    }
+  ],
+  "resubmissions": 0,
+  "estimated_cost_usd": 1.4,
+  "billing_verified": false
+}

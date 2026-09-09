@@ -1,0 +1,19 @@
+{
+  "name": "madogiwa-super-try-underground",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "render": "remotion render src/index.ts SuperTryCM out/visual.mp4 && python3 scripts/mux_audio.py"
+  },
+  "dependencies": {
+    "remotion": "4.0.522",
+    "@remotion/cli": "4.0.522",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  },
+  "devDependencies": {
+    "typescript": "5.8.3",
+    "@types/react": "19.1.0"
+  }
+}
