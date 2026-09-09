@@ -1,0 +1,82 @@
+{
+  "fps": 30,
+  "width": 854,
+  "height": 480,
+  "source": "completed_cm.mp4",
+  "segments": [
+    {
+      "kind": "card",
+      "duration": 174,
+      "from": 0,
+      "text": "窓際族物語、最大の謎が――\nついに明かされる。",
+      "voiceIndex": 0
+    },
+    {
+      "kind": "video",
+      "duration": 150,
+      "from": 174,
+      "sourceStart": 0
+    },
+    {
+      "kind": "card",
+      "duration": 138,
+      "from": 324,
+      "text": "その夜、東京は\n彼らの狩り場になった。",
+      "voiceIndex": 1
+    },
+    {
+      "kind": "video",
+      "duration": 285,
+      "from": 462,
+      "sourceStart": 150
+    },
+    {
+      "kind": "card",
+      "duration": 130,
+      "from": 747,
+      "text": "その男は、\n地球を支配するために来た。",
+      "voiceIndex": 2
+    },
+    {
+      "kind": "video",
+      "duration": 80,
+      "from": 877,
+      "sourceStart": 600
+    },
+    {
+      "kind": "video",
+      "duration": 165,
+      "from": 957,
+      "sourceStart": 435
+    },
+    {
+      "kind": "video",
+      "duration": 264,
+      "from": 1122,
+      "sourceStart": 723
+    },
+    {
+      "kind": "card",
+      "duration": 198,
+      "from": 1386,
+      "text": "この男が、やがて\n窓際族になることを――\nまだ、誰も知らない。",
+      "voiceIndex": 3
+    },
+    {
+      "kind": "video",
+      "duration": 111,
+      "from": 1584,
+      "sourceStart": 987
+    },
+    {
+      "kind": "video",
+      "duration": 102,
+      "from": 1695,
+      "sourceStart": 1098
+    }
+  ],
+  "audio": {
+    "sourceEffectStartFrame": 156
+  },
+  "durationInFrames": 1797
+}

@@ -1,0 +1,40 @@
+{
+  "model": "Aratako/Irodori-TTS-v4.1-Small",
+  "reference": "02_CHARACTERS/Sobaya_voice.wav",
+  "postprocess": "sobaya_monsterize.sh",
+  "lines": [
+    {
+      "text": "窓際族物語、最大の謎が、ついに明かされる。",
+      "file": "trailer_narration_sobaya_1.wav",
+      "duration": 4.830333,
+      "seed": 42,
+      "caption": "映画予告編の語り。重々しく抑制した演技。言葉を明瞭に、最後まで大真面目に語る。",
+      "sha256": "2b9b8e25188bd0606ec70fca308c416df696c252bba2214e6bdb9ab19f4c385b"
+    },
+    {
+      "text": "その夜、東京は彼らの狩り場になった。",
+      "file": "trailer_narration_sobaya_2.wav",
+      "duration": 3.629333,
+      "seed": 42,
+      "caption": "映画予告編の語り。重々しく抑制した演技。言葉を明瞭に、最後まで大真面目に語る。",
+      "sha256": "20a760cd16a0f0bfb59b688229730fe333eb07a509c187fa7cee810138ca95ba"
+    },
+    {
+      "text": "その男は、地球を支配するために来た。",
+      "file": "trailer_narration_sobaya_3.wav",
+      "duration": 3.359104,
+      "seed": 42,
+      "caption": "映画予告編の語り。重々しく抑制した演技。言葉を明瞭に、最後まで大真面目に語る。",
+      "sha256": "2e4a8619011903b684baf21801addc7e2207efbde5c7991b3bd95811ca8ac118"
+    },
+    {
+      "text": "この男が、やがて窓際族になることを、まだ、誰も知らない。",
+      "file": "trailer_narration_sobaya_4.wav",
+      "duration": 5.647292,
+      "seed": 42,
+      "caption": "映画予告編の語り。重々しく抑制した演技。言葉を明瞭に、最後まで大真面目に語る。",
+      "sha256": "75212958b301626820155e33813036437796e039fc4c73472d46a163d83806ac"
+    }
+  ],
+  "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58"
+}

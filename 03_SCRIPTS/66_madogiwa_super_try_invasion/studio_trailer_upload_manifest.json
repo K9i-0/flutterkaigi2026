@@ -1,0 +1,58 @@
+[
+  {
+    "path": "03_SCRIPTS/66_madogiwa_super_try_invasion/final_remotion_cm.mp4",
+    "kind": "other",
+    "label": "編集元：本編40秒",
+    "mime": "video/mp4",
+    "filename": "final_remotion_cm.mp4",
+    "size": 16352740
+  },
+  {
+    "path": "02_CHARACTERS/Sobaya_voice.wav",
+    "kind": "audio",
+    "label": "Irodori正典そば屋参照",
+    "mime": "audio/wav",
+    "filename": "Sobaya_voice.wav",
+    "size": 705678
+  },
+  {
+    "path": "03_SCRIPTS/66_madogiwa_super_try_invasion/trailer_narration_sobaya_1.wav",
+    "kind": "audio",
+    "label": "暗転1：そば屋ナレーション",
+    "mime": "audio/wav",
+    "filename": "trailer_narration_sobaya_1.wav",
+    "size": 463790
+  },
+  {
+    "path": "03_SCRIPTS/66_madogiwa_super_try_invasion/trailer_narration_sobaya_2.wav",
+    "kind": "audio",
+    "label": "暗転2：そば屋ナレーション",
+    "mime": "audio/wav",
+    "filename": "trailer_narration_sobaya_2.wav",
+    "size": 348494
+  },
+  {
+    "path": "03_SCRIPTS/66_madogiwa_super_try_invasion/trailer_narration_sobaya_3_v3.wav",
+    "kind": "audio",
+    "label": "暗転3：そば屋ナレーション",
+    "mime": "audio/wav",
+    "filename": "trailer_narration_sobaya_3_v3.wav",
+    "size": 310688
+  },
+  {
+    "path": "03_SCRIPTS/66_madogiwa_super_try_invasion/trailer_narration_sobaya_4.wav",
+    "kind": "audio",
+    "label": "暗転4：そば屋ナレーション",
+    "mime": "audio/wav",
+    "filename": "trailer_narration_sobaya_4.wav",
+    "size": 542218
+  },
+  {
+    "path": "03_SCRIPTS/66_madogiwa_super_try_invasion/remotion/out/studio_trailer_documents.zip",
+    "kind": "document",
+    "label": "採用編集設定・音声設定・元生成プロンプト",
+    "mime": "application/zip",
+    "filename": "studio_trailer_documents.zip",
+    "size": 47002
+  }
+]

@@ -5,7 +5,12 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "render": "remotion render src/index.tsx InvasionPart1 out/picture.mp4 && ffmpeg -v error -i out/picture.mp4 -i public/input.mp4 -map 0:v:0 -map 1:a:0 -c copy -movflags +faststart ../final_remotion_part1_subtitles.mp4 -y",
-    "render:full": "remotion render src/index.tsx InvasionFull out/full_picture.mp4 && python3 scripts/mux_full.py"
+    "render:full": "remotion render src/index.tsx InvasionFull out/full_picture.mp4 && python3 scripts/mux_full.py",
+    "render:trailer": "remotion render src/index.tsx InvasionTrailer out/trailer_picture.mp4 && python3 scripts/mix_trailer.py",
+    "render:trailer:v2": "remotion render src/index.tsx InvasionTrailerV2 out/trailer_v2_picture.mp4 --concurrency=2 && python3 scripts/mix_trailer_v2.py",
+    "render:trailer:voice": "remotion render src/index.tsx InvasionTrailerVoice out/trailer_voice_picture.mp4 --concurrency=2 && python3 scripts/mix_trailer_v2.py --voice",
+    "render:trailer:v3": "remotion render src/index.tsx InvasionTrailerV3 out/trailer_v3_picture.mp4 --concurrency=2 && python3 scripts/mix_trailer_v3.py",
+    "render:trailer:voice-v3": "remotion render src/index.tsx InvasionTrailerVoiceV3 out/trailer_voice-v3_picture.mp4 --concurrency=2 && python3 scripts/mix_trailer_v3.py --voice"
   },
   "dependencies": {
     "remotion": "4.0.522",

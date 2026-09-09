@@ -1,0 +1,68 @@
+{
+  "fps": 30,
+  "width": 854,
+  "height": 480,
+  "durationInFrames": 1487,
+  "source": "completed_cm.mp4",
+  "segments": [
+    {
+      "kind": "video",
+      "from": 0,
+      "duration": 150,
+      "sourceStart": 0
+    },
+    {
+      "kind": "card",
+      "from": 150,
+      "duration": 120,
+      "text": "窓際族物語、最大の謎が――\nついに明かされる。"
+    },
+    {
+      "kind": "video",
+      "from": 270,
+      "duration": 186,
+      "sourceStart": 150
+    },
+    {
+      "kind": "card",
+      "from": 456,
+      "duration": 105,
+      "text": "その男は、\n地球を支配するために来た。"
+    },
+    {
+      "kind": "video",
+      "from": 561,
+      "duration": 99,
+      "sourceStart": 336
+    },
+    {
+      "kind": "video",
+      "from": 660,
+      "duration": 80,
+      "sourceStart": 600
+    },
+    {
+      "kind": "card",
+      "from": 740,
+      "duration": 105,
+      "text": "では、なぜ会社では\n窓際なのか。"
+    },
+    {
+      "kind": "video",
+      "from": 845,
+      "duration": 165,
+      "sourceStart": 435
+    },
+    {
+      "kind": "video",
+      "from": 1010,
+      "duration": 477,
+      "sourceStart": 723
+    }
+  ],
+  "audio": {
+    "sourceEffectStartFrame": 156,
+    "sourceEffectDurationFrames": 90,
+    "note": "Existing scene mechanical sound, filtered and pitched lower. No new narration."
+  }
+}

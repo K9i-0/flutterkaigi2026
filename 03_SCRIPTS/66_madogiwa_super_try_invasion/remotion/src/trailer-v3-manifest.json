@@ -1,0 +1,64 @@
+{
+  "fps": 30,
+  "width": 854,
+  "height": 480,
+  "source": "completed_cm.mp4",
+  "audio": {
+    "sourceEffectStartFrame": 156
+  },
+  "segments": [
+    {
+      "kind": "card",
+      "duration": 120,
+      "from": 0,
+      "text": "窓際族物語、最大の謎が――\nついに明かされる。",
+      "voiceIndex": 0
+    },
+    {
+      "kind": "video",
+      "sourceStart": 0,
+      "duration": 279,
+      "from": 120
+    },
+    {
+      "kind": "card",
+      "duration": 90,
+      "from": 399,
+      "text": "その夜、東京は\n彼らの狩り場になった。",
+      "voiceIndex": 1
+    },
+    {
+      "kind": "video",
+      "sourceStart": 279,
+      "duration": 321,
+      "from": 489
+    },
+    {
+      "kind": "card",
+      "duration": 105,
+      "from": 810,
+      "text": "その男は、\nビールに目が無かった。",
+      "voiceIndex": 2
+    },
+    {
+      "kind": "video",
+      "sourceStart": 600,
+      "duration": 387,
+      "from": 915
+    },
+    {
+      "kind": "card",
+      "duration": 165,
+      "from": 1302,
+      "text": "この男が、やがて\n窓際族になることを――\nまだ、誰も知らない。",
+      "voiceIndex": 3
+    },
+    {
+      "kind": "video",
+      "sourceStart": 987,
+      "duration": 213,
+      "from": 1467
+    }
+  ],
+  "durationInFrames": 1680
+}

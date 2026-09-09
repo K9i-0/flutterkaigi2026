@@ -1,0 +1,70 @@
+{
+  "fps": 30,
+  "width": 854,
+  "height": 480,
+  "source": "completed_cm.mp4",
+  "audio": {
+    "sourceEffectStartFrame": 156
+  },
+  "segments": [
+    {
+      "kind": "card",
+      "duration": 174,
+      "from": 0,
+      "text": "窓際族物語、最大の謎が――\nついに明かされる。",
+      "voiceIndex": 0
+    },
+    {
+      "kind": "video",
+      "sourceStart": 0,
+      "duration": 279,
+      "from": 174
+    },
+    {
+      "kind": "card",
+      "duration": 138,
+      "from": 453,
+      "text": "その夜、東京は\n彼らの狩り場になった。",
+      "voiceIndex": 1
+    },
+    {
+      "kind": "video",
+      "sourceStart": 279,
+      "duration": 321,
+      "from": 591
+    },
+    {
+      "kind": "card",
+      "duration": 126,
+      "from": 912,
+      "text": "その男は、\nビールに目が無かった。",
+      "voiceIndex": 2
+    },
+    {
+      "kind": "video",
+      "sourceStart": 600,
+      "duration": 387,
+      "from": 1038
+    },
+    {
+      "kind": "card",
+      "duration": 198,
+      "from": 1425,
+      "text": "この男が、やがて\n窓際族になることを――\nまだ、誰も知らない。",
+      "voiceIndex": 3
+    },
+    {
+      "kind": "video",
+      "sourceStart": 987,
+      "duration": 213,
+      "from": 1623
+    }
+  ],
+  "durationInFrames": 1836,
+  "voiceFiles": [
+    "trailer_narration_sobaya_1.wav",
+    "trailer_narration_sobaya_2.wav",
+    "trailer_narration_sobaya_3_v3.wav",
+    "trailer_narration_sobaya_4.wav"
+  ]
+}
