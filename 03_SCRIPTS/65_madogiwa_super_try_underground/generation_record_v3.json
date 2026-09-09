@@ -1,0 +1,70 @@
+{
+  "version": "v3",
+  "authorization": "User requested generation of approved v3 after prior explicit paid Qwen Cloud authorization in this session.",
+  "model": "wan3.0-video",
+  "resolution": "480P",
+  "ratio": "16:9",
+  "estimated_cost_usd": 1.575,
+  "billing_verified": false,
+  "price_source": "https://www.qwencloud.com/models/wan3.0-video",
+  "price_checked_date": "2026-09-09",
+  "resubmissions": 0,
+  "audio_source": "wan3",
+  "audio_sync_strategy": "wan_generated_lip_sync",
+  "tasks": [
+    {
+      "part": 1,
+      "duration": 15,
+      "seed": 650041,
+      "task_id": "e4a20150-dd78-4c5b-95c6-6c38dadf72ad",
+      "status": "SUCCEEDED",
+      "prompt_sha256": "7a8da093a5a934a5479eaeb9fde9ade70fd8b79e208f62089766fe8a5d6d8aae"
+    },
+    {
+      "part": 2,
+      "duration": 30,
+      "seed": 650042,
+      "task_id": "7d37ffe2-6515-473c-8486-df93751cc5fa",
+      "status": "SUCCEEDED",
+      "prompt_sha256": "222ea57359dcaab06a93838cfd56d53949e3e29b84793e95167b48e6b1d28601"
+    }
+  ],
+  "postproduction": {
+    "tool": "remotion",
+    "composition": "SuperTryCMv3",
+    "output": "final_remotion_cm_v3.mp4",
+    "audio": "Native Wan audio retained; no speech replacement",
+    "status": "review_take"
+  },
+  "audit": {
+    "visual_method": "1 fps full contact sheets, 4 fps Yametaro dialogue sample",
+    "improvements": [
+      "No black plate behind Yametaro face in inspected frames",
+      "Payout remains Yametaro",
+      "Visible sustained sip followed by lowered can before dialogue"
+    ],
+    "remaining": [
+      "Yametaro mouth remains nearly fixed smiling during dialogue; lip sync not approved",
+      "Labor opens close but widens; exhaustion expression weak",
+      "Labor worker/bar count and motion not certified from sampled frames",
+      "Dorm extras stand rather than sit; location continuity differs between parts"
+    ],
+    "audio_method": "Offline Whisper screening only; no direct listening available. Pronunciation, delivery and location sound not certified.",
+    "asr_flags": [
+      "ためるんや recognized as 溜めてるんや",
+      "ひえてやがる recognized as 冷えてあがる",
+      "Silent drinking section ASR repeats text with timestamps beyond clip duration: unreliable hallucination, not confirmed speech"
+    ],
+    "approval": "Not marked fully approved"
+  },
+  "final_validation": {
+    "duration_seconds": 45,
+    "width": 854,
+    "height": 480,
+    "fps": 30,
+    "audio": "AAC 48000 Hz",
+    "full_decode": "passed",
+    "endcard_visual_check": "passed at 43 seconds",
+    "speech_and_lip_sync": "not approved"
+  }
+}
