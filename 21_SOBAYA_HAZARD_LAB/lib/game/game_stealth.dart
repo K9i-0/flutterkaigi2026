@@ -211,7 +211,9 @@ extension HazardStealth on HazardGameState {
       if (obstacle.ray(from, delta.normalized(), distance) != null) walls++;
     }
     // A single wall muffles footsteps; a gunshot remains audible nearby.
-    radius *= math.pow(.48, math.min(walls, 3));
+    radius *= noise.kind == 'beer_lure'
+        ? math.pow(.8, math.min(walls, 2))
+        : math.pow(.48, math.min(walls, 3));
     // The ratio is 1 at the hearing threshold and grows for stronger sources
     // and shorter distances. Cover affects both audibility and prioritization.
     return distance <= radius ? radius / distance : 0;
@@ -657,7 +659,7 @@ extension HazardStealth on HazardGameState {
     // Beer wins over pursuit and footsteps, but never over nearby danger.
     if (beer != null && !gunfire) _hearNoise(e, beer, 1);
     if (e.lureAttention > 0 && e.investigationTarget != null) {
-      final danger = gunfire || (distance < 1.8 && e.seesPlayer);
+      final danger = gunfire;
       final p = e.investigationTarget!;
       e.searchRemaining = math.max(0, e.searchRemaining - dt);
       if (math.pow(p.x - e.x, 2) + math.pow(p.z - e.z, 2) < 1 &&

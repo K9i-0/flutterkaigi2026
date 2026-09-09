@@ -2225,7 +2225,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
           ),
           const SizedBox(height: 12),
           const Text(
-            '忍び足で音を抑え、背後から近づくとビールを破壊できます。\n見つかったら建物で視界を切り、忍び足で別の死角へ。\n捜索ゲージがなくなると、そば屋は持ち場へ戻ります。\nショットガンの発砲音は遠くまで届きます。\n弾倉が空なら射撃操作で装填。Rでも事前に装填できます。\nZ（またはCtrl）を押しながら移動で忍び足。MacではZを推奨。\n1 / 2 / 3 武器切替  4 ビール  H 回復  E 調べる\nビール投げは追跡中の通常そば屋も一斉誘導。到着後5秒、移動込み最大10秒の間に隠れよう。銃声・至近距離への接近で解除。\nスマホ：左スティックで移動、右の空いている画面で視点操作。\n下の装備表示から武器・ビールを選択。構えると射撃・投擲に切り替わります。\n弾数の「装填」で手動リロード。回復は体力の横、持ち物は休止メニュー。',
+            '忍び足で音を抑え、背後から近づくとビールを破壊できます。\n見つかったら建物で視界を切り、忍び足で別の死角へ。\n捜索ゲージがなくなると、そば屋は持ち場へ戻ります。\nショットガンの発砲音は遠くまで届きます。\n弾倉が空なら射撃操作で装填。Rでも事前に装填できます。\nZ（またはCtrl）を押しながら移動で忍び足。MacではZを推奨。\n1 / 2 / 3 武器切替  4 ビール  H 回復  E 調べる\nビール投げは追跡中の通常そば屋も一斉誘導。到着後5秒、移動込み最大10秒の間に隠れよう。銃声・被弾で解除。赤は着地点、黄は遮蔽物なしの最大範囲。\nスマホ：左スティックで移動、右の空いている画面で視点操作。\n下の装備表示から武器・ビールを選択。構えると射撃・投擲に切り替わります。\n弾数の「装填」で手動リロード。回復は体力の横、持ち物は休止メニュー。',
             style: TextStyle(color: gold, height: 2),
           ),
         ],
@@ -2454,6 +2454,28 @@ class VillageMapPainter extends CustomPainter {
           ..style = PaintingStyle.stroke
           ..strokeWidth = 1,
       );
+    }
+    final landing = state.beerPreview?.landing;
+    if (state.running &&
+        state.aiming &&
+        state.weapon == 'beer' &&
+        state.beers > 0 &&
+        landing != null) {
+      final target = at(landing.x, landing.z);
+      final range = Rect.fromCenter(
+        center: target,
+        width: hazardBeerLureRadius / 48 * size.width * 2,
+        height: hazardBeerLureRadius / 54 * size.height * 2,
+      );
+      c.drawOval(range, Paint()..color = const Color(0x22ffdd22));
+      c.drawOval(
+        range,
+        Paint()
+          ..color = const Color(0xddffdd22)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.5,
+      );
+      c.drawCircle(target, 3.5, Paint()..color = const Color(0xffff4433));
     }
     p.color = ivory;
     c.drawCircle(at(state.x, state.z), 3, p);

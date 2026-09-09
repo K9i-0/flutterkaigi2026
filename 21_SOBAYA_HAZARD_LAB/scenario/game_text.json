@@ -26,7 +26,7 @@
     ],
     "stableIds": "会話はowner/topic/index、イベントはevent/index、メモ/画像/資料は既存キー。sourceTextはファイル/宣言名/文字列順で、文言の修正や無関係な行の追加では変わらない。同じ宣言への文字列挿入は後続番号を変える。",
     "templateCount": 126,
-    "technicalLiteralsExcluded": 2188,
+    "technicalLiteralsExcluded": 2190,
     "excludedGameFiles": [
       "campaign_audit.dart",
       "game_automation.dart",
@@ -26848,7 +26848,7 @@
       "scope": "restoreBeerFlights",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_beer_throw.dart",
-        "line": 36
+        "line": 38
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -26862,7 +26862,7 @@
       "scope": "restoreBeerFlights",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_beer_throw.dart",
-        "line": 41
+        "line": 43
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -26876,7 +26876,7 @@
       "scope": "restoreBeerFlights",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_beer_throw.dart",
-        "line": 53
+        "line": 55
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -26890,7 +26890,7 @@
       "scope": "weaponLabel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_beer_throw.dart",
-        "line": 73
+        "line": 75
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -26904,7 +26904,7 @@
       "scope": "weaponLabel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_beer_throw.dart",
-        "line": 74
+        "line": 76
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -26918,7 +26918,7 @@
       "scope": "weaponLabel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_beer_throw.dart",
-        "line": 75
+        "line": 77
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -26932,7 +26932,7 @@
       "scope": "weaponLabel",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_beer_throw.dart",
-        "line": 76
+        "line": 78
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -26946,7 +26946,7 @@
       "scope": "throwBeer",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_beer_throw.dart",
-        "line": 164
+        "line": 166
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -26960,7 +26960,7 @@
       "scope": "throwBeer",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_beer_throw.dart",
-        "line": 177
+        "line": 179
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -34780,7 +34780,7 @@
     },
     {
       "id": "source:game_page:pause:17",
-      "text": "忍び足で音を抑え、背後から近づくとビールを破壊できます。\n見つかったら建物で視界を切り、忍び足で別の死角へ。\n捜索ゲージがなくなると、そば屋は持ち場へ戻ります。\nショットガンの発砲音は遠くまで届きます。\n弾倉が空なら射撃操作で装填。Rでも事前に装填できます。\nZ（またはCtrl）を押しながら移動で忍び足。MacではZを推奨。\n1 / 2 / 3 武器切替  4 ビール  H 回復  E 調べる\nビール投げは追跡中の通常そば屋も一斉誘導。到着後5秒、移動込み最大10秒の間に隠れよう。銃声・至近距離への接近で解除。\nスマホ：左スティックで移動、右の空いている画面で視点操作。\n下の装備表示から武器・ビールを選択。構えると射撃・投擲に切り替わります。\n弾数の「装填」で手動リロード。回復は体力の横、持ち物は休止メニュー。",
+      "text": "忍び足で音を抑え、背後から近づくとビールを破壊できます。\n見つかったら建物で視界を切り、忍び足で別の死角へ。\n捜索ゲージがなくなると、そば屋は持ち場へ戻ります。\nショットガンの発砲音は遠くまで届きます。\n弾倉が空なら射撃操作で装填。Rでも事前に装填できます。\nZ（またはCtrl）を押しながら移動で忍び足。MacではZを推奨。\n1 / 2 / 3 武器切替  4 ビール  H 回復  E 調べる\nビール投げは追跡中の通常そば屋も一斉誘導。到着後5秒、移動込み最大10秒の間に隠れよう。銃声・被弾で解除。赤は着地点、黄は遮蔽物なしの最大範囲。\nスマホ：左スティックで移動、右の空いている画面で視点操作。\n下の装備表示から武器・ビールを選択。構えると射撃・投擲に切り替わります。\n弾数の「装填」で手動リロード。回復は体力の横、持ち物は休止メニュー。",
       "usage": "player_text",
       "scope": "pause",
       "source": {
@@ -36881,7 +36881,7 @@
       "scope": "_rememberAttack",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_stealth.dart",
-        "line": 274
+        "line": 276
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -36895,7 +36895,7 @@
       "scope": "_returnHome",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_stealth.dart",
-        "line": 303
+        "line": 305
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -36909,7 +36909,7 @@
       "scope": "_hearNoise",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_stealth.dart",
-        "line": 475
+        "line": 477
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -36923,7 +36923,7 @@
       "scope": "_hearNoise",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_stealth.dart",
-        "line": 511
+        "line": 513
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -36937,7 +36937,7 @@
       "scope": "_hearNoise",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_stealth.dart",
-        "line": 511
+        "line": 513
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -36951,7 +36951,7 @@
       "scope": "_shareVisualContact",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_stealth.dart",
-        "line": 580
+        "line": 582
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -36965,7 +36965,7 @@
       "scope": "_updateEnemyPerception",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_stealth.dart",
-        "line": 719
+        "line": 721
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -36979,7 +36979,7 @@
       "scope": "stealthKill",
       "source": {
         "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_stealth.dart",
-        "line": 1032
+        "line": 1034
       },
       "condition": {
         "status": "inferred_from_source_context",
@@ -38948,11 +38948,11 @@
     },
     {
       "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_beer_throw.dart",
-      "sha256": "a35a3081d5591080fe2a6c11b6f7d2523dd24b13fe54d004176e8f9b198928ca"
+      "sha256": "b15933b0c936011d9d0893dbc49fa68033a2a1779936a47f4adc5fd119315c23"
     },
     {
       "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_beer_visuals.dart",
-      "sha256": "774f545bdbbc38a34127088b4ad33637a184fcaaf4e5d0afab9bcb6cee7b5778"
+      "sha256": "04b3fc22343247e997ba9441273f8ee2784cfa118bce79fe276c1d740734d7f3"
     },
     {
       "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_camera.dart",
@@ -39044,7 +39044,7 @@
     },
     {
       "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_page.dart",
-      "sha256": "271e505347c491ad1d700c53ff227f71fe3e118ff61e5d66e1eeecc9ffbb18c9"
+      "sha256": "315a1e61a8e6d256b079f632d218ee5c1d4452a646dbba92111e222c22c8e18c"
     },
     {
       "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_perception_geometry.dart",
@@ -39080,7 +39080,7 @@
     },
     {
       "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_stealth.dart",
-      "sha256": "98c99e80a2de18f3ffcf34f2110234f154e05a320a9e9845b4125559f4ef6483"
+      "sha256": "e19a4f89d875e1194429055a7a3b369206e12343f30278e1c2af869b3ef7f297"
     },
     {
       "path": "21_SOBAYA_HAZARD_LAB/lib/game/game_story.dart",
