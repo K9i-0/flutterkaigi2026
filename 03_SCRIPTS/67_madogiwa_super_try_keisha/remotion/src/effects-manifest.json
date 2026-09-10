@@ -1,0 +1,63 @@
+{
+  "image": "office_left.png",
+  "composition": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "durationInFrames": 150
+  },
+  "variants": {
+    "A": {
+      "label": "控えめな光",
+      "blur": 0,
+      "drops": 0,
+      "dropletOpacity": 0,
+      "sweep": 0.1
+    },
+    "B": {
+      "label": "結露と柔らかい反射",
+      "blur": 2,
+      "drops": 135,
+      "dropletOpacity": 0.65,
+      "sweep": 0.22
+    },
+    "C": {
+      "label": "光を強めたCM調",
+      "blur": 4,
+      "drops": 200,
+      "dropletOpacity": 0.85,
+      "sweep": 0.4
+    }
+  },
+  "events": {
+    "pictureFade": [
+      0,
+      6
+    ],
+    "textFade": [
+      8,
+      25
+    ],
+    "lightSweep": [
+      24,
+      108
+    ],
+    "fallingDrop": [
+      45,
+      135
+    ]
+  },
+  "zoom": [
+    1,
+    1.012
+  ],
+  "sampleCopy": {
+    "text": "低姿勢で、ぶっちぎれ。",
+    "left": 1010,
+    "top": 270,
+    "width": 750,
+    "fontSize": 48,
+    "letterSpacing": 2,
+    "fontWeight": 700
+  }
+}

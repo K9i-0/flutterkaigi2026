@@ -1,0 +1,55 @@
+{
+  "composition": {
+    "width": 854,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 750,
+    "id": "KeishaCM"
+  },
+  "inputVideo": "input.mp4",
+  "endcardStartFrame": 600,
+  "captions": [
+    {
+      "startFrame": 0,
+      "endFrame": 60,
+      "speaker": "実況",
+      "text": "そば屋、失格！ 最終周！"
+    },
+    {
+      "startFrame": 60,
+      "endFrame": 120,
+      "speaker": "やめ太郎",
+      "text": "いける！ ワイ、いけるで！"
+    },
+    {
+      "startFrame": 120,
+      "endFrame": 180,
+      "speaker": "実況",
+      "text": "やめ太郎、完璧だ！"
+    },
+    {
+      "startFrame": 180,
+      "endFrame": 240,
+      "speaker": "実況",
+      "text": "だが制御できない！"
+    },
+    {
+      "startFrame": 240,
+      "endFrame": 360,
+      "speaker": "実況",
+      "text": "これが王者の、完全土下座ぁーっ！"
+    },
+    {
+      "startFrame": 360,
+      "endFrame": 444,
+      "speaker": "実況",
+      "text": "いーさん、圧勝ーっ！"
+    },
+    {
+      "startFrame": 480,
+      "endFrame": 570,
+      "speaker": "いーさん",
+      "text": "頭を下げた分、うまい。"
+    }
+  ]
+}

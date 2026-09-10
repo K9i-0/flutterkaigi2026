@@ -18,3 +18,6 @@ python3 .claude/skills/wan-video/scripts/qwen_wan3_generate.py 03_SCRIPTS/67_mad
 
 ## 最新状態
 後半初回生成済み: `wan3_part2_480p.mp4`。所見は `generation_part2.md`。前半未生成、最終編集未実施。
+
+## 字幕付き25秒版
+`final_remotion_cm.mp4`：後半20秒＋共通商品カット5秒、実況・セリフ字幕付き。編集ソースと再現手順は`remotion/`。
