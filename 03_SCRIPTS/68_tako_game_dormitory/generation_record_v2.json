@@ -1,0 +1,41 @@
+{
+  "date": "2026-09-10",
+  "task_id": "e5424ef9-f6cb-46b3-8aa9-05ba287d891b",
+  "status": "SUCCEEDED",
+  "version": 2,
+  "model": "wan3.0-video",
+  "seed": 680030,
+  "paid_tasks_this_revision": 1,
+  "estimated_usd": 1.05,
+  "billing_status": "displayed unit price; invoice not checked",
+  "source": "wan3_result_v2_seed680030_480p.mp4",
+  "source_sha256": "21749e68a4b5803d5e44bc41346c273f9367d3e58e582087362d17efee5fc9c1",
+  "prompt": "prompt_wan3_v2.txt",
+  "prompt_sha256": "9a83b1fde25acdfcb0ff9f512b8ddde75764d273032331742703b90f74bad117",
+  "width": 854,
+  "height": 480,
+  "fps": 30,
+  "video_duration_seconds": 30,
+  "postproduction": "remotion",
+  "composition_id": "TakoGameIntroV2",
+  "output": "final_remotion_subtitles_v2.mp4",
+  "audio_replacement": false,
+  "audit": {
+    "visual": "Sampled overview and 2fps confrontation contact sheets viewed",
+    "identity": "Yametaro now has white lenses without pupils in sampled awake frames, closer to reference. Brief opening eyelid-like lines and taller hair/head interpretation remain; exact sheet match not certified.",
+    "acting": "Sobaya rises leaning forward with lowered fists; Yametaro extends an open palm with broader speaking mouth. Sobaya agitation is still more restrained than requested.",
+    "costume": "Purple participants, Fukuchan 218 corrected, three blue guards X/triangle/X maintained in samples",
+    "audio": "Whisper-small Korean ASR recognizes dialogue sequence, two 균 and new confrontation lines. Sobaya 너희 is recognized as 니; pronunciation/listening not certified.",
+    "lip_sync": "Sampled mouth activity only; not fully verified",
+    "timing": "Subtitle timing derived from cropped ASR and silence boundaries",
+    "final_render": {
+      "frames": 900,
+      "duration_seconds": 30,
+      "decode": "PASS including audio to end",
+      "visual": "9 subtitle/title representative frames viewed, readable without face overlap",
+      "audio_duration_seconds": 30.058667,
+      "note": "AAC padding; no audio replacement"
+    }
+  },
+  "postproduction_status": "rendered"
+}

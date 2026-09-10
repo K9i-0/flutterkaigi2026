@@ -1,0 +1,73 @@
+{
+  "composition": {
+    "id": "TakoGameIntro",
+    "width": 854,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 900
+  },
+  "inputVideo": "input.mp4",
+  "inputVideoVolume": 1,
+  "replacementAudio": null,
+  "overlays": [],
+  "captions": [
+    {
+      "startFrame": 48,
+      "endFrame": 86,
+      "text": "……ここどこや"
+    },
+    {
+      "startFrame": 137,
+      "endFrame": 221,
+      "text": "ワイ、さっきまで\nバグを作ってたはず……"
+    },
+    {
+      "startFrame": 234,
+      "endFrame": 273,
+      "text": "起きたギュン？"
+    },
+    {
+      "startFrame": 279,
+      "endFrame": 312,
+      "text": "福ちゃんも捕まったんか"
+    },
+    {
+      "startFrame": 319,
+      "endFrame": 382,
+      "text": "福利厚生って聞いたギュン"
+    },
+    {
+      "startFrame": 459,
+      "endFrame": 582,
+      "text": "皆さんには、ゲームに\n参加していただきます"
+    },
+    {
+      "startFrame": 592,
+      "endFrame": 693,
+      "text": "俺、見た目的にそっちでしょ"
+    },
+    {
+      "startFrame": 710,
+      "endFrame": 787,
+      "text": "あなたは書類で落ちました"
+    },
+    {
+      "startFrame": 796,
+      "endFrame": 848,
+      "text": "応募しとったんかい"
+    }
+  ],
+  "titleCard": {
+    "startFrame": 855,
+    "endFrame": 900,
+    "text": "タコゲーム",
+    "symbols": [
+      "×",
+      "△",
+      "×"
+    ],
+    "background": "#000000",
+    "color": "#ed4993"
+  },
+  "timingStatus": "Aligned using cropped Korean ASR, silence boundaries and visual samples; full auditory/lip-sync approval pending."
+}

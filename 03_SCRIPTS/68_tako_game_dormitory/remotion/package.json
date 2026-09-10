@@ -1,0 +1,20 @@
+{
+  "name": "tako-game-intro",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "render": "remotion render src/index.tsx TakoGameIntro ../final_remotion_subtitles.mp4 --concurrency=2",
+    "render:v2": "remotion render src/index.tsx TakoGameIntroV2 ../final_remotion_subtitles_v2.mp4 --concurrency=2"
+  },
+  "dependencies": {
+    "remotion": "4.0.523",
+    "@remotion/cli": "4.0.523",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  },
+  "devDependencies": {
+    "typescript": "5.8.3",
+    "@types/react": "19.1.0"
+  }
+}

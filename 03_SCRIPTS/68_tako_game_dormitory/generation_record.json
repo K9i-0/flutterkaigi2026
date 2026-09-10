@@ -1,0 +1,44 @@
+{
+  "date": "2026-09-10",
+  "task_id": "1f0f49e2-253a-474d-957c-da49dd2fdec0",
+  "status": "SUCCEEDED",
+  "model": "wan3.0-video",
+  "seed": 680030,
+  "paid_tasks": 1,
+  "resolution": "480P",
+  "width": 854,
+  "height": 480,
+  "fps": 30,
+  "video_duration_seconds": 30,
+  "audio_duration_seconds": 30.022993,
+  "estimated_usd": 1.05,
+  "billing_status": "estimate from displayed price; invoice not checked",
+  "source": "wan3_result_seed680030_480p.mp4",
+  "source_sha256": "2fa37185902c4289eb4b14d1a03e5e798673b94847a672e21c7d707b445db4c7",
+  "prompt_sha256": "4a4dcfea289998b035d58b470b0944e58f8c285ae184e0a7a3c3bed7763d0e19",
+  "postproduction": "remotion",
+  "output": "final_remotion_subtitles.mp4",
+  "audio_replacement": false,
+  "audit": {
+    "visual": "sampled contact sheets; dormitory, purple tracksuits, three blue guards with X/triangle/X, hooded Takosan and Sobaya mask present",
+    "deviations": [
+      "Fukuchan number is 456 rather than 218 in close-ups",
+      "Yametaro has more explicit pupils/eye expression than reference",
+      "minor timing and shot-boundary deviations"
+    ],
+    "asr": "Korean dialogue sequence and two 균 detected by whisper-small; occasional spelling discrepancies, no full listening certification",
+    "lip_sync": "not fully verified; sampled visible mouth motion only",
+    "subtitle_timing": "cropped ASR and silence boundaries; not full listening approval",
+    "final_render": {
+      "video_frames": 900,
+      "video_duration_seconds": 30,
+      "width": 854,
+      "height": 480,
+      "decode": "PASS through end, including audio",
+      "captions_and_title": "9 representative frames viewed; Japanese text legible and no face overlap in samples",
+      "audio_duration_seconds": 30.058667,
+      "note": "AAC padding beyond video end; no speed changes or audio replacement"
+    }
+  },
+  "postproduction_status": "rendered"
+}
