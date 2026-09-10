@@ -1,0 +1,75 @@
+{
+  "studio_id": "MS-BTTMC4HG",
+  "episode_id": "105f3d16-2802-4b5a-92b2-16bee3568116",
+  "slug": "madogiwa-super-try-keisha",
+  "generation_id": "0217a83e-4749-49b9-afb2-304960407995",
+  "version": 1,
+  "model": "Wan 3.0 + Remotion 4.0.523",
+  "video": [
+    {
+      "id": "e76bb9b4-1934-4efd-9b4a-a9976c4a0d9a",
+      "status": "ready",
+      "size_bytes": 9530896,
+      "poster_r2_key": "episodes/105f3d16-2802-4b5a-92b2-16bee3568116/generations/0217a83e-4749-49b9-afb2-304960407995/videos/e76bb9b4-1934-4efd-9b4a-a9976c4a0d9a/poster.jpg"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "338a2f69-39f5-4640-90ec-e69c1e2de897",
+      "filename": "character_sobaya_basic_sheet.png",
+      "status": "ready",
+      "size_bytes": 2019627
+    },
+    {
+      "id": "61cbd028-68a5-4307-9f0f-fa44a6881093",
+      "filename": "character_yametaro_basic_sheet.png",
+      "status": "ready",
+      "size_bytes": 1471133
+    },
+    {
+      "id": "5e2ad057-7751-4cd3-b03e-65ca2724a44a",
+      "filename": "character_iisan_keisha_sheet.png",
+      "status": "ready",
+      "size_bytes": 1487770
+    },
+    {
+      "id": "cb65fe8c-8c75-4e9c-aa9d-d967d03fff25",
+      "filename": "product_super_try.png",
+      "status": "ready",
+      "size_bytes": 1455821
+    },
+    {
+      "id": "4e3b4565-0147-46f1-9f6c-559ee6b73ab7",
+      "filename": "voice_ref_yametaro.wav",
+      "status": "ready",
+      "size_bytes": 617478
+    },
+    {
+      "id": "8b39d037-9cb0-43aa-b64e-49ca5f635e55",
+      "filename": "office_left.png",
+      "status": "ready",
+      "size_bytes": 1534966
+    },
+    {
+      "id": "e6ee77cd-1992-46cc-b6b7-7d5f5e262da9",
+      "filename": "title_meme.png",
+      "status": "ready",
+      "size_bytes": 1580671
+    },
+    {
+      "id": "ece66be9-c900-449a-8eb4-eafb7fe3ae9a",
+      "filename": "product_call.wav",
+      "status": "ready",
+      "size_bytes": 806478
+    },
+    {
+      "id": "b438bab4-3296-41ca-8a4d-112658cc47a9",
+      "filename": "studio_production.zip",
+      "status": "ready",
+      "size_bytes": 40788
+    }
+  ],
+  "url": "https://madogiwa-studio.madogiwa-studio.workers.dev/episodes/madogiwa-super-try-keisha",
+  "member_note": "いーさんはStudioメンバー一覧未登録。説明・参照画像に記録。",
+  "verified_at": "2026-09-10"
+}
