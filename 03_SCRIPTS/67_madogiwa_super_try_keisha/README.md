@@ -15,3 +15,6 @@ python3 .claude/skills/wan-video/scripts/qwen_wan3_generate.py 03_SCRIPTS/67_mad
 ```
 
 有料生成は未実行。実行承認と現行費用の確認後だけ、それぞれへ `--submit` を付ける。後半は前半の会場・実況声・人物を確認してから実行する。完成映像・音声・文字の監査は生成後。
+
+## 最新状態
+後半初回生成済み: `wan3_part2_480p.mp4`。所見は `generation_part2.md`。前半未生成、最終編集未実施。

@@ -1,0 +1,21 @@
+{
+  "task_id": "e11c2cc6-c885-4fc5-a7d3-cbe625c9b822",
+  "status": "SUCCEEDED",
+  "date": "2026-09-10",
+  "model": "wan3.0-video",
+  "seed": 670042,
+  "output": "wan3_part2_480p.mp4",
+  "sha256": "8634337d145f5eb17045fcbbd31519cac1b8251e7ef75bd1e70fb215ebcd423c",
+  "bytes": 19126278,
+  "width": 854,
+  "height": 480,
+  "fps": 30,
+  "video_duration": 20.0,
+  "container_duration": 20.039,
+  "price_estimate_usd": 0.7,
+  "price_basis": "480P USD 0.035/s x 20s, official display; billed charge not independently verified",
+  "price_source": "https://www.qwencloud.com/models/wan3.0-video",
+  "submission_count": 1,
+  "approval": "User explicitly approved prepared character/product image and Yametaro WAV disclosure to Qwen Cloud and paid generation.",
+  "audit": "First generated candidate, not final adopted edit. See generation_part2.md."
+}

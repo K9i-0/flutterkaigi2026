@@ -1,0 +1,31 @@
+{
+  "model": "openai/whisper-small",
+  "note": "Local ASR without expected transcript; not listening or lip-sync approval.",
+  "segments": [
+    {
+      "start": 0,
+      "end": 20,
+      "recognized": "そばや失格最終集いけるワイイケルでやめたろ完璧だだが制御できないこれが王者の完全ドゲザーイーサン圧勝頭を下げた分うまい"
+    },
+    {
+      "start": 0,
+      "end": 4,
+      "recognized": "そばや失格!最終集!いける!ワイいけるで!"
+    },
+    {
+      "start": 4,
+      "end": 8,
+      "recognized": "やめたろう!完璧だ!だが制御できない!"
+    },
+    {
+      "start": 8,
+      "end": 15,
+      "recognized": "これが王者の完全ドゲザーイーサン 圧勝"
+    },
+    {
+      "start": 15,
+      "end": 20,
+      "recognized": "頭を下げた分、うまい"
+    }
+  ]
+}
