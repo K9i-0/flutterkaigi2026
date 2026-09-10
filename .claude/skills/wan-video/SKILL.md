@@ -9,6 +9,8 @@ Wan 3.0のマルチモーダル参照と音声生成を使い、再現可能な�
 
 ## 必ず守ること
 
+- やめ太郎が登場する制作・プロンプト修正では、初回から[顔固定の共通文](../../../02_CHARACTERS/references/yametaro-identity-prompt.md)を全文読み、実送信本文へ展開する。単なるシート参照へ省略せず、入力番号・目覚めや怒りの演出との競合も確認する。
+
 - このリポジトリでは`AGENTS.md`、`01_WORLD/`、`02_CHARACTERS/`、対象エピソードの既存資料を先に確認する。
 - 登場キャラクターの人物同一性を正典へ一致させる。音声参照は`02_CHARACTERS/VOICE_CAST.md`の正典を優先する。
 - 画面内で人物が話す場合は、音声方式を決める前に「発音・文面の完全一致」と「リップシンク」のどちらを優先するか確定する。詳細は[references/lip-sync-workflow.md](references/lip-sync-workflow.md)を読む。
@@ -155,20 +157,22 @@ Wan 3.0のマルチモーダル参照と音声生成を使い、再現可能な�
 乾式検証:
 
 ```bash
-python3 .claude/skills/wan-video/scripts/qwen_wan3_generate.py \
+python3 -u .claude/skills/wan-video/scripts/qwen_wan3_generate.py \
   03_SCRIPTS/<episode>/wan3_config.json
 ```
 
 ユーザーが従量課金実行を承認し、環境変数が設定済みの場合だけ送信する:
 
 ```bash
-python3 .claude/skills/wan-video/scripts/qwen_wan3_generate.py \
+python3 -u .claude/skills/wan-video/scripts/qwen_wan3_generate.py \
   03_SCRIPTS/<episode>/wan3_config.json --submit
 ```
 
 スクリプトは既定で乾式検証だけを行う。`--submit`時だけ非同期タスクを作成し、完了までポーリングして、期限付きURLからMP4を即時保存する。
 
 #### 生成待機の目安と進捗共有
+
+- CLIは `python3 -u` で起動してタスクID・状態を逐次取得する。出力がバッファされているだけの状態を、未送信や失敗と判断しない。
 
 - Wan 3.0の30秒動画は、送信からダウンロード完了まで通常約8分を目安にする。キュー、入力数、音声、解像度で前後するため保証時間として扱わない。
 - 30秒生成を開始したら、ユーザーへ最初に「目安約8分」と伝える。

@@ -1,0 +1,71 @@
+{
+  "model": "openai/whisper-small",
+  "note": "Local ASR without expected transcript; not listening or lip-sync approval.",
+  "segments": [
+    {
+      "start": 0,
+      "end": 20,
+      "recognized": {
+        "text": "そばや失格! 最終集!いける! わい! いけるで!やめたろ! 完璧だ!だが制御できない!これが王者の完全ドゲザー!イーサン! 圧勝!スタッフ!頭を下げた分うまい!",
+        "offsets": [
+          {
+            "text": "そばや失格! 最終集!",
+            "timestamp": [
+              0.0,
+              2.0
+            ]
+          },
+          {
+            "text": "いける! わい! いけるで!",
+            "timestamp": [
+              2.0,
+              4.0
+            ]
+          },
+          {
+            "text": "やめたろ! 完璧だ!",
+            "timestamp": [
+              4.0,
+              6.0
+            ]
+          },
+          {
+            "text": "だが制御できない!",
+            "timestamp": [
+              6.0,
+              8.0
+            ]
+          },
+          {
+            "text": "これが王者の完全ドゲザー!",
+            "timestamp": [
+              8.0,
+              12.0
+            ]
+          },
+          {
+            "text": "イーサン! 圧勝!",
+            "timestamp": [
+              12.0,
+              15.0
+            ]
+          },
+          {
+            "text": "スタッフ!",
+            "timestamp": [
+              15.0,
+              16.0
+            ]
+          },
+          {
+            "text": "頭を下げた分うまい!",
+            "timestamp": [
+              16.0,
+              20.0
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
