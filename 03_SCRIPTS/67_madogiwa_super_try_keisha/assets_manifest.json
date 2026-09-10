@@ -1,0 +1,35 @@
+[
+  {
+    "file": "character_iisan_keisha_sheet.png",
+    "sha256": "c0dcf9b44fa1f5737262ff738208274d199bca403f70edb34f8862d577feb24a",
+    "bytes": 1487770
+  },
+  {
+    "file": "character_sobaya_basic_sheet.png",
+    "sha256": "6de96b8fe2ebf1ce88c2f966d77a1abd7f0c2632322dfe4c527135de67494def",
+    "bytes": 2019627,
+    "source": "03_SCRIPTS/00_TEMPLATES/characters/character_sobaya_basic_sheet.png",
+    "source_sha256_matches": true
+  },
+  {
+    "file": "character_yametaro_basic_sheet.png",
+    "sha256": "1e98502e8051bbacf482f273e551a7dd8b8fb79e2c153865d9e48df690eb91e6",
+    "bytes": 1471133,
+    "source": "03_SCRIPTS/00_TEMPLATES/characters/character_yametaro_basic_sheet.png",
+    "source_sha256_matches": true
+  },
+  {
+    "file": "product_super_try.png",
+    "sha256": "2d671176dc991ceb02ffc6e64b5102740c503903cf76951adfe4e8a46dc7c6fb",
+    "bytes": 1455821,
+    "source": "03_SCRIPTS/00_TEMPLATES/props/product_super_try.png",
+    "source_sha256_matches": true
+  },
+  {
+    "file": "voice_ref_yametaro.wav",
+    "sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+    "bytes": 617478,
+    "source": "02_CHARACTERS/Yametaro_voice.wav",
+    "source_sha256_matches": true
+  }
+]

@@ -1,0 +1,36 @@
+{
+  "model": "wan3.0-video",
+  "audio_source": "wan3",
+  "audio_sync_strategy": "no_visible_speech",
+  "project_duration": 45,
+  "generation_mode": "segmented_over_30",
+  "prompt_file": "prompt_wan3_part1.txt",
+  "media": [
+    {
+      "type": "reference_image",
+      "path": "character_sobaya_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_yametaro_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_iisan_keisha_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "product_super_try.png"
+    }
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 20,
+    "audio": true,
+    "seed": 670041,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_part1_480p.mp4"
+}

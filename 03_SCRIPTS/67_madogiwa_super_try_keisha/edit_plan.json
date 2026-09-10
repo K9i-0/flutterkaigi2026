@@ -1,0 +1,53 @@
+{
+  "status": "preproduction_not_rendered",
+  "fps": 30,
+  "durationFrames": 1350,
+  "segments": [
+    {
+      "startFrame": 0,
+      "durationFrames": 600,
+      "input": "wan3_part1_480p.mp4"
+    },
+    {
+      "startFrame": 600,
+      "durationFrames": 600,
+      "input": "wan3_part2_480p.mp4"
+    },
+    {
+      "startFrame": 1200,
+      "durationFrames": 150,
+      "input": "episode-specific render of common endcard",
+      "copy": "低姿勢で、ぶっちぎれ。",
+      "source": "../00_TEMPLATES/props/super_try_endcard/",
+      "preserve_common_master": true
+    }
+  ],
+  "overlays": [
+    {
+      "startFrame": 0,
+      "endFrame": 90,
+      "text": "窓際スーパーつらい杯\n競謝グランプリ",
+      "position": "top-left"
+    },
+    {
+      "startFrame": 90,
+      "endFrame": 210,
+      "text": "いーさん\nアクシデンチュア トップ営業／窓際族\n競謝・絶対王者",
+      "position": "left"
+    },
+    {
+      "startFrame": 600,
+      "endFrame": 660,
+      "text": "そば屋　失格",
+      "position": "top-left"
+    },
+    {
+      "startFrame": 984,
+      "endFrame": 1050,
+      "text": "優勝　いーさん",
+      "position": "top-left"
+    }
+  ],
+  "style": "serious sports broadcast, white/navy, gold winner; no news preset",
+  "timing_note": "Recheck after generated audio; overlay positions avoid face, forehead and palms. No speed counters or explanatory physics UI."
+}
