@@ -1,0 +1,13 @@
+{
+  "status": "user-approved",
+  "date": "2026-09-10",
+  "composition": "SuperTryEndcardFinal",
+  "frames": 150,
+  "fps": 30,
+  "files": {
+    "final_remotion_endcard_adopted.mp4": "826bffeea087d3f7acacdbdc1d837194e121186594b3ab70d3345c2d87cb8a71",
+    "remotion/public/office_left.png": "59e04621917043a8dc9bd65427f5278cd0f1a57a34bdc49536c41a1e46ec0b82",
+    "remotion/public/product_call.wav": "1b6bfd7e435a4d0b0ac36ff712abe007213a391275f8904b569790615dfd5f94",
+    "remotion/public/titles/title_meme.png": "7055c9be58c1e88df124d2ff383d164942aadf08cf5919091c929c54c9b3523f"
+  }
+}

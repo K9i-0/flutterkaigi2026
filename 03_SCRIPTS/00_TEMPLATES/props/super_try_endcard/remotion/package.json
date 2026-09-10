@@ -1,0 +1,20 @@
+{
+  "name": "super-try-reusable-endcard",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "render": "remotion render src/index.tsx SuperTryEndcardFinal ../final_remotion_endcard_adopted.mp4 --concurrency=2",
+    "render:final": "npm run render --"
+  },
+  "dependencies": {
+    "remotion": "4.0.523",
+    "@remotion/cli": "4.0.523",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  },
+  "devDependencies": {
+    "typescript": "5.8.3",
+    "@types/react": "19.1.0"
+  }
+}

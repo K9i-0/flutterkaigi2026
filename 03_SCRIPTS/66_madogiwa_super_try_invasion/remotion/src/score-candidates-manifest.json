@@ -1,0 +1,822 @@
+{
+  "status": "three unadopted candidates",
+  "source": "final_remotion_trailer_rescore.mp4",
+  "sourceFrames": [
+    723,
+    1200
+  ],
+  "trailerSpans": [
+    [
+      1161,
+      264,
+      0
+    ],
+    [
+      1623,
+      213,
+      264
+    ]
+  ],
+  "method": "original DSP synthesis; htdemucs voice plus transient residual; dark card untouched",
+  "candidates": [
+    {
+      "candidate": 1,
+      "title": "艦隊の凱旋",
+      "bpm": 108,
+      "seed": 660921,
+      "notes": [
+        {
+          "note": 50,
+          "start": 0,
+          "duration": 3.9000000000000004,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 57,
+          "start": 0,
+          "duration": 3.9000000000000004,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 62,
+          "start": 0,
+          "duration": 3.9000000000000004,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 65,
+          "start": 0,
+          "duration": 3.9000000000000004,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 46,
+          "start": 3.2,
+          "duration": 3.9000000000000004,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 53,
+          "start": 3.2,
+          "duration": 3.9000000000000004,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 58,
+          "start": 3.2,
+          "duration": 3.9000000000000004,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 62,
+          "start": 3.2,
+          "duration": 3.9000000000000004,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 48,
+          "start": 6.4,
+          "duration": 3.1000000000000005,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 55,
+          "start": 6.4,
+          "duration": 3.1000000000000005,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 60,
+          "start": 6.4,
+          "duration": 3.1000000000000005,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 64,
+          "start": 6.4,
+          "duration": 3.1000000000000005,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 50,
+          "start": 8.8,
+          "duration": 4.3999999999999995,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 57,
+          "start": 8.8,
+          "duration": 4.3999999999999995,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 62,
+          "start": 8.8,
+          "duration": 4.3999999999999995,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 66,
+          "start": 8.8,
+          "duration": 4.3999999999999995,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 38,
+          "start": 12.5,
+          "duration": 3.4000000000000004,
+          "gain": 0.03,
+          "instrument": "pad"
+        },
+        {
+          "note": 50,
+          "start": 12.5,
+          "duration": 3.4000000000000004,
+          "gain": 0.03,
+          "instrument": "pad"
+        },
+        {
+          "note": 57,
+          "start": 12.5,
+          "duration": 3.4000000000000004,
+          "gain": 0.03,
+          "instrument": "pad"
+        },
+        {
+          "note": 62,
+          "start": 12.5,
+          "duration": 3.4000000000000004,
+          "gain": 0.03,
+          "instrument": "pad"
+        },
+        {
+          "note": 66,
+          "start": 12.5,
+          "duration": 3.4000000000000004,
+          "gain": 0.03,
+          "instrument": "pad"
+        },
+        {
+          "note": 69,
+          "start": 12.5,
+          "duration": 3.4000000000000004,
+          "gain": 0.03,
+          "instrument": "pad"
+        },
+        {
+          "note": 62,
+          "start": 0,
+          "duration": 0.8,
+          "gain": 0.072,
+          "instrument": "brass"
+        },
+        {
+          "note": 50,
+          "start": 0,
+          "duration": 0.8,
+          "gain": 0.035,
+          "instrument": "brass"
+        },
+        {
+          "note": 69,
+          "start": 1.1,
+          "duration": 0.8,
+          "gain": 0.072,
+          "instrument": "brass"
+        },
+        {
+          "note": 57,
+          "start": 1.1,
+          "duration": 0.8,
+          "gain": 0.035,
+          "instrument": "brass"
+        },
+        {
+          "note": 74,
+          "start": 2.2,
+          "duration": 1,
+          "gain": 0.072,
+          "instrument": "brass"
+        },
+        {
+          "note": 62,
+          "start": 2.2,
+          "duration": 1,
+          "gain": 0.035,
+          "instrument": "brass"
+        },
+        {
+          "note": 70,
+          "start": 3.3,
+          "duration": 0.7,
+          "gain": 0.072,
+          "instrument": "brass"
+        },
+        {
+          "note": 58,
+          "start": 3.3,
+          "duration": 0.7,
+          "gain": 0.035,
+          "instrument": "brass"
+        },
+        {
+          "note": 69,
+          "start": 4.4,
+          "duration": 0.7,
+          "gain": 0.072,
+          "instrument": "brass"
+        },
+        {
+          "note": 57,
+          "start": 4.4,
+          "duration": 0.7,
+          "gain": 0.035,
+          "instrument": "brass"
+        },
+        {
+          "note": 65,
+          "start": 5.5,
+          "duration": 1,
+          "gain": 0.072,
+          "instrument": "brass"
+        },
+        {
+          "note": 53,
+          "start": 5.5,
+          "duration": 1,
+          "gain": 0.035,
+          "instrument": "brass"
+        },
+        {
+          "note": 67,
+          "start": 6.6,
+          "duration": 0.65,
+          "gain": 0.072,
+          "instrument": "brass"
+        },
+        {
+          "note": 55,
+          "start": 6.6,
+          "duration": 0.65,
+          "gain": 0.035,
+          "instrument": "brass"
+        },
+        {
+          "note": 72,
+          "start": 7.5,
+          "duration": 1,
+          "gain": 0.072,
+          "instrument": "brass"
+        },
+        {
+          "note": 60,
+          "start": 7.5,
+          "duration": 1,
+          "gain": 0.035,
+          "instrument": "brass"
+        },
+        {
+          "note": 74,
+          "start": 8.8,
+          "duration": 1.1,
+          "gain": 0.072,
+          "instrument": "brass"
+        },
+        {
+          "note": 62,
+          "start": 8.8,
+          "duration": 1.1,
+          "gain": 0.035,
+          "instrument": "brass"
+        },
+        {
+          "note": 76,
+          "start": 10.0,
+          "duration": 0.9,
+          "gain": 0.072,
+          "instrument": "brass"
+        },
+        {
+          "note": 64,
+          "start": 10.0,
+          "duration": 0.9,
+          "gain": 0.035,
+          "instrument": "brass"
+        },
+        {
+          "note": 78,
+          "start": 11.1,
+          "duration": 1,
+          "gain": 0.072,
+          "instrument": "brass"
+        },
+        {
+          "note": 66,
+          "start": 11.1,
+          "duration": 1,
+          "gain": 0.035,
+          "instrument": "brass"
+        },
+        {
+          "note": 74,
+          "start": 12.5,
+          "duration": 2.5,
+          "gain": 0.072,
+          "instrument": "brass"
+        },
+        {
+          "note": 62,
+          "start": 12.5,
+          "duration": 2.5,
+          "gain": 0.035,
+          "instrument": "brass"
+        }
+      ],
+      "musicGain": 1.3924652479390678,
+      "peak": 0.8940820097923279,
+      "fullVideo": "final_remotion_trailer_score_1.mp4",
+      "preview": "preview_trailer_score_1.mp4"
+    },
+    {
+      "candidate": 2,
+      "title": "星々の祝杯",
+      "bpm": 78,
+      "seed": 660922,
+      "notes": [
+        {
+          "note": 50,
+          "start": 0,
+          "duration": 3.9000000000000004,
+          "gain": 0.04,
+          "instrument": "pad"
+        },
+        {
+          "note": 57,
+          "start": 0,
+          "duration": 3.9000000000000004,
+          "gain": 0.04,
+          "instrument": "pad"
+        },
+        {
+          "note": 61,
+          "start": 0,
+          "duration": 3.9000000000000004,
+          "gain": 0.04,
+          "instrument": "pad"
+        },
+        {
+          "note": 64,
+          "start": 0,
+          "duration": 3.9000000000000004,
+          "gain": 0.04,
+          "instrument": "pad"
+        },
+        {
+          "note": 47,
+          "start": 3.2,
+          "duration": 3.9000000000000004,
+          "gain": 0.04,
+          "instrument": "pad"
+        },
+        {
+          "note": 54,
+          "start": 3.2,
+          "duration": 3.9000000000000004,
+          "gain": 0.04,
+          "instrument": "pad"
+        },
+        {
+          "note": 59,
+          "start": 3.2,
+          "duration": 3.9000000000000004,
+          "gain": 0.04,
+          "instrument": "pad"
+        },
+        {
+          "note": 62,
+          "start": 3.2,
+          "duration": 3.9000000000000004,
+          "gain": 0.04,
+          "instrument": "pad"
+        },
+        {
+          "note": 43,
+          "start": 6.4,
+          "duration": 3.1000000000000005,
+          "gain": 0.04,
+          "instrument": "pad"
+        },
+        {
+          "note": 50,
+          "start": 6.4,
+          "duration": 3.1000000000000005,
+          "gain": 0.04,
+          "instrument": "pad"
+        },
+        {
+          "note": 57,
+          "start": 6.4,
+          "duration": 3.1000000000000005,
+          "gain": 0.04,
+          "instrument": "pad"
+        },
+        {
+          "note": 62,
+          "start": 6.4,
+          "duration": 3.1000000000000005,
+          "gain": 0.04,
+          "instrument": "pad"
+        },
+        {
+          "note": 50,
+          "start": 8.8,
+          "duration": 4.3999999999999995,
+          "gain": 0.04,
+          "instrument": "pad"
+        },
+        {
+          "note": 57,
+          "start": 8.8,
+          "duration": 4.3999999999999995,
+          "gain": 0.04,
+          "instrument": "pad"
+        },
+        {
+          "note": 62,
+          "start": 8.8,
+          "duration": 4.3999999999999995,
+          "gain": 0.04,
+          "instrument": "pad"
+        },
+        {
+          "note": 66,
+          "start": 8.8,
+          "duration": 4.3999999999999995,
+          "gain": 0.04,
+          "instrument": "pad"
+        },
+        {
+          "note": 38,
+          "start": 12.5,
+          "duration": 3.4000000000000004,
+          "gain": 0.037,
+          "instrument": "pad"
+        },
+        {
+          "note": 50,
+          "start": 12.5,
+          "duration": 3.4000000000000004,
+          "gain": 0.037,
+          "instrument": "pad"
+        },
+        {
+          "note": 57,
+          "start": 12.5,
+          "duration": 3.4000000000000004,
+          "gain": 0.037,
+          "instrument": "pad"
+        },
+        {
+          "note": 62,
+          "start": 12.5,
+          "duration": 3.4000000000000004,
+          "gain": 0.037,
+          "instrument": "pad"
+        },
+        {
+          "note": 66,
+          "start": 12.5,
+          "duration": 3.4000000000000004,
+          "gain": 0.037,
+          "instrument": "pad"
+        },
+        {
+          "note": 69,
+          "start": 12.5,
+          "duration": 3.4000000000000004,
+          "gain": 0.037,
+          "instrument": "pad"
+        },
+        {
+          "note": 74,
+          "start": 0,
+          "duration": 2.7,
+          "gain": 0.035,
+          "instrument": "glass"
+        },
+        {
+          "note": 81,
+          "start": 1.5,
+          "duration": 2.7,
+          "gain": 0.035,
+          "instrument": "glass"
+        },
+        {
+          "note": 78,
+          "start": 3.1,
+          "duration": 2.7,
+          "gain": 0.035,
+          "instrument": "glass"
+        },
+        {
+          "note": 74,
+          "start": 4.7,
+          "duration": 2.7,
+          "gain": 0.035,
+          "instrument": "glass"
+        },
+        {
+          "note": 79,
+          "start": 6.3,
+          "duration": 2.7,
+          "gain": 0.035,
+          "instrument": "glass"
+        },
+        {
+          "note": 83,
+          "start": 7.8,
+          "duration": 2.7,
+          "gain": 0.035,
+          "instrument": "glass"
+        },
+        {
+          "note": 81,
+          "start": 9.4,
+          "duration": 2.7,
+          "gain": 0.035,
+          "instrument": "glass"
+        },
+        {
+          "note": 86,
+          "start": 11,
+          "duration": 2.7,
+          "gain": 0.035,
+          "instrument": "glass"
+        },
+        {
+          "note": 86,
+          "start": 12.5,
+          "duration": 2.7,
+          "gain": 0.035,
+          "instrument": "glass"
+        },
+        {
+          "note": 67,
+          "start": 6.4,
+          "duration": 3.0,
+          "gain": 0.052,
+          "instrument": "brass"
+        },
+        {
+          "note": 69,
+          "start": 8.8,
+          "duration": 3.0,
+          "gain": 0.052,
+          "instrument": "brass"
+        },
+        {
+          "note": 73,
+          "start": 10.4,
+          "duration": 3.0,
+          "gain": 0.052,
+          "instrument": "brass"
+        },
+        {
+          "note": 74,
+          "start": 12.5,
+          "duration": 3.0,
+          "gain": 0.052,
+          "instrument": "brass"
+        }
+      ],
+      "musicGain": 1.1940144843406537,
+      "peak": 0.8940820097923279,
+      "fullVideo": "final_remotion_trailer_score_2.mp4",
+      "preview": "preview_trailer_score_2.mp4"
+    },
+    {
+      "candidate": 3,
+      "title": "ビール回収作戦",
+      "bpm": 144,
+      "seed": 660923,
+      "notes": [
+        {
+          "note": 50,
+          "start": 0,
+          "duration": 3.9000000000000004,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 57,
+          "start": 0,
+          "duration": 3.9000000000000004,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 62,
+          "start": 0,
+          "duration": 3.9000000000000004,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 65,
+          "start": 0,
+          "duration": 3.9000000000000004,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 46,
+          "start": 3.2,
+          "duration": 3.9000000000000004,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 53,
+          "start": 3.2,
+          "duration": 3.9000000000000004,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 58,
+          "start": 3.2,
+          "duration": 3.9000000000000004,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 62,
+          "start": 3.2,
+          "duration": 3.9000000000000004,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 48,
+          "start": 6.4,
+          "duration": 3.1000000000000005,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 55,
+          "start": 6.4,
+          "duration": 3.1000000000000005,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 60,
+          "start": 6.4,
+          "duration": 3.1000000000000005,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 64,
+          "start": 6.4,
+          "duration": 3.1000000000000005,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 50,
+          "start": 8.8,
+          "duration": 4.3999999999999995,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 57,
+          "start": 8.8,
+          "duration": 4.3999999999999995,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 62,
+          "start": 8.8,
+          "duration": 4.3999999999999995,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 66,
+          "start": 8.8,
+          "duration": 4.3999999999999995,
+          "gain": 0.027,
+          "instrument": "pad"
+        },
+        {
+          "note": 38,
+          "start": 12.5,
+          "duration": 3.4000000000000004,
+          "gain": 0.03,
+          "instrument": "pad"
+        },
+        {
+          "note": 50,
+          "start": 12.5,
+          "duration": 3.4000000000000004,
+          "gain": 0.03,
+          "instrument": "pad"
+        },
+        {
+          "note": 57,
+          "start": 12.5,
+          "duration": 3.4000000000000004,
+          "gain": 0.03,
+          "instrument": "pad"
+        },
+        {
+          "note": 62,
+          "start": 12.5,
+          "duration": 3.4000000000000004,
+          "gain": 0.03,
+          "instrument": "pad"
+        },
+        {
+          "note": 66,
+          "start": 12.5,
+          "duration": 3.4000000000000004,
+          "gain": 0.03,
+          "instrument": "pad"
+        },
+        {
+          "note": 69,
+          "start": 12.5,
+          "duration": 3.4000000000000004,
+          "gain": 0.03,
+          "instrument": "pad"
+        },
+        {
+          "note": 50,
+          "start": 0,
+          "duration": 1.5,
+          "gain": 0.068,
+          "instrument": "brass"
+        },
+        {
+          "note": 58,
+          "start": 3.2,
+          "duration": 1.5,
+          "gain": 0.068,
+          "instrument": "brass"
+        },
+        {
+          "note": 60,
+          "start": 6.4,
+          "duration": 1.5,
+          "gain": 0.068,
+          "instrument": "brass"
+        },
+        {
+          "note": 62,
+          "start": 8.8,
+          "duration": 1.5,
+          "gain": 0.068,
+          "instrument": "brass"
+        },
+        {
+          "note": 69,
+          "start": 10.4,
+          "duration": 1.5,
+          "gain": 0.068,
+          "instrument": "brass"
+        },
+        {
+          "note": 74,
+          "start": 12.5,
+          "duration": 1.5,
+          "gain": 0.068,
+          "instrument": "brass"
+        }
+      ],
+      "musicGain": 1.5811671197270145,
+      "peak": 0.8940820097923279,
+      "fullVideo": "final_remotion_trailer_score_3.mp4",
+      "preview": "preview_trailer_score_3.mp4"
+    }
+  ]
+}

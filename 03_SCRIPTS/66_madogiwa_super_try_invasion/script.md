@@ -165,3 +165,13 @@ src/full-manifest.jsonが完成版のフレーム正本。後半字幕は可視�
 
 ## 採用予告編のStudio登録
 そば屋ナレーションありvoice-v3を採用。別エピソード MS-8QAHSQ8X / v1。Studio現行本編名に合わせ「窓際スーパーつらい — そば屋&たこさん初めての東京篇［予告編］」。動画・サムネイル・採用入力7件を送信し、全件readyとサイズを確認。モデルはWan 3.0 + Remotion 4.0.522 + Irodori-TTS v4.1-Small。登録情報はstudio_trailer_registration.json。
+
+## BGM再作曲・比較版（2026-09-10）
+`final_remotion_trailer_rescore.mp4`。採用済みvoice-v3を保持したローカル比較版、Studio未差替え。元143–279f（東京三体）、551–600f（たこさん操縦席）、723–987f（格納庫・移送）のみ処理。htdemucsで声を抽出し、残差へ時間/周波数メディアンによる持続音抑制を適用。機械音と音楽の完全分離ではなく残響や効果音の変化あり。NumPy/SciPyで金管風合成・太鼓・ガラス音・パッド和音を作曲し、操縦/流体音を補った。seed660910。暗転、ナレーション、他場面の音声はAAC再符号化前のサンプル一致を検査。映像はstream copyで元動画とハッシュ一致。全編デコード合格。直接通し試聴による主観音質は未認定。
+再現: IrodoriのPython環境で `remotion/scripts/separate_rescore.py`、続けて `remotion/scripts/rescore_trailer.py`。音符と区間は `remotion/src/rescore-manifest.json`、分離音源・作曲WAV・比較用区間は `remotion/out/rescore/`（未採用）。
+
+## 格納庫以降BGM・3候補
+2026-09-10。未採用比較版。1「艦隊の凱旋」108BPM・金管主旋律と太鼓、2「星々の祝杯」78BPM・広い和音とベルから上昇、3「ビール回収作戦」144BPM・速い弦風刻みと打撃。格納庫以降の元723–1200f対象、最終暗転の既存音とナレーションを保持、台詞と商品コール中は新曲を下げる。音源分離の限界は比較版と同様。全尺61.2秒、後半試聴22.5秒。フル動画の映像ストリームhash一致と全編デコードを確認。主観的な通し試聴は未認定。再現: remotion/scripts/score_candidates.py、譜面等: remotion/src/score-candidates-manifest.json。候補WAVはremotion/out/rescore/candidates、Studio未登録。
+
+## スペースオペラ調BGM・3候補
+スターウォーズで流れそうな方向を受け、金管ファンファーレ、弦の刻み、ティンパニ中心のオリジナル3曲を作成。1「銀河艦隊の出航」112BPM、2「星海を駆ける冒険」156BPM、3「宇宙の戴冠式」92BPM。既存の旋律や録音は使用せずDSP合成。格納庫以降を変更し、前半と暗転音声を保持。フル61.2秒、比較用後半22.5秒。全動画デコード合格、フル映像hash一致。音楽の主観的評価は未認定。再現: remotion/scripts/spaceopera_candidates.py、譜面: remotion/src/spaceopera-candidates-manifest.json。未採用、Studio未変更。

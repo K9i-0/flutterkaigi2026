@@ -140,3 +140,7 @@ Studioを開く操作が不要なら`npm run studio`を省き、`npm run render`
 - `script.md`または編集記録の入力・出力・監査情報
 
 一時フレーム、プレビュー、`node_modules/`、バンドル、レンダー動画をGitへ追加しない。
+
+## 窓際スーパーつらいCM（該当時のみ）
+
+窓際スーパーつらい（窓際スーパーツライ）のCM・商品カット・締めの商品コールを扱うときだけ [references/super-tsurai-cm.md](references/super-tsurai-cm.md) を読む。共通エンドカットと回ごとのコピー差し替えを扱う。

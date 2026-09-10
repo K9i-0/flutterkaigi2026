@@ -206,3 +206,7 @@ python3 .claude/skills/wan-video/scripts/qwen_wan3_generate.py \
 - Remotionを使う場合は、対象エピソード直下の`remotion/`編集プロジェクトと完成編集記録
 
 一時的なBase64、APIレスポンス全文、期限付きURL、候補動画はGitへ追加しない。
+
+## 窓際スーパーつらいCM（該当時のみ）
+
+窓際スーパーつらい（窓際スーパーツライ）のCMを作るときだけ [共通エンドカットの知見](../remotion-video/references/super-tsurai-cm.md) を読む。締めの商品カットは既存素材を編集で接続できる。

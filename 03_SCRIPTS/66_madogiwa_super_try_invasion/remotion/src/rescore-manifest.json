@@ -1,0 +1,179 @@
+{
+  "seed": 660910,
+  "sampleRate": 44100,
+  "method": "NumPy/SciPy original synthesis; htdemucs voice + harmonic/transient residual; incomplete music/SFX separation",
+  "peak": 0.8955062627792358,
+  "cues": [
+    {
+      "name": "tokyo",
+      "sourceStartFrame": 143,
+      "sourceEndFrame": 279,
+      "trailerStartFrame": 317,
+      "notes": [
+        {
+          "note": 26,
+          "start": 0.06,
+          "duration": 2.4,
+          "gain": 0.16,
+          "instrument": "brass"
+        },
+        {
+          "note": 38,
+          "start": 0.06,
+          "duration": 2.4,
+          "gain": 0.07,
+          "instrument": "brass"
+        },
+        {
+          "note": 45,
+          "start": 0.06,
+          "duration": 2.4,
+          "gain": 0.04,
+          "instrument": "brass"
+        },
+        {
+          "note": 50,
+          "start": 1.7,
+          "duration": 0.3,
+          "gain": 0.035,
+          "instrument": "brass"
+        },
+        {
+          "note": 51,
+          "start": 1.98,
+          "duration": 0.3,
+          "gain": 0.035,
+          "instrument": "brass"
+        },
+        {
+          "note": 50,
+          "start": 2.26,
+          "duration": 0.3,
+          "gain": 0.035,
+          "instrument": "brass"
+        },
+        {
+          "note": 45,
+          "start": 2.54,
+          "duration": 0.3,
+          "gain": 0.035,
+          "instrument": "brass"
+        },
+        {
+          "note": 50,
+          "start": 2.8200000000000003,
+          "duration": 0.3,
+          "gain": 0.035,
+          "instrument": "brass"
+        },
+        {
+          "note": 51,
+          "start": 3.1,
+          "duration": 0.3,
+          "gain": 0.035,
+          "instrument": "brass"
+        }
+      ],
+      "originalRms": 0.36797577142715454,
+      "newRms": 0.13290624673480425
+    },
+    {
+      "name": "pilot",
+      "sourceStartFrame": 551,
+      "sourceEndFrame": 600,
+      "trailerStartFrame": 863,
+      "notes": [
+        {
+          "note": 74,
+          "start": 0.15,
+          "duration": 0.6,
+          "gain": 0.028,
+          "instrument": "glass"
+        },
+        {
+          "note": 69,
+          "start": 0.72,
+          "duration": 0.6,
+          "gain": 0.028,
+          "instrument": "glass"
+        }
+      ],
+      "originalRms": 0.3154214322566986,
+      "newRms": 0.051159325183000065
+    },
+    {
+      "name": "hangar",
+      "sourceStartFrame": 723,
+      "sourceEndFrame": 987,
+      "trailerStartFrame": 1161,
+      "notes": [
+        {
+          "note": 50,
+          "start": 0,
+          "duration": 5.4,
+          "gain": 0.04,
+          "instrument": "pad"
+        },
+        {
+          "note": 57,
+          "start": 0,
+          "duration": 5.4,
+          "gain": 0.035,
+          "instrument": "pad"
+        },
+        {
+          "note": 64,
+          "start": 0,
+          "duration": 5.4,
+          "gain": 0.028,
+          "instrument": "pad"
+        },
+        {
+          "note": 53,
+          "start": 4.0,
+          "duration": 4.800000000000001,
+          "gain": 0.038,
+          "instrument": "pad"
+        },
+        {
+          "note": 60,
+          "start": 4.0,
+          "duration": 4.800000000000001,
+          "gain": 0.033,
+          "instrument": "pad"
+        },
+        {
+          "note": 67,
+          "start": 4.0,
+          "duration": 4.800000000000001,
+          "gain": 0.022,
+          "instrument": "pad"
+        },
+        {
+          "note": 74,
+          "start": 1.0,
+          "duration": 2,
+          "gain": 0.017,
+          "instrument": "glass"
+        },
+        {
+          "note": 77,
+          "start": 2.0,
+          "duration": 2,
+          "gain": 0.017,
+          "instrument": "glass"
+        },
+        {
+          "note": 81,
+          "start": 2.8,
+          "duration": 2,
+          "gain": 0.017,
+          "instrument": "glass"
+        }
+      ],
+      "originalRms": 0.15161842107772827,
+      "newRms": 0.0578769705155853
+    }
+  ],
+  "untouchedOutsideCues": true
+}
