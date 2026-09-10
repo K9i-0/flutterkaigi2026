@@ -1,0 +1,102 @@
+{
+  "studio_id": "MS-XE2TEYUR",
+  "episode_id": "41e60fe4-0818-4577-b6d2-ac6ab41a75fc",
+  "slug": "tako-game-dormitory",
+  "generation_id": "f16e30ff-3fdb-46aa-8b97-6b712562e6d9",
+  "studio_version": 1,
+  "local_revision": 2,
+  "model": "wan3.0-video",
+  "video_id": "5ab8803c-024c-47a7-849c-20373f65c5e7",
+  "video_status": "ready",
+  "video_filename": "final_remotion_subtitles_v2.mp4",
+  "input_count": 14,
+  "inputs": [
+    {
+      "id": "8514c2f2-e626-4c6e-a78b-4513bfe74ca1",
+      "label": "やめ太郎・人物同一性",
+      "size_bytes": 1471133,
+      "status": "ready"
+    },
+    {
+      "id": "6c1ef1e4-38ee-4be8-afb4-fd3dc7d733a1",
+      "label": "福ちゃん・人物同一性",
+      "size_bytes": 1982927,
+      "status": "ready"
+    },
+    {
+      "id": "db779041-9b59-4fa6-b679-a4aea23545e0",
+      "label": "そば屋・人物同一性",
+      "size_bytes": 2019627,
+      "status": "ready"
+    },
+    {
+      "id": "7151f079-2b88-45ca-aa5c-1d00dedbef0d",
+      "label": "たこさん・人物同一性",
+      "size_bytes": 1884536,
+      "status": "ready"
+    },
+    {
+      "id": "d9157e56-346d-4907-a81a-80ec6800f286",
+      "label": "兵士服の水色参照（ゆめみんは登場しない）",
+      "size_bytes": 12971,
+      "status": "ready"
+    },
+    {
+      "id": "e15e04ff-30c4-4081-b875-29d2d75cbbb3",
+      "label": "やめ太郎・声質参照",
+      "size_bytes": 617478,
+      "status": "ready"
+    },
+    {
+      "id": "f33e866b-1f40-494d-965c-ac8da9617ebe",
+      "label": "福ちゃん・声質参照",
+      "size_bytes": 265560,
+      "status": "ready"
+    },
+    {
+      "id": "6ec41b96-e79a-44c4-8806-6a497c8b2659",
+      "label": "そば屋・声質参照",
+      "size_bytes": 216168,
+      "status": "ready"
+    },
+    {
+      "id": "e34fa883-4844-4e93-a7fd-0414d0466b23",
+      "label": "採用改訂の台本・演技設計",
+      "size_bytes": 3439,
+      "status": "ready"
+    },
+    {
+      "id": "1717f7f5-363f-42d3-9c67-945f1b543acf",
+      "label": "韓国語台詞と日本語字幕",
+      "size_bytes": 2526,
+      "status": "ready"
+    },
+    {
+      "id": "2a6d3399-da17-4261-abeb-276f92f7c218",
+      "label": "採用Wan生成設定",
+      "size_bytes": 1258,
+      "status": "ready"
+    },
+    {
+      "id": "c98a4237-e4e1-4238-b996-ab508e42b883",
+      "label": "参照素材の出典・切出区間・SHA",
+      "size_bytes": 3218,
+      "status": "ready"
+    },
+    {
+      "id": "a9cea017-c52e-409c-9816-3ddb67bcc746",
+      "label": "採用字幕・タイトル編集設定",
+      "size_bytes": 1621,
+      "status": "ready"
+    },
+    {
+      "id": "6ae84e16-bc00-405b-8da0-5810fef1c15d",
+      "label": "採用生成条件と監査記録",
+      "size_bytes": 2073,
+      "status": "ready"
+    }
+  ],
+  "url": "https://madogiwa-studio.madogiwa-studio.workers.dev/episodes/tako-game-dormitory",
+  "production_commit": "219f31a",
+  "verified": "All 14 inputs and video ready, video size and poster_r2_key verified"
+}
