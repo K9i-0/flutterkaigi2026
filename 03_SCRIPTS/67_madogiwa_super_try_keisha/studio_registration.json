@@ -71,5 +71,16 @@
   ],
   "url": "https://madogiwa-studio.madogiwa-studio.workers.dev/episodes/madogiwa-super-try-keisha",
   "member_note": "いーさんはStudioメンバー一覧未登録。説明・参照画像に記録。",
-  "verified_at": "2026-09-10"
+  "verified_at": "2026-09-10",
+  "v2": {
+    "generation_id": "55bd6295-d78b-4d5c-a120-6c3a24a999e8",
+    "video_id": "374502a4-a357-4f3c-aa3c-f636ae4ca1fd",
+    "filename": "final_remotion_cm_cover.mp4",
+    "thumbnail": "thumbnail_keisha.jpg",
+    "thumbnail_seconds": 4.5,
+    "status": "ready",
+    "inputs_ready": 9,
+    "video_bytes": 9591085,
+    "note": "Same picture/audio as v1, embedded cover and Studio poster updated; v1 retained."
+  }
 }

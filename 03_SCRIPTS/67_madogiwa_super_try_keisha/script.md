@@ -70,3 +70,6 @@
 
 ## Studio登録（2026-09-10）
 MS-BTTMC4HG / v1、25秒完成編集版、採用入力9件、実送信プロンプトを登録。動画・入力全件ready、動画サイズ・サムネイルキー確認済み。Studioメンバーはそば屋・やめ太郎。いーさんはメンバー台帳未登録のため概要と人物参照へ記載。詳細: studio_registration.json。
+
+## サムネイル改訂・Studio v2
+ユーザー指定により4.5秒の二人並走「やめ太郎、完璧だ！」を採用。thumbnail_keisha.jpgをStudioポスターとMP4添付カバーへ設定。final_remotion_cm_cover.mp4は再エンコードなし、映像・音声はv1と同じ。Studio v2、入力9件と動画ready確認、配信ポスターはローカルJPEGとバイト一致。v1は保持。
