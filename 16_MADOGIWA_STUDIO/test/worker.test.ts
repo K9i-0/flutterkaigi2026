@@ -174,7 +174,7 @@ describe("Madogiwa Studio Worker", () => {
     expect(episodeHtml.indexOf("<video")).toBeLessThan(episodeHtml.indexOf("<h1"));
     const expectedXQuery = new URLSearchParams({
       text: "そば屋ビールバッテリー #窓際族物語",
-      url: "https://madogiwa-studio.madogiwa-studio.workers.dev/episodes/sobaya-beer-battery",
+      url: "https://madogiwa.work/episodes/sobaya-beer-battery",
     }).toString().replaceAll("&", "&amp;");
     expect(episodeHtml).toContain(`https://twitter.com/intent/tweet?${expectedXQuery}`);
 
@@ -271,7 +271,7 @@ describe("Madogiwa Studio Worker", () => {
   });
 
   it("serves consistent Open Graph and X metadata on every public page", async () => {
-    const origin = "https://madogiwa-studio.madogiwa-studio.workers.dev";
+    const origin = "https://madogiwa.work";
     const pages = [
       {
         path: "/",

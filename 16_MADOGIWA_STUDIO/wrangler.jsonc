@@ -1,6 +1,8 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "madogiwa-studio",
+  "workers_dev": true,
+  "routes": [{ "pattern": "madogiwa.work", "custom_domain": true }],
   "main": "worker/index.ts",
   "compatibility_date": "2026-08-17",
   "compatibility_flags": ["nodejs_compat"],

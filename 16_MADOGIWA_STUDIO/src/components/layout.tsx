@@ -41,7 +41,7 @@ export function Layout() {
     <footer className="official-footer">
       <div className="official-logo"><img src="/site/sobaya-icon.jpg" alt="" /><span><b>窓際族物語</b><small>MADOGIWAZOKU MONOGATARI</small></span></div>
       <p>働かない。でも、物語は動き出す。</p>
-      <a href="/admin" aria-label="管理画面"><LockKeyhole className="size-3.5" /> MANAGE</a>
+      <a href="https://madogiwa-studio.madogiwa-studio.workers.dev/admin" aria-label="管理画面"><LockKeyhole className="size-3.5" /> MANAGE</a>
       <small>© MADOGIWAZOKU MONOGATARI · Powered by Cloudflare</small>
     </footer>
   </div>;

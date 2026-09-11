@@ -2,6 +2,10 @@
 
 「窓際族物語」の公式サイトをTanStack StartでEdge SSRし、コンテンツと動画制作物を管理画面とRemote MCPから共有管理するCloudflare Workersアプリです。
 
+公式URL: https://madogiwa.work
+
+ドメイン接続設定と `k9i.app` 移管の残作業は [DOMAIN_OPERATIONS.md](./DOMAIN_OPERATIONS.md) を参照。
+
 ## 構成
 
 - TanStack Start + React + Vite: 公開ページのSSR、型付きルーティング、サーバー関数、管理画面
