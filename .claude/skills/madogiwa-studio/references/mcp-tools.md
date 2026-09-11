@@ -2,6 +2,8 @@
 
 ## Connection
 
+The public website is `https://madogiwa.work`. Use that origin for public episode/gallery links and completion reports. The admin UI remains at `https://madogiwa-studio.madogiwa-studio.workers.dev/admin`, and the authenticated MCP endpoint below is unchanged. Do not replace the MCP host with the public website host or rewrite one-time upload URLs returned by tools.
+
 Endpoint:
 
 ```text

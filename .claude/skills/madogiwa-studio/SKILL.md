@@ -7,6 +7,12 @@ description: Madogiwa StudioのRemote Web MCPを使い、窓際族物語のギ�
 
 Madogiwa Studioを制作物の共有台帳として扱い、Remote MCPでメタデータを操作し、一回限りURLへバイナリを直接アップロードする。
 
+## URLの使い分け
+
+- 公式サイト・公開確認・完了報告のURL: `https://madogiwa.work`。エピソードは `/episodes/<slug>`、ギャラリーは `/gallery/<slug>`。
+- 管理画面: `https://madogiwa-studio.madogiwa-studio.workers.dev/admin`。Remote MCPの接続先も同じworkers.devホストの `/mcp` を使う。既存のCloudflare Access認証を維持しているため、公開ドメインへの変更だけを理由にMCP設定を置き換えない。
+- 一回限りのアップロードURLはツールが返した値をそのまま使い、ホストを書き換えない。ドメイン運用の詳細・移管残作業はリポジトリの `16_MADOGIWA_STUDIO/DOMAIN_OPERATIONS.md` を参照する。
+
 ## 準備
 
 1. `references/mcp-tools.md`を最後まで読む。
@@ -48,7 +54,7 @@ Madogiwa Studioを制作物の共有台帳として扱い、Remote MCPでメタ�
 5. 入力画像・参照音声・資料はそれぞれ`create_input_upload`でチケットを発行し、返されたURLへファイルをPUTする。
 6. 生成動画から0.5秒付近のJPEGサムネイルを作る。`create_video_upload`でチケットを発行し、`posterUploadUrl`へJPEG、`uploadUrl`へ動画をPUTする。公式サイトで優先したい採用動画は`featured: true`を指定する。
 7. `get_episode`を再実行し、各ファイルが`ready`、動画の`poster_r2_key`とサイズが非null、プロンプトとモデルが意図どおりか確認する。
-8. 必要なら公開詳細ページ`https://madogiwa-studio.madogiwa-studio.workers.dev/episodes/<slug>`で表示・再生を確認する。
+8. 必要なら公開詳細ページ`https://madogiwa.work/episodes/<slug>`で表示・再生を確認する。
 
 ## ギャラリー・記事ワークフロー
 
