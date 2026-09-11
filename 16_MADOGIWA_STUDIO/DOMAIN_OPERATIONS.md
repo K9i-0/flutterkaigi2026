@@ -37,11 +37,13 @@
 
 残作業:
 - [x] CloudflareでActiveになったことを確認。
-- [ ] ユーザーに届いた移管コードをCloudflareの移管画面へ入力。
-- [ ] 移管価格・更新価格・1年延長を確認してユーザーが決済・規約同意。
+- [x] ユーザーに届いた移管コードをCloudflareの移管画面へ入力。
+- [x] 移管価格・更新価格を確認し、ユーザーが決済・規約同意。
+- 現在Cloudflareは `Pending Transfer` / `Wait for your domain to be released`。申込済み、Squarespaceのリリース待ち（画面案内: 最大7日、移管承認メールで早められる場合あり）。
+- [ ] 移管完了時に有効期限の延長を確認。
 - [ ] 必要なメール承認を実施し、RegistrarがCloudflareになったことを確認。
 - [ ] 移管完了後にCloudflareでDNSSECを再有効化、DS反映・DNS正常性を確認。
 - [ ] 自動更新・有効期限・元レジストラの移管完了状態を確認。
 
-Squarespace表示の有効期限: 2027-09-11、更新料金: 1,600円。Cloudflareの移管価格は未確認。
+Squarespace表示の有効期限: 2027-09-11、更新料金: 1,600円。Cloudflare表示: 移管14.20 USD（税別）、更新14.20 USD/年。
 移管コード・個人住所・決済情報はこのメモに記録しない。
