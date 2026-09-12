@@ -31,7 +31,7 @@ void attachGameAutomation(HazardGameController game) {
   _registered = true;
   registerMarionetteExtension(
     name: 'madogiwa.deviceDiagnostics',
-    description: 'Read-only iOS thermal category, power mode and monotonic scene counters. Delta renderCalls / delta elapsedSeconds measures Scene.render calls, not presented FPS or GPU completion. No temperature in Celsius is available.',
+    description: 'Read-only iOS thermal category, process CPU seconds, memory, battery, brightness and scene counters. Delta CPU seconds / delta native sample uptime times 100 uses one core = 100 percent. Render calls are not presented FPS or GPU completion; no Celsius reading.',
     callback: (_) async {
       final g = _game;
       if (g == null) return MarionetteExtensionResult.error(1, 'Not ready');

@@ -90,6 +90,30 @@ FPSは30／60のみ、秒数は8〜300の整数（既定8）。条件未達時�
 
 初回の診断時点で熱状態はすでに `serious`、低電力モードはOFFだった。有線デバッグ中の観測で、開始温度・画面輝度・充電状態を統制していないため、原因や発熱の改善幅を示さない。初回起動にはバックグラウンドGPUエラーと紫色の材質があり、前面のままhot restartすると同一素材で正常に戻った。正本・検証コピー・iOSバンドルの生成シーン／シェーダーは一致し、素材変換の破損は見つからなかった。背景でのGPU初期化後のリソース状態が疑わしいが、エンジン内部の個別原因は未特定。実機の横向き操作感、15分の継続性能、非充電での発熱改善は未検証。
 
+## クローンと実機負荷の切り分け（2026-09-12）
+
+`madogiwa.deviceDiagnostics` に、公開APIによるプロセス全スレッドのCPU累積秒、メモリのphysical footprint、バッテリー状態・残量、画面輝度、利用可能なコア数を追加した。CPU率は累積CPU秒の差をnative採取時刻の差で割り、100を掛ける。100%は1コア分で、複数コアなら100%を超える。熱状態は `nominal / fair / serious / critical` の段階で、摂氏温度、GPU使用率、消費電力の測定ではない。[getrusage](https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/getrusage.2.html)、[Apple DTSのメモリ計測](https://developer.apple.com/forums/thread/105088)。
+
+iPhone 16 Pro / iOS 26.6.2、profile、村8体追跡、高画質85%、60 fps上限、各60秒。縦画面402×874 logical px、DPR 3、内部1026×2229 px。USB接続・充電中、輝度35%。ユーザーの非充電試遊と条件が異なる。最初のGPU計測はInstrumentsの接続が完了せず停止し、以下はInstrumentsなしで採取した。
+
+| 条件（実行順） | Scene.render呼出/秒 | UI P95 | プロセスCPU（1コア=100%） | 開始→終了の熱状態 |
+| --- | ---: | ---: | ---: | --- |
+| 従来描画 | 33.09 | 46.69 ms | 89.12% | fair→serious |
+| 骨転送を一括化した試作 | 32.03 | 49.08 ms | 106.66% | fair→serious |
+| 同じ試作コードで一括化OFF | 29.19 | 55.58 ms | 77.47% | serious→serious |
+
+全ケースで8体の追跡と測定条件は成立。CPUは初回描画のwarmupを含む全区間、UI P95は最後の240 Flutterフレーム。呼出回数は実提示FPSではなく、CPU率は消費電力ではない。開始熱状態・バッテリー残量・背景処理を統制した反復比較ではないため、表から速度差や発熱低減率を確定しない。[値と条件の記録](qa/ios-clone-profiling-20260912.json)。
+
+従来方式の既存Dart profiler記録5,493サンプルでは、leafの約80%がMetal command buffer作成中の `semaphore_wait_trap`。ゲームcontroller tickはinclusive約2.5%、経路更新は約1.4%だった。これらは待機も含むスタックの割合で、CPU使用率とは異なる。Bloom内部に待ちが多く現れたが、Bloom自体のGPU演算時間とは断定できない。Appleのcommand queueは空きがないとCPU側を待たせる。[command bufferの作成仕様](https://developer.apple.com/documentation/metal/mtlcommandqueue/makecommandbuffer%28descriptor%3A%29?language=objc)。
+
+クローンの骨転送をまとめる試作は、個体ごとの行列・GPUテクスチャ・前フレーム履歴を維持したまま、1フレーム11回の転送を1 command bufferへ集約できた。MacのTAA・3体追跡・巨人・会話で正常表示、iPhoneではfallback 0を確認。ただし待ちの場所がDepthPrepass等へ移り、プロセスCPU負荷は低下しなかった。**発熱改善として採用せず、製品のrendererを元へ戻した。** 試作パッチと生ログはローカルに保存した。Bloomの複数描画パスを1 command bufferにまとめる案も、固定SDKのMetal encoder終了APIの制約から実機実行前に撤回した。
+
+モデルのGeometry・元材質・アニメーション資産は `Node.clone` で共有済み。そば屋は1体1 skin、45骨、4材質で、材質ごとに骨転送を重複していない。ジョッキも近距離4m以内の最寄り1体だけ高詳細で、それ以外は屈折と細かい泡を省く。追加の材質共有だけではdraw数は減らない。
+
+クローン設定をさらに使う本命は、共有するモデル内の骨姿勢と、個体ごとの位置・向きを分離し、同じ姿勢のグループをGPUでまとめて描く方式。現rendererは骨テクスチャに個体の世界座標を含め、skinned meshを自動instancingから除外しているため、色・深度・影・TAA速度の各パスをそろえて改修する必要がある。歩行の位相、攻撃、頭・ジョッキ位置、命中判定の独立性を維持する設計が必要で、今回の小変更へ無理に含めない。
+
+採用した変更は診断・完全な分割ログ・CPU集計と、計測終了時の継続描画停止。通常ゲームへ定期的な計測や自動画質変更は加えていない。非充電・同じ開始熱状態での3分／15分比較と、実提示フレーム／GPU消費電力の取得は未実施。
+
 ## 参照資料
 
 - [Flutterのprofile計測](https://docs.flutter.dev/perf/ui-performance)は実機・profile modeの利用を説明する。

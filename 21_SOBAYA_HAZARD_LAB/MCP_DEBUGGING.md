@@ -40,7 +40,7 @@ Marionette `call_custom_extension` の引数:
 | 長い通し経路の自動確認 | `madogiwa.auditCampaign` |
 | 実際のボタン・キー・長押しの確認 | MarionetteのUI操作とスクリーンショット |
 | 描画負荷 | profileビルドの既存ベンチマーク |
-| iOSの熱状態・低電力モード・描画回数 | `madogiwa.deviceDiagnostics`（読み取り専用） |
+| iOSのCPU・メモリ・熱状態・電源状態・描画回数 | `madogiwa.deviceDiagnostics`（設定・進行は変更しない） |
 
 Dartコード変更後はDTDへ接続してhot reloadする。extension登録の追加はhot restartまたは再起動が必要。GLB・音声など同梱素材を更新した場合はアプリを再ビルドして確認する。
 
@@ -50,13 +50,53 @@ Dartコード変更後はDTDへ接続してhot reloadする。extension登録の
 
 ### iOSの熱状態とフレーム上限（2026-09-12）
 
-`madogiwa.deviceDiagnostics` は物理iPhoneの `ProcessInfo.thermalState`（`nominal/fair/serious/critical`）と低電力モードを、その呼び出し時だけ取得する。摂氏温度・消費電力・バッテリー消費量ではない。Simulator、Mac、チャネル未接続やタイムアウトは `available=false` と理由を返し、正常な熱状態として扱わない。Swiftの変更を反映するにはフルビルドが必要。
+debugの `madogiwa.deviceDiagnostics` は物理iPhoneの熱状態・低電力モードを `device`、追加の端末指標を `device.metrics` に返す。その呼び出し時だけ取得し、通常プレイでは定期取得しない。`thermalState` は `ProcessInfo` の `nominal/fair/serious/critical` であり、摂氏温度には対応していない。
+
+| `device.metrics` の項目 | 値と意味 |
+| --- | --- |
+| `processCpu` | `getrusage(RUSAGE_SELF)` による全プロセススレッドの累積CPU秒。`totalSeconds = userSeconds + systemSeconds`、採取時刻は `sampleSystemUptimeSeconds`。 |
+| `memory.physicalFootprintBytes` | `TASK_VM_INFO.phys_footprint` のバイト数。 |
+| `battery` | `state` と残量 `level`（0〜1）。診断呼び出し時に監視を有効にするため、初回などは `unknown`／取得不可の場合がある。 |
+| `screenBrightness.value` | 前面画面の明るさ設定（0〜1）。消費電力や輝度のnit値ではない。 |
+| `activeProcessorCount.count` | OSが返す有効プロセッサ数。CPU率の分母として割り直さない。 |
+
+同じプロセスの2回の有効なCPU採取値から、`100 × ΔtotalSeconds / ΔsampleSystemUptimeSeconds` を計算する。100%は1コア分で、並列実行では100%を超える。`systemUptime` は端末起動後の時間であり、プロセスの起動時間ではない。累積CPU秒をuptimeそのものでは割らず、必ず差分同士を使う。Simulator、Mac、チャネル未接続やタイムアウトは `available=false` と理由を返す。追加指標は個別にも取得不可になり、旧ネイティブ実装は `notReported` を返すため、0や正常値に置き換えない。バッテリー残量の記録は消費電力の測定ではない。Swiftの変更を反映するにはフルビルドが必要。
 
 応答の `rendering.renderCalls` と `elapsedSeconds` の2回分の差から、Scene.renderの呼び出し回数／秒を確認できる。`ticks` はゲーム更新回数で別に数える。どちらも画面へ提示されたFPSやGPU処理完了の計測ではない。`continuous`、`foreground`、`phase`、設定の `frameRateLimit` を同時に照合する。休止直後の静止画更新が落ち着いた後は、連続描画が止まっていることを確認する。
 
 設定の「フレーム上限」で30／60 fpsを切り替える。3Dの更新と描画要求を同じ周期に制限し、静止画面のUI変更は反映する。画質プリセットと解像度は独立し、保存済みの画質を変更しない。診断による設定の自動変更や常駐ポーリングは行わない。
 
 会話の構図確認は `openGameScenario name=introEvent`（または `farmEvent` / `bossEvent` / `endingEvent`）のあと、`gameAction action=eventFrame shot=2 progress=0.5` のように呼ぶ。音声と連続描画を止め、指定カットのカメラ位置と人物の向きを描画する。背景表示でも静止画は取得できるが、これは発話・実時間モーションの検証には使わない。画面の「再開」から通常の再生へ戻れる。
+
+### profileベンチマークの診断とログ復元
+
+起動条件は [GRAPHICS.mdのprofile比較](GRAPHICS.md#再現できるprofile比較) を参照。既定は8秒で、`--dart-define=HAZARD_BENCHMARK_SECONDS=180` なら3分、`HAZARD_BENCHMARK_FPS=30`／`60` で上限を指定する。ケース開始・10秒間隔・終了に同じ端末指標を採取し、取得時刻・失敗理由を含む生データを結果JSONの `thermal.samples` に残す。集計は `processCpu` と `deviceMetrics`、熱状態の観測ピークは `thermal.peakState`。採取間隔の間に起きた変化や瞬間ピークは測っていない。
+
+`processCpu.oneCorePercent` はケース準備後の最初と最後の有効なネイティブCPU採取間の平均で、ウォームアップを除外しない。`maximumIntervalOneCorePercent` も採取区間の平均の最大値である。`sceneRenderCallsPerSecond` はケース全体の実経過時間、UI／Raster値は最後の240 Flutterフレームを使い、3つの測定区間を混同しない。全ケースが終了すると通常プレイは一時停止、会話演出はその場で停止し、連続描画・音声・診断タイマーを止める。
+
+iOSでは長い1行ログが切れるため、完全JSONは `HAZARD_GAME_BENCHMARK_CHUNK` 行から復元する。各行は700文字未満のASCIIで、`id`、1始まりの `part`、`total`、最大512文字の `data` を持つ。同じIDの `data` を連番順に連結し、Base64→UTF-8→JSONの順に復号する。各断片を個別にUTF-8復号しない。互換用の `HAZARD_GAME_BENCHMARK` 1行や終了マーカーだけで、記録が揃ったと判断しない。
+
+このディレクトリで次を実行する。入力はテキストログ、またはログ文字列のJSON配列に対応し、成功時は `benchmark-<id>.json` を出力する。
+
+```sh
+python3 tools/collect_hazard_benchmark.py \
+  evidence/ios-thermal-20260912/run.log \
+  evidence/ios-thermal-20260912/reassembled
+```
+
+同一断片の重複は許容する。欠番・総数の不一致・内容が異なる重複・不正なBase64／UTF-8／JSON・chunkなしはエラーとなる。復元エラーを隠したり、欠けた指標を推定して埋めたりしない。
+
+### DartのCPUスタックを追加採取する
+
+所有するprofileアプリのループバックVM Service WebSocket URIを使い、重いDart処理を調べる。URIはその起動セッションの値へ置き換える。
+
+```sh
+mise exec -- dart tools/profile_hazard_vm.dart \
+  'ws://127.0.0.1:<port>/<token>/ws' \
+  evidence/ios-thermal-20260912/vm 20
+```
+
+採取秒数は1〜60（省略時20）。`cpu-samples.json`、`timeline.json`、`capture-metadata.json` にスタック・タイムライン・実際の採取区間を保存し、変更したVMの採取設定は終了時に戻す。対象は選択したDart isolate（通常 `main`）のサンプリング結果であり、ネイティブを含む総プロセスCPU率やGPU時間・GPU使用率ではない。採取区間もベンチマーク全体とは別で、`processCpu.oneCorePercent` やUI／Raster値の代用にしない。
 
 ### iOSの通常再起動まで確認する
 
