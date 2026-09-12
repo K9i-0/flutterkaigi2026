@@ -1114,6 +1114,26 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
             </div>
           </>
         )}
+        {route.page === "home" && (
+          <section id="goods" className="j-section j-goods" aria-labelledby="goods-title">
+            <header>
+              <span className="j-kicker">グッズ</span>
+              <h2 id="goods-title">{theme === "sakaba" ? "酒場の土産棚" : theme === "underground" ? "地下売店" : "窓際購買部"}</h2>
+              <p>窓際族を、日常の片隅に。</p>
+            </header>
+            <div className="j-goods-item">
+              <a className="j-goods-image" href="https://suzuri.jp/sobaya15/20889070/t-shirt/xl/white" target="_blank" rel="noreferrer" aria-label="窓際族TシャツをSUZURIで見る（新しいタブ）">
+                <img src="/site/goods/madogiwa-tshirt.webp" alt="窓際族の仲間たちが集合したイラストと、白い窓際族Tシャツ" width="1200" height="630" loading="lazy" />
+              </a>
+              <div className="j-goods-copy">
+                <h3>窓際族Tシャツ</h3>
+                <p>いつもの仲間たちが、一枚に。<br />窓際族が好きなあなたへ。</p>
+                <a className="j-goods-link" href="https://suzuri.jp/sobaya15/20889070/t-shirt/xl/white" target="_blank" rel="noreferrer">SUZURIで見る <ArrowUpRight size={16} /></a>
+                <small>ご購入・色・サイズの選択はSUZURIへ。</small>
+              </div>
+            </div>
+          </section>
+        )}
       </main>
       <div className="j-footer-shell">
       <footer className="j-footer">

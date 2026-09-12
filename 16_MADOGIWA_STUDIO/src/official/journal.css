@@ -2708,3 +2708,18 @@
   .j-scope-tabs button { flex: 1; padding: 10px 8px; font-size: 12px; }
   .j-pickup-badge { margin-left: 6px; font-size: 9px; }
 }
+
+/* A quiet souvenir shelf at the end of the home page. */
+.j-goods { border-top: 1px solid var(--line); padding-top: 28px; }
+.j-goods > header h2 { margin: 4px 0; font-size: 22px; }
+.j-goods > header p { margin: 0 0 20px; }
+.j-goods-item { display: grid; grid-template-columns: minmax(0, 420px) minmax(0, 1fr); gap: 28px; align-items: center; }
+.j-goods-image { display: block; overflow: hidden; border: 1px solid var(--line); background: white; }
+.j-goods-image img { display: block; width: 100%; height: auto; }
+.j-goods-copy h3 { margin: 0 0 8px; font-size: 18px; }
+.j-goods-copy p { margin: 0 0 16px; }
+.j-goods-link { display: inline-flex; align-items: center; gap: 6px; text-decoration: underline !important; text-underline-offset: 5px; }
+.j-goods-copy small { display: block; margin-top: 12px; font-size: 11px; }
+@media (max-width: 600px) {
+  .j-goods-item { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+}
