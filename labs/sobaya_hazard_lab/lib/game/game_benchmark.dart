@@ -9,6 +9,43 @@ import 'game_device_diagnostics.dart';
 import 'game_state.dart';
 import 'game_settings.dart';
 
+/// Lossless transport for native consoles that truncate long log messages.
+///
+/// Every line starts with [chunkPrefix], followed by an ASCII JSON envelope:
+/// `{ "id": "record-id", "part": 1, "total": N, "data": "base64" }`.
+/// Parts are one-based. Group by id, require a consistent total and all parts,
+/// concatenate data in part order, then base64-decode and UTF-8-decode the
+/// result to recover the original JSON text. Identical duplicate parts may be
+/// discarded; conflicting duplicates or missing parts must not yield a record.
+abstract final class GameBenchmarkLog {
+  static const chunkPrefix = 'HAZARD_GAME_BENCHMARK_CHUNK ';
+  static const chunkDataCharacters = 512;
+
+  /// Encode the entire UTF-8 payload before splitting: a part can end between
+  /// UTF-8 bytes, so decode only after reassembly. No compression is required.
+  static Iterable<String> chunkLines(
+    String payload, {
+    required String id,
+  }) sync* {
+    if (!RegExp(r'^[A-Za-z0-9_-]{1,64}$').hasMatch(id)) {
+      throw ArgumentError.value(
+        id,
+        'id',
+        'Expected 1–64 ASCII identifier characters',
+      );
+    }
+    final encoded = base64Encode(utf8.encode(payload));
+    final total = math.max(
+      1,
+      (encoded.length + chunkDataCharacters - 1) ~/ chunkDataCharacters,
+    );
+    for (var part = 1; part <= total; part++) {
+      final start = (part - 1) * chunkDataCharacters;
+      yield '$chunkPrefix${jsonEncode({'id': id, 'part': part, 'total': total, 'data': encoded.substring(start, math.min(start + chunkDataCharacters, encoded.length))})}';
+    }
+  }
+}
+
 /// Compile-time workload limits, independent of saved player preferences.
 class GameBenchmarkConfig {
   const GameBenchmarkConfig._(this.frameRateLimit, this.seconds);
@@ -176,6 +213,14 @@ class GameBenchmarkDiagnostics {
           ? calls / elapsedSeconds
           : null,
       'sceneRenderMeasurement': 'Scene.render calls that returned per real elapsed second; not presented FPS or GPU completion',
+      'processCpu': _cpuSummary(),
+      'deviceMetrics': {
+        'measurement': 'Native snapshots at case boundaries and every ten seconds; not GPU utilization or temperature in degrees',
+        'memory': _metricSummary('memory', 'physicalFootprintBytes'),
+        'battery': _metricSummary('battery', 'level'),
+        'screenBrightness': _metricSummary('screenBrightness', 'value'),
+        'activeProcessorCount': _metricSummary('activeProcessorCount', 'count'),
+      },
       'thermal': {
         'status': peak == null
             ? 'unavailable'
@@ -189,6 +234,113 @@ class GameBenchmarkDiagnostics {
         'peakRecordedAtUtc': peak?['completedAtUtc'],
         'samples': List<Map<String, Object?>>.of(_samples),
       },
+    };
+  }
+
+  Map<String, Object?> _metric(Map<String, Object?> sample, String name) {
+    final metrics = sample['metrics'];
+    final metric = metrics is Map ? metrics[name] : null;
+    return metric is Map
+        ? Map<String, Object?>.from(metric)
+        : {
+            'status': 'unavailable',
+            'available': false,
+            'reason': 'notReported',
+          };
+  }
+
+  static double? _nonnegativeNumber(Object? value) =>
+      value is num && value.isFinite && value >= 0 ? value.toDouble() : null;
+
+  Map<String, Object?> _metricSummary(String name, String valueKey) {
+    final metrics = _samples.map((sample) => _metric(sample, name)).toList();
+    final values = metrics
+        .where((metric) => metric['available'] == true)
+        .map((metric) => _nonnegativeNumber(metric[valueKey]))
+        .whereType<double>()
+        .toList();
+    return {
+      'status': values.isEmpty
+          ? 'unavailable'
+          : values.length == metrics.length
+          ? 'available'
+          : 'partial',
+      'valueField': valueKey,
+      'start': metrics.firstOrNull,
+      'end': metrics.lastOrNull,
+      'minimumSampledValue': values.isEmpty ? null : values.reduce(math.min),
+      'maximumSampledValue': values.isEmpty ? null : values.reduce(math.max),
+    };
+  }
+
+  Map<String, Object?> _cpuSummary() {
+    final validSamples =
+        <({Map<String, Object?> sample, double cpu, double uptime})>[];
+    for (final sample in _samples) {
+      final metric = _metric(sample, 'processCpu');
+      final cpu = _nonnegativeNumber(metric['totalSeconds']);
+      final uptime = _nonnegativeNumber(metric['sampleSystemUptimeSeconds']);
+      if (metric['available'] == true && cpu != null && uptime != null) {
+        validSamples.add((sample: sample, cpu: cpu, uptime: uptime));
+      }
+    }
+    final intervals = <Map<String, Object?>>[];
+    for (var i = 1; i < validSamples.length; i++) {
+      final start = validSamples[i - 1], end = validSamples[i];
+      final cpuSeconds = end.cpu - start.cpu;
+      final elapsedSeconds = end.uptime - start.uptime;
+      final valid = cpuSeconds >= 0 && elapsedSeconds > 0;
+      intervals.add({
+        'status': valid ? 'available' : 'unavailable',
+        if (!valid)
+          'reason': cpuSeconds < 0
+              ? 'cpuCounterDecreased'
+              : 'nonIncreasingClock',
+        'startCaseElapsedMs': start.sample['caseElapsedMs'],
+        'endCaseElapsedMs': end.sample['caseElapsedMs'],
+        'elapsedSeconds': elapsedSeconds > 0 ? elapsedSeconds : null,
+        'cpuSeconds': cpuSeconds >= 0 ? cpuSeconds : null,
+        'oneCorePercent': valid ? cpuSeconds / elapsedSeconds * 100 : null,
+      });
+    }
+    final valid =
+        intervals.isNotEmpty &&
+        intervals.every((interval) => interval['status'] == 'available');
+    final start = validSamples.firstOrNull, end = validSamples.lastOrNull;
+    final cpuSeconds = valid ? end!.cpu - start!.cpu : null;
+    final elapsedSeconds = valid ? end!.uptime - start!.uptime : null;
+    final rates = intervals
+        .map((interval) => interval['oneCorePercent'])
+        .whereType<double>()
+        .toList();
+    return {
+      'status': !valid
+          ? 'unavailable'
+          : validSamples.length == _samples.length
+          ? 'available'
+          : 'partial',
+      if (!valid)
+        'reason': intervals.isEmpty
+            ? 'insufficientSamples'
+            : 'invalidCounterSequence',
+      'scope': 'processAllThreads',
+      'usageConvention': 'oneCore100Percent',
+      'measurement': '100 * cumulative process CPU seconds delta / native sampleSystemUptimeSeconds delta; 100 percent is one core and values above 100 are valid',
+      'measurementWindow': 'First to last available native CPU snapshot after case setup; no warmup exclusion; separate from the last 240 Flutter frame durations',
+      'clock': 'ProcessInfo.systemUptime differences, not process lifetime',
+      'sampleIntervalSeconds': 10,
+      'availableSamples': validSamples.length,
+      'start': start == null ? null : _metric(start.sample, 'processCpu'),
+      'end': end == null ? null : _metric(end.sample, 'processCpu'),
+      'startCaseElapsedMs': start?.sample['caseElapsedMs'],
+      'endCaseElapsedMs': end?.sample['caseElapsedMs'],
+      'elapsedSeconds': elapsedSeconds,
+      'cpuSeconds': cpuSeconds,
+      'oneCorePercent': valid ? cpuSeconds! / elapsedSeconds! * 100 : null,
+      'maximumIntervalOneCorePercent': rates.isEmpty
+          ? null
+          : rates.reduce(math.max),
+      'intervals': intervals,
     };
   }
 
@@ -397,6 +549,7 @@ class GameBenchmark {
     index++;
     if (index == cases.length) {
       dispose();
+      pauseCompletedWorkload(game);
       debugPrintSynchronously('HAZARD_GAME_BENCHMARK_COMPLETE');
       return;
     }
@@ -527,41 +680,81 @@ class GameBenchmark {
         return;
       }
       final ready = semanticReady;
-      debugPrintSynchronously(
-        'HAZARD_GAME_BENCHMARK ${jsonEncode({
-          'schemaVersion': 2,
-          'recordedAtUtc': DateTime.now().toUtc().toIso8601String(),
-          'runLabel': const String.fromEnvironment('HAZARD_BENCHMARK_RUN'),
-          'case': cases[index].name,
-          'benchmarkDurationSeconds': configuration.seconds,
-          'benchmarkDeadlineSeconds': configuration.deadlineSeconds,
-          'benchmarkFrameRateLimit': configuration.frameRateLimit,
-          'settings': jsonDecode(game.settings.encode()),
+      final payload = jsonEncode({
+        'schemaVersion': 2,
+        'recordedAtUtc': DateTime.now().toUtc().toIso8601String(),
+        'runLabel': const String.fromEnvironment('HAZARD_BENCHMARK_RUN'),
+        'case': cases[index].name,
+        'benchmarkDurationSeconds': configuration.seconds,
+        'benchmarkDeadlineSeconds': configuration.deadlineSeconds,
+        'benchmarkFrameRateLimit': configuration.frameRateLimit,
+        'settings': jsonDecode(game.settings.encode()),
           'lighting': game.lighting.inspect(game.scene),
-          'audio': {'observedAmbience': heardAmbience, 'observedSpeech': heardSpeech, 'voice': game.voice.inspect(), 'soundscape': game.soundscape.inspect()},
-          'region': cases[index].region,
-          'contactShadows': cases[index].contacts,
-          'profile': kProfileMode,
-          'valid': kProfileMode && game.frames.count == 240 && !interrupted && game.foreground && game.state!.phase == expectedPhase && ready && game.voice.inspect()['errors'].isEmpty,
-          'speechMorphTicks': speechMorphTicks,
-          'eventShot': game.director?.index,
-          'windowMotionTicks': windowMotionTicks,
-          'completedWindowPassages': completedPassages,
-          'workload': {'observedVisualPursuers': observedPursuers.toList()..sort(), 'pursuitTicks': pursuitTicks, 'searchTicks': searchTicks, 'maxConcurrentSearchers': maxConcurrentSearchers, 'movingSearchers': movingSearchers.toList()..sort(), 'advancedSearchers': advancedSearchers.toList()..sort(), 'beerPreviewTicks': beerPreviewTicks, 'maxBeerGuideSprites': maxBeerGuideSprites, 'activeEnemies': game.state!.enemies.where((e) => e.active && e.alive).length, 'currentSearchingEnemies': currentSearchers.length, 'beerGuideVisible': game.beerVisuals.dots.node.visible, 'semanticReady': ready},
-          'interrupted': interrupted,
-          'foreground': game.foreground,
-          'gamePhase': game.state!.phase.name,
-          'simulatedSeconds': game.state!.time,
-          'renderScale': game.scene.renderScale,
-          'viewport': [game.viewport.width, game.viewport.height],
-          'devicePixelRatio': game.devicePixelRatio,
-          'renderPixels': [(game.viewport.width * game.devicePixelRatio * game.scene.renderScale).ceil(), (game.viewport.height * game.devicePixelRatio * game.scene.renderScale).ceil()],
-          'measurement': 'Flutter UI and raster thread durations; not GPU execution time or presented FPS',
-          'elapsedMs': watch.elapsedMilliseconds,
-          ...game.frames.toJson(),
-          ...diagnosticResult,
-        })}',
-      );
+        'audio': {
+          'observedAmbience': heardAmbience,
+          'observedSpeech': heardSpeech,
+          'voice': game.voice.inspect(),
+          'soundscape': game.soundscape.inspect(),
+        },
+        'region': cases[index].region,
+        'contactShadows': cases[index].contacts,
+        'profile': kProfileMode,
+        'valid':
+            kProfileMode &&
+            game.frames.count == 240 &&
+            !interrupted &&
+            game.foreground &&
+            game.state!.phase == expectedPhase &&
+            ready &&
+            game.voice.inspect()['errors'].isEmpty,
+        'speechMorphTicks': speechMorphTicks,
+        'eventShot': game.director?.index,
+        'windowMotionTicks': windowMotionTicks,
+        'completedWindowPassages': completedPassages,
+        'workload': {
+          'observedVisualPursuers': observedPursuers.toList()..sort(),
+          'pursuitTicks': pursuitTicks,
+          'searchTicks': searchTicks,
+          'maxConcurrentSearchers': maxConcurrentSearchers,
+          'movingSearchers': movingSearchers.toList()..sort(),
+          'advancedSearchers': advancedSearchers.toList()..sort(),
+          'beerPreviewTicks': beerPreviewTicks,
+          'maxBeerGuideSprites': maxBeerGuideSprites,
+          'activeEnemies': game.state!.enemies
+              .where((e) => e.active && e.alive)
+              .length,
+          'currentSearchingEnemies': currentSearchers.length,
+          'beerGuideVisible': game.beerVisuals.dots.node.visible,
+          'semanticReady': ready,
+        },
+        'interrupted': interrupted,
+        'foreground': game.foreground,
+        'gamePhase': game.state!.phase.name,
+        'simulatedSeconds': game.state!.time,
+        'renderScale': game.scene.renderScale,
+        'viewport': [game.viewport.width, game.viewport.height],
+        'devicePixelRatio': game.devicePixelRatio,
+        'renderPixels': [
+          (game.viewport.width * game.devicePixelRatio * game.scene.renderScale)
+              .ceil(),
+          (game.viewport.height *
+                  game.devicePixelRatio *
+                  game.scene.renderScale)
+              .ceil(),
+        ],
+        'measurement': 'Flutter UI and raster thread durations; not GPU execution time or presented FPS',
+        'elapsedMs': watch.elapsedMilliseconds,
+        ...game.frames.toJson(),
+        ...diagnosticResult,
+      });
+      final recordId =
+          '${DateTime.now().toUtc().microsecondsSinceEpoch.toRadixString(36)}-${index.toRadixString(36)}';
+      // Emit complete short records before the legacy line, which iOS may cut.
+      // This work runs after diagnostics finish and does not enter their window.
+      for (final line in GameBenchmarkLog.chunkLines(payload, id: recordId)) {
+        debugPrintSynchronously(line);
+      }
+      debugPrintSynchronously('HAZARD_GAME_BENCHMARK $payload');
       next();
     } finally {
       _closingCase = false;
@@ -773,5 +966,19 @@ class GameBenchmark {
     timer = null;
     watch.stop();
     diagnostics.stop();
+  }
+
+  /// Stop an opt-in workload without completing or skipping a story event.
+  /// Keep an interrupted menu or an already paused game in its current state.
+  @visibleForTesting
+  static void pauseCompletedWorkload(HazardGameController game) {
+    if (game.disposed || game.state == null) return;
+    if (game.director != null) {
+      game.setEventPaused(true);
+    } else if (game.state!.running) {
+      game.toggle(PlayPhase.paused);
+    }
+    // toggle notifies the view; freeze audio/clips now even without another tick.
+    game.prepareStaticFrame();
   }
 }

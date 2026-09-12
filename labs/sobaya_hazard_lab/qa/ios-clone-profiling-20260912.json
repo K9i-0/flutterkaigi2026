@@ -1,0 +1,569 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-12",
+  "status": "investigation-complete-no-heat-improvement-demonstrated",
+  "sourceBaseCommit": "61d88b5251ee69740973ae6c018e7176600fa18b",
+  "device": {
+    "model": "iPhone 16 Pro",
+    "os": "iOS 26.6.2",
+    "connection": "USB, charging during benchmark",
+    "brightness": 0.35
+  },
+  "measurementLimits": [
+    "Profile build, portrait, fixed village pursuit scenario; not a measurement of normal Release play.",
+    "100 percent process CPU means one core. Stack sampling includes native waits and does not measure busy CPU percentage.",
+    "Scene.render returns per second are not presented FPS. UI/raster durations are not GPU execution durations.",
+    "CPU window includes initial rendering warmup; Flutter frame metrics cover the last 240 frames.",
+    "Thermal categories only, no temperature in degrees, power, or exact GPU utilization.",
+    "These runs cannot prove lower heat in the user's unplugged three-minute condition."
+  ],
+  "instruments": {
+    "status": "attachment did not complete; terminated owned xctrace process",
+    "template": "Game Performance",
+    "usableGpuTrace": false
+  },
+  "runs": [
+    {
+      "label": "legacy-native-uploads-clean",
+      "valid": true,
+      "graphics": "quality",
+      "scale": 0.85,
+      "frameRateLimit": 60,
+      "durationSeconds": 60.026853,
+      "viewport": [
+        402.0,
+        874.0
+      ],
+      "devicePixelRatio": 3.0,
+      "renderPixels": [
+        1026,
+        2229
+      ],
+      "activeEnemies": 8,
+      "observedVisualPursuers": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "sceneRenderCalls": 1986,
+      "sceneRenderCallsPerSecond": 33.08519272199727,
+      "uiP95Ms": 46.687,
+      "rasterP95Ms": 44.415,
+      "processCpuOneCorePercent": 89.12464280078255,
+      "cpuSeconds": 53.498205,
+      "cpuMsPerRenderReturnIncludingWarmup": 26.937666163141994,
+      "cpuIntervals": [
+        {
+          "status": "available",
+          "startCaseElapsedMs": 0.14,
+          "endCaseElapsedMs": 10007.658,
+          "elapsedSeconds": 10.007556666663731,
+          "cpuSeconds": 15.272714,
+          "oneCorePercent": 152.6118163374991
+        },
+        {
+          "status": "available",
+          "startCaseElapsedMs": 10007.658,
+          "endCaseElapsedMs": 20033.37,
+          "elapsedSeconds": 10.025791416672291,
+          "cpuSeconds": 13.492027000000004,
+          "oneCorePercent": 134.573186686924
+        },
+        {
+          "status": "available",
+          "startCaseElapsedMs": 20033.37,
+          "endCaseElapsedMs": 30516.572,
+          "elapsedSeconds": 10.483254791673971,
+          "cpuSeconds": 7.29974,
+          "oneCorePercent": 69.63238178468782
+        },
+        {
+          "status": "available",
+          "startCaseElapsedMs": 30516.572,
+          "endCaseElapsedMs": 40534.339,
+          "elapsedSeconds": 10.017634416653891,
+          "cpuSeconds": 6.199844999999996,
+          "oneCorePercent": 61.88931180891386
+        },
+        {
+          "status": "available",
+          "startCaseElapsedMs": 40534.339,
+          "endCaseElapsedMs": 51008.226,
+          "elapsedSeconds": 10.473921458338737,
+          "cpuSeconds": 6.110097000000003,
+          "oneCorePercent": 58.33628812573818
+        },
+        {
+          "status": "available",
+          "startCaseElapsedMs": 51008.226,
+          "endCaseElapsedMs": 60026.255,
+          "elapsedSeconds": 9.018118291671271,
+          "cpuSeconds": 5.123781999999991,
+          "oneCorePercent": 56.81653127939214
+        }
+      ],
+      "nativeSamples": [
+        {
+          "elapsedMs": 0.14,
+          "thermal": "fair",
+          "battery": "charging",
+          "batteryLevel": 0.75,
+          "brightness": 0.3499999940395355,
+          "memoryFootprintBytes": 821036432
+        },
+        {
+          "elapsedMs": 10007.658,
+          "thermal": "fair",
+          "battery": "charging",
+          "batteryLevel": 0.75,
+          "brightness": 0.3499999940395355,
+          "memoryFootprintBytes": 1464272392
+        },
+        {
+          "elapsedMs": 20033.37,
+          "thermal": "serious",
+          "battery": "charging",
+          "batteryLevel": 0.75,
+          "brightness": 0.3499999940395355,
+          "memoryFootprintBytes": 1518896696
+        },
+        {
+          "elapsedMs": 30516.572,
+          "thermal": "serious",
+          "battery": "charging",
+          "batteryLevel": 0.75,
+          "brightness": 0.3499999940395355,
+          "memoryFootprintBytes": 1494648376
+        },
+        {
+          "elapsedMs": 40534.339,
+          "thermal": "serious",
+          "battery": "charging",
+          "batteryLevel": 0.75,
+          "brightness": 0.3499999940395355,
+          "memoryFootprintBytes": 1519502904
+        },
+        {
+          "elapsedMs": 51008.226,
+          "thermal": "serious",
+          "battery": "charging",
+          "batteryLevel": 0.75,
+          "brightness": 0.3499999940395355,
+          "memoryFootprintBytes": 1511392824
+        },
+        {
+          "elapsedMs": 60026.255,
+          "thermal": "serious",
+          "battery": "charging",
+          "batteryLevel": 0.75,
+          "brightness": 0.3499999940395355,
+          "memoryFootprintBytes": 1481934392
+        }
+      ]
+    },
+    {
+      "label": "eight-batch-60",
+      "valid": true,
+      "graphics": "quality",
+      "scale": 0.85,
+      "frameRateLimit": 60,
+      "durationSeconds": 60.028442,
+      "viewport": [
+        402.0,
+        874.0
+      ],
+      "devicePixelRatio": 3.0,
+      "renderPixels": [
+        1026,
+        2229
+      ],
+      "activeEnemies": 8,
+      "observedVisualPursuers": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "sceneRenderCalls": 1923,
+      "sceneRenderCallsPerSecond": 32.03481443013297,
+      "uiP95Ms": 49.076,
+      "rasterP95Ms": 43.094,
+      "processCpuOneCorePercent": 106.66184368353517,
+      "cpuSeconds": 64.02681700000001,
+      "cpuMsPerRenderReturnIncludingWarmup": 33.29527665106605,
+      "cpuIntervals": [
+        {
+          "status": "available",
+          "startCaseElapsedMs": 0.148,
+          "endCaseElapsedMs": 10006.221,
+          "elapsedSeconds": 10.006043583329301,
+          "cpuSeconds": 17.232123,
+          "oneCorePercent": 172.21714913084932
+        },
+        {
+          "status": "available",
+          "startCaseElapsedMs": 10006.221,
+          "endCaseElapsedMs": 20013.629,
+          "elapsedSeconds": 10.00746616665856,
+          "cpuSeconds": 13.525923000000002,
+          "oneCorePercent": 135.15831854684387
+        },
+        {
+          "status": "available",
+          "startCaseElapsedMs": 20013.629,
+          "endCaseElapsedMs": 30021.604,
+          "elapsedSeconds": 10.007997291671927,
+          "cpuSeconds": 8.230085000000003,
+          "oneCorePercent": 82.23508420459507
+        },
+        {
+          "status": "available",
+          "startCaseElapsedMs": 30021.604,
+          "endCaseElapsedMs": 40545.433,
+          "elapsedSeconds": 10.523947541674715,
+          "cpuSeconds": 8.753247999999992,
+          "oneCorePercent": 83.17456890902608
+        },
+        {
+          "status": "available",
+          "startCaseElapsedMs": 40545.433,
+          "endCaseElapsedMs": 51039.081,
+          "elapsedSeconds": 10.493518541654339,
+          "cpuSeconds": 8.930665000000012,
+          "oneCorePercent": 85.10648706198467
+        },
+        {
+          "status": "available",
+          "startCaseElapsedMs": 51039.081,
+          "endCaseElapsedMs": 60027.923,
+          "elapsedSeconds": 8.988882000005106,
+          "cpuSeconds": 7.3547729999999945,
+          "oneCorePercent": 81.8207759318213
+        }
+      ],
+      "skinUploads": {
+        "scope": "Scene prepass uploads; accepted batch submits and legacy overwrite calls, not GPU completion",
+        "legacyCommandBufferMeasurement": "Estimated from overwrite call count; native return value not checked, not GPU completion.",
+        "batchingEnabled": true,
+        "batchingSupported": true,
+        "sceneUpdates": 1925,
+        "skinUploads": 21175,
+        "uniqueSkinBindingsAcrossUpdates": 21175,
+        "uploadedBytes": 86732800,
+        "batchCommandBuffers": 1925,
+        "legacyUploads": 0,
+        "legacyCommandBuffers": 0,
+        "fallbackFrames": 0,
+        "lastFrame": {
+          "skinUploads": 11,
+          "uniqueSkinBindings": 11,
+          "uploadedBytes": 45056,
+          "batchCommandBuffers": 1,
+          "legacyUploads": 0,
+          "legacyCommandBuffers": 0,
+          "fallback": false
+        }
+      },
+      "nativeSamples": [
+        {
+          "elapsedMs": 0.148,
+          "thermal": "fair",
+          "battery": "charging",
+          "batteryLevel": 0.800000011920929,
+          "brightness": 0.3499999940395355,
+          "memoryFootprintBytes": 806847984
+        },
+        {
+          "elapsedMs": 10006.221,
+          "thermal": "fair",
+          "battery": "charging",
+          "batteryLevel": 0.800000011920929,
+          "brightness": 0.3499999940395355,
+          "memoryFootprintBytes": 1471268384
+        },
+        {
+          "elapsedMs": 20013.629,
+          "thermal": "fair",
+          "battery": "charging",
+          "batteryLevel": 0.800000011920929,
+          "brightness": 0.3499999940395355,
+          "memoryFootprintBytes": 1528563256
+        },
+        {
+          "elapsedMs": 30021.604,
+          "thermal": "serious",
+          "battery": "charging",
+          "batteryLevel": 0.800000011920929,
+          "brightness": 0.3499999940395355,
+          "memoryFootprintBytes": 1561593400
+        },
+        {
+          "elapsedMs": 40545.433,
+          "thermal": "serious",
+          "battery": "charging",
+          "batteryLevel": 0.800000011920929,
+          "brightness": 0.3499999940395355,
+          "memoryFootprintBytes": 1500366392
+        },
+        {
+          "elapsedMs": 51039.081,
+          "thermal": "serious",
+          "battery": "charging",
+          "batteryLevel": 0.800000011920929,
+          "brightness": 0.3499999940395355,
+          "memoryFootprintBytes": 1567147720
+        },
+        {
+          "elapsedMs": 60027.923,
+          "thermal": "serious",
+          "battery": "charging",
+          "batteryLevel": 0.800000011920929,
+          "brightness": 0.3499999940395355,
+          "memoryFootprintBytes": 1560020680
+        }
+      ]
+    },
+    {
+      "label": "eight-legacy-control-60",
+      "valid": true,
+      "graphics": "quality",
+      "scale": 0.85,
+      "frameRateLimit": 60,
+      "durationSeconds": 60.048402,
+      "viewport": [
+        402.0,
+        874.0
+      ],
+      "devicePixelRatio": 3.0,
+      "renderPixels": [
+        1026,
+        2229
+      ],
+      "activeEnemies": 8,
+      "observedVisualPursuers": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "sceneRenderCalls": 1753,
+      "sceneRenderCallsPerSecond": 29.193116579521966,
+      "uiP95Ms": 55.584,
+      "rasterP95Ms": 53.504,
+      "processCpuOneCorePercent": 77.46620561729637,
+      "cpuSeconds": 46.516714,
+      "cpuMsPerRenderReturnIncludingWarmup": 26.53549001711352,
+      "cpuIntervals": [
+        {
+          "status": "available",
+          "startCaseElapsedMs": 0.009,
+          "endCaseElapsedMs": 10004.931,
+          "elapsedSeconds": 10.005030333340983,
+          "cpuSeconds": 14.679376999999999,
+          "oneCorePercent": 146.71996496684395
+        },
+        {
+          "status": "available",
+          "startCaseElapsedMs": 10004.931,
+          "endCaseElapsedMs": 20032.82,
+          "elapsedSeconds": 10.028060333323083,
+          "cpuSeconds": 9.827245999999999,
+          "oneCorePercent": 97.99747581637716
+        },
+        {
+          "status": "available",
+          "startCaseElapsedMs": 20032.82,
+          "endCaseElapsedMs": 30501.217,
+          "elapsedSeconds": 10.468066666668165,
+          "cpuSeconds": 5.936362000000003,
+          "oneCorePercent": 56.70924908132498
+        },
+        {
+          "status": "available",
+          "startCaseElapsedMs": 30501.217,
+          "endCaseElapsedMs": 40527.224,
+          "elapsedSeconds": 10.026196999999229,
+          "cpuSeconds": 5.544850000000004,
+          "oneCorePercent": 55.30362110379868
+        },
+        {
+          "status": "available",
+          "startCaseElapsedMs": 40527.224,
+          "endCaseElapsedMs": 50532.56,
+          "elapsedSeconds": 10.005403125003795,
+          "cpuSeconds": 5.4173609999999925,
+          "oneCorePercent": 54.14435512809923
+        },
+        {
+          "status": "available",
+          "startCaseElapsedMs": 50532.56,
+          "endCaseElapsedMs": 60047.428,
+          "elapsedSeconds": 9.514993208329543,
+          "cpuSeconds": 5.111518000000004,
+          "oneCorePercent": 53.72066892833216
+        }
+      ],
+      "skinUploads": {
+        "scope": "Scene prepass uploads; accepted batch submits and legacy overwrite calls, not GPU completion",
+        "legacyCommandBufferMeasurement": "Estimated from overwrite call count; native return value not checked, not GPU completion.",
+        "batchingEnabled": false,
+        "batchingSupported": true,
+        "sceneUpdates": 1755,
+        "skinUploads": 19305,
+        "uniqueSkinBindingsAcrossUpdates": 19305,
+        "uploadedBytes": 79073280,
+        "batchCommandBuffers": 0,
+        "legacyUploads": 19305,
+        "legacyCommandBuffers": 19305,
+        "fallbackFrames": 0,
+        "lastFrame": {
+          "skinUploads": 11,
+          "uniqueSkinBindings": 11,
+          "uploadedBytes": 45056,
+          "batchCommandBuffers": 0,
+          "legacyUploads": 11,
+          "legacyCommandBuffers": 11,
+          "fallback": false
+        }
+      },
+      "nativeSamples": [
+        {
+          "elapsedMs": 0.009,
+          "thermal": "serious",
+          "battery": "charging",
+          "batteryLevel": 0.800000011920929,
+          "brightness": 0.3499999940395355,
+          "memoryFootprintBytes": 821609920
+        },
+        {
+          "elapsedMs": 10004.931,
+          "thermal": "serious",
+          "battery": "charging",
+          "batteryLevel": 0.800000011920929,
+          "brightness": 0.3499999940395355,
+          "memoryFootprintBytes": 1436419640
+        },
+        {
+          "elapsedMs": 20032.82,
+          "thermal": "serious",
+          "battery": "charging",
+          "batteryLevel": 0.800000011920929,
+          "brightness": 0.3499999940395355,
+          "memoryFootprintBytes": 1514653264
+        },
+        {
+          "elapsedMs": 30501.217,
+          "thermal": "serious",
+          "battery": "charging",
+          "batteryLevel": 0.800000011920929,
+          "brightness": 0.3499999940395355,
+          "memoryFootprintBytes": 1499219536
+        },
+        {
+          "elapsedMs": 40527.224,
+          "thermal": "serious",
+          "battery": "charging",
+          "batteryLevel": 0.800000011920929,
+          "brightness": 0.3499999940395355,
+          "memoryFootprintBytes": 1498039888
+        },
+        {
+          "elapsedMs": 50532.56,
+          "thermal": "serious",
+          "battery": "charging",
+          "batteryLevel": 0.800000011920929,
+          "brightness": 0.3499999940395355,
+          "memoryFootprintBytes": 1488062032
+        },
+        {
+          "elapsedMs": 60047.428,
+          "thermal": "serious",
+          "battery": "charging",
+          "batteryLevel": 0.800000011920929,
+          "brightness": 0.3499999940395355,
+          "memoryFootprintBytes": 1514915408
+        }
+      ]
+    }
+  ],
+  "shippedChanges": [
+    "On-demand native process CPU seconds, physical memory footprint, battery charge/state, brightness and processor count alongside existing thermal diagnostics.",
+    "Benchmark CPU deltas use native sampling timestamps, report one-core utilization and missing/invalid metric states.",
+    "Complete benchmark JSON via short base64 log chunks with collector validation.",
+    "All benchmark cases stop their timer and continuous game rendering at completion."
+  ],
+  "experiments": {
+    "skinUploadBatch": {
+      "decision": "not adopted; restored original product renderer",
+      "result": "11 individual palettes per frame -> 1 accepted copy command buffer; independent pose/texture data and three-slot history maintained. No measured reduction of whole-process CPU work.",
+      "rejectedPatchLocal": ".local/hazard-experiments/skin-upload-batch-20260912/experiment.patch",
+      "visualQa": "Mac debug, showcase 100%, TAA, 3 pursuers and giant, conversation probe. No visible corruption, grip errors zero, no runtime errors/fallback.",
+      "testResults": "12 lifecycle tests plus existing giant-velocity test passed before prototype removal."
+    },
+    "bloomBatch": {
+      "decision": "not run or adopted",
+      "reason": "Pinned Metal backend opens a live render encoder at render-pass creation and only closes it during submit. No public end API; multiple passes in one CB are not supported by this path."
+    },
+    "mugMaterialSharing": {
+      "decision": "not implemented",
+      "reason": "Existing far glass is alpha blended and beer is morphed, both excluded from automatic instancing. Sharing two material objects per mug would not reduce draws or transmission captures."
+    }
+  },
+  "cpuStackEvidence": {
+    "legacyClean": {
+      "sampleCount": 5493,
+      "semaphoreWaitLeafPercent": 80.08,
+      "bloomInclusivePercent": 69.42,
+      "skinInclusivePercent": 6.7,
+      "gameControllerTickInclusivePercent": 2.48,
+      "enemyNavigationInclusivePercent": 1.37
+    },
+    "batched": {
+      "sampleCount": 17139,
+      "semaphoreWaitLeafPercent": 76.08,
+      "depthPrepassInclusivePercent": 42.57,
+      "bloomInclusivePercent": 12.11
+    },
+    "interpretation": "Native waiting moved between passes. Inclusive sampled stacks are nested/non-additive and are not busy CPU or GPU percentages; capture windows differ."
+  },
+  "nextCloneWork": [
+    "Geometry, source materials and animation assets already shared across Node.clone.",
+    "Body pose textures include actor world transforms; exact texture sharing requires separating shared local pose from per-actor transform and updating color/depth/shadow/velocity rendering consistently.",
+    "Per-actor motion phase, blends, attacks, head/mug positions and hit tests must remain correct; merely sharing same named Walk/Run clip is insufficient.",
+    "Existing mug LOD selects only the nearest enemy within four meters for high-detail transmission."
+  ],
+  "validation": {
+    "fullSuiteBeforePrototypeRemoval": {
+      "passed": 457,
+      "optionalSkipped": 1
+    },
+    "shippingTargetedTests": {
+      "passed": 41,
+      "scope": "game_benchmark_test.dart, game_device_diagnostics_test.dart after removing prototype"
+    },
+    "shippingAnalyze": "No issues found",
+    "pythonLogCollectorTestsPassed": 7,
+    "standaloneRelease": {
+      "build": "passed, 44.8 seconds, 334.5 MB",
+      "signed": "codesign verify deep strict passed",
+      "sceneAssets": 9,
+      "benchmarkAndExperimentDefines": false,
+      "installed": true,
+      "launch": "Succeeded via devicectl without debugger; final Release UI not independently captured"
+    },
+    "rendererRestoredToSourceBase": true
+  }
+}

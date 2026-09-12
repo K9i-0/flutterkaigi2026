@@ -1,7 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sobaya_hazard_lab/game/game_benchmark.dart';
+import 'package:sobaya_hazard_lab/game/game_controller.dart';
+import 'package:sobaya_hazard_lab/game/game_events.dart';
+import 'package:sobaya_hazard_lab/game/game_state.dart';
 
 Map<String, Object?> thermal(String state) => {
   'status': 'available',
@@ -36,7 +41,201 @@ class DiagnosticClock {
 
 Future<void> flushReads() => Future<void>.delayed(Duration.zero);
 
+Map<String, Object?> deviceSnapshot({
+  required double cpu,
+  required double uptime,
+  int footprint = 500000000,
+}) => {
+  ...thermal('fair'),
+  'metrics': {
+    'processCpu': {
+      'status': 'available',
+      'available': true,
+      'source': 'getrusage(RUSAGE_SELF)',
+      'scope': 'processAllThreads',
+      'usageConvention': 'oneCore100Percent',
+      'totalSeconds': cpu,
+      'sampleSystemUptimeSeconds': uptime,
+    },
+    'memory': {
+      'status': 'available',
+      'available': true,
+      'physicalFootprintBytes': footprint,
+    },
+    'battery': {
+      'status': 'available',
+      'available': true,
+      'state': 'unplugged',
+      'level': .75,
+    },
+    'screenBrightness': {'status': 'available', 'available': true, 'value': .4},
+    'activeProcessorCount': {
+      'status': 'available',
+      'available': true,
+      'count': 6,
+    },
+  },
+};
+
+class CompletionController extends Fake implements HazardGameController {
+  @override
+  HazardGameState? state = HazardGameState(
+    jsonDecode(File('assets/village.json').readAsStringSync()),
+  );
+  @override
+  HazardDirector? director;
+  @override
+  bool disposed = false;
+  final calls = <String>[];
+
+  @override
+  void toggle(PlayPhase phase) {
+    calls.add('toggle:${phase.name}');
+    state!.toggle(phase);
+  }
+
+  @override
+  void setEventPaused(bool paused) {
+    calls.add('eventPaused:$paused');
+    director!.paused = paused;
+  }
+
+  @override
+  void prepareStaticFrame() => calls.add('prepareStaticFrame');
+}
+
 void main() {
+  group('benchmark log transport', () {
+    test(
+      'UTF-8 Japanese JSON survives shuffled ASCII chunks below 700 characters',
+      () {
+        final expected = {
+          'runLabel': '村のそば屋8体・追跡🔥',
+          'case': 'village-eight',
+          'valid': true,
+          'processCpu': {'oneCorePercent': 238.45, 'optional': null},
+          'thermal': {
+            'samples': List.generate(
+              19,
+              (i) => {
+                ...deviceSnapshot(cpu: i * 25.5, uptime: 10000 + i * 10.0),
+                'caseElapsedMs': i * 10000,
+                    'note': '福ちゃん／そば屋、"改行"\nとタブ\tも保持',
+              },
+            ),
+          },
+        };
+        final payload = jsonEncode(expected);
+        final id = List.filled(64, 'a').join();
+        final lines = GameBenchmarkLog.chunkLines(payload, id: id).toList();
+        expect(lines.length, greaterThan(10));
+        final parts = <int, String>{};
+        for (final line in lines.reversed) {
+          expect(line, startsWith(GameBenchmarkLog.chunkPrefix));
+          expect(line.length, lessThan(700));
+          expect(line.codeUnits.every((value) => value <= 127), isTrue);
+          expect(line, isNot(contains('\n')));
+          final envelope = jsonDecode(
+            line.substring(GameBenchmarkLog.chunkPrefix.length),
+          ) as Map;
+          expect(
+            envelope.keys,
+            unorderedEquals(['id', 'part', 'total', 'data']),
+          );
+          expect(envelope['id'], id);
+          expect(envelope['total'], lines.length);
+          expect(envelope['part'], inInclusiveRange(1, lines.length));
+          expect((envelope['data'] as String).length, lessThanOrEqualTo(512));
+          parts[envelope['part'] as int] = envelope['data'] as String;
+        }
+        final encoded = [for (var i = 1; i <= lines.length; i++) parts[i]!]
+            .join();
+        final decoded = utf8.decode(base64Decode(encoded));
+        expect(decoded, payload);
+        expect(jsonDecode(decoded), expected);
+      },
+    );
+
+    test('base64 boundaries and final padding preserve every payload byte', () {
+      for (final length in [
+        0,
+        1,
+        380,
+        381,
+        382,
+        383,
+        384,
+        766,
+        767,
+        768,
+        5000,
+      ]) {
+        final payload = jsonEncode(List.filled(length, 'x').join());
+        final lines = GameBenchmarkLog.chunkLines(
+          payload,
+          id: 'case_0-60fps',
+        ).toList();
+        final encoded = base64Encode(utf8.encode(payload));
+        expect(lines.length, (encoded.length + 511) ~/ 512);
+        final data = <String>[];
+        for (var i = 0; i < lines.length; i++) {
+          final envelope = jsonDecode(
+            lines[i].substring(GameBenchmarkLog.chunkPrefix.length),
+          ) as Map;
+          expect(envelope['part'], i + 1);
+          expect(envelope['total'], lines.length);
+          final chunk = envelope['data'] as String;
+          if (i < lines.length - 1) {
+            expect(chunk.length, 512);
+            expect(chunk, isNot(contains('=')));
+          }
+          data.add(chunk);
+        }
+        expect(data.join(), encoded);
+        expect(utf8.decode(base64Decode(data.join())), payload);
+      }
+    });
+
+    test(
+      'independent records retain identifiers without changing the JSON schema',
+      () {
+        final payload = jsonEncode({
+          'schemaVersion': 2,
+          'case': 'village-eight',
+        });
+        for (final id in ['run-0', 'run-1']) {
+          final line = GameBenchmarkLog.chunkLines(payload, id: id).single;
+          final envelope = jsonDecode(
+            line.substring(GameBenchmarkLog.chunkPrefix.length),
+          ) as Map;
+          expect(envelope['id'], id);
+          expect(envelope['part'], 1);
+          expect(envelope['total'], 1);
+          expect(
+            utf8.decode(base64Decode(envelope['data'] as String)),
+            payload,
+          );
+        }
+      },
+    );
+
+    test('unsafe or oversized identifiers cannot expand or split a native log line', () {
+      for (final id in [
+        '',
+        '日本語',
+        'line\nbreak',
+        'has space',
+        'quoted"',
+        List.filled(65, 'a').join(),
+      ]) {
+        expect(
+          () => GameBenchmarkLog.chunkLines('{}', id: id).toList(),
+          throwsArgumentError,
+        );
+      }
+    });
+  });
+
   group('benchmark configuration', () {
     test('defaults preserve the short 60 limit and eight-second profile', () {
       final config = GameBenchmarkConfig.parse();
@@ -93,6 +292,197 @@ void main() {
   });
 
   group('per-case diagnostics', () {
+    test('CPU uses native elapsed deltas, allows multiple cores, and weights intervals', () async {
+      final clock = DiagnosticClock();
+      var reads = 0;
+      final diagnostics = clock.diagnostics(() async {
+        // Deliberately unlike the Dart request clock and process lifetime.
+        return switch (reads++) {
+          0 => deviceSnapshot(cpu: 500, uptime: 100000),
+          1 => deviceSnapshot(cpu: 520, uptime: 100010),
+          _ => deviceSnapshot(cpu: 522, uptime: 100014),
+        };
+      });
+      await diagnostics.beginCase();
+      clock.advance(10);
+      diagnostics.poll();
+      await flushReads();
+      clock.advance(8);
+      final result = (await diagnostics.finishCase())!;
+      final cpu = result['processCpu']! as Map;
+      expect(cpu['status'], 'available');
+      expect(cpu['cpuSeconds'], 22.0);
+      expect(cpu['elapsedSeconds'], 14.0);
+      expect(cpu['oneCorePercent'], closeTo(22 / 14 * 100, 1e-9));
+      expect(cpu['maximumIntervalOneCorePercent'], 200.0);
+      expect((cpu['intervals'] as List).map((e) => e['oneCorePercent']), [
+        200.0,
+        50.0,
+      ]);
+      expect(cpu['startCaseElapsedMs'], 0.0);
+      expect(cpu['endCaseElapsedMs'], 18000.0);
+      expect(cpu['measurementWindow'], contains('no warmup exclusion'));
+      expect(cpu['clock'], contains('not process lifetime'));
+    });
+
+    test(
+      'CPU window begins at the first snapshot, including its native latency',
+      () async {
+        final clock = DiagnosticClock();
+        var reads = 0;
+        final diagnostics = clock.diagnostics(() async {
+          clock.advance(++reads == 1 ? 2 : 1);
+          return deviceSnapshot(
+            cpu: 10 + clock.micros / 1e6,
+            uptime: 1000 + clock.micros / 1e6,
+          );
+        });
+        await diagnostics.beginCase();
+        clock.advance(8);
+        final result = (await diagnostics.finishCase())!;
+        final cpu = result['processCpu']! as Map;
+        expect(result['sceneRenderMeasurementSeconds'], 11.0);
+        expect(cpu['elapsedSeconds'], 9.0);
+        expect(cpu['cpuSeconds'], 9.0);
+        expect(cpu['oneCorePercent'], 100.0);
+        expect((cpu['start'] as Map)['sampleSystemUptimeSeconds'], 1002.0);
+      },
+    );
+
+    test(
+      'raw OS metrics and memory extrema remain in low-frequency case evidence',
+      () async {
+        final clock = DiagnosticClock();
+        var reads = 0;
+        final diagnostics = clock.diagnostics(
+          () async => deviceSnapshot(
+            cpu: (reads * 10).toDouble(),
+            uptime: (1000 + reads++ * 10).toDouble(),
+            footprint: reads == 2 ? 650000000 : 500000000,
+          ),
+        );
+        await diagnostics.beginCase();
+        clock.advance(10);
+        diagnostics.poll();
+        await flushReads();
+        clock.advance(10);
+        final result = (await diagnostics.finishCase())!;
+        final metrics = result['deviceMetrics']! as Map;
+        expect((metrics['memory'] as Map)['maximumSampledValue'], 650000000);
+        expect((metrics['memory'] as Map)['minimumSampledValue'], 500000000);
+        expect(
+          ((metrics['battery'] as Map)['end'] as Map)['state'],
+          'unplugged',
+        );
+        expect(
+          ((metrics['screenBrightness'] as Map)['start'] as Map)['value'],
+          .4,
+        );
+        expect(
+          ((metrics['activeProcessorCount'] as Map)['start'] as Map)['count'],
+          6,
+        );
+        final samples = (result['thermal'] as Map)['samples'] as List;
+        expect(samples.length, 3);
+        expect(samples.every((e) => e['thermalState'] == 'fair'), isTrue);
+        expect(
+          ((samples[1]['metrics'] as Map)['memory']
+              as Map)['physicalFootprintBytes'],
+          650000000,
+        );
+        expect(jsonDecode(jsonEncode(result)), isA<Map>());
+      },
+    );
+
+    test('missing metrics keep unavailable reasons and never infer CPU from uptime', () async {
+      final clock = DiagnosticClock();
+      final diagnostics = clock.diagnostics(() async => thermal('nominal'));
+      await diagnostics.beginCase();
+      clock.advance(8);
+      final result = (await diagnostics.finishCase())!;
+      final cpu = result['processCpu']! as Map;
+      expect(cpu['status'], 'unavailable');
+      expect(cpu['oneCorePercent'], isNull);
+      expect(cpu['availableSamples'], 0);
+      final metrics = result['deviceMetrics'] as Map;
+      expect((metrics['memory'] as Map)['status'], 'unavailable');
+      expect(
+        ((metrics['battery'] as Map)['end'] as Map)['reason'],
+        'notReported',
+      );
+    });
+
+    test('an unavailable middle sample marks CPU partial without losing cumulative evidence', () async {
+      final clock = DiagnosticClock();
+      var reads = 0;
+      final diagnostics = clock.diagnostics(() async {
+        if (++reads == 2) return thermal('nominal');
+        return deviceSnapshot(
+          cpu: clock.micros / 1e6 * 1.5,
+          uptime: clock.micros / 1e6,
+        );
+      });
+      await diagnostics.beginCase();
+      clock.advance(10);
+      diagnostics.poll();
+      await flushReads();
+      clock.advance(10);
+      final result = (await diagnostics.finishCase())!;
+      final cpu = result['processCpu']! as Map;
+      expect(cpu['status'], 'partial');
+      expect(cpu['availableSamples'], 2);
+      expect(cpu['oneCorePercent'], 150.0);
+      expect(((result['thermal'] as Map)['samples'] as List).length, 3);
+    });
+
+    test('counter reset and non-increasing native time invalidate aggregate CPU rates', () async {
+      for (final last in [
+        (cpu: 9.0, uptime: 1010.0),
+        (cpu: 15.0, uptime: 1000.0),
+        (cpu: 15.0, uptime: 999.0),
+      ]) {
+        final clock = DiagnosticClock();
+        var reads = 0;
+        final diagnostics = clock.diagnostics(
+          () async => ++reads == 1
+              ? deviceSnapshot(cpu: 10, uptime: 1000)
+              : deviceSnapshot(cpu: last.cpu, uptime: last.uptime),
+        );
+        await diagnostics.beginCase();
+        clock.advance(8);
+        final cpu = (await diagnostics.finishCase())!['processCpu']! as Map;
+        expect(cpu['status'], 'unavailable');
+        expect(cpu['reason'], 'invalidCounterSequence');
+        expect(cpu['oneCorePercent'], isNull);
+        expect((cpu['intervals'] as List).single['oneCorePercent'], isNull);
+      }
+    });
+
+    test(
+      'invalid numeric CPU evidence and single snapshots cannot create rates',
+      () async {
+        for (final value in [double.nan, double.infinity, -1.0]) {
+          final clock = DiagnosticClock();
+          final diagnostics = clock.diagnostics(
+            () async => deviceSnapshot(cpu: value, uptime: 1000),
+          );
+          await diagnostics.beginCase();
+          clock.advance(8);
+          final cpu = (await diagnostics.finishCase())!['processCpu']! as Map;
+          expect(cpu['status'], 'unavailable');
+          expect(cpu['oneCorePercent'], isNull);
+        }
+        final clock = DiagnosticClock();
+        final diagnostics = clock.diagnostics(
+          () async => deviceSnapshot(cpu: 10, uptime: 1000),
+        );
+        await diagnostics.beginCase();
+        final cpu = (await diagnostics.finishCase())!['processCpu']! as Map;
+        expect(cpu['reason'], 'insufficientSamples');
+        expect(cpu['oneCorePercent'], isNull);
+      },
+    );
+
     test(
       'three-minute fake run records real-time call rate and thermal peak',
       () async {
@@ -320,5 +710,56 @@ void main() {
         expect(reset['sceneRenderCallsPerSecond'], isNull);
       },
     );
+  });
+
+  group('benchmark completion', () {
+    test('playing uses normal pause to clear held input then freezes audio and clips', () {
+      final game = CompletionController();
+      game.state!
+        ..inputY = 1
+        ..sprint = true
+        ..aiming = true;
+      GameBenchmark.pauseCompletedWorkload(game);
+      expect(game.state!.phase, PlayPhase.paused);
+      expect(game.state!.inputY, 0);
+      expect(game.state!.sprint, isFalse);
+      expect(game.state!.aiming, isFalse);
+      expect(game.calls, ['toggle:paused', 'prepareStaticFrame']);
+      game.calls.clear();
+      GameBenchmark.pauseCompletedWorkload(game);
+      expect(game.state!.phase, PlayPhase.paused);
+      expect(game.calls, ['prepareStaticFrame']);
+    });
+
+    test(
+      'cinematic pauses in place without completing or skipping the event',
+      () {
+        final game = CompletionController();
+        game.state!.phase = PlayPhase.cinematic;
+        game.director = HazardDirector('opening')..index = 1;
+        final director = game.director;
+        GameBenchmark.pauseCompletedWorkload(game);
+        expect(game.state!.phase, PlayPhase.cinematic);
+        expect(game.director, same(director));
+        expect(game.director!.index, 1);
+        expect(game.director!.paused, isTrue);
+        expect(game.calls, ['eventPaused:true', 'prepareStaticFrame']);
+      },
+    );
+
+    test('interrupted menus remain intact and disposed or absent games are ignored', () {
+      final game = CompletionController();
+      game.state!.phase = PlayPhase.settings;
+      GameBenchmark.pauseCompletedWorkload(game);
+      expect(game.state!.phase, PlayPhase.settings);
+      expect(game.calls, ['prepareStaticFrame']);
+      game.calls.clear();
+      game.disposed = true;
+      GameBenchmark.pauseCompletedWorkload(game);
+      game.disposed = false;
+      game.state = null;
+      GameBenchmark.pauseCompletedWorkload(game);
+      expect(game.calls, isEmpty);
+    });
   });
 }
