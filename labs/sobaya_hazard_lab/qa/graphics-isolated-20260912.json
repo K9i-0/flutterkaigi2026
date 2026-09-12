@@ -1,0 +1,110 @@
+{
+  "date": "2026-09-12",
+  "purpose": "Check whether the later window-case spike in a sequential sweep also appears on fresh independent app launches.",
+  "runs": [
+    {
+      "recordedAtUtc": "2026-09-12T05:39:31.565338Z",
+      "runLabel": "isolated-window-enemies-quality",
+      "case": "window-enemies",
+      "valid": true,
+      "foreground": true,
+      "profile": true,
+      "viewport": [
+        1280,
+        840
+      ],
+      "devicePixelRatio": 2,
+      "renderScale": 0.85,
+      "renderPixels": [
+        2176,
+        1428
+      ],
+      "elapsedMs": 8003,
+      "samples": 240,
+      "uiP95Ms": 14.447,
+      "rasterP95Ms": 15.045,
+      "uiMaxMs": 15.472,
+      "rasterMaxMs": 15.658,
+      "uiOver16_7Ms": 0,
+      "rasterOver16_7Ms": 0,
+      "workload": {
+        "observedVisualPursuers": [
+          0,
+          1
+        ],
+        "pursuitTicks": 94,
+        "searchTicks": 0,
+        "maxConcurrentSearchers": 0,
+        "movingSearchers": [],
+        "advancedSearchers": [],
+        "beerPreviewTicks": 0,
+        "maxBeerGuideSprites": 0,
+        "activeEnemies": 2,
+        "currentSearchingEnemies": 0,
+        "beerGuideVisible": false,
+        "semanticReady": true
+      }
+    },
+    {
+      "recordedAtUtc": "2026-09-12T05:40:26.253846Z",
+      "runLabel": "isolated-village-eight-quality",
+      "case": "village-eight",
+      "valid": true,
+      "foreground": true,
+      "profile": true,
+      "viewport": [
+        1280,
+        840
+      ],
+      "devicePixelRatio": 2,
+      "renderScale": 0.85,
+      "renderPixels": [
+        2176,
+        1428
+      ],
+      "elapsedMs": 8011,
+      "samples": 240,
+      "uiP95Ms": 12.427,
+      "rasterP95Ms": 4.063,
+      "uiMaxMs": 19.131,
+      "rasterMaxMs": 8.418,
+      "uiOver16_7Ms": 3,
+      "rasterOver16_7Ms": 0,
+      "workload": {
+        "observedVisualPursuers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "pursuitTicks": 376,
+        "searchTicks": 178,
+        "maxConcurrentSearchers": 3,
+        "movingSearchers": [
+          2,
+          5,
+          6,
+          7
+        ],
+        "advancedSearchers": [
+          2,
+          5,
+          6,
+          7
+        ],
+        "beerPreviewTicks": 0,
+        "maxBeerGuideSprites": 0,
+        "activeEnemies": 8,
+        "currentSearchingEnemies": 3,
+        "beerGuideVisible": false,
+        "semanticReady": true
+      }
+    }
+  ],
+  "conclusion": "Both isolated cases met a UI and Raster P95 under 16.67ms. This does not establish presented 60fps or thermally sustained performance. The sequential-sweep difference is not attributed to a specific cause.",
+  "settingsOnlyFix": "These checks include the final transparent Material wrapper in the settings panel. The bulk comparison preceded that settings-only fix; gameplay rendering and assets were unchanged."
+}

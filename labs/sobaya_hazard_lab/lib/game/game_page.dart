@@ -1,4 +1,5 @@
 import 'game_journal.dart';
+import 'game_map.dart';
 import 'game_item_tile.dart';
 import 'game_cinematic_insert.dart';
 
@@ -17,6 +18,7 @@ import 'game_controller.dart';
 import 'game_input.dart';
 import 'game_state.dart';
 import 'game_settings.dart';
+import 'game_graphics_panel.dart';
 import 'game_mobile.dart';
 import 'game_title.dart';
 import 'game_equipment.dart';
@@ -1903,6 +1905,11 @@ class _HazardGamePageState extends State<HazardGamePage> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            HazardGraphicsPanel(
+              settings: options,
+              onChanged: game.changeSettings,
+            ),
+            const SizedBox(height: 24),
             const Text('難易度', style: TextStyle(color: gold)),
             DropdownButton<HazardDifficulty>(
               key: const ValueKey('game-difficulty'),
@@ -1954,16 +1961,20 @@ class _HazardGamePageState extends State<HazardGamePage> {
               onChanged: (v) =>
                   game.changeSettings((s) => s.touchSensitivity = v),
             ),
-            SwitchListTile.adaptive(
-              key: const ValueKey('game-touch-controls'),
-              contentPadding: EdgeInsets.zero,
-              title: const Text('タッチ操作を常に表示', style: TextStyle(color: ivory)),
-              subtitle: const Text(
-                'スマホ・小さい画面では自動で表示します。',
-                style: TextStyle(color: gold, fontSize: 12),
+            Material(
+              type: MaterialType.transparency,
+              child: SwitchListTile.adaptive(
+                key: const ValueKey('game-touch-controls'),
+                contentPadding: EdgeInsets.zero,
+                title: const Text('タッチ操作を常に表示', style: TextStyle(color: ivory)),
+                subtitle: const Text(
+                  'スマホ・小さい画面では自動で表示します。',
+                  style: TextStyle(color: gold, fontSize: 12),
+                ),
+                value: options.touchControls,
+                onChanged: (v) =>
+                    game.changeSettings((s) => s.touchControls = v),
               ),
-              value: options.touchControls,
-              onChanged: (v) => game.changeSettings((s) => s.touchControls = v),
             ),
             Text(
               '全体音量  ${(options.volume * 100).round()}%',
@@ -2054,33 +2065,18 @@ class _HazardGamePageState extends State<HazardGamePage> {
                     s.sensitivity = 1;
                     s.touchSensitivity = 1;
                     s.touchControls = false;
-                    s.renderScale = .85;
+                    final defaults = HazardSettings.decode(
+                      null,
+                      mobileDevice:
+                          defaultTargetPlatform == TargetPlatform.iOS ||
+                          defaultTargetPlatform == TargetPlatform.android,
+                    );
+                    s.renderScale = defaults.renderScale;
+                    s.graphicsPreset = defaults.graphicsPreset;
                     s.muted = false;
                     s.cinematicLighting = true;
                     s.threatEffects = .7;
                   }),
-                ),
-                action(
-                  'lighting',
-                  options.cinematicLighting ? '光と影の演出：ON' : '光と影の演出：OFF',
-                  () => game.changeSettings(
-                    (s) => s.cinematicLighting = !s.cinematicLighting,
-                  ),
-                ),
-                action(
-                  'quality',
-                  '画質：${options.renderScale < .8
-                      ? '軽量'
-                      : options.renderScale < 1
-                      ? '標準'
-                      : '高精細'}',
-                  () => game.changeSettings(
-                    (s) => s.renderScale = s.renderScale < .8
-                        ? .85
-                        : s.renderScale < 1
-                        ? 1
-                        : .65,
-                  ),
                 ),
               ],
             ),
@@ -2137,10 +2133,12 @@ class _HazardGamePageState extends State<HazardGamePage> {
     '${s.chapterLabel}  /  MAP',
     LayoutBuilder(
       builder: (context, bounds) {
-        final landscape = bounds.maxHeight < 420 && bounds.maxWidth > 400;
+        final landscape =
+            bounds.maxWidth >= 680 ||
+            (bounds.maxHeight < 420 && bounds.maxWidth > 400);
         final side = landscape
-            ? math.min(300.0, math.min(bounds.maxHeight, bounds.maxWidth * .52))
-            : math.min(300.0, bounds.maxWidth);
+            ? math.min(440.0, math.min(bounds.maxHeight, bounds.maxWidth * .55))
+            : math.min(360.0, bounds.maxWidth);
         final map = SizedBox.square(
           key: const ValueKey('game-full-map'),
           dimension: side,
@@ -2182,7 +2180,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
         );
       },
     ),
-    width: 600,
+    width: 900,
   );
 
   Widget pause(HazardGameState s) => modal(
@@ -2319,175 +2317,4 @@ class ReticlePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(ReticlePainter old) => old.hit != hit;
-}
-
-class VillageMapPainter extends CustomPainter {
-  VillageMapPainter(this.state, {this.detailed = false});
-  final bool detailed;
-  final HazardGameState state;
-  @override
-  void paint(Canvas c, Size size) {
-    c.save();
-    // Boundary cliffs extend beyond the playable area; keep both maps inside
-    // their viewport instead of painting over the surrounding controls.
-    c.clipRect(Offset.zero & size);
-    Offset at(double x, double z) =>
-        Offset((x + 24) / 48 * size.width, (27 - z) / 54 * size.height);
-    final p = Paint()..color = const Color(0xff30362e);
-    c.drawRect(Offset.zero & size, p);
-    p.color = const Color(0xff454c3e);
-    for (final o in state.obstacles) {
-      if (o.bottom > 1.5 || (o.id == 'gate' && state.gateOpen)) continue;
-      c.drawRect(
-        Rect.fromPoints(
-          at(o.x - o.w / 2, o.z + o.d / 2),
-          at(o.x + o.w / 2, o.z - o.d / 2),
-        ),
-        p,
-      );
-    }
-    p.color = const Color(0xff657057);
-    for (final h in state.map['houses']) {
-      final a = at(
-            (h['x'] - h['w'] / 2).toDouble(),
-            (h['z'] + h['d'] / 2).toDouble(),
-          ),
-          b = at(
-            (h['x'] + h['w'] / 2).toDouble(),
-            (h['z'] - h['d'] / 2).toDouble(),
-          );
-      c.drawRect(Rect.fromPoints(a, b), p);
-    }
-    p.color = gold;
-    c.drawCircle(
-      at(
-        (state.gate['x'] as num).toDouble(),
-        (state.gate['z'] as num).toDouble(),
-      ),
-      3,
-      p,
-    );
-    if (detailed) {
-      for (final e in state.map['exits'] as List? ?? []) {
-        c.drawCircle(
-          at((e['x'] as num).toDouble(), (e['z'] as num).toDouble()),
-          5,
-          p,
-        );
-      }
-      p.color = const Color(0xff9cd0cc);
-      for (final n in state.npcs) {
-        c.drawCircle(
-          at((n['x'] as num).toDouble(), (n['z'] as num).toDouble()),
-          4,
-          p,
-        );
-      }
-    }
-    p.color = gold;
-    for (final m in state.localMemos.where(
-      (m) => !state.foundMemos.contains(m.id),
-    )) {
-      c.drawRect(
-        Rect.fromCenter(
-          center: at(m.x, m.z),
-          width: detailed ? 6 : 3,
-          height: detailed ? 8 : 4,
-        ),
-        p,
-      );
-    }
-    for (final enemy in state.enemies.where((e) => e.alive && e.discovered)) {
-      final visible = enemy.visibleToPlayer;
-      final ex = visible ? enemy.x : enemy.lastSeenByPlayerX;
-      final ez = visible ? enemy.z : enemy.lastSeenByPlayerZ;
-      if (ex == null || ez == null) continue;
-      final color = switch (enemy.awareness) {
-        EnemyAwareness.chasing => const Color(0xffff5f52),
-        EnemyAwareness.searching => const Color(0xffffbd70),
-        EnemyAwareness.returning => const Color(0xffadbd9b),
-        _ => const Color(0xffe5c66a),
-      };
-      final point = at(ex, ez);
-      if (visible) {
-        final cone = state.enemySightPolygon(enemy);
-        if (cone.isNotEmpty) {
-          final path = Path()..moveTo(point.dx, point.dy);
-          for (final vertex in cone) {
-            final projected = at(vertex.x, vertex.y);
-            path.lineTo(projected.dx, projected.dy);
-          }
-          path.close();
-          c.drawPath(path, Paint()..color = color.withValues(alpha: .17));
-        }
-      }
-      p
-        ..color = color.withValues(alpha: visible ? 1 : .45)
-        ..style = visible ? PaintingStyle.fill : PaintingStyle.stroke
-        ..strokeWidth = 1.5;
-      c.drawCircle(point, detailed ? 4 : 2.8, p);
-      p.style = PaintingStyle.fill;
-    }
-    for (final splash in state.beerSplashes.where((s) => s.age < .8)) {
-      c.drawOval(
-        Rect.fromCenter(
-          center: at(splash.position.x, splash.position.z),
-          width: 16 / 48 * size.width,
-          height: 16 / 54 * size.height,
-        ),
-        Paint()
-          ..color = const Color(0xffffbd70)
-              .withValues(alpha: .4 * (1 - splash.age / .8))
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 1,
-      );
-    }
-    if (state.playerNoiseTime > 0) {
-      c.drawOval(
-        Rect.fromCenter(
-          center: at(state.x, state.z),
-          width: state.playerNoiseRadius / 48 * size.width * 2,
-          height: state.playerNoiseRadius / 54 * size.height * 2,
-        ),
-        Paint()
-          ..color = const Color(0x77f0d497)
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 1,
-      );
-    }
-    final landing = state.beerPreview?.landing;
-    if (state.running &&
-        state.aiming &&
-        state.weapon == 'beer' &&
-        state.beers > 0 &&
-        landing != null) {
-      final target = at(landing.x, landing.z);
-      final range = Rect.fromCenter(
-        center: target,
-        width: hazardBeerLureRadius / 48 * size.width * 2,
-        height: hazardBeerLureRadius / 54 * size.height * 2,
-      );
-      c.drawOval(range, Paint()..color = const Color(0x22ffdd22));
-      c.drawOval(
-        range,
-        Paint()
-          ..color = const Color(0xddffdd22)
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 1.5,
-      );
-      c.drawCircle(target, 3.5, Paint()..color = const Color(0xffff4433));
-    }
-    p.color = ivory;
-    c.drawCircle(at(state.x, state.z), 3, p);
-    final center = at(state.x, state.z);
-    c.drawLine(
-      center,
-      center + Offset(math.sin(state.heading), -math.cos(state.heading)) * 9,
-      p..strokeWidth = 2,
-    );
-    c.restore();
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter old) => true;
 }

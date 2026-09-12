@@ -46,7 +46,7 @@ for name, folder in [('village', 'pueblo'), ('farm', 'farm')]:
                 assert hit is None, (name, house['id'], dx, height, hit)
         for dx in [-1.35, 1.35]:
             hit = cast((x + dx, z - .7, 1.15), (x + dx, z + .7, 1.15))
-            assert hit and hit.startswith('House_' + house['id']), (
+            assert hit and (hit.startswith('House_' + house['id']) or hit == 'StaticArchitecture'), (
                 name, house['id'], 'wall beside opening', hit)
         checks.append({'rearDoor': house['id'], 'x': x, 'z': z,
                        'clearBodyWidth': .84, 'clearHeadHeight': 1.72,

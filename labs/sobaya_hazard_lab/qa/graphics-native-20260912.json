@@ -1,0 +1,102 @@
+{
+  "date": "2026-09-12",
+  "platform": "macOS / Apple M4",
+  "target": "lib/game_main.dart",
+  "mode": "debug",
+  "tools": [
+    "Dart MCP launch_app / hot_reload / get_runtime_errors",
+    "Marionette extensions / key and tap actions / screenshots"
+  ],
+  "connection": {
+    "app": "sobaya_hazard",
+    "ready": true,
+    "foreground": true
+  },
+  "visualChecks": [
+    {
+      "name": "village comparison",
+      "images": [
+        "design/graphics-20260912/baseline-village.png",
+        "design/graphics-20260912/final-village.png"
+      ],
+      "kind": "static art fixture at the same camera position"
+    },
+    {
+      "name": "farm facade",
+      "position": {
+        "x": 3,
+        "z": -16,
+        "yaw": 3.75,
+        "pitch": 0.07
+      },
+      "image": "design/graphics-20260912/farm-detail.png"
+    },
+    {
+      "name": "mountain facade",
+      "position": {
+        "x": 8,
+        "z": 1,
+        "yaw": 3.141592653589793,
+        "pitch": 0.08
+      },
+      "image": "design/graphics-20260912/mountain-detail.png"
+    },
+    {
+      "name": "window vault",
+      "scenario": "window",
+      "action": "windowPose",
+      "seconds": 1.1,
+      "image": "design/graphics-20260912/window.png"
+    },
+    {
+      "name": "farm map",
+      "method": "M key / modal close",
+      "mapLogicalSide": 440,
+      "image": "design/graphics-20260912/farm-map.png",
+      "observed": "Japanese labels, chapter, doors, walls, scale, position and legend are readable; no overflow."
+    },
+    {
+      "name": "settings",
+      "method": "real taps and inspectHazardGame",
+      "presets": [
+        "balanced",
+        "quality",
+        "showcase"
+      ],
+      "scales": [
+        0.65,
+        0.85,
+        1
+      ],
+      "observed": "Preset changes retain resolution; resolution changes retain preset; actual AA, shadow resolution and GI reflect preset.",
+      "image": "design/graphics-20260912/settings.png"
+    }
+  ],
+  "settingsRestored": {
+    "graphicsPreset": "quality",
+    "renderScale": 1,
+    "reason": "Preserved the pre-existing saved resolution after UI checks."
+  },
+  "runtimeErrors": {
+    "found": "Existing touch-controls SwitchListTile painted behind a decorated modal ancestor.",
+    "fix": "Wrap the existing tile in transparent Material; graphics panel already owns its Material.",
+    "final": "No runtime errors after hot reload and repeated preset changes."
+  },
+  "validation": {
+    "fullSuiteBeforeLastSettingsOnlyFix": {
+      "passed": 380,
+      "optionalSkipped": 1
+    },
+    "afterLastFix": {
+      "analyze": "No issues found",
+      "focusedExistingTests": 2,
+      "nativeHotReload": "passed",
+      "runtimeErrors": 0
+    }
+  },
+  "limits": [
+    "Static art/pose images are not a continuous gameplay route or frame performance test.",
+    "Screenshots are downscaled to 800px wide by Marionette.",
+    "iOS optimization is deferred at the user's request."
+  ]
+}

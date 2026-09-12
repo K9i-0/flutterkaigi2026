@@ -106,7 +106,8 @@ def weed_tuft(g,x,z):
   face(g,grass,[lo[0],lo[1],mid[1],mid[0]])
   face(g,grass,[mid[0],mid[1],tip],[(0,0),(1,0),(.5,1)])
 
-def window(g,x,z,h,sign,shutter=False):
+def window(g,x,z,h,sign,shutter=False,width_scale=1):
+ before={m:len(d['v']) for m,d in groups.get(g,{}).items()}
  # Layered sill, lintel and four small dirty panes replace the flat teal square.
  box(g,wood,(x,z,h),(1.30,.12,1.44))
  for dx in [-.275,.275]:
@@ -122,6 +123,10 @@ def window(g,x,z,h,sign,shutter=False):
    box(g,boards,(xx,z-sign*.015,h),(.53,.10,1.32))
    for dz in [-.44,.44]:box(g,wood,(xx,z+sign*.05,h+dz),(.54,.07,.08))
    for dz in [-.49,.49]:box(g,metal,(xx-side*.20,z+sign*.095,h+dz),(.12,.025,.065))
+ if width_scale!=1:
+  for mat,data in groups[g].items():
+   for i in range(before.get(mat,0),len(data['v'])):
+    xx,zz,yy=data['v'][i];data['v'][i]=(x+(xx-x)*width_scale,zz,yy)
 
 def interior_details(g,id,x,z,w,d):
  # Detail existing furniture footprints so navigation/collision stays identical.
@@ -144,7 +149,9 @@ def interior_details(g,id,x,z,w,d):
 def facade_details(g,id,x,z,w,d,h,two,rear_door=False):
  # Plaster upper storeys and selected cottages distinguish rooms at a distance.
  if two or id in ['Entrance','SaveHut','Ruins']:
-  low=3.12 if two else 2.30;hh=h-low
+  # Wide cottages have a vault aperture up to 2.42m; plaster must not seal
+  # its upper 12cm while the collision map still describes an open window.
+  low=3.12 if two else (2.50 if w>=7 else 2.30);hh=h-low
   for side in [-1,1]:
    box(g,plaster,(x+side*(w/2+.182),z,low+hh/2),(.018,d,hh))
    box(g,plaster,(x,z+side*(d/2+.182),low+hh/2),(w,.018,hh))
@@ -210,7 +217,11 @@ def house(id,x,z,w,d,two=False,rear_door=False):
       box(g,boards,(wx+sign*1.10,wz+.06,1.62),(.48,.10,1.48))
      box(g,wood,(wx,wz,2.46),(1.75,.48,.09))
      box(g,stone,(wx,wz,.79),(1.75,.52,.06))
-    else:window(g,xx,zz,yy,-1 if zz<z else 1,shutter=(w>=7 and i==0))
+    else:
+     # A full-size window on the 4m shed intrudes into its doorway. Fit its
+     # existing visible opening beside the door without changing collision.
+     small=w<4.8;window_x=x+(-1 if i==0 else 1)*(w/2-.68) if small else xx
+     window(g,window_x,zz,yy,-1 if zz<z else 1,shutter=(w>=7 and i==0),width_scale=.64 if small else 1)
  if two:
   # Upstairs floor with a stairwell along its east wall.
   box(g,boards,(x-.9,z,2.95),(w-2.3,d-.6,.16));box(g,boards,(x+w/2-1.05,z+d/2-1,2.95),(1.7,1.7,.16))
@@ -249,15 +260,30 @@ def make_objects():
   mesh=bpy.data.meshes.new(group);mesh.from_pydata(verts,[],faces);mesh.update();obj=bpy.data.objects.new(group,mesh);bpy.context.collection.objects.link(obj)
   for mat in materials:mesh.materials.append(mat)
   uv=mesh.uv_layers.new()
+  # Static environment colour carries broad material variation/contact shade.
+  # It is ordinary glTF COLOR_0, multiplied by the shared albedo at runtime;
+  # no extra texture, material or lighting pass is required.
+  art_colors=mesh.color_attributes.new(name='EnvironmentTint',type='FLOAT_COLOR',domain='CORNER') if '_environment_vertex_tint' in globals() else None
   for poly,mi,coords in zip(mesh.polygons,indices,uvs):
    poly.material_index=mi
    period={stone:3,dirt:5,wood:1.4,boards:1.4,roof:1.5,plaster:3}.get(materials[mi].name,1)
-   for li,coord in zip(poly.loop_indices,coords):uv.data[li].uv=tuple(v/period for v in coord)
+   for li,coord in zip(poly.loop_indices,coords):
+    uv.data[li].uv=tuple(v/period for v in coord)
+    if art_colors:
+     vertex=mesh.vertices[mesh.loops[li].vertex_index].co
+     art_colors.data[li].color=_environment_vertex_tint(group,materials[mi].name,vertex,poly.normal)
   objects.append(obj)
+ if '_environment_vertex_tint' in globals():
+  from hazard_environment_batch import batch_static_architecture
+  objects=batch_static_architecture(objects)
  return objects
 
 def export(path):
- make_objects();bpy.ops.object.select_all(action='SELECT');bpy.ops.export_scene.gltf(filepath=str(path),export_format='GLB',use_selection=True,export_animations=False)
+ if path.stem in ['village','farm','mountain']:
+  from hazard_environment_art import polish_environment
+  globals()['_environment_vertex_tint']=polish_environment(path.stem,globals())
+ else:globals().pop('_environment_vertex_tint',None)
+ make_objects();bpy.ops.object.select_all(action='SELECT');bpy.ops.export_scene.gltf(filepath=str(path),export_format='GLB',use_selection=True,export_animations=False,export_vertex_color='NAME' if '_environment_vertex_tint' in globals() else 'MATERIAL',export_vertex_color_name='EnvironmentTint',export_extras='_environment_vertex_tint' in globals())
 
 def reset_world():
  bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False)

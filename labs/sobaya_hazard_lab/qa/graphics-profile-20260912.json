@@ -1,0 +1,992 @@
+{
+  "date": "2026-09-12",
+  "scope": "Mac first; iOS optimization deferred at user's request",
+  "baselineRevision": "a71450932b391b49bdf2a78e2cb55d779e6b89de",
+  "machine": {
+    "model": "MacBook Air",
+    "chip": "Apple M4",
+    "memoryGB": 32,
+    "os": "macOS 26.6.2 (25G83)"
+  },
+  "validation": {
+    "analyze": "passed",
+    "flutterTests": {
+      "passed": 380,
+      "optionalSkipped": 1
+    },
+    "environmentAudit": "all 180 aperture rays, placement JSON identity, node retention, attribute and budget checks passed"
+  },
+  "comparison": {
+    "case": "village-eight",
+    "profile": true,
+    "window": [
+      1280,
+      840
+    ],
+    "devicePixelRatio": 2,
+    "renderScale": 0.85,
+    "renderPixels": [
+      2176,
+      1428
+    ],
+    "samplesPerRun": 240,
+    "minSecondsPerRun": 8,
+    "controlledProjectWork": "No overlapping project tests, Blender exports or other project game renderers during samples; each preceding build finished before the app measurement began.",
+    "limitations": [
+      "Flutter UI/raster durations are not GPU execution times or presented FPS.",
+      "Short repeated runs; 15-minute thermal endurance not established.",
+      "System-wide background activity and exact thermal state were not controlled.",
+      "Earlier exploratory baseline3 collided with a test; all earlier exploratory readings are excluded from final comparison."
+    ],
+    "results": {
+      "quality": {
+        "runs": 3,
+        "uiP95MedianMs": 13.026,
+        "rasterP95MedianMs": 4.198,
+        "uiP95RangeMs": [
+          12.447,
+          13.54
+        ],
+        "rasterP95RangeMs": [
+          4.185,
+          4.448
+        ],
+        "allValid": true,
+        "uiOver16_7Ms": [
+          2,
+          2,
+          5
+        ],
+        "rasterOver16_7Ms": [
+          0,
+          0,
+          0
+        ]
+      },
+      "baseline": {
+        "runs": 3,
+        "uiP95MedianMs": 18.244,
+        "rasterP95MedianMs": 5.903,
+        "uiP95RangeMs": [
+          18.004,
+          18.55
+        ],
+        "rasterP95RangeMs": [
+          5.83,
+          5.921
+        ],
+        "allValid": true,
+        "uiOver16_7Ms": [
+          36,
+          45,
+          45
+        ],
+        "rasterOver16_7Ms": [
+          0,
+          0,
+          0
+        ]
+      },
+      "balanced": {
+        "runs": 3,
+        "uiP95MedianMs": 11.298,
+        "rasterP95MedianMs": 4.033,
+        "uiP95RangeMs": [
+          11.13,
+          14.528
+        ],
+        "rasterP95RangeMs": [
+          4.005,
+          4.67
+        ],
+        "allValid": true,
+        "uiOver16_7Ms": [
+          1,
+          2,
+          2
+        ],
+        "rasterOver16_7Ms": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "runs": [
+      {
+        "schemaVersion": 2,
+        "recordedAtUtc": "2026-09-12T05:17:44.334312Z",
+        "runLabel": "final-quality-1",
+        "case": "village-eight",
+        "profile": true,
+        "valid": true,
+        "interrupted": false,
+        "foreground": true,
+        "gamePhase": "playing",
+        "settings": {
+          "difficulty": "standard",
+          "volume": 1,
+          "voiceVolume": 1,
+          "environmentVolume": 1,
+          "musicVolume": 1,
+          "effectsVolume": 1,
+          "sensitivity": 1,
+          "touchSensitivity": 1,
+          "threatEffects": 0.7,
+          "touchControls": false,
+          "renderScale": 0.85,
+          "muted": false,
+          "cinematicLighting": true,
+          "graphicsPreset": "quality"
+        },
+        "lighting": {
+          "advanced": true,
+          "graphicsPreset": "quality",
+          "antiAliasing": "taa",
+          "globalIllumination": false,
+          "globalIlluminationProbeUpdateBudget": 64,
+          "shadowFilter": "bilinearPcf",
+          "shadowMapResolution": 1024,
+          "shadowCascadeCount": 2,
+          "shadowMaxDistance": 32,
+          "cacheStaticShadows": true,
+          "ambientOcclusion": true,
+          "ambientOcclusionSamples": 8,
+          "ambientOcclusionHalfResolution": true,
+          "bloom": true,
+          "depthOfField": false,
+          "focusDistance": 3.4062110234949303,
+          "zone": "village"
+        },
+        "region": "village",
+        "renderScale": 0.85,
+        "viewport": [
+          1280,
+          840
+        ],
+        "devicePixelRatio": 2,
+        "renderPixels": [
+          2176,
+          1428
+        ],
+        "measurement": "Flutter UI and raster thread durations; not GPU execution time or presented FPS",
+        "elapsedMs": 8004,
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 12.447,
+        "rasterP95Ms": 4.198,
+        "uiMaxMs": 18.443,
+        "rasterMaxMs": 8.82,
+        "uiOver16_7Ms": 2,
+        "rasterOver16_7Ms": 0,
+        "simulatedSeconds": 7.4166680000000245,
+        "workload": {
+          "observedVisualPursuers": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "pursuitTicks": 410,
+          "searchTicks": 2,
+          "maxConcurrentSearchers": 2,
+          "movingSearchers": [
+            0,
+            4,
+            5
+          ],
+          "advancedSearchers": [
+            0,
+            4,
+            5
+          ],
+          "beerPreviewTicks": 0,
+          "maxBeerGuideSprites": 0,
+          "activeEnemies": 8,
+          "currentSearchingEnemies": 0,
+          "beerGuideVisible": false,
+          "semanticReady": true
+        },
+        "speechMorphTicks": {},
+        "completedWindowPassages": 0
+      },
+      {
+        "comparisonLabel": "final-baseline-1",
+        "case": "village-eight",
+        "profile": true,
+        "valid": true,
+        "interrupted": false,
+        "foreground": true,
+        "gamePhase": "playing",
+        "settings": {
+          "difficulty": "standard",
+          "volume": 1,
+          "voiceVolume": 1,
+          "environmentVolume": 1,
+          "musicVolume": 1,
+          "effectsVolume": 1,
+          "sensitivity": 1,
+          "touchSensitivity": 1,
+          "threatEffects": 0.7,
+          "touchControls": false,
+          "renderScale": 0.85,
+          "muted": false,
+          "cinematicLighting": true
+        },
+        "lighting": {
+          "advanced": true,
+          "antiAliasing": "taa",
+          "globalIllumination": true,
+          "shadowFilter": "bilinearPcf",
+          "depthOfField": false,
+          "focusDistance": 3.4062116394251434,
+          "zone": "village"
+        },
+        "region": "village",
+        "renderScale": 0.85,
+        "viewport": [
+          1280,
+          840
+        ],
+        "devicePixelRatio": 2,
+        "elapsedMs": 8014,
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 18.004,
+        "rasterP95Ms": 5.83,
+        "uiMaxMs": 34.842,
+        "rasterMaxMs": 6.517,
+        "uiOver16_7Ms": 36,
+        "rasterOver16_7Ms": 0,
+        "simulatedSeconds": 7.350006000000001,
+        "workload": {
+          "observedVisualPursuers": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "pursuitTicks": 333,
+          "searchTicks": 0,
+          "maxConcurrentSearchers": 1,
+          "movingSearchers": [
+            2,
+            6
+          ],
+          "advancedSearchers": [
+            2,
+            5,
+            6
+          ],
+          "beerPreviewTicks": 0,
+          "maxBeerGuideSprites": 0,
+          "activeEnemies": 8,
+          "currentSearchingEnemies": 1,
+          "beerGuideVisible": false,
+          "semanticReady": true
+        },
+        "speechMorphTicks": {},
+        "completedWindowPassages": 0
+      },
+      {
+        "schemaVersion": 2,
+        "recordedAtUtc": "2026-09-12T05:20:01.880339Z",
+        "runLabel": "final-balanced-1",
+        "case": "village-eight",
+        "profile": true,
+        "valid": true,
+        "interrupted": false,
+        "foreground": true,
+        "gamePhase": "playing",
+        "settings": {
+          "difficulty": "standard",
+          "volume": 1,
+          "voiceVolume": 1,
+          "environmentVolume": 1,
+          "musicVolume": 1,
+          "effectsVolume": 1,
+          "sensitivity": 1,
+          "touchSensitivity": 1,
+          "threatEffects": 0.7,
+          "touchControls": false,
+          "renderScale": 0.85,
+          "muted": false,
+          "cinematicLighting": true,
+          "graphicsPreset": "balanced"
+        },
+        "lighting": {
+          "advanced": true,
+          "graphicsPreset": "balanced",
+          "antiAliasing": "smaa",
+          "globalIllumination": false,
+          "globalIlluminationProbeUpdateBudget": 64,
+          "shadowFilter": "bilinearPcf",
+          "shadowMapResolution": 1024,
+          "shadowCascadeCount": 2,
+          "shadowMaxDistance": 32,
+          "cacheStaticShadows": true,
+          "ambientOcclusion": true,
+          "ambientOcclusionSamples": 8,
+          "ambientOcclusionHalfResolution": true,
+          "bloom": true,
+          "depthOfField": false,
+          "focusDistance": 3.4062124369728415,
+          "zone": "village"
+        },
+        "region": "village",
+        "renderScale": 0.85,
+        "viewport": [
+          1280,
+          840
+        ],
+        "devicePixelRatio": 2,
+        "renderPixels": [
+          2176,
+          1428
+        ],
+        "measurement": "Flutter UI and raster thread durations; not GPU execution time or presented FPS",
+        "elapsedMs": 8003,
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 11.13,
+        "rasterP95Ms": 4.005,
+        "uiMaxMs": 17.16,
+        "rasterMaxMs": 4.504,
+        "uiOver16_7Ms": 1,
+        "rasterOver16_7Ms": 0,
+        "simulatedSeconds": 7.049999000000021,
+        "workload": {
+          "observedVisualPursuers": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "pursuitTicks": 504,
+          "searchTicks": 126,
+          "maxConcurrentSearchers": 3,
+          "movingSearchers": [
+            2,
+            4,
+            5
+          ],
+          "advancedSearchers": [
+            2,
+            4,
+            5
+          ],
+          "beerPreviewTicks": 0,
+          "maxBeerGuideSprites": 0,
+          "activeEnemies": 8,
+          "currentSearchingEnemies": 2,
+          "beerGuideVisible": false,
+          "semanticReady": true
+        },
+        "speechMorphTicks": {},
+        "completedWindowPassages": 0
+      },
+      {
+        "schemaVersion": 2,
+        "recordedAtUtc": "2026-09-12T05:20:54.785713Z",
+        "runLabel": "final-quality-2",
+        "case": "village-eight",
+        "profile": true,
+        "valid": true,
+        "interrupted": false,
+        "foreground": true,
+        "gamePhase": "playing",
+        "settings": {
+          "difficulty": "standard",
+          "volume": 1,
+          "voiceVolume": 1,
+          "environmentVolume": 1,
+          "musicVolume": 1,
+          "effectsVolume": 1,
+          "sensitivity": 1,
+          "touchSensitivity": 1,
+          "threatEffects": 0.7,
+          "touchControls": false,
+          "renderScale": 0.85,
+          "muted": false,
+          "cinematicLighting": true,
+          "graphicsPreset": "quality"
+        },
+        "lighting": {
+          "advanced": true,
+          "graphicsPreset": "quality",
+          "antiAliasing": "taa",
+          "globalIllumination": false,
+          "globalIlluminationProbeUpdateBudget": 64,
+          "shadowFilter": "bilinearPcf",
+          "shadowMapResolution": 1024,
+          "shadowCascadeCount": 2,
+          "shadowMaxDistance": 32,
+          "cacheStaticShadows": true,
+          "ambientOcclusion": true,
+          "ambientOcclusionSamples": 8,
+          "ambientOcclusionHalfResolution": true,
+          "bloom": true,
+          "depthOfField": false,
+          "focusDistance": 3.4062108183036397,
+          "zone": "village"
+        },
+        "region": "village",
+        "renderScale": 0.85,
+        "viewport": [
+          1280,
+          840
+        ],
+        "devicePixelRatio": 2,
+        "renderPixels": [
+          2176,
+          1428
+        ],
+        "measurement": "Flutter UI and raster thread durations; not GPU execution time or presented FPS",
+        "elapsedMs": 8021,
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 13.54,
+        "rasterP95Ms": 4.185,
+        "uiMaxMs": 21.174,
+        "rasterMaxMs": 9.341,
+        "uiOver16_7Ms": 2,
+        "rasterOver16_7Ms": 0,
+        "simulatedSeconds": 7.108332000000024,
+        "workload": {
+          "observedVisualPursuers": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "pursuitTicks": 350,
+          "searchTicks": 169,
+          "maxConcurrentSearchers": 3,
+          "movingSearchers": [
+            2,
+            5,
+            7
+          ],
+          "advancedSearchers": [
+            2,
+            5,
+            6,
+            7
+          ],
+          "beerPreviewTicks": 0,
+          "maxBeerGuideSprites": 0,
+          "activeEnemies": 8,
+          "currentSearchingEnemies": 2,
+          "beerGuideVisible": false,
+          "semanticReady": true
+        },
+        "speechMorphTicks": {},
+        "completedWindowPassages": 0
+      },
+      {
+        "comparisonLabel": "final-baseline-2",
+        "case": "village-eight",
+        "profile": true,
+        "valid": true,
+        "interrupted": false,
+        "foreground": true,
+        "gamePhase": "playing",
+        "settings": {
+          "difficulty": "standard",
+          "volume": 1,
+          "voiceVolume": 1,
+          "environmentVolume": 1,
+          "musicVolume": 1,
+          "effectsVolume": 1,
+          "sensitivity": 1,
+          "touchSensitivity": 1,
+          "threatEffects": 0.7,
+          "touchControls": false,
+          "renderScale": 0.85,
+          "muted": false,
+          "cinematicLighting": true
+        },
+        "lighting": {
+          "advanced": true,
+          "antiAliasing": "taa",
+          "globalIllumination": true,
+          "shadowFilter": "bilinearPcf",
+          "depthOfField": false,
+          "focusDistance": 3.4062113692583873,
+          "zone": "village"
+        },
+        "region": "village",
+        "renderScale": 0.85,
+        "viewport": [
+          1280,
+          840
+        ],
+        "devicePixelRatio": 2,
+        "elapsedMs": 8010,
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 18.244,
+        "rasterP95Ms": 5.921,
+        "uiMaxMs": 43.412,
+        "rasterMaxMs": 8.391,
+        "uiOver16_7Ms": 45,
+        "rasterOver16_7Ms": 0,
+        "simulatedSeconds": 7.266665999999998,
+        "workload": {
+          "observedVisualPursuers": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "pursuitTicks": 298,
+          "searchTicks": 46,
+          "maxConcurrentSearchers": 3,
+          "movingSearchers": [
+            0,
+            4,
+            5,
+            6
+          ],
+          "advancedSearchers": [
+            0,
+            4,
+            5,
+            6
+          ],
+          "beerPreviewTicks": 0,
+          "maxBeerGuideSprites": 0,
+          "activeEnemies": 8,
+          "currentSearchingEnemies": 1,
+          "beerGuideVisible": false,
+          "semanticReady": true
+        },
+        "speechMorphTicks": {},
+        "completedWindowPassages": 0
+      },
+      {
+        "schemaVersion": 2,
+        "recordedAtUtc": "2026-09-12T05:22:31.301843Z",
+        "runLabel": "final-balanced-2",
+        "case": "village-eight",
+        "profile": true,
+        "valid": true,
+        "interrupted": false,
+        "foreground": true,
+        "gamePhase": "playing",
+        "settings": {
+          "difficulty": "standard",
+          "volume": 1,
+          "voiceVolume": 1,
+          "environmentVolume": 1,
+          "musicVolume": 1,
+          "effectsVolume": 1,
+          "sensitivity": 1,
+          "touchSensitivity": 1,
+          "threatEffects": 0.7,
+          "touchControls": false,
+          "renderScale": 0.85,
+          "muted": false,
+          "cinematicLighting": true,
+          "graphicsPreset": "balanced"
+        },
+        "lighting": {
+          "advanced": true,
+          "graphicsPreset": "balanced",
+          "antiAliasing": "smaa",
+          "globalIllumination": false,
+          "globalIlluminationProbeUpdateBudget": 64,
+          "shadowFilter": "bilinearPcf",
+          "shadowMapResolution": 1024,
+          "shadowCascadeCount": 2,
+          "shadowMaxDistance": 32,
+          "cacheStaticShadows": true,
+          "ambientOcclusion": true,
+          "ambientOcclusionSamples": 8,
+          "ambientOcclusionHalfResolution": true,
+          "bloom": true,
+          "depthOfField": false,
+          "focusDistance": 3.4062113748658835,
+          "zone": "village"
+        },
+        "region": "village",
+        "renderScale": 0.85,
+        "viewport": [
+          1280,
+          840
+        ],
+        "devicePixelRatio": 2,
+        "renderPixels": [
+          2176,
+          1428
+        ],
+        "measurement": "Flutter UI and raster thread durations; not GPU execution time or presented FPS",
+        "elapsedMs": 8004,
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 11.298,
+        "rasterP95Ms": 4.033,
+        "uiMaxMs": 25.422,
+        "rasterMaxMs": 4.645,
+        "uiOver16_7Ms": 2,
+        "rasterOver16_7Ms": 0,
+        "simulatedSeconds": 7.091666000000015,
+        "workload": {
+          "observedVisualPursuers": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "pursuitTicks": 438,
+          "searchTicks": 0,
+          "maxConcurrentSearchers": 1,
+          "movingSearchers": [
+            0,
+            5
+          ],
+          "advancedSearchers": [
+            0,
+            5
+          ],
+          "beerPreviewTicks": 0,
+          "maxBeerGuideSprites": 0,
+          "activeEnemies": 8,
+          "currentSearchingEnemies": 0,
+          "beerGuideVisible": false,
+          "semanticReady": true
+        },
+        "speechMorphTicks": {},
+        "completedWindowPassages": 0
+      },
+      {
+        "schemaVersion": 2,
+        "recordedAtUtc": "2026-09-12T05:23:27.335827Z",
+        "runLabel": "final-quality-3",
+        "case": "village-eight",
+        "profile": true,
+        "valid": true,
+        "interrupted": false,
+        "foreground": true,
+        "gamePhase": "playing",
+        "settings": {
+          "difficulty": "standard",
+          "volume": 1,
+          "voiceVolume": 1,
+          "environmentVolume": 1,
+          "musicVolume": 1,
+          "effectsVolume": 1,
+          "sensitivity": 1,
+          "touchSensitivity": 1,
+          "threatEffects": 0.7,
+          "touchControls": false,
+          "renderScale": 0.85,
+          "muted": false,
+          "cinematicLighting": true,
+          "graphicsPreset": "quality"
+        },
+        "lighting": {
+          "advanced": true,
+          "graphicsPreset": "quality",
+          "antiAliasing": "taa",
+          "globalIllumination": false,
+          "globalIlluminationProbeUpdateBudget": 64,
+          "shadowFilter": "bilinearPcf",
+          "shadowMapResolution": 1024,
+          "shadowCascadeCount": 2,
+          "shadowMaxDistance": 32,
+          "cacheStaticShadows": true,
+          "ambientOcclusion": true,
+          "ambientOcclusionSamples": 8,
+          "ambientOcclusionHalfResolution": true,
+          "bloom": true,
+          "depthOfField": false,
+          "focusDistance": 3.406212294707606,
+          "zone": "village"
+        },
+        "region": "village",
+        "renderScale": 0.85,
+        "viewport": [
+          1280,
+          840
+        ],
+        "devicePixelRatio": 2,
+        "renderPixels": [
+          2176,
+          1428
+        ],
+        "measurement": "Flutter UI and raster thread durations; not GPU execution time or presented FPS",
+        "elapsedMs": 8008,
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 13.026,
+        "rasterP95Ms": 4.448,
+        "uiMaxMs": 33.157,
+        "rasterMaxMs": 10.228,
+        "uiOver16_7Ms": 5,
+        "rasterOver16_7Ms": 0,
+        "simulatedSeconds": 7.18333200000002,
+        "workload": {
+          "observedVisualPursuers": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "pursuitTicks": 377,
+          "searchTicks": 51,
+          "maxConcurrentSearchers": 2,
+          "movingSearchers": [
+            0,
+            4,
+            5,
+            6
+          ],
+          "advancedSearchers": [
+            0,
+            4,
+            5,
+            6
+          ],
+          "beerPreviewTicks": 0,
+          "maxBeerGuideSprites": 0,
+          "activeEnemies": 8,
+          "currentSearchingEnemies": 1,
+          "beerGuideVisible": false,
+          "semanticReady": true
+        },
+        "speechMorphTicks": {},
+        "completedWindowPassages": 0
+      },
+      {
+        "comparisonLabel": "final-baseline-3",
+        "case": "village-eight",
+        "profile": true,
+        "valid": true,
+        "interrupted": false,
+        "foreground": true,
+        "gamePhase": "playing",
+        "settings": {
+          "difficulty": "standard",
+          "volume": 1,
+          "voiceVolume": 1,
+          "environmentVolume": 1,
+          "musicVolume": 1,
+          "effectsVolume": 1,
+          "sensitivity": 1,
+          "touchSensitivity": 1,
+          "threatEffects": 0.7,
+          "touchControls": false,
+          "renderScale": 0.85,
+          "muted": false,
+          "cinematicLighting": true
+        },
+        "lighting": {
+          "advanced": true,
+          "antiAliasing": "taa",
+          "globalIllumination": true,
+          "shadowFilter": "bilinearPcf",
+          "depthOfField": false,
+          "focusDistance": 3.4062129764012385,
+          "zone": "village"
+        },
+        "region": "village",
+        "renderScale": 0.85,
+        "viewport": [
+          1280,
+          840
+        ],
+        "devicePixelRatio": 2,
+        "elapsedMs": 8008,
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 18.55,
+        "rasterP95Ms": 5.903,
+        "uiMaxMs": 33.787,
+        "rasterMaxMs": 12.553,
+        "uiOver16_7Ms": 45,
+        "rasterOver16_7Ms": 0,
+        "simulatedSeconds": 7.141664000000012,
+        "workload": {
+          "observedVisualPursuers": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "pursuitTicks": 332,
+          "searchTicks": 108,
+          "maxConcurrentSearchers": 2,
+          "movingSearchers": [
+            2,
+            5,
+            6
+          ],
+          "advancedSearchers": [
+            2,
+            5,
+            6
+          ],
+          "beerPreviewTicks": 0,
+          "maxBeerGuideSprites": 0,
+          "activeEnemies": 8,
+          "currentSearchingEnemies": 2,
+          "beerGuideVisible": false,
+          "semanticReady": true
+        },
+        "speechMorphTicks": {},
+        "completedWindowPassages": 0
+      },
+      {
+        "schemaVersion": 2,
+        "recordedAtUtc": "2026-09-12T05:25:26.583051Z",
+        "runLabel": "final-balanced-3",
+        "case": "village-eight",
+        "profile": true,
+        "valid": true,
+        "interrupted": false,
+        "foreground": true,
+        "gamePhase": "playing",
+        "settings": {
+          "difficulty": "standard",
+          "volume": 1,
+          "voiceVolume": 1,
+          "environmentVolume": 1,
+          "musicVolume": 1,
+          "effectsVolume": 1,
+          "sensitivity": 1,
+          "touchSensitivity": 1,
+          "threatEffects": 0.7,
+          "touchControls": false,
+          "renderScale": 0.85,
+          "muted": false,
+          "cinematicLighting": true,
+          "graphicsPreset": "balanced"
+        },
+        "lighting": {
+          "advanced": true,
+          "graphicsPreset": "balanced",
+          "antiAliasing": "smaa",
+          "globalIllumination": false,
+          "globalIlluminationProbeUpdateBudget": 64,
+          "shadowFilter": "bilinearPcf",
+          "shadowMapResolution": 1024,
+          "shadowCascadeCount": 2,
+          "shadowMaxDistance": 32,
+          "cacheStaticShadows": true,
+          "ambientOcclusion": true,
+          "ambientOcclusionSamples": 8,
+          "ambientOcclusionHalfResolution": true,
+          "bloom": true,
+          "depthOfField": false,
+          "focusDistance": 3.406211754536259,
+          "zone": "village"
+        },
+        "region": "village",
+        "renderScale": 0.85,
+        "viewport": [
+          1280,
+          840
+        ],
+        "devicePixelRatio": 2,
+        "renderPixels": [
+          2176,
+          1428
+        ],
+        "measurement": "Flutter UI and raster thread durations; not GPU execution time or presented FPS",
+        "elapsedMs": 8017,
+        "samples": 240,
+        "window": "last 240 Flutter frames",
+        "uiP95Ms": 14.528,
+        "rasterP95Ms": 4.67,
+        "uiMaxMs": 30.24,
+        "rasterMaxMs": 4.996,
+        "uiOver16_7Ms": 2,
+        "rasterOver16_7Ms": 0,
+        "simulatedSeconds": 7.250001000000018,
+        "workload": {
+          "observedVisualPursuers": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "pursuitTicks": 418,
+          "searchTicks": 0,
+          "maxConcurrentSearchers": 1,
+          "movingSearchers": [
+            0,
+            4
+          ],
+          "advancedSearchers": [
+            0,
+            4,
+            5
+          ],
+          "beerPreviewTicks": 0,
+          "maxBeerGuideSprites": 0,
+          "activeEnemies": 8,
+          "currentSearchingEnemies": 0,
+          "beerGuideVisible": false,
+          "semanticReady": true
+        },
+        "speechMorphTicks": {},
+        "completedWindowPassages": 0
+      }
+    ],
+    "additionalCoverage": {
+      "file": "graphics-all-cases-20260912.json",
+      "cases": 13,
+      "allValid": true,
+      "limit": "A single sequential sweep, not a 3-run performance comparison. Several windows/interior, search, preview and voice cases exceeded 16.7 ms; sustained 60 fps remains unproven."
+    }
+  },
+  "ios": {
+    "optimized": false,
+    "measured": false,
+    "reason": "User requested Mac first; no iPhone performance claim."
+  },
+  "visual": {
+    "reference": "design/graphics-20260912/village-target.png",
+    "generation": "built-in Imagegen",
+    "prompt": "design/graphics-20260912/prompt.txt",
+    "before": "design/graphics-20260912/baseline-village.png",
+    "after": "design/graphics-20260912/final-village.png"
+  }
+}

@@ -11,6 +11,96 @@ import 'package:sobaya_hazard_lab/game/game_state.dart';
 import 'package:sobaya_hazard_lab/game/game_checkpoint.dart';
 
 void main() {
+  test('one visibility update preserves wall clearance and aim changes', () {
+    final s =
+        HazardGameState(
+            jsonDecode(File('assets/village.json').readAsStringSync()),
+          )
+          ..phase = PlayPhase.playing
+          ..x = 4.287296518367787
+          ..z = -11
+          ..yaw = .796373653965431
+          ..pitch = 0
+          ..aiming = true;
+    for (final size in [const ui.Size(1280, 840), const ui.Size(402, 874)]) {
+      final inView = playerViewForUpdate(s, size);
+      for (final aiming in [true, false]) {
+        s.aiming = aiming;
+        final camera = playerCamera(s);
+        for (final enemy in s.enemies) {
+          for (final height in [enemy.targetHeight, enemy.headHeight]) {
+            final point = vm.Vector3(enemy.x, enemy.y + height, enemy.z);
+            final projected = camera.worldToScreen(point, size);
+            expect(
+              inView(point),
+              projected != null &&
+                  projected.dx >= 0 &&
+                  projected.dx <= size.width &&
+                  projected.dy >= 0 &&
+                  projected.dy <= size.height,
+              reason: 'size=$size aiming=$aiming enemy=${enemy.id}',
+            );
+          }
+        }
+      }
+    }
+  });
+
+  test('scoped visibility matches fresh cameras after movement and occlusion changes', () {
+    const size = ui.Size(1280, 840);
+    HazardGameState createState() => HazardGameState(
+      jsonDecode(File('assets/village.json').readAsStringSync()),
+    )..phase = PlayPhase.playing;
+    final reference = createState(), scoped = createState();
+    reference.enemyVisibleInView = (point) {
+      final projected = playerCamera(reference).worldToScreen(point, size);
+      return projected != null &&
+          projected.dx >= 0 &&
+          projected.dx <= size.width &&
+          projected.dy >= 0 &&
+          projected.dy <= size.height;
+    };
+    var prepared = 0;
+    scoped.prepareEnemyView = () {
+      prepared++;
+      return playerViewForUpdate(scoped, size);
+    };
+    for (var frame = 0; frame < 24; frame++) {
+      for (final state in [reference, scoped]) {
+        if (frame == 8) {
+          state
+            ..x = 4.287296518367787
+            ..z = -11
+            ..yaw = .796373653965431
+            ..pitch = 0;
+        }
+        if (frame == 16) {
+          state
+            ..x = -6
+            ..z = 3
+            ..yaw = math.pi;
+          state.crates.first.broken = true;
+        }
+        state
+          ..aiming = frame % 3 == 0
+          ..inputY = .4;
+        state.tick(1 / 60);
+      }
+      expect(prepared, frame + 1);
+      expect(scoped.x, reference.x);
+      expect(scoped.y, reference.y);
+      expect(scoped.z, reference.z);
+      for (var i = 0; i < reference.enemies.length; i++) {
+        final expected = reference.enemies[i], actual = scoped.enemies[i];
+        expect(actual.visibleToPlayer, expected.visibleToPlayer);
+        expect(actual.discovered, expected.discovered);
+        expect(actual.lastSeenByPlayerX, expected.lastSeenByPlayerX);
+        expect(actual.lastSeenByPlayerY, expected.lastSeenByPlayerY);
+        expect(actual.lastSeenByPlayerZ, expected.lastSeenByPlayerZ);
+      }
+    }
+  });
+
   test(
     'short landscape captions keep the subject visible without moving the lens',
     () {

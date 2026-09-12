@@ -666,11 +666,12 @@ class HazardGameController extends ChangeNotifier {
     campaign.syncRefuge();
     state?.damageScale = settings.damageScale;
     state?.enemySpeedScale = settings.enemySpeedScale;
-    state?.enemyVisibleInView = _enemyInPlayerView;
+    state?.prepareEnemyView = () => playerViewForUpdate(state!, viewport);
     scene.renderScale = settings.renderScale;
     lighting.apply(
       scene,
       enabled: settings.cinematicLighting,
+      preset: settings.graphicsPreset,
       zone: state?.zoneId ?? 'village',
     );
   }
@@ -990,15 +991,6 @@ class HazardGameController extends ChangeNotifier {
     rotatePlayerView(state!, dx, dy, sensitivity: settings.sensitivity);
   }
 
-  bool _enemyInPlayerView(vm.Vector3 point) {
-    final projected = playerCamera(state!).worldToScreen(point, viewport);
-    return projected != null &&
-        projected.dx >= 0 &&
-        projected.dx <= viewport.width &&
-        projected.dy >= 0 &&
-        projected.dy <= viewport.height;
-  }
-
   PerspectiveCamera camera() {
     final s = state!;
     final d = director;
@@ -1110,7 +1102,13 @@ class HazardGameController extends ChangeNotifier {
   }
 
   void updateRocketTarget() {
-    final s = state!, c = camera();
+    final s = state!;
+    if (!s.rocketLockEnabled) {
+      s.rocketLockId = null;
+      rocketLockScreen = null;
+      return;
+    }
+    final c = camera();
     s.updateRocketLock(
       c.position,
       c.target - c.position,

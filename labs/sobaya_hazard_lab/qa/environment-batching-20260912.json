@@ -1,0 +1,87 @@
+{
+  "date": "2026-09-12",
+  "description": "Independent comparison of exported GLB triangles before and after batching, including position, normal, UV, COLOR_0 and material",
+  "regions": {
+    "village": {
+      "before": {
+        "triangles": 13126,
+        "attributeElements": {
+          "POSITION": 27310,
+          "NORMAL": 27310,
+          "TEXCOORD_0": 27310,
+          "COLOR_0": 27310
+        },
+        "trianglePayloadSha256": "e23aaa5285ab8001a1f84fc0b602162af574697a1b91bd160118ffa06af42ecb"
+      },
+      "after": {
+        "triangles": 13126,
+        "attributeElements": {
+          "POSITION": 27310,
+          "NORMAL": 27310,
+          "TEXCOORD_0": 27310,
+          "COLOR_0": 27310
+        },
+        "trianglePayloadSha256": "e23aaa5285ab8001a1f84fc0b602162af574697a1b91bd160118ffa06af42ecb"
+      },
+      "passed": true,
+      "allNonHouseNodeNamesRetained": true,
+      "sourceGlbSha256": "f6537ed1cdb7f4ab2fecd8f959aa719813f3e01cd01242b627d415007901d362",
+      "batchedGlbSha256": "4bf0dae3c0626c876029695fdd8547fe287a70c4ad49349f8373f5387e611d68",
+      "nonHouseNodesRetained": 78
+    },
+    "farm": {
+      "before": {
+        "triangles": 10422,
+        "attributeElements": {
+          "POSITION": 21654,
+          "NORMAL": 21654,
+          "TEXCOORD_0": 21654,
+          "COLOR_0": 21654
+        },
+        "trianglePayloadSha256": "a5709e1d2c4585824d7da90085d6dd002744615482e7d389a77f060a80065183"
+      },
+      "after": {
+        "triangles": 10422,
+        "attributeElements": {
+          "POSITION": 21654,
+          "NORMAL": 21654,
+          "TEXCOORD_0": 21654,
+          "COLOR_0": 21654
+        },
+        "trianglePayloadSha256": "a5709e1d2c4585824d7da90085d6dd002744615482e7d389a77f060a80065183"
+      },
+      "passed": true,
+      "allNonHouseNodeNamesRetained": true,
+      "sourceGlbSha256": "112129c520c96361ae2459ff5fc13ee8acc4352e4beedc73080695e3eb11d427",
+      "batchedGlbSha256": "b96b53c4d4af95255adfd0a5b30f7ab21279eaa65996b59309ee6211dc8d562b",
+      "nonHouseNodesRetained": 47
+    },
+    "mountain": {
+      "before": {
+        "triangles": 2418,
+        "attributeElements": {
+          "POSITION": 5074,
+          "NORMAL": 5074,
+          "TEXCOORD_0": 5074,
+          "COLOR_0": 5074
+        },
+        "trianglePayloadSha256": "01450cb58677bee8d07d4ca12b3adc0669bf02aa23c30ad56da2ebb34f9d6960"
+      },
+      "after": {
+        "triangles": 2418,
+        "attributeElements": {
+          "POSITION": 5074,
+          "NORMAL": 5074,
+          "TEXCOORD_0": 5074,
+          "COLOR_0": 5074
+        },
+        "trianglePayloadSha256": "01450cb58677bee8d07d4ca12b3adc0669bf02aa23c30ad56da2ebb34f9d6960"
+      },
+      "passed": true,
+      "allNonHouseNodeNamesRetained": true,
+      "sourceGlbSha256": "bb9cc5821bd9d8f0a3e431ab47889a7f9fd9e4150f5a8d4e832152940f43432a",
+      "batchedGlbSha256": "4a3f068211dcaa72022e4f0c505f4c8b287517f3cff67db6b164bdd425826104",
+      "nonHouseNodesRetained": 30
+    }
+  }
+}

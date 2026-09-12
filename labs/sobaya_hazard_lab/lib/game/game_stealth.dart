@@ -102,7 +102,10 @@ extension HazardStealth on HazardGameState {
     return _enemyPlayerLineClear(e);
   }
 
-  void _updatePlayerDiscovery(Enemy e) {
+  void _updatePlayerDiscovery(
+    Enemy e,
+    bool Function(vm.Vector3)? visibleInView,
+  ) {
     final from = vm.Vector3(x, y + 1.5, z);
     final forward = vm.Vector3(
       -math.sin(yaw) * math.cos(pitch),
@@ -122,7 +125,7 @@ extension HazardStealth on HazardGameState {
       // A visible head above cover is enough, but its own sample must pass
       // both tests: a blocked torso on screen cannot borrow an offscreen head.
       return delta.length < 24 &&
-          (enemyVisibleInView?.call(target) ?? inFrustum) &&
+          (visibleInView?.call(target) ?? inFrustum) &&
           _sightLineClear(from, target);
     }
 

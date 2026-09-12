@@ -15,6 +15,9 @@ class RocketBlast {
 }
 
 extension HazardRocketCombat on HazardGameState {
+  bool get rocketLockEnabled =>
+      weapon == 'rocket' && hasRocket && running && aiming;
+
   /// Uses the actual camera frustum, then both camera and muzzle visibility.
   /// The closest target to screen centre wins; walls cannot be locked through.
   void updateRocketLock(
@@ -24,7 +27,7 @@ extension HazardRocketCombat on HazardGameState {
     required double aspect,
   }) {
     rocketLockId = null;
-    if (weapon != 'rocket' || !hasRocket || !running || !aiming) return;
+    if (!rocketLockEnabled) return;
     final f = forward.normalized();
     final right = f.cross(vm.Vector3(0, 1, 0)).normalized();
     final up = right.cross(f).normalized();
