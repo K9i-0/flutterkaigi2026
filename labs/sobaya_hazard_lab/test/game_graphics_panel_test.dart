@@ -57,11 +57,18 @@ void main() {
       }
 
       expectFits();
+      expect(settings.frameRateLimit, 60);
+      for (final fps in [30, 60]) {
+        expect(find.byKey(ValueKey('game-frame-rate-$fps')), findsOneWidget);
+        expect(find.text('$fps fps'), findsOneWidget);
+      }
       for (final preset in HazardGraphicsPreset.values) {
         final previousScale = settings.renderScale;
+        final previousFrameRate = settings.frameRateLimit;
         await choose('game-graphics-${preset.name}');
         expect(settings.graphicsPreset, preset);
         expect(settings.renderScale, previousScale);
+        expect(settings.frameRateLimit, previousFrameRate);
         expect(
           tester
               .widget<ChoiceChip>(
@@ -71,9 +78,11 @@ void main() {
           isTrue,
         );
         for (final scale in [.65, .85, 1.0]) {
+          final previousFrameRate = settings.frameRateLimit;
           await choose('game-resolution-${(scale * 100).round()}');
           expect(settings.renderScale, scale);
           expect(settings.graphicsPreset, preset);
+          expect(settings.frameRateLimit, previousFrameRate);
           expect(
             tester
                 .widget<ChoiceChip>(
@@ -84,12 +93,41 @@ void main() {
                 .selected,
             isTrue,
           );
+          for (final fps in [30, 60]) {
+            await choose('game-frame-rate-$fps');
+            expect(settings.frameRateLimit, fps);
+            expect(settings.graphicsPreset, preset);
+            expect(settings.renderScale, scale);
+            expect(settings.cinematicLighting, isTrue);
+            for (final option in [30, 60]) {
+              expect(
+                tester
+                    .widget<ChoiceChip>(
+                      find.byKey(ValueKey('game-frame-rate-$option')),
+                    )
+                    .selected,
+                option == fps,
+              );
+            }
+            final restored = HazardSettings.decode(settings.encode());
+            expect(restored.frameRateLimit, fps);
+            expect(restored.graphicsPreset, preset);
+            expect(restored.renderScale, scale);
+          }
         }
       }
+      await choose('game-frame-rate-30');
+      await choose('game-frame-rate-30');
+      expect(
+        settings.frameRateLimit,
+        30,
+        reason: 'reselecting cannot remove the frame limit',
+      );
       await choose('game-lighting');
       expect(settings.cinematicLighting, isFalse);
       expect(settings.graphicsPreset, HazardGraphicsPreset.showcase);
       expect(settings.renderScale, 1);
+      expect(settings.frameRateLimit, 30);
     },
   );
 }

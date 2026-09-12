@@ -5,6 +5,7 @@ import 'package:marionette_flutter/marionette_flutter.dart';
 import 'package:vector_math/vector_math.dart' as vm;
 
 import 'game_controller.dart';
+import 'game_device_diagnostics.dart';
 import 'game_state.dart';
 import 'game_settings.dart';
 import 'game_native_audit.dart';
@@ -28,6 +29,29 @@ void attachGameAutomation(HazardGameController game) {
   _game = game;
   if (_registered) return;
   _registered = true;
+  registerMarionetteExtension(
+    name: 'madogiwa.deviceDiagnostics',
+    description: 'Read-only iOS thermal category, power mode and monotonic scene counters. Delta renderCalls / delta elapsedSeconds measures Scene.render calls, not presented FPS or GPU completion. No temperature in Celsius is available.',
+    callback: (_) async {
+      final g = _game;
+      if (g == null) return MarionetteExtensionResult.error(1, 'Not ready');
+      final device = await HazardDeviceDiagnostics.readThermalState();
+      return MarionetteExtensionResult.success({
+        'device': device,
+        'rendering': {
+          'elapsedSeconds': g.diagnosticClock.elapsedMicroseconds / 1000000,
+          'renderCalls': g.sceneRenderCount,
+          'ticks': g.renderedTicks,
+          'frameRateLimit': g.settings.frameRateLimit,
+          'foreground': g.foreground,
+          'continuous': g.animateScene,
+          'phase': g.state?.phase.name,
+          'measurement':
+              'Scene.render calls; not presented FPS or GPU completion',
+        },
+      });
+    },
+  );
   registerMarionetteExtension(
     name: 'madogiwa.debugSession',
     description: 'Read-only connection identity and readiness. Check pid/foreground before any native UI test.',
@@ -138,6 +162,8 @@ void attachGameAutomation(HazardGameController game) {
               'foreground': _game!.foreground,
               'posePreview': _game!.posePreview,
               'ticks': _game!.renderedTicks,
+              'sceneRenderCalls': _game!.sceneRenderCount,
+              'frameRateLimit': _game!.settings.frameRateLimit,
               'simulationSeconds': _game!.state!.time,
               'playerClipSeconds':
                   _game!.player.clips[_game!.player.current]!.playbackTime,

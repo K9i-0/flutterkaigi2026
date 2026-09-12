@@ -40,12 +40,21 @@ Marionette `call_custom_extension` の引数:
 | 長い通し経路の自動確認 | `madogiwa.auditCampaign` |
 | 実際のボタン・キー・長押しの確認 | MarionetteのUI操作とスクリーンショット |
 | 描画負荷 | profileビルドの既存ベンチマーク |
+| iOSの熱状態・低電力モード・描画回数 | `madogiwa.deviceDiagnostics`（読み取り専用） |
 
 Dartコード変更後はDTDへ接続してhot reloadする。extension登録の追加はhot restartまたは再起動が必要。GLB・音声など同梱素材を更新した場合はアプリを再ビルドして確認する。
 
 終了にはDart MCP `stop_app` と記録した起動PIDを使う。ネイティブ子プロセスが残る場合があるため、同じパスの古いウィンドウに接続し続けないよう `debugSession.pid` と照合する。追加終了が必要な場合も、所有する対象PIDとコマンドを確認してから行い、他のFlutterアプリを一括終了しない。
 
 生ログ・画像はGit対象外の `evidence/`、軽量な採用検証記録は `qa/` に保存する。
+
+### iOSの熱状態とフレーム上限（2026-09-12）
+
+`madogiwa.deviceDiagnostics` は物理iPhoneの `ProcessInfo.thermalState`（`nominal/fair/serious/critical`）と低電力モードを、その呼び出し時だけ取得する。摂氏温度・消費電力・バッテリー消費量ではない。Simulator、Mac、チャネル未接続やタイムアウトは `available=false` と理由を返し、正常な熱状態として扱わない。Swiftの変更を反映するにはフルビルドが必要。
+
+応答の `rendering.renderCalls` と `elapsedSeconds` の2回分の差から、Scene.renderの呼び出し回数／秒を確認できる。`ticks` はゲーム更新回数で別に数える。どちらも画面へ提示されたFPSやGPU処理完了の計測ではない。`continuous`、`foreground`、`phase`、設定の `frameRateLimit` を同時に照合する。休止直後の静止画更新が落ち着いた後は、連続描画が止まっていることを確認する。
+
+設定の「フレーム上限」で30／60 fpsを切り替える。3Dの更新と描画要求を同じ周期に制限し、静止画面のUI変更は反映する。画質プリセットと解像度は独立し、保存済みの画質を変更しない。診断による設定の自動変更や常駐ポーリングは行わない。
 
 会話の構図確認は `openGameScenario name=introEvent`（または `farmEvent` / `bossEvent` / `endingEvent`）のあと、`gameAction action=eventFrame shot=2 progress=0.5` のように呼ぶ。音声と連続描画を止め、指定カットのカメラ位置と人物の向きを描画する。背景表示でも静止画は取得できるが、これは発話・実時間モーションの検証には使わない。画面の「再開」から通常の再生へ戻れる。
 

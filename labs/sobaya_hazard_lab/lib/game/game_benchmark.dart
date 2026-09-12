@@ -5,12 +5,208 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 
 import 'game_controller.dart';
+import 'game_device_diagnostics.dart';
 import 'game_state.dart';
 import 'game_settings.dart';
 
-/// Opt-in profile run. Uses real rendered Flutter frames, never inferred FPS.
+/// Compile-time workload limits, independent of saved player preferences.
+class GameBenchmarkConfig {
+  const GameBenchmarkConfig._(this.frameRateLimit, this.seconds);
+
+  factory GameBenchmarkConfig.parse({String fps = '60', String seconds = '8'}) {
+    if (fps != '30' && fps != '60') {
+      throw ArgumentError.value(
+        fps,
+        'HAZARD_BENCHMARK_FPS',
+        'Expected 30 or 60',
+      );
+    }
+    final duration = RegExp(r'^[0-9]+$').hasMatch(seconds)
+        ? int.tryParse(seconds)
+        : null;
+    if (duration == null || duration < 8 || duration > 300) {
+      throw ArgumentError.value(
+        seconds,
+        'HAZARD_BENCHMARK_SECONDS',
+        'Expected an integer between 8 and 300',
+      );
+    }
+    return GameBenchmarkConfig._(int.parse(fps), duration);
+  }
+
+  factory GameBenchmarkConfig.fromEnvironment() => GameBenchmarkConfig.parse(
+    fps: const String.fromEnvironment(
+      'HAZARD_BENCHMARK_FPS',
+      defaultValue: '60',
+    ),
+    seconds: const String.fromEnvironment(
+      'HAZARD_BENCHMARK_SECONDS',
+      defaultValue: '8',
+    ),
+  );
+
+  final int frameRateLimit;
+  final int seconds;
+  int get deadlineSeconds => math.max(30, seconds + 22);
+
+  bool shouldFinish(
+    Duration elapsed, {
+    required int samples,
+    required bool semanticReady,
+  }) =>
+      elapsed >= Duration(seconds: seconds) &&
+      ((samples >= 240 && semanticReady) ||
+          elapsed >= Duration(seconds: deadlineSeconds));
+}
+
+/// Per-case render-call and OS-state evidence. The caller's existing poll timer
+/// drives sampling; this object owns no timer and starts at most one read.
+class GameBenchmarkDiagnostics {
+  GameBenchmarkDiagnostics({
+    required this.renderCount,
+    required this.elapsedMicroseconds,
+    Future<Map<String, Object?>> Function()? readThermal,
+    DateTime Function()? utcNow,
+  }) : readThermal = readThermal ?? HazardDeviceDiagnostics.readThermalState,
+       utcNow = utcNow ?? (() => DateTime.now().toUtc());
+
+  final int Function() renderCount;
+  final int Function() elapsedMicroseconds;
+  final Future<Map<String, Object?>> Function() readThermal;
+  final DateTime Function() utcNow;
+  final _samples = <Map<String, Object?>>[];
+  Future<void>? _pending;
+  int _generation = 0,
+      _startMicros = 0,
+      _startRenderCount = 0,
+      _nextSampleMicros = 0;
+  int? _lastSampleRequestedMicros;
+  bool _active = false, _finishing = false;
+
+  Future<void> beginCase() {
+    final generation = ++_generation;
+    _active = true;
+    _finishing = false;
+    _samples.clear();
+    _lastSampleRequestedMicros = null;
+    _startMicros = elapsedMicroseconds();
+    _startRenderCount = renderCount();
+    _nextSampleMicros = _startMicros;
+    if (_pending != null) {
+      // An old case's read cannot be cancelled. Wait for it, discard its
+      // response, then take this case's initial sample without overlapping.
+      return _pending!.then((_) {
+        if (_active && generation == _generation) return _sample();
+      });
+    }
+    return _sample();
+  }
+
+  void poll() {
+    if (_active && !_finishing && elapsedMicroseconds() >= _nextSampleMicros) {
+      unawaited(_sample());
+    }
+  }
+
+  Future<void> _sample() {
+    if (!_active) return Future<void>.value();
+    if (_pending != null) return _pending!;
+    final generation = _generation;
+    final requestedMicros = elapsedMicroseconds();
+    final requestedAt = utcNow().toUtc().toIso8601String();
+    _nextSampleMicros =
+        requestedMicros + const Duration(seconds: 10).inMicroseconds;
+    final future = () async {
+      Map<String, Object?> state;
+      try {
+        state = await readThermal();
+      } catch (_) {
+        state = {
+          'status': 'unavailable',
+          'available': false,
+          'reason': 'readFailed',
+        };
+      }
+      if (!_active || generation != _generation) return;
+      _lastSampleRequestedMicros = requestedMicros;
+      _samples.add({
+        ...state,
+        'requestedAtUtc': requestedAt,
+        'completedAtUtc': utcNow().toUtc().toIso8601String(),
+        'caseElapsedMs': (requestedMicros - _startMicros) / 1000,
+        'completedCaseElapsedMs': (elapsedMicroseconds() - _startMicros) / 1000,
+      });
+    }();
+    _pending = future.whenComplete(() => _pending = null);
+    return _pending!;
+  }
+
+  Future<Map<String, Object?>?> finishCase() async {
+    if (!_active) return null;
+    final generation = _generation;
+    final requestedEndMicros = elapsedMicroseconds();
+    _finishing = true;
+    // A boundary sample can reuse the request started by this same poll.
+    await _pending;
+    if (!_active || generation != _generation) return null;
+    if ((_lastSampleRequestedMicros ?? -1) < requestedEndMicros) {
+      await _sample();
+    }
+    if (!_active || generation != _generation) return null;
+    final endCount = renderCount();
+    final elapsedSeconds = (elapsedMicroseconds() - _startMicros) / 1e6;
+    final calls = endCount - _startRenderCount;
+    const ranks = {'nominal': 0, 'fair': 1, 'serious': 2, 'critical': 3};
+    Map<String, Object?>? peak;
+    for (final sample in _samples) {
+      final rank = ranks[sample['thermalState']];
+      if (sample['available'] == true &&
+          rank != null &&
+          (peak == null || rank > ranks[peak['thermalState']]!)) {
+        peak = sample;
+      }
+    }
+    _active = false;
+    return {
+      'sceneRenderCountStart': _startRenderCount,
+      'sceneRenderCountEnd': endCount,
+      'sceneRenderCalls': calls >= 0 ? calls : null,
+      'sceneRenderMeasurementSeconds': elapsedSeconds,
+      'sceneRenderCallsPerSecond': calls >= 0 && elapsedSeconds > 0
+          ? calls / elapsedSeconds
+          : null,
+      'sceneRenderMeasurement': 'Scene.render calls that returned per real elapsed second; not presented FPS or GPU completion',
+      'thermal': {
+        'status': peak == null
+            ? 'unavailable'
+            : _samples.every((sample) => sample['available'] == true)
+            ? 'available'
+            : 'partial',
+        'sampleIntervalSeconds': 10,
+        'start': _samples.firstOrNull,
+        'end': _samples.lastOrNull,
+        'peakState': peak?['thermalState'],
+        'peakRecordedAtUtc': peak?['completedAtUtc'],
+        'samples': List<Map<String, Object?>>.of(_samples),
+      },
+    };
+  }
+
+  void stop() {
+    _active = false;
+    _generation++;
+  }
+}
+
+/// Opt-in Flutter frame-duration profile with separately labelled render-call
+/// cadence and OS thermal snapshots, never inferred presentation or GPU time.
 class GameBenchmark {
-  GameBenchmark(this.game) {
+  GameBenchmark(this.game)
+    : configuration = GameBenchmarkConfig.fromEnvironment(),
+      diagnostics = GameBenchmarkDiagnostics(
+        renderCount: () => game.sceneRenderCount,
+        elapsedMicroseconds: () => game.diagnosticClock.elapsedMicroseconds,
+      ) {
     if (cases.isEmpty) {
       throw ArgumentError.value(
         const String.fromEnvironment('HAZARD_BENCHMARK_CASE'),
@@ -26,6 +222,7 @@ class GameBenchmark {
         defaultValue: true,
       ),
       graphicsPreset: benchmarkGraphics,
+      frameRateLimit: configuration.frameRateLimit,
     );
     game.lighting.apply(
       game.scene,
@@ -33,9 +230,15 @@ class GameBenchmark {
       preset: game.settings.graphicsPreset,
     );
     next();
-    timer = Timer.periodic(const Duration(milliseconds: 500), (_) => poll());
+    timer = Timer.periodic(
+      const Duration(milliseconds: 500),
+      (_) => unawaited(poll()),
+    );
   }
   final HazardGameController game;
+  final GameBenchmarkConfig configuration;
+  final GameBenchmarkDiagnostics diagnostics;
+  bool _disposed = false, _closingCase = false;
   Timer? timer;
   final watch = Stopwatch();
   int index = -1;
@@ -190,6 +393,7 @@ class GameBenchmark {
   ];
 
   void next() {
+    if (_disposed) return;
     index++;
     if (index == cases.length) {
       dispose();
@@ -302,47 +506,66 @@ class GameBenchmark {
     watch
       ..reset()
       ..start();
+    unawaited(diagnostics.beginCase());
   }
 
-  void poll() {
-    if (watch.elapsedMilliseconds < 8000) return;
-    final ready = semanticReady;
-    if ((game.frames.count < 240 || !ready) &&
-        watch.elapsedMilliseconds < 30000) {
+  Future<void> poll() async {
+    if (_disposed || _closingCase) return;
+    diagnostics.poll();
+    if (!configuration.shouldFinish(
+      watch.elapsed,
+      samples: game.frames.count,
+      semanticReady: semanticReady,
+    )) {
       return;
     }
-    debugPrintSynchronously(
-      'HAZARD_GAME_BENCHMARK ${jsonEncode({
-        'schemaVersion': 2,
-        'recordedAtUtc': DateTime.now().toUtc().toIso8601String(),
-        'runLabel': const String.fromEnvironment('HAZARD_BENCHMARK_RUN'),
-        'case': cases[index].name,
-        'settings': jsonDecode(game.settings.encode()),
-        'lighting': game.lighting.inspect(game.scene),
-        'audio': {'observedAmbience': heardAmbience, 'observedSpeech': heardSpeech, 'voice': game.voice.inspect(), 'soundscape': game.soundscape.inspect()},
-        'region': cases[index].region,
-        'contactShadows': cases[index].contacts,
-        'profile': kProfileMode,
-        'valid': kProfileMode && game.frames.count == 240 && !interrupted && game.foreground && game.state!.phase == expectedPhase && ready && game.voice.inspect()['errors'].isEmpty,
-        'speechMorphTicks': speechMorphTicks,
-        'eventShot': game.director?.index,
-        'windowMotionTicks': windowMotionTicks,
-        'completedWindowPassages': completedPassages,
-        'workload': {'observedVisualPursuers': observedPursuers.toList()..sort(), 'pursuitTicks': pursuitTicks, 'searchTicks': searchTicks, 'maxConcurrentSearchers': maxConcurrentSearchers, 'movingSearchers': movingSearchers.toList()..sort(), 'advancedSearchers': advancedSearchers.toList()..sort(), 'beerPreviewTicks': beerPreviewTicks, 'maxBeerGuideSprites': maxBeerGuideSprites, 'activeEnemies': game.state!.enemies.where((e) => e.active && e.alive).length, 'currentSearchingEnemies': currentSearchers.length, 'beerGuideVisible': game.beerVisuals.dots.node.visible, 'semanticReady': ready},
-        'interrupted': interrupted,
-        'foreground': game.foreground,
-        'gamePhase': game.state!.phase.name,
-        'simulatedSeconds': game.state!.time,
-        'renderScale': game.scene.renderScale,
-        'viewport': [game.viewport.width, game.viewport.height],
-        'devicePixelRatio': game.devicePixelRatio,
-        'renderPixels': [(game.viewport.width * game.devicePixelRatio * game.scene.renderScale).ceil(), (game.viewport.height * game.devicePixelRatio * game.scene.renderScale).ceil()],
-        'measurement': 'Flutter UI and raster thread durations; not GPU execution time or presented FPS',
-        'elapsedMs': watch.elapsedMilliseconds,
-        ...game.frames.toJson(),
-      })}',
-    );
-    next();
+    final closingIndex = index;
+    _closingCase = true;
+    try {
+      final diagnosticResult = await diagnostics.finishCase();
+      if (_disposed || index != closingIndex || diagnosticResult == null) {
+        return;
+      }
+      final ready = semanticReady;
+      debugPrintSynchronously(
+        'HAZARD_GAME_BENCHMARK ${jsonEncode({
+          'schemaVersion': 2,
+          'recordedAtUtc': DateTime.now().toUtc().toIso8601String(),
+          'runLabel': const String.fromEnvironment('HAZARD_BENCHMARK_RUN'),
+          'case': cases[index].name,
+          'benchmarkDurationSeconds': configuration.seconds,
+          'benchmarkDeadlineSeconds': configuration.deadlineSeconds,
+          'benchmarkFrameRateLimit': configuration.frameRateLimit,
+          'settings': jsonDecode(game.settings.encode()),
+          'lighting': game.lighting.inspect(game.scene),
+          'audio': {'observedAmbience': heardAmbience, 'observedSpeech': heardSpeech, 'voice': game.voice.inspect(), 'soundscape': game.soundscape.inspect()},
+          'region': cases[index].region,
+          'contactShadows': cases[index].contacts,
+          'profile': kProfileMode,
+          'valid': kProfileMode && game.frames.count == 240 && !interrupted && game.foreground && game.state!.phase == expectedPhase && ready && game.voice.inspect()['errors'].isEmpty,
+          'speechMorphTicks': speechMorphTicks,
+          'eventShot': game.director?.index,
+          'windowMotionTicks': windowMotionTicks,
+          'completedWindowPassages': completedPassages,
+          'workload': {'observedVisualPursuers': observedPursuers.toList()..sort(), 'pursuitTicks': pursuitTicks, 'searchTicks': searchTicks, 'maxConcurrentSearchers': maxConcurrentSearchers, 'movingSearchers': movingSearchers.toList()..sort(), 'advancedSearchers': advancedSearchers.toList()..sort(), 'beerPreviewTicks': beerPreviewTicks, 'maxBeerGuideSprites': maxBeerGuideSprites, 'activeEnemies': game.state!.enemies.where((e) => e.active && e.alive).length, 'currentSearchingEnemies': currentSearchers.length, 'beerGuideVisible': game.beerVisuals.dots.node.visible, 'semanticReady': ready},
+          'interrupted': interrupted,
+          'foreground': game.foreground,
+          'gamePhase': game.state!.phase.name,
+          'simulatedSeconds': game.state!.time,
+          'renderScale': game.scene.renderScale,
+          'viewport': [game.viewport.width, game.viewport.height],
+          'devicePixelRatio': game.devicePixelRatio,
+          'renderPixels': [(game.viewport.width * game.devicePixelRatio * game.scene.renderScale).ceil(), (game.viewport.height * game.devicePixelRatio * game.scene.renderScale).ceil()],
+          'measurement': 'Flutter UI and raster thread durations; not GPU execution time or presented FPS',
+          'elapsedMs': watch.elapsedMilliseconds,
+          ...game.frames.toJson(),
+          ...diagnosticResult,
+        })}',
+      );
+      next();
+    } finally {
+      _closingCase = false;
+    }
   }
 
   PlayPhase get expectedPhase =>
@@ -350,7 +573,7 @@ class GameBenchmark {
 
   // Fast rendering can fill the frame buffer before a voiced shot or window
   // traversal finishes. Reuse the actual workload requirements for waiting
-  // and validity, while poll's 30-second deadline still reports failures.
+  // and validity, while the configured deadline still reports failures.
   bool get semanticReady {
     final c = cases[index];
     final ordinaryPursuit =
@@ -389,7 +612,8 @@ class GameBenchmark {
   // A paused SceneView has no tick callbacks. Observe UI/lifecycle changes too
   // so a pause cannot disappear from the benchmark's interruption history.
   void observeState() {
-    if (index >= 0 &&
+    if (!_disposed &&
+        index >= 0 &&
         index < cases.length &&
         (!game.foreground || game.state!.phase != expectedPhase)) {
       interrupted = true;
@@ -397,6 +621,7 @@ class GameBenchmark {
   }
 
   void tick() {
+    if (_disposed) return;
     observeState();
     heardAmbience |= game.soundscape.ambience.speaking;
     heardSpeech |= game.voice.speaking;
@@ -542,7 +767,11 @@ class GameBenchmark {
   }
 
   void dispose() {
+    if (_disposed) return;
+    _disposed = true;
     timer?.cancel();
+    timer = null;
     watch.stop();
+    diagnostics.stop();
   }
 }

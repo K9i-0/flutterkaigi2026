@@ -10,6 +10,7 @@ import 'package:flutter_scene/src/hot_reload/hot_reload_coordinator.dart';
 import 'package:flutter_scene/src/material/environment.dart';
 import 'package:flutter_scene/src/tone_mapping.dart';
 import 'package:flutter_scene/src/widgets/declarative.dart';
+import 'package:flutter_scene/src/widgets/frame_pacer.dart';
 import 'package:flutter_scene/src/render_view.dart';
 import 'package:flutter_scene/src/components/widget_component.dart';
 import 'package:flutter/gestures.dart';
@@ -96,8 +97,10 @@ class SceneView extends StatefulWidget {
     this.cameraBuilder,
     this.viewsBuilder,
     this.autoTick = true,
+    this.maxFramesPerSecond,
     this.pixelRatio,
     this.onTick,
+    this.onFrameRendered,
     this.loading,
     this.loadingBuilder,
     this.revealMinDuration = Duration.zero,
@@ -108,6 +111,11 @@ class SceneView extends StatefulWidget {
        environmentIntensity = 1.0,
        exposure = 1.0,
        toneMapping = null,
+       assert(
+         maxFramesPerSecond == null ||
+             (maxFramesPerSecond > 0 && maxFramesPerSecond < double.infinity),
+         'maxFramesPerSecond must be positive and finite.',
+       ),
        assert(
          (camera != null ? 1 : 0) +
                  (cameraBuilder != null ? 1 : 0) +
@@ -140,8 +148,10 @@ class SceneView extends StatefulWidget {
     this.cameraBuilder,
     this.viewsBuilder,
     this.autoTick = true,
+    this.maxFramesPerSecond,
     this.pixelRatio,
     this.onTick,
+    this.onFrameRendered,
     this.loading,
     this.loadingBuilder,
     this.revealMinDuration = Duration.zero,
@@ -149,6 +159,11 @@ class SceneView extends StatefulWidget {
     this.debugWidgetInput = false,
     this.children = const [],
   }) : scene = null,
+       assert(
+         maxFramesPerSecond == null ||
+             (maxFramesPerSecond > 0 && maxFramesPerSecond < double.infinity),
+         'maxFramesPerSecond must be positive and finite.',
+       ),
        assert(
          (camera != null ? 1 : 0) +
                  (cameraBuilder != null ? 1 : 0) +
@@ -203,6 +218,19 @@ class SceneView extends StatefulWidget {
   /// example with a new [camera]).
   final bool autoTick;
 
+  /// Optional target ceiling for automatic ticks and 3D repaints, in frames
+  /// per second. Null preserves the display-driven cadence. Does not change
+  /// the operating system's display refresh rate or the cadence of other UI.
+  ///
+  /// Skipped vsync callbacks do not tick the scene, advance motion history, or
+  /// request a repaint. The next accepted callback receives all elapsed time.
+  /// A 90 Hz display uses an alternating cadence to approximate 60 fps; small
+  /// refresh-rate drift keeps near-harmonic divisors stable. Layout, loading
+  /// and explicit static-view changes may still require an immediate paint.
+  /// Place the view in a [RepaintBoundary] to isolate it from unrelated parent
+  /// paints, such as an independently animated HUD.
+  final double? maxFramesPerSecond;
+
   /// Logical-to-physical pixel multiplier for the offscreen render target,
   /// forwarded to [Scene.render]. Defaults to the view's device pixel ratio.
   final double? pixelRatio;
@@ -219,6 +247,17 @@ class SceneView extends StatefulWidget {
   /// the scene is revealed), and its first call after reveal carries a
   /// single-frame delta rather than the whole loading time.
   final SceneTickCallback? onTick;
+
+  /// Called once after a successful [Scene.render] or [Scene.renderViews]
+  /// invocation by this view's painter. This counts scene render calls, not
+  /// GPU completion or frames presented by the operating system. It can also
+  /// observe paints caused by layout or explicit static-view changes.
+  /// Calls skipped for an unready scene, empty size or empty view list are
+  /// excluded. A rendered sky with no visible meshes still counts.
+  ///
+  /// Runs during paint: observers must not call setState, change the scene,
+  /// or request another repaint. Null adds no observer work.
+  final VoidCallback? onFrameRendered;
 
   /// Resources this view waits for before it reveals the scene.
   ///
@@ -294,6 +333,7 @@ class _SceneViewState extends State<SceneView>
   final ResourceGroup _childLoads = ResourceGroup();
 
   final _Repaint _repaint = _Repaint();
+  final _framePacer = SceneFramePacer();
   final ValueNotifier<Duration> _elapsed = ValueNotifier<Duration>(
     Duration.zero,
   );
@@ -351,7 +391,21 @@ class _SceneViewState extends State<SceneView>
     }
   }
 
-  void _onAssetsRefreshed() => _repaint.notify();
+  void _onAssetsRefreshed() => _requestRepaint();
+
+  void _requestRepaint() {
+    // Automatic accepted ticks already repaint. Coalesce parent/HUD, asset
+    // and semantics updates into that cadence, while static or muted views
+    // must still show their changes without waiting for a ticker callback.
+    if (widget.maxFramesPerSecond != null &&
+        widget.autoTick &&
+        _revealed &&
+        _ticker?.isActive == true &&
+        _ticker?.muted == false) {
+      return;
+    }
+    _repaint.notify();
+  }
 
   // Creates the owned scene for the declarative form and applies every scene
   // prop, the single creation path for initState and constructor-form
@@ -388,13 +442,22 @@ class _SceneViewState extends State<SceneView>
   // Repaints so the next frame's semantics refresh sees the change (a
   // screen reader toggling on/off, or semantics components mounting and
   // unmounting), even when the view is not ticking.
-  void _onSemanticsChanged() => _repaint.notify();
+  void _onSemanticsChanged() => _requestRepaint();
 
   @override
   void didUpdateWidget(SceneView oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (widget.maxFramesPerSecond != oldWidget.maxFramesPerSecond &&
+        (widget.maxFramesPerSecond == null ||
+            oldWidget.maxFramesPerSecond == null)) {
+      _framePacer.reset();
+      if (widget.maxFramesPerSecond != null) {
+        _framePacer.shouldAdvance(_lastTick, widget.maxFramesPerSecond);
+      }
+    }
     if (widget.autoTick != oldWidget.autoTick) {
       _ticker?.dispose();
+      _framePacer.reset();
       _ticker = widget.autoTick ? (createTicker(_onTick)..start()) : null;
     }
     final oldScene = oldWidget.scene ?? _ownedScene;
@@ -439,7 +502,7 @@ class _SceneViewState extends State<SceneView>
     }
     // Repaint immediately so a changed camera / scene is reflected even when
     // not auto-ticking.
-    _repaint.notify();
+    _requestRepaint();
   }
 
   // Waits for the engine's shared static resources and the `loading` group,
@@ -485,9 +548,14 @@ class _SceneViewState extends State<SceneView>
       // is a single frame, not the whole time spent on the loading screen.
       _tickOrigin = elapsed;
       _lastTick = Duration.zero;
+      _framePacer.reset();
       return;
     }
     final revealElapsed = elapsed - _tickOrigin;
+    if (widget.maxFramesPerSecond != null &&
+        !_framePacer.shouldAdvance(revealElapsed, widget.maxFramesPerSecond)) {
+      return;
+    }
     final deltaSeconds = (revealElapsed - _lastTick).inMicroseconds / 1e6;
     _lastTick = revealElapsed;
     _elapsed.value = revealElapsed;
@@ -593,7 +661,7 @@ class _SceneViewState extends State<SceneView>
     // Debug-only hot reload: refresh changed .fmat materials in place, then
     // repaint so the change shows without restarting or app-side wiring.
     HotReloadCoordinator.instance.onReassemble();
-    _repaint.notify();
+    _requestRepaint();
   }
 
   @override
@@ -682,6 +750,7 @@ class _SceneViewState extends State<SceneView>
               // through the windowing API.
               pixelRatio:
                   widget.pixelRatio ?? View.of(context).devicePixelRatio,
+              onFrameRendered: widget.onFrameRendered,
               semantics: _sceneSemantics,
               repaint: _repaint,
             ),
@@ -816,6 +885,7 @@ class _ScenePainter extends CustomPainter {
     required this.cameraForFrame,
     required this.viewsForFrame,
     required this.pixelRatio,
+    required this.onFrameRendered,
     required this.semantics,
     required Listenable repaint,
   }) : super(repaint: repaint);
@@ -824,6 +894,7 @@ class _ScenePainter extends CustomPainter {
   final Camera Function()? cameraForFrame;
   final List<RenderView> Function()? viewsForFrame;
   final double? pixelRatio;
+  final VoidCallback? onFrameRendered;
   final SceneSemanticsCoordinator semantics;
 
   @override
@@ -840,6 +911,12 @@ class _ScenePainter extends CustomPainter {
           region: Offset.zero & size,
           pixelRatio: pixelRatio,
         );
+        if (onFrameRendered != null &&
+            Scene.isReadyToRender &&
+            !size.isEmpty &&
+            list.isNotEmpty) {
+          onFrameRendered!();
+        }
       } finally {
         // Semantics follow the primary view: the first one rendering to the
         // screen. Views with an offscreen target contribute nothing.
@@ -863,6 +940,9 @@ class _ScenePainter extends CustomPainter {
           viewport: Offset.zero & size,
           pixelRatio: pixelRatio,
         );
+        if (onFrameRendered != null && Scene.isReadyToRender && !size.isEmpty) {
+          onFrameRendered!();
+        }
       } finally {
         semantics.refreshAfterRender(camera, Offset.zero & size);
       }

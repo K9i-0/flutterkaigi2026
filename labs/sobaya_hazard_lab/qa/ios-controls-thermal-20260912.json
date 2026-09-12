@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-12",
+  "device": {
+    "model": "iPhone 16 Pro",
+    "os": "iOS 26.6.2",
+    "connection": "wired",
+    "chargingDuringAutomation": "not measured",
+    "userReportedConditions": {
+      "graphicsPreset": "quality",
+      "renderScale": 0.85,
+      "minutes": 3,
+      "charging": false
+    }
+  },
+  "sourceBase": "e8c9144",
+  "changes": [
+    "Left tap-to-toggle aim and right fire/throw",
+    "Right sprint/sneak toggles",
+    "Independent persisted 30/60 scene update and render limit",
+    "Read-only physical iOS thermal diagnostics",
+    "Opt-in sustained profile sampling"
+  ],
+  "checks": {
+    "analyze": {
+      "result": "pass",
+      "issues": 0
+    },
+    "tests": {
+      "result": "pass",
+      "passed": 425,
+      "skipped": 1
+    },
+    "iosDebugBuild": {
+      "result": "pass",
+      "seconds": 38.9
+    },
+    "nativeThermalChannel": {
+      "result": "pass",
+      "initialThermalState": "serious",
+      "lowPowerMode": false
+    },
+    "nativeButtons": {
+      "orientation": "portrait",
+      "logicalSize": [
+        402,
+        874
+      ],
+      "aimLeft": true,
+      "fireRight": true,
+      "movementTogglesRight": true,
+      "oneTapFire": {
+        "shots": 1,
+        "loadedAfter": 5,
+        "sneakMaintained": true
+      }
+    },
+    "pausedRenderCounters": {
+      "before": {
+        "elapsedSeconds": 438.519738,
+        "renderCalls": 6857,
+        "ticks": 6854,
+        "frameRateLimit": 60,
+        "foreground": true,
+        "continuous": false,
+        "phase": "paused",
+        "measurement": "Scene.render calls; not presented FPS or GPU completion"
+      },
+      "after": {
+        "elapsedSeconds": 445.945436,
+        "renderCalls": 6857,
+        "ticks": 6854,
+        "frameRateLimit": 60,
+        "foreground": true,
+        "continuous": false,
+        "phase": "paused",
+        "measurement": "Scene.render calls; not presented FPS or GPU completion"
+      },
+      "additionalRenderCalls": 0
+    },
+    "nativeFrameLimit30": {
+      "before": {
+        "elapsedSeconds": 155.854046,
+        "renderCalls": 1028,
+        "ticks": 1026,
+        "frameRateLimit": 30,
+        "foreground": true,
+        "continuous": true,
+        "phase": "playing",
+        "measurement": "Scene.render calls; not presented FPS or GPU completion"
+      },
+      "after": {
+        "elapsedSeconds": 168.085385,
+        "renderCalls": 1395,
+        "ticks": 1393,
+        "frameRateLimit": 30,
+        "foreground": true,
+        "continuous": true,
+        "phase": "playing",
+        "measurement": "Scene.render calls; not presented FPS or GPU completion"
+      },
+      "sceneRenderCallsPerSecond": 30.0048915331347,
+      "preset": "balanced",
+      "renderScale": 0.65,
+      "mode": "debug",
+      "thermalState": "serious",
+      "measurement": "Cadence verification only; not performance or heat comparison"
+    },
+    "materialRecovery": {
+      "initial": "Magenta materials after GPU background error",
+      "recovery": "Hot restart while foreground",
+      "result": "Normal material colors observed",
+      "dataChanges": false,
+      "diagnosis": "GPU resource state after background upload failure is suspected; exact engine cause is not identified"
+    },
+    "runtimeErrorsAfterRestart": {
+      "errors": 0
+    },
+    "selectedSettingsBeforeRelease": {
+      "difficulty": "standard",
+      "volume": 1,
+      "voiceVolume": 1,
+      "environmentVolume": 1,
+      "musicVolume": 1,
+      "effectsVolume": 1,
+      "sensitivity": 1,
+      "touchSensitivity": 1,
+      "threatEffects": 0.7,
+      "touchControls": false,
+      "renderScale": 0.85,
+      "muted": false,
+      "cinematicLighting": true,
+      "graphicsPreset": "quality",
+      "frameRateLimit": 60
+    }
+  },
+  "limitations": [
+    "Initial debug launch reported GPU background execution error and magenta materials; these initial scene cadence data are not a performance comparison.",
+    "Thermal state was already serious at first sample, without controlled charging, brightness or starting conditions. This does not establish cause or temperature in Celsius.",
+    "No measured heat reduction, power consumption, presented FPS, sustained 60 fps, or human two-thumb comfort claim."
+  ],
+  "evidence": {
+    "settings": "../evidence/ios-controls-20260912/iphone16pro-settings.png",
+    "controls": "../evidence/ios-controls-20260912/iphone16pro-controls.png",
+    "tests": "../evidence/ios-controls-20260912/all-tests.log",
+    "analyze": "../evidence/ios-controls-20260912/analyze.log"
+  },
+  "release": {
+    "displayName": "そば屋 検証版",
+    "bundleIdentifier": "com.madogiwa.sobayaHazardLab.graphics20260912",
+    "mode": "release",
+    "benchmarkEnabled": false,
+    "buildSeconds": 35.4,
+    "reportedSizeMB": 334.5,
+    "sceneCount": 9,
+    "appAotSha256": "6e1e4d23f7ddbe7fa03ff3ec9cf3cfce93d78ad7e4d2bb4941aca1414d9ac567",
+    "signatureVerification": "codesign --verify --deep --strict passed outside sandbox",
+    "install": "success",
+    "launchWithoutDebugger": "success",
+    "visualVerification": "User confirmed normal display after standalone Release launch; debug controls screenshots independently verified",
+    "existingMainApp": "separate bundle; unchanged",
+    "path": "../../.local/hazard-graphics-device/21_SOBAYA_HAZARD_LAB/build/ios/iphoneos/Runner.app",
+    "processAliveAfterLaunch": true
+  }
+}
