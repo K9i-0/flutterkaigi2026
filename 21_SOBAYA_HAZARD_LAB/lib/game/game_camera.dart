@@ -85,6 +85,30 @@ PerspectiveCamera playerCamera(HazardGameState s) {
   );
 }
 
+/// Reuse the collision-resolved camera only for one enemy update loop.
+/// Movement, recoil, projectiles and obstacle changes finish before that loop.
+/// A grab can stop aiming during it, so rebuild at that boundary. The caller
+/// must create a fresh predicate for each update; nothing survives a frame.
+bool Function(vm.Vector3) playerViewForUpdate(
+  HazardGameState s,
+  ui.Size viewport,
+) {
+  PerspectiveCamera? view;
+  bool? aiming;
+  return (point) {
+    if (view == null || aiming != s.aiming) {
+      view = playerCamera(s);
+      aiming = s.aiming;
+    }
+    final projected = view!.worldToScreen(point, viewport);
+    return projected != null &&
+        projected.dx >= 0 &&
+        projected.dx <= viewport.width &&
+        projected.dy >= 0 &&
+        projected.dy <= viewport.height;
+  };
+}
+
 // A small camera sphere keeps the near plane clear when skimming a wall.
 double cameraCollisionDistance(
   HazardGameState s,

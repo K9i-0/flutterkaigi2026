@@ -1,5 +1,9 @@
 import 'dart:convert';
 
+import 'game_graphics.dart';
+
+export 'game_graphics.dart';
+
 enum HazardDifficulty { casual, standard, tense }
 
 /// Preferences live outside checkpoints so loading progress never resets them.
@@ -18,8 +22,10 @@ class HazardSettings {
     this.renderScale = .85,
     this.muted = false,
     this.cinematicLighting = true,
+    this.graphicsPreset = HazardGraphicsPreset.quality,
   });
   HazardDifficulty difficulty;
+  HazardGraphicsPreset graphicsPreset;
   double volume,
       voiceVolume,
       environmentVolume,
@@ -59,12 +65,19 @@ class HazardSettings {
     'renderScale': renderScale,
     'muted': muted,
     'cinematicLighting': cinematicLighting,
+    'graphicsPreset': graphicsPreset.name,
   });
   factory HazardSettings.decode(String? encoded, {bool mobileDevice = false}) {
     // Only the caller's native device class selects first-launch quality;
     // saved choices and desktop window resizing never change the preference.
     final defaultRenderScale = mobileDevice ? .65 : .85;
-    final s = HazardSettings(renderScale: defaultRenderScale);
+    final defaultGraphics = mobileDevice
+        ? HazardGraphicsPreset.balanced
+        : HazardGraphicsPreset.quality;
+    final s = HazardSettings(
+      renderScale: defaultRenderScale,
+      graphicsPreset: defaultGraphics,
+    );
     if (encoded == null) return s;
     try {
       final j = jsonDecode(encoded) as Map;
@@ -94,6 +107,10 @@ class HazardSettings {
           : defaultRenderScale;
       s.muted = j['muted'] == true;
       s.cinematicLighting = j['cinematicLighting'] != false;
+      s.graphicsPreset = HazardGraphicsPreset.decode(
+        j['graphicsPreset'],
+        fallback: defaultGraphics,
+      );
     } catch (_) {
       /* Damaged preferences use the playable defaults. */
     }

@@ -1,0 +1,72 @@
+{
+  "date": "2026-09-12",
+  "scope": "Read-only device and signing inspection; no application build, installation or launch during preparation",
+  "privacy": "No device identifier, serial number, device name, network address or provisioning device list is recorded",
+  "device": {
+    "model": "iPhone 16 Pro",
+    "productType": "iPhone17,1",
+    "osVersion": "26.6.2",
+    "osBuild": "23G90",
+    "developerMode": "enabled",
+    "developerDiskImageServicesAvailable": true,
+    "paired": true,
+    "transport": "localNetwork",
+    "tunnelConnected": true,
+    "passcodeRequiredAtInspection": false,
+    "unlockedSinceBoot": true
+  },
+  "existingApplication": {
+    "bundleIdentifier": "com.madogiwa.sobayaHazardLab",
+    "defaultAndDeveloperAppsIncluded": true,
+    "matchingInstalledApplications": 0
+  },
+  "signing": {
+    "currentDevelopmentCertificateAvailable": true,
+    "currentDevelopmentCertificateExpiry": "2027-08-22",
+    "existingWildcardIosDevelopmentProfileIncludesDeviceAndCurrentCertificate": true,
+    "matchingProfileExpiry": "2027-08-22",
+    "projectTeamUnchanged": true,
+    "permissionsUnchanged": true,
+    "olderSameNameCertificateReportsRevocation": true,
+    "newSigningAssetsCreated": false
+  },
+  "candidatePreparation": {
+    "bundleIdentifier": "com.madogiwa.sobayaHazardLab.graphics20260912",
+    "localDirectory": ".local/hazard-graphics-device/21_SOBAYA_HAZARD_LAB",
+    "sourceFilesCopied": 645,
+    "canonicalAssetSymlinks": 49,
+    "generatedScenesReusedWithMatchingInputStamps": 6,
+    "changedEnvironmentScenesRequireConversion": 3,
+    "copiedDartToolOrBuildCache": false,
+    "built": false,
+    "installed": false,
+    "launched": false
+  },
+  "tools": {
+    "xcode": "26.6 (17F113)",
+    "flutter": "3.47.2",
+    "dart": "3.13.2",
+    "deviceQueries": [
+      "devicectl device info details",
+      "devicectl device info lockState",
+      "devicectl device info apps --bundle-id (target application only) --include-all-apps"
+    ],
+    "signingQueries": [
+      "security find-identity -v -p codesigning",
+      "Public development certificate metadata",
+      "Existing local provisioning profiles; only capability and matching booleans retained"
+    ]
+  },
+  "limits": [
+    "No physical iPhone performance result is claimed by this readiness report.",
+    "Device lock and connection state may change after inspection.",
+    "The candidate inputs are live canonical symlinks; record input hashes immediately before the actual test."
+  ],
+  "followUp": {
+    "status": "deferred; user requested Mac first",
+    "attempt": "A subsequent Dart MCP profile launch timed out before a VM connection or benchmark result. An iOS Runner.app build artifact exists locally; installation and launch were not verified.",
+    "connection": "A later target-app query also timed out on the development network connection.",
+    "performanceMeasured": false,
+    "note": "candidatePreparation describes the earlier preparation snapshot, not the subsequent launch attempt."
+  }
+}

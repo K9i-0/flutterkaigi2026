@@ -11,6 +11,13 @@ import 'game_settings.dart';
 /// Opt-in profile run. Uses real rendered Flutter frames, never inferred FPS.
 class GameBenchmark {
   GameBenchmark(this.game) {
+    if (cases.isEmpty) {
+      throw ArgumentError.value(
+        const String.fromEnvironment('HAZARD_BENCHMARK_CASE'),
+        'HAZARD_BENCHMARK_CASE',
+        'No benchmark case matches this name',
+      );
+    }
     game.benchmarkMode = true;
     // Reproducible audible settings without writing the user's preferences.
     game.settings = HazardSettings(
@@ -18,8 +25,13 @@ class GameBenchmark {
         'HAZARD_CINEMATIC',
         defaultValue: true,
       ),
+      graphicsPreset: benchmarkGraphics,
     );
-    game.lighting.apply(game.scene, enabled: game.settings.cinematicLighting);
+    game.lighting.apply(
+      game.scene,
+      enabled: game.settings.cinematicLighting,
+      preset: game.settings.graphicsPreset,
+    );
     next();
     timer = Timer.periodic(const Duration(milliseconds: 500), (_) => poll());
   }
@@ -36,6 +48,33 @@ class GameBenchmark {
       movingSearchers = <int>{},
       advancedSearchers = <int>{};
   final speechMorphTicks = <String, int>{};
+  static final benchmarkGraphics = _graphics();
+  static final overrideScale = _scale();
+  static HazardGraphicsPreset _graphics() {
+    const name = String.fromEnvironment(
+      'HAZARD_GRAPHICS',
+      defaultValue: 'quality',
+    );
+    if (!HazardGraphicsPreset.values.any((preset) => preset.name == name)) {
+      throw ArgumentError.value(name, 'HAZARD_GRAPHICS');
+    }
+    return HazardGraphicsPreset.decode(name);
+  }
+
+  static double? _scale() {
+    const raw = String.fromEnvironment('HAZARD_BENCHMARK_SCALE');
+    if (raw.isEmpty) return null;
+    final scale = double.tryParse(raw);
+    if (scale == null || !scale.isFinite || scale < .5 || scale > 1) {
+      throw ArgumentError.value(
+        raw,
+        'HAZARD_BENCHMARK_SCALE',
+        'Expected a finite resolution scale between 0.5 and 1.0',
+      );
+    }
+    return scale;
+  }
+
   static final cases = allCases
       .where(
         (c) =>
@@ -189,7 +228,10 @@ class GameBenchmark {
       e.heading = math.atan2(s.x - e.x, s.z - e.z);
       e.ambientDance = null;
     }
-    game.scene.renderScale = c.scale;
+    // Align the saved-settings snapshot with the actual workload. The previous
+    // full-resolution cases incorrectly logged the constructor's 85% setting.
+    game.settings.renderScale = overrideScale ?? c.scale;
+    game.scene.renderScale = game.settings.renderScale;
     game.contactShadows?.node.visible = c.contacts;
     windowMotionTicks = completedPassages = 0;
     playerWasVaulting = false;
@@ -271,6 +313,9 @@ class GameBenchmark {
     }
     debugPrintSynchronously(
       'HAZARD_GAME_BENCHMARK ${jsonEncode({
+        'schemaVersion': 2,
+        'recordedAtUtc': DateTime.now().toUtc().toIso8601String(),
+        'runLabel': const String.fromEnvironment('HAZARD_BENCHMARK_RUN'),
         'case': cases[index].name,
         'settings': jsonDecode(game.settings.encode()),
         'lighting': game.lighting.inspect(game.scene),
@@ -291,6 +336,8 @@ class GameBenchmark {
         'renderScale': game.scene.renderScale,
         'viewport': [game.viewport.width, game.viewport.height],
         'devicePixelRatio': game.devicePixelRatio,
+        'renderPixels': [(game.viewport.width * game.devicePixelRatio * game.scene.renderScale).ceil(), (game.viewport.height * game.devicePixelRatio * game.scene.renderScale).ceil()],
+        'measurement': 'Flutter UI and raster thread durations; not GPU execution time or presented FPS',
         'elapsedMs': watch.elapsedMilliseconds,
         ...game.frames.toJson(),
       })}',

@@ -398,6 +398,9 @@ class HazardGameState {
 
   /// Frustum inclusion is evaluated for each body/head sample independently.
   bool Function(vm.Vector3)? enemyVisibleInView;
+
+  /// Optional render-camera predicate scoped to the following enemy loop.
+  bool Function(vm.Vector3) Function()? prepareEnemyView;
   String? get lastSound => _sounds.lastOrNull?.name;
   set lastSound(String? name) {
     if (name == null) {
@@ -1101,6 +1104,7 @@ class HazardGameState {
       _flowTimer = .7;
       _buildFlow();
     }
+    final visibleInView = prepareEnemyView?.call() ?? enemyVisibleInView;
     for (final e in enemies) {
       if (!running) break;
       e.moved = 0;
@@ -1128,7 +1132,7 @@ class HazardGameState {
         continue;
       }
       if (!e.active) continue;
-      _updatePlayerDiscovery(e);
+      _updatePlayerDiscovery(e, visibleInView);
       if (insideRefuge) {
         _disengage(e);
         e.attackPending = e.grabPending = false;

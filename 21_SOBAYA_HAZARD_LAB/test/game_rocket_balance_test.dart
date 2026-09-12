@@ -60,6 +60,33 @@ void flight(HazardGameState s, [double seconds = 1]) {
 }
 
 void main() {
+  test(
+    'leaving rocket aim clears a previous lock for every inactive state',
+    () {
+      final transitions = <String, void Function(HazardGameState)>{
+        'weapon switch': (s) => s.equip('handgun'),
+        'aim release': (s) => s.aiming = false,
+        'rocket removed': (s) =>
+            s.bag.removeWhere((item) => item.kind == 'rocket'),
+        for (final phase in PlayPhase.values)
+          if (phase != PlayPhase.playing) phase.name: (s) => s.phase = phase,
+      };
+      for (final transition in transitions.entries) {
+        final s = state();
+        s.addItem('rocket', 1);
+        s.equip('rocket');
+        final enemy = target(s);
+        lock(s);
+        expect(s.rocketLockEnabled, true);
+        expect(s.rocketLockId, enemy.id);
+        transition.value(s);
+        expect(s.rocketLockEnabled, false, reason: transition.key);
+        lock(s);
+        expect(s.rocketLockId, isNull, reason: transition.key);
+      }
+    },
+  );
+
   test('secret offer checks beer at conversation entry; successful exchange persists and cannot repeat', () {
     final s = state(id: 'farm')..beers = 9;
     shop(s);

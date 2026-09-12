@@ -1,0 +1,232 @@
+{
+  "date": "2026-09-12",
+  "description": "Exported GLB geometry, COLOR_0 and budget audit; not an FPS measurement",
+  "iteration": {
+    "number": 2,
+    "reference": "evidence/graphics-20260912/after-village-v1.png",
+    "finding": "Bright upright triangular foliage distracted from the buildings",
+    "change": "Low two-triangle folded leaves, dark muted olive tint, sparse foundation stones",
+    "costConstraint": "Triangle totals at or below native v1; primitives and images unchanged"
+  },
+  "regions": {
+    "village": {
+      "source": "04_GAME_ASSETS/3d/environments/pueblo/village.glb",
+      "sha256": "4bf0dae3c0626c876029695fdd8547fe287a70c4ad49349f8373f5387e611d68",
+      "layoutSha256": "d6e469fc243628e49d4be6240fa53a553369b5177c36d7c75da05724757ca2fb",
+      "layoutUnchanged": true,
+      "before": {
+        "triangles": 17932,
+        "primitives": 153,
+        "bytes": 12656064,
+        "images": 12
+      },
+      "after": {
+        "triangles": 26068,
+        "primitives": 127,
+        "bytes": 13675588,
+        "images": 12,
+        "materials": 21,
+        "meshes": 79,
+        "vertexColorPrimitives": 127
+      },
+      "budget": {
+        "triangleBudget": 30000,
+        "primitiveBudget": 170
+      },
+      "nativeV1Triangles": 26115,
+      "architectureBatch": {
+        "after": {
+          "colorValues": 27310,
+          "corners": 27310,
+          "facePayloadSha256": "9abb1da8169df9e3fec524afded6fbf4bc24bfb2a1c0e8e4b01ef4acaeb12da2",
+          "polygons": 7092,
+          "uvValues": 27310,
+          "vertices": 27310
+        },
+        "before": {
+          "colorValues": 27310,
+          "corners": 27310,
+          "facePayloadSha256": "9abb1da8169df9e3fec524afded6fbf4bc24bfb2a1c0e8e4b01ef4acaeb12da2",
+          "polygons": 7092,
+          "uvValues": 27310,
+          "vertices": 27310
+        },
+        "payloadPreserved": true,
+        "primitiveCountAfter": 10,
+        "primitiveCountBefore": 50,
+        "primitiveReduction": 40,
+        "sourceHouseNodes": [
+          "House_Shotgun",
+          "House_Barn",
+          "House_West",
+          "House_East",
+          "House_Entrance"
+        ]
+      },
+      "checks": [
+        {
+          "house": "Shotgun",
+          "apertureRaysPassed": 18,
+          "roofVisibilityNodeRetained": true
+        },
+        {
+          "house": "Barn",
+          "apertureRaysPassed": 27,
+          "roofVisibilityNodeRetained": true
+        },
+        {
+          "house": "West",
+          "apertureRaysPassed": 18,
+          "roofVisibilityNodeRetained": true
+        },
+        {
+          "house": "East",
+          "apertureRaysPassed": 9,
+          "roofVisibilityNodeRetained": true
+        },
+        {
+          "house": "Entrance",
+          "apertureRaysPassed": 18,
+          "roofVisibilityNodeRetained": true
+        }
+      ],
+      "passed": true
+    },
+    "farm": {
+      "source": "04_GAME_ASSETS/3d/environments/farm/farm.glb",
+      "sha256": "b96b53c4d4af95255adfd0a5b30f7ab21279eaa65996b59309ee6211dc8d562b",
+      "layoutSha256": "884cd3bc01228a4248383485d59ff10da18d135519328e2b4a1f51408bafb875",
+      "layoutUnchanged": true,
+      "before": {
+        "triangles": 13655,
+        "primitives": 113,
+        "bytes": 12658448,
+        "images": 10
+      },
+      "after": {
+        "triangles": 19833,
+        "primitives": 93,
+        "bytes": 13447708,
+        "images": 10,
+        "materials": 19,
+        "meshes": 48,
+        "vertexColorPrimitives": 93
+      },
+      "budget": {
+        "triangleBudget": 24000,
+        "primitiveBudget": 126
+      },
+      "nativeV1Triangles": 19869,
+      "architectureBatch": {
+        "after": {
+          "colorValues": 21654,
+          "corners": 21654,
+          "facePayloadSha256": "5d13e3f60141bd4973b7179d6ac1ea717282dbebe395657f0bec86bca556b73a",
+          "polygons": 5616,
+          "uvValues": 21654,
+          "vertices": 21654
+        },
+        "before": {
+          "colorValues": 21654,
+          "corners": 21654,
+          "facePayloadSha256": "5d13e3f60141bd4973b7179d6ac1ea717282dbebe395657f0bec86bca556b73a",
+          "polygons": 5616,
+          "uvValues": 21654,
+          "vertices": 21654
+        },
+        "payloadPreserved": true,
+        "primitiveCountAfter": 10,
+        "primitiveCountBefore": 40,
+        "primitiveReduction": 30,
+        "sourceHouseNodes": [
+          "House_SaveHut",
+          "House_Tools",
+          "House_NorthShed",
+          "House_Barn"
+        ]
+      },
+      "checks": [
+        {
+          "house": "SaveHut",
+          "apertureRaysPassed": 9,
+          "roofVisibilityNodeRetained": true
+        },
+        {
+          "house": "Tools",
+          "apertureRaysPassed": 27,
+          "roofVisibilityNodeRetained": true
+        },
+        {
+          "house": "NorthShed",
+          "apertureRaysPassed": 9,
+          "roofVisibilityNodeRetained": true
+        },
+        {
+          "house": "Barn",
+          "apertureRaysPassed": 27,
+          "roofVisibilityNodeRetained": true
+        }
+      ],
+      "passed": true
+    },
+    "mountain": {
+      "source": "04_GAME_ASSETS/3d/environments/mountain/mountain.glb",
+      "sha256": "4a3f068211dcaa72022e4f0c505f4c8b287517f3cff67db6b164bdd425826104",
+      "layoutSha256": "cc6b8c3e688e14138fbe98f3213090164ea0088e652c4ce8b93b79397bb9567a",
+      "layoutUnchanged": true,
+      "before": {
+        "triangles": 9043,
+        "primitives": 46,
+        "bytes": 12171680,
+        "images": 10
+      },
+      "after": {
+        "triangles": 12689,
+        "primitives": 48,
+        "bytes": 12656424,
+        "images": 10,
+        "materials": 18,
+        "meshes": 31,
+        "vertexColorPrimitives": 48
+      },
+      "budget": {
+        "triangleBudget": 15000,
+        "primitiveBudget": 50
+      },
+      "nativeV1Triangles": 12701,
+      "architectureBatch": {
+        "after": {
+          "colorValues": 5074,
+          "corners": 5074,
+          "facePayloadSha256": "8d6ca567574d79f7c33a81345aed3686d6e240e7a91cf0cfd6213a1a38e223b9",
+          "polygons": 1328,
+          "uvValues": 5074,
+          "vertices": 5074
+        },
+        "before": {
+          "colorValues": 5074,
+          "corners": 5074,
+          "facePayloadSha256": "8d6ca567574d79f7c33a81345aed3686d6e240e7a91cf0cfd6213a1a38e223b9",
+          "polygons": 1328,
+          "uvValues": 5074,
+          "vertices": 5074
+        },
+        "payloadPreserved": true,
+        "primitiveCountAfter": 10,
+        "primitiveCountBefore": 10,
+        "primitiveReduction": 0,
+        "sourceHouseNodes": [
+          "House_Ruins"
+        ]
+      },
+      "checks": [
+        {
+          "house": "Ruins",
+          "apertureRaysPassed": 18,
+          "roofVisibilityNodeRetained": true
+        }
+      ],
+      "passed": true
+    }
+  }
+}
