@@ -23,7 +23,7 @@ Produce a candid live-action documentary version of the source, emphasizing the 
 
 ## 文字監査
 
-当初の実写シーン3候補は元絵の字形へ強く引かれ、`アーロンチェア`に近い表記になった。Wan参照用の椅子単体版では、正しい文字参照`prop_aronchia_handwritten_final.png`を使い、3案とも`アーロンチュア`へ修正済み。
+当初の実写シーン3候補は元絵の字形へ強く引かれ、小書きの`ュ`が`ェ`に近い誤表記になった。Wan参照用の椅子単体版では、正しい文字参照`prop_aronchia_handwritten_final.png`を使い、3案とも`アーロンチュア`へ修正済み。
 
 ## 椅子単体・透過候補
 

@@ -940,7 +940,7 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
                 {
                   image: 2,
                   title: "席は、段ボール。",
-                  copy: "入社したそば屋を待っていたのは、手書きの「アーロンチェア」。本人は、もちろん快適です。",
+                  copy: "入社したそば屋を待っていたのは、手書きの「アーロンチュア」。本人は、もちろん快適です。",
                 },
                 {
                   image: 4,

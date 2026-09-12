@@ -33,7 +33,7 @@ Shot 8 [20.0-23.0 s] — Without a cut, he rides up a broad reception ramp, acro
 
 Shot 9 [23.0-26.0 s] — Without a cut, Sobaya bursts through a lightweight meeting-room partition and crosses an emergency meeting in progress. A suited NPC points at him and shouts exactly once in Japanese: 「会議中です！」 Sobaya plows through a rolling whiteboard, scattering sticky notes and printed charts. Objective changes to “緊急会議を中止しろ”. Nobody is struck. A score popup reads “会議破壊 +500”.
 
-Shot 10 [26.0-28.0 s] — Without a cut, he enters the connected open office and makes one tight donut around a pillar. The rear wheel knocks over stacks of cardboard “アーロンチェア” boxes, three rolling chairs, and one copier in a readable chain reaction. The copier ejects a blizzard of paper and the ceiling sprinklers switch on. Office workers scatter sideways with silent game NPC panic animations.
+Shot 10 [26.0-28.0 s] — Without a cut, he enters the connected open office and makes one tight donut around a pillar. The rear wheel knocks over stacks of cardboard “アーロンチュア” boxes, three rolling chairs, and one copier in a readable chain reaction. The copier ejects a blizzard of paper and the ceiling sprinklers switch on. Office workers scatter sideways with silent game NPC panic animations.
 
 Shot 11 [28.0-30.0 s] — Without a cut, Sobaya ends the donut, brakes to a full stop beneath the sprinklers, removes the same mug, takes a fast sip, and raises it overhead while still seated on the motorcycle. Objective becomes “ミッション完了”; giant center text “定時退社” pops once with a bright completion chime. Sobaya says exactly once: 「定時なので帰ります！」 Hold the final wet, paper-filled gameplay tableau through exactly 30.0 seconds. No logo and no fade.
 

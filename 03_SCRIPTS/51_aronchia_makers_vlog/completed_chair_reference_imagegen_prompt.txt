@@ -18,7 +18,7 @@ Chair geometry — preserve all of these:
 
 Text (verbatim): “アーロンチュア”
 Exact character order: ア ー ロ ン チ ュ ア
-Text placement: exactly once, centered on the large central front/base box, in casual black-marker handwriting. Preserve the long vowel mark and small ュ. Never write アーロンチェア.
+Text placement: exactly once, centered on the large central front/base box, in casual black-marker handwriting. Preserve the long vowel mark and small ュ. Never replace the small ュ with a small ェ.
 
 Backdrop: transparent alpha outside the chair. No office, floor, person, hand, tool, beer, paper, shadow, reflection, caption, logo or watermark.
 
