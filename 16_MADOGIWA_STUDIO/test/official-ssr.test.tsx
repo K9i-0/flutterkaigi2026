@@ -16,3 +16,11 @@ describe("official initial HTML", () => {
     expect(html).not.toContain("official-header");
   });
 });
+
+it("renders all comic chapters with reserved image dimensions and lazy loading", () => {
+  const html = renderToStaticMarkup(<Journal episodes={[]} galleryItems={[]} initialTheme="sakaba" initialHref="/story?chapter=8" />);
+  expect(html.match(/class="j-story-chapter"/g)).toHaveLength(14);
+  expect(html).toContain('id="chapter-14"');
+  expect(html).toContain('width="538" height="720" loading="lazy"');
+  expect(html).not.toContain('aria-label="次の話"');
+});

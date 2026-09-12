@@ -20,7 +20,8 @@ describe("public data cost and freshness", () => {
     const html = await response.text();
     expect(html).toContain('"@type":"VideoObject"');
     expect(html).toContain('"contentUrl":"https://madogiwa.work/media/');
-    expect(html.match(/class="deferred-video"/g)).toHaveLength(2);
+    expect(html.match(/class="deferred-video"/g)).toHaveLength(1);
+    expect(html).toContain("制作バージョン");
     expect(html).not.toMatch(/<video\b/);
     expect(html).not.toMatch(/<source\b/);
   }, 15_000);

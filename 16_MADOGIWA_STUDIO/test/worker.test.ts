@@ -168,15 +168,12 @@ describe("Madogiwa Studio Worker", () => {
     const episodePage = await SELF.fetch("http://localhost/episodes/sobaya-beer-battery");
     const episodeHtml = await episodePage.text();
     expect(episodePage.status).toBe(200);
-    expect(episodeHtml).toContain("PROMPT &amp; INPUTS");
+    expect(episodeHtml).toContain("制作ノート");
     expect(episodeHtml).toContain("このデモデータは管理画面の表示確認用です");
     expect(episodeHtml).toContain("Character");
-    expect(episodeHtml.indexOf("<video")).toBeLessThan(episodeHtml.indexOf("<h1"));
-    const expectedXQuery = new URLSearchParams({
-      text: "そば屋ビールバッテリー #窓際族物語",
-      url: "https://madogiwa.work/episodes/sobaya-beer-battery",
-    }).toString().replaceAll("&", "&amp;");
-    expect(episodeHtml).toContain(`https://twitter.com/intent/tweet?${expectedXQuery}`);
+    expect(episodeHtml).toContain("動画に戻る");
+    expect(episodeHtml).not.toContain("official-header");
+    expect(episodeHtml).not.toContain("https://twitter.com/intent/tweet");
 
     expect((await adminFetch("http://localhost/admin-api/episodes/sobaya-beer-battery", {
       method: "PATCH",

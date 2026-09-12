@@ -2729,3 +2729,14 @@
 .j-making-link b { font-size:15px; }
 .j-making-link small { margin-top:4px; font-size:12px; opacity:.7; }
 .j-making-link:hover { background:rgba(128,128,128,.12); }
+
+.j-story-index { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 36px; }
+.j-story-index a { padding:6px 12px; border:1px solid var(--line); font-size:13px; }
+.j-story-scroll { max-width:780px; margin-inline:auto; }
+.j-story-chapter { margin:0 0 48px; scroll-margin-top:100px; }
+.j-story-chapter h2 { display:flex; align-items:baseline; gap:12px; margin:0 0 14px; font-size:20px; }
+.j-story-chapter h2 small { font-size:13px; font-weight:400; white-space:nowrap; }
+.j-story-image { display:block; width:100%; padding:0; cursor:zoom-in; }
+.j-story-image img { display:block; width:100%; height:auto; }
+.j-story-end { margin:36px 0; }
+@media(max-width:600px) { .j-story-chapter { margin-bottom:32px; } .j-story-chapter h2 { font-size:17px; } }

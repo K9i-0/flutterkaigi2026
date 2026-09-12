@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import {
-  ArrowLeft,
   ArrowRight,
   ArrowUpRight,
   Play,
@@ -109,6 +108,14 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
   const chooseTheme = (next: AvailableTheme) => { setWorking(false); changeTheme(next); };
   const [route, setRoute] = useState<Route>(() => readRoute(initialHref));
   const [menu, setMenu] = useState(false);
+  useEffect(() => {
+    if (route.page !== "story") return;
+    const chapter = route.chapter ?? 1;
+    const target = location.hash || (chapter > 1 ? `#chapter-${chapter}` : "");
+    if (!/^#chapter-\d+$/.test(target)) return;
+    const frame = requestAnimationFrame(() => document.getElementById(target.slice(1))?.scrollIntoView());
+    return () => cancelAnimationFrame(frame);
+  }, [route.page, route.chapter]);
   const [playing, setPlaying] = useState<Episode | null>(null);
   const [zoom, setZoom] = useState<{ src: string; title: string } | null>(null);
   const [toast, setToast] = useState("");
@@ -338,7 +345,7 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
       </div>
     </section>
   );
-  const story = comicEpisodes[(route.chapter ?? 1) - 1];
+
   const filtered = episodes.filter(
     (e) =>
       (route.scope === "all" || e.has_featured_video === 1) &&
@@ -1017,84 +1024,21 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
                 窓際族物語の原点。
               </p>
             </div>
-            <section className="j-reader">
-              <div className="j-reader-image">
-                <button
-                  onClick={() =>
-                    setZoom({
-                      src: story.image,
-                      title: `第${story.number}話 ${story.title}`,
-                    })
-                  }
-                  aria-label={`第${story.number}話の画像を拡大`}
-                >
-                  <img
-                    src={story.image}
-                    alt={`第${story.number}話 ${story.title}`}
-                  />
-                  <span>
-                    画像を拡大
-                    <ArrowUpRight size={14} />
-                  </span>
-                </button>
-              </div>
-              <div className="j-reader-copy">
-                <span className="j-kicker">
-                  第{String(story.number).padStart(2, "0")}話 / 14
-                </span>
-                <h2>{story.title}</h2>
-                <p>{story.description}</p>
-                <div className="j-reader-controls">
-                  <button
-                    aria-label="前の話"
-                    disabled={story.number === 1}
-                    onClick={() =>
-                      go({ page: "story", chapter: story.number - 1 })
-                    }
-                  >
-                    <ArrowLeft size={19} />
-                  </button>
-                  <span>{story.number} / 14</span>
-                  <button
-                    aria-label="次の話"
-                    disabled={story.number === 14}
-                    onClick={() =>
-                      go({ page: "story", chapter: story.number + 1 })
-                    }
-                  >
-                    <ArrowRight size={19} />
-                  </button>
-                </div>
-                {story.number === 14 &&
-                  link(
-                    { page: "movies" },
-                    <>
-                      続いて、動画の窓際へ
-                      <ArrowRight size={17} />
-                    </>,
-                    "j-underlined",
-                  )}
-              </div>
-            </section>
-            <nav className="j-chapter-list" aria-label="話数を選ぶ">
-              {comicEpisodes.map((e) => (
-                <a
-                  key={e.number}
-                  href={href({ page: "story", chapter: e.number })}
-                  aria-current={story.number === e.number ? "page" : undefined}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    go({ page: "story", chapter: e.number });
-                  }}
-                >
-                  <img src={e.image} alt="" loading="lazy" />
-                  <span>
-                    <small>第{e.number}話</small>
-                    {e.title}
-                  </span>
-                </a>
-              ))}
+            <nav className="j-story-index" aria-label="話数へジャンプ">
+              {comicEpisodes.map((episode) => <a key={episode.number} href={`#chapter-${episode.number}`}>第{episode.number}話</a>)}
             </nav>
+            <div className="j-story-scroll">
+              {comicEpisodes.map((episode, index) => {
+                const dimensions = [[720,720],[720,720],[720,720],[538,720],[538,720],[672,900],[900,900],[483,720],[646,720],[720,709],[720,720],[483,720],[592,720],[900,651]][index];
+                return <section className="j-story-chapter" id={`chapter-${episode.number}`} key={episode.number} aria-labelledby={`chapter-title-${episode.number}`}>
+                  <h2 id={`chapter-title-${episode.number}`}><small>第{episode.number}話</small>{episode.title}</h2>
+                  <button className="j-story-image" onClick={() => setZoom({ src: episode.image, title: `第${episode.number}話 ${episode.title}` })} aria-label={`第${episode.number}話の画像を拡大`}>
+                    <img src={episode.image} alt={`第${episode.number}話 ${episode.title}`} width={dimensions[0]} height={dimensions[1]} loading={index === 0 ? "eager" : "lazy"} decoding="async" />
+                  </button>
+                </section>;
+              })}
+              <div className="j-story-end">{link({ page: "movies" }, <>続いて、動画の窓際へ<ArrowRight size={17} /></>, "j-underlined")}</div>
+            </div>
           </>
         )}
         {route.page === "gallery" && (

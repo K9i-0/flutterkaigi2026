@@ -3,7 +3,7 @@ import { ArrowLeft, ImageIcon, Music2, Paperclip } from "lucide-react";
 import { DeferredVideo } from "@/components/deferred-video";
 import { DocumentPreview } from "@/components/document-preview";
 import { ZoomableImage } from "@/components/image-lightbox";
-import { episodePoster, type PublicEpisodeDetail, type PublicInputAsset } from "@/lib/public-data";
+import { absoluteUrl, episodePoster, type PublicEpisodeDetail, type PublicInputAsset } from "@/lib/public-data";
 import "./production-note.css";
 
 export function EpisodePage({ detail }: { detail: PublicEpisodeDetail }) {
@@ -20,7 +20,9 @@ export function EpisodePage({ detail }: { detail: PublicEpisodeDetail }) {
   }, [episode.slug, videos]);
   const video = videos.find((item) => item.id === selected) ?? videos[0];
   const production = productions.find((item) => item.generation_id === video?.generation_id);
+  const jsonLd = { "@context": "https://schema.org", "@type": "VideoObject", name: episode.title, description: episode.summary || episode.title, thumbnailUrl: [absoluteUrl(episodePoster(detail))], uploadDate: episode.published_at ?? episode.updated_at, contentUrl: videos[0] ? absoluteUrl(`/media/${videos[0].id}`) : undefined, url: absoluteUrl(`/episodes/${episode.slug}`) };
   return <article className="production-note">
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
     <a className="production-back" href={returnTo}><ArrowLeft size={17} />動画に戻る</a>
     <header className="production-heading"><p>窓際族物語 / 制作ノート</p><h1>{episode.title}</h1></header>
     {videos.length > 1 && <label className="production-select">制作バージョン<select value={video?.id} onChange={(event) => { setSelected(event.target.value); history.replaceState(null, "", `#making-${event.target.value}`); }}>{videos.map((item) => <option key={item.id} value={item.id}>{item.label || "動画"} · v{productions.find((p) => p.generation_id === item.generation_id)?.version ?? "—"}</option>)}</select></label>}
