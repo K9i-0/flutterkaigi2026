@@ -1,6 +1,7 @@
 import { Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { Archive, Clapperboard, LockKeyhole, Menu } from "lucide-react";
 import { useEffect } from "react";
+import { OfficialSite } from "../official/site";
 import { cn } from "@/lib/utils";
 
 const publicLinks = [
@@ -21,7 +22,7 @@ export function Layout() {
 
   if (admin) return <StudioLayout />;
 
-  return <div className="official-shell">
+  const classic = <div className="official-shell">
     <header className="official-header">
       <Link to="/" className="official-logo" aria-label="窓際族物語 ホーム">
         <img src="/site/sobaya-icon.jpg" alt="" />
@@ -45,6 +46,8 @@ export function Layout() {
       <small>© MADOGIWAZOKU MONOGATARI · Powered by Cloudflare</small>
     </footer>
   </div>;
+  const journalRoute = pathname === "/" || pathname === "/episodes" || pathname === "/episodes/" || pathname.startsWith("/characters") || pathname === "/story" || pathname === "/gallery" || pathname === "/gallery/";
+  return journalRoute ? <OfficialSite fallback={classic} /> : classic;
 }
 
 function StudioLayout() {

@@ -214,3 +214,11 @@ Fork元などStudio本体を持たないリポジトリでも、次のファイ�
 5. 各利用者が自分のアカウントでOAuthログインする。Codex CLIでは`codex mcp login madogiwa-studio`を実行する
 
 OAuthキャッシュやCloudflare API tokenをリポジトリ間・利用者間で共有する必要はありません。
+
+## 公式サイトの採用デザイン（2026-09-12）
+
+`src/official/`が本番の3スタイル（窓際酒場・仕事してるふりExcel・地下労働ゆめポイント）の正本。番号は画面へ表示しない。選択は同一ブラウザのlocalStorageへ保存し、theme指定なしで復元。
+
+`Layout`から既存の公開ページをフォールバックとして保持して読み込み、公開中のエピソード・ギャラリーを既存サーバー関数から取得する。管理画面・API・MCP・エピソード詳細の固有URLと公開メタデータを維持。動画は`/media/`、通常サムネイルは`/posters/`を使い、試作の固定エピソードJSON・動画キャッシュは本番へ含めない。
+
+配信用の布・紙・コンクリート・フォントは`public/themes/`。原本と生成プロンプトは`design-preview/source-assets/`。採用音声は`public/voice/sobaya.wav`。以前のローカル比較は`design-preview/`に制作履歴として保持する。今後の本番修正は`src/official/`へ反映する。

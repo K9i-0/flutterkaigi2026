@@ -1,0 +1,1673 @@
+[
+  {
+    "id": "41e60fe4-0818-4577-b6d2-ac6ab41a75fc",
+    "slug": "tako-game-dormitory",
+    "episode_number": null,
+    "title": "タコゲーム — 目覚め",
+    "summary": "巨大な多段ベッドの部屋で目覚めたやめ太郎。紫ジャージの窓際族を待っていたのは、水色の武装兵を従えたゲームマスター・たこさんだった。韓国語の真剣な芝居と、いつもの口調の日本語字幕が食い違う30秒パロディ。福ちゃんの「ギュン」だけは音声でもそのまま。",
+    "status": "published",
+    "created_at": "2026-09-10T13:11:21.325Z",
+    "updated_at": "2026-09-10T13:12:07.918Z",
+    "published_at": "2026-09-10T13:11:21.325Z",
+    "studio_id": "MS-XE2TEYUR",
+    "generation_count": 1,
+    "video_count": 1,
+    "input_count": 0,
+    "primary_video_id": "5ab8803c-024c-47a7-849c-20373f65c5e7",
+    "has_featured_video": 1,
+    "featured_video_created_at": "2026-09-10T13:15:03.668Z",
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/5ab8803c-024c-47a7-849c-20373f65c5e7",
+    "members": [
+      {
+        "episode_id": "41e60fe4-0818-4577-b6d2-ac6ab41a75fc",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      },
+      {
+        "episode_id": "41e60fe4-0818-4577-b6d2-ac6ab41a75fc",
+        "id": "takosan",
+        "slug": "takosan",
+        "name": "たこさん",
+        "sort_order": 2
+      },
+      {
+        "episode_id": "41e60fe4-0818-4577-b6d2-ac6ab41a75fc",
+        "id": "fukuchan",
+        "slug": "fukuchan",
+        "name": "福ちゃん",
+        "sort_order": 5
+      },
+      {
+        "episode_id": "41e60fe4-0818-4577-b6d2-ac6ab41a75fc",
+        "id": "yametaro",
+        "slug": "yametaro",
+        "name": "無職やめ太郎",
+        "sort_order": 6
+      }
+    ]
+  },
+  {
+    "id": "105f3d16-2802-4b5a-92b2-16bee3568116",
+    "slug": "madogiwa-super-try-keisha",
+    "episode_number": null,
+    "title": "窓際スーパーつらい — 土下座レース篇",
+    "summary": "CMシリーズ第5弾。完成された土下座ほど加速する謎の競技「競謝」。そば屋失格後の最終周、やめ太郎に対し、不動の王者・いーさんが完全土下座で勝負を決める。新メンバーいーさんはアクシデンチュアのトップ営業で窓際族。実況字幕付き25秒。「低姿勢で、ぶっちぎれ。」",
+    "status": "published",
+    "created_at": "2026-09-10T05:35:04.703Z",
+    "updated_at": "2026-09-10T05:48:33.888Z",
+    "published_at": "2026-09-10T05:35:04.703Z",
+    "studio_id": "MS-BTTMC4HG",
+    "generation_count": 2,
+    "video_count": 2,
+    "input_count": 0,
+    "primary_video_id": "374502a4-a357-4f3c-aa3c-f636ae4ca1fd",
+    "has_featured_video": 1,
+    "featured_video_created_at": "2026-09-10T05:50:32.886Z",
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/374502a4-a357-4f3c-aa3c-f636ae4ca1fd",
+    "members": [
+      {
+        "episode_id": "105f3d16-2802-4b5a-92b2-16bee3568116",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      },
+      {
+        "episode_id": "105f3d16-2802-4b5a-92b2-16bee3568116",
+        "id": "yametaro",
+        "slug": "yametaro",
+        "name": "無職やめ太郎",
+        "sort_order": 6
+      }
+    ]
+  },
+  {
+    "id": "0755a6d6-d2f8-48d7-b6e7-e20e672e4ccd",
+    "slug": "madogiwa-super-try-sobaya-invasion-trailer",
+    "episode_number": null,
+    "title": "窓際スーパーつらい — そば屋&たこさん初めての東京篇［予告編］",
+    "summary": "窓際族物語、最大の謎がついに明かされる。地球のビールを狙うそば屋とたこさんの侵略を、映画予告編風に紹介。そば屋の日本語ナレーションと4回の暗転、英語本編音声・日本語字幕、最後はビールCM。61.2秒。本編: https://madogiwa-studio.madogiwa-studio.workers.dev/episodes/madogiwa-super-try-sobaya-invasion （MS-GCH4HZGE）。",
+    "status": "published",
+    "created_at": "2026-09-09T23:02:50.077Z",
+    "updated_at": "2026-09-09T23:04:34.050Z",
+    "published_at": "2026-09-09T23:02:50.077Z",
+    "studio_id": "MS-8QAHSQ8X",
+    "generation_count": 1,
+    "video_count": 1,
+    "input_count": 0,
+    "primary_video_id": "912872aa-41a1-4902-80cd-e6dc8ba0205d",
+    "has_featured_video": 1,
+    "featured_video_created_at": "2026-09-09T23:04:37.530Z",
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/912872aa-41a1-4902-80cd-e6dc8ba0205d",
+    "members": [
+      {
+        "episode_id": "0755a6d6-d2f8-48d7-b6e7-e20e672e4ccd",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      },
+      {
+        "episode_id": "0755a6d6-d2f8-48d7-b6e7-e20e672e4ccd",
+        "id": "takosan",
+        "slug": "takosan",
+        "name": "たこさん",
+        "sort_order": 2
+      },
+      {
+        "episode_id": "0755a6d6-d2f8-48d7-b6e7-e20e672e4ccd",
+        "id": "yotan",
+        "slug": "yotan",
+        "name": "よーたん",
+        "sort_order": 4
+      },
+      {
+        "episode_id": "0755a6d6-d2f8-48d7-b6e7-e20e672e4ccd",
+        "id": "fukuchan",
+        "slug": "fukuchan",
+        "name": "福ちゃん",
+        "sort_order": 5
+      },
+      {
+        "episode_id": "0755a6d6-d2f8-48d7-b6e7-e20e672e4ccd",
+        "id": "okayaman",
+        "slug": "okayaman",
+        "name": "窓際王おかやまん",
+        "sort_order": 7
+      }
+    ]
+  },
+  {
+    "id": "a50dfe42-76b1-4a2f-9d00-f674bc8dc07c",
+    "slug": "madogiwa-super-try-sobaya-invasion",
+    "episode_number": null,
+    "title": "窓際スーパーつらい — そば屋&たこさん初めての東京篇",
+    "summary": "赤坂に巨大な三脚マシンが襲来。たこさん収集部隊の目的は、母艦で待つそば屋のための地球のビールだった。ハリウッド侵略映画オマージュのCM第四弾。英語セリフ・日本語字幕、40秒。",
+    "status": "published",
+    "created_at": "2026-09-09T10:30:28.239Z",
+    "updated_at": "2026-09-09T22:07:08.461Z",
+    "published_at": "2026-09-09T10:30:28.239Z",
+    "studio_id": "MS-GCH4HZGE",
+    "generation_count": 1,
+    "video_count": 1,
+    "input_count": 0,
+    "primary_video_id": "0ac20e15-2532-419e-80a0-3a0bcae964b1",
+    "has_featured_video": 0,
+    "featured_video_created_at": null,
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/0ac20e15-2532-419e-80a0-3a0bcae964b1",
+    "members": [
+      {
+        "episode_id": "a50dfe42-76b1-4a2f-9d00-f674bc8dc07c",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      },
+      {
+        "episode_id": "a50dfe42-76b1-4a2f-9d00-f674bc8dc07c",
+        "id": "takosan",
+        "slug": "takosan",
+        "name": "たこさん",
+        "sort_order": 2
+      },
+      {
+        "episode_id": "a50dfe42-76b1-4a2f-9d00-f674bc8dc07c",
+        "id": "yotan",
+        "slug": "yotan",
+        "name": "よーたん",
+        "sort_order": 4
+      },
+      {
+        "episode_id": "a50dfe42-76b1-4a2f-9d00-f674bc8dc07c",
+        "id": "fukuchan",
+        "slug": "fukuchan",
+        "name": "福ちゃん",
+        "sort_order": 5
+      },
+      {
+        "episode_id": "a50dfe42-76b1-4a2f-9d00-f674bc8dc07c",
+        "id": "okayaman",
+        "slug": "okayaman",
+        "name": "窓際王おかやまん",
+        "sort_order": 7
+      }
+    ]
+  },
+  {
+    "id": "c3ee3978-4b6b-4b86-8307-67c5f4fbe341",
+    "slug": "madogiwa-super-try-underground",
+    "episode_number": null,
+    "title": "窓際スーパーつらい — 地下労働篇",
+    "summary": "本番データとバックアップを消し、地下労働に送られたやめ太郎。10万ゆめポイントを貯めて脱出する決意は、よーたん班長の冷えたビールで揺らぐ。カイジ地下労働編オマージュのCM。完成v4は45秒。v1〜v3の失敗テイクと実際の入力素材も保存。",
+    "status": "published",
+    "created_at": "2026-09-09T04:04:04.186Z",
+    "updated_at": "2026-09-09T04:08:02.199Z",
+    "published_at": "2026-09-09T04:04:04.186Z",
+    "studio_id": "MS-A245SGQM",
+    "generation_count": 4,
+    "video_count": 12,
+    "input_count": 0,
+    "primary_video_id": "717ee648-a9f2-4932-9dfe-98a3fbf0dd1a",
+    "has_featured_video": 1,
+    "featured_video_created_at": "2026-09-09T04:08:55.759Z",
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/717ee648-a9f2-4932-9dfe-98a3fbf0dd1a",
+    "members": [
+      {
+        "episode_id": "c3ee3978-4b6b-4b86-8307-67c5f4fbe341",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      },
+      {
+        "episode_id": "c3ee3978-4b6b-4b86-8307-67c5f4fbe341",
+        "id": "yotan",
+        "slug": "yotan",
+        "name": "よーたん",
+        "sort_order": 4
+      },
+      {
+        "episode_id": "c3ee3978-4b6b-4b86-8307-67c5f4fbe341",
+        "id": "yametaro",
+        "slug": "yametaro",
+        "name": "無職やめ太郎",
+        "sort_order": 6
+      }
+    ]
+  },
+  {
+    "id": "4353816d-bd30-44e7-a22c-ee22c1a29021",
+    "slug": "madogiwa-super-try-space-casual",
+    "episode_number": null,
+    "title": "窓際スーパーつらい — 宇宙カジュアル篇",
+    "summary": "宇宙服で慎重に船外作業を進めるよーたんと福ちゃん。おかやまんの指示が届くなか、未確認窓際族が接近する。窓際スーパーつらいCM第二弾。英語セリフ・日本語字幕、30秒。",
+    "status": "published",
+    "created_at": "2026-09-09T00:44:56.786Z",
+    "updated_at": "2026-09-09T00:47:36.564Z",
+    "published_at": "2026-09-09T00:44:56.786Z",
+    "studio_id": "MS-M5PWMBM6",
+    "generation_count": 1,
+    "video_count": 1,
+    "input_count": 0,
+    "primary_video_id": "95b2542c-5127-408f-9f3a-501f3bc348a5",
+    "has_featured_video": 1,
+    "featured_video_created_at": "2026-09-09T01:08:35.402Z",
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/95b2542c-5127-408f-9f3a-501f3bc348a5",
+    "members": [
+      {
+        "episode_id": "4353816d-bd30-44e7-a22c-ee22c1a29021",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      },
+      {
+        "episode_id": "4353816d-bd30-44e7-a22c-ee22c1a29021",
+        "id": "yotan",
+        "slug": "yotan",
+        "name": "よーたん",
+        "sort_order": 4
+      },
+      {
+        "episode_id": "4353816d-bd30-44e7-a22c-ee22c1a29021",
+        "id": "fukuchan",
+        "slug": "fukuchan",
+        "name": "福ちゃん",
+        "sort_order": 5
+      },
+      {
+        "episode_id": "4353816d-bd30-44e7-a22c-ee22c1a29021",
+        "id": "okayaman",
+        "slug": "okayaman",
+        "name": "窓際王おかやまん",
+        "sort_order": 7
+      }
+    ]
+  },
+  {
+    "id": "cfe7a5f6-462f-423c-89b7-97649a0a1f6e",
+    "slug": "madogiwa-super-try-commute",
+    "episode_number": null,
+    "title": "窓際スーパーつらい — 出社インポッシブル篇",
+    "summary": "スパイ映画さながらに高層ビルをよじ登るそば屋。命懸けの潜入と思いきや、外からしか行けないベランダの窓際席への出社だった。福ちゃんの挨拶、冷えたビール、そして「冷えてる。待遇も。」で締める30秒のパロディCM。商品名は窓際スーパーつらい／Madogiwa Super TRY。Wan 3.0・480Pで生成し、Remotionで正確な商品名とコピーを合成。",
+    "status": "published",
+    "created_at": "2026-09-08T06:41:24.393Z",
+    "updated_at": "2026-09-08T22:43:27.577Z",
+    "published_at": "2026-09-08T06:41:24.393Z",
+    "studio_id": "MS-YHXU7YEX",
+    "generation_count": 1,
+    "video_count": 1,
+    "input_count": 0,
+    "primary_video_id": "f3139b70-f378-446c-87aa-56317908c439",
+    "has_featured_video": 1,
+    "featured_video_created_at": "2026-09-08T06:42:16.414Z",
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/f3139b70-f378-446c-87aa-56317908c439",
+    "members": [
+      {
+        "episode_id": "cfe7a5f6-462f-423c-89b7-97649a0a1f6e",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      },
+      {
+        "episode_id": "cfe7a5f6-462f-423c-89b7-97649a0a1f6e",
+        "id": "fukuchan",
+        "slug": "fukuchan",
+        "name": "福ちゃん",
+        "sort_order": 5
+      }
+    ]
+  },
+  {
+    "id": "511551b8-587a-4a1d-b8ff-a1014ecff655",
+    "slug": "chikuwa-line-fishing-soba-shark",
+    "episode_number": null,
+    "title": "そばシャーク - 遭遇",
+    "summary": "小型漁船で海釣りに出たよーたんと福ちゃん。激闘の末に釣り上げたのは、ゴムまりのように激しく暴れ回る巨大な『天然大ちくわ』だった！喜ぶ二人の背後にサメの背びれが急接近し、水煙とともに現れたのは巨大ビールジョッキを手にした『そばシャーク』。豪快な乾杯とともに、大ちくわは海へと帰っていく――実写×残念CGクリーチャーショートコメディ。",
+    "status": "published",
+    "created_at": "2026-09-05T01:35:03.502Z",
+    "updated_at": "2026-09-05T01:52:41.393Z",
+    "published_at": "2026-09-05T01:35:03.502Z",
+    "studio_id": "MS-CULKZHBA",
+    "generation_count": 1,
+    "video_count": 1,
+    "input_count": 0,
+    "primary_video_id": "a3c2c439-0c12-41b8-a2f5-2c4be16d1565",
+    "has_featured_video": 0,
+    "featured_video_created_at": null,
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/a3c2c439-0c12-41b8-a2f5-2c4be16d1565",
+    "members": [
+      {
+        "episode_id": "511551b8-587a-4a1d-b8ff-a1014ecff655",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      },
+      {
+        "episode_id": "511551b8-587a-4a1d-b8ff-a1014ecff655",
+        "id": "yotan",
+        "slug": "yotan",
+        "name": "よーたん",
+        "sort_order": 4
+      },
+      {
+        "episode_id": "511551b8-587a-4a1d-b8ff-a1014ecff655",
+        "id": "fukuchan",
+        "slug": "fukuchan",
+        "name": "福ちゃん",
+        "sort_order": 5
+      }
+    ]
+  },
+  {
+    "id": "f00b6a49-998b-4dea-ba6a-a4a461a6fe6e",
+    "slug": "sobaya-guardian-declaration",
+    "episode_number": null,
+    "title": "そば屋の守護宣言",
+    "summary": "劇画調の三段構成で、そば屋がビールを手に「無職やめ太郎も、福ちゃんも、とーくんも、窓際王おかやまんでさえも、俺が守護らねばならぬ」と宣言する約15秒のモーションコミック。GPT Imageで制作した採用B案を、Remotionで完成動画に仕上げた。",
+    "status": "published",
+    "created_at": "2026-09-04T00:44:47.063Z",
+    "updated_at": "2026-09-04T00:55:14.086Z",
+    "published_at": "2026-09-04T00:44:47.063Z",
+    "studio_id": "MS-4AKMFSFW",
+    "generation_count": 2,
+    "video_count": 1,
+    "input_count": 0,
+    "primary_video_id": "26ce3f75-66c8-4eca-8ae6-005ed22482a4",
+    "has_featured_video": 0,
+    "featured_video_created_at": null,
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/26ce3f75-66c8-4eca-8ae6-005ed22482a4",
+    "members": [
+      {
+        "episode_id": "f00b6a49-998b-4dea-ba6a-a4a461a6fe6e",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      },
+      {
+        "episode_id": "f00b6a49-998b-4dea-ba6a-a4a461a6fe6e",
+        "id": "tokun",
+        "slug": "tokun",
+        "name": "とーくん",
+        "sort_order": 3
+      },
+      {
+        "episode_id": "f00b6a49-998b-4dea-ba6a-a4a461a6fe6e",
+        "id": "fukuchan",
+        "slug": "fukuchan",
+        "name": "福ちゃん",
+        "sort_order": 5
+      },
+      {
+        "episode_id": "f00b6a49-998b-4dea-ba6a-a4a461a6fe6e",
+        "id": "yametaro",
+        "slug": "yametaro",
+        "name": "無職やめ太郎",
+        "sort_order": 6
+      },
+      {
+        "episode_id": "f00b6a49-998b-4dea-ba6a-a4a461a6fe6e",
+        "id": "okayaman",
+        "slug": "okayaman",
+        "name": "窓際王おかやまん",
+        "sort_order": 7
+      }
+    ]
+  },
+  {
+    "id": "6eb67c29-675b-4848-adab-59df8aae646b",
+    "slug": "professional-window-side-sobaya",
+    "episode_number": null,
+    "title": "プロフェッショナル 窓際の流儀",
+    "summary": "公共放送の人物密着番組を思わせる重厚な演出で、アクシデンチュア株式会社のウィンドウサイドエンジニア・そば屋を追う約36.5秒のパロディ。出社後のビール、Excelを開いて閉じる仕事術、そして「一流の窓際族は窓際を作り出す」という哲学を、Wan 3.0映像、正典Irodori-TTS音声、RemotionのYHKタイトル・質問カード・字幕で仕上げた採用版。壁には無職やめ太郎本人の指名手配ポスターが掲示されている。",
+    "status": "published",
+    "created_at": "2026-08-31T05:38:44.333Z",
+    "updated_at": "2026-08-31T05:48:14.010Z",
+    "published_at": "2026-08-31T05:48:13.966Z",
+    "studio_id": "MS-CLFBD9B4",
+    "generation_count": 1,
+    "video_count": 1,
+    "input_count": 0,
+    "primary_video_id": "991edfa4-92c6-4687-ab51-39213c6dc2f0",
+    "has_featured_video": 0,
+    "featured_video_created_at": null,
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/991edfa4-92c6-4687-ab51-39213c6dc2f0",
+    "members": [
+      {
+        "episode_id": "6eb67c29-675b-4848-adab-59df8aae646b",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      },
+      {
+        "episode_id": "6eb67c29-675b-4848-adab-59df8aae646b",
+        "id": "yametaro",
+        "slug": "yametaro",
+        "name": "無職やめ太郎",
+        "sort_order": 6
+      }
+    ]
+  },
+  {
+    "id": "ece8c12a-10b7-4d77-b2ff-3f5db238bd57",
+    "slug": "yametaro-unauthorized-office-livestream",
+    "episode_number": null,
+    "title": "やめチャンネル — オフィス無断生配信",
+    "summary": "無職やめ太郎が同僚の勤務中オフィスを、自撮り棒付きスマートフォンで無断生配信する約32秒のコメディ。そば屋が勤務中のビールに堂々と「かんぱーい！」、やめ太郎も「普通の会社は酒ダメなん？」と悪びれず、視聴者はドン引き。福ちゃんのモニターに「社外秘」が映り込み、激しく止めに入った福ちゃんの手のひらが配信レンズを覆って終了する。Wan 3.0の本編・差し替え映像、Irodori-TTSの正典音声、RemotionのYumeTube Live UI・字幕・実況コメントを統合した完成版。",
+    "status": "published",
+    "created_at": "2026-08-28T05:40:51.317Z",
+    "updated_at": "2026-08-29T01:26:47.096Z",
+    "published_at": "2026-08-28T05:40:51.317Z",
+    "studio_id": "MS-AXQM76D2",
+    "generation_count": 2,
+    "video_count": 2,
+    "input_count": 0,
+    "primary_video_id": "40403208-9d81-4305-9a7a-66258a1c11c5",
+    "has_featured_video": 1,
+    "featured_video_created_at": "2026-08-29T01:26:47.339Z",
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/40403208-9d81-4305-9a7a-66258a1c11c5",
+    "members": [
+      {
+        "episode_id": "ece8c12a-10b7-4d77-b2ff-3f5db238bd57",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      },
+      {
+        "episode_id": "ece8c12a-10b7-4d77-b2ff-3f5db238bd57",
+        "id": "fukuchan",
+        "slug": "fukuchan",
+        "name": "福ちゃん",
+        "sort_order": 5
+      },
+      {
+        "episode_id": "ece8c12a-10b7-4d77-b2ff-3f5db238bd57",
+        "id": "yametaro",
+        "slug": "yametaro",
+        "name": "無職やめ太郎",
+        "sort_order": 6
+      },
+      {
+        "episode_id": "ece8c12a-10b7-4d77-b2ff-3f5db238bd57",
+        "id": "okayaman",
+        "slug": "okayaman",
+        "name": "窓際王おかやまん",
+        "sort_order": 7
+      }
+    ]
+  },
+  {
+    "id": "5872726e-80f5-41c9-9eda-ba22ca969bbe",
+    "slug": "yumemi-group-sobaya-figure-shopping",
+    "episode_number": null,
+    "title": "ゆめみグループ — 等身大そば屋フィギュア通販",
+    "summary": "夢グループをパロディした架空通販番組「ゆめみグループ」。福ちゃんが明らかに粗悪な等身大そば屋フィギュアを超高品質として紹介し、とーくん社長がウクレレで価格を決定。最後はそば屋本人と並べて「どっちが本物かわからないぎゅん！」と絶賛する30秒コメディ。Wan 3.0映像へIrodori-TTSの正典音声、とーくんの演奏、分離BGMを合成し、Remotionで自然なテレビショッピングテロップを後付けした。",
+    "status": "published",
+    "created_at": "2026-08-27T10:06:03.406Z",
+    "updated_at": "2026-08-27T10:06:29.374Z",
+    "published_at": "2026-08-27T10:06:03.406Z",
+    "studio_id": "MS-BSDCRRRP",
+    "generation_count": 1,
+    "video_count": 1,
+    "input_count": 0,
+    "primary_video_id": "3463f877-21d2-42e5-836d-b9b672711c73",
+    "has_featured_video": 1,
+    "featured_video_created_at": "2026-08-27T10:08:03.047Z",
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/3463f877-21d2-42e5-836d-b9b672711c73",
+    "members": [
+      {
+        "episode_id": "5872726e-80f5-41c9-9eda-ba22ca969bbe",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      },
+      {
+        "episode_id": "5872726e-80f5-41c9-9eda-ba22ca969bbe",
+        "id": "tokun",
+        "slug": "tokun",
+        "name": "とーくん",
+        "sort_order": 3
+      },
+      {
+        "episode_id": "5872726e-80f5-41c9-9eda-ba22ca969bbe",
+        "id": "fukuchan",
+        "slug": "fukuchan",
+        "name": "福ちゃん",
+        "sort_order": 5
+      }
+    ]
+  },
+  {
+    "id": "ccf73d98-8577-4682-af29-a950456d7029",
+    "slug": "sobayahazard-game-cm",
+    "episode_number": null,
+    "title": "そば屋ハザード ゲームCM",
+    "summary": "架空のサバイバルホラーゲーム『SOBAYAHAZARD』の約17秒テレビCM。ゲームのルールが一目で分かる構成で、生存道具はビール瓶。空のジョッキを正しく満たせば白仮面のそば屋は穏やかに飲んで立ち去り、こぼせば仮面が赤く染まってゲームオーバーの追跡が始まる。夜のオフィスラウンジで福ちゃんが「え、全員ジョッキ空っぽやん……！」から「ギュンギュンどころじゃない！こぼしたー！」まで駆け抜ける。緊張感は出しつつ、流血・残酷描写や陰惨な結末は排した。MiniMax H3で4チャプター生成し、末尾にパッケージ広告カードをローカルで付加した。",
+    "status": "published",
+    "created_at": "2026-08-27T03:22:32.370Z",
+    "updated_at": "2026-08-27T03:23:32.204Z",
+    "published_at": "2026-08-27T03:22:32.370Z",
+    "studio_id": "MS-F86ELDJA",
+    "generation_count": 1,
+    "video_count": 1,
+    "input_count": 0,
+    "primary_video_id": "5122c3a9-665d-4e63-9ad4-b7717e88dce3",
+    "has_featured_video": 0,
+    "featured_video_created_at": null,
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/5122c3a9-665d-4e63-9ad4-b7717e88dce3",
+    "members": [
+      {
+        "episode_id": "ccf73d98-8577-4682-af29-a950456d7029",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      },
+      {
+        "episode_id": "ccf73d98-8577-4682-af29-a950456d7029",
+        "id": "fukuchan",
+        "slug": "fukuchan",
+        "name": "福ちゃん",
+        "sort_order": 5
+      }
+    ]
+  },
+  {
+    "id": "711b80d6-0c6e-4665-8330-8b5c4370e88e",
+    "slug": "buyobuyo-puzzle-arrival",
+    "episode_number": null,
+    "title": "新作パズル ぶよぶよ 到着編",
+    "summary": "架空の落ちものパズル『ぶよぶよ』のゲームCM、約26秒。そば屋が家のインターホンを鳴らし、迎え入れられ、「新しいゲーム買ったよ！」と新作を披露する。福ちゃん・やめ太郎・たこさん・ゆめみんが「よし！やろうぜ！」と乗り、全員のアイコンが落ちものパズルの盤面で連鎖していく。紫がそば屋、赤がやめ太郎で、4つつながると消える。締めはナレーションの「（そば屋の腹は）ぶよぶよ！近日発売」。MiniMax H3で6チャプター生成し、H3のR2V音声上限3本を超えるゆめみんの鳴き声だけローカルでミックスした。",
+    "status": "published",
+    "created_at": "2026-08-27T03:17:06.255Z",
+    "updated_at": "2026-08-27T03:18:42.260Z",
+    "published_at": "2026-08-27T03:17:06.255Z",
+    "studio_id": "MS-ECRAHG8B",
+    "generation_count": 1,
+    "video_count": 1,
+    "input_count": 0,
+    "primary_video_id": "d36b8ae2-722a-4105-87d3-283d3f6e6d94",
+    "has_featured_video": 0,
+    "featured_video_created_at": null,
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/d36b8ae2-722a-4105-87d3-283d3f6e6d94",
+    "members": [
+      {
+        "episode_id": "711b80d6-0c6e-4665-8330-8b5c4370e88e",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      },
+      {
+        "episode_id": "711b80d6-0c6e-4665-8330-8b5c4370e88e",
+        "id": "takosan",
+        "slug": "takosan",
+        "name": "たこさん",
+        "sort_order": 2
+      },
+      {
+        "episode_id": "711b80d6-0c6e-4665-8330-8b5c4370e88e",
+        "id": "fukuchan",
+        "slug": "fukuchan",
+        "name": "福ちゃん",
+        "sort_order": 5
+      },
+      {
+        "episode_id": "711b80d6-0c6e-4665-8330-8b5c4370e88e",
+        "id": "yametaro",
+        "slug": "yametaro",
+        "name": "無職やめ太郎",
+        "sort_order": 6
+      },
+      {
+        "episode_id": "711b80d6-0c6e-4665-8330-8b5c4370e88e",
+        "id": "yumemin",
+        "slug": "yumemin",
+        "name": "ゆめみん",
+        "sort_order": 8
+      }
+    ]
+  },
+  {
+    "id": "b2231655-236e-49e7-811a-41c55abf8d7a",
+    "slug": "sobaya-breaking-news-arrest",
+    "episode_number": null,
+    "title": "速報 そば屋逮捕連行",
+    "summary": "ニュース速報仕立ての約23秒コメディ。冒頭はニューススタジオのアナウンサーが「速報です。」と伝え、以降は昼間の警察署前を歩く連行B-rollにナレーションが重なる。他人に同じ白仮面を着けさせ、自分の代わりに出社・労働させていた罪で、そば屋が二人の制服警官に連行される。最後は連行されながらのそば屋本人の一言で締める。暴力・陰惨さのない穏やかな連行として描いた。MiniMax H3で6チャプターを生成し、ナレーションはローカルで重ねた。",
+    "status": "published",
+    "created_at": "2026-08-27T03:10:08.207Z",
+    "updated_at": "2026-08-27T03:11:38.420Z",
+    "published_at": "2026-08-27T03:10:08.207Z",
+    "studio_id": "MS-N6MBKK3C",
+    "generation_count": 1,
+    "video_count": 1,
+    "input_count": 0,
+    "primary_video_id": "ac55bab3-9a75-45b6-bf62-89175c2e3200",
+    "has_featured_video": 0,
+    "featured_video_created_at": null,
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/ac55bab3-9a75-45b6-bf62-89175c2e3200",
+    "members": [
+      {
+        "episode_id": "b2231655-236e-49e7-811a-41c55abf8d7a",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      }
+    ]
+  },
+  {
+    "id": "98be28df-6bac-4b65-a318-09a1dc69e41d",
+    "slug": "wai-window-side-ai",
+    "episode_number": null,
+    "title": "WAI — Window-Side AI",
+    "summary": "無職やめ太郎の一人称「ワイ」を冠した架空AIサービスが、VS CodeとiTerm2に積み上がるエラーや複雑なコードを、プロジェクトごと消去して技術的負債ゼロを実現する30秒の企業発表風コメディ。英語ナレーションと日本語字幕で、学習元の「日本のプロフェッショナル」としてそば屋と福ちゃんが登場する。",
+    "status": "published",
+    "created_at": "2026-08-26T23:56:56.731Z",
+    "updated_at": "2026-08-26T23:57:28.156Z",
+    "published_at": "2026-08-26T23:56:56.731Z",
+    "studio_id": "MS-4WRR9DXT",
+    "generation_count": 1,
+    "video_count": 1,
+    "input_count": 0,
+    "primary_video_id": "198da1bc-3197-4adf-95d6-bf2ab4452b97",
+    "has_featured_video": 0,
+    "featured_video_created_at": null,
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/198da1bc-3197-4adf-95d6-bf2ab4452b97",
+    "members": [
+      {
+        "episode_id": "98be28df-6bac-4b65-a318-09a1dc69e41d",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      },
+      {
+        "episode_id": "98be28df-6bac-4b65-a318-09a1dc69e41d",
+        "id": "fukuchan",
+        "slug": "fukuchan",
+        "name": "福ちゃん",
+        "sort_order": 5
+      },
+      {
+        "episode_id": "98be28df-6bac-4b65-a318-09a1dc69e41d",
+        "id": "yametaro",
+        "slug": "yametaro",
+        "name": "無職やめ太郎",
+        "sort_order": 6
+      }
+    ]
+  },
+  {
+    "id": "39e76468-7d38-420b-9440-68f7b7af0c8a",
+    "slug": "aronchia-makers-vlog",
+    "episode_number": null,
+    "title": "アーロンチュアを作る男たち",
+    "summary": "福ちゃん、よーたん、そば屋が配送用段ボール箱を切り、組み、手書きで「アーロンチュア」と名付けて耐荷重テストする30秒の実写社内工作Vlog。",
+    "status": "published",
+    "created_at": "2026-08-26T07:26:36.620Z",
+    "updated_at": "2026-08-26T07:29:01.740Z",
+    "published_at": "2026-08-26T07:26:36.620Z",
+    "studio_id": "MS-L8SL9XTN",
+    "generation_count": 1,
+    "video_count": 1,
+    "input_count": 0,
+    "primary_video_id": "124f895c-4dca-446e-995d-f8947bd11408",
+    "has_featured_video": 1,
+    "featured_video_created_at": "2026-08-26T07:34:14.537Z",
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/124f895c-4dca-446e-995d-f8947bd11408",
+    "members": [
+      {
+        "episode_id": "39e76468-7d38-420b-9440-68f7b7af0c8a",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      },
+      {
+        "episode_id": "39e76468-7d38-420b-9440-68f7b7af0c8a",
+        "id": "yotan",
+        "slug": "yotan",
+        "name": "よーたん",
+        "sort_order": 4
+      },
+      {
+        "episode_id": "39e76468-7d38-420b-9440-68f7b7af0c8a",
+        "id": "fukuchan",
+        "slug": "fukuchan",
+        "name": "福ちゃん",
+        "sort_order": 5
+      }
+    ]
+  },
+  {
+    "id": "1b4d89d6-dec3-4ea1-b1c5-995f07ddbe8d",
+    "slug": "sobaya-akasaka-gta-parody",
+    "episode_number": null,
+    "title": "そば屋 赤坂GTAパロディ",
+    "summary": "そば屋が赤坂でバイクを奪い、ビールを飲み、アクシデンチュアのオフィスへ突入して暴れ回る30秒のオープンワールド犯罪アクションゲーム風パロディ。",
+    "status": "published",
+    "created_at": "2026-08-26T07:26:41.896Z",
+    "updated_at": "2026-08-26T07:28:49.241Z",
+    "published_at": "2026-08-26T07:26:41.896Z",
+    "studio_id": "MS-AZKTPSVJ",
+    "generation_count": 1,
+    "video_count": 1,
+    "input_count": 0,
+    "primary_video_id": "1ecc5d9e-6830-4072-86f5-7391fe3d0fab",
+    "has_featured_video": 0,
+    "featured_video_created_at": null,
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/1ecc5d9e-6830-4072-86f5-7391fe3d0fab",
+    "members": [
+      {
+        "episode_id": "1b4d89d6-dec3-4ea1-b1c5-995f07ddbe8d",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      }
+    ]
+  },
+  {
+    "id": "888bc16c-c0f7-43f2-a534-0a7b16d74f69",
+    "slug": "sobaya-hazard-trailer",
+    "episode_number": null,
+    "title": "そば屋ハザード",
+    "summary": "福ちゃんが霧の寒村、古城、水牢を駆け抜け、ゾンビではなく白仮面のそば屋たちに襲われる30秒のサバイバルホラーゲーム風トレーラー。英語・スペイン語音声と日本語字幕、専用タイトルロゴを収録。",
+    "status": "published",
+    "created_at": "2026-08-26T07:26:39.303Z",
+    "updated_at": "2026-08-26T07:28:40.460Z",
+    "published_at": "2026-08-26T07:26:39.303Z",
+    "studio_id": "MS-J3HZTDM6",
+    "generation_count": 1,
+    "video_count": 1,
+    "input_count": 0,
+    "primary_video_id": "edf72857-8a12-47a0-9b10-0f926c0ea05a",
+    "has_featured_video": 0,
+    "featured_video_created_at": null,
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/edf72857-8a12-47a0-9b10-0f926c0ea05a",
+    "members": [
+      {
+        "episode_id": "888bc16c-c0f7-43f2-a534-0a7b16d74f69",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      },
+      {
+        "episode_id": "888bc16c-c0f7-43f2-a534-0a7b16d74f69",
+        "id": "takosan",
+        "slug": "takosan",
+        "name": "たこさん",
+        "sort_order": 2
+      },
+      {
+        "episode_id": "888bc16c-c0f7-43f2-a534-0a7b16d74f69",
+        "id": "yotan",
+        "slug": "yotan",
+        "name": "よーたん",
+        "sort_order": 4
+      },
+      {
+        "episode_id": "888bc16c-c0f7-43f2-a534-0a7b16d74f69",
+        "id": "fukuchan",
+        "slug": "fukuchan",
+        "name": "福ちゃん",
+        "sort_order": 5
+      }
+    ]
+  },
+  {
+    "id": "54dfbeee-cc28-4d6e-be6a-c2d92ab80f2c",
+    "slug": "balcony-bar-construction-timelapse",
+    "episode_number": null,
+    "title": "窓際酒場 建築タイムラプス",
+    "summary": "汚れたベランダ席で働くそば屋が、怪力でオフィス用品を破壊・廃棄し、清掃と床張りを経て窓際酒場を完成させ、福ちゃんととーくんと乾杯する30秒の実写建築タイムラプス。Wan 3.0通常版とPrime版を比較。",
+    "status": "published",
+    "created_at": "2026-08-26T02:11:33.165Z",
+    "updated_at": "2026-08-26T02:12:35.314Z",
+    "published_at": "2026-08-26T02:11:33.165Z",
+    "studio_id": "MS-Z257HCA8",
+    "generation_count": 2,
+    "video_count": 2,
+    "input_count": 0,
+    "primary_video_id": "ed9573c4-25e7-4dab-b7c5-0cd9a1f24b7e",
+    "has_featured_video": 1,
+    "featured_video_created_at": "2026-08-26T02:14:57.539Z",
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/ed9573c4-25e7-4dab-b7c5-0cd9a1f24b7e",
+    "members": [
+      {
+        "episode_id": "54dfbeee-cc28-4d6e-be6a-c2d92ab80f2c",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      },
+      {
+        "episode_id": "54dfbeee-cc28-4d6e-be6a-c2d92ab80f2c",
+        "id": "tokun",
+        "slug": "tokun",
+        "name": "とーくん",
+        "sort_order": 3
+      },
+      {
+        "episode_id": "54dfbeee-cc28-4d6e-be6a-c2d92ab80f2c",
+        "id": "fukuchan",
+        "slug": "fukuchan",
+        "name": "福ちゃん",
+        "sort_order": 5
+      }
+    ]
+  },
+  {
+    "id": "99074501-5a52-4054-ac1e-d885f83f54ac",
+    "slug": "sobaya-m202-office-blast",
+    "episode_number": null,
+    "title": "そば屋のアニキ、M202全弾発射",
+    "summary": "そば屋がM202ロケットランチャーを全弾発射し、ゆめみオフィスの壊滅を背にビールを飲む15秒のアクションパロディ。",
+    "status": "published",
+    "created_at": "2026-08-16T23:02:51.400Z",
+    "updated_at": "2026-08-26T00:08:31.025Z",
+    "published_at": "2026-08-17T09:34:31.187Z",
+    "studio_id": "MS-WR5VTE9A",
+    "generation_count": 2,
+    "video_count": 2,
+    "input_count": 0,
+    "primary_video_id": "5d21f15a-8053-4d57-8eb3-3693d59e1a13",
+    "has_featured_video": 1,
+    "featured_video_created_at": "2026-08-16T23:08:15.948Z",
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/5d21f15a-8053-4d57-8eb3-3693d59e1a13",
+    "members": [
+      {
+        "episode_id": "99074501-5a52-4054-ac1e-d885f83f54ac",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      }
+    ]
+  },
+  {
+    "id": "499ecf22-86ee-434a-92f9-98e104996362",
+    "slug": "no-way-debug-trailer",
+    "episode_number": null,
+    "title": "No Way Debug — 23-Second Movie Trailer CM",
+    "summary": "A playful 23-second cinematic comedy trailer in which Yametaro touches one connected blue data cable, causes harmless visual bugs, and somehow fixes them.",
+    "status": "published",
+    "created_at": "2026-08-18T07:04:11.735Z",
+    "updated_at": "2026-08-18T07:04:11.735Z",
+    "published_at": "2026-08-18T07:04:11.735Z",
+    "studio_id": "MS-NKNB2DF7",
+    "generation_count": 1,
+    "video_count": 0,
+    "input_count": 0,
+    "primary_video_id": null,
+    "has_featured_video": 0,
+    "featured_video_created_at": null,
+    "prompt_label": null,
+    "primary_video_poster_url": null,
+    "members": [
+      {
+        "episode_id": "499ecf22-86ee-434a-92f9-98e104996362",
+        "id": "yametaro",
+        "slug": "yametaro",
+        "name": "無職やめ太郎",
+        "sort_order": 6
+      }
+    ]
+  },
+  {
+    "id": "8bab423b-83d2-4461-b3b4-921ec5264456",
+    "slug": "gyun-gyun-quest-opening",
+    "episode_number": null,
+    "title": "ぎゅんぎゅんクエスト — オープニング",
+    "summary": "ゲーム『ぎゅんぎゅんクエスト』の居酒屋シーンから始まるオープニングカットシーン。",
+    "status": "published",
+    "created_at": "2026-08-17T01:35:49.008Z",
+    "updated_at": "2026-08-17T09:34:31.187Z",
+    "published_at": "2026-08-17T09:34:31.187Z",
+    "studio_id": "MS-Q4T34BST",
+    "generation_count": 1,
+    "video_count": 1,
+    "input_count": 0,
+    "primary_video_id": "bc0c9767-a1a5-481e-a6d5-f5ac28668462",
+    "has_featured_video": 0,
+    "featured_video_created_at": null,
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/bc0c9767-a1a5-481e-a6d5-f5ac28668462",
+    "members": [
+      {
+        "episode_id": "8bab423b-83d2-4461-b3b4-921ec5264456",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      }
+    ]
+  },
+  {
+    "id": "22f31e5b-b934-40e6-8634-ea3a7f1b4161",
+    "slug": "fukuchan-yametaro-engineer-stereotypes",
+    "episode_number": null,
+    "title": "福ちゃんとやめ太郎：エンジニアあるある",
+    "summary": "福ちゃんがやめ太郎にエンジニアのステレオタイプを次々と投げ、やめ太郎が穏やかに切り返す長尺の漫才風オフィスコメディ。",
+    "status": "published",
+    "created_at": "2026-08-17T01:35:45.849Z",
+    "updated_at": "2026-08-17T09:34:31.187Z",
+    "published_at": "2026-08-17T09:34:31.187Z",
+    "studio_id": "MS-KYEJT8JY",
+    "generation_count": 22,
+    "video_count": 23,
+    "input_count": 0,
+    "primary_video_id": "3ffea4b0-5b0b-4ca8-8fc8-88cd6abb8b47",
+    "has_featured_video": 1,
+    "featured_video_created_at": "2026-08-17T02:16:53.455Z",
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/3ffea4b0-5b0b-4ca8-8fc8-88cd6abb8b47",
+    "members": [
+      {
+        "episode_id": "22f31e5b-b934-40e6-8634-ea3a7f1b4161",
+        "id": "fukuchan",
+        "slug": "fukuchan",
+        "name": "福ちゃん",
+        "sort_order": 5
+      },
+      {
+        "episode_id": "22f31e5b-b934-40e6-8634-ea3a7f1b4161",
+        "id": "yametaro",
+        "slug": "yametaro",
+        "name": "無職やめ太郎",
+        "sort_order": 6
+      }
+    ]
+  },
+  {
+    "id": "89b41428-0566-4679-912b-915917365572",
+    "slug": "yumemin-hundred-babies",
+    "episode_number": null,
+    "title": "ゆめみんと百匹の赤ちゃん",
+    "summary": "明るいリビングで、ゆめみんを小さくした百匹の赤ちゃんが安全に登場する、魔法のファミリーコメディ。",
+    "status": "published",
+    "created_at": "2026-08-17T01:35:42.626Z",
+    "updated_at": "2026-08-17T09:34:31.187Z",
+    "published_at": "2026-08-17T09:34:31.187Z",
+    "studio_id": "MS-Y2M7CFRA",
+    "generation_count": 1,
+    "video_count": 1,
+    "input_count": 0,
+    "primary_video_id": "a0a75c07-e4be-47fb-8c1a-9d91d8f7893b",
+    "has_featured_video": 0,
+    "featured_video_created_at": null,
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/a0a75c07-e4be-47fb-8c1a-9d91d8f7893b",
+    "members": [
+      {
+        "episode_id": "89b41428-0566-4679-912b-915917365572",
+        "id": "takosan",
+        "slug": "takosan",
+        "name": "たこさん",
+        "sort_order": 2
+      },
+      {
+        "episode_id": "89b41428-0566-4679-912b-915917365572",
+        "id": "yumemin",
+        "slug": "yumemin",
+        "name": "ゆめみん",
+        "sort_order": 8
+      }
+    ]
+  },
+  {
+    "id": "73ca3e1a-abdf-4363-96a2-662cbea5abd0",
+    "slug": "takosan-php-prompt-pun",
+    "episode_number": null,
+    "title": "PHP Means What?",
+    "summary": "たこさんの質問に、やめ太郎がPHPを「パワ・ハラ・プロンプト」と誤解して答える、友好的なオフィス言葉遊び。",
+    "status": "published",
+    "created_at": "2026-08-17T01:35:40.093Z",
+    "updated_at": "2026-08-17T09:34:31.187Z",
+    "published_at": "2026-08-17T09:34:31.187Z",
+    "studio_id": "MS-D2H4PW4L",
+    "generation_count": 2,
+    "video_count": 2,
+    "input_count": 0,
+    "primary_video_id": "11128474-3878-4301-ba6c-8e3735051286",
+    "has_featured_video": 0,
+    "featured_video_created_at": null,
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/11128474-3878-4301-ba6c-8e3735051286",
+    "members": [
+      {
+        "episode_id": "73ca3e1a-abdf-4363-96a2-662cbea5abd0",
+        "id": "takosan",
+        "slug": "takosan",
+        "name": "たこさん",
+        "sort_order": 2
+      },
+      {
+        "episode_id": "73ca3e1a-abdf-4363-96a2-662cbea5abd0",
+        "id": "yametaro",
+        "slug": "yametaro",
+        "name": "無職やめ太郎",
+        "sort_order": 6
+      }
+    ]
+  },
+  {
+    "id": "f9dc4745-06b8-44c5-b1bc-53d505e64d33",
+    "slug": "php-prompt-pun-yumemin",
+    "episode_number": null,
+    "title": "PHP: Papa's Hilarious Prompt",
+    "summary": "ゆめみんがノートPCを指し、やめ太郎がPHPを「パワ・ハラ・プロンプト」と誤解する、温かなオフィス言葉遊び。",
+    "status": "published",
+    "created_at": "2026-08-17T01:35:37.000Z",
+    "updated_at": "2026-08-17T09:34:31.187Z",
+    "published_at": "2026-08-17T09:34:31.187Z",
+    "studio_id": "MS-KXC936NL",
+    "generation_count": 1,
+    "video_count": 1,
+    "input_count": 0,
+    "primary_video_id": "c09b8556-7218-4553-94e8-cf8cac00fe67",
+    "has_featured_video": 0,
+    "featured_video_created_at": null,
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/c09b8556-7218-4553-94e8-cf8cac00fe67",
+    "members": [
+      {
+        "episode_id": "f9dc4745-06b8-44c5-b1bc-53d505e64d33",
+        "id": "yametaro",
+        "slug": "yametaro",
+        "name": "無職やめ太郎",
+        "sort_order": 6
+      },
+      {
+        "episode_id": "f9dc4745-06b8-44c5-b1bc-53d505e64d33",
+        "id": "yumemin",
+        "slug": "yumemin",
+        "name": "ゆめみん",
+        "sort_order": 8
+      }
+    ]
+  },
+  {
+    "id": "020a54cd-f889-44bf-8ff6-4917cadfa3b8",
+    "slug": "professional-morning-takosan",
+    "episode_number": null,
+    "title": "プロフェッショナルの朝は、遅い。",
+    "summary": "たこさんの出社から窓際での仕事ぶりまでを追う、企業密着ドキュメンタリー風15秒コメディ。",
+    "status": "published",
+    "created_at": "2026-08-17T01:35:31.691Z",
+    "updated_at": "2026-08-17T09:34:31.187Z",
+    "published_at": "2026-08-17T09:34:31.187Z",
+    "studio_id": "MS-BRKK24UM",
+    "generation_count": 2,
+    "video_count": 1,
+    "input_count": 0,
+    "primary_video_id": "4460776e-b703-40b7-bc2e-8eeb679a788d",
+    "has_featured_video": 0,
+    "featured_video_created_at": null,
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/4460776e-b703-40b7-bc2e-8eeb679a788d",
+    "members": [
+      {
+        "episode_id": "020a54cd-f889-44bf-8ff6-4917cadfa3b8",
+        "id": "takosan",
+        "slug": "takosan",
+        "name": "たこさん",
+        "sort_order": 2
+      },
+      {
+        "episode_id": "020a54cd-f889-44bf-8ff6-4917cadfa3b8",
+        "id": "yametaro",
+        "slug": "yametaro",
+        "name": "無職やめ太郎",
+        "sort_order": 6
+      }
+    ]
+  },
+  {
+    "id": "f1d7037e-0261-48f0-b360-337cc7f3d724",
+    "slug": "sobaya-never-drops-beer",
+    "episode_number": null,
+    "title": "そば屋：ビールだけは落とさない",
+    "summary": "よーたんとの衝突で荷物が宙を舞う中、そば屋がビールジョッキだけを完璧に救う15秒のスローモーションコメディ。",
+    "status": "published",
+    "created_at": "2026-08-16T23:02:51.515Z",
+    "updated_at": "2026-08-17T09:34:31.187Z",
+    "published_at": "2026-08-17T09:34:31.187Z",
+    "studio_id": "MS-R96A98N4",
+    "generation_count": 1,
+    "video_count": 1,
+    "input_count": 0,
+    "primary_video_id": "b2a8382e-8962-436f-9fe2-6cdcbf111826",
+    "has_featured_video": 0,
+    "featured_video_created_at": null,
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/b2a8382e-8962-436f-9fe2-6cdcbf111826",
+    "members": [
+      {
+        "episode_id": "f1d7037e-0261-48f0-b360-337cc7f3d724",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      },
+      {
+        "episode_id": "f1d7037e-0261-48f0-b360-337cc7f3d724",
+        "id": "yotan",
+        "slug": "yotan",
+        "name": "よーたん",
+        "sort_order": 4
+      }
+    ]
+  },
+  {
+    "id": "2cf28f2c-e6c9-4da4-b000-d8926a71a130",
+    "slug": "sobaya-beer-encouragement",
+    "episode_number": null,
+    "title": "そば屋の励まし",
+    "summary": "自信をなくした無職やめ太郎を、そば屋が極度乾燥ビールで励ます15秒のトイジオラマ風エピソード。",
+    "status": "published",
+    "created_at": "2026-08-16T23:02:51.455Z",
+    "updated_at": "2026-08-17T09:34:31.187Z",
+    "published_at": "2026-08-17T09:34:31.187Z",
+    "studio_id": "MS-VT6GSKZK",
+    "generation_count": 1,
+    "video_count": 1,
+    "input_count": 0,
+    "primary_video_id": "dc41978b-c215-4113-9472-50942a78e83d",
+    "has_featured_video": 0,
+    "featured_video_created_at": null,
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/dc41978b-c215-4113-9472-50942a78e83d",
+    "members": [
+      {
+        "episode_id": "2cf28f2c-e6c9-4da4-b000-d8926a71a130",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      },
+      {
+        "episode_id": "2cf28f2c-e6c9-4da4-b000-d8926a71a130",
+        "id": "yametaro",
+        "slug": "yametaro",
+        "name": "無職やめ太郎",
+        "sort_order": 6
+      }
+    ]
+  },
+  {
+    "id": "ee931c7c-f9fa-4afb-883a-9ac299a2168d",
+    "slug": "ai-human-pet-shop",
+    "episode_number": null,
+    "title": "人間ペットショップ",
+    "summary": "快適な部屋で暮らす無職やめ太郎が、実はAI向け人間ペットショップの商品だったと明かされる10秒エピソード。",
+    "status": "published",
+    "created_at": "2026-08-16T23:02:51.343Z",
+    "updated_at": "2026-08-17T09:34:31.187Z",
+    "published_at": "2026-08-17T09:34:31.187Z",
+    "studio_id": "MS-2NU7HM55",
+    "generation_count": 1,
+    "video_count": 1,
+    "input_count": 0,
+    "primary_video_id": "3ec285d7-ea20-4898-bb41-4b54034737c1",
+    "has_featured_video": 0,
+    "featured_video_created_at": null,
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/3ec285d7-ea20-4898-bb41-4b54034737c1",
+    "members": [
+      {
+        "episode_id": "ee931c7c-f9fa-4afb-883a-9ac299a2168d",
+        "id": "yametaro",
+        "slug": "yametaro",
+        "name": "無職やめ太郎",
+        "sort_order": 6
+      }
+    ]
+  },
+  {
+    "id": "6e6ba3a8-8e0d-4578-af4e-325ec9e87d45",
+    "slug": "sobamoot-soba-flare",
+    "episode_number": null,
+    "title": "そばムート「そばフレア」",
+    "summary": "味方召喚獣そばムートが宇宙から必殺技「そばフレア」を放ち、たこさんを撃破する15秒のRPG風エピソード。",
+    "status": "published",
+    "created_at": "2026-08-16T23:02:51.280Z",
+    "updated_at": "2026-08-17T09:34:31.187Z",
+    "published_at": "2026-08-17T09:34:31.187Z",
+    "studio_id": "MS-XF798X6D",
+    "generation_count": 2,
+    "video_count": 2,
+    "input_count": 0,
+    "primary_video_id": "366d6dc5-c05a-4ea9-9d13-a27d435f8878",
+    "has_featured_video": 0,
+    "featured_video_created_at": null,
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/366d6dc5-c05a-4ea9-9d13-a27d435f8878",
+    "members": [
+      {
+        "episode_id": "6e6ba3a8-8e0d-4578-af4e-325ec9e87d45",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      },
+      {
+        "episode_id": "6e6ba3a8-8e0d-4578-af4e-325ec9e87d45",
+        "id": "takosan",
+        "slug": "takosan",
+        "name": "たこさん",
+        "sort_order": 2
+      },
+      {
+        "episode_id": "6e6ba3a8-8e0d-4578-af4e-325ec9e87d45",
+        "id": "tokun",
+        "slug": "tokun",
+        "name": "とーくん",
+        "sort_order": 3
+      },
+      {
+        "episode_id": "6e6ba3a8-8e0d-4578-af4e-325ec9e87d45",
+        "id": "yotan",
+        "slug": "yotan",
+        "name": "よーたん",
+        "sort_order": 4
+      },
+      {
+        "episode_id": "6e6ba3a8-8e0d-4578-af4e-325ec9e87d45",
+        "id": "yametaro",
+        "slug": "yametaro",
+        "name": "無職やめ太郎",
+        "sort_order": 6
+      }
+    ]
+  },
+  {
+    "id": "205dec8d-23e7-4d37-8efd-fb02207e43cb",
+    "slug": "first-class-madogiwa-employee",
+    "episode_number": null,
+    "title": "一流の窓際社員",
+    "summary": "屋上で追い詰められたそば屋が巨大な窓を生み出し、窓際社員らしい方法で脱出するエピソード。",
+    "status": "published",
+    "created_at": "2026-08-16T23:02:51.221Z",
+    "updated_at": "2026-08-17T09:34:31.187Z",
+    "published_at": "2026-08-17T09:34:31.187Z",
+    "studio_id": "MS-YXJQF3XT",
+    "generation_count": 2,
+    "video_count": 2,
+    "input_count": 0,
+    "primary_video_id": "19c5d31f-98e9-489a-8216-0ad00ba31193",
+    "has_featured_video": 1,
+    "featured_video_created_at": "2026-08-16T23:08:09.245Z",
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/19c5d31f-98e9-489a-8216-0ad00ba31193",
+    "members": [
+      {
+        "episode_id": "205dec8d-23e7-4d37-8efd-fb02207e43cb",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      },
+      {
+        "episode_id": "205dec8d-23e7-4d37-8efd-fb02207e43cb",
+        "id": "yotan",
+        "slug": "yotan",
+        "name": "よーたん",
+        "sort_order": 4
+      },
+      {
+        "episode_id": "205dec8d-23e7-4d37-8efd-fb02207e43cb",
+        "id": "fukuchan",
+        "slug": "fukuchan",
+        "name": "福ちゃん",
+        "sort_order": 5
+      }
+    ]
+  },
+  {
+    "id": "59a7b2e4-2d36-4a04-922c-a1d8bc72b239",
+    "slug": "yotan-vs-sobaya-grindhouse-battle",
+    "episode_number": null,
+    "title": "よーたん対そば屋：爆音ジョッキ決戦",
+    "summary": "強化エレキギターのよーたんと、大型ビールジョッキのそば屋がライブハウスで激突する30秒のグラインドハウス風バトル。",
+    "status": "published",
+    "created_at": "2026-08-16T23:02:51.153Z",
+    "updated_at": "2026-08-17T09:34:31.187Z",
+    "published_at": "2026-08-17T09:34:31.187Z",
+    "studio_id": "MS-R4QJS2Q4",
+    "generation_count": 2,
+    "video_count": 2,
+    "input_count": 0,
+    "primary_video_id": "44bfe261-a18d-4751-8ec4-132ee6883271",
+    "has_featured_video": 0,
+    "featured_video_created_at": null,
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/44bfe261-a18d-4751-8ec4-132ee6883271",
+    "members": [
+      {
+        "episode_id": "59a7b2e4-2d36-4a04-922c-a1d8bc72b239",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      },
+      {
+        "episode_id": "59a7b2e4-2d36-4a04-922c-a1d8bc72b239",
+        "id": "yotan",
+        "slug": "yotan",
+        "name": "よーたん",
+        "sort_order": 4
+      }
+    ]
+  },
+  {
+    "id": "f340b515-926d-4fc8-ac8a-11c5ee4c3a28",
+    "slug": "giant-sobaya-office-rampage",
+    "episode_number": null,
+    "title": "巨大そば屋・オフィス暴走",
+    "summary": "ビールを探す3.2メートルの巨大そば屋がオフィスを破壊し、炎上案拳を操る無職やめ太郎と激突する30秒エピソード。",
+    "status": "published",
+    "created_at": "2026-08-16T23:02:51.094Z",
+    "updated_at": "2026-08-17T09:34:31.187Z",
+    "published_at": "2026-08-17T09:34:31.187Z",
+    "studio_id": "MS-HZXX2TSG",
+    "generation_count": 2,
+    "video_count": 2,
+    "input_count": 0,
+    "primary_video_id": "96abddc4-8b2b-41d4-b052-697843bad46f",
+    "has_featured_video": 1,
+    "featured_video_created_at": "2026-08-16T23:07:45.801Z",
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/96abddc4-8b2b-41d4-b052-697843bad46f",
+    "members": [
+      {
+        "episode_id": "f340b515-926d-4fc8-ac8a-11c5ee4c3a28",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      },
+      {
+        "episode_id": "f340b515-926d-4fc8-ac8a-11c5ee4c3a28",
+        "id": "yametaro",
+        "slug": "yametaro",
+        "name": "無職やめ太郎",
+        "sort_order": 6
+      },
+      {
+        "episode_id": "f340b515-926d-4fc8-ac8a-11c5ee4c3a28",
+        "id": "okayaman",
+        "slug": "okayaman",
+        "name": "窓際王おかやまん",
+        "sort_order": 7
+      }
+    ]
+  },
+  {
+    "id": "2ce89e49-b7f4-4a7e-adbe-bee24754e41a",
+    "slug": "giant-takosan-regulation-beam",
+    "episode_number": null,
+    "title": "巨大たこさん：レギュレーション違反ビーム",
+    "summary": "巨大化したたこさんが渋谷を襲い、窓際王おかやまんのレギュレーション違反ビームで鎮圧される30秒の特撮エピソード。",
+    "status": "published",
+    "created_at": "2026-08-16T23:02:51.035Z",
+    "updated_at": "2026-08-17T09:34:31.187Z",
+    "published_at": "2026-08-17T09:34:31.187Z",
+    "studio_id": "MS-NUQDHWAF",
+    "generation_count": 1,
+    "video_count": 1,
+    "input_count": 0,
+    "primary_video_id": "497ded5a-1fa1-45e0-b193-16a407f03329",
+    "has_featured_video": 0,
+    "featured_video_created_at": null,
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/497ded5a-1fa1-45e0-b193-16a407f03329",
+    "members": [
+      {
+        "episode_id": "2ce89e49-b7f4-4a7e-adbe-bee24754e41a",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      },
+      {
+        "episode_id": "2ce89e49-b7f4-4a7e-adbe-bee24754e41a",
+        "id": "takosan",
+        "slug": "takosan",
+        "name": "たこさん",
+        "sort_order": 2
+      },
+      {
+        "episode_id": "2ce89e49-b7f4-4a7e-adbe-bee24754e41a",
+        "id": "tokun",
+        "slug": "tokun",
+        "name": "とーくん",
+        "sort_order": 3
+      },
+      {
+        "episode_id": "2ce89e49-b7f4-4a7e-adbe-bee24754e41a",
+        "id": "yotan",
+        "slug": "yotan",
+        "name": "よーたん",
+        "sort_order": 4
+      },
+      {
+        "episode_id": "2ce89e49-b7f4-4a7e-adbe-bee24754e41a",
+        "id": "fukuchan",
+        "slug": "fukuchan",
+        "name": "福ちゃん",
+        "sort_order": 5
+      },
+      {
+        "episode_id": "2ce89e49-b7f4-4a7e-adbe-bee24754e41a",
+        "id": "yametaro",
+        "slug": "yametaro",
+        "name": "無職やめ太郎",
+        "sort_order": 6
+      },
+      {
+        "episode_id": "2ce89e49-b7f4-4a7e-adbe-bee24754e41a",
+        "id": "okayaman",
+        "slug": "okayaman",
+        "name": "窓際王おかやまん",
+        "sort_order": 7
+      },
+      {
+        "episode_id": "2ce89e49-b7f4-4a7e-adbe-bee24754e41a",
+        "id": "yumemin",
+        "slug": "yumemin",
+        "name": "ゆめみん",
+        "sort_order": 8
+      }
+    ]
+  },
+  {
+    "id": "6386bc3b-5cbe-496f-bf64-3f69881ed2b1",
+    "slug": "giant-sobaya-vs-enjo-anken",
+    "episode_number": null,
+    "title": "巨大そば屋 vs 炎上案拳",
+    "summary": "巨大化したそば屋と、炎上案拳を放つ無職やめ太郎が街で激突する30秒の特撮アクションコメディ。",
+    "status": "published",
+    "created_at": "2026-08-16T23:02:20.526Z",
+    "updated_at": "2026-08-17T09:34:31.187Z",
+    "published_at": "2026-08-17T09:34:31.187Z",
+    "studio_id": "MS-T6EDLS4G",
+    "generation_count": 1,
+    "video_count": 1,
+    "input_count": 0,
+    "primary_video_id": "ad9ffd49-ab8f-420e-832a-c6b36aea1ea1",
+    "has_featured_video": 1,
+    "featured_video_created_at": "2026-08-16T23:07:16.362Z",
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/ad9ffd49-ab8f-420e-832a-c6b36aea1ea1",
+    "members": [
+      {
+        "episode_id": "6386bc3b-5cbe-496f-bf64-3f69881ed2b1",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      },
+      {
+        "episode_id": "6386bc3b-5cbe-496f-bf64-3f69881ed2b1",
+        "id": "yametaro",
+        "slug": "yametaro",
+        "name": "無職やめ太郎",
+        "sort_order": 6
+      }
+    ]
+  },
+  {
+    "id": "175f2479-f11b-4d3e-b445-e8345ac83c84",
+    "slug": "chikuwa-landing-news",
+    "episode_number": null,
+    "title": "ちくわの水揚げが最盛期",
+    "summary": "浜松で最盛期を迎えた天然ちくわの水揚げを、ゆめテレの朝ニュースが伝える15秒エピソード。",
+    "status": "published",
+    "created_at": "2026-08-16T07:47:38.563Z",
+    "updated_at": "2026-08-17T09:34:31.187Z",
+    "published_at": "2026-08-17T09:34:31.187Z",
+    "studio_id": "MS-A97WEXKB",
+    "generation_count": 1,
+    "video_count": 1,
+    "input_count": 0,
+    "primary_video_id": "fe3c52ca-593d-4b01-8252-631443d2020b",
+    "has_featured_video": 1,
+    "featured_video_created_at": "2026-08-16T07:49:08.809Z",
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/fe3c52ca-593d-4b01-8252-631443d2020b",
+    "members": [
+      {
+        "episode_id": "175f2479-f11b-4d3e-b445-e8345ac83c84",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      },
+      {
+        "episode_id": "175f2479-f11b-4d3e-b445-e8345ac83c84",
+        "id": "tokun",
+        "slug": "tokun",
+        "name": "とーくん",
+        "sort_order": 3
+      },
+      {
+        "episode_id": "175f2479-f11b-4d3e-b445-e8345ac83c84",
+        "id": "fukuchan",
+        "slug": "fukuchan",
+        "name": "福ちゃん",
+        "sort_order": 5
+      },
+      {
+        "episode_id": "175f2479-f11b-4d3e-b445-e8345ac83c84",
+        "id": "okayaman",
+        "slug": "okayaman",
+        "name": "窓際王おかやまん",
+        "sort_order": 7
+      }
+    ]
+  },
+  {
+    "id": "6ae765ae-f187-413a-9d03-0ab2fbdfad30",
+    "slug": "mcp-video-registration-validation-20260816",
+    "episode_number": null,
+    "title": "MCP動画登録検証",
+    "summary": "CodexからRemote MCP経由でプロンプトと動画を登録し、Web再生を確認するための検証用エピソード。",
+    "status": "published",
+    "created_at": "2026-08-16T04:00:37.088Z",
+    "updated_at": "2026-08-17T09:34:31.187Z",
+    "published_at": "2026-08-17T09:34:31.187Z",
+    "studio_id": "MS-W5RN2EZT",
+    "generation_count": 2,
+    "video_count": 1,
+    "input_count": 0,
+    "primary_video_id": "6d6a5bfb-06a5-4b7a-a399-dd84ef3b0a4e",
+    "has_featured_video": 0,
+    "featured_video_created_at": null,
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/6d6a5bfb-06a5-4b7a-a399-dd84ef3b0a4e",
+    "members": [
+      {
+        "episode_id": "6ae765ae-f187-413a-9d03-0ab2fbdfad30",
+        "id": "takosan",
+        "slug": "takosan",
+        "name": "たこさん",
+        "sort_order": 2
+      }
+    ]
+  },
+  {
+    "id": "00000000-0000-4000-8000-000000000040",
+    "slug": "sobaya-beer-battery",
+    "episode_number": 40,
+    "title": "そば屋ビールバッテリー",
+    "summary": "極度乾燥ビールをめぐる、オフィスでの短編エピソード。",
+    "status": "published",
+    "created_at": "2026-08-16T01:13:34.034Z",
+    "updated_at": "2026-08-17T09:34:31.187Z",
+    "published_at": "2026-08-17T09:34:31.187Z",
+    "studio_id": "MS-7K9Q2F",
+    "generation_count": 1,
+    "video_count": 1,
+    "input_count": 0,
+    "primary_video_id": "40000000-0000-4000-8000-000000000040",
+    "has_featured_video": 0,
+    "featured_video_created_at": null,
+    "prompt_label": null,
+    "primary_video_poster_url": "/posters/40000000-0000-4000-8000-000000000040",
+    "members": [
+      {
+        "episode_id": "00000000-0000-4000-8000-000000000040",
+        "id": "sobaya",
+        "slug": "sobaya",
+        "name": "そば屋",
+        "sort_order": 1
+      },
+      {
+        "episode_id": "00000000-0000-4000-8000-000000000040",
+        "id": "fukuchan",
+        "slug": "fukuchan",
+        "name": "福ちゃん",
+        "sort_order": 5
+      },
+      {
+        "episode_id": "00000000-0000-4000-8000-000000000040",
+        "id": "yametaro",
+        "slug": "yametaro",
+        "name": "無職やめ太郎",
+        "sort_order": 6
+      }
+    ]
+  }
+]

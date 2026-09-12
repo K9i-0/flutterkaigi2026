@@ -1,0 +1,219 @@
+@font-face {
+  font-family: "Sakaba Brush";
+  src: url("/themes/sakaba/yuji-syuku-subset.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+
+.j-theme-picker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+  font-size: 11px;
+}
+.j-theme-picker select {
+  max-width: 220px;
+  min-height: 40px;
+  padding: 6px 30px 6px 10px;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+}
+.j-theme-picker option { color: #242726; background: #fff9ed; }
+
+html[data-theme="sakaba"] {
+  --bg: #f7f1e5;
+  --ink: #222c30;
+  --surface: #efe5d3;
+  --muted: #71685c;
+  --line: #745b3e35;
+  --accent: #e9d5ae;
+  --sakaba-red: #b53426;
+  --sakaba-navy: #142b40;
+  background-color: var(--bg);
+  background-image: linear-gradient(#f7f1e570, #f7f1e570), url("/themes/sakaba/washi.webp");
+  background-repeat: repeat;
+  background-size: 768px;
+}
+[data-theme="sakaba"] .journal {
+  --j-red: var(--sakaba-red);
+  --j-serif: "Noto Serif JP", "Yu Mincho", serif;
+}
+[data-theme="sakaba"] .j-header {
+  background: var(--sakaba-navy) url("/themes/sakaba/noren.webp") center / 1024px auto;
+  color: #fff2d6;
+  border-top: 5px solid #68462f;
+  border-bottom: 0;
+  box-shadow: 0 3px 4px #26201c18;
+}
+[data-theme="sakaba"] .j-header::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 15px;
+  pointer-events: none;
+  background: repeating-linear-gradient(90deg, transparent 0 calc(25% - 2px), var(--bg) calc(25% - 2px) 25%);
+}
+[data-theme="sakaba"] .j-header-main { height: 113px; padding-bottom: 6px; }
+[data-theme="sakaba"] .j-brand { gap: 13px; }
+[data-theme="sakaba"] .j-brand > img { border: 1px solid #e8d6b181; width: 46px; height: 46px; }
+[data-theme="sakaba"] .j-brand > span {
+  font-family: "Sakaba Brush", var(--j-serif);
+  font-weight: 400;
+  font-size: 37px;
+  gap: 13px;
+  letter-spacing: .015em;
+  white-space: nowrap;
+}
+[data-theme="sakaba"] .j-brand small { display: none; }
+.j-sakaba-seal {
+  display: inline-block;
+  writing-mode: vertical-rl;
+  font: 400 15px/1.25 "Sakaba Brush", serif;
+  color: #f37b61;
+  border: 1.5px solid currentColor;
+  border-radius: 3px 2px 4px 1px;
+  padding: 3px 1px;
+  transform: rotate(3deg);
+}
+[data-theme="sakaba"] .j-header nav { gap: 22px; font-size: 12px; font-weight: 600; }
+[data-theme="sakaba"] .j-header nav a::after { background: #f6ddac; }
+[data-theme="sakaba"] .j-header-main nav > span + span { border-left: 1px solid #e5d2b635; padding-left: 20px; }
+[data-theme="sakaba"] .j-menu-button { color: #fff2d6; }
+[data-theme="sakaba"] .j-mobile-nav { background: #142b40; color: #fff2d6; }
+[data-theme="sakaba"] .j-mobile-nav > span { border-color: #f5e3c335; }
+[data-theme="sakaba"] .j-cover { padding-top: 21px; }
+[data-theme="sakaba"] .j-cover-rule { border-bottom: 1px solid #745b3e55; padding-bottom: 11px; margin-bottom: 21px; }
+[data-theme="sakaba"] .j-cover-rule > span:first-child { font: 400 25px/1.4 "Sakaba Brush", serif; letter-spacing: .04em; }
+[data-theme="sakaba"] .j-cover-rule > span:last-child { color: #6a6054; }
+[data-theme="sakaba"] .j-cover-copy h1 { font-size: clamp(24px, 2.25vw, 30px); line-height: 1.65; letter-spacing: -.035em; }
+[data-theme="sakaba"] .j-cover-copy > p,
+[data-theme="sakaba"] .j-world-strip p,
+[data-theme="sakaba"] .j-person-editorial-copy p,
+[data-theme="sakaba"] .j-page-heading > p { color: #665e52; }
+[data-theme="sakaba"] .j-outline-label {
+  background: var(--sakaba-red);
+  color: #fff8e9;
+  border: 0;
+  border-radius: 1px 3px 2px 1px;
+  padding: 4px 12px 5px;
+  font: 400 18px/1.45 "Sakaba Brush", var(--j-serif);
+  letter-spacing: .045em;
+  box-shadow: 1px 1px 0 #b5342625;
+}
+[data-theme="sakaba"] .j-photo-play { background: #fff9eb; color: #272d2f; border-radius: 5px; }
+[data-theme="sakaba"] .j-photo-play svg { color: var(--sakaba-red); }
+[data-theme="sakaba"] .j-underlined { border-color: var(--sakaba-red); }
+[data-theme="sakaba"] .j-underlined svg,
+[data-theme="sakaba"] .j-more svg,
+[data-theme="sakaba"] .j-lead-person svg,
+[data-theme="sakaba"] .j-art-grid svg { color: var(--sakaba-red); }
+[data-theme="sakaba"] .j-underlined:hover,
+[data-theme="sakaba"] .j-more:hover { color: var(--sakaba-red); }
+[data-theme="sakaba"] .j-section-heading h2 { font-size: 23px; }
+[data-theme="sakaba"] .j-section-heading h2::before {
+  content: "";
+  display: inline-block;
+  vertical-align: -.1em;
+  width: 3px;
+  height: 1em;
+  margin-right: 10px;
+  background: var(--sakaba-red);
+}
+[data-theme="sakaba"] .j-latest,
+[data-theme="sakaba"] .j-feature-person { border-color: #745b3e55; }
+[data-theme="sakaba"] .j-world-strip,
+[data-theme="sakaba"] .j-person-editorial {
+  background: #efe3ca70;
+  border: 1px solid #80674940;
+  box-shadow: 0 2px 0 #715b3510;
+}
+[data-theme="sakaba"] .j-world-strip h2 { font: 400 31px/1.5 "Sakaba Brush", var(--j-serif); margin-bottom: 14px; }
+[data-theme="sakaba"] .j-person-editorial-image > span {
+  color: #262b2d;
+  background: #fff5df;
+  border-bottom: 2px solid var(--sakaba-red);
+}
+[data-theme="sakaba"] .j-cheers { display: flex; align-items: center; gap: 13px; font: 400 30px/1.5 "Sakaba Brush", var(--j-serif); }
+[data-theme="sakaba"] .j-cheers svg { color: #b38328; transform: rotate(12deg); }
+[data-theme="sakaba"] .j-friends-row img { border: 1px solid #b5a58c; background: #fffaf0; }
+[data-theme="sakaba"] .j-friends-row svg { color: var(--sakaba-red); }
+[data-theme="sakaba"] .j-pickup-badge { color: #99412e; }
+[data-theme="sakaba"] .j-page-heading { border-bottom-color: var(--sakaba-red); }
+[data-theme="sakaba"] .j-kicker { color: #866047; }
+[data-theme="sakaba"] .j-scope-tabs button[aria-pressed="true"] { background: var(--sakaba-navy); border-color: var(--sakaba-navy); color: #fff5df; }
+[data-theme="sakaba"] .j-category-tabs button[aria-pressed="true"] { border-color: var(--sakaba-red); color: var(--sakaba-red); }
+[data-theme="sakaba"] .j-search { background: #fffbf1; border-color: #b6a78c; }
+[data-theme="sakaba"] .j-footer-shell {
+  margin-top: 70px;
+  background: var(--sakaba-navy) url("/themes/sakaba/noren.webp") center / 1024px auto;
+  color: #fff2d6;
+}
+[data-theme="sakaba"] .j-footer { margin-top: 0; border-top: 0; padding-top: 32px; }
+[data-theme="sakaba"] .j-footer-brand { font: 400 29px/1.5 "Sakaba Brush", serif; }
+[data-theme="sakaba"] .j-footer-bottom { color: #d8cdb7; border-color: #eee0c12e; }
+[data-theme="sakaba"] .j-theme-picker { color: #ded1b8; }
+[data-theme="sakaba"] .j-footer a:hover { color: #ffd18c; }
+[data-theme="sakaba"] :is(a, button, input, select):focus-visible { outline-color: #c7803a; }
+[data-theme="sakaba"] .j-header :is(a, button):focus-visible,
+[data-theme="sakaba"] .j-footer :is(a, button, select):focus-visible { outline-color: #ffe3a6; }
+
+@media (max-width: 1050px) {
+  [data-theme="sakaba"] .j-brand > span { font-size: 31px; }
+  [data-theme="sakaba"] .j-header nav { gap: 16px; }
+  [data-theme="sakaba"] .j-header-main nav > span + span { padding-left: 15px; }
+}
+@media (max-width: 760px) {
+  [data-theme="sakaba"] .j-header-main { height: 92px; }
+  [data-theme="sakaba"] .j-brand > span { font-size: 31px; }
+  [data-theme="sakaba"] .j-header::after { height: 10px; }
+}
+@media (max-width: 580px) {
+  [data-theme="sakaba"] .j-header-main { height: 87px; }
+  [data-theme="sakaba"] .j-brand { gap: 9px; }
+  [data-theme="sakaba"] .j-brand > span { font-size: 28px; gap: 9px; }
+  [data-theme="sakaba"] .j-brand > img { width: 35px; height: 35px; }
+  [data-theme="sakaba"] .j-sakaba-seal { font-size: 11px; padding: 2px 0; }
+  [data-theme="sakaba"] .j-cover { padding-top: 19px; }
+  [data-theme="sakaba"] .j-cover-rule { margin-bottom: 15px; padding-bottom: 10px; }
+  [data-theme="sakaba"] .j-cover-rule > span:first-child { font-size: 20px; }
+  [data-theme="sakaba"] .j-cover-rule > span:last-child { font-size: 8px; }
+  [data-theme="sakaba"] .j-outline-label { font-size: 15px; padding: 3px 10px; }
+  [data-theme="sakaba"] .j-cover-copy h1 { font-size: 25px; margin: 10px 0 9px; }
+  [data-theme="sakaba"] .j-section-heading h2 { font-size: 20px; }
+  [data-theme="sakaba"] .j-world-strip h2 { font-size: 28px; margin: 0 0 8px; }
+  [data-theme="sakaba"] .j-cheers { font-size: 26px; }
+  [data-theme="sakaba"] .j-cheers svg { width: 23px; }
+  [data-theme="sakaba"] .j-footer-shell { margin-top: 46px; }
+  [data-theme="sakaba"] .j-footer-brand { font-size: 25px; }
+}
+@media (max-width: 360px) {
+  [data-theme="sakaba"] .j-brand > span { font-size: 25px; }
+  [data-theme="sakaba"] .j-brand > img { width: 30px; height: 30px; }
+  [data-theme="sakaba"] .j-sakaba-seal { display: none; }
+  [data-theme="sakaba"] .j-cover-copy h1 { font-size: 23px; }
+}
+
+/* Shared detail pages and portalled controls follow the same palette. */
+[data-theme="sakaba"] .j-profile { background: #eee3ce; }
+[data-theme="sakaba"] .j-profile-copy > p { color: #665e52; }
+[data-theme="sakaba"] .j-profile-copy .j-profile-line { color: var(--ink); }
+[data-theme="sakaba"] .journal .j-button { background: var(--sakaba-navy); border-color: var(--sakaba-navy); color: #fff5df; }
+[data-theme="sakaba"] .journal .j-button:hover { background: #29445a; }
+[data-theme="sakaba"] .journal .j-button.saved { background: #f1d9b8; border-color: #ba8a61; color: #713e2c; }
+[data-theme="sakaba"] .journal .j-icon-button { border-color: #b6a78c; }
+[data-theme="sakaba"] .j-wave i { background: #b88b43; }
+[data-theme="sakaba"] .j-cast-filter button > span { background: #eee0c9; }
+[data-theme="sakaba"] .j-cast-filter button[aria-pressed="true"] { border-color: var(--sakaba-red); }
+[data-theme="sakaba"] .j-chapter-list a[aria-current="page"] { background: #efe0c3; border-color: var(--sakaba-red); }
+[data-theme="sakaba"] .j-dialog-overlay { background: #102235df; }
+[data-theme="sakaba"] .j-video-dialog,
+[data-theme="sakaba"] .j-image-dialog { background: #fbf5e8; color: var(--ink); }
+[data-theme="sakaba"] .j-dialog-close { background: #e9dcc4; }
+[data-theme="sakaba"] .j-player-state { background: #142b40eb; }
+[data-theme="sakaba"] .j-toast { background: var(--sakaba-navy); }
