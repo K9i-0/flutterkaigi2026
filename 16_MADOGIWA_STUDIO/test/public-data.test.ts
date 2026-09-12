@@ -7,6 +7,7 @@ import { createEpisode, createGeneration, createVideo, listEpisodes, setVideoFea
 import { loadPublicEpisode } from "../src/server/public-data.server";
 
 describe("public data cost and freshness", () => {
+  // The first SELF request also transforms the SSR app on a cold CI runner.
   it("serves video metadata for SEO without loading primary, alternate or related video bytes", async () => {
     const episode = await createEpisode(env.DB, { slug: crypto.randomUUID(), title: "Click to play" }, "test");
     const generation = await createGeneration(env.DB, episode.id, "v2", "model", "", "test");
@@ -22,7 +23,7 @@ describe("public data cost and freshness", () => {
     expect(html.match(/class="deferred-video"/g)).toHaveLength(2);
     expect(html).not.toMatch(/<video\b/);
     expect(html).not.toMatch(/<source\b/);
-  });
+  }, 15_000);
   it("keeps public cards equivalent with multiple generations, pending and archived videos", async () => {
     const episode = await createEpisode(env.DB, { slug: crypto.randomUUID(), title: "Public card", memberIds: ["sobaya", "fukuchan"] }, "test");
     const generation = await createGeneration(env.DB, episode.id, "v2", "model", "", "test");
