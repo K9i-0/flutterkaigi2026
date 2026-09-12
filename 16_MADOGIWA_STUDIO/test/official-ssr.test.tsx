@@ -19,8 +19,11 @@ describe("official initial HTML", () => {
 
 it("renders all comic chapters with reserved image dimensions and lazy loading", () => {
   const html = renderToStaticMarkup(<Journal episodes={[]} galleryItems={[]} initialTheme="sakaba" initialHref="/story?chapter=8" />);
-  expect(html.match(/class="j-story-chapter"/g)).toHaveLength(14);
-  expect(html).toContain('id="chapter-14"');
+  expect(html.match(/class="j-story-chapter"/g)).toHaveLength(15);
+  expect(html).toContain('id="chapter-15"');
+  expect(html).toContain('/site/comic/chapter-14.webp');
+  expect(html).toContain('第14話 ゆめみ地下帝国 構想会議');
+  expect(html).toContain('第15話 BONK');
   expect(html).toContain('width="538" height="720" loading="lazy"');
   expect(html).not.toContain('aria-label="次の話"');
 });

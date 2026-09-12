@@ -278,7 +278,7 @@ describe("Madogiwa Studio Worker", () => {
       {
         path: "/story",
         title: "原作ストーリー｜窓際族物語",
-        description: "入社初日からBONKまで。窓際族物語の原点となる全14話。",
+        description: "入社初日からBONKまで。窓際族物語の原点となる全15話。",
       },
       {
         path: "/episodes",

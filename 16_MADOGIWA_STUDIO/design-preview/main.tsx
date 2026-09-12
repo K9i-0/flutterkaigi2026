@@ -643,7 +643,7 @@ export default function App() {
                   ))}
                 </div>
                 <div>
-                  <h3>原作漫画 全14話</h3>
+                  <h3>原作漫画 全15話</h3>
                   <span>
                     そば屋の入社から読む <ArrowUpRight size={18} />
                   </span>

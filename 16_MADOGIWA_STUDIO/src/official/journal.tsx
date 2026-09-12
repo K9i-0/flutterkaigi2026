@@ -76,7 +76,7 @@ function readRoute(href = typeof location === "undefined" ? "/" : location.href)
     scope: p.get("scope") === "all" ? "all" : undefined,
     collection: p.get("collection") ?? undefined,
     chapter: Math.min(
-      14,
+      comicEpisodes.length,
       Math.max(1, Math.floor(Number(p.get("chapter"))) || 1),
     ),
   };
@@ -549,7 +549,7 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
                     </div>
                     <div className="j-experience-label">
                       <div>
-                        <small>原作漫画 / 全14話</small>
+                        <small>原作漫画 / 全15話</small>
                         <h3>はじまりは、そば屋の入社。</h3>
                       </div>
                       <ArrowUpRight />
@@ -986,7 +986,7 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
             <section className="j-world-invite">
               <BookOpen size={24} />
               <div>
-                <h2>始まりを読むなら、原作14話。</h2>
+                <h2>始まりを読むなら、原作15話。</h2>
                 <p>そば屋の入社から、窓際の仲間との出会いまで。</p>
               </div>
               {link(
@@ -1015,7 +1015,7 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
             {breadcrumbs("原作漫画")}
             <div className="j-page-heading">
               <div>
-                <span className="j-kicker">全14話</span>
+                <span className="j-kicker">全15話</span>
                 <h1>原作漫画</h1>
               </div>
               <p>
@@ -1026,7 +1026,7 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
             </div>
             <div className="j-story-scroll">
               {comicEpisodes.map((episode, index) => {
-                const dimensions = [[720,720],[720,720],[720,720],[538,720],[538,720],[672,900],[900,900],[483,720],[646,720],[720,709],[720,720],[483,720],[592,720],[900,651]][index];
+                const dimensions = [[720,720],[720,720],[720,720],[538,720],[538,720],[672,900],[900,900],[483,720],[646,720],[720,709],[720,720],[483,720],[592,720],[622,720],[900,651]][index];
                 return <section className="j-story-chapter" id={`chapter-${episode.number}`} key={episode.number} aria-labelledby={`chapter-title-${episode.number}`}>
                   <h2 id={`chapter-title-${episode.number}`}><small>第{episode.number}話</small>{episode.title}</h2>
                   <button className="j-story-image" onClick={() => setZoom({ src: episode.image, title: `第${episode.number}話 ${episode.title}` })} aria-label={`第${episode.number}話の画像を拡大`}>

@@ -73,7 +73,7 @@ function readRoute(): Route {
     scope: p.get("scope") === "all" ? "all" : undefined,
     collection: p.get("collection") ?? undefined,
     chapter: Math.min(
-      14,
+      comicEpisodes.length,
       Math.max(1, Math.floor(Number(p.get("chapter"))) || 1),
     ),
   };
@@ -526,7 +526,7 @@ export default function Journal() {
                     </div>
                     <div className="j-experience-label">
                       <div>
-                        <small>原作漫画 / 全14話</small>
+                        <small>原作漫画 / 全15話</small>
                         <h3>はじまりは、そば屋の入社。</h3>
                       </div>
                       <ArrowUpRight />
@@ -963,7 +963,7 @@ export default function Journal() {
             <section className="j-world-invite">
               <BookOpen size={24} />
               <div>
-                <h2>始まりを読むなら、原作14話。</h2>
+                <h2>始まりを読むなら、原作15話。</h2>
                 <p>そば屋の入社から、窓際の仲間との出会いまで。</p>
               </div>
               {link(
@@ -992,7 +992,7 @@ export default function Journal() {
             {breadcrumbs("原作漫画")}
             <div className="j-page-heading">
               <div>
-                <span className="j-kicker">全14話</span>
+                <span className="j-kicker">全15話</span>
                 <h1>原作漫画</h1>
               </div>
               <p>
@@ -1024,7 +1024,7 @@ export default function Journal() {
               </div>
               <div className="j-reader-copy">
                 <span className="j-kicker">
-                  第{String(story.number).padStart(2, "0")}話 / 14
+                  第{String(story.number).padStart(2, "0")}話 / {comicEpisodes.length}
                 </span>
                 <h2>{story.title}</h2>
                 <p>{story.description}</p>
@@ -1038,10 +1038,10 @@ export default function Journal() {
                   >
                     <ArrowLeft size={19} />
                   </button>
-                  <span>{story.number} / 14</span>
+                  <span>{story.number} / {comicEpisodes.length}</span>
                   <button
                     aria-label="次の話"
-                    disabled={story.number === 14}
+                    disabled={story.number === comicEpisodes.length}
                     onClick={() =>
                       go({ page: "story", chapter: story.number + 1 })
                     }
@@ -1049,7 +1049,7 @@ export default function Journal() {
                     <ArrowRight size={19} />
                   </button>
                 </div>
-                {story.number === 14 &&
+                {story.number === comicEpisodes.length &&
                   link(
                     { page: "movies" },
                     <>

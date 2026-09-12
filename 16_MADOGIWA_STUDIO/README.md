@@ -120,7 +120,7 @@ Workerの起動プロファイル、本番アップロードを行わないdeplo
 - `/episodes/:slug`: SSRされた作品ページ。動画、キャスト、関連作品、Web Share／X／LINE／URLコピーを提供
 - `/characters/:slug`: キャラクター単位の共有ページと出演エピソード
 - `/gallery/:slug`: ギャラリー作品単位の共有ページ
-- `/story`: 原作14話を一続きで読めるページ
+- `/story`: 原作15話を一続きで読めるページ
 - `/sitemap.xml`、`/robots.txt`: 公開済みデータからWorker上で生成
 
 ホームを含む全公開ページは、ルートごとのcanonical URLと、共通の`socialMeta`で生成したOpen Graph・X CardをSSR時に出力します。

@@ -22,10 +22,11 @@ export const comicEpisodes = [
   { title: "逃走", description: "無職やめ太郎が赤坂の街を全力逃走。そば屋もジョッキを6個抱えたまま「ついでに」逃げ、とーくんは演奏を続ける。" },
   { title: "タコ部屋に連行", description: "2人はついに確保され、タコ部屋へ。そば屋はタイピング、無職やめ太郎は電話対応という強制労働が始まる。" },
   { title: "脱走", description: "よーたんが差し入れを持って訪ねると、壁には巨大な人型の穴。そば屋と無職やめ太郎は壁を破って脱走していた。" },
-  { title: "窓際王おかやまん", description: "窓際王おかやまんがリモート出演。窓際十人衆（Windows 10）の野望のため、2人を地下懲罰房へ送るよう命じる。" },
-  { title: "BONK", description: "窓際で居眠りするそば屋を、ゆめみんが木槌でBONK! 夢だったように思えた一連の出来事は、すべて現実である。" },
+  { title: "窓際王おかやまん", description: "都内某社の窓際会議室に、窓際王おかやまんがリモート出演。そば屋とやめ太郎の脱走を許したという報告に驚きを示す。" },
+  { title: "ゆめみ地下帝国 構想会議", image: "/site/comic/chapter-14.webp", description: "窓際十人衆（Windows 10）の野望が明らかに。おかやまんは2人を捕え、ゆめみ地下懲罰房へ送るよう命じる。" },
+  { title: "BONK", image: "/site/comic/episode-14.webp", description: "窓際で居眠りするそば屋を、ゆめみんが木槌でBONK! 夢だったように思えた一連の出来事は、すべて現実である。" },
 ].map((episode, index) => ({
   ...episode,
   number: index + 1,
-  image: `/site/comic/episode-${String(index + 1).padStart(2, "0")}.webp`,
+  image: episode.image ?? `/site/comic/episode-${String(index + 1).padStart(2, "0")}.webp`,
 }));

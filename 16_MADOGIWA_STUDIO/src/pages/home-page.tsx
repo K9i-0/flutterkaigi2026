@@ -38,8 +38,8 @@ export function HomePage({ episodes, galleryItems, articles }: { episodes: Episo
         <div className="character-strip">{characters.map((character, index) => <Link to="/characters/$slug" params={{ slug: character.id }} className="character-card" key={character.name}><img src={character.image} alt={character.name} loading="lazy" /><div><span>0{index + 1}</span><small>{character.role}</small><h3>{character.name}</h3><p>{character.copy}</p></div></Link>)}</div>
       </Section>
 
-      <Section id="comic" eyebrow="ORIGINAL COMIC" title="すべては、14話の漫画から。" icon={<BookOpen />} intro="入社初日、そこに自分の席はなかった。窓際族物語の原点を一気に読む。">
-        <ComicCarousel /><div className="movie-section-link story-link"><span>14 CHAPTERS</span><Link to="/story">原作ストーリーを読む <ArrowRight /></Link></div>
+      <Section id="comic" eyebrow="ORIGINAL COMIC" title="すべては、15話の漫画から。" icon={<BookOpen />} intro="入社初日、そこに自分の席はなかった。窓際族物語の原点を一気に読む。">
+        <ComicCarousel /><div className="movie-section-link story-link"><span>15 CHAPTERS</span><Link to="/story">原作ストーリーを読む <ArrowRight /></Link></div>
       </Section>
 
       <Section id="gallery" eyebrow="GALLERY" title="物語から生まれた、もうひとつの景色。" icon={<Images />} intro="原作の外側へ広がるキービジュアル、世界観アート、特別作品。">
@@ -140,7 +140,7 @@ function ComicCarousel() {
         ref={carouselRef}
         className="comic-carousel"
         onScroll={handleScroll}
-        aria-label="原作漫画 全14話"
+        aria-label="原作漫画 全15話"
       >
         {comicEpisodes.map((episode, index) => {
           const selected = selectedComic === episode.number;

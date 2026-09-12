@@ -7,7 +7,7 @@ export function StoryPage() {
   return <div className="story-page">
     <header className="story-header">
       <div className="section-icon"><BookOpen /></div>
-      <div><span>ORIGINAL STORY</span><h1>原作ストーリー</h1><p>窓際の席から、物語は始まった。入社初日からBONKまでを辿る全14話。</p>
+      <div><span>ORIGINAL STORY</span><h1>原作ストーリー</h1><p>窓際の席から、物語は始まった。入社初日からBONKまでを辿る全15話。</p>
         <ShareActions title="原作ストーリー" path="/story" />
       </div>
     </header>
