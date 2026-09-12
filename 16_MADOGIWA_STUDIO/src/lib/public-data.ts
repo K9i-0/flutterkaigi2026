@@ -3,7 +3,7 @@ import type { Article, Episode, EpisodeSummary, GalleryItem, InputAsset, Member,
 export const SITE_ORIGIN = "https://madogiwa.work";
 export const SITE_NAME = "窓際族物語";
 export const DEFAULT_DESCRIPTION = "働かない。でも、物語は動き出す。漫画、映像、ゲームへと広がる『窓際族物語』公式サイト。";
-export const DEFAULT_OG_IMAGE = "/site/hero-shibuya-wide.webp";
+export const DEFAULT_OG_IMAGE = "/site/ogp-balcony-20260912.jpg";
 
 type SocialMetaOptions = {
   title: string;

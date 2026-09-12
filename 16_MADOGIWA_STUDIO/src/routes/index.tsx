@@ -10,7 +10,7 @@ export const Route = createFileRoute("/")({
       title: "窓際族物語｜公式サイト",
       description: DEFAULT_DESCRIPTION,
       path: "/",
-      imageAlt: "渋谷の中心に現れた巨大なそば屋と、窓際族物語の登場人物たち",
+      imageAlt: "高層ビル外側のベランダ席でビールを飲むそば屋、窓の中の福ちゃん、宙に浮くたこさんとやめ太郎の指名手配ポスター",
     }),
     links: [{ rel: "canonical", href: absoluteUrl("/") }],
   }),
