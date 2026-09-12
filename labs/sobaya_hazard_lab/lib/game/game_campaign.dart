@@ -117,6 +117,9 @@ class HazardCampaign {
 
   void _carry(HazardGameState from, HazardGameState to) {
     to.difficulty = from.difficulty;
+    to.missionFlags
+      ..clear()
+      ..addAll(from.missionFlags);
     to.bag
       ..clear()
       ..addAll(

@@ -1,3 +1,4 @@
+import 'game_tutorial_text.dart';
 import 'game_journal.dart';
 import 'game_map.dart';
 import 'game_item_tile.dart';
@@ -222,6 +223,10 @@ class _HazardGamePageState extends State<HazardGamePage> {
 
   KeyEventResult onKey(FocusNode node, KeyEvent e) {
     final s = game.state!;
+    if (game.regionLoadBlocked) {
+      clearInput();
+      return KeyEventResult.handled;
+    }
     keyboard.handle(e);
     if (e is KeyUpEvent) {
       updateInput();
@@ -349,7 +354,8 @@ class _HazardGamePageState extends State<HazardGamePage> {
                       mounted &&
                       renderedInputEpoch == touchEpoch &&
                       identical(s, game.state) &&
-                      s.running;
+                      s.running &&
+                      !game.regionLoadBlocked;
                   final mobile =
                       game.settings.touchControls ||
                       bounds.biggest.shortestSide < 700 ||
@@ -1123,6 +1129,63 @@ class _HazardGamePageState extends State<HazardGamePage> {
                             ),
                           ),
                         ),
+                      if (s.tutorialActive && s.running)
+                        Positioned(
+                          left: 16 + safe.left,
+                          right: 16 + safe.right,
+                          bottom: promptBottom + 50,
+                          child: Material(
+                            color: ink,
+                            borderRadius: BorderRadius.circular(12),
+                            child: Padding(
+                              padding: const EdgeInsets.all(12),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'やめ太郎の実地研修  ${tutorialSteps.indexOf(s.tutorialStep!) + 1} / 7',
+                                    style: const TextStyle(
+                                      color: gold,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    tutorialCoachLines[s.tutorialStep]!,
+                                    style: const TextStyle(color: ivory),
+                                  ),
+                                  Text(
+                                    s.tutorialControlHint(mobile),
+                                    style: const TextStyle(
+                                      color: Colors.white70,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                  Wrap(
+                                    spacing: 12,
+                                    children: [
+                                      if (s.tutorialStep == 'complete')
+                                        FilledButton(
+                                          onPressed: game.finishTutorial,
+                                          child: const Text('村へ出発'),
+                                        )
+                                      else
+                                        TextButton(
+                                          onPressed: game.retryTutorial,
+                                          child: const Text('この練習をやり直す'),
+                                        ),
+                                      if (s.tutorialStep != 'complete')
+                                        TextButton(
+                                          onPressed: game.finishTutorial,
+                                          child: const Text('練習をスキップ'),
+                                        ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
                       if (s.phase == PlayPhase.title) title(s),
                       if (s.phase == PlayPhase.cinematic) eventOverlay(),
                       if (s.phase == PlayPhase.settings) settingsPanel(),
@@ -1170,6 +1233,43 @@ class _HazardGamePageState extends State<HazardGamePage> {
                       if (s.phase == PlayPhase.dead ||
                           s.phase == PlayPhase.clear)
                         ending(s),
+                      if (game.regionLoadBlocked)
+                        Positioned.fill(
+                          child: AbsorbPointer(
+                            absorbing: game.regionLoading,
+                            child: Material(
+                              color: const Color(0xf5181b17),
+                              child: Center(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    if (game.regionLoading)
+                                      const CircularProgressIndicator(
+                                        color: gold,
+                                      ),
+                                    const SizedBox(height: 20),
+                                    Text(
+                                      game.regionLoading
+                                          ? '次の区画を読み込んでいます…'
+                                          : '区画を読み込めませんでした',
+                                      style: const TextStyle(color: ivory),
+                                    ),
+                                    if (!game.regionLoading) ...[
+                                      FilledButton(
+                                        onPressed: game.retryRegionLoad,
+                                        child: const Text('再試行'),
+                                      ),
+                                      TextButton(
+                                        onPressed: game.cancelRegionLoad,
+                                        child: const Text('戻る'),
+                                      ),
+                                    ],
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                     ],
                   );
                 },

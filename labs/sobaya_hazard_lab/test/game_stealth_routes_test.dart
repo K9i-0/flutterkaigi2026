@@ -219,6 +219,11 @@ Map<String, dynamic> escapeRun(
       p.path(zone == 'village' ? [(-6.4, 12.2)] : [(4.2, -6.2)], sneak: true);
     }
     if (strategy == 'leave_after_release') {
+      // Isolate cover escape after the rescue preparations are complete.
+      state.missionFlags.addAll([
+        ...HazardGameState.farmMissionItems.keys,
+        'radio_ready',
+      ]);
       p.stop();
       state.sprint = false;
       final deadline = state.time + 32;

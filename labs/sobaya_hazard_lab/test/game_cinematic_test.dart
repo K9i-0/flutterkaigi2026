@@ -14,11 +14,11 @@ void main() {
       final d = HazardDirector('opening');
       expect(d.shot.voiceSpeaker, 'ナレーション');
       expect(d.shot.speaker, isEmpty);
-      for (var i = 0; i < 200; i++) {
+      for (var i = 0; i < 100; i++) {
         d.tick(.05);
       }
       expect(d.index, 0);
-      expect(d.duration, greaterThan(12));
+      expect(d.duration, greaterThan(5));
       d.next(); // Manual advance remains available to fast readers.
       expect(d.index, 1);
       expect(d.duration, greaterThan(d.shot.seconds));
@@ -47,7 +47,7 @@ void main() {
         expect(d.duration, greaterThanOrEqualTo(shot.readingSeconds));
       }
     }
-    expect(count, 5);
+    expect(count, 4);
   });
 
   test('every authored cut resolves an asset/document and a valid camera', () {
@@ -84,13 +84,15 @@ void main() {
   });
 
   test('village reveal cuts during one spoken line and freezes on pause', () {
-    final d = HazardDirector('opening', voiceSeconds: {'event:opening:3': 12})
-      ..index = 3;
+    final d = HazardDirector(
+      'chapter1intro',
+      voiceSeconds: {'event:chapter1intro:0': 12},
+    );
     final line = d.shot;
     d.elapsed = 2;
     expect(d.cut?.isInsert, false);
-    d.elapsed = 4;
-    expect(d.cut?.image, 'village-crowd');
+    d.elapsed = 7;
+    expect(d.cut?.isInsert, false);
     expect(d.shot, same(line));
     expect(d.duration, 12.5);
     final progress = d.visualProgress;

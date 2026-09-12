@@ -1,3 +1,5 @@
+import 'game_tutorial_text.dart';
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math' as math;
@@ -1009,11 +1011,150 @@ class HazardGameController extends ChangeNotifier {
 
   Future<bool> restart() => _changeRegion('village', _restartState);
 
+  Node? trainingTarget, trainingMarker;
+  final missionNodes = <String, Node>{};
+  void _updateLessonVisuals() {
+    final s = state!;
+    Node marker(vm.Vector3 size, vm.Vector4 color) {
+      final n = Node(
+        mesh: Mesh(
+          CuboidGeometry(size),
+          UnlitMaterial()..baseColorFactor = color,
+        ),
+      )..castsShadows = false;
+      scene.add(n);
+      return n;
+    }
+
+    if (trainingTarget == null) {
+      trainingTarget = marker(
+        vm.Vector3(1.2, 1.2, .12),
+        vm.Vector4(.75, .6, .28, 1),
+      );
+      for (final ring in [
+        (1.04, vm.Vector4(.94, .88, .64, 1)),
+        (.72, vm.Vector4(.18, .22, .2, 1)),
+        (.48, vm.Vector4(.94, .78, .3, 1)),
+        (.2, vm.Vector4(.7, .18, .12, 1)),
+      ]) {
+        trainingTarget!.add(
+          Node(
+              mesh: Mesh(
+                CuboidGeometry(vm.Vector3(ring.$1, ring.$1, .015)),
+                UnlitMaterial()..baseColorFactor = ring.$2,
+              ),
+            )
+            ..position = vm.Vector3(0, 0, -.075 - (1.2 - ring.$1) * .04)
+            ..castsShadows = false,
+        );
+      }
+      trainingTarget!.add(
+        Node(
+            mesh: Mesh(
+              CuboidGeometry(vm.Vector3(.1, .9, .12)),
+              UnlitMaterial()..baseColorFactor = vm.Vector4(.3, .23, .15, 1),
+            ),
+          )
+          ..position = vm.Vector3(0, -1.05, .05)
+          ..castsShadows = false,
+      );
+    }
+    trainingTarget!
+      ..position = vm.Vector3(0, 1.5, -13)
+      ..visible = s.tutorialActive && ['aim', 'shoot'].contains(s.tutorialStep);
+    trainingMarker ??= marker(
+      vm.Vector3(1.5, .035, 1.5),
+      vm.Vector4(1, .8, .15, 1),
+    );
+    final point = s.tutorialWaypoint;
+    trainingMarker!
+      ..position = vm.Vector3(point.x, .045, point.z)
+      ..visible =
+          s.tutorialActive &&
+          ['move', 'sneak', 'escape'].contains(s.tutorialStep);
+    for (final entry in HazardGameState.farmMissionItems.entries) {
+      final item = entry.value;
+      final n = missionNodes.putIfAbsent(entry.key, () {
+        final battery = entry.key == 'radio_battery';
+        final n = marker(
+          battery ? vm.Vector3(.5, .36, .3) : vm.Vector3(.5, .045, .65),
+          battery ? vm.Vector4(.2, .28, .25, 1) : vm.Vector4(.94, .89, .73, 1),
+        );
+        void detail(vm.Vector3 size, vm.Vector3 position, vm.Vector4 color) {
+          n.add(
+            Node(
+                mesh: Mesh(
+                  CuboidGeometry(size),
+                  UnlitMaterial()..baseColorFactor = color,
+                ),
+              )
+              ..position = position
+              ..castsShadows = false,
+          );
+        }
+
+        if (battery) {
+          for (final x in [-.15, .15]) {
+            detail(
+              vm.Vector3(.08, .08, .08),
+              vm.Vector3(x, .21, 0),
+              vm.Vector4(.92, .65, .18, 1),
+            );
+          }
+          detail(
+            vm.Vector3(.3, .18, .015),
+            vm.Vector3(0, 0, -.16),
+            vm.Vector4(.95, .78, .25, 1),
+          );
+        } else {
+          for (var i = 0; i < 5; i++) {
+            detail(
+              vm.Vector3(.33, .006, .015),
+              vm.Vector3(0, .027, -.18 + i * .08),
+              vm.Vector4(.25, .28, .25, 1),
+            );
+          }
+        }
+        return n;
+      });
+      n
+        ..position = vm.Vector3(
+          item.x,
+          item.y + (entry.key == 'radio_battery' ? .2 : .07),
+          item.z,
+        )
+        ..visible = s.zoneId == 'farm' && !s.missionFlags.contains(entry.key);
+    }
+  }
+
+  void finishTutorial() {
+    if (regionLoadBlocked || !state!.tutorialActive) return;
+    _restartState();
+    state!.seenEvents.addAll(['title_call', 'opening', 'tutorial_complete']);
+    unawaited(saveCheckpoint(stageStart: true));
+    startEvent('chapter1intro');
+    notifyListeners();
+  }
+
+  void retryTutorial() {
+    if (regionLoadBlocked || !state!.tutorialActive) return;
+    state!.beginTutorial(step: state!.tutorialStep!);
+    runEpoch++;
+    _mountRegion();
+    unawaited(saveCheckpoint(stageStart: true));
+    notifyListeners();
+  }
+
+  int _savedTutorialRevision = -1;
   bool _openingAfterTitle = false;
 
   Future<bool> startRun({bool skipTutorial = false}) =>
       _changeRegion('village', () {
         _restartState();
+        if (!skipTutorial) {
+          state!.beginTutorial();
+          _resetNodes();
+        }
         unawaited(saveCheckpoint(stageStart: true));
         _openingAfterTitle = true;
         startEvent('title_call');
@@ -1367,6 +1508,12 @@ class HazardGameController extends ChangeNotifier {
         d.shot.voiceSpeaker,
         d.shot.text,
       );
+    } else if (s.tutorialActive && s.running) {
+      cue = voiceCatalog.cue(
+        'tutorial:$runEpoch:${s.tutorialStep}',
+        'やめ太郎',
+        tutorialCoachLines[s.tutorialStep]!,
+      );
     } else if (dialogue) {
       final line = s.dialogueLine;
       cue = voiceCatalog.cue(
@@ -1461,6 +1608,13 @@ class HazardGameController extends ChangeNotifier {
       }
     }
     if (!posePreview) s.tick(dt);
+    _updateLessonVisuals();
+    if (s.tutorialActive &&
+        s.running &&
+        _savedTutorialRevision != s.tutorialRevision) {
+      _savedTutorialRevision = s.tutorialRevision;
+      unawaited(saveCheckpoint(stageStart: true));
+    }
     if (!posePreview && director == null) {
       if (s.phase == PlayPhase.clear && !s.seenEvents.contains('ending')) {
         startEvent('ending');
@@ -1871,7 +2025,7 @@ class HazardGameController extends ChangeNotifier {
       );
     }
     for (final target in s.targets) {
-      village.getChildByName(target['node'])!.visible = !s.medallions.contains(
+      village.getChildByName(target['node'])?.visible = !s.medallions.contains(
         target['id'],
       );
     }

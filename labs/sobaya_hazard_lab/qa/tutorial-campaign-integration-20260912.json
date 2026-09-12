@@ -1,0 +1,69 @@
+{
+  "date": "2026-09-12",
+  "scope": "Mac debug rendered UI plus deterministic rules/collision campaign; not human difficulty or thermal benchmark",
+  "implementation": [
+    "Seven real-operation tutorial steps with Yametaro canonical voice",
+    "Target hit uses ordinary camera fire ray and cover checks",
+    "Practice clone uses normal perception but does not move or attack",
+    "Tutorial restart, skip, lesson-entry save/restore; fresh inventory at chapter 1",
+    "Farm battery and manifest, free acquisition order, final dialogue delivery, once-only departure supplies",
+    "Region-scoped environment claims with asynchronous retry and rollback"
+  ],
+  "validation": {
+    "fullSuite": {
+      "passed": 472,
+      "skipped": 1,
+      "log": "/tmp/hazard-final-tests.log"
+    },
+    "finalLessonVoiceRegionSuite": {
+      "passed": 18,
+      "log": "/tmp/hazard-final-lessons.log"
+    },
+    "saveAndCampaignSuite": {
+      "passed": 24,
+      "log": "/tmp/hazard-final-related.log"
+    },
+    "campaign": {
+      "success": true,
+      "allEnemiesDefeated": 20,
+      "gallery": 12,
+      "medallions": 7,
+      "missionFlags": [
+        "radio_battery",
+        "evacuation_manifest",
+        "radio_ready"
+      ],
+      "refuge": {
+        "unlocked": true,
+        "inside": true,
+        "reports": [
+          "yametaro",
+          "takosan"
+        ],
+        "complete": true
+      },
+      "simulationSeconds": 560.65,
+      "durationCaveat": "Automated exact aiming and path planning; not first-play duration"
+    }
+  },
+  "mac": {
+    "launch": "Dart MCP debug game_main.dart on macos",
+    "renderedChecks": [
+      "Tutorial move HUD and waypoint",
+      "Aimed target with colored rings",
+      "Normal camera fire: shots=1 hits=1 changed shoot to reload",
+      "Reload lesson progression",
+      "UI departure button resets tutorial=null shots=0 loaded=6 and plays voiced chapter1intro",
+      "Asynchronous farm environment arrival and new rescue objective"
+    ],
+    "chapter1Voice": {
+      "backend": "playing",
+      "errors": []
+    },
+    "limitations": [
+      "Final mountain reunion was verified by the rules/collision campaign; a later native screenshot request occurred after the window became backgrounded and was not counted as rendered confirmation.",
+      "Hot restart produced stale frames in the background; cold Mac launch restored the rendered scene.",
+      "No new CPU, GPU, iOS heat, or presented-FPS performance claim."
+    ]
+  }
+}

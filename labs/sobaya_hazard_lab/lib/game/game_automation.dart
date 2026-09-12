@@ -160,6 +160,7 @@ void attachGameAutomation(HazardGameController game) {
         ? MarionetteExtensionResult.error(1, 'Not ready')
         : MarionetteExtensionResult.success({
             ..._game!.state!.inspect(),
+            'regionLoading': _game!.inspectRegionLoading(),
             'frames': _game!.frames.toJson(),
             'settings': _game!.settings.encode(),
             'lighting': _game!.lighting.inspect(_game!.scene),
@@ -804,6 +805,15 @@ void attachGameAutomation(HazardGameController game) {
       }
       final s = g.state!;
       switch (p['action']) {
+        case 'tutorial':
+          g.benchmarkMode = true;
+          await g.startRun();
+          g.advanceEvent(skip: true);
+          g.advanceEvent(skip: true);
+          if (p['step'] != null && tutorialSteps.contains(p['step'])) {
+            g.state!.beginTutorial(step: p['step']!);
+            g.refreshView();
+          }
         case 'eventFrame':
           final d = g.director;
           final shot = int.tryParse(p['shot'] ?? '');
@@ -1009,6 +1019,20 @@ void attachGameAutomation(HazardGameController game) {
           g.interact();
         case 'reload':
           s.reload();
+        case 'look':
+          final dx = double.tryParse(p['dx'] ?? '0'),
+              dy = double.tryParse(p['dy'] ?? '0');
+          if (dx == null ||
+              dy == null ||
+              !dx.isFinite ||
+              !dy.isFinite ||
+              dx.abs() > 1000 ||
+              dy.abs() > 1000) {
+            return MarionetteExtensionResult.invalidParams(
+              'Finite dx/dy within 1000 required',
+            );
+          }
+          g.rotate(dx, dy);
         case 'aim':
           s.aiming = true;
         case 'pause':
@@ -1048,7 +1072,7 @@ void attachGameAutomation(HazardGameController game) {
           return MarionetteExtensionResult.invalidParams('Invalid action');
       }
       g.refreshView();
-      return MarionetteExtensionResult.success(s.inspect());
+      return MarionetteExtensionResult.success(g.state!.inspect());
     },
   );
 }

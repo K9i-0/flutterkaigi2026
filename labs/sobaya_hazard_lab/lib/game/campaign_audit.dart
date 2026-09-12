@@ -3,6 +3,8 @@
 // aiming skill, first-play duration, camera framing or frame performance.
 import 'dart:math' as math;
 
+import 'game_dialogue.dart';
+
 import 'package:vector_math/vector_math.dart' as vm;
 
 import 'package:sobaya_hazard_lab/game/game_campaign.dart';
@@ -564,6 +566,31 @@ class CampaignAudit {
     await pickup('farm_herb');
     await pickup('farm_barn_ammo');
     await pickup('farm_barn_shells');
+    for (final entry in HazardGameState.farmMissionItems.entries) {
+      final item = entry.value;
+      await walk(item.x, item.z, y: item.y, radius: 1.2, reach: true);
+      s.interact();
+      if (!s.missionFlags.contains(entry.key)) {
+        throw StateError('Mission pickup failed: ${entry.key}');
+      }
+      record('mission:${entry.key}');
+    }
+    final merchantNpc = s.npcs.firstWhere((n) => n['id'] == 'takosan');
+    await walk(
+      (merchantNpc['x'] as num).toDouble(),
+      (merchantNpc['z'] as num).toDouble(),
+      radius: 1.3,
+      reach: true,
+    );
+    s.interact();
+    while (s.phase == PlayPhase.dialogue && !s.dialogueChoices) {
+      s.advanceDialogue();
+    }
+    s.endDialogue();
+    if (!s.missionFlags.contains('radio_ready')) {
+      throw StateError('Rescue radio not ready');
+    }
+    record('mission:radio_ready');
     if (completionist) {
       await collectImages();
       await medals();
@@ -597,7 +624,7 @@ class CampaignAudit {
       if (s.collected.length != campaign.catalog.length ||
           s.kills != expectedKills ||
           s.medallions.length != 7 ||
-          s.tradePurchases['ammo'] != 2 ||
+          s.tradePurchases['ammo'] != 1 ||
           !weaponsUsed.containsAll(['handgun', 'shotgun'])) {
         throw StateError('Completionist obligations not fulfilled');
       }
@@ -611,7 +638,20 @@ class CampaignAudit {
           }
         }
       }
-      if (s.beers != expectedKills + 3 - 4) {
+      final collectedBeer = campaign.regions.values.fold<int>(
+        0,
+        (total, region) =>
+            total +
+            region.pickups
+                .where((p) => p.kind == 'beer' && p.taken)
+                .fold<int>(0, (n, p) => n + region.pickupAmount(p)),
+      );
+      final spentBeer = tradeOffers.fold<int>(
+        0,
+        (total, offer) =>
+            total + offer.price * (s.tradePurchases[offer.id] ?? 0),
+      );
+      if (s.beers != collectedBeer + 3 - spentBeer - s.beersThrown) {
         throw StateError('Beer ledger does not balance');
       }
     }

@@ -44,6 +44,10 @@ void main() {
     c.state.beers = 2;
     c.state.tradePurchases['ammo'] = 1;
     c.state.medallions.add('farm_0');
+    c.state.missionFlags.addAll([
+      ...HazardGameState.farmMissionItems.keys,
+      'radio_ready',
+    ]);
     c.state.x = 18.5;
     c.state.z = -10;
     c.state.interact();
