@@ -73,13 +73,13 @@ export function PointLedger() {
   const [beers, setBeers] = useState(0);
   const [message, setMessage] = useState("本日分の200ポイントが支給されました。");
   return <section className="u-ledger" aria-label="地下労働編のゆめポイント体験">
-    <div className="u-ledger-title"><Ticket size={17} /><b>ゆめポイント</b><span>地下労働編のミニ体験</span></div>
+    <div className="u-ledger-title"><Ticket size={17} /><b>地下売店</b><span>福利厚生・ゆめポイント</span></div>
     <div className="u-ledger-body">
-      <div className="u-balance"><span>残高</span><strong>{balance.toLocaleString()}<small>pt</small></strong></div>
-      <div className="u-exit"><span>タコ部屋退室</span><b>100,000 <small>pt</small></b><div className="u-meter" role="progressbar" aria-label="退室に必要なポイント" aria-valuemin={0} aria-valuemax={100000} aria-valuenow={balance}><i style={{ width: `${balance / 1000}%` }} /></div></div>
-      <button className="u-beer" disabled={balance < 200} onClick={() => { setBalance((value) => value - 200); setBeers((value) => value + 1); setMessage("今日の労働が、泡になりました。"); }}><Beer size={19} /><span>ビールと交換<small>200 pt</small></span></button>
-      <button className="u-work" disabled={balance >= 100000} onClick={() => { setBalance((value) => Math.min(100000, value + 200)); setMessage("一日おつかれさま。200ポイント支給です。"); }}><ClipboardList size={15} /><span>もう一日働く<small>＋200 pt</small></span></button>
+      <div className="u-balance"><span>本日の支給票・残高</span><strong>{balance.toLocaleString()}<small>pt</small></strong></div>
+      <div className="u-exit"><span>退室許可証</span><b>100,000 <small>pt</small></b><div className="u-meter" role="progressbar" aria-label="退室に必要なポイント" aria-valuemin={0} aria-valuemax={100000} aria-valuenow={balance}><i style={{ width: `${balance / 1000}%` }} /></div></div>
+      <button className="u-beer" disabled={balance < 200} onClick={() => { setBalance((value) => value - 200); setBeers((value) => value + 1); setMessage("今日の労働が、泡になりました。"); }}><Beer size={19} /><span><em>ビール引換券</em>ビールと交換<small>200 pt</small></span></button>
+      <button className="u-work" disabled={balance >= 100000} onClick={() => { setBalance((value) => Math.min(100000, value + 200)); setMessage("一日おつかれさま。200ポイント支給です。"); }}><ClipboardList size={15} /><span><em>翌日分の支給</em>もう一日働く<small>＋200 pt</small></span></button>
     </div>
-    <div className="u-ledger-foot"><span role="status">{message}</span>{beers > 0 && <small>乾杯 {beers}回</small>}</div>
+    <div className="u-ledger-foot"><span role="status">{message}</span>{beers > 0 ? <small key={beers} className="u-paid-stamp">交換済 ×{beers}</small> : <small>地下労働編のミニ体験</small>}</div>
   </section>;
 }

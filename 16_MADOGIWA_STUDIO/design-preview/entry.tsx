@@ -11,7 +11,7 @@ if (comparison) {
   );
 } else {
   document.documentElement.dataset.theme = readSiteTheme();
-  void import("./journal").then(({ default: Journal }) =>
+  void import("./review").then(({ default: Journal }) =>
     root.render(<Journal />),
   );
 }

@@ -50,7 +50,9 @@ export const episodeTitle = (e: Episode) => titles[e.slug] ?? e.title;
 export const episodeCopy = (e: Episode) =>
   copies[e.slug] ?? e.members.map((m) => m.name).join("・");
 export const poster = (e: Episode) =>
-  e.slug === "madogiwa-super-try-sobaya-invasion-trailer"
+  e.slug === "balcony-bar-construction-timelapse"
+    ? "/themes/sakaba/bar-opening.webp"
+    :   e.slug === "madogiwa-super-try-sobaya-invasion-trailer"
     ? "/cache/editorial-trailer.jpg"
     : e.slug === "professional-window-side-sobaya"
       ? "/cache/editorial-professional.jpg"

@@ -36,9 +36,12 @@ import {
 import type { GalleryItem } from "../lib/api";
 import "./journal.css";
 import "./sakaba.css";
+import { chooseThemeFeature, themeFeatures } from "./theme-features";
+import { OwnerNote, ownerNotes, menuNotes } from "./shop-details";
 import { ThemeSwitcher, DesktopChrome, ExcelFormula, WorkSheet, PointLedger } from "./episode-themes";
 import { Noren, SobayaLantern } from "./sakaba-entrance";
 import { readSiteTheme, useSiteTheme, siteThemes, type AvailableTheme } from "./site-theme";
+import "./shop-details.css";
 type Page = "home" | "movies" | "characters" | "world" | "story" | "gallery";
 type Route = {
   page: Page;
@@ -97,6 +100,9 @@ export default function Journal({ episodes: publicEpisodes, galleryItems }: { ep
   const starters = starterSlugs.map((slug) => episodes.find((e) => e.slug === slug)).filter((e): e is Episode => !!e);
   if (!starters.length && episodes.length) starters.push(episodes[0]);
   const { theme, changeTheme } = useSiteTheme();
+  const hero = chooseThemeFeature(episodes, theme) ?? episodes[0];
+  const feature = themeFeatures[theme];
+  const lead = cast.find((person) => person.id === (hero?.slug === feature.slug ? feature.character : hero?.members[0]?.slug)) ?? cast[0];
   const [lanternLit, setLanternLit] = useState(true);
   const [working, setWorking] = useState(false);
   const chooseTheme = (next: AvailableTheme) => { setWorking(false); changeTheme(next); };
@@ -212,9 +218,10 @@ export default function Journal({ episodes: publicEpisodes, galleryItems }: { ep
     }
   }
   function heading(name: string, action?: Route, more = "すべて見る") {
+    const note = theme === "sakaba" ? ownerNotes[name] : undefined;
     return (
       <div className="j-section-heading">
-        <h2>{name}</h2>
+        <div className={note ? "s-heading-with-note" : undefined}><h2>{note?.title ?? name}</h2>{note && <OwnerNote>{note.note}</OwnerNote>}</div>
         {action &&
           link(
             action,
@@ -249,7 +256,7 @@ export default function Journal({ episodes: publicEpisodes, galleryItems }: { ep
           <button onClick={() => setPlaying(e)}>
             <h3>{episodeTitle(e)}</h3>
           </button>
-          <p>{episodeCopy(e)}</p>
+          {theme === "sakaba" && menuNotes[e.slug] ? <p className="s-menu-aside"><small>店主のひとこと</small>{menuNotes[e.slug]}</p> : <p>{episodeCopy(e)}</p>}
         </div>
       </article>
     );
@@ -312,7 +319,9 @@ export default function Journal({ episodes: publicEpisodes, galleryItems }: { ep
         />
       </div>
       <div>
+        {theme === "sakaba" && <span className="s-small-label">当店のご案内</span>}
         <h2>初めての方へ</h2>
+        {theme === "sakaba" && <OwnerNote>初めて？ とりあえず座って。</OwnerNote>}
         <p>会社の窓際に、酒場ができました。<br />そば屋と仲間たちを、漫画と動画でご紹介。</p>
         {link(
           { page: "world" },
@@ -401,7 +410,7 @@ export default function Journal({ episodes: publicEpisodes, galleryItems }: { ep
     </header>
   );
   return (
-    <div className="journal">
+    <div className="journal" style={{ "--shop-light": lanternLit ? 1 : 0 } as React.CSSProperties}>
       <DesktopChrome theme={theme} working={working} onToggleWork={() => setWorking((value) => !value)} />
       {mainHeader}
       {theme === "excel" && <ExcelFormula title={working ? "仕事中" : pageNames[route.page]} />}
@@ -412,48 +421,46 @@ export default function Journal({ episodes: publicEpisodes, galleryItems }: { ep
           <>
             <section className="j-cover">
               <div className="j-cover-rule">
-                <span>{({ sakaba: "窓際酒場", excel: "窓際業務報告", underground: "窓際業務記録" })[theme]}</span>
-                <span>動画・漫画・ときどき大騒動</span>
+                <span>{({ sakaba: "本日のお品書き", excel: "窓際業務報告", underground: "休憩時間の上映案内" })[theme]}</span>
+                <span>{theme === "sakaba" ? "立ち飲み処 窓際酒場" : theme === "underground" ? "地下売店・娯楽係" : "動画・漫画・ときどき大騒動"}</span>
               </div>
               <div className="j-cover-grid">
                 <button
                   className="j-cover-photo"
-                  onClick={() => setPlaying(starters[0])}
-                  aria-label="出社インポッシブルを再生"
+                  onClick={() => setPlaying(hero)}
+                  aria-label={`${episodeTitle(hero)}を再生`}
                 >
                   <img
-                    src={poster(starters[0])}
-                    alt="高層ビルをよじ登るそば屋"
+                    src={poster(hero)}
+                    alt={episodeTitle(hero)}
                     fetchPriority="high"
                   />
                   <span className="j-photo-play">
                     <IconPlay />
-                    30秒で見る
+                    {runtime(hero) === "短編" ? "動画を見る" : `${runtime(hero)}で見る`}
                   </span>
                 </button>
                 <div className="j-cover-copy">
+                  {theme === "sakaba" && <span className="s-house-stamp" aria-hidden="true">店主<br />おすすめ</span>}
                   <span className="j-outline-label">{theme === "sakaba" ? "本日のおすすめ" : "おすすめの一本"}</span>
-                  <h1>出社インポッシブル</h1>
-                  <p>
-                    命懸けでよじ登った先は、
-                    <br />
-                    いつもの窓際席。
-                  </p>
+                  <h1>{episodeTitle(hero)}</h1>
+                  <p>{episodeCopy(hero)}</p>
                   <button
                     className="j-underlined"
-                    onClick={() => setPlaying(starters[0])}
+                    onClick={() => setPlaying(hero)}
                   >
                     動画を見る
                     <ArrowUpRight size={18} />
                   </button>
+                  {theme === "sakaba" && <OwnerNote portrait>{hero.slug === feature.slug ? feature.note : "まず一本。ビールは持った？"}</OwnerNote>}
                   {link(
-                    { page: "characters", character: "sobaya" },
+                    { page: "characters", character: lead.id },
                     <>
-                      <img src={cast[0].image} alt="" />
+                      <img src={lead.image} alt="" />
                       <span>
                         <small>この人が主役</small>
                         <b>
-                          そば屋
+                          {lead.name}
                           <ArrowRight size={15} />
                         </b>
                       </span>
@@ -512,7 +519,7 @@ export default function Journal({ episodes: publicEpisodes, galleryItems }: { ep
                 ))}
               </div>
             </section>
-            <section className="j-section">
+            <section className="j-section s-after-hours">
               {heading("漫画・ゲーム")}
               <div className="j-experiences">
                 {link(
@@ -557,7 +564,7 @@ export default function Journal({ episodes: publicEpisodes, galleryItems }: { ep
                 </a>
               </div>
             </section>
-            <section className="j-section">
+            <section className="j-section s-wall-gallery">
               {heading("ギャラリー", { page: "gallery" })}
               <div className="j-art-grid">
                 {arts.slice(0, 3).map((a) => (
