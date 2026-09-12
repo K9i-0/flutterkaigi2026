@@ -1,10 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { getHomeData } from "@/server/public-data.functions";
-import { HomePage } from "@/pages/home-page";
 import { DEFAULT_DESCRIPTION, absoluteUrl, socialMeta } from "@/lib/public-data";
 
 export const Route = createFileRoute("/")({
-  loader: () => getHomeData(),
   head: () => ({
     meta: socialMeta({
       title: "窓際族物語｜公式サイト",
@@ -17,6 +14,5 @@ export const Route = createFileRoute("/")({
   component: HomeRoute,
 });
 
-function HomeRoute() {
-  return <HomePage {...Route.useLoaderData()} />;
-}
+// The root route owns the official UI and its data. Keep only route metadata here.
+function HomeRoute() { return null; }

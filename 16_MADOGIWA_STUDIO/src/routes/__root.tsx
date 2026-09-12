@@ -6,7 +6,7 @@ import { Layout } from "@/components/layout";
 import { NotFoundPage } from "@/pages/not-found-page";
 import { DEFAULT_DESCRIPTION, SITE_NAME, socialMeta } from "@/lib/public-data";
 import "../styles.css";
-import { getHomeData, getInitialSiteTheme } from "@/server/public-data.functions";
+import { getOfficialShell } from "@/server/public-data.functions";
 import { validTheme } from "@/official/site-theme";
 
 export const Route = createRootRoute({
@@ -14,7 +14,7 @@ export const Route = createRootRoute({
     const path = location.pathname.replace(/\/$/, "") || "/";
     const official = ["/", "/episodes", "/story", "/gallery"].includes(path) || path.startsWith("/characters");
     if (!official) return { official: null };
-    const [data, savedTheme] = await Promise.all([getHomeData(), getInitialSiteTheme()]);
+    const { data, theme: savedTheme } = await getOfficialShell();
     const explicit = new URL(location.href, "https://madogiwa.work").searchParams.get("theme");
     return { official: { data, theme: validTheme(explicit) ? explicit : savedTheme, href: location.href } };
   },

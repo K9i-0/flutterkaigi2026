@@ -47,3 +47,14 @@ export const getInitialSiteTheme = createServerFn({ method: "GET" }).handler(asy
   const value = getCookie("madogiwa-site-theme");
   return value === "excel" || value === "underground" ? value : "sakaba";
 });
+
+// Cookie-dependent preferences travel with the public shell in one server call.
+// Only the public content loaders are shared in Cloudflare's data cache.
+export const getOfficialShell = createServerFn({ method: "GET" }).handler(async () => {
+  const { loadPublicEpisodes, loadPublicGallery } = await import("./public-data.server");
+  const { getCookie } = await import("@tanstack/react-start/server");
+  const [episodes, galleryItems] = await Promise.all([loadPublicEpisodes(), loadPublicGallery()]);
+  const value = getCookie("madogiwa-site-theme");
+  const theme = value === "excel" || value === "underground" ? value : "sakaba";
+  return { data: { episodes, galleryItems }, theme };
+});

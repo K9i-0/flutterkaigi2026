@@ -1,5 +1,6 @@
 import { ArrowLeft, CalendarDays, FileText, Film, ImageIcon, Music2, Paperclip, Sparkles, Star, Users } from "lucide-react";
 import { Link } from "@tanstack/react-router";
+import { DeferredVideo } from "@/components/deferred-video";
 import { MovieCard } from "@/components/movie-card";
 import { ShareActions } from "@/components/share-actions";
 import { DocumentPreview } from "@/components/document-preview";
@@ -37,7 +38,7 @@ export function EpisodePage({ detail }: { detail: PublicEpisodeDetail }) {
     <header className="episode-detail-header">
       <div className="episode-detail-media">
         {primaryVideo
-          ? <video src={`/media/${primaryVideo.id}`} poster={primaryVideo.poster_url ?? undefined} controls preload="metadata" playsInline />
+          ? <DeferredVideo src={`/media/${primaryVideo.id}`} poster={primaryVideo.poster_url ?? episodePoster(detail)} label={primaryVideo.label || episode.title} />
           : <img src={episodePoster(detail)} alt={`${episode.title}のキービジュアル`} />}
       </div>
       <div className="episode-detail-copy">
@@ -64,7 +65,7 @@ export function EpisodePage({ detail }: { detail: PublicEpisodeDetail }) {
         {videos.slice(1).map((video) => {
           const production = productions.find((item) => item.generation_id === video.generation_id) ?? null;
           return <article key={video.id}>
-            <video src={`/media/${video.id}`} poster={video.poster_url ?? undefined} controls preload="metadata" playsInline />
+            <DeferredVideo src={`/media/${video.id}`} poster={video.poster_url ?? episodePoster(detail)} label={video.label} />
             <div><h3>{video.label}</h3>{production ? <small>v{production.version}{production.model_name ? ` · ${production.model_name}` : ""}</small> : null}</div>
           </article>;
         })}

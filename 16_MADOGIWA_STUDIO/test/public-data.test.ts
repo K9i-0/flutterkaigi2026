@@ -1,4 +1,5 @@
 import { env } from "cloudflare:workers";
+import { SELF } from "cloudflare:test";
 import { describe, expect, it, vi } from "vitest";
 import { cachedPublicData } from "../worker/public-cache";
 import { listPublicEpisodes, listPublicSitemapEntries, queryPublicEpisodes } from "../worker/public-repository";
@@ -6,6 +7,22 @@ import { createEpisode, createGeneration, createVideo, listEpisodes, setVideoFea
 import { loadPublicEpisode } from "../src/server/public-data.server";
 
 describe("public data cost and freshness", () => {
+  it("serves video metadata for SEO without loading primary, alternate or related video bytes", async () => {
+    const episode = await createEpisode(env.DB, { slug: crypto.randomUUID(), title: "Click to play" }, "test");
+    const generation = await createGeneration(env.DB, episode.id, "v2", "model", "", "test");
+    for (const filename of ["primary.mp4", "alternate.mp4"]) {
+      const video = await createVideo(env.DB, { generationId: generation.id, filename, label: filename, contentType: "video/mp4", uploadedBy: "test" });
+      await setVideoStatus(env.DB, video.id, "ready");
+    }
+    const response = await SELF.fetch(`http://localhost/episodes/${episode.slug}`);
+    expect(response.status).toBe(200);
+    const html = await response.text();
+    expect(html).toContain('"@type":"VideoObject"');
+    expect(html).toContain('"contentUrl":"https://madogiwa.work/media/');
+    expect(html.match(/class="deferred-video"/g)).toHaveLength(2);
+    expect(html).not.toMatch(/<video\b/);
+    expect(html).not.toMatch(/<source\b/);
+  });
   it("keeps public cards equivalent with multiple generations, pending and archived videos", async () => {
     const episode = await createEpisode(env.DB, { slug: crypto.randomUUID(), title: "Public card", memberIds: ["sobaya", "fukuchan"] }, "test");
     const generation = await createGeneration(env.DB, episode.id, "v2", "model", "", "test");

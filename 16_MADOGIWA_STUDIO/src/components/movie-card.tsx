@@ -18,6 +18,7 @@ export function MovieCard({ episode, index, featuredLayout = false, inlinePlayba
   async function startPlayback() {
     const video = videoRef.current;
     if (!video) return;
+    if (!video.getAttribute("src")) video.src = `/media/${episode.primary_video_id}`;
     video.muted = false;
     try {
       await video.play();
@@ -28,17 +29,16 @@ export function MovieCard({ episode, index, featuredLayout = false, inlinePlayba
   }
 
   const visual = <>
-    {episode.primary_video_id ? <video
+    {inlinePlayback && episode.primary_video_id ? <video
       ref={inlinePlayback ? videoRef : undefined}
-      src={`/media/${episode.primary_video_id}`}
       poster={episode.primary_video_poster_url ?? undefined}
       muted={!inlinePlayback}
       controls={inlinePlayback && started}
-      preload="metadata"
+      preload="none"
       playsInline
       onPlay={inlinePlayback ? () => setStarted(true) : undefined}
       onEnded={inlinePlayback ? () => setStarted(false) : undefined}
-    /> : <img src="/site/hero-shibuya-wide.webp" alt="" />}
+    /> : <img src={episode.primary_video_poster_url ?? "/site/hero-shibuya-wide.webp"} alt="" loading="lazy" decoding="async" />}
     <div className="movie-number">{String(index + 1).padStart(2, "0")}</div>
   </>;
 
