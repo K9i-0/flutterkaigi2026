@@ -403,6 +403,9 @@ class _HazardGamePageState extends State<HazardGamePage> {
                             enabled: tickScene,
                             child: SceneView(
                               game.scene,
+                              maxFramesPerSecond: game.settings.frameRateLimit
+                                  .toDouble(),
+                              onFrameRendered: () => game.sceneRenderCount++,
                               // SceneView 0.23 uses SingleTickerProviderStateMixin.
                               // Keep its ticker alive and mute it through TickerMode.
                               cameraBuilder: (_) {

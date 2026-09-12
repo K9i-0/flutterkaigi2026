@@ -149,6 +149,9 @@ class HazardGameController extends ChangeNotifier {
   HazardDirector? director;
   bool foreground = true;
   int renderedTicks = 0;
+  // Counts Scene.render calls that returned, not GPU completion or presentation.
+  int sceneRenderCount = 0;
+  final diagnosticClock = Stopwatch()..start();
   final _npcHeadings = <String, double>{};
   bool get animateScene =>
       ready &&

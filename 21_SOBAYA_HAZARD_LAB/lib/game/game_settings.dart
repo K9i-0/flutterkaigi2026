@@ -23,9 +23,12 @@ class HazardSettings {
     this.muted = false,
     this.cinematicLighting = true,
     this.graphicsPreset = HazardGraphicsPreset.quality,
+    this.frameRateLimit = 60,
   });
   HazardDifficulty difficulty;
   HazardGraphicsPreset graphicsPreset;
+  /// Caps 3D updates and rendering, independently from image quality.
+  int frameRateLimit;
   double volume,
       voiceVolume,
       environmentVolume,
@@ -66,6 +69,7 @@ class HazardSettings {
     'muted': muted,
     'cinematicLighting': cinematicLighting,
     'graphicsPreset': graphicsPreset.name,
+    'frameRateLimit': frameRateLimit,
   });
   factory HazardSettings.decode(String? encoded, {bool mobileDevice = false}) {
     // Only the caller's native device class selects first-launch quality;
@@ -111,6 +115,7 @@ class HazardSettings {
         j['graphicsPreset'],
         fallback: defaultGraphics,
       );
+      s.frameRateLimit = j['frameRateLimit'] == 30 ? 30 : 60;
     } catch (_) {
       /* Damaged preferences use the playable defaults. */
     }

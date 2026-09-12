@@ -390,8 +390,9 @@ class HazardTouchControls extends StatelessWidget {
         landscape: MediaQuery.orientationOf(context) == Orientation.landscape,
       );
       final landscape = height == 128;
-      // Both slots stay fixed when the available actions change. In particular,
-      // revealing fire never moves it underneath the finger pressing aim.
+      // Keep aim on the left and locomotion toggles beside the right action.
+      // All slots stay fixed as modes change; new fire never inherits aim's
+      // touch, and switching a mode never recreates the held movement stick.
       final actionIdentity = (aiming, throwingBeer, weaponLabel);
       final modes = [
         HazardTouchButton(
@@ -421,35 +422,17 @@ class HazardTouchControls extends StatelessWidget {
                 onMove: onMove,
               ),
             ),
-            if (landscape)
+            for (var i = 0; i < modes.length; i++)
               Positioned(
-                left: 114,
-                bottom: 0,
-                child: SizedBox(
-                  width: 50,
-                  child: Column(
-                    children: [modes[0], const SizedBox(height: 6), modes[1]],
-                  ),
-                ),
-              )
-            else
-              Positioned(
-                left: 0,
-                bottom: 120,
-                child: SizedBox(
-                  width: 112,
-                  child: Row(
-                    children: [
-                      Expanded(child: modes[0]),
-                      const SizedBox(width: 6),
-                      Expanded(child: modes[1]),
-                    ],
-                  ),
-                ),
+                right: 80,
+                bottom: (landscape ? 0 : 58) + i * 62,
+                width: 56,
+                height: 56,
+                child: modes[i],
               ),
             Positioned(
-              right: 80,
-              bottom: landscape ? 0 : 58,
+              left: landscape ? 114 : 0,
+              bottom: landscape ? 0 : 120,
               width: 56,
               height: 56,
               child: HazardTouchButton(
@@ -501,15 +484,17 @@ class HazardTouchControls extends StatelessWidget {
             if (aiming && !throwingBeer && showReload)
               Positioned(
                 key: const ValueKey('mobile-reload-slot'),
-                right: 0,
-                bottom: landscape ? 80 : 138,
-                width: 136,
+                left: landscape ? null : 64,
+                right: landscape ? 144 : null,
+                bottom: landscape ? 80 : 128,
+                width: landscape ? 136 : 88,
                 height: 48,
                 child: HazardTouchButton(
                   id: 'reload',
-                  label: '$ammoLabel  装填',
+                  label: landscape ? '$ammoLabel  装填' : '$ammoLabel\n装填',
                   icon: Icons.sync,
                   horizontal: true,
+                  maxLabelLines: landscape ? 1 : 2,
                   enabled: canReload,
                   actionIdentity: actionIdentity,
                   onPressed: onReload,

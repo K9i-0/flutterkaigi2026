@@ -179,6 +179,34 @@ void main() {
           find.byKey(const ValueKey('game-thumbstick')),
         );
         expect(rects.any((rect) => rect.overlaps(stick)), isFalse);
+        expect(stick.center.dx, lessThan(safeRect.center.dx));
+        expect(
+          tester.getCenter(find.byKey(const ValueKey('game-aim'))).dx,
+          lessThan(safeRect.center.dx),
+          reason: 'the left thumb owns the aim toggle',
+        );
+        for (final id in [
+          'sneak',
+          'sprint',
+          if (mode == 'shoot' || mode == 'throw') 'fire',
+        ]) {
+          expect(
+            tester.getCenter(find.byKey(ValueKey('game-$id'))).dx,
+            greaterThan(safeRect.center.dx),
+            reason: '$id belongs to the right thumb',
+          );
+        }
+        final landscape = size.width > size.height;
+        expect(
+          tester.getSize(find.byType(HazardTouchControls)).height,
+          landscape ? 128 : 186,
+        );
+        if (mode == 'shoot') {
+          expect(
+            find.text(landscape ? '6 / 24  装填' : '6 / 24\n装填'),
+            findsOneWidget,
+          );
+        }
       });
     }
   }
@@ -492,6 +520,198 @@ void main() {
     await look.cancel();
   });
 
+  testWidgets(
+    'two thumbs keep moving while right sprint and sneak toggle independently from look',
+    (tester) async {
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      for (final size in [const Size(390, 844), const Size(844, 390)]) {
+        final state = await _twoThumbHarness(tester, size);
+        final stickState = tester.state(find.byType(HazardThumbstick));
+        final left = await tester.startGesture(
+          tester.getCenter(find.byKey(const ValueKey('game-thumbstick'))),
+          pointer: 61,
+        );
+        await left.moveBy(const Offset(16, -34));
+        final moving = state.movement;
+        expect(moving.dy, greaterThan(.5));
+        final right = await tester.startGesture(
+          tester.getCenter(find.byKey(const ValueKey('game-sprint'))),
+          pointer: 62,
+        );
+        expect(state.sprinting, isFalse, reason: 'toggles commit on release');
+        await right.up();
+        await tester.pump();
+        expect(state.sprinting, isTrue);
+        expect(state.sneaking, isFalse);
+        expect(state.movement, moving);
+        expect(state.looks, isEmpty);
+
+        final look = await tester.startGesture(
+          Offset(size.width * .72, size.height * .4),
+          pointer: 62,
+        );
+        await look.moveBy(const Offset(10, -6));
+        await look.up();
+        expect(state.looks, [const Offset(10, -6)]);
+        expect(
+          state.sprinting,
+          isTrue,
+          reason: 'look release does not release sprint',
+        );
+        await touchTap(tester, 'sneak', pointer: 62);
+        expect(state.sneaking, isTrue);
+        expect(state.sprinting, isFalse);
+        expect(state.movement, moving);
+        await touchTap(tester, 'sneak', pointer: 62);
+        expect(state.sneaking, isFalse);
+        expect(state.sprinting, isFalse);
+        expect(tester.state(find.byType(HazardThumbstick)), same(stickState));
+        await left.moveBy(const Offset(-8, -2));
+        expect(
+          state.movement,
+          isNot(moving),
+          reason: 'the original movement pointer remains live',
+        );
+        expect(state.movement.dy, greaterThan(.5));
+        expect(state.shots, 0);
+        await left.up();
+        expect(state.movement, Offset.zero);
+        expect(tester.takeException(), isNull);
+      }
+    },
+  );
+
+  testWidgets(
+    'two thumbs retain left aim toggle during right look and then move with single-shot fire or throw',
+    (tester) async {
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      for (final size in [const Size(390, 844), const Size(844, 390)]) {
+        for (final beer in [false, true]) {
+          final state = await _twoThumbHarness(tester, size, throwingBeer: beer);
+          final rightLook = await tester.startGesture(
+            Offset(size.width * .72, size.height * .4),
+            pointer: 72,
+          );
+          final leftAim = await tester.startGesture(
+            tester.getCenter(find.byKey(const ValueKey('game-aim'))),
+            pointer: 71,
+          );
+          expect(state.aiming, isFalse);
+          await leftAim.up();
+          await tester.pump();
+          expect(state.aiming, isTrue);
+          expect(state.shots, 0);
+          await rightLook.moveBy(const Offset(12, -5));
+          expect(state.looks, [const Offset(12, -5)]);
+          await rightLook.up();
+          expect(
+            state.aiming,
+            isTrue,
+            reason: 'aim remains toggled after both thumbs lift',
+          );
+          expect(find.text(beer ? '投げる' : '撃つ'), findsOneWidget);
+
+          final leftMove = await tester.startGesture(
+            tester.getCenter(find.byKey(const ValueKey('game-thumbstick'))),
+            pointer: 71,
+          );
+          await leftMove.moveBy(const Offset(5, -34));
+          final moving = state.movement;
+          final rightFire = await tester.startGesture(
+            tester.getCenter(find.byKey(const ValueKey('game-fire'))),
+            pointer: 72,
+          );
+          await tester.pump(const Duration(milliseconds: 300));
+          expect(
+            state.shots,
+            0,
+            reason: 'holding a fire button does not auto-fire',
+          );
+          await rightFire.up();
+          await tester.pump();
+          expect(state.shots, 1);
+          expect(state.movement, moving);
+          expect(state.looks, [
+            const Offset(12, -5),
+          ], reason: 'action taps do not rotate the camera');
+          expect(state.aiming, isTrue);
+          await leftMove.moveBy(const Offset(-4, -2));
+          expect(state.movement, isNot(moving));
+          await leftMove.up();
+          expect(state.movement, Offset.zero);
+          await touchTap(tester, 'aim', pointer: 71);
+          expect(state.aiming, isFalse);
+          expect(find.byKey(const ValueKey('game-fire')), findsNothing);
+          expect(state.shots, 1);
+          expect(tester.takeException(), isNull);
+        }
+      }
+    },
+  );
+
+  testWidgets(
+    'two thumbs cannot turn an existing look drag into fire or slide a fire press into sprint',
+    (tester) async {
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      for (final size in [const Size(390, 844), const Size(844, 390)]) {
+        final state = await _twoThumbHarness(tester, size);
+        final look = await tester.startGesture(
+          Offset(size.width * .72, size.height * .4),
+          pointer: 82,
+        );
+        await touchTap(tester, 'aim', pointer: 81);
+        expect(state.aiming, isTrue);
+        await look.moveTo(
+          tester.getCenter(find.byKey(const ValueKey('game-fire'))),
+        );
+        await look.up();
+        await tester.pump();
+        expect(state.looks, isNotEmpty);
+        expect(
+          state.shots,
+          0,
+          reason: 'the surface owning pointer down keeps the pointer',
+        );
+        expect(state.interactions, 0);
+
+        final leftMove = await tester.startGesture(
+          tester.getCenter(find.byKey(const ValueKey('game-thumbstick'))),
+          pointer: 81,
+        );
+        await leftMove.moveBy(const Offset(0, -36));
+        final moving = state.movement;
+        final lookCount = state.looks.length;
+        final rightFire = await tester.startGesture(
+          tester.getCenter(find.byKey(const ValueKey('game-fire'))),
+          pointer: 82,
+        );
+        await rightFire.moveTo(
+          tester.getCenter(find.byKey(const ValueKey('game-sprint'))),
+        );
+        await rightFire.up();
+        await tester.pump();
+        expect(state.shots, 0);
+        expect(state.sprinting, isFalse);
+        expect(state.sneaking, isFalse);
+        expect(state.movement, moving);
+        expect(
+          state.looks.length,
+          lookCount,
+          reason: 'a canceled action does not become a look drag',
+        );
+        final canceledFire = await tester.startGesture(
+          tester.getCenter(find.byKey(const ValueKey('game-fire'))),
+          pointer: 82,
+        );
+        await canceledFire.cancel();
+        expect(state.shots, 0);
+        await leftMove.cancel();
+        expect(state.movement, Offset.zero);
+        expect(tester.takeException(), isNull);
+      }
+    },
+  );
+
   testWidgets('stick ignores second pointer and resets when owner cancels', (
     tester,
   ) async {
@@ -665,10 +885,16 @@ void main() {
 }
 
 HazardTouchControls controls({
+  Key? key,
   ValueChanged<Offset>? onMove,
   VoidCallback? onFire,
   VoidCallback? onReload,
   VoidCallback? onInteract,
+  VoidCallback? onAim,
+  VoidCallback? onSprint,
+  VoidCallback? onSneak,
+  bool sneaking = false,
+  bool sprinting = false,
   bool aiming = false,
   bool throwingBeer = false,
   bool canInteract = true,
@@ -677,9 +903,10 @@ HazardTouchControls controls({
   String ammoLabel = '6 / 24',
   String weaponLabel = 'ハンドガン',
 }) => HazardTouchControls(
+  key: key,
   onMove: onMove ?? (_) {},
-  sneaking: false,
-  sprinting: false,
+  sneaking: sneaking,
+  sprinting: sprinting,
   aiming: aiming,
   weaponLabel: weaponLabel,
   ammoLabel: ammoLabel,
@@ -688,11 +915,92 @@ HazardTouchControls controls({
   canReload: canReload,
   showReload: showReload,
   stealthReady: true,
-  onSneak: () {},
-  onSprint: () {},
-  onAim: () {},
+  onSneak: onSneak ?? () {},
+  onSprint: onSprint ?? () {},
+  onAim: onAim ?? () {},
   onFire: onFire ?? () {},
   onReload: onReload ?? () {},
   onInteract: onInteract ?? () {},
   onWeapon: () {},
 );
+
+Future<void> touchTap(
+  WidgetTester tester,
+  String id, {
+  required int pointer,
+}) async {
+  final touch = await tester.startGesture(
+    tester.getCenter(find.byKey(ValueKey('game-$id'))),
+    pointer: pointer,
+  );
+  await touch.up();
+  await tester.pump();
+}
+
+Future<_TwoThumbHarnessState> _twoThumbHarness(
+  WidgetTester tester,
+  Size size, {
+  bool throwingBeer = false,
+}) async {
+  await tester.binding.setSurfaceSize(size);
+  final key = GlobalKey<_TwoThumbHarnessState>();
+  await tester.pumpWidget(
+    MaterialApp(
+      home: MediaQuery(
+        data: MediaQueryData(size: size),
+        child: _TwoThumbHarness(key: key, throwingBeer: throwingBeer),
+      ),
+    ),
+  );
+  return key.currentState!;
+}
+
+class _TwoThumbHarness extends StatefulWidget {
+  const _TwoThumbHarness({super.key, required this.throwingBeer});
+  final bool throwingBeer;
+  @override
+  State<_TwoThumbHarness> createState() => _TwoThumbHarnessState();
+}
+
+class _TwoThumbHarnessState extends State<_TwoThumbHarness> {
+  Offset movement = Offset.zero;
+  final looks = <Offset>[];
+  bool aiming = false, sneaking = false, sprinting = false;
+  int shots = 0, interactions = 0;
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    body: Stack(
+      children: [
+        Positioned.fill(
+          left: MediaQuery.sizeOf(context).width * .43,
+          child: HazardTouchLookSurface(onLook: looks.add),
+        ),
+        Positioned(
+          left: 12,
+          right: 12,
+          bottom: 12,
+          child: controls(
+            key: const ValueKey('two-thumb-controls'),
+            aiming: aiming,
+            sneaking: sneaking,
+            sprinting: sprinting,
+            throwingBeer: widget.throwingBeer,
+            weaponLabel: widget.throwingBeer ? 'ビール' : 'ハンドガン',
+            onMove: (value) => movement = value,
+            onAim: () => setState(() => aiming = !aiming),
+            onSneak: () => setState(() {
+              sneaking = !sneaking;
+              if (sneaking) sprinting = false;
+            }),
+            onSprint: () => setState(() {
+              sprinting = !sprinting;
+              if (sprinting) sneaking = false;
+            }),
+            onFire: () => setState(() => shots++),
+            onInteract: () => interactions++,
+          ),
+        ),
+      ],
+    ),
+  );
+}

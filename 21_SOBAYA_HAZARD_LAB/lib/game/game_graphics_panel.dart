@@ -36,6 +36,35 @@ class HazardGraphicsPanel extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         Wrap(
+          spacing: 12,
+          runSpacing: 8,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            const Text('フレーム上限', style: TextStyle(color: _gold)),
+            for (final fps in [30, 60])
+              ChoiceChip(
+                key: ValueKey('game-frame-rate-$fps'),
+                label: Text('$fps fps'),
+                selected: settings.frameRateLimit == fps,
+                selectedColor: _gold,
+                backgroundColor: const Color(0xff18201c),
+                checkmarkColor: const Color(0xff18201c),
+                labelStyle: TextStyle(
+                  color: settings.frameRateLimit == fps
+                      ? const Color(0xff18201c)
+                      : _ivory,
+                ),
+                onSelected: (_) => onChanged((s) => s.frameRateLimit = fps),
+              ),
+          ],
+        ),
+        const SizedBox(height: 6),
+        const Text(
+          '60 fpsは操作のなめらかさを優先。30 fpsは描画回数を抑えます。',
+          style: TextStyle(color: _gold, fontSize: 12, height: 1.6),
+        ),
+        const SizedBox(height: 12),
+        Wrap(
           spacing: 8,
           runSpacing: 8,
           children: [
