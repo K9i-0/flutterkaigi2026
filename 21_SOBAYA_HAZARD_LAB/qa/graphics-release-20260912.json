@@ -1,0 +1,119 @@
+{
+  "date": "2026-09-12T14:43:03.131770+09:00",
+  "sourceRevision": "6440155f98b64f50769d1b96440b5cef6a3584ea",
+  "bundleId": "com.madogiwa.sobayaHazardLab",
+  "displayName": "そば屋ハザード",
+  "architectures": [
+    "x86_64",
+    "arm64"
+  ],
+  "declaredMinimumMacOS": "12.0",
+  "signatureIntegrity": "codesign --verify --deep --strict passed",
+  "signatureDistribution": "ad hoc; not notarized",
+  "sceneCount": 9,
+  "voiceCueCount": 126,
+  "sceneSources": [
+    {
+      "id": "assets/models/beer_mug",
+      "source": "04_GAME_ASSETS/3d/props/beer_mug_v2/beer_mug.glb",
+      "sourceSha256": "3456dcd7a79ec55936e6141a2b51432d51f38084d62a636368216530de2972f4",
+      "compiledFile": "scene.beer_mug.1e79f718.fsceneb",
+      "compiledSha256": "2251af923f238395819fe44cd0f23d4e3282b52b1cd8549467a0ccb01a83bb8c",
+      "importStamp": "c87e4829c1c7dce7"
+    },
+    {
+      "id": "assets/models/farm",
+      "source": "04_GAME_ASSETS/3d/environments/farm/farm.glb",
+      "sourceSha256": "b96b53c4d4af95255adfd0a5b30f7ab21279eaa65996b59309ee6211dc8d562b",
+      "compiledFile": "scene.farm.df7fa6b4.fsceneb",
+      "compiledSha256": "026cc28d8f2e824bf4fbd80f754f8c1016ef806e47745e4cad473df1a6e9632c",
+      "importStamp": "00b7ce3ff26cf76d"
+    },
+    {
+      "id": "assets/models/fukuchan",
+      "source": "04_GAME_ASSETS/3d/hazard_adopted/fukuchan.glb",
+      "sourceSha256": "6d8254a05ff43a87801f6f7e6eb4dbbd2750752f839129b408a0ad347affda03",
+      "compiledFile": "scene.fukuchan.c0d54c25.fsceneb",
+      "compiledSha256": "0fb0a44924977dc4347139190fa3f9734498ffe74b9890fd398cc6b737f7ae02",
+      "importStamp": "24d7e233b555e4ac"
+    },
+    {
+      "id": "assets/models/items",
+      "source": "04_GAME_ASSETS/3d/props/hazard_kit/items.glb",
+      "sourceSha256": "6ed27a4efb14863e54fc177ef8db88d195ee5c0436f98cddccb635244b2840eb",
+      "compiledFile": "scene.items.79a2d4bf.fsceneb",
+      "compiledSha256": "872c39c2988ad5725b32ce045cb5095deb0a424ef76a06433b14bc182ba419de",
+      "importStamp": "60fc41555bb71553"
+    },
+    {
+      "id": "assets/models/mountain",
+      "source": "04_GAME_ASSETS/3d/environments/mountain/mountain.glb",
+      "sourceSha256": "4a3f068211dcaa72022e4f0c505f4c8b287517f3cff67db6b164bdd425826104",
+      "compiledFile": "scene.mountain.551294d6.fsceneb",
+      "compiledSha256": "7999a418aaed4e02a2c4afcfc6a7182e6ef8448a879c90dd23fbce73a1adfb9b",
+      "importStamp": "919f3c11388f1cf0"
+    },
+    {
+      "id": "assets/models/sobaya",
+      "source": "04_GAME_ASSETS/3d/hazard_adopted/sobaya.glb",
+      "sourceSha256": "e8df48deafb162543e07c46f3e839b5b8c71c0316352880af46b2b12a7147d6e",
+      "compiledFile": "scene.sobaya.fd082e41.fsceneb",
+      "compiledSha256": "5521d69297ea7da3b7cc25f3fd74906dd7af4a25f6aebad1f35af02e76e8ee6b",
+      "importStamp": "83dde67da7da70ea"
+    },
+    {
+      "id": "assets/models/takosan",
+      "source": "04_GAME_ASSETS/3d/characters/takosan/rig_sheet_v2/takosan.glb",
+      "sourceSha256": "aae590ad14daedc9f24b0c9749d533646b8930c139357539822e1f88a2f92469",
+      "compiledFile": "scene.takosan.744cfef3.fsceneb",
+      "compiledSha256": "e446bdc6ea844016c3422b5387eb06b6dc152ac49484a048fde4b78e9b99d3a2",
+      "importStamp": "6862946761c23a74"
+    },
+    {
+      "id": "assets/models/village",
+      "source": "04_GAME_ASSETS/3d/environments/pueblo/village.glb",
+      "sourceSha256": "4bf0dae3c0626c876029695fdd8547fe287a70c4ad49349f8373f5387e611d68",
+      "compiledFile": "scene.village.c8a19c1a.fsceneb",
+      "compiledSha256": "e46f2651850879c787d7725bb08815589ba6ade80bcf105f1aba430c2939dbc0",
+      "importStamp": "8e2c562c589c41ea"
+    },
+    {
+      "id": "assets/models/yametaro",
+      "source": "04_GAME_ASSETS/3d/characters/yametaro/rig_sheet_v2/yametaro.glb",
+      "sourceSha256": "78189559825840993d3392a59a187438f3589f651d92fd9a6a13f97197704cd0",
+      "compiledFile": "scene.yametaro.349b9361.fsceneb",
+      "compiledSha256": "3b9b034fe8a5713a96a2e23862ee303becdb7f67d0dfc2d88b872c09a31fb181",
+      "importStamp": "4e880177e06374c4"
+    }
+  ],
+  "appBytes": 365531864,
+  "binaryHashes": {
+    "runner": "0db2477e99747db8c16b5b9c71e6ccedd96bc51e45207b15365a376c5bf7ee47",
+    "dartAot": "94a042389a6a5237b41b75fc9478310a98d66a66a420565207adcf7015e5eb57"
+  },
+  "archive": {
+    "archive": ".local/hazard_releases/sobaya-hazard-macos-graphics-20260912.zip",
+    "bytes": 272601493,
+    "sha256": "223bf18ace6324b0405fb8c54871abeecb0c5e0e01ab5cce67d07e73bbb23b34",
+    "sourceRevision": "6440155f98b64f50769d1b96440b5cef6a3584ea",
+    "sceneCount": 9,
+    "voiceCueCount": 126
+  },
+  "path": ".local/hazard_releases/sobaya-hazard-macos-graphics-20260912/そば屋ハザード.app",
+  "checks": {
+    "releaseBuild": "passed",
+    "canonicalScenesAndAudio": "passed",
+    "bundleSignature": "passed",
+    "copiedSignature": "passed",
+    "zipIntegrity": "passed",
+    "nativeDebugUI": "passed; see graphics-native-20260912.json",
+    "profileWorkloads": "passed; 9 repeated comparison runs, 13-case sweep, 2 fresh isolated checks",
+    "packagedReleaseUI": "Not verified. CUA could not obtain a window (cgWindowNotFound); no process from this packaged path was observed after the attempt."
+  },
+  "limits": [
+    "Local ad hoc preview, not notarized.",
+    "Intel and other Mac hardware not tested.",
+    "No sustained presented-60fps guarantee.",
+    "iOS optimization deferred at user request."
+  ]
+}

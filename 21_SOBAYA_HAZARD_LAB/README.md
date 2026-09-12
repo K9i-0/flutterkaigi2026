@@ -4,7 +4,7 @@
 
 M4 MacBook Airの村8体・85%・profile各3回では、UI P95の中央値が旧版18.24ms→高画質13.03ms（約29%減）。静的建物の結合、同一フレーム内のカメラ計算共有、照明設定を併せて調整した。窓付近や山の100%では重い条件が残り、全場面60fps達成の判定ではない。[測定条件・結果と残る課題](GRAPHICS.md)。全体380テスト（任意1件スキップ）と、最後の設定スイッチ修正後の重点2テスト・静的解析・Mac実画面確認を実施した。iOS最適化は後続へ回す。
 
-最新Mac版の配布リンクは、この更新のビルド検証後に記載する。以下は各更新時点の履歴。
+最新Mac版（ソース `6440155`）: [そば屋ハザード.app](../.local/hazard_releases/sobaya-hazard-macos-graphics-20260912/そば屋ハザード.app) / [ZIP](../.local/hazard_releases/sobaya-hazard-macos-graphics-20260912.zip)。9シーン・126音声の同梱、署名とZIPの整合性を確認。Macの実画面はdebug版、性能はprofile版で確認し、配布コピーのRelease UIはウインドウ取得不可で未確認。[配布版検査](qa/graphics-release-20260912.json)。以下は各更新時点の履歴。
 
 **アプリ名とアイコンを統一（2026-09-08）。** iOS・Android・macOSの表示名は「そば屋ハザード」、アイコンはユーザー指定の[C案「暗闇からの視線」](../04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/README.md)を採用した。Macのビルド成果物も「そば屋ハザード.app」。Androidには背景を広げたAdaptive Iconとテーマ用の単色版を追加。iOSホーム画面、Macのビルド済みアイコン、Androidエミュレーターの円形・単色ランチャー表示を確認した。[アイコン検証](qa/icon-C-adoption-20260908.json)／[名称変更の検証](qa/app-branding-20260908.json)。
 
