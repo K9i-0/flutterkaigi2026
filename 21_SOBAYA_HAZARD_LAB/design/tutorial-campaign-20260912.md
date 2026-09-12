@@ -31,13 +31,13 @@
 
 ## 農場の接続
 
-| interaction ID | mission flag | 配置候補（x, y, z） | 意味 |
+| interaction ID | mission flag | 配置（x, y, z） | 意味 |
 |---|---|---|---|
 | `mission:radio_battery` | `radio_battery` | `(-9, 0, 3.8)` | Tools内の救難無線用バッテリー |
 | `mission:evacuation_manifest` | `evacuation_manifest` | `(6, 2.95, -10)` | Barn二階の避難者名簿 |
 | `npc:takosan` | `radio_ready` | 既存補給所 | 2品を渡し、無線と避難者の準備を確定 |
 
-座標は既存JSONの室内・階段を調べた候補。実装時の当たり判定と視認性の確認を経て確定する。2品の取得順は自由、各1回。通常の在庫枠や消費資源ではなく進行フラグで持ち、捨てる・売る・弾切れで進行不能にしない。UIは不足品と届先を示す。
+座標は既存JSONの室内・階段を使い、当たり判定と通常移動による回収を検証する。2品の取得順は自由、各1回。通常の在庫枠や消費資源ではなく進行フラグで持ち、捨てる・売る・弾切れで進行不能にしない。UIは不足品と届先を示す。
 
 `farmMissionDialogue`は`request` / `ready` / `complete`。依頼は農場イベントでも同じ本文で伝える。`ready`を最後まで読んで閉じたあとに`radio_ready`を確定し、東門を解放する。途中で閉じて完了にせず、戻れば続行・再確認できる。メダリオン7枚と商店の購入は任務条件に含めない。
 
@@ -52,11 +52,10 @@
 
 やめ太郎・福ちゃん・そば屋・ナレーションは既存Irodoriと正典参照WAV、たこさんはVOICEVOX:Voidoll style 89を維持する。声のない新台詞、古い本文の音声、たこさんの汎用返答音への代替で完成扱いにしない。`VoiceCatalog.cue`のたこさん用fallbackは音声欠損検査では成功とみなさず、manifestの本文完全一致を直接調べる。
 
-## 担当と検証境界
+## 実装と検証
 
-- map_ui: 台詞、物語説明、声かけ定数、音声と全文exportの登録・生成。
-- root: tutorial state/HUD/進行、農場mission state・取得物・会話の接続。
-- world_assets: 環境の遅延読み込み。
-- render_performance: 新進行と入力の回帰検証。
+研修状態は `game_tutorial.dart`、本編の任務品・会話は `game_state.dart`、保存は `game_checkpoint.dart` / `game_campaign.dart`、画面と音声・3D標的は `game_page.dart` / `game_controller.dart`。環境の寿命は `game_region_loader.dart` が管理する。
 
-仕様と台詞を書いただけでは完了しない。序章から第1章、農場2品の順序自由と返却、山での終幕まで実際の状態遷移・音声・映像を確認して採用する。追加後のCPU・GPU・発熱改善は、この設計自体からは主張しない。
+研修用クローンは通常の知覚判定を使うが移動・攻撃を止め、安全な反復練習にする。研修中の全弾消費や忍び足の失敗は「この練習をやり直す」で回復できる。本編へ出発すると初期装備に戻る。農場の受け渡しでは最高難度以外に弾薬・回復薬を一度だけ配る。
+
+検証の範囲と結果は `qa/tutorial-campaign-integration-20260912.json` に記録する。CPU・GPU・発熱改善は設計から推定しない。

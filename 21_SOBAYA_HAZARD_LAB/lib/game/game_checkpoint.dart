@@ -56,6 +56,8 @@ extension HazardCheckpoint on HazardGameState {
     'time': time,
     'medallions': medallions.toList(),
     'seenEvents': seenEvents.toList(),
+    'missionFlags': missionFlags.toList(),
+    'tutorialStep': tutorialStep,
     'foundMemos': foundMemos.toList(),
     'hasKey': hasKey,
     'gateOpen': gateOpen,
@@ -238,6 +240,16 @@ HazardGameState restoreHazardCheckpoint(
   s.hasKey = data['hasKey'] as bool;
   s.gateOpen = data['gateOpen'] as bool;
   require(!s.gateOpen || s.gateMode != 'key' || s.hasKey);
+  s.missionFlags.addAll(
+    (data['missionFlags'] as List? ?? const []).cast<String>(),
+  );
+  // Existing runs already beyond the farm retain their unlocked return route.
+  if (!data.containsKey('missionFlags') && s.zoneId != 'village') {
+    s.missionFlags.addAll([
+      ...HazardGameState.farmMissionItems.keys,
+      'radio_ready',
+    ]);
+  }
   s.seenEvents.addAll((data['seenEvents'] as List? ?? const []).cast<String>());
   if (refugeReady != null) {
     if (refugeReady) {
@@ -617,5 +629,22 @@ HazardGameState restoreHazardCheckpoint(
   s.phase = PlayPhase.playing;
   s.invulnerable = .5;
   s.say('チェックポイントから探索を再開した。');
+  final lesson = data['tutorialStep'];
+  require(lesson == null || lesson is String);
+  require(
+    s.missionFlags.every(
+      (id) =>
+          HazardGameState.farmMissionItems.containsKey(id) ||
+          id == 'radio_ready',
+    ),
+  );
+  require(!s.missionFlags.contains('radio_ready') || s.farmSuppliesReady);
+  if (lesson is String) {
+    if (!tutorialSteps.contains(lesson) || s.zoneId != 'village') {
+      throw const FormatException('Invalid tutorial checkpoint');
+    }
+    s.beginTutorial(step: lesson);
+    s.seenEvents.addAll(['title_call', 'opening']);
+  }
   return s;
 }

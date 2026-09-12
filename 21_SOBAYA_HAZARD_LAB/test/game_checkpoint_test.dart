@@ -82,7 +82,7 @@ void main() {
     s.endDialogue();
     final restored = restoreHazardCheckpoint(s.checkpoint(), farm(), {});
     restored.interact();
-    expect(restored.dialogueTopic, 'greeting');
+    expect(restored.dialogueTopic, 'mission_request');
     expect(restored.stockRemaining(tradeOffers.first), 0);
     restored.chooseDialogue('trade:ammo');
     expect(restored.beers, 2);

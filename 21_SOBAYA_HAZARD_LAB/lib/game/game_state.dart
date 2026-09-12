@@ -13,6 +13,7 @@ import 'game_ladder.dart';
 import 'game_window.dart';
 import 'game_grapple.dart';
 
+part 'game_tutorial.dart';
 part 'game_rockets.dart';
 part 'game_combat_balance.dart';
 part 'game_refuge.dart';
@@ -297,21 +298,27 @@ class HazardGameState {
   final List<Map<String, dynamic>>? catalog;
   List<Map<String, dynamic>> get gallery => catalog ?? images;
   String get zoneId => map['id'] as String? ?? 'village';
-  String get chapterLabel =>
-      map['label'] as String? ?? 'CHAPTER 01  /  YUMEMI VILLAGE';
-  String get subtitle => map['subtitle'] as String? ?? '廃村ゆめみ村。特別研修、帰任日未定。';
+  String get chapterLabel => tutorialActive
+      ? 'PROLOGUE  /  FIELD TRAINING'
+      : map['label'] as String? ?? 'CHAPTER 01  /  YUMEMI VILLAGE';
+  String get subtitle => tutorialActive
+      ? '帰るための研修 — やめ太郎と基本操作を確認'
+      : map['subtitle'] as String? ?? '廃村ゆめみ村。特別研修、帰任日未定。';
   Map<String, dynamic> get gate => map['gate'] as Map<String, dynamic>;
   String get gateMode => gate['mode'] as String? ?? 'key';
   bool get bossAlive => enemies.any((e) => e.boss && e.alive);
   bool get canOpenGate =>
       chapterSecured &&
+      (zoneId != 'farm' || missionFlags.contains('radio_ready')) &&
       (gateMode == 'free' || (gateMode == 'boss' ? !bossAlive : hasKey));
-  String get objective => hasRefuge
+  String get objective => tutorialActive
+      ? tutorialObjective
+      : hasRefuge
       ? refugeObjective
       : hardest && !chapterSecured
       ? 'この章のそば屋を全員倒せ — 残り $livingEnemies 体 / 補給は仲間から'
       : zoneId == 'farm'
-      ? '納屋で補給し、東の門から山道へ'
+      ? farmObjective
       : zoneId == 'mountain'
       ? refugeObjective
       : gateOpen
@@ -320,6 +327,28 @@ class HazardGameState {
       ? '北東の門を紋章の鍵で開けろ'
       : '村を探索し、紋章の鍵を探せ';
   Map<String, dynamic>? exitRequested;
+  String? tutorialStep;
+  double tutorialProgress = 0, tutorialLastX = 0, tutorialLastZ = -21;
+  bool tutorialWasSeen = false;
+  int tutorialRevision = 0;
+  final missionFlags = <String>{};
+  static const farmMissionItems =
+      <String, ({String label, double x, double y, double z})>{
+        'radio_battery': (label: '救難無線の予備バッテリー', x: -9, y: 0, z: 3.8),
+        'evacuation_manifest': (label: '避難者名簿', x: 6, y: 2.95, z: -10),
+      };
+  bool get farmSuppliesReady =>
+      farmMissionItems.keys.every(missionFlags.contains);
+  String get farmObjective => missionFlags.contains('radio_ready')
+      ? '救難準備完了 — 東の門から山道へ'
+      : farmSuppliesReady
+      ? 'たこさんにバッテリーと名簿を届ける'
+      : !missionFlags.contains('radio_battery') &&
+            !missionFlags.contains('evacuation_manifest')
+      ? '工具小屋のバッテリーと納屋二階の名簿を探す'
+      : !missionFlags.contains('radio_battery')
+      ? '工具小屋の予備バッテリーを探す'
+      : '納屋二階の避難者名簿を探す';
   final medallions = <String>{};
   final seenEvents = <String>{};
   final foundMemos = <String>{};
@@ -346,8 +375,19 @@ class HazardGameState {
     reactionSerial++;
   }
 
-  List<Map<String, dynamic>> get targets =>
-      (map['targets'] as List? ?? const []).cast<Map<String, dynamic>>();
+  List<Map<String, dynamic>> get targets => tutorialActive
+      ? [
+          if (['aim', 'shoot'].contains(tutorialStep))
+            {
+              'id': 'training_target',
+              'node': 'TrainingTarget',
+              'x': 0.0,
+              'y': 1.5,
+              'z': -13.0,
+              'radius': .6,
+            },
+        ]
+      : (map['targets'] as List? ?? const []).cast<Map<String, dynamic>>();
   final Set<String> collected;
   late List<Obstacle> obstacles;
   final enemies = <Enemy>[],
@@ -496,6 +536,9 @@ class HazardGameState {
       return mountainYametaroBefore[dialogueTopic] ??
           mountainYametaroBefore['greeting']!;
     }
+    if (zoneId == 'farm' && dialogueTopic.startsWith('mission_')) {
+      return farmMissionDialogue[dialogueTopic.substring(8)]!;
+    }
     if (dialogueOwner == 'takosan') {
       return [
         for (final line in takosanDialogue[dialogueTopic]!)
@@ -607,6 +650,10 @@ class HazardGameState {
   }
 
   void restart() {
+    tutorialStep = null;
+    tutorialProgress = 0;
+    tutorialWasSeen = false;
+    missionFlags.clear();
     x = (map['spawn']['x'] as num).toDouble();
     z = (map['spawn']['z'] as num).toDouble();
     y = 0;
@@ -919,6 +966,7 @@ class HazardGameState {
 
   void _finishReload() {
     reloading = 0;
+    if (tutorialStep == 'reload') advanceTutorial();
     var needed = capacity - loaded;
     var moved = 0;
     for (final i in bag.where(
@@ -1150,6 +1198,9 @@ class HazardGameState {
       e.approachTimer -= dt;
       final dx = x - e.x, dz = z - e.z, dist = math.sqrt(dx * dx + dz * dz);
       if (!_updateEnemyPerception(e, dt, dist)) continue;
+      // The practice clone observes and searches with normal perception, but
+      // stays at its marked station so the lesson is safe and repeatable.
+      if (tutorialActive) continue;
       e.vocalCooldown = math.max(0, e.vocalCooldown - dt);
       if (e.alerted && e.vocalCooldown <= 0 && dist < 16 && e.stun <= 0) {
         emitSound('enemy', x: e.x, y: e.y + 1.2, z: e.z);
@@ -1399,11 +1450,17 @@ class HazardGameState {
       e.moved = math.sqrt(math.pow(e.x - oldX, 2) + math.pow(e.z - oldZ, 2));
       _emitEnemyFootstep(e);
     }
-    if (running) {
+    tickTutorial(dt);
+    if (running && !tutorialActive) {
       for (final exit in map['exits'] as List? ?? const []) {
         if (hasRefuge && exit['target'] == 'ending') continue;
         if (exit['id'] != 'back' && !chapterSecured) continue;
         if (exit['requiresGate'] == true && !gateOpen) continue;
+        if (zoneId == 'farm' &&
+            exit['id'] != 'back' &&
+            !missionFlags.contains('radio_ready')) {
+          continue;
+        }
         if (y < 1 &&
             math.pow(x - exit['x'], 2) + math.pow(z - exit['z'], 2) <
                 math.pow(exit['radius'], 2)) {
@@ -1908,6 +1965,9 @@ class HazardGameState {
   }
 
   void shoot(vm.Vector3 origin, vm.Vector3 direction) {
+    if (tutorialActive && !['aim', 'shoot', 'reload'].contains(tutorialStep)) {
+      return;
+    }
     if (actionLocked) return;
     if (!running ||
         !aiming ||
@@ -2043,6 +2103,14 @@ class HazardGameState {
       crate = null;
       medallion = null;
     }
+    if (medallion != null &&
+        tutorialStep == 'shoot' &&
+        medallion['id'] == 'training_target') {
+      hits++;
+      hitFlash = .18;
+      advanceTutorial();
+      medallion = null;
+    }
     if (medallion != null) {
       medallions.add(medallion['id']);
       hits++;
@@ -2136,6 +2204,7 @@ class HazardGameState {
   }
 
   String? _nearestInteraction() {
+    if (tutorialActive) return null;
     if (actionLocked) return null;
     final stealth = stealthTarget;
     if (stealth != null) return 'stealth:${stealth.id}';
@@ -2153,6 +2222,15 @@ class HazardGameState {
         1.9,
       )) {
         return 'npc:${n['id']}';
+      }
+    }
+    if (zoneId == 'farm') {
+      for (final entry in farmMissionItems.entries) {
+        final item = entry.value;
+        if (!missionFlags.contains(entry.key) &&
+            _near(item.x, item.y, item.z, 1.55)) {
+          return 'mission:${entry.key}';
+        }
       }
     }
     for (final p in pickups) {
@@ -2245,6 +2323,14 @@ class HazardGameState {
   String get interactionLabel {
     final key = interaction;
     if (key == null) return '';
+    if (key.startsWith('mission:')) {
+      return '${farmMissionItems[key.substring(8)]!.label}を回収';
+    }
+    if (key == 'gate' &&
+        zoneId == 'farm' &&
+        !missionFlags.contains('radio_ready')) {
+      return farmObjective;
+    }
     if (key.startsWith('stealth:')) return 'ビールを破壊する';
     if (key == 'refuge') {
       return refugeUnlocked ? '集合場所 — 玄関から中へ' : refugeObjective;
@@ -2295,7 +2381,12 @@ class HazardGameState {
     interaction = _nearestInteraction();
     final key = interaction;
     if (key == null) return;
-    if (key.startsWith('stealth:')) {
+    if (key.startsWith('mission:')) {
+      missionFlags.add(key.substring(8));
+      checkpointRequested = true;
+      lastSound = 'pickup';
+      say(farmObjective);
+    } else if (key.startsWith('stealth:')) {
       stealthKill();
     } else if (key == 'refuge') {
       say(refugeObjective);
@@ -2411,6 +2502,14 @@ class HazardGameState {
         : (id == 'yametaro' ? metYametaro : metTakosan)
         ? 'greeting'
         : 'intro';
+    if (zoneId == 'farm' && id == 'takosan') {
+      dialogueTopic =
+          'mission_${missionFlags.contains('radio_ready')
+              ? 'complete'
+              : farmSuppliesReady
+              ? 'ready'
+              : 'request'}';
+    }
     dialogueIndex = 0;
     if (id == 'yametaro') {
       metYametaro = true;
@@ -2435,6 +2534,7 @@ class HazardGameState {
         !availableDialogueTopics.contains(topic)) {
       return;
     }
+    _rememberFarmDelivery();
     _rememberRefugeReport();
     if (postBossReunion) seenEvents.add('reunion_$dialogueOwner');
     if (topic == 'leave') {
@@ -2508,8 +2608,35 @@ class HazardGameState {
     dialogueIndex = 0;
   }
 
+  void _rememberFarmDelivery() {
+    if (zoneId == 'farm' &&
+        dialogueTopic == 'mission_ready' &&
+        dialogueChoices &&
+        farmSuppliesReady) {
+      if (missionFlags.add('radio_ready') && !hardest) {
+        for (final supply in [('ammo', 12), ('shells', 6), ('green', 1)]) {
+          if (!addItem(supply.$1, supply.$2)) {
+            pickups.add(
+              Pickup(
+                'rescue_supply_${supply.$1}',
+                supply.$1,
+                -14.2,
+                .2,
+                -17.8,
+                amount: supply.$2,
+              ),
+            );
+          }
+        }
+        say('救難準備完了。出発用の弾薬と回復薬を受け取った。');
+      }
+      checkpointRequested = true;
+    }
+  }
+
   void endDialogue() {
     if (phase != PlayPhase.dialogue) return;
+    _rememberFarmDelivery();
     if (postBossReunion && dialogueChoices) {
       seenEvents.add('reunion_$dialogueOwner');
     }
@@ -2527,6 +2654,8 @@ class HazardGameState {
   }
 
   Map<String, Object?> inspect() => {
+    'tutorial': tutorialStep,
+    'missionFlags': missionFlags.toList(),
     'message': message,
     'phase': phase.name,
     'position': {'x': x, 'y': y, 'z': z},
