@@ -17,6 +17,7 @@ import 'game_navigation.dart';
 import 'game_camera.dart';
 import 'game_contact_shadows.dart';
 import 'game_campaign.dart';
+import 'game_region_loader.dart';
 import 'game_settings.dart';
 import 'game_lighting.dart';
 import 'game_world_effects.dart';
@@ -142,6 +143,64 @@ class HazardGameController extends ChangeNotifier {
   HazardGameState? state;
   late HazardCampaign campaign;
   final environments = <String, Node>{};
+  final _sharedSceneClaims = <String>{};
+  bool _committingRegionChange = false;
+  ({String target, void Function() commit, PlayPhase previousPhase})?
+  _pendingRegionChange;
+  late final _regionLoader = HazardRegionLoader<Node>(
+    acquire: (id) => loadScene('assets/models/$id.glb'),
+    release: (id) async {
+      await releaseScene('assets/models/$id.glb');
+    },
+    prepare: _prepareEnvironment,
+    attach: (id, node) {
+      village = node;
+      environments[id] = node;
+      scene.add(node);
+    },
+    detach: (id, node) {
+      // Controller disposal may already have unmounted the whole scene while
+      // an outstanding acquire/warm-up is finishing.
+      if (node.parent == scene.root) scene.remove(node);
+      if (identical(environments[id], node)) environments.remove(id);
+    },
+    warmUp: () async {
+      if (!ready || disposed) return; // Initial SceneView performs its warm-up.
+      lighting.apply(
+        scene,
+        enabled: settings.cinematicLighting,
+        preset: settings.graphicsPreset,
+        zone: regionLoadTarget!,
+      );
+      await scene.warmUp([
+        RenderView(camera: camera()),
+      ], includeOffscreen: true);
+    },
+    onChanged: () {
+      if (disposed) return;
+      if (ready && !regionLoading && regionLoadError != null) _applySettings();
+      if (regionLoadBlocked) {
+        state?.stopInput();
+        prepareStaticFrame();
+      }
+      notifyListeners();
+    },
+  );
+  bool get regionLoading => _regionLoader.loading;
+  String? get regionLoadTarget => _regionLoader.targetId;
+  String? get regionLoadError => _regionLoader.error?.toString();
+  bool get regionLoadBlocked =>
+      !_committingRegionChange && (regionLoading || regionLoadError != null);
+  Map<String, Object?> inspectRegionLoading() => {
+    'loading': regionLoading,
+    'blocked': regionLoadBlocked,
+    'current': _regionLoader.currentId,
+    'target': regionLoadTarget,
+    'error': regionLoadError,
+    'releaseError': _regionLoader.releaseError?.toString(),
+    'mountedRegions': environments.keys.toList(),
+    'sharedAssetClaims': _sharedSceneClaims.toList(),
+  };
   final endingChairs = <Node>[];
   final _navigationGeometry = <String, EnemyNavigation>{};
   bool ready = false, disposed = false;
@@ -156,6 +215,7 @@ class HazardGameController extends ChangeNotifier {
   bool get animateScene =>
       ready &&
       !disposed &&
+      !regionLoadBlocked &&
       foreground &&
       !posePreview &&
       (state!.running ||
@@ -233,7 +293,10 @@ class HazardGameController extends ChangeNotifier {
   String collectionResetMessage = "";
 
   Future<bool> resetCollection() async {
-    if (!ready || collectionResetBusy || state!.phase != PlayPhase.settings) {
+    if (!ready ||
+        regionLoadBlocked ||
+        collectionResetBusy ||
+        state!.phase != PlayPhase.settings) {
       return false;
     }
     collectionResetBusy = true;
@@ -326,29 +389,27 @@ class HazardGameController extends ChangeNotifier {
     }
     await Scene.initializeStaticResources();
     final loaded = await Future.wait(
-      [
-        'village',
-        'items',
-        'beer_mug',
-        'sobaya',
-        'fukuchan',
-        'yametaro',
-        'takosan',
-        'farm',
-        'mountain',
-      ].map((n) => loadScene('assets/models/$n.glb')),
+      ['items', 'beer_mug', 'sobaya', 'fukuchan', 'yametaro', 'takosan'].map((
+        n,
+      ) async {
+        final node = await loadScene('assets/models/$n.glb');
+        if (disposed) {
+          await releaseScene('assets/models/$n.glb');
+        } else {
+          _sharedSceneClaims.add(n);
+        }
+        return node;
+      }),
     );
     if (disposed) return;
-    environments.addAll({
-      'village': loaded[0],
-      'farm': loaded[7],
-      'mountain': loaded[8],
-    });
-    village = loaded[0];
-    itemsTemplate = loaded[1];
-    beerTemplate = loaded[2];
-    sobayaTemplate = loaded[3];
-    fukuTemplate = loaded[4];
+    if (!await _regionLoader.activate(state!.zoneId, commit: () {})) {
+      if (disposed) return;
+      throw StateError('Environment load failed: $regionLoadError');
+    }
+    itemsTemplate = loaded[0];
+    beerTemplate = loaded[1];
+    sobayaTemplate = loaded[2];
+    fukuTemplate = loaded[3];
     // Prepare actors from every region, even when absent from chapter one.
     final cast = <String, Map<String, dynamic>>{};
     for (final map in maps.values) {
@@ -357,7 +418,7 @@ class HazardGameController extends ChangeNotifier {
       }
     }
     for (final n in cast.values) {
-      final actor = CharacterPlayer(loaded[n['id'] == 'yametaro' ? 5 : 6], [
+      final actor = CharacterPlayer(loaded[n['id'] == 'yametaro' ? 4 : 5], [
         'Idle',
         'Talk',
         'Wave',
@@ -372,23 +433,6 @@ class HazardGameController extends ChangeNotifier {
       npcs[n['id']] = actor;
       scene.add(actor.node);
     }
-    for (final entry in environments.entries) {
-      final environment = entry.value, map = maps[entry.key]!;
-      _static(environment);
-      if (entry.key == 'mountain') _addRefugeDoor(environment);
-      for (final h in map['houses']) {
-        final roof = environment.getChildByName('Roof_${h['id']}');
-        if (roof != null) _static(roof, value: false);
-      }
-      _static(environment.getChildByName('FarmGate')!, value: false);
-      for (final row in [
-        ...map['collection'],
-        ...(map['targets'] as List? ?? []),
-      ]) {
-        _static(environment.getChildByName(row['node'])!, value: false);
-      }
-    }
-    scene.add(village);
     _applySettings();
     player = CharacterPlayer(fukuTemplate, [
       'Idle',
@@ -587,6 +631,7 @@ class HazardGameController extends ChangeNotifier {
   }
 
   void startEvent(String id) {
+    if (regionLoadBlocked) return;
     if (state!.seenEvents.contains(id)) return;
     state!.reaction = null;
     state!.reactionTime = 0;
@@ -602,6 +647,7 @@ class HazardGameController extends ChangeNotifier {
   }
 
   void advanceEvent({bool skip = false}) {
+    if (regionLoadBlocked) return;
     final d = director;
     if (d == null) return;
     posePreview = false;
@@ -618,6 +664,7 @@ class HazardGameController extends ChangeNotifier {
   }
 
   void setEventPaused(bool paused) {
+    if (regionLoadBlocked) return;
     if (director == null) return;
     director!.paused = paused;
     // Apply immediately, including when no next SceneView tick is scheduled.
@@ -680,6 +727,7 @@ class HazardGameController extends ChangeNotifier {
   }
 
   void changeSettings(void Function(HazardSettings) change) {
+    if (regionLoadBlocked) return;
     change(settings);
     _applySettings();
     _syncVoice();
@@ -698,6 +746,7 @@ class HazardGameController extends ChangeNotifier {
   }
 
   void openSettings() {
+    if (regionLoadBlocked) return;
     settingsReturn = state!.phase;
     state!
       ..stopInput()
@@ -706,6 +755,7 @@ class HazardGameController extends ChangeNotifier {
   }
 
   void closeSettings() {
+    if (regionLoadBlocked) return;
     if (collectionResetBusy) return;
     state!.phase = settingsReturn;
     notifyListeners();
@@ -716,6 +766,24 @@ class HazardGameController extends ChangeNotifier {
     for (final child in node.children) {
       _static(child, value: value);
     }
+  }
+
+  void _prepareEnvironment(String id, Node environment) {
+    final map = campaign.maps[id]!;
+    _static(environment);
+    if (id == 'mountain') _addRefugeDoor(environment);
+    for (final h in map['houses']) {
+      final roof = environment.getChildByName('Roof_${h['id']}');
+      if (roof != null) _static(roof, value: false);
+    }
+    _static(environment.getChildByName('FarmGate')!, value: false);
+    for (final row in [
+      ...map['collection'],
+      ...(map['targets'] as List? ?? []),
+    ]) {
+      _static(environment.getChildByName(row['node'])!, value: false);
+    }
+    HazardWorldEffects.prepareEnvironment(id, environment);
   }
 
   Node _prop(String name) {
@@ -828,9 +896,6 @@ class HazardGameController extends ChangeNotifier {
   void _mountRegion() {
     state!.useNavigation(_navigationGeometry[state!.zoneId]!);
     _applySettings();
-    scene.remove(village);
-    village = environments[state!.zoneId]!;
-    scene.add(village);
     for (final entry in npcs.entries) {
       final rows = state!.npcs.where((n) => n['id'] == entry.key);
       entry.value.node.visible = rows.isNotEmpty;
@@ -847,23 +912,91 @@ class HazardGameController extends ChangeNotifier {
     _stepDistance = 0;
   }
 
-  bool transitionRegion() {
-    final target = state?.exitRequested?['target'];
-    final firstVisit = target != null && !campaign.regions.containsKey(target);
-    if (!campaign.traverse()) return false;
-    state = campaign.state;
-    _mountRegion();
-    if (firstVisit) unawaited(saveCheckpoint(stageStart: true));
-    if (state!.zoneId == 'farm' && !state!.seenEvents.contains('farm')) {
-      startEvent('farm');
-    } else if (state!.zoneId == 'mountain' && state!.bossAlive) {
-      startEvent('last_order');
-    }
-    notifyListeners();
-    return true;
+  Future<bool> _changeRegion(String target, void Function() commit) async {
+    if (!ready || disposed || regionLoadBlocked) return false;
+    _pendingRegionChange = (
+      target: target,
+      commit: commit,
+      previousPhase: state!.phase,
+    );
+    state!
+      ..stopInput()
+      ..phase = PlayPhase.transition;
+    return _attemptRegionChange();
   }
 
-  void restart() {
+  Future<bool> _attemptRegionChange() async {
+    final request = _pendingRegionChange;
+    if (request == null || disposed || regionLoading) return false;
+    final success = await _regionLoader.activate(
+      request.target,
+      commit: () {
+        _committingRegionChange = true;
+        try {
+          request.commit();
+        } finally {
+          _committingRegionChange = false;
+        }
+      },
+    );
+    if (disposed) return false;
+    if (success) {
+      _pendingRegionChange = null;
+      refreshView();
+    } else {
+      prepareStaticFrame();
+      notifyListeners();
+    }
+    return success;
+  }
+
+  Future<bool> retryRegionLoad() => _attemptRegionChange();
+
+  /// A failed boundary crossing returns to the previous region paused, so the
+  /// still-nearby exit cannot immediately request the same failed load again.
+  void cancelRegionLoad() {
+    if (disposed || regionLoading || regionLoadError == null) return;
+    final request = _pendingRegionChange;
+    _pendingRegionChange = null;
+    if (request != null) {
+      state!
+        ..stopInput()
+        ..exitRequested = null
+        ..phase = request.previousPhase == PlayPhase.transition
+            ? PlayPhase.paused
+            : request.previousPhase;
+    }
+    _regionLoader.clearError();
+    refreshView();
+  }
+
+  Future<bool> transitionRegion() {
+    final from = state, exit = state?.exitRequested;
+    if (from == null ||
+        exit == null ||
+        from.phase != PlayPhase.transition ||
+        (exit['id'] != 'back' && !from.chapterSecured)) {
+      return Future.value(false);
+    }
+    final target = exit['target'] as String;
+    if (!campaign.maps.containsKey(target)) return Future.value(false);
+    final firstVisit = !campaign.regions.containsKey(target);
+    return _changeRegion(target, () {
+      if (!campaign.traverse()) {
+        throw StateError('Region exit is no longer valid');
+      }
+      state = campaign.state;
+      _mountRegion();
+      if (firstVisit) unawaited(saveCheckpoint(stageStart: true));
+      if (state!.zoneId == 'farm' && !state!.seenEvents.contains('farm')) {
+        startEvent('farm');
+      } else if (state!.zoneId == 'mountain' && state!.bossAlive) {
+        startEvent('last_order');
+      }
+    });
+  }
+
+  void _restartState() {
     runEpoch++;
     soundscape.resetEncounter();
     posePreview = false;
@@ -872,17 +1005,19 @@ class HazardGameController extends ChangeNotifier {
     campaign.restart();
     state = campaign.state;
     _mountRegion();
-    notifyListeners();
   }
+
+  Future<bool> restart() => _changeRegion('village', _restartState);
 
   bool _openingAfterTitle = false;
 
-  void startRun() {
-    restart();
-    unawaited(saveCheckpoint(stageStart: true));
-    _openingAfterTitle = true;
-    startEvent('title_call');
-  }
+  Future<bool> startRun({bool skipTutorial = false}) =>
+      _changeRegion('village', () {
+        _restartState();
+        unawaited(saveCheckpoint(stageStart: true));
+        _openingAfterTitle = true;
+        startEvent('title_call');
+      });
 
   Future<void> saveCheckpoint({
     bool announce = false,
@@ -930,34 +1065,40 @@ class HazardGameController extends ChangeNotifier {
     return _saveQueue;
   }
 
-  void continueRun() {
+  Future<bool> continueRun() async {
+    if (!ready || disposed || regionLoadBlocked) return false;
     final fromTitle = state?.phase == PlayPhase.title;
-    if (_checkpointJson == null) return;
+    if (_checkpointJson == null) return false;
     try {
-      campaign = HazardCampaign.restore(
+      final restored = HazardCampaign.restore(
         jsonDecode(_checkpointJson!),
         campaign.maps,
         state!.collected,
         difficulty: settings.difficulty,
       );
-      state = campaign.state;
-      director = null;
-      posePreview = false;
-      _mountRegion();
-      player.setMotion('Idle');
-      saveStatus = '';
-      if (fromTitle) {
-        _openingAfterTitle = false;
-        state!.seenEvents.remove('title_call');
-        startEvent('title_call');
-      }
+      return await _changeRegion(restored.state.zoneId, () {
+        campaign = restored;
+        state = campaign.state;
+        director = null;
+        posePreview = false;
+        _mountRegion();
+        player.setMotion('Idle');
+        saveStatus = '';
+        if (fromTitle) {
+          _openingAfterTitle = false;
+          state!.seenEvents.remove('title_call');
+          startEvent('title_call');
+        }
+      });
     } catch (_) {
       saveStatus = '保存データを復元できませんでした。';
     }
     notifyListeners();
+    return false;
   }
 
   Future<void> returnToTitle() async {
+    if (regionLoadBlocked) return;
     if (![
           PlayPhase.paused,
           PlayPhase.dead,
@@ -979,6 +1120,7 @@ class HazardGameController extends ChangeNotifier {
   }
 
   void interact() {
+    if (regionLoadBlocked) return;
     state!.interact();
     // A pickup can stop the SceneView ticker. Apply visibility, pickup sound
     // and pending saves now instead of relying on another gameplay frame.
@@ -986,11 +1128,13 @@ class HazardGameController extends ChangeNotifier {
   }
 
   void toggle(PlayPhase phase) {
+    if (regionLoadBlocked) return;
     state!.toggle(phase);
     notifyListeners();
   }
 
   void rotate(double dx, double dy) {
+    if (regionLoadBlocked) return;
     rotatePlayerView(state!, dx, dy, sensitivity: settings.sensitivity);
   }
 
@@ -1125,7 +1269,7 @@ class HazardGameController extends ChangeNotifier {
   }
 
   void fire() {
-    if (!ready) return;
+    if (!ready || regionLoadBlocked) return;
     final s = state!;
     updateRocketTarget();
     final ray = camera().screenPointToRay(
@@ -1258,6 +1402,7 @@ class HazardGameController extends ChangeNotifier {
     voice.sync(
       cue,
       paused:
+          regionLoadBlocked ||
           !foreground ||
           (d?.paused ?? false) ||
           (d == null &&
@@ -1291,6 +1436,10 @@ class HazardGameController extends ChangeNotifier {
 
   void tick(Duration elapsed, double delta) {
     if (!ready || disposed) return;
+    if (regionLoadBlocked) {
+      state!.stopInput();
+      return;
+    }
     final s = state!, dt = delta.clamp(0.0, .05);
     s.viewAspect = viewport.width / math.max(1, viewport.height);
     _syncVoice();
@@ -1323,7 +1472,10 @@ class HazardGameController extends ChangeNotifier {
         startEvent('last_order');
       }
     }
-    if (s.phase == PlayPhase.transition && transitionRegion()) return;
+    if (s.phase == PlayPhase.transition) {
+      unawaited(transitionRegion());
+      return;
+    }
     _syncVoice();
     final stealthAudio = s.stealthFeedback;
     final newAlert = soundscape.tick(
@@ -1925,24 +2077,18 @@ class HazardGameController extends ChangeNotifier {
   @override
   void dispose() {
     disposed = true;
+    _pendingRegionChange = null;
+    unawaited(_regionLoader.dispose());
     for (final a in fxPools.values) {
       unawaited(a.dispose());
     }
     unawaited(voice.dispose());
     unawaited(soundscape.dispose());
-    for (final name in [
-      'village',
-      'items',
-      'beer_mug',
-      'sobaya',
-      'fukuchan',
-      'yametaro',
-      'takosan',
-      'farm',
-      'mountain',
-    ]) {
+    scene.removeAll();
+    for (final name in _sharedSceneClaims) {
       unawaited(releaseScene('assets/models/$name.glb'));
     }
+    _sharedSceneClaims.clear();
     super.dispose();
   }
 }

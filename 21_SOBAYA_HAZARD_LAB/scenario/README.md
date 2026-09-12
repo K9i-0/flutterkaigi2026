@@ -2,6 +2,8 @@
 
 `game_text.json` は、本編で定義される台詞・文章・UI文字列を一つにまとめた生成物です。変更は `lib/game/` とマップの正本へ行い、このJSONを直接編集しません。
 
+2026-09-12の序章は`runtimeStory.tutorial`にstep IDとやめ太郎の声かけを収録します。`opening`→実操作の序章→`chapter1intro`が導入の順序です。農場の救難準備は`dialogueTrees.farmMission`（request / ready / complete）を参照し、青いメダリオンの任意収集と区別してください。
+
 ## 生成と追従確認
 
 リポジトリの `21_SOBAYA_HAZARD_LAB` で実行します。
@@ -17,7 +19,7 @@ Python標準ライブラリ、プロジェクトのDart（`mise exec -- dart`）
 
 ## AIレビューで読む順序
 
-1. `runtimeStory.events`: 会話シーンの順番、話者、字幕、既読/未読分岐、映像の切替と資料ID。
+1. `runtimeStory.events` と `tutorial`: 会話シーンの順番、話者、字幕、既読/未読分岐、映像の切替と資料ID。`tutorial`は実操作中の声かけをstep順に示します。
 2. `runtimeStory.dialogueTrees`: 章と話題ごとの会話定数、購入後の掛け合い、被弾時の声。第3章は撃破前用のやめ太郎、撃破後のやめ太郎/たこさんの定数をそれぞれ分けています。玄関変更後はNPCが家の解放まで不在のため、撃破前用など実プレイで選べない定数も比較用に残ります。実際の会話可否は `dialogueStarts` / `dialogueStartAttempts` で確認してください。
 3. `runtimeStory.dialogueStarts` と `resolvedDialogueVariants`: 前者は実際にNPCの場所で `startDialogue` を実行した初回/再訪/撃破後再会の冒頭と選択肢。後者は本物の `HazardGameState.dialogueLines` が返す会話で、地域、ボス生存、難易度、残敵、資料所持の入力と、NPCの存在/選択肢の表示条件を併記します。到達不可の入力も比較用に含まれます。全イベント既視聴や各メモ単独所持まで総当たりした一覧ではありません。
 4. `runtimeStory.memos` と `posterEvidence`: メモ本文とポスター裏面の書き込み。
@@ -46,6 +48,8 @@ Python標準ライブラリ、プロジェクトのDart（`mise exec -- dart`）
 新たな会話テーブルを追加したら、`tool/export_hazard_text_runtime.dart` の `dialogueTrees` と `dialogueTableSourceNames` にも登録してください。独立した条件付き `DialogueLine` 定数は `specialDialogue` に登録します。ソースの定数一覧と登録が異なる場合は生成エラーになります。第3章の条件付き会話も、実状態のgetterで解決した結果を確認します。資料の `(見出し, 本文, 脚注)` 形式を変えた場合は、Pythonの `documents()` も合わせます。未対応の構造は黙って欠落させず生成エラーにします。
 
 
-## 最新の検証
+## 2026-09-07時点の検証記録
 
 玄関解放と二人への報告によるクリアに更新済み。全文の生成一致、全体186テスト、旧セーブ互換追補後の関連33テスト、実機での入室・会話・保存・エンディング・クリアを確認した。本文の独立レビューは2名とも90点、全項目9点、重大0件。採否と残る軽微指摘は [EDIT_HISTORY.md](EDIT_HISTORY.md)、実装の確認結果は `../qa/refuge-*-20260907.json` を参照。
+
+上記は旧導入時点の記録です。2026-09-12の序章と農場の進行追加に対する検証結果ではありません。

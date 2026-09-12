@@ -6,6 +6,10 @@ class DialogueLine {
 const yametaroDialogue = <String, List<DialogueLine>>{
   "intro": [
     DialogueLine("やめ太郎", "ワイは未完成の画面を、完成しました言うて納品したんや。そしたら出向の手続きだけ、一日で完成したわ。"),
+    DialogueLine(
+      "福ちゃん",
+      "本番で全社員を窓際配属にしてしまって。テストデータだと思ったら、本社の名簿でした。社長にも通知が行きました。",
+    ),
     DialogueLine("福ちゃん", "僕がやらかす前から、ここにいたんですね。ずっと一人で案内を？"),
     DialogueLine("やめ太郎", "最初は迎えの船を待っとっただけや。来る船が毎回、新入り置いて帰るから、放っとけんようになったんや。"),
   ],
@@ -18,7 +22,10 @@ const yametaroDialogue = <String, List<DialogueLine>>{
     DialogueLine("やめ太郎", "ワイ、納品が終わったら長い休み取るつもりやってん。こんな長期滞在を頼んだ覚えはないで。"),
   ],
   "combat": [
-    DialogueLine("やめ太郎", "ジョッキを上げたら横へ避けるんや。Xで回避や。頭を狙ってひるませたら、近づいてFで蹴れるで。"),
+    DialogueLine(
+      "やめ太郎",
+      "ジョッキを上げたら横へ避けるんや。頭を狙ってひるませたら、近づいて蹴れるで。囲まれたら、先に逃げ道を探すんや。",
+    ),
     DialogueLine(
       "やめ太郎",
       "落としたビールは拾っとき。たこさんが農場で回収しとる。弾と交換して、そば屋さんに飲まれんよう封をするんや。",
@@ -28,7 +35,7 @@ const yametaroDialogue = <String, List<DialogueLine>>{
   "records": [
     DialogueLine(
       "やめ太郎",
-      "壁のポスター、懐かしいやろ。島流しにされた社員が持ち込んだんや。裏の書き込みや日記も、Eで拾えばその場で読める。あとから見るならCや。",
+      "壁のポスター、懐かしいやろ。島流しにされた社員が持ち込んだんや。裏の書き込みや日記も、調べればその場で読める。あとから記録でも見返せるで。",
     ),
     DialogueLine("福ちゃん", "映画会の案内まである。待ってる間に、村で暮らす準備をしてたんですね。"),
     DialogueLine("やめ太郎", "ワイの指名手配書だけ、まだ現役みたいなんやけど。あれ剥がしといてくれへん？"),
@@ -83,6 +90,39 @@ const takosanDialogue = <String, List<DialogueLine>>{
     DialogueLine(
       "たこさん",
       "宿舎に避難している社員がいます。巨大そば屋を倒したら、私が桟橋まで連れていきます。福ちゃんの席も残します。",
+    ),
+  ],
+};
+
+/// Chapter two has an actionable rescue-preparation objective. The state owns
+/// item flags and only commits radio_ready after the ready dialogue is closed.
+const farmMissionDialogue = <String, List<DialogueLine>>{
+  'request': [
+    DialogueLine(
+      'たこさん',
+      '帰任票より救難無線です。工具小屋の予備バッテリーと、納屋二階の避難者名簿を持ってきてください。誰も置いていかずに帰る準備です。',
+    ),
+    DialogueLine(
+      'たこさん',
+      '農場の青いメダリオンは、寄り道の腕試しです。七つ全部落とせたら、ビール三杯分おまけします。避難の準備とは別で、挑戦は自由ですよ。',
+    ),
+  ],
+  'ready': [
+    DialogueLine(
+      'たこさん',
+      '揃いました。無線は私が運びます。名簿にある人は、宿舎で全員の無事を確認できました。東の門も開けられます。',
+    ),
+    DialogueLine(
+      'たこさん',
+      '山の廃屋の巨大そば屋を倒せば、エンジンと救難回線の督促放送が止まります。玄関が開いたら中へ。私とやめ太郎、二人に声をかけてください。船は私が呼びます。',
+    ),
+    DialogueLine('福ちゃん', '巨大そば屋さんを倒せばいいんですね。停止ボタンが、だいぶ大きいですね。'),
+    DialogueLine('たこさん', 'しかも、押そうとすると殴り返してきます。離れて撃ってください。'),
+  ],
+  'complete': [
+    DialogueLine(
+      'たこさん',
+      '山の廃屋の巨大そば屋を倒せば、エンジンと救難回線の督促放送が止まります。玄関が開いたら中へ。私とやめ太郎、二人に声をかけてください。船は私が呼びます。',
     ),
   ],
 };

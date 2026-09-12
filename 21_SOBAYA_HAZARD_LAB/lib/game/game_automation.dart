@@ -18,6 +18,7 @@ HazardGameController? _game;
 bool _registered = false;
 NativeCampaignAudit? _nativeAudit;
 bool _probeRunning = false;
+bool _scenarioOpening = false;
 void detachGameAutomation() {
   _nativeAudit?.stop();
   _nativeAudit = null;
@@ -89,7 +90,9 @@ void attachGameAutomation(HazardGameController game) {
       if (g == null || !g.ready) {
         return MarionetteExtensionResult.error(1, 'Not ready');
       }
-      if (_probeRunning || _nativeAudit?.status == 'running') {
+      if (_probeRunning ||
+          _scenarioOpening ||
+          (_nativeAudit?.isActive ?? false)) {
         return MarionetteExtensionResult.error(
           2,
           'Another probe or campaign audit is running',
@@ -122,16 +125,20 @@ void attachGameAutomation(HazardGameController game) {
       }
       switch (p['action']) {
         case 'start':
-          if (_probeRunning || _nativeAudit?.status == 'running') {
+          if (_probeRunning ||
+              _scenarioOpening ||
+              (_nativeAudit?.isActive ?? false)) {
             return MarionetteExtensionResult.error(
               2,
               'Another probe or campaign audit is running',
             );
           }
-          _nativeAudit = NativeCampaignAudit(
+          final audit = NativeCampaignAudit(
             g,
             completionist: p['complete'] == 'true',
           );
+          _nativeAudit = audit;
+          await audit.start();
         case 'stop':
           _nativeAudit?.stop();
         case 'inspect':
@@ -314,433 +321,471 @@ void attachGameAutomation(HazardGameController game) {
       ].contains(name)) {
         return MarionetteExtensionResult.invalidParams('Invalid scenario');
       }
-      g.restart();
-      if ([
-        'merchant',
-        'secretMerchant',
-        'rocketBoss',
-        'reunion',
-        'reunionRemaining',
-        'reunionBefore',
-        'companionTakosan',
-        'farm',
-        'farmEnemyStairs',
-        'farmGate',
-        'mountain',
-        'mountainGate',
-        'farmEvent',
-        'bossEvent',
-        'bossCombat',
-        'endingEvent',
-      ].contains(name)) {
-        final first = g.state!;
-        first.difficulty = HazardDifficulty
-            .standard; // Debug transport bypasses chapter combat.
-        first.hasKey = first.gateOpen = true;
-        first.exitRequested = Map<String, dynamic>.from(
-          (first.map['exits'] as List).first,
+      if (_probeRunning ||
+          _scenarioOpening ||
+          (_nativeAudit?.isActive ?? false)) {
+        return MarionetteExtensionResult.error(
+          2,
+          'Another scenario or audit is running',
         );
-        first.phase = PlayPhase.transition;
-        g.transitionRegion();
+      }
+      _scenarioOpening = true;
+      try {
+        if (!await g.restart() || g.disposed || !identical(_game, g)) {
+          return MarionetteExtensionResult.error(
+            3,
+            'Could not load the village',
+          );
+        }
+        final epoch = g.runEpoch;
         if ([
-          'mountain',
-          'mountainGate',
-          'bossEvent',
-          'bossCombat',
+          'merchant',
+          'secretMerchant',
           'rocketBoss',
           'reunion',
           'reunionRemaining',
           'reunionBefore',
+          'companionTakosan',
+          'farm',
+          'farmEnemyStairs',
+          'farmGate',
+          'mountain',
+          'mountainGate',
+          'farmEvent',
+          'bossEvent',
+          'bossCombat',
           'endingEvent',
         ].contains(name)) {
-          final farm = g.state!..gateOpen = true;
-          farm.difficulty = HazardDifficulty.standard;
-          farm.exitRequested = Map<String, dynamic>.from(
-            (farm.map['exits'] as List).last,
+          final first = g.state!;
+          first.difficulty = HazardDifficulty
+              .standard; // Debug transport bypasses chapter combat.
+          first.hasKey = first.gateOpen = true;
+          first.exitRequested = Map<String, dynamic>.from(
+            (first.map['exits'] as List).first,
           );
-          farm.phase = PlayPhase.transition;
-          g.transitionRegion();
+          first.phase = PlayPhase.transition;
+          if (!await g.transitionRegion() ||
+              g.disposed ||
+              g.runEpoch != epoch ||
+              !identical(_game, g)) {
+            return MarionetteExtensionResult.error(
+              3,
+              'Could not load the farm',
+            );
+          }
+          if ([
+            'mountain',
+            'mountainGate',
+            'bossEvent',
+            'bossCombat',
+            'rocketBoss',
+            'reunion',
+            'reunionRemaining',
+            'reunionBefore',
+            'endingEvent',
+          ].contains(name)) {
+            final farm = g.state!..gateOpen = true;
+            farm.difficulty = HazardDifficulty.standard;
+            farm.exitRequested = Map<String, dynamic>.from(
+              (farm.map['exits'] as List).last,
+            );
+            farm.phase = PlayPhase.transition;
+            if (!await g.transitionRegion() ||
+                g.disposed ||
+                g.runEpoch != epoch ||
+                !identical(_game, g)) {
+              return MarionetteExtensionResult.error(
+                3,
+                'Could not load the mountain',
+              );
+            }
+          }
         }
-      }
-      g.director = null;
-      final s = g.state!;
-      s.checkpointRequested = false;
-      for (final e in s.enemies) {
-        e.active = false;
-      }
-      switch (name) {
-        case 'storyMemo':
-          final m = villageMemos.first;
-          s.x = m.x;
-          s.z = m.z + 1;
-          s.y = 0;
-          s.yaw = 0;
-        case 'audioExplore':
-          s.x = 0;
-          s.z = -18;
-        case 'audioThreat':
-          s.x = 0;
-          s.z = -18;
-          s.enemies.first
-            ..active = true
-            ..alerted = true
-            ..x = 0
-            ..z = -9
-            ..stun = 60;
-        case 'companionYametaro':
-        case 'companionTakosan':
-          final npc = s.npcs.firstWhere(
-            (n) =>
-                n['id'] ==
-                (name == 'companionYametaro' ? 'yametaro' : 'takosan'),
-          );
-          s.x = (npc['x'] as num).toDouble() + 2.5;
-          s.z = (npc['z'] as num).toDouble() - 1.8;
-          s.yaw = -1;
-          s.enemies.first
-            ..active = true
-            ..alerted = true
-            ..x = (npc['x'] as num).toDouble()
-            ..z = (npc['z'] as num).toDouble() + 1;
-        case 'bossEvent':
-          // Match the chapter-entry framing; keep the real arrival position.
-          s.x = -19;
-          s.z = -21;
-          s.yaw = 3.141592653589793;
-          s.heading = 0;
-        case 'bossCombat':
-          s.x = 6;
-          s.z = 4;
-          s.yaw = -1.5707963267948966;
-          s.seenEvents.add('last_order');
-          s.enemies.firstWhere((e) => e.boss)
-            ..active = true
-            ..alerted = true;
-          s.phase = PlayPhase.paused;
-
-        case 'farm':
-          s.x = -19;
-          s.z = -21;
-        case 'mountain':
-          s.x = 0;
-          s.z = 4;
-          s.yaw = -1.5707963267948966;
-        case 'farmGate':
-          s.x = 18.5;
-          s.z = -10;
-          s.yaw = -1.5707963267948966;
-        case 'mountainGate':
-          s.x = 13;
-          s.z = 7.7;
-          s.yaw = 3.141592653589793;
-          final boss = s.enemies.firstWhere((e) => e.boss);
-          boss.hp = 0;
-          boss.alive = false;
-          s.kills = 1;
-        case 'secretMerchant':
-          s.beers = int.tryParse(p['beers'] ?? '10') ?? 10;
-          s.x = -13;
-          s.z = -19.4;
-          s.yaw = 3.141592653589793;
-          s.pitch = .12;
-        case 'rocketCombat':
-          s.addItem('rocket', 1);
-          s.equip('rocket');
-          s.x = 0;
-          s.z = -16;
-          s.yaw = 3.141592653589793;
-          s.pitch = 0;
-          s.aiming = true;
-          s.enemies.first
-            ..active = true
-            ..x = 0
-            ..z = -10
-            ..stun = 30;
-        case 'rocketBoss':
-          s.invulnerable = 100;
-          s.seenEvents.add('last_order');
-          s.addItem('rocket', 1);
-          s.equip('rocket');
-          s.x = 6;
-          s.z = 4;
-          s.yaw = -1.5707963267948966;
-          s.pitch = -.27;
-          s.aiming = true;
-          s.enemies.firstWhere((e) => e.boss)
-            ..active = true
-            ..alerted = true
-            ..stun = 30;
-        case 'reunion':
-        case 'reunionRemaining':
-        case 'reunionBefore':
-          // Dialogue/audio QA at the normal house position, with enemies
-          // disabled. This fixture is not evidence of traversing the level.
-          s.seenEvents.addAll(['opening', 'farm', 'last_order']);
-          if (name != 'reunionBefore') {
-            s.enemies.firstWhere((e) => e.boss)
-              ..alive = false
-              ..hp = 0
-              ..dropped = true;
-            s.seenEvents.add('giant_defeated');
-            s.kills = 1;
-          }
-          if (name == 'reunionRemaining') {
-            s.difficulty = HazardDifficulty.tense;
-          }
-          s.beers = 12;
-          final owner = p['npc'] == 'yametaro' || name == 'reunionBefore'
-              ? 'yametaro'
-              : 'takosan';
-          s.refreshRefuge();
-          final npc = s.npcs.where((n) => n['id'] == owner).firstOrNull;
-          s.x = npc == null ? 13 : (npc['x'] as num).toDouble();
-          s.z = npc == null ? 7.7 : (npc['z'] as num).toDouble() - 1.2;
-          s.yaw = 3.141592653589793;
-          s.pitch = .1;
-        case 'merchant':
-          s.x = -13;
-          s.z = -19.4;
-          s.beers = 8;
-          s.pitch = .12;
-        case 'npc':
-          s.x = -2.8;
-          s.z = -23;
-          s.pitch = .12;
-        case 'stagger':
-          s.x = 0;
-          s.z = -16;
-          s.heading = 0;
-          s.enemies[0]
-            ..active = true
-            ..alerted = true
-            ..x = 0
-            ..z = -14.6
-            ..hp = 35
-            ..stun = 30;
-        case 'mugTiming':
-          s.x = 0;
-          s.z = -16;
-          s.yaw = 3.141592653589793;
-          final enemyIndex = (int.tryParse(p['enemy'] ?? '0') ?? 0).clamp(0, 2);
-          s.enemies[enemyIndex]
-            ..active = true
-            ..alerted = true
-            ..grabCooldown = 30
-            ..x = .25
-            ..z = -15.1;
-        case 'ambientDance':
-          g.posePreview = false;
-          s.x = 0;
-          s.z = -16;
-          s.yaw = 3.141592653589793;
-          s.invulnerable = 100;
-          for (var i = 0; i < 3; i++) {
-            s.enemies[i]
-              ..active = true
-              ..ambientDance = const [
-                'DanceStep',
-                'DanceDisco',
-                'DanceVictory',
-              ][i]
-              ..x = (i - 1) * 2.0
-              ..z = -10
-              ..heading = 0;
-          }
-        case 'encounter':
-          s.x = 0;
-          s.z = -14;
-          s.yaw = 3.141592653589793;
-          s.invulnerable = 100;
-          for (final e in s.enemies.take(3)) {
-            e
+        g.director = null;
+        final s = g.state!;
+        s.checkpointRequested = false;
+        for (final e in s.enemies) {
+          e.active = false;
+        }
+        switch (name) {
+          case 'storyMemo':
+            final m = villageMemos.first;
+            s.x = m.x;
+            s.z = m.z + 1;
+            s.y = 0;
+            s.yaw = 0;
+          case 'audioExplore':
+            s.x = 0;
+            s.z = -18;
+          case 'audioThreat':
+            s.x = 0;
+            s.z = -18;
+            s.enemies.first
               ..active = true
               ..alerted = true
-              ..x = (e.id - 1) * 1.2
-              ..z = -6;
-          }
-        case 'beerThrow':
-          s.x = 0;
-          s.z = -20;
-          s.yaw = 3.141592653589793;
-          s.heading = 0;
-          s.pitch = 0;
-          s.seenEvents.addAll(['opening', 'farm', 'last_order', 'ending']);
-          s.addItem('beer', 3);
-          s.equip('beer');
-          s.aiming = true;
-          s.enemies.first
-            ..active = true
-            ..ambientDance = null
-            ..x = 3
-            ..z = -11
-            ..heading = 0;
-        case 'stealthRear':
-        case 'stealthVision':
-        case 'stealthNoise':
-          s.x = 0;
-          s.z = name == 'stealthRear' ? -16.25 : -20;
-          s.yaw = 3.141592653589793;
-          s.heading = 0;
-          s.pitch = 0;
-          s.seenEvents.addAll(['opening', 'farm', 'last_order', 'ending']);
-          s.enemies.first
-            ..active = true
-            ..ambientDance = null
-            ..x = 0
-            ..z = -15
-            ..heading = name == 'stealthVision' ? 3.141592653589793 : 0;
-          if (name == 'stealthNoise') {
+              ..x = 0
+              ..z = -9
+              ..stun = 60;
+          case 'companionYametaro':
+          case 'companionTakosan':
+            final npc = s.npcs.firstWhere(
+              (n) =>
+                  n['id'] ==
+                  (name == 'companionYametaro' ? 'yametaro' : 'takosan'),
+            );
+            s.x = (npc['x'] as num).toDouble() + 2.5;
+            s.z = (npc['z'] as num).toDouble() - 1.8;
+            s.yaw = -1;
+            s.enemies.first
+              ..active = true
+              ..alerted = true
+              ..x = (npc['x'] as num).toDouble()
+              ..z = (npc['z'] as num).toDouble() + 1;
+          case 'bossEvent':
+            // Match the chapter-entry framing; keep the real arrival position.
+            s.x = -19;
+            s.z = -21;
+            s.yaw = 3.141592653589793;
+            s.heading = 0;
+          case 'bossCombat':
+            s.x = 6;
+            s.z = 4;
+            s.yaw = -1.5707963267948966;
+            s.seenEvents.add('last_order');
+            s.enemies.firstWhere((e) => e.boss)
+              ..active = true
+              ..alerted = true;
+            s.phase = PlayPhase.paused;
+
+          case 'farm':
+            s.x = -19;
+            s.z = -21;
+          case 'mountain':
+            s.x = 0;
+            s.z = 4;
+            s.yaw = -1.5707963267948966;
+          case 'farmGate':
+            s.x = 18.5;
+            s.z = -10;
+            s.yaw = -1.5707963267948966;
+          case 'mountainGate':
+            s.x = 13;
+            s.z = 7.7;
+            s.yaw = 3.141592653589793;
+            final boss = s.enemies.firstWhere((e) => e.boss);
+            boss.hp = 0;
+            boss.alive = false;
+            s.kills = 1;
+          case 'secretMerchant':
+            s.beers = int.tryParse(p['beers'] ?? '10') ?? 10;
+            s.x = -13;
+            s.z = -19.4;
+            s.yaw = 3.141592653589793;
+            s.pitch = .12;
+          case 'rocketCombat':
+            s.addItem('rocket', 1);
+            s.equip('rocket');
+            s.x = 0;
+            s.z = -16;
+            s.yaw = 3.141592653589793;
+            s.pitch = 0;
+            s.aiming = true;
+            s.enemies.first
+              ..active = true
+              ..x = 0
+              ..z = -10
+              ..stun = 30;
+          case 'rocketBoss':
+            s.invulnerable = 100;
+            s.seenEvents.add('last_order');
+            s.addItem('rocket', 1);
+            s.equip('rocket');
+            s.x = 6;
+            s.z = 4;
+            s.yaw = -1.5707963267948966;
+            s.pitch = -.27;
+            s.aiming = true;
+            s.enemies.firstWhere((e) => e.boss)
+              ..active = true
+              ..alerted = true
+              ..stun = 30;
+          case 'reunion':
+          case 'reunionRemaining':
+          case 'reunionBefore':
+            // Dialogue/audio QA at the normal house position, with enemies
+            // disabled. This fixture is not evidence of traversing the level.
+            s.seenEvents.addAll(['opening', 'farm', 'last_order']);
+            if (name != 'reunionBefore') {
+              s.enemies.firstWhere((e) => e.boss)
+                ..alive = false
+                ..hp = 0
+                ..dropped = true;
+              s.seenEvents.add('giant_defeated');
+              s.kills = 1;
+            }
+            if (name == 'reunionRemaining') {
+              s.difficulty = HazardDifficulty.tense;
+            }
+            s.beers = 12;
+            final owner = p['npc'] == 'yametaro' || name == 'reunionBefore'
+                ? 'yametaro'
+                : 'takosan';
+            s.refreshRefuge();
+            final npc = s.npcs.where((n) => n['id'] == owner).firstOrNull;
+            s.x = npc == null ? 13 : (npc['x'] as num).toDouble();
+            s.z = npc == null ? 7.7 : (npc['z'] as num).toDouble() - 1.2;
+            s.yaw = 3.141592653589793;
+            s.pitch = .1;
+          case 'merchant':
+            s.x = -13;
+            s.z = -19.4;
+            s.beers = 8;
+            s.pitch = .12;
+          case 'npc':
+            s.x = -2.8;
+            s.z = -23;
+            s.pitch = .12;
+          case 'stagger':
+            s.x = 0;
+            s.z = -16;
+            s.heading = 0;
+            s.enemies[0]
+              ..active = true
+              ..alerted = true
+              ..x = 0
+              ..z = -14.6
+              ..hp = 35
+              ..stun = 30;
+          case 'mugTiming':
+            s.x = 0;
+            s.z = -16;
+            s.yaw = 3.141592653589793;
+            final enemyIndex = (int.tryParse(p['enemy'] ?? '0') ?? 0).clamp(
+              0,
+              2,
+            );
+            s.enemies[enemyIndex]
+              ..active = true
+              ..alerted = true
+              ..grabCooldown = 30
+              ..x = .25
+              ..z = -15.1;
+          case 'ambientDance':
+            g.posePreview = false;
+            s.x = 0;
+            s.z = -16;
+            s.yaw = 3.141592653589793;
+            s.invulnerable = 100;
+            for (var i = 0; i < 3; i++) {
+              s.enemies[i]
+                ..active = true
+                ..ambientDance = const [
+                  'DanceStep',
+                  'DanceDisco',
+                  'DanceVictory',
+                ][i]
+                ..x = (i - 1) * 2.0
+                ..z = -10
+                ..heading = 0;
+            }
+          case 'encounter':
+            s.x = 0;
+            s.z = -14;
+            s.yaw = 3.141592653589793;
+            s.invulnerable = 100;
+            for (final e in s.enemies.take(3)) {
+              e
+                ..active = true
+                ..alerted = true
+                ..x = (e.id - 1) * 1.2
+                ..z = -6;
+            }
+          case 'beerThrow':
+            s.x = 0;
+            s.z = -20;
+            s.yaw = 3.141592653589793;
+            s.heading = 0;
+            s.pitch = 0;
+            s.seenEvents.addAll(['opening', 'farm', 'last_order', 'ending']);
+            s.addItem('beer', 3);
+            s.equip('beer');
+            s.aiming = true;
+            s.enemies.first
+              ..active = true
+              ..ambientDance = null
+              ..x = 3
+              ..z = -11
+              ..heading = 0;
+          case 'stealthRear':
+          case 'stealthVision':
+          case 'stealthNoise':
+            s.x = 0;
+            s.z = name == 'stealthRear' ? -16.25 : -20;
+            s.yaw = 3.141592653589793;
+            s.heading = 0;
+            s.pitch = 0;
+            s.seenEvents.addAll(['opening', 'farm', 'last_order', 'ending']);
+            s.enemies.first
+              ..active = true
+              ..ambientDance = null
+              ..x = 0
+              ..z = -15
+              ..heading = name == 'stealthVision' ? 3.141592653589793 : 0;
+            if (name == 'stealthNoise') {
+              s.addItem('shotgun', 1);
+              s.addItem('shells', 10);
+              s.equip('shotgun');
+            }
+          case 'mobileControls':
+            // Stable UI fixture. Enemies remain disabled by scenario setup;
+            // this checks touch controls, not stealth or campaign difficulty.
+            s.seenEvents.addAll(['opening', 'farm', 'last_order']);
+            s.x = 0;
+            s.z = -20;
+            s.yaw = 3.141592653589793;
+            s.health = 65;
+            s.beers = 3;
+            s.pistolLoaded = 6;
+            s.shotgunLoaded = 2;
             s.addItem('shotgun', 1);
             s.addItem('shells', 10);
-            s.equip('shotgun');
-          }
-        case 'mobileControls':
-          // Stable UI fixture. Enemies remain disabled by scenario setup;
-          // this checks touch controls, not stealth or campaign difficulty.
-          s.seenEvents.addAll(['opening', 'farm', 'last_order']);
-          s.x = 0;
-          s.z = -20;
-          s.yaw = 3.141592653589793;
-          s.health = 65;
-          s.beers = 3;
-          s.pistolLoaded = 6;
-          s.shotgunLoaded = 2;
-          s.addItem('shotgun', 1);
-          s.addItem('shells', 10);
-        case 'combat':
-          s.x = 0;
-          s.z = -16;
-          s.yaw = 3.141592653589793;
-          s.pitch = 0;
-          s.aiming = true;
-          s.enemies[0]
-            ..active = true
-            ..x = 0
-            ..z = -11;
-        case 'pickup':
-          s.x = -8;
-          s.z = -14.8;
-        case 'collection':
-          s.x = -8;
-          s.z = -18.8;
-        case 'gate':
-          s.x = 11.5;
-          s.z = 22;
-          s.hasKey = true;
-        case 'grapple':
-          s.x = 0;
-          s.y = 0;
-          s.z = -21;
-          s.yaw = 3.141592653589793;
-          s.heading = 0;
-          s.invulnerable = 0;
-          s.enemies.first
-            ..active = true
-            ..alerted = true
-            ..x = 0
-            ..y = 0
-            ..z = -20.1
-            ..heading = 3.141592653589793;
-        case 'window':
-          final w = s.windows.first;
-          s.x = w.x;
-          s.y = 0;
-          s.z = w.entryZ(true);
-          s.yaw = 3.141592653589793;
-          s.heading = 0;
-        case 'enemyWindow':
-          final w = s.windows.first;
-          s.x = w.x;
-          s.y = 0;
-          s.z = w.exitZ(true) + 2;
-          s.yaw = 0;
-          s.heading = 3.141592653589793;
-          s.invulnerable = 100;
-          for (var i = 0; i < 2; i++) {
-            s.enemies[i]
+          case 'combat':
+            s.x = 0;
+            s.z = -16;
+            s.yaw = 3.141592653589793;
+            s.pitch = 0;
+            s.aiming = true;
+            s.enemies[0]
+              ..active = true
+              ..x = 0
+              ..z = -11;
+          case 'pickup':
+            s.x = -8;
+            s.z = -14.8;
+          case 'collection':
+            s.x = -8;
+            s.z = -18.8;
+          case 'gate':
+            s.x = 11.5;
+            s.z = 22;
+            s.hasKey = true;
+          case 'grapple':
+            s.x = 0;
+            s.y = 0;
+            s.z = -21;
+            s.yaw = 3.141592653589793;
+            s.heading = 0;
+            s.invulnerable = 0;
+            s.enemies.first
               ..active = true
               ..alerted = true
-              ..x = w.x
+              ..x = 0
               ..y = 0
-              ..z = w.entryZ(true) - i;
-          }
-        case 'ladder':
-          s.x = -13.5;
-          s.y = 0;
-          s.z = -9.1;
-          s.yaw = 3.141592653589793;
-          s.heading = 0;
-        case 'enemyLadder':
-          s.x = -13.5;
-          s.y = 4.22;
-          s.z = -6.5;
-          s.yaw = 0;
-          s.invulnerable = 100;
-          for (var i = 0; i < 2; i++) {
-            s.enemies[i]
+              ..z = -20.1
+              ..heading = 3.141592653589793;
+          case 'window':
+            final w = s.windows.first;
+            s.x = w.x;
+            s.y = 0;
+            s.z = w.entryZ(true);
+            s.yaw = 3.141592653589793;
+            s.heading = 0;
+          case 'enemyWindow':
+            final w = s.windows.first;
+            s.x = w.x;
+            s.y = 0;
+            s.z = w.exitZ(true) + 2;
+            s.yaw = 0;
+            s.heading = 3.141592653589793;
+            s.invulnerable = 100;
+            for (var i = 0; i < 2; i++) {
+              s.enemies[i]
+                ..active = true
+                ..alerted = true
+                ..x = w.x
+                ..y = 0
+                ..z = w.entryZ(true) - i;
+            }
+          case 'ladder':
+            s.x = -13.5;
+            s.y = 0;
+            s.z = -9.1;
+            s.yaw = 3.141592653589793;
+            s.heading = 0;
+          case 'enemyLadder':
+            s.x = -13.5;
+            s.y = 4.22;
+            s.z = -6.5;
+            s.yaw = 0;
+            s.invulnerable = 100;
+            for (var i = 0; i < 2; i++) {
+              s.enemies[i]
+                ..active = true
+                ..alerted = true
+                ..x = -13.5 + i * .9
+                ..y = 0
+                ..z = -12;
+            }
+          case 'enemyStairs':
+          case 'farmEnemyStairs':
+            final ramp = (s.map['ramps'] as List).first;
+            s.x = (ramp['x'] as num).toDouble() - 2;
+            s.z = (ramp['z1'] as num).toDouble() + .65;
+            s.y = 3.03;
+            s.yaw = 0;
+            s.invulnerable = 100;
+            s.enemies.first
               ..active = true
               ..alerted = true
-              ..x = -13.5 + i * .9
-              ..y = 0
-              ..z = -12;
-          }
-        case 'enemyStairs':
-        case 'farmEnemyStairs':
-          final ramp = (s.map['ramps'] as List).first;
-          s.x = (ramp['x'] as num).toDouble() - 2;
-          s.z = (ramp['z1'] as num).toDouble() + .65;
-          s.y = 3.03;
-          s.yaw = 0;
-          s.invulnerable = 100;
-          s.enemies.first
-            ..active = true
-            ..alerted = true
-            ..x = (ramp['x'] as num).toDouble()
-            ..z = (ramp['z0'] as num).toDouble() + .35;
-          s.enemies.first.y = s.floorHeight(
-            s.enemies.first.x,
-            s.enemies.first.z,
-            0,
-          );
-        case 'stairs':
-          s.x = 11;
-          s.z = -10;
-          s.yaw = 3.141592653589793;
-        case 'death':
-          s.health = 10;
-          s.x = 0;
-          s.z = -16;
-          s.enemies[0]
-            ..active = true
-            ..x = 0
-            ..z = -15.1;
-      }
-      s.phase =
-          [
-            'bossCombat',
-            'mugTiming',
-            'ladder',
-            'enemyLadder',
-            'window',
-            'enemyWindow',
-            'grapple',
-          ].contains(name)
-          ? PlayPhase.paused
-          : PlayPhase.playing;
-      final event = {
-        'introEvent': 'opening',
-        'farmEvent': 'farm',
-        'bossEvent': 'last_order',
-        'endingEvent': 'ending',
-      }[name];
-      if (event != null) {
-        if (event == 'last_order') {
-          s.enemies.firstWhere((e) => e.boss).active = true;
+              ..x = (ramp['x'] as num).toDouble()
+              ..z = (ramp['z0'] as num).toDouble() + .35;
+            s.enemies.first.y = s.floorHeight(
+              s.enemies.first.x,
+              s.enemies.first.z,
+              0,
+            );
+          case 'stairs':
+            s.x = 11;
+            s.z = -10;
+            s.yaw = 3.141592653589793;
+          case 'death':
+            s.health = 10;
+            s.x = 0;
+            s.z = -16;
+            s.enemies[0]
+              ..active = true
+              ..x = 0
+              ..z = -15.1;
         }
-        g.startEvent(event);
+        s.phase =
+            [
+              'bossCombat',
+              'mugTiming',
+              'ladder',
+              'enemyLadder',
+              'window',
+              'enemyWindow',
+              'grapple',
+            ].contains(name)
+            ? PlayPhase.paused
+            : PlayPhase.playing;
+        final event = {
+          'introEvent': 'opening',
+          'farmEvent': 'farm',
+          'bossEvent': 'last_order',
+          'endingEvent': 'ending',
+        }[name];
+        if (event != null) {
+          if (event == 'last_order') {
+            s.enemies.firstWhere((e) => e.boss).active = true;
+          }
+          g.startEvent(event);
+        }
+        g.refreshView();
+        return MarionetteExtensionResult.success(s.inspect());
+      } finally {
+        _scenarioOpening = false;
       }
-      g.refreshView();
-      return MarionetteExtensionResult.success(s.inspect());
     },
   );
   registerMarionetteExtension(
@@ -750,6 +795,12 @@ void attachGameAutomation(HazardGameController game) {
       final g = _game;
       if (g == null || !g.ready) {
         return MarionetteExtensionResult.error(1, 'Not ready');
+      }
+      if (_scenarioOpening || g.regionLoadBlocked || g.disposed) {
+        return MarionetteExtensionResult.error(
+          2,
+          'Region setup is not complete',
+        );
       }
       final s = g.state!;
       switch (p['action']) {
@@ -766,7 +817,7 @@ void attachGameAutomation(HazardGameController game) {
               progress < 0 ||
               progress > 1 ||
               _probeRunning ||
-              _nativeAudit?.status == 'running') {
+              (_nativeAudit?.isActive ?? false)) {
             return MarionetteExtensionResult.invalidParams(
               'Open an event scenario first; shot in range, progress=0..1; no running audit',
             );

@@ -8,7 +8,9 @@ import 'game_state.dart';
 /// The initial single-enemy fixture isolates escape behaviour from crowd luck.
 Future<Map<String, Object?>> probeStealthHorror(HazardGameController g) async {
   if (!g.ready || !g.foreground) throw StateError('Foreground game required');
-  g.restart();
+  if (!await g.restart() || g.disposed) {
+    throw StateError('Probe could not load the village');
+  }
   g.posePreview = false;
   g.director = null;
   final epoch = g.runEpoch, s = g.state!;
@@ -120,7 +122,9 @@ Future<Map<String, Object?>> probeStealthHorror(HazardGameController g) async {
       'Native escape did not complete: ${e.awareness.name}, ${s.x},${s.z}, ${e.x},${e.z}',
     );
   } finally {
-    s.stopInput();
-    g.toggle(PlayPhase.paused);
+    if (!g.disposed && g.runEpoch == epoch && identical(g.state, s)) {
+      s.stopInput();
+      g.toggle(PlayPhase.paused);
+    }
   }
 }
