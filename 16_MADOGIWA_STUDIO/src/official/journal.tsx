@@ -121,6 +121,17 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
     } catch { /* Storage may be unavailable. */ }
   }, []);
   const [onlySaved, setOnlySaved] = useState(false);
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(sessionStorage.getItem("madogiwa-production-return") ?? "null");
+      if (!saved?.restore || saved.href !== location.pathname + location.search) return;
+      sessionStorage.setItem("madogiwa-production-return", JSON.stringify({ ...saved, restore: false }));
+      if (saved.route && Object.hasOwn(pageNames, saved.route.page)) setRoute(saved.route);
+      if (typeof saved.query === "string") setQuery(saved.query);
+      setPlaying(publicEpisodes.find((episode) => episode.id === saved.episodeId) ?? null);
+      requestAnimationFrame(() => window.scrollTo({ top: Number(saved.scroll) || 0 }));
+    } catch { /* Stored navigation state is optional. */ }
+  }, [publicEpisodes]);
   const current = cast.find((c) => c.id === route.character);
   const reduced = () =>
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -1205,7 +1216,9 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
                 </div>
                 <Video key={playing.id} episode={playing} />
                 <p className="j-video-description">{episodeCopy(playing)}</p>
-                <a className="j-making-link" href={`/episodes/${playing.slug}#making-${playing.primary_video_id}`}>
+                <a className="j-making-link" href={`/episodes/${playing.slug}#making-${playing.primary_video_id}`} onClick={() => {
+                  try { sessionStorage.setItem("madogiwa-production-return", JSON.stringify({ slug: playing.slug, href: location.pathname + location.search, route, query, scroll: window.scrollY, episodeId: playing.id, restore: true })); } catch { /* Navigation still works without storage. */ }
+                }}>
                   <span><b>この動画の作り方</b><small>使用モデル・プロンプト・入力素材</small></span><ArrowUpRight size={20} />
                 </a>
                 <div className="j-video-cast">

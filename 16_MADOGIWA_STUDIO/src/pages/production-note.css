@@ -1,0 +1,29 @@
+.production-shell { min-height:100vh; background:#f7f7f4; color:#272b28; font-family:"Noto Sans JP",sans-serif; line-height:1.8; }
+.production-note { max-width:960px; margin:auto; padding:32px 28px 64px; }
+.production-back { display:inline-flex; align-items:center; gap:8px; color:#46564e; font-size:14px; text-decoration:none; padding:8px 0; }
+.production-back:hover { text-decoration:underline; }
+.production-heading { margin:36px 0 28px; }
+.production-heading>p { color:#6a746d; font-size:12px; margin-bottom:12px; }
+.production-heading h1 { font-size:clamp(22px,3vw,32px); line-height:1.5; font-weight:700; }
+.production-select { display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin:24px 0; font-size:14px; }
+.production-select select { max-width:100%; padding:10px; border:1px solid #cbd0ca; border-radius:5px; background:white; color:#272b28; }
+.production-video { overflow:hidden; border-radius:8px; background:#151917; }
+.production-video video { width:100%; max-height:540px; }
+.production-content>section { padding:32px 0; border-bottom:1px solid #d9ddd7; }
+.production-content h2 { font-size:19px; font-weight:700; margin-bottom:14px; }
+.production-content h2 small { font-size:13px; font-weight:400; color:#6a746d; }
+.production-model p { font-size:18px; }
+.production-model small { display:block; font-size:13px; color:#6a746d; }
+.production-help { color:#657168; font-size:14px; margin:12px 0 20px; }
+.production-input-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; }
+.production-note .episode-input-asset { background:white; border:1px solid #d9ddd7; border-radius:6px; overflow:hidden; min-width:0; }
+.production-note .episode-input-preview { width:100%; background:#eceee9; }
+.production-note .episode-input-preview img { width:100%; height:240px; object-fit:contain; }
+.production-note .episode-input-copy { padding:16px; color:#303b34; }
+.production-note .episode-input-copy span,.production-note .episode-input-copy small,.production-note .episode-input-copy p { color:#647067; overflow-wrap:anywhere; font-size:12px; }
+.production-note .episode-input-copy h3 { color:#273d30; font-size:15px; }
+.production-note .episode-prompt-copy { background:white; color:#304d3b; border-color:#b8c6ba; border-radius:5px; font-size:14px; }
+.production-note .episode-copy-status { color:#526a59; }
+.production-prompt pre { white-space:pre-wrap; overflow-wrap:anywhere; background:#fff; border:1px solid #d9ddd7; border-radius:6px; padding:24px; font-size:14px; line-height:1.9; margin-top:16px; }
+.production-back-bottom { margin-top:32px; }
+@media(max-width:600px) { .production-note { padding:20px 18px 40px; } .production-input-grid { grid-template-columns:1fr; } .production-prompt pre { padding:16px; font-size:13px; } }

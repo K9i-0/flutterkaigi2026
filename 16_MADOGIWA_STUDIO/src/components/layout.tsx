@@ -23,6 +23,7 @@ export function Layout() {
   }, [pathname, hash]);
 
   if (admin) return <StudioLayout />;
+  if (/^\/episodes\/[^/]+\/?$/.test(pathname)) return <main className="production-shell"><Outlet /></main>;
 
   const classic = <div className="official-shell">
     <header className="official-header">

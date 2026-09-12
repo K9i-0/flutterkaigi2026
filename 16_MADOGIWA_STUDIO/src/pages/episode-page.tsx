@@ -1,124 +1,37 @@
-import { useState } from "react";
-import { ArrowLeft, CalendarDays, FileText, Film, ImageIcon, Music2, Paperclip, Sparkles, Star, Users } from "lucide-react";
-import { Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { ArrowLeft, ImageIcon, Music2, Paperclip } from "lucide-react";
 import { DeferredVideo } from "@/components/deferred-video";
-import { MovieCard } from "@/components/movie-card";
-import { ShareActions } from "@/components/share-actions";
 import { DocumentPreview } from "@/components/document-preview";
 import { ZoomableImage } from "@/components/image-lightbox";
-import {
-  absoluteUrl,
-  episodePoster,
-  type PublicEpisodeDetail,
-  type PublicInputAsset,
-  type PublicProduction,
-  type PublicVideo,
-} from "@/lib/public-data";
-import { formatDate } from "@/lib/utils";
+import { episodePoster, type PublicEpisodeDetail, type PublicInputAsset } from "@/lib/public-data";
+import "./production-note.css";
 
 export function EpisodePage({ detail }: { detail: PublicEpisodeDetail }) {
-  const { episode, members, videos, productions, related } = detail;
-  const primaryVideo = videos[0] ?? null;
-  const primaryProduction = productions.find((production) => production.generation_id === primaryVideo?.generation_id) ?? null;
-  const pagePath = `/episodes/${episode.slug}`;
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "VideoObject",
-    name: episode.title,
-    description: episode.summary || "窓際族たちの新しい物語。",
-    thumbnailUrl: [absoluteUrl(episodePoster(detail))],
-    uploadDate: episode.published_at ?? episode.updated_at,
-    contentUrl: primaryVideo ? absoluteUrl(`/media/${primaryVideo.id}`) : undefined,
-    url: absoluteUrl(pagePath),
-  };
-
-  return <div className="episode-detail-page">
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
-    <Link to="/episodes" className="archive-back"><ArrowLeft /> EPISODES</Link>
-
-    <header className="episode-detail-header">
-      <div className="episode-detail-media">
-        {primaryVideo
-          ? <DeferredVideo src={`/media/${primaryVideo.id}`} poster={primaryVideo.poster_url ?? episodePoster(detail)} label={primaryVideo.label || episode.title} />
-          : <img src={episodePoster(detail)} alt={`${episode.title}のキービジュアル`} />}
-      </div>
-      <div className="episode-detail-copy">
-        <div>
-          <span>{episode.studio_id}</span>
-          {primaryVideo ? <small>{primaryVideo.is_featured ? <><Star fill="currentColor" /> PICK UP</> : "EPISODE VIDEO"}</small> : null}
-        </div>
-        <h1>{episode.title}</h1>
-        {primaryVideo ? <p className="episode-primary-video-label">{primaryVideo.label}</p> : null}
-        <p>{episode.summary || "窓際族たちの新しい物語。"}</p>
-        <div className="episode-detail-facts">
-          <span><CalendarDays />{formatDate(episode.published_at ?? episode.updated_at)}</span>
-          <span><Film />{videos.length} VIDEO{videos.length === 1 ? "" : "S"}</span>
-          <span><Users />{members.length} CAST</span>
-          {primaryProduction ? <span><Sparkles />v{primaryProduction.version}{primaryProduction.model_name ? ` · ${primaryProduction.model_name}` : ""}</span> : null}
-        </div>
-        <ShareActions title={episode.title} path={pagePath} />
-        <a className="episode-making-jump" href="#production">この動画の作り方を見る ↓</a>
-      </div>
-    </header>
-
-    {videos.length > 1 ? <section className="episode-video-section" aria-labelledby="episode-video-heading">
-      <div className="episode-section-label"><Film /><span id="episode-video-heading">MORE VIDEOS</span></div>
-      <div className="episode-more-videos">
-        {videos.slice(1).map((video) => {
-          const production = productions.find((item) => item.generation_id === video.generation_id) ?? null;
-          return <article key={video.id}>
-            <DeferredVideo src={`/media/${video.id}`} poster={video.poster_url ?? episodePoster(detail)} label={video.label} />
-            <div><h3>{video.label}</h3>{production ? <small>v{production.version}{production.model_name ? ` · ${production.model_name}` : ""}</small> : null}</div>
-          </article>;
-        })}
-      </div>
-    </section> : null}
-
-    {productions.length ? <ProductionSection productions={productions} videos={videos} /> : <section id="production" className="episode-production-section"><h2>この動画の作り方</h2>{videos.map((video) => <span key={video.id} id={`making-${video.id}`} />)}<p>この作品の制作資料はまだ公開されていません。</p></section>}
-
-    {members.length ? <section className="episode-cast-section" aria-labelledby="episode-cast-heading">
-      <div className="episode-section-label"><Users /><span id="episode-cast-heading">CAST</span></div>
-      <div className="episode-cast-grid">{members.map((member) => <Link key={member.id} to="/characters/$slug" params={{ slug: member.id }}>
-        <span>{member.name}</span><small>CHARACTER PROFILE →</small>
-      </Link>)}</div>
-    </section> : null}
-
-    {related.length ? <section className="episode-related-section" aria-labelledby="episode-related-heading">
-      <div className="episode-section-label"><Film /><span id="episode-related-heading">RELATED EPISODES</span></div>
-      <div className="movie-archive-grid">{related.map((item, index) => <MovieCard key={item.id} episode={item} index={index} />)}</div>
-    </section> : null}
-  </div>;
-}
-
-function ProductionSection({ productions, videos }: { productions: PublicProduction[]; videos: PublicVideo[] }) {
-  return <section id="production" className="episode-production-section" aria-labelledby="episode-production-heading">
-    <div className="episode-section-label"><Sparkles /><span id="episode-production-heading">この動画の作り方</span></div>
-    <p className="episode-making-intro">制作時のモデル、実際に使ったプロンプトと参照素材を、生成バージョンごとに公開しています。モデルを確認し、入力素材の参照番号とプロンプトを照らし合わせてご覧ください。</p>
-    <div className="episode-production-list">{productions.map((production) => {
-      const labels = videos.filter((video) => video.generation_id === production.generation_id).map((video) => video.label);
-      return <article className="episode-production" key={production.generation_id}>
-        {videos.filter((video) => video.generation_id === production.generation_id).map((video) => <span className="episode-making-anchor" id={`making-${video.id}`} key={video.id} />)}
-        <header>
-          <div><span>GENERATION v{production.version}</span><h2>{production.label}</h2></div>
-          <div>{production.model_name ? <span>{production.model_name}</span> : null}{labels.map((label) => <small key={label}>{label}</small>)}</div>
-        </header>
-        <div className="episode-production-grid">
-          <div className="episode-prompt-card">
-            <div><FileText /><span>プロンプト</span>{production.prompt ? <small>revision {production.prompt.version}</small> : null}</div>
-            {production.prompt
-              ? <><h3>{production.prompt.label}</h3><PromptBody body={production.prompt.body} /></>
-              : <p>この動画のプロンプトはまだ登録されていません。</p>}
-          </div>
-          <div className="episode-inputs-card">
-            <div><Paperclip /><span>入力素材</span><small>{production.inputs.length}</small></div>
-            {production.inputs.length
-              ? <div className="episode-input-grid">{production.inputs.map((asset) => <InputAssetPreview key={asset.id} asset={asset} />)}</div>
-              : <p>この生成にはインプット素材が登録されていません。</p>}
-          </div>
-        </div>
-      </article>;
-    })}</div>
-  </section>;
+  const { episode, videos, productions } = detail;
+  const [selected, setSelected] = useState(videos[0]?.id ?? "");
+  const [returnTo, setReturnTo] = useState("/?page=movies");
+  useEffect(() => {
+    const requested = location.hash.replace("#making-", "");
+    if (videos.some((video) => video.id === requested)) setSelected(requested);
+    try {
+      const saved = JSON.parse(sessionStorage.getItem("madogiwa-production-return") ?? "null");
+      if (saved?.slug === episode.slug && typeof saved.href === "string" && saved.href.startsWith("/") && !saved.href.startsWith("//")) setReturnTo(saved.href);
+    } catch { /* Direct visits return to the video list. */ }
+  }, [episode.slug, videos]);
+  const video = videos.find((item) => item.id === selected) ?? videos[0];
+  const production = productions.find((item) => item.generation_id === video?.generation_id);
+  return <article className="production-note">
+    <a className="production-back" href={returnTo}><ArrowLeft size={17} />動画に戻る</a>
+    <header className="production-heading"><p>窓際族物語 / 制作ノート</p><h1>{episode.title}</h1></header>
+    {videos.length > 1 && <label className="production-select">制作バージョン<select value={video?.id} onChange={(event) => { setSelected(event.target.value); history.replaceState(null, "", `#making-${event.target.value}`); }}>{videos.map((item) => <option key={item.id} value={item.id}>{item.label || "動画"} · v{productions.find((p) => p.generation_id === item.generation_id)?.version ?? "—"}</option>)}</select></label>}
+    {video && <section className="production-video"><DeferredVideo key={video.id} src={`/media/${video.id}`} poster={video.poster_url ?? episodePoster(detail)} label={video.label || episode.title} /></section>}
+    {production ? <div id={`making-${video?.id}`} className="production-content">
+      <section className="production-model"><h2>使用モデル</h2><p>{production.model_name || "未登録"}<small>生成 v{production.version} · {production.label}</small></p></section>
+      <section className="production-inputs"><h2>入力素材 <small>{production.inputs.length}件</small></h2><p className="production-help">参照番号をプロンプト内の指定と照らし合わせてご覧ください。</p>{production.inputs.length ? <div className="production-input-grid">{production.inputs.map((asset) => <InputAssetPreview key={asset.id} asset={asset} />)}</div> : <p>入力素材はまだ公開されていません。</p>}</section>
+      <section className="production-prompt"><h2>プロンプト</h2>{production.prompt ? <><p className="production-help">{production.prompt.label} · revision {production.prompt.version}</p><PromptBody key={production.generation_id} body={production.prompt.body} /></> : <p>プロンプトはまだ公開されていません。</p>}</section>
+    </div> : <p className="production-help">この動画の制作資料はまだ公開されていません。</p>}
+    <a className="production-back production-back-bottom" href={returnTo}><ArrowLeft size={17} />動画に戻る</a>
+  </article>;
 }
 
 function InputAssetPreview({ asset }: { asset: PublicInputAsset }) {
