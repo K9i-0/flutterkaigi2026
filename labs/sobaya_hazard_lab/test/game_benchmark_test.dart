@@ -104,7 +104,125 @@ class CompletionController extends Fake implements HazardGameController {
   void prepareStaticFrame() => calls.add('prepareStaticFrame');
 }
 
+class RegionPreparationController extends Fake implements HazardGameController {
+  @override
+  HazardGameState? state = _state('mountain');
+  @override
+  bool disposed = false;
+  @override
+  int runEpoch = 0;
+  Future<bool>? restartResult, transitionResult;
+  int restarts = 0, transitions = 0;
+  bool leaveRegionUnchanged = false;
+
+  static HazardGameState _state(String region) => HazardGameState(
+    jsonDecode(File('assets/$region.json').readAsStringSync()),
+  );
+
+  @override
+  Future<bool> restart() async {
+    restarts++;
+    if (!await (restartResult ?? Future.value(true))) return false;
+    state = _state('village');
+    runEpoch++;
+    return true;
+  }
+
+  @override
+  Future<bool> transitionRegion() async {
+    transitions++;
+    if (!await (transitionResult ?? Future.value(true))) return false;
+    if (!leaveRegionUnchanged) {
+      state = _state(state!.exitRequested!['target'] as String);
+    }
+    return true;
+  }
+}
+
 void main() {
+  group('benchmark region preparation', () {
+    test('waits for restart and region load before reporting ready', () async {
+      final game = RegionPreparationController();
+      final restart = Completer<bool>(), transition = Completer<bool>();
+      game.restartResult = restart.future;
+      game.transitionResult = transition.future;
+      var ready = false;
+      final pending = GameBenchmark.prepareRegion(
+        game,
+        'farm',
+        cancelled: () => false,
+      ).then((value) => ready = value);
+      expect(game.transitions, 0);
+      expect(ready, false);
+      restart.complete(true);
+      await flushReads();
+      expect(game.transitions, 1);
+      expect(game.state!.zoneId, 'village');
+      expect(ready, false);
+      transition.complete(true);
+      await pending;
+      expect(game.state!.zoneId, 'farm');
+      expect(ready, true);
+    });
+
+    test('failed or cyclic transitions terminate without spinning', () async {
+      final failed = RegionPreparationController()
+        ..transitionResult = Future.value(false);
+      expect(
+        await GameBenchmark.prepareRegion(
+          failed,
+          'mountain',
+          cancelled: () => false,
+        ),
+        false,
+      );
+      expect(failed.transitions, 1);
+      final cyclic = RegionPreparationController()..leaveRegionUnchanged = true;
+      expect(
+        await GameBenchmark.prepareRegion(
+          cyclic,
+          'mountain',
+          cancelled: () => false,
+        ),
+        false,
+      );
+      expect(cyclic.transitions, 1);
+    });
+
+    test('cancellation during restart never starts the next region', () async {
+      final game = RegionPreparationController(), gate = Completer<bool>();
+      game.restartResult = gate.future;
+      var cancelled = false;
+      final pending = GameBenchmark.prepareRegion(
+        game,
+        'farm',
+        cancelled: () => cancelled,
+      );
+      cancelled = true;
+      gate.complete(true);
+      expect(await pending, false);
+      expect(game.transitions, 0);
+    });
+
+    test(
+      'disposal while a region loads prevents subsequent transitions',
+      () async {
+        final game = RegionPreparationController(), gate = Completer<bool>();
+        game.transitionResult = gate.future;
+        final pending = GameBenchmark.prepareRegion(
+          game,
+          'mountain',
+          cancelled: () => false,
+        );
+        await flushReads();
+        game.disposed = true;
+        gate.complete(true);
+        expect(await pending, false);
+        expect(game.transitions, 1);
+      },
+    );
+  });
+
   group('benchmark log transport', () {
     test(
       'UTF-8 Japanese JSON survives shuffled ASCII chunks below 700 characters',
@@ -120,7 +238,7 @@ void main() {
               (i) => {
                 ...deviceSnapshot(cpu: i * 25.5, uptime: 10000 + i * 10.0),
                 'caseElapsedMs': i * 10000,
-                    'note': '福ちゃん／そば屋、"改行"\nとタブ\tも保持',
+                'note': '福ちゃん／そば屋、"改行"\nとタブ\tも保持',
               },
             ),
           },

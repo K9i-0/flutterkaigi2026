@@ -11,7 +11,7 @@ Future<Map<String, Object?>> probeConversation(
   HazardGameController game,
 ) async {
   final snapshots = <Map<String, Object?>>[];
-  final clock = Stopwatch()..start();
+  final clock = Stopwatch();
   int? epoch;
   Map<String, Object?> snapshot(String stage) => {
     'stage': stage,
@@ -92,13 +92,31 @@ Future<Map<String, Object?>> probeConversation(
     if (!game.ready || !game.foreground || game.disposed) {
       throw StateError('Ready foreground game required; no run was reset');
     }
-    game.restart();
+    if (!await game.restart() || game.disposed) {
+      throw StateError('Probe could not load the village');
+    }
     epoch = game.runEpoch;
+    clock.start();
     game.startEvent('opening');
-    game.advanceEvent();
-    await observeSpeaker('やめ太郎', 1);
+    final shots = game.director!.shots;
+    final firstShot = shots.indexWhere(
+      (shot) => ['福ちゃん', 'やめ太郎'].contains(shot.speaker),
+    );
+    if (firstShot < 0) throw StateError('Opening has no playable speaker');
+    final firstSpeaker = shots[firstShot].speaker;
+    final secondSpeaker = firstSpeaker == '福ちゃん' ? 'やめ太郎' : '福ちゃん';
+    final secondShot = shots.indexWhere(
+      (shot) => shot.speaker == secondSpeaker,
+    );
+    if (secondShot <= firstShot) {
+      throw StateError('Opening must contain both actors for this voice probe');
+    }
+    while (game.director!.index < firstShot) {
+      game.advanceEvent();
+    }
+    await observeSpeaker(firstSpeaker, firstShot);
     final pausedPosition = game.voice.playbackSeconds!;
-    await pauseAndCheck('paused-yametaro');
+    await pauseAndCheck('paused:$firstSpeaker');
     game.setEventPaused(false);
     await until(
       () => game.voice.speaking && game.voice.playbackSeconds != null,
@@ -106,10 +124,12 @@ Future<Map<String, Object?>> probeConversation(
     if (game.voice.playbackSeconds! + .05 < pausedPosition) {
       throw StateError('Audio rewound after resume');
     }
-    snapshots.add(snapshot('resumed-yametaro'));
-    game.advanceEvent();
-    await observeSpeaker('福ちゃん', 2);
-    await pauseAndCheck('paused-fukuchan');
+    snapshots.add(snapshot('resumed:$firstSpeaker'));
+    while (game.director!.index < secondShot) {
+      game.advanceEvent();
+    }
+    await observeSpeaker(secondSpeaker, secondShot);
+    await pauseAndCheck('paused:$secondSpeaker');
     return {
       'success': true,
       'probe': 'conversation',
@@ -138,7 +158,7 @@ Future<Map<String, Object?>> probeCompanionVoice(
   HazardGameController game,
   String id,
 ) async {
-  final clock = Stopwatch()..start();
+  final clock = Stopwatch();
   final snapshots = <Map<String, Object?>>[];
   final benchmark = game.benchmarkMode;
   int? epoch;
@@ -168,7 +188,9 @@ Future<Map<String, Object?>> probeCompanionVoice(
       throw StateError('Ready foreground game required');
     }
     game.benchmarkMode = true;
-    game.restart();
+    if (!await game.restart() || game.disposed) {
+      throw StateError('Probe could not load the village');
+    }
     epoch = game.runEpoch;
     // Takosan now lives in the farm. Follow the same region transport used
     // by the deterministic companion scenario before looking up its node.
@@ -180,10 +202,15 @@ Future<Map<String, Object?>> probeCompanionVoice(
         (village.map['exits'] as List).first,
       );
       village.phase = PlayPhase.transition;
-      game.transitionRegion();
+      if (!await game.transitionRegion() ||
+          game.disposed ||
+          game.runEpoch != epoch) {
+        throw StateError('Probe could not load the farm');
+      }
       game.director = null;
       game.state!.phase = PlayPhase.playing;
     }
+    clock.start();
     final s = game.state!;
     final npc = s.npcs.firstWhere((n) => n['id'] == id);
     s.x = (npc['x'] as num).toDouble() + 2.5;
@@ -227,7 +254,9 @@ Future<Map<String, Object?>> probeCompanionVoice(
       'snapshots': snapshots,
     };
   } finally {
-    game.benchmarkMode = benchmark;
+    if (!game.disposed && (epoch == null || game.runEpoch == epoch)) {
+      game.benchmarkMode = benchmark;
+    }
     if (epoch != null && game.runEpoch == epoch && !game.disposed) {
       game.state!
         ..phase = PlayPhase.paused

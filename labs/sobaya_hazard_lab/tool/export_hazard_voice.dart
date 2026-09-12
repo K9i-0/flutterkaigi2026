@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:sobaya_hazard_lab/game/game_dialogue.dart';
 import 'package:sobaya_hazard_lab/game/game_events.dart';
 import 'package:sobaya_hazard_lab/game/game_state.dart';
+import 'package:sobaya_hazard_lab/game/game_tutorial_text.dart';
 
 void main(List<String> args) {
   final rows = <String, Map<String, dynamic>>{};
@@ -15,6 +16,10 @@ void main(List<String> args) {
       () => {'speaker': speaker, 'text': text, 'uses': <String>[]},
     );
     (row['uses'] as List).add(usage);
+  }
+
+  for (final entry in tutorialCoachLines.entries) {
+    add('やめ太郎', entry.value, 'tutorial:${entry.key}');
   }
 
   add(
@@ -38,6 +43,7 @@ void main(List<String> args) {
   for (final owner in {
     'yametaro': yametaroDialogue,
     'takosan': takosanDialogue,
+    'farm_mission': farmMissionDialogue,
     'reaction': companionReactions,
     'mountain_yametaro_before': mountainYametaroBefore,
     'mountain_yametaro_after': mountainYametaroAfter,

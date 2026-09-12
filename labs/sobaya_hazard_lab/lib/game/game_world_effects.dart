@@ -100,11 +100,9 @@ double hazardFireLightDistanceGain(double distance) {
 
 class HazardWorldEffects {
   HazardWorldEffects(this.scene, {required Map<String, Node> environments}) {
-    // Preserve the authored logs, stone ring and collision footprint.
-    for (var i = 0; i < 6; i++) {
-      environments['village']?.getChildByName('Flame_$i')?.visible = false;
+    for (final entry in environments.entries) {
+      prepareEnvironment(entry.key, entry.value);
     }
-    environments['farm']?.add(_buildMerchantShelf());
     for (final batch in [_flames, _smoke, _glow]) {
       scene.add(batch.node);
     }
@@ -118,6 +116,20 @@ class HazardWorldEffects {
         ..addComponent(PointLightComponent(light));
       _lights.add((node: node, light: light));
       scene.add(node);
+    }
+  }
+
+  /// Reapply per-instance details whenever a streamed environment is realized.
+  static void prepareEnvironment(String id, Node environment) {
+    if (id == 'village') {
+      // Preserve the authored logs, stone ring and collision footprint.
+      for (var i = 0; i < 6; i++) {
+        environment.getChildByName('Flame_$i')?.visible = false;
+      }
+    }
+    if (id == 'farm' &&
+        environment.getChildByName('TakosanSupplyShelf') == null) {
+      environment.add(_buildMerchantShelf());
     }
   }
 

@@ -381,7 +381,7 @@ class GameBenchmark {
       enabled: game.settings.cinematicLighting,
       preset: game.settings.graphicsPreset,
     );
-    next();
+    unawaited(next());
     timer = Timer.periodic(
       const Duration(milliseconds: 500),
       (_) => unawaited(poll()),
@@ -390,7 +390,7 @@ class GameBenchmark {
   final HazardGameController game;
   final GameBenchmarkConfig configuration;
   final GameBenchmarkDiagnostics diagnostics;
-  bool _disposed = false, _closingCase = false;
+  bool _disposed = false, _closingCase = false, _preparingCase = false;
   Timer? timer;
   final watch = Stopwatch();
   int index = -1;
@@ -544,126 +544,169 @@ class GameBenchmark {
     ),
   ];
 
-  void next() {
-    if (_disposed) return;
-    index++;
-    if (index == cases.length) {
-      dispose();
-      pauseCompletedWorkload(game);
-      debugPrintSynchronously('HAZARD_GAME_BENCHMARK_COMPLETE');
-      return;
-    }
-    final c = cases[index];
-    game.restart();
-    while (game.state!.zoneId != c.region) {
+  /// Load each required region before fixtures or measurement clocks begin.
+  /// A rejected transition must not spin forever on the same old region.
+  @visibleForTesting
+  static Future<bool> prepareRegion(
+    HazardGameController game,
+    String region, {
+    required bool Function() cancelled,
+  }) async {
+    if (cancelled() || game.disposed || !await game.restart()) return false;
+    if (cancelled() || game.disposed) return false;
+    final epoch = game.runEpoch;
+    final visited = <String>{};
+    while (game.state!.zoneId != region) {
       final current = game.state!;
+      if (!visited.add(current.zoneId)) return false;
       current.exitRequested = Map<String, dynamic>.from(
         (current.map['exits'] as List).last,
       );
       current.phase = PlayPhase.transition;
-      game.transitionRegion();
-    }
-    game.director = null;
-    final s = game.state!;
-    s.seenEvents.addAll(['opening', 'farm', 'last_order', 'ending']);
-    s.checkpointRequested = false;
-    s.phase = PlayPhase.playing;
-    final baseX = c.region == 'mountain' ? 8.0 : 0.0;
-    final baseZ = c.region == 'mountain'
-        ? 1.0
-        : c.region == 'farm'
-        ? -8.0
-        : -13.0;
-    s.x = baseX;
-    s.z = baseZ;
-    s.health = 100000;
-    for (final e in s.enemies) {
-      e.active = e.id < c.count;
-      e.alerted = false;
-      e.x = baseX + (e.id % 4 - 1.5) * 1.5;
-      e.z = baseZ + 6 + (e.id ~/ 4) * 2;
-      e.heading = math.atan2(s.x - e.x, s.z - e.z);
-      e.ambientDance = null;
-    }
-    // Align the saved-settings snapshot with the actual workload. The previous
-    // full-resolution cases incorrectly logged the constructor's 85% setting.
-    game.settings.renderScale = overrideScale ?? c.scale;
-    game.scene.renderScale = game.settings.renderScale;
-    game.contactShadows?.node.visible = c.contacts;
-    windowMotionTicks = completedPassages = 0;
-    playerWasVaulting = false;
-    pursuitTicks = searchTicks = beerPreviewTicks = 0;
-    maxConcurrentSearchers = maxBeerGuideSprites = 0;
-    observedPursuers.clear();
-    movingSearchers.clear();
-    advancedSearchers.clear();
-    if (c.name == 'stealth-search') {
-      // A recorded sighting outside the barn, followed by the player hiding
-      // inside its real west wall. AI must generate and visit its own guesses.
-      s.x = -7.8;
-      s.z = 11;
-      s.yaw = math.pi / 2;
-      s.invulnerable = 100000;
-      for (final e in s.enemies.where((e) => e.active)) {
-        e
-          ..x = -10.8
-          ..z = 6.5 + e.id * 1.2
-          ..heading = 0
-          ..alerted = true
-          ..lastKnownX = -10.5
-          ..lastKnownY = 0
-          ..lastKnownZ = 11
-          ..knowledgeSource = 'sight'
-          ..knowledgeTime = s.time
-          ..observedHeading = 0;
-      }
-    } else if (c.name == 'beer-preview') {
-      s.beers = 10;
-      s.equip('beer');
-      s.aiming = true;
-      s.pitch = -.15;
-      s.invulnerable = 100000;
-    } else if (c.event == null && !c.name.startsWith('window-')) {
-      stageVisiblePursuers(baseX, baseZ);
-    }
-    if (c.name.startsWith('window-')) {
-      final w = s.windows.first;
-      s.x = w.x;
-      s.y = 0;
-      s.pitch = .12;
-      s.invulnerable = 100000;
-      if (c.name == 'window-player') {
-        s.z = w.entryZ(true);
-        s.yaw = math.pi;
-      } else {
-        s.z = w.exitZ(true) + 2;
-        s.yaw = 0;
-        resetWindowEnemies();
+      if (!await game.transitionRegion() ||
+          cancelled() ||
+          game.disposed ||
+          game.runEpoch != epoch) {
+        return false;
       }
     }
-    if (c.event != null) {
-      s.seenEvents.remove(c.event);
-      if (c.event == 'opening') {
-        // Reverse shots are authored at the actual entrance. The generic
-        // crowd staging point left Fukuchan outside his own camera frame.
-        s.x = (s.map['spawn']['x'] as num).toDouble();
-        s.z = (s.map['spawn']['z'] as num).toDouble();
+    return true;
+  }
+
+  Future<void> next() async {
+    if (_disposed || _preparingCase) return;
+    _preparingCase = true;
+    watch.stop();
+    try {
+      index++;
+      if (index == cases.length) {
+        dispose();
+        pauseCompletedWorkload(game);
+        debugPrintSynchronously('HAZARD_GAME_BENCHMARK_COMPLETE');
+        return;
       }
-      game.startEvent(c.event!);
-      if (c.event == 'opening') game.director!.index = 1;
+      final c = cases[index];
+      if (!await prepareRegion(game, c.region, cancelled: () => _disposed)) {
+        if (_disposed || game.disposed) return;
+        throw StateError('Could not load benchmark region ${c.region}');
+      }
+      game.director = null;
+      final s = game.state!;
+      final caseEpoch = game.runEpoch;
+      s.seenEvents.addAll(['opening', 'farm', 'last_order', 'ending']);
+      s.checkpointRequested = false;
+      s.phase = PlayPhase.playing;
+      final baseX = c.region == 'mountain' ? 8.0 : 0.0;
+      final baseZ = c.region == 'mountain'
+          ? 1.0
+          : c.region == 'farm'
+          ? -8.0
+          : -13.0;
+      s.x = baseX;
+      s.z = baseZ;
+      s.health = 100000;
+      for (final e in s.enemies) {
+        e.active = e.id < c.count;
+        e.alerted = false;
+        e.x = baseX + (e.id % 4 - 1.5) * 1.5;
+        e.z = baseZ + 6 + (e.id ~/ 4) * 2;
+        e.heading = math.atan2(s.x - e.x, s.z - e.z);
+        e.ambientDance = null;
+      }
+      // Align the saved-settings snapshot with the actual workload. The previous
+      // full-resolution cases incorrectly logged the constructor's 85% setting.
+      game.settings.renderScale = overrideScale ?? c.scale;
+      game.scene.renderScale = game.settings.renderScale;
+      game.contactShadows?.node.visible = c.contacts;
+      windowMotionTicks = completedPassages = 0;
+      playerWasVaulting = false;
+      pursuitTicks = searchTicks = beerPreviewTicks = 0;
+      maxConcurrentSearchers = maxBeerGuideSprites = 0;
+      observedPursuers.clear();
+      movingSearchers.clear();
+      advancedSearchers.clear();
+      if (c.name == 'stealth-search') {
+        // A recorded sighting outside the barn, followed by the player hiding
+        // inside its real west wall. AI must generate and visit its own guesses.
+        s.x = -7.8;
+        s.z = 11;
+        s.yaw = math.pi / 2;
+        s.invulnerable = 100000;
+        for (final e in s.enemies.where((e) => e.active)) {
+          e
+            ..x = -10.8
+            ..z = 6.5 + e.id * 1.2
+            ..heading = 0
+            ..alerted = true
+            ..lastKnownX = -10.5
+            ..lastKnownY = 0
+            ..lastKnownZ = 11
+            ..knowledgeSource = 'sight'
+            ..knowledgeTime = s.time
+            ..observedHeading = 0;
+        }
+      } else if (c.name == 'beer-preview') {
+        s.beers = 10;
+        s.equip('beer');
+        s.aiming = true;
+        s.pitch = -.15;
+        s.invulnerable = 100000;
+      } else if (c.event == null && !c.name.startsWith('window-')) {
+        stageVisiblePursuers(baseX, baseZ);
+      }
+      if (c.name.startsWith('window-')) {
+        final w = s.windows.first;
+        s.x = w.x;
+        s.y = 0;
+        s.pitch = .12;
+        s.invulnerable = 100000;
+        if (c.name == 'window-player') {
+          s.z = w.entryZ(true);
+          s.yaw = math.pi;
+        } else {
+          s.z = w.exitZ(true) + 2;
+          s.yaw = 0;
+          resetWindowEnemies();
+        }
+      }
+      if (c.event != null) {
+        s.seenEvents.remove(c.event);
+        if (c.event == 'opening') {
+          // Reverse shots are authored at the actual entrance. The generic
+          // crowd staging point left Fukuchan outside his own camera frame.
+          s.x = (s.map['spawn']['x'] as num).toDouble();
+          s.z = (s.map['spawn']['z'] as num).toDouble();
+        }
+        game.startEvent(c.event!);
+        if (c.event == 'opening') game.director!.index = 1;
+      }
+      heardAmbience = heardSpeech = false;
+      speechMorphTicks.clear();
+      interrupted = false;
+      await diagnostics.beginCase();
+      if (_disposed || game.disposed) return;
+      if (game.runEpoch != caseEpoch || !identical(game.state, s)) {
+        throw StateError('Benchmark run was replaced during setup');
+      }
+      game.frames.reset();
+      watch
+        ..reset()
+        ..start();
+    } catch (error) {
+      if (!_disposed) {
+        debugPrintSynchronously(
+          'HAZARD_GAME_BENCHMARK_SETUP_ERROR ${jsonEncode({'case': index >= 0 && index < cases.length ? cases[index].name : null, 'error': '$error', 'valid': false})}',
+        );
+        dispose();
+        pauseCompletedWorkload(game);
+      }
+    } finally {
+      _preparingCase = false;
     }
-    game.frames.reset();
-    heardAmbience = heardSpeech = false;
-    speechMorphTicks.clear();
-    interrupted = false;
-    watch
-      ..reset()
-      ..start();
-    unawaited(diagnostics.beginCase());
   }
 
   Future<void> poll() async {
-    if (_disposed || _closingCase) return;
+    if (_disposed || _closingCase || _preparingCase) return;
     diagnostics.poll();
     if (!configuration.shouldFinish(
       watch.elapsed,
@@ -689,7 +732,7 @@ class GameBenchmark {
         'benchmarkDeadlineSeconds': configuration.deadlineSeconds,
         'benchmarkFrameRateLimit': configuration.frameRateLimit,
         'settings': jsonDecode(game.settings.encode()),
-          'lighting': game.lighting.inspect(game.scene),
+        'lighting': game.lighting.inspect(game.scene),
         'audio': {
           'observedAmbience': heardAmbience,
           'observedSpeech': heardSpeech,
@@ -755,7 +798,7 @@ class GameBenchmark {
         debugPrintSynchronously(line);
       }
       debugPrintSynchronously('HAZARD_GAME_BENCHMARK $payload');
-      next();
+      await next();
     } finally {
       _closingCase = false;
     }
@@ -806,6 +849,7 @@ class GameBenchmark {
   // so a pause cannot disappear from the benchmark's interruption history.
   void observeState() {
     if (!_disposed &&
+        !_preparingCase &&
         index >= 0 &&
         index < cases.length &&
         (!game.foreground || game.state!.phase != expectedPhase)) {
@@ -814,7 +858,7 @@ class GameBenchmark {
   }
 
   void tick() {
-    if (_disposed) return;
+    if (_disposed || _preparingCase) return;
     observeState();
     heardAmbience |= game.soundscape.ambience.speaking;
     heardSpeech |= game.voice.speaking;

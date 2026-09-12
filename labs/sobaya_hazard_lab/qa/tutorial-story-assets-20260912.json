@@ -1,0 +1,257 @@
+{
+  "date": "2026-09-12",
+  "status": "story-and-audio-assets-validated-runtime-integration-owned-by-root",
+  "story": {
+    "events": {
+      "opening": 3,
+      "chapter1intro": 2,
+      "farm": 7
+    },
+    "tutorialSteps": [
+      "move",
+      "aim",
+      "shoot",
+      "reload",
+      "sneak",
+      "escape",
+      "complete"
+    ],
+    "farmMissionTopics": [
+      "request",
+      "ready",
+      "complete"
+    ],
+    "design": "design/tutorial-campaign-20260912.md"
+  },
+  "voice": {
+    "totalSpeechClips": 126,
+    "newOrChangedAdoptedClips": 20,
+    "unchangedTextClips": 106,
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "engineRevision": "8224dafb46d0aba89209a8f905f1cb7e3299d9c1",
+    "canonicalReferencesPreserved": true,
+    "takosanCast": "VOICEVOX:Voidoll style 89",
+    "clips": [
+      {
+        "id": "ca456e79bf590162",
+        "speaker": "やめ太郎",
+        "uses": [
+          "tutorial:move"
+        ],
+        "seconds": 4.920041666666667,
+        "sha256": "0c800de8758d4c39fc163af1b0e56a1d7ca8f0380a7f42df1ea3663596adef5a"
+      },
+      {
+        "id": "ed633b2c4c6f9b93",
+        "speaker": "やめ太郎",
+        "uses": [
+          "tutorial:aim"
+        ],
+        "seconds": 5.440041666666667,
+        "sha256": "04c201f7ef258c6e09d5db68ce7daa3cda255bead2e950cba04a85ba90966050"
+      },
+      {
+        "id": "731634046066cbf3",
+        "speaker": "やめ太郎",
+        "uses": [
+          "tutorial:shoot"
+        ],
+        "seconds": 4.840041666666667,
+        "sha256": "af30155d227ffc8aba8d2c7d04855da4355a7fb99aef0d86cf3a2d94feb11a7f"
+      },
+      {
+        "id": "1974b12f6dbefe30",
+        "speaker": "やめ太郎",
+        "uses": [
+          "tutorial:reload"
+        ],
+        "seconds": 6.080041666666666,
+        "sha256": "82ff89369630f9873d5d7d6bcee4a02e2430e8bd3d223798728cbc8607092719"
+      },
+      {
+        "id": "59ad49ec0d74fd52",
+        "speaker": "やめ太郎",
+        "uses": [
+          "tutorial:sneak"
+        ],
+        "seconds": 6.360041666666667,
+        "sha256": "35c14cfd9dcaabb0097fd68e6944dc6806221996cb2b8fa3e6b94fcb3226040c"
+      },
+      {
+        "id": "bd9088645e287815",
+        "speaker": "やめ太郎",
+        "uses": [
+          "tutorial:escape"
+        ],
+        "seconds": 5.800041666666667,
+        "sha256": "44327b4b9857c2b98273751b79fae5207932ae503c0f0a7ad430c92fdd079018"
+      },
+      {
+        "id": "18d1eee20f1d2369",
+        "speaker": "やめ太郎",
+        "uses": [
+          "tutorial:complete"
+        ],
+        "seconds": 5.2000416666666665,
+        "sha256": "64bfcee721524a1219d9ff9e71e912e45e1df61ae464a5c6df2eb65caedc7c3a"
+      },
+      {
+        "id": "045b65e3d1650928",
+        "speaker": "ナレーション",
+        "uses": [
+          "event:opening:0"
+        ],
+        "seconds": 8.770833333333334,
+        "sha256": "7ab79a32f2b136e19c3103f5c2c99dc0ebbcc5f4bc9f63992ba949305d45db9b"
+      },
+      {
+        "id": "e0a6c755e615d96b",
+        "speaker": "福ちゃん",
+        "uses": [
+          "event:opening:1"
+        ],
+        "seconds": 7.2000416666666665,
+        "sha256": "b9b91a0f6d91e49722364cfc2a8419e0212b11d34671d16e62fd2dde9c9f7a5e"
+      },
+      {
+        "id": "7930db24669ae72e",
+        "speaker": "やめ太郎",
+        "uses": [
+          "event:opening:2"
+        ],
+        "seconds": 8.160041666666666,
+        "sha256": "e07cdc5ea8c9bd034a0729f8816bc7ee8d0edad571c5070abdbf10e88d31f160"
+      },
+      {
+        "id": "52a4961dd52d0b79",
+        "speaker": "やめ太郎",
+        "uses": [
+          "event:chapter1intro:0"
+        ],
+        "seconds": 9.640041666666667,
+        "sha256": "930e5dd6ab83cf9bf45f25fcccb605879b85063ed14b7d374f313b784c506c1d"
+      },
+      {
+        "id": "169de0f5e29bcb03",
+        "speaker": "福ちゃん",
+        "uses": [
+          "event:chapter1intro:1"
+        ],
+        "seconds": 6.640041666666667,
+        "sha256": "d70fc8287e101443c7271b25f285521c01c18657577408f1a3f2f24a67d61d44"
+      },
+      {
+        "id": "c6c2ec58ec0573da",
+        "speaker": "ナレーション",
+        "uses": [
+          "event:farm:0"
+        ],
+        "seconds": 9.315333333333333,
+        "sha256": "6ce7267621a6f12bee813cf272357b7700863c6206157e897991ceeadb2ff1f3"
+      },
+      {
+        "id": "955b40112fe0dd48",
+        "speaker": "福ちゃん",
+        "uses": [
+          "event:farm:2"
+        ],
+        "seconds": 5.720041666666667,
+        "sha256": "cf2b68cd5772dc34588257fd937367798393ffd8806f07b9f8623d29658b5f17"
+      },
+      {
+        "id": "d94db7804f17b5fc",
+        "speaker": "たこさん",
+        "uses": [
+          "event:farm:5",
+          "dialogue:farm_mission:request:0"
+        ],
+        "seconds": 11.008,
+        "sha256": "a781025e1f01cac027da85d31047094994ef7863c7a5a4277ceb28552a7b42a7"
+      },
+      {
+        "id": "39291754985b9cb0",
+        "speaker": "福ちゃん",
+        "uses": [
+          "event:farm:6"
+        ],
+        "seconds": 6.080041666666666,
+        "sha256": "b6b08e87b4e775949723774cd2c2a68c9fb8c39a6416112a42b9809dcc286555"
+      },
+      {
+        "id": "d25780623784d5f3",
+        "speaker": "やめ太郎",
+        "uses": [
+          "dialogue:yametaro:combat:0"
+        ],
+        "seconds": 9.200041666666667,
+        "sha256": "6a489b692e92b7f393f9eccff319e5a8d23d4c4e1bf3002b44a7b16375ddaadf"
+      },
+      {
+        "id": "3417eea802e306b5",
+        "speaker": "やめ太郎",
+        "uses": [
+          "dialogue:yametaro:records:0"
+        ],
+        "seconds": 11.080041666666666,
+        "sha256": "5a7d4eda07ba30d0595a16d7ca00a5f8d1b2fad0ada962e8dc5b5c62655f0200"
+      },
+      {
+        "id": "915f5351b45e9c04",
+        "speaker": "たこさん",
+        "uses": [
+          "dialogue:farm_mission:request:1"
+        ],
+        "seconds": 12.202666666666667,
+        "sha256": "9f21e1237e691d60991d8b88627b71095600b993c6837cc6d096aa26d495e90a"
+      },
+      {
+        "id": "a7dc20d5d45ad330",
+        "speaker": "たこさん",
+        "uses": [
+          "dialogue:farm_mission:ready:0"
+        ],
+        "seconds": 9.984,
+        "sha256": "c424a0ef308c5b4fc24b82b1d70d1f9921d26267814566dd5b5a68b6223de396"
+      }
+    ]
+  },
+  "validation": {
+    "waveIntegrity": {
+      "status": "pass",
+      "clips": 126,
+      "report": "qa/tutorial-voice-assets-20260912.json"
+    },
+    "newSpeechTranscript": {
+      "status": "machine-screening-complete",
+      "clips": 20,
+      "report": "qa/tutorial-voice-transcript-20260912.json",
+      "limitations": "Whisper has homophone, proper-name and Kansai-dialect transcription errors. This environment cannot listen to audio input; no human listening or perceptual voice-identity approval is claimed."
+    },
+    "tests": {
+      "status": "pass",
+      "count": 6,
+      "files": [
+        "test/game_tutorial_voice_test.dart",
+        "test/game_speech_test.dart"
+      ],
+      "log": "evidence/tutorial-campaign-20260912/voice-tests.log"
+    },
+    "analysis": {
+      "status": "pass",
+      "items": 7,
+      "log": "evidence/tutorial-campaign-20260912/story-analyze.log"
+    },
+    "scenarioExport": {
+      "status": "pass",
+      "sourceTextEntries": 795,
+      "events": 6,
+      "imageTranscripts": 17,
+      "command": "python3 tool/export_hazard_text.py --check"
+    }
+  },
+  "scopeLimits": [
+    "This report verifies narrative tables, generated voice assets and text export. It does not claim tutorial input, mission progression, save compatibility or native playback passed.",
+    "Root owns tutorial and farm mission runtime integration; export runtime mission-state variants after its state API is fixed.",
+    "No CPU, GPU, memory or temperature improvement is inferred from these asset checks."
+  ]
+}

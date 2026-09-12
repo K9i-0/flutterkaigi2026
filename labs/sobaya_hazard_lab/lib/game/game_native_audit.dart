@@ -12,120 +12,156 @@ import 'game_camera.dart';
 /// Opt-in debug driver. Frames come from the real SceneView ticker; aiming uses
 /// the same camera and fire() as mouse/keyboard. No simulation fast-forward.
 class NativeCampaignAudit {
-  NativeCampaignAudit(this.game, {required bool completionist}) {
-    game.startRun();
-    final epoch = game.runEpoch;
-    driver = CampaignAudit(
-      game.campaign,
-      pump: () async {
-        do {
-          await Future<void>.delayed(const Duration(milliseconds: 16));
-          if (driver.cancelled ||
-              game.disposed ||
-              game.runEpoch != epoch ||
-              game.campaign != driver.campaign) {
-            throw StateError('Audit stopped or run replaced');
-          }
-        } while (!game.foreground ||
-            ![
-              PlayPhase.playing,
-              PlayPhase.dead,
-              PlayPhase.clear,
-              PlayPhase.transition,
-            ].contains(game.state!.phase));
-      },
-      steer: (dx, dz) {
-        final s = game.state!;
-        final targetYaw = math.atan2(-dx, -dz);
-        final turn = math.atan2(
-          math.sin(targetYaw - s.yaw),
-          math.cos(targetYaw - s.yaw),
-        );
-        s.yaw += turn * .15;
-        s.pitch += (.12 - s.pitch) * .15;
-        s.inputX = -dx * math.cos(s.yaw) + dz * math.sin(s.yaw);
-        s.inputY = -dx * math.sin(s.yaw) - dz * math.cos(s.yaw);
-        s.sprint = true;
-        s.aiming = false;
-      },
-      aimAndFire: (target) {
-        aimCamera(game, target);
-        final s = game.state!;
-        final ray = game.camera().screenPointToRay(
-          ui.Offset(game.viewport.width / 2, game.viewport.height / 2),
-          game.viewport,
-        );
-        final delta = target - ray.origin,
-            direction = ray.direction.normalized();
-        if (delta.cross(direction).length > .1 ||
-            s.wallDistance(ray.origin, direction, delta.length) <
-                delta.length - .3) {
-          // The shoulder can still be behind cover when the body has sight.
-          // Un-aim and step sideways, just as a player must, before firing.
+  NativeCampaignAudit(this.game, {required this.completionist});
+
+  Future<void> start() => _startFuture ??= _start();
+
+  Future<void> _start() async {
+    try {
+      if (status == 'stopped') return;
+      if (!await game.startRun(skipTutorial: true) || game.disposed) {
+        throw StateError('Audit could not load its starting region');
+      }
+      final epoch = game.runEpoch;
+      _epoch = epoch;
+      if (status == 'stopped') {
+        game.state!.stopInput();
+        return;
+      }
+      driver = CampaignAudit(
+        game.campaign,
+        transitionRegion: game.transitionRegion,
+        pump: () async {
+          do {
+            await Future<void>.delayed(const Duration(milliseconds: 16));
+            if (driver.cancelled ||
+                game.disposed ||
+                game.runEpoch != epoch ||
+                game.campaign != driver.campaign) {
+              throw StateError('Audit stopped or run replaced');
+            }
+            if (game.regionLoadError != null) {
+              throw StateError('Region load failed: ${game.regionLoadError}');
+            }
+          } while (!game.foreground ||
+              game.regionLoadBlocked ||
+              ![
+                PlayPhase.playing,
+                PlayPhase.dead,
+                PlayPhase.clear,
+              ].contains(game.state!.phase));
+        },
+        steer: (dx, dz) {
+          final s = game.state!;
+          final targetYaw = math.atan2(-dx, -dz);
+          final turn = math.atan2(
+            math.sin(targetYaw - s.yaw),
+            math.cos(targetYaw - s.yaw),
+          );
+          s.yaw += turn * .15;
+          s.pitch += (.12 - s.pitch) * .15;
+          s.inputX = -dx * math.cos(s.yaw) + dz * math.sin(s.yaw);
+          s.inputY = -dx * math.sin(s.yaw) - dz * math.cos(s.yaw);
+          s.sprint = true;
           s.aiming = false;
-          s.sprint = false;
-          s.inputX = s.inputY = 0;
-          for (final angle in [
-            0.0,
-            math.pi / 4,
-            -math.pi / 4,
-            math.pi / 2,
-            -math.pi / 2,
-            math.pi,
-          ]) {
-            final dx = math.cos(s.yaw + angle), dz = -math.sin(s.yaw + angle);
-            if ([
-              .2,
-              .4,
-              .6,
-            ].any((d) => s.blocked(s.x + dx * d, s.z + dz * d, s.y))) {
-              continue;
+        },
+        aimAndFire: (target) {
+          aimCamera(game, target);
+          final s = game.state!;
+          final ray = game.camera().screenPointToRay(
+            ui.Offset(game.viewport.width / 2, game.viewport.height / 2),
+            game.viewport,
+          );
+          final delta = target - ray.origin,
+              direction = ray.direction.normalized();
+          if (delta.cross(direction).length > .1 ||
+              s.wallDistance(ray.origin, direction, delta.length) <
+                  delta.length - .3) {
+            // The shoulder can still be behind cover when the body has sight.
+            // Un-aim and step sideways, just as a player must, before firing.
+            s.aiming = false;
+            s.sprint = false;
+            s.inputX = s.inputY = 0;
+            for (final angle in [
+              0.0,
+              math.pi / 4,
+              -math.pi / 4,
+              math.pi / 2,
+              -math.pi / 2,
+              math.pi,
+            ]) {
+              final dx = math.cos(s.yaw + angle), dz = -math.sin(s.yaw + angle);
+              if ([
+                .2,
+                .4,
+                .6,
+              ].any((d) => s.blocked(s.x + dx * d, s.z + dz * d, s.y))) {
+                continue;
+              }
+              s.inputX = -dx * math.cos(s.yaw) + dz * math.sin(s.yaw);
+              s.inputY = -dx * math.sin(s.yaw) - dz * math.cos(s.yaw);
+              break;
             }
-            s.inputX = -dx * math.cos(s.yaw) + dz * math.sin(s.yaw);
-            s.inputY = -dx * math.sin(s.yaw) - dz * math.cos(s.yaw);
-            break;
+            return;
           }
-          return;
-        }
-        game.fire();
-      },
-    )..completionist = completionist;
-    unawaited(
-      driver
-          .run()
-          .then((_) {
-            status = 'complete';
-            game.state!.stopInput();
-          })
-          .catchError((Object e, StackTrace st) {
-            error = '$e\n$st';
-            status = driver.cancelled ? 'stopped' : 'failed';
-            if (!game.disposed &&
-                game.runEpoch == epoch &&
-                game.campaign == driver.campaign) {
-              game.state!.stopInput();
-              if (game.state!.running) game.toggle(PlayPhase.paused);
-            }
-          }),
-    );
+          game.fire();
+        },
+      )..completionist = completionist;
+      _hasDriver = true;
+      status = 'running';
+      unawaited(
+        driver
+            .run()
+            .then((_) {
+              status = driver.cancelled ? 'stopped' : 'complete';
+              if (!game.disposed &&
+                  game.runEpoch == epoch &&
+                  game.campaign == driver.campaign) {
+                game.state!.stopInput();
+              }
+            })
+            .catchError((Object e, StackTrace st) {
+              error = '$e\n$st';
+              status = driver.cancelled ? 'stopped' : 'failed';
+              if (!game.disposed &&
+                  game.runEpoch == epoch &&
+                  game.campaign == driver.campaign) {
+                game.state!.stopInput();
+                if (game.state!.running) game.toggle(PlayPhase.paused);
+              }
+            }),
+      );
+    } catch (e, st) {
+      error = '$e\n$st';
+      if (status != 'stopped') status = 'failed';
+    }
   }
+
   final HazardGameController game;
+  final bool completionist;
+  Future<void>? _startFuture;
+  int? _epoch;
+  bool _hasDriver = false;
   late final CampaignAudit driver;
-  String status = 'running';
+  String status = 'starting';
+  bool get isActive => status == 'starting' || status == 'running';
   String? error;
   void stop() {
-    driver.cancelled = true;
-    game.state!.stopInput();
+    status = 'stopped';
+    if (_hasDriver) driver.cancelled = true;
+    if (!game.disposed && _epoch != null && game.runEpoch == _epoch) {
+      game.state!.stopInput();
+    }
   }
 
   Map<String, dynamic> inspect() => {
     'auditStatus': status,
     'error': error,
     'mode': 'real SceneView frames and center-screen fire',
-    'completionist': driver.completionist,
-    'frames': driver.frames,
-    'weaponsUsed': driver.weaponsUsed.toList(),
-    'events': driver.events,
+    'completionist': completionist,
+    'frames': _hasDriver ? driver.frames : 0,
+    'weaponsUsed': _hasDriver ? driver.weaponsUsed.toList() : <String>[],
+    'events': _hasDriver ? driver.events : <Map<String, dynamic>>[],
   };
 }
 

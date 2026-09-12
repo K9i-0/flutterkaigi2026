@@ -15,11 +15,13 @@ class CampaignAudit {
     this.steer,
     this.aimAndFire,
     this.onRecord,
+    this.transitionRegion,
   });
   final Future<void> Function()? pump;
   final void Function(double, double)? steer;
   final void Function(vm.Vector3)? aimAndFire;
   final void Function(Map<String, dynamic>)? onRecord;
+  final Future<bool> Function()? transitionRegion;
   bool cancelled = false;
   HazardCampaign campaign;
   HazardGameState get s => campaign.state;
@@ -473,7 +475,11 @@ class CampaignAudit {
     if (s.zoneId != zone) {
       record('arrive');
     } else if (s.phase == PlayPhase.transition) {
-      campaign.traverse();
+      final transition = transitionRegion;
+      final moved = transition == null
+          ? campaign.traverse()
+          : await transition();
+      if (!moved) throw StateError('Region transition failed');
       record('arrive');
     } else if (s.phase != PlayPhase.clear) {
       throw StateError('Exit failed');

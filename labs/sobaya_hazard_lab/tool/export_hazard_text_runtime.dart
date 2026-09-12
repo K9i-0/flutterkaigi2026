@@ -7,6 +7,7 @@ import 'package:sobaya_hazard_lab/game/game_events.dart';
 import 'package:sobaya_hazard_lab/game/game_settings.dart';
 import 'package:sobaya_hazard_lab/game/game_state.dart';
 import 'package:sobaya_hazard_lab/game/game_story.dart';
+import 'package:sobaya_hazard_lab/game/game_tutorial_text.dart';
 
 Map<String, Object?> line(DialogueLine value) => {
   'speaker': value.speaker,
@@ -52,6 +53,7 @@ void main() {
   final dialogueTrees = {
     'yametaro': yametaroDialogue,
     'takosan': takosanDialogue,
+    'farmMission': farmMissionDialogue,
     'reaction': companionReactions,
     'purchaseReply': purchaseReplies,
     'mountainYametaroBefore': mountainYametaroBefore,
@@ -261,9 +263,19 @@ void main() {
   }
   stdout.writeln(
     jsonEncode({
+      'tutorial': [
+        for (final entry in tutorialCoachLines.entries)
+          {
+            'id': 'tutorial:${entry.key}',
+            'step': entry.key,
+            'speaker': 'やめ太郎',
+            'text': entry.value,
+          },
+      ],
       'dialogueTableSourceNames': [
         'yametaroDialogue',
         'takosanDialogue',
+        'farmMissionDialogue',
         'companionReactions',
         'purchaseReplies',
         'mountainYametaroBefore',
