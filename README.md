@@ -50,3 +50,7 @@
 
 ## For Claude Code
 プロジェクトのワークフローやSeedanceプロンプト作成ルールは [CLAUDE.md](CLAUDE.md) を参照。
+
+## 原作漫画
+
+[原作漫画（全15話）](https://madogiwa.work/story)は各話1枚で、縦スクロールで通して読めます。世界観と各話の説明は[WORLD BIBLE](01_WORLD/WORLD_BIBLE.md)と[STORY TIMELINE](01_WORLD/STORY_TIMELINE.md)を参照してください。
