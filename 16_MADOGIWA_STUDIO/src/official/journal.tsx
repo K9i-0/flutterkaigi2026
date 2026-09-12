@@ -1117,9 +1117,8 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
         {route.page === "home" && (
           <section id="goods" className="j-section j-goods" aria-labelledby="goods-title">
             <header>
-              <span className="j-kicker">グッズ</span>
               <h2 id="goods-title">{theme === "sakaba" ? "酒場の土産棚" : theme === "underground" ? "地下売店" : "窓際購買部"}</h2>
-              <p>窓際族を、日常の片隅に。</p>
+              <p>これであなたも窓際族 by そば屋</p>
             </header>
             <div className="j-goods-item">
               <a className="j-goods-image" href="https://suzuri.jp/sobaya15/20889070/t-shirt/xl/white" target="_blank" rel="noreferrer" aria-label="窓際族TシャツをSUZURIで見る（新しいタブ）">
