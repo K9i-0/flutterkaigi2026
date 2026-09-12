@@ -2723,3 +2723,9 @@
 @media (max-width: 600px) {
   .j-goods-item { grid-template-columns: minmax(0, 1fr); gap: 18px; }
 }
+
+.j-making-link { display:flex; align-items:center; justify-content:space-between; gap:20px; margin:16px 0 24px; padding:16px 20px; border:1px solid currentColor; border-radius:4px; color:inherit; text-decoration:none; }
+.j-making-link b,.j-making-link small { display:block; }
+.j-making-link b { font-size:15px; }
+.j-making-link small { margin-top:4px; font-size:12px; opacity:.7; }
+.j-making-link:hover { background:rgba(128,128,128,.12); }

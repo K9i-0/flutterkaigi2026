@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ArrowLeft, CalendarDays, FileText, Film, ImageIcon, Music2, Paperclip, Sparkles, Star, Users } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { DeferredVideo } from "@/components/deferred-video";
@@ -56,6 +57,7 @@ export function EpisodePage({ detail }: { detail: PublicEpisodeDetail }) {
           {primaryProduction ? <span><Sparkles />v{primaryProduction.version}{primaryProduction.model_name ? ` · ${primaryProduction.model_name}` : ""}</span> : null}
         </div>
         <ShareActions title={episode.title} path={pagePath} />
+        <a className="episode-making-jump" href="#production">この動画の作り方を見る ↓</a>
       </div>
     </header>
 
@@ -72,7 +74,7 @@ export function EpisodePage({ detail }: { detail: PublicEpisodeDetail }) {
       </div>
     </section> : null}
 
-    {productions.length ? <ProductionSection productions={productions} videos={videos} /> : null}
+    {productions.length ? <ProductionSection productions={productions} videos={videos} /> : <section id="production" className="episode-production-section"><h2>この動画の作り方</h2>{videos.map((video) => <span key={video.id} id={`making-${video.id}`} />)}<p>この作品の制作資料はまだ公開されていません。</p></section>}
 
     {members.length ? <section className="episode-cast-section" aria-labelledby="episode-cast-heading">
       <div className="episode-section-label"><Users /><span id="episode-cast-heading">CAST</span></div>
@@ -89,24 +91,26 @@ export function EpisodePage({ detail }: { detail: PublicEpisodeDetail }) {
 }
 
 function ProductionSection({ productions, videos }: { productions: PublicProduction[]; videos: PublicVideo[] }) {
-  return <section className="episode-production-section" aria-labelledby="episode-production-heading">
-    <div className="episode-section-label"><Sparkles /><span id="episode-production-heading">PROMPT &amp; INPUTS</span></div>
+  return <section id="production" className="episode-production-section" aria-labelledby="episode-production-heading">
+    <div className="episode-section-label"><Sparkles /><span id="episode-production-heading">この動画の作り方</span></div>
+    <p className="episode-making-intro">制作時のモデル、実際に使ったプロンプトと参照素材を、生成バージョンごとに公開しています。モデルを確認し、入力素材の参照番号とプロンプトを照らし合わせてご覧ください。</p>
     <div className="episode-production-list">{productions.map((production) => {
       const labels = videos.filter((video) => video.generation_id === production.generation_id).map((video) => video.label);
       return <article className="episode-production" key={production.generation_id}>
+        {videos.filter((video) => video.generation_id === production.generation_id).map((video) => <span className="episode-making-anchor" id={`making-${video.id}`} key={video.id} />)}
         <header>
           <div><span>GENERATION v{production.version}</span><h2>{production.label}</h2></div>
           <div>{production.model_name ? <span>{production.model_name}</span> : null}{labels.map((label) => <small key={label}>{label}</small>)}</div>
         </header>
         <div className="episode-production-grid">
           <div className="episode-prompt-card">
-            <div><FileText /><span>PROMPT</span>{production.prompt ? <small>revision {production.prompt.version}</small> : null}</div>
+            <div><FileText /><span>プロンプト</span>{production.prompt ? <small>revision {production.prompt.version}</small> : null}</div>
             {production.prompt
-              ? <><h3>{production.prompt.label}</h3><pre>{production.prompt.body}</pre></>
+              ? <><h3>{production.prompt.label}</h3><PromptBody body={production.prompt.body} /></>
               : <p>この動画のプロンプトはまだ登録されていません。</p>}
           </div>
           <div className="episode-inputs-card">
-            <div><Paperclip /><span>INPUTS</span><small>{production.inputs.length}</small></div>
+            <div><Paperclip /><span>入力素材</span><small>{production.inputs.length}</small></div>
             {production.inputs.length
               ? <div className="episode-input-grid">{production.inputs.map((asset) => <InputAssetPreview key={asset.id} asset={asset} />)}</div>
               : <p>この生成にはインプット素材が登録されていません。</p>}
@@ -130,4 +134,13 @@ function InputAssetPreview({ asset }: { asset: PublicInputAsset }) {
       {asset.notes ? <p>{asset.notes}</p> : null}
     </div>
   </article>;
+}
+
+function PromptBody({ body }: { body: string }) {
+  const [message, setMessage] = useState("");
+  async function copy() {
+    try { await navigator.clipboard.writeText(body); setMessage("コピーしました"); }
+    catch { setMessage("コピーできませんでした。本文を選択してコピーしてください。"); }
+  }
+  return <><button className="episode-prompt-copy" onClick={() => void copy()}>プロンプトをコピー</button><span className="episode-copy-status" role="status">{message}</span><pre>{body}</pre></>;
 }

@@ -1205,6 +1205,9 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
                 </div>
                 <Video key={playing.id} episode={playing} />
                 <p className="j-video-description">{episodeCopy(playing)}</p>
+                <a className="j-making-link" href={`/episodes/${playing.slug}#making-${playing.primary_video_id}`}>
+                  <span><b>この動画の作り方</b><small>使用モデル・プロンプト・入力素材</small></span><ArrowUpRight size={20} />
+                </a>
                 <div className="j-video-cast">
                   <span>出演</span>
                   {playing.members.map((m) => {
