@@ -40,7 +40,7 @@ import { chooseThemeFeature, themeFeatures } from "./theme-features";
 import { OwnerNote, ownerNotes, menuNotes } from "./shop-details";
 import { ThemeSwitcher, DesktopChrome, ExcelFormula, WorkSheet, PointLedger } from "./episode-themes";
 import { Noren, SobayaLantern } from "./sakaba-entrance";
-import { readSiteTheme, useSiteTheme, siteThemes, type AvailableTheme } from "./site-theme";
+import { useSiteTheme, siteThemes, type AvailableTheme } from "./site-theme";
 import "./shop-details.css";
 type Page = "home" | "movies" | "characters" | "world" | "story" | "gallery";
 type Route = {
@@ -59,9 +59,10 @@ const pageNames: Record<Page, string> = {
   story: "原作漫画",
   gallery: "ギャラリー",
 };
-function readRoute(): Route {
-  const p = new URLSearchParams(location.search);
-  const path = location.pathname.replace(/\/$/, "");
+function readRoute(href = typeof location === "undefined" ? "/" : location.href): Route {
+  const url = new URL(href, "https://madogiwa.work");
+  const p = url.searchParams;
+  const path = url.pathname.replace(/\/$/, "");
   const pathPage = path === "/episodes" || path === "/movies" ? "movies" : path.startsWith("/characters") ? "characters" : path === "/story" ? "story" : path === "/gallery" ? "gallery" : null;
   const page = p.get("page") ?? pathPage;
   return {
@@ -82,7 +83,7 @@ function readRoute(): Route {
   };
 }
 function href(route: Route) {
-  const q = new URLSearchParams({ theme: readSiteTheme() });
+  const q = new URLSearchParams();
   if (route.page !== "home") q.set("page", route.page);
   if (route.character) q.set("character", route.character);
   if (route.scope) q.set("scope", route.scope);
@@ -94,39 +95,31 @@ function href(route: Route) {
 function IconPlay() {
   return <Play size={15} fill="currentColor" />;
 }
-export default function Journal({ episodes: publicEpisodes, galleryItems }: { episodes: Episode[]; galleryItems: GalleryItem[] }) {
+export default function Journal({ episodes: publicEpisodes, galleryItems, initialTheme, initialHref }: { episodes: Episode[]; galleryItems: GalleryItem[]; initialTheme?: AvailableTheme; initialHref?: string }) {
   const arts = galleryItems.map((item) => ({ src: item.image_url, title: item.title, kind: item.kind }));
   const episodes = publicEpisodes.filter((e) => e.primary_video_id && !e.title.includes("検証"));
   const starters = starterSlugs.map((slug) => episodes.find((e) => e.slug === slug)).filter((e): e is Episode => !!e);
   if (!starters.length && episodes.length) starters.push(episodes[0]);
-  const { theme, changeTheme } = useSiteTheme();
+  const { theme, changeTheme } = useSiteTheme(initialTheme);
   const hero = chooseThemeFeature(episodes, theme) ?? episodes[0];
   const feature = themeFeatures[theme];
   const lead = cast.find((person) => person.id === (hero?.slug === feature.slug ? feature.character : hero?.members[0]?.slug)) ?? cast[0];
   const [lanternLit, setLanternLit] = useState(true);
   const [working, setWorking] = useState(false);
   const chooseTheme = (next: AvailableTheme) => { setWorking(false); changeTheme(next); };
-  const [route, setRoute] = useState<Route>(readRoute);
+  const [route, setRoute] = useState<Route>(() => readRoute(initialHref));
   const [menu, setMenu] = useState(false);
   const [playing, setPlaying] = useState<Episode | null>(null);
   const [zoom, setZoom] = useState<{ src: string; title: string } | null>(null);
   const [toast, setToast] = useState("");
   const [query, setQuery] = useState("");
-  const [saved, setSaved] = useState<string[]>(() => {
+  const [saved, setSaved] = useState<string[]>([]);
+  useEffect(() => {
     try {
-      const ids: unknown = JSON.parse(
-        localStorage.getItem("madogiwa-favorites") ?? "[]",
-      );
-      return Array.isArray(ids)
-        ? ids.filter(
-            (id): id is string =>
-              typeof id === "string" && cast.some((c) => c.id === id),
-          )
-        : [];
-    } catch {
-      return [];
-    }
-  });
+      const ids: unknown = JSON.parse(localStorage.getItem("madogiwa-favorites") ?? "[]");
+      if (Array.isArray(ids)) setSaved(ids.filter((id): id is string => typeof id === "string" && cast.some((c) => c.id === id)));
+    } catch { /* Storage may be unavailable. */ }
+  }, []);
   const [onlySaved, setOnlySaved] = useState(false);
   const current = cast.find((c) => c.id === route.character);
   const reduced = () =>
@@ -417,7 +410,8 @@ export default function Journal({ episodes: publicEpisodes, galleryItems }: { ep
       {theme === "underground" && <PointLedger />}
       {theme === "excel" && working && <WorkSheet onClose={() => setWorking(false)} />}
       <main className="j-main" hidden={theme === "excel" && working}>
-        {route.page === "home" && (
+        {route.page === "home" && !hero && <section className="j-cover"><h1>窓際族物語</h1><p>公開中の動画はまだありません。</p></section>}
+        {route.page === "home" && hero && (
           <>
             <section className="j-cover">
               <div className="j-cover-rule">

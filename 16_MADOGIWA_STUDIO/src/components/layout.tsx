@@ -1,6 +1,7 @@
 import { Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { Archive, Clapperboard, LockKeyhole, Menu } from "lucide-react";
 import { useEffect } from "react";
+import { Route as RootRoute } from "@/routes/__root";
 import { OfficialSite } from "../official/site";
 import { cn } from "@/lib/utils";
 
@@ -11,6 +12,7 @@ const publicLinks = [
 ];
 
 export function Layout() {
+  const { official } = RootRoute.useLoaderData();
   const { pathname, hash } = useRouterState({
     select: (state) => ({ pathname: state.location.pathname, hash: state.location.hash }),
   });
@@ -47,7 +49,7 @@ export function Layout() {
     </footer>
   </div>;
   const journalRoute = pathname === "/" || pathname === "/episodes" || pathname === "/episodes/" || pathname.startsWith("/characters") || pathname === "/story" || pathname === "/gallery" || pathname === "/gallery/";
-  return journalRoute ? <OfficialSite fallback={classic} /> : classic;
+  return journalRoute && official ? <OfficialSite data={official.data} initialTheme={official.theme} initialHref={official.href} /> : classic;
 }
 
 function StudioLayout() {

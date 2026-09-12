@@ -41,3 +41,9 @@ export const getCharacterData = createServerFn({ method: "GET" })
     const { loadCharacterData } = await import("./public-data.server");
     return loadCharacterData(data);
   });
+
+export const getInitialSiteTheme = createServerFn({ method: "GET" }).handler(async () => {
+  const { getCookie } = await import("@tanstack/react-start/server");
+  const value = getCookie("madogiwa-site-theme");
+  return value === "excel" || value === "underground" ? value : "sakaba";
+});
