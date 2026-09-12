@@ -1024,9 +1024,6 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
                 窓際族物語の原点。
               </p>
             </div>
-            <nav className="j-story-index" aria-label="話数へジャンプ">
-              {comicEpisodes.map((episode) => <a key={episode.number} href={`#chapter-${episode.number}`}>第{episode.number}話</a>)}
-            </nav>
             <div className="j-story-scroll">
               {comicEpisodes.map((episode, index) => {
                 const dimensions = [[720,720],[720,720],[720,720],[538,720],[538,720],[672,900],[900,900],[483,720],[646,720],[720,709],[720,720],[483,720],[592,720],[900,651]][index];
@@ -1035,6 +1032,7 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
                   <button className="j-story-image" onClick={() => setZoom({ src: episode.image, title: `第${episode.number}話 ${episode.title}` })} aria-label={`第${episode.number}話の画像を拡大`}>
                     <img src={episode.image} alt={`第${episode.number}話 ${episode.title}`} width={dimensions[0]} height={dimensions[1]} loading={index === 0 ? "eager" : "lazy"} decoding="async" />
                   </button>
+                  <p className="j-story-description">{episode.description}</p>
                 </section>;
               })}
               <div className="j-story-end">{link({ page: "movies" }, <>続いて、動画の窓際へ<ArrowRight size={17} /></>, "j-underlined")}</div>
