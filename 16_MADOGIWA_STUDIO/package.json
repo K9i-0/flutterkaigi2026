@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && tsc -b --pretty false",
-    "check": "tsc -b --pretty false && eslint .",
+    "check": "tsc -b --pretty false && tsc -p test/tsconfig.json --pretty false && eslint .",
     "test": "vitest run",
     "preview": "vite preview",
     "upload:video": "node tools/upload-video.mjs",

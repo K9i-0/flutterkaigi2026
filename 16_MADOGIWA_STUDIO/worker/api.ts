@@ -1,3 +1,5 @@
+import { listPublicEpisodes } from "./public-repository";
+import { cachedPublicData } from "./public-cache";
 import { requireAdmin } from "./auth";
 import { HttpError, json, readJson } from "./http";
 import { consumeInputUpload, createInputUpload } from "./input-assets";
@@ -62,10 +64,8 @@ export async function handleApi(request: Request, env: Env, ctx: ExecutionContex
   if (request.method === "GET" && routePath === "/api/gallery-items") {
     return json(
       {
-        galleryItems: await listGalleryItems(
-          env.DB,
-          isAdminApi ? { includeArchived: true } : { publishedOnly: true },
-        ),
+        galleryItems: isAdminApi ? await listGalleryItems(env.DB, { includeArchived: true })
+          : await cachedPublicData(env.DB, "gallery", () => listGalleryItems(env.DB, { publishedOnly: true })),
       },
       { headers: { "cache-control": "no-store" } },
     );
@@ -73,10 +73,8 @@ export async function handleApi(request: Request, env: Env, ctx: ExecutionContex
   if (request.method === "GET" && routePath === "/api/articles") {
     return json(
       {
-        articles: await listArticles(
-          env.DB,
-          isAdminApi ? { includeArchived: true } : { publishedOnly: true },
-        ),
+        articles: isAdminApi ? await listArticles(env.DB, { includeArchived: true })
+          : await cachedPublicData(env.DB, "articles", () => listArticles(env.DB, { publishedOnly: true })),
       },
       { headers: { "cache-control": "no-store" } },
     );
@@ -85,7 +83,10 @@ export async function handleApi(request: Request, env: Env, ctx: ExecutionContex
     return json({ members: await listMembers(env.DB) }, { headers: { "cache-control": "no-store" } });
   }
   if (request.method === "GET" && routePath === "/api/episodes") {
-    const episodes = await listEpisodes(env.DB, { featuredOnly: url.searchParams.get("featured") === "true" });
+    const featuredOnly = url.searchParams.get("featured") === "true";
+    const episodes = isAdminApi
+      ? await listEpisodes(env.DB, { featuredOnly })
+      : (await listPublicEpisodes(env.DB)).filter((episode) => !featuredOnly || episode.has_featured_video === 1);
     return json(
       { episodes: isAdminApi ? episodes : episodes.filter((episode) => episode.status === "published").map((episode) => ({ ...episode, input_count: 0, prompt_label: null })) },
       { headers: { "cache-control": "no-store" } },

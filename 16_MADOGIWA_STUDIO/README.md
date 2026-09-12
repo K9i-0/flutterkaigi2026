@@ -51,6 +51,28 @@ HTTP経由で呼び直さないため、SSR時に余分な内部ネットワー�
 - `worker/`: API、Access認証、MCP、R2ストリーミング、D1 repository
 - `migrations/`: D1スキーマと初期データ
 
+## 公開データのD1読み取りとキャッシュ
+
+`worker/public-repository.ts` は公開一覧を3つの一括SELECTで取得します。管理用の素材数・プロンプト集計は公開一覧で実行しません。関連作品・キャラクターページも同じ一覧を再利用し、制作プロンプトや入力素材は詳細ページに引き続き掲載します。
+
+`worker/public-cache.ts` は公開JSONをCache APIへ300秒保存します。HTMLはテーマCookieに依存するためキャッシュせず、管理API・MCP応答・アップロードチケット・認証情報も対象外です。公開JSONの内容は利用者に依存しません。
+
+各取得では `public_content_revision` の1行だけを確認します。migration `0010` のトリガーがコンテンツ変更と同じトランザクションでrevisionを更新するので、管理画面・MCP・アップロード・直接SQLのいずれから更新しても、次の取得は全拠点で新しいキーを使います。非公開化後に古いキャッシュへフォールバックしません。コンテンツ1行の更新につきrevisionの書き込みが1回増えます。既に表示済みのブラウザー画面は再取得時に反映されます。
+
+Cache APIは拠点ごとに保存され、退避・TTL切れ・キャッシュ非対応環境では軽量SQLへ戻ります。DB停止時もrevision確認を省略しません。`public_data_cache` の構造化ログで `hit` / `miss` を確認できます。HTML・公開API・サイトマップの外側に無条件のCache Everythingルールを追加しないでください。
+
+再測定（読み取りSELECTを各1回実行）:
+
+```bash
+node tools/benchmark-public-reads.mjs --remote
+```
+
+2026-09-13 07:13 JST、本番44エピソードで旧一覧5,168行、新一覧の初回1,025行（revision込み、80.17%減）。キャッシュヒット時はrevisionの1行のみです。日次削減率はアクセス分布・更新頻度・キャッシュ命中率によって変わります。
+
+2026-09-13にmigration `0010` とWorker `8ce37455-5c58-4a60-a749-3b80d6f1a3e4` を本番反映済み。公開一覧・詳細で `miss` → `hit`、44作品の一覧、主要SSRページ、XMLサイトマップ、未認証の管理API/MCPの401を確認しました。22テストと本体・テストコードの型検査が通過しています。日次使用量は翌日以降のD1 Insightsで比較します。
+
+デプロイ順は `npm run verify` → `npm run db:migrate:remote` → `npm run deploy`。Workerを以前の版へ戻しても追加テーブルとトリガーは残して問題ありません。
+
 ## 開発
 
 Node.js 24を使用します。
