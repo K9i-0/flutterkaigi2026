@@ -11,7 +11,7 @@ export const characters = [
 
 export const comicEpisodes = [
   { title: "入社", description: "そば屋がワクワク気分で入社。用意された椅子は「AERON CHUA」と手書きされた段ボール箱だったが、本人はもちろん快適です！" },
-  { title: "僕の席", image: "/site/comic/episode-02-chua.webp", description: "本来の席はオフィスの窓際。机には「窓際族」の貼り紙があり、段ボール椅子の表記だけは「アーロンチュア」に訂正されていた。" },
+  { title: "僕の席", image: "/site/comic/episode-02-chua-v2.webp", description: "本来の席はオフィスの窓際。机には「窓際族」の貼り紙があり、段ボール椅子の表記だけは「アーロンチュア」に訂正されていた。" },
   { title: "ベランダ席", description: "翌朝、席はビル外壁のベランダへ。冬の寒ささえ「ビールが冷えたまま」というメリットに変えてしまう。" },
   { title: "立ち飲み処 開店", description: "会社が自由ならこちらも自由に。ベランダへ暖簾と赤提灯を掲げ、とーくんのウクレレをBGMに立ち飲み処が開店する。" },
   { title: "ビールサーバ到着", description: "待望のビールサーバが到着し、ジョッキtoジョッキを卒業。「やめさん確保でビール永久無料キャンペーン」が始まる。" },
@@ -24,7 +24,7 @@ export const comicEpisodes = [
   { title: "脱走", description: "よーたんが差し入れを持って訪ねると、壁には巨大な人型の穴。そば屋と無職やめ太郎は壁を破って脱走していた。" },
   { title: "窓際王おかやまん", description: "都内某社の窓際会議室に、窓際王おかやまんがリモート出演。そば屋とやめ太郎の脱走を許したという報告に驚きを示す。" },
   { title: "ゆめみ地下帝国 構想会議", image: "/site/comic/chapter-14.webp", description: "窓際十人衆（Windows 10）の野望が明らかに。おかやまんは2人を捕え、ゆめみ地下懲罰房へ送るよう命じる。" },
-  { title: "BONK", image: "/site/comic/episode-14.webp", description: "窓際で居眠りするそば屋を、ゆめみんが木槌でBONK! 夢だったように思えた一連の出来事は、すべて現実である。" },
+  { title: "BONK", image: "/site/comic/episode-15-chua.webp", description: "窓際で居眠りするそば屋を、ゆめみんが木槌でBONK! 夢だったように思えた一連の出来事は、すべて現実である。" },
 ].map((episode, index) => ({
   ...episode,
   number: index + 1,
