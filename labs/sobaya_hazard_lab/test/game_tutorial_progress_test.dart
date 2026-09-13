@@ -28,7 +28,7 @@ void main() {
     s.aiming = true;
     tick(s, .7);
     expect(s.tutorialStep, 'shoot');
-    s.aiming = true;
+    expect(s.aiming, true, reason: 'aim flows directly into shooting');
     s.shoot(vm.Vector3(s.x, 1.5, s.z), vm.Vector3(1, 0, 0));
     expect(s.tutorialStep, 'shoot');
     tick(s, .5);
@@ -60,6 +60,19 @@ void main() {
     s.z = -20;
     tick(s, 35);
     expect(s.tutorialStep, 'complete');
+  });
+  test('sneak goal has no hidden minimum walking distance', () {
+    final s = world()..beginTutorial(step: 'sneak');
+    s.x = -3;
+    s.z = -15;
+    s.tutorialLastX = s.x;
+    s.tutorialLastZ = s.z;
+    tick(s, .1);
+    expect(s.tutorialStep, 'sneak');
+    expect(s.tutorialStatus, contains('忍び足に切り替える'));
+    s.sneaking = true;
+    tick(s, .1);
+    expect(s.tutorialStep, 'escape');
   });
   test('paused training cannot advance and restores lesson boundary', () {
     final s = world()..beginTutorial(step: 'aim');
