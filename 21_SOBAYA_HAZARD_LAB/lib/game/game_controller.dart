@@ -466,10 +466,10 @@ class HazardGameController extends ChangeNotifier {
     final fingerPoses = <String, vm.Quaternion>{
       for (final digit in ['Index', 'Middle', 'Ring', 'Thumb'])
         for (final joint in [1, 2])
-          '$digit$joint.R': gripRig
-              .getChildByName('$digit$joint.R')!
-              .rotation
-              .clone(),
+          // Sobaya's Tripo v2 rig has rigid hands. Apply the legacy finger
+          // correction only when the model actually supplies finger bones.
+          if (gripRig.getChildByName('$digit$joint.R') case final finger?)
+            '$digit$joint.R': finger.rotation.clone(),
     };
     for (var i = 0; i < state!.enemies.length; i++) {
       final actor = CharacterPlayer(sobayaTemplate, [
@@ -1980,7 +1980,9 @@ class HazardGameController extends ChangeNotifier {
     }
     for (var i = 0; i < s.enemies.length; i++) {
       final e = s.enemies[i], actor = enemies[i];
-      final head = actor.node.getChildByName('Head');
+      // V2 also has a mesh object named Head. Hit detection follows the bone
+      // under the skeleton root, rather than that mesh's origin at the feet.
+      final head = actor.node.getChildByName('Root')?.getChildByName('Head');
       e.headCentre = head == null
           ? null
           : head.globalTransform.getTranslation() +

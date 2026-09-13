@@ -1,0 +1,52 @@
+{
+  "date": "2026-09-13",
+  "app": "21_SOBAYA_HAZARD_LAB/lib/game_main.dart",
+  "device": "macOS debug / Flutter 3.47.2",
+  "verification": {
+    "flutterAnalyze": "No issues found",
+    "flutterTests": {
+      "files": [
+        "test/game_motion_blend_test.dart",
+        "test/game_speech_test.dart"
+      ],
+      "passed": 8
+    },
+    "runtimeErrors": 0
+  },
+  "actualLoadedModels": {
+    "sobayaV2": true,
+    "fukuchanV2": true,
+    "sobayaSocket": true,
+    "fukuchanSocket": true,
+    "fukuchanFingerRig": true
+  },
+  "staticVisualChecks": [
+    {
+      "scenario": "Fukuchan Aim",
+      "motion": "Aim",
+      "time": 0.5,
+      "view": "front and three-quarter side",
+      "finding": "53-bone source plus GunSocket loaded. Both hands curl around handgun; weapon follows hand. A refreshed static frame was used after pose changes."
+    },
+    {
+      "scenario": "mugTiming",
+      "finding": "Both v2 models render; Sobaya mug follows socket.",
+      "mugGripErrors": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "enemyHeadCentre": [
+        0.23923248052597046,
+        1.650181770324707,
+        -15.092514038085938
+      ]
+    }
+  ],
+  "scope": "Static native rendering and attachment checks after the web rig review. Continuous animation was reviewed in Three.js; these native snapshots are not a performance benchmark."
+}

@@ -1,5 +1,9 @@
 import fs from 'node:fs';import path from 'node:path';import {createRequire} from 'node:module';
 const root=path.resolve(import.meta.dirname,'..');const require=createRequire(root+'/.local/vrm-validation/package.json');
+if(JSON.parse(fs.readFileSync(root+'/04_GAME_ASSETS/3d/hazard_adopted/manifest.json')).sobaya.version===2){
+ await import('./validate_hazard_v2_models.mjs');
+ process.exit(0);
+}
 const THREE=await import(require.resolve('three'));
 const {GLTFLoader}=await import(path.join(path.dirname(require.resolve('three')),'../examples/jsm/loaders/GLTFLoader.js'));
 const {validateBytes}=require('gltf-validator');

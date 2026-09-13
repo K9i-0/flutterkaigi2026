@@ -209,11 +209,13 @@ def main():
     from fukuchan_v2_face import add_face
     from fukuchan_v2_motion import retarget
     from humanoid_deformation import smooth_shoulders
+    from fukuchan_v2_rig import refine_bind,skin_fingers
     from build_humanoid_motion import use_action,clear_pose
     rig,body,head,hair,report=build_geometry()
     lids,report['face']=add_face(head,rig)
+    report['rigRefinement']=refine_bind(body,rig)
     report['shoulderVertices']=smooth_shoulders(body,rig)
-    report['wristVertices']=stabilize_wrists(body)
+    report['fingerVertices']=skin_fingers(body,rig)
     report['animations']=retarget(rig,[body,head,hair,lids])
     meshes=[body,head,hair,lids]
     for obj in meshes:

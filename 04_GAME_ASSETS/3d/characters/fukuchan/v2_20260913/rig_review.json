@@ -1,0 +1,89 @@
+{
+  "date": "2026-09-13",
+  "method": "Chrome / Three.js web preview, live playback and paused matching-camera comparison",
+  "sourceGlbSha256": "c436fb988fb31d112d2b1d40fb5a514dc45ce4b25fc85af1ba615c6b4998dbd7",
+  "baselineGlbSha256": "9e19aa9570f80a30e2b3505f23b41e4eb0343fa0bb5267d60a81291b91851c31",
+  "baselineLocalPath": ".local/fukuchan-v2-rig/before.glb",
+  "preview": "http://127.0.0.1:8767/tools/preview_fukuchan_v2.html?review=rig6",
+  "bonesBefore": 23,
+  "bonesAfter": 53,
+  "addedFingerBones": 30,
+  "restMeshUnchanged": true,
+  "additionalTripoCredits": 0,
+  "observations": [
+    {
+      "motion": "Rest",
+      "views": [
+        "front",
+        "hand close-up"
+      ],
+      "finding": "Corrected unequal clavicles and low elbow pivots; fitted three joints to each existing finger."
+    },
+    {
+      "motion": "Aim",
+      "seconds": 0.5,
+      "views": [
+        "front",
+        "right",
+        "left",
+        "hand close-up"
+      ],
+      "comparison": "Same camera and stopped time, before v2 versus refined v2. Open upward palms changed to opposing grip; wrist orientation and pistol mount reviewed."
+    },
+    {
+      "motion": "Test_Grip",
+      "seconds": 1.5,
+      "views": [
+        "front",
+        "hand close-up"
+      ],
+      "finding": "Initial digit-boundary spikes were found and corrected with five UV-weld-aware weight-smoothing passes."
+    },
+    {
+      "motion": "Test_ArmRaise",
+      "seconds": 1.5,
+      "views": [
+        "front with bones"
+      ],
+      "finding": "Clavicles now elevate with arms; shoulder and elbow skin remain continuous."
+    },
+    {
+      "motion": "Test_ElbowBend",
+      "seconds": 1.5,
+      "views": [
+        "front with bones"
+      ],
+      "finding": "Elbow and wrist pivots reviewed; palms made consistent on both hands."
+    },
+    {
+      "motion": "Walk / Run",
+      "playback": "continuous",
+      "views": [
+        "front",
+        "right"
+      ],
+      "finding": "Arm swings, relaxed/running fingers, knee bends and feet reviewed."
+    },
+    {
+      "motion": "AimShotgun",
+      "seconds": 0.5,
+      "views": [
+        "right"
+      ],
+      "finding": "Moved rear hand toward torso so stock reaches shoulder; left palm supports underside."
+    },
+    {
+      "motion": "ReloadHandgun",
+      "playback": "continuous",
+      "views": [
+        "front with bones"
+      ],
+      "finding": "Weapon follows reoriented right hand; left-hand motion and finger deformation reviewed."
+    }
+  ],
+  "limits": [
+    "Loose generated jacket retains sculpted folds; this is a skin rig, not cloth simulation.",
+    "Finger meshes are the original Tripo topology; no subdivision or replacement hand was introduced.",
+    "No exhaustive per-frame collision guarantee for every inherited library clip."
+  ]
+}

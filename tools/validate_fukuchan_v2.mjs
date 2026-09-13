@@ -16,9 +16,20 @@ const loader=new GLTFLoader();
 loader.register(()=>({name:'NoTextures',loadTexture:()=>Promise.resolve(new THREE.Texture())}));
 const gltf=await loader.parseAsync(buffer.buffer.slice(buffer.byteOffset,buffer.byteOffset+buffer.byteLength),'');
 const expected=['Idle','Walk','Run','Aim','AimShotgun','ReloadHandgun','ReloadShotgun','Hit','Evade','Kick','Climb','Vault','Struggle','BreakFree','DanceStep','DanceDisco','DanceVictory','Greeting','Test_HeadTurn','Test_ArmRaise','Test_ElbowBend','Test_KneeBend'];
+expected.push('Test_Grip');
 assert.deepEqual(gltf.animations.map(a=>a.name).sort(),expected.sort());
 for(const name of ['Body','Head','Hair','Eyelids'])assert(gltf.scene.getObjectByName(name),'Missing separate part '+name);
 const meshes=[];gltf.scene.traverse(o=>{if(o.isMesh)meshes.push(o);});
+const baselinePath=root+'/.local/fukuchan-v2-rig/before.glb';
+let unchangedRestGeometry=null;
+if(fs.existsSync(baselinePath)){
+ const b=fs.readFileSync(baselinePath),old=await loader.parseAsync(b.buffer.slice(b.byteOffset,b.byteOffset+b.byteLength),'');
+ function restPoints(scene){const points=new Set();scene.traverse(o=>{if(!o.isMesh)return;
+  const p=o.geometry.attributes.position;for(let i=0;i<p.count;i++)points.add([p.getX(i),p.getY(i),p.getZ(i)].map(n=>n.toFixed(6)).join(','));
+ });return [...points].sort();}
+ assert.deepEqual(restPoints(gltf.scene),restPoints(old.scene),'Rig repair changed the rest mesh');
+ unchangedRestGeometry=true;
+}
 gltf.scene.updateMatrixWorld(true);
 const restBox=new THREE.Box3().setFromObject(gltf.scene,true);
 assert(Math.abs(restBox.max.y-restBox.min.y-1.7)<.002,JSON.stringify(restBox));
@@ -39,6 +50,15 @@ for(const mesh of meshes){
  }
 }
 assert(maxWeightError<.0001);
+const fingerBones=[];
+for(const side of ['L','R'])for(const digit of ['Thumb','Index','Middle','Ring','Little'])for(let joint=1;joint<=3;joint++){
+ const name=`${digit}${joint}.${side}`,bone=gltf.scene.getObjectByName(THREE.PropertyBinding.sanitizeNodeName(name));assert(bone?.isBone,'Missing finger bone '+name);
+ let influenced=0;for(const m of meshes){const index=m.skeleton.bones.indexOf(bone);if(index<0)continue;
+  const ids=m.geometry.attributes.skinIndex,w=m.geometry.attributes.skinWeight;
+  for(let i=0;i<ids.count*4;i++)if(ids.array[i]===index&&w.array[i]>.01)influenced++;
+ }
+ assert(influenced>5,'Unweighted finger '+name);fingerBones.push({name,influences:influenced});
+}
 for(const name of ['SpeechOpen','SpeechNarrow','Smile','Blink','BlinkLeft','BlinkRight'])assert(morphs[name]>.0001,'Empty morph '+name);
 const mixer=new THREE.AnimationMixer(gltf.scene),position=new THREE.Vector3();
 const samples=[];
@@ -60,6 +80,6 @@ for(const clip of gltf.animations){
  }
  samples.push({clip:clip.name,duration:clip.duration,evaluatedVertices,bounds:{min:box.min.toArray(),max:box.max.toArray()}});
 }
-const report={glbSha256:createHash('sha256').update(buffer).digest('hex'),gltfErrors:format.issues.numErrors,gltfWarnings:format.issues.numWarnings,formatMessages:format.issues.messages,triangles,renderMeshes:meshes.length,bones:meshes[0].skeleton.bones.length,restHeightM:restBox.max.y-restBox.min.y,maxWeightError,morphMaxDisplacementsM:morphs,animations:samples,scope:'Format, separated parts, 170cm rest height, normalized skin weights, six nonempty neutral morphs, 22 clips sampled at five times. Naturalness and intersections require the accompanying rendered/UI review.'};
+const report={unchangedRestGeometry,glbSha256:createHash('sha256').update(buffer).digest('hex'),gltfErrors:format.issues.numErrors,gltfWarnings:format.issues.numWarnings,formatMessages:format.issues.messages,triangles,renderMeshes:meshes.length,bones:meshes[0].skeleton.bones.length,fingerBones,restHeightM:restBox.max.y-restBox.min.y,maxWeightError,morphMaxDisplacementsM:morphs,animations:samples,scope:'Format, separated parts, 170cm rest height, normalized skin weights, six nonempty neutral morphs, 23 clips sampled at five times. Naturalness and intersections require the accompanying rendered/UI review.'};
 fs.writeFileSync(folder+'/validation.json',JSON.stringify(report,null,2)+'\n');
 console.log(JSON.stringify({...report,formatMessages:undefined,animations:report.animations.map(a=>a.clip)},null,2));

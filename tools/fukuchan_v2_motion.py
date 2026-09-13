@@ -4,6 +4,7 @@ import bpy
 from mathutils import Matrix,Quaternion,Vector
 from fukuchan_v2_common import ROOT
 from build_humanoid_motion import Body,use_action,clear_pose
+from fukuchan_v2_rig import finish_pose
 
 SOURCES={
  'Idle':'Adopted_Library_Idle_A','Walk':'Adopted_Library_Walk','Run':'Adopted_Candidate_Mixamo_Run',
@@ -86,6 +87,7 @@ def retarget(rig,meshes):
                     b=Matrix((u1,n1,u1.cross(n1))).transposed()
                     h.matrix=Matrix.Translation(h.head)@(b@a.transposed()@rest[h.name].to_3x3()).to_4x4()
                     bpy.context.view_layer.update()
+            finish_pose(body,name,i/frames)
             body.key(i)
         report.append({'name':name,'source':spec['source'],'seconds':frames/30,'loop':loop,'sourceGlbSha256':digest,'retargetLegScale':scale})
     use_action(rig,bpy.data.actions['Idle']);bpy.context.scene.frame_set(0)
@@ -94,7 +96,7 @@ def retarget(rig,meshes):
     def baseline():
         for b in rig.pose.bones:b.matrix_basis=neutral[b.name]
         bpy.context.view_layer.update()
-    for name in ['Greeting','Test_HeadTurn','Test_ArmRaise','Test_ElbowBend','Test_KneeBend']:
+    for name in ['Greeting','Test_HeadTurn','Test_ArmRaise','Test_ElbowBend','Test_KneeBend','Test_Grip']:
         frames=90;body.action(name,frames)
         for i in range(frames+1):
             bpy.context.scene.frame_set(i);baseline();t=i/frames
@@ -128,9 +130,10 @@ def retarget(rig,meshes):
                 for side,sign in [('l',1),('r',-1)]:
                     h=body.bone('hand_'+side);goal=h.head.lerp(Vector((sign*.24,-.30,1.37)),envelope)
                     body.ik(['upperarm_'+side,'lowerarm_'+side,'hand_'+side],goal,Vector((sign*.3,-1,0)))
-            else:
+            elif name=='Test_KneeBend':
                 foot=body.bone('foot_r');goal=foot.head+Vector((0,.20,.25))*envelope
                 body.leg_ik('r',goal,foot.matrix.to_3x3(),Vector((0,-1,0)))
+            finish_pose(body,name,t)
             bpy.context.view_layer.update();body.key(i)
         report.append({'name':name,'source':'authored in Blender on the v2 rig','seconds':3,'loop':False})
     use_action(rig,None);clear_pose(rig)
