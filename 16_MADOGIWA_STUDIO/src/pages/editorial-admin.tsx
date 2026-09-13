@@ -25,7 +25,7 @@ function GalleryAdmin() {
   async function refresh(preferredId?: string): Promise<void> {
     const next = (await api.listAdminGalleryItems()).galleryItems;
     setItems(next);
-    setSelectedId((current) => preferredId ?? (current && next.some((item) => item.id === current) ? current : next[0]?.id ?? null));
+    setSelectedId((current) => preferredId ?? (current && next.some((item) => item.id === current) ? current : null));
   }
 
   useEffect(() => {
@@ -50,11 +50,12 @@ function GalleryAdmin() {
   if (loading) return <div className="py-16 text-center text-sm text-stone-600">GALLERY LOADING...</div>;
   const selected = items.find((item) => item.id === selectedId) ?? null;
 
-  return <div className="grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)]">
-    <ContentList title="Gallery" icon={<Images className="size-4" />} onCreate={() => setCreating(true)}>
+  return <div className={`desk-editorial ${selected || creating ? "is-editing" : ""}`}>
+    <ContentList title="ギャラリー" icon={<Images className="size-4" />} onCreate={() => setCreating(true)}>
       {items.map((item, index) => <ContentListItem
         key={item.id}
         title={item.title}
+        image={item.image_url}
         meta={item.kind}
         status={item.status}
         selected={selectedId === item.id && !creating}
@@ -64,11 +65,11 @@ function GalleryAdmin() {
         onMove={(direction) => void move(item.id, direction)}
       />)}
     </ContentList>
-    <div>{creating
+    <div className="desk-editorial-panel">{(selected || creating) && <button className="desk-back" onClick={() => {setSelectedId(null); setCreating(false);}}>← 一覧へ戻る</button>}{creating
       ? <CreateGalleryForm nextOrder={items.length} onCreated={async (item) => { setCreating(false); await refresh(item.id); }} />
       : selected
         ? <GalleryEditor key={`${selected.id}:${selected.updated_at}`} item={selected} onSaved={() => refresh(selected.id)} />
-        : <EmptyEditor label="ギャラリー項目を追加してください" />}
+        : <EmptyEditor label="ギャラリー項目を選んで編集" />}
     </div>
   </div>;
 }
@@ -155,7 +156,7 @@ function ArticlesAdmin() {
   async function refresh(preferredId?: string): Promise<void> {
     const next = (await api.listAdminArticles()).articles;
     setItems(next);
-    setSelectedId((current) => preferredId ?? (current && next.some((item) => item.id === current) ? current : next[0]?.id ?? null));
+    setSelectedId((current) => preferredId ?? (current && next.some((item) => item.id === current) ? current : null));
   }
 
   useEffect(() => {
@@ -179,15 +180,15 @@ function ArticlesAdmin() {
 
   if (loading) return <div className="py-16 text-center text-sm text-stone-600">ARTICLES LOADING...</div>;
   const selected = items.find((item) => item.id === selectedId) ?? null;
-  return <div className="grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)]">
-    <ContentList title="Articles" icon={<BookOpen className="size-4" />} onCreate={() => setCreating(true)}>
+  return <div className={`desk-editorial ${selected || creating ? "is-editing" : ""}`}>
+    <ContentList title="記事" icon={<BookOpen className="size-4" />} onCreate={() => setCreating(true)}>
       {items.map((item, index) => <ContentListItem key={item.id} title={item.title} meta={`${item.source} · ${item.label}`} status={item.status} selected={selectedId === item.id && !creating} first={index === 0} last={index === items.length - 1} onSelect={() => { setSelectedId(item.id); setCreating(false); }} onMove={(direction) => void move(item.id, direction)} />)}
     </ContentList>
-    <div>{creating
+    <div className="desk-editorial-panel">{(selected || creating) && <button className="desk-back" onClick={() => {setSelectedId(null); setCreating(false);}}>← 一覧へ戻る</button>}{creating
       ? <CreateArticleForm nextOrder={items.length} onCreated={async (item) => { setCreating(false); await refresh(item.id); }} />
       : selected
         ? <ArticleEditor key={`${selected.id}:${selected.updated_at}`} item={selected} onSaved={() => refresh(selected.id)} />
-        : <EmptyEditor label="記事を追加してください" />}
+        : <EmptyEditor label="記事を選んで編集" />}
     </div>
   </div>;
 }
@@ -249,12 +250,12 @@ function articleInput(data: FormData, displayOrder: number) {
 }
 
 function ContentList({ title, icon, onCreate, children }: { title: string; icon: React.ReactNode; onCreate: () => void; children: React.ReactNode }) {
-  const createLabel = title === "Gallery" ? "新規ギャラリー" : "新規記事";
-  return <aside className="space-y-3"><Button className="w-full" onClick={onCreate}><Plus className="size-4" />{createLabel}</Button><div className="rounded-2xl border border-white/7 bg-white/[0.02] p-2"><div className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-stone-500">{icon}{title}</div><div className="space-y-1">{children}</div></div></aside>;
+  const createLabel = title === "ギャラリー" ? "新規ギャラリー" : "新規記事";
+  return <aside className="space-y-3"><div className="rounded-2xl border border-white/7 bg-white/[0.02] p-2"><div className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-stone-500">{icon}{title}</div><div className="space-y-1">{children}</div></div><details className="desk-add"><summary>追加操作</summary><Button onClick={onCreate}><Plus className="size-4" />{createLabel}</Button></details></aside>;
 }
 
-function ContentListItem({ title, meta, status, selected, first, last, onSelect, onMove }: { title: string; meta: string; status: string; selected: boolean; first: boolean; last: boolean; onSelect: () => void; onMove: (direction: -1 | 1) => void }) {
-  return <div className={cn("rounded-xl transition", selected ? "bg-white/10" : "hover:bg-white/5")}><button type="button" onClick={onSelect} className="flex w-full items-center justify-between gap-3 px-3 pt-3 text-left"><div className="min-w-0"><div className="truncate text-sm text-stone-200">{title}</div><div className="mt-1 truncate text-[10px] text-stone-600">{meta}</div></div><StatusBadge status={status} /></button><div className="flex justify-end gap-1 px-2 pb-2"><Button type="button" variant="ghost" size="sm" disabled={first} aria-label={`${title}を上へ`} onClick={() => onMove(-1)}><ArrowUp className="size-3" /></Button><Button type="button" variant="ghost" size="sm" disabled={last} aria-label={`${title}を下へ`} onClick={() => onMove(1)}><ArrowDown className="size-3" /></Button></div></div>;
+function ContentListItem({ image, title, meta, status, selected, first, last, onSelect, onMove }: { image?: string; title: string; meta: string; status: string; selected: boolean; first: boolean; last: boolean; onSelect: () => void; onMove: (direction: -1 | 1) => void }) {
+  return <div className={cn("rounded-xl transition", selected ? "bg-white/10" : "hover:bg-white/5")}><button type="button" onClick={onSelect} className="flex w-full items-center justify-between gap-3 px-3 pt-3 text-left">{image && <img src={image} alt="" loading="lazy" className="h-12 w-16 shrink-0 object-contain"/>}<div className="min-w-0"><div className="truncate text-sm text-stone-200">{title}</div><div className="mt-1 truncate text-[10px] text-stone-600">{meta}</div></div><StatusBadge status={status} /></button><div className="flex justify-end gap-1 px-2 pb-2"><Button type="button" variant="ghost" size="sm" disabled={first} aria-label={`${title}を上へ`} onClick={() => onMove(-1)}><ArrowUp className="size-3" /></Button><Button type="button" variant="ghost" size="sm" disabled={last} aria-label={`${title}を下へ`} onClick={() => onMove(1)}><ArrowDown className="size-3" /></Button></div></div>;
 }
 
 function StatusSelect({ defaultValue }: { defaultValue: EditorialContentStatus }) {

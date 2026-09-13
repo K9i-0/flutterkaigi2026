@@ -11,6 +11,8 @@ export type Episode = {
   studio_id: string;
   slug: string;
   episode_number: number | null;
+  display_order: number;
+  representative_video_id: string | null;
   title: string;
   summary: string;
   status: EpisodeStatus;
@@ -54,6 +56,7 @@ export type Video = {
   size_bytes: number | null;
   status: VideoStatus;
   is_primary: number;
+  display_order: number;
   is_featured: number;
   uploaded_by: string | null;
   created_at: string;
@@ -165,7 +168,15 @@ function jsonInit(method: string, body: unknown): RequestInit {
   return { method, headers: { "content-type": "application/json" }, body: JSON.stringify(body) };
 }
 
+export type EpisodeEditorInput = {
+  title: string; summary: string; status: EpisodeStatus; memberIds: string[];
+  representativeVideoId: string | null; expectedUpdatedAt: string;
+  videos: {id: string; label: string; featured: boolean; status: VideoStatus; expectedUpdatedAt: string}[];
+};
+
 export const api = {
+  reorderEpisodes: (itemIds: string[], previousIds: string[]) => request<{episodes: EpisodeSummary[]}>("/admin-api/episodes/reorder", jsonInit("PUT", {itemIds, previousIds})),
+  saveEpisodeEditor: (id: string, input: EpisodeEditorInput) => request<EpisodeDetail>(`/admin-api/episodes/${id}/editor`, jsonInit("PUT", input)),
   listGalleryItems: () => request<{ galleryItems: GalleryItem[] }>("/api/gallery-items"),
   listArticles: () => request<{ articles: Article[] }>("/api/articles"),
   listAdminGalleryItems: () => request<{ galleryItems: GalleryItem[] }>("/admin-api/gallery-items"),

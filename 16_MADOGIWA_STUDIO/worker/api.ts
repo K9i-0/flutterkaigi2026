@@ -1,3 +1,5 @@
+import { serveR2Object } from "./r2-response";
+import { editorSchema, orderSchema, reorderEpisodes, saveEpisodeEditor } from "./editor-repository";
 import { listPublicEpisodes } from "./public-repository";
 import { cachedPublicData } from "./public-cache";
 import { requireAdmin } from "./auth";
@@ -15,6 +17,7 @@ import {
 } from "./content-repository";
 import { consumeGalleryImageUpload, createGalleryImageUpload } from "./gallery-images";
 import {
+  getVideo,
   createEpisode,
   createGeneration,
   getEpisodeBySlug,
@@ -58,6 +61,13 @@ export async function handleApi(request: Request, env: Env, ctx: ExecutionContex
   const segments = pathSegments(routePath);
   const admin = isAdminApi ? await requireAdmin(request, env, ctx) : null;
 
+  if (isAdminApi && request.method === "GET" && segments.length === 4 && segments[1] === "videos" && ["preview", "poster"].includes(segments[3])) {
+    const video = await getVideo(env.DB, segments[2]);
+    if (!video || video.status === "upload_pending") throw new HttpError(404, "動画はまだ利用できません");
+    const key = segments[3] === "poster" ? video.poster_r2_key : video.r2_key;
+    if (!key) throw new HttpError(404, "サムネイルがありません");
+    return serveR2Object(request, env.MEDIA, key, undefined, "private, no-store");
+  }
   if (isAdminApi && request.method === "GET" && routePath === "/api/session") {
     return json({ admin });
   }
@@ -139,6 +149,13 @@ export async function handleApi(request: Request, env: Env, ctx: ExecutionContex
   if (isAdminApi && request.method === "PUT" && routePath === "/api/articles/reorder") {
     const input = reorderContentSchema.parse(await readJson(request));
     return json({ articles: await reorderArticles(env.DB, input.itemIds, admin!.email) });
+  }
+  if (isAdminApi && request.method === "PUT" && routePath === "/api/episodes/reorder") {
+    await reorderEpisodes(env.DB, orderSchema.parse(await readJson(request)));
+    return json({ episodes: await listEpisodes(env.DB) });
+  }
+  if (isAdminApi && request.method === "PUT" && segments.length === 4 && segments[1] === "episodes" && segments[3] === "editor") {
+    return json(await saveEpisodeEditor(env.DB, segments[2], editorSchema.parse(await readJson(request))));
   }
   if (isAdminApi && request.method === "POST" && routePath === "/api/episodes") {
     const input = createEpisodeSchema.parse(await readJson(request));

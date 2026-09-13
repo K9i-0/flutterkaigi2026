@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { useVideoPreferences } from "../components/use-video-preferences";
 import * as Dialog from "@radix-ui/react-dialog";
 import {
+  ArrowLeft,
+  VolumeX,
   ArrowRight,
   ArrowUpRight,
   Play,
@@ -1148,9 +1150,6 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
             className="j-video-dialog j-watch-dialog"
             aria-describedby={undefined}
           >
-            <Dialog.Close className="j-dialog-close" aria-label="閉じる">
-              <X size={21} />
-            </Dialog.Close>
             {playing && (
               <VideoViewer key={playing.id} episode={playing} onNext={() => {
                 if (nextEpisode) setPlaying(nextEpisode);
@@ -1209,14 +1208,10 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
         <Dialog.Portal>
           <Dialog.Overlay className="j-dialog-overlay" />
           <Dialog.Content
-            className="j-image-dialog"
+            className="j-image-dialog j-immersive-image"
             aria-describedby={undefined}
           >
-            <Dialog.Close className="j-dialog-close" aria-label="閉じる">
-              <X size={21} />
-            </Dialog.Close>
-            <Dialog.Title>{zoom?.title}</Dialog.Title>
-            <img src={zoom?.src} alt={zoom?.title} />
+            {zoom && <ImageViewer key={zoom.src} src={zoom.src} title={zoom.title} />}
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog.Root>
@@ -1229,6 +1224,25 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
     </div>
   );
 }
+function ViewerClose() {
+  return <Dialog.Close className="j-dialog-close j-viewer-close" aria-label="閉じる">
+    <X className="j-close-desktop" size={21} /><ArrowLeft className="j-close-mobile" size={23} />
+  </Dialog.Close>;
+}
+function ImageViewer({ src, title }: { src: string; title: string }) {
+  const [chrome, setChrome] = useState(true);
+  return <div className="j-image-viewer" data-chrome={chrome}>
+    <ViewerClose />
+    <Dialog.Title>{title}</Dialog.Title>
+    <button className="j-image-stage" aria-label={chrome ? "操作表示を隠す" : "操作表示を表示"} onClick={() => setChrome(!chrome)}>
+      <img src={src} alt={title} />
+    </button>
+  </div>;
+}
+function mediaTime(value: number) {
+  const seconds = Number.isFinite(value) ? Math.max(0, Math.floor(value)) : 0;
+  return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
+}
 function VideoViewer({ episode, children, onNext, hasNext }: {
   episode: Episode;
   children: React.ReactNode;
@@ -1238,6 +1252,29 @@ function VideoViewer({ episode, children, onNext, hasNext }: {
   const [failed, setFailed] = useState(false);
   const [ended, setEnded] = useState(false);
   const [infoOpen, setInfoOpen] = useState(false);
+  const [mobile, setMobile] = useState(false);
+  const [chrome, setChrome] = useState(true);
+  const [paused, setPaused] = useState(true);
+  const [time, setTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [muted, setMuted] = useState(false);
+  const [rate, setRate] = useState(1);
+  const [interaction, setInteraction] = useState(0);
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 760px), (max-height: 500px) and (pointer: coarse)");
+    const update = () => setMobile(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
+  useEffect(() => {
+    if (!mobile || paused || infoOpen || !chrome || ended || failed) return;
+    const timer = window.setTimeout(() => {
+      // Keep keyboard-operated controls visible while they have focus.
+      if (!document.activeElement?.closest(".j-mobile-playback, .j-viewer-toolbar")) setChrome(false);
+    }, 3500);
+    return () => window.clearTimeout(timer);
+  }, [mobile, paused, infoOpen, chrome, ended, failed, interaction]);
   const { ref: preferenceRef, videoRef: ref } = useVideoPreferences();
   const infoRef = useRef<HTMLDivElement>(null);
   const infoButtonRef = useRef<HTMLButtonElement>(null);
@@ -1245,6 +1282,7 @@ function VideoViewer({ episode, children, onNext, hasNext }: {
   const swiped = useRef(false);
   function openInfo() {
     setInfoOpen(true);
+    setChrome(true);
     requestAnimationFrame(() => infoRef.current?.focus());
   }
   function closeInfo() {
@@ -1252,7 +1290,8 @@ function VideoViewer({ episode, children, onNext, hasNext }: {
     infoButtonRef.current?.focus();
   }
   return (
-    <div className="j-viewer">
+    <div className="j-viewer" data-chrome={chrome || infoOpen || ended || failed} data-info-open={infoOpen}>
+      <ViewerClose />
       <header className="j-video-title">
         <span>{category(episode)} · {runtime(episode)}</span>
         <Dialog.Title>{episodeTitle(episode)}</Dialog.Title>
@@ -1263,12 +1302,33 @@ function VideoViewer({ episode, children, onNext, hasNext }: {
             ref={preferenceRef}
             src={videoSource(episode)}
             poster={poster(episode)}
-            controls autoPlay playsInline preload="metadata"
+            controls={!mobile} autoPlay playsInline preload="metadata"
             aria-label={episodeTitle(episode)}
             onError={() => setFailed(true)}
-            onEnded={() => setEnded(true)}
-            onPlay={() => setEnded(false)}
+            onEnded={() => { setEnded(true); setPaused(true); setChrome(true); }}
+            onPlay={() => { setEnded(false); setPaused(false); }}
+            onPause={() => setPaused(true)}
+            onTimeUpdate={(event) => setTime(event.currentTarget.currentTime)}
+            onLoadedMetadata={(event) => { setDuration(event.currentTarget.duration); setMuted(event.currentTarget.muted); }}
+            onDurationChange={(event) => setDuration(event.currentTarget.duration)}
+            onVolumeChange={(event) => setMuted(event.currentTarget.muted || event.currentTarget.volume === 0)}
+            onRateChange={(event) => setRate(event.currentTarget.playbackRate)}
           />
+          {mobile && !infoOpen && <button className="j-media-tap" aria-label={chrome ? "操作表示を隠す" : "操作表示を表示"} onClick={() => { setChrome(!chrome); setInteraction((value) => value + 1); }} />}
+          {mobile && <div className="j-mobile-playback" onPointerDown={() => setInteraction((value) => value + 1)} onKeyDown={() => setInteraction((value) => value + 1)}>
+            <input type="range" aria-label="再生位置" min={0} max={Number.isFinite(duration) && duration > 0 ? duration : 1} step={0.1} value={Math.min(time, duration || 1)} disabled={!Number.isFinite(duration) || duration <= 0}
+              onChange={(event) => { if (ref.current) { ref.current.currentTime = Number(event.target.value); setTime(Number(event.target.value)); } }} />
+            <div>
+              <button aria-label={paused ? "再生" : "一時停止"} onClick={() => {
+                if (!ref.current) return;
+                if (ref.current.paused) void ref.current.play().catch(() => setPaused(true));
+                else ref.current.pause();
+              }}>{paused ? <Play size={22} fill="currentColor" /> : <Pause size={22} fill="currentColor" />}</button>
+              <span>{mediaTime(time)} / {mediaTime(duration)}</span>
+              <button aria-label={`再生速度 ${rate}倍`} onClick={() => { if (ref.current) ref.current.playbackRate = rate === 1 ? 1.5 : rate === 1.5 ? 2 : rate === 2 ? 0.5 : 1; }}>{rate}×</button>
+              <button aria-label={muted ? "ミュートを解除" : "ミュート"} onClick={() => { if (ref.current) ref.current.muted = !ref.current.muted; }}>{muted ? <VolumeX size={23} /> : <Volume2 size={23} />}</button>
+            </div>
+          </div>}
           {failed && <div className="j-player-state">
             <p>動画を読み込めませんでした。</p>
             <a href={`https://madogiwa.work/episodes/${episode.slug}`} target="_blank" rel="noreferrer">

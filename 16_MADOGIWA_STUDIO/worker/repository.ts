@@ -70,12 +70,12 @@ export async function listEpisodes(db: D1Database, options?: { featuredOnly?: bo
             WHERE g.episode_id = e.id AND v.status != 'archived') AS video_count,
           (SELECT COUNT(*) FROM input_assets a JOIN generations g ON g.id = a.generation_id
             WHERE g.episode_id = e.id AND a.status != 'archived') AS input_count,
-          (SELECT v.id FROM videos v JOIN generations g ON g.id = v.generation_id
+          COALESCE((SELECT r.id FROM videos r WHERE r.id = e.representative_video_id AND r.episode_id = e.id AND r.status NOT IN ('archived', 'upload_pending')), (SELECT v.id FROM videos v JOIN generations g ON g.id = v.generation_id
             WHERE g.episode_id = e.id AND v.status NOT IN ('archived', 'upload_pending')
-            ORDER BY v.is_featured DESC, v.created_at DESC, g.version DESC, v.is_primary DESC LIMIT 1) AS primary_video_id,
-          (SELECT v.poster_r2_key FROM videos v JOIN generations g ON g.id = v.generation_id
+            ORDER BY v.display_order, v.created_at DESC, v.id LIMIT 1)) AS primary_video_id,
+          CASE WHEN EXISTS(SELECT 1 FROM videos r WHERE r.id = e.representative_video_id AND r.episode_id = e.id AND r.status NOT IN ('archived', 'upload_pending')) THEN (SELECT r.poster_r2_key FROM videos r WHERE r.id = e.representative_video_id) ELSE (SELECT v.poster_r2_key FROM videos v JOIN generations g ON g.id = v.generation_id
             WHERE g.episode_id = e.id AND v.status NOT IN ('archived', 'upload_pending')
-            ORDER BY v.is_featured DESC, v.created_at DESC, g.version DESC, v.is_primary DESC LIMIT 1) AS primary_video_poster_r2_key,
+            ORDER BY v.display_order, v.created_at DESC, v.id LIMIT 1) END AS primary_video_poster_r2_key,
           EXISTS(SELECT 1 FROM videos v JOIN generations g ON g.id = v.generation_id
             WHERE g.episode_id = e.id AND v.is_featured = 1
               AND v.status NOT IN ('archived', 'upload_pending')) AS has_featured_video,
@@ -86,7 +86,7 @@ export async function listEpisodes(db: D1Database, options?: { featuredOnly?: bo
             WHERE g.episode_id = e.id AND p.is_current = 1
             ORDER BY g.version DESC LIMIT 1) AS prompt_label
          FROM episodes e
-         ORDER BY e.updated_at DESC, e.created_at DESC`,
+         ORDER BY e.display_order, e.created_at DESC, e.id`,
       )
       .all<EpisodeSummaryBase>(),
     db
@@ -118,7 +118,7 @@ export async function getEpisodeById(db: D1Database, id: string): Promise<Episod
     db.prepare("SELECT * FROM episodes WHERE id = ?").bind(id).first<EpisodeRow>(),
     db.prepare("SELECT * FROM generations WHERE episode_id = ? ORDER BY version DESC").bind(id).all<GenerationRow>(),
     db.prepare("SELECT * FROM prompt_versions WHERE episode_id = ? ORDER BY version DESC").bind(id).all<PromptRow>(),
-    db.prepare("SELECT * FROM videos WHERE episode_id = ? ORDER BY is_primary DESC, created_at DESC").bind(id).all<VideoRow>(),
+    db.prepare("SELECT * FROM videos WHERE episode_id = ? ORDER BY display_order, created_at DESC, id").bind(id).all<VideoRow>(),
     db
       .prepare("SELECT * FROM input_assets WHERE episode_id = ? ORDER BY COALESCE(group_label, ''), display_order, created_at")
       .bind(id)

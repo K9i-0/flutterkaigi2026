@@ -9,6 +9,6 @@ export const Route = createFileRoute("/admin")({
     episode: typeof search.episode === "string" ? search.episode : undefined,
     section: search.section === "gallery" || search.section === "articles" ? search.section : undefined,
   }),
-  head: () => ({ meta: [{ title: "Production desk｜Madogiwa Studio" }, { name: "robots", content: "noindex,nofollow" }] }),
+  head: () => ({ meta: [{ title: "コンテンツ管理｜Madogiwa Studio" }, { name: "robots", content: "noindex,nofollow" }] }),
   component: AdminPage,
 });

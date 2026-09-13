@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { chooseThemeFeature } from "../src/official/theme-features";
 import type { EpisodeSummary } from "../src/lib/api";
 function episode(slug: string, overrides: Partial<EpisodeSummary> = {}): EpisodeSummary {
-  return { id: slug, studio_id: slug, slug, episode_number: null, title: slug, summary: "", status: "published", created_at: "", updated_at: "", published_at: null, generation_count: 1, video_count: 1, input_count: 0, primary_video_id: slug, primary_video_poster_url: null, has_featured_video: 0, featured_video_created_at: null, prompt_label: null, members: [], ...overrides };
+  return { id: slug, studio_id: slug, slug, episode_number: null, display_order: 0, representative_video_id: null, title: slug, summary: "", status: "published", created_at: "", updated_at: "", published_at: null, generation_count: 1, video_count: 1, input_count: 0, primary_video_id: slug, primary_video_poster_url: null, has_featured_video: 0, featured_video_created_at: null, prompt_label: null, members: [], ...overrides };
 }
 describe("theme recommendations", () => {
   it("opens a different relevant episode for each of the three styles", () => {

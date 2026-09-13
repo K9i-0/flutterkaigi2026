@@ -35,7 +35,7 @@ async function queryPublicEpisode(slug: string): Promise<PublicEpisodeDetail | n
   const videos: PublicVideo[] = detail.generations
     .flatMap((generation) => generation.videos)
     .filter((video) => video.status !== "archived" && video.status !== "upload_pending")
-    .sort((left, right) => right.is_featured - left.is_featured || right.created_at.localeCompare(left.created_at))
+    .sort((left, right) => left.display_order - right.display_order || right.created_at.localeCompare(left.created_at) || left.id.localeCompare(right.id))
     .map((video) => ({
       id: video.id,
       generation_id: video.generation_id,

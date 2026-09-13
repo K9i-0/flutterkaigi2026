@@ -7,12 +7,12 @@ export const PUBLIC_EPISODE_QUERIES = {
   episodes: `SELECT e.*, COUNT(g.id) AS generation_count
     FROM episodes e LEFT JOIN generations g ON g.episode_id = e.id
     WHERE e.status = 'published' GROUP BY e.id
-    ORDER BY e.updated_at DESC, e.created_at DESC`,
+    ORDER BY e.display_order, e.created_at DESC, e.id`,
   videos: `SELECT v.id, v.episode_id, v.status, v.poster_r2_key, v.is_featured, v.created_at
     FROM videos v JOIN generations g ON g.id = v.generation_id
     JOIN episodes e ON e.id = g.episode_id
     WHERE e.status = 'published' AND v.status != 'archived'
-    ORDER BY v.is_featured DESC, v.created_at DESC, g.version DESC, v.is_primary DESC`,
+    ORDER BY v.display_order, v.created_at DESC, v.id`,
   members: `SELECT em.episode_id, m.* FROM episode_members em
     JOIN episodes e ON e.id = em.episode_id JOIN members m ON m.id = em.member_id
     WHERE e.status = 'published' ORDER BY m.sort_order, m.name`,
@@ -34,11 +34,11 @@ export async function queryPublicEpisodes(db: D1Database): Promise<EpisodeSummar
     if (!episode) continue;
     episode.video_count++;
     if (video.status === "upload_pending") continue;
-    if (!episode.primary_video_id) {
+    if (!episode.primary_video_id || video.id === episode.representative_video_id) {
       episode.primary_video_id = video.id;
       episode.primary_video_poster_url = video.poster_r2_key ? `/posters/${video.id}` : null;
     }
-    if (video.is_featured && !episode.has_featured_video) {
+    if (video.is_featured && (!episode.featured_video_created_at || video.created_at > episode.featured_video_created_at)) {
       episode.has_featured_video = 1;
       episode.featured_video_created_at = video.created_at;
     }

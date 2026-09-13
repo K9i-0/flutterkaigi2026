@@ -1,131 +1,159 @@
-import { Bot, CheckCircle2, CloudUpload, FileVideo2, ImageIcon, KeyRound, Layers3, LogOut, Music2, Paperclip, Plus, Save, Star } from "lucide-react";
-import { FormEvent, useEffect, useMemo, useState } from "react";
-import { useNavigate, useSearch } from "@tanstack/react-router";
+import { useEffect, useRef, useState } from "react";
+import { useBlocker, useNavigate, useSearch } from "@tanstack/react-router";
+import { ArrowDown, ArrowUp, GripVertical, Search, Star, X } from "lucide-react";
 import { toast } from "sonner";
-import { StatusBadge } from "@/components/status-badge";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { AdminAuthenticationRequiredError, api, type EpisodeDetail, type EpisodeStatus, type EpisodeSummary, type Generation, type InputAssetKind, type Member } from "@/lib/api";
-import { cn } from "@/lib/utils";
-import { createVideoPoster } from "@/lib/video-poster";
-import { EditorialAdmin } from "@/pages/editorial-admin";
+import { api, type EpisodeDetail, type EpisodeEditorInput, type EpisodeSummary, type Member } from "@/lib/api";
+import { CreateEpisode, ProductionEditor } from "./admin-production";
+import { EditorialAdmin } from "./editorial-admin";
+import "./admin.css";
 
-const COMMON_MODELS = ["Seedance 2.0", "Seedance 2.5", "MiniMax H3"];
+function message(error: unknown) { return error instanceof Error ? error.message : "処理に失敗しました"; }
+function moved<T>(items: T[], from: number, to: number) {
+  if (from < 0 || to < 0 || to >= items.length) return items;
+  const next = [...items]; const [item] = next.splice(from, 1); next.splice(to, 0, item); return next;
+}
 
 export function AdminPage() {
-  const search = useSearch({ from: "/admin" });
-  const navigate = useNavigate({ from: "/admin" });
-  const selectedSlug = search.episode;
-  const requestedSection = search.section;
-  const section: "episodes" | "gallery" | "articles" = requestedSection === "gallery" || requestedSection === "articles" ? requestedSection : "episodes";
-  const [session, setSession] = useState<{ email: string; source: "access" } | null | undefined>(undefined);
+  const search = useSearch({from: "/admin"});
+  const navigate = useNavigate({from: "/admin"});
+  const section = search.section ?? "episodes";
   const [episodes, setEpisodes] = useState<EpisodeSummary[]>([]);
   const [members, setMembers] = useState<Member[]>([]);
+  const [email, setEmail] = useState("");
+  const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState("");
   const [detail, setDetail] = useState<EpisodeDetail | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  function handleLoadError(reason: unknown) {
-    if (reason instanceof AdminAuthenticationRequiredError) {
-      window.location.reload();
-      return;
-    }
-    setError(reason instanceof Error ? reason.message : "読み込みに失敗しました");
-  }
-
-  async function refreshList() { setEpisodes((await api.listEpisodes()).episodes); }
-  async function refreshDetail(): Promise<EpisodeDetail> {
-    if (!selectedSlug) throw new Error("エピソードが選択されていません");
-    const next = await api.getEpisode(selectedSlug);
-    setDetail(next);
-    await refreshList();
-    return next;
-  }
-
+  const [detailError, setDetailError] = useState("");
+  const [creating, setCreating] = useState(false);
+  const [query, setQuery] = useState("");
+  const [member, setMember] = useState("");
+  const [status, setStatus] = useState("");
+  const [featured, setFeatured] = useState(false);
+  const [sort, setSort] = useState("display");
+  const [order, setOrder] = useState<EpisodeSummary[] | null>(null);
+  const [savingOrder, setSavingOrder] = useState(false);
+  const [dirty, setDirty] = useState(false);
+  const dragId = useRef<string | null>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+  const dirtyAny = dirty || order !== null;
+  useBlocker({shouldBlockFn: () => { if (!dirtyAny) return false; if (!window.confirm("未保存の変更があります。破棄して移動しますか？")) return true; setDirty(false); setOrder(null); return false; }, enableBeforeUnload: dirtyAny});
+  async function reloadList() { setEpisodes((await api.listEpisodes()).episodes); }
   useEffect(() => {
-    Promise.all([api.getSession(), api.listEpisodes(), api.listMembers()]).then(([sessionResult, episodeResult, memberResult]) => {
-      setSession(sessionResult.admin); setEpisodes(episodeResult.episodes); setMembers(memberResult.members);
-    }).catch(handleLoadError);
+    let active = true;
+    Promise.all([api.getSession(), api.listEpisodes(), api.listMembers()]).then(([session, list, people]) => {
+      if (!active) return;
+      setEmail(session.admin?.email ?? ""); setEpisodes(list.episodes); setMembers(people.members); setLoaded(true);
+    }).catch((reason: unknown) => { if (active) setError(message(reason)); });
+    return () => { active = false; };
   }, []);
   useEffect(() => {
-    if (!selectedSlug) { setDetail(null); return; }
-    api.getEpisode(selectedSlug).then(setDetail).catch(handleLoadError);
-  }, [selectedSlug]);
-
-  if (error) return <div className="rounded-2xl border border-red-400/20 bg-red-400/8 p-5 text-sm text-red-200">{error}</div>;
-  if (session === undefined) return <div className="py-20 text-center text-sm text-stone-600">管理画面を確認しています…</div>;
-  if (!session) return <LoginRequired />;
-
-  return <div className="space-y-8"><datalist id="madogiwa-model-suggestions">{COMMON_MODELS.map((model) => <option key={model} value={model} />)}</datalist>
-    <section className="flex flex-wrap items-end justify-between gap-5"><div><Badge className="border-emerald-400/20 bg-emerald-400/8 text-emerald-300"><CheckCircle2 className="mr-2 size-3" />Authenticated</Badge><h1 className="mt-5 text-3xl font-semibold tracking-[-0.035em] sm:text-5xl">Production desk</h1><p className="mt-3 text-sm text-stone-500">{session.email}</p></div><div className="flex items-center gap-2"><Badge>Cloudflare Access</Badge><Button variant="ghost" size="sm" asChild><a href="/cdn-cgi/access/logout"><LogOut className="size-3.5" />ログアウト</a></Button></div></section>
-    <nav className="flex flex-wrap gap-2 rounded-2xl border border-white/7 bg-white/[0.02] p-2" aria-label="管理対象"><Button type="button" variant={section === "episodes" ? "secondary" : "ghost"} onClick={() => void navigate({ to: "/admin", search: {} })}>Episodes</Button><Button type="button" variant={section === "gallery" ? "secondary" : "ghost"} onClick={() => void navigate({ to: "/admin", search: { section: "gallery" } })}>Gallery</Button><Button type="button" variant={section === "articles" ? "secondary" : "ghost"} onClick={() => void navigate({ to: "/admin", search: { section: "articles" } })}>Articles</Button></nav>
-    {section === "episodes" ? <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]"><aside className="space-y-3"><Button className="w-full" onClick={() => void navigate({ to: "/admin", search: {} })}><Plus className="size-4" />新規エピソード</Button><div className="space-y-1 rounded-2xl border border-white/7 bg-white/[0.02] p-2">{episodes.map((episode) => <button key={episode.id} onClick={() => void navigate({ to: "/admin", search: { episode: episode.slug } })} className={cn("flex w-full items-center justify-between gap-3 rounded-xl px-3 py-3 text-left transition", selectedSlug === episode.slug ? "bg-white/10" : "hover:bg-white/5")}><div className="min-w-0"><div className="truncate text-sm text-stone-200">{episode.title}</div><div className="mt-1 font-mono text-[10px] text-stone-600">{episode.studio_id} · {episode.generation_count} versions</div></div><StatusBadge status={episode.status} /></button>)}</div><McpHint /></aside><div>{detail ? <EpisodeEditor key={detail.episode.id} detail={detail} members={members} onSaved={refreshDetail} /> : <CreateEpisode members={members} onCreated={async (slug) => { await refreshList(); await navigate({ to: "/admin", search: { episode: slug } }); }} />}</div></div> : <EditorialAdmin section={section} />}
+    let active = true;
+    if (search.episode) api.getEpisode(search.episode).then((next) => {
+      if (active) { setDetail(next); setDirty(false); }
+    }).catch((reason: unknown) => { if (active) setDetailError(message(reason)); });
+    return () => { active = false; };
+  }, [search.episode]);
+  async function select(slug?: string) {
+    if (slug === search.episode) return;
+    if (dirty && !window.confirm("未保存の変更を破棄しますか？")) return;
+    setDirty(false); setCreating(false); setDetailError(""); setDetail(null);
+    await navigate({search: {episode: slug}, ignoreBlocker: true});
+  }
+  async function refreshDetail() {
+    const next = await api.getEpisode(search.episode!); setDetail(next); await reloadList(); return next;
+  }
+  const visible = (order ?? episodes).filter((episode) => order || (
+    `${episode.title} ${episode.studio_id} ${episode.slug}`.toLowerCase().includes(query.toLowerCase()) &&
+    (!member || episode.members.some((person) => person.id === member)) && (!status || episode.status === status) && (!featured || !!episode.has_featured_video)
+  )).sort((a, b) => order || sort === "display" ? 0 : sort === "title" ? a.title.localeCompare(b.title, "ja") : sort === "updated" ? b.updated_at.localeCompare(a.updated_at) : b.created_at.localeCompare(a.created_at));
+  async function saveOrder() {
+    if (!order) return; setSavingOrder(true);
+    try { setEpisodes((await api.reorderEpisodes(order.map((item) => item.id), episodes.map((item) => item.id))).episodes); setOrder(null); toast.success("掲載順を保存しました"); }
+    catch (reason) { toast.error(message(reason)); } finally { setSavingOrder(false); }
+  }
+  if (error) return <div role="alert" className="desk-empty">{error}<button onClick={() => window.location.reload()}>再読み込み</button></div>;
+  if (!loaded) return <div className="desk-empty" role="status">作品を読み込んでいます…</div>;
+  if (!email) return <div className="desk-empty">管理画面にログインしてください。</div>;
+  const editing = !!search.episode || creating;
+  return <div className="desk">
+    <header className="desk-heading"><div><h1>コンテンツ管理</h1><p>登録済みの作品を編集・整理</p></div><details className="desk-account"><summary>アカウント</summary><p>{email}</p><a href="/cdn-cgi/access/logout">ログアウト</a></details></header>
+    <nav className="desk-tabs" aria-label="管理対象">{(["episodes", "gallery", "articles"] as const).map((item) => <button key={item} aria-current={section === item ? "page" : undefined} onClick={() => void navigate({search: item === "episodes" ? {} : {section: item}})}>{{episodes: "作品", gallery: "ギャラリー", articles: "記事"}[item]}</button>)}</nav>
+    {section !== "episodes" ? <EditorialAdmin section={section} /> : <div className={`desk-workspace ${editing ? "is-editing" : ""}`}>
+      <div className="desk-library" ref={listRef}>
+        <div className="desk-tools">
+          <label className="desk-search"><Search size={16}/><input aria-label="作品を検索" placeholder="タイトル・Studio IDで検索" value={query} disabled={!!order} onChange={(event) => setQuery(event.target.value)}/></label>
+          <div className="desk-filters"><select aria-label="登場人物で絞り込み" value={member} disabled={!!order} onChange={(event) => setMember(event.target.value)}><option value="">全登場人物</option>{members.map((person) => <option value={person.id} key={person.id}>{person.name}</option>)}</select><select aria-label="公開状態で絞り込み" value={status} disabled={!!order} onChange={(event) => setStatus(event.target.value)}><option value="">公開・非公開</option><option value="published">公開</option><option value="archived">非公開</option></select><label><input type="checkbox" checked={featured} disabled={!!order} onChange={(event) => setFeatured(event.target.checked)}/> ★ イチオシ</label></div>
+          <div className="desk-list-actions"><span>{visible.length}作品</span>{order ? <><button className="desk-primary" disabled={savingOrder} onClick={() => void saveOrder()}>{savingOrder ? "保存中…" : "順序を保存"}</button><button disabled={savingOrder} onClick={() => setOrder(null)}>キャンセル</button></> : <><select aria-label="一覧の並び順" value={sort} onChange={(event) => setSort(event.target.value)}><option value="display">掲載順</option><option value="created">登録日が新しい順</option><option value="updated">更新日が新しい順</option><option value="title">タイトル順</option></select><button disabled={dirty} onClick={() => {setOrder([...episodes]);}}>掲載順を編集</button></>}</div>
+          {order && <p role="status">全作品を表示中。⋮⋮ をドラッグ、または上下ボタンで移動して保存します。</p>}
+        </div>
+        <div className="desk-rows">{visible.map((episode, index) => <div key={episode.id} className={`desk-row ${search.episode === episode.slug ? "selected" : ""}`} onDragOver={(event) => {if (order) event.preventDefault();}} onDrop={(event) => {event.preventDefault(); if (order && !savingOrder) setOrder(moved(order, order.findIndex((item) => item.id === dragId.current), index)); dragId.current = null;}}>
+          {order && <div className="desk-reorder"><button draggable={!savingOrder} disabled={savingOrder} aria-label={`${episode.title}をドラッグして移動`} onDragStart={() => {dragId.current = episode.id;}} onDragEnd={() => {dragId.current = null;}}><GripVertical size={16}/></button><button aria-label={`${episode.title}を上へ`} disabled={index === 0 || savingOrder} onClick={() => setOrder(moved(order, index, index - 1))}><ArrowUp size={14}/></button><button aria-label={`${episode.title}を下へ`} disabled={index === visible.length - 1 || savingOrder} onClick={() => setOrder(moved(order, index, index + 1))}><ArrowDown size={14}/></button></div>}
+          <button className="desk-select" onClick={() => void select(episode.slug)} aria-pressed={search.episode === episode.slug}>
+            <div className="desk-thumb">{episode.primary_video_poster_url ? <img src={episode.primary_video_poster_url} alt="" loading="lazy"/> : <span>サムネなし</span>}</div>
+            <div className="desk-row-copy"><strong>{episode.title}</strong><span>{episode.members.map((person) => person.name).join("・") || "登場人物未設定"}</span><small>{episode.video_count}動画 · {episode.generation_count}バージョン · {episode.status === "published" ? "公開" : "非公開"}{episode.has_featured_video ? " · ★ イチオシ" : ""}</small></div>
+          </button>
+        </div>)}{!visible.length && <div className="desk-empty">条件に一致する作品はありません。</div>}</div>
+        <details className="desk-add"><summary>追加操作</summary><p>新規登録はMCPから行えます。手動登録も利用できます。</p><button onClick={() => {if (!dirty || window.confirm("未保存の変更を破棄しますか？")) {setDirty(false); setCreating(true);}}}>新規作品を登録</button></details>
+      </div>
+      <section className="desk-panel" aria-label="作品の編集">
+        {editing && <button className="desk-back" onClick={() => {if (creating) {setCreating(false);} else void select();}}>← 一覧へ戻る</button>}
+        {creating ? <CreateEpisode members={members} onCreated={async (slug) => {await reloadList(); setCreating(false); await select(slug);}}/> : search.episode ? detailError ? <div role="alert" className="desk-empty">{detailError}<button onClick={() => void refreshDetail().then(() => setDetailError("")).catch((reason) => toast.error(message(reason)))}>再読み込み</button></div> : detail?.episode.slug === search.episode ? <WorkEditor key={detail.episode.id} detail={detail} members={members} onDirty={setDirty} onSaved={async (next) => {setDetail(next); await reloadList();}} onRefresh={refreshDetail}/> : <div role="status" className="desk-empty">作品を読み込んでいます…</div> : <div className="desk-empty"><h2>作品を選んで編集</h2><p>タイトル・登場人物・イチオシ設定・動画の順序をまとめて変更できます。</p></div>}
+      </section>
+    </div>}
   </div>;
 }
 
-function LoginRequired() { return <Card className="mx-auto max-w-xl"><CardHeader className="items-center pt-10 text-center"><span className="grid size-14 place-items-center rounded-2xl bg-amber-400/10 text-amber-300"><KeyRound className="size-6" /></span><h1 className="mt-4 text-2xl font-semibold">管理画面は認証が必要です</h1><p className="max-w-md text-sm leading-6 text-stone-500">Cloudflare Accessのログイン画面から、許可された方法でログインしてください。</p></CardHeader></Card>; }
-
-function CreateEpisode({ members, onCreated }: { members: Member[]; onCreated: (slug: string) => Promise<void> }) {
+function initialDraft(detail: EpisodeDetail): EpisodeEditorInput {
+  return {title: detail.episode.title, summary: detail.episode.summary, status: detail.episode.status,
+    memberIds: detail.members.map((member) => member.id), representativeVideoId: detail.episode.representative_video_id,
+    expectedUpdatedAt: detail.episode.updated_at,
+    videos: detail.generations.flatMap((generation) => generation.videos).sort((a, b) => a.display_order - b.display_order || b.created_at.localeCompare(a.created_at) || a.id.localeCompare(b.id)).map((video) => ({id: video.id, label: video.label, featured: !!video.is_featured, status: video.status, expectedUpdatedAt: video.updated_at})),
+  };
+}
+function WorkEditor({detail, members, onDirty, onSaved, onRefresh}: {detail: EpisodeDetail; members: Member[]; onDirty: (value: boolean) => void; onSaved: (next: EpisodeDetail) => Promise<void>; onRefresh: () => Promise<EpisodeDetail>}) {
+  const [draft, setDraft] = useState(() => initialDraft(detail));
+  const [baseline, setBaseline] = useState(() => initialDraft(detail));
   const [saving, setSaving] = useState(false);
-  async function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault(); setSaving(true); const data = new FormData(event.currentTarget);
-    try { const created = await api.createEpisode({ slug: String(data.get("slug")), title: String(data.get("title")), summary: String(data.get("summary")), memberIds: data.getAll("members").map(String) }); toast.success(`${created.studio_id}を作成しました`); await onCreated(created.slug); }
-    catch (reason) { toast.error(reason instanceof Error ? reason.message : "作成に失敗しました"); } finally { setSaving(false); }
+  const [error, setError] = useState("");
+  const [preview, setPreview] = useState<string | null>(null);
+  const [production, setProduction] = useState(false);
+  const drag = useRef<number>(-1);
+  const heading = useRef<HTMLHeadingElement>(null);
+  useEffect(() => {heading.current?.focus();}, []);
+  const dirty = JSON.stringify(draft) !== JSON.stringify(baseline);
+  function change(next: EpisodeEditorInput) {setDraft(next); onDirty(JSON.stringify(next) !== JSON.stringify(baseline));}
+  async function save() {
+    setSaving(true); setError("");
+    try {const next = await api.saveEpisodeEditor(detail.episode.id, draft); const saved = initialDraft(next); setDraft(saved); setBaseline(saved); onDirty(false); await onSaved(next); toast.success("作品の変更を保存しました");}
+    catch (reason) {setError(message(reason));} finally {setSaving(false);}
   }
-  return <Card><CardHeader><h2 className="text-xl font-medium">新規エピソード</h2><p className="text-sm text-stone-500">Studio IDとv1は自動生成されます。採番や時系列の入力は不要です。</p></CardHeader><CardContent><form onSubmit={submit} className="grid gap-5 sm:grid-cols-2"><Field label="slug"><Input name="slug" required placeholder="new-episode" /></Field><Field label="タイトル"><Input name="title" required placeholder="エピソードタイトル" /></Field><Field label="概要" className="sm:col-span-2"><Textarea name="summary" placeholder="一覧と詳細ページへ表示する短い概要" /></Field><Field label="登場メンバー" className="sm:col-span-2"><MemberPicker members={members} selected={[]} /></Field><div className="sm:col-span-2"><Button disabled={saving}>{saving ? "作成中…" : "エピソードを作成"}</Button></div></form></CardContent></Card>;
+  async function refresh() {
+    if (dirty && !window.confirm("未保存の変更を破棄して再読み込みしますか？")) return;
+    try {const next = await onRefresh(); const saved = initialDraft(next); setDraft(saved); setBaseline(saved); onDirty(false); setError("");} catch (reason) {setError(message(reason));}
+  }
+  function updateVideo(index: number, patch: Partial<EpisodeEditorInput["videos"][number]>) {change({...draft, videos: draft.videos.map((video, i) => i === index ? {...video, ...patch} : video)});}
+  return <div className="desk-editor">
+    <div className="desk-editor-heading"><div><small>{detail.episode.studio_id}</small><h2 tabIndex={-1} ref={heading}>{detail.episode.title}</h2></div><a href={`https://madogiwa.work/episodes/${detail.episode.slug}`} target="_blank" rel="noopener noreferrer">公開ページ ↗</a></div>
+    <div className="desk-savebar"><span role="status">{dirty ? "未保存の変更あり" : "保存済み"}</span><button disabled={saving} onClick={() => void refresh()}>再読み込み</button><button disabled={!dirty || saving} onClick={() => {setDraft(baseline); onDirty(false); setError("");}}>キャンセル</button><button className="desk-primary" disabled={!dirty || saving} onClick={() => void save()}>{saving ? "保存中…" : "変更を保存"}</button></div>
+    {error && <p role="alert" className="desk-error">{error}</p>}
+    <fieldset disabled={saving} className="desk-fields">
+      <label>タイトル<input maxLength={120} required value={draft.title} onChange={(event) => change({...draft, title: event.target.value})}/></label>
+      <label>概要<textarea maxLength={1000} rows={3} value={draft.summary} onChange={(event) => change({...draft, summary: event.target.value})}/></label>
+      <label>公開状態<select value={draft.status} onChange={(event) => change({...draft, status: event.target.value as EpisodeEditorInput["status"]})}><option value="published">公開</option><option value="archived">非公開（アーカイブ）</option></select></label>
+      <div><h3>登場人物</h3><div className="desk-members">{members.map((member) => <label key={member.id}><input type="checkbox" checked={draft.memberIds.includes(member.id)} onChange={(event) => change({...draft, memberIds: event.target.checked ? [...draft.memberIds, member.id] : draft.memberIds.filter((id) => id !== member.id)})}/>{member.name}</label>)}</div></div>
+      <section className="desk-videos"><h3>動画 <small>{draft.videos.length}本</small></h3><p>全バージョンの動画です。上下ボタン・ドラッグで掲載順を変更できます。</p><label>代表動画<select value={draft.representativeVideoId ?? ""} onChange={(event) => change({...draft, representativeVideoId: event.target.value || null})}><option value="">自動（掲載順で先頭の再生可能な動画）</option>{draft.videos.filter((video) => video.status === "ready" || video.status === "published").map((video) => <option key={video.id} value={video.id}>{video.label}</option>)}</select></label><p>代表動画は一覧のサムネと再生に使用。★はイチオシの指定です。</p>
+        {draft.videos.map((video, index) => {
+          const generation = detail.generations.find((item) => item.videos.some((v) => v.id === video.id))!;
+          const source = generation.videos.find((item) => item.id === video.id)!;
+          return <div className="desk-video-row" key={video.id} onDragOver={(event) => event.preventDefault()} onDrop={(event) => {event.preventDefault(); if (!saving) change({...draft, videos: moved(draft.videos, drag.current, index)}); drag.current = -1;}}>
+            <div className="desk-reorder"><button type="button" draggable={!saving} aria-label={`${video.label}をドラッグして移動`} onDragStart={() => {drag.current = index;}} onDragEnd={() => {drag.current = -1;}}><GripVertical size={16}/></button><button type="button" aria-label={`${video.label}を上へ`} disabled={index === 0} onClick={() => change({...draft, videos: moved(draft.videos, index, index - 1)})}><ArrowUp size={14}/></button><button type="button" aria-label={`${video.label}を下へ`} disabled={index === draft.videos.length - 1} onClick={() => change({...draft, videos: moved(draft.videos, index, index + 1)})}><ArrowDown size={14}/></button></div>
+            <button type="button" className="desk-video-thumb" disabled={video.status === "upload_pending"} aria-label={`${video.label}をプレビュー`} onClick={() => setPreview(preview === video.id ? null : video.id)}>{source.poster_r2_key ? <img src={`/admin-api/videos/${video.id}/poster`} alt="" loading="lazy"/> : <span>サムネなし</span>}<span>▶ 確認</span></button>
+            <div className="desk-video-copy"><small>v{generation.version} · {generation.label || "生成動画"}</small><label>動画の表示名<input value={video.label} maxLength={120} onChange={(event) => updateVideo(index, {label: event.target.value})}/></label><div className="desk-video-options"><button type="button" aria-pressed={video.featured} className={video.featured ? "is-featured" : ""} onClick={() => updateVideo(index, {featured: !video.featured})}><Star size={15} fill={video.featured ? "currentColor" : "none"}/>イチオシ</button><select aria-label={`${video.label}の状態`} value={video.status} disabled={video.status === "upload_pending"} onChange={(event) => {const status = event.target.value as typeof video.status; change({...draft, representativeVideoId: status === "archived" && draft.representativeVideoId === video.id ? null : draft.representativeVideoId, videos: draft.videos.map((v, i) => i === index ? {...v, status} : v)});}}>{video.status === "upload_pending" && <option value="upload_pending">アップロード中</option>}<option value="ready">再生可能</option><option value="published">公開採用</option><option value="archived">非公開</option></select></div></div>
+            {preview === video.id && <div className="desk-preview"><button type="button" aria-label="プレビューを閉じる" onClick={() => setPreview(null)}><X size={16}/></button><video key={video.id} controls preload="metadata" poster={source.poster_r2_key ? `/admin-api/videos/${video.id}/poster` : undefined} src={`/admin-api/videos/${video.id}/preview`}/></div>}
+          </div>;
+        })}{!draft.videos.length && <p>動画は未登録です。MCPまたは追加操作から登録できます。</p>}
+      </section>
+    </fieldset>
+    <div className="desk-production"><button disabled={dirty || saving} aria-expanded={production} onClick={() => setProduction(!production)}>{production ? "−" : "＋"} 制作情報・追加操作</button>{dirty && <small>変更を保存すると開けます</small>}{production && !dirty && <ProductionEditor detail={detail} onSaved={async () => {const next = await onRefresh(); const saved = initialDraft(next); setDraft(saved); setBaseline(saved); return next;}}/>}</div>
+  </div>;
 }
-
-function EpisodeEditor({ detail, members, onSaved }: { detail: EpisodeDetail; members: Member[]; onSaved: () => Promise<EpisodeDetail> }) {
-  const [tab, setTab] = useState<"details" | "generation" | "prompt" | "inputs" | "video">("details");
-  const [generationId, setGenerationId] = useState(detail.generations[0]?.id ?? "");
-  const [addingGeneration, setAddingGeneration] = useState(false);
-  const generation = detail.generations.find((item) => item.id === generationId) ?? detail.generations[0];
-  return <div className="space-y-5"><div className="flex flex-wrap items-center justify-between gap-4"><div><div className="font-mono text-xs text-stone-500">{detail.episode.studio_id}</div><h2 className="mt-1 text-2xl font-medium">{detail.episode.title}</h2></div><StatusBadge status={detail.episode.status} /></div><div className="space-y-3 rounded-2xl border border-white/7 bg-white/[0.02] p-3"><div className="flex flex-wrap items-center gap-2">{detail.generations.map((item) => <button key={item.id} onClick={() => setGenerationId(item.id)} className={cn("rounded-xl border px-3 py-2 text-left transition", item.id === generation?.id ? "border-amber-300/25 bg-amber-300/[0.08] text-amber-200" : "border-white/7 text-stone-500 hover:text-stone-300")}><div className="font-mono text-xs">v{item.version}</div><div className="mt-0.5 max-w-32 truncate text-[10px] opacity-70">{item.label || `生成 v${item.version}`}</div>{item.model_name ? <div className="mt-1 max-w-32 truncate text-[10px] text-violet-300/70">{item.model_name}</div> : null}</button>)}<Button type="button" variant="ghost" size="sm" onClick={() => setAddingGeneration((value) => !value)}><Plus className="size-3.5" />新しい生成</Button></div>{addingGeneration ? <CreateGenerationForm episodeId={detail.episode.id} nextVersion={detail.generations.length + 1} onCreated={async (created) => { await onSaved(); setGenerationId(created.id); setAddingGeneration(false); }} /> : null}</div><div className="flex gap-1 rounded-2xl border border-white/7 bg-white/[0.02] p-1">{(["details", "generation", "prompt", "inputs", "video"] as const).map((item) => <button key={item} onClick={() => setTab(item)} className={cn("flex-1 rounded-xl px-3 py-2 text-xs font-medium capitalize transition", tab === item ? "bg-white/10 text-white" : "text-stone-600 hover:text-stone-300")}>{item}</button>)}</div>{tab === "details" ? <DetailsForm detail={detail} members={members} onSaved={onSaved} /> : null}{generation && tab === "generation" ? <GenerationSettings key={generation.id} generation={generation} onSaved={onSaved} /> : null}{generation && tab === "prompt" ? <PromptForm generation={generation} onSaved={onSaved} /> : null}{generation && tab === "inputs" ? <InputAssetsForm generation={generation} onSaved={onSaved} /> : null}{generation && tab === "video" ? <VideoForm generation={generation} onSaved={onSaved} /> : null}</div>;
-}
-
-function CreateGenerationForm({ episodeId, nextVersion, onCreated }: { episodeId: string; nextVersion: number; onCreated: (generation: Generation) => Promise<void> }) {
-  const [saving, setSaving] = useState(false);
-  async function submit(event: FormEvent<HTMLFormElement>) { event.preventDefault(); setSaving(true); const data = new FormData(event.currentTarget); try { const modelName = String(data.get("modelName") || "").trim(); const created = await api.createGeneration(episodeId, { label: String(data.get("label")), modelName: modelName || null, notes: String(data.get("notes")) }); toast.success(`v${created.version}を追加しました`); await onCreated(created); } catch (reason) { toast.error(reason instanceof Error ? reason.message : "追加に失敗しました"); } finally { setSaving(false); } }
-  return <form onSubmit={submit} className="grid gap-3 rounded-xl border border-white/7 bg-black/15 p-4 sm:grid-cols-2 xl:grid-cols-[1fr_1fr_1.5fr_auto]"><Input name="label" placeholder={`v${nextVersion}のラベル`} /><Input name="modelName" list="madogiwa-model-suggestions" placeholder="使用モデル（任意）" /><Input name="notes" placeholder="変更点や生成目的" /><Button size="sm" disabled={saving}><Layers3 className="size-3.5" />{saving ? "追加中" : `v${nextVersion}を追加`}</Button></form>;
-}
-
-function GenerationSettings({ generation, onSaved }: { generation: Generation; onSaved: () => Promise<EpisodeDetail> }) {
-  const [saving, setSaving] = useState(false);
-  async function submit(event: FormEvent<HTMLFormElement>) { event.preventDefault(); setSaving(true); const data = new FormData(event.currentTarget); try { const modelName = String(data.get("modelName") || "").trim(); await api.updateGeneration(generation.id, { label: String(data.get("label")), modelName: modelName || null, notes: String(data.get("notes")) }); toast.success(`v${generation.version}の生成情報を保存しました`); await onSaved(); } catch (reason) { toast.error(reason instanceof Error ? reason.message : "保存に失敗しました"); } finally { setSaving(false); } }
-  return <Card><CardHeader><h3 className="text-sm font-medium">生成 v{generation.version}の設定</h3><p className="text-xs text-stone-600">使用モデルは候補から選択するか、任意のモデル名を入力できます。</p></CardHeader><CardContent><form onSubmit={submit} className="space-y-5"><Field label="ラベル"><Input name="label" defaultValue={generation.label} placeholder={`生成 v${generation.version}`} /></Field><Field label="使用モデル（任意）"><Input name="modelName" list="madogiwa-model-suggestions" defaultValue={generation.model_name ?? ""} placeholder="Seedance 2.0 / Seedance 2.5 / MiniMax H3 / その他" /></Field><Field label="変更点・メモ"><Textarea name="notes" defaultValue={generation.notes} /></Field><Button disabled={saving}><Save className="size-4" />{saving ? "保存中…" : "生成情報を保存"}</Button></form></CardContent></Card>;
-}
-
-function DetailsForm({ detail, members, onSaved }: { detail: EpisodeDetail; members: Member[]; onSaved: () => Promise<EpisodeDetail> }) {
-  const [saving, setSaving] = useState(false);
-  async function submit(event: FormEvent<HTMLFormElement>) { event.preventDefault(); setSaving(true); const data = new FormData(event.currentTarget); try { await api.updateEpisode(detail.episode.slug, { title: String(data.get("title")), summary: String(data.get("summary")), status: String(data.get("status")) as EpisodeStatus }); await api.updateEpisodeMembers(detail.episode.id, data.getAll("members").map(String)); toast.success("基本情報とメンバーを保存しました"); await onSaved(); } catch (reason) { toast.error(reason instanceof Error ? reason.message : "保存に失敗しました"); } finally { setSaving(false); } }
-  return <Card><CardContent className="pt-6"><form onSubmit={submit} className="space-y-5"><Field label="Studio ID"><Input value={detail.episode.studio_id} readOnly className="font-mono text-stone-500" /></Field><Field label="タイトル"><Input name="title" defaultValue={detail.episode.title} required /></Field><Field label="概要"><Textarea name="summary" defaultValue={detail.episode.summary} /></Field><Field label="公開状態"><select name="status" defaultValue={detail.episode.status} className="h-11 w-full rounded-xl border border-white/10 bg-stone-950 px-3 text-sm outline-none focus:border-amber-400/60">{["published", "archived"].map((status) => <option key={status} value={status}>{status === "published" ? "公開" : "非公開（アーカイブ）"}</option>)}</select></Field><Field label="登場メンバー"><MemberPicker members={members} selected={detail.members.map((member) => member.id)} /></Field><Button disabled={saving}><Save className="size-4" />{saving ? "保存中…" : "保存"}</Button></form></CardContent></Card>;
-}
-
-function MemberPicker({ members, selected }: { members: Member[]; selected: string[] }) { return <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">{members.map((member) => <label key={member.id} className="flex cursor-pointer items-center gap-2 rounded-xl border border-white/8 bg-white/[0.02] px-3 py-2 text-xs text-stone-400 transition has-[:checked]:border-amber-300/25 has-[:checked]:bg-amber-300/[0.06] has-[:checked]:text-amber-200"><input type="checkbox" name="members" value={member.id} defaultChecked={selected.includes(member.id)} className="accent-amber-400" />{member.name}</label>)}</div>; }
-
-function PromptForm({ generation, onSaved }: { generation: Generation; onSaved: () => Promise<EpisodeDetail> }) {
-  const [saving, setSaving] = useState(false);
-  async function submit(event: FormEvent<HTMLFormElement>) { event.preventDefault(); setSaving(true); const data = new FormData(event.currentTarget); try { await api.upsertPrompt(generation.id, { label: String(data.get("label")), body: String(data.get("body")) }); toast.success(`v${generation.version}のプロンプトを保存しました`); await onSaved(); } catch (reason) { toast.error(reason instanceof Error ? reason.message : "保存に失敗しました"); } finally { setSaving(false); } }
-  return <Card><CardHeader><h3 className="text-sm font-medium">生成 v{generation.version}のプロンプト</h3></CardHeader><CardContent><form onSubmit={submit} className="space-y-5"><Field label="ラベル"><Input name="label" defaultValue={generation.prompt?.label ?? "Seedance prompt"} required /></Field><Field label="プロンプト"><Textarea name="body" defaultValue={generation.prompt?.body ?? ""} className="min-h-96 font-mono text-xs" required /></Field><div className="flex justify-end"><Button disabled={saving}><Save className="size-4" />{saving ? "保存中…" : "新しいrevisionとして保存"}</Button></div></form></CardContent></Card>;
-}
-
-function VideoForm({ generation, onSaved }: { generation: Generation; onSaved: () => Promise<EpisodeDetail> }) {
-  const [file, setFile] = useState<File | null>(null); const [uploading, setUploading] = useState(false); const defaultLabel = useMemo(() => `Generated video ${generation.videos.length + 1}`, [generation.videos.length]);
-  async function submit(event: FormEvent<HTMLFormElement>) { event.preventDefault(); if (!file) return; setUploading(true); const data = new FormData(event.currentTarget); try { const poster = await createVideoPoster(file); const ticket = await api.createUpload(generation.id, { filename: file.name, label: String(data.get("label")), contentType: file.type || "video/mp4", featured: data.get("featured") === "on" }); await api.uploadPoster(ticket.posterUploadUrl, poster); await api.uploadFile(ticket.uploadUrl, file); toast.success(`v${generation.version}へ動画とサムネイルを登録しました`); setFile(null); await onSaved(); } catch (reason) { toast.error(reason instanceof Error ? reason.message : "アップロードに失敗しました"); } finally { setUploading(false); } }
-  async function toggleFeatured(videoId: string, featured: boolean) { try { await api.setVideoFeatured(videoId, featured); toast.success(featured ? "イチオシに設定しました" : "イチオシを解除しました"); await onSaved(); } catch (reason) { toast.error(reason instanceof Error ? reason.message : "変更に失敗しました"); } }
-  return <div className="space-y-4"><Card><CardHeader><h3 className="text-sm font-medium">生成 v{generation.version}の動画</h3><p className="text-xs text-stone-600">先頭付近のフレームからサムネイルを自動生成します。イチオシにすると公式サイトの最新動画や絞り込みで優先されます。</p></CardHeader><CardContent><form onSubmit={submit} className="space-y-5"><Field label="表示名"><Input name="label" defaultValue={defaultLabel} required /></Field><label className="flex cursor-pointer items-center gap-3 rounded-xl border border-amber-300/15 bg-amber-300/[0.04] px-4 py-3 text-sm text-stone-300"><input type="checkbox" name="featured" className="accent-amber-400" /><Star className="size-4 text-amber-300" />イチオシ動画として登録</label><UploadPicker file={file} label="動画を選択" accept="video/*" onFile={setFile} /><Button disabled={!file || uploading}><CloudUpload className="size-4" />{uploading ? "サムネイル生成・R2へアップロード中…" : "動画を登録"}</Button></form></CardContent></Card>{generation.videos.length ? <Card><CardContent className="space-y-2 pt-6">{generation.videos.map((video) => <div key={video.id} className="flex items-center justify-between gap-4 rounded-xl bg-white/[0.025] px-4 py-3"><div className="flex min-w-0 items-center gap-3"><FileVideo2 className="size-4 shrink-0 text-stone-600" /><span className="truncate text-sm text-stone-300">{video.label}</span>{video.poster_r2_key ? <Badge className="border-sky-300/15 bg-sky-300/[0.06] text-sky-200">サムネあり</Badge> : null}{video.is_featured ? <Badge className="border-amber-300/20 bg-amber-300/10 text-amber-200"><Star className="mr-1 size-3" fill="currentColor" />イチオシ</Badge> : null}</div><div className="flex items-center gap-2"><Button type="button" variant="ghost" size="sm" onClick={() => void toggleFeatured(video.id, !video.is_featured)}><Star className={cn("size-3.5", video.is_featured ? "fill-amber-300 text-amber-300" : "text-stone-500")} />{video.is_featured ? "解除" : "イチオシ"}</Button><StatusBadge status={video.status} /></div></div>)}</CardContent></Card> : null}</div>;
-}
-
-function inferKind(file: File): InputAssetKind { if (file.type.startsWith("image/")) return "image"; if (file.type.startsWith("audio/")) return "audio"; if (file.type.startsWith("text/") || file.type === "application/pdf") return "document"; return "other"; }
-function InputAssetsForm({ generation, onSaved }: { generation: Generation; onSaved: () => Promise<EpisodeDetail> }) {
-  const [file, setFile] = useState<File | null>(null); const [kind, setKind] = useState<InputAssetKind>("image"); const [uploading, setUploading] = useState(false);
-  async function submit(event: FormEvent<HTMLFormElement>) { event.preventDefault(); if (!file) return; setUploading(true); const data = new FormData(event.currentTarget); try { const ticket = await api.createInputUpload(generation.id, { filename: file.name, label: String(data.get("label")), kind, referenceLabel: String(data.get("referenceLabel") || "") || null, groupLabel: String(data.get("groupLabel") || "") || null, notes: String(data.get("notes") || ""), contentType: file.type || "application/octet-stream", displayOrder: Number(data.get("displayOrder") || 0) }); await api.uploadInputFile(ticket.uploadUrl, file); toast.success(`v${generation.version}へ入力アセットを登録しました`); setFile(null); await onSaved(); } catch (reason) { toast.error(reason instanceof Error ? reason.message : "アップロードに失敗しました"); } finally { setUploading(false); } }
-  return <div className="space-y-4"><Card><CardHeader><h3 className="text-sm font-medium">生成 v{generation.version}の入力アセット</h3><p className="text-xs text-stone-600">この生成だけで使用する画像、参照音声、資料を登録します。</p></CardHeader><CardContent><form onSubmit={submit} className="grid gap-5 sm:grid-cols-2"><Field label="表示名"><Input name="label" required /></Field><Field label="種別"><select value={kind} onChange={(event) => setKind(event.target.value as InputAssetKind)} className="h-11 w-full rounded-xl border border-white/10 bg-stone-950 px-3 text-sm">{["image", "audio", "document", "other"].map((item) => <option key={item}>{item}</option>)}</select></Field><Field label="参照名"><Input name="referenceLabel" placeholder="@Image 1 / @Audio 1" /></Field><Field label="グループ"><Input name="groupLabel" placeholder="Clip A" /></Field><Field label="並び順"><Input name="displayOrder" type="number" min="0" defaultValue="0" /></Field><Field label="用途メモ"><Input name="notes" /></Field><div className="sm:col-span-2"><UploadPicker file={file} label="入力ファイルを選択" onFile={(next) => { setFile(next); if (next) setKind(inferKind(next)); }} /></div><div className="sm:col-span-2"><Button disabled={!file || uploading}><CloudUpload className="size-4" />{uploading ? "R2へアップロード中…" : "入力アセットを登録"}</Button></div></form></CardContent></Card>{generation.inputAssets.length ? <Card><CardContent className="space-y-2 pt-6">{generation.inputAssets.map((asset) => <div key={asset.id} className="flex items-center justify-between gap-4 rounded-xl bg-white/[0.025] px-4 py-3"><div className="flex min-w-0 items-center gap-3">{asset.kind === "image" ? <ImageIcon className="size-4 text-sky-400" /> : asset.kind === "audio" ? <Music2 className="size-4 text-violet-400" /> : <Paperclip className="size-4 text-stone-500" />}<div className="min-w-0"><div className="truncate text-sm text-stone-300">{asset.label}</div><div className="mt-1 text-[10px] text-stone-600">{[asset.group_label, asset.reference_label, asset.filename].filter(Boolean).join(" · ")}</div></div></div><StatusBadge status={asset.status} /></div>)}</CardContent></Card> : null}</div>;
-}
-
-function UploadPicker({ file, label, accept, onFile }: { file: File | null; label: string; accept?: string; onFile: (file: File | null) => void }) { return <label className="grid cursor-pointer place-items-center rounded-3xl border border-dashed border-white/12 bg-black/10 px-6 py-10 text-center transition hover:border-amber-300/30"><input type="file" accept={accept} className="sr-only" onChange={(event) => onFile(event.target.files?.[0] ?? null)} /><span className="grid size-12 place-items-center rounded-2xl bg-white/5 text-stone-400"><CloudUpload className="size-5" /></span><span className="mt-4 text-sm text-stone-300">{file ? file.name : label}</span></label>; }
-function McpHint() { return <div className="rounded-2xl border border-violet-400/10 bg-violet-400/[0.04] p-4"><div className="flex items-center gap-2 text-xs font-medium text-violet-300"><Bot className="size-4" />Codex / MCP</div><p className="mt-2 text-[11px] leading-5 text-stone-600">エピソード、生成バージョン、入力、動画、ギャラリー、記事をRemote MCPから登録できます。</p></div>; }
-function Field({ label, className, children }: { label: string; className?: string; children: React.ReactNode }) { return <div className={cn("space-y-2", className)}><Label>{label}</Label>{children}</div>; }

@@ -10,12 +10,7 @@ import { characters, comicEpisodes } from "@/lib/site-content";
 const HOME_GALLERY_LIMIT = 6;
 
 export function HomePage({ episodes, galleryItems, articles }: { episodes: EpisodeSummary[]; galleryItems: GalleryItem[]; articles: Article[] }) {
-  const prioritizedEpisodes = useMemo(() => [...episodes].sort((left, right) => {
-    if (left.has_featured_video !== right.has_featured_video) return right.has_featured_video - left.has_featured_video;
-    const leftDate = left.has_featured_video ? left.featured_video_created_at : left.updated_at;
-    const rightDate = right.has_featured_video ? right.featured_video_created_at : right.updated_at;
-    return String(rightDate ?? "").localeCompare(String(leftDate ?? ""));
-  }), [episodes]);
+  const prioritizedEpisodes = useMemo(() => [...episodes].sort((a, b) => a.display_order - b.display_order || b.created_at.localeCompare(a.created_at)), [episodes]);
   return <>
     <section className="official-hero">
       <ZoomableImage src="/site/hero-shibuya-wide.webp" alt="渋谷の中心に現れた巨大なそば屋" caption="窓際族物語 キービジュアル" fetchPriority="high" buttonClassName="hero-media" />

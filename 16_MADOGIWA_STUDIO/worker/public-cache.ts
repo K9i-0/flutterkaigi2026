@@ -6,7 +6,7 @@ export async function cachedPublicData<T>(db: D1Database, key: string, load: () 
   // Unlike cache.delete(), this invalidates entries in every Cloudflare colo.
   const revision = await db.prepare("SELECT revision FROM public_content_revision WHERE id = 1").first<string>("revision");
   if (!revision) throw new Error("Public content revision is missing");
-  const cacheKey = new Request(`https://madogiwa.work/__public-data/v1/${encodeURIComponent(key)}?revision=${revision}`);
+  const cacheKey = new Request(`https://madogiwa.work/__public-data/v2/${encodeURIComponent(key)}?revision=${revision}`);
   try {
     const cache = await caches.open("madogiwa-public-v1");
     const hit = await cache.match(cacheKey);

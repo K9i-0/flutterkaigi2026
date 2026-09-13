@@ -11,5 +11,5 @@ const tones: Record<string, string> = {
 };
 
 export function StatusBadge({ status }: { status: string }) {
-  return <Badge className={cn(tones[status])}>{status.replaceAll("_", " ")}</Badge>;
+  return <Badge className={cn(tones[status])}>{{published: "公開", ready: "再生可能", draft: "下書き", upload_pending: "アップロード中", archived: "非公開", generated: "生成済み"}[status] ?? status}</Badge>;
 }

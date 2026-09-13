@@ -87,5 +87,5 @@ export function absoluteUrl(path: string): string {
 }
 
 export function episodePoster(detail: PublicEpisodeDetail): string {
-  return detail.videos[0]?.poster_url ?? DEFAULT_OG_IMAGE;
+  return (detail.videos.find((video) => video.id === detail.episode.representative_video_id) ?? detail.videos[0])?.poster_url ?? DEFAULT_OG_IMAGE;
 }

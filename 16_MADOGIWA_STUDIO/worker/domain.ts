@@ -14,6 +14,8 @@ export type EpisodeRow = {
   studio_id: string;
   slug: string;
   episode_number: number | null;
+  display_order: number;
+  representative_video_id: string | null;
   title: string;
   summary: string;
   status: EpisodeStatus;
@@ -60,6 +62,7 @@ export type VideoRow = {
   size_bytes: number | null;
   status: VideoStatus;
   is_primary: number;
+  display_order: number;
   is_featured: number;
   uploaded_by: string | null;
   created_at: string;
