@@ -98,6 +98,7 @@
 ---
 
 ## 表記・呼称メモ
+- 会社・椅子の綴りは[WORLD BIBLEの固有名詞の表記](WORLD_BIBLE.md#固有名詞の表記)を参照。会社名は Accidenchua、椅子は AERON CHUA。
 - キャラ名の正式表記は「無職やめたろう」。作中の手配書は「YAMETARO」「やめ太郎」表記のことがある
 - やめたろうの社内指名手配書の正典素材は [`props/yametaro_wanted_poster.png`](props/yametaro_wanted_poster.png)
 - そば屋はやめたろうを「やめさん」と呼ぶ

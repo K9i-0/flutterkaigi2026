@@ -214,3 +214,7 @@ python3 -u .claude/skills/wan-video/scripts/qwen_wan3_generate.py \
 ## 窓際スーパーつらいCM（該当時のみ）
 
 窓際スーパーつらい（窓際スーパーツライ）のCMを作るときだけ [共通エンドカットの知見](../remotion-video/references/super-tsurai-cm.md) を読む。締めの商品カットは既存素材を編集で接続できる。
+
+## 会社名・椅子の表記（該当時）
+
+架空企業名や段ボール椅子の名称を台本・プロンプト・画像内文字へ書く場合は、[WORLD BIBLEの固有名詞の表記](../../../01_WORLD/WORLD_BIBLE.md#固有名詞の表記)を読み、採用綴りを使う。画像に出す場合は生成後の文字も照合する。
