@@ -733,6 +733,20 @@
 .j-footer-bottom small {
   font-size: 9px;
 }
+.j-footer-admin {
+  display: inline-block;
+  margin-left: 12px;
+  padding: 6px 2px;
+  color: inherit;
+  text-decoration: none;
+}
+.j-footer-admin:hover {
+  text-decoration: underline;
+}
+.j-footer-admin:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
 /* Browse pages */
 .j-breadcrumb {
   display: flex;

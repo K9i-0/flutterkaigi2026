@@ -1127,7 +1127,7 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
           </select>
         </label>
         <div className="j-footer-bottom">
-          <small>© 窓際族物語</small>
+          <small>© 窓際族物語 <a className="j-footer-admin" href="https://madogiwa-studio.madogiwa-studio.workers.dev/admin" aria-label="管理画面">管理</a></small>
           <span>窓際は、今日も営業中。</span>
         </div>
       </footer>
