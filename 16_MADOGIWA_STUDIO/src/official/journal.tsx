@@ -1271,7 +1271,8 @@ function VideoViewer({ episode, children, onNext, hasNext }: {
     if (!mobile || paused || infoOpen || !chrome || ended || failed) return;
     const timer = window.setTimeout(() => {
       // Keep keyboard-operated controls visible while they have focus.
-      if (!document.activeElement?.closest(".j-mobile-playback, .j-viewer-toolbar")) setChrome(false);
+      const focused = document.activeElement;
+      if (!(focused?.matches(":focus-visible") && focused.closest(".j-mobile-playback, .j-viewer-toolbar"))) setChrome(false);
     }, 3500);
     return () => window.clearTimeout(timer);
   }, [mobile, paused, infoOpen, chrome, ended, failed, interaction]);
