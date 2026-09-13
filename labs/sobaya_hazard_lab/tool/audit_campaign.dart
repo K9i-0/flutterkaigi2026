@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:sobaya_hazard_lab/game/campaign_audit.dart';
 import 'package:sobaya_hazard_lab/game/game_campaign.dart';
-import 'package:sobaya_hazard_lab/game/game_state.dart';
 
 Future<void> main(List<String> args) async {
   final maps = {
@@ -21,7 +20,7 @@ Future<void> main(List<String> args) async {
   String? error;
   try {
     await audit.run();
-    success = audit.s.refugeComplete;
+    success = audit.s.seenEvents.contains('facility_discovered');
   } catch (e, st) {
     error = '$e\n$st';
     stderr.writeln(error);

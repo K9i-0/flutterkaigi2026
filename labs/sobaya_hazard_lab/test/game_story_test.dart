@@ -119,24 +119,19 @@ void main() {
       expect(s.reaction!.text, contains('福ちゃん'));
     }
   });
-  test(
-    'engine topic follows discovered information, including backtracking',
-    () {
-      final s = HazardGameState(maps()['village']!)
-        ..talkingTo = 'yametaro'
-        ..dialogueTopic = 'greeting'
-        ..phase = PlayPhase.dialogue;
-      expect(s.knowsEngine, false);
-      s.chooseDialogue('engine');
-      expect(s.dialogueTopic, 'greeting');
-      s.foundMemos.add('night_shift');
-      s.chooseDialogue('engine');
-      expect(s.dialogueTopic, 'engine');
-      s.foundMemos.clear();
-      s.seenEvents.add('farm');
-      expect(s.knowsEngine, true);
-    },
-  );
+  test('engine remains unknown after every demo clue and backtracking', () {
+    final s = HazardGameState(maps()['village']!)
+      ..talkingTo = 'yametaro'
+      ..dialogueTopic = 'greeting'
+      ..phase = PlayPhase.dialogue;
+    s.foundMemos.addAll(villageMemos.map((m) => m.id));
+    s.seenEvents.addAll(['farm', 'boss_confession', 'facility_discovered']);
+    s.chooseDialogue('engine');
+    expect(s.knowsEngine, false);
+    expect(s.dialogueTopic, 'greeting');
+    expect(s.availableDialogueTopics, isNot(contains('engine')));
+  });
+
   test('entering safe dialogue clears an old combat cry', () {
     final s = HazardGameState(maps()['village']!);
     for (final e in s.enemies) {

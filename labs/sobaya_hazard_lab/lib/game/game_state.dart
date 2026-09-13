@@ -307,6 +307,18 @@ class HazardGameState {
   Map<String, dynamic> get gate => map['gate'] as Map<String, dynamic>;
   String get gateMode => gate['mode'] as String? ?? 'key';
   bool get bossAlive => enemies.any((e) => e.boss && e.alive);
+  String? get pendingDemoEvent {
+    if (zoneId != 'mountain') return null;
+    if (bossAlive && !seenEvents.contains('last_order')) return 'last_order';
+    if (enemies.any((e) => e.boss && (!e.alive || e.hp < e.maxHp * .55)) &&
+        !seenEvents.contains('boss_confession')) {
+      return 'boss_confession';
+    }
+    if (!bossAlive && !seenEvents.contains('boss_defeated')) {
+      return 'boss_defeated';
+    }
+    return null;
+  }
   bool get canOpenGate =>
       chapterSecured &&
       (zoneId != 'farm' || missionFlags.contains('radio_ready')) &&
@@ -322,10 +334,10 @@ class HazardGameState {
       : zoneId == 'mountain'
       ? refugeObjective
       : gateOpen
-      ? '農場への門をくぐれ'
+      ? '商店街への門をくぐれ'
       : hasKey
       ? '北東の門を紋章の鍵で開けろ'
-      : '村を探索し、紋章の鍵を探せ';
+      : '港の北の漁具倉庫で門の鍵を探せ';
   Map<String, dynamic>? exitRequested;
   String? tutorialStep;
   double tutorialProgress = 0, tutorialLastX = 0, tutorialLastZ = -21;
@@ -334,31 +346,29 @@ class HazardGameState {
   final missionFlags = <String>{};
   static const farmMissionItems =
       <String, ({String label, double x, double y, double z})>{
-        'radio_battery': (label: '救難無線の予備バッテリー', x: -9, y: 0, z: 3.8),
-        'evacuation_manifest': (label: '避難者名簿', x: 6, y: 2.95, z: -10),
+        'radio_battery': (label: '参道の門の鍵', x: -9, y: 0, z: 3.8),
+        'evacuation_manifest': (label: 'ゆめみ村の案内図', x: 6, y: 2.95, z: -10),
       };
   bool get farmSuppliesReady =>
       farmMissionItems.keys.every(missionFlags.contains);
   String get farmObjective => missionFlags.contains('radio_ready')
-      ? '救難準備完了 — 東の門から山道へ'
+      ? '準備完了 — 東の門から神社へ'
       : farmSuppliesReady
-      ? 'たこさんにバッテリーと名簿を届ける'
+      ? 'たこさんに参道の鍵と案内図を見せる'
       : !missionFlags.contains('radio_battery') &&
             !missionFlags.contains('evacuation_manifest')
-      ? '工具小屋のバッテリーと納屋二階の名簿を探す'
+      ? '旧管理室の鍵と集会所二階の案内図を探す'
       : !missionFlags.contains('radio_battery')
-      ? '工具小屋の予備バッテリーを探す'
-      : '納屋二階の避難者名簿を探す';
+      ? '旧管理室で参道の門の鍵を探す'
+      : '集会所二階で村の案内図を探す';
   final medallions = <String>{};
   final seenEvents = <String>{};
   final foundMemos = <String>{};
   String? readingRecord;
   Iterable<VillageMemo> get localMemos =>
       villageMemos.where((m) => m.zone == zoneId);
-  bool get knowsEngine =>
-      foundMemos.contains('night_shift') ||
-      seenEvents.contains('farm') ||
-      zoneId != 'village';
+  // The engine is a mid-game reveal, unavailable throughout the demo.
+  bool get knowsEngine => false;
   bool get hasStoryEvidence => dialogueOwner == 'takosan'
       ? foundMemos.contains('returns')
       : foundMemos.contains('campaign');
@@ -421,7 +431,7 @@ class HazardGameState {
       gateOpen = false,
       hasKey = false,
       collectionDirty = false;
-  String weapon = 'handgun', message = '村に残された記録を探し、農場への門を開けろ。';
+  String weapon = 'handgun', message = '港の漁具倉庫で鍵を探し、商店街へ向かおう。';
   int pistolLoaded = 10,
       shotgunLoaded = 5,
       beers = 0,
@@ -506,8 +516,7 @@ class HazardGameState {
   bool companionThreatened(String id) =>
       enemies.any((e) => e.alive && e.active && e.companionTarget == id);
   bool checkpointRequested = false;
-  bool get evacuationStarted =>
-      hasRefuge ? refugeUnlocked : seenEvents.contains('refuge_ready');
+  bool get evacuationStarted => false;
   bool get postBossReunion => hasRefuge && refugeUnlocked;
   List<Map<String, dynamic>> get npcs => [
     if (hasRefuge ? refugeUnlocked : !evacuationStarted)
@@ -558,7 +567,7 @@ class HazardGameState {
   }
 
   List<String> get availableDialogueTopics => postBossReunion
-      ? ['reunion', 'route', 'engine', 'evidence']
+      ? ['reunion', 'route', 'evidence']
       : [
           if (dialogueOwner == 'yametaro') ...[
             'route',
@@ -573,14 +582,14 @@ class HazardGameState {
     'reunion' => 'さっきの戦い',
     'route' =>
       postBossReunion
-          ? '集合と救助船'
+          ? '神社の裏手'
           : zoneId == 'mountain'
-          ? '巨大そば屋と帰り道'
-          : '農場への道',
+          ? '神社の巨大そば屋'
+          : '商店街への道',
     'combat' => zoneId == 'mountain' ? '巨大そば屋の倒し方' : 'そば屋への対処',
     'records' => '壁の貼り紙',
     'supplies' => '予備弾をもらう',
-    'engine' => postBossReunion ? '止まったエンジン' : 'そば屋エンジンについて',
+    'engine' => postBossReunion ? '施設について' : 'そば屋エンジンについて',
     'evidence' =>
       postBossReunion
           ? (dialogueOwner == 'takosan' ? '避難した社員' : '持ち帰る記録')
@@ -2170,9 +2179,7 @@ class HazardGameState {
     kills++;
     say(
       e.boss
-          ? (hardest && livingEnemies > 0
-                ? '巨大そば屋を倒した！ 残るそば屋を全員倒すと家が開く。補給は農場のたこさんへ。'
-                : '巨大そば屋を倒した！ 集合場所の家が開いた。中に入って二人と話そう。')
+          ? '巨大そば屋を倒した！ 神社の裏手を調べよう。'
           : suppressBeer
           ? 'そば屋を撃破。ビールも蒸発した。'
           : 'そば屋を倒した。ビールを回収しよう。',
@@ -2206,6 +2213,12 @@ class HazardGameState {
   String? _nearestInteraction() {
     if (tutorialActive) return null;
     if (actionLocked) return null;
+    if (hasRefuge &&
+        !bossAlive &&
+        seenEvents.contains('boss_defeated') &&
+        _near(19.8, 0, 15, 2.2)) {
+      return 'facility';
+    }
     final stealth = stealthTarget;
     if (stealth != null) return 'stealth:${stealth.id}';
     if (hasRefuge &&
@@ -2332,8 +2345,9 @@ class HazardGameState {
       return farmObjective;
     }
     if (key.startsWith('stealth:')) return 'ビールを破壊する';
+    if (key == 'facility') return '搬入口の看板を調べる';
     if (key == 'refuge') {
-      return refugeUnlocked ? '集合場所 — 玄関から中へ' : refugeObjective;
+      return refugeUnlocked ? '神社の社務所 — 祠を調べる' : refugeObjective;
     }
     if (key == 'npc:yametaro') return 'やめ太郎と話す';
     if (key == 'npc:takosan') {
@@ -2352,7 +2366,7 @@ class HazardGameState {
     return gateOpen
         ? '門の先へ進む'
         : canOpenGate
-        ? '${gate['label'] ?? '農場への門'}を開ける'
+        ? '${gate['label'] ?? '商店街への門'}を開ける'
         : gateMode == 'boss'
         ? '廃屋前のそば屋を撃退する'
         : '紋章の鍵が必要';
@@ -2381,7 +2395,12 @@ class HazardGameState {
     interaction = _nearestInteraction();
     final key = interaction;
     if (key == null) return;
-    if (key.startsWith('mission:')) {
+    if (key == 'facility') {
+      seenEvents.add('facility_discovered');
+      checkpointRequested = true;
+      stopInput();
+      phase = PlayPhase.clear;
+    } else if (key.startsWith('mission:')) {
       missionFlags.add(key.substring(8));
       checkpointRequested = true;
       lastSound = 'pickup';
@@ -2446,7 +2465,7 @@ class HazardGameState {
       if (canOpenGate) {
         gateOpen = true;
         checkpointRequested = true;
-        say('${gate['label'] ?? '農場への門'}が開いた。');
+        say('${gate['label'] ?? '商店街への門'}が開いた。');
         emitSound(
           'gate',
           x: (gate['x'] as num).toDouble(),
@@ -2628,7 +2647,7 @@ class HazardGameState {
             );
           }
         }
-        say('救難準備完了。出発用の弾薬と回復薬を受け取った。');
+        say('神社への準備完了。出発用の弾薬と回復薬を受け取った。');
       }
       checkpointRequested = true;
     }
@@ -2643,7 +2662,8 @@ class HazardGameState {
     _rememberRefugeReport();
     if (_refugeReportPending && insideRefuge) {
       seenEvents.add('refuge_report_$dialogueOwner');
-      if (refugeReports.length == 2) seenEvents.add('refuge_complete');
+      // Talking to companions no longer completes the demo.
+      // Completion requires discovering the facility after defeating the boss.
       say(refugeObjective);
     }
     _refugeReportPending = false;

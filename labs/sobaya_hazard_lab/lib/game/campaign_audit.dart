@@ -506,39 +506,16 @@ class CampaignAudit {
     record('refuge-unlocked');
   }
 
-  Future<void> reuniteInRefuge() async {
-    // Enter through the front door, not the removed eastern escape trigger.
-    await walk(13, 10.6, radius: .4);
-    if (!s.insideRefuge) {
-      throw StateError('Did not enter the refuge ${s.inspect()}');
+  Future<void> discoverFacility() async {
+    // The pure-state driver has no cinematic director. Mark only the two
+    // post-combat presentation beats; movement and interaction remain real.
+    if (pump == null) s.seenEvents.addAll(['boss_confession', 'boss_defeated']);
+    await walk(19.8, 15, radius: .6);
+    s.interact();
+    if (!s.seenEvents.contains('facility_discovered')) {
+      throw StateError('Facility discovery did not complete ${s.inspect()}');
     }
-    record('refuge-entered');
-    for (final owner in ['yametaro', 'takosan']) {
-      final npc = s.npcs.firstWhere((n) => n['id'] == owner);
-      await walk(
-        (npc['x'] as num).toDouble(),
-        (npc['z'] as num).toDouble(),
-        radius: 1.3,
-        reach: true,
-      );
-      s.startDialogue(owner);
-      if (s.phase != PlayPhase.dialogue || s.dialogueTopic != 'reunion') {
-        throw StateError('Reunion did not start for $owner ${s.inspect()}');
-      }
-      while (!s.dialogueChoices) {
-        s.advanceDialogue();
-      }
-      s.endDialogue();
-      if (!s.refugeReports.contains(owner)) {
-        throw StateError('Reunion report was not recorded for $owner');
-      }
-      record('refuge-report:$owner');
-    }
-    if (!s.refugeComplete) {
-      throw StateError('Both refuge conversations did not complete the run');
-    }
-    // The controller saves this flag before starting the ending. A pure state
-    // audit therefore verifies refugeComplete rather than forcing phase=clear.
+    record('facility-discovered');
   }
 
   Future<void> run() async {
@@ -614,7 +591,7 @@ class CampaignAudit {
       await collectImages();
       await collectBeer();
     }
-    await reuniteInRefuge();
+    await discoverFacility();
     record('clear');
     if (completionist) {
       final expectedKills = campaign.maps.values.fold<int>(

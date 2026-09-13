@@ -55,6 +55,7 @@ extension HazardCheckpoint on HazardGameState {
     'hits': hits,
     'time': time,
     'medallions': medallions.toList(),
+    'storyVersion': 2,
     'seenEvents': seenEvents.toList(),
     'missionFlags': missionFlags.toList(),
     'tutorialStep': tutorialStep,
@@ -251,6 +252,14 @@ HazardGameState restoreHazardCheckpoint(
     ]);
   }
   s.seenEvents.addAll((data['seenEvents'] as List? ?? const []).cast<String>());
+  if ((data['storyVersion'] as int? ?? 1) < 2) {
+    s.seenEvents.removeAll([
+      'ending',
+      'refuge_complete',
+      'refuge_report_yametaro',
+      'refuge_report_takosan',
+    ]);
+  }
   if (refugeReady != null) {
     if (refugeReady) {
       s.seenEvents.add('refuge_ready');

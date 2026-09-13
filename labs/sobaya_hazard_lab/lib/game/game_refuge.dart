@@ -19,21 +19,9 @@ extension HazardRefuge on HazardGameState {
   };
   bool get refugeComplete =>
       refugeUnlocked && seenEvents.contains('refuge_complete');
-  String get refugeObjective => !refugeUnlocked
-      ? hardest
-            ? '家は施錠中 — そば屋を全員倒せ（残り $livingEnemies 体）／補給は農場'
-            : '巨大そば屋を倒して、集合場所の家を開けよう'
-      : refugeComplete
-      ? '三人そろった。ゆめみ村から帰ろう。'
-      : !insideRefuge
-      ? '家が開いた — 緑の灯りの玄関から集合場所へ'
-      : '生還報告 ${refugeReports.length}/2 — ${[for (final id in HazardGameState.companionNames.keys)
-          if (!refugeReports.contains(id)) HazardGameState.companionNames[id]!].join('・')}と話そう';
-  String get dialogueLeaveLabel => !insideRefuge
-      ? 'E  探索へ戻る'
-      : refugeReports.where((id) => id != dialogueOwner).isNotEmpty
-      ? 'E  会話を終えてクリア'
-      : 'E  会話を終えて、もう一人へ';
+  String get refugeObjective =>
+      bossAlive ? '神社の巨大そば屋を倒し、村の異変を調べる' : '祠に異常は見つからない — 神社の東の管理道を調べる';
+  String get dialogueLeaveLabel => 'E  探索へ戻る';
   Iterable<HazardWindow> get usableWindows => hasRefuge ? const [] : windows;
   Iterable<Obstacle> get collisionObstacles sync* {
     for (final o in obstacles) {
@@ -68,7 +56,7 @@ extension HazardRefuge on HazardGameState {
     if (refugeUnlocked) {
       if (seenEvents.add('refuge_ready')) {
         checkpointRequested = true;
-        say('集合場所の家が開いた。緑の灯りの玄関から入り、二人と話そう。');
+        say('境内が静まった。神社の裏手から機械の音が聞こえる。');
         emitSound('gate', x: 13, z: 9.5);
       }
     } else {

@@ -1,8 +1,8 @@
 {
   "version": 1,
   "id": "farm",
-  "label": "CHAPTER 02  /  ABANDONED PROJECT",
-  "subtitle": "秘密案件の補給施設。撤収対象外。",
+  "label": "CHAPTER 02 / VILLAGE QUARTER",
+  "subtitle": "村の生活圏。たこさんの商店だけが営業中。",
   "spawn": {
     "x": -19,
     "z": -21,
@@ -805,6 +805,15 @@
       "bottom": 0,
       "top": 1.35,
       "id": null
+    },
+    {
+      "x": -13,
+      "z": -16.95,
+      "w": 3.4,
+      "d": 0.18,
+      "bottom": 0,
+      "top": 2.3,
+      "id": null
     }
   ],
   "ramps": [
@@ -1076,7 +1085,7 @@
     "z": -10,
     "y": 0,
     "mode": "free",
-    "label": "山道への門"
+    "label": "神社への門"
   },
   "targets": [
     {

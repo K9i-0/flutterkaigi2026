@@ -639,7 +639,13 @@ class HazardGameController extends ChangeNotifier {
     state!.reactionTime = 0;
     director = HazardDirector(
       id,
-      voiceSeconds: voiceCatalog.eventSeconds,
+      voiceSeconds: {
+        for (final entry in hazardEvents[id]!.asMap().entries)
+          'event:$id:${entry.key}': voiceCatalog.seconds(
+            entry.value.voiceSpeaker,
+            entry.value.text,
+          ),
+      },
       foundMemos: state!.foundMemos,
     );
     state!
@@ -1075,45 +1081,27 @@ class HazardGameController extends ChangeNotifier {
     for (final entry in HazardGameState.farmMissionItems.entries) {
       final item = entry.value;
       final n = missionNodes.putIfAbsent(entry.key, () {
-        final battery = entry.key == 'radio_battery';
+        if (entry.key == 'radio_battery') {
+          final key = _prop('Key')..scale = vm.Vector3.all(1.8);
+          scene.add(key);
+          return key;
+        }
         final n = marker(
-          battery ? vm.Vector3(.5, .36, .3) : vm.Vector3(.5, .045, .65),
-          battery ? vm.Vector4(.2, .28, .25, 1) : vm.Vector4(.94, .89, .73, 1),
+          vm.Vector3(.5, .045, .65),
+          vm.Vector4(.94, .89, .73, 1),
         );
-        void detail(vm.Vector3 size, vm.Vector3 position, vm.Vector4 color) {
+        for (var i = 0; i < 5; i++) {
           n.add(
             Node(
                 mesh: Mesh(
-                  CuboidGeometry(size),
-                  UnlitMaterial()..baseColorFactor = color,
+                  CuboidGeometry(vm.Vector3(.33, .006, .015)),
+                  UnlitMaterial()
+                    ..baseColorFactor = vm.Vector4(.25, .28, .25, 1),
                 ),
               )
-              ..position = position
+              ..position = vm.Vector3(0, .027, -.18 + i * .08)
               ..castsShadows = false,
           );
-        }
-
-        if (battery) {
-          for (final x in [-.15, .15]) {
-            detail(
-              vm.Vector3(.08, .08, .08),
-              vm.Vector3(x, .21, 0),
-              vm.Vector4(.92, .65, .18, 1),
-            );
-          }
-          detail(
-            vm.Vector3(.3, .18, .015),
-            vm.Vector3(0, 0, -.16),
-            vm.Vector4(.95, .78, .25, 1),
-          );
-        } else {
-          for (var i = 0; i < 5; i++) {
-            detail(
-              vm.Vector3(.33, .006, .015),
-              vm.Vector3(0, .027, -.18 + i * .08),
-              vm.Vector4(.25, .28, .25, 1),
-            );
-          }
         }
         return n;
       });
@@ -1175,7 +1163,7 @@ class HazardGameController extends ChangeNotifier {
           PlayPhase.title,
           PlayPhase.dead,
           PlayPhase.companionDown,
-          if (!s.refugeComplete) PlayPhase.clear,
+          if (!s.seenEvents.contains('facility_discovered')) PlayPhase.clear,
           PlayPhase.dialogue,
           PlayPhase.cinematic,
           PlayPhase.settings,
@@ -1283,12 +1271,17 @@ class HazardGameController extends ChangeNotifier {
     final s = state!;
     final d = director;
     if (d != null) {
-      final anchor = d.view.anchorToPlayer
+      final boss = d.id == 'boss_confession' && d.shot.actor == 'sobaya'
+          ? s.enemies.where((e) => e.boss).firstOrNull
+          : null;
+      final anchor = boss != null
+          ? vm.Vector3(boss.x - 12, boss.y, boss.z - 4)
+          : d.view.anchorToPlayer
           ? vm.Vector3(s.x, s.y, s.z)
           : vm.Vector3.zero();
       final target = d.view.aim + anchor;
       var position = d.view.camera(d.visualProgress) + anchor;
-      if (d.view.anchorToPlayer) {
+      if (d.view.anchorToPlayer || boss != null) {
         final offset = position - target;
         final clearance = cameraCollisionDistance(
           s,
@@ -1381,12 +1374,11 @@ class HazardGameController extends ChangeNotifier {
     if (s == null ||
         !s.running ||
         !s.refugeUnlocked ||
-        s.insideRefuge ||
-        s.z > 10 ||
+        !s.seenEvents.contains('boss_defeated') ||
         s.x < -3) {
       return null;
     }
-    return camera().worldToScreen(vm.Vector3(13, 2.8, 9.2), viewport);
+    return camera().worldToScreen(vm.Vector3(19.8, 2.8, 15), viewport);
   }
 
   void updateRocketTarget() {
@@ -1598,8 +1590,7 @@ class HazardGameController extends ChangeNotifier {
     if (!posePreview &&
         director == null &&
         s.running &&
-        s.insideRefuge &&
-        s.refugeComplete) {
+        s.seenEvents.contains('facility_discovered')) {
       // Completion does not replace the safe stage-entry checkpoint.
       if (s.seenEvents.contains('ending')) {
         s.phase = PlayPhase.clear;
@@ -1619,12 +1610,8 @@ class HazardGameController extends ChangeNotifier {
       if (s.phase == PlayPhase.clear && !s.seenEvents.contains('ending')) {
         startEvent('ending');
       }
-      if (s.running &&
-          s.zoneId == 'mountain' &&
-          s.bossAlive &&
-          !s.seenEvents.contains('last_order')) {
-        startEvent('last_order');
-      }
+      final pendingEvent = s.pendingDemoEvent;
+      if (s.running && pendingEvent != null) startEvent(pendingEvent);
     }
     if (s.phase == PlayPhase.transition) {
       unawaited(transitionRegion());
@@ -1723,23 +1710,12 @@ class HazardGameController extends ChangeNotifier {
         ..playbackTimeScale = 0;
     }
     for (final chair in endingChairs) {
-      chair.visible = director?.id == 'ending';
+      chair.visible = false;
     }
     player.node.position = vm.Vector3(s.x, s.y, s.z);
     if (director?.id == 'farm') {
       // Stage the conversation without changing gameplay or saved position.
       player.node.position = vm.Vector3(-13, 0, -20.8);
-    }
-    if (director?.id == 'ending') {
-      // Render-only gathering outside the house; restore normal placement on
-      // event exit. Never teleport campaign/checkpoint positions for a cut.
-      player.node.position = vm.Vector3(11.5, 0, 6);
-      npcs['yametaro']!.node
-        ..visible = true
-        ..position = vm.Vector3(14, 0, 7);
-      npcs['takosan']!.node
-        ..visible = true
-        ..position = vm.Vector3(16.2, 0, 7);
     }
     // Dialogue uses a close shot of the speaker, beyond the player's shoulder.
     final closeCamera =
@@ -1860,13 +1836,17 @@ class HazardGameController extends ChangeNotifier {
           !e.grabPending &&
           s.grapple?.enemyId != e.id &&
           e.releaseTime <= 0;
-      actor.node.visible = e.active && !e.dropped && director?.id != 'ending';
+      actor.node.visible =
+          (e.active && !e.dropped && director?.id != 'ending') ||
+          (e.boss && director?.id == 'boss_confession');
       actor.node.position = vm.Vector3(e.x, e.y, e.z);
       actor.node.rotation = vm.Quaternion.axisAngle(
         vm.Vector3(0, 1, 0),
         e.heading + math.pi,
       );
-      final scale = e.alive ? 1.0 : math.max(.001, 1 - e.vanish / .65);
+      final scale = e.alive || (e.boss && director?.id == 'boss_confession')
+          ? 1.0
+          : math.max(.001, 1 - e.vanish / .65);
       actor.node.scale = vm.Vector3.all(scale * e.modelScale);
       final bossMelee =
           e.boss &&
@@ -2078,19 +2058,6 @@ class HazardGameController extends ChangeNotifier {
         // Turning to each camera made both bodies jump at every cut.
         final friend = npcs['yametaro']!;
         for (final pair in [(player, friend), (friend, player)]) {
-          final delta = pair.$2.node.position - pair.$1.node.position;
-          pair.$1.node.rotation = vm.Quaternion.axisAngle(
-            vm.Vector3(0, 1, 0),
-            math.atan2(delta.x, delta.z) + math.pi,
-          );
-        }
-      } else if (d.id == 'ending') {
-        final friend = npcs['yametaro']!, merchant = npcs['takosan']!;
-        for (final pair in [
-          (player, friend),
-          (friend, player),
-          (merchant, player),
-        ]) {
           final delta = pair.$2.node.position - pair.$1.node.position;
           pair.$1.node.rotation = vm.Quaternion.axisAngle(
             vm.Vector3(0, 1, 0),

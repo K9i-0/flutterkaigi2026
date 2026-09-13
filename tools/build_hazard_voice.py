@@ -20,8 +20,8 @@ def caption(row):
  if any(u.startswith('dialogue:reaction:') for u in row['uses']):return '突然殴られて痛がり、仲間に助けを求める。短く切迫して。声の同一性は保つ。'
  if 'ワイ、二週間ぶりにくつろいだんやけど。' in row['text']:return '関西弁で仲間へ話す。椅子が段ボールだと気づき、そのあと二週間ぶりにくつろいだとぼやく。二つの文を最後まで明瞭に話す。'
  if row['text']=='え、また集まるの？':return '驚いて、短く聞き返す。'
- if row['speaker']=='そば屋':return '相手を誘うように、堂々と。最後の乾杯を呼びかける。'
- if any(u.startswith('event:ending') for u in row['uses']):return 'ほっとして、親しい仲間に軽い冗談を交えながら自然に話す。'
+ if row['speaker']=='そば屋':return '言葉をうまくつなげられない怪物。単語ごとに途切れ、息を漏らして低くうなる。ビールへの渇望。文章を流暢にせず、指定された単語だけを明瞭に言う。'
+ if any(u.startswith('event:ending') for u in row['uses']):return '不審な施設を見つけ、静かに驚きながら独り言のように話す。疑問を残す抑制した声。'
  if row['speaker']=='福ちゃん':return '友人に話しかける。少し呆れながらも明瞭に、言葉の最後まで自然に話す。'
  return '焦りを少し抑えて、友人へ道案内する。柔らかい関西イントネーションで、聞き取りやすく自然に話す。'
 rows=json.loads((OUT/'voice-lines.json').read_text())
@@ -52,6 +52,7 @@ for index,row in enumerate(rows):
  # Isolated stamp text needs an explicit reading, without altering subtitles.
  speech=speech.replace('済って書いておきます', 'すみって書いておきます')
  if row['speaker']=='ナレーション':
+  speech=speech.replace('体験版 終', '体験版、終わり。')
   speech=speech.replace('CHAPTER 02 —', '第二章。').replace('LAST ORDER —', 'ラストオーダー。').replace('CHAPTER 03 —', '第三章。').replace('撤収対象外 ', '撤収対象外。').replace('そば屋エンジン中枢 ', 'そば屋エンジン中枢。')
  if row['text']=='え、また集まるの？':speech='えっ、また集まるの？'
  for label,spoken in [('Xで','エックスで'),('Fで','エフで'),('Eで','イーで'),('Cで','シーで')]:speech=speech.replace(label,spoken)

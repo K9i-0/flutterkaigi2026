@@ -27,7 +27,7 @@ void shop(HazardGameState s) {
   s.endDialogue();
   final npc = s.npcs.firstWhere((n) => n['id'] == 'takosan');
   s.x = (npc['x'] as num).toDouble();
-  s.z = (npc['z'] as num).toDouble() + .8;
+  s.z = (npc['z'] as num).toDouble() - .8;
   s.startDialogue('takosan');
   while (!s.dialogueChoices) {
     s.advanceDialogue();
