@@ -260,10 +260,9 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
           <span className="j-play-mini">
             <IconPlay />
           </span>
-          <span className="j-runtime">{runtime(e)}</span>
         </button>
         <div className="j-movie-meta">
-          <span>{category(e)}{e.has_featured_video === 1 && <span className="j-pickup-badge"><Star size={11} fill="currentColor" />ピックアップ</span>}</span>
+          <span>{category(e)}<small className="j-movie-runtime">{runtime(e)}</small>{e.has_featured_video === 1 && <span className="j-pickup-badge"><Star size={11} fill="currentColor" />ピックアップ</span>}</span>
           <button onClick={() => setPlaying(e)}>
             <h3>{episodeTitle(e)}</h3>
           </button>
@@ -355,6 +354,9 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
         .toLowerCase()
         .includes(query.toLowerCase()),
   );
+  const playbackQueue = route.page === "movies" && filtered.some((e) => e.id === playing?.id) ? filtered : episodes;
+  const playingIndex = playbackQueue.findIndex((e) => e.id === playing?.id);
+  const nextEpisode = playingIndex >= 0 ? playbackQueue[playingIndex + 1] : undefined;
   const mainHeader = (
     <header className="j-header" data-lantern-lit={lanternLit}>
       {theme === "sakaba" && <Noren />}
@@ -1056,7 +1058,7 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
             <div className="j-gallery-wall">
               {arts.map((a) => (
                 <button key={a.src} onClick={() => setZoom(a)}>
-                  <img src={a.src} alt={a.title} />
+                  <img src={a.src} alt={a.title} loading="lazy" decoding="async" />
                   <span>
                     <small>{a.kind}</small>
                     <h2>{a.title}</h2>
@@ -1142,21 +1144,16 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
         <Dialog.Portal>
           <Dialog.Overlay className="j-dialog-overlay" />
           <Dialog.Content
-            className="j-video-dialog"
+            className="j-video-dialog j-watch-dialog"
             aria-describedby={undefined}
           >
             <Dialog.Close className="j-dialog-close" aria-label="閉じる">
               <X size={21} />
             </Dialog.Close>
             {playing && (
-              <>
-                <div className="j-video-title">
-                  <span>
-                    {category(playing)} · {runtime(playing)}
-                  </span>
-                  <Dialog.Title>{episodeTitle(playing)}</Dialog.Title>
-                </div>
-                <Video key={playing.id} episode={playing} />
+              <VideoViewer key={playing.id} episode={playing} onNext={() => {
+                if (nextEpisode) setPlaying(nextEpisode);
+              }} hasNext={!!nextEpisode}>
                 <p className="j-video-description">{episodeCopy(playing)}</p>
                 <a className="j-making-link" href={`/episodes/${playing.slug}#making-${playing.primary_video_id}`} onClick={() => {
                   try { sessionStorage.setItem("madogiwa-production-return", JSON.stringify({ slug: playing.slug, href: location.pathname + location.search, route, query, scroll: window.scrollY, episodeId: playing.id, restore: true })); } catch { /* Navigation still works without storage. */ }
@@ -1197,7 +1194,7 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
                       </button>
                     ))}
                 </div>
-              </>
+              </VideoViewer>
             )}
           </Dialog.Content>
         </Dialog.Portal>
@@ -1231,53 +1228,108 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
     </div>
   );
 }
-function Video({ episode }: { episode: Episode }) {
+function VideoViewer({ episode, children, onNext, hasNext }: {
+  episode: Episode;
+  children: React.ReactNode;
+  onNext: () => void;
+  hasNext: boolean;
+}) {
   const [failed, setFailed] = useState(false);
   const [ended, setEnded] = useState(false);
+  const [infoOpen, setInfoOpen] = useState(false);
   const ref = useRef<HTMLVideoElement>(null);
+  const infoRef = useRef<HTMLDivElement>(null);
+  const infoButtonRef = useRef<HTMLButtonElement>(null);
+  const dragStart = useRef<number | null>(null);
+  const swiped = useRef(false);
+  function openInfo() {
+    setInfoOpen(true);
+    requestAnimationFrame(() => infoRef.current?.focus());
+  }
+  function closeInfo() {
+    setInfoOpen(false);
+    infoButtonRef.current?.focus();
+  }
   return (
-    <div className="j-player">
-      <video
-        ref={ref}
-        src={videoSource(episode)}
-        poster={poster(episode)}
-        controls
-        autoPlay
-        playsInline
-        preload="metadata"
-        onError={() => setFailed(true)}
-        onEnded={() => setEnded(true)}
-        onPlay={() => setEnded(false)}
-      />
-      {failed && (
-        <div className="j-player-state">
-          <p>動画を読み込めませんでした。</p>
-          <a
-            href={`https://madogiwa.work/episodes/${episode.slug}`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            公式ページで見る
-            <ArrowUpRight size={17} />
-          </a>
+    <div className="j-viewer">
+      <header className="j-video-title">
+        <span>{category(episode)} · {runtime(episode)}</span>
+        <Dialog.Title>{episodeTitle(episode)}</Dialog.Title>
+      </header>
+      <div className={`j-viewer-body${infoOpen ? " j-info-open" : ""}`}>
+        <div className="j-player">
+          <video
+            ref={ref}
+            src={videoSource(episode)}
+            poster={poster(episode)}
+            controls autoPlay playsInline preload="metadata"
+            aria-label={episodeTitle(episode)}
+            onError={() => setFailed(true)}
+            onEnded={() => setEnded(true)}
+            onPlay={() => setEnded(false)}
+          />
+          {failed && <div className="j-player-state">
+            <p>動画を読み込めませんでした。</p>
+            <a href={`https://madogiwa.work/episodes/${episode.slug}`} target="_blank" rel="noreferrer">
+              公式ページで見る<ArrowUpRight size={17} />
+            </a>
+          </div>}
+          {ended && !failed && <div className="j-player-state j-player-ended">
+            <div className="j-end-actions">
+              <button onClick={() => {
+                if (ref.current) {
+                  ref.current.currentTime = 0;
+                  void ref.current.play().catch(() => setFailed(true));
+                }
+              }}><IconPlay />もう一度</button>
+              <button onClick={openInfo}><BookOpen size={17} />作品情報・作り方</button>
+              {hasNext && <button onClick={onNext}>次の動画<ArrowRight size={17} /></button>}
+            </div>
+          </div>}
         </div>
-      )}
-      {ended && !failed && (
-        <div className="j-player-state">
-          <button
-            onClick={() => {
-              if (ref.current) {
-                ref.current.currentTime = 0;
-                void ref.current.play().catch(() => setFailed(true));
-              }
-            }}
-          >
-            <IconPlay />
-            もう一度見る
-          </button>
-          <p>続きは、下のおすすめから。</p>
-        </div>
-      )}
+        <section id="watch-info" className="j-watch-info" aria-label="作品情報" hidden={!infoOpen} onKeyDown={(event) => {
+          if (event.key === "Escape") { event.stopPropagation(); closeInfo(); }
+        }}>
+          <div className="j-info-heading">
+            <button className="j-info-handle" aria-label="作品情報を閉じる" onClick={closeInfo}
+              onPointerDown={(event) => {
+                dragStart.current = event.clientY;
+                event.currentTarget.setPointerCapture(event.pointerId);
+              }}
+              onPointerUp={(event) => {
+                if (dragStart.current !== null && event.clientY - dragStart.current > 40) closeInfo();
+                dragStart.current = null;
+              }}
+              onPointerCancel={() => { dragStart.current = null; }}
+            ><span /></button>
+            <h3>作品情報</h3>
+            <button className="j-info-close" onClick={closeInfo} aria-label="作品情報を閉じる"><X size={18} /></button>
+          </div>
+          <div className="j-info-content" ref={infoRef} tabIndex={-1}>{children}</div>
+        </section>
+      </div>
+      <footer className="j-viewer-toolbar">
+        <button ref={infoButtonRef} aria-expanded={infoOpen} aria-controls="watch-info"
+          onClick={() => {
+            if (swiped.current) { swiped.current = false; return; }
+            if (infoOpen) closeInfo(); else openInfo();
+          }}
+          onPointerDown={(event) => {
+            swiped.current = false;
+            dragStart.current = event.clientY;
+            event.currentTarget.setPointerCapture(event.pointerId);
+          }}
+          onPointerUp={(event) => {
+            if (dragStart.current !== null && dragStart.current - event.clientY > 40) {
+              swiped.current = true;
+              openInfo();
+            }
+            dragStart.current = null;
+          }}
+          onPointerCancel={() => { dragStart.current = null; }}
+        ><BookOpen size={17} />作品情報・作り方</button>
+        {hasNext && <button onClick={onNext}>次の動画<ArrowRight size={17} /></button>}
+      </footer>
     </div>
   );
 }
