@@ -14,13 +14,15 @@ enum HazardGraphicsPreset {
   String get description => switch (this) {
     balanced => '建物と陰影をくっきり保ち、描画負荷を抑える',
     quality => '遠景のちらつきを抑え、会話の光とぼけを豊かに',
-    showcase => '高精細な影と動的な間接光を加える',
+    showcase => '自然な明るさを保ち、影と陰影をより精細に',
   };
 
   HazardGraphicsPreset get next => values[(index + 1) % values.length];
 
   bool get temporalAntiAliasing => this != balanced;
-  bool get dynamicGlobalIllumination => this == showcase;
+  // The probe field replaces sky diffuse lighting rather than adding bounce.
+  // Keep the calibrated sky fill at every tier until GI matches its energy.
+  bool get dynamicGlobalIllumination => false;
   bool get cinematicFocus => this != balanced;
   int get shadowMapResolution => this == showcase ? 2048 : 1024;
   double get shadowMaxDistance => this == showcase ? 40 : 32;
