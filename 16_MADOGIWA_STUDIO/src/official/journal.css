@@ -2702,14 +2702,31 @@
   border-color: var(--ink);
 }
 .j-scope-tabs button > span { opacity: .7; font-size: 11px; }
-.j-person-editorial-image { max-height: 320px; }
+.j-person-editorial-image {
+  display: block;
+  align-self: center;
+  aspect-ratio: 1;
+  max-height: none;
+}
+.j-person-editorial-image > img {
+  display: block;
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+}
 .j-person-editorial-copy h2 { margin: 0 0 8px; }
 .j-friends-row img { object-position: 50% 15%; }
+.j-friends-row img[data-character="yametaro"] {
+  object-fit: contain;
+  object-position: center;
+  padding: 5px;
+  background: #fff;
+}
 .j-friends-row img[data-character="fukuchan"],
 .j-friends-row img[data-character="tokun"],
 .j-friends-row img[data-character="yotan"] { object-position: 50% 0%; }
 @media (max-width: 580px) {
-  .j-person-editorial-image { aspect-ratio: 1.65; max-height: none; }
+  .j-person-editorial-image { aspect-ratio: 1; max-height: none; }
   .j-person-editorial-copy { padding: 17px 22px 20px; }
   .j-person-editorial-copy h2 { font-size: 21px; line-height: 1.4; margin: 0 0 5px; }
   .j-person-editorial-copy p { font-size: 12px; line-height: 1.8; }
