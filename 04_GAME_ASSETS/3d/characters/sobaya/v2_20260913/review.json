@@ -1,0 +1,42 @@
+{
+  "glbSha256": "e440c9a6767af855657a6f0202dbb8dc1f53d586a75fc6302a5b4e679ae982e4",
+  "blenderViews": [
+    "front",
+    "side",
+    "back",
+    "head front/side/back",
+    "Idle",
+    "Walk",
+    "Run",
+    "Greeting",
+    "head turn",
+    "arm raise",
+    "elbow bend",
+    "knee bend"
+  ],
+  "browser": {
+    "url": "http://127.0.0.1:8767/tools/preview_sobaya_v2.html",
+    "checked": [
+      "v2 loaded: 48774 triangles, 23 bones, 11 clips, 4 render meshes",
+      "Greeting continuous replay and paused mid pose",
+      "Walk playback with actual skeleton overlay",
+      "v1/v2 switching",
+      "final v2 Greeting left open"
+    ]
+  },
+  "video": {
+    "file": "preview/greeting.mp4",
+    "sha256": "ce5377732503ddd591c363e49eb65f6f0253280fe7fbd6252a1decbb588d1a86",
+    "width": 1920,
+    "height": 1080,
+    "fps": 24,
+    "frames": 72,
+    "durationSeconds": 3,
+    "inspectedFrames": [
+      0,
+      36,
+      71
+    ]
+  },
+  "remaining": "Generated sleeve/underarm wrinkles and uneven collar edges; no individual finger rig, mug socket or hem helper bones; not game-adopted."
+}

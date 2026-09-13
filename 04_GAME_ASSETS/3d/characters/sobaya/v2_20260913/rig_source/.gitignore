@@ -1,0 +1,6 @@
+raw/
+task*.json
+upload*.json
+request.json
+submission_started.json
+rig_check*.json

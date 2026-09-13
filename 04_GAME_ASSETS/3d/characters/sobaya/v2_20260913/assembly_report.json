@@ -1,0 +1,162 @@
+{
+  "neck": {
+    "removedBodyStumpFaces": 499,
+    "taperedNeckVertices": 947,
+    "collarRimEdges": 85,
+    "neckInteriorFaces": 514,
+    "masterHeightM": 1.8
+  },
+  "materials": [
+    {
+      "material": "CollarFabric",
+      "maps": []
+    },
+    {
+      "material": "NeckInteriorSkin",
+      "maps": []
+    },
+    {
+      "material": "tripo_mat_08767eb2",
+      "maps": [
+        "color",
+        "normal",
+        "roughness",
+        "metallic"
+      ]
+    },
+    {
+      "material": "tripo_mat_b56740ad",
+      "maps": [
+        "color",
+        "normal",
+        "roughness",
+        "metallic"
+      ]
+    }
+  ],
+  "smoothedShoulderVertices": 2514,
+  "normalizedVertices": {
+    "Body": 3,
+    "Head": 0
+  },
+  "animations": [
+    {
+      "name": "Idle",
+      "source": "Adopted_Library_Idle_A",
+      "seconds": 3.1333333333333333,
+      "loop": true,
+      "sourceGlbSha256": "e8df48deafb162543e07c46f3e839b5b8c71c0316352880af46b2b12a7147d6e",
+      "retargetLegScale": 1.0458272944443634
+    },
+    {
+      "name": "Walk",
+      "source": "Adopted_Library_Walk",
+      "seconds": 1.6666666666666667,
+      "loop": true,
+      "sourceGlbSha256": "e8df48deafb162543e07c46f3e839b5b8c71c0316352880af46b2b12a7147d6e",
+      "retargetLegScale": 1.0458272944443634
+    },
+    {
+      "name": "Run",
+      "source": "Adopted_Candidate_Chase_Run",
+      "seconds": 0.9666666666666667,
+      "loop": true,
+      "sourceGlbSha256": "e8df48deafb162543e07c46f3e839b5b8c71c0316352880af46b2b12a7147d6e",
+      "retargetLegScale": 1.0458272944443634
+    },
+    {
+      "name": "DanceStep",
+      "source": "Adopted_Library_Dance_Simple",
+      "seconds": 1.2666666666666666,
+      "loop": true,
+      "sourceGlbSha256": "e8df48deafb162543e07c46f3e839b5b8c71c0316352880af46b2b12a7147d6e",
+      "retargetLegScale": 1.0458272944443634
+    },
+    {
+      "name": "DanceDisco",
+      "source": "Adopted_Library_Dance_Charleston",
+      "seconds": 2.3,
+      "loop": true,
+      "sourceGlbSha256": "e8df48deafb162543e07c46f3e839b5b8c71c0316352880af46b2b12a7147d6e",
+      "retargetLegScale": 1.0458272944443634
+    },
+    {
+      "name": "DanceVictory",
+      "source": "Adopted_Library_Dance_Body_Roll",
+      "seconds": 6.466666666666667,
+      "loop": true,
+      "sourceGlbSha256": "e8df48deafb162543e07c46f3e839b5b8c71c0316352880af46b2b12a7147d6e",
+      "retargetLegScale": 1.0458272944443634
+    },
+    {
+      "name": "Greeting",
+      "source": "authored in Blender on the v2 rig",
+      "seconds": 3,
+      "loop": false
+    },
+    {
+      "name": "Test_HeadTurn",
+      "source": "authored in Blender on the v2 rig",
+      "seconds": 3,
+      "loop": false
+    },
+    {
+      "name": "Test_ArmRaise",
+      "source": "authored in Blender on the v2 rig",
+      "seconds": 3,
+      "loop": false
+    },
+    {
+      "name": "Test_ElbowBend",
+      "source": "authored in Blender on the v2 rig",
+      "seconds": 3,
+      "loop": false
+    },
+    {
+      "name": "Test_KneeBend",
+      "source": "authored in Blender on the v2 rig",
+      "seconds": 3,
+      "loop": false
+    }
+  ],
+  "heightM": 1.7999999523162842,
+  "meshStats": {
+    "Body": {
+      "vertices": 15925,
+      "triangles": 30680
+    },
+    "Head": {
+      "vertices": 9254,
+      "triangles": 18094
+    }
+  },
+  "bones": [
+    "Root",
+    "Hips",
+    "Spine",
+    "Spine1",
+    "Spine2",
+    "Neck",
+    "Head",
+    "LeftShoulder",
+    "LeftArm",
+    "LeftForeArm",
+    "LeftHand",
+    "RightShoulder",
+    "RightArm",
+    "RightForeArm",
+    "RightHand",
+    "LeftUpLeg",
+    "LeftLeg",
+    "LeftFoot",
+    "LeftToeBase",
+    "RightUpLeg",
+    "RightLeg",
+    "RightFoot",
+    "RightToeBase"
+  ],
+  "glb": {
+    "bytes": 11632560,
+    "sha256": "e440c9a6767af855657a6f0202dbb8dc1f53d586a75fc6302a5b4e679ae982e4"
+  }
+}

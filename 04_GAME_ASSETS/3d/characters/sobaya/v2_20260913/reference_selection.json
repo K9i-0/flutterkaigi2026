@@ -1,0 +1,17 @@
+{
+  "selected_candidate": "C",
+  "selected_by": "user",
+  "date": "2026-09-13",
+  "reference": "reference/master_front.png",
+  "sha256": "d6ea87db6883ed59e0f1caaa68878e0f61cf6558f9720b2fce7b894da378c675",
+  "canonical_sources": [
+    "02_CHARACTERS/Sobaya.jpg",
+    "03_SCRIPTS/00_TEMPLATES/characters/character_sobaya_basic_sheet.png"
+  ],
+  "intent": "Use candidate C as the reference for this Tripo model generation and its associated assembly checks only. Preserve existing canonical character images and design references for all other productions.",
+  "tripo_submitted": true,
+  "scope": "Only the current Sobaya v2 Tripo 3D model production. This image is not a canonical character image or a standard reference for future works.",
+  "updates_character_canon": false,
+  "result": "sobaya_v2.glb",
+  "provenance": "provenance.json"
+}

@@ -1,0 +1,17 @@
+{
+  "reference": "reference/master_front.png",
+  "scope": "current Tripo Sobaya v2 only",
+  "tool": "built-in image_gen",
+  "parts": [
+    {
+      "part": "body",
+      "prompt": "Use case: identity-preserve. This is a part reference for Tripo image-to-3D generation, derived ONLY from the supplied USER-APPROVED COMPLETE Sobaya character C. Preserve the exact sculpted 3D style, proportions and materials. Do not redesign. Neutral gray skin, white fitted T-shirt, black jeans, white sneakers. White seamless background, soft even neutral studio illumination. One object, no labels, no sheet, no text, no watermark, no pedestal. Show entire intended part with 8 percent whitespace margins. Create the complete clothed BODY from the base of the neck to shoe soles, with both arms and all fingers included. Remove ONLY the head and hair above the neck. Retain a short natural thick gray neck stump extending above the collar for later joining. No face or head on the stump. Match approved C's thick powerful chest, broad shoulders, torso length, waist, leg length, arms and clothing silhouette exactly. Straight frontal orthographic-like view. Symmetric A-pose with arms 40 degrees away from torso, elbows straight, fingers naturally straight and gently separated, palms facing front; no bent fists, no foreshortening. Feet parallel shoulder width, toes forward. Do not shorten arms or legs. Portrait composition.",
+      "source": "/Users/kotahayashi/.codex/generated_images/01a0995b-21f8-7ed2-906f-c100a3535d63/exec-3fec5bfb-3909-4c38-990a-9b0997aad1e3.png"
+    },
+    {
+      "part": "head",
+      "prompt": "Use case: identity-preserve. This is a part reference for Tripo image-to-3D generation, derived ONLY from the supplied USER-APPROVED COMPLETE Sobaya character C. Preserve the exact sculpted 3D style, proportions and materials. Do not redesign. Neutral gray skin, white fitted T-shirt, black jeans, white sneakers. White seamless background, soft even neutral studio illumination. One object, no labels, no sheet, no text, no watermark, no pedestal. Show entire intended part with 8 percent whitespace margins. Create only the complete HEAD including its existing short black sculpted spiky HAIR, gray ears, WHITE MASK and thick gray NECK as one connected assembly. Include the natural neck cylinder down to its root so it can overlap into the body collar, but NO shoulders, chest, shirt, stand or pedestal. Preserve C's exact head proportions and mask design: smooth elongated white oval mask, two large black circular eye openings, four tapered red markings above/below eye openings, small round black forehead detail, small projecting white nose and narrow horizontal black mouth slot. Hair stays on head, never split it or make bald. Neutral straight front view, no rotation, no facial expression change. Crisp high-detail geometric sculpted appearance exactly like source C, no skin visible behind mask holes, no eyeballs. Square composition.",
+      "source": "/Users/kotahayashi/.codex/generated_images/01a0995b-21f8-7ed2-906f-c100a3535d63/exec-fa7b500a-4ee0-422a-92bd-641fc15ced84.png"
+    }
+  ]
+}

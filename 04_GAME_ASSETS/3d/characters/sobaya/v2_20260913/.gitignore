@@ -1,0 +1,13 @@
+**/raw/
+**/task*.json
+**/upload*.json
+**/request.json
+**/submission_started.json
+*.blend
+*.blend1
+qa/
+preview/
+reference_candidates/
+rejected_attempt.json
+source_audit.json
+parts_audit.json

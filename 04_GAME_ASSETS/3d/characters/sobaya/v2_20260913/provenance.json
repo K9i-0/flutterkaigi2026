@@ -1,0 +1,46 @@
+{
+  "workflow": "https://www.tripo3d.ai/blog/gpt-6-astra-3d-character-workflow",
+  "scope": "This Sobaya v2 Tripo 3D model only. No canonical design or game-adoption update.",
+  "selectedCandidate": "C",
+  "masterReference": "reference/master_front.png",
+  "masterSha256": "d6ea87db6883ed59e0f1caaa68878e0f61cf6558f9720b2fce7b894da378c675",
+  "canonicalSources": [
+    "02_CHARACTERS/Sobaya.jpg",
+    "03_SCRIPTS/00_TEMPLATES/characters/character_sobaya_basic_sheet.png"
+  ],
+  "masterPrompt": "Use case: identity-preserve. Create one full-body image-to-3D input candidate of Sobaya, directly from these canonical reference images. Image 1 is the PRIMARY exact mask/head likeness and original sculpted 3D rendering reference. Image 2 is the canonical full-body proportions, clothing and material reference. The user's ideal is literally this existing 3D-looking character becoming a 3D model. Preserve the exact character, do not redesign or beautify: immensely broad heavy muscular adult male, thick neck, huge arms and chest, sturdy legs, neutral gray skin on all exposed areas, short dense black pointed sculpted hair tufts. Exact elongated white rigid mask, two large black circular eye holes, four vertical red tapered markings aligned above/below eyes, small black circular forehead detail, small projecting nose, narrow horizontal black mouth slot. White fitted short-sleeved T-shirt, black denim jeans, white low-top sneakers exactly as reference sheet. Match head/body scale of sheet. One continuous complete character from hair tips to soles, both hands fully visible, naturally separated fingers, no cropped limbs. Empty hands, remove beer mug for this modeling reference. Pure white seamless background, soft neutral studio lighting revealing geometry without dramatic shadows. Preserve original high-quality sculpted 3D material aesthetic, not a real human photograph, not cartoon, not voxel. No pedestal, no text, no labels, no multiple panels, no detached body parts. Center the entire body with generous margin.\nVery mild three-quarter view, only 15 degrees rotated from frontal, camera at torso height with orthographic-like long lens. Symmetrical relaxed A-pose arms 35 degrees from torso, both hands open and clear of hips. Feet shoulder width. Show subtle mask projection, chest depth and arm volume while keeping both eye holes and both limbs clearly visible. Portrait composition.",
+  "imageGeneration": "Built-in image_gen; new master from canonical sources, new part references from selected C",
+  "parts": "Body; Head including hair, mask and neck (user requested no separate hair)",
+  "tasks": {
+    "body": {
+      "task_id": "08767eb2-0f2e-4168-bad7-dc008a51fd11",
+      "input_sha256": "0c6de4b9e7dbefd1ddb6f7f14b3bf7a492e963262c71ad086929fcdcb8d9ac6d",
+      "status": "success",
+      "credits_consumed": 120.0
+    },
+    "head": {
+      "task_id": "b56740ad-beb8-4afe-b5e9-765df9d7da5d",
+      "input_sha256": "72794a5815b8ca3809bdc5522b070d044a3299a93c9246eb93346a6dc1a73ff0",
+      "status": "success",
+      "credits_consumed": 120.0
+    },
+    "rig_source": {
+      "task_id": "84047ac0-1e34-4a8a-8c3c-7ae382baf30f",
+      "source_task": "08767eb2-0f2e-4168-bad7-dc008a51fd11",
+      "status": "success",
+      "credits_consumed": 25.0
+    }
+  },
+  "credits": {
+    "balanceBefore": 1060,
+    "body": 120,
+    "headIncludingHair": 120,
+    "rigCheck": 0,
+    "rig": 25,
+    "totalThisRun": 265,
+    "balanceAfter": 795,
+    "frozenAfter": 0,
+    "earlierRejectedAttempt": 240
+  },
+  "review": "Blender MCP connected to a dedicated Sobaya_v2_Review_20260913 scene; reproducible batch scripts handle geometry, retargeting and rendering."
+}

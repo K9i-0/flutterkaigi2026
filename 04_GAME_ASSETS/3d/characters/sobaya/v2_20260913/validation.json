@@ -1,0 +1,239 @@
+{
+  "glbSha256": "e440c9a6767af855657a6f0202dbb8dc1f53d586a75fc6302a5b4e679ae982e4",
+  "gltfErrors": 0,
+  "gltfWarnings": 4,
+  "formatMessages": [
+    {
+      "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+      "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+      "severity": 1,
+      "pointer": "/meshes/0/primitives/0/material"
+    },
+    {
+      "code": "UNUSED_OBJECT",
+      "message": "This object may be unused.",
+      "severity": 2,
+      "pointer": "/meshes/0/primitives/1/attributes/TEXCOORD_0"
+    },
+    {
+      "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+      "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+      "severity": 1,
+      "pointer": "/meshes/1/primitives/0/material"
+    },
+    {
+      "code": "UNUSED_OBJECT",
+      "message": "This object may be unused.",
+      "severity": 2,
+      "pointer": "/meshes/1/primitives/1/attributes/TEXCOORD_0"
+    },
+    {
+      "code": "NODE_SKINNED_MESH_NON_ROOT",
+      "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+      "severity": 1,
+      "pointer": "/nodes/23"
+    },
+    {
+      "code": "NODE_SKINNED_MESH_NON_ROOT",
+      "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+      "severity": 1,
+      "pointer": "/nodes/24"
+    }
+  ],
+  "triangles": 48774,
+  "renderMeshes": 4,
+  "bones": 23,
+  "restHeightM": 1.8000002092238612,
+  "maxWeightError": 4.470348358154297e-8,
+  "morphMaxDisplacementsM": {},
+  "animations": [
+    {
+      "clip": "DanceDisco",
+      "duration": 2.299999952316284,
+      "evaluatedVertices": 19005,
+      "bounds": {
+        "min": [
+          -0.7772212045347768,
+          -0.0667413191118745,
+          -1.1909495641753618
+        ],
+        "max": [
+          0.784883059102292,
+          1.6571161015609601,
+          0.5672023351504991
+        ]
+      }
+    },
+    {
+      "clip": "DanceStep",
+      "duration": 1.2666666507720947,
+      "evaluatedVertices": 19005,
+      "bounds": {
+        "min": [
+          -0.49809047047412625,
+          -0.013188353563424845,
+          -0.262093917813113
+        ],
+        "max": [
+          0.48415469446884846,
+          1.7848374707912378,
+          0.4950139000867698
+        ]
+      }
+    },
+    {
+      "clip": "DanceVictory",
+      "duration": 6.4666666984558105,
+      "evaluatedVertices": 19005,
+      "bounds": {
+        "min": [
+          -0.9465261271794705,
+          -0.060297356761188685,
+          -0.6508758367988193
+        ],
+        "max": [
+          0.8572590453289992,
+          1.724750092532848,
+          0.46455531026892094
+        ]
+      }
+    },
+    {
+      "clip": "Greeting",
+      "duration": 3,
+      "evaluatedVertices": 19005,
+      "bounds": {
+        "min": [
+          -0.5739305645922392,
+          0.0032249411092540223,
+          -0.3961812947789286
+        ],
+        "max": [
+          0.5094220770981719,
+          1.8555789543073424,
+          0.39971551939694583
+        ]
+      }
+    },
+    {
+      "clip": "Idle",
+      "duration": 3.133333444595337,
+      "evaluatedVertices": 19005,
+      "bounds": {
+        "min": [
+          -0.449985519569575,
+          0.0030002834313333855,
+          -0.39914944049783807
+        ],
+        "max": [
+          0.5094219451086176,
+          1.7634080980445461,
+          0.3999362601976727
+        ]
+      }
+    },
+    {
+      "clip": "Run",
+      "duration": 0.9666666388511658,
+      "evaluatedVertices": 19005,
+      "bounds": {
+        "min": [
+          -0.5636826475751742,
+          0.00032911401488244785,
+          -0.7698310407085841
+        ],
+        "max": [
+          0.6043409817592218,
+          1.6773077206675577,
+          0.7223865463597972
+        ]
+      }
+    },
+    {
+      "clip": "Test_ArmRaise",
+      "duration": 3,
+      "evaluatedVertices": 19005,
+      "bounds": {
+        "min": [
+          -0.9564830066163804,
+          0.0032249411092540223,
+          -0.3961812947789286
+        ],
+        "max": [
+          1.0022143671875274,
+          1.997897893267682,
+          0.39971551939694583
+        ]
+      }
+    },
+    {
+      "clip": "Test_ElbowBend",
+      "duration": 3,
+      "evaluatedVertices": 19005,
+      "bounds": {
+        "min": [
+          -0.4499732386577794,
+          0.0032249411092540223,
+          -0.3961812947789286
+        ],
+        "max": [
+          0.5135550605686758,
+          1.763408179318029,
+          0.541691752426992
+        ]
+      }
+    },
+    {
+      "clip": "Test_HeadTurn",
+      "duration": 3,
+      "evaluatedVertices": 19005,
+      "bounds": {
+        "min": [
+          -0.4499732386577794,
+          0.0032249411092540223,
+          -0.3961812947789286
+        ],
+        "max": [
+          0.5094220770981719,
+          1.7634081811413356,
+          0.39971551939694583
+        ]
+      }
+    },
+    {
+      "clip": "Test_KneeBend",
+      "duration": 3,
+      "evaluatedVertices": 19005,
+      "bounds": {
+        "min": [
+          -0.44997590515830466,
+          0.0032249411092540223,
+          -0.5982412699565767
+        ],
+        "max": [
+          0.5094220770981719,
+          1.763408179318029,
+          0.39971551939694583
+        ]
+      }
+    },
+    {
+      "clip": "Walk",
+      "duration": 1.6666666269302368,
+      "evaluatedVertices": 19005,
+      "bounds": {
+        "min": [
+          -0.4382764892793273,
+          0.0028779162432373815,
+          -0.46871908571385595
+        ],
+        "max": [
+          0.4956531877929977,
+          1.821895369554576,
+          0.5036746035653996
+        ]
+      }
+    }
+  ],
+  "scope": "Format, separated parts, 180cm rest height, normalized skin weights, rigid mask with no face morphs, 11 clips sampled at five times. Naturalness and intersections require the accompanying rendered/UI review."
+}
