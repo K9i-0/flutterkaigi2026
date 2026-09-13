@@ -1,0 +1,15 @@
+{
+  "date": "2026-09-13",
+  "passed": true,
+  "sourceSha256": "4ddd42d8b2e015a839d211b19049afd957fafdc7b85f0458e3d3b598bc0390d2",
+  "triangles": 9634,
+  "primitives": 46,
+  "images": 9,
+  "bytes": 12142568,
+  "pineBatches": 3,
+  "walkingFootprintsUnchanged": true,
+  "placementsAndNonTerrainCollisionUnchanged": true,
+  "terrainCollision": "Six footprints, each with a low skirt and four receding upper layers",
+  "apertureRaysPassed": 18,
+  "frameRateMeasured": false
+}

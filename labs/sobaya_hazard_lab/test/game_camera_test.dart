@@ -11,6 +11,24 @@ import 'package:sobaya_hazard_lab/game/game_state.dart';
 import 'package:sobaya_hazard_lab/game/game_checkpoint.dart';
 
 void main() {
+  test('mountain tunnel approach camera stays outside the west bank', () {
+    final s =
+        HazardGameState(
+            jsonDecode(File('assets/mountain.json').readAsStringSync()),
+          )
+          ..phase = PlayPhase.playing
+          ..x = -19
+          ..yaw = -math.pi / 2
+          ..pitch = .12;
+    for (final z in [0.0, 3.5]) {
+      s.z = z;
+      final camera = playerCamera(s);
+      // The visible west bank begins at x=-21.6. Its low skirt alone
+      // allowed the camera to pass above it and enter the sloping mesh.
+      expect(camera.position.x, greaterThan(-21.6), reason: 'approach z=$z');
+    }
+  });
+
   test('one visibility update preserves wall clearance and aim changes', () {
     final s =
         HazardGameState(

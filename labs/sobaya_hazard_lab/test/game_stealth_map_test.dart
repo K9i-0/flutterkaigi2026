@@ -33,6 +33,16 @@ void clearRoute(
 }
 
 void main() {
+  test('mountain approach and tunnel retain a clear walking route', () {
+    clearRoute(HazardGameState(loadMap('mountain')), [
+      (-19, -21),
+      (-19, 4),
+      (0, 4),
+      (6, 4),
+      (12, 4),
+    ]);
+  });
+
   for (final name in ['village', 'farm']) {
     test('$name offers beer without defeating or breaking anything', () {
       final world = loadMap(name), s = HazardGameState(loadMap(name));
