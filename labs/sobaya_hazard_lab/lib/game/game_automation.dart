@@ -161,6 +161,19 @@ void attachGameAutomation(HazardGameController game) {
         : MarionetteExtensionResult.success({
             ..._game!.state!.inspect(),
             'regionLoading': _game!.inspectRegionLoading(),
+            'characterModels': {
+              'sobayaV2':
+                  _game!.sobayaTemplate.getChildByName('SobayaV2Rig') != null,
+              'fukuchanV2':
+                  _game!.fukuTemplate.getChildByName('FukuchanV2Rig') != null,
+              'sobayaSocket':
+                  _game!.sobayaTemplate.getChildByName('PropSocket.R') != null,
+              'fukuchanSocket':
+                  _game!.fukuTemplate.getChildByName('GunSocket') != null,
+              'fukuchanFingerRig':
+                  _game!.fukuTemplate.getChildByName('Middle3.R') != null &&
+                  _game!.fukuTemplate.getChildByName('Middle3.L') != null,
+            },
             'frames': _game!.frames.toJson(),
             'settings': _game!.settings.encode(),
             'lighting': _game!.lighting.inspect(_game!.scene),

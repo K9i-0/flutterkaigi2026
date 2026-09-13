@@ -1,16 +1,19 @@
 {
   "sobaya": {
-    "source": "04_GAME_ASSETS/3d/motion_library/sobaya/sobaya.glb",
-    "sourceSha256": "d1ce073f0deb2082acbea7cac45862d9242a10951ae7dfe294c4ef515d8ff172",
-    "sha256": "e8df48deafb162543e07c46f3e839b5b8c71c0316352880af46b2b12a7147d6e",
-    "changedWeightVertices": 1675,
+    "version": 2,
+    "file": "04_GAME_ASSETS/3d/hazard_adopted/v2_20260913/sobaya.glb",
+    "source": "04_GAME_ASSETS/3d/characters/sobaya/v2_20260913/sobaya_v2.glb",
+    "sourceSha256": "30fd09d54b25d362d8d9439d9cccb9538596d7a85b430fcad3d71bd88f7f3d4a",
+    "motionSource": "04_GAME_ASSETS/3d/hazard_adopted/sobaya.glb",
+    "motionSourceSha256": "e8df48deafb162543e07c46f3e839b5b8c71c0316352880af46b2b12a7147d6e",
+    "sha256": "e9802f38ab8483740e50420f6efa658b493c8d0107d3fa67e81aa1837fc8aec9",
     "sources": {
       "Walk": "Adopted_Library_Walk",
       "Run": "Adopted_Candidate_Chase_Run"
     },
     "groundSpeedMps": {
-      "Walk": 0.7230468839406967,
-      "Run": 4.944039657711983
+      "Walk": 0.7222705241292715,
+      "Run": 5.019194036722183
     },
     "clips": [
       "Adopted_Candidate_Chase_Run",
@@ -27,6 +30,7 @@
       "DanceStep",
       "DanceVictory",
       "Grab",
+      "Greeting",
       "Hold",
       "Hybrid_Bow",
       "Hybrid_Crouch_Idle",
@@ -70,9 +74,9 @@
       "Library_Idle_Talking",
       "Library_Interact",
       "Library_Jog",
-      "Library_Jump_air",
       "Library_Jump_Land",
       "Library_Jump_Start",
+      "Library_Jump_air",
       "Library_Kneeling_Tired",
       "Library_Melee_Hook",
       "Library_PickUp_Table",
@@ -105,26 +109,37 @@
       "Procedural_Walk",
       "Release",
       "Run",
+      "Test_ArmRaise",
+      "Test_ElbowBend",
+      "Test_HeadTurn",
+      "Test_KneeBend",
       "Toast",
       "Vault",
       "Walk",
-      "Wan_Walk",
       "WanRig_Walk",
+      "Wan_Walk",
       "ZombieWalk"
-    ]
+    ],
+    "socket": "PropSocket.R",
+    "individualFingerRig": false,
+    "retainedV1ClipCount": 98,
+    "retainedV2ClipCount": 11
   },
   "fukuchan": {
-    "source": "04_GAME_ASSETS/3d/motion_library/fukuchan/fukuchan.glb",
-    "sourceSha256": "2f1825b598883d99677646fb26bdb934029b3dd63bc40460520f3d0c95302d53",
-    "sha256": "6d8254a05ff43a87801f6f7e6eb4dbbd2750752f839129b408a0ad347affda03",
-    "changedWeightVertices": 587,
+    "version": 2,
+    "file": "04_GAME_ASSETS/3d/hazard_adopted/v2_20260913/fukuchan.glb",
+    "source": "04_GAME_ASSETS/3d/characters/fukuchan/v2_20260913/fukuchan_v2.glb",
+    "sourceSha256": "c436fb988fb31d112d2b1d40fb5a514dc45ce4b25fc85af1ba615c6b4998dbd7",
+    "motionSource": "04_GAME_ASSETS/3d/hazard_adopted/fukuchan.glb",
+    "motionSourceSha256": "6d8254a05ff43a87801f6f7e6eb4dbbd2750752f839129b408a0ad347affda03",
+    "sha256": "3cd6e23564d36104d4b8bff5cadc94db4d83a2af6365ef365a5db5ad07983cea",
     "sources": {
       "Walk": "Adopted_Library_Walk",
       "Run": "Adopted_Candidate_Mixamo_Run"
     },
     "groundSpeedMps": {
-      "Walk": 0.6532815936952829,
-      "Run": 2.0935137569904327
+      "Walk": 0.6413970328867435,
+      "Run": 2.1074143052101135
     },
     "clips": [
       "Adopted_Candidate_Chase_Run",
@@ -144,6 +159,7 @@
       "DanceStep",
       "DanceVictory",
       "Evade",
+      "Greeting",
       "Hit",
       "Hybrid_Bow",
       "Hybrid_Crouch_Idle",
@@ -180,9 +196,9 @@
       "Library_Idle_Talking",
       "Library_Interact",
       "Library_Jog",
-      "Library_Jump_air",
       "Library_Jump_Land",
       "Library_Jump_Start",
+      "Library_Jump_air",
       "Library_Kneeling_Tired",
       "Library_Melee_Hook",
       "Library_PickUp_Table",
@@ -216,10 +232,19 @@
       "ReloadShotgun",
       "Run",
       "Struggle",
+      "Test_ArmRaise",
+      "Test_ElbowBend",
+      "Test_Grip",
+      "Test_HeadTurn",
+      "Test_KneeBend",
       "Vault",
       "Walk",
-      "Wan_Walk",
-      "WanRig_Walk"
-    ]
+      "WanRig_Walk",
+      "Wan_Walk"
+    ],
+    "socket": "GunSocket",
+    "individualFingerRig": true,
+    "retainedV1ClipCount": 93,
+    "retainedV2ClipCount": 23
   }
 }
