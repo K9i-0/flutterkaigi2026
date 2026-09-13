@@ -163,14 +163,14 @@ class VillageMapPainter extends CustomPainter {
       for (final h in state.map['houses'] as List) {
         final (name, compact) = switch (h['id']) {
           'Shotgun' => ('二階家', '民家'),
-          'Barn' => ('納屋', '納屋'),
+          'Barn' => state.zoneId == 'village' ? ('漁具倉庫', '倉庫') : ('集会所', '集会所'),
           'West' => ('西の家', '西家'),
           'East' => ('東の家', '東家'),
-          'Entrance' => ('入口\n小屋', '入口'),
+          'Entrance' => ('待合所', '待合所'),
           'SaveHut' => ('小屋', '小屋'),
-          'Tools' => ('道具庫', '道具'),
+          'Tools' => ('旧管理室', '管理室'),
           'NorthShed' => ('北の小屋', '小屋'),
-          'Ruins' => ('集合場所', '集合場所'),
+          'Ruins' => ('神社', '神社'),
           _ => ('', ''),
         };
         final center = map.at(_n(h['x']), _n(h['z']));
@@ -222,9 +222,9 @@ class VillageMapPainter extends CustomPainter {
           ..strokeWidth = .5,
       );
       final title = switch (state.zoneId) {
-        'farm' => '02 / 農場',
-        'mountain' => '03 / 山道',
-        _ => '01 / ゆめみ村',
+        'farm' => '02 / 村の生活圏',
+        'mountain' => '03 / 山の神社',
+        _ => '01 / ゆめみ港',
       };
       _label(c, title, const Offset(11, 9), detailType * .9, _brass);
       final start = Offset(12, size.height - 13);

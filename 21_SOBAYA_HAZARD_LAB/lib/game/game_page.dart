@@ -519,7 +519,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
                                 borderRadius: BorderRadius.circular(4),
                               ),
                               child: const Text(
-                                '集合場所\n▼  玄関から中へ',
+                                '神社の裏手\n▼  管理道を調べる',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Color(0xff8de5a8),
@@ -2254,7 +2254,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
             Text(s.objective, style: const TextStyle(color: ivory)),
             const SizedBox(height: 12),
             const Text(
-              '白：現在地  金丸：門・集合場所  金の紙：メモ  水色：仲間\n黄：目視済みのそば屋  赤：敵対中  扇形：視界\n薄い印：最後に見た位置  明るい壁：建物',
+              '白：現在地  金丸：門・神社  金の紙：メモ  水色：仲間\n黄：目視済みのそば屋  赤：敵対中  扇形：視界\n薄い印：最後に見た位置  明るい壁：建物',
               style: TextStyle(color: ivory, height: 1.6),
             ),
             const SizedBox(height: 12),
@@ -2359,7 +2359,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
                 const SizedBox(height: 18),
                 Text(
                   s.phase == PlayPhase.clear
-                      ? '最後の一杯を断り、村を抜けた。'
+                      ? '巨大そば屋を撃破。神社の裏に、会社の施設があった。\nゆめみ村の調査は、ここから続く。'
                       : s.fallenCompanion != null
                       ? '${HazardGameState.companionNames[s.fallenCompanion]}を守れなかった。'
                       : 'ビールの包囲網を抜けられなかった。',

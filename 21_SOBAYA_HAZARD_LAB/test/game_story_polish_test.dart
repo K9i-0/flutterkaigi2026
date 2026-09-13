@@ -12,41 +12,32 @@ void main() {
     jsonDecode(File('assets/audio/voice-manifest.json').readAsStringSync()),
   );
   test(
-    'ending text, images and voice duration follow actual diary discovery',
+    'facility ending is independent of optional diaries and never returns home',
     () {
-      final index = hazardEvents['ending']!.indexWhere(
-        (s) => s.readMemo == 'diary_end',
-      );
-      for (final read in [false, true]) {
-        final d = HazardDirector(
-          'ending',
-          voiceSeconds: catalog.eventSeconds,
-          foundMemos: read ? {'diary_end'} : {},
-        )..index = index;
-        expect(d.shot.text.contains('あの日記'), read);
-        expect(d.shot.cuts.any((c) => c.document == 'diary'), read);
-        final cue = catalog.cue('ending', d.shot.voiceSpeaker, d.shot.text);
-        expect(cue, isNotNull);
-        final seconds = catalog.seconds(d.shot.voiceSpeaker, d.shot.text);
-        expect(d.duration, greaterThanOrEqualTo(seconds + .5));
-        expect(
-          catalog.eventSeconds['event:ending:$index${d.shot.voiceUseSuffix}'],
-          seconds,
-        );
+      for (final found in [
+        <String>{},
+        {'diary_end'},
+      ]) {
+        final d = HazardDirector('ending', foundMemos: found);
+        expect(d.shots.map((s) => s.text).join(), contains('アクシデンチュア'));
+        expect(d.shots.any((s) => s.readMemo.isNotEmpty), false);
+        expect(d.shots.map((s) => s.text).join(), isNot(contains('救助船')));
       }
     },
   );
-  test('a ledger alone never makes Fuku claim to have read a diary', () {
+
+  test('village history dialogue does not expose the secret engine', () {
     final s =
         HazardGameState(jsonDecode(File('assets/farm.json').readAsStringSync()))
           ..dialogueOwner = 'takosan'
-          ..talkingTo = 'takosan'
           ..dialogueTopic = 'evidence';
-    s.foundMemos.add('returns');
-    expect(s.dialogueLines[1], same(unreadKeeperReply));
-    s.foundMemos.add('night_shift');
-    expect(s.dialogueLines[1].text, contains('日記にあった'));
+    s.foundMemos.addAll(['returns', 'night_shift']);
+    final text = s.dialogueLines.map((l) => l.text).join();
+    expect(text, contains('事業を引き揚げ'));
+    expect(text, isNot(contains('エンジン')));
+    expect(text, isNot(contains('クローン')));
   });
+
   test('each successful purchase speaks the matching joke without changing transaction rules', () {
     for (final offer in tradeOffers) {
       final s =

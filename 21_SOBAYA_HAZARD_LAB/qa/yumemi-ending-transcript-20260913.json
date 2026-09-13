@@ -1,0 +1,14 @@
+{
+  "model": "openai/whisper-small",
+  "device": "cpu",
+  "note": "Automated transcript screening; not human listening or identity verification.",
+  "clips": [
+    {
+      "id": "43009f87531754bc",
+      "speaker": "ナレーション",
+      "expected": "村の異変と、会社の施設。扉の向こうに、何が残されているのか。 そば屋ハザード — 体験版、終わり。",
+      "recognized": "村の異変と会社の施設 扉の向こうに何が残されているのかそばやハザード体験版終わり",
+      "sha256": "a0c6e64c7dec88c387ad376d018495ea55bc3ec8589717f393195cfb9988b284"
+    }
+  ]
+}

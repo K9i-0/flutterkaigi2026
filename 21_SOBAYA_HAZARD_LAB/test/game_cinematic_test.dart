@@ -47,7 +47,7 @@ void main() {
         expect(d.duration, greaterThanOrEqualTo(shot.readingSeconds));
       }
     }
-    expect(count, 4);
+    expect(count, 5);
   });
 
   test('every authored cut resolves an asset/document and a valid camera', () {
@@ -90,9 +90,9 @@ void main() {
     );
     final line = d.shot;
     d.elapsed = 2;
-    expect(d.cut?.isInsert, false);
+    expect(d.cut, isNull);
     d.elapsed = 7;
-    expect(d.cut?.isInsert, false);
+    expect(d.cut, isNull);
     expect(d.shot, same(line));
     expect(d.duration, 12.5);
     final progress = d.visualProgress;
@@ -117,11 +117,11 @@ void main() {
       expect(shop.target.$1, closeTo(merchant['x'], .3));
       expect(shop.target.$3, closeTo(merchant['z'], .3));
       expect(shop.cuts.where((cut) => cut.document == 'ledger'), isEmpty);
-      final giant = HazardDirector('last_order')..index = 2;
+      final giant = HazardDirector('last_order')..index = 1;
       giant.elapsed = giant.duration * .8;
       expect(giant.view.target.$2, greaterThan(3));
       for (final event in hazardEvents.entries.where(
-        (e) => e.key != 'title_call',
+        (e) => e.key != 'title_call' && e.key != 'ending',
       )) {
         for (final shot in event.value.where((s) => s.speaker.isNotEmpty)) {
           expect(
@@ -139,14 +139,15 @@ void main() {
     },
   );
 
-  test('evidence inserts match the document mentioned by each speaker', () {
-    expect(dialogueInsert('takosan', 'engine', 0)?.document, 'decree');
-    expect(dialogueInsert('takosan', 'evidence', 0)?.document, 'ledger');
-    expect(dialogueInsert('takosan', 'evidence', 1)?.document, 'diary');
-    expect(dialogueInsert('takosan', 'evidence', 2)?.image, 'shelter');
-    expect(dialogueInsert('yametaro', 'evidence', 0)?.document, 'withdrawal');
-    expect(dialogueInsert('yametaro', 'evidence', 1)?.document, 'arrivals');
-    expect(dialogueInsert('takosan', 'evidence', 1, postBoss: true), isNull);
+  test('demo evidence dialogue never inserts engine or rescue documents', () {
+    for (final owner in ['takosan', 'yametaro']) {
+      for (final topic in ['engine', 'evidence']) {
+        for (var i = 0; i < 4; i++) {
+          expect(dialogueInsert(owner, topic, i), isNull);
+        }
+      }
+    }
+    expect(dialogueInsert('yametaro', 'combat', 2)?.document, 'decree');
   });
 
   testWidgets(

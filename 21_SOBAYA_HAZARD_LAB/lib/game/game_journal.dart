@@ -279,9 +279,9 @@ class HazardJournal extends StatelessWidget {
                             state.foundMemos.contains(m.id)
                                 ? m.author
                                 : {
-                                    'village': 'ゆめみ村',
-                                    'farm': '農場',
-                                    'mountain': '山道',
+                                    'village': 'ゆめみ港',
+                                    'farm': '村の生活圏',
+                                    'mountain': '山の神社',
                                   }[m.zone]!,
                             style: const TextStyle(color: gold),
                           ),

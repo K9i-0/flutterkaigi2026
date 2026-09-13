@@ -131,7 +131,7 @@ class HazardTitleScreen extends StatelessWidget {
           Text(
             compact
                 ? '廃村に潜むそば屋から、生き延びろ。'
-                : '窓際社員の島流し先、廃村ゆめみ村。\n炎上して捨てられた秘密案件が、まだ動いている。',
+                : '窓際社員の島流し先、廃村ゆめみ村。\n迎えの船は来ない。山の神社から、何かが聞こえる。',
             maxLines: compact ? 3 : 2,
             overflow: TextOverflow.ellipsis,
             textAlign: compact ? TextAlign.center : TextAlign.left,

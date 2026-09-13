@@ -128,6 +128,10 @@ def weeds(name,x,z,count):
 def save(id,label,subtitle,spawn,items,crates,enemies,collection,npcs,exits,gate_data,targets=None):
     if '--mountain-only' in sys.argv and id!='mountain':return
     out=ROOT/'04_GAME_ASSETS/3d/environments'/id;out.mkdir(parents=True,exist_ok=True)
+    from hazard_yumemi_art import dress_yumemi
+    dress_yumemi(id, globals())
+    label,subtitle = {'farm': ('CHAPTER 02 / VILLAGE QUARTER', '村の生活圏。たこさんの商店だけが営業中。'), 'mountain': ('CHAPTER 03 / MOUNTAIN SHRINE', '山の神社。祟りの噂と、巨大な影。')}[id]
+    gate_data['label'] = '神社への門' if id=='farm' else '神社の社務所'
     data={'version':1,'id':id,'label':label,'subtitle':subtitle,'spawn':spawn,
         'houses':houses,'windows':windows,'solids':solids,'ramps':ramps,'items':items,'crates':crates,
         'enemies':enemies,'collection':collection,'npcs':npcs,'exits':exits,
@@ -257,6 +261,6 @@ mountain_guard_headings=[math.pi,-math.pi/2,math.pi,math.pi,0,0]
 enemies=[{'id':i,'x':x,'z':z,'active':True,'boss':i==4,'heading':mountain_guard_headings[i]} for i,(x,z) in enumerate([
     (-19,-5),(-1,4),(6,5),(15,7),(12,4),(11,7)])]
 save('mountain','CHAPTER 03  /  LAST ORDER','誰も終わらせに来ない仕事。',{'x':-19,'z':-21,'yaw':math.pi},items,crates,enemies,collection,
-    [{'id':'yametaro','x':16,'z':17.5}, {'id':'takosan','x':13.6,'z':17.1,'afterBoss':True}],
+    [{'id':'yametaro','x':16,'z':17.5}],
     [{'id':'back','target':'farm','x':-19,'z':-23.5,'radius':1,'arrival':{'x':18,'z':-10,'yaw':math.pi/2}}],
     {'x':13,'z':9.5,'y':0,'mode':'boss','label':'集合場所の家'})

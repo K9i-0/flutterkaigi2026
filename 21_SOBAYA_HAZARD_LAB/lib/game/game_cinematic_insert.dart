@@ -71,27 +71,8 @@ EventCut? dialogueInsert(
   int index, {
   bool postBoss = false,
 }) {
-  if (postBoss) return null;
-  if (topic == 'engine' && index == 0) {
-    return owner == 'takosan'
-        ? const EventCut(0, document: 'decree', label: '特別研修への辞令')
-        : const EventCut(0, image: 'engine-archive', label: 'そば屋エンジン　開発記録');
-  }
-  if (topic == 'evidence' && index < 2) {
-    return EventCut(
-      0,
-      document: owner == 'takosan'
-          ? (index == 0 ? 'ledger' : 'diary')
-          : index == 0
-          ? 'withdrawal'
-          : 'arrivals',
-      label: '拾った記録',
-    );
-  }
-  if (owner == 'takosan' && topic == 'evidence' && index == 2) {
-    return const EventCut(0, image: 'shelter', label: '宿舎で待つ避難者');
-  }
-  if (owner == 'yametaro' && topic == 'combat' && index == 2) {
+  // Demo conversations discuss the village, never the later engine archive.
+  if (!postBoss && owner == 'yametaro' && topic == 'combat' && index == 2) {
     return const EventCut(0, document: 'decree', label: 'よーたんの追記');
   }
   return null;

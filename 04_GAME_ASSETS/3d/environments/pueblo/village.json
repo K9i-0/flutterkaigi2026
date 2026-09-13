@@ -747,6 +747,51 @@
       "bottom": 0,
       "top": 0.9,
       "id": null
+    },
+    {
+      "x": -6.2,
+      "z": -22.2,
+      "w": 0.12,
+      "d": 0.14,
+      "bottom": 0,
+      "top": 2.2,
+      "id": null
+    },
+    {
+      "x": -3.4,
+      "z": -22.2,
+      "w": 0.12,
+      "d": 0.14,
+      "bottom": 0,
+      "top": 2.2,
+      "id": null
+    },
+    {
+      "x": -18,
+      "z": -18,
+      "w": 1.4,
+      "d": 0.8,
+      "bottom": 0,
+      "top": 0.7,
+      "id": null
+    },
+    {
+      "x": 18,
+      "z": -16,
+      "w": 1.4,
+      "d": 0.8,
+      "bottom": 0,
+      "top": 0.7,
+      "id": null
+    },
+    {
+      "x": 18,
+      "z": 18,
+      "w": 1.4,
+      "d": 0.8,
+      "bottom": 0,
+      "top": 0.7,
+      "id": null
     }
   ],
   "ramps": [
@@ -1043,7 +1088,7 @@
     "z": 23,
     "y": 0,
     "mode": "key",
-    "label": "農場への門"
+    "label": "商店街への門"
   },
   "tower": {
     "x": -13.5,
@@ -1058,8 +1103,8 @@
     }
   ],
   "id": "village",
-  "label": "CHAPTER 01  /  YUMEMI VILLAGE",
-  "subtitle": "廃村ゆめみ村。特別研修、帰任日未定。",
+  "label": "CHAPTER 01  /  YUMEMI PORT",
+  "subtitle": "ゆめみ港。着任受付は、村の奥。",
   "exits": [
     {
       "id": "forward",

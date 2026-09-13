@@ -441,7 +441,7 @@ void attachGameAutomation(HazardGameController game) {
               ..active = true
               ..alerted = true
               ..x = (npc['x'] as num).toDouble()
-              ..z = (npc['z'] as num).toDouble() + 1;
+              ..z = (npc['z'] as num).toDouble() - 1;
           case 'bossEvent':
             // Match the chapter-entry framing; keep the real arrival position.
             s.x = -19;

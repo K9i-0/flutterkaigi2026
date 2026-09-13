@@ -4,8 +4,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from hazard_environment_kit import *
 from hazard_entrance_backdrop import build_entrance_backdrop
+from hazard_yumemi_art import dress_yumemi
 # Plaza and approach. World layout is authored in meters, Blender Y = game Z.
-box('Ground',dirt,(0,0,-.16),(62,66,.3))
+box('Ground',dirt,(0,4,-.16),(62,58,.3))
 for h in [('Shotgun',8,-6,8,9,True),('Barn',-4,11,11,7,False),('West',-11,1,7,7,False),('East',14,6,6,7,False),('Entrance',-8,-15,5.5,5,False)]:house(*h,rear_door=h[0] in ['Barn','Entrance'])
 # Rear routes cross the key barn and offer a second corner after the first
 # building. Screens are solid plank structures, visually distinct from fences.
@@ -66,7 +67,7 @@ for i in range(200):
  if any(abs(x-h['x'])<h['w']/2+.25 and abs(z-h['z'])<h['d']/2+.25 for h in houses):continue
  weed_tuft('Weeds',x,z)
 
-build_entrance_backdrop()
+# Harbor replaces the old inland entrance backdrop.
 
 # Collectible images stay canonical in the script library.
 posters=[
@@ -100,10 +101,11 @@ village_guard_headings=[math.pi/2,-math.pi/2,0,math.pi,math.pi/2,-math.pi/2,math
 enemies=[{'id':i,'x':x,'z':z,'active':True,'heading':village_guard_headings[i]} for i,(x,z) in enumerate([(-2,-6),(3,-2),(-5,3),(6,7),(-9,6),(11,11),(-2,14),(17,1)])]
 enemies[4].update(x=-10.5,z=6,patrol=[[-10.5,6],[-8.4,6],[-8.4,5.2]])
 enemies[6].update(x=3,z=17,heading=-math.pi/2,patrol=[[3,17],[-1,17],[3,17],[3,13.5]])
+dress_yumemi('village', globals())
 data={'version':1,'spawn':{'x':0,'z':-21,'yaw':math.pi},'houses':houses,'windows':windows,'solids':solids,'ramps':ramps,'items':items,'crates':crates,'enemies':enemies,'collection':collection,'gate':{'x':11.5,'z':23,'y':0},'tower':{'x':-13.5,'z':-8.8,'top':4.22}}
 data['npcs']=[{'id': 'yametaro', 'x': -2.8, 'z': -21.2}]
-data.update({'id': 'village', 'label': 'CHAPTER 01  /  YUMEMI VILLAGE', 'subtitle': '廃村ゆめみ村。特別研修、帰任日未定。', 'exits': [{'id': 'forward', 'target': 'farm', 'x': 11.5, 'z': 27.2, 'radius': 1.2, 'requiresGate': True, 'arrival': {'x': -19, 'z': -21, 'yaw': 3.141592653589793}}]})
-data['gate'].update(mode='key',label='農場への門')
+data.update({'id': 'village', 'label': 'CHAPTER 01  /  YUMEMI PORT', 'subtitle': 'ゆめみ港。着任受付は、村の奥。', 'exits': [{'id': 'forward', 'target': 'farm', 'x': 11.5, 'z': 27.2, 'radius': 1.2, 'requiresGate': True, 'arrival': {'x': -19, 'z': -21, 'yaw': 3.141592653589793}}]})
+data['gate'].update(mode='key',label='商店街への門')
 (OUT/'village.json').write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
 
 export(OUT/'village.glb')

@@ -1,0 +1,56 @@
+{
+  "scope": "Static asset counts, not runtime draw calls or measured frame rate",
+  "regions": [
+    {
+      "region": "village",
+      "before": {
+        "bytes": 13675588,
+        "nodes": 79,
+        "primitives": 127,
+        "triangles": 26068,
+        "materials": 21
+      },
+      "after": {
+        "bytes": 12219788,
+        "nodes": 53,
+        "primitives": 89,
+        "triangles": 25041,
+        "materials": 24
+      }
+    },
+    {
+      "region": "farm",
+      "before": {
+        "bytes": 13447708,
+        "nodes": 48,
+        "primitives": 93,
+        "triangles": 19833,
+        "materials": 19
+      },
+      "after": {
+        "bytes": 11377772,
+        "nodes": 49,
+        "primitives": 87,
+        "triangles": 20259,
+        "materials": 20
+      }
+    },
+    {
+      "region": "mountain",
+      "before": {
+        "bytes": 12142568,
+        "nodes": 23,
+        "primitives": 46,
+        "triangles": 9634,
+        "materials": 18
+      },
+      "after": {
+        "bytes": 11117972,
+        "nodes": 31,
+        "primitives": 56,
+        "triangles": 10063,
+        "materials": 22
+      }
+    }
+  ]
+}

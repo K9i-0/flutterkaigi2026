@@ -1,0 +1,34 @@
+{
+  "date": "2026-09-13",
+  "scope": "Yumemi village three-stage demo rewrite",
+  "tests": {
+    "passed": 459,
+    "skipped": 1,
+    "result": "pass",
+    "after_final_narration_revision": {
+      "passed": 18,
+      "result": "pass"
+    }
+  },
+  "static_analysis": "No issues found",
+  "audio": {
+    "adopted_cues": 98,
+    "asset_audit": "pass",
+    "ending_pronunciation": "体験版、終わり。",
+    "transcript_screening": "Local Whisper; not human listening or voice identity verification"
+  },
+  "campaign_rules": "yumemi-campaign-rules-20260913.json",
+  "native_campaign": {
+    "result": "complete",
+    "report": "yumemi-campaign-native-20260913.json",
+    "final_phase_after_cinematic": "clear",
+    "voice_errors": [],
+    "note": "Real rendered frame pump and center-screen fire; automated exact aim. Final narration reading subsequently rebuilt."
+  },
+  "environment_metrics": "yumemi-environment-20260913.json",
+  "limitations": [
+    "No new smartphone thermal or sustained performance measurement",
+    "Automated campaign uses exact aim; does not assess human difficulty",
+    "Existing release distributions are not updated"
+  ]
+}
