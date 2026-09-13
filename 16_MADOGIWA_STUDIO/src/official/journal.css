@@ -2740,3 +2740,12 @@
 @media(max-width:600px) { .j-story-chapter { margin-bottom:32px; } .j-story-chapter h2 { font-size:17px; } }
 
 .j-story-description { margin:14px 0 0; font-size:14px; line-height:1.9; color:var(--ink); font-weight:400; }
+
+@media (min-width: 601px) {
+  .j-story-scroll {
+    /* Chapters 8 and 12 are the tallest originals (483 × 720).
+       Reserve room for the heading, description, anchor offset and bottom tabs. */
+    max-width: clamp(240px, calc((100svh - 280px) * 483 / 720), 560px);
+  }
+  .j-story-chapter { scroll-margin-top: 24px; }
+}
