@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useVideoPreferences } from "../components/use-video-preferences";
 import * as Dialog from "@radix-ui/react-dialog";
 import {
   ArrowRight,
@@ -1237,7 +1238,7 @@ function VideoViewer({ episode, children, onNext, hasNext }: {
   const [failed, setFailed] = useState(false);
   const [ended, setEnded] = useState(false);
   const [infoOpen, setInfoOpen] = useState(false);
-  const ref = useRef<HTMLVideoElement>(null);
+  const { ref: preferenceRef, videoRef: ref } = useVideoPreferences();
   const infoRef = useRef<HTMLDivElement>(null);
   const infoButtonRef = useRef<HTMLButtonElement>(null);
   const dragStart = useRef<number | null>(null);
@@ -1259,7 +1260,7 @@ function VideoViewer({ episode, children, onNext, hasNext }: {
       <div className={`j-viewer-body${infoOpen ? " j-info-open" : ""}`}>
         <div className="j-player">
           <video
-            ref={ref}
+            ref={preferenceRef}
             src={videoSource(episode)}
             poster={poster(episode)}
             controls autoPlay playsInline preload="metadata"

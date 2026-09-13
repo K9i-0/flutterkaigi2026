@@ -1,5 +1,6 @@
 import { Play, Star } from "lucide-react";
-import { useRef, useState } from "react";
+import { useState } from "react";
+import { useVideoPreferences } from "./use-video-preferences";
 import { Link } from "@tanstack/react-router";
 import type { EpisodeSummary } from "@/lib/api";
 
@@ -11,7 +12,7 @@ type MovieCardProps = {
 };
 
 export function MovieCard({ episode, index, featuredLayout = false, inlinePlayback = false }: MovieCardProps) {
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const { ref, videoRef } = useVideoPreferences();
   const [started, setStarted] = useState(false);
   const className = featuredLayout ? "movie-card movie-card-featured" : "movie-card";
 
@@ -19,7 +20,6 @@ export function MovieCard({ episode, index, featuredLayout = false, inlinePlayba
     const video = videoRef.current;
     if (!video) return;
     if (!video.getAttribute("src")) video.src = `/media/${episode.primary_video_id}`;
-    video.muted = false;
     try {
       await video.play();
       setStarted(true);
@@ -30,9 +30,8 @@ export function MovieCard({ episode, index, featuredLayout = false, inlinePlayba
 
   const visual = <>
     {inlinePlayback && episode.primary_video_id ? <video
-      ref={inlinePlayback ? videoRef : undefined}
+      ref={ref}
       poster={episode.primary_video_poster_url ?? undefined}
-      muted={!inlinePlayback}
       controls={inlinePlayback && started}
       preload="none"
       playsInline
