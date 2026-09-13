@@ -1,0 +1,13 @@
+{
+  "image": "inputs/front.png",
+  "generation": {
+    "model": "P2-20260801",
+    "quad": true,
+    "face_limit": 14000,
+    "texture": true,
+    "pbr": true,
+    "texture_quality": "detailed",
+    "model_seed": 931301,
+    "texture_seed": 931301
+  }
+}

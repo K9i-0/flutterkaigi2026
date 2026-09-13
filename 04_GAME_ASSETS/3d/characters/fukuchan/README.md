@@ -1,5 +1,7 @@
 # 福ちゃん — そば屋ハザード用
 
+2026-09-13: [福ちゃんv2](v2_20260913/README.md)を体・頭・髪の独立生成で制作。瞬き・笑顔と22動作を備えた比較用GLBと確認ページを追加した。以下はv1の制作記録。本編の採用状態は `04_GAME_ASSETS/3d/hazard_adopted/manifest.json` を参照。
+
 正典 `02_CHARACTERS/Fukuchan.jpg` の顔を参照し、built-in Imagegenで正面・背面のAポーズ画像を作成。入力正本は `tripo_p2_20260905/inputs/`、プロンプトは同ディレクトリの `imagegen_prompt.txt`。
 
 Tripo P2 (`P2-20260801`) の複数画像入力で生成。12,000 face上限・quad・詳細PBR。生成 task `c7ffd494-5af3-4fac-b31b-dcd834c1caf0` は120クレジット。無料rig-checkでbiped可能を確認し、v1.0-20240301 / biped / Mixamo rig task `6697bd45-e6a8-4f49-8d2e-3d317a1ba4ee` は25クレジット。開始480→残335。2026-09-06確認。`out_format=glb`指定でも取得実体はFBXだったためBlenderで変換した。

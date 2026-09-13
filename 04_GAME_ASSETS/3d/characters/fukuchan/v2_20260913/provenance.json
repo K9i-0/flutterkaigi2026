@@ -1,0 +1,62 @@
+{
+  "workflow": "https://www.tripo3d.ai/blog/gpt-6-astra-3d-character-workflow",
+  "canonicalReference": "02_CHARACTERS/Fukuchan.jpg",
+  "imageTool": "built-in Imagegen",
+  "imagePrompts": "imagegen_prompts.json",
+  "credits": {
+    "before": 685,
+    "spent": 385,
+    "after": 300,
+    "frozenAfter": 0,
+    "topUps": 0
+  },
+  "jobs": [
+    {
+      "part": "body",
+      "taskId": "dece964e-d99e-4ab7-ae54-5f4ee6098fdb",
+      "credits": 120,
+      "config": "body/config.json",
+      "rawFile": "raw/output_model_url.fbx",
+      "rawSha256": "3ce566fe8bfa6817066beb1929c1c0c78ca4430ac4909c2dc10454151073a696"
+    },
+    {
+      "part": "head",
+      "taskId": "cc915a71-bf12-4aeb-9e87-0892ed383621",
+      "credits": 120,
+      "config": "head/config.json",
+      "rawFile": "raw/output_model_url.fbx",
+      "rawSha256": "c65264f58c3c05595c81915137770bfe2d8dc6ab77bf2b355fce0be3400ce331"
+    },
+    {
+      "part": "hair",
+      "taskId": "1a68a4d9-1dea-4eb8-b65e-e7808b829f65",
+      "credits": 120,
+      "config": "hair/config.json",
+      "rawFile": "raw/output_model_url.fbx",
+      "rawSha256": "7ff0da2751c2dba70dd416c706e90687ad9d7871e5c28022c9e2302ddd4eb841"
+    },
+    {
+      "part": "rig_source",
+      "taskId": "c849a200-e3f9-4a9f-836c-ddab59522592",
+      "credits": 25,
+      "config": "rig_source/config.json",
+      "rawFile": "raw/output_model_url.fbx",
+      "rawSha256": "0f98f224188692dd543f7f7080216c46df262a117ad7b80d226155d2ae76fafa"
+    }
+  ],
+  "rigCheck": {
+    "taskId": "09af9efe-f7ad-4f33-9b7e-190f4ad70bb5",
+    "riggable": true,
+    "rigType": "biped",
+    "credits": 0
+  },
+  "inputImages": {
+    "body/inputs/front.png": "3a0ce4a00bb58faf39d2e222803c66bd1fa710ebb0130b0a7dae9ebe61f45767",
+    "hair/inputs/back.png": "2ec4f57d1a486adb39a5b1aee036d08e09a2a13edb7ca1ac48f9a5c25f920980",
+    "hair/inputs/front.png": "f750637f14c39881ec00f021c0e5bb5c42b683e60df0e0a4651347a843fdcb51",
+    "head/inputs/back.png": "703216e252944da214e3e0d01ecee815511ec380005f56995404b77046d4dfb2",
+    "head/inputs/front.png": "e3c9ac3e69b71f78aea61ca8b85d77cabca6c7c0ffda217a40f62dd31ed6eec0",
+    "head/inputs/left.png": "a7b77c4c7556082895b3971628d70352bfb884498419cb388e2d3f3d1842c3e0",
+    "reference/master_front.png": "a873220ac0ca343a5ce0e91d372597cd151743253508803199d340ed065c0334"
+  }
+}

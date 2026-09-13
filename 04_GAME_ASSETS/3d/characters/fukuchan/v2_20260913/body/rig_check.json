@@ -1,0 +1,9 @@
+{
+  "code": 0,
+  "status": "success",
+  "data": {
+    "type": "animate_prerigcheck",
+    "status": "queued",
+    "task_id": "09af9efe-f7ad-4f33-9b7e-190f4ad70bb5"
+  }
+}

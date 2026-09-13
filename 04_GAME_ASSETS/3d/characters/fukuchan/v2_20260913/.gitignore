@@ -1,0 +1,9 @@
+**/raw/
+**/task*.json
+**/upload*.json
+**/request.json
+**/submission_started.json
+*.blend
+*.blend1
+qa/
+preview/
