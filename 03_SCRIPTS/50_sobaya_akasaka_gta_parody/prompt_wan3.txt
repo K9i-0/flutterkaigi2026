@@ -51,7 +51,7 @@ Hard constraints:
 - Preserve Image 1 identity. Never show the character sheet, labels, panels, multiple views, white sheet background, or a second Sobaya.
 - Exact mug state: holder while moving and jumping; hand only during the full stop at 11.0–14.0; holder again before the security sedan arrives; hand again only after final stop at 28.0.
 - Exactly three orange cones, one roadwork barrier, one yellow taxi, one delivery truck, one security sedan, one receptionist, one speaking security NPC, one speaking meeting NPC, three rolling chairs, and one copier.
-- Use fictional “アクシデンチュア”; no real Accenture logo. No GTA or Rockstar logo, no real game title, no watermark.
+- Use fictional “アクシデンチュア”; no real company logo. No GTA or Rockstar logo, no real game title, no watermark.
 - No English speech, English subtitles, dialogue bubbles, subtitle bar, captions, foreign-language vocals, or call-to-prayer audio.
 - No weapons, gunfire, police violence, collision with people, injury, blood, gore, fire, or explosion.
 - Do not end early. Keep the world visible and final pose stable through 30.0 seconds.
