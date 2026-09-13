@@ -26,7 +26,7 @@
 
 ### 企業ロゴ
 
-採用ロゴは[黒背景・白文字・虫D](props/accidenchua/logo-dark.png)。Dをデバッグの虫へ置き換え、バグによるアクシデントを表す。虫は #5EFF00、背景は #000000、文字は #FFFFFF。厳密なRGB反転で白背景・黒文字・紫 #A100FFとなり、元ネタの配色を想起させる隠しネタ。[配色・反転仕様](props/accidenchua/README.md)。
+採用ロゴは[黒背景・白文字・虫D](props/accidenchua/logo-dark.png)。Dをデバッグの虫へ置き換え、バグによるアクシデントを表す。虫Dは #5EFF00、背景は #000000、文字は #FFFFFF。ライトテーマでは白背景・黒文字にし、虫Dは同じ #5EFF00 を維持する。[ロゴ仕様](props/accidenchua/README.md)。
 
 ## Overview
 舞台は東京・赤坂（赤坂サカス周辺）の巨大IT企業「アクシデンチュア株式会社」。高層ビルのオフィスからは東京タワーが見える。
