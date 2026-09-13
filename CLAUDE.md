@@ -4,6 +4,7 @@
 
 ## 制作時の参照ファイル
 - 窓際スーパーつらいの標準缶: `03_SCRIPTS/00_TEMPLATES/props/product_super_try.png`（2026-09-10採用のA案修正版。上部は黒い「労働」。「辛口」「350ml」は表示しない。銀地・赤いひらがな「つらい」・黒い筆記体Madogiwa・小さめの丸ゴシックの「生」。次回以降はこれを使い、エピソード63〜66の旧缶を参照元にしない。詳細: `03_SCRIPTS/00_TEMPLATES/props/README.md`）
+- 固有名詞の表記: `01_WORLD/WORLD_BIBLE.md` の「固有名詞の表記」を正本にする。架空企業は `Accidenchua`（ロゴ `ACCIDENCHUA`、法人 `Accidenchua Inc.`）。椅子は「アーロンチュア」/ `AERON CHUA`。新規制作・該当箇所の改修で使う。
 - 世界観の基本資料: `01_WORLD/WORLD_BIBLE.md`（ユーザー指定がないときの出発点。改変可能）
 - 過去エピソード台帳: `01_WORLD/STORY_TIMELINE.md`（ネタと出来事の参照用。正史の連続性や整合性を要求しない）
 - キャラクター設定: `02_CHARACTERS/*.md`（各ファイルの「人物同一性」だけを維持し、それ以外は通常形の参考とする）
