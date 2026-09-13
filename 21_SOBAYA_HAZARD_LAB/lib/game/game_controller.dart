@@ -1144,8 +1144,9 @@ class HazardGameController extends ChangeNotifier {
           _resetNodes();
         }
         unawaited(saveCheckpoint(stageStart: true));
-        _openingAfterTitle = true;
-        startEvent('title_call');
+        // The player just left the title screen: begin the arrival immediately.
+        _openingAfterTitle = false;
+        startEvent('opening');
       });
 
   Future<void> saveCheckpoint({

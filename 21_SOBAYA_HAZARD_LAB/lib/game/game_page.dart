@@ -1,4 +1,4 @@
-import 'game_tutorial_text.dart';
+import 'game_tutorial_panel.dart';
 import 'game_journal.dart';
 import 'game_map.dart';
 import 'game_item_tile.dart';
@@ -554,7 +554,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
                               ),
                             ),
                           ),
-                        if (!mobile)
+                        if (!mobile && !s.tutorialActive)
                           Positioned(
                             left: 28,
                             top: 26,
@@ -1055,6 +1055,7 @@ class _HazardGamePageState extends State<HazardGamePage> {
                             ),
                           ),
                         if (s.toastTime > 0 &&
+                            !s.tutorialActive &&
                             s.running &&
                             s.grapple == null &&
                             (!mobile ||
@@ -1131,59 +1132,17 @@ class _HazardGamePageState extends State<HazardGamePage> {
                         ),
                       if (s.tutorialActive && s.running)
                         Positioned(
-                          left: 16 + safe.left,
-                          right: 16 + safe.right,
-                          bottom: promptBottom + 50,
-                          child: Material(
-                            color: ink,
-                            borderRadius: BorderRadius.circular(12),
-                            child: Padding(
-                              padding: const EdgeInsets.all(12),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'やめ太郎の実地研修  ${tutorialSteps.indexOf(s.tutorialStep!) + 1} / 7',
-                                    style: const TextStyle(
-                                      color: gold,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    tutorialCoachLines[s.tutorialStep]!,
-                                    style: const TextStyle(color: ivory),
-                                  ),
-                                  Text(
-                                    s.tutorialControlHint(mobile),
-                                    style: const TextStyle(
-                                      color: Colors.white70,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                  Wrap(
-                                    spacing: 12,
-                                    children: [
-                                      if (s.tutorialStep == 'complete')
-                                        FilledButton(
-                                          onPressed: game.finishTutorial,
-                                          child: const Text('村へ出発'),
-                                        )
-                                      else
-                                        TextButton(
-                                          onPressed: game.retryTutorial,
-                                          child: const Text('この練習をやり直す'),
-                                        ),
-                                      if (s.tutorialStep != 'complete')
-                                        TextButton(
-                                          onPressed: game.finishTutorial,
-                                          child: const Text('練習をスキップ'),
-                                        ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
+                          left: (mobile ? 12 : 28) + safe.left,
+                          top: (mobile ? 10 : 26) + safe.top,
+                          width: math.min(
+                            360,
+                            (bounds.maxWidth - safe.horizontal) * .42,
+                          ),
+                          child: HazardTutorialPanel(
+                            state: s,
+                            mobile: mobile,
+                            onRetry: game.retryTutorial,
+                            onFinish: game.finishTutorial,
                           ),
                         ),
                       if (s.phase == PlayPhase.title) title(s),
@@ -1297,128 +1256,132 @@ class _HazardGamePageState extends State<HazardGamePage> {
       child: SafeArea(
         child: Stack(
           children: [
-            Positioned(
-              left: 12,
-              top: 10,
-              width: math.min(
-                300,
-                math.max(
-                  0,
-                  availableWidth - mapSize - (pauseBelowMap ? 40 : 94),
-                ),
-              ),
-              child: IgnorePointer(
-                ignoring: !canHeal,
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: const Color(0x99182018),
-                    borderRadius: BorderRadius.circular(8),
+            if (!s.tutorialActive)
+              Positioned(
+                left: 12,
+                top: 10,
+                width: math.min(
+                  300,
+                  math.max(
+                    0,
+                    availableWidth - mapSize - (pauseBelowMap ? 40 : 94),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        s.chapterLabel,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: gold,
-                          fontSize: 10,
-                          letterSpacing: 1,
+                ),
+                child: IgnorePointer(
+                  ignoring: !canHeal,
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: const Color(0x99182018),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          s.chapterLabel,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            color: gold,
+                            fontSize: 10,
+                            letterSpacing: 1,
+                          ),
                         ),
-                      ),
-                      Text(
-                        s.objective,
-                        maxLines: short ? 1 : 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(color: ivory, fontSize: 12),
-                      ),
-                      const SizedBox(height: 5),
-                      SizedBox(
-                        height: canHeal ? 48 : 18,
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.favorite,
-                              size: 14,
-                              color: s.health < 35
-                                  ? Colors.orange
-                                  : const Color(0xff90ac72),
-                            ),
-                            const SizedBox(width: 4),
-                            Text(
-                              '${s.health.ceil()}',
-                              style: const TextStyle(
-                                color: ivory,
-                                fontSize: 12,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: LinearProgressIndicator(
-                                value: (s.health / s.maxHealth).clamp(0.0, 1.0),
+                        Text(
+                          s.objective,
+                          maxLines: short ? 1 : 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(color: ivory, fontSize: 12),
+                        ),
+                        const SizedBox(height: 5),
+                        SizedBox(
+                          height: canHeal ? 48 : 18,
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.favorite,
+                                size: 14,
                                 color: s.health < 35
                                     ? Colors.orange
                                     : const Color(0xff90ac72),
-                                backgroundColor: Colors.white12,
                               ),
-                            ),
-                            if (canHeal) ...[
-                              const SizedBox(width: 8),
-                              SizedBox(
-                                width: 64,
-                                height: 48,
-                                child: HazardTouchButton(
-                                  id: 'heal',
-                                  label: '回復 $healCount',
-                                  icon: Icons.healing,
-                                  onPressed: () {
-                                    if (!s.running || s.actionLocked) return;
-                                    s.heal();
-                                    game.refreshView();
-                                  },
+                              const SizedBox(width: 4),
+                              Text(
+                                '${s.health.ceil()}',
+                                style: const TextStyle(
+                                  color: ivory,
+                                  fontSize: 12,
                                 ),
                               ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: LinearProgressIndicator(
+                                  value: (s.health / s.maxHealth).clamp(
+                                    0.0,
+                                    1.0,
+                                  ),
+                                  color: s.health < 35
+                                      ? Colors.orange
+                                      : const Color(0xff90ac72),
+                                  backgroundColor: Colors.white12,
+                                ),
+                              ),
+                              if (canHeal) ...[
+                                const SizedBox(width: 8),
+                                SizedBox(
+                                  width: 64,
+                                  height: 48,
+                                  child: HazardTouchButton(
+                                    id: 'heal',
+                                    label: '回復 $healCount',
+                                    icon: Icons.healing,
+                                    onPressed: () {
+                                      if (!s.running || s.actionLocked) return;
+                                      s.heal();
+                                      game.refreshView();
+                                    },
+                                  ),
+                                ),
+                              ],
                             ],
-                          ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        '${hostile
-                            ? '● 敵対中'
-                            : s.sneaking
-                            ? '忍び足'
-                            : s.sprint
-                            ? '走行'
-                            : '歩行'}  音 ${noise.toStringAsFixed(1)}m',
-                        key: const ValueKey('game-noise-status'),
-                        maxLines: 1,
-                        style: TextStyle(
-                          color: hostile ? const Color(0xffff9283) : gold,
-                          fontSize: 11,
-                        ),
-                      ),
-                      HazardThreatStatus(
-                        feedback: s.stealthFeedback,
-                        compact: true,
-                      ),
-                      for (final npc in s.npcs.where(
-                        (npc) => s.companionThreatened(npc['id']),
-                      ))
+                        const SizedBox(height: 4),
                         Text(
-                          '⚠ ${HazardGameState.companionNames[npc['id']]} ${s.companionHealth[npc['id']]?.ceil() ?? 0}',
-                          style: const TextStyle(
-                            color: Colors.orange,
+                          '${hostile
+                              ? '● 敵対中'
+                              : s.sneaking
+                              ? '忍び足'
+                              : s.sprint
+                              ? '走行'
+                              : '歩行'}  音 ${noise.toStringAsFixed(1)}m',
+                          key: const ValueKey('game-noise-status'),
+                          maxLines: 1,
+                          style: TextStyle(
+                            color: hostile ? const Color(0xffff9283) : gold,
                             fontSize: 11,
                           ),
                         ),
-                    ],
+                        HazardThreatStatus(
+                          feedback: s.stealthFeedback,
+                          compact: true,
+                        ),
+                        for (final npc in s.npcs.where(
+                          (npc) => s.companionThreatened(npc['id']),
+                        ))
+                          Text(
+                            '⚠ ${HazardGameState.companionNames[npc['id']]} ${s.companionHealth[npc['id']]?.ceil() ?? 0}',
+                            style: const TextStyle(
+                              color: Colors.orange,
+                              fontSize: 11,
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
             Positioned(
               right: 12,
               top: 10,
