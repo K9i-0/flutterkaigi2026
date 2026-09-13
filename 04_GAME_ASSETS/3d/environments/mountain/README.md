@@ -4,7 +4,13 @@
 
 生成: `Blender --background --factory-startup --python tools/build_hazard_regions.py`（リポジトリルート）。共有の建物・材質・単位は `tools/hazard_environment_kit.py`。
 
-12,689 三角面 / 31 meshes / 48 primitives / 18 materials / 12,656,424 bytes。1 unit=1m。外部ファイル参照なしのpacked GLB。Flutter Sceneで読み込み時に圧縮変換する。
+9,634 三角面 / 23 meshes / 46 primitives / 18 materials / 12,142,568 bytes。1 unit=1m。外部ファイル参照なしのpacked GLB。Flutter Sceneで読み込み時に圧縮変換する。
+
+2026-09-13: 平らな崖天板と大量の円錐状の突起を撤去し、閉じた起伏のある斜面と村と共通の透過樹木へ変更。岩肌の周期的な波模様を村と共通の土・砂利の写真由来材質へ置き換え、斜面のUVを実寸座標へ揃えた。通路上の厚い岩板は木造の覆いへ変更。木々は3つの空間グループへまとめ、従来の50 primitive予算内を維持した。FPS・実機の発熱はこのパスでは未測定。
+
+歩行用の6つの地形の占有範囲は維持。上部の当たり判定だけは斜面を覆う段階状に後退させ、見た目の空中に旧い箱型壁が残る問題を防ぐ。家・敵・アイテム・遷移先と、地形以外の当たり判定は変更なし。過去の「配置・衝突JSONが同一」という記述は各更新時点の記録であり、この更新では地形の上部を変更している。
+
+山のみ生成: `Blender --background --factory-startup --python tools/build_hazard_regions.py -- --mountain-only`。読み戻し検証: `Blender --background --factory-startup --python tools/audit_hazard_mountain.py`。従来の山の衝突ハッシュを固定した2026-09-12の監査に代わり、この山専用監査で通路・配置・18本の扉窓レイ・描画予算を確認する。[検証結果](../../../../21_SOBAYA_HAZARD_LAB/qa/mountain-forest-20260913.json)。
 
 2026-09-12: 村と共通の `tools/hazard_environment_art.py` で漆喰・木材の面分け、窓格子、軒、地際の植生、道・苔・接地陰の頂点色を追加。共有画像は10枚のまま。家の漆喰帯が窓上端12cmを覆っていた表示も、既存の開口外へ移動して修正した。配置・衝突JSONは変更前と同一。[GLB監査](../../../../21_SOBAYA_HAZARD_LAB/qa/environment-art-20260912.json)で山の家の扉・窓18本のレイ、屋根ノード、描画予算を確認した。
 

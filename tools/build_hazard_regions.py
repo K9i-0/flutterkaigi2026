@@ -11,19 +11,10 @@ from hazard_environment_kit import *
 blue = material('Blue enamel medallion',(.025,.20,.52),.3,.65)
 straw = material('Old golden hay',(.41,.34,.15),pattern='wood')
 rock = material('Weathered exposed bedrock',(.34,.33,.28),1)
-# A packed, tileable rock albedo, generated from periodic ridged noise.
-# Geometry below carries the broad silhouette; this supplies small strata.
-n=512; yy,xx=np.mgrid[0:n,0:n]/n; noise=np.zeros((n,n))
-rr=np.random.default_rng(4907)
-for octave in range(1,7):
-    for k in range(5):
-        fx=int(rr.integers(1,4))*2**(octave-1);fy=int(rr.integers(1,4))*2**(octave-1)
-        noise += np.sin((xx*fx+yy*fy)*math.tau+rr.random()*math.tau)/2**(octave*.8)
-noise=(noise-noise.min())/(noise.max()-noise.min())
-strata=np.abs(np.sin((yy*9+np.sin(xx*math.tau*2)*.35+noise*.7)*math.tau))
-v=.60+.40*noise+.15*strata
-im=bpy.data.images.new('Bedrock_albedo',width=n,height=n)
-pixels=np.ones((n,n,4),dtype=np.float32);pixels[:,:,:3]=v[:,:,None]*np.array([.39,.385,.33]);im.pixels.foreach_set(pixels.ravel());im.pack()
+# Reuse the village's photographic earth/gravel on the cut banks. The former
+# periodic procedural strata read as stretched waves from the gameplay camera.
+im=next(node.image for node in mats[dirt].node_tree.nodes
+        if node.type=='TEX_IMAGE' and node.image.name.startswith('earth'))
 tex=mats[rock].node_tree.nodes.new('ShaderNodeTexImage');tex.image=im
 mats[rock].node_tree.links.new(tex.outputs['Color'],mats[rock].node_tree.nodes.get('Principled BSDF').inputs['Base Color'])
 
@@ -70,33 +61,62 @@ def gate(x,z,axis='x'):
     for h in [.3,2.0]:box('FarmGate',metal,(x,z,h),(.27,3.3,.08) if axis=='z' else (3.3,.27,.08))
 
 def rocks(name,x,z,w,d,h):
-    # Segmented cliff faces with sloping strata, matching the solid footprint.
-    # The irregular surface recedes into the collider instead of hiding a path.
-    solid(x,z,w,d,h)
-    for side,length in [('south',w),('north',w),('east',d),('west',d)]:
-        count=max(2,round(length/1.4)); rows=[]
-        for level in range(5):
-            row=[]
-            for i in range(count+1):
-                t=-length/2+length*i/count
-                recess=rng.uniform(0,min(.6,w*.22,d*.22)) if level else 0
-                hh=h*level/4+(rng.uniform(-.3,.3) if level else 0)
-                if side in ['south','north']:
-                    px=x+t;pz=z+(-1 if side=='south' else 1)*(d/2-recess)
-                else:
-                    px=x+(-1 if side=='west' else 1)*(w/2-recess);pz=z+t
-                row.append((px,pz,hh))
-            rows.append(row)
-        for level in range(4):
-            for i in range(count):
-                vs=[rows[level][i],rows[level][i+1],rows[level+1][i+1],rows[level+1][i]]
-                if side in ['north','west']:vs.reverse()
-                # Quads are triangulated by glTF export; metre UVs avoid stretching.
-                face(name,rock,vs,[(i*.7,level*h/8),((i+1)*.7,level*h/8),((i+1)*.7,(level+1)*h/8),(i*.7,(level+1)*h/8)])
-    box(name,rock,(x,z,h-.25),(w,d,.25))
-    for i in range(max(2,int(w*d/15))):
-        xx=x+rng.uniform(-w*.4,w*.4);zz=z+rng.uniform(-d*.4,d*.4)
-        cylinder(name,rock,(xx,zz,h*.94),rng.uniform(.8,1.6),h*.42,7,r2=rng.uniform(.2,.65))
+    # Preserve the navigable footprint; all slopes and trees recede into it.
+    # A closed ring mesh replaces the flat lid and repeated conical pillars.
+    solid(x,z,w,d,1.45)
+    local=random.Random(f'{name}:forest-20260913')
+    nx=max(4,math.ceil(w/2.2));nz=max(4,math.ceil(d/2.2))
+    perimeter=[]
+    for i in range(nx):perimeter.append((-w/2+w*i/nx,-d/2))
+    for i in range(nz):perimeter.append((w/2,-d/2+d*i/nz))
+    for i in range(nx):perimeter.append((w/2-w*i/nx,d/2))
+    for i in range(nz):perimeter.append((-w/2,d/2-d*i/nz))
+    def surface(px,pz):
+        edge=min(w/2-abs(px-x),d/2-abs(pz-z))
+        rise=min(1,max(0,edge)/min(3.8,w*.35,d*.35))
+        relief=.5*math.sin(px*.48+pz*.29)+.35*math.cos(pz*.63-px*.18)
+        return 1.45+(h-1.45)*rise+relief*rise
+    # Enclose each slope band so the third-person camera cannot enter its
+    # surface. The upper bands still recede instead of retaining a tall box.
+    bottom_height=1.45
+    previous_fraction=0
+    for fraction in [.2,.4,.7,1.0]:
+        inset=previous_fraction*min(3.8,w*.35,d*.35)/min(w,d)
+        top=1.45+(h-1.45+.85)*fraction
+        solid(x,z,w*(1-2*inset),d*(1-2*inset),top-bottom_height,
+              bottom=bottom_height)
+        bottom_height=top
+        previous_fraction=fraction
+    rings=[]
+    for inset in [0,.055,.15,.29,.42]:
+        ring=[]
+        for px,pz in perimeter:
+            xx=x+px*(1-2*inset);zz=z+pz*(1-2*inset)
+            ring.append((xx,zz,surface(xx,zz)))
+        rings.append(ring)
+    bottom=[(x+px,z+pz,-.12) for px,pz in perimeter]
+    for lo,hi in zip([bottom]+rings[:-1],rings):
+        for i in range(len(perimeter)):
+            j=(i+1)%len(perimeter)
+            mat=rock if lo is bottom or hi is rings[1] else dirt
+            vs=[lo[i],lo[j],hi[j],hi[i]]
+            along_x=abs(lo[j][0]-lo[i][0])>abs(lo[j][1]-lo[i][1])
+            uv=[(px,pz) if mat==dirt else ((px if along_x else pz)/3,hh/3)
+                for px,pz,hh in vs]
+            face(name,mat,vs,uv)
+    center=(x,z,surface(x,z)+.25)
+    for i in range(len(perimeter)):
+        vs=[rings[-1][i],rings[-1][(i+1)%len(perimeter)],center]
+        face(name,dirt,vs,[(px,pz) for px,pz,_ in vs])
+    # Staggered groves on the inaccessible banks, using the village's pine art.
+    # Keep the tree cards behind the path edge and avoid a regular plantation.
+    for ix in range(max(1,int((w-3)/3.7))):
+        for iz in range(max(1,int((d-3)/4.1))):
+            xx=x-w/2+2.1+ix*3.7+local.uniform(-.35,.35)
+            zz=z-d/2+2.1+iz*4.1+local.uniform(-.4,.4)
+            if local.random()<.19:continue
+            height=local.uniform(4.5,8.5)
+            backdrop_pine(xx,zz,height,surface(xx,zz)-.15)
 
 def weeds(name,x,z,count):
     for i in range(count):
@@ -106,6 +126,7 @@ def weeds(name,x,z,count):
             face(name,grass,[(xx-dx,zz-dz,0),(xx+dx,zz+dz,0),(xx+dx*2,zz+dz*2,h)],[(0,0),(1,0),(.5,1)])
 
 def save(id,label,subtitle,spawn,items,crates,enemies,collection,npcs,exits,gate_data,targets=None):
+    if '--mountain-only' in sys.argv and id!='mountain':return
     out=ROOT/'04_GAME_ASSETS/3d/environments'/id;out.mkdir(parents=True,exist_ok=True)
     data={'version':1,'id':id,'label':label,'subtitle':subtitle,'spawn':spawn,
         'houses':houses,'windows':windows,'solids':solids,'ramps':ramps,'items':items,'crates':crates,
@@ -203,11 +224,16 @@ rocks('East cliff',14,-12,16,21,5.0)
 rocks('West ridge',-26,-9,8.8,31,6)
 rocks('Far ridge',26,11,8.8,26,5.5)
 rocks('North ridge',11,27,22,8.8,6)
-for x,z,base in [(-24,-18,6),(-25,-7,6),(-25,8,6),(-14,18,6.5),(-5,20,6.5),
-                 (6,-15,5.8),(19,-9,5),(26,3,5.5),(26,16,5.5),(7,29,6),(18,29,6)]:
-    backdrop_pine(x,z,7+abs(x+z)%4,base)
+# Three spatial grove batches keep the denser forest within the draw budget.
+for patch in [key for key in groups if key.startswith('PinePatch_')]:
+    for mat,data in groups.pop(patch).items():
+        for indices,uv in zip(data['f'],data['uv']):
+            vertices=[data['v'][i] for i in indices]
+            cx=sum(v[0] for v in vertices)/len(vertices)
+            zone='west' if cx < -10 else 'east' if cx > 10 else 'central'
+            face('MountainPines_'+zone,mat,vertices,uv)
 for x in [-14,-11,-8,-5]:
-    box('Tunnel roof',rock,(x,4.0,3.5),(3.3,6,.9))
+    box('Tunnel roof',boards,(x,4.0,3.5),(3.3,6,.22))
     for z in [1.5,6.5]:box('Tunnel frame',wood,(x,z,1.7),(.22,.25,3.4))
     box('Tunnel frame',wood,(x,4,3.2),(.22,5.5,.25))
 for x,z in [(-20,-15),(-17,-8),(-20,2),(-2,6),(2,0),(6,8),(18,8),(20,20)]:weeds('Mountain weeds',x,z,20)
