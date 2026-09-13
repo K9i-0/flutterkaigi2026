@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useMediaViewport } from "./use-media-viewport";
 import { useVideoPreferences } from "../components/use-video-preferences";
 import * as Dialog from "@radix-ui/react-dialog";
 import {
@@ -121,6 +122,7 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
   }, [route.page, route.chapter]);
   const [playing, setPlaying] = useState<Episode | null>(null);
   const [zoom, setZoom] = useState<{ src: string; title: string } | null>(null);
+  useMediaViewport(!!playing || !!zoom);
   const [toast, setToast] = useState("");
   const [query, setQuery] = useState("");
   const [saved, setSaved] = useState<string[]>([]);

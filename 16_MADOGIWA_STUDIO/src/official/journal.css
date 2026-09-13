@@ -2838,7 +2838,7 @@
   .j-viewer .j-player video { width: 100%; height: 100%; object-fit: contain; }
   .j-close-desktop { display: none; }
   .j-close-mobile { display: block; }
-  .j-viewer .j-viewer-close, .j-image-viewer .j-viewer-close {
+  .j-viewer .j-dialog-close.j-viewer-close, .j-image-viewer .j-dialog-close.j-viewer-close {
     z-index: 6; top: max(16px, env(safe-area-inset-top)); left: max(16px, env(safe-area-inset-left)); right: auto; width: 44px; height: 44px; background: #202020b8; color: #fff; backdrop-filter: blur(12px);
   }
   .j-viewer .j-video-title {
@@ -2875,4 +2875,19 @@
   .j-image-viewer .j-image-stage { width: 100%; height: 100%; }
   .j-image-viewer .j-image-stage img { width: 100%; height: 100%; max-width: none; max-height: none; object-fit: contain; }
   .j-image-viewer h2 { position: absolute; z-index: 2; left: 0; right: 0; bottom: 0; margin: 0; padding: 48px 20px max(24px, env(safe-area-inset-bottom)); background: linear-gradient(transparent, #000b); font-size: 16px; pointer-events: none; }
+}
+
+/* Cover browser-inset / rubber-band gaps as well as the visible viewer. */
+html.media-viewer-open, html.media-viewer-open body {
+  background: #000 !important;
+  overscroll-behavior: none;
+}
+html.media-viewer-open .journal { visibility: hidden; }
+html.media-viewer-open body::before {
+  content: ""; position: fixed; inset: -100vmax; z-index: 89; background: #000; pointer-events: none;
+}
+html.media-viewer-open .j-dialog-overlay { background: #000; backdrop-filter: none; }
+html.media-viewer-open :is(.j-video-dialog.j-watch-dialog, .j-image-dialog.j-immersive-image) {
+  top: var(--media-viewport-top, 0px); left: var(--media-viewport-left, 0px); right: auto; bottom: auto;
+  width: var(--media-viewport-width, 100%); height: var(--media-viewport-height, 100dvh);
 }
