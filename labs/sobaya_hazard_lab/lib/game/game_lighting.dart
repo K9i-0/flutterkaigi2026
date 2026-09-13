@@ -126,7 +126,8 @@ class HazardLighting {
         globalIlluminationVisibility: .9,
         globalIlluminationEmissiveBoost: 1.2,
         // At most one quarter of the 256 probes per frame. Geometry and sky
-        // already establish the broad lighting; this is a subtle extra bounce.
+        // already establish the broad lighting. GI stays disabled in the presets
+        // because this field replaces sky diffuse rather than adding to it.
         globalIlluminationProbeUpdateBudget: 64,
         globalIlluminationInjectionResolution:
             IrradianceInjectionResolution.sixteenth,
