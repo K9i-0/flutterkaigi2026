@@ -10,6 +10,10 @@ const {GLTFLoader}=await import(path.join(path.dirname(require.resolve('three'))
 const {validateBytes}=require('gltf-validator');
 const folder=root+'/04_GAME_ASSETS/3d/characters/sobaya/v2_20260913';
 const buffer=fs.readFileSync(folder+'/sobaya_v2.glb');
+const asset=JSON.parse(buffer.subarray(20,20+buffer.readUInt32LE(12)).toString());
+const blackMaterial=asset.materials.find(m=>m.name==='MaskBlackBacking');
+assert(blackMaterial?.extensions?.KHR_materials_unlit,'Mask backing must stay unlit in GLB');
+assert.deepEqual(blackMaterial.pbrMetallicRoughness.baseColorFactor,[0,0,0,1]);
 const format=await validateBytes(buffer,{maxIssues:100});
 assert.equal(format.issues.numErrors,0,JSON.stringify(format.issues));
 const loader=new GLTFLoader();
@@ -29,6 +33,14 @@ for(const mesh of meshes){
  const geometry=mesh.geometry,w=geometry.attributes.skinWeight;
  assert(w&&w.itemSize===4);
  for(let i=0;i<w.count;i++){let sum=0;for(let j=0;j<4;j++)sum+=w.array[i*4+j];maxWeightError=Math.max(maxWeightError,Math.abs(1-sum));}
+ if(mesh.material.name==='MaskBlackBacking'){
+  assert(mesh.material.isMeshBasicMaterial,'Mask backing must not receive lighting');
+  assert.equal(mesh.material.color.getHex(),0);
+  const joints=geometry.attributes.skinIndex;
+  for(let i=0;i<w.count;i++)for(let j=0;j<4;j++)if(w.array[i*4+j]>1e-6){
+   assert.equal(mesh.skeleton.bones[joints.array[i*4+j]].name,'Head','Black face must follow Head rigidly');
+  }
+ }
  for(const attr of Object.values(geometry.attributes))for(const n of attr.array)assert(Number.isFinite(n));
  triangles+=(geometry.index?.count??geometry.attributes.position.count)/3;
  for(const [name,index] of Object.entries(mesh.morphTargetDictionary??{})){
@@ -62,5 +74,6 @@ for(const clip of gltf.animations){
  samples.push({clip:clip.name,duration:clip.duration,evaluatedVertices,bounds:{min:box.min.toArray(),max:box.max.toArray()}});
 }
 const report={glbSha256:createHash('sha256').update(buffer).digest('hex'),gltfErrors:format.issues.numErrors,gltfWarnings:format.issues.numWarnings,formatMessages:format.issues.messages,triangles,renderMeshes:meshes.length,bones:meshes[0].skeleton.bones.length,restHeightM:restBox.max.y-restBox.min.y,maxWeightError,morphMaxDisplacementsM:morphs,animations:samples,scope:'Format, separated parts, 180cm rest height, normalized skin weights, rigid mask with no face morphs, 11 clips sampled at five times. Naturalness and intersections require the accompanying rendered/UI review.'};
+report.maskBacking={material:blackMaterial.name,unlit:true,color:[0,0,0,1],rigidBone:'Head'};
 fs.writeFileSync(folder+'/validation.json',JSON.stringify(report,null,2)+'\n');
 console.log(JSON.stringify({...report,formatMessages:undefined,animations:report.animations.map(a=>a.clip)},null,2));

@@ -13,6 +13,12 @@ def pose(name,frame):
 bpy.context.scene.cycles.samples=16
 if '--movie-only' not in sys.argv:
  pose(None,0)
+ for name,direction in [('front',(0,-1,0)),('left_oblique',(.7,-1,0)),('right_oblique',(-.7,-1,0)),('grazing',(1,-.5,0))]:
+  render_view('mask_'+name+'.png',direction,target=(0,-.015,1.637),scale=.39,size=(720,720))
+ pose('Test_HeadTurn',22)
+ render_view('mask_headturn.png',(0,-1,0),target=(0,-.015,1.637),scale=.43,size=(720,720))
+if '--movie-only' not in sys.argv and '--mask-only' not in sys.argv:
+ pose(None,0)
  for name,direction in [('front',(0,-1,0)),('side',(1,0,0)),('back',(0,1,0))]:
   render_view('final_'+name+'.png',direction,target=(0,0,.90),scale=2.0,size=(960,960))
   render_view('head_'+name+'.png',direction,target=(0,0,1.61),scale=.48,size=(640,640))

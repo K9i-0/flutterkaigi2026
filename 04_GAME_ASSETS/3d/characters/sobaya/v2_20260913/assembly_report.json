@@ -6,6 +6,56 @@
     "neckInteriorFaces": 514,
     "masterHeightM": 1.8
   },
+  "maskBacking": {
+    "material": "MaskBlackBacking",
+    "cavityFacesRecolored": 248,
+    "backingVertices": 3459,
+    "backingFaces": 3456,
+    "openings": [
+      {
+        "opening": "LeftEye",
+        "rimSamples": 64,
+        "behindMaskM": 0.0015,
+        "center": [
+          0.044,
+          1.643
+        ],
+        "surfaceCoefficients": [
+          -0.10420674271881576,
+          0.01729583434235144,
+          0.001794594466314916
+        ]
+      },
+      {
+        "opening": "RightEye",
+        "rimSamples": 64,
+        "behindMaskM": 0.0015,
+        "center": [
+          -0.044,
+          1.643
+        ],
+        "surfaceCoefficients": [
+          -0.10408487822860477,
+          -0.017410584820835708,
+          0.0018100145867400701
+        ]
+      },
+      {
+        "opening": "Mouth",
+        "rimSamples": 64,
+        "behindMaskM": 0.0015,
+        "center": [
+          0.0,
+          1.565
+        ],
+        "surfaceCoefficients": [
+          -0.11698122927919026,
+          -4.196103720722767e-05,
+          -0.001596547313416411
+        ]
+      }
+    ]
+  },
   "materials": [
     {
       "material": "CollarFabric",
@@ -126,8 +176,8 @@
       "triangles": 30680
     },
     "Head": {
-      "vertices": 9254,
-      "triangles": 18094
+      "vertices": 12713,
+      "triangles": 24718
     }
   },
   "bones": [
@@ -156,7 +206,7 @@
     "RightToeBase"
   ],
   "glb": {
-    "bytes": 11632560,
-    "sha256": "e440c9a6767af855657a6f0202dbb8dc1f53d586a75fc6302a5b4e679ae982e4"
+    "bytes": 12096092,
+    "sha256": "30fd09d54b25d362d8d9439d9cccb9538596d7a85b430fcad3d71bd88f7f3d4a"
   }
 }

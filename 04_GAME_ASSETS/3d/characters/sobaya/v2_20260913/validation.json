@@ -1,5 +1,5 @@
 {
-  "glbSha256": "e440c9a6767af855657a6f0202dbb8dc1f53d586a75fc6302a5b4e679ae982e4",
+  "glbSha256": "30fd09d54b25d362d8d9439d9cccb9538596d7a85b430fcad3d71bd88f7f3d4a",
   "gltfErrors": 0,
   "gltfWarnings": 4,
   "formatMessages": [
@@ -28,6 +28,12 @@
       "pointer": "/meshes/1/primitives/1/attributes/TEXCOORD_0"
     },
     {
+      "code": "UNUSED_OBJECT",
+      "message": "This object may be unused.",
+      "severity": 2,
+      "pointer": "/meshes/1/primitives/2/attributes/TEXCOORD_0"
+    },
+    {
       "code": "NODE_SKINNED_MESH_NON_ROOT",
       "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
       "severity": 1,
@@ -40,8 +46,8 @@
       "pointer": "/nodes/24"
     }
   ],
-  "triangles": 48774,
-  "renderMeshes": 4,
+  "triangles": 55398,
+  "renderMeshes": 5,
   "bones": 23,
   "restHeightM": 1.8000002092238612,
   "maxWeightError": 4.470348358154297e-8,
@@ -50,7 +56,7 @@
     {
       "clip": "DanceDisco",
       "duration": 2.299999952316284,
-      "evaluatedVertices": 19005,
+      "evaluatedVertices": 22130,
       "bounds": {
         "min": [
           -0.7772212045347768,
@@ -59,7 +65,7 @@
         ],
         "max": [
           0.784883059102292,
-          1.6571161015609601,
+          1.6602279542577358,
           0.5672023351504991
         ]
       }
@@ -67,7 +73,7 @@
     {
       "clip": "DanceStep",
       "duration": 1.2666666507720947,
-      "evaluatedVertices": 19005,
+      "evaluatedVertices": 22130,
       "bounds": {
         "min": [
           -0.49809047047412625,
@@ -76,7 +82,7 @@
         ],
         "max": [
           0.48415469446884846,
-          1.7848374707912378,
+          1.7850430298455962,
           0.4950139000867698
         ]
       }
@@ -84,7 +90,7 @@
     {
       "clip": "DanceVictory",
       "duration": 6.4666666984558105,
-      "evaluatedVertices": 19005,
+      "evaluatedVertices": 22130,
       "bounds": {
         "min": [
           -0.9465261271794705,
@@ -93,7 +99,7 @@
         ],
         "max": [
           0.8572590453289992,
-          1.724750092532848,
+          1.728574575818527,
           0.46455531026892094
         ]
       }
@@ -101,7 +107,7 @@
     {
       "clip": "Greeting",
       "duration": 3,
-      "evaluatedVertices": 19005,
+      "evaluatedVertices": 22130,
       "bounds": {
         "min": [
           -0.5739305645922392,
@@ -118,7 +124,7 @@
     {
       "clip": "Idle",
       "duration": 3.133333444595337,
-      "evaluatedVertices": 19005,
+      "evaluatedVertices": 22130,
       "bounds": {
         "min": [
           -0.449985519569575,
@@ -127,7 +133,7 @@
         ],
         "max": [
           0.5094219451086176,
-          1.7634080980445461,
+          1.7633105109371996,
           0.3999362601976727
         ]
       }
@@ -135,7 +141,7 @@
     {
       "clip": "Run",
       "duration": 0.9666666388511658,
-      "evaluatedVertices": 19005,
+      "evaluatedVertices": 22130,
       "bounds": {
         "min": [
           -0.5636826475751742,
@@ -144,7 +150,7 @@
         ],
         "max": [
           0.6043409817592218,
-          1.6773077206675577,
+          1.6805803241382578,
           0.7223865463597972
         ]
       }
@@ -152,7 +158,7 @@
     {
       "clip": "Test_ArmRaise",
       "duration": 3,
-      "evaluatedVertices": 19005,
+      "evaluatedVertices": 22130,
       "bounds": {
         "min": [
           -0.9564830066163804,
@@ -169,7 +175,7 @@
     {
       "clip": "Test_ElbowBend",
       "duration": 3,
-      "evaluatedVertices": 19005,
+      "evaluatedVertices": 22130,
       "bounds": {
         "min": [
           -0.4499732386577794,
@@ -178,7 +184,7 @@
         ],
         "max": [
           0.5135550605686758,
-          1.763408179318029,
+          1.7633105922611778,
           0.541691752426992
         ]
       }
@@ -186,7 +192,7 @@
     {
       "clip": "Test_HeadTurn",
       "duration": 3,
-      "evaluatedVertices": 19005,
+      "evaluatedVertices": 22130,
       "bounds": {
         "min": [
           -0.4499732386577794,
@@ -195,7 +201,7 @@
         ],
         "max": [
           0.5094220770981719,
-          1.7634081811413356,
+          1.763310594348209,
           0.39971551939694583
         ]
       }
@@ -203,7 +209,7 @@
     {
       "clip": "Test_KneeBend",
       "duration": 3,
-      "evaluatedVertices": 19005,
+      "evaluatedVertices": 22130,
       "bounds": {
         "min": [
           -0.44997590515830466,
@@ -212,7 +218,7 @@
         ],
         "max": [
           0.5094220770981719,
-          1.763408179318029,
+          1.7633105922611778,
           0.39971551939694583
         ]
       }
@@ -220,7 +226,7 @@
     {
       "clip": "Walk",
       "duration": 1.6666666269302368,
-      "evaluatedVertices": 19005,
+      "evaluatedVertices": 22130,
       "bounds": {
         "min": [
           -0.4382764892793273,
@@ -229,11 +235,22 @@
         ],
         "max": [
           0.4956531877929977,
-          1.821895369554576,
+          1.8250403896276044,
           0.5036746035653996
         ]
       }
     }
   ],
-  "scope": "Format, separated parts, 180cm rest height, normalized skin weights, rigid mask with no face morphs, 11 clips sampled at five times. Naturalness and intersections require the accompanying rendered/UI review."
+  "scope": "Format, separated parts, 180cm rest height, normalized skin weights, rigid mask with no face morphs, 11 clips sampled at five times. Naturalness and intersections require the accompanying rendered/UI review.",
+  "maskBacking": {
+    "material": "MaskBlackBacking",
+    "unlit": true,
+    "color": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "rigidBone": "Head"
+  }
 }

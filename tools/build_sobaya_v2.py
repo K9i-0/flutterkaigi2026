@@ -116,9 +116,10 @@ def fit_neck(body,head):
 def skin_head(rig,head):
  head.vertex_groups.clear()
  for name in ['Head','Neck','Spine2']:head.vertex_groups.new(name=name)
+ black_vertices={i for p in head.data.polygons if head.data.materials[p.material_index].name=='MaskBlackBacking' for i in p.vertices}
  for v in head.data.vertices:
   # Mask, hair, ears and skull stay rigid. Only the neck can bend.
-  rigid=v.co.z>1.585 or (v.co.y<-.065 and v.co.z>1.49)
+  rigid=v.index in black_vertices or v.co.z>1.585 or (v.co.y<-.065 and v.co.z>1.49)
   h=1. if rigid else smooth(1.535,1.59,v.co.z)
   neck=(1-h)*smooth(1.455,1.53,v.co.z);chest=1-h-neck
   for name,w in [('Head',h),('Neck',neck),('Spine2',chest)]:
@@ -147,7 +148,10 @@ def normalize_weights(mesh,rig):
 def main():
  bpy.ops.wm.read_factory_settings(use_empty=True);bpy.context.scene.name='Sobaya_v2_Review_20260913'
  body,rig=import_body();head=import_part('head',.365,1.435)
- report={'neck':fit_neck(body,head)};skin_head(rig,head)
+ report={'neck':fit_neck(body,head)}
+ from sobaya_v2_mask import add_black_backing
+ report['maskBacking']=add_black_backing(head)
+ skin_head(rig,head)
  report['materials']=materials()
  from humanoid_deformation import smooth_shoulders
  report['smoothedShoulderVertices']=smooth_shoulders(body,rig)
