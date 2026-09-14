@@ -11,6 +11,7 @@ import 'game_settings.dart';
 import 'game_native_audit.dart';
 import 'game_debug_probe.dart';
 import 'game_native_stealth_probe.dart';
+import 'game_shop_alley_probe.dart';
 
 import 'dart:io' show pid;
 
@@ -71,12 +72,13 @@ void attachGameAutomation(HazardGameController game) {
         'companionYametaro',
         'companionTakosan',
         'stealthHorror',
+        'shopAlley',
       ],
     }),
   );
   registerMarionetteExtension(
     name: 'madogiwa.runGameProbe',
-    description: 'name=conversation|companionYametaro|companionTakosan|stealthHorror. Resets the test run, keeps saved collection; observes real frames/audio, pauses at the end. Foreground required, stealth 55s / dialogue 15s deadline. Controller test, not keyboard/pointer input.',
+    description: 'name=conversation|companionYametaro|companionTakosan|stealthHorror|shopAlley. Foreground required. shopAlley requires openGameScenario(name=shopAlley) first, retains authored actors/pickups, and has an 85s deadline with a 5s stalled-frame failure. Other probes reset the test run, keeping collection; stealth 55s / dialogue 15s. All pause at the end. Controller tests, not keyboard/pointer input.',
     callback: (p) async {
       final g = _game;
       if (![
@@ -84,6 +86,7 @@ void attachGameAutomation(HazardGameController game) {
         'companionYametaro',
         'companionTakosan',
         'stealthHorror',
+        'shopAlley',
       ].contains(p['name'])) {
         return MarionetteExtensionResult.invalidParams('name=conversation');
       }
@@ -101,7 +104,9 @@ void attachGameAutomation(HazardGameController game) {
       _probeRunning = true;
       try {
         return MarionetteExtensionResult.success(
-          p['name'] == 'stealthHorror'
+          p['name'] == 'shopAlley'
+              ? await probeShopAlley(g)
+              : p['name'] == 'stealthHorror'
               ? await probeStealthHorror(g)
               : p['name'] == 'conversation'
               ? await probeConversation(g)
@@ -324,6 +329,7 @@ void attachGameAutomation(HazardGameController game) {
         'stagger',
         'merchant',
         'farm',
+        'shopAlley',
         'mountain',
         'farmGate',
         'mountainGate',
@@ -345,6 +351,8 @@ void attachGameAutomation(HazardGameController game) {
       }
       _scenarioOpening = true;
       try {
+        // This route fixture must never replace the player's stage checkpoint.
+        if (name == 'shopAlley') g.benchmarkMode = true;
         if (!await g.restart() || g.disposed || !identical(_game, g)) {
           return MarionetteExtensionResult.error(
             3,
@@ -361,6 +369,7 @@ void attachGameAutomation(HazardGameController game) {
           'reunionBefore',
           'companionTakosan',
           'farm',
+          'shopAlley',
           'farmEnemyStairs',
           'farmGate',
           'mountain',
@@ -419,9 +428,15 @@ void attachGameAutomation(HazardGameController game) {
         final s = g.state!;
         s.checkpointRequested = false;
         for (final e in s.enemies) {
-          e.active = false;
+          if (name != 'shopAlley') e.active = false;
         }
         switch (name) {
+          case 'shopAlley':
+            // Keep authored actors, patrols and pickups. Only chapter transport
+            // is skipped; all movement and beer collection start at its spawn.
+            s.seenEvents.addAll(['opening', 'farm']);
+            s.yaw = 3.141592653589793;
+            s.pitch = .12;
           case 'storyMemo':
             final m = villageMemos.first;
             s.x = m.x;
@@ -773,6 +788,7 @@ void attachGameAutomation(HazardGameController game) {
         }
         s.phase =
             [
+              'shopAlley',
               'bossCombat',
               'mugTiming',
               'ladder',

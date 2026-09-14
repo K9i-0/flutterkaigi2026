@@ -1,0 +1,16 @@
+{
+  "date": "2026-09-14",
+  "method": "Marionette tap 探索に戻る then long_press game-move-up 1000ms; native rendered app in foreground",
+  "initialPosition": {
+    "x": -19,
+    "y": 0,
+    "z": -21
+  },
+  "finalPosition": {
+    "x": -19,
+    "y": 0,
+    "z": -19.71875374999998
+  },
+  "phase": "playing",
+  "scope": "Movement button smoke check at chapter start; full route separately verified with controller inputs."
+}

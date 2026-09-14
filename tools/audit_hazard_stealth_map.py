@@ -62,7 +62,7 @@ for name, folder in [('village', 'pueblo'), ('farm', 'farm')]:
             assert hit and hit.startswith(expected), (name, solid['id'], height, hit)
         checks.append({'opaqueCover': solid['id'], 'raysPassed': 4})
     if name == 'farm':
-        for x, z in [(-11, -16), (-20, 8), (-18, 17), (0, 19), (19, 21), (-21, -3)]:
+        for x, z in [(-11.8, -16), (-20, 8), (-18, 17), (0, 19), (19, 21), (-21, -3)]:
             hit = cast((x - .5, z, 1.2), (x + .5, z, 1.2))
             assert hit and ('trunk' in hit.lower() or 'tree' in hit.lower()), (x, z, hit)
         checks.append({'playableTrunks': 6, 'raysPassed': 6})

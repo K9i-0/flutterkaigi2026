@@ -479,6 +479,14 @@ class GameBenchmark {
       event: null,
     ),
     (
+      name: 'shop-alley-corner',
+      region: 'farm',
+      count: 6,
+      scale: .85,
+      contacts: true,
+      event: null,
+    ),
+    (
       name: 'mountain-six',
       region: 'mountain',
       count: 6,
@@ -586,6 +594,20 @@ class GameBenchmark {
         return;
       }
       final c = cases[index];
+      if (c.name == 'shop-alley-corner') {
+        // Native app discovery may take time. Exclude foreground acquisition
+        // from this comparison instead of producing a zero-render sample.
+        final waiting = Stopwatch()..start();
+        var foregroundSamples = 0;
+        while (foregroundSamples < 10) {
+          if (_disposed || game.disposed) return;
+          if (waiting.elapsed.inSeconds >= 120) {
+            throw StateError('Bring the profile window foreground within 120s');
+          }
+          await Future<void>.delayed(const Duration(milliseconds: 100));
+          foregroundSamples = game.foreground ? foregroundSamples + 1 : 0;
+        }
+      }
       if (!await prepareRegion(game, c.region, cancelled: () => _disposed)) {
         if (_disposed || game.disposed) return;
         throw StateError('Could not load benchmark region ${c.region}');
@@ -606,6 +628,8 @@ class GameBenchmark {
       s.z = baseZ;
       s.health = 100000;
       for (final e in s.enemies) {
+        // This viewpoint keeps the authored patrols for a geometry comparison.
+        if (c.name == 'shop-alley-corner') continue;
         e.active = e.id < c.count;
         e.alerted = false;
         e.x = baseX + (e.id % 4 - 1.5) * 1.5;
@@ -625,7 +649,12 @@ class GameBenchmark {
       observedPursuers.clear();
       movingSearchers.clear();
       advancedSearchers.clear();
-      if (c.name == 'stealth-search') {
+      if (c.name == 'shop-alley-corner') {
+        s.x = -10.65;
+        s.z = -17.5;
+        s.yaw = math.pi;
+        s.pitch = .2;
+      } else if (c.name == 'stealth-search') {
         // A recorded sighting outside the barn, followed by the player hiding
         // inside its real west wall. AI must generate and visit its own guesses.
         s.x = -7.8;
@@ -815,6 +844,7 @@ class GameBenchmark {
     final ordinaryPursuit =
         c.event == null &&
         !c.name.startsWith('window-') &&
+        c.name != 'shop-alley-corner' &&
         c.name != 'stealth-search' &&
         c.name != 'beer-preview';
     return heardAmbience &&
@@ -919,6 +949,8 @@ class GameBenchmark {
           completedPassages += 2;
           resetWindowEnemies();
         }
+      } else if (name == 'shop-alley-corner') {
+        s.yaw = math.pi;
       } else if (name == 'stealth-search') {
         s.yaw = math.pi / 2 + math.sin(s.time * .3) * .15;
       } else {

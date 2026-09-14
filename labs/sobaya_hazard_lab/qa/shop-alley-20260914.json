@@ -1,0 +1,241 @@
+{
+  "date": "2026-09-14",
+  "status": "verified",
+  "change": "Notice tree and farm_0 medallion moved 0.8m toward the shop (x=-11 to -11.8); mesh and three trunk colliders rebuilt together.",
+  "route": {
+    "region": "farm",
+    "start": [
+      -19,
+      -21
+    ],
+    "pickupAndLookout": [
+      [
+        -18,
+        -19
+      ],
+      [
+        -13,
+        -19.4
+      ],
+      [
+        -10,
+        -18.8
+      ],
+      [
+        -5,
+        -19
+      ]
+    ],
+    "throwDirection": [
+      0.9,
+      0.2,
+      0.4
+    ],
+    "coverRoute": [
+      [
+        -10.65,
+        -18.8
+      ],
+      [
+        -10.65,
+        -15
+      ],
+      [
+        -12.5,
+        -15
+      ],
+      [
+        -12.5,
+        -10
+      ],
+      [
+        -16,
+        -10
+      ]
+    ],
+    "finishWaitSeconds": 12
+  },
+  "baseline": {
+    "observation": "The straight line through the shop gap meets the old tree; an additional sidestep succeeds. The first proposed throw point at (-8,-18.8) hides the guard behind cover, so the chosen lookout is (-5,-19).",
+    "screenshot": "evidence/alley-20260914/baseline-corner.png",
+    "oldMap": "evidence/alley-20260914/baseline-farm.json"
+  },
+  "stateRoute": {
+    "method": "20 Hz state simulation on authored actors and pickups; no in-route teleport or granted items",
+    "visibleBeforeThrow": true,
+    "perceptionMetrics": "visibleBeforeThrow means the player sees a guard; discoveries/visibleSeconds in the route summary count guards detecting/seeing the player.",
+    "throw": {
+      "landing": [
+        2.032,
+        -16.07
+      ],
+      "wallImpact": false,
+      "throws": 1
+    },
+    "landing": [
+      2.031686305999756,
+      0.05999999865889549,
+      -16.069665908813477
+    ],
+    "noise": {
+      "kind": "beer_lure",
+      "position": [
+        2.031686305999756,
+        0.2099999986588955,
+        -16.069665908813477
+      ],
+      "radius": 18.0
+    },
+    "luredEnemies": [
+      0
+    ],
+    "elapsed": 45.1,
+    "hp": 100.0,
+    "survived": true,
+    "discoveries": 0,
+    "reacquisitions": 0,
+    "visibleSeconds": 0.0,
+    "grabs": 0,
+    "firstSeen": null,
+    "firstLost": null,
+    "firstRelease": null,
+    "healthAtRelease": null,
+    "releaseAfterFirstLoss": null,
+    "currentlyAlerted": false,
+    "shots": 0,
+    "beersThrown": 1,
+    "position": [
+      -16.0,
+      -10.0
+    ],
+    "failures": []
+  },
+  "assetMetrics": {
+    "before": {
+      "bytes": 11377772,
+      "triangles": 20259,
+      "primitives": 87,
+      "images": 9
+    },
+    "after": {
+      "bytes": 11377768,
+      "triangles": 20259,
+      "primitives": 87,
+      "images": 9
+    }
+  },
+  "meshAudit": "shop-alley-geometry-20260914.json",
+  "validation": {
+    "focusedBeerAndAlleyTests": {
+      "passed": 12
+    },
+    "fullSuite": {
+      "passed": 465,
+      "skipped": 1,
+      "failed": 0,
+      "log": "evidence/alley-20260914/final-tests.log"
+    },
+    "afterCoordinateUpdate": {
+      "mapTestsPassed": 10
+    },
+    "analyze": "No issues found (final run, 3.1s)",
+    "explicitPerceptionEvidenceTests": {
+      "passed": 2,
+      "log": "evidence/alley-20260914/state-evidence-tests.log"
+    },
+    "benchmarkRegressionTests": {
+      "passed": 31,
+      "log": "evidence/alley-20260914/benchmark-tests.log"
+    }
+  },
+  "native": {
+    "success": true,
+    "mode": "native rendered controller inputs; not keyboard/touch or performance proof",
+    "wallMs": 44934,
+    "simulationSeconds": 44.90823800000075,
+    "health": 100,
+    "beersThrown": 1,
+    "shots": 0,
+    "visibleBeforeThrow": true,
+    "heardLure": true,
+    "renderedTicks": 2692,
+    "musicPhases": [
+      "calm",
+      "returning"
+    ],
+    "evidence": "shop-alley-native-20260914.json",
+    "afterScreenshot": "evidence/alley-20260914/after-corner.png",
+    "camera": {
+      "x": -10.65,
+      "z": -17.5,
+      "yaw": 3.141592653589793,
+      "pitch": 0.2
+    },
+    "visualReview": "The tree is now closer to the shop edge; the straight gap is open in the same-camera image. Character models and rendering materials were unchanged.",
+    "uiEvidence": "shop-alley-ui-20260914.json"
+  },
+  "performance": {
+    "status": "valid-macos-profile-comparison",
+    "device": "Apple M4",
+    "power": "AC attached, 80%, not charging (read between runs); power settings unchanged",
+    "conditions": "Same machine, profile, quality, renderScale .85, fixed camera (-10.65,-17.5), yaw pi, pitch .2, authored six guards, 20 seconds each. Other user apps left running; no concurrent build/test during either measurement.",
+    "scope": "Fixed corner on the route, not a full-route profile. One before/after pair; no statistical speedup claim.",
+    "results": {
+      "before": {
+        "uiP95Ms": 4.757,
+        "rasterP95Ms": 0.574,
+        "uiMaxMs": 6.806,
+        "rasterMaxMs": 1.063,
+        "sceneRenderCallsPerSecond": 59.886477106667115,
+        "samples": 240,
+        "elapsedMs": 20121,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "renderPixels": [
+          2176,
+          1428
+        ],
+        "renderScale": 0.85,
+        "devicePixelRatio": 2.0
+      },
+      "after": {
+        "uiP95Ms": 4.361,
+        "rasterP95Ms": 0.464,
+        "uiMaxMs": 6.107,
+        "rasterMaxMs": 0.538,
+        "sceneRenderCallsPerSecond": 59.991833754527036,
+        "samples": 240,
+        "elapsedMs": 20119,
+        "viewport": [
+          1280.0,
+          840.0
+        ],
+        "renderPixels": [
+          2176,
+          1428
+        ],
+        "renderScale": 0.85,
+        "devicePixelRatio": 2.0
+      }
+    },
+    "interpretation": "No large regression observed in this sample. UI and raster durations are the last 240 Flutter frames; Scene.render calls/sec cover the full measurement and are not presented FPS.",
+    "unmeasured": [
+      "GPU completion time",
+      "Presented FPS",
+      "Mac CPU and thermal metrics (native endpoint unsupported)",
+      "iPhone long-run heat and battery"
+    ],
+    "raw": [
+      "shop-alley-profile-before-20260914.json",
+      "shop-alley-profile-after-20260914.json"
+    ],
+    "rejectedAttempt": "Initial baseline attempt was backgrounded with only one Scene.render call; excluded (evidence/alley-20260914/profile-before-attempt)."
+  },
+  "remaining": [],
+  "assetHashes": {
+    "farm.glb": "46a90d46cde248193276db6f3b9190c4dd3cde8ef92d1985b9df5c2080aca1ff",
+    "farm.json": "4c4c757634acd875d9087168cdd72dde5577c8600fda499c1aaaad1f3ae37678"
+  }
+}

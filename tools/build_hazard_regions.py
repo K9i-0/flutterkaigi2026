@@ -169,7 +169,10 @@ for x,z in [(13,11),(15,14),(8,16)]:
 cylinder('Old well',stone,(-20,-11,.45),.65,.9,16)
 cylinder('Old well water',glass,(-20,-11,.85),.48,.015,16)
 solid(-20,-11,1.3,1.3,.9)
-playable_trunk('Notice tree',-11,-16,4,.23,.08)
+# Keep the shop-side gap readable: the trunk previously sat directly in the
+# walking line after the narrow stall/cover opening. Move mesh and collider
+# together toward the shop, with its hanging medallion following the trunk.
+playable_trunk('Notice tree',-11.8,-16,4,.23,.08)
 for x,z in [(-20,8),(-18,17),(0,19),(19,21),(-21,-3)]:
     playable_trunk('Bare trunks',x,z,5.6,.18,.055)
     for i in range(5):
@@ -188,7 +191,7 @@ gate(20,-10,'z')
 fence('Exit lane',17.5,-12,5,'x');fence('Exit lane',17.5,-8,5,'x')
 for x,z in [(-20,-16),(-21,4),(-12,5),(-2,12),(6,18),(18,20),(17,-15),(0,-19)]:weeds('Farm weeds',x,z,24)
 targets=[medallion('farm_'+str(i),x,z,h) for i,(x,z,h) in enumerate([
-    (-11,-16.2,2.6),(-16,-16.72,2.7),(-8,1-.2,2.5),(-10,14.28,2.8),
+    (-11.8,-16.2,2.6),(-16,-16.72,2.7),(-8,1-.2,2.5),(-10,14.28,2.8),
     (12,5.15,1.8),(6,-14.22,4.6),(11,19,2.1)])]
 collection=[
     poster('work','労働時間のお知らせ','03_SCRIPTS/19_liveaction_tako_room_escape/prop_notice_work_8_hours_production.png',-16,-11.72,1.55),
