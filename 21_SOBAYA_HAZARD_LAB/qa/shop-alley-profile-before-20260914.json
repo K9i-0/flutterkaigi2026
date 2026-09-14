@@ -1,0 +1,349 @@
+{
+  "schemaVersion": 2,
+  "recordedAtUtc": "2026-09-14T04:08:12.605776Z",
+  "runLabel": "alley-before",
+  "case": "shop-alley-corner",
+  "benchmarkDurationSeconds": 20,
+  "benchmarkDeadlineSeconds": 42,
+  "benchmarkFrameRateLimit": 60,
+  "settings": {
+    "difficulty": "standard",
+    "volume": 1.0,
+    "voiceVolume": 1.0,
+    "environmentVolume": 1.0,
+    "musicVolume": 1.0,
+    "effectsVolume": 1.0,
+    "sensitivity": 1.0,
+    "touchSensitivity": 1.0,
+    "threatEffects": 0.7,
+    "touchControls": false,
+    "renderScale": 0.85,
+    "muted": false,
+    "cinematicLighting": true,
+    "graphicsPreset": "quality",
+    "frameRateLimit": 60
+  },
+  "lighting": {
+    "advanced": true,
+    "graphicsPreset": "quality",
+    "antiAliasing": "taa",
+    "globalIllumination": false,
+    "globalIlluminationProbeUpdateBudget": 64,
+    "shadowFilter": "bilinearPcf",
+    "shadowMapResolution": 1024,
+    "shadowCascadeCount": 2,
+    "shadowMaxDistance": 32.0,
+    "cacheStaticShadows": true,
+    "ambientOcclusion": true,
+    "ambientOcclusionSamples": 8,
+    "ambientOcclusionHalfResolution": true,
+    "bloom": true,
+    "depthOfField": false,
+    "focusDistance": 3.4202866825208313,
+    "zone": "farm"
+  },
+  "audio": {
+    "observedAmbience": true,
+    "observedSpeech": false,
+    "voice": {
+      "requested": null,
+      "active": null,
+      "playbackSeconds": null,
+      "loading": false,
+      "speaking": false,
+      "finished": false,
+      "paused": false,
+      "volume": 1.0,
+      "errors": []
+    },
+    "soundscape": {
+      "phase": "calm",
+      "intensity": 0.0,
+      "pursuitMix": 0.0,
+      "suspenseMix": 0.0,
+      "encounter": false,
+      "safeTime": 20.099963000000443,
+      "duck": 1.0,
+      "impactDuck": 1.0,
+      "releaseHold": 0.0,
+      "shelterMix": 0.0,
+      "ambience": {
+        "requested": "farm",
+        "active": "farm",
+        "playbackSeconds": null,
+        "loading": false,
+        "speaking": true,
+        "finished": false,
+        "paused": false,
+        "volume": 0.2,
+        "errors": [],
+        "backend": {
+          "state": "completed",
+          "positionMs": 3706,
+          "durationMs": 16000,
+          "loop": true,
+          "loopCompletions": 1,
+          "playbackRequested": true,
+          "positionUpdateMs": 200
+        }
+      },
+      "exploration": {
+        "requested": "exploration",
+        "active": "exploration",
+        "playbackSeconds": 19.999814999999998,
+        "loading": false,
+        "speaking": true,
+        "finished": false,
+        "paused": false,
+        "volume": 0.4,
+        "errors": [],
+        "backend": {
+          "state": "playing",
+          "positionMs": 19898,
+          "durationMs": 48000,
+          "loop": true,
+          "loopCompletions": 0,
+          "playbackRequested": true,
+          "positionUpdateMs": 200
+        }
+      },
+      "tension": {
+        "requested": "tension",
+        "active": "tension",
+        "playbackSeconds": 20.022811,
+        "loading": false,
+        "speaking": true,
+        "finished": false,
+        "paused": false,
+        "volume": 0.0,
+        "errors": [],
+        "backend": {
+          "state": "playing",
+          "positionMs": 19921,
+          "durationMs": 48000,
+          "loop": true,
+          "loopCompletions": 0,
+          "playbackRequested": true,
+          "positionUpdateMs": 200
+        }
+      },
+      "searching": {
+        "requested": "searching",
+        "active": "searching",
+        "playbackSeconds": 19.989807000000003,
+        "loading": false,
+        "speaking": true,
+        "finished": false,
+        "paused": false,
+        "volume": 0.0,
+        "errors": [],
+        "backend": {
+          "state": "playing",
+          "positionMs": 19888,
+          "durationMs": 48000,
+          "loop": true,
+          "loopCompletions": 0,
+          "playbackRequested": true,
+          "positionUpdateMs": 200
+        }
+      }
+    }
+  },
+  "region": "farm",
+  "contactShadows": true,
+  "profile": true,
+  "valid": true,
+  "speechMorphTicks": {},
+  "eventShot": null,
+  "windowMotionTicks": 0,
+  "completedWindowPassages": 0,
+  "workload": {
+    "observedVisualPursuers": [],
+    "pursuitTicks": 0,
+    "searchTicks": 0,
+    "maxConcurrentSearchers": 0,
+    "movingSearchers": [],
+    "advancedSearchers": [],
+    "beerPreviewTicks": 0,
+    "maxBeerGuideSprites": 0,
+    "activeEnemies": 6,
+    "currentSearchingEnemies": 0,
+    "beerGuideVisible": false,
+    "semanticReady": true
+  },
+  "interrupted": false,
+  "foreground": true,
+  "gamePhase": "playing",
+  "simulatedSeconds": 20.099963000000443,
+  "renderScale": 0.85,
+  "viewport": [
+    1280.0,
+    840.0
+  ],
+  "devicePixelRatio": 2.0,
+  "renderPixels": [
+    2176,
+    1428
+  ],
+  "measurement": "Flutter UI and raster thread durations; not GPU execution time or presented FPS",
+  "elapsedMs": 20121,
+  "samples": 240,
+  "window": "last 240 Flutter frames",
+  "uiP95Ms": 4.757,
+  "rasterP95Ms": 0.574,
+  "uiMaxMs": 6.806,
+  "rasterMaxMs": 1.063,
+  "uiOver16_7Ms": 0,
+  "rasterOver16_7Ms": 0,
+  "sceneRenderCountStart": 4,
+  "sceneRenderCountEnd": 1209,
+  "sceneRenderCalls": 1205,
+  "sceneRenderMeasurementSeconds": 20.121404,
+  "sceneRenderCallsPerSecond": 59.886477106667115,
+  "sceneRenderMeasurement": "Scene.render calls that returned per real elapsed second; not presented FPS or GPU completion",
+  "processCpu": {
+    "status": "unavailable",
+    "reason": "insufficientSamples",
+    "scope": "processAllThreads",
+    "usageConvention": "oneCore100Percent",
+    "measurement": "100 * cumulative process CPU seconds delta / native sampleSystemUptimeSeconds delta; 100 percent is one core and values above 100 are valid",
+    "measurementWindow": "First to last available native CPU snapshot after case setup; no warmup exclusion; separate from the last 240 Flutter frame durations",
+    "clock": "ProcessInfo.systemUptime differences, not process lifetime",
+    "sampleIntervalSeconds": 10,
+    "availableSamples": 0,
+    "start": null,
+    "end": null,
+    "startCaseElapsedMs": null,
+    "endCaseElapsedMs": null,
+    "elapsedSeconds": null,
+    "cpuSeconds": null,
+    "oneCorePercent": null,
+    "maximumIntervalOneCorePercent": null,
+    "intervals": []
+  },
+  "deviceMetrics": {
+    "measurement": "Native snapshots at case boundaries and every ten seconds; not GPU utilization or temperature in degrees",
+    "memory": {
+      "status": "unavailable",
+      "valueField": "physicalFootprintBytes",
+      "start": {
+        "status": "unavailable",
+        "available": false,
+        "reason": "notReported"
+      },
+      "end": {
+        "status": "unavailable",
+        "available": false,
+        "reason": "notReported"
+      },
+      "minimumSampledValue": null,
+      "maximumSampledValue": null
+    },
+    "battery": {
+      "status": "unavailable",
+      "valueField": "level",
+      "start": {
+        "status": "unavailable",
+        "available": false,
+        "reason": "notReported"
+      },
+      "end": {
+        "status": "unavailable",
+        "available": false,
+        "reason": "notReported"
+      },
+      "minimumSampledValue": null,
+      "maximumSampledValue": null
+    },
+    "screenBrightness": {
+      "status": "unavailable",
+      "valueField": "value",
+      "start": {
+        "status": "unavailable",
+        "available": false,
+        "reason": "notReported"
+      },
+      "end": {
+        "status": "unavailable",
+        "available": false,
+        "reason": "notReported"
+      },
+      "minimumSampledValue": null,
+      "maximumSampledValue": null
+    },
+    "activeProcessorCount": {
+      "status": "unavailable",
+      "valueField": "count",
+      "start": {
+        "status": "unavailable",
+        "available": false,
+        "reason": "notReported"
+      },
+      "end": {
+        "status": "unavailable",
+        "available": false,
+        "reason": "notReported"
+      },
+      "minimumSampledValue": null,
+      "maximumSampledValue": null
+    }
+  },
+  "thermal": {
+    "status": "unavailable",
+    "sampleIntervalSeconds": 10,
+    "start": {
+      "status": "unavailable",
+      "available": false,
+      "platform": "macOS",
+      "reason": "unsupportedPlatform",
+      "requestedAtUtc": "2026-09-14T04:07:52.484809Z",
+      "completedAtUtc": "2026-09-14T04:07:52.484843Z",
+      "caseElapsedMs": 0.0,
+      "completedCaseElapsedMs": 0.035
+    },
+    "end": {
+      "status": "unavailable",
+      "available": false,
+      "platform": "macOS",
+      "reason": "unsupportedPlatform",
+      "requestedAtUtc": "2026-09-14T04:08:12.605741Z",
+      "completedAtUtc": "2026-09-14T04:08:12.605748Z",
+      "caseElapsedMs": 20121.394,
+      "completedCaseElapsedMs": 20121.403
+    },
+    "peakState": null,
+    "peakRecordedAtUtc": null,
+    "samples": [
+      {
+        "status": "unavailable",
+        "available": false,
+        "platform": "macOS",
+        "reason": "unsupportedPlatform",
+        "requestedAtUtc": "2026-09-14T04:07:52.484809Z",
+        "completedAtUtc": "2026-09-14T04:07:52.484843Z",
+        "caseElapsedMs": 0.0,
+        "completedCaseElapsedMs": 0.035
+      },
+      {
+        "status": "unavailable",
+        "available": false,
+        "platform": "macOS",
+        "reason": "unsupportedPlatform",
+        "requestedAtUtc": "2026-09-14T04:08:02.606214Z",
+        "completedAtUtc": "2026-09-14T04:08:02.606266Z",
+        "caseElapsedMs": 10121.637,
+        "completedCaseElapsedMs": 10121.692
+      },
+      {
+        "status": "unavailable",
+        "available": false,
+        "platform": "macOS",
+        "reason": "unsupportedPlatform",
+        "requestedAtUtc": "2026-09-14T04:08:12.605741Z",
+        "completedAtUtc": "2026-09-14T04:08:12.605748Z",
+        "caseElapsedMs": 20121.394,
+        "completedCaseElapsedMs": 20121.403
+      }
+    ]
+  }
+}

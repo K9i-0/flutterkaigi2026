@@ -1,0 +1,107 @@
+{
+  "description": "Exported mesh aperture and cover ray audit",
+  "maps": {
+    "village": {
+      "glb": "04_GAME_ASSETS/3d/environments/pueblo/village.glb",
+      "glbSha256": "209068ee6b2e2d365ee5e6937b85adcf3375f1ecc04edcf68949ed49867b0081",
+      "mapSha256": "08f242dc4dc1bf0e5f5d55fafdc04fed6b3ab9f96586e65362f216114be1e6f9",
+      "checks": [
+        {
+          "rearDoor": "Barn",
+          "x": -4,
+          "z": 14.5,
+          "clearBodyWidth": 0.84,
+          "clearHeadHeight": 1.72,
+          "raysPassed": 11
+        },
+        {
+          "rearDoor": "Entrance",
+          "x": -8,
+          "z": -12.5,
+          "clearBodyWidth": 0.84,
+          "clearHeadHeight": 1.72,
+          "raysPassed": 11
+        },
+        {
+          "opaqueCover": "cover_entrance",
+          "raysPassed": 4
+        },
+        {
+          "opaqueCover": "cover_entrance_return",
+          "raysPassed": 4
+        },
+        {
+          "opaqueCover": "cover_west",
+          "raysPassed": 4
+        },
+        {
+          "opaqueCover": "cover_west_return",
+          "raysPassed": 4
+        },
+        {
+          "opaqueCover": "cover_barn_rear",
+          "raysPassed": 4
+        },
+        {
+          "opaqueCover": "cover_barn_return",
+          "raysPassed": 4
+        }
+      ],
+      "passed": true,
+      "diagnosticOverhead": "evidence/stealth-village-overhead.png"
+    },
+    "farm": {
+      "glb": "04_GAME_ASSETS/3d/environments/farm/farm.glb",
+      "glbSha256": "46a90d46cde248193276db6f3b9190c4dd3cde8ef92d1985b9df5c2080aca1ff",
+      "mapSha256": "4c4c757634acd875d9087168cdd72dde5577c8600fda499c1aaaad1f3ae37678",
+      "checks": [
+        {
+          "rearDoor": "Tools",
+          "x": -9,
+          "z": 5.0,
+          "clearBodyWidth": 0.84,
+          "clearHeadHeight": 1.72,
+          "raysPassed": 11
+        },
+        {
+          "rearDoor": "Barn",
+          "x": 8,
+          "z": -4.0,
+          "clearBodyWidth": 0.84,
+          "clearHeadHeight": 1.72,
+          "raysPassed": 11
+        },
+        {
+          "opaqueCover": "cover_farm_approach",
+          "raysPassed": 4
+        },
+        {
+          "opaqueCover": "cover_farm_approach_return",
+          "raysPassed": 4
+        },
+        {
+          "opaqueCover": "cover_farm_barn_flank",
+          "raysPassed": 4
+        },
+        {
+          "opaqueCover": "cover_farm_barn_return",
+          "raysPassed": 4
+        },
+        {
+          "opaqueCover": "cover_farm_tools",
+          "raysPassed": 4
+        },
+        {
+          "opaqueCover": "cover_farm_tools_return",
+          "raysPassed": 4
+        },
+        {
+          "playableTrunks": 6,
+          "raysPassed": 6
+        }
+      ],
+      "passed": true,
+      "diagnosticOverhead": "evidence/stealth-farm-overhead.png"
+    }
+  }
+}

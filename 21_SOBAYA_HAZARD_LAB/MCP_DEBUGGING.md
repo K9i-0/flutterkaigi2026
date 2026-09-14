@@ -48,6 +48,29 @@ Dartコード変更後はDTDへ接続してhot reloadする。extension登録の
 
 生ログ・画像はGit対象外の `evidence/`、軽量な採用検証記録は `qa/` に保存する。
 
+### 商店裏のビール誘導経路（2026-09-14）
+
+`madogiwa.openGameScenario(name=shopAlley)` は生活圏の開始地点へ移り、敵6体の通常配置・巡回・拾得物を保持して一時停止する。従来の `farm` シナリオは敵を無効にするため、この経路の検証には使わない。`shopAlley` は検証セッションの保存を無効にする。通常のセーブ動作へ戻る際はアプリを再起動する。
+
+前面の本編で `madogiwa.runGameProbe(name=shopAlley)` を呼ぶ。章入口→配置ビールの回収→商店前→板塀の先でそば屋を視認→実投擲→商店裏へ通常移動→12秒待機を行い、状態・描画tick・音楽の遷移を返す。最大85秒、5秒間描画が進まない場合や背景化は失敗にし、理由と取得済みtraceを返す。`success` と `renderedTicks` を確認する。これは描画中のcontroller入力検査であり、キーボード／タッチやprofileの性能測定とは別。
+
+静止画の比較位置は `gameAction(action=viewpoint, x=-10.65, z=-17.5, yaw=3.141592653589793, pitch=0.2, keepEnemies=true)`。配置を直接指定した画像を経路完走の証明にしない。状態テストは `test/game_shop_alley_test.dart`。`HAZARD_WRITE_ALLEY_QA=true` で実行すると `evidence/alley-20260914/state-route.json` に記録する。
+
+進捗と未検証事項は [商店裏の検証記録](qa/shop-alley-20260914.json)を参照。
+
+同じ角のprofile比較は `HAZARD_BENCHMARK_CASE=shop-alley-corner` を使う。カメラは `(-10.65, -17.5)`、yaw=π、pitch=0.2固定で、通常配置の敵6体を保持する。最大120秒の前面待ち後に測定を始める。これは経路途中の固定視点の描画負荷で、経路全体の操作・難度の検証ではない。
+
+```sh
+mise exec -- flutter run -d macos --profile -t lib/game_main.dart \
+  --dart-define=HAZARD_GAME_BENCHMARK=true \
+  --dart-define=HAZARD_BENCHMARK_CASE=shop-alley-corner \
+  --dart-define=HAZARD_BENCHMARK_SECONDS=20 \
+  --dart-define=HAZARD_GRAPHICS=quality \
+  --dart-define=HAZARD_BENCHMARK_SCALE=0.85
+```
+
+測定ログは `tools/collect_hazard_benchmark.py` で復元し、`valid=true`、`interrupted=false`、viewport・画質・電源条件を照合する。UI/Rasterは末尾240フレーム、Scene呼出頻度は測定期間全体であり、GPU時間や実提示FPSは示さない。
+
 ### iOSの熱状態とフレーム上限（2026-09-12）
 
 debugの `madogiwa.deviceDiagnostics` は物理iPhoneの熱状態・低電力モードを `device`、追加の端末指標を `device.metrics` に返す。その呼び出し時だけ取得し、通常プレイでは定期取得しない。`thermalState` は `ProcessInfo` の `nominal/fair/serious/critical` であり、摂氏温度には対応していない。

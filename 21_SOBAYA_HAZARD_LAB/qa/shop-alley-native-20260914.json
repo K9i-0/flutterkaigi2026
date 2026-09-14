@@ -1,0 +1,3975 @@
+{
+  "success": true,
+  "mode": "native rendered controller inputs; not keyboard/touch or performance proof",
+  "wallMs": 44934,
+  "simulationSeconds": 44.90823800000075,
+  "health": 100,
+  "beersThrown": 1,
+  "shots": 0,
+  "visibleBeforeThrow": true,
+  "sawEnemy": true,
+  "heardLure": true,
+  "preview": [
+    1.987077236175537,
+    0.05999999865889549,
+    -16.06810188293457
+  ],
+  "landing": [
+    1.986948847770691,
+    0.05999999865889549,
+    -16.068159103393555
+  ],
+  "renderedTicks": 2692,
+  "musicPhases": [
+    "calm",
+    "returning"
+  ],
+  "trace": [
+    {
+      "stage": "walk:-18.0,-19.0",
+      "time": 0,
+      "player": [
+        -19,
+        0,
+        -21
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 1,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            -3,
+            0,
+            -15.5
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -6
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-18.0,-19.0",
+      "time": 1.0083319999999993,
+      "player": [
+        -18.720417336909858,
+        0,
+        -20.44083467381967
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 61,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            -3,
+            0,
+            -15.5
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -6
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-18.0,-19.0",
+      "time": 2.016664,
+      "player": [
+        -18.44083467381972,
+        0,
+        -19.881669347639342
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 121,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            -3,
+            0,
+            -15.5
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -6
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-18.0,-19.0",
+      "time": 3.033328999999996,
+      "player": [
+        -18.158941499576922,
+        0,
+        -19.317882999153802
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 182,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            -3,
+            0,
+            -15.5
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -6
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-13.0,-19.4",
+      "time": 4.016660999999993,
+      "player": [
+        -17.71129189668779,
+        0,
+        -19.103385667141282
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 241,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            -3,
+            0,
+            -15.5
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -6
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-13.0,-19.4",
+      "time": 5.016659999999989,
+      "player": [
+        -17.092517631441073,
+        0,
+        -19.14234256471861
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 301,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            -3,
+            0,
+            -15.5
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -6
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-13.0,-19.4",
+      "time": 6.0166589999999855,
+      "player": [
+        -16.473743366194352,
+        0,
+        -19.18129946229594
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 361,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            -3,
+            0,
+            -15.5
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -6
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-13.0,-19.4",
+      "time": 7.016656999999982,
+      "player": [
+        -15.854969719722542,
+        0,
+        -19.220256320916334
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 421,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            -3,
+            0,
+            -15.5
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -6
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-13.0,-19.4",
+      "time": 8.016655999999978,
+      "player": [
+        -15.236195454475927,
+        0,
+        -19.25921321849368
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 481,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            -3,
+            0,
+            -15.5
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -6
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-13.0,-19.4",
+      "time": 9.016653999999994,
+      "player": [
+        -14.617421808004195,
+        0,
+        -19.298170077114122
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 541,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            -3,
+            0,
+            -15.5
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -6
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-13.0,-19.4",
+      "time": 10.01665200000001,
+      "player": [
+        -13.998648161532465,
+        0,
+        -19.337126935734556
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 601,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            -2.815833549999999,
+            0,
+            -15.5
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -6
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-13.0,-19.4",
+      "time": 11.016650000000025,
+      "player": [
+        -13.379874515060727,
+        0,
+        -19.376083794354994
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 661,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            -2.165834849999997,
+            0,
+            -15.5
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -6.649998699999996
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-10.0,-18.8",
+      "time": 12.03331500000004,
+      "player": [
+        -12.77038923544373,
+        0,
+        -19.33168753360771
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 722,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            -1.505002599999993,
+            0,
+            -15.5
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -7.31083094999999
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-10.0,-18.8",
+      "time": 13.033313000000057,
+      "player": [
+        -12.161502494733135,
+        0,
+        -19.21483121418767
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 782,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            -0.8550038999999902,
+            0,
+            -15.5
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -7.960829649999984
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-10.0,-18.8",
+      "time": 14.016644000000072,
+      "player": [
+        -11.562764089626635,
+        0,
+        -19.099922542938703
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 841,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            -0.21583874999999014,
+            0,
+            -15.5
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -8.599994799999966
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-10.0,-18.8",
+      "time": 15.016642000000088,
+      "player": [
+        -10.95387734891604,
+        0,
+        -18.98306622351866
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 901,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            0.43415995000001,
+            0,
+            -15.5
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -9.249993499999945
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-10.0,-18.8",
+      "time": 16.033307000000107,
+      "player": [
+        -10.33484227260135,
+        0,
+        -18.864262255927553
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 962,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            1.0949922000000103,
+            0,
+            -15.5
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -9.910825749999924
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-5.0,-19.0",
+      "time": 17.016638000000185,
+      "player": [
+        -9.747577566899864,
+        0,
+        -18.829216004447858
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 1021,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            1.604157350000013,
+            0,
+            -15.5
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -10.549990899999907
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-5.0,-19.0",
+      "time": 18.01663600000027,
+      "player": [
+        -9.127979571892489,
+        0,
+        -18.851504723217097
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 1081,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            1.604157350000013,
+            0,
+            -15.5
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -11.199989599999887
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-5.0,-19.0",
+      "time": 19.01663300000035,
+      "player": [
+        -8.508382196484348,
+        0,
+        -18.87379341969755
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 1141,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            1.604157350000013,
+            0,
+            -15.5
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -11.849987649999868
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-5.0,-19.0",
+      "time": 20.016631000000434,
+      "player": [
+        -7.888784201476973,
+        0,
+        -18.89608213846671
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 1201,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            1.604157350000013,
+            0,
+            -15.5
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -12.499986349999848
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-5.0,-19.0",
+      "time": 21.016629000000517,
+      "player": [
+        -7.269186206469598,
+        0,
+        -18.91837085723587
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 1261,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            1.604157350000013,
+            0,
+            -15.5
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -13.10665149999983
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-5.0,-19.0",
+      "time": 22.033293000000597,
+      "player": [
+        -6.639261970624949,
+        0,
+        -18.941031040534966
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 1322,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            1.6565917077625765,
+            0,
+            -15.897387884523535
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -13.10665149999983
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-5.0,-19.0",
+      "time": 23.01662400000068,
+      "player": [
+        -6.029990836054083,
+        0,
+        -18.962948272485427
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 1381,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            1.740203278798746,
+            0,
+            -16.531060666141475
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -13.10665149999983
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-5.0,-19.0",
+      "time": 24.033289000000764,
+      "player": [
+        -5.400065980610199,
+        0,
+        -18.985608478073257
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 1442,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            1.8266492037899111,
+            0,
+            -17.186214361614933
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -13.10665149999983
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "impact",
+      "time": 25.008287000000838,
+      "player": [
+        -5.09448831623056,
+        0,
+        -18.996600983985743
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 1499,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            1.9095522288517905,
+            0,
+            -17.81451723697626
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": true,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -13.10665149999983
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-10.65,-18.8",
+      "time": 26.00828500000091,
+      "player": [
+        -5.234400734483637,
+        0,
+        -18.991649699447766
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 1559,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            1.9478151569550488,
+            0,
+            -18.104503129880374
+          ],
+          "awareness": "investigating",
+          "source": "beer_lure",
+          "visible": false,
+          "target": [
+            1.986948847770691,
+            0,
+            -16.068159103393555
+          ]
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -13.10665149999983
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-10.65,-18.8",
+      "time": 27.00828200000099,
+      "player": [
+        -8.032640704800087,
+        0,
+        -18.892624305765338
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 1619,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            1.2956563585789123,
+            0,
+            -16.918307152017384
+          ],
+          "awareness": "investigating",
+          "source": "beer_lure",
+          "visible": false,
+          "target": [
+            1.986948847770691,
+            0,
+            -16.068159103393555
+          ]
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -13.10665149999983
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-10.65,-15.0",
+      "time": 28.024947000001074,
+      "player": [
+        -10.593808519031194,
+        0,
+        -18.522182215797354
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 1680,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            1.5636487726457116,
+            0,
+            -16.524109389180733
+          ],
+          "awareness": "investigating",
+          "source": "beer_lure",
+          "visible": false,
+          "target": [
+            1.986948847770691,
+            0,
+            -16.068159103393555
+          ]
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -13.10665149999983
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-10.65,-15.0",
+      "time": 29.008278000001155,
+      "player": [
+        -10.637728400550635,
+        0,
+        -15.769205733586581
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 1739,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            1.5636487726457116,
+            0,
+            -16.524109389180733
+          ],
+          "awareness": "investigating",
+          "source": "beer_lure",
+          "visible": false,
+          "target": [
+            1.986948847770691,
+            0,
+            -16.068159103393555
+          ]
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -12.889985049999837
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-12.5,-10.0",
+      "time": 30.008275000001237,
+      "player": [
+        -12.416347480880143,
+        0,
+        -14.677358008331495
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 1799,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            1.5636487726457116,
+            0,
+            -16.524109389180733
+          ],
+          "awareness": "investigating",
+          "source": "beer_lure",
+          "visible": false,
+          "target": [
+            1.986948847770691,
+            0,
+            -16.068159103393555
+          ]
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -12.239986999999855
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-12.5,-10.0",
+      "time": 31.00827300000132,
+      "player": [
+        -12.466416159407364,
+        0,
+        -11.877811300833653
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 1859,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            1.5636487726457116,
+            0,
+            -16.524109389180733
+          ],
+          "awareness": "investigating",
+          "source": "beer_lure",
+          "visible": false,
+          "target": [
+            1.986948847770691,
+            0,
+            -16.068159103393555
+          ]
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -11.589988299999876
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "walk:-16.0,-10.0",
+      "time": 32.0082710000014,
+      "player": [
+        -13.478407809395813,
+        0,
+        -10.054714836952705
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 1919,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            1.5636487726457116,
+            0,
+            -16.524109389180733
+          ],
+          "awareness": "investigating",
+          "source": "beer_lure",
+          "visible": false,
+          "target": [
+            1.986948847770691,
+            0,
+            -16.068159103393555
+          ]
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -10.939989599999896
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "cover",
+      "time": 33.02493500000135,
+      "player": [
+        -15.928673673475755,
+        0,
+        -10.001547676242316
+      ],
+      "health": 100,
+      "phase": "returning",
+      "music": "returning",
+      "ticks": 1980,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            1.3688107030468897,
+            0,
+            -16.78001485024108
+          ],
+          "awareness": "returning",
+          "source": "beer_lure",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -10.279157999999915
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "cover",
+      "time": 34.0249330000013,
+      "player": [
+        -15.928673673475755,
+        0,
+        -10.001547676242316
+      ],
+      "health": 100,
+      "phase": "returning",
+      "music": "returning",
+      "ticks": 2040,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            0.6095401892294319,
+            0,
+            -17.475844716693413
+          ],
+          "awareness": "returning",
+          "source": "beer_lure",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -9.629159299999936
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "cover",
+      "time": 35.00826400000125,
+      "player": [
+        -15.928673673475755,
+        0,
+        -10.001547676242316
+      ],
+      "health": 100,
+      "phase": "returning",
+      "music": "returning",
+      "ticks": 2099,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            -0.07500171826178358,
+            0,
+            -18.18493607941142
+          ],
+          "awareness": "returning",
+          "source": "beer_lure",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -8.989994149999955
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "cover",
+      "time": 36.0082610000012,
+      "player": [
+        -15.928673673475755,
+        0,
+        -10.001547676242316
+      ],
+      "health": 100,
+      "phase": "returning",
+      "music": "returning",
+      "ticks": 2159,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            -1.0236222168707005,
+            0,
+            -17.892843541691224
+          ],
+          "awareness": "returning",
+          "source": "beer_lure",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -8.339996099999972
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "cover",
+      "time": 37.008259000001146,
+      "player": [
+        -15.928673673475755,
+        0,
+        -10.001547676242316
+      ],
+      "health": 100,
+      "phase": "returning",
+      "music": "returning",
+      "ticks": 2219,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            -1.798492987304542,
+            0,
+            -17.18459607256704
+          ],
+          "awareness": "returning",
+          "source": "beer_lure",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -7.689997399999984
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "cover",
+      "time": 38.024923000001095,
+      "player": [
+        -15.928673673475755,
+        0,
+        -10.001547676242316
+      ],
+      "health": 100,
+      "phase": "returning",
+      "music": "returning",
+      "ticks": 2280,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            -2.560344340422248,
+            0,
+            -16.43687069740046
+          ],
+          "awareness": "returning",
+          "source": "beer_lure",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -7.029165799999991
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "cover",
+      "time": 39.024920000001046,
+      "player": [
+        -15.928673673475755,
+        0,
+        -10.001547676242316
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 2340,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            -2.7463342797085613,
+            0,
+            -16.251631821255707
+          ],
+          "awareness": "idle",
+          "source": "beer_lure",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -6.390001299999997
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "cover",
+      "time": 40.008251000000996,
+      "player": [
+        -15.928673673475755,
+        0,
+        -10.001547676242316
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 2399,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            -2.7463342797085613,
+            0,
+            -16.251631821255707
+          ],
+          "awareness": "idle",
+          "source": "beer_lure",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -6.390001299999997
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "cover",
+      "time": 41.024915000000945,
+      "player": [
+        -15.928673673475755,
+        0,
+        -10.001547676242316
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 2460,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            -2.7463342797085613,
+            0,
+            -16.251631821255707
+          ],
+          "awareness": "idle",
+          "source": "beer_lure",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -6.390001299999997
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "cover",
+      "time": 42.008246000000895,
+      "player": [
+        -15.928673673475755,
+        0,
+        -10.001547676242316
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 2519,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            -2.8017604740788675,
+            0,
+            -16.087399573508698
+          ],
+          "awareness": "idle",
+          "source": "beer_lure",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -6.390001299999997
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "cover",
+      "time": 43.008243000000846,
+      "player": [
+        -15.928673673475755,
+        0,
+        -10.001547676242316
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 2579,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            -2.874507328208801,
+            0,
+            -15.871844825324802
+          ],
+          "awareness": "idle",
+          "source": "beer_lure",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -6.390001299999997
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    },
+    {
+      "stage": "cover",
+      "time": 44.024907000000795,
+      "player": [
+        -15.928673673475755,
+        0,
+        -10.001547676242316
+      ],
+      "health": 100,
+      "phase": "calm",
+      "music": "calm",
+      "ticks": 2640,
+      "enemies": [
+        {
+          "id": 0,
+          "position": [
+            -2.874507328208801,
+            0,
+            -15.871844825324802
+          ],
+          "awareness": "idle",
+          "source": "beer_lure",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 1,
+          "position": [
+            0,
+            0,
+            2
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 2,
+          "position": [
+            14.2,
+            0,
+            -6.390001299999997
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 3,
+          "position": [
+            14,
+            0,
+            10
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 4,
+          "position": [
+            -11,
+            0,
+            12
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        },
+        {
+          "id": 5,
+          "position": [
+            -9,
+            0,
+            3
+          ],
+          "awareness": "idle",
+          "source": "none",
+          "visible": false,
+          "target": null
+        }
+      ]
+    }
+  ],
+  "type": "_extensionType",
+  "method": "ext.flutter.madogiwa.runGameProbe",
+  "status": "Success"
+}

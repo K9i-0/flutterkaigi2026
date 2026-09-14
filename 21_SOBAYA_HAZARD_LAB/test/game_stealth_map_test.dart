@@ -157,11 +157,11 @@ void main() {
     () {
       final s = HazardGameState(loadMap('farm'));
       expect(
-        s.wallDistance(vm.Vector3(-11.6, 1.2, -16), vm.Vector3(1, 0, 0), 1.2),
+        s.wallDistance(vm.Vector3(-12.4, 1.2, -16), vm.Vector3(1, 0, 0), 1.2),
         lessThan(1.2),
       );
       expect(
-        s.wallDistance(vm.Vector3(-11.6, 1.2, -16.6), vm.Vector3(1, 0, 0), 1.2),
+        s.wallDistance(vm.Vector3(-12.4, 1.2, -16.6), vm.Vector3(1, 0, 0), 1.2),
         1.2,
       );
     },
