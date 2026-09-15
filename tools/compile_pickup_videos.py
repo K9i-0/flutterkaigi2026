@@ -10,6 +10,7 @@ import re
 import shutil
 import subprocess
 import sys
+import unicodedata
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -83,6 +84,49 @@ def normalize(source, target, width, height, fps):
     return frames / fps
 
 
+def title_lines(title, max_units=32):
+    """Conservative wrapping: CJK glyphs use one em, Latin half an em."""
+    lines = []
+    paragraphs = title.replace(' — ', '\n').replace('：', '\n').replace('（', '\n（').splitlines()
+    for paragraph in paragraphs:
+        line, units = '', 0
+        for token in re.findall(r'[A-Za-z0-9]+(?:[-/][A-Za-z0-9]+)*|.', paragraph):
+            cost = sum(2 if unicodedata.east_asian_width(c) in ('W', 'F', 'A') else 1 for c in token)
+            if units + cost > max_units and line and token not in '、。，．：；？！ー）)]』」':
+                lines.append(line.strip())
+                line, units = '', 0
+            line += token
+            units += cost
+        if line.strip():
+            lines.append(line.strip())
+    return lines
+
+
+def title_card(title, target, width, height, fps, frames, font):
+    text_path = target.with_suffix('.txt')
+    lines = title_lines(title, 44)
+    fontsize = max(12, min(round(width * 0.035), int(height * 0.65 / (len(lines) * 1.5))))
+    text_path.write_text('\n'.join(lines) + '\n', encoding='utf-8')
+    # Work directory and font are provided as relative, fixed names; title text
+    # stays in a UTF-8 file and never becomes filter syntax.
+    shutil.copyfile(font, target.parent / 'title-font.ttc')
+    filters = []
+    line_height = round(fontsize * 1.5)
+    for index, line in enumerate(lines):
+        line_path = target.with_suffix(f'.line{index}.txt')
+        line_path.write_text(line, encoding='utf-8')
+        y = round(height / 2 - len(lines) * line_height / 2 + index * line_height)
+        filters.append(f"drawtext=fontfile=title-font.ttc:textfile={line_path.name}:expansion=none:"
+                       f"fontcolor=white:fontsize={fontsize}:x=(w-text_w)/2:y={y}")
+    vf = ','.join(filters + ['setsar=1'])
+    subprocess.run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-nostdin', '-y',
+        '-f', 'lavfi', '-i', f'color=c=black:s={width}x{height}:r={fps}',
+        '-f', 'lavfi', '-i', 'anullsrc=r=48000:cl=stereo', '-vf', vf,
+        '-t', str(frames / fps), '-c:v', 'libx264', '-preset', 'fast', '-crf', '20',
+        '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-ar', '48000', '-ac', '2', '-b:a', '192k',
+        '-movflags', '+faststart', target.name], cwd=target.parent, check=True)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--limit', type=int, default=0, help='Newest N pickup works; 0 = all')
@@ -94,7 +138,13 @@ def main():
     parser.add_argument('--dry-run', action='store_true', help='List videos without downloading or rendering')
     parser.add_argument('--catalog', type=Path, help='Read saved public API JSON (offline verification)')
     parser.add_argument('--output', type=Path, help='New .mp4 path; existing files are never overwritten')
+    parser.add_argument('--versions', choices=['both', 'plain', 'titles'], default='both')
+    parser.add_argument('--title-seconds', type=float, default=2.0)
+    parser.add_argument('--font', type=Path, default=Path('/System/Library/Fonts/ヒラギノ角ゴシック W6.ttc'))
     args = parser.parse_args()
+    if not math.isfinite(args.title_seconds) or not 0 < args.title_seconds <= 30:
+        parser.error('--title-seconds must be between 0 and 30')
+    title_frames = max(1, round(args.title_seconds * args.fps))
     width, height = (1080, 1920) if args.portrait else (1920, 1080)
     if args.size:
         if not re.fullmatch(r'\d+x\d+', args.size):
@@ -127,7 +177,11 @@ def main():
     if output.suffix.lower() != '.mp4':
         parser.error('--output must end in .mp4')
     manifest_path = output.with_suffix('.json')
-    if output.exists() or manifest_path.exists():
+    versions = ['plain', 'titles'] if args.versions == 'both' else [args.versions]
+    outputs = {version: output.with_name(output.stem + '_' + version + '.mp4') for version in versions}
+    if 'titles' in versions and not args.font.is_file():
+        parser.error('Japanese font missing; specify --font /path/to/font.ttf')
+    if output.exists() or any(path.exists() for path in outputs.values()) or manifest_path.exists():
         raise ValueError('Output or manifest already exists; choose a new output path')
     output.parent.mkdir(parents=True, exist_ok=True)
     cache = ROOT / '.local/pickup-compilations/cache'
@@ -137,7 +191,10 @@ def main():
     manifest = {'created_at': dt.datetime.now(dt.timezone.utc).isoformat(), 'origin': origin,
                 'selection': 'public pickup episodes, one primary video per episode',
                 'order': args.order, 'seed': seed, 'width': width, 'height': height,
-                'fps': args.fps, 'videos': videos, 'status': 'rendering'}
+                'fps': args.fps, 'videos': videos, 'status': 'rendering',
+                'title_frames': title_frames, 'title_font': str(args.font),
+                'title_placement': 'between videos, showing the following video title',
+                'outputs': {key: str(value) for key, value in outputs.items()}}
     manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n')
     try:
         for index, item in enumerate(videos):
@@ -145,20 +202,42 @@ def main():
             source = cache / f'{item["video_id"]}.mp4'
             download(origin + '/media/' + item['video_id'], source)
             item['duration_seconds'] = normalize(source, work / f'{index:04d}.mp4', width, height, args.fps)
-        playlist = work / 'concat.txt'
-        playlist.write_text(''.join(f"file '{i:04d}.mp4'\n" for i in range(len(videos))))
-        staged = work / 'complete.mp4'
-        run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-nostdin', '-n', '-f', 'concat',
-             '-safe', '1', '-i', playlist, '-c', 'copy', '-movflags', '+faststart', staged])
-        run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-xerror', '-nostdin', '-i', staged,
-             '-f', 'null', '-'])
-        manifest['result'] = probe(staged)['format']
-        manifest['result']['filename'] = str(output)
-        # Hard-link publishes atomically without replacing any existing output.
-        output.hardlink_to(staged)
+        if 'titles' in versions:
+            for index, item in enumerate(videos[1:], 1):
+                title_card(item['title'], work / f'title-{index:04d}.mp4', width, height,
+                           args.fps, title_frames, args.font)
+        manifest['results'] = {}
+        for version in versions:
+            entries = []
+            cursor = 0.0
+            timeline = []
+            for index, item in enumerate(videos):
+                if version == 'titles' and index:
+                    entries.append(f'title-{index:04d}.mp4')
+                    timeline.append({'type': 'title', 'title': item['title'], 'start': cursor,
+                                     'duration': title_frames / args.fps})
+                    cursor += title_frames / args.fps
+                entries.append(f'{index:04d}.mp4')
+                timeline.append({'type': 'video', 'video_id': item['video_id'], 'start': cursor,
+                                 'duration': item['duration_seconds']})
+                cursor += item['duration_seconds']
+            playlist = work / f'concat-{version}.txt'
+            playlist.write_text(''.join(f"file '{name}'\n" for name in entries))
+            staged = work / f'complete-{version}.mp4'
+            run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-nostdin', '-n', '-f', 'concat',
+                 '-safe', '1', '-i', playlist, '-c', 'copy', '-movflags', '+faststart', staged])
+            run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-xerror', '-nostdin', '-i', staged,
+                 '-f', 'null', '-'])
+            result = probe(staged)['format']
+            result['filename'] = str(outputs[version])
+            result['timeline'] = timeline
+            manifest['results'][version] = result
+        # Validate both versions before publishing either one.
+        for version, destination in outputs.items():
+            destination.hardlink_to(work / f'complete-{version}.mp4')
+            print(f'Complete: {destination}', flush=True)
         manifest['status'] = 'complete'
         shutil.rmtree(work)
-        print(f'Complete: {output}', flush=True)
     except Exception as error:
         manifest['status'] = 'failed'
         manifest['error'] = str(error)
