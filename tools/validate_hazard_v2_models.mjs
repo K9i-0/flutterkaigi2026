@@ -30,7 +30,7 @@ for(const name of ['sobaya','fukuchan']){
  const data=json(buffer),sourceData=json(original);
  const game=await load(buffer),source=await load(original);
  const ids=new Set(game.animations.map(a=>a.name));
- for(const a of [...json(old).animations,...sourceData.animations])assert(ids.has(a.name),'Missing '+name+' '+a.name);
+ for(const a of [...json(old).animations,...(sourceData.animations??[])])assert(ids.has(a.name),'Missing '+name+' '+a.name);
  const meshes=[];game.scene.traverse(o=>{if(o.isMesh)meshes.push(o);});
  const originalMeshes=[];source.scene.traverse(o=>{if(o.isMesh)originalMeshes.push(o);});
  const triangles=ms=>ms.reduce((sum,m)=>sum+(m.geometry.index?.count??m.geometry.attributes.position.count)/3,0);
@@ -80,10 +80,9 @@ for(const name of ['sobaya','fukuchan']){
  }
  report.push({name,version:2,glbSha256:sha(buffer),gltfErrors:0,gltfWarnings:format.issues.numWarnings,
   triangles:triangles(meshes),renderMeshes:meshes.length,bones:meshes[0].skeleton.bones.length,
-  gameClips:ids.size,retainedV1Clips:json(old).animations.length,retainedV2Clips:sourceData.animations.length,
+  gameClips:ids.size,retainedV1Clips:json(old).animations.length,retainedV2Clips:(sourceData.animations??[]).length,
   heightM:rest.max.y-rest.min.y,maxWeightError,maxAttachmentDistance,evaluatedVertices,
   scope:'V2 geometry count, expressions/black material, all v1/v2 clip IDs, five skin samples per clip, socket follows hand. Visual grip quality requires game review.'});
 }
 fs.writeFileSync(folder+'/validation.json',JSON.stringify(report,null,2)+'\n');
-fs.writeFileSync(folder+'/v2_20260913/validation.json',JSON.stringify(report,null,2)+'\n');
 console.log(JSON.stringify(report,null,2));

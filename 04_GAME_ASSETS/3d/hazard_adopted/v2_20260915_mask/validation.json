@@ -1,0 +1,38 @@
+[
+  {
+    "name": "sobaya",
+    "version": 2,
+    "glbSha256": "3ccce1dc4135b433f953b975c6cc33043fca77dae68d56f2f74dc99115f61e0d",
+    "gltfErrors": 0,
+    "gltfWarnings": 5,
+    "triangles": 200090,
+    "renderMeshes": 7,
+    "bones": 24,
+    "gameClips": 103,
+    "retainedV1Clips": 98,
+    "retainedV2Clips": 11,
+    "heightM": 1.7998658705307986,
+    "maxWeightError": 4.470348358154297e-8,
+    "maxAttachmentDistance": 0.06500015354834458,
+    "evaluatedVertices": 4130300,
+    "scope": "V2 geometry count, expressions/black material, all v1/v2 clip IDs, five skin samples per clip, socket follows hand. Visual grip quality requires game review."
+  },
+  {
+    "name": "fukuchan",
+    "version": 2,
+    "glbSha256": "3cd6e23564d36104d4b8bff5cadc94db4d83a2af6365ef365a5db5ad07983cea",
+    "gltfErrors": 0,
+    "gltfWarnings": 7,
+    "triangles": 69413,
+    "renderMeshes": 8,
+    "bones": 54,
+    "gameClips": 99,
+    "retainedV1Clips": 93,
+    "retainedV2Clips": 23,
+    "heightM": 1.6999998469265225,
+    "maxWeightError": 4.470348358154297e-8,
+    "maxAttachmentDistance": 0.07794254981785156,
+    "evaluatedVertices": 1428075,
+    "scope": "V2 geometry count, expressions/black material, all v1/v2 clip IDs, five skin samples per clip, socket follows hand. Visual grip quality requires game review."
+  }
+]
