@@ -14,7 +14,7 @@ export const Route = createRootRoute({
     const path = location.pathname.replace(/\/$/, "") || "/";
     const official = ["/", "/episodes", "/story", "/gallery"].includes(path) || path.startsWith("/characters");
     if (!official) return { official: null };
-    const { data, theme: savedTheme } = await getOfficialShell();
+    const { data, theme: savedTheme } = await getOfficialShell({ data: location.href });
     const explicit = new URL(location.href, "https://madogiwa.work").searchParams.get("theme");
     return { official: { data, theme: validTheme(explicit) ? explicit : savedTheme, href: location.href } };
   },

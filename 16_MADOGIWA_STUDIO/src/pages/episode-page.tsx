@@ -24,7 +24,7 @@ export function EpisodePage({ detail }: { detail: PublicEpisodeDetail }) {
   return <article className="production-note">
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
     <a className="production-back" href={returnTo}><ArrowLeft size={17} />動画に戻る</a>
-    <header className="production-heading"><p>窓際族物語 / 制作ノート</p><h1>{episode.title}</h1></header>
+    <header className="production-heading"><p>窓際族物語 / 制作ノート</p><h1>{episode.title}</h1><p>公開中：生成バージョン {productions.length}件 · 動画 {videos.length}本</p></header>
     {videos.length > 1 && <label className="production-select">制作バージョン<select value={video?.id} onChange={(event) => { setSelected(event.target.value); history.replaceState(null, "", `#making-${event.target.value}`); }}>{videos.map((item) => <option key={item.id} value={item.id}>{item.label || "動画"} · v{productions.find((p) => p.generation_id === item.generation_id)?.version ?? "—"}</option>)}</select></label>}
     {video && <section className="production-video"><DeferredVideo key={video.id} src={`/media/${video.id}`} poster={video.poster_url ?? episodePoster(detail)} label={video.label || episode.title} /></section>}
     {production ? <div id={`making-${video?.id}`} className="production-content">

@@ -2,9 +2,9 @@ import {
   characters as baseCharacters,
   comicEpisodes,
 } from "../lib/site-content";
-import type { EpisodeSummary } from "../lib/api";
+import type { PublicCard } from "../lib/catalog";
 export { comicEpisodes };
-export type Episode = EpisodeSummary;
+export type Episode = PublicCard;
 export const starterSlugs = [
   "madogiwa-super-try-commute",
   "professional-window-side-sobaya",

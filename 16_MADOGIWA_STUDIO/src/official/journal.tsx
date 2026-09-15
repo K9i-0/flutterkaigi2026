@@ -10,7 +10,6 @@ import {
   Play,
   X,
   Menu,
-  Search,
   Heart,
   Volume2,
   Pause,
@@ -30,12 +29,12 @@ import {
   poster,
   runtime,
   videoSource,
-  categories,
   category,
   comicEpisodes,
   type Episode,
   type Cast,
 } from "./journal-data";
+import type { CatalogPage } from "../lib/catalog";
 import type { GalleryItem } from "../lib/api";
 import "./journal.css";
 import "./sakaba.css";
@@ -50,7 +49,8 @@ type Route = {
   page: Page;
   character?: string;
   member?: string;
-  collection?: string;
+  after?: string;
+  before?: string;
   chapter?: number;
   scope?: "all";
 };
@@ -78,7 +78,8 @@ function readRoute(href = typeof location === "undefined" ? "/" : location.href)
     character: p.get("character") ?? (path.startsWith("/characters/") ? path.split("/")[2] : undefined),
     member: p.get("member") ?? undefined,
     scope: p.get("scope") === "all" ? "all" : undefined,
-    collection: p.get("collection") ?? undefined,
+    after: p.get("after") ?? undefined,
+    before: p.get("before") ?? undefined,
     chapter: Math.min(
       comicEpisodes.length,
       Math.max(1, Math.floor(Number(p.get("chapter"))) || 1),
@@ -91,14 +92,15 @@ function href(route: Route) {
   if (route.character) q.set("character", route.character);
   if (route.scope) q.set("scope", route.scope);
   if (route.member) q.set("member", route.member);
-  if (route.collection) q.set("collection", route.collection);
+  if (route.after) q.set("after", route.after);
+  if (route.before) q.set("before", route.before);
   if (route.page === "story") q.set("chapter", String(route.chapter ?? 1));
   return `/?${q}`;
 }
 function IconPlay() {
   return <Play size={15} fill="currentColor" />;
 }
-export default function Journal({ episodes: publicEpisodes, galleryItems, initialTheme, initialHref }: { episodes: Episode[]; galleryItems: GalleryItem[]; initialTheme?: AvailableTheme; initialHref?: string }) {
+export default function Journal({ episodes: publicEpisodes, galleryItems, initialTheme, initialHref, catalog }: { catalog?: CatalogPage; episodes: Episode[]; galleryItems: GalleryItem[]; initialTheme?: AvailableTheme; initialHref?: string }) {
   const arts = galleryItems.map((item) => ({ src: item.image_url, title: item.title, kind: item.kind }));
   const episodes = publicEpisodes.filter((e) => e.primary_video_id && !e.title.includes("検証"));
   const starters = starterSlugs.map((slug) => episodes.find((e) => e.slug === slug)).filter((e): e is Episode => !!e);
@@ -124,7 +126,6 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
   const [zoom, setZoom] = useState<{ src: string; title: string } | null>(null);
   useMediaViewport(!!playing || !!zoom);
   const [toast, setToast] = useState("");
-  const [query, setQuery] = useState("");
   const [saved, setSaved] = useState<string[]>([]);
   useEffect(() => {
     try {
@@ -139,7 +140,6 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
       if (!saved?.restore || saved.href !== location.pathname + location.search) return;
       sessionStorage.setItem("madogiwa-production-return", JSON.stringify({ ...saved, restore: false }));
       if (saved.route && Object.hasOwn(pageNames, saved.route.page)) setRoute(saved.route);
-      if (typeof saved.query === "string") setQuery(saved.query);
       setPlaying(publicEpisodes.find((episode) => episode.id === saved.episodeId) ?? null);
       requestAnimationFrame(() => window.scrollTo({ top: Number(saved.scroll) || 0 }));
     } catch { /* Stored navigation state is optional. */ }
@@ -183,13 +183,9 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
     return () => clearTimeout(timer);
   }, [toast]);
   function go(next: Route) {
-    setWorking(false);
-    history.pushState(null, "", href(next));
-    setRoute(next);
-    setMenu(false);
-    setPlaying(null);
-    setQuery("");
-    window.scrollTo({ top: 0, behavior: "instant" });
+    // Navigate through SSR so every route gets only its own data. Browser history,
+    // reloads and shared filter URLs all use the same server-side query.
+    window.location.assign(href(next));
   }
   function link(next: Route, label: React.ReactNode, className = "") {
     return (
@@ -350,15 +346,7 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
     </section>
   );
 
-  const filtered = episodes.filter(
-    (e) =>
-      (route.scope === "all" || e.has_featured_video === 1) &&
-      (!route.member || e.members.some((m) => m.slug === route.member)) &&
-      (!route.collection || category(e) === route.collection) &&
-      `${episodeTitle(e)} ${e.summary} ${e.members.map((m) => m.name).join(" ")}`
-        .toLowerCase()
-        .includes(query.toLowerCase()),
-  );
+  const filtered = episodes;
   const playbackQueue = route.page === "movies" && filtered.some((e) => e.id === playing?.id) ? filtered : episodes;
   const playingIndex = playbackQueue.findIndex((e) => e.id === playing?.id);
   const nextEpisode = playingIndex >= 0 ? playbackQueue[playingIndex + 1] : undefined;
@@ -614,95 +602,41 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
                 気になった一本からどうぞ。
               </p>
             </div>
-            <div className="j-scope-tabs" aria-label="動画の表示範囲">
-              {([undefined, "all"] as const).map((scope) => (
-                <button key={scope ?? "pickup"} aria-pressed={route.scope === scope}
-                  onClick={() => {
-                    const next = { ...route, scope };
-                    history.replaceState(null, "", href(next));
-                    setRoute(next);
-                  }}>
-                  {!scope && <Star size={14} fill="currentColor" />}
-                  {scope ? "すべての動画" : "ピックアップ"}
-                  <span>{episodes.filter((e) => scope || e.has_featured_video === 1).length}</span>
-                </button>
-              ))}
-            </div>
-            <div className="j-search">
-              <Search size={19} />
-              <input
-                aria-label="動画を検索"
-                placeholder="作品名・登場人物で探す"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-              />
-              {query && (
-                <button aria-label="検索をクリア" onClick={() => setQuery("")}>
-                  <X size={17} />
-                </button>
-              )}
-            </div>
-            <div className="j-category-tabs" aria-label="ジャンルで絞り込む">
-              {categories.map((c) => (
-                <button
-                  key={c}
-                  aria-pressed={c === (route.collection ?? "すべて")}
-                  onClick={() => {
-                    const next = {
-                      ...route,
-                      collection: c === "すべて" ? undefined : c,
-                    };
-                    history.replaceState(null, "", href(next));
-                    setRoute(next);
-                  }}
-                >
-                  {c === "すべて" ? "全ジャンル" : c}
-                </button>
-              ))}
-            </div>
-            <div className="j-filter-row">
+            <div className="j-catalog-controls">
               <label>
-                登場人物
-                <select
-                  value={route.member ?? ""}
-                  onChange={(e) => {
-                    const next = {
-                      ...route,
-                      member: e.target.value || undefined,
-                    };
-                    history.replaceState(null, "", href(next));
-                    setRoute(next);
-                  }}
-                >
-                  <option value="">すべての登場人物</option>
-                  {cast.map((c) => (
-                    <option key={c.id} value={c.id}>
-                      {c.name}
-                    </option>
-                  ))}
+                表示
+                <select aria-label="動画の表示範囲" value={route.scope ?? "pickup"}
+                  onChange={(event) => go({ page: "movies", member: route.member, scope: event.target.value === "all" ? "all" : undefined })}>
+                  <option value="pickup">ピックアップ</option>
+                  <option value="all">すべての動画</option>
                 </select>
               </label>
-              <span aria-live="polite">{filtered.length}作品</span>
+              <label>
+                登場人物
+                <select aria-label="登場人物で絞り込む" value={route.member ?? ""}
+                  onChange={(event) => go({ page: "movies", scope: route.scope, member: event.target.value || undefined })}>
+                  <option value="">すべての登場人物</option>
+                  {cast.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+                </select>
+              </label>
             </div>
             <div className="j-movie-grid j-catalog">
               {filtered.map((e) => movie(e))}
             </div>
             {!filtered.length && (
               <div className="j-empty">
-                <Search />
-                <h2>見つかりませんでした</h2>
-                <p>別の言葉や登場人物で探してみてください。</p>
-                <button
-                  className="j-button"
-                  onClick={() => {
-                    setQuery("");
-                    go({ page: "movies" });
-                  }}
-                >
-                  条件をリセット
-                </button>
+                <BookOpen />
+                <h2>該当する動画はありません</h2>
+                <p>表示範囲や登場人物を変更してください。</p>
+                <button className="j-button" onClick={() => go({ page: "movies", scope: "all" })}>すべての動画を見る</button>
               </div>
             )}
+            {(catalog?.previous || catalog?.next || route.after || route.before) && <nav className="j-catalog-pagination" aria-label="動画一覧のページ送り">
+              {catalog?.previous ? link({ ...route, after: undefined, before: catalog.previous }, <><ChevronLeft size={17} />前へ</>, "j-button") : <button className="j-button" disabled><ChevronLeft size={17} />前へ</button>}
+              <span>{filtered.length}作品を表示</span>
+              {catalog?.next ? link({ ...route, before: undefined, after: catalog.next }, <>次へ<ChevronRight size={17} /></>, "j-button") : <button className="j-button" disabled>次へ<ChevronRight size={17} /></button>}
+            </nav>}
+
           </>
         )}
         {route.page === "characters" && !current && (
@@ -1158,7 +1092,7 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
               }} hasNext={!!nextEpisode}>
                 <p className="j-video-description">{episodeCopy(playing)}</p>
                 <a className="j-making-link" href={`/episodes/${playing.slug}#making-${playing.primary_video_id}`} onClick={() => {
-                  try { sessionStorage.setItem("madogiwa-production-return", JSON.stringify({ slug: playing.slug, href: location.pathname + location.search, route, query, scroll: window.scrollY, episodeId: playing.id, restore: true })); } catch { /* Navigation still works without storage. */ }
+                  try { sessionStorage.setItem("madogiwa-production-return", JSON.stringify({ slug: playing.slug, href: location.pathname + location.search, route, scroll: window.scrollY, episodeId: playing.id, restore: true })); } catch { /* Navigation still works without storage. */ }
                 }}>
                   <span><b>この動画の作り方</b><small>使用モデル・プロンプト・入力素材</small></span><ArrowUpRight size={20} />
                 </a>
