@@ -1,12 +1,12 @@
 {
   "sobaya": {
     "version": 2,
-    "file": "04_GAME_ASSETS/3d/hazard_adopted/v2_20260913/sobaya.glb",
-    "source": "04_GAME_ASSETS/3d/characters/sobaya/v2_20260913/sobaya_v2.glb",
-    "sourceSha256": "30fd09d54b25d362d8d9439d9cccb9538596d7a85b430fcad3d71bd88f7f3d4a",
+    "file": "04_GAME_ASSETS/3d/hazard_adopted/v2_20260915_mask/sobaya.glb",
+    "source": "04_GAME_ASSETS/3d/characters/sobaya/v2_20260915_mask/sobaya_v2.glb",
+    "sourceSha256": "969a2a530e94d973591e8d0741603e7d517019a680ea09b4d1b8db616e650d38",
     "motionSource": "04_GAME_ASSETS/3d/hazard_adopted/sobaya.glb",
     "motionSourceSha256": "e8df48deafb162543e07c46f3e839b5b8c71c0316352880af46b2b12a7147d6e",
-    "sha256": "e9802f38ab8483740e50420f6efa658b493c8d0107d3fa67e81aa1837fc8aec9",
+    "sha256": "3ccce1dc4135b433f953b975c6cc33043fca77dae68d56f2f74dc99115f61e0d",
     "sources": {
       "Walk": "Adopted_Library_Walk",
       "Run": "Adopted_Candidate_Chase_Run"
@@ -123,7 +123,10 @@
     "socket": "PropSocket.R",
     "individualFingerRig": false,
     "retainedV1ClipCount": 98,
-    "retainedV2ClipCount": 11
+    "retainedV2ClipCount": 11,
+    "geometryRevision": "20260915_oval_mask_original_v2_proportions",
+    "animationSource": "04_GAME_ASSETS/3d/hazard_adopted/v2_20260913/sobaya.glb",
+    "animationSourceSha256": "e9802f38ab8483740e50420f6efa658b493c8d0107d3fa67e81aa1837fc8aec9"
   },
   "fukuchan": {
     "version": 2,
