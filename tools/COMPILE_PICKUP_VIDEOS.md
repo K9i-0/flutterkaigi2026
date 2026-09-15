@@ -35,7 +35,7 @@ python3 tools/compile_pickup_videos.py --order newest --output .local/pickup-new
 ## 出力
 
 - 既定: `.local/pickup-compilations/pickup_<日時>_plain.mp4` と `pickup_<日時>_titles.mp4`
-- 両版は同じ素材・同じ順番。変換素材は共用する。タイトル版は2本目以降の直前に、次の作品名を黒背景・白文字で2秒表示する。冒頭・末尾にはタイトル画面を付けない。タイトル画面は無音。
+- 両版は同じ素材・同じ順番。変換素材は共用する。タイトル版は最初の動画を含む各動画の直前に、その作品名を黒背景・白文字で2秒表示する。末尾にはタイトル画面を付けない。タイトル画面は無音。
 - `--versions both`（既定）/ `plain` / `titles` で出力版を選ぶ。
 - `--output name.mp4` は `name_plain.mp4` と `name_titles.mp4` の基準名。
 - 隣のJSONに対象ID・順番・seed・設定・各版の時間割・処理結果を保存。

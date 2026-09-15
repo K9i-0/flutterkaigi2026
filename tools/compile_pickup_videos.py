@@ -193,7 +193,7 @@ def main():
                 'order': args.order, 'seed': seed, 'width': width, 'height': height,
                 'fps': args.fps, 'videos': videos, 'status': 'rendering',
                 'title_frames': title_frames, 'title_font': str(args.font),
-                'title_placement': 'between videos, showing the following video title',
+                'title_placement': 'before every video, including the first',
                 'outputs': {key: str(value) for key, value in outputs.items()}}
     manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n')
     try:
@@ -203,7 +203,7 @@ def main():
             download(origin + '/media/' + item['video_id'], source)
             item['duration_seconds'] = normalize(source, work / f'{index:04d}.mp4', width, height, args.fps)
         if 'titles' in versions:
-            for index, item in enumerate(videos[1:], 1):
+            for index, item in enumerate(videos):
                 title_card(item['title'], work / f'title-{index:04d}.mp4', width, height,
                            args.fps, title_frames, args.font)
         manifest['results'] = {}
@@ -212,7 +212,7 @@ def main():
             cursor = 0.0
             timeline = []
             for index, item in enumerate(videos):
-                if version == 'titles' and index:
+                if version == 'titles':
                     entries.append(f'title-{index:04d}.mp4')
                     timeline.append({'type': 'title', 'title': item['title'], 'start': cursor,
                                      'duration': title_frames / args.fps})

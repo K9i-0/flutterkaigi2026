@@ -61,9 +61,9 @@ class CompilationTests(unittest.TestCase):
                 self.assertEqual((video['width'], video['height']), (320, 180))
                 self.assertEqual(audio['channels'], 2)
                 durations[version] = float(info['format']['duration'])
-            self.assertAlmostEqual(durations['titles'] - durations['plain'], 2, delta=0.1)
+            self.assertAlmostEqual(durations['titles'] - durations['plain'], 4, delta=0.1)
             self.assertEqual([entry['type'] for entry in manifest['results']['titles']['timeline']],
-                             ['video', 'title', 'video'])
+                             ['title', 'video', 'title', 'video'])
 
 
 if __name__ == '__main__':
