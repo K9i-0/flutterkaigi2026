@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Character3D } from "./character-3d";
 import { useMediaViewport } from "./use-media-viewport";
 import { useVideoPreferences } from "../components/use-video-preferences";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -763,6 +764,7 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
                     }
                   />
                 )}
+                <Character3D key={current.id} character={current.id} />
                 <nav
                   className="j-profile-pagination"
                   aria-label="前後のキャラクター"

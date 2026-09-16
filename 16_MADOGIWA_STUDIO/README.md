@@ -286,3 +286,13 @@ OAuthキャッシュやCloudflare API tokenをリポジトリ間・利用者間�
 - `PUT /admin-api/episodes/reorder` は全IDと変更前ID順を検証。`PUT /admin-api/episodes/:id/editor` は編集前タイムスタンプ・動画所属・人物ID・代表動画の再生可否を検証し、D1 batchで一括保存。revisionチェック用の制約により、保存中の競合時にも全体をロールバックします。
 - 認証付き `/admin-api/videos/:id/preview` と `/poster` は非公開動画の管理プレビューにも対応し、`private, no-store` で返します。公開メディアのアクセス制御は維持。
 - デプロイは `npm run verify` → `npm run db:migrate:remote` → `npx wrangler deploy`。追加列は旧Workerと互換性があります。公開JSONキャッシュのURL世代はv2です。
+
+## キャラクターの3Dビュー
+
+人物ページの音声ボタン付近に「3Dで見る」を表示する。そば屋v2・福ちゃんv2・たこさん・やめ太郎に対応し、ダイアログ内で人物切り替え、回転・拡大縮小、既存動作の再生・停止、正面へのリセットができる。
+
+- 実装: `src/official/character-3d.tsx` / `character-3d-scene.ts` / `character-3d.css`。
+- `public/models/characters/*.glb` はそば屋ハザード採用モデルへの相対symlink。ビルド時に静的アセットへ展開し、WorkerやR2のAPIを通さず配信する。
+- ビューを開いてから描画コードと選択モデルを読み込む。背景タブ・画面外では描画を止め、閉じる／人物を切り替える際に通信・アニメーション・GPU資源を解放する。
+- 初回公開は承認済み試作と同じ未軽量化モデル（そば屋約23.6MB、福ちゃん約19.4MB、たこさん約1.5MB、やめ太郎約2.6MB）。4体を先読みしない。モデル変更時は静的アセットの単一ファイル上限も確認する。
+- ローカル確認: `npm run dev` → `/characters/sobaya`。4体の描画・動作切り替え、回転、一時停止、正面リセット、390px幅、閉じた後のcanvas除去を確認済み。スマホ実機の速度計測は未実施。
