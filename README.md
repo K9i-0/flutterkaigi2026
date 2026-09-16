@@ -46,6 +46,7 @@
 - 過去エピソード台帳（ネタ参照用・非正史）: [01_WORLD/STORY_TIMELINE.md](01_WORLD/STORY_TIMELINE.md)
 - キャラクター設定: [02_CHARACTERS/](02_CHARACTERS/)
 - 台本・生成済みプロンプト: [03_SCRIPTS/](03_SCRIPTS/)
+- **共有3Dモデル（非ボクセル・4体の採用パス／完成度／AR）:** [モデル一覧](04_GAME_ASSETS/3d/CHARACTER_MODELS.md)
 - ゲーム用アセット（共用ボクセル）: [04_GAME_ASSETS/voxel/](04_GAME_ASSETS/voxel/)
 
 ## For Claude Code
