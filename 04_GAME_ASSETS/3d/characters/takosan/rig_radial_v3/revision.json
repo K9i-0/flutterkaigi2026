@@ -1,0 +1,44 @@
+{
+  "source": "04_GAME_ASSETS/3d/characters/takosan/rig_sheet_v2/takosan.blend",
+  "source_sha256": "5c5fb7de772135319b8c7d0be38e72ebfbad019271c795819c42d6513f1a5307",
+  "front_axis": "-Y (Blender)",
+  "layout": "Six radial legs: front-left/right, left/right, rear-left/right; no central front or rear leg",
+  "tentacle_angles_degrees": [
+    -120.0,
+    -60.0,
+    60.0,
+    120.0,
+    0,
+    180
+  ],
+  "rotated_degrees": [
+    12.279,
+    21.593,
+    107.116,
+    21.638,
+    0,
+    0
+  ],
+  "triangles": 17591,
+  "bones": 27,
+  "clips": [
+    "Idle",
+    "Talk",
+    "Wave"
+  ],
+  "unchanged": [
+    "head",
+    "robe",
+    "human arms and hands",
+    "UVs",
+    "materials",
+    "weights",
+    "animation keys",
+    "six radial leg vertices (inner boundaries capped)"
+  ],
+  "status": "Local revision, not adopted by website or game",
+  "center_cleanup": {
+    "removed_vertices": 381,
+    "cap_faces": 4
+  }
+}
