@@ -1,0 +1,18 @@
+{
+  "source": "04_GAME_ASSETS/3d/characters/takosan/rig_radial_v3/takosan.blend",
+  "source_glb_sha256": "70a80f6d312b6fb3b26e30222208af95cf3406afe280e2caae7d7fd143b9474b",
+  "change": "Both hands: round ivory palm with one short inward-facing thumb; remove generated multi-finger cluster",
+  "removed_vertices": 719,
+  "triangles": 19728,
+  "bones": 27,
+  "clips": [
+    "Idle",
+    "Talk",
+    "Wave"
+  ],
+  "status": "Local revision; not adopted by website or game",
+  "cuff_finish": {
+    "cuff_boundary_vertices": 75,
+    "cuff_caps": 2
+  }
+}
