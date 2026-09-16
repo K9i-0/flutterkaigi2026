@@ -3,11 +3,11 @@ import globals from "globals";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
-  { ignores: [".output", "dist", "design-preview/dist", "src/routeTree.gen.ts", "worker-configuration.d.ts"] },
+  { ignores: [".output", "dist", "design-preview/dist", "dist-ar-preview", "src/routeTree.gen.ts", "worker-configuration.d.ts"] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    files: ["tools/**/*.mjs"],
+    files: ["tools/**/*.mjs", "ar-preview/*.mjs"],
     languageOptions: { globals: globals.node },
   },
   {

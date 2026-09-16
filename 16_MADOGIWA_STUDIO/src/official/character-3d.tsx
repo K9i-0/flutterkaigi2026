@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-import { Box, Pause, Play, RotateCcw, X } from "lucide-react";
+import { Box, Camera, Pause, Play, RotateCcw, X } from "lucide-react";
 import type { CharacterScene } from "./character-3d-scene";
 import "./character-3d.css";
+import { cameraUrl, isARCharacter, modelUrl } from "./character-ar-config";
 
 const characters = [
   { id: "sobaya", name: "そば屋" },
@@ -47,6 +48,7 @@ function ModelPicker({ initial }: { initial: string }) {
       {characters.map((entry) => <button key={entry.id} aria-pressed={selected === entry.id} onClick={() => setSelected(entry.id)}>{entry.name}</button>)}
     </div>
     <ModelView key={selected} character={selected} />
+    <a className="j-model-camera-link" href={cameraUrl(selected)}><Camera size={18} />いっしょに撮る<span>ARカメラへ</span></a>
   </>;
 }
 
@@ -63,7 +65,7 @@ function ModelView({ character }: { character: string }) {
     let instance: CharacterScene | undefined;
     void import("./character-3d-scene").then(({ createCharacterScene }) => {
       if (cancelled || !host.current) return;
-      instance = createCharacterScene(host.current, `/models/characters/${character}.glb?v=20260916-2`, (clips) => {
+      instance = createCharacterScene(host.current, modelUrl(character), (clips) => {
         if (cancelled) return;
         setAvailable(clips);
         setStatus("ready");
@@ -94,4 +96,9 @@ function ModelView({ character }: { character: string }) {
       </div>
     </div>
   </>;
+}
+
+export function CharacterCameraLink({ character }: { character: string }) {
+  if (!isARCharacter(character)) return null;
+  return <a className="j-model-trigger j-camera-trigger" href={cameraUrl(character)}><Camera size={18} /><span>いっしょに撮る</span><span className="j-model-trigger-note">等身大でも、ぬいぐるみでも。</span></a>;
 }

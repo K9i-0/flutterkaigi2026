@@ -15,6 +15,7 @@ import { Route as MoviesRouteImport } from './routes/movies'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as StoryRouteImport } from './routes/story'
+import { Route as CameraCharacterRouteImport } from './routes/camera/$character'
 import { Route as CharactersIndexRouteImport } from './routes/characters/index'
 import { Route as CharactersSlugRouteImport } from './routes/characters/$slug'
 import { Route as EpisodesIndexRouteImport } from './routes/episodes/index'
@@ -50,6 +51,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const StoryRoute = StoryRouteImport.update({
   id: '/story',
   path: '/story',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CameraCharacterRoute = CameraCharacterRouteImport.update({
+  id: '/camera/$character',
+  path: '/camera/$character',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CharactersIndexRoute = CharactersIndexRouteImport.update({
@@ -90,6 +96,7 @@ export interface FileRoutesByFullPath {
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/story': typeof StoryRoute
+  '/camera/$character': typeof CameraCharacterRoute
   '/characters/$slug': typeof CharactersSlugRoute
   '/episodes/$slug': typeof EpisodesSlugRoute
   '/gallery/$slug': typeof GallerySlugRoute
@@ -104,6 +111,7 @@ export interface FileRoutesByTo {
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/story': typeof StoryRoute
+  '/camera/$character': typeof CameraCharacterRoute
   '/characters/$slug': typeof CharactersSlugRoute
   '/episodes/$slug': typeof EpisodesSlugRoute
   '/gallery/$slug': typeof GallerySlugRoute
@@ -119,6 +127,7 @@ export interface FileRoutesById {
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/story': typeof StoryRoute
+  '/camera/$character': typeof CameraCharacterRoute
   '/characters/$slug': typeof CharactersSlugRoute
   '/episodes/$slug': typeof EpisodesSlugRoute
   '/gallery/$slug': typeof GallerySlugRoute
@@ -135,6 +144,7 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/sitemap.xml'
     | '/story'
+    | '/camera/$character'
     | '/characters/$slug'
     | '/episodes/$slug'
     | '/gallery/$slug'
@@ -149,6 +159,7 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/sitemap.xml'
     | '/story'
+    | '/camera/$character'
     | '/characters/$slug'
     | '/episodes/$slug'
     | '/gallery/$slug'
@@ -163,6 +174,7 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/sitemap.xml'
     | '/story'
+    | '/camera/$character'
     | '/characters/$slug'
     | '/episodes/$slug'
     | '/gallery/$slug'
@@ -178,6 +190,7 @@ export interface RootRouteChildren {
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   StoryRoute: typeof StoryRoute
+  CameraCharacterRoute: typeof CameraCharacterRoute
   CharactersSlugRoute: typeof CharactersSlugRoute
   EpisodesSlugRoute: typeof EpisodesSlugRoute
   GallerySlugRoute: typeof GallerySlugRoute
@@ -228,6 +241,13 @@ declare module '@tanstack/react-router' {
       path: '/story'
       fullPath: '/story'
       preLoaderRoute: typeof StoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/camera/$character': {
+      id: '/camera/$character'
+      path: '/camera/$character'
+      fullPath: '/camera/$character'
+      preLoaderRoute: typeof CameraCharacterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/characters/': {
@@ -282,6 +302,7 @@ const rootRouteChildren: RootRouteChildren = {
   RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   StoryRoute: StoryRoute,
+  CameraCharacterRoute: CameraCharacterRoute,
   CharactersSlugRoute: CharactersSlugRoute,
   EpisodesSlugRoute: EpisodesSlugRoute,
   GallerySlugRoute: GallerySlugRoute,

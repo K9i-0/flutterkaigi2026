@@ -1,0 +1,12 @@
+:root { font-family: -apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",sans-serif; color:#263e32; background:#ebe8df; }
+body { margin:0; padding:24px 14px max(24px,env(safe-area-inset-bottom)); }
+.j-model-dialog.ar-preview { position:static; transform:none; width:100%; max-width:620px; max-height:none; margin:auto; overflow:visible; box-sizing:border-box; box-shadow:0 12px 50px #263e320c; }
+.ar-preview header { padding:12px 4px 16px; }
+.ar-preview h1 { margin:12px 0; font:700 clamp(26px,7vw,38px)/1.45 serif; letter-spacing:.03em; }
+.ar-preview header p { color:#65705c; font-size:12px; }
+.ar-preview-characters { display:grid; grid-template-columns:repeat(4,1fr); gap:7px; }
+.ar-preview-characters button { padding:9px 2px; border:1px solid #263e3228; border-radius:12px; background:#fffcf5; font-size:12px; }
+.ar-preview-characters button[aria-pressed=true] { background:#e6ebd8; border-color:#526643; box-shadow:inset 0 0 0 1px #526643; }
+.ar-preview-characters img { display:block; width:100%; height:92px; object-fit:contain; margin-bottom:6px; }
+.ar-preview footer { margin-top:24px; padding-top:16px; border-top:1px solid #263e3218; font-size:10px; line-height:1.8; color:#79816f; }
+@media(max-width:390px) { .ar-preview-characters img { height:70px; } }

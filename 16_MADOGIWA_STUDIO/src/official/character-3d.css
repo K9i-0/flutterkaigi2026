@@ -32,3 +32,8 @@
 .j-model-motions .j-model-pause { display:flex; align-items:center; gap:5px; margin-left:auto; }
 @media(max-width:480px) { .j-model-dialog { padding:16px; width:calc(100vw - 20px); max-height:calc(100dvh - 20px); } .j-model-heading h2 { font-size:22px; } .j-model-tabs button { font-size:12px; } .j-model-description { font-size:11px; } .j-model-trigger-note { margin-left:0; } }
 @media(prefers-reduced-motion:reduce) { .j-model-spinner { animation:none; } }
+
+.j-camera-trigger { color:inherit; text-decoration:none; width:fit-content; }
+.j-camera-trigger:focus-visible,.j-model-camera-link:focus-visible { outline:2px solid #a34934; outline-offset:4px; }
+.j-model-camera-link { display:flex; align-items:center; justify-content:center; gap:8px; min-height:48px; margin-top:20px; border-radius:9px; background:#263e32; color:#fffaf0; text-decoration:none; font-weight:700; padding:10px; }
+.j-model-camera-link span { font-size:11px; font-weight:400; opacity:.8; margin-left:auto; }

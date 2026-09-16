@@ -24,7 +24,9 @@
     "dev:design": "vite --config design-preview/vite.config.ts",
     "check:design": "tsc -p design-preview/tsconfig.json",
     "build:design": "vite build --config design-preview/vite.config.ts",
-    "prepare:design": "node tools/prepare-design.mjs"
+    "prepare:design": "node tools/prepare-design.mjs",
+    "build:ar": "tsc -p ar-preview/tsconfig.json && vite build --config ar-preview/vite.config.ts && node ar-preview/copy-assets.mjs",
+    "preview:ar": "vite preview --config ar-preview/vite.config.ts --port 5175"
   },
   "dependencies": {
     "@modelcontextprotocol/server": "^2.0.0",
