@@ -43,11 +43,38 @@
 
 - **Blender:** GLBをglTF 2.0としてインポートすれば形状・材質・リグ・収録動作を利用できます。元の編集履歴やBlender固有の設定まで復元するものではありません。
 - **Three.js:** `GLTFLoader`で読み込み、`gltf.scene`を配置。動作は`gltf.animations`を`AnimationMixer`で再生します。手振りは、たこさん・やめ太郎が`Wave`、そば屋・福ちゃんが`Greeting`です。
+- **Flutter Scene:** 同じGLBをビルド時に変換し、`loadScene()`で読み込んで`Scene`へ追加。`SceneView`で表示します。導入手順と短いコード例は下記を参照。
 - **このモノレポの別プロジェクト:** モデルの重複コピーを避け、`public/models/`などから上記GLBへ相対symlinkを張ります。既存の[公式サイトの参照先](../../16_MADOGIWA_STUDIO/public/models/characters/)もこの方式です。
 - **ゲーム用動作:** そば屋・福ちゃんは動作入りの`hazard_adopted`版を使用。制作元のGLBには同じ動作が揃っていない場合があります。[採用モデルの説明](hazard_adopted/README.md)を参照。
 - **モデルの区別:** 本一覧は非ボクセル版です。ボクセル版は別の[VOXEL_CHARACTER_KIT](../voxel/VOXEL_CHARACTER_KIT.md)を使用します。
 
 キャラクターの人物同一性は[キャラクター設定](../../02_CHARACTERS/)を参照。たこさん・やめ太郎の最新版は公式サイトに採用済みですが、各ゲームの参照先が自動でこの版になるわけではありません。
+
+### Flutter Sceneでの最小の使い方
+
+このリポジトリの[そば屋ハザード](../../21_SOBAYA_HAZARD_LAB/README.md)の実装例です。Flutter 3.47.2／Flutter Scene 0.23.0を基に、修正を含む`vendor/flutter_scene`をpath依存で使用しています。以下はこの構成向けで、別バージョンではAPI・ビルド方法を確認してください。
+
+1. `assets/models/yametaro.glb`などから採用GLBへ相対symlinkを張る。
+2. [hook/build.dart](../../21_SOBAYA_HAZARD_LAB/hook/build.dart)の`buildScenes(inputFilePaths: [...])`へパスを明示する。自動探索はsymlinkを除外するため、この指定が必要。[pubspec.yaml](../../21_SOBAYA_HAZARD_LAB/pubspec.yaml)で`flutter_scene_generated/`をassetsへ登録する。GLBのパスを登録するだけではなく、ビルド時に生成されるシーンを読み込む構成。
+3. 非同期の初期化処理で読み込み、シーンへ追加して動作を再生する。
+
+```dart
+import 'package:flutter_scene/scene.dart';
+
+// 非同期の初期化処理内。Widgetのbuild()内で毎回読み込まない。
+final scene = Scene();
+final model = await loadScene('assets/models/yametaro.glb');
+scene.add(model);
+final idle = model.findAnimationByName('Idle');
+if (idle != null) {
+  final clip = model.createAnimationClip(idle)
+    ..loop = true
+    ..weight = 1;
+  clip.play();
+}
+```
+
+表示側は`SceneView(scene, cameraBuilder: (_) => camera)`でカメラを指定し、必要な照明・環境も設定します（`camera`はアプリ側で用意）。実際の[ロード・カメラ・解放処理](../../21_SOBAYA_HAZARD_LAB/lib/lab/lab_controller.dart)、[SceneViewの配置](../../21_SOBAYA_HAZARD_LAB/lib/main.dart)、[アニメーション切替](../../21_SOBAYA_HAZARD_LAB/lib/lab/rig_actor.dart)を参照してください。利用後はノードをシーンから外し、ロードに対応して`releaseScene('assets/models/yametaro.glb')`を呼びます。初回のGLB変換・テクスチャ圧縮には時間がかかります。
 
 ## 制作方法とTripo API費用
 
