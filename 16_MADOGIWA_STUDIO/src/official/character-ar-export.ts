@@ -43,10 +43,14 @@ export async function createARAsset(character: ARCharacter, placement: ARPlaceme
     const restHeight = restBox.max.y - restBox.min.y;
     const clipName = pose === "Wave" ? arCharacters[character].greeting : "Idle";
     const clip = gltf.animations.find((clip) => clip.name === clipName);
-    if (!clip) throw new Error("このポーズはまだ利用できません。");
-    mixer = new THREE.AnimationMixer(gltf.scene);
-    mixer.clipAction(clip).play();
-    mixer.setTime(pose === "Wave" ? 0.8 : 0);
+    if (!clip && (pose !== "Idle" || arCharacters[character].greeting !== null)) {
+      throw new Error("このポーズはまだ利用できません。");
+    }
+    if (clip) {
+      mixer = new THREE.AnimationMixer(gltf.scene);
+      mixer.clipAction(clip).play();
+      mixer.setTime(pose === "Wave" ? 0.8 : 0);
+    }
     gltf.scene.updateMatrixWorld(true);
     gltf.scene.traverse((object) => { if (object instanceof THREE.SkinnedMesh) object.skeleton.update(); });
     // USDZExporter doesn't bake skinning. Freeze evaluated vertices into static

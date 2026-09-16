@@ -25,7 +25,7 @@ export function Character3D({ character }: { character: string }) {
   if (!characters.some((entry) => entry.id === character)) return null;
   return <Dialog.Root open={open} onOpenChange={setOpen}>
     <Dialog.Trigger asChild>
-      <button className="j-model-trigger"><Box size={18} /><span>3Dで見る</span><span className="j-model-trigger-note">回して、動かして。</span></button>
+      <button className="j-model-trigger"><Box size={18} /><span>3Dで見る</span><span className="j-model-trigger-note">{character === "sobaya" ? "回して、じっくり。" : "回して、動かして。"}</span></button>
     </Dialog.Trigger>
     <Dialog.Portal>
       <Dialog.Overlay className="j-model-overlay" />
@@ -88,13 +88,13 @@ function ModelView({ character }: { character: string }) {
       </div>}
       <button className="j-model-reset" disabled={status !== "ready"} onClick={() => scene.current?.reset()}><RotateCcw size={15} />正面に戻す</button>
     </div>
-    <div className="j-model-controls">
+    {available.length > 0 && <div className="j-model-controls">
       <span className="j-model-controls-label">動いてもらう</span>
       <div className="j-model-motions">
         {motions.filter((entry) => available.includes(entry.id)).map((entry) => <button key={entry.id} disabled={status !== "ready"} aria-pressed={motion === entry.id} onClick={() => { setMotion(entry.id); scene.current?.motion(entry.id); }}>{entry.label}</button>)}
         <button className="j-model-pause" disabled={status !== "ready"} aria-label={paused ? "動作を再生" : "動作を一時停止"} onClick={() => { scene.current?.pause(!paused); setPaused(!paused); }}>{paused ? <Play size={16} /> : <Pause size={16} />}{paused ? "再生" : "一時停止"}</button>
       </div>
-    </div>
+    </div>}
   </>;
 }
 

@@ -16,7 +16,7 @@ export function CharacterAR({ character }: { character: string }) {
       <button aria-pressed={placement === "life"} onClick={() => setPlacement("life")}><span>等身大</span><small>高さ約{Math.round(arHeight(id, "life") * 100)}cm・隣に並んで</small></button>
       <button aria-pressed={placement === "selfie"} onClick={() => setPlacement("selfie")}><span>顔の横で自撮り <em>実験版</em></span><small>高さ12cm・顔の動きについてくる</small></button>
     </div>
-    <div className="j-ar-poses" role="group" aria-label="撮影ポーズ"><span>ポーズ</span><button aria-pressed={pose === "Idle"} onClick={() => setPose("Idle")}>いつもの姿</button><button aria-pressed={pose === "Wave"} onClick={() => setPose("Wave")}>ごあいさつ</button></div>
+    {arCharacters[id].greeting && <div className="j-ar-poses" role="group" aria-label="撮影ポーズ"><span>ポーズ</span><button aria-pressed={pose === "Idle"} onClick={() => setPose("Idle")}>いつもの姿</button><button aria-pressed={pose === "Wave"} onClick={() => setPose("Wave")}>ごあいさつ</button></div>}
     {placement === "selfie" ? <p className="j-ar-hint">TrueDepthカメラ搭載iPhone向け。顔に合わせた固定位置・サイズです。顔の向きに合わせてキャラも動きます。</p> : <p className="j-ar-hint">置いたあとも指で移動・拡大縮小できます。AR画面の撮影ボタンで写真を撮れます。</p>}
     <ARLaunch key={`${id}:${placement}:${pose}`} character={id} placement={placement} pose={pose} />
     <p className="j-ar-privacy"><Check size={14} />写真・カメラ映像はサーバーに送信しません。</p>
