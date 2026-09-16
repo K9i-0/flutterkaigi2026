@@ -1,0 +1,15 @@
+{
+  "source": "04_GAME_ASSETS/3d/characters/yametaro/rig_sheet_v2/yametaro.blend",
+  "source_sha256": "78189559825840993d3392a59a187438f3589f651d92fd9a6a13f97197704cd0",
+  "change": "Replace black nose with centered low rounded skin-colored bulge, matching current character sheet",
+  "nose_vertices": 100,
+  "preserved": [
+    "forehead mark",
+    "glasses",
+    "cheeks",
+    "mouth",
+    "speech shape keys",
+    "rig and animation actions"
+  ],
+  "status": "Adopted by official website on 2026-09-16; game unchanged"
+}

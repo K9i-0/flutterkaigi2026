@@ -63,7 +63,7 @@ function ModelView({ character }: { character: string }) {
     let instance: CharacterScene | undefined;
     void import("./character-3d-scene").then(({ createCharacterScene }) => {
       if (cancelled || !host.current) return;
-      instance = createCharacterScene(host.current, `/models/characters/${character}.glb`, (clips) => {
+      instance = createCharacterScene(host.current, `/models/characters/${character}.glb?v=20260916-2`, (clips) => {
         if (cancelled) return;
         setAvailable(clips);
         setStatus("ready");
