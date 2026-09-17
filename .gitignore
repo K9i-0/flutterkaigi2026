@@ -38,3 +38,5 @@ __pycache__/
 04_GAME_ASSETS/3d/characters/sobaya/grip_v3_20260917/qa/*.png
 !04_GAME_ASSETS/3d/characters/sobaya/grip_v3_20260917/qa/grip_front.png
 !04_GAME_ASSETS/3d/characters/sobaya/grip_v3_20260917/qa/grip_outer.png
+
+!04_GAME_ASSETS/3d/characters/sobaya/grip_v3_20260917/qa/grip_fingertips.png
