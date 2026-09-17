@@ -1,6 +1,6 @@
 # やめ太郎 — そば屋ハザード用 NPC
 
-ゲーム正本は `rig_sheet_v2/yametaro.glb`。2026-09-06、`03_SCRIPTS/00_TEMPLATES/characters/character_yametaro_basic_sheet.png` をデザイン正本、同ディレクトリの `character_yametaro_toy_diorama_3d_basic_sheet.png` を立体・背面の補助資料としてTripo P2で再制作した。大きなセンター分け黒髪、台形の輪郭、白いレンズの丸眼鏡、丸いピンクの頬、ラベンダーの柄シャツ、短い体格を維持する。
+ゲーム正本は `rig_nose_v3/yametaro.glb`。2026-09-17、鼻の黒点を肌色の低い膨らみに修正した[最新版](rig_nose_v3/README.md)をそば屋ハザードへ採用。以下は元モデルの制作記録。2026-09-06、`03_SCRIPTS/00_TEMPLATES/characters/character_yametaro_basic_sheet.png` をデザイン正本、同ディレクトリの `character_yametaro_toy_diorama_3d_basic_sheet.png` を立体・背面の補助資料としてTripo P2で再制作した。大きなセンター分け黒髪、台形の輪郭、白いレンズの丸眼鏡、丸いピンクの頬、ラベンダーの柄シャツ、短い体格を維持する。
 
 - 1.3m、15,299三角面、23骨、3材質、2,599,288 bytes。カラー2K・その他PBR1K。
 - 2026-09-07、頬・顎を囲う独立した黒い帯（510頂点・906三角面）を除去。帯の下に転写されていた黒色と溝の法線表現も肌へ戻し、耳は肌色、襟の黒い縁はラベンダーへ変更した。顔のUV、黒髪、丸眼鏡、眉・鼻・口、ピンクの頬、シャツ柄を保持する。
