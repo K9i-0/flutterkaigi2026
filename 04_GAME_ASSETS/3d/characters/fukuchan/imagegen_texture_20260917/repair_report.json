@@ -1,0 +1,12 @@
+{
+  "C matte sculpted black hair": {
+    "changed_texels": 686971,
+    "accepted_hair_texels": 733284
+  },
+  "Front faithful skin": {
+    "changed_texels": 24315,
+    "accepted_hair_texels": 24315
+  },
+  "hair_material_faces": 122,
+  "geometry_unchanged": true
+}

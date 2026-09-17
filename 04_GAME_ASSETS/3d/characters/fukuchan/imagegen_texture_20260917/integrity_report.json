@@ -1,0 +1,14 @@
+{
+  "geometry_positions_bitwise_equal": true,
+  "uv_coordinates_bitwise_equal": true,
+  "central_face_sampled_polygon_centers": 727,
+  "central_face_samples_identical": true,
+  "sample_world_region": {
+    "abs_x_less_than": 0.034,
+    "z": [
+      1.49,
+      1.595
+    ],
+    "y_less_than": -0.06
+  }
+}

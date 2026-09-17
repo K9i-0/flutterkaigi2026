@@ -1,0 +1,27 @@
+{
+  "target": [
+    0,
+    0,
+    1.54
+  ],
+  "scale": 0.38,
+  "views": [
+    [
+      "profile_left",
+      [
+        1,
+        0,
+        0
+      ]
+    ],
+    [
+      "profile_right",
+      [
+        -1,
+        0,
+        0
+      ]
+    ]
+  ],
+  "panel_size": 1024
+}

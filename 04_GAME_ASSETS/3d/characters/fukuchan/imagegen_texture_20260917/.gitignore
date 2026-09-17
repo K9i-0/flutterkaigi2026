@@ -1,0 +1,7 @@
+*.blend*
+*.glb
+*.npz
+albedo_*.png
+qa/
+comparison*.png
+texture_*.png
