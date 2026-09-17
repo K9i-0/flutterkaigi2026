@@ -1,0 +1,72 @@
+{
+  "revision": "sobaya-grip-v3-20260917",
+  "source": "04_GAME_ASSETS/3d/hazard_adopted/v3_20260917/sobaya.glb",
+  "sourceSha256": "8c5e746d49c1326adbb6f1e1b09c4c1fb51557ad23ee93f5351a4800e5266ab5",
+  "sha256": "4303ecb09266cd8619063bf66a46a49950ce530058773d8b7e4e73ffe1016411",
+  "contact": {
+    "method": "90 constrained neighbor-fairing iterations against exported Handle mesh",
+    "contactClearanceM": 0.00065,
+    "correctedUniqueVertices": 1963,
+    "beforePenetratingVertices": 209,
+    "beforeMaxDepthM": 0.009985802578739822,
+    "afterPenetratingVertices": 0,
+    "afterMaxDepthM": 0,
+    "maxContactDisplacementM": 0.011642422602704344,
+    "facesRotatedOver90Degrees": 12,
+    "contactFoldFairingVertices": 258
+  },
+  "morph": "MugGrip",
+  "changedExportVertices": 4084,
+  "maxDisplacementM": 0.08456038215483272,
+  "minimumRightHandSkinWeight": 0.9403071403503418,
+  "localJacobianDeterminant": [
+    0.12922146916389465,
+    1.9177120923995972
+  ],
+  "curveFieldFoldedSamples": 0,
+  "originalBinaryPreserved": true,
+  "unchangedRestBonesSkinMaterials": true,
+  "unchangedBodyMotionClips": 103,
+  "heldClips": [
+    "Adopted_Candidate_Chase_Run",
+    "Adopted_Candidate_Mixamo_Run",
+    "Adopted_Library_Dance_Body_Roll",
+    "Adopted_Library_Dance_Charleston",
+    "Adopted_Library_Dance_Simple",
+    "Adopted_Library_Idle_A",
+    "Adopted_Library_Jog",
+    "Adopted_Library_Sprint",
+    "Adopted_Library_Walk",
+    "Climb",
+    "DanceDisco",
+    "DanceStep",
+    "DanceVictory",
+    "Grab",
+    "Hold",
+    "Hybrid_MugHold",
+    "Hybrid_MugHook",
+    "Hybrid_MugPunch",
+    "Hybrid_MugRun",
+    "Hybrid_MugSmash",
+    "Idle",
+    "MugAttack",
+    "Release",
+    "Run",
+    "Toast",
+    "Vault",
+    "Walk",
+    "ZombieWalk"
+  ],
+  "socketHandLocalPosition": [
+    -0.018,
+    0.1,
+    -0.005
+  ],
+  "socketHandLocalRotation": [
+    0.4994799494743347,
+    -0.6059754490852356,
+    -0.3937883973121643,
+    0.4777491092681885
+  ],
+  "note": "Attachment follows the existing wrist. Gait wrist orientation and attack choreography are not revised."
+}

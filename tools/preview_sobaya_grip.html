@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ja">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>そば屋 v3 — ジョッキの握り</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#e7e5df;color:#26332d;font:15px system-ui}header{padding:18px 24px;background:#f7f6f1;border-bottom:1px solid #c8cec5}h1{margin:0 0 7px;font-size:22px}p{margin:6px 0;color:#59625b}.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px}button,select{font:inherit;padding:8px 13px;border:1px solid #adb8ae;border-radius:7px;background:white;color:inherit}button:hover{background:#e0ebdf}label{display:flex;gap:6px;align-items:center}#stage{height:calc(100vh - 205px);min-height:420px}output{font-variant-numeric:tabular-nums}canvas{display:block}#status{font-size:13px}a{color:#355d43}
+</style>
+<script type="importmap">{"imports":{"three":"/.local/vrm-validation/node_modules/three/build/three.module.js","three/addons/":"/.local/vrm-validation/node_modules/three/examples/jsm/"}}</script>
+<header><h1>そば屋 v3 — ジョッキの握り</h1><p>ドラッグで回転、ホイールで拡大。握りの切り替えと、指の厚み・持ち手との接触を確認できます。</p>
+<div class="controls"><select id="motion"><option value="Hybrid_MugHold">ジョッキ保持</option><option value="Adopted_Library_Walk">歩行</option><option value="Adopted_Candidate_Chase_Run">ダッシュ</option><option value="Hybrid_MugSmash">叩きつけ</option><option value="Hybrid_MugPunch">パンチ</option><option value="Hybrid_MugHook">フック</option><option value="Greeting">挨拶（開いた手）</option></select><button id="play">再生</button><button id="close">握りを拡大</button><button id="full">全身</button><label><input type="checkbox" id="mug" checked>ジョッキ</label><label><input type="checkbox" id="contact">持ち手を強調</label><label><input type="checkbox" id="isolate">右手だけ</label><label>握り<input type="range" id="grip" min="0" max="1" step="0.01" value="1"></label><label>時刻<input type="range" id="time" min="0" max="2" step="0.01" value="0"></label><output id="clock"></output></div><p id="status">モデルを読み込み中…</p></header><div id="stage"></div>
+<script type="module">
+import * as T from 'three';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+const $=id=>document.getElementById(id),scene=new T.Scene(),renderer=new T.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setClearColor(0xe7e5df);renderer.toneMapping=T.ACESFilmicToneMapping;renderer.localClippingEnabled=true;$('stage').append(renderer.domElement);
+const pmrem=new T.PMREMGenerator(renderer);scene.environment=pmrem.fromScene(new RoomEnvironment(),.04).texture;
+const camera=new T.PerspectiveCamera(32,1,.005,100),controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;
+scene.add(new T.HemisphereLight(0xffffff,0x888579,1.1));const light=new T.DirectionalLight(0xffffff,1.8);light.position.set(-2,4,3);scene.add(light);
+const loader=new GLTFLoader();
+try{
+const model=await loader.loadAsync('/04_GAME_ASSETS/3d/characters/sobaya/grip_v3_20260917/sobaya_grip.glb?v=1');scene.add(model.scene);
+const mug=await loader.loadAsync('/04_GAME_ASSETS/3d/props/beer_mug_v2/beer_mug.glb');
+// Nested transmission is approximated in this inspection viewer only.
+mug.scene.getObjectByName('BeerVolume')?.traverse(o=>{if(o.isMesh)for(const m of [].concat(o.material)){m.color.set(0xe2a02b);m.transmission=0;m.roughness=.2;}});
+const handle=mug.scene.getObjectByName('Handle');const contactMaterial=new T.MeshStandardMaterial({color:0x3b8a92,roughness:.45});
+handle?.traverse(o=>{if(o.isMesh)o.userData.glassMaterial=o.material;});
+$('contact').onchange=()=>handle?.traverse(o=>{if(o.isMesh)o.material=$('contact').checked?contactMaterial:o.userData.glassMaterial;});
+const socket=model.scene.getObjectByName('PropSocketR')??model.scene.getObjectByName('PropSocket.R');
+if(!socket)throw Error('ジョッキソケットがありません');
+mug.scene.updateMatrixWorld(true);const anchor=mug.scene.getObjectByName('Grip');const attachment=anchor.matrixWorld.clone().invert().multiply(mug.scene.matrixWorld);socket.add(mug.scene);mug.scene.matrix.copy(attachment);mug.scene.matrix.decompose(mug.scene.position,mug.scene.quaternion,mug.scene.scale);
+const morphs=[];model.scene.traverse(o=>{if(o.morphTargetDictionary?.MugGrip!==undefined)morphs.push(o)});
+const mixer=new T.AnimationMixer(model.scene);let clip,action,t=0,paused=true,manualGrip=null;
+function sample(){mixer.setTime(t);for(const o of morphs)if(manualGrip!==null)o.morphTargetInfluences[o.morphTargetDictionary.MugGrip]=manualGrip;model.scene.updateMatrixWorld(true);$('time').value=t;$('clock').textContent=t.toFixed(2)+' / '+clip.duration.toFixed(2)+' 秒';$('grip').value=morphs[0].morphTargetInfluences[morphs[0].morphTargetDictionary.MugGrip];}
+function choose(){mixer.stopAllAction();clip=model.animations.find(a=>a.name===$('motion').value);action=mixer.clipAction(clip).play();t=0;manualGrip=null;$('time').max=clip.duration;sample();}
+function close(){sample();const p=new T.Vector3();socket.getWorldPosition(p);camera.up.set(0,1,0);camera.position.copy(p).add(new T.Vector3(-.28,.16,.65));controls.target.copy(p);controls.update();}
+function full(){camera.up.set(0,1,0);camera.position.set(-2,1.4,3.5);controls.target.set(0,.95,0);controls.update();}
+$('motion').onchange=()=>{choose();if($('isolate').checked)isolate();};$('play').onclick=()=>{paused=!paused;$('play').textContent=paused?'再生':'一時停止'};
+$('time').oninput=()=>{paused=true;$('play').textContent='再生';t=+$('time').value;sample();};$('grip').oninput=()=>{manualGrip=+$('grip').value;sample()};
+$('mug').onchange=()=>mug.scene.visible=$('mug').checked;$('close').onclick=close;$('full').onclick=full;
+// Clip the body only for contact inspection; no geometry or skinning is altered.
+function isolate(){const plane=new T.Plane(new T.Vector3(-1,0,0),-.20);model.scene.traverse(o=>{if(!o.isMesh||o.parent===mug.scene)return;let p=o;while(p&&p!==mug.scene)p=p.parent;if(p===mug.scene)return;for(const material of [].concat(o.material)){material.clippingPlanes=$('isolate').checked?[plane]:[];material.needsUpdate=true;}});}
+$('isolate').onchange=isolate;
+choose();close();$('status').textContent='握り専用モデル。身体の103モーションは保持。歩行・ダッシュの手首方向、構え、攻撃演出の作り直しは次工程です。';
+let last=performance.now();renderer.setAnimationLoop(now=>{const dt=Math.min((now-last)/1000,.1);last=now;if(!paused)t=(t+dt*.65)%clip.duration;sample();controls.update();renderer.render(scene,camera)});
+}catch(e){$('status').textContent='読み込みエラー: '+e.message;console.error(e)}
+function resize(){const w=$('stage').clientWidth,h=$('stage').clientHeight;renderer.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix()}window.addEventListener('resize',resize);resize();
+</script></html>

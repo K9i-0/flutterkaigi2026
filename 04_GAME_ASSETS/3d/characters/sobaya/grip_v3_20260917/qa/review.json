@@ -1,0 +1,51 @@
+{
+  "sha256": "4303ecb09266cd8619063bf66a46a49950ce530058773d8b7e4e73ffe1016411",
+  "renderSamples": [
+    {
+      "clip": "Hybrid_MugHold",
+      "phase": 0,
+      "morphWeight": 1.0,
+      "attachmentErrorM": 2.443972150513042e-07
+    },
+    {
+      "clip": "Adopted_Library_Walk",
+      "phase": 0.25,
+      "morphWeight": 1.0,
+      "attachmentErrorM": 2.1400163496054816e-07
+    },
+    {
+      "clip": "Adopted_Candidate_Chase_Run",
+      "phase": 0.25,
+      "morphWeight": 1.0,
+      "attachmentErrorM": 1.4901161193847656e-07
+    },
+    {
+      "clip": "Hybrid_MugSmash",
+      "phase": 0.48,
+      "morphWeight": 1.0,
+      "attachmentErrorM": 1.737759081973225e-07
+    },
+    {
+      "clip": "Greeting",
+      "phase": 0.45,
+      "morphWeight": 0.0,
+      "attachmentErrorM": 3.911377414586153e-07
+    }
+  ],
+  "cycleSamples": 42,
+  "maxAttachmentErrorM": 2.568019619526578e-07,
+  "bodyMotionAndWristOrientationChanged": false,
+  "contactVertexSamples": 5287,
+  "contact": {
+    "Handle": {
+      "penetratingVertices": 0,
+      "maxDepthM": 0,
+      "verticesWithin5mm": 623
+    },
+    "GlassBody": {
+      "penetratingVertices": 0,
+      "maxDepthM": 0,
+      "verticesWithin5mm": 0
+    }
+  }
+}

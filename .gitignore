@@ -34,3 +34,7 @@ __pycache__/
 04_GAME_ASSETS/3d/motions/casual_greeting_20260917/qa/*.png
 # Blender's numbered save backups are local recovery files, not source assets.
 04_GAME_ASSETS/**/*.blend[0-9]*
+# Rebuildable grip review frames; the selected final close-up is tracked.
+04_GAME_ASSETS/3d/characters/sobaya/grip_v3_20260917/qa/*.png
+!04_GAME_ASSETS/3d/characters/sobaya/grip_v3_20260917/qa/grip_front.png
+!04_GAME_ASSETS/3d/characters/sobaya/grip_v3_20260917/qa/grip_outer.png
