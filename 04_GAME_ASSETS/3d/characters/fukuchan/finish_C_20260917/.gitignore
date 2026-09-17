@@ -1,0 +1,11 @@
+source_mesh.npz
+source_color.png
+face_albedo_*.png
+badge_albedo_front.png
+qa/
+*.blend[0-9]*
+*.blend
+*.glb
+fukuchan_finished_albedo.png
+fukuchan_hair_albedo.png
+comparison_face.png

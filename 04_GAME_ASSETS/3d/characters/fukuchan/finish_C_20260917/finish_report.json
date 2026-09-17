@@ -1,0 +1,45 @@
+{
+  "original_vertices": 31285,
+  "geometry_outside_eyeballs_unchanged": true,
+  "removed_coarse_eye_vertices": 400,
+  "eye_bounds": [
+    [
+      [
+        -0.047753,
+        -0.090938,
+        1.526429
+      ],
+      [
+        -0.017855,
+        -0.070176,
+        1.557157
+      ]
+    ],
+    [
+      [
+        0.017855,
+        -0.090938,
+        1.526429
+      ],
+      [
+        0.047753,
+        -0.070176,
+        1.557157
+      ]
+    ]
+  ],
+  "repainted_texels": 524215,
+  "material_faces": {
+    "C soft skin, clean normals": 8118,
+    "C matte sculpted black hair": 9376,
+    "C matte fabric": 14116
+  },
+  "badge_text": "福ちゃん",
+  "badge_center": [
+    -0.004,
+    -0.10834787921905517,
+    1.032
+  ],
+  "badge_font": "Hiragino Kaku Gothic W6",
+  "source_glb": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/04_GAME_ASSETS/3d/characters/fukuchan/wan_multiview_20260917/fukuchan_wholebody.glb"
+}
