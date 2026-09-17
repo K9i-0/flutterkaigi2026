@@ -13,7 +13,7 @@
 - 旧福ちゃんの `hazard_adopted/fukuchan.glb` から、元姿勢と脚長を考慮して17動作をリターゲット。ローカル回転をそのままコピーしない。元クリップ名・SHA・長さは `motions.json`。
 - 既存動作：Idle / Walk / Run / Aim / AimShotgun / ReloadHandgun / ReloadShotgun / Hit / Evade / Kick / Climb / Vault / Struggle / BreakFree / DanceStep / DanceDisco / DanceVictory。
 - Greeting：新しい手の向きに合わせた2.2秒の短い挨拶。
-- GyunGyunPose：1秒の固定ポーズ。頬下の両こぶし、肘を低く・前腕を立て、右膝を外へ開き、すねを下へ垂らす。左足で支持。
+- GyunGyunPose：1秒の固定ポーズ。頬下の両こぶし、肘を低く・前腕を立て、左膝を外へ開き、すねを下へ垂らす。右足で支持。
 - GyunGyun：4秒の構える→保持→戻る動作。固定ポーズと同じ姿勢。
 
 添付写真と追記された赤線画像を `inputs/` に保持。顔・表情の正本は引き続き承認済みfrontであり、今回の写真で顔を作り直していない。動作はPython/Blenderによるリターゲットと手付けで、写真からのモーションキャプチャではない。元動作はMixamo・CC0素材・手付けが混在し、一括してCC0とは扱わない。

@@ -27,16 +27,16 @@ def author(rig,mesh):
   for b in rig.pose.bones:b.matrix_basis=neutral[b.name]
   bpy.context.view_layer.update()
  reset()
- # Photo: subject's right knee lifts, both fists beside the cheeks, elbows down.
+ # User correction: subject stands on the RIGHT foot and raises the LEFT knee.
  hip=rig.pose.bones['Hips'];h=hip.matrix.copy();h.translation+=Vector((.065,0,-.02));hip.matrix=h;bpy.context.view_layer.update()
- body.leg_ik('l',Vector((.13,.032,.105)),body.rest['LeftFoot'].to_3x3())
- thigh=rig.pose.bones['RightUpLeg'];knee=thigh.head+Vector((-.50,-.85,.12)).normalized()*body.length('thigh_r','calf_r');body.aim(thigh,knee);calf=rig.pose.bones['RightLeg'];body.aim(calf,calf.head+Vector((.25,-.02,-1)));foot=rig.pose.bones['RightFoot'];foot.matrix=Matrix.Translation(foot.head)@body.rest['RightFoot'].to_3x3().to_4x4();bpy.context.view_layer.update()
+ body.leg_ik('r',Vector((-.13,.032,.105)),body.rest['RightFoot'].to_3x3())
+ thigh=rig.pose.bones['LeftUpLeg'];knee=thigh.head+Vector((.50,-.85,.12)).normalized()*body.length('thigh_l','calf_l');body.aim(thigh,knee);calf=rig.pose.bones['LeftLeg'];body.aim(calf,calf.head+Vector((-.25,-.02,-1)));foot=rig.pose.bones['LeftFoot'];foot.matrix=Matrix.Translation(foot.head)@body.rest['LeftFoot'].to_3x3().to_4x4();bpy.context.view_layer.update()
  for side,sign,short in [('Left',1,'l'),('Right',-1,'r')]:
   goal=Vector((sign*.145+.035,-.19,1.34));body.ik(['upperarm_'+short,'lowerarm_'+short,'hand_'+short],goal,Vector((sign*.1,-.25,-1)))
   orient(rig,side,(sign*-.15,0,1),(-sign*.8,.6,0))
  curl(rig,.75);tuck_thumbs(rig)
  # Place the supporting shoe at the floor without disturbing the lifted leg.
- h=hip.matrix.copy();h.translation.z+=.003-body.skin_floor('l');hip.matrix=h;bpy.context.view_layer.update()
+ h=hip.matrix.copy();h.translation.z+=.003-body.skin_floor('r');hip.matrix=h;bpy.context.view_layer.update()
  gyun={b.name:b.matrix_basis.copy() for b in rig.pose.bones}
  for name,frames,held in [('GyunGyunPose',30,True),('GyunGyun',120,False)]:
   body.action(name,frames)
