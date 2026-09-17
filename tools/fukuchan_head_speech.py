@@ -16,7 +16,7 @@ def curve(x):
     return .0035 * min(1., (abs(x) / WIDTH) ** 2)
 
 
-def add_head_speech(head, *, jaw_bottom=1.444, jaw_full=1.472, include_teeth=True):
+def add_head_speech(head, *, jaw_bottom=1.444, jaw_full=1.472, include_teeth=True, jaw_distance=.009, spread=0., warm_lining=False):
     head.shape_key_clear()
     head.data.calc_loop_triangles()
     original_points = [v.co.copy() for v in head.data.vertices]
@@ -50,6 +50,16 @@ def add_head_speech(head, *, jaw_bottom=1.444, jaw_full=1.472, include_teeth=Tru
     dark.diffuse_color = (.012, .002, .003, 1)
     dark.node_tree.nodes['Principled BSDF'].inputs['Base Color'].default_value = dark.diffuse_color
     dark.node_tree.nodes['Principled BSDF'].inputs['Roughness'].default_value = .9
+    if warm_lining:
+        # Per-corner color preserves the shared lip vertices and the face albedo.
+        color = dark.node_tree.nodes.new('ShaderNodeVertexColor')
+        color.layer_name = 'SpeechLiningColor'
+        dark.node_tree.links.new(color.outputs['Color'], dark.node_tree.nodes['Principled BSDF'].inputs['Base Color'])
+        dark.diffuse_color = (1, 1, 1, 1)
+        colors = bm.loops.layers.float_color.new('SpeechLiningColor')
+        for face in bm.faces:
+            for loop in face.loops:
+                loop[colors] = (1, 1, 1, 1)
     material = len(head.data.materials)
     head.data.materials.append(dark)
     boundary = [e for e in bm.edges if e.is_boundary and
@@ -74,6 +84,11 @@ def add_head_speech(head, *, jaw_bottom=1.444, jaw_full=1.472, include_teeth=Tru
             inside.append(rear[key])
         face = bm.faces.new((edge.verts[0], edge.verts[1], inside[1], inside[0]))
         face.material_index = material
+        if warm_lining:
+            for loop in face.loops:
+                # Linear RGB: a muted red-brown opening fading into the cavity.
+                loop[colors] = ((.035, .010, .008, 1) if loop.vert[lining] > .5
+                                else (.16, .058, .042, 1))
     for vertex in bm.verts:
         vertex.co.z += curve(vertex.co.x)
     uv_layer = bm.loops.layers.uv.active
@@ -140,13 +155,15 @@ def add_head_speech(head, *, jaw_bottom=1.444, jaw_full=1.472, include_teeth=Tru
         front = 1 - smooth(-.07, -.035, y)
         jaw = smooth(jaw_bottom, jaw_full, z) if below else 0
         weight = side * front * jaw
-        opened.data[i].co.z -= .009 * weight
-        opened.data[i].co.y += .0015 * weight
+        opened.data[i].co.z -= jaw_distance * weight
+        opened.data[i].co.y += jaw_distance / 6 * weight
         lip = exp(-((z - MOUTH) / .018) ** 2) * side * front
+        opened.data[i].co.x += x * spread * lip
         narrow.data[i].co.x -= x * .14 * lip
         affected += weight > .001 or lip > .001
     opened.value = narrow.value = 0
     return {'targets': ['SpeechOpen', 'SpeechNarrow'], 'affectedVertices': affected,
-            'mouthHeight': MOUTH, 'maximumJawDisplacement': .009,
+            'mouthHeight': MOUTH, 'maximumJawDisplacement': jaw_distance, 'spread': spread,
+            'warmLining': warm_lining,
             'source': 'authored split lip seam and inward oral lining; not a phoneme rig',
             'teeth': 8 if include_teeth else 0}

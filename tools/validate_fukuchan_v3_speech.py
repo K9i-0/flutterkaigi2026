@@ -50,6 +50,16 @@ for mesh in dst['meshes']:
      assert abs(pos[0])<.035 and 1.426<pos[1]<1.57,(name,pos)
      moved[name]=moved.get(name,0)+1
 assert all(moved.get(n,0)>0 for n in ['SpeechOpen','SpeechNarrow'])
-assert .005<max_delta<.012
-report={'result':'PASS','sourceSha256':hashlib.sha256(SOURCE.read_bytes()).hexdigest(),'sha256':hashlib.sha256((OUT/'fukuchan.glb').read_bytes()).hexdigest(),'originalClips':len(src['animations']),'gameClips':len(dst['animations']),'maximumAnimationSampleError':max_error,'movedVertices':moved,'maximumMorphDisplacement':max_delta,'scope':'finite localized mouth deltas, normalized weights, original animation sample comparison; visual QA separate'}
+assert .005<max_delta<.006
+assert not any('Teeth' in m.get('name','') for m in dst['materials'])
+lining=[]
+for mesh in dst['meshes']:
+ for p in mesh['primitives']:
+  if dst['materials'][p['material']]['name']=='FukuchanOralLining':
+   assert 'COLOR_0' in p['attributes']
+   lining.extend(da(p['attributes']['COLOR_0']))
+assert lining and len(set(lining))>=2
+assert all(c[0]>c[1]>c[2]>0 for c in lining)
+assert max(c[0] for c in lining)>min(c[0] for c in lining)*3
+report={'result':'PASS','sourceSha256':hashlib.sha256(SOURCE.read_bytes()).hexdigest(),'sha256':hashlib.sha256((OUT/'fukuchan.glb').read_bytes()).hexdigest(),'originalClips':len(src['animations']),'gameClips':len(dst['animations']),'maximumAnimationSampleError':max_error,'movedVertices':moved,'maximumMorphDisplacement':max_delta,'teeth':0,'oralGradientVerified':True,'scope':'finite localized mouth deltas, normalized weights, original animation sample comparison; visual QA separate'}
 (OUT/'speech_validation.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))

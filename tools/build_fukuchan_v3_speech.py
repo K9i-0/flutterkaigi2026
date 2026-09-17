@@ -16,7 +16,8 @@ head=bpy.data.objects['FukuchanV3']
 import fukuchan_head_speech as speech
 speech.MOUTH=1.4774
 speech.WIDTH=.034
-report=speech.add_head_speech(head,jaw_bottom=1.427,jaw_full=1.455,include_teeth=False)
+report=speech.add_head_speech(head,jaw_bottom=1.427,jaw_full=1.455,include_teeth=False,
+                              jaw_distance=.0054,spread=.055,warm_lining=True)
 bpy.ops.object.select_all(action='DESELECT')
 rig.select_set(True);head.select_set(True);bpy.context.view_layer.objects.active=rig
 out=OUT/'fukuchan.glb'
