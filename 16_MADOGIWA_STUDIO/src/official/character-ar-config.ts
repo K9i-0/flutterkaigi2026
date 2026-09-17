@@ -1,5 +1,5 @@
 export const arCharacters = {
-  sobaya: { name: "そば屋", greeting: null, height: 1.8 },
+  sobaya: { name: "そば屋", greeting: "Greeting", height: 1.8 },
   fukuchan: { name: "福ちゃん", greeting: "Greeting", height: 1.7 },
   takosan: { name: "たこさん", greeting: "Wave", height: 1.433 },
   yametaro: { name: "やめ太郎", greeting: "Wave", height: 1.3 },
@@ -10,7 +10,7 @@ export function arHeight(character: ARCharacter, placement: ARPlacement) {
   return placement === "life" ? arCharacters[character].height : placement === "plush" ? 0.2 : 0.12;
 }
 export function modelUrl(character: string) {
-  const version = character === "sobaya" ? "v3-face-red-20260917" : "20260916-2";
+  const version = character === "sobaya" ? "v3-rig-upright-20260917" : "20260916-2";
   return `/models/characters/${character}.glb?v=${version}`;
 }
 

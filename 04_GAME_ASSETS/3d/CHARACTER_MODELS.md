@@ -39,12 +39,12 @@
 | そば屋 | [紹介](https://madogiwa.work/characters/sobaya) | [AR](https://madogiwa.work/camera/sobaya) | [GLB](https://madogiwa.work/models/characters/sobaya.glb) |
 | 福ちゃん | [紹介](https://madogiwa.work/characters/fukuchan) | [AR](https://madogiwa.work/camera/fukuchan) | [GLB](https://madogiwa.work/models/characters/fukuchan.glb) |
 
-公式サイトのそば屋は2026-09-17に **v3顔パーツ修正版（輪郭維持・未リグ・静止モデル）** へ更新。正本は [仕上げ版GLB](characters/sobaya/wan_multiview_20260916/face_red_edge_20260917/sobaya_front_matched.glb)、制作記録は [FINAL.md](characters/sobaya/wan_multiview_20260916/FINAL.md)。3DビューとARは静止姿勢で利用できます。ゲーム採用版は上表の姿勢補正・リグ付きv3です。
+公式サイトのそば屋は2026-09-17に **v3姿勢補正・リグ付き版** へ更新。ゲームと同じ [配布用GLB](characters/sobaya/rig_v3_20260917/sobaya_rig.glb) を参照。仮面・顔の比率を保持し、前傾を補正。3DビューとARで動作を利用できます。
 
 ## 別の制作物で使う
 
 - **Blender:** GLBをglTF 2.0としてインポートすれば形状・材質・リグ・収録動作を利用できます。元の編集履歴やBlender固有の設定まで復元するものではありません。
-- **Three.js:** `GLTFLoader`で読み込み、`gltf.scene`を配置。動作は`gltf.animations`を`AnimationMixer`で再生します。手振りは、たこさん・やめ太郎が`Wave`、動作入りそば屋v3・福ちゃんが`Greeting`です。公式サイトのそば屋v3には動作を収録していません。
+- **Three.js:** `GLTFLoader`で読み込み、`gltf.scene`を配置。動作は`gltf.animations`を`AnimationMixer`で再生します。手振りは、たこさん・やめ太郎が`Wave`、動作入りそば屋v3・福ちゃんが`Greeting`です。公式サイトのそば屋v3にも同じ動作を収録しています。
 - **Flutter Scene:** 同じGLBをビルド時に変換し、`loadScene()`で読み込んで`Scene`へ追加。`SceneView`で表示します。導入手順と短いコード例は下記を参照。
 - **このモノレポの別プロジェクト:** モデルの重複コピーを避け、`public/models/`などから上記GLBへ相対symlinkを張ります。既存の[公式サイトの参照先](../../16_MADOGIWA_STUDIO/public/models/characters/)もこの方式です。
 - **ゲーム用動作:** そば屋・福ちゃんは動作入りの`hazard_adopted`版を使用。制作元のGLBには同じ動作が揃っていない場合があります。[採用モデルの説明](hazard_adopted/README.md)を参照。

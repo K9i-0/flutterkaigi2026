@@ -26,6 +26,6 @@
 
 順にBlenderで `tools/build_sobaya_v3_rig.py`、同スクリプト `-- --rig`、`tools/retarget_sobaya_v3.py`、`tools/review_sobaya_v3.py`。Pythonで `tools/adopt_sobaya_v3.py`。最後に `node tools/validate_hazard_adopted.mjs`。
 
-MCPによる本編での検証記録は `21_SOBAYA_HAZARD_LAB/qa/sobaya-v3-20260917.json`。公式サイトの公開モデルは本作業では差し替えない。
+MCPによる本編での検証記録は `21_SOBAYA_HAZARD_LAB/qa/sobaya-v3-20260917.json`。公式サイトも同日の追加依頼で本GLBへ更新（URL世代 `v3-rig-upright-20260917`）。
 
 モーションの利用条件は元ライブラリの条件を引き継ぐ。Mixamo由来を含むため一式をCC0として扱わない。
