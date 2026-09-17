@@ -121,6 +121,9 @@ def make_rig():
  from sobaya_pelvis_weights import correct_pelvis_weights
  pelvis_report=correct_pelvis_weights(main)
  (OUT/'pelvis_weights_report.json').write_text(json.dumps(pelvis_report,indent=2))
+ from sobaya_arm_weights import correct_arm_weights
+ arm_report=correct_arm_weights(main)
+ (OUT/'arm_weights_report.json').write_text(json.dumps(arm_report,indent=2))
  for o in meshes:
   for mod in o.modifiers:
    if mod.type=='ARMATURE':mod.use_deform_preserve_volume=False

@@ -35,3 +35,9 @@ MCPによる本編での検証記録は `21_SOBAYA_HAZARD_LAB/qa/sobaya-v3-20260
 ダンスで股下が三角形に尖る原因は、ズボン中央で左右の腿ウェイトが急に切り替わること。細分化後に `tools/sobaya_pelvis_weights.py` で中心15cm幅を滑らかにつなぎ、骨盤の影響を中央へ補う。顔・体格・頂点位置・UV・骨・モーションは維持。修正前後3ダンス×4位相を正面・背面で比較（`qa/pelvis_comparison.png`）。この処置はベースウェイトへ一度だけ適用し、修正済みウェイトへ累積しない。
 
 公式サイト公開世代: `v3-rig-pelvis-20260917`。公開GLBのSHA-256は `qa/pelvis_invariants.json` のcorrectedSha256と一致。公開3Dビューのダンスを正面・背面から拡大確認済み。ゲームの連続再生記録: `21_SOBAYA_HAZARD_LAB/qa/sobaya-pelvis-20260917.json`。
+
+## 挨拶時の上腕の追加修正（2026-09-17）
+
+腕の内側に残った胴体ウェイトが、挨拶で肉を脇へ引き下げていた。`tools/sobaya_arm_weights.py` でメッシュ表面の距離を用いて上腕と胴体を分離し、袖・肩へは補正を弱める。UV境界の重複点と非連結部分は同じ連続場から補間し、最大4影響に正規化。肘の混合範囲も局所化。頂点・UV・骨格・103モーションは保持。挨拶8位相の同視点比較は `qa/greeting_comparison.png`。前回の股周り修正も保持。
+
+公開世代は `v3-rig-arm-20260917`。公開GLBのハッシュを配布用GLBと照合し、公式サイトで挨拶の連続再生を拡大確認。検証記録は `21_SOBAYA_HAZARD_LAB/qa/sobaya-arm-20260917.json`。袖下の小さな折れは残るため、衣服シミュレーション相当の品質を保証するものではない。GLBの挨拶8位相は `tools/review_sobaya_greeting.py` で再確認できる。

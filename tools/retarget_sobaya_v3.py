@@ -97,7 +97,7 @@ bpy.context.view_layer.objects.active=rig
 bpy.ops.export_scene.gltf(filepath=str(OUT/'sobaya_rig.glb'),export_format='GLB',use_selection=True,export_apply=True,export_animations=True,export_animation_mode='ACTIONS',export_frame_range=False,export_anim_slide_to_zero=True,export_anim_single_armature=True,export_skins=True,export_def_bones=False,export_force_sampling=True,export_optimize_animation_size=True,export_extras=True)
 report={'version':3,'clips':sorted(records),'clipCount':len(records),'bones':ordered,'legScale':scale,'groundSpeedMps':{'Walk':speed_samples['Adopted_Library_Walk'],'Run':speed_samples['Adopted_Candidate_Chase_Run']},'floorCorrectionM':floor_report,'animationSource':str(OLD.relative_to(ROOT)),'animationSourceSha256':hashlib.sha256(OLD.read_bytes()).hexdigest(),'sha256':hashlib.sha256((OUT/'sobaya_rig.glb').read_bytes()).hexdigest()}
 report['speedMethod']='Target backward foot velocity in original clip stance phases; target floor correction excluded from phase classification.'
-report['skinningRevision']=json.loads((OUT/'pelvis_weights_report.json').read_text())['revision']
+report['skinningRevision']=json.loads((OUT/'arm_weights_report.json').read_text())['revision']
 (OUT/'rig_report.json').write_text(json.dumps(report,indent=2));print('V3_RETARGET_DONE',report['clipCount'],report['groundSpeedMps'],flush=True)
 for clip,phase in [('Hybrid_MugHold',.0),('Adopted_Library_Walk',.25),('Adopted_Candidate_Chase_Run',.25),('Hybrid_MugSmash',.48),('DanceDisco',.33)]:
  use_action(rig,bpy.data.actions[clip]);end=bpy.data.actions[clip].frame_range[1];s.frame_set(int(end*phase));render('motion_'+clip,False)
