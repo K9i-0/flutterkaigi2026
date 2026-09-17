@@ -1,0 +1,31 @@
+{
+  "status": "quote prototype; not approved for manufacture",
+  "source": "04_GAME_ASSETS/3d/characters/sobaya/standing_v3_20260917/sobaya_standing.blend",
+  "source_sha256": "d754aa304ef4fdb841a79fefba3f109bbec4dcaed502239c93e40b38ccaa3a22",
+  "dimensions_mm": [
+    84.99683380126953,
+    84.99683380126953,
+    149.96412420272827
+  ],
+  "base_diameter_mm": 85,
+  "base_height_mm": 5,
+  "solid_volume_cm3": 133.24642910000952,
+  "nonmanifold_edges": 0,
+  "vertices": 502765,
+  "voxel_mm": 0.15,
+  "excluded_internal_mug_parts": [
+    "BeerVolume",
+    "LiquidSurface",
+    "Carbonation",
+    "Icosphere"
+  ],
+  "remaining_checks": [
+    "vendor minimum wall thickness and fingers/mug handle review",
+    "full-color texture/material compatibility",
+    "support removal and surface finish",
+    "no hollowing applied"
+  ],
+  "connected_components_after_cleanup": 1,
+  "removed_small_components": 20,
+  "stl_sha256": "8bf0537a9db7e0aff8a21fb5478ee88a21752b09e394a7629044b9e96258ca86"
+}

@@ -1,0 +1,8 @@
+# Generated quote prototypes and review media stay local; regenerate from the script.
+*.blend
+*.blend[0-9]*
+*.stl
+*.obj
+*.mtl
+*.png
+*.zip
