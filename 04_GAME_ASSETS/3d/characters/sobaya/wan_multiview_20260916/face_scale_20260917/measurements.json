@@ -1,0 +1,14 @@
+{
+  "WAN front": {
+    "core_width_over_mask_width_pct": 69.36258173024832,
+    "core_height_over_mask_height_pct": 58.363009933962516
+  },
+  "Before": {
+    "core_width_over_mask_width_pct": 73.83837142373835,
+    "core_height_over_mask_height_pct": 69.05742919692935
+  },
+  "After / 90%": {
+    "core_width_over_mask_width_pct": 66.46754984787184,
+    "core_height_over_mask_height_pct": 62.05643264717879
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "Mask black eye L": {
+    "vertices": 129,
+    "scale": 0.9
+  },
+  "Mask black eye R": {
+    "vertices": 129,
+    "scale": 0.9
+  },
+  "Mask reference mouth": {
+    "vertices": 131,
+    "scale": 0.9
+  },
+  "Mask closed nose without nostrils": {
+    "vertices": 8064,
+    "scale": 0.9
+  },
+  "Mask domed forehead medallion": {
+    "vertices": 1986,
+    "scale": 0.9
+  },
+  "face_scale": 0.9,
+  "pivot_px": [
+    539.62,
+    550.69
+  ],
+  "mask_border_hair_body_unchanged": true,
+  "fixed_vertices": 15617,
+  "changed_mask_interior_vertices": 343
+}

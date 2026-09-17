@@ -1,0 +1,108 @@
+{
+  "anchors_manual_native_pixels": {
+    "reference": {
+      "left": [
+        360,
+        127
+      ],
+      "right": [
+        461,
+        128
+      ],
+      "top": [
+        409,
+        80
+      ],
+      "chin": [
+        410,
+        207
+      ]
+    },
+    "model": {
+      "left": [
+        247,
+        540
+      ],
+      "right": [
+        818,
+        561
+      ],
+      "top": [
+        540,
+        307
+      ],
+      "chin": [
+        525,
+        961
+      ]
+    }
+  },
+  "definition": "Mask width at eye level. Visible central hairline to chin height. Core face box contains eye openings, forehead medallion and mouth; nose lies within it. Ears/hair/neck excluded. Roll removed, uniform scaling only.",
+  "uncertainty": "Source outline \u00b11\u20132px; source hairline \u00b13px; model outline \u00b14px, hairline \u00b115px. Original camera calibration unavailable.",
+  "measurements": {
+    "reference": {
+      "mask_width_px": 101.00490043770043,
+      "mask_height_px": 126.9860569129961,
+      "mask_height_over_width": 1.2572266925932054,
+      "eye_spacing_px": 44.81108731574638,
+      "core_width_px": 70.0596066176559,
+      "core_height_px": 74.11288501087921,
+      "eye_spacing_over_mask_width_pct": 44.36526061761305,
+      "eye_spacing_over_mask_height_pct": 35.288194944464244,
+      "core_width_over_mask_width_pct": 69.36258173024832,
+      "core_height_over_mask_height_pct": 58.363009933962516,
+      "eye_level_from_top_pct": 37.379751316980894,
+      "mouth_level_from_top_pct": 68.50420056115524,
+      "bottom_margin_below_mouth_pct": 29.05875302366418
+    },
+    "model": {
+      "mask_width_px": 571.3853601338756,
+      "mask_height_px": 654.1225654261971,
+      "mask_height_over_width": 1.1448010590837263,
+      "eye_spacing_px": 269.18976527087625,
+      "core_width_px": 421.901644476516,
+      "core_height_px": 451.72022748033385,
+      "eye_spacing_over_mask_width_pct": 47.11177150352699,
+      "eye_spacing_over_mask_height_pct": 41.15280216567429,
+      "core_width_over_mask_width_pct": 73.83837142373835,
+      "core_height_over_mask_height_pct": 69.05742919692935,
+      "eye_level_from_top_pct": 37.1752534749505,
+      "mouth_level_from_top_pct": 73.60389708638438,
+      "bottom_margin_below_mouth_pct": 23.18848606670643
+    }
+  },
+  "relative_excess_pct": {
+    "eye_spacing_over_mask_width_pct": 6.190679030573687,
+    "eye_spacing_over_mask_height_pct": 16.61917598913638,
+    "core_width_over_mask_width_pct": 6.45274380197729,
+    "core_height_over_mask_height_pct": 18.323967997996537
+  },
+  "pose_sensitivity": {
+    "-5": {
+      "manual_top": [
+        540,
+        315
+      ],
+      "manual_chin": [
+        527,
+        956
+      ],
+      "mask_height_px": 641.0847060934561,
+      "core_height_over_mask_height_pct": 70.24193432979287,
+      "excess_vs_reference_pct": 20.353515710158376
+    },
+    "-15": {
+      "manual_top": [
+        540,
+        299
+      ],
+      "manual_chin": [
+        526,
+        969
+      ],
+      "mask_height_px": 670.0521974084854,
+      "core_height_over_mask_height_pct": 67.01850202239086,
+      "excess_vs_reference_pct": 14.830441572876385
+    }
+  }
+}
