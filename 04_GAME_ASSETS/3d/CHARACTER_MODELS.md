@@ -39,7 +39,7 @@
 | そば屋 | [紹介](https://madogiwa.work/characters/sobaya) | [AR](https://madogiwa.work/camera/sobaya) | [GLB](https://madogiwa.work/models/characters/sobaya.glb) |
 | 福ちゃん | [紹介](https://madogiwa.work/characters/fukuchan) | [AR](https://madogiwa.work/camera/fukuchan) | [GLB](https://madogiwa.work/models/characters/fukuchan.glb) |
 
-公式サイトのそば屋は2026-09-17に **v3（未リグ・静止モデル）** へ更新。正本は [仕上げ版GLB](characters/sobaya/wan_multiview_20260916/imagegen_mask_v1/sobaya_refined_final.glb)、制作記録は [FINAL.md](characters/sobaya/wan_multiview_20260916/FINAL.md)。3DビューとARは静止姿勢で利用できます。ゲーム採用版は上表のv2を維持しています。
+公式サイトのそば屋は2026-09-17に **v3顔パーツ修正版（輪郭維持・未リグ・静止モデル）** へ更新。正本は [仕上げ版GLB](characters/sobaya/wan_multiview_20260916/face_refinement_20260917/sobaya_front_matched.glb)、制作記録は [FINAL.md](characters/sobaya/wan_multiview_20260916/FINAL.md)。3DビューとARは静止姿勢で利用できます。ゲーム採用版は上表のv2を維持しています。
 
 ## 別の制作物で使う
 
