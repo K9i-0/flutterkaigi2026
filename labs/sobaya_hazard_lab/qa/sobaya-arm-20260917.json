@@ -1,0 +1,93 @@
+{
+  "date": "2026-09-17",
+  "revision": "arm-surface-20260917",
+  "modelSha256": "666792e30bf061bf8e06ae758c10c01b9bb8c34fcd4134d79ee4b2a9daa7640b",
+  "native": {
+    "device": "macOS debug",
+    "dance": {
+      "rendering": {
+        "continuous": true,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 1274,
+        "sceneRenderCalls": 1277,
+        "frameRateLimit": 60,
+        "simulationSeconds": 36.69159399999981,
+        "playerClipSeconds": 2.25792610945126
+      },
+      "motions": [
+        {
+          "motion": "DanceStep",
+          "sourceMotion": "DanceStep",
+          "seconds": 1.2579277783813447
+        },
+        {
+          "motion": "DanceDisco",
+          "sourceMotion": "DanceDisco",
+          "seconds": 2.224594715255719
+        },
+        {
+          "motion": "DanceVictory",
+          "sourceMotion": "DanceVictory",
+          "seconds": 4.391260507720957
+        }
+      ],
+      "grip": [
+        0,
+        1.4901161193847656e-8,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "attack": {
+      "rendering": {
+        "continuous": true,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 3164,
+        "sceneRenderCalls": 3168,
+        "frameRateLimit": 60,
+        "simulationSeconds": 55.89988799999892,
+        "playerClipSeconds": 0.349435994567788
+      },
+      "motions": [
+        {
+          "motion": "MugPunch",
+          "sourceMotion": "Hybrid_MugPunch",
+          "seconds": 1.0797575681859797
+        },
+        {
+          "motion": "Idle",
+          "sourceMotion": "Hybrid_MugHold",
+          "seconds": 0.44999999999999996
+        },
+        {
+          "motion": "Idle",
+          "sourceMotion": "Hybrid_MugHold",
+          "seconds": 0.35
+        }
+      ],
+      "grip": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "checks": [
+    "Greeting 8 phases before vs exported GLB visual comparison",
+    "6 exported motions x 2 phases visually reviewed",
+    "geometry UVs and rest transforms unchanged; 103 clip buffers identical",
+    "5 motion tests and website 39 tests passed"
+  ],
+  "scope": "Arm and elbow weights only. Cloth creases at raised armpits remain; no cloth simulation or individual finger rig."
+}
