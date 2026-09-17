@@ -1,0 +1,24 @@
+{
+  "task_id": "7038b8f5-eaa3-49ba-8922-b502d977bba3",
+  "status": "SUCCEEDED",
+  "model": "wan3.0-video",
+  "seed": 917031,
+  "duration_requested": 8,
+  "resolution": "720P",
+  "estimated_usd": 0.56,
+  "authorization": "User explicitly approved image uploads to Qwen Cloud and Tripo and one paid generation each after approval-review clarification.",
+  "input_sha256": "883b2e5b5a05eafc1b3dcc002924f0473f535115b1f328d14efff7324418d51f",
+  "recorded_at": "2026-09-17T04:22:05.946439+00:00",
+  "authorization_confirmed": true,
+  "actual_duration": 8.033991,
+  "width": 832,
+  "height": 1108,
+  "fps": 30,
+  "selected_frames": {
+    "front": 0.2,
+    "left": 2.5,
+    "back": 4.0,
+    "right": 5.5
+  },
+  "video_sha256": "1fdb91a103b391f94c534a493722a281668ec6e419377854c6f12f81ad2fd82f"
+}

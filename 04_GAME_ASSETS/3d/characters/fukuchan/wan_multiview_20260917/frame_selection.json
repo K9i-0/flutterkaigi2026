@@ -1,0 +1,15 @@
+{
+  "source_video": "../../../../../03_SCRIPTS/fukuchan_turnaround_wan_20260917/wan3_fukuchan_turnaround_720p.mp4",
+  "seconds": {
+    "front": 0.2,
+    "left": 2.5,
+    "back": 4.0,
+    "right": 5.5
+  },
+  "size": [
+    832,
+    1108
+  ],
+  "processing": "ffmpeg extraction only; no crop or resize",
+  "note": "Approximate views visually selected; pose and wrist rotation drift remain. left=nose screen-left; right=nose screen-right."
+}

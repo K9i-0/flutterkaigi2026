@@ -1,0 +1,27 @@
+{
+  "source": "raw/output_model_url.fbx",
+  "mesh_objects": 1,
+  "vertices": 16274,
+  "polygons": 17477,
+  "height_m": 1.7,
+  "rigged": false,
+  "materials": [
+    {
+      "material": "Dots Stroke",
+      "maps": []
+    },
+    {
+      "material": "Material",
+      "maps": []
+    },
+    {
+      "material": "tripo_mat_dbcdad3d",
+      "maps": [
+        "color",
+        "normal",
+        "roughness",
+        "metallic"
+      ]
+    }
+  ]
+}

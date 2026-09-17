@@ -1,0 +1,13 @@
+{
+  "magic": "glTF",
+  "version": 2,
+  "declared_bytes_match": true,
+  "bytes": 9416396,
+  "sha256": "ceab8030636d2f1a013cdeb62ca19720e75b26e39803e16ea67a2f441decc568",
+  "meshes": 1,
+  "primitives": 1,
+  "images": 3,
+  "all_images_embedded": true,
+  "skins": 0,
+  "animations": 0
+}
