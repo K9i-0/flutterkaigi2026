@@ -3,10 +3,10 @@
     "version": 3,
     "file": "04_GAME_ASSETS/3d/hazard_adopted/v3_20260917/sobaya.glb",
     "source": "04_GAME_ASSETS/3d/characters/sobaya/rig_v3_20260917/sobaya_rig.glb",
-    "sourceSha256": "666792e30bf061bf8e06ae758c10c01b9bb8c34fcd4134d79ee4b2a9daa7640b",
+    "sourceSha256": "73ac14ce9ff57cc6a70ab61550b528a804849046bad56472dd6dfa2163fba3d7",
     "motionSource": "04_GAME_ASSETS/3d/hazard_adopted/sobaya.glb",
     "motionSourceSha256": "e8df48deafb162543e07c46f3e839b5b8c71c0316352880af46b2b12a7147d6e",
-    "sha256": "666792e30bf061bf8e06ae758c10c01b9bb8c34fcd4134d79ee4b2a9daa7640b",
+    "sha256": "73ac14ce9ff57cc6a70ab61550b528a804849046bad56472dd6dfa2163fba3d7",
     "sources": {
       "Walk": "Adopted_Library_Walk",
       "Run": "Adopted_Candidate_Chase_Run"
@@ -130,7 +130,8 @@
     "rig": "SobayaV3Rig",
     "boneCount": 24,
     "retargetMethod": "world-space rest-aware rotations, anatomical joint offsets, foot contact correction",
-    "skinningRevision": "arm-surface-20260917"
+    "skinningRevision": "arm-surface-20260917",
+    "motionRevision": "greeting-palm-20260917"
   },
   "fukuchan": {
     "version": 2,
