@@ -1,0 +1,104 @@
+{
+  "revision": "mug-motion-greeting-20260917",
+  "date": "2026-09-17",
+  "liveModelSha256": "f438fa1f0073d710df5158da962cd3fe005aa77d0cbb41a04701f792848d5c4f",
+  "liveMugSha256": "3456dcd7a79ec55936e6141a2b51432d51f38084d62a636368216530de2972f4",
+  "productionARGeneration": "Greeting with mug: succeeded",
+  "nativeMugCompleteFrameMaximumError": 1.1920928955078125e-7,
+  "nativeMugOrientationFix": "Removed legacy -90 degree X rotation; Grip frame aligns directly to PropSocket.R",
+  "sourceSha256": "c0cdb21cd0505255a2722fa017eb679df16013fc865146f461864c5dde42fb7d",
+  "site": {
+    "version": "d56e1375-ab57-421d-b855-403ea43683cf",
+    "tests": 41,
+    "checks": [
+      "types",
+      "lint",
+      "build",
+      "startup",
+      "deploy dry-run"
+    ],
+    "ar": {
+      "cases": [
+        "Idle with mug",
+        "Greeting with mug",
+        "Idle without mug",
+        "Greeting without mug"
+      ],
+      "mugParts": 6,
+      "withoutMugMeshCount": 16,
+      "withMugMeshCount": 22,
+      "appleUsdchecker": "Success",
+      "iphoneCameraCapture": "not tested on physical device"
+    }
+  },
+  "game": {
+    "nativePid": 25080,
+    "sourceIdle": "CharacterSheet_MugStand",
+    "tests": 5,
+    "analyze": "No issues found",
+    "runtimeErrors": 0,
+    "samples": [
+      {
+        "motion": {
+          "motion": "Idle",
+          "sourceMotion": "CharacterSheet_MugStand",
+          "seconds": 0.6999990000000001
+        },
+        "health": 85,
+        "frames": {
+          "samples": 240,
+          "window": "last 240 Flutter frames",
+          "uiP95Ms": 13.677,
+          "rasterP95Ms": 8.469,
+          "uiMaxMs": 23.464,
+          "rasterMaxMs": 13.723,
+          "uiOver16_7Ms": 3,
+          "rasterOver16_7Ms": 0
+        },
+        "gripError": 3.725290298461914e-9
+      },
+      {
+        "motion": {
+          "motion": "MugPunch",
+          "sourceMotion": "Hybrid_MugPunch",
+          "seconds": 0.4106655971202852
+        },
+        "health": 70,
+        "frames": {
+          "samples": 240,
+          "window": "last 240 Flutter frames",
+          "uiP95Ms": 14.991,
+          "rasterP95Ms": 9.026,
+          "uiMaxMs": 22.426,
+          "rasterMaxMs": 14.683,
+          "uiOver16_7Ms": 10,
+          "rasterOver16_7Ms": 0
+        },
+        "gripError": 0
+      },
+      {
+        "motion": {
+          "motion": "MugPunch",
+          "sourceMotion": "Hybrid_MugPunch",
+          "seconds": 0.9101002893756693
+        },
+        "health": 40,
+        "frames": {
+          "samples": 240,
+          "window": "last 240 Flutter frames",
+          "uiP95Ms": 15.546,
+          "rasterP95Ms": 8.627,
+          "uiMaxMs": 29.69,
+          "rasterMaxMs": 13.5,
+          "uiOver16_7Ms": 9,
+          "rasterOver16_7Ms": 0
+        },
+        "gripError": 3.725290298461914e-9
+      }
+    ]
+  },
+  "limitations": [
+    "AR Quick Look actual camera capture requires iPhone Safari; Mac validation covers generation, contents and USDZ structure.",
+    "No new distributable Mac ZIP or iOS release package was produced."
+  ]
+}

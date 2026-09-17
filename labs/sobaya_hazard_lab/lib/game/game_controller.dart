@@ -522,8 +522,9 @@ class HazardGameController extends ChangeNotifier {
       final inverseGrip = vm.Matrix4.copy(anchor.globalTransform)
         ..invert()
         ..multiply(mug.globalTransform);
-      mug.localTransform = vm.Matrix4.rotationX(-math.pi / 2)
-        ..multiply(inverseGrip);
+      // The reviewed v3 socket already encodes the mug's complete orientation.
+      // Align the authored Grip frame directly, as in the 3D/AR viewer.
+      mug.localTransform = inverseGrip;
       actor.node.getChildByName('PropSocket.R')!.add(mug);
       final liquid = BeerMugComponent(
         isPaused: () =>

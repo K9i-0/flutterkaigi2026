@@ -2,14 +2,15 @@
   "sobaya": {
     "version": 3,
     "file": "04_GAME_ASSETS/3d/hazard_adopted/v3_20260917/sobaya.glb",
-    "source": "04_GAME_ASSETS/3d/characters/sobaya/rig_v3_20260917/sobaya_rig.glb",
-    "sourceSha256": "8c5e746d49c1326adbb6f1e1b09c4c1fb51557ad23ee93f5351a4800e5266ab5",
+    "source": "04_GAME_ASSETS/3d/characters/sobaya/motion_v3_20260917/sobaya_motion.glb",
+    "sourceSha256": "c0cdb21cd0505255a2722fa017eb679df16013fc865146f461864c5dde42fb7d",
     "motionSource": "04_GAME_ASSETS/3d/hazard_adopted/sobaya.glb",
     "motionSourceSha256": "e8df48deafb162543e07c46f3e839b5b8c71c0316352880af46b2b12a7147d6e",
-    "sha256": "8c5e746d49c1326adbb6f1e1b09c4c1fb51557ad23ee93f5351a4800e5266ab5",
+    "sha256": "c0cdb21cd0505255a2722fa017eb679df16013fc865146f461864c5dde42fb7d",
     "sources": {
       "Walk": "Adopted_Library_Walk",
-      "Run": "Adopted_Candidate_Chase_Run"
+      "Run": "Adopted_Candidate_Chase_Run",
+      "Idle": "CharacterSheet_MugStand"
     },
     "groundSpeedMps": {
       "Walk": 0.7001936808228493,
@@ -25,6 +26,7 @@
       "Adopted_Library_Jog",
       "Adopted_Library_Sprint",
       "Adopted_Library_Walk",
+      "CharacterSheet_MugStand",
       "Climb",
       "DanceDisco",
       "DanceStep",
@@ -131,7 +133,8 @@
     "boneCount": 24,
     "retargetMethod": "world-space rest-aware rotations, anatomical joint offsets, foot contact correction",
     "skinningRevision": "arm-surface-20260917",
-    "motionRevision": "casual-hey-20260917"
+    "motionRevision": "casual-hey-20260917",
+    "revision": "mug-motion-greeting-20260917"
   },
   "fukuchan": {
     "version": 3,

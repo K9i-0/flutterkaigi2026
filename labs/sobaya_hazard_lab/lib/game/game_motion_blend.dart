@@ -43,7 +43,7 @@ const playerMotionSources = {
   'Run': 'Adopted_Candidate_Mixamo_Run',
 };
 const sobayaMotionSources = {
-  'Idle': 'Hybrid_MugHold',
+  'Idle': 'CharacterSheet_MugStand',
   'Walk': 'Adopted_Library_Walk',
   'Run': 'Adopted_Candidate_Chase_Run',
   'MugAttack': 'Hybrid_MugSmash',
