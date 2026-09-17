@@ -19,10 +19,23 @@ bpy.ops.import_scene.gltf(filepath=str(ROOT/'04_GAME_ASSETS/3d/props/beer_mug_v2
 mug=bpy.data.objects['BeerMugRoot'];grip=bpy.data.objects['Grip'];bpy.context.view_layer.update();attach=Matrix.Rotation(-math.pi/2,4,'X')@grip.matrix_world.inverted()@mug.matrix_world
 mug.matrix_world=r.matrix_world@r.pose.bones['PropSocket.R'].matrix@attach;bpy.context.view_layer.update()
 up=mug.matrix_world.to_3x3()@Vector((0,0,1));assert up.normalized().dot(Vector((0,0,1)))>.9999
+# Measure the rendered sculpt, not just the already-centered rest skeleton.
+dg=bpy.context.evaluated_depsgraph_get();axis={}
+for name,key in [('Mask domed forehead medallion','forehead'),('Mask closed nose without nostrils','nose')]:
+ obj=bpy.data.objects[name].evaluated_get(dg);mesh=obj.to_mesh();xs=[(obj.matrix_world@v.co).x for v in mesh.vertices]
+ axis[key]=(min(xs)+max(xs))/2;obj.to_mesh_clear()
+axis['mug']=mug.matrix_world.translation.x
+body=next(o for o in s.objects if o.type=='MESH' and o.data.shape_keys and 'MugGrip' in o.data.shape_keys.key_blocks)
+ev=body.evaluated_get(dg);mesh=ev.to_mesh();points=[ev.matrix_world@v.co for v in mesh.vertices]
+for z,key in [(1.0,'waist'),(1.1,'abdomen'),(1.2,'chest')]:
+ xs=[p.x for p in points if abs(p.z-z)<.015 and abs(p.x)<.25]
+ axis[key]=(min(xs)+max(xs))/2
+ev.to_mesh_clear()
+assert max(abs(x) for x in axis.values())<.01,axis
 studio();s.cycles.samples=20;s.render.resolution_x=1024;s.render.resolution_y=1024
 # Grounded studio view; no changes to the character materials.
 for name,direction in [('front',(0,-4,.12)),('three_quarter',(-2,-4,.15)),('side',(-4,0,.12)),('back',(0,4,.12))]:
  target=Vector((0,-.025,.90));s.camera.location=target+Vector(direction);s.camera.rotation_euler=(target-s.camera.location).to_track_quat('-Z','Y').to_euler();s.camera.data.ortho_scale=2.04
  s.render.filepath=str(QA/(name+'.png'));bpy.ops.render.render(write_still=True)
-proof={'sha256':hashlib.sha256((OUT/'sobaya_standing.glb').read_bytes()).hexdigest(),'maxRoundTripBoneMatrixError':max(errors),'mugUprightDot':up.normalized().z,'clip':report['clip']}
+proof={'sha256':hashlib.sha256((OUT/'sobaya_standing.glb').read_bytes()).hexdigest(),'maxRoundTripBoneMatrixError':max(errors),'mugUprightDot':up.normalized().z,'clip':report['clip'],'visualAxisXM':axis}
 (QA/'review.json').write_text(json.dumps(proof,indent=2)+'\n');print('STANDING_REVIEW_DONE',proof,flush=True)

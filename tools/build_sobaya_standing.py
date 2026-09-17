@@ -35,8 +35,17 @@ def arm(side,target,pole):
  elbow=shoulder+axis*along+normal*h
  aim(side+'Arm',elbow);aim(side+'ForeArm',target)
 
+# The generated sculpt is laterally offset even though its rest bones are
+# centered. Recenter the torso progressively and the complete head rigidly;
+# keep their world orientations so the mask itself does not acquire a roll.
+axis_offsets={'Spine':.002,'Spine1':.008,'Spine2':.018,'Neck':.025,'Head':.0385}
+axis_rest={name:r.pose.bones[name].matrix.copy() for name in axis_offsets}
+for name,offset in axis_offsets.items():
+ r.pose.bones[name].matrix=Matrix.Translation(Vector((-offset,0,0)))@axis_rest[name]
+ bpy.context.view_layer.update()
+
 # Keep the mug upright, with its handle toward the character's right hand.
-desired_mug=Matrix.Translation(Vector((-.015,-.32,1.20)))@Matrix.Rotation(math.pi,4,'Z')
+desired_mug=Matrix.Translation(Vector((0,-.32,1.20)))@Matrix.Rotation(math.pi,4,'Z')
 desired_hand=desired_mug@(relative@attachment).inverted()
 arm('Right',desired_hand.translation,(-.52,-.07,1.13));r.pose.bones['RightHand'].matrix=desired_hand
 # Relax the free arm alongside the hip, with a small natural elbow bend.
@@ -88,7 +97,7 @@ result=struct.pack('<III',0x46546c67,2,28+len(j)+len(binary))+struct.pack('<I4s'
 assert bytes(binary[:len(raw)])==raw
 for key in ['nodes','meshes','skins','materials','textures','images']:assert before.get(key)==doc.get(key)
 assert doc['animations'][:-1]==before['animations']
-report={'clip':NAME,'sourceSha256':hashlib.sha256(SOURCE.read_bytes()).hexdigest(),'sha256':hashlib.sha256(result).hexdigest(),'existingClipsUnchanged':len(before['animations']),'geometryGripAndMaterialsUnchanged':True,'originalBinaryPrefixPreserved':True,'rightWrist':list(hand.head),'mugTargetMatrix':[list(row) for row in desired_mug],'boneWorldMatrices':{b.name:[list(row) for row in b.matrix] for b in r.pose.bones}}
+report={'clip':NAME,'sourceSha256':hashlib.sha256(SOURCE.read_bytes()).hexdigest(),'sha256':hashlib.sha256(result).hexdigest(),'existingClipsUnchanged':len(before['animations']),'geometryGripAndMaterialsUnchanged':True,'originalBinaryPrefixPreserved':True,'rightWrist':list(hand.head),'visualAxisOffsetsM':axis_offsets,'mugTargetMatrix':[list(row) for row in desired_mug],'boneWorldMatrices':{b.name:[list(row) for row in b.matrix] for b in r.pose.bones}}
 (OUT/'report.json').write_text(json.dumps(report,indent=2)+'\n')
 s.frame_start=0;s.frame_end=60;s.camera.location=(0,-4,1.05);s.camera.rotation_euler=(Vector((0,0,.9))-s.camera.location).to_track_quat('-Z','Y').to_euler();s.camera.data.ortho_scale=2.02
 bpy.ops.wm.save_as_mainfile(filepath=str(OUT/'sobaya_standing.blend'))

@@ -1,7 +1,7 @@
 {
   "mimeType": "model/gltf-binary",
   "validatorVersion": "2.0.0-dev.3.10",
-  "validatedAt": "2026-09-17T12:21:54.151Z",
+  "validatedAt": "2026-09-17T12:29:38.564Z",
   "issues": {
     "numErrors": 0,
     "numWarnings": 6,
@@ -706,5 +706,5 @@
     "maxInfluences": 4,
     "maxAttributes": 6
   },
-  "sha256": "71e9814aed1ea9d86555c56a5406dbb689607c78f1dbe49ec1118b9c888b88b4"
+  "sha256": "eff163341525cab3062caed99dda7c5698bcca09e5a1c6659434d7d78601f76b"
 }

@@ -1,6 +1,14 @@
 {
-  "sha256": "71e9814aed1ea9d86555c56a5406dbb689607c78f1dbe49ec1118b9c888b88b4",
+  "sha256": "eff163341525cab3062caed99dda7c5698bcca09e5a1c6659434d7d78601f76b",
   "maxRoundTripBoneMatrixError": 9.715557098388672e-06,
   "mugUprightDot": 1.0,
-  "clip": "CharacterSheet_MugStand"
+  "clip": "CharacterSheet_MugStand",
+  "visualAxisXM": {
+    "forehead": 6.0597434639930725e-05,
+    "nose": -0.00017755478620529175,
+    "mug": -1.2084097988918074e-07,
+    "waist": 0.0012316405773162842,
+    "abdomen": 0.0024644583463668823,
+    "chest": 0.005329824984073639
+  }
 }

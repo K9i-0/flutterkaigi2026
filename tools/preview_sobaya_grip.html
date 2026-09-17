@@ -22,7 +22,7 @@ const loader=new GLTFLoader();
 const standing=new URLSearchParams(location.search).get('pose')==='standing';
 if(standing){$('motion').prepend(new Option('立ちポーズ（胸元のジョッキ）','CharacterSheet_MugStand',true,true));document.querySelector('h1').textContent='そば屋 v3 — 立ちポーズ';}
 try{
-const model=await loader.loadAsync(standing?'/sobaya_standing.glb?v=standing-20260917':'/04_GAME_ASSETS/3d/characters/sobaya/grip_v3_20260917/sobaya_grip.glb?v=rounded-tips-20260917');scene.add(model.scene);
+const model=await loader.loadAsync(standing?'/sobaya_standing.glb?v=standing-axis-20260917':'/04_GAME_ASSETS/3d/characters/sobaya/grip_v3_20260917/sobaya_grip.glb?v=rounded-tips-20260917');scene.add(model.scene);
 const mug=await loader.loadAsync('/04_GAME_ASSETS/3d/props/beer_mug_v2/beer_mug.glb');
 // Nested transmission is approximated in this inspection viewer only.
 mug.scene.getObjectByName('BeerVolume')?.traverse(o=>{if(o.isMesh)for(const m of [].concat(o.material)){m.color.set(0xe2a02b);m.transmission=0;m.roughness=.2;}});
