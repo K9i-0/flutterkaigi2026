@@ -1,6 +1,8 @@
 # 福ちゃん — そば屋ハザード用
 
-2026-09-17: [本人らしさの仕上げ版](likeness_finish_20260917/README.md)を制作。承認済みの浅い形状を維持し、frontの顔色・目元と髪の陰影を調整。公式サイトのローカル確認には `likeness_finish_20260917/fukuchan_final.glb` を使用。前段階の[浅い形状の比較記録](shallow_face_20260917/README.md)も保持。
+2026-09-17: [v3の首補修・リグ・ギュンギュン](rig_v3_20260917/README.md)を追加。承認済みの見た目を保って54骨・20クリップ化。現在のローカル公式サイトは `rig_v3_20260917/fukuchan.glb` を表示。
+
+2026-09-17: [本人らしさの仕上げ版](likeness_finish_20260917/README.md)を制作。承認済みの浅い形状を維持し、frontの顔色・目元と髪の陰影を調整。リグ前の静的仕上げ版は `likeness_finish_20260917/fukuchan_final.glb`。前段階の[浅い形状の比較記録](shallow_face_20260917/README.md)も保持。
 
 2026-09-17: リアル頭身C案の全身一体モデルを制作し、[frontに合わせた顔の改善](front_fidelity_20260917/README.md)と[Imagegenによる髪テクスチャ修正](imagegen_texture_20260917/README.md)を実施。髪修正時点の静的候補は `imagegen_texture_20260917/fukuchan_texture_fixed.glb`（ローカル保持）。
 

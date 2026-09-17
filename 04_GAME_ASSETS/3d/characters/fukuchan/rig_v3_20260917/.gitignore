@@ -1,0 +1,6 @@
+*.glb
+*.blend*
+qa/
+__pycache__/
+neck_atlas_*.png
+grip_probe.py

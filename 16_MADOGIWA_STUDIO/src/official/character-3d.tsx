@@ -14,6 +14,10 @@ const characters = [
 const motions = [
   { id: "Idle", label: "待機" },
   { id: "Greeting", label: "ごあいさつ" },
+  { id: "GyunGyun", label: "ギュンギュン" },
+  { id: "GyunGyunPose", label: "ギュンギュンポーズ" },
+  { id: "Walk", label: "歩く" },
+  { id: "Run", label: "走る" },
   { id: "Wave", label: "手を振る" },
   { id: "Talk", label: "おしゃべり" },
   { id: "DanceStep", label: "ダンス" },
