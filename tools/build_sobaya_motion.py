@@ -6,7 +6,7 @@ from mathutils import Matrix,Vector,Quaternion
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT/'tools'))
 from replace_glb_animation import read_glb
 from build_humanoid_motion import clear_pose
-from sobaya_motion_authoring import GAITS,ATTACKS,correct_gait,attack
+from sobaya_motion_authoring import GAITS,ATTACKS,correct_gait,attack,greeting
 SOURCE=ROOT/'04_GAME_ASSETS/3d/characters/sobaya/standing_v3_20260917/sobaya_standing.glb'
 OUT=ROOT/'04_GAME_ASSETS/3d/characters/sobaya/motion_v3_20260917';OUT.mkdir(exist_ok=True)
 bpy.ops.wm.read_factory_settings(use_empty=True);s=bpy.context.scene;s.render.fps=30
@@ -37,13 +37,14 @@ def posed_locals(names):
 def append(array,kind):
  a=np.array(array,dtype='<f4').reshape(-1,{'SCALAR':1,'VEC3':3,'VEC4':4}[kind]);binary.extend(b'\0'*(-len(binary)%4));vi=len(doc['bufferViews']);doc['bufferViews'].append({'buffer':0,'byteOffset':len(binary),'byteLength':a.nbytes});binary.extend(a.tobytes());ai=len(doc['accessors']);doc['accessors'].append({'bufferView':vi,'componentType':5126,'count':len(a),'type':kind,'min':a.min(0).tolist(),'max':a.max(0).tolist()});return ai
 proof={};snapshots={}
-for clip in GAITS+ATTACKS:
+for clip in GAITS+ATTACKS+['Greeting']:
  animation=next(a for a in doc['animations'] if a['name']==clip);frames=round(actions[clip].frame_range[1]);names=['RightForeArm','RightHand','LeftForeArm','LeftHand'] if clip in GAITS else list(ids)
  times=sorted(set([i/30 for i in range(frames+1)]+([frames/30*.48] if clip in ATTACKS else [])))
  samples={name:[] for name in names};rows=[];snapshots[clip]={}
  for time in times:
   phase=time/(frames/30)
   if clip in GAITS:sample_source(clip,time*30);row=correct_gait(r)
+  elif clip=='Greeting':row=greeting(r,phase,neutral)
   else:row=attack(r,clip,phase,neutral)
   rows.append(row);poses=posed_locals(names)
   for name in names:samples[name].append(poses[name])
@@ -61,12 +62,20 @@ for clip in GAITS+ATTACKS:
  if clip in GAITS:
   proof[clip]={'frames':len(times),'changedBones':names,'minimumInwardDot':{side:min(row[side]['inwardDot'] for row in rows) for side in ['Right','Left']},'maximumWristRollDeg':max(abs(row[side]['wristRollDeg']) for row in rows for side in ['Right','Left']),'unchangedOtherChannels':True}
   assert all(v>.65 for v in proof[clip]['minimumInwardDot'].values()),proof[clip]
+ elif clip=='Greeting':
+  # Use the standing morph channels, retaining the closed right-hand grip.
+  animation['channels']=[c for c in animation['channels'] if c['target']['path']!='weights']
+  stand=next(a for a in doc['animations'] if a['name']=='CharacterSheet_MugStand')
+  for c in stand['channels']:
+   if c['target']['path']=='weights':
+    c=copy.deepcopy(c);sampler=copy.deepcopy(stand['samplers'][c['sampler']]);c['sampler']=len(animation['samplers']);animation['samplers'].append(sampler);animation['channels'].append(c)
+  proof[clip]={'frames':len(times),'duration':frames/30,'startEndPose':'CharacterSheet_MugStand','raisedHand':'Left','rightGrip':'standing morph channels'}
  else:proof[clip]={'frames':len(times),'duration':frames/30,'contactPhase':.48,'maxReachClampM':max(row['rightHandReachClampM'] for row in rows),'startEndPose':'CharacterSheet_MugStand'}
  print('CLIP_DONE',clip,proof[clip],flush=True)
 assert bytes(binary[:len(raw)])==raw
 for key in ['nodes','meshes','skins','materials','textures','images']:assert doc.get(key)==before.get(key)
 for a,b in zip(before['animations'],doc['animations']):
- if a['name'] not in GAITS+ATTACKS:assert a==b
+ if a['name'] not in GAITS+ATTACKS+['Greeting']:assert a==b
  elif a['name'] in GAITS:
   changed={ids[n] for n in ['RightForeArm','RightHand','LeftForeArm','LeftHand']}
   assert [c for c in a['channels'] if c['target']['node'] not in changed]==[c for c in b['channels'] if c['target']['node'] not in changed]

@@ -119,3 +119,30 @@ def attack(r,kind,p,neutral):
   for b in r.pose.bones:b.matrix_basis=neutral[b.name].copy()
   update()
  return {'rightHandReachClampM':error}
+
+
+def greeting(r,p,neutral):
+ # Keep the approved body and mug arm fixed; lift only the free left arm.
+ from casual_greeting import ease
+ for b in r.pose.bones:b.matrix_basis=neutral[b.name].copy()
+ update()
+ amount=ease((p-.055)/.24)*(1-ease((p-.51)/.37))
+ ik(r,['LeftArm','LeftForeArm','LeftHand'],(.43,-.29,1.53),(.59,.03,1.16))
+ hand=r.pose.bones['LeftHand'];fore=r.pose.bones['LeftForeArm']
+ finger=Vector((.18,-.04,1)).normalized();normal=Vector((0,-1,0));normal=(normal-finger*normal.dot(finger)).normalized()
+ local_finger=Vector((0,1,0));local_normal=palms(r)['Left'].normalized()
+ source=Matrix((local_finger,local_normal,local_finger.cross(local_normal))).transposed()
+ target=Matrix((finger,normal,finger.cross(normal))).transposed();desired=target@source.transposed()
+ axis=(hand.head-fore.head).normalized()
+ natural=(fore.matrix@fore.bone.matrix_local.inverted()@hand.bone.matrix_local).to_3x3()@local_normal
+ a=(natural-axis*natural.dot(axis)).normalized();b=(normal-axis*normal.dot(axis)).normalized()
+ rotate(fore,axis,math.atan2(axis.dot(a.cross(b)),a.dot(b))*.85)
+ hand.matrix=Matrix.Translation(hand.head)@desired.to_4x4();update()
+ raised={name:r.pose.bones[name].matrix_basis.copy() for name in ['LeftArm','LeftForeArm','LeftHand']}
+ for bone in r.pose.bones:
+  m=neutral[bone.name]
+  if bone.name in raised:
+   t,q,s=m.decompose();rt,rq,rs=raised[bone.name].decompose();bone.matrix_basis=Matrix.LocRotScale(t.lerp(rt,amount),q.slerp(rq,amount),s.lerp(rs,amount))
+  else:bone.matrix_basis=m.copy()
+ update()
+ return {'raiseAmount':amount}

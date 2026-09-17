@@ -29,12 +29,12 @@ for clip,samples in report['roundTripSamples'].items():
   errors.extend(max(abs(x-y) for row,other in zip(r.pose.bones[name].matrix,mat) for x,y in zip(row,other)) for name,mat in expected.items())
   attachment_errors.append((grip.matrix_world.translation-(r.matrix_world@r.pose.bones['PropSocket.R'].matrix).translation).length)
  assert max(errors)<3e-5,(clip,max(errors))
-for clip in ATTACKS:
+for clip in ATTACKS+['Greeting']:
  pose(clip,0);start={b.name:b.matrix.copy() for b in r.pose.bones};pose(clip,report['clips'][clip]['duration'])
  continuity[clip]=max(max(abs(x-y) for row,other in zip(b.matrix,start[b.name]) for x,y in zip(row,other)) for b in r.pose.bones)
  assert continuity[clip]<1e-5
-for clip in ['Adopted_Library_Walk','Adopted_Candidate_Chase_Run']+ATTACKS:
- phases=[0,.25,.5,.75,1] if clip in GAITS else [0,.28,.48,.60,.9]
+for clip in (['Greeting'] if '--greeting-only' in sys.argv else ['Adopted_Library_Walk','Adopted_Candidate_Chase_Run']+ATTACKS+['Greeting']):
+ phases=[0,.25,.5,.75,1] if clip in GAITS or clip=='Greeting' else [0,.28,.48,.60,.9]
  duration=actions[clip].frame_range[1]/30;copies=[]
  for index,phase in enumerate(phases):
   pose(clip,duration*phase);dg=bpy.context.evaluated_depsgraph_get()
@@ -50,7 +50,7 @@ for clip in ['Adopted_Library_Walk','Adopted_Candidate_Chase_Run']+ATTACKS:
 # Both wrists at the troublesome middle of walking, from front and rear.
 pose('Adopted_Library_Walk',actions['Adopted_Library_Walk'].frame_range[1]/30*.25)
 s.render.resolution_x=900;s.render.resolution_y=900
-for side in ['Left','Right']:
+for side in ([] if '--greeting-only' in sys.argv else ['Left','Right']):
  target=r.pose.bones[side+'Hand'].head.copy()+Vector((0,0,-.03));s.camera.location=target+Vector((.55 if side=='Left' else -.55,-1,.1));s.camera.rotation_euler=(target-s.camera.location).to_track_quat('-Z','Y').to_euler();s.camera.data.ortho_scale=.46;s.render.filepath=str(QA/('walk_'+side+'_wrist.png'));bpy.ops.render.render(write_still=True)
 proof={'sha256':hashlib.sha256((OUT/'sobaya_motion.glb').read_bytes()).hexdigest(),'maximumBoneRoundTripError':max(errors),'maximumAttachmentErrorM':max(attachment_errors),'attackStartEndMatrixError':continuity}
 (QA/'review.json').write_text(json.dumps(proof,indent=2)+'\n');print('MOTION_REVIEW_DONE',proof,flush=True)
