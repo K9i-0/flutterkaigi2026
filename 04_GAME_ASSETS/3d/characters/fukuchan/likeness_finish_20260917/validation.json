@@ -1,0 +1,11 @@
+{
+  "geometry_topology_material_assignment_uv_exact_match": true,
+  "vertices": 34536,
+  "polygons": 34913,
+  "bytes": 44360844,
+  "sha256": "b15ca1ab788309ffbea3c6ee379004886313666ef6d76982c8e4f2c80049f1d6",
+  "meshes": 1,
+  "primitives": 9,
+  "embedded_images": 6,
+  "rigged": false
+}
