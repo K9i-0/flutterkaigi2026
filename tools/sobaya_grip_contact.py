@@ -28,7 +28,10 @@ def fit_contact(doc,values,mesh,hand,root):
     neighbors=[set() for _ in points]
     for a,b,c in triangles:
         neighbors[a].update([b,c]);neighbors[b].update([a,c]);neighbors[c].update([a,b])
-    base=[deform(p) for p in points];offset=[Vector() for _ in points]
+    unpacked=[deform(p) for p in points]
+    from sobaya_grip_spacing import pack_fingers,measure_spacing
+    base,finger_weights,spacing_report=pack_fingers(points,unpacked,neighbors)
+    offset=[Vector() for _ in points]
     active=[]
     initial_inside=[]
     for i,p in enumerate(base):
@@ -73,8 +76,8 @@ def fit_contact(doc,values,mesh,hand,root):
             co,n,f,d=surface.find_nearest(revised[i]);signed=(revised[i]-co).dot(n)
             if signed<.00065 and d<.018:revised[i]+=n*(.00065-signed)
         final=revised
-    offset=[p-q for p,q in zip(final,base)]
-    n0=normals(base);n1=normals(final);mapping={}
+    offset=[p-q for p,q in zip(final,unpacked)]
+    n0=normals(unpacked);n1=normals(final);mapping={}
     for key,i in lookup.items():
         if offset[i].length>1e-7:
             mapping[key]=(offset[i],n0[i].rotation_difference(n1[i]))
@@ -86,7 +89,9 @@ def fit_contact(doc,values,mesh,hand,root):
     for a,b,c in triangles:
         n=(base[b]-base[a]).cross(base[c]-base[a]);nn=(final[b]-final[a]).cross(final[c]-final[a])
         if n.length>1e-10 and nn.length>1e-10 and n.dot(nn)<0:flipped+=1
-    report={'method':'90 constrained neighbor-fairing iterations against exported Handle mesh',
+    spacing_report['before']=measure_spacing(points,unpacked,triangles,finger_weights)
+    spacing_report['after']=measure_spacing(points,final,triangles,finger_weights)
+    report={'fingerSpacing':spacing_report,'method':'90 constrained neighbor-fairing iterations against exported Handle mesh',
             'contactClearanceM':.00065,'correctedUniqueVertices':len(mapping),
             'beforePenetratingVertices':len(initial_inside),'beforeMaxDepthM':max(initial_inside,default=0),
             'afterPenetratingVertices':len(final_inside),'afterMaxDepthM':max(final_inside,default=0),
