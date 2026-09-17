@@ -269,6 +269,21 @@ void attachGameAutomation(HazardGameController game) {
                             .getTranslation())
                     .length,
             ],
+            'enemyMugGripFrameErrors': [
+              for (var i = 0; i < _game!.enemyMugs.length; i++)
+                [
+                  for (var component = 0; component < 16; component++)
+                    (_game!.enemyMugs[i]
+                                .getChildByName('Grip')!
+                                .globalTransform
+                                .storage[component] -
+                            _game!.enemies[i].node
+                                .getChildByName('PropSocket.R')!
+                                .globalTransform
+                                .storage[component])
+                        .abs(),
+                ].reduce((a, b) => a > b ? a : b),
+            ],
             'npcVisibility': _game!.npcs.map(
               (id, actor) => MapEntry(id, actor.node.visible),
             ),

@@ -1,0 +1,21 @@
+{
+  "sourceSHA256": "c0cdb21cd0505255a2722fa017eb679df16013fc865146f461864c5dde42fb7d",
+  "sha256": "f438fa1f0073d710df5158da962cd3fe005aa77d0cbb41a04701f792848d5c4f",
+  "bytes": 20066532,
+  "images": [
+    {
+      "image": 0,
+      "before": 12229841,
+      "after": 5534966,
+      "pixelsExact": true
+    },
+    {
+      "image": 1,
+      "before": 95746,
+      "after": 1996,
+      "pixelsExact": true
+    }
+  ],
+  "animations": 104,
+  "geometryAndAnimationBuffersExact": true
+}

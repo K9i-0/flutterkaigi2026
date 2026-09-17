@@ -12,6 +12,10 @@ const characters = [
   { id: "yametaro", name: "やめ太郎" },
 ];
 const motions = [
+  { id: "CharacterSheet_MugStand", label: "立ちポーズ" },
+  { id: "Hybrid_MugPunch", label: "パンチ" },
+  { id: "Hybrid_MugHook", label: "フック" },
+  { id: "Hybrid_MugSmash", label: "叩きつけ" },
   { id: "Idle", label: "待機" },
   { id: "Greeting", label: "ごあいさつ" },
   { id: "GyunGyun", label: "ギュンギュン" },
@@ -61,8 +65,9 @@ function ModelView({ character }: { character: string }) {
   const scene = useRef<CharacterScene | null>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
   const [available, setAvailable] = useState<string[]>([]);
-  const [motion, setMotion] = useState("Idle");
+  const [motion, setMotion] = useState(character === "sobaya" ? "CharacterSheet_MugStand" : "Idle");
   const [paused, setPaused] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  const [mug, setMug] = useState(true);
   const [attempt, setAttempt] = useState(0);
   useEffect(() => {
     let cancelled = false;
@@ -78,7 +83,7 @@ function ModelView({ character }: { character: string }) {
         setStatus("error");
         instance?.dispose();
         scene.current = null;
-      });
+      }, character === "sobaya");
       scene.current = instance;
     }).catch(() => { if (!cancelled) setStatus("error"); });
     return () => { cancelled = true; instance?.dispose(); scene.current = null; };
@@ -88,10 +93,11 @@ function ModelView({ character }: { character: string }) {
       <div className="j-model-canvas" ref={host} />
       <span className="j-model-stage-label">{characters.find((entry) => entry.id === character)?.name}</span>
       {status !== "ready" && <div className="j-model-status" role="status">
-        {status === "loading" ? <><span className="j-model-spinner" />もうすぐ、会えます。<small>3Dモデルを読み込み中</small></> : <><span>3Dを表示できませんでした。</span><small>通信環境やブラウザの3D対応をご確認ください。</small><button onClick={() => { setStatus("loading"); setMotion("Idle"); setPaused(window.matchMedia("(prefers-reduced-motion: reduce)").matches); setAttempt((value) => value + 1); }}>もう一度読み込む</button></>}
+        {status === "loading" ? <><span className="j-model-spinner" />もうすぐ、会えます。<small>3Dモデルを読み込み中</small></> : <><span>3Dを表示できませんでした。</span><small>通信環境やブラウザの3D対応をご確認ください。</small><button onClick={() => { setStatus("loading"); setMotion(character === "sobaya" ? "CharacterSheet_MugStand" : "Idle"); setMug(true); setPaused(window.matchMedia("(prefers-reduced-motion: reduce)").matches); setAttempt((value) => value + 1); }}>もう一度読み込む</button></>}
       </div>}
       <button className="j-model-reset" disabled={status !== "ready"} onClick={() => scene.current?.reset()}><RotateCcw size={15} />正面に戻す</button>
     </div>
+    {character === "sobaya" && <div className="j-model-controls"><label><input type="checkbox" checked={mug} disabled={status !== "ready"} onChange={(event) => { setMug(event.target.checked); scene.current?.mug(event.target.checked); }} /> ジョッキを持つ</label></div>}
     {available.length > 0 && <div className="j-model-controls">
       <span className="j-model-controls-label">動いてもらう</span>
       <div className="j-model-motions">

@@ -9,3 +9,6 @@ for (const character of ["sobaya", "fukuchan", "takosan", "yametaro"]) {
   }
 }
 console.log("Copied only four public character models and four thumbnails.");
+
+await mkdir(path.join(project, "dist-ar-preview/models/props"), { recursive: true });
+await copyFile(path.join(project, "public/models/props/beer_mug.glb"), path.join(project, "dist-ar-preview/models/props/beer_mug.glb"));

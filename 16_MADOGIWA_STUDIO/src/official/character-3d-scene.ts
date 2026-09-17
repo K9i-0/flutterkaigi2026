@@ -2,8 +2,11 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
+import { loadMug, mountMug, setMugGrip } from "./character-mug";
+
 export type CharacterScene = {
   motion: (name: string) => void;
+  mug: (enabled: boolean) => void;
   pause: (paused: boolean) => void;
   reset: () => void;
   dispose: () => void;
@@ -38,6 +41,7 @@ export function createCharacterScene(
   url: string,
   onReady: (motions: string[]) => void,
   onError: () => void,
+  withMug = false,
 ): CharacterScene {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color("#eee9dd");
@@ -70,6 +74,8 @@ export function createCharacterScene(
   let visible = true;
   let mixer: THREE.AnimationMixer | undefined;
   let model: THREE.Group | undefined;
+  let mug: THREE.Group | undefined;
+  let mugEnabled = withMug;
   let clips: THREE.AnimationClip[] = [];
   let current: THREE.AnimationAction | undefined;
   let height = 2;
@@ -103,6 +109,7 @@ export function createCharacterScene(
     previous = now;
     if (document.hidden || !visible) return;
     if (!paused) mixer?.update(delta);
+    if (withMug && model) setMugGrip(model, mugEnabled);
     controls.update();
     renderer.render(scene, camera);
   };
@@ -133,7 +140,14 @@ export function createCharacterScene(
       model = gltf.scene;
       clips = gltf.animations;
       mixer = new THREE.AnimationMixer(model);
-      motion("Idle");
+      motion(withMug ? "CharacterSheet_MugStand" : "Idle");
+      if (withMug) {
+        const loadedMug = await loadMug(abort.signal);
+        if (disposed) { release(loadedMug); release(model); return; }
+        try { mug = mountMug(model, loadedMug); } catch (error) { release(loadedMug); throw error; }
+        mug.visible = mugEnabled;
+        setMugGrip(model, mugEnabled);
+      }
       model.updateMatrixWorld(true);
       const box = new THREE.Box3().setFromObject(model);
       const size = box.getSize(new THREE.Vector3());
@@ -149,11 +163,12 @@ export function createCharacterScene(
       reset();
       onReady(clips.map((clip) => clip.name));
     } catch {
-      if (!disposed) onError();
+      if (!disposed) { if (model && !model.parent) release(model); onError(); }
     }
   })();
   return {
     motion,
+    mug: (enabled) => { mugEnabled = enabled; if (mug) mug.visible = enabled; if (model) setMugGrip(model, enabled); },
     pause: (value) => { paused = value; },
     reset,
     dispose: () => {

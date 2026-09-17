@@ -12,7 +12,7 @@
 | --- | --- | --- | --- | --- |
 | たこさん | **かなり完成度が高い**。放射状の6本脚、中央残骸の除去、丸い手＋突起1本を反映 | [takosan.glb](characters/takosan/rig_radial_v4_hands/takosan.glb) | 約1.45 MiB | 3本: Idle / Talk / Wave |
 | やめ太郎 | **かなり完成度が高い**。鼻は黒点ではなく肌色の膨らみ。ARの側面の三角形状のムラも修正済み | [yametaro.glb](characters/yametaro/rig_nose_v3/yametaro.glb) | 約3.25 MiB | 4本: Idle / Talk / Walk / Wave |
-| そば屋 | **改善の余地あり**。姿勢補正済みv3・リグ付き | [sobaya.glb](hazard_adopted/v3_20260917/sobaya.glb) | 約22.87 MiB | 103本。Idle / Walk / Run / Greetingなど |
+| そば屋 | **改善の余地あり**。姿勢補正済みv3・リグ付き | [sobaya.glb](hazard_adopted/v3_20260917/sobaya.glb) | 約25.61 MiB | 104本。立ちポーズ / Walk / Run / 左手Greeting / ジョッキ攻撃など |
 | 福ちゃん | **課題が多い**。Tripo由来の実写系v2。完成版の品質基準として扱わず、用途ごとに見た目・動作を確認 | [fukuchan.glb](hazard_adopted/v2_20260913/fukuchan.glb) | 約18.51 MiB | 99本。Idle / Walk / Run / Greetingなど |
 
 そば屋・福ちゃんの詳細な改善項目はこの一覧では未確定です。制作記録は、それぞれ[そば屋v3姿勢・リグ](characters/sobaya/rig_v3_20260917/README.md)、[福ちゃんv2](characters/fukuchan/v2_20260913/README.md)を参照してください。
@@ -39,7 +39,7 @@
 | そば屋 | [紹介](https://madogiwa.work/characters/sobaya) | [AR](https://madogiwa.work/camera/sobaya) | [GLB](https://madogiwa.work/models/characters/sobaya.glb) |
 | 福ちゃん | [紹介](https://madogiwa.work/characters/fukuchan) | [AR](https://madogiwa.work/camera/fukuchan) | [GLB](https://madogiwa.work/models/characters/fukuchan.glb) |
 
-公式サイトのそば屋は2026-09-17に **v3姿勢補正・リグ付き版** へ更新。ゲームと同じ [配布用GLB](characters/sobaya/rig_v3_20260917/sobaya_rig.glb) を参照。仮面・顔の比率を保持し、前傾を補正。3DビューとARで動作を利用できます。
+公式サイトのそば屋は2026-09-17に **握り・立ちポーズ・歩走・攻撃・左手挨拶版** へ更新。[サイト用GLB](characters/sobaya/web_motion_v3_20260917/sobaya.glb) はゲーム採用版と同じ形状・動作を保持し、テクスチャだけ可逆WebPへ変換。3DとARでジョッキをON/OFFできます。
 
 ## 別の制作物で使う
 
@@ -153,3 +153,5 @@ AR用USDZは固定ファイルとして管理せず、GLBから**ブラウザ内
 - ローカル試作の起動方法は[ARプレビューREADME](../../16_MADOGIWA_STUDIO/ar-preview/README.md)。たこさん・やめ太郎の改善版はユーザーのiPhone確認を経て本番反映済み（`3f759c4`）。
 
 モーションの出典・利用条件は[モーションライブラリ](motion_library/README.md)と各モデルの制作記録を引き継ぎます。モデル一式を一律にCC0として扱わないでください。
+
+2026-09-17採用更新：そば屋は承認済みの握り・立ちポーズ・歩走・攻撃・左手挨拶を反映。公式サイトは `characters/sobaya/web_motion_v3_20260917/sobaya.glb` を使用し、ゲーム採用版のテクスチャだけ可逆WebPへ変換。3DとARでジョッキのON/OFFが可能。

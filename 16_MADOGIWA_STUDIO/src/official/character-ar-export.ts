@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { USDZExporter } from "three/addons/exporters/USDZExporter.js";
+import { loadMug, mountMug, setMugGrip } from "./character-mug";
 import { bakeARColors } from "./character-ar-colors";
 import { backfaceARGeometry, freezeARGeometry } from "./character-ar-geometry";
 import { anchorUSDZ } from "./character-ar-usdz";
@@ -28,7 +29,7 @@ function dispose(root: THREE.Object3D) {
   });
 }
 
-export async function createARAsset(character: ARCharacter, placement: ARPlacement, pose: "Idle" | "Wave", signal: AbortSignal): Promise<Blob> {
+export async function createARAsset(character: ARCharacter, placement: ARPlacement, pose: "Idle" | "Wave", signal: AbortSignal, withMug = character === "sobaya"): Promise<Blob> {
   const response = await fetch(modelUrl(character), { signal });
   if (!response.ok) throw new Error("モデルを読み込めませんでした。");
   const data = await response.arrayBuffer();
@@ -41,7 +42,7 @@ export async function createARAsset(character: ARCharacter, placement: ARPlaceme
     gltf.scene.updateMatrixWorld(true);
     const restBox = new THREE.Box3().setFromObject(gltf.scene);
     const restHeight = restBox.max.y - restBox.min.y;
-    const clipName = pose === "Wave" ? arCharacters[character].greeting : "Idle";
+    const clipName = pose === "Wave" ? arCharacters[character].greeting : character === "sobaya" ? "CharacterSheet_MugStand" : "Idle";
     const clip = gltf.animations.find((clip) => clip.name === clipName);
     if (!clip && (pose !== "Idle" || arCharacters[character].greeting !== null)) {
       throw new Error("このポーズはまだ利用できません。");
@@ -51,12 +52,20 @@ export async function createARAsset(character: ARCharacter, placement: ARPlaceme
       mixer.clipAction(clip).play();
       mixer.setTime(pose === "Wave" ? 0.8 : 0);
     }
+    if (character === "sobaya") {
+      if (withMug) {
+        const mug = await loadMug(signal);
+        try { mountMug(gltf.scene, mug); } catch (error) { dispose(mug); throw error; }
+      }
+      setMugGrip(gltf.scene, withMug);
+    }
+    signal.throwIfAborted();
     gltf.scene.updateMatrixWorld(true);
     gltf.scene.traverse((object) => { if (object instanceof THREE.SkinnedMesh) object.skeleton.update(); });
     // USDZExporter doesn't bake skinning. Freeze evaluated vertices into static
     // meshes so arms, morphs and the character's pose survive the conversion.
-    gltf.scene.traverse((object) => {
-      if (!(object instanceof THREE.Mesh) || !object.visible) return;
+    gltf.scene.traverseVisible((object) => {
+      if (!(object instanceof THREE.Mesh)) return;
       if (Array.isArray(object.material)) throw new Error("複数マテリアルの変換には未対応です。");
       const geometry = freezeARGeometry(object);
       const material = object.material.clone() as THREE.MeshStandardMaterial;
