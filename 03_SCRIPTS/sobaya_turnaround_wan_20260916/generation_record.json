@@ -1,0 +1,25 @@
+{
+  "task_id": "76e32846-9167-454b-92b0-4cf4124e2645",
+  "status": "SUCCEEDED",
+  "model": "wan3.0-video",
+  "duration": 8,
+  "resolution": "720P",
+  "estimated_cost_usd": 0.56,
+  "width": 832,
+  "height": 1108,
+  "fps": 30,
+  "container_duration": 8.033991,
+  "frames": {
+    "front": 0.2,
+    "left": 2.5,
+    "back": 4.0,
+    "right": 5.6
+  },
+  "audit": {
+    "identity": "preserved in inspected frames",
+    "rotation": "full turn",
+    "pose": "arms closer to torso than requested; not strict rigid rotation",
+    "angles": "visually selected approximate cardinal views; not calibrated",
+    "ready_for": "experimental whole-body multiview reconstruction; inspect arm-body fusion"
+  }
+}
