@@ -1,0 +1,10 @@
+{
+  "sha256": "c89a619fc4a5d3ae16f549e11bc12cd7667ec44f9a1891889f61a6ad716a43bc",
+  "maximumBoneRoundTripError": 9.953975677490234e-06,
+  "maximumAttachmentErrorM": 3.919883500923486e-07,
+  "attackStartEndMatrixError": {
+    "Hybrid_MugPunch": 0.0,
+    "Hybrid_MugHook": 0.0,
+    "Hybrid_MugSmash": 0.0
+  }
+}
