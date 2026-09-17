@@ -1,0 +1,45 @@
+{
+  "sourceSHA256": "c057e4f5d4c54c578ac30648ad53eb7c2912a7a50d106cde2981ee5f888bd8d8",
+  "sha256": "cc36514fd536a3aa361f6ce11bf21e4223698c0abb2ae4d4802068852a376181",
+  "bytes": 24183360,
+  "images": [
+    {
+      "image": 0,
+      "before": 11023268,
+      "after": 5372982,
+      "pixelsExact": true
+    },
+    {
+      "image": 1,
+      "before": 4787489,
+      "after": 2303566,
+      "pixelsExact": true
+    },
+    {
+      "image": 2,
+      "before": 456727,
+      "after": 280114,
+      "pixelsExact": true
+    },
+    {
+      "image": 3,
+      "before": 10785019,
+      "after": 5270314,
+      "pixelsExact": true
+    },
+    {
+      "image": 4,
+      "before": 10796431,
+      "after": 5272832,
+      "pixelsExact": true
+    },
+    {
+      "image": 5,
+      "before": 4786812,
+      "after": 2304838,
+      "pixelsExact": true
+    }
+  ],
+  "animations": 20,
+  "geometryAndAnimationBuffersExact": true
+}
