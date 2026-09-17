@@ -14,6 +14,8 @@ html=html.replace('/04_GAME_ASSETS/3d/props/beer_mug_v2/beer_mug.glb','/beer_mug
 (web/'index.html').write_text(html)
 shutil.copy2(ROOT/'04_GAME_ASSETS/3d/characters/sobaya/grip_v3_20260917/sobaya_grip.glb',web/'sobaya_grip.glb')
 shutil.copy2(ROOT/'04_GAME_ASSETS/3d/props/beer_mug_v2/beer_mug.glb',web/'beer_mug.glb')
+standing=ROOT/'04_GAME_ASSETS/3d/characters/sobaya/standing_v3_20260917/sobaya_standing.glb'
+if standing.exists():shutil.copy2(standing,web/'sobaya_standing.glb')
 three=ROOT/'.local/vrm-validation/node_modules/three'
 for folder in ['build','examples/jsm']:shutil.copytree(three/folder,web/'three'/folder,dirs_exist_ok=True)
 if not args.stage_only:
