@@ -1,0 +1,23 @@
+{
+  "mild": {
+    "bytes": 28892472,
+    "sha256": "b3a27e49ff196e4856821a6a8a0b9f54cc2e3f9cfbe0bb47533cc05ad1b67b29",
+    "meshes": 1,
+    "primitives": 8,
+    "embedded_images": 4
+  },
+  "shallow": {
+    "bytes": 28893036,
+    "sha256": "b314963c78ade379dd77c093d94d7ea1f167c026e80d34766988b3b97f42f51b",
+    "meshes": 1,
+    "primitives": 8,
+    "embedded_images": 4
+  },
+  "balanced": {
+    "bytes": 28896580,
+    "sha256": "50ac6ea6926e5464d79f1295406b6b7e10f52c248ba4fef841a6e49f0c8e0314",
+    "meshes": 1,
+    "primitives": 9,
+    "embedded_images": 4
+  }
+}

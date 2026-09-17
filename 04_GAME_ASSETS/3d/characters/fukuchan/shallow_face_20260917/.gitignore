@@ -1,0 +1,4 @@
+*.glb
+*.blend*
+qa/
+comparison*.png

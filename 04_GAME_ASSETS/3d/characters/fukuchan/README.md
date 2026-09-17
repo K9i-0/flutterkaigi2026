@@ -1,6 +1,8 @@
 # 福ちゃん — そば屋ハザード用
 
-2026-09-17: リアル頭身C案の全身一体モデルを制作し、[frontに合わせた顔の改善](front_fidelity_20260917/README.md)と[Imagegenによる髪テクスチャ修正](imagegen_texture_20260917/README.md)を実施。最新の静的候補は `imagegen_texture_20260917/fukuchan_texture_fixed.glb`（ローカル保持）。
+2026-09-17: [顔の奥行きを浅くした比較候補](shallow_face_20260917/README.md)を追加。公式サイトのローカル確認には `shallow_face_20260917/fukuchan_balanced.glb` を使用。
+
+2026-09-17: リアル頭身C案の全身一体モデルを制作し、[frontに合わせた顔の改善](front_fidelity_20260917/README.md)と[Imagegenによる髪テクスチャ修正](imagegen_texture_20260917/README.md)を実施。髪修正時点の静的候補は `imagegen_texture_20260917/fukuchan_texture_fixed.glb`（ローカル保持）。
 
 2026-09-13: [福ちゃんv2](v2_20260913/README.md)を体・頭・髪の独立生成で制作。瞬き・笑顔と22動作を備えた比較用GLBと確認ページを追加した。以下はv1の制作記録。本編の採用状態は `04_GAME_ASSETS/3d/hazard_adopted/manifest.json` を参照。
 
