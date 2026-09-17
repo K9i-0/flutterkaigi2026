@@ -12,10 +12,10 @@
 | --- | --- | --- | --- | --- |
 | たこさん | **かなり完成度が高い**。放射状の6本脚、中央残骸の除去、丸い手＋突起1本を反映 | [takosan.glb](characters/takosan/rig_radial_v4_hands/takosan.glb) | 約1.45 MiB | 3本: Idle / Talk / Wave |
 | やめ太郎 | **かなり完成度が高い**。鼻は黒点ではなく肌色の膨らみ。ARの側面の三角形状のムラも修正済み | [yametaro.glb](characters/yametaro/rig_nose_v3/yametaro.glb) | 約3.25 MiB | 4本: Idle / Talk / Walk / Wave |
-| そば屋 | **改善の余地あり**。v2の仮面修正版 | [sobaya.glb](hazard_adopted/v2_20260915_mask/sobaya.glb) | 約22.48 MiB | 103本。Idle / Walk / Run / Greetingなど |
+| そば屋 | **改善の余地あり**。姿勢補正済みv3・リグ付き | [sobaya.glb](hazard_adopted/v3_20260917/sobaya.glb) | 約22.87 MiB | 103本。Idle / Walk / Run / Greetingなど |
 | 福ちゃん | **課題が多い**。Tripo由来の実写系v2。完成版の品質基準として扱わず、用途ごとに見た目・動作を確認 | [fukuchan.glb](hazard_adopted/v2_20260913/fukuchan.glb) | 約18.51 MiB | 99本。Idle / Walk / Run / Greetingなど |
 
-そば屋・福ちゃんの詳細な改善項目はこの一覧では未確定です。制作記録は、それぞれ[そば屋v2仮面修正](characters/sobaya/v2_20260915_mask/README.md)、[福ちゃんv2](characters/fukuchan/v2_20260913/README.md)を参照してください。
+そば屋・福ちゃんの詳細な改善項目はこの一覧では未確定です。制作記録は、それぞれ[そば屋v3姿勢・リグ](characters/sobaya/rig_v3_20260917/README.md)、[福ちゃんv2](characters/fukuchan/v2_20260913/README.md)を参照してください。
 
 ### コピーして使えるリポジトリ内パス
 
@@ -24,7 +24,7 @@
 ```text
 04_GAME_ASSETS/3d/characters/takosan/rig_radial_v4_hands/takosan.glb
 04_GAME_ASSETS/3d/characters/yametaro/rig_nose_v3/yametaro.glb
-04_GAME_ASSETS/3d/hazard_adopted/v2_20260915_mask/sobaya.glb
+04_GAME_ASSETS/3d/hazard_adopted/v3_20260917/sobaya.glb
 04_GAME_ASSETS/3d/hazard_adopted/v2_20260913/fukuchan.glb
 ```
 
@@ -39,12 +39,12 @@
 | そば屋 | [紹介](https://madogiwa.work/characters/sobaya) | [AR](https://madogiwa.work/camera/sobaya) | [GLB](https://madogiwa.work/models/characters/sobaya.glb) |
 | 福ちゃん | [紹介](https://madogiwa.work/characters/fukuchan) | [AR](https://madogiwa.work/camera/fukuchan) | [GLB](https://madogiwa.work/models/characters/fukuchan.glb) |
 
-公式サイトのそば屋は2026-09-17に **v3顔パーツ修正版（輪郭維持・未リグ・静止モデル）** へ更新。正本は [仕上げ版GLB](characters/sobaya/wan_multiview_20260916/face_red_edge_20260917/sobaya_front_matched.glb)、制作記録は [FINAL.md](characters/sobaya/wan_multiview_20260916/FINAL.md)。3DビューとARは静止姿勢で利用できます。ゲーム採用版は上表のv2を維持しています。
+公式サイトのそば屋は2026-09-17に **v3顔パーツ修正版（輪郭維持・未リグ・静止モデル）** へ更新。正本は [仕上げ版GLB](characters/sobaya/wan_multiview_20260916/face_red_edge_20260917/sobaya_front_matched.glb)、制作記録は [FINAL.md](characters/sobaya/wan_multiview_20260916/FINAL.md)。3DビューとARは静止姿勢で利用できます。ゲーム採用版は上表の姿勢補正・リグ付きv3です。
 
 ## 別の制作物で使う
 
 - **Blender:** GLBをglTF 2.0としてインポートすれば形状・材質・リグ・収録動作を利用できます。元の編集履歴やBlender固有の設定まで復元するものではありません。
-- **Three.js:** `GLTFLoader`で読み込み、`gltf.scene`を配置。動作は`gltf.animations`を`AnimationMixer`で再生します。手振りは、たこさん・やめ太郎が`Wave`、動作入りそば屋v2・福ちゃんが`Greeting`です。公式サイトのそば屋v3には動作を収録していません。
+- **Three.js:** `GLTFLoader`で読み込み、`gltf.scene`を配置。動作は`gltf.animations`を`AnimationMixer`で再生します。手振りは、たこさん・やめ太郎が`Wave`、動作入りそば屋v3・福ちゃんが`Greeting`です。公式サイトのそば屋v3には動作を収録していません。
 - **Flutter Scene:** 同じGLBをビルド時に変換し、`loadScene()`で読み込んで`Scene`へ追加。`SceneView`で表示します。導入手順と短いコード例は下記を参照。
 - **このモノレポの別プロジェクト:** モデルの重複コピーを避け、`public/models/`などから上記GLBへ相対symlinkを張ります。既存の[公式サイトの参照先](../../16_MADOGIWA_STUDIO/public/models/characters/)もこの方式です。
 - **ゲーム用動作:** そば屋・福ちゃんは動作入りの`hazard_adopted`版を使用。制作元のGLBには同じ動作が揃っていない場合があります。[採用モデルの説明](hazard_adopted/README.md)を参照。
@@ -137,7 +137,7 @@ GLB4体はGitから取得できます。`.blend`の共有状況は異なりま�
 | --- | --- | --- |
 | たこさん | `04_GAME_ASSETS/3d/characters/takosan/rig_radial_v4_hands/takosan.blend` | ローカル保持。[修正記録](characters/takosan/rig_radial_v4_hands/README.md) |
 | やめ太郎 | `04_GAME_ASSETS/3d/characters/yametaro/rig_nose_v3/yametaro.blend` | ローカル保持。[修正記録](characters/yametaro/rig_nose_v3/README.md) |
-| そば屋 | `04_GAME_ASSETS/3d/characters/sobaya/v2_20260915_mask/sobaya_v2.blend` | Git管理済み。[編集ファイル](characters/sobaya/v2_20260915_mask/sobaya_v2.blend)。配布GLBへのゲーム動作追加は別工程 |
+| そば屋 | `04_GAME_ASSETS/3d/characters/sobaya/rig_v3_20260917/sobaya_animated.blend` | Git管理済み。[編集ファイル](characters/sobaya/rig_v3_20260917/sobaya_animated.blend)。103本のゲーム動作入り |
 | 福ちゃん | `04_GAME_ASSETS/3d/characters/fukuchan/v2_20260913/fukuchan_v2.blend` | ローカル保持。[制作・再現手順](characters/fukuchan/v2_20260913/README.md) |
 
 ## ARで使う場合

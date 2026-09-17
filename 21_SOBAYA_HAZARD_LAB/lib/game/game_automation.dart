@@ -167,6 +167,8 @@ void attachGameAutomation(HazardGameController game) {
             ..._game!.state!.inspect(),
             'regionLoading': _game!.inspectRegionLoading(),
             'characterModels': {
+              'sobayaV3':
+                  _game!.sobayaTemplate.getChildByName('SobayaV3Rig') != null,
               'sobayaV2':
                   _game!.sobayaTemplate.getChildByName('SobayaV2Rig') != null,
               'fukuchanV2':

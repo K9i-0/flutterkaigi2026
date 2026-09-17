@@ -1,0 +1,16 @@
+{
+  "bones": 24,
+  "bodyVertices": 67030,
+  "rigidMaskSourceVertices": 400,
+  "rigidAddedFaceObjects": [
+    "Mask black eye L",
+    "Mask black eye R",
+    "Mask reference mouth",
+    "Mask closed nose without nostrils",
+    "Mask domed forehead medallion"
+  ],
+  "maxInfluences": 4,
+  "posturePitchDegrees": -10,
+  "postureIsRigidTransform": true,
+  "individualFingerRig": false
+}

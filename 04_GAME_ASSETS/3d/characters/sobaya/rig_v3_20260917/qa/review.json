@@ -1,0 +1,62 @@
+[
+  {
+    "clip": "Hybrid_MugHold",
+    "phase": 0.15,
+    "image": "Hybrid_MugHold_0.15.png"
+  },
+  {
+    "clip": "Hybrid_MugHold",
+    "phase": 0.55,
+    "image": "Hybrid_MugHold_0.55.png"
+  },
+  {
+    "clip": "Adopted_Library_Walk",
+    "phase": 0.15,
+    "image": "Adopted_Library_Walk_0.15.png"
+  },
+  {
+    "clip": "Adopted_Library_Walk",
+    "phase": 0.55,
+    "image": "Adopted_Library_Walk_0.55.png"
+  },
+  {
+    "clip": "Adopted_Candidate_Chase_Run",
+    "phase": 0.15,
+    "image": "Adopted_Candidate_Chase_Run_0.15.png"
+  },
+  {
+    "clip": "Adopted_Candidate_Chase_Run",
+    "phase": 0.55,
+    "image": "Adopted_Candidate_Chase_Run_0.55.png"
+  },
+  {
+    "clip": "Hybrid_MugSmash",
+    "phase": 0.15,
+    "image": "Hybrid_MugSmash_0.15.png"
+  },
+  {
+    "clip": "Hybrid_MugSmash",
+    "phase": 0.55,
+    "image": "Hybrid_MugSmash_0.55.png"
+  },
+  {
+    "clip": "DanceDisco",
+    "phase": 0.15,
+    "image": "DanceDisco_0.15.png"
+  },
+  {
+    "clip": "DanceDisco",
+    "phase": 0.55,
+    "image": "DanceDisco_0.55.png"
+  },
+  {
+    "clip": "DanceVictory",
+    "phase": 0.15,
+    "image": "DanceVictory_0.15.png"
+  },
+  {
+    "clip": "DanceVictory",
+    "phase": 0.55,
+    "image": "DanceVictory_0.55.png"
+  }
+]

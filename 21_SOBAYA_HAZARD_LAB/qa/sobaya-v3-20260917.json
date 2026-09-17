@@ -1,0 +1,161 @@
+{
+  "date": "2026-09-17",
+  "device": "macOS debug",
+  "appPid": 59319,
+  "model": "SobayaV3Rig",
+  "checks": [
+    "Dart MCP full rebuild",
+    "Marionette continuous gameplay and screenshots visually reviewed",
+    "GLB roundtrip 6 motions x 2 phases",
+    "103 clips structural and sampled skin validation",
+    "5 motion blend tests passed",
+    "flutter analyze passed"
+  ],
+  "observations": {
+    "dance": {
+      "rendering": {
+        "continuous": true,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 410,
+        "sceneRenderCalls": 414,
+        "frameRateLimit": 60,
+        "simulationSeconds": 8.216667000000008,
+        "playerClipSeconds": 2.001000110809316
+      },
+      "models": {
+        "sobayaV3": true,
+        "sobayaV2": false,
+        "fukuchanV2": true,
+        "sobayaSocket": true,
+        "fukuchanSocket": true,
+        "fukuchanFingerRig": true
+      },
+      "motions": [
+        {
+          "motion": "DanceStep",
+          "sourceMotion": "DanceStep",
+          "seconds": 0.6676670953674313
+        },
+        {
+          "motion": "DanceDisco",
+          "sourceMotion": "DanceDisco",
+          "seconds": 1.3676671430511438
+        },
+        {
+          "motion": "DanceVictory",
+          "sourceMotion": "DanceVictory",
+          "seconds": 1.8010003015441893
+        }
+      ],
+      "gripErrors": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "run": {
+      "rendering": {
+        "continuous": true,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 1749,
+        "sceneRenderCalls": 1761,
+        "frameRateLimit": 60,
+        "simulationSeconds": 0.958331,
+        "playerClipSeconds": 0.6926102202605643
+      },
+      "models": {
+        "sobayaV3": true,
+        "sobayaV2": false,
+        "fukuchanV2": true,
+        "sobayaSocket": true,
+        "fukuchanSocket": true,
+        "fukuchanFingerRig": true
+      },
+      "motions": [
+        {
+          "motion": "Run",
+          "sourceMotion": "Adopted_Candidate_Chase_Run",
+          "seconds": 0.24119201645483024
+        },
+        {
+          "motion": "Run",
+          "sourceMotion": "Adopted_Candidate_Chase_Run",
+          "seconds": 0.241192016454832
+        },
+        {
+          "motion": "Idle",
+          "sourceMotion": "Hybrid_MugHold",
+          "seconds": 0.958331
+        }
+      ],
+      "gripErrors": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "attack": {
+      "rendering": {
+        "continuous": true,
+        "foreground": true,
+        "posePreview": false,
+        "ticks": 1092,
+        "sceneRenderCalls": 1103,
+        "frameRateLimit": 60,
+        "simulationSeconds": 9.733317000000033,
+        "playerClipSeconds": 2.025983887832611
+      },
+      "models": {
+        "sobayaV3": true,
+        "sobayaV2": false,
+        "fukuchanV2": true,
+        "sobayaSocket": true,
+        "fukuchanSocket": true,
+        "fukuchanFingerRig": true
+      },
+      "motions": [
+        {
+          "motion": "MugPunch",
+          "sourceMotion": "Hybrid_MugPunch",
+          "seconds": 0.7850898320704635
+        },
+        {
+          "motion": "Idle",
+          "sourceMotion": "Hybrid_MugHold",
+          "seconds": 0.041666
+        },
+        {
+          "motion": "MugAttack",
+          "sourceMotion": "Hybrid_MugSmash",
+          "seconds": 1.436118712308927
+        }
+      ],
+      "gripErrors": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "limitations": [
+    "Hands rigid to hand bones; no individual finger grip",
+    "iOS device performance not measured"
+  ]
+}

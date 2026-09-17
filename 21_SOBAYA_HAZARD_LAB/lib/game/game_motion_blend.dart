@@ -52,7 +52,7 @@ const sobayaMotionSources = {
 };
 const fukuchanWalkSpeed = 0.6413970328867435;
 const fukuchanRunSpeed = 2.1074143052101135;
-const sobayaMugRunSpeed = 5.019194036722183;
+const sobayaMugRunSpeed = 4.577950034290552;
 
 /// The gameplay clock strikes at .77; every new mug clip contacts at 48%.
 /// Map anticipation and recovery separately, keeping hit damage on its existing
@@ -74,4 +74,4 @@ String? chooseAmbientDance(double roll, int variant, {bool boss = false}) {
   return const ['DanceStep', 'DanceDisco', 'DanceVictory'][variant % 3];
 }
 
-const sobayaWalkSpeed = 0.7222705241292715;
+const sobayaWalkSpeed = 0.7001936808228493;

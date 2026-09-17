@@ -1,0 +1,558 @@
+{
+  "version": 3,
+  "clips": [
+    "Adopted_Candidate_Chase_Run",
+    "Adopted_Candidate_Mixamo_Run",
+    "Adopted_Library_Dance_Body_Roll",
+    "Adopted_Library_Dance_Charleston",
+    "Adopted_Library_Dance_Simple",
+    "Adopted_Library_Idle_A",
+    "Adopted_Library_Jog",
+    "Adopted_Library_Sprint",
+    "Adopted_Library_Walk",
+    "Climb",
+    "DanceDisco",
+    "DanceStep",
+    "DanceVictory",
+    "Grab",
+    "Greeting",
+    "Hold",
+    "Hybrid_Bow",
+    "Hybrid_Crouch_Idle",
+    "Hybrid_Crouch_Walk",
+    "Hybrid_Idle_A",
+    "Hybrid_Idle_Talking",
+    "Hybrid_Jog",
+    "Hybrid_MugHold",
+    "Hybrid_MugHook",
+    "Hybrid_MugPunch",
+    "Hybrid_MugRun",
+    "Hybrid_MugSmash",
+    "Hybrid_Pistol_Aim_Neutral",
+    "Hybrid_Punch_Jab",
+    "Hybrid_Sitting_Enter",
+    "Hybrid_Sitting_Exit",
+    "Hybrid_Sitting_Idle",
+    "Hybrid_Sprint",
+    "Hybrid_Strafe_left",
+    "Hybrid_Strafe_right",
+    "Hybrid_Walk",
+    "Hybrid_Walk_Backwards",
+    "Hybrid_Zombie_Walk",
+    "Idle",
+    "Legacy_DanceDisco",
+    "Legacy_DanceStep",
+    "Legacy_DanceVictory",
+    "Library_Bow",
+    "Library_Consume",
+    "Library_Crouch_Idle",
+    "Library_Crouch_Walk",
+    "Library_Dodge_back",
+    "Library_Dodge_left",
+    "Library_Dodge_right",
+    "Library_Greeting",
+    "Library_Hit_Chest",
+    "Library_Hit_Head",
+    "Library_Idle_A",
+    "Library_Idle_FoldArms",
+    "Library_Idle_Listening",
+    "Library_Idle_Talking",
+    "Library_Interact",
+    "Library_Jog",
+    "Library_Jump_Land",
+    "Library_Jump_Start",
+    "Library_Jump_air",
+    "Library_Kneeling_Tired",
+    "Library_Melee_Hook",
+    "Library_PickUp_Table",
+    "Library_Pistol_Aim_Neutral",
+    "Library_Pistol_Reload",
+    "Library_Pistol_Shoot",
+    "Library_Punch_Cross",
+    "Library_Punch_Jab",
+    "Library_Push",
+    "Library_Sitting_Enter",
+    "Library_Sitting_Exit",
+    "Library_Sitting_Idle",
+    "Library_Sprint",
+    "Library_Strafe_left",
+    "Library_Strafe_right",
+    "Library_Victory",
+    "Library_Walk",
+    "Library_Walk_Backwards",
+    "Library_Walk_Carry",
+    "Library_Zombie_Walk",
+    "MugAttack",
+    "Procedural_Breathing",
+    "Procedural_Crouch",
+    "Procedural_Jog",
+    "Procedural_LookAround",
+    "Procedural_Reach",
+    "Procedural_RollForward",
+    "Procedural_SideStep",
+    "Procedural_StepUp",
+    "Procedural_Walk",
+    "Release",
+    "Run",
+    "Test_ArmRaise",
+    "Test_ElbowBend",
+    "Test_HeadTurn",
+    "Test_KneeBend",
+    "Toast",
+    "Vault",
+    "Walk",
+    "WanRig_Walk",
+    "Wan_Walk",
+    "ZombieWalk"
+  ],
+  "clipCount": 103,
+  "bones": [
+    "Root",
+    "Hips",
+    "Spine",
+    "Spine1",
+    "Spine2",
+    "Neck",
+    "Head",
+    "LeftShoulder",
+    "LeftArm",
+    "LeftForeArm",
+    "LeftHand",
+    "RightShoulder",
+    "RightArm",
+    "RightForeArm",
+    "RightHand",
+    "PropSocket.R",
+    "LeftUpLeg",
+    "LeftLeg",
+    "LeftFoot",
+    "LeftToeBase",
+    "RightUpLeg",
+    "RightLeg",
+    "RightFoot",
+    "RightToeBase"
+  ],
+  "legScale": 0.9283696011757103,
+  "groundSpeedMps": {
+    "Walk": 0.7001936808228493,
+    "Run": 4.577950034290552
+  },
+  "floorCorrectionM": {
+    "Adopted_Candidate_Chase_Run": [
+      -0.08664367347955704,
+      0.06837928295135498
+    ],
+    "Adopted_Candidate_Mixamo_Run": [
+      -0.049402665346860886,
+      0.013558363541960716
+    ],
+    "Adopted_Library_Dance_Body_Roll": [
+      0.0007094200700521469,
+      0.035513389855623245
+    ],
+    "Adopted_Library_Dance_Charleston": [
+      0.007014845497906208,
+      0.04032102972269058
+    ],
+    "Adopted_Library_Dance_Simple": [
+      -0.0219629667699337,
+      0.002491246908903122
+    ],
+    "Adopted_Library_Idle_A": [
+      -0.01766987144947052,
+      -0.014628267847001553
+    ],
+    "Adopted_Library_Jog": [
+      -0.25363656878471375,
+      0.04847228527069092
+    ],
+    "Adopted_Library_Sprint": [
+      -0.2046375870704651,
+      0.042397063225507736
+    ],
+    "Adopted_Library_Walk": [
+      -0.029494881629943848,
+      0.03469054400920868
+    ],
+    "Climb": [
+      0,
+      0
+    ],
+    "DanceDisco": [
+      0.007014845497906208,
+      0.04032102972269058
+    ],
+    "DanceStep": [
+      -0.0219629667699337,
+      0.002491246908903122
+    ],
+    "DanceVictory": [
+      0.0007094200700521469,
+      0.035513389855623245
+    ],
+    "Grab": [
+      -0.0069620865397155285,
+      -0.0069620865397155285
+    ],
+    "Greeting": [
+      -0.01650204509496689,
+      -0.01650204509496689
+    ],
+    "Hold": [
+      -0.0069620865397155285,
+      -0.0069620865397155285
+    ],
+    "Hybrid_Bow": [
+      -0.008269303478300571,
+      -0.00826917216181755
+    ],
+    "Hybrid_Crouch_Idle": [
+      0.023209886625409126,
+      0.02465396746993065
+    ],
+    "Hybrid_Crouch_Walk": [
+      -0.010151349008083344,
+      0.057805102318525314
+    ],
+    "Hybrid_Idle_A": [
+      -0.003317928873002529,
+      -0.0006439419230446219
+    ],
+    "Hybrid_Idle_Talking": [
+      -0.0022318840492516756,
+      -0.0013060520868748426
+    ],
+    "Hybrid_Jog": [
+      -0.24893856048583984,
+      0.024144355207681656
+    ],
+    "Hybrid_MugHold": [
+      -0.0063295564614236355,
+      -0.001688291784375906
+    ],
+    "Hybrid_MugHook": [
+      -0.0024457601830363274,
+      -0.0015498754801228642
+    ],
+    "Hybrid_MugPunch": [
+      -0.0024457601830363274,
+      -0.0020669258665293455
+    ],
+    "Hybrid_MugRun": [
+      -0.24893856048583984,
+      0.02414437010884285
+    ],
+    "Hybrid_MugSmash": [
+      -0.0024457601830363274,
+      -0.002067586872726679
+    ],
+    "Hybrid_Pistol_Aim_Neutral": [
+      -0.0025154673494398594,
+      -0.0025152943562716246
+    ],
+    "Hybrid_Punch_Jab": [
+      -0.005422740709036589,
+      0.0011223881738260388
+    ],
+    "Hybrid_Sitting_Enter": [
+      -0.002225953619927168,
+      0.04670371115207672
+    ],
+    "Hybrid_Sitting_Exit": [
+      -0.002453462453559041,
+      0.04511820897459984
+    ],
+    "Hybrid_Sitting_Idle": [
+      0.0467032864689827,
+      0.046703413128852844
+    ],
+    "Hybrid_Sprint": [
+      -0.15759505331516266,
+      0.01912572979927063
+    ],
+    "Hybrid_Strafe_left": [
+      -0.042725756764411926,
+      0.006962169893085957
+    ],
+    "Hybrid_Strafe_right": [
+      -0.01362142339348793,
+      0.0071569220162928104
+    ],
+    "Hybrid_Walk": [
+      -0.04752688854932785,
+      0.02018536627292633
+    ],
+    "Hybrid_Walk_Backwards": [
+      -0.018328674137592316,
+      0.004719782155007124
+    ],
+    "Hybrid_Zombie_Walk": [
+      -0.02032092958688736,
+      0.015163646079599857
+    ],
+    "Idle": [
+      -0.01766987144947052,
+      -0.014628267847001553
+    ],
+    "Legacy_DanceDisco": [
+      -0.006344066001474857,
+      -0.0020942646078765392
+    ],
+    "Legacy_DanceStep": [
+      -0.025982918217778206,
+      -0.002021115506067872
+    ],
+    "Legacy_DanceVictory": [
+      -0.005651239771395922,
+      -0.00020262316684238613
+    ],
+    "Library_Bow": [
+      -0.005125731695443392,
+      -0.005125731695443392
+    ],
+    "Library_Consume": [
+      -0.012167875654995441,
+      -0.008893724530935287
+    ],
+    "Library_Crouch_Idle": [
+      0.005932672414928675,
+      0.011488336138427258
+    ],
+    "Library_Crouch_Walk": [
+      -0.03167599067091942,
+      0.0356578528881073
+    ],
+    "Library_Dodge_back": [
+      0.00018719350919127464,
+      0.03428379446268082
+    ],
+    "Library_Dodge_left": [
+      -0.14636608958244324,
+      0.041825342923402786
+    ],
+    "Library_Dodge_right": [
+      -0.17986993491649628,
+      0.03539875149726868
+    ],
+    "Library_Greeting": [
+      -0.02349936030805111,
+      -0.02137012779712677
+    ],
+    "Library_Hit_Chest": [
+      -0.5630937218666077,
+      -0.5578200221061707
+    ],
+    "Library_Hit_Head": [
+      -0.009018104523420334,
+      -0.008690247312188148
+    ],
+    "Library_Idle_A": [
+      -0.010898503474891186,
+      -0.008281635120511055
+    ],
+    "Library_Idle_FoldArms": [
+      -0.015057552605867386,
+      -0.002697697142139077
+    ],
+    "Library_Idle_Listening": [
+      0.01689545065164566,
+      0.01762254163622856
+    ],
+    "Library_Idle_Talking": [
+      -0.010416585020720959,
+      -0.009085370227694511
+    ],
+    "Library_Interact": [
+      -0.01062725018709898,
+      -0.008747340179979801
+    ],
+    "Library_Jog": [
+      -0.2536376714706421,
+      0.04847192391753197
+    ],
+    "Library_Jump_Land": [
+      0,
+      0
+    ],
+    "Library_Jump_Start": [
+      0,
+      0
+    ],
+    "Library_Jump_air": [
+      0,
+      0
+    ],
+    "Library_Kneeling_Tired": [
+      0.0506998747587204,
+      0.0520738884806633
+    ],
+    "Library_Melee_Hook": [
+      -0.04726351797580719,
+      0.011642618104815483
+    ],
+    "Library_PickUp_Table": [
+      -0.017558354884386063,
+      -0.008906458504498005
+    ],
+    "Library_Pistol_Aim_Neutral": [
+      -0.00882396288216114,
+      -0.008823857642710209
+    ],
+    "Library_Pistol_Reload": [
+      -0.009383000433444977,
+      -0.00882396288216114
+    ],
+    "Library_Pistol_Shoot": [
+      -0.00882396288216114,
+      -0.00882396288216114
+    ],
+    "Library_Punch_Cross": [
+      0.0026402869261801243,
+      0.005976636428385973
+    ],
+    "Library_Punch_Jab": [
+      0.002580641768872738,
+      0.00602228008210659
+    ],
+    "Library_Push": [
+      -0.0487869456410408,
+      0.025572989135980606
+    ],
+    "Library_Sitting_Enter": [
+      -0.026005059480667114,
+      0.011736594140529633
+    ],
+    "Library_Sitting_Exit": [
+      -0.025884481146931648,
+      0.010705646127462387
+    ],
+    "Library_Sitting_Idle": [
+      0.010705636814236641,
+      0.0107056749984622
+    ],
+    "Library_Sprint": [
+      -0.20463865995407104,
+      0.04239703714847565
+    ],
+    "Library_Strafe_left": [
+      -0.043486129492521286,
+      0.019680161029100418
+    ],
+    "Library_Strafe_right": [
+      -0.018649915233254433,
+      0.03197669982910156
+    ],
+    "Library_Victory": [
+      -0.37850356101989746,
+      0.0678790956735611
+    ],
+    "Library_Walk": [
+      -0.024883989244699478,
+      0.04052038863301277
+    ],
+    "Library_Walk_Backwards": [
+      -0.0030247196555137634,
+      0.016806328669190407
+    ],
+    "Library_Walk_Carry": [
+      0.0009248740971088409,
+      0.05376587435603142
+    ],
+    "Library_Zombie_Walk": [
+      -0.06520659476518631,
+      0.022431032732129097
+    ],
+    "MugAttack": [
+      -0.007006837986409664,
+      -0.0029326071962714195
+    ],
+    "Procedural_Breathing": [
+      -0.006048428360372782,
+      -0.005165360867977142
+    ],
+    "Procedural_Crouch": [
+      -0.005994163919240236,
+      0.0010785824852064252
+    ],
+    "Procedural_Jog": [
+      -0.042627908289432526,
+      -0.0004895026213489473
+    ],
+    "Procedural_LookAround": [
+      -0.006048683077096939,
+      -0.005165360867977142
+    ],
+    "Procedural_Reach": [
+      -0.006048050709068775,
+      -0.0051656560972332954
+    ],
+    "Procedural_RollForward": [
+      0,
+      0
+    ],
+    "Procedural_SideStep": [
+      -0.0199484433978796,
+      -0.004966322798281908
+    ],
+    "Procedural_StepUp": [
+      0,
+      0
+    ],
+    "Procedural_Walk": [
+      -0.027043892070651054,
+      -0.0008632562821730971
+    ],
+    "Release": [
+      -0.0069620865397155285,
+      -0.0069620865397155285
+    ],
+    "Run": [
+      -0.08664367347955704,
+      0.06837928295135498
+    ],
+    "Test_ArmRaise": [
+      -0.01650204509496689,
+      -0.01650204509496689
+    ],
+    "Test_ElbowBend": [
+      -0.01650204509496689,
+      -0.01650204509496689
+    ],
+    "Test_HeadTurn": [
+      -0.01650204509496689,
+      -0.01650204509496689
+    ],
+    "Test_KneeBend": [
+      -0.01650204509496689,
+      -0.01650204509496689
+    ],
+    "Toast": [
+      -0.007006837986409664,
+      -0.007006837986409664
+    ],
+    "Vault": [
+      0,
+      0
+    ],
+    "Walk": [
+      -0.029494881629943848,
+      0.03469054400920868
+    ],
+    "WanRig_Walk": [
+      -0.01606939733028412,
+      0.015429994091391563
+    ],
+    "Wan_Walk": [
+      -0.02885633148252964,
+      0.01897439919412136
+    ],
+    "ZombieWalk": [
+      -0.02492664009332657,
+      -0.002526430878788233
+    ]
+  },
+  "animationSource": "04_GAME_ASSETS/3d/hazard_adopted/v2_20260915_mask/sobaya.glb",
+  "animationSourceSha256": "3ccce1dc4135b433f953b975c6cc33043fca77dae68d56f2f74dc99115f61e0d",
+  "sha256": "1ab6529ee3fb37a9822cba146cfcd122e115e7cca4d4b4342e0019d09eab767c",
+  "speedMethod": "Target backward foot velocity in original clip stance phases; target floor correction excluded from phase classification."
+}

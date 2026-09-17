@@ -37,7 +37,8 @@ for(const name of ['sobaya','fukuchan']){
  assert.equal(triangles(meshes),triangles(originalMeshes),'Approved geometry face count changed');
  game.scene.updateMatrixWorld(true);
  const rest=new THREE.Box3().setFromObject(game.scene,true);
- assert(Math.abs(rest.max.y-rest.min.y-(name==='sobaya'?1.8:1.7))<.002);
+ // V3 subdivision rounds the hair tips by 2.4mm relative to its 1.8m cage.
+ assert(Math.abs(rest.max.y-rest.min.y-(name==='sobaya'?1.8:1.7))<(row.version===3?.003:.002), `${name}: height ${rest.max.y-rest.min.y}`);
  const socket=game.scene.getObjectByName(THREE.PropertyBinding.sanitizeNodeName(row.socket));
  const hand=game.scene.getObjectByName('RightHand');
  assert(socket&&hand,'Missing hand attachment');
@@ -51,13 +52,19 @@ for(const name of ['sobaya','fukuchan']){
   }
  }
  assert(maxWeightError<.0001);
- if(name==='sobaya'){
+ if(name==='sobaya' && row.version===2){
   const black=data.materials.find(m=>m.name==='MaskBlackBacking');
   assert(black?.extensions?.KHR_materials_unlit);
   assert.deepEqual(black.pbrMetallicRoughness.baseColorFactor,[0,0,0,1]);
- }else{
+ }else if(name==='fukuchan'){
   const morphs=new Set(data.meshes.flatMap(m=>m.extras?.targetNames??[]));
   for(const m of ['SpeechOpen','SpeechNarrow','Smile','Blink','BlinkLeft','BlinkRight'])assert(morphs.has(m));
+ }
+ if(name==='sobaya' && row.version===3){
+  const black=data.materials.find(m=>m.name==='Mask absolute black');
+  assert(black, 'Missing black eye material');
+  assert.deepEqual(black.pbrMetallicRoughness.baseColorFactor.slice(0,3),[0,0,0]);
+  assert(game.scene.getObjectByName('SobayaV3Rig'));
  }
  const mixer=new THREE.AnimationMixer(game.scene),point=new THREE.Vector3();
  let maxAttachmentDistance=0,evaluatedVertices=0;
@@ -78,11 +85,11 @@ for(const name of ['sobaya','fukuchan']){
    }
   }
  }
- report.push({name,version:2,glbSha256:sha(buffer),gltfErrors:0,gltfWarnings:format.issues.numWarnings,
+ report.push({name,version:row.version,glbSha256:sha(buffer),gltfErrors:0,gltfWarnings:format.issues.numWarnings,
   triangles:triangles(meshes),renderMeshes:meshes.length,bones:meshes[0].skeleton.bones.length,
   gameClips:ids.size,retainedV1Clips:json(old).animations.length,retainedV2Clips:(sourceData.animations??[]).length,
   heightM:rest.max.y-rest.min.y,maxWeightError,maxAttachmentDistance,evaluatedVertices,
-  scope:'V2 geometry count, expressions/black material, all v1/v2 clip IDs, five skin samples per clip, socket follows hand. Visual grip quality requires game review.'});
+  scope:'Adopted geometry count, expressions/black material, retained clip IDs, five skin samples per clip, socket follows hand. Visual grip quality requires game review.'});
 }
 fs.writeFileSync(folder+'/validation.json',JSON.stringify(report,null,2)+'\n');
 console.log(JSON.stringify(report,null,2));

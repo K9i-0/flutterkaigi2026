@@ -1,19 +1,19 @@
 {
   "sobaya": {
-    "version": 2,
-    "file": "04_GAME_ASSETS/3d/hazard_adopted/v2_20260915_mask/sobaya.glb",
-    "source": "04_GAME_ASSETS/3d/characters/sobaya/v2_20260915_mask/sobaya_v2.glb",
-    "sourceSha256": "969a2a530e94d973591e8d0741603e7d517019a680ea09b4d1b8db616e650d38",
+    "version": 3,
+    "file": "04_GAME_ASSETS/3d/hazard_adopted/v3_20260917/sobaya.glb",
+    "source": "04_GAME_ASSETS/3d/characters/sobaya/rig_v3_20260917/sobaya_rig.glb",
+    "sourceSha256": "1ab6529ee3fb37a9822cba146cfcd122e115e7cca4d4b4342e0019d09eab767c",
     "motionSource": "04_GAME_ASSETS/3d/hazard_adopted/sobaya.glb",
     "motionSourceSha256": "e8df48deafb162543e07c46f3e839b5b8c71c0316352880af46b2b12a7147d6e",
-    "sha256": "3ccce1dc4135b433f953b975c6cc33043fca77dae68d56f2f74dc99115f61e0d",
+    "sha256": "1ab6529ee3fb37a9822cba146cfcd122e115e7cca4d4b4342e0019d09eab767c",
     "sources": {
       "Walk": "Adopted_Library_Walk",
       "Run": "Adopted_Candidate_Chase_Run"
     },
     "groundSpeedMps": {
-      "Walk": 0.7222705241292715,
-      "Run": 5.019194036722183
+      "Walk": 0.7001936808228493,
+      "Run": 4.577950034290552
     },
     "clips": [
       "Adopted_Candidate_Chase_Run",
@@ -123,10 +123,13 @@
     "socket": "PropSocket.R",
     "individualFingerRig": false,
     "retainedV1ClipCount": 98,
-    "retainedV2ClipCount": 11,
-    "geometryRevision": "20260915_oval_mask_original_v2_proportions",
-    "animationSource": "04_GAME_ASSETS/3d/hazard_adopted/v2_20260913/sobaya.glb",
-    "animationSourceSha256": "e9802f38ab8483740e50420f6efa658b493c8d0107d3fa67e81aa1837fc8aec9"
+    "retainedV2ClipCount": 103,
+    "geometryRevision": "wan_v3_upright_90pct_face_red_eye_edge",
+    "animationSource": "04_GAME_ASSETS/3d/hazard_adopted/v2_20260915_mask/sobaya.glb",
+    "animationSourceSha256": "3ccce1dc4135b433f953b975c6cc33043fca77dae68d56f2f74dc99115f61e0d",
+    "rig": "SobayaV3Rig",
+    "boneCount": 24,
+    "retargetMethod": "world-space rest-aware rotations, anatomical joint offsets, foot contact correction"
   },
   "fukuchan": {
     "version": 2,
