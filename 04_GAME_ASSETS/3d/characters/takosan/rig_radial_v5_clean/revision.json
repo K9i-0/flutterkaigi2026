@@ -1,0 +1,24 @@
+{
+  "source": "04_GAME_ASSETS/3d/characters/takosan/rig_radial_v4_hands/takosan.blend",
+  "source_glb_sha256": "db6b395c9f9af01259b2ec7515ab89c413d725f91c451d7015cd168c4a0ae09b",
+  "change": "Remove inward dangling spur on negative-X lateral tentacle; close local cut",
+  "removed_vertices": 14,
+  "cut_edges": 9,
+  "cap_faces": 1,
+  "closed_boundary_edges": 25,
+  "triangles": 19726,
+  "bones": 27,
+  "clips": [
+    "Idle",
+    "Talk",
+    "Wave"
+  ],
+  "preserved": [
+    "all surviving vertex positions",
+    "six tentacles",
+    "UVs",
+    "skin weights",
+    "materials",
+    "animation keys"
+  ]
+}

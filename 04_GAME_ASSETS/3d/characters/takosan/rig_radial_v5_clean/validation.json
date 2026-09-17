@@ -1,0 +1,28 @@
+{
+  "result": "PASS",
+  "sha256": "81b86b164564da818c3f974fd289f1f936731d58b066c086b4f66ee3c47dad4d",
+  "bytes": 1521952,
+  "triangles": 19726,
+  "vertices": 15968,
+  "joints": 27,
+  "materials": 3,
+  "maxWeightError": 2.9802322387695312e-08,
+  "clips": [
+    {
+      "name": "Idle",
+      "seconds": 3.0,
+      "loopSeam": 0
+    },
+    {
+      "name": "Talk",
+      "seconds": 3.0,
+      "loopSeam": 0
+    },
+    {
+      "name": "Wave",
+      "seconds": 3.0,
+      "loopSeam": 0
+    }
+  ],
+  "scope": "GLB structural checks; visual deformation review is separate"
+}
