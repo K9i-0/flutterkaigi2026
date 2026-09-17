@@ -1,0 +1,4 @@
+*.blend
+*.blend[0-9]*
+*.stl
+*.png
