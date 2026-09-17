@@ -25,3 +25,12 @@ scratch/voice_extract/
 
 # Python generator caches
 __pycache__/
+
+# Rebuildable Sobaya v3 intermediates and individual review frames
+04_GAME_ASSETS/3d/characters/sobaya/rig_v3_20260917/posture.blend
+04_GAME_ASSETS/3d/characters/sobaya/rig_v3_20260917/sobaya_rig.blend
+04_GAME_ASSETS/3d/characters/sobaya/rig_v3_20260917/motion_*.png
+04_GAME_ASSETS/3d/characters/sobaya/rig_v3_20260917/qa/**/*.png
+04_GAME_ASSETS/3d/motions/casual_greeting_20260917/qa/*.png
+# Blender's numbered save backups are local recovery files, not source assets.
+04_GAME_ASSETS/**/*.blend[0-9]*
