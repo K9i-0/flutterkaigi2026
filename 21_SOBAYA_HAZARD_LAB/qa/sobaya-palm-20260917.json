@@ -1,0 +1,68 @@
+{
+  "sha256": "73ac14ce9ff57cc6a70ab61550b528a804849046bad56472dd6dfa2163fba3d7",
+  "deployment": "d1976ae8-65d7-4d66-bb94-fec04e50a716",
+  "publicHashMatches": true,
+  "rendering": {
+    "continuous": true,
+    "foreground": true,
+    "posePreview": false,
+    "ticks": 1315,
+    "sceneRenderCalls": 1318,
+    "frameRateLimit": 60,
+    "simulationSeconds": 44.974904999999566,
+    "playerClipSeconds": 1.1562367756652536
+  },
+  "enemyMotions": [
+    {
+      "motion": "DanceStep",
+      "sourceMotion": "DanceStep",
+      "seconds": 0.689572222976685
+    },
+    {
+      "motion": "DanceDisco",
+      "sourceMotion": "DanceDisco",
+      "seconds": 1.3229059059905848
+    },
+    {
+      "motion": "DanceVictory",
+      "sourceMotion": "DanceVictory",
+      "seconds": 6.222904809265145
+    },
+    {
+      "motion": "Idle",
+      "sourceMotion": "Hybrid_MugHold",
+      "seconds": 0
+    },
+    {
+      "motion": "Idle",
+      "sourceMotion": "Hybrid_MugHold",
+      "seconds": 0
+    },
+    {
+      "motion": "Idle",
+      "sourceMotion": "Hybrid_MugHold",
+      "seconds": 0
+    },
+    {
+      "motion": "Idle",
+      "sourceMotion": "Hybrid_MugHold",
+      "seconds": 0
+    },
+    {
+      "motion": "Idle",
+      "sourceMotion": "Hybrid_MugHold",
+      "seconds": 0
+    }
+  ],
+  "enemyMugGripErrors": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "scope": "Greeting: 8 exported-GLB stills and live official viewer inspected. Native full rebuild and ambientDance continuous playback smoke-tested. Other 102 clips and geometry/weights byte-identical. Finger grasp deferred."
+}

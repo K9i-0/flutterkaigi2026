@@ -10,7 +10,7 @@ export function arHeight(character: ARCharacter, placement: ARPlacement) {
   return placement === "life" ? arCharacters[character].height : placement === "plush" ? 0.2 : 0.12;
 }
 export function modelUrl(character: string) {
-  const version = character === "sobaya" ? "v3-rig-arm-20260917" : "20260916-2";
+  const version = character === "sobaya" ? "v3-rig-palm-20260917" : "20260916-2";
   return `/models/characters/${character}.glb?v=${version}`;
 }
 
