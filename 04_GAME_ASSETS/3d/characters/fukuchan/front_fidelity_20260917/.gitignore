@@ -1,0 +1,11 @@
+*.glb
+*.blend*
+*.exr
+candidate*.png
+baseline*.png
+reference*.png
+comparison*.png
+diffuse_calibration.png
+face_atlas.png
+hairline_atlas.png
+check_*.py

@@ -1,0 +1,18 @@
+{
+  "status": "production_review_pass_at_available_reference_resolution",
+  "reference_sha256": "fba72fd02c17159da7a20e9b3531203004e287226bedd12caf8f53b8defc3969",
+  "projection_input_sha256": "3cbca5bc0c53e50d903315fc033ffa994c5e6794ed6cd9b0a81503a222defd0a",
+  "checks": [
+    "Front input, baseline and result compared at the same head scale",
+    "Eyelid opening and height, brow furrow, iris, nose, lip outline and expression reviewed",
+    "Final GLB reimport rendered from front, oblique, left/right profile, full body and badge",
+    "Body and all non-head vertex coordinates unchanged",
+    "Exact 福ちゃん badge retained; one whole-body mesh with embedded images"
+  ],
+  "limitations": [
+    "Approx. 100 px facial detail in the source image",
+    "Residual original hairline and ear mesh/texture roughness in close-up",
+    "Static expression; eye rotation and rig deformation untested"
+  ],
+  "metrics_note": "Luminance correlation is supporting image agreement only, not identity probability."
+}

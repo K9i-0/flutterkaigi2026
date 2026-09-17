@@ -1,0 +1,67 @@
+{
+  "note": "Fixed camera and lighting. Source-resolution luminance comparison, not an identity or 3D quality score. Region bounds in the 180x180 crop.",
+  "regions": {
+    "brows_eyes": [
+      52,
+      77,
+      128,
+      101
+    ],
+    "nose": [
+      66,
+      101,
+      114,
+      125
+    ],
+    "mouth": [
+      60,
+      126,
+      114,
+      143
+    ],
+    "central_face": [
+      51,
+      76,
+      130,
+      148
+    ]
+  },
+  "results": {
+    "baseline_front.png": {
+      "brows_eyes": {
+        "normalized_luminance_correlation": 0.7806,
+        "mean_absolute_luminance_error_255": 31.087
+      },
+      "nose": {
+        "normalized_luminance_correlation": 0.4372,
+        "mean_absolute_luminance_error_255": 24.088
+      },
+      "mouth": {
+        "normalized_luminance_correlation": 0.6053,
+        "mean_absolute_luminance_error_255": 26.053
+      },
+      "central_face": {
+        "normalized_luminance_correlation": 0.7719,
+        "mean_absolute_luminance_error_255": 27.587
+      }
+    },
+    "candidate_front.png": {
+      "brows_eyes": {
+        "normalized_luminance_correlation": 0.9567,
+        "mean_absolute_luminance_error_255": 9.845
+      },
+      "nose": {
+        "normalized_luminance_correlation": 0.9341,
+        "mean_absolute_luminance_error_255": 5.997
+      },
+      "mouth": {
+        "normalized_luminance_correlation": 0.9503,
+        "mean_absolute_luminance_error_255": 7.076
+      },
+      "central_face": {
+        "normalized_luminance_correlation": 0.9268,
+        "mean_absolute_luminance_error_255": 10.319
+      }
+    }
+  }
+}

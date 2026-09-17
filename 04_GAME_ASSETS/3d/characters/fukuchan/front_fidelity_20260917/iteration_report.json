@@ -1,0 +1,13 @@
+{
+  "projection": {
+    "scale": 590.0,
+    "center_x": 411.0,
+    "top": 24.5
+  },
+  "changed_vertices": 8399,
+  "body_vertices_unchanged": true,
+  "non_head_vertices_unchanged": true,
+  "max_displacement_m": 0.006779184595234744,
+  "projected_texels": 143278,
+  "reference": "../wan_multiview_20260917/inputs/front.png"
+}
