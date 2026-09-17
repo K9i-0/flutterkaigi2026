@@ -1568,7 +1568,9 @@ class HazardGameController extends ChangeNotifier {
         );
         node.setMorphWeight(
           node.morphTargetNames.indexOf('SpeechNarrow'),
-          opening * .2,
+          entry.key == '福ちゃん'
+              ? opening * (.12 + .55 * (1 - opening))
+              : opening * .2,
         );
       }
     }
