@@ -84,8 +84,8 @@ for label,samples in sorted(records.items()):
 if '--measure-only' in sys.argv:
  report=json.loads((OUT/'rig_report.json').read_text());report['groundSpeedMps']={'Walk':speed_samples['Adopted_Library_Walk'],'Run':speed_samples['Adopted_Candidate_Chase_Run']};report['speedMethod']='Target backward foot velocity in original clip stance phases; target floor correction excluded from phase classification.'
  (OUT/'rig_report.json').write_text(json.dumps(report,indent=2));print('SPEED_MEASURED',report['groundSpeedMps'],flush=True);raise SystemExit(0)
-from sobaya_greeting_palm import correct_greeting_palm, REVISION as PALM_REVISION
-correct_greeting_palm(rig,bpy.data.actions['Greeting'])
+from casual_greeting import author_greeting, REVISION as PALM_REVISION
+author_greeting(rig,'sobaya')
 use_action(rig,None);clear_pose(rig);s.frame_set(0)
 bpy.ops.wm.save_as_mainfile(filepath=str(OUT/'sobaya_animated.blend'))
 if '--preview-only' in sys.argv:

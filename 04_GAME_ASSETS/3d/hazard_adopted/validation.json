@@ -2,7 +2,7 @@
   {
     "name": "sobaya",
     "version": 3,
-    "glbSha256": "73ac14ce9ff57cc6a70ab61550b528a804849046bad56472dd6dfa2163fba3d7",
+    "glbSha256": "8c5e746d49c1326adbb6f1e1b09c4c1fb51557ad23ee93f5351a4800e5266ab5",
     "gltfErrors": 0,
     "gltfWarnings": 6,
     "triangles": 198688,
@@ -20,7 +20,7 @@
   {
     "name": "fukuchan",
     "version": 2,
-    "glbSha256": "3cd6e23564d36104d4b8bff5cadc94db4d83a2af6365ef365a5db5ad07983cea",
+    "glbSha256": "ef66bd25afc07a49622deac4bc51c5092407da7739c9843c53f71631574fdacb",
     "gltfErrors": 0,
     "gltfWarnings": 7,
     "triangles": 69413,

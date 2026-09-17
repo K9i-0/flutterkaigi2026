@@ -553,8 +553,8 @@
   },
   "animationSource": "04_GAME_ASSETS/3d/hazard_adopted/v2_20260915_mask/sobaya.glb",
   "animationSourceSha256": "3ccce1dc4135b433f953b975c6cc33043fca77dae68d56f2f74dc99115f61e0d",
-  "sha256": "73ac14ce9ff57cc6a70ab61550b528a804849046bad56472dd6dfa2163fba3d7",
+  "sha256": "8c5e746d49c1326adbb6f1e1b09c4c1fb51557ad23ee93f5351a4800e5266ab5",
   "speedMethod": "Target backward foot velocity in original clip stance phases; target floor correction excluded from phase classification.",
   "skinningRevision": "arm-surface-20260917",
-  "motionRevision": "greeting-palm-20260917"
+  "motionRevision": "casual-hey-20260917"
 }

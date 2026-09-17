@@ -1,0 +1,50 @@
+{
+  "revision": "casual-hey-20260917",
+  "deployment": "d6c48ec9-6900-41f1-a178-c9d9482b6399",
+  "publicHashesMatch": true,
+  "tests": {
+    "site": 39,
+    "flutterMotion": 5,
+    "flutterAnalyze": "No issues found"
+  },
+  "native": {
+    "rendering": {
+      "continuous": true,
+      "foreground": true,
+      "posePreview": false,
+      "ticks": 861,
+      "sceneRenderCalls": 864,
+      "frameRateLimit": 60,
+      "simulationSeconds": 36.35826799999993,
+      "playerClipSeconds": 1.92760010945127
+    },
+    "enemyMotions": [
+      {
+        "motion": "DanceStep",
+        "sourceMotion": "DanceStep",
+        "seconds": 0.9276017783813517
+      },
+      {
+        "motion": "DanceDisco",
+        "sourceMotion": "DanceDisco",
+        "seconds": 1.8942687152557307
+      },
+      {
+        "motion": "DanceVictory",
+        "sourceMotion": "DanceVictory",
+        "seconds": 4.060934507720917
+      }
+    ],
+    "gripErrors": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "scope": "New Greeting reviewed for both models with final-GLB front/oblique renders and browser playback. Native full rebuild/ambientDance regression smoke check; Greeting is not an in-game enemy action. Other 102 Sobaya and 98 Fukuchan clips byte-identical."
+}
