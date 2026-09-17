@@ -3,10 +3,10 @@
     "version": 3,
     "file": "04_GAME_ASSETS/3d/hazard_adopted/v3_20260917/sobaya.glb",
     "source": "04_GAME_ASSETS/3d/characters/sobaya/rig_v3_20260917/sobaya_rig.glb",
-    "sourceSha256": "73ac14ce9ff57cc6a70ab61550b528a804849046bad56472dd6dfa2163fba3d7",
+    "sourceSha256": "8c5e746d49c1326adbb6f1e1b09c4c1fb51557ad23ee93f5351a4800e5266ab5",
     "motionSource": "04_GAME_ASSETS/3d/hazard_adopted/sobaya.glb",
     "motionSourceSha256": "e8df48deafb162543e07c46f3e839b5b8c71c0316352880af46b2b12a7147d6e",
-    "sha256": "73ac14ce9ff57cc6a70ab61550b528a804849046bad56472dd6dfa2163fba3d7",
+    "sha256": "8c5e746d49c1326adbb6f1e1b09c4c1fb51557ad23ee93f5351a4800e5266ab5",
     "sources": {
       "Walk": "Adopted_Library_Walk",
       "Run": "Adopted_Candidate_Chase_Run"
@@ -131,7 +131,7 @@
     "boneCount": 24,
     "retargetMethod": "world-space rest-aware rotations, anatomical joint offsets, foot contact correction",
     "skinningRevision": "arm-surface-20260917",
-    "motionRevision": "greeting-palm-20260917"
+    "motionRevision": "casual-hey-20260917"
   },
   "fukuchan": {
     "version": 2,
@@ -140,7 +140,7 @@
     "sourceSha256": "c436fb988fb31d112d2b1d40fb5a514dc45ce4b25fc85af1ba615c6b4998dbd7",
     "motionSource": "04_GAME_ASSETS/3d/hazard_adopted/fukuchan.glb",
     "motionSourceSha256": "6d8254a05ff43a87801f6f7e6eb4dbbd2750752f839129b408a0ad347affda03",
-    "sha256": "3cd6e23564d36104d4b8bff5cadc94db4d83a2af6365ef365a5db5ad07983cea",
+    "sha256": "ef66bd25afc07a49622deac4bc51c5092407da7739c9843c53f71631574fdacb",
     "sources": {
       "Walk": "Adopted_Library_Walk",
       "Run": "Adopted_Candidate_Mixamo_Run"
@@ -253,6 +253,7 @@
     "socket": "GunSocket",
     "individualFingerRig": true,
     "retainedV1ClipCount": 93,
-    "retainedV2ClipCount": 23
+    "retainedV2ClipCount": 23,
+    "motionRevision": "casual-hey-20260917"
   }
 }
