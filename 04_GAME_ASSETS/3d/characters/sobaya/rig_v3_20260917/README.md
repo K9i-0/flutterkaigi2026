@@ -29,3 +29,9 @@
 MCPによる本編での検証記録は `21_SOBAYA_HAZARD_LAB/qa/sobaya-v3-20260917.json`。公式サイトも同日の追加依頼で本GLBへ更新（URL世代 `v3-rig-upright-20260917`）。
 
 モーションの利用条件は元ライブラリの条件を引き継ぐ。Mixamo由来を含むため一式をCC0として扱わない。
+
+## 股周りの追加修正（2026-09-17）
+
+ダンスで股下が三角形に尖る原因は、ズボン中央で左右の腿ウェイトが急に切り替わること。細分化後に `tools/sobaya_pelvis_weights.py` で中心15cm幅を滑らかにつなぎ、骨盤の影響を中央へ補う。顔・体格・頂点位置・UV・骨・モーションは維持。修正前後3ダンス×4位相を正面・背面で比較（`qa/pelvis_comparison.png`）。この処置はベースウェイトへ一度だけ適用し、修正済みウェイトへ累積しない。
+
+公式サイト公開世代: `v3-rig-pelvis-20260917`。公開GLBのSHA-256は `qa/pelvis_invariants.json` のcorrectedSha256と一致。公開3Dビューのダンスを正面・背面から拡大確認済み。ゲームの連続再生記録: `21_SOBAYA_HAZARD_LAB/qa/sobaya-pelvis-20260917.json`。

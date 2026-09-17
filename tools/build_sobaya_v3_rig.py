@@ -118,6 +118,9 @@ def make_rig():
    if mod.type=='SUBSURF':bpy.ops.object.modifier_apply(modifier=mod.name)
   bpy.ops.object.vertex_group_limit_total(limit=4)
   bpy.ops.object.vertex_group_normalize_all(lock_active=False)
+ from sobaya_pelvis_weights import correct_pelvis_weights
+ pelvis_report=correct_pelvis_weights(main)
+ (OUT/'pelvis_weights_report.json').write_text(json.dumps(pelvis_report,indent=2))
  for o in meshes:
   for mod in o.modifiers:
    if mod.type=='ARMATURE':mod.use_deform_preserve_volume=False
