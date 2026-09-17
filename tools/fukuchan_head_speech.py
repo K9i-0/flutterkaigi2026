@@ -16,7 +16,7 @@ def curve(x):
     return .0035 * min(1., (abs(x) / WIDTH) ** 2)
 
 
-def add_head_speech(head):
+def add_head_speech(head, *, jaw_bottom=1.444, jaw_full=1.472, include_teeth=True):
     head.shape_key_clear()
     head.data.calc_loop_triangles()
     original_points = [v.co.copy() for v in head.data.vertices]
@@ -78,7 +78,7 @@ def add_head_speech(head):
         vertex.co.z += curve(vertex.co.x)
     uv_layer = bm.loops.layers.uv.active
     for face in bm.faces:
-        if face.material_index != 0:
+        if face.material_index >= material:
             continue
         if not any(abs(v.co.z - MOUTH) < .010 and abs(v.co.x) < .065 and v.co.y < -.07 for v in face.verts):
             continue
@@ -94,24 +94,25 @@ def add_head_speech(head):
             ua, ub, uc = original_uv[index]
             mapped = barycentric_transform(point, a, b, c, ua, ub, uc)
             loop[uv_layer].uv = mapped.xy
-    enamel = bpy.data.materials.new('FukuchanUpperTeeth')
-    enamel.use_nodes = True
-    enamel.diffuse_color = (.60, .55, .46, 1)
-    enamel.node_tree.nodes['Principled BSDF'].inputs['Base Color'].default_value = enamel.diffuse_color
-    enamel.node_tree.nodes['Principled BSDF'].inputs['Roughness'].default_value = .4
-    tooth_material = len(head.data.materials)
-    head.data.materials.append(enamel)
-    lip_points = [v.co.copy() for e in boundary for v in e.verts]
-    for x in [-.021, -.015, -.009, -.003, .003, .009, .015, .021]:
-        nearest = min(lip_points, key=lambda p: abs(p.x - x))
-        transform = Matrix.Translation((x, nearest.y + .008, MOUTH + curve(x) - .0015)) @ Matrix.Diagonal(Vector((.00285, .0025, .0032, 1)))
-        teeth = bmesh.ops.create_uvsphere(bm, u_segments=10, v_segments=6, radius=1, matrix=transform)['verts']
-        for vertex in teeth:
-            vertex[deform][head_group] = 1
-            vertex[lining] = 1
-            for face in vertex.link_faces:
-                face.material_index = tooth_material
-                face.smooth = True
+    if include_teeth:
+        enamel = bpy.data.materials.new('FukuchanUpperTeeth')
+        enamel.use_nodes = True
+        enamel.diffuse_color = (.60, .55, .46, 1)
+        enamel.node_tree.nodes['Principled BSDF'].inputs['Base Color'].default_value = enamel.diffuse_color
+        enamel.node_tree.nodes['Principled BSDF'].inputs['Roughness'].default_value = .4
+        tooth_material = len(head.data.materials)
+        head.data.materials.append(enamel)
+        lip_points = [v.co.copy() for e in boundary for v in e.verts]
+        for x in [-.021, -.015, -.009, -.003, .003, .009, .015, .021]:
+            nearest = min(lip_points, key=lambda p: abs(p.x - x))
+            transform = Matrix.Translation((x, nearest.y + .008, MOUTH + curve(x) - .0015)) @ Matrix.Diagonal(Vector((.00285, .0025, .0032, 1)))
+            teeth = bmesh.ops.create_uvsphere(bm, u_segments=10, v_segments=6, radius=1, matrix=transform)['verts']
+            for vertex in teeth:
+                vertex[deform][head_group] = 1
+                vertex[lining] = 1
+                for face in vertex.link_faces:
+                    face.material_index = tooth_material
+                    face.smooth = True
     bmesh.ops.recalc_face_normals(bm, faces=list(bm.faces))
     bm.to_mesh(head.data)
     bm.free()
@@ -137,7 +138,7 @@ def add_head_speech(head):
         below = z < seam_z - 1e-6 or (abs(z - seam_z) < 1e-6 and lower[i].value > .5)
         side = 1 - smooth(.010, WIDTH, abs(x))
         front = 1 - smooth(-.07, -.035, y)
-        jaw = smooth(1.444, 1.472, z) if below else 0
+        jaw = smooth(jaw_bottom, jaw_full, z) if below else 0
         weight = side * front * jaw
         opened.data[i].co.z -= .009 * weight
         opened.data[i].co.y += .0015 * weight
@@ -147,4 +148,5 @@ def add_head_speech(head):
     opened.value = narrow.value = 0
     return {'targets': ['SpeechOpen', 'SpeechNarrow'], 'affectedVertices': affected,
             'mouthHeight': MOUTH, 'maximumJawDisplacement': .009,
-            'source': 'authored split lip seam, inward oral lining and eight static upper teeth; not a phoneme rig'}
+            'source': 'authored split lip seam and inward oral lining; not a phoneme rig',
+            'teeth': 8 if include_teeth else 0}

@@ -1,0 +1,38 @@
+{
+  "targets": [
+    "SpeechOpen",
+    "SpeechNarrow"
+  ],
+  "affectedVertices": 1422,
+  "mouthHeight": 1.4774,
+  "maximumJawDisplacement": 0.009,
+  "source": "04_GAME_ASSETS/3d/characters/fukuchan/rig_v3_20260917/fukuchan.glb",
+  "teeth": 0,
+  "sourceSha256": "c057e4f5d4c54c578ac30648ad53eb7c2912a7a50d106cde2981ee5f888bd8d8",
+  "sha256": "77af43981a677219375905ec1fa3de92a65ba063dcab29fb37ee246539a2c61e",
+  "clips": [
+    "Aim",
+    "AimShotgun",
+    "BreakFree",
+    "Climb",
+    "DanceDisco",
+    "DanceStep",
+    "DanceVictory",
+    "Evade",
+    "Greeting",
+    "GyunGyun",
+    "GyunGyunPose",
+    "Hit",
+    "Idle",
+    "Kick",
+    "ReloadHandgun",
+    "ReloadShotgun",
+    "Run",
+    "Struggle",
+    "Vault",
+    "Walk",
+    "Adopted_Library_Idle_A",
+    "Adopted_Library_Walk",
+    "Adopted_Candidate_Mixamo_Run"
+  ]
+}
