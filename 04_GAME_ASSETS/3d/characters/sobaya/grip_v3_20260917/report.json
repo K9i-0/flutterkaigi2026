@@ -2,8 +2,33 @@
   "revision": "sobaya-grip-v3-20260917",
   "source": "04_GAME_ASSETS/3d/hazard_adopted/v3_20260917/sobaya.glb",
   "sourceSha256": "8c5e746d49c1326adbb6f1e1b09c4c1fb51557ad23ee93f5351a4800e5266ab5",
-  "sha256": "f49e7e9502593e4fc98ef1b65460ae366ab22cb01988325bfb29013e9597e71c",
+  "sha256": "80379ef55d1fefaed395649752d662c87bb2b22a622883f35abbb805b8344796",
   "contact": {
+    "fingertips": {
+      "method": "rigid distal sculpt preservation with surface-weighted root blend",
+      "digits": [
+        {
+          "finger": "Little",
+          "rigidFitVertices": 358,
+          "maxCorrectionM": 0.02272299134542374
+        },
+        {
+          "finger": "Ring",
+          "rigidFitVertices": 363,
+          "maxCorrectionM": 0.0312979855946453
+        },
+        {
+          "finger": "Middle",
+          "rigidFitVertices": 350,
+          "maxCorrectionM": 0.031111208435053023
+        },
+        {
+          "finger": "Index",
+          "rigidFitVertices": 340,
+          "maxCorrectionM": 0.024425559107912713
+        }
+      ]
+    },
     "fingerSpacing": {
       "method": "surface-harmonic finger adduction; distal fingers translate without width scaling",
       "digitOrder": [
@@ -64,47 +89,47 @@
             "Little",
             "Ring"
           ],
-          "minimumSurfaceGapM": 3.2335494779545115e-06,
-          "closestDecileGapM": 0.0020535454852506517,
-          "nearNegativeNormalSamples": 17,
-          "maximumNegativeNormalDistanceM": 0.0022833989442005986
+          "minimumSurfaceGapM": 5.1032697228947654e-05,
+          "closestDecileGapM": 0.0025094790384173394,
+          "nearNegativeNormalSamples": 40,
+          "maximumNegativeNormalDistanceM": 0.00442922257934697
         },
         {
           "pair": [
             "Ring",
             "Middle"
           ],
-          "minimumSurfaceGapM": 2.338554259040393e-05,
-          "closestDecileGapM": 0.0033446338726207613,
-          "nearNegativeNormalSamples": 35,
-          "maximumNegativeNormalDistanceM": 0.00542759349627886
+          "minimumSurfaceGapM": 0.0008459453820250928,
+          "closestDecileGapM": 0.004119361005723477,
+          "nearNegativeNormalSamples": 0,
+          "maximumNegativeNormalDistanceM": 0
         },
         {
           "pair": [
             "Middle",
             "Index"
           ],
-          "minimumSurfaceGapM": 6.0166788898641244e-05,
-          "closestDecileGapM": 0.002341858809813857,
-          "nearNegativeNormalSamples": 31,
-          "maximumNegativeNormalDistanceM": 0.003347253383253701
+          "minimumSurfaceGapM": 4.395720679895021e-05,
+          "closestDecileGapM": 0.0042918650433421135,
+          "nearNegativeNormalSamples": 35,
+          "maximumNegativeNormalDistanceM": 0.005484988389071077
         }
       ]
     },
     "method": "90 constrained neighbor-fairing iterations against exported Handle mesh",
     "contactClearanceM": 0.00065,
     "correctedUniqueVertices": 2681,
-    "beforePenetratingVertices": 154,
-    "beforeMaxDepthM": 0.009441964703000849,
+    "beforePenetratingVertices": 118,
+    "beforeMaxDepthM": 0.009674423024989665,
     "afterPenetratingVertices": 0,
     "afterMaxDepthM": 0,
-    "maxContactDisplacementM": 0.025350732123326038,
-    "facesRotatedOver90Degrees": 2,
-    "contactFoldFairingVertices": 45
+    "maxContactDisplacementM": 0.03247567793912392,
+    "facesRotatedOver90Degrees": 0,
+    "contactFoldFairingVertices": 0
   },
   "morph": "MugGrip",
   "changedExportVertices": 4332,
-  "maxDisplacementM": 0.08712897358224538,
+  "maxDisplacementM": 0.086523104783004,
   "minimumRightHandSkinWeight": 0.9403071403503418,
   "localJacobianDeterminant": [
     0.12922146916389465,

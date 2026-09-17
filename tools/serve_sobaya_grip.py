@@ -9,7 +9,7 @@ parser=argparse.ArgumentParser();parser.add_argument('--port',type=int,default=8
 web=ROOT/'.local/sobaya-grip/web';web.mkdir(parents=True,exist_ok=True)
 html=(ROOT/'tools/preview_sobaya_grip.html').read_text()
 html=html.replace('/.local/vrm-validation/node_modules/three/','/three/')
-html=html.replace('/04_GAME_ASSETS/3d/characters/sobaya/grip_v3_20260917/sobaya_grip.glb?v=1','/sobaya_grip.glb')
+html=html.replace('/04_GAME_ASSETS/3d/characters/sobaya/grip_v3_20260917/sobaya_grip.glb','/sobaya_grip.glb')
 html=html.replace('/04_GAME_ASSETS/3d/props/beer_mug_v2/beer_mug.glb','/beer_mug.glb')
 (web/'index.html').write_text(html)
 shutil.copy2(ROOT/'04_GAME_ASSETS/3d/characters/sobaya/grip_v3_20260917/sobaya_grip.glb',web/'sobaya_grip.glb')

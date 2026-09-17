@@ -1,5 +1,5 @@
 {
-  "sha256": "f49e7e9502593e4fc98ef1b65460ae366ab22cb01988325bfb29013e9597e71c",
+  "sha256": "80379ef55d1fefaed395649752d662c87bb2b22a622883f35abbb805b8344796",
   "renderSamples": [
     {
       "clip": "Hybrid_MugHold",
@@ -40,7 +40,7 @@
     "Handle": {
       "penetratingVertices": 0,
       "maxDepthM": 0,
-      "verticesWithin5mm": 388
+      "verticesWithin5mm": 310
     },
     "GlassBody": {
       "penetratingVertices": 0,

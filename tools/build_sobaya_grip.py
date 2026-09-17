@@ -68,7 +68,7 @@ for primitive in mesh['primitives']:
   assert det>.1,('Folded grip field',tuple(p),det)
   delta=rotation@(q-p);deltas[i]=delta
   normal=(rotation@j.inverted().transposed()@inverse_rotation@Vector(normals[i])).normalized()
-  if correction:normal=(rotation@correction[1].to_matrix()@inverse_rotation@normal).normalized()
+  if correction:normal=(rotation@correction[1].to_matrix()@inverse_rotation@Vector(normals[i])).normalized()
   ndeltas[i]=normal-Vector(normals[i]);changed+=1;max_move=max(max_move,delta.length)
  primitive['targets']=[{'POSITION':append(deltas,'VEC3'),'NORMAL':append(ndeltas,'VEC3')}]
  for accessor in primitive['targets'][0].values():doc['bufferViews'][doc['accessors'][accessor]['bufferView']]['target']=34962

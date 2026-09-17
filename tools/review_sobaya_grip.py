@@ -42,6 +42,29 @@ for clip,phase in [('Hybrid_MugHold',0),('Adopted_Library_Walk',.25),('Adopted_C
    # Mug-oriented closeups, so contact is readable independent of wrist roll.
    target=m@Vector((.12,0,.12));direction=m.to_3x3()@Vector(d);up=m.to_3x3()@Vector((0,0,1))
    render('grip_'+label,target,direction,up,.34)
+  # Inspect the finger pads without the torso obscuring this inward view.
+  dg=bpy.context.evaluated_depsgraph_get();ev=body.evaluated_get(dg);em=ev.to_mesh()
+  selected={v.index for v in body.data.vertices if v.co.x<-.30 and .68<v.co.z<.99}
+  hm=bpy.data.meshes.new('Palm audit');hm.from_pydata([ev.matrix_world@v.co for v in em.vertices],[],
+       [tuple(f.vertices) for f in em.polygons if all(i in selected for i in f.vertices)])
+  for material in body.data.materials:hm.materials.append(material)
+  # Retain UVs and material slots for the isolated evaluated hand.
+  source_faces=[f for f in em.polygons if all(i in selected for i in f.vertices)]
+  for f,source in zip(hm.polygons,source_faces):f.material_index=source.material_index;f.use_smooth=True
+  normal_matrix=ev.matrix_world.to_3x3().inverted().transposed()
+  hm.normals_split_custom_set([(normal_matrix@em.corner_normals[i].vector).normalized() for f in source_faces for i in f.loop_indices])
+  for uv in em.uv_layers:
+   layer=hm.uv_layers.new(name=uv.name)
+   for f,source in zip(hm.polygons,source_faces):
+    for a,b in zip(f.loop_indices,source.loop_indices):layer.data[a].uv=uv.data[b].uv
+  ho=bpy.data.objects.new('Palm audit',hm);bpy.context.collection.objects.link(ho);ev.to_mesh_clear()
+  hidden=[o for o in s.objects if o.type=='MESH' and o!=ho and o not in root.children_recursive and not o.hide_render]
+  for o in hidden:o.hide_render=True
+  target=m@Vector((.14,0,.12));direction=m.to_3x3()@Vector((.2,-1,.15));up=m.to_3x3()@Vector((0,0,1))
+  render('grip_fingertips',target,direction,up,.25)
+  for o in hidden:o.hide_render=False
+  bpy.data.objects.remove(ho,do_unlink=True)
+
  error=(grip.matrix_world.translation-(rig.matrix_world@rig.pose.bones['PropSocket.R'].matrix).translation).length
  records.append({'clip':clip,'phase':phase,'morphWeight':keys.key_blocks['MugGrip'].value,'attachmentErrorM':error})
 # Check a complete cycle independently of the selected render frames.

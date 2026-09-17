@@ -31,6 +31,8 @@ def fit_contact(doc,values,mesh,hand,root):
     unpacked=[deform(p) for p in points]
     from sobaya_grip_spacing import pack_fingers,measure_spacing
     base,finger_weights,spacing_report=pack_fingers(points,unpacked,neighbors)
+    from sobaya_grip_tips import preserve_tips
+    base,tip_report=preserve_tips(points,base,finger_weights)
     offset=[Vector() for _ in points]
     active=[]
     initial_inside=[]
@@ -77,7 +79,7 @@ def fit_contact(doc,values,mesh,hand,root):
             if signed<.00065 and d<.018:revised[i]+=n*(.00065-signed)
         final=revised
     offset=[p-q for p,q in zip(final,unpacked)]
-    n0=normals(unpacked);n1=normals(final);mapping={}
+    n0=normals(points);n1=normals(final);mapping={}
     for key,i in lookup.items():
         if offset[i].length>1e-7:
             mapping[key]=(offset[i],n0[i].rotation_difference(n1[i]))
@@ -91,7 +93,7 @@ def fit_contact(doc,values,mesh,hand,root):
         if n.length>1e-10 and nn.length>1e-10 and n.dot(nn)<0:flipped+=1
     spacing_report['before']=measure_spacing(points,unpacked,triangles,finger_weights)
     spacing_report['after']=measure_spacing(points,final,triangles,finger_weights)
-    report={'fingerSpacing':spacing_report,'method':'90 constrained neighbor-fairing iterations against exported Handle mesh',
+    report={'fingertips':tip_report,'fingerSpacing':spacing_report,'method':'90 constrained neighbor-fairing iterations against exported Handle mesh',
             'contactClearanceM':.00065,'correctedUniqueVertices':len(mapping),
             'beforePenetratingVertices':len(initial_inside),'beforeMaxDepthM':max(initial_inside,default=0),
             'afterPenetratingVertices':len(final_inside),'afterMaxDepthM':max(final_inside,default=0),
