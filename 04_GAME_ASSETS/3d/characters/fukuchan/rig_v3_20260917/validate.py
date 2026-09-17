@@ -25,7 +25,11 @@ for a in actions:
   frame=float(frames[0]+(frames[1]-frames[0])*fraction);bpy.context.scene.frame_set(int(frame),subframe=frame-int(frame));deps=bpy.context.evaluated_depsgraph_get();ev=o.evaluated_get(deps);mesh=ev.to_mesh();q=np.array([tuple(v.co) for v in mesh.vertices]);assert np.isfinite(q).all();stretch=np.linalg.norm(q[edges[:,0]]-q[edges[:,1]],axis=1)-restlen
   rows.append({'fraction':fraction,'bounds_min':q.min(0).tolist(),'bounds_max':q.max(0).tolist(),'max_edge_extension_m':float(stretch.max()),'left_sole_m':body.skin_floor('l'),'right_sole_m':body.skin_floor('r')});ev.to_mesh_clear()
  report[a.name]=rows
- if a.name=='GyunGyunPose':assert abs(rows[0]['right_sole_m']-.003)<.002 and rows[0]['left_sole_m']>.2
+ if a.name=='GyunGyunPose':
+  assert abs(rows[0]['right_sole_m']-.003)<.002 and rows[0]['left_sole_m']>.2
+  # Reference silhouette: lifted left knee crosses in front of the right hip.
+  assert rig.pose.bones['LeftLeg'].head.x < rig.pose.bones['RightUpLeg'].head.x
+  assert rig.pose.bones['LeftLeg'].head.y < rig.pose.bones['RightUpLeg'].head.y-.15
 use_action(rig,None);clear_pose(rig)
 b=(P/'fukuchan.glb').read_bytes();magic,version,length=struct.unpack_from('<4sII',b);assert magic==b'glTF' and version==2 and length==len(b);n=struct.unpack_from('<I',b,12)[0];g=json.loads(b[20:20+n]);assert len(g['skins'])==1 and len(g['animations'])==20;assert all('bufferView' in im for im in g['images']);assert {'GyunGyun','GyunGyunPose','Idle','Walk','Run','Greeting'}<={a['name'] for a in g['animations']}
 for mat in g['materials']:
