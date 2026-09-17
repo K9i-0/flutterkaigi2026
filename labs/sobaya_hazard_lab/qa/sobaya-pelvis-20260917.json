@@ -1,0 +1,59 @@
+{
+  "date": "2026-09-17",
+  "revision": "pelvis-blend-20260917",
+  "device": "macOS debug",
+  "modelSha256": "4ed8b6d190b6365369f1f8950609000004147148f60efc577a6e366bff781e13",
+  "rendering": {
+    "continuous": true,
+    "foreground": true,
+    "posePreview": false,
+    "ticks": 670,
+    "sceneRenderCalls": 675,
+    "frameRateLimit": 60,
+    "simulationSeconds": 16.733301000000097,
+    "playerClipSeconds": 1.0666337770232959
+  },
+  "models": {
+    "sobayaV3": true,
+    "sobayaV2": false,
+    "fukuchanV2": true,
+    "sobayaSocket": true,
+    "fukuchanSocket": true,
+    "fukuchanFingerRig": true
+  },
+  "motions": [
+    {
+      "motion": "DanceStep",
+      "sourceMotion": "DanceStep",
+      "seconds": 0.2666345399627655
+    },
+    {
+      "motion": "DanceDisco",
+      "sourceMotion": "DanceDisco",
+      "seconds": 0.6333013337860006
+    },
+    {
+      "motion": "DanceVictory",
+      "sourceMotion": "DanceVictory",
+      "seconds": 3.799967603088379
+    }
+  ],
+  "gripErrors": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "checks": [
+    "12 paired pelvis poses visually reviewed",
+    "6 exported GLB motions x 2 phases reviewed",
+    "103 clips byte-identical; geometry, UVs and bone rest unchanged",
+    "native game continuous dance screenshot reviewed",
+    "5 motion tests passed",
+    "website verify 39 tests passed"
+  ]
+}
