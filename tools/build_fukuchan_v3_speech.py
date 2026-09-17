@@ -7,7 +7,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'tools'))
 OUT=ROOT/'04_GAME_ASSETS/3d/hazard_adopted/v3_preview_20260917'
-SOURCE=ROOT/'04_GAME_ASSETS/3d/characters/fukuchan/rig_v3_20260917/fukuchan.glb'
+SOURCE=ROOT/'04_GAME_ASSETS/3d/characters/fukuchan/skin_even_20260917/fukuchan.glb'
 bpy.ops.wm.read_factory_settings(use_empty=True)
 bpy.context.scene.render.fps=30
 bpy.ops.import_scene.gltf(filepath=str(SOURCE))

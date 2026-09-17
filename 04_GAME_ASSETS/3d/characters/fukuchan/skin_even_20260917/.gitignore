@@ -1,0 +1,5 @@
+*.blend*
+*.glb
+cheek_atlas.png
+qa/
+__pycache__/

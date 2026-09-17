@@ -139,9 +139,9 @@
   "fukuchan": {
     "version": 3,
     "file": "04_GAME_ASSETS/3d/hazard_adopted/v3_preview_20260917/fukuchan.glb",
-    "source": "04_GAME_ASSETS/3d/characters/fukuchan/rig_v3_20260917/fukuchan.glb",
-    "sourceSha256": "c057e4f5d4c54c578ac30648ad53eb7c2912a7a50d106cde2981ee5f888bd8d8",
-    "sha256": "91a6703e7ffc09ce87af2a52c0a0f6dd62a9ee29cddadbdb9723399c1bdc759c",
+    "source": "04_GAME_ASSETS/3d/characters/fukuchan/skin_even_20260917/fukuchan.glb",
+    "sourceSha256": "b3c254d4b81fe21de74fc768cb1ecc51cbb5997e32ab8bc1732006b54d609f4d",
+    "sha256": "8ef167bc4b8f494aedcb7031adaadd25cc803a769b0b69cfcd105382663a363d",
     "sources": {
       "Walk": "Adopted_Library_Walk",
       "Run": "Adopted_Candidate_Mixamo_Run"

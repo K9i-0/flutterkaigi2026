@@ -6,7 +6,7 @@ import crypto from 'node:crypto';
 const here=path.dirname(fileURLToPath(import.meta.url));
 const require=createRequire(path.resolve(here,'../../../../../16_MADOGIWA_STUDIO/package.json'));
 const sharp=require('sharp');
-const source=fs.readFileSync(path.resolve(here,'../rig_v3_20260917/fukuchan.glb'));
+const source=fs.readFileSync(path.resolve(here,'../skin_even_20260917/fukuchan.glb'));
 const size=source.readUInt32LE(12),g=JSON.parse(source.subarray(20,20+size)),bin=source.subarray(28+size);
 const images=new Map(),report=[];
 for(const [i,im] of g.images.entries()) {

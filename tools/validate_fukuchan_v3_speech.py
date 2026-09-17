@@ -3,7 +3,7 @@ import json, struct, math, hashlib
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'04_GAME_ASSETS/3d/hazard_adopted/v3_preview_20260917'
-SOURCE=ROOT/'04_GAME_ASSETS/3d/characters/fukuchan/rig_v3_20260917/fukuchan.glb'
+SOURCE=ROOT/'04_GAME_ASSETS/3d/characters/fukuchan/skin_even_20260917/fukuchan.glb'
 def read(path):
  raw=path.read_bytes();size=struct.unpack_from('<I',raw,12)[0];g=json.loads(raw[20:20+size]);binary=raw[28+size:]
  def acc(index):

@@ -1,0 +1,37 @@
+{
+  "result": "PASS",
+  "geometryWeightsUVsAnimationsMaterialsExact": true,
+  "unchangedNonImageBuffers": 2100,
+  "images": [
+    {
+      "image": 0,
+      "changedPixels": 0,
+      "totalPixels": 16777216
+    },
+    {
+      "image": 1,
+      "changedPixels": 0,
+      "totalPixels": 16777216
+    },
+    {
+      "image": 2,
+      "changedPixels": 0,
+      "totalPixels": 921856
+    },
+    {
+      "image": 3,
+      "changedPixels": 239759,
+      "totalPixels": 16777216
+    },
+    {
+      "image": 4,
+      "changedPixels": 0,
+      "totalPixels": 16777216
+    },
+    {
+      "image": 5,
+      "changedPixels": 0,
+      "totalPixels": 16777216
+    }
+  ]
+}
