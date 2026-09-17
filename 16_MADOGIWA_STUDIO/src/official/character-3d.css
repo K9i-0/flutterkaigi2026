@@ -18,7 +18,8 @@
 .j-model-canvas { width:100%; height:100%; touch-action:none; }
 .j-model-canvas canvas { display:block; }
 .j-model-stage-label { position:absolute; left:18px; top:14px; pointer-events:none; font-family:"Noto Serif JP",serif; font-weight:700; }
-.j-model-dialog .j-model-reset { position:absolute; bottom:12px; right:12px; display:flex; align-items:center; gap:6px; background:#fffaf0de; padding:7px 11px; border-radius:20px; font-size:11px; }
+.j-model-framing { position:absolute; bottom:12px; right:12px; display:flex; gap:6px; }
+.j-model-dialog .j-model-framing button { display:flex; align-items:center; justify-content:center; gap:6px; min-height:44px; background:#fffaf0ed; padding:8px 14px; border:1px solid #263e3228; border-radius:24px; font-size:12px; }
 .j-model-status { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:10px; background:#eee9dd; padding:20px; text-align:center; }
 .j-model-status small { color:#73796d; font-size:11px; }
 .j-model-status button { text-decoration:underline; }

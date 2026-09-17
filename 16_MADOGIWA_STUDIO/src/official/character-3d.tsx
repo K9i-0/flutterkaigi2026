@@ -42,7 +42,7 @@ export function Character3D({ character }: { character: string }) {
           <div><span className="j-model-eyebrow">窓際の住人を、ぐるり。</span><Dialog.Title>3Dキャラクター</Dialog.Title></div>
           <Dialog.Close className="j-model-icon" aria-label="3Dビューを閉じる"><X size={22} /></Dialog.Close>
         </div>
-        <Dialog.Description className="j-model-description">ドラッグで回転。ピンチやホイールで、もっと近くに。</Dialog.Description>
+        <Dialog.Description className="j-model-description">見たい場所をダブルタップ・ダブルクリックでアップ。ドラッグで回転、2本指や右ドラッグで移動。ピンチやホイールで拡大できます。</Dialog.Description>
         <ModelPicker initial={character} />
       </Dialog.Content>
     </Dialog.Portal>
@@ -95,7 +95,10 @@ function ModelView({ character }: { character: string }) {
       {status !== "ready" && <div className="j-model-status" role="status">
         {status === "loading" ? <><span className="j-model-spinner" />もうすぐ、会えます。<small>3Dモデルを読み込み中</small></> : <><span>3Dを表示できませんでした。</span><small>通信環境やブラウザの3D対応をご確認ください。</small><button onClick={() => { setStatus("loading"); setMotion(character === "sobaya" ? "CharacterSheet_MugStand" : "Idle"); setMug(true); setPaused(window.matchMedia("(prefers-reduced-motion: reduce)").matches); setAttempt((value) => value + 1); }}>もう一度読み込む</button></>}
       </div>}
-      <button className="j-model-reset" disabled={status !== "ready"} onClick={() => scene.current?.reset()}><RotateCcw size={15} />正面に戻す</button>
+      <div className="j-model-framing" aria-label="表示範囲">
+        <button disabled={status !== "ready"} onClick={() => scene.current?.face()}>顔アップ</button>
+        <button disabled={status !== "ready"} onClick={() => scene.current?.reset()}><RotateCcw size={15} />全身</button>
+      </div>
     </div>
     {character === "sobaya" && <div className="j-model-controls"><label><input type="checkbox" checked={mug} disabled={status !== "ready"} onChange={(event) => { setMug(event.target.checked); scene.current?.mug(event.target.checked); }} /> ジョッキを持つ</label></div>}
     {available.length > 0 && <div className="j-model-controls">
