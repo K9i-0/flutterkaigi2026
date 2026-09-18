@@ -64,16 +64,17 @@ box('Mug rack',(15,16,50),(5,6,.5),steel)
 bpy.ops.object.camera_add();cam=bpy.context.object;cam.name='CAM_DOCK_REVEAL';s.camera=cam;cam.data.clip_end=500
 bpy.ops.object.empty_add();aim=bpy.context.object;aim.name='Camera aim'
 track=cam.constraints.new('TRACK_TO');track.target=aim;track.track_axis='TRACK_NEGATIVE_Z';track.up_axis='UP_Y'
-# Brief close-up, accelerating crane reveal, overhead pause, fast human-scale approach.
+# Side close-up, crane reveal, then pass ABOVE the bridge to its outer side.
+# End facing back toward the giant, with bridge people in the foreground.
 shots=[
  (1,(15,5,56.5),(0,9,55.5),32),
  (25,(15,3,57),(0,9,55.5),32),
  (66,(13,-6,69),(0,5,51),28),
  (96,(7,-3,77),(0,0,49),24),
  (112,(5,-3,76),(0,-1,49),24),
- (150,(1,-6,60),(-.5,-13,50),30),
- (176,(-.5,-8.3,50.8),(-.5,-13,50.1),35),
- (192,(-.5,-8.7,50.6),(-.5,-13,50.1),35),
+ (150,(2,-21,63),(0,-6,52),28),
+ (176,(-.5,-18.8,51.5),(-.5,4,52.2),30),
+ (192,(-.5,-18,51.1),(-.5,4,51.8),30),
 ]
 for fr,pos,target,lens in shots:
  cam.location=pos;cam.keyframe_insert(data_path='location',frame=fr)
