@@ -1,0 +1,43 @@
+{
+  "status": "SUCCEEDED",
+  "submitted_at": "2026-09-18T20:04:13.131986+00:00",
+  "config": "wan3_config_dock_camera_v3.json",
+  "model": "wan3.0-video",
+  "seed": 700030,
+  "submission_count": 1,
+  "user_authorization": "生成して; prior explicit media upload approval persists",
+  "estimated_cost_usd": 0.28,
+  "price_source": "https://www.qwencloud.com/models/wan3.0-video",
+  "input_sha256": {
+    "character_yametaro_basic_sheet.png": "1e98502e8051bbacf482f273e551a7dd8b8fb79e2c153865d9e48df690eb91e6",
+    "character_yotan_basic_sheet.png": "a5fcff5308da91a9690426b6a4028a0fdf537cf362b6fb1438fdf14c51878e5a",
+    "character_fukuchan_basic_sheet.png": "a3e1f8f9feff43bf501617818f6e8652c2b6b39d72f7982716cbc550cb3b5866",
+    "character_sobaya_basic_sheet.png": "6de96b8fe2ebf1ce88c2f966d77a1abd7f0c2632322dfe4c527135de67494def",
+    "previs_dock/dock_camera_dynamic_v2_8s.mp4": "747ad68b1111dd579922db6c9578004facd42ab11071eaa393b0ece893becc19"
+  },
+  "task_id": "e4c4c220-c57c-4d18-b6e0-0cb90eb161d5",
+  "completed_at": "2026-09-18T20:12:40.568259+00:00",
+  "output": "wan3_result_dock_camera_v3_seed700030_480p.mp4",
+  "sha256": "c01db6216d62b97b67fc997fd1d77b0fc28524657961a3883e593667267e97e8",
+  "audit": {
+    "method": "2fps full-duration contact sheet, comparison ffprobe and decode",
+    "camera": "Opening incorrectly focuses on Yotan instead of giant Sobaya; rising overview and finale with Sobaya behind bridge pair remain.",
+    "identity_layout": "Duplicate Yotan visible at bridge and elevated platform; guitar contamination on elevated figure. Fukuchan exact likeness not certified.",
+    "immersion": "Upper chest still exposed, shoulder-high requirement failed.",
+    "conclusion": "Simplification did not produce an overall improvement; opening identity/location assignment regressed. Prompt and image count changed together, so causality is not isolated.",
+    "audio": "Track present, not listening-certified.",
+    "adoption_status": "not_recommended"
+  },
+  "comparison": {
+    "output": "dock_camera_comparison_v3_side_by_side.mp4",
+    "left": "previs_dock/dock_camera_dynamic_v2_8s.mp4",
+    "right": "wan3_result_dock_camera_v3_seed700030_480p.mp4",
+    "duration": 8,
+    "fps": 30,
+    "width": 1708,
+    "height": 480,
+    "audio": "right only",
+    "rebuild": "build_dock_comparison_v3.py",
+    "decode": "passed"
+  }
+}
