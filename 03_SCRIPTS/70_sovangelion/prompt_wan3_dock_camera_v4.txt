@@ -13,7 +13,9 @@ Exactly three characters: one giant Sobaya and the bridge pair Yametaro and Fuku
 The giant stands submerged in opaque amber BEER up to the shoulder tops at the base of the neck. Only the head, neck and a narrow strip of wet white fabric at the shoulder tops emerge. Foam traces this high, constant liquid level; the chest and arms are hidden below it, not visible through the beer. The amber plane in Video 1 is liquid, not a floor.
 Steel shaft ribs, shoulder clamps, cold industrial light and red-black hazard bands evoke the Evangelion cage. Keep the mug on its separate rack, clear of the bridge.
 
-Shot 1 [0-8 s] — Follow Video 1 as one continuous take: side close-up of giant Sobaya’s masked head, rising orbit to overhead, then travel above the bridge to its outer side and descend. Finish with Yametaro and Fukuchan in the foreground and giant Sobaya behind them. Use the reference's acceleration and pauses. Facial identity and the stated liquid level take priority over proxy shapes; otherwise retain the reference composition. Do not redesign the camera path to compensate for character proportions.
+Shot 1 [0-5 s] — Match Video 1: hold the side close-up of giant Sobaya's masked head for 1.2 seconds, then accelerate into the rising orbit and ease to a complete stop at the overhead view by 3.5 seconds. Hold that overhead composition absolutely still until 5 seconds, revealing the shoulder-high beer and tiny bridge pair. No camera drift during the holds.
+Shot 2 [5-8 s] — At exactly 5 seconds, HARD CUT to Video 1's fixed close view of Yametaro and Fukuchan, giant Sobaya directly behind them. Hold the camera still for all three seconds; only subtle character breathing. No fly-through, zoom or dissolve between the views.
+Facial identity and the stated liquid level take priority over proxy shapes; otherwise retain the reference composition and edit timing.
 
 AUDIO AND OUTPUT
-Low machinery ambience, subtle bubbling and a distant warning alarm only. No speech, narration, vocalizations or music. No cuts, titles, captions, split screens, blackouts or visible placeholder geometry.
+Low machinery ambience, subtle bubbling and a distant warning alarm only. No speech, narration, vocalizations or music. Exactly one hard cut at 5 seconds. No titles, captions, split screens, blackouts or visible placeholder geometry.

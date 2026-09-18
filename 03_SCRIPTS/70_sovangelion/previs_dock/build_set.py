@@ -46,21 +46,16 @@ for name,x,y in [('Yametaro position',-2,Y),('Fukuchan position',1,Y+.3)]:
 # One visibly separate peripheral prop cylinder, no staged character image.
 cyl('Mug placeholder rack',(15,16,53),1.8,5,rail)
 box('Mug rack',(15,16,50),(5,6,.5),steel)
-# Eight-second continuous crane/orbit/dive. Target animation avoids Euler flips.
-bpy.ops.object.camera_add();cam=bpy.context.object;cam.name='CAM_DOCK_REVEAL';s.camera=cam;cam.data.clip_end=500
+# 8s edit: hold / crane / overhead hold / hard cut / final hold.
+bpy.ops.object.camera_add();cam=bpy.context.object;cam.name='CAM_SIDE_TO_OVERHEAD';s.camera=cam;cam.data.clip_end=500
 bpy.ops.object.empty_add();aim=bpy.context.object;aim.name='Camera aim'
 track=cam.constraints.new('TRACK_TO');track.target=aim;track.track_axis='TRACK_NEGATIVE_Z';track.up_axis='UP_Y'
-# Side close-up, crane reveal, then pass ABOVE the bridge to its outer side.
-# End facing back toward the giant, with bridge people in the foreground.
+# Frame 1-29 static; 29-85 crane; 85-120 static overhead.
 shots=[
  (1,(15,5,56.5),(0,9,55.5),32),
- (25,(15,3,57),(0,9,55.5),32),
- (66,(13,-6,69),(0,5,51),28),
- (96,(7,-3,77),(0,0,49),24),
- (112,(5,-3,76),(0,-1,49),24),
- (150,(2,-7,63),(0,3,52),28),
- (176,(-.5,-4.8,51.5),(-.5,9,51.9),30),
- (192,(-.5,-4,51.1),(-.5,9,51.5),30),
+ (29,(15,5,56.5),(0,9,55.5),32),
+ (85,(7,-3,77),(0,0,49),24),
+ (120,(7,-3,77),(0,0,49),24),
 ]
 for fr,pos,target,lens in shots:
  cam.location=pos;cam.keyframe_insert(data_path='location',frame=fr)
@@ -74,6 +69,14 @@ for block in [cam,aim,cam.data]:
     for curve in bag.fcurves:
      for key in curve.keyframe_points:
       key.interpolation='BEZIER';key.handle_left_type='AUTO_CLAMPED';key.handle_right_type='AUTO_CLAMPED'
+# Real camera cut at t=5.0s, not a fast interpolated flight.
+bpy.ops.object.camera_add(location=(-.5,-4,51.1));close=bpy.context.object
+close.name='CAM_BRIDGE_STATIC';close.data.lens=30;close.data.clip_end=500
+close.rotation_euler=(Vector((-.5,9,51.5))-close.location).to_track_quat('-Z','Y').to_euler()
+s.timeline_markers.clear()
+s.timeline_markers.new('Side then overhead',frame=1).camera=cam
+s.timeline_markers.new('CUT to bridge closeup',frame=121).camera=close
+s.camera=cam
 s.frame_start=1;s.frame_end=192;s.render.fps=24;s.render.resolution_x=1280;s.render.resolution_y=720;s.render.resolution_percentage=100
 s.render.engine='BLENDER_WORKBENCH';s.display.shading.light='STUDIO';s.display.shading.studiolight_rotate_z=.4;s.display.shading.color_type='MATERIAL';s.display.shading.show_shadows=True;s.display.shading.show_cavity=True;s.display.shading.cavity_type='BOTH';s.display.shading.show_specular_highlight=True;s.display.shading.background_type='WORLD';s.world.color=(.06,.07,.09)
 s.render.image_settings.file_format='PNG';s.view_settings.view_transform='Standard'
