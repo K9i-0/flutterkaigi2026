@@ -1,0 +1,33 @@
+{
+  "status": "geometry quote only; thin features, strength and color data not approved",
+  "models": [
+    {
+      "file": "takosan_30mm_keychain_quote.stl",
+      "body_height_mm": 30,
+      "dimensions_mm": [
+        25.503516389136852,
+        20.703437519212457,
+        35.103849921142924
+      ],
+      "volume_cm3": 3.093870107986909,
+      "watertight": true,
+      "components": 1,
+      "sha256": "1a8a9da67fd4ee2c8e7e98ba66fd4f2161b9cd19fa571e0274b3dfc8b0a3a24c",
+      "file_bytes": 30149284
+    },
+    {
+      "file": "sobaya_40mm_keychain_quote.stl",
+      "body_height_mm": 40,
+      "dimensions_mm": [
+        19.703771928645217,
+        13.104013478648339,
+        45.10309106595555
+      ],
+      "volume_cm3": 2.3486953099281602,
+      "watertight": true,
+      "components": 1,
+      "sha256": "d01bce6919c095395fead3d001fa3dbd4bb4f4d738c5ccc3ffe47bdad0fec4c3",
+      "file_bytes": 25339084
+    }
+  ]
+}
