@@ -62,3 +62,6 @@ postproduction=remotion（未着手、生成素材確定後）。入力予定: `
 
 ## v2 演技改訂
 改善版は`prompt_wan3_v2.txt`、設定は`wan3_config_v2.json`、出力は`wan3_result_v2_seed700030_480p.mp4`。変更・結果・未確認点は`revision_v2.md`と`generation_record_v2.json`。v1は比較用に保持。
+
+## 次版 v3（未生成）
+現在の準備版は20秒・ドック全景入力なし。`revision_v3.md`、`prompt_wan3_v3.txt`、`wan3_config_v3.json`を参照。過去の30秒台本はv1/v2の履歴。正典声質を維持し、本家の演技音声参照は未入手。

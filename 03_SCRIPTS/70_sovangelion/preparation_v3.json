@@ -1,0 +1,33 @@
+{
+  "status": "prepared_not_submitted",
+  "paid_api_submitted": false,
+  "duration": 20,
+  "images": 5,
+  "audio_reference_seconds": 14.990000000000002,
+  "audio_changes": [
+    {
+      "path": "voice_ref_yametaro_v3.wav",
+      "source": "02_CHARACTERS/Yametaro_voice.wav",
+      "source_start": 0,
+      "source_end": 4.8,
+      "sha256": "911cafa556922b8d5487442a2816443634e1b7fada2d5e332258baf11dcd548e",
+      "source_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "boundary": "detected pause 4.751383–4.871542s at -25dB, 0.08s; meaning boundary still needs listening confirmation"
+    },
+    {
+      "path": "voice_ref_fukuchan_v3.wav",
+      "source": "02_CHARACTERS/Fukuchan_voice.wav",
+      "source_start": 0,
+      "source_end": 5.19,
+      "sha256": "6caf760f25cd5e747aead9ecb77c1afe0fcb80b199f1973c9af0bd17b0fcd3b2",
+      "source_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "boundary": "detected pause 5.149184–5.243832s at -25dB, 0.08s; meaning boundary still needs listening confirmation"
+    }
+  ],
+  "performance_reference": "not provided",
+  "open_checks": [
+    "Reference-clip meaning boundaries and Fukuchan timbre require listening",
+    "No original performance audio supplied; precise original rhythm remains unverified"
+  ],
+  "dry_run": "passed"
+}
