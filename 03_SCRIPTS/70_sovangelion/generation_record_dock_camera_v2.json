@@ -1,0 +1,60 @@
+{
+  "status": "SUCCEEDED",
+  "recorded_at": "2026-09-18T14:20:28.166039+00:00",
+  "config": "wan3_config_dock_camera_v2.json",
+  "model": "wan3.0-video",
+  "seed": 700030,
+  "user_authorization": "新しい動画を生成して 今回も左右に繋げた版も欲しい; prior explicit approval for character media upload to Wan/Qwen Cloud persists",
+  "estimated_cost_usd": 0.28,
+  "price_source": "https://www.qwencloud.com/models/wan3.0-video",
+  "submission_count": 1,
+  "changes": [
+    "v2 camera ends outside bridge with Sobaya background",
+    "Fukuchan face crop and identity instructions",
+    "neutral facial expression",
+    "opaque shoulder-high beer and peripheral mug emphasis"
+  ],
+  "face_crop": {
+    "source": "character_fukuchan_basic_sheet.png",
+    "x": 970,
+    "y": 15,
+    "width": 565,
+    "height": 480,
+    "method": "ffmpeg crop, no synthesis or retouch"
+  },
+  "input_sha256": {
+    "character_yametaro_basic_sheet.png": "1e98502e8051bbacf482f273e551a7dd8b8fb79e2c153865d9e48df690eb91e6",
+    "character_yotan_basic_sheet.png": "a5fcff5308da91a9690426b6a4028a0fdf537cf362b6fb1438fdf14c51878e5a",
+    "character_fukuchan_basic_sheet.png": "a3e1f8f9feff43bf501617818f6e8652c2b6b39d72f7982716cbc550cb3b5866",
+    "character_sobaya_basic_sheet.png": "6de96b8fe2ebf1ce88c2f966d77a1abd7f0c2632322dfe4c527135de67494def",
+    "character_fukuchan_face_detail.png": "6c75ff64ee0bcae0c2717777e6fd99a36e0ba2649b838ff757023801088ebe4b",
+    "previs_dock/dock_camera_dynamic_v2_8s.mp4": "747ad68b1111dd579922db6c9578004facd42ab11071eaa393b0ece893becc19"
+  },
+  "approval_review": "User explicitly approved added face crop upload with ok.",
+  "submitted_at": "2026-09-18T14:23:14.128723+00:00",
+  "task_id": "5837d28f-f186-4d52-a4e2-958ff97ee3f3",
+  "completed_at": "2026-09-18T14:34:38.166813+00:00",
+  "output": "wan3_result_dock_camera_v2_seed700030_480p.mp4",
+  "sha256": "7eb452c2758a61f9867213e89e6c5189bf737b710796a4d2ca8da8bf3608dd16",
+  "audit": {
+    "method": "2 fps full duration frame sampling, comparison decode and ffprobe",
+    "camera": "Side closeup to overhead to outer bridge approach achieved. Sobaya is behind the pair at the end.",
+    "identity": "Fukuchan remains visibly different from the sheet, with a more lined, older-looking face despite added crop; likeness not passed. Yametaro recognizable but head/hair proportion drift remains. Sobaya mask retained in samples.",
+    "immersion": "Shoulder-high requirement not achieved: upper chest exposed and submerged torso visible through beer.",
+    "layout": "Bridge pair, separate elevated Yotan and peripheral mug retained in sampled frames.",
+    "audio": "Track present; not listening-certified.",
+    "adoption_status": "review_required"
+  },
+  "comparison": {
+    "output": "dock_camera_comparison_v2_side_by_side.mp4",
+    "left": "previs_dock/dock_camera_dynamic_v2_8s.mp4",
+    "right": "wan3_result_dock_camera_v2_seed700030_480p.mp4",
+    "width": 1708,
+    "height": 480,
+    "fps": 30,
+    "duration": 8,
+    "audio": "generated side only",
+    "rebuild": "build_dock_comparison_v2.py",
+    "decode": "passed"
+  }
+}
