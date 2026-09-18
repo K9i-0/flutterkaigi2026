@@ -1,0 +1,42 @@
+{
+  "status": "SUCCEEDED",
+  "submitted_at": "2026-09-18T20:35:43.704629+00:00",
+  "config": "wan3_config_dock_camera_v4.json",
+  "model": "wan3.0-video",
+  "seed": 700030,
+  "submission_count": 1,
+  "user_authorization": "これで生成して; media upload approval persists",
+  "estimated_cost_usd": 0.28,
+  "price_source": "https://www.qwencloud.com/models/wan3.0-video",
+  "input_sha256": {
+    "character_yametaro_basic_sheet.png": "1e98502e8051bbacf482f273e551a7dd8b8fb79e2c153865d9e48df690eb91e6",
+    "character_fukuchan_basic_sheet.png": "a3e1f8f9feff43bf501617818f6e8652c2b6b39d72f7982716cbc550cb3b5866",
+    "character_sobaya_basic_sheet.png": "6de96b8fe2ebf1ce88c2f966d77a1abd7f0c2632322dfe4c527135de67494def",
+    "previs_dock/dock_camera_hold_cut_8s.mp4": "1cc10c6030b11b2368d8d889bff047287a5019f77db571f0722f8d30b6e2600a"
+  },
+  "task_id": "28d1a706-2239-4886-88a4-27b2a747eae3",
+  "completed_at": "2026-09-18T20:40:33.268307+00:00",
+  "output": "wan3_result_dock_camera_v4_seed700030_480p.mp4",
+  "sha256": "900226cae981d6390b42c936c849f8ad84d2586e9081196d674d694585991f21",
+  "audit": {
+    "method": "2fps full-duration contact sheet; comparison ffprobe and full decode",
+    "camera": "Opening Sobaya restored; overhead pause then hard cut visible near 5s; final mostly fixed foreground pair with looming Sobaya background. Exact subframe timing and zero drift not certified.",
+    "layout": "Only three intended characters in sampled frames. Orange proxy cylinders remain as hazard-striped bollard-like objects; exact bridge pair spacing differs.",
+    "identity": "Sobaya mask retained. Fukuchan still differs from canonical face; not identity-approved.",
+    "immersion": "Upper chest/shoulder fabric remains prominently exposed, full shoulder immersion not achieved.",
+    "audio": "Track present; not listening-certified.",
+    "adoption_status": "review_required"
+  },
+  "comparison": {
+    "output": "dock_camera_comparison_v4_side_by_side.mp4",
+    "left": "previs_dock/dock_camera_hold_cut_8s.mp4",
+    "right": "wan3_result_dock_camera_v4_seed700030_480p.mp4",
+    "width": 1708,
+    "height": 480,
+    "fps": 30,
+    "duration": 8,
+    "audio": "right only",
+    "rebuild": "build_dock_comparison_v4.py",
+    "decode": "passed"
+  }
+}
