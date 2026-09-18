@@ -9,7 +9,7 @@
 - Irodori-TTS revision: `8224dafb46d0aba89209a8f905f1cb7e3299d9c1`
 - 正典参照WAV: `02_CHARACTERS/Yametaro_voice.wav`
 - 正典参照WAV SHA-256: `ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b`
-- 生成スクリプト: `.agents/skills/seedance/scripts/irodori_speak.sh`
+- 生成スクリプト: `tools/irodori_speak.sh`
 - 推論設定: 40 steps、text CFG `3.0`、caption CFG `3.0`、speaker CFG `5.0`
 - 尺: v4.1-Smallの自動推定。`--seconds`と`--duration-scale`は不使用
 - 出力: 48 kHz、mono、PCM 16-bit WAV

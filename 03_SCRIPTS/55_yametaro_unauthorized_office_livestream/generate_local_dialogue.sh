@@ -3,8 +3,8 @@ set -eu
 
 SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 PROJECT_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel)"
-IRODORI="$PROJECT_ROOT/.claude/skills/seedance/scripts/irodori_speak.sh"
-MONSTERIZE="$PROJECT_ROOT/.claude/skills/seedance/scripts/sobaya_monsterize.sh"
+IRODORI="$PROJECT_ROOT/tools/irodori_speak.sh"
+MONSTERIZE="$PROJECT_ROOT/tools/sobaya_monsterize.sh"
 OUT_DIR="$SCRIPT_DIR/audio"
 TASK_TMP="$(mktemp -d /private/tmp/ep55_dialogue.XXXXXX)"
 

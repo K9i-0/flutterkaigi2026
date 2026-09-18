@@ -1,5 +1,5 @@
 version: 9
-purpose: Seedance制作で再利用する正本テンプレート
+purpose: 共通素材と過去のSeedance制作テンプレート。新規動画制作の設定は .claude/skills/wan-video/SKILL.md を正本とし、以下のSeedance固有設定は過去作の参照用とする
 
 policy:
   super_try_product: 窓際スーパーつらいの次回以降の標準缶は 03_SCRIPTS/00_TEMPLATES/props/product_super_try.png（2026-09-10採用A案修正版。上部の旧「辛口」位置に黒い「労働」を表示。「350ml」は削除し、「生」は小さめの丸ゴシック）。エピソード63〜66の旧缶を新作へ流用しない。必要なエピソードへ実ファイルとしてコピーし、過去の入力スナップショットは保持する
@@ -13,7 +13,6 @@ policy:
   override: 同一人物に基本形とエピソード限定形がある場合、該当秒区間ではエピソード限定形を優先する
   immutability: 過去エピソード内のコピー画像をテンプレートとして直接更新しない
   default_generation: モデル、解像度、尺の明示指定がなければSeedance 2.0・480p・15秒を選ぶ。Seedance 2.5、別解像度、別尺、Long Video、編集、延長、始終端、複数キーフレームはユーザーが明示指定した場合だけ使う。15秒を超える内容は既定の15秒クリップへ分割する
-  official_seedance_2_5: ユーザーがSeedance 2.5を明示指定した場合だけ、.claude/skills/seedance/references/official_seedance_2_5_guide.md の素材上限、専用記法、Long Video、編集、延長、キーフレーム規則に従う
   action_description: 格闘、追跡、破壊、複雑なカメラはscript.mdのシーン地理と秒区間ごとの詳細テキストを正本にする。始終端・複数キーフレーム等はユーザーが明示指定した場合だけ使う
   pacing_overlap: 会話、コメディ、登場、受け渡し、交換などはペースモードを選び、音声・主動作・副動作・カメラの4レーンへ分ける。完全直列にするのはハード依存だけとし、ソフト依存と並行可能イベントを同じ時間窓へ重ねる
   voice_consistency: 02_CHARACTERS/VOICE_CAST.mdの正典話者は、固定モデル・参照WAV・既定seedからIrodori-TTSボイスサンプルを生成し、@AudioとしてSeedanceへ添付する。生成クリップの埋め込み音声を最終音声の正本にし、サンプルWAVをタイムラインへ重ねない
@@ -122,7 +121,6 @@ action_prompt:
 pacing_prompt:
   design_source_of_truth: prompt/seedance_script_template.md
   paste_ready_source_of_truth: prompt/seedance_prompt_template.txt
-  workflow: .claude/skills/seedance/references/pacing_overlap_workflow.md
   required_for: 会話、コメディ、リアクション、登場、受け渡し、交換、組み立て、調理、および間延び・待ち・テンポに関するFB対応
   lanes: 音声、主動作、副動作、カメラ
   dependencies: ハード依存、ソフト依存、並行可能、演出上の待ち

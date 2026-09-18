@@ -16,9 +16,9 @@ for i,(text,caption) in enumerate([
  raw=RAW/f'{ident}.wav'
  if not raw.exists():
   with (RAW/f'{ident}.log').open('w') as log:
-   subprocess.run([str(ROOT/'.claude/skills/seedance/scripts/irodori_speak.sh'),text,str(raw),str(ref),'42',caption],cwd=ROOT,env={**os.environ,'HF_HUB_OFFLINE':'1'},stdout=log,stderr=subprocess.STDOUT,check=True)
+   subprocess.run([str(ROOT/'tools/irodori_speak.sh'),text,str(raw),str(ref),'42',caption],cwd=ROOT,env={**os.environ,'HF_HUB_OFFLINE':'1'},stdout=log,stderr=subprocess.STDOUT,check=True)
  monster=RAW/f'{ident}-monster.wav'
- subprocess.run([str(ROOT/'.claude/skills/seedance/scripts/sobaya_monsterize.sh'),str(raw),str(monster)],check=True)
+ subprocess.run([str(ROOT/'tools/sobaya_monsterize.sh'),str(raw),str(monster)],check=True)
  dest=OUT/f'enemy_{i}.wav'
  # Retain the voice identity and canonical monster processing. Short room tail.
  subprocess.run(['ffmpeg','-y','-v','error','-i',str(monster),'-af','highpass=f=65,lowpass=f=6500,aecho=0.85:0.8:43|89:0.12|0.06,loudnorm=I=-20:TP=-3:LRA=9','-ar','24000','-ac','1','-c:a','pcm_s16le',str(dest)],check=True)

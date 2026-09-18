@@ -47,7 +47,7 @@ The four quoted Japanese lines below are the only spoken content. Kana readings,
 
 ## Dialogue Timing Audit
 
-All assigned dialogue beats include at least 0.4 seconds before speech and 0.4 seconds after speech with stable framing and a still mouth. Values were validated with `.claude/skills/seedance/scripts/check_dialogue_timing.py`.
+All assigned dialogue beats include at least 0.4 seconds before speech and 0.4 seconds after speech with stable framing and a still mouth. Values were validated with `tools/check_dialogue_timing.py`.
 
 | Speaker | Exact line | Mora | Delivery rate | Minimum speech | Assigned speech interval | Required beat | Assigned beat |
 |---|---|---:|---:|---:|---:|---:|---:|

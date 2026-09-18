@@ -20,7 +20,7 @@ Hugging Faceからキャッシュへ取得される。
 ## セリフ生成
 
 ```bash
-.claude/skills/seedance/scripts/irodori_speak.sh \
+tools/irodori_speak.sh \
   'やったー、だいちくわだね！' \
   output.wav \
   02_CHARACTERS/Fukuchan_voice.wav \

@@ -159,7 +159,7 @@ Seedanceへ、次の順番どおりに6枚をアップロードする。画像�
 検証コマンド：
 
 ```bash
-python3 .claude/skills/seedance/scripts/check_dialogue_timing.py \
+python3 tools/check_dialogue_timing.py \
   --text 'ビールー' \
   --reading 'びーるー' \
   --style shout \

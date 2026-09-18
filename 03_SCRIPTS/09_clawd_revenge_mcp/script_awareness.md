@@ -55,7 +55,7 @@ The six quoted Japanese lines below are the only spoken content. Kana, Hepburn, 
 | Claude Code | `"報復MCPを利用します"` | 17 | 3.5 mora/s | 4.9s | 17.1–22.0s | 5.7s | 16.7–22.4s |
 | Yametaro | `"報復？なんのことや。気のせいやろ"` | 16 | 4.5 mora/s | 4.5s | 22.8–27.3s | 5.3s | 22.4–27.7s |
 
-All six lines were validated with `.claude/skills/seedance/scripts/check_dialogue_timing.py`. Every beat includes at least 0.4 seconds before and after speech.
+All six lines were validated with `tools/check_dialogue_timing.py`. Every beat includes at least 0.4 seconds before and after speech.
 
 ## Seedance Motion Prompt
 

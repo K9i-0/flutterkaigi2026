@@ -107,7 +107,7 @@ Seedanceへ実際にアップロードする順番を固定する。画像番号
 
 ## セリフ尺の監査
 
-`.claude/skills/seedance/scripts/check_dialogue_timing.py`で、かな読みと通常話速を検証済み。
+`tools/check_dialogue_timing.py`で、かな読みと通常話速を検証済み。
 
 | 話者 | 種別 | 正確なセリフ | モーラ | 最低発話尺 | 指定発話区間 | 必要な演技尺 | 指定演技区間 | リスク |
 |---|---|---|---:|---:|---|---:|---|---|

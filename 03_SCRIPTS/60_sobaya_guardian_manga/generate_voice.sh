@@ -7,8 +7,8 @@ AUDIO_DIR="$SCRIPT_DIR/audio"
 REF="$ROOT_DIR/02_CHARACTERS/Sobaya_voice.wav"
 SEED="42"
 CAPTION="低く重厚な声。静かに確固たる覚悟を込めて話す。"
-SPEAK_SH="$ROOT_DIR/.claude/skills/seedance/scripts/irodori_speak.sh"
-MONSTER_SH="$ROOT_DIR/.claude/skills/seedance/scripts/sobaya_monsterize.sh"
+SPEAK_SH="$ROOT_DIR/tools/irodori_speak.sh"
+MONSTER_SH="$ROOT_DIR/tools/sobaya_monsterize.sh"
 
 # Baki style: speak the RUBY readings!
 LINES=(

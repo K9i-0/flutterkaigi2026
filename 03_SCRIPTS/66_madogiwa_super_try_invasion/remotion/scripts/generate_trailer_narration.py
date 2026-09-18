@@ -5,8 +5,8 @@ lines=['窓際族物語、最大の謎が、ついに明かされる。','その
 rows=[]
 for i,t in enumerate(lines,1):
  raw=tmp/f'trailer_narration_{i}_raw.wav';out=p/f'trailer_narration_sobaya_{i}.wav'
- subprocess.run(['bash',str(r/'.claude/skills/seedance/scripts/irodori_speak.sh'),t,str(raw),str(r/'02_CHARACTERS/Sobaya_voice.wav'),'42',cap],check=True)
- subprocess.run(['bash',str(r/'.claude/skills/seedance/scripts/sobaya_monsterize.sh'),str(raw),str(out)],check=True)
+ subprocess.run(['bash',str(r/'tools/irodori_speak.sh'),t,str(raw),str(r/'02_CHARACTERS/Sobaya_voice.wav'),'42',cap],check=True)
+ subprocess.run(['bash',str(r/'tools/sobaya_monsterize.sh'),str(raw),str(out)],check=True)
  duration=float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','default=nw=1:nk=1',str(out)]))
  rows.append(dict(text=t,file=out.name,duration=duration,seed=42,caption=cap))
  (p/'trailer_voice_manifest.json').write_text(json.dumps({'model':'Aratako/Irodori-TTS-v4.1-Small','reference':'02_CHARACTERS/Sobaya_voice.wav','postprocess':'sobaya_monsterize.sh','lines':rows},ensure_ascii=False,indent=2))
