@@ -60,15 +60,38 @@ for obj in list(bpy.context.scene.objects):
 # One visibly separate peripheral prop cylinder, no staged character image.
 cyl('Mug placeholder rack',(15,16,53),1.8,5,rail)
 box('Mug rack',(15,16,50),(5,6,.5),steel)
-# Continuous reference camera. Slow lateral approach, never cuts to a different layout.
-bpy.ops.object.camera_add();cam=bpy.context.object;cam.name='CAM_DOCK_REVEAL';s.camera=cam;cam.data.lens=32;cam.data.clip_end=500
-for fr,pos,target in [(1,(7,-34,54),(0,8,51)),(120,(3,-29,52.8),(0,8,51.5))]:
- cam.location=pos;cam.rotation_euler=(Vector(target)-cam.location).to_track_quat('-Z','Y').to_euler();cam.keyframe_insert(data_path='location',frame=fr);cam.keyframe_insert(data_path='rotation_euler',frame=fr)
-s.frame_start=1;s.frame_end=120;s.render.fps=24;s.render.resolution_x=1280;s.render.resolution_y=720;s.render.resolution_percentage=100
+# Eight-second continuous crane/orbit/dive. Target animation avoids Euler flips.
+bpy.ops.object.camera_add();cam=bpy.context.object;cam.name='CAM_DOCK_REVEAL';s.camera=cam;cam.data.clip_end=500
+bpy.ops.object.empty_add();aim=bpy.context.object;aim.name='Camera aim'
+track=cam.constraints.new('TRACK_TO');track.target=aim;track.track_axis='TRACK_NEGATIVE_Z';track.up_axis='UP_Y'
+# Brief close-up, accelerating crane reveal, overhead pause, fast human-scale approach.
+shots=[
+ (1,(15,5,56.5),(0,9,55.5),32),
+ (25,(15,3,57),(0,9,55.5),32),
+ (66,(13,-6,69),(0,5,51),28),
+ (96,(7,-3,77),(0,0,49),24),
+ (112,(5,-3,76),(0,-1,49),24),
+ (150,(1,-6,60),(-.5,-13,50),30),
+ (176,(-.5,-8.3,50.8),(-.5,-13,50.1),35),
+ (192,(-.5,-8.7,50.6),(-.5,-13,50.1),35),
+]
+for fr,pos,target,lens in shots:
+ cam.location=pos;cam.keyframe_insert(data_path='location',frame=fr)
+ aim.location=target;aim.keyframe_insert(data_path='location',frame=fr)
+ cam.data.lens=lens;cam.data.keyframe_insert(data_path='lens',frame=fr)
+for block in [cam,aim,cam.data]:
+ action=block.animation_data.action
+ for layer in action.layers:
+  for strip in layer.strips:
+   for bag in strip.channelbags:
+    for curve in bag.fcurves:
+     for key in curve.keyframe_points:
+      key.interpolation='BEZIER';key.handle_left_type='AUTO_CLAMPED';key.handle_right_type='AUTO_CLAMPED'
+s.frame_start=1;s.frame_end=192;s.render.fps=24;s.render.resolution_x=1280;s.render.resolution_y=720;s.render.resolution_percentage=100
 s.render.engine='BLENDER_WORKBENCH';s.display.shading.light='STUDIO';s.display.shading.studiolight_rotate_z=.4;s.display.shading.color_type='MATERIAL';s.display.shading.show_shadows=True;s.display.shading.show_cavity=True;s.display.shading.cavity_type='BOTH';s.display.shading.show_specular_highlight=True;s.display.shading.background_type='WORLD';s.world.color=(.06,.07,.09)
 s.render.image_settings.file_format='PNG';s.view_settings.view_transform='Standard'
 s.frame_set(1);bpy.ops.wm.save_as_mainfile(filepath=str(OUT/'dock_scale_set.blend'))
 if '--animation' in sys.argv:
  (OUT/'frames').mkdir(exist_ok=True);s.render.filepath=str(OUT/'frames/frame_');bpy.ops.render.render(animation=True)
 else:
- for fr in [1,60,120]:s.frame_set(fr);s.render.filepath=str(OUT/f'preview_{fr:03d}.png');bpy.ops.render.render(write_still=True)
+ for fr in [1,96,192]:s.frame_set(fr);s.render.filepath=str(OUT/f'preview_{fr:03d}.png');bpy.ops.render.render(write_still=True)

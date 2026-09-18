@@ -1,19 +1,20 @@
 # ドック空間・液面・縮尺プリビズ
 
-編集可能セット: `dock_scale_set.blend`。5秒の参照映像: `dock_camera_5s.mp4`（1280×720、24fps、120フレーム、無音）。正本の再生成コード: `build_set.py`。完成人物を作らず、通常人物は顔・手足なしの円柱とした。巨大そば屋の位置も円柱の頭・首と簡略な肩の量塊で表す。
+編集可能セット: `dock_scale_set.blend`。8秒の参照映像: `dock_camera_dynamic_8s.mp4`（1280×720、24fps、192フレーム、無音）。旧5秒版は`dock_camera_5s.mp4`としてローカル保持。正本の再生成コード: `build_set.py`。完成人物を作らず、通常人物は顔・手足なしの円柱とした。巨大そば屋の位置も円柱の頭・首と簡略な肩の量塊で表す。
 
 ## 寸法（m）
 - 巨大側: 地面基準の全高60、頭上端60、肩上端49、液面48.5。肩の大部分が液面下で、上端のみ見える。
 - 通常人物: 高さ1.7、半径0.28。橋上の橙色2円柱がやめ太郎・福ちゃん。よーたんは左側の独立した司令台に配置し、橋から7m高い床面（56.2m）から見下ろす。人物位置は登場カット用の尺度目印。
 - 手すり1.1、橋幅3、橋床49.2。槽は約40×51。
-- 32mmカメラ。手すりと人円柱を前景に、巨大頭部へゆっくり前進しながら横移動。カットなし。
+- 32→24→35mmカメラ。カットなしの連続移動。0〜1秒はそば屋頭部の右横アップ、1〜4秒は後方へ回りながら約77mまで上昇、4〜4.6秒は俯瞰で減速、4.6〜7.3秒は橋の2人へ急接近、残りで静止へ収束。最後は人間側を向くリバース構図。
+- カメラ位置と注視点を別々にアニメーションし、回転の不連続を防止。曲線はAUTO_CLAMPED。人間の配置と液面は旧版と共通。
 
 ## 再生成
 ```sh
 blender -b -t 4 --python 03_SCRIPTS/70_sovangelion/previs_dock/build_set.py -- --animation
-ffmpeg -y -framerate 24 -i 03_SCRIPTS/70_sovangelion/previs_dock/frames/frame_%04d.png -c:v libx264 -crf 18 -pix_fmt yuv420p -movflags +faststart 03_SCRIPTS/70_sovangelion/previs_dock/dock_camera_5s.mp4
+ffmpeg -y -framerate 24 -i 03_SCRIPTS/70_sovangelion/previs_dock/frames/frame_%04d.png -c:v libx264 -crf 18 -pix_fmt yuv420p -movflags +faststart 03_SCRIPTS/70_sovangelion/previs_dock/dock_camera_dynamic_8s.mp4
 ```
-Blender 5.1.2、Workbenchレンダー。頭部・身体を実キャラクターへ似せず、建築と液面も簡易色面に限定。肩は角を落としたローポリ。液面は不透明・水平、簡易泡の帯のみ。開始・中間・終端を目視し、120フレーム/5秒をffprobe確認。
+Blender 5.1.2、Workbenchレンダー。頭部・身体を実キャラクターへ似せず、建築と液面も簡易色面に限定。肩は角を落としたローポリ。液面は不透明・水平、簡易泡の帯のみ。開始・中間・終端を目視し、192フレーム/8秒をffprobe確認。
 
 ## 生成モデルへ渡す際
 映像は空間配置、サイズ比、肩までの液面、カメラ移動のみを参照。人物同一性はキャラクターシートを優先する。橙色円柱は通常人物に置換し、円柱自体・橙色衣装・簡略頭部を完成画へ残さない。巨大側の灰色量塊もそば屋へ置換。ジョッキ位置の黄円柱はジョッキへ置換。背景の描写は完成映像として再構成する。
