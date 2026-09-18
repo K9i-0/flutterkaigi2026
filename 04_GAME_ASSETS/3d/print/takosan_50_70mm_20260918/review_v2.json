@@ -1,0 +1,18 @@
+[
+  {
+    "height_mm": 50,
+    "max_source_surface_distance_mm": 5.35646915435791,
+    "distance_note": "Includes buried faces behind hood; not an outer-surface error metric",
+    "max_outer_tentacle_distance_mm": 0.19702808558940887,
+    "outer_tentacle_samples": 2973,
+    "vertices_over_1mm": 1017
+  },
+  {
+    "height_mm": 70,
+    "max_source_surface_distance_mm": 7.5881781578063965,
+    "distance_note": "Includes buried faces behind hood; not an outer-surface error metric",
+    "max_outer_tentacle_distance_mm": 0.2028544694185257,
+    "outer_tentacle_samples": 3137,
+    "vertices_over_1mm": 1233
+  }
+]

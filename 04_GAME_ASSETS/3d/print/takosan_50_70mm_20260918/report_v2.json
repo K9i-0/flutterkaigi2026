@@ -1,0 +1,33 @@
+{
+  "status": "quote prototype; six-tentacle geometry repaired; vendor review pending",
+  "models": [
+    {
+      "file": "takosan_50mm_base45_v2.stl",
+      "height_mm": 50,
+      "dimensions_mm": [
+        45.05988023952096,
+        45.05988023952096,
+        50.0
+      ],
+      "volume_cm3": 16.581283596616867,
+      "watertight": true,
+      "components": 1,
+      "voxel_pitch_mm": 0.15,
+      "sha256": "892374cc6b2e3a7573344210a36324da43692267e59683ee99f0dd7b0d142450"
+    },
+    {
+      "file": "takosan_70mm_base60_v2.stl",
+      "height_mm": 70,
+      "dimensions_mm": [
+        59.978632478632484,
+        59.978632478632484,
+        70.0
+      ],
+      "volume_cm3": 42.12233546978956,
+      "watertight": true,
+      "components": 1,
+      "voxel_pitch_mm": 0.15,
+      "sha256": "e44dd1ae264890af13fc43e223e7861ff314131d76ffefda2711228f68dfdea8"
+    }
+  ]
+}
