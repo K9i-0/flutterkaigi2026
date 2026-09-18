@@ -1,0 +1,21 @@
+{
+  "model": "openai/whisper-small",
+  "note": "Automated screening without expected-text prompt. Not listening or lip-sync approval.",
+  "segments": [
+    {
+      "start": 24,
+      "duration": 2,
+      "recognized": "残業も"
+    },
+    {
+      "start": 26,
+      "duration": 2,
+      "recognized": "サービス!"
+    },
+    {
+      "start": 28,
+      "duration": 2,
+      "recognized": "ん"
+    }
+  ]
+}

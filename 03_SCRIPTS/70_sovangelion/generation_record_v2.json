@@ -1,0 +1,36 @@
+{
+  "task_id": "8ec2a1a3-6271-43bb-93a0-15a6ffcfa3e9",
+  "status": "SUCCEEDED",
+  "recorded_at": "2026-09-18T12:50:41.819544+00:00",
+  "config": "wan3_config_v2.json",
+  "model": "wan3.0-video",
+  "seed": 700030,
+  "resolution": "480P",
+  "duration": 30,
+  "output": "wan3_result_v2_seed700030_480p.mp4",
+  "estimated_cost_usd": 1.05,
+  "price_source": "https://www.qwencloud.com/models/wan3.0-video",
+  "user_authorization": "改善版のプロンプトを作りv2動画を生成しよう",
+  "submission_count": 1,
+  "completed_at": "2026-09-18T12:57:33.873566+00:00",
+  "sha256": "be17b22e156f75ab5bbee1ca763aab72fee25503069f2bde33d782114a8b334a",
+  "actual_video": {
+    "width": 854,
+    "height": 480,
+    "fps": 30,
+    "duration_seconds": 30,
+    "audio_duration_seconds": 30.022993
+  },
+  "audit": {
+    "decode": "passed",
+    "visual": "1fps frames reviewed; core/cross/dock retained; cheek and pointing gestures absent; boarding line filmed in wide shot rather than requested close shot; final reaction present",
+    "asr": "first four lines detected; no gyun detected; final line recognized as 残業もサービス, second service not confirmed in full and segmented ASR",
+    "limitations": [
+      "Naturalness and canonical voice fidelity not listening-certified",
+      "Possible omission of second サービス; not declared verbatim pass",
+      "Boarding line wide shot limits lip-sync assessment",
+      "Final reaction mouth slightly open in sampled frames despite closed-mouth request"
+    ],
+    "postproduction": "none; no automatic paid regeneration or voice replacement"
+  }
+}

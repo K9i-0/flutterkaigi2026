@@ -1,0 +1,36 @@
+{
+  "model": "openai/whisper-small",
+  "note": "Automated screening without expected-text prompt. Not listening or lip-sync approval.",
+  "segments": [
+    {
+      "start": 0,
+      "duration": 30,
+      "recognized": "やめたろうそばに乗れ出なければ帰れ定時なんで帰りますやめちゃんそばに乗りなさい帰れ言うたやん残業もサービス"
+    },
+    {
+      "start": 8,
+      "duration": 6,
+      "recognized": "やめたろうそばに乗れ出なければ帰れ"
+    },
+    {
+      "start": 14,
+      "duration": 3,
+      "recognized": "定時なんで帰ります"
+    },
+    {
+      "start": 17,
+      "duration": 4,
+      "recognized": "やめちゃんそばに乗りなさい"
+    },
+    {
+      "start": 21,
+      "duration": 3,
+      "recognized": "帰れ、ゆうたやん。"
+    },
+    {
+      "start": 24,
+      "duration": 6,
+      "recognized": "残業もサービス"
+    }
+  ]
+}
