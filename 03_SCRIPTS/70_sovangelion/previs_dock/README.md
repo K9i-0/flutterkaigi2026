@@ -1,6 +1,6 @@
 # ドック空間・液面・縮尺プリビズ
 
-編集可能セット: `dock_scale_set.blend`。現在の8秒の参照映像: `dock_camera_three_characters_8s.mp4`（1280×720、24fps、192フレーム、無音）。旧5秒版は`dock_camera_5s.mp4`としてローカル保持。正本の再生成コード: `build_set.py`。完成人物を作らず、通常人物は顔・手足なしの円柱とした。巨大そば屋の位置も円柱の頭・首と簡略な肩の量塊で表す。
+編集可能セット: `dock_scale_set.blend`。現在の8秒の参照映像: `dock_camera_close_bridge_8s.mp4`（1280×720、24fps、192フレーム、無音）。旧5秒版は`dock_camera_5s.mp4`としてローカル保持。正本の再生成コード: `build_set.py`。完成人物を作らず、通常人物は顔・手足なしの円柱とした。巨大そば屋の位置も円柱の頭・首と簡略な肩の量塊で表す。
 
 ## 寸法（m）
 - 巨大側: 地面基準の全高60、頭上端60、肩上端49、液面48.5。肩の大部分が液面下で、上端のみ見える。
@@ -12,7 +12,7 @@
 ## 再生成
 ```sh
 blender -b -t 4 --python 03_SCRIPTS/70_sovangelion/previs_dock/build_set.py -- --animation
-ffmpeg -y -framerate 24 -i 03_SCRIPTS/70_sovangelion/previs_dock/frames/frame_%04d.png -c:v libx264 -crf 18 -pix_fmt yuv420p -movflags +faststart 03_SCRIPTS/70_sovangelion/previs_dock/dock_camera_three_characters_8s.mp4
+ffmpeg -y -framerate 24 -i 03_SCRIPTS/70_sovangelion/previs_dock/frames/frame_%04d.png -c:v libx264 -crf 18 -pix_fmt yuv420p -movflags +faststart 03_SCRIPTS/70_sovangelion/previs_dock/dock_camera_close_bridge_8s.mp4
 ```
 Blender 5.1.2、Workbenchレンダー。頭部・身体を実キャラクターへ似せず、建築と液面も簡易色面に限定。肩は角を落としたローポリ。液面は不透明・水平、簡易泡の帯のみ。開始・中間・終端を目視し、192フレーム/8秒をffprobe確認。
 
@@ -27,3 +27,5 @@ Blender 5.1.2、Workbenchレンダー。頭部・身体を実キャラクター�
 カメラv2: ユーザー指定により最後の撮影位置を橋の外側へ変更。旧`dock_camera_dynamic_8s.mp4`はWan v1への実送信入力なので上書きせず保持。v2はBlender確認用で、Wan再生成は未実施。
 
 2026-09-19 入力3人版: カメラ軌道・液面・橋上2人は維持し、よーたん設備一式のみ削除。次回設定は`../wan3_config_dock_camera_v4.json`。Image 1=やめ太郎、Image 2=福ちゃん、Image 3=そば屋。旧映像と生成設定は履歴として保持。新設定は乾式検証のみで、Wanへ未送信。
+
+橋近接版: 橋中心をy=-13mからy=1mへ14m移動。橋内縁y=2.5mと肩の前端y=4.5mの隙間は16m→2m。人物中心と巨大頭部中心の水平距離は22m→8m。終盤のカメラも14m移動し、2人の画面内サイズをほぼ保ったまま背景の頭部を拡大。冒頭〜俯瞰のキーは維持。生成用v4設定を新動画へ更新、未送信。

@@ -35,7 +35,7 @@ for x in [-11,11]:
  box('Clamp support',(x,15,50),(4,10,2),dark)
  box('Clamp hazard panel',(x,4.95,50),(3.8,.12,.5),rail)
 # Foreground bridge normal-human dimensions, 1.1 m handrails and 1.7 m cylinders.
-Z=49.2;Y=-13
+Z=49.2;Y=1.0  # Inner bridge edge y=2.5, shoulder front y=4.5: 2m clearance.
 box('Bridge 3m width',(0,Y,Z-.25),(40,3,.5),steel)
 for y in [Y-1.4,Y+1.4]:
  for x in range(-19,20,2):box('Railing post 1.1m',(x,y,Z+.55),(.07,.07,1.1),rail)
@@ -58,9 +58,9 @@ shots=[
  (66,(13,-6,69),(0,5,51),28),
  (96,(7,-3,77),(0,0,49),24),
  (112,(5,-3,76),(0,-1,49),24),
- (150,(2,-21,63),(0,-6,52),28),
- (176,(-.5,-18.8,51.5),(-.5,4,52.2),30),
- (192,(-.5,-18,51.1),(-.5,4,51.8),30),
+ (150,(2,-7,63),(0,3,52),28),
+ (176,(-.5,-4.8,51.5),(-.5,9,51.9),30),
+ (192,(-.5,-4,51.1),(-.5,9,51.5),30),
 ]
 for fr,pos,target,lens in shots:
  cam.location=pos;cam.keyframe_insert(data_path='location',frame=fr)
