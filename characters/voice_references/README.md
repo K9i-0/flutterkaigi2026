@@ -51,14 +51,14 @@ YouTubeの対談動画（ゆめみ×いえらぶ コラボ動画）から、福�
 
 ```bash
 # 福ちゃん
-.agents/skills/seedance/scripts/irodori_speak.sh \
+tools/irodori_speak.sh \
   "みなさんこんにちは！福ちゃんです。今日も張り切っていきましょう！" \
   output_fukuchan.wav \
   02_CHARACTERS/voice_references/Fukuchan_ref_intro.wav \
   100
 
 # 無職やめ太郎
-.agents/skills/seedance/scripts/irodori_speak.sh \
+tools/irodori_speak.sh \
   "どうも、無職やめ太郎です。今日はちょっと新しいコードを書いてみようと思います。" \
   output_yametaro.wav \
   02_CHARACTERS/voice_references/Yametaro_ref_intro_mid.wav \

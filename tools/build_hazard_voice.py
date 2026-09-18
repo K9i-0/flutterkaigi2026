@@ -61,12 +61,12 @@ for index,row in enumerate(rows):
  if not raw.exists() or not meta.exists() or json.loads(meta.read_text())!=request:
   print(f'GENERATE {index+1}/{len(rows)} {row["speaker"]} {ident}',flush=True)
   with log.open('w') as output:
-   subprocess.run([str(ROOT/'.claude/skills/seedance/scripts/irodori_speak.sh'),speech,str(raw),str(ref),str(seed),request['caption']],cwd=ROOT,env={**os.environ,'HF_HUB_OFFLINE':'1'},stdout=output,stderr=subprocess.STDOUT,check=True)
+   subprocess.run([str(ROOT/'tools/irodori_speak.sh'),speech,str(raw),str(ref),str(seed),request['caption']],cwd=ROOT,env={**os.environ,'HF_HUB_OFFLINE':'1'},stdout=output,stderr=subprocess.STDOUT,check=True)
   meta.write_text(json.dumps(request,ensure_ascii=False,indent=2)+'\n')
  source=raw
  if row['speaker']=='そば屋':
   source=RAW/f'{ident}_monster.wav'
-  subprocess.run([str(ROOT/'.claude/skills/seedance/scripts/sobaya_monsterize.sh'),str(raw),str(source)],check=True)
+  subprocess.run([str(ROOT/'tools/sobaya_monsterize.sh'),str(raw),str(source)],check=True)
  dest=OUT/'voice'/f'{ident}.wav';dest.parent.mkdir(parents=True,exist_ok=True)
  subprocess.run(['ffmpeg','-y','-v','error','-i',str(source),'-af','loudnorm=I=-18:TP=-2:LRA=7','-ar','24000','-ac','1','-c:a','pcm_s16le',str(dest)],check=True)
  with wave.open(str(dest)) as f:seconds=f.getnframes()/f.getframerate()

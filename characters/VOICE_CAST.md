@@ -8,7 +8,7 @@
 - エンジン：Irodori-TTSのゼロショットボイスクローン
 - 固定モデル：`Aratako/Irodori-TTS-v4.1-Small`
 - 動作確認済みIrodori-TTS本体：`8224dafb46d0aba89209a8f905f1cb7e3299d9c1`（2026-08-11の`main`）
-- 生成方法：`.claude/skills/seedance/scripts/irodori_speak.sh`
+- 生成方法：`tools/irodori_speak.sh`
 - 入力：実際に発話する日本語本文と、下表の正典参照WAV
 - 尺制御：`--seconds`と`--duration-scale`は使わず、v4.1-Smallの自動尺推定に任せる
 - 再現情報：モデルID、参照WAV、seed、caption、自動推定後の実測長を`script.md`へ記録する
