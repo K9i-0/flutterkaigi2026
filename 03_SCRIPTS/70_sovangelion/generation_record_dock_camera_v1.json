@@ -1,0 +1,40 @@
+{
+  "status": "SUCCEEDED",
+  "recorded_at": "2026-09-18T14:00:01.436847+00:00",
+  "config": "wan3_config_dock_camera_v1.json",
+  "user_authorization": "それでOK — character sheets (4) and Blender reference video upload to Wan/Qwen Cloud, approximately USD 0.28 explicitly approved",
+  "scope": "8s dock camera only; user requests separate reusable segment",
+  "estimated_cost_usd": 0.28,
+  "price_source": "https://www.qwencloud.com/models/wan3.0-video",
+  "model": "wan3.0-video",
+  "submission_count": 1,
+  "input_sha256": {
+    "character_yametaro_basic_sheet.png": "1e98502e8051bbacf482f273e551a7dd8b8fb79e2c153865d9e48df690eb91e6",
+    "character_yotan_basic_sheet.png": "a5fcff5308da91a9690426b6a4028a0fdf537cf362b6fb1438fdf14c51878e5a",
+    "character_fukuchan_basic_sheet.png": "a3e1f8f9feff43bf501617818f6e8652c2b6b39d72f7982716cbc550cb3b5866",
+    "character_sobaya_basic_sheet.png": "6de96b8fe2ebf1ce88c2f966d77a1abd7f0c2632322dfe4c527135de67494def",
+    "previs_dock/dock_camera_dynamic_8s.mp4": "5f56c2971d736e1d9655ba374a2673e2ddd044932a00ad060ebcef36934e7c2b"
+  },
+  "submitted_at": "2026-09-18T14:01:54.744206+00:00",
+  "task_id": "02d913a3-2267-45b3-9db7-3fca258a8452",
+  "completed_at": "2026-09-18T14:07:17.865221+00:00",
+  "output": "wan3_result_dock_camera_v1_seed700030_480p.mp4",
+  "sha256": "d30c1ca984708e558b14c0328c0a7293c30d17e3bf602a66504895f96b133907",
+  "actual_video": {
+    "width": 854,
+    "height": 480,
+    "fps": 30,
+    "duration_seconds": 8,
+    "audio_duration_seconds": 8.033991
+  },
+  "audit": {
+    "method": "2 fps full-duration contact sheet; ffprobe",
+    "camera": "Side closeup, rising orbit, overhead reveal and approach to bridge pair achieved in sampled sequence; exact per-frame trajectory not measured.",
+    "layout": "Two bridge characters and Yotan on separate elevated platform observed. Mug displaced from peripheral rack to bridge.",
+    "immersion": "Failed shoulder-high requirement: broad upper chest and shoulders above beer; torso visible through beer.",
+    "identity": "Sobaya mask stays worn in sampled frames. Yametaro recognizable but exaggerated hair/head and open mouth; end railing crosses face. Fukuchan recognizable at final approach; exact likeness not certified.",
+    "audio": "Audio track present; no listening certification.",
+    "adoption_status": "camera_test_review_required",
+    "paid_retries": 0
+  }
+}

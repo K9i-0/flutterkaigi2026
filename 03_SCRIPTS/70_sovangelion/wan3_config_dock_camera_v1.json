@@ -1,0 +1,40 @@
+{
+  "model": "wan3.0-video",
+  "audio_source": "wan3",
+  "audio_sync_strategy": "no_visible_speech",
+  "project_duration": 8,
+  "generation_mode": "single",
+  "prompt_file": "prompt_wan3_dock_camera_v1.txt",
+  "media": [
+    {
+      "type": "reference_image",
+      "path": "character_yametaro_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_yotan_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_fukuchan_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_sobaya_basic_sheet.png"
+    },
+    {
+      "type": "reference_video",
+      "path": "previs_dock/dock_camera_dynamic_8s.mp4"
+    }
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 8,
+    "audio": true,
+    "seed": 700030,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_result_dock_camera_v1_seed700030_480p.mp4"
+}
