@@ -43,20 +43,6 @@ for y in [Y-1.4,Y+1.4]:
  box('Railing middle',(0,y,Z+.55),(40,.05,.05),rail)
 for name,x,y in [('Yametaro position',-2,Y),('Fukuchan position',1,Y+.3)]:
  cyl(name+' HUMAN 1.7m cylinder',(x,y,Z+.85),.28,1.7,human)
-# Yotan alone on elevated command platform, 7m above the two-person bridge.
-CZ=Z+7
-box('Elevated command platform YOTAN',( -15,-6,CZ-.25),(7,6,.5),steel)
-box('Command console',(-13,-7,CZ+.5),(2.5,.7,1),dark)
-cyl('Yotan position HUMAN 1.7m cylinder elevated',(-15,-5.5,CZ+.85),.28,1.7,human)
-for x in [-18.3,-11.7]:
- for y in [-8.8,-6,-3.2]:box('Command railing post',(x,y,CZ+.55),(.07,.07,1.1),rail)
- box('Command side handrail',(x,-6,CZ+1.1),(.07,5.6,.07),rail)
-for y in [-8.8,-3.2]:
- box('Command front back handrail',(-15,y,CZ+1.1),(6.6,.07,.07),rail)
-for x in [-17.5,-12.5]:box('Command platform supports',(x,-5,CZ-3.5),(.5,.5,7),dark)
-# Keep command station inside establishing frame.
-for obj in list(bpy.context.scene.objects):
- if obj.name.startswith(('Command ', 'Elevated command', 'Yotan position')): obj.location.x += 3
 # One visibly separate peripheral prop cylinder, no staged character image.
 cyl('Mug placeholder rack',(15,16,53),1.8,5,rail)
 box('Mug rack',(15,16,50),(5,6,.5),steel)
