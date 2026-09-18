@@ -1,0 +1,99 @@
+{
+  "assets": [
+    {
+      "path": "character_takosan_basic_sheet.png",
+      "source": "03_SCRIPTS/00_TEMPLATES/characters/character_takosan_basic_sheet.png",
+      "sha256": "527c6eabf2e50e8e82f825916d31bb4835ceb3750255f8fe9aac0cc9c9682d7f",
+      "role": "identity"
+    },
+    {
+      "path": "character_sobaya_basic_sheet.png",
+      "source": "03_SCRIPTS/00_TEMPLATES/characters/character_sobaya_basic_sheet.png",
+      "sha256": "6de96b8fe2ebf1ce88c2f966d77a1abd7f0c2632322dfe4c527135de67494def",
+      "role": "identity"
+    },
+    {
+      "path": "character_yametaro_basic_sheet.png",
+      "source": "03_SCRIPTS/00_TEMPLATES/characters/character_yametaro_basic_sheet.png",
+      "sha256": "1e98502e8051bbacf482f273e551a7dd8b8fb79e2c153865d9e48df690eb91e6",
+      "role": "identity"
+    },
+    {
+      "path": "character_yotan_basic_sheet.png",
+      "source": "03_SCRIPTS/00_TEMPLATES/characters/character_yotan_basic_sheet.png",
+      "sha256": "a5fcff5308da91a9690426b6a4028a0fdf537cf362b6fb1438fdf14c51878e5a",
+      "role": "identity"
+    },
+    {
+      "path": "character_fukuchan_basic_sheet.png",
+      "source": "03_SCRIPTS/00_TEMPLATES/characters/character_fukuchan_basic_sheet.png",
+      "sha256": "a3e1f8f9feff43bf501617818f6e8652c2b6b39d72f7982716cbc550cb3b5866",
+      "role": "identity"
+    },
+    {
+      "path": "character_takosan_giant_core_sheet.png",
+      "source": "/Users/kotahayashi/.codex/generated_images/01a0b460-1f7b-75e1-b706-2b6a405d87de/exec-35f6bec9-8adb-414d-a665-329b8366d336.png",
+      "sha256": "ae4ce061c82243802c122cc4243e5279ea7e9384f1c2e136845982ee167600d0",
+      "role": "episode_design",
+      "generator": "built-in imagegen",
+      "visual_review": "completed"
+    },
+    {
+      "path": "character_sobaya_giant_dock_sheet.png",
+      "source": "/Users/kotahayashi/.codex/generated_images/01a0b460-1f7b-75e1-b706-2b6a405d87de/exec-6b1c9267-577d-4b06-ad7e-7dfc7a1a3217.png",
+      "sha256": "f31832e451956b18dd428213bb38d132931752723ef9e9ade9e6047b86784d0c",
+      "role": "episode_design",
+      "generator": "built-in imagegen",
+      "visual_review": "completed",
+      "status": "superseded_local_only"
+    },
+    {
+      "path": "voice_ref_yotan.wav",
+      "source": "02_CHARACTERS/Yotan_voice.wav",
+      "source_sha256": "9bd48c5577f5c70c7ed1ff7d684cca3f98ed23f24e89a02eee20907b47c1ec0c",
+      "sha256": "f0389fbc29da60a8a8d5aab900e357ad15bd9fd7b3f0dc1c8a1797b22882f9fa",
+      "source_start": 0,
+      "source_end": 5,
+      "duration_seconds": 5.0,
+      "role": "voice_timbre_only",
+      "boundary": "full canonical file"
+    },
+    {
+      "path": "voice_ref_yametaro.wav",
+      "source": "02_CHARACTERS/Yametaro_voice.wav",
+      "source_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "sha256": "f65b4b1226f7ab4351ba1154ed315dbeb10a87898af131a1f407a71abaa832cc",
+      "source_start": 0,
+      "source_end": 7,
+      "duration_seconds": 7.0,
+      "role": "voice_timbre_only",
+      "boundary": "full canonical file"
+    },
+    {
+      "path": "voice_ref_fukuchan.wav",
+      "source": "02_CHARACTERS/Fukuchan_voice.wav",
+      "source_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "sha256": "7a6028447c56ab3c8a399fe4cf545ed0ffc7420eb5ca6acf6f96f3857eeedcc1",
+      "source_start": 0,
+      "source_end": 3,
+      "duration_seconds": 3.0,
+      "role": "voice_timbre_only",
+      "boundary": "3.0s falls in detected silence 2.963129–3.064422s (-25dB, 0.08s); no time stretch"
+    },
+    {
+      "path": "character_sobaya_giant_dock_v2_sheet.png",
+      "source": "/Users/kotahayashi/.codex/generated_images/01a0b460-1f7b-75e1-b706-2b6a405d87de/exec-84a21bc0-1764-4125-8be5-f2bda03a30de.png",
+      "sha256": "59de9dfc32a7864133600b0b546985e4e16e9879fb94ca3d13c73712adaf74fa",
+      "role": "dock_design",
+      "visual_review": "completed"
+    },
+    {
+      "path": "reference_dock_composition.jpg",
+      "source": "user attachment",
+      "sha256": "5568948d9778981a391a47dc3fed9c3cd19219b624ca3b660d719bd0414135f6",
+      "role": "composition_input_imagegen",
+      "visual_review": "completed"
+    }
+  ],
+  "total_reference_audio_seconds": 15.0
+}

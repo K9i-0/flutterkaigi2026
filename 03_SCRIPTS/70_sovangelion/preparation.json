@@ -1,0 +1,13 @@
+{
+  "status": "prepared_not_submitted",
+  "paid_api_submitted": false,
+  "dry_run": "passed",
+  "reference_hashes": "passed",
+  "reference_audio_total_seconds": 15.0,
+  "prompt_characters": 10900,
+  "generated_duration_seconds": 30,
+  "remotion": "deferred_until_video_generated",
+  "official_api_checked": "2026-09-18",
+  "official_api_url": "https://docs.qwencloud.com/api-reference/video-generation/wan30-video/create-task",
+  "dock_revision": 2
+}
