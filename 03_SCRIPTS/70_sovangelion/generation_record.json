@@ -1,0 +1,38 @@
+{
+  "task_id": "284c55b5-e17f-462b-ab96-46e7eb157efe",
+  "status": "SUCCEEDED",
+  "recorded_at": "2026-09-18T12:33:26.899516+00:00",
+  "model": "wan3.0-video",
+  "config": "wan3_config.json",
+  "output": "wan3_result_seed700030_480p.mp4",
+  "duration": 30,
+  "resolution": "480P",
+  "seed": 700030,
+  "estimated_cost_usd": 1.05,
+  "price_source": "https://www.qwencloud.com/models/wan3.0-video",
+  "price_checked": "2026-09-18",
+  "user_authorization": "これで生成して",
+  "submission_count": 1,
+  "initial_network_attempt": "DNS resolution failed before connection; then submitted with network permission",
+  "downloaded_at": "2026-09-18T12:40:05.789343+00:00",
+  "sha256": "2225b44c145e8d1454a7aedc60932029a1b2e85425034eafa340a4e320f65bf8",
+  "actual_video": {
+    "width": 854,
+    "height": 480,
+    "fps": 30,
+    "duration_seconds": 30.0,
+    "audio_duration_seconds": 30.022993
+  },
+  "audit": {
+    "decode": "passed",
+    "visual": "1 fps contact sheet examined: city attack, red core, cross light, revised symmetrical dock, five dialogue shots, live final reaction; no titles or blackout; Sobaya mask present in sampled frames",
+    "asr": "all five dialogue meanings present in full-video automated transcript; Japanese orthographic substitutions and per-window boundary spill present",
+    "limitations": [
+      "ASR is not a listening check or voice-identity approval",
+      "Frame sampling does not certify every frame or phoneme-level lip sync",
+      "Final Fukuchan line starts earlier than planned 25s; subtitle timing must follow actual audio",
+      "Takosan tentacles partly occluded: exact count not certified"
+    ],
+    "remotion": "not started; original 30-second generation preserved"
+  }
+}

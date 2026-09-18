@@ -1,6 +1,6 @@
 {
-  "status": "prepared_not_submitted",
-  "paid_api_submitted": false,
+  "status": "generated",
+  "paid_api_submitted": true,
   "dry_run": "passed",
   "reference_hashes": "passed",
   "reference_audio_total_seconds": 15.0,
