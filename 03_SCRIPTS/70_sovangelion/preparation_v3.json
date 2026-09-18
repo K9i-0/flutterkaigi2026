@@ -1,6 +1,6 @@
 {
-  "status": "prepared_not_submitted",
-  "paid_api_submitted": false,
+  "status": "generated_review_required",
+  "paid_api_submitted": true,
   "duration": 20,
   "images": 5,
   "audio_reference_seconds": 14.990000000000002,

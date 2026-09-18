@@ -1,0 +1,38 @@
+{
+  "task_id": "766f7b1d-9c2e-4728-95a9-1a63fc1fa765",
+  "status": "SUCCEEDED",
+  "recorded_at": "2026-09-18T13:21:32.227446+00:00",
+  "config": "wan3_config_v3.json",
+  "model": "wan3.0-video",
+  "seed": 700030,
+  "resolution": "480P",
+  "duration": 20,
+  "output": "wan3_result_v3_seed700030_480p.mp4",
+  "estimated_cost_usd": 0.7,
+  "price_source": "https://www.qwencloud.com/models/wan3.0-video",
+  "user_authorization": "生成して",
+  "submission_count": 1,
+  "completed_at": "2026-09-18T13:25:05.989507+00:00",
+  "sha256": "85c5c9a0f01eae29f4e022d3a34312c31c72b7a30ca3ab82c5c71c13ad106e2e",
+  "actual_video": {
+    "width": 854,
+    "height": 480,
+    "fps": 30,
+    "duration_seconds": 20,
+    "audio_duration_seconds": 20.039002
+  },
+  "audit": {
+    "decode": "passed",
+    "visual": "1fps frame review: character-scale reverse shots, Fukuchan mouth visible during order; Yametaro open-mouth protest; final reaction returns to smiling rest face rather than sustained anger; beer immersion not clearly visible in dock establishing frames",
+    "asr": "Five line meanings detected; service repeated twice, possible extra って at end; per-window recognitions vary",
+    "limitations": [
+      "Not listening-certified for exact pronunciation or vocal identity",
+      "Angry vocal performance not certified from frame sampling",
+      "Final angry reaction not achieved in sampled frame",
+      "Beam and cross explosion not confirmed in 1fps sample",
+      "Beer bath is not clearly established"
+    ],
+    "postproduction": "none",
+    "adoption_status": "review_required"
+  }
+}
