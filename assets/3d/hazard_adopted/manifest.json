@@ -1,12 +1,12 @@
 {
   "sobaya": {
     "version": 3,
-    "file": "04_GAME_ASSETS/3d/hazard_adopted/v3_20260917/sobaya.glb",
+    "file": "04_GAME_ASSETS/3d/hazard_adopted/optimized_20260919/sobaya.glb",
     "source": "04_GAME_ASSETS/3d/characters/sobaya/motion_v3_20260917/sobaya_motion.glb",
     "sourceSha256": "c0cdb21cd0505255a2722fa017eb679df16013fc865146f461864c5dde42fb7d",
     "motionSource": "04_GAME_ASSETS/3d/hazard_adopted/sobaya.glb",
     "motionSourceSha256": "e8df48deafb162543e07c46f3e839b5b8c71c0316352880af46b2b12a7147d6e",
-    "sha256": "c0cdb21cd0505255a2722fa017eb679df16013fc865146f461864c5dde42fb7d",
+    "sha256": "8a35c9ea6cd0088f34e28d94516f056893b80d6d9ee553c7223c122e893ebe2c",
     "sources": {
       "Walk": "Adopted_Library_Walk",
       "Run": "Adopted_Candidate_Chase_Run",
@@ -134,14 +134,20 @@
     "retargetMethod": "world-space rest-aware rotations, anatomical joint offsets, foot contact correction",
     "skinningRevision": "arm-surface-20260917",
     "motionRevision": "casual-hey-20260917",
-    "revision": "mug-motion-greeting-20260917"
+    "revision": "mug-motion-greeting-20260917",
+    "optimization": {
+      "revision": "lossless-textures-rigid-head-20260919",
+      "source": "04_GAME_ASSETS/3d/hazard_adopted/v3_20260917/sobaya.glb",
+      "sourceSha256": "c0cdb21cd0505255a2722fa017eb679df16013fc865146f461864c5dde42fb7d",
+      "report": "04_GAME_ASSETS/3d/hazard_adopted/optimized_20260919/optimization.json"
+    }
   },
   "fukuchan": {
     "version": 3,
-    "file": "04_GAME_ASSETS/3d/hazard_adopted/v3_preview_20260917/fukuchan.glb",
+    "file": "04_GAME_ASSETS/3d/hazard_adopted/optimized_20260919/fukuchan.glb",
     "source": "04_GAME_ASSETS/3d/characters/fukuchan/skin_even_20260917/fukuchan.glb",
     "sourceSha256": "b3c254d4b81fe21de74fc768cb1ecc51cbb5997e32ab8bc1732006b54d609f4d",
-    "sha256": "8ef167bc4b8f494aedcb7031adaadd25cc803a769b0b69cfcd105382663a363d",
+    "sha256": "9886f69341e59670cd28bcaaa41203b51a96b04a50257db53cdd398cc84378bb",
     "sources": {
       "Walk": "Adopted_Library_Walk",
       "Run": "Adopted_Candidate_Mixamo_Run"
@@ -191,6 +197,12 @@
       "revision": "warm-small-20260917"
     },
     "adopted": "2026-09-17",
-    "status": "User-approved game model; preview-named directory retained for stable regeneration paths"
+    "status": "User-approved v3 game model with pixel-identical optimized derivative; original preview-named source retained",
+    "optimization": {
+      "revision": "lossless-textures-rigid-head-20260919",
+      "source": "04_GAME_ASSETS/3d/hazard_adopted/v3_preview_20260917/fukuchan.glb",
+      "sourceSha256": "8ef167bc4b8f494aedcb7031adaadd25cc803a769b0b69cfcd105382663a363d",
+      "report": "04_GAME_ASSETS/3d/hazard_adopted/optimized_20260919/optimization.json"
+    }
   }
 }

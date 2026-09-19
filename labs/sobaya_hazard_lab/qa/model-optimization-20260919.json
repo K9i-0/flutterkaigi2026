@@ -1,0 +1,302 @@
+{
+  "date": "2026-09-19",
+  "scope": "Mac debug native rendering and source-model equivalence; not a profile benchmark",
+  "nativePid": 90467,
+  "flutterTests": {
+    "passed": 8,
+    "files": [
+      "test/game_motion_blend_test.dart",
+      "test/game_speech_test.dart"
+    ]
+  },
+  "flutterAnalyze": "No issues found",
+  "runtimeErrors": 0,
+  "conversationProbe": {
+    "success": true,
+    "durationMs": 2442,
+    "snapshots": 17,
+    "foreground": true,
+    "checks": [
+      "Native frames progressed",
+      "Fukuchan speech morph weights varied",
+      "Non-speaker mouth closed",
+      "Pause and resume audio/face behavior passed"
+    ]
+  },
+  "nativeMotionSnapshots": [
+    {
+      "case": "native_motion_first",
+      "phase": "playing",
+      "motion": "Idle",
+      "sourceMotion": "Adopted_Library_Idle_A",
+      "enemyMotions": [
+        {
+          "motion": "DanceStep",
+          "sourceMotion": "DanceStep",
+          "seconds": 0.216666047683715
+        },
+        {
+          "motion": "DanceDisco",
+          "sourceMotion": "DanceDisco",
+          "seconds": 1.7166660476837146
+        },
+        {
+          "motion": "DanceVictory",
+          "sourceMotion": "DanceVictory",
+          "seconds": 4.016665999999993
+        },
+        {
+          "motion": "Idle",
+          "sourceMotion": "CharacterSheet_MugStand",
+          "seconds": 0.0003330000000003608
+        },
+        {
+          "motion": "Idle",
+          "sourceMotion": "CharacterSheet_MugStand",
+          "seconds": 0.0003330000000003608
+        },
+        {
+          "motion": "Idle",
+          "sourceMotion": "CharacterSheet_MugStand",
+          "seconds": 0.0003330000000003608
+        },
+        {
+          "motion": "Idle",
+          "sourceMotion": "CharacterSheet_MugStand",
+          "seconds": 0
+        },
+        {
+          "motion": "Idle",
+          "sourceMotion": "CharacterSheet_MugStand",
+          "seconds": 0
+        }
+      ],
+      "enemyMugGripErrors": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "enemyMugGripFrameErrors": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "case": "native_motion_second",
+      "phase": "playing",
+      "motion": "Idle",
+      "sourceMotion": "Adopted_Library_Idle_A",
+      "enemyMotions": [
+        {
+          "motion": "DanceStep",
+          "sourceMotion": "DanceStep",
+          "seconds": 0.46666688919066884
+        },
+        {
+          "motion": "DanceDisco",
+          "sourceMotion": "DanceDisco",
+          "seconds": 2.100000333786005
+        },
+        {
+          "motion": "DanceVictory",
+          "sourceMotion": "DanceVictory",
+          "seconds": 5.266666603088341
+        },
+        {
+          "motion": "Idle",
+          "sourceMotion": "CharacterSheet_MugStand",
+          "seconds": 0.0003330000000003608
+        },
+        {
+          "motion": "Idle",
+          "sourceMotion": "CharacterSheet_MugStand",
+          "seconds": 0.0003330000000003608
+        },
+        {
+          "motion": "Idle",
+          "sourceMotion": "CharacterSheet_MugStand",
+          "seconds": 0.0003330000000003608
+        },
+        {
+          "motion": "Idle",
+          "sourceMotion": "CharacterSheet_MugStand",
+          "seconds": 0
+        },
+        {
+          "motion": "Idle",
+          "sourceMotion": "CharacterSheet_MugStand",
+          "seconds": 0
+        }
+      ],
+      "enemyMugGripErrors": [
+        0,
+        2.9802322387695312e-8,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "enemyMugGripFrameErrors": [
+        0,
+        2.9802322387695312e-8,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "case": "native_combat",
+      "phase": "playing",
+      "motion": "Aim",
+      "sourceMotion": "Aim",
+      "enemyMotions": [
+        {
+          "motion": "Idle",
+          "sourceMotion": "CharacterSheet_MugStand",
+          "seconds": 0.9250000000000038
+        },
+        {
+          "motion": "Idle",
+          "sourceMotion": "CharacterSheet_MugStand",
+          "seconds": 0
+        },
+        {
+          "motion": "Idle",
+          "sourceMotion": "CharacterSheet_MugStand",
+          "seconds": 0
+        },
+        {
+          "motion": "Idle",
+          "sourceMotion": "CharacterSheet_MugStand",
+          "seconds": 0.0003330000000003608
+        },
+        {
+          "motion": "Idle",
+          "sourceMotion": "CharacterSheet_MugStand",
+          "seconds": 0.0003330000000003608
+        },
+        {
+          "motion": "Idle",
+          "sourceMotion": "CharacterSheet_MugStand",
+          "seconds": 0.0003330000000003608
+        },
+        {
+          "motion": "Idle",
+          "sourceMotion": "CharacterSheet_MugStand",
+          "seconds": 0
+        },
+        {
+          "motion": "Idle",
+          "sourceMotion": "CharacterSheet_MugStand",
+          "seconds": 0
+        }
+      ],
+      "enemyMugGripErrors": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "enemyMugGripFrameErrors": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "browserComparison": {
+    "renderPixels": [
+      560,
+      620
+    ],
+    "timeSeconds": 0.5,
+    "lighting": "Identical Three.js hemisphere + directional light",
+    "sobaya": {
+      "clip": "CharacterSheet_MugStand",
+      "views": [
+        {
+          "view": "front",
+          "changedPixelsOver2": 1741,
+          "meanAbsoluteRgbDifference": 0.07982046850998464
+        },
+        {
+          "view": "side",
+          "changedPixelsOver2": 245,
+          "meanAbsoluteRgbDifference": 0.012092933947772657
+        },
+        {
+          "view": "back",
+          "changedPixelsOver2": 596,
+          "meanAbsoluteRgbDifference": 0.01453821044546851
+        }
+      ],
+      "visualReview": "No noticeable silhouette, face-pattern or hair loss at inspected close-up views"
+    },
+    "fukuchan": {
+      "clip": "Idle",
+      "view": "front close-up",
+      "changedPixelsOver2": 0,
+      "meanAbsoluteRgbDifference": 0,
+      "maximumChannelDifference": 0
+    }
+  },
+  "nativeBossComparison": {
+    "scenario": "bossEvent",
+    "action": {
+      "action": "eventFrame",
+      "shot": 1,
+      "progress": 0.5
+    },
+    "renderPixels": [
+      800,
+      525
+    ],
+    "meanAbsoluteRgbDifference": 0.0008214285714285715,
+    "changedPixelsOver2": 42,
+    "totalPixels": 420000,
+    "maximumChannelDifference": 12,
+    "evidenceDirectory": "evidence/model-optimization-20260919",
+    "note": "Static frames, not a timing or continuous-animation benchmark"
+  },
+  "compiledSceneBytes": {
+    "sobaya": {
+      "before": 25487488,
+      "after": 24545176
+    },
+    "fukuchan": {
+      "before": 77564656,
+      "after": 77564656
+    }
+  },
+  "limitations": [
+    "No before/after profile FPS or thermal measurement",
+    "Texture dimensions and decoded texture memory unchanged",
+    "No new release ZIP or physical iPhone installation",
+    "Simplification error is attribute-weighted and not a strict Hausdorff distance bound"
+  ]
+}
