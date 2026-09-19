@@ -1,0 +1,14 @@
+{
+  "task_id": "1703fba6-33a8-4c59-a6d2-fad0a88ed6e3",
+  "status": "SUCCEEDED",
+  "model": "wan3.0-video",
+  "seed": 690015,
+  "duration": 15,
+  "resolution": "480P",
+  "authorization": "User explicitly approved paid generation and export of both reference images and canonical Sobaya audio to Qwen Cloud.",
+  "price_checked": "2026-09-18",
+  "displayed_estimate_usd": 0.525,
+  "actual_charge_verified": false,
+  "submission_count": 1,
+  "output": "wan3_result_seed690015_480p.mp4"
+}

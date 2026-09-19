@@ -1,0 +1,21 @@
+{
+  "assets": [
+    {
+      "path": "prop_tanker_production.png",
+      "sha256": "2d91d33b200673086f4d7898d770c9cdf2573600806556b0f3b5b804f346a117",
+      "status": "existing_image_preserved"
+    },
+    {
+      "path": "character_sobaya_basic_sheet.png",
+      "sha256": "6de96b8fe2ebf1ce88c2f966d77a1abd7f0c2632322dfe4c527135de67494def",
+      "status": "existing_image_preserved"
+    },
+    {
+      "path": "voice_ref_sobaya.wav",
+      "sha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "duration_seconds": 8.0,
+      "source": "../../02_CHARACTERS/Sobaya_voice.wav",
+      "usage": "voice_timbre_only"
+    }
+  ]
+}

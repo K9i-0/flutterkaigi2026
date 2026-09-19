@@ -1,0 +1,5 @@
+{
+  "model": "openai/whisper-small",
+  "recognized": "そば屋さん、中も窓際何回?",
+  "note": "Automatic unprompted transcript screening only; not voice identity, pronunciation or lip-sync certification."
+}

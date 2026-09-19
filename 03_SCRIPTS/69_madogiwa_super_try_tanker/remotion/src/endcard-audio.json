@@ -1,0 +1,25 @@
+{
+  "composition": {
+    "id": "SuperTryEndcard",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "durationInFrames": 150
+  },
+  "audio": "product_call.wav",
+  "audioSource": {
+    "path": "03_SCRIPTS/63_madogiwa_super_try_commute/wan3_result_seed630030_480p.mp4",
+    "fps": 30,
+    "startFrame": 774,
+    "endFrame": 900,
+    "note": "Original mixed audio including music; no voice separation or TTS."
+  },
+  "audioStartFrame": 9,
+  "audioFadeInFrames": 3,
+  "audioFadeOutFrames": 9,
+  "zoom": [
+    1,
+    1.025
+  ],
+  "pictureFadeInFrames": 6
+}

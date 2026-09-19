@@ -1,0 +1,49 @@
+{
+  "status": "review_rendered",
+  "postproduction": "remotion",
+  "composition": {
+    "id": "SovangelionRemake",
+    "width": 854,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 740
+  },
+  "segments": [
+    {
+      "id": "reused-takosan-opening",
+      "source": "wan3_result_seed700030_480p.mp4",
+      "sha256": "2225b44c145e8d1454a7aedc60932029a1b2e85425034eafa340a4e320f65bf8",
+      "sourceStartFrame": 0,
+      "sourceEndFrameExclusive": 140,
+      "timelineStartFrame": 0,
+      "durationInFrames": 140,
+      "audio": "retain original Wan audio",
+      "preview": "remake_dock_20260919/opening_takosan_v1_140f.mp4",
+      "preview_sha256": "494c49eef21d0971fe73f9bffbbffacf825c3d2c178068c42d02ea44cac274a7"
+    },
+    {
+      "id": "new-dock-cockpit",
+      "source": "wan3_result_remake_v1_seed700030_480p.mp4",
+      "status": "generated",
+      "sourceStartFrame": 0,
+      "sourceEndFrameExclusive": 600,
+      "timelineStartFrame": 140,
+      "durationInFrames": 600,
+      "audio": "retain newly generated synchronized Wan audio"
+    }
+  ],
+  "join": "hard cut, no overlap, no time stretching; inspect music/ambience discontinuity after generation",
+  "source_of_truth": "remotion/src/edit-manifest.json",
+  "scope": "User explicitly requested existing opening reuse; only the new 20-second remainder is generated in one task.",
+  "remotion_project": "remotion/",
+  "final_output": "final_remotion_remake.mp4 (planned, not rendered)",
+  "opening_review": {
+    "first_dock_frame": 140,
+    "last_attack_frame": 139,
+    "boundary_visual_checked": true,
+    "trim_decode_passed": true,
+    "audio_full_listen": "not certified"
+  },
+  "overlays": [],
+  "review_output": "review_remotion_remake_v1.mp4"
+}

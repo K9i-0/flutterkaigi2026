@@ -1,0 +1,39 @@
+{
+  "model": "wan3.0-video",
+  "audio_source": "wan3",
+  "audio_sync_strategy": "wan_generated_lip_sync",
+  "reference_audio_usage": "voice_timbre_only",
+  "project_duration": 8,
+  "generation_mode": "single",
+  "prompt_file": "prompt_wan3_cockpit_19h_v2.txt",
+  "media": [
+    {
+      "type": "reference_image",
+      "path": "character_yametaro_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_takosan_giant_core_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "remake_dock_20260919/scene_cockpit_19h_v2.png"
+    },
+    {
+      "type": "reference_audio",
+      "path": "voice_ref_yametaro.wav"
+    }
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 8,
+    "audio": true,
+    "seed": 700030,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_result_cockpit_19h_v2_480p.mp4",
+  "postproduction": "remotion",
+  "scope_note": "User explicitly requested only final scene recreation. One 8-second replacement task; preserve existing opening and dock."
+}

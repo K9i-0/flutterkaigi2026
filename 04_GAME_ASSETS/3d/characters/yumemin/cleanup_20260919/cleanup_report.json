@@ -1,0 +1,28 @@
+{
+  "source": "../wan_multiview_20260919/raw/output_model_url.fbx",
+  "vertices": 16030,
+  "polygons": 17525,
+  "mesh_objects": 3,
+  "vertex_displacement_max": 0.04005660570881044,
+  "vertex_displacement_mean": 0.005145012517381632,
+  "body_fit_center": [
+    0.00010496872294171047,
+    -0.034442465728572035,
+    0.4957011000451738
+  ],
+  "body_fit_radius": 0.5077961803845733,
+  "rigged": false,
+  "edits": [
+    "local weighted smoothing",
+    "central crown bump cleanup",
+    "clean blue-white boundary",
+    "wrinkled eye support rebuilt locally; clean shallow ellipsoid eyes at source locations",
+    "removed generated normal and roughness noise",
+    "matte clean base color bake"
+  ],
+  "glb_bytes": 1068988,
+  "glb_sha256": "ea0bd4fde31ea8049661cbd2c08903c3a451509c15f71538e8af122567e06326",
+  "glb_reimport_verified": true,
+  "qa_views": 7,
+  "external_images": []
+}

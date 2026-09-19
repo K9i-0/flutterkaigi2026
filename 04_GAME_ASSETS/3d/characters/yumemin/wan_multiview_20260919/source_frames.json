@@ -1,0 +1,10 @@
+{
+  "video": "03_SCRIPTS/yumemin_turnaround_wan_20260919/wan3_yumemin_turnaround_480p_square.mp4",
+  "times_seconds": {
+    "front": 0.2,
+    "left": 2.7,
+    "back": 4.3,
+    "right": 5.7
+  },
+  "method": "Unmodified full frames, selected visually. Approximate view angles."
+}

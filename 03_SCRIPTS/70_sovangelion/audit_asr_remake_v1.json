@@ -1,0 +1,5 @@
+{
+  "model": "openai/whisper-small",
+  "recognized": "やめたろそばに乗れ出なければ帰れ 提示なんで帰りますやめちゃんそばに乗るのよそば屋さん中も窓際なんかい",
+  "note": "Automatic unprompted transcript screening only; not voice identity, pronunciation or lip-sync certification."
+}

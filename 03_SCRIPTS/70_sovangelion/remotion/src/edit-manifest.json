@@ -1,0 +1,35 @@
+{
+  "composition": {
+    "id": "SovangelionRemake",
+    "width": 854,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 752
+  },
+  "segments": [
+    {
+      "id": "original-attack",
+      "src": "opening-original.mp4",
+      "from": 0,
+      "durationInFrames": 140,
+      "trimBefore": 0,
+      "trimAfter": 140
+    },
+    {
+      "id": "retained-dock",
+      "src": "remake.mp4",
+      "from": 140,
+      "durationInFrames": 372,
+      "trimBefore": 0,
+      "trimAfter": 372
+    },
+    {
+      "id": "cockpit-evening",
+      "src": "cockpit-19h.mp4",
+      "from": 512,
+      "durationInFrames": 240,
+      "trimBefore": 0,
+      "trimAfter": 240
+    }
+  ]
+}

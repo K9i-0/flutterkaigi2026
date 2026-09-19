@@ -1,0 +1,75 @@
+{
+  "studio_id": "MS-EJRDXQN6",
+  "episode_id": "6e752d77-10e0-4fa2-bd48-40360e18b04c",
+  "slug": "madogiwa-super-try-tanker",
+  "url": "https://madogiwa.work/episodes/madogiwa-super-try-tanker",
+  "generation_id": "c95cd29b-a924-4809-80c5-d8fa78e3db42",
+  "studio_version": 1,
+  "local_revision": 3,
+  "model": "wan3.0-video",
+  "video": [
+    {
+      "id": "77dc5f69-eb45-4c3a-a77e-3c075ee2ca5d",
+      "filename": "final_remotion_cm_v3.mp4",
+      "status": "ready",
+      "size_bytes": 7449509,
+      "poster_verified": true
+    }
+  ],
+  "inputs": [
+    {
+      "id": "0f6fa9e5-8041-4ce9-9fbf-4ff04e7fe71f",
+      "filename": "character_sobaya_basic_sheet.png",
+      "status": "ready",
+      "size_bytes": 2019627
+    },
+    {
+      "id": "419ac774-64f9-426a-ac9a-ce6ccaee1fd3",
+      "filename": "prop_tanker_production.png",
+      "status": "ready",
+      "size_bytes": 1875579
+    },
+    {
+      "id": "186fe6d1-3ff4-41e3-aec3-7519156cfd0c",
+      "filename": "voice_ref_sobaya.wav",
+      "status": "ready",
+      "size_bytes": 705678
+    },
+    {
+      "id": "cd763e81-8796-4193-a452-343007bdd3b0",
+      "filename": "office_left.png",
+      "status": "ready",
+      "size_bytes": 1534966
+    },
+    {
+      "id": "81401084-e3db-4921-8b80-379c60be1371",
+      "filename": "title_meme.png",
+      "status": "ready",
+      "size_bytes": 1580671
+    },
+    {
+      "id": "6f91226b-f739-4830-bc2a-bdcbd8e678e2",
+      "filename": "product_call.wav",
+      "status": "ready",
+      "size_bytes": 806478
+    },
+    {
+      "id": "f911eead-2569-4f20-8cde-ffd1ae6a14e6",
+      "filename": "wan3_config_v3.json",
+      "status": "ready",
+      "size_bytes": 987
+    },
+    {
+      "id": "740c82dc-db0e-4138-84b9-d556d4eb3c27",
+      "filename": "revision_v3.md",
+      "status": "ready",
+      "size_bytes": 1057
+    },
+    {
+      "id": "e939012c-cf64-4ecc-8d37-4bc8ac2cc378",
+      "filename": "remotion_adopted_source.zip",
+      "status": "ready",
+      "size_bytes": 37687
+    }
+  ]
+}

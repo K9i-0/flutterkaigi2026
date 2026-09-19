@@ -1,0 +1,27 @@
+{
+  "composition": {
+    "id": "SovangelionRemake",
+    "width": 854,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 740
+  },
+  "segments": [
+    {
+      "id": "original-attack",
+      "src": "opening-original.mp4",
+      "from": 0,
+      "durationInFrames": 140,
+      "trimBefore": 0,
+      "trimAfter": 140
+    },
+    {
+      "id": "new-dock-cockpit",
+      "src": "remake.mp4",
+      "from": 140,
+      "durationInFrames": 600,
+      "trimBefore": 0,
+      "trimAfter": 600
+    }
+  ]
+}

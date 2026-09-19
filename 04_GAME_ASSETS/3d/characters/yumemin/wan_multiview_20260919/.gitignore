@@ -1,0 +1,7 @@
+# Local API responses and rebuildable previews
+qa/
+upload_*.json
+submission_started.json
+task_response.json
+*.blend
+raw/output_rendered_image_url.webp

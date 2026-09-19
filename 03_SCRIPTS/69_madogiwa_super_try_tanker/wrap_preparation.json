@@ -1,0 +1,28 @@
+{
+  "status": "SUCCEEDED",
+  "submitted": true,
+  "new_generation_seconds": 10,
+  "final_seconds": 30,
+  "estimated_usd": 0.35,
+  "assets": [
+    {
+      "path": "character_fukuchan_basic_sheet.png",
+      "sha256": "a3e1f8f9feff43bf501617818f6e8652c2b6b39d72f7982716cbc550cb3b5866"
+    },
+    {
+      "path": "prop_tanker_production.png",
+      "sha256": "2d91d33b200673086f4d7898d770c9cdf2573600806556b0f3b5b804f346a117"
+    },
+    {
+      "path": "reference_chase_environment.jpg",
+      "sha256": "b0e572557ba7ac72f5d02549e803575400af7adcc86eef1803d302551b9dec14"
+    },
+    {
+      "path": "voice_ref_fukuchan.wav",
+      "sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "duration": 9.0
+    }
+  ],
+  "task_id": "ff937ea9-ebc2-463d-8338-8b468b97947b",
+  "authorization": "User explicitly approved these specific references to Qwen Cloud and paid 10-second generation."
+}

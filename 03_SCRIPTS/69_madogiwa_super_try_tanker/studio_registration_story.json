@@ -1,0 +1,97 @@
+{
+  "studio_id": "MS-EJRDXQN6",
+  "slug": "madogiwa-super-try-tanker",
+  "url": "https://madogiwa.work/episodes/madogiwa-super-try-tanker",
+  "generation_id": "c5a27957-6c43-46ff-b256-659b142cfc07",
+  "version": 2,
+  "model": "wan3.0-video",
+  "video": [
+    {
+      "id": "472c9198-fed7-4704-9d1a-127b5a823245",
+      "filename": "final_remotion_cm_story.mp4",
+      "status": "ready",
+      "size": 10182133,
+      "poster_verified": true
+    }
+  ],
+  "inputs": [
+    {
+      "id": "81514d08-b3d4-4207-a84b-e37f386c9328",
+      "filename": "character_sobaya_basic_sheet.png",
+      "status": "ready",
+      "size": 2019627
+    },
+    {
+      "id": "47a09800-6a7f-4263-88a9-339608672cb7",
+      "filename": "prop_tanker_production.png",
+      "status": "ready",
+      "size": 1875579
+    },
+    {
+      "id": "89d7e641-e314-4aa5-a201-626c8395d2ba",
+      "filename": "voice_ref_sobaya.wav",
+      "status": "ready",
+      "size": 705678
+    },
+    {
+      "id": "5a400f45-c20f-4131-a7ec-fb962771e5c7",
+      "filename": "character_fukuchan_basic_sheet.png",
+      "status": "ready",
+      "size": 1982927
+    },
+    {
+      "id": "e41aca8c-770b-490d-ad1b-1944fc3164fe",
+      "filename": "reference_chase_environment.jpg",
+      "status": "ready",
+      "size": 35701
+    },
+    {
+      "id": "b683f7eb-5f36-4d7b-8fc9-1f845d76d80c",
+      "filename": "voice_ref_fukuchan.wav",
+      "status": "ready",
+      "size": 793878
+    },
+    {
+      "id": "19b05968-d43b-4af5-baa5-8b5be4a90a70",
+      "filename": "office_left.png",
+      "status": "ready",
+      "size": 1534966
+    },
+    {
+      "id": "f1430a5f-1139-476d-8cc7-d88ff820d2e0",
+      "filename": "title_meme.png",
+      "status": "ready",
+      "size": 1580671
+    },
+    {
+      "id": "7b5c5032-b8b9-418c-b7bd-dbe8b42b85f8",
+      "filename": "product_call.wav",
+      "status": "ready",
+      "size": 806478
+    },
+    {
+      "id": "9a936b03-a613-4837-9699-fde9edc132f4",
+      "filename": "wan3_config_v3.json",
+      "status": "ready",
+      "size": 987
+    },
+    {
+      "id": "343c8303-c19e-4098-87b0-b52d51bcfa6c",
+      "filename": "wan3_config_fukuchan_wrap.json",
+      "status": "ready",
+      "size": 1149
+    },
+    {
+      "id": "1020074a-d02c-4a2b-83c7-4e9360534c66",
+      "filename": "revision_fukuchan_wrap.md",
+      "status": "ready",
+      "size": 1986
+    },
+    {
+      "id": "64fc70e3-09bc-4dbe-a424-f9cde571a459",
+      "filename": "remotion_story_source.zip",
+      "status": "ready",
+      "size": 40056
+    }
+  ]
+}

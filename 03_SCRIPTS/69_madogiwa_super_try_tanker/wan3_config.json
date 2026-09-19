@@ -1,0 +1,35 @@
+{
+  "model": "wan3.0-video",
+  "audio_source": "wan3",
+  "audio_sync_strategy": "no_visible_speech",
+  "reference_audio_usage": "voice_timbre_only",
+  "project_duration": 15,
+  "generation_mode": "single",
+  "prompt_file": "prompt_wan3.txt",
+  "media": [
+    {
+      "type": "reference_image",
+      "path": "character_sobaya_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "prop_tanker_production.png"
+    },
+    {
+      "type": "reference_audio",
+      "path": "voice_ref_sobaya.wav"
+    }
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 15,
+    "audio": true,
+    "seed": 690015,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_result_seed690015_480p.mp4",
+  "postproduction": "remotion",
+  "audio_sync_note": "The speaking character is visible, but actual lips are hidden by the rigid canonical mask. Wan generates the dialogue and performance together without animating the mask."
+}

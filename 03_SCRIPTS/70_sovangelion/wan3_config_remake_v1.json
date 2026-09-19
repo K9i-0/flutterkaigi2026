@@ -1,0 +1,63 @@
+{
+  "model": "wan3.0-video",
+  "audio_source": "wan3",
+  "audio_sync_strategy": "wan_generated_lip_sync",
+  "reference_audio_usage": "voice_timbre_only",
+  "project_duration": 20,
+  "generation_mode": "single",
+  "prompt_file": "prompt_wan3_remake_v1.txt",
+  "media": [
+    {
+      "type": "reference_image",
+      "path": "character_yametaro_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_yotan_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_fukuchan_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_sobaya_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_takosan_giant_core_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "remake_dock_20260919/scene_b.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "remake_dock_20260919/scene_cockpit_v1.png"
+    },
+    {
+      "type": "reference_audio",
+      "path": "voice_ref_yotan.wav"
+    },
+    {
+      "type": "reference_audio",
+      "path": "voice_ref_yametaro_v3.wav"
+    },
+    {
+      "type": "reference_audio",
+      "path": "voice_ref_fukuchan_v3.wav"
+    }
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 20,
+    "audio": true,
+    "seed": 700030,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_result_remake_v1_seed700030_480p.mp4",
+  "postproduction": "remotion",
+  "scope_note": "One new 20-second task. User explicitly requests reuse of first 140 frames of original video, appended in editing; original is not Wan input."
+}

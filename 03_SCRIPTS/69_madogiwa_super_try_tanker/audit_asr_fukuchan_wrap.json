@@ -1,0 +1,16 @@
+{
+  "model": "openai/whisper-small",
+  "note": "Local automated transcript screening, no expected transcript prompt. Not listening or voice-identity approval.",
+  "segments": [
+    {
+      "start": 0,
+      "duration": 6,
+      "recognized": "変な看板ギュン"
+    },
+    {
+      "start": 6,
+      "duration": 4,
+      "recognized": "飲みに来ただけギュン"
+    }
+  ]
+}

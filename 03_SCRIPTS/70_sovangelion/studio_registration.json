@@ -1,0 +1,99 @@
+{
+  "title": "ソヴァ",
+  "studio_id": "MS-DSN9ER7G",
+  "slug": "sova",
+  "url": "https://madogiwa.work/episodes/sova",
+  "generation_id": "301c3900-d224-473e-9962-e4f7726c0c41",
+  "version": 1,
+  "video": [
+    {
+      "id": "c3ca9ad4-10fa-4f59-9377-9ff6f0dcc2e8",
+      "filename": "sova_19h_final.mp4",
+      "status": "ready",
+      "size_bytes": 8484173,
+      "poster_r2_key": "episodes/6fda6512-d09f-4c3f-a130-141e0a519374/generations/301c3900-d224-473e-9962-e4f7726c0c41/videos/c3ca9ad4-10fa-4f59-9377-9ff6f0dcc2e8/poster.jpg"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "9e8e2480-8328-4e98-ab72-56ef53e0c7c2",
+      "filename": "character_yametaro_basic_sheet.png",
+      "status": "ready",
+      "size_bytes": 1471133
+    },
+    {
+      "id": "6e90b4ed-0a1e-432b-984a-299b378f72dd",
+      "filename": "character_yotan_basic_sheet.png",
+      "status": "ready",
+      "size_bytes": 2194921
+    },
+    {
+      "id": "646b0785-79bc-4d2e-b875-3fe4c5ab9486",
+      "filename": "character_fukuchan_basic_sheet.png",
+      "status": "ready",
+      "size_bytes": 1982927
+    },
+    {
+      "id": "8e8f7bb4-a1d1-4ea2-b188-5ebe1d39bc12",
+      "filename": "character_sobaya_basic_sheet.png",
+      "status": "ready",
+      "size_bytes": 2019627
+    },
+    {
+      "id": "f2a54a9a-0a08-4489-b4f9-e6ad26d96639",
+      "filename": "character_takosan_giant_core_sheet.png",
+      "status": "ready",
+      "size_bytes": 1653725
+    },
+    {
+      "id": "f08d6043-1843-49c7-ada2-543195782414",
+      "filename": "scene_b.png",
+      "status": "ready",
+      "size_bytes": 2782442
+    },
+    {
+      "id": "b2a5daf3-c40d-491e-9c9a-27b12c56ce9b",
+      "filename": "scene_cockpit_v1.png",
+      "status": "ready",
+      "size_bytes": 2109359
+    },
+    {
+      "id": "87ab8814-b28e-407a-9ffe-c16b2032ef20",
+      "filename": "scene_cockpit_19h_v2.png",
+      "status": "ready",
+      "size_bytes": 2058469
+    },
+    {
+      "id": "e8799fbc-d454-4572-81a9-57bc354a1ecc",
+      "filename": "voice_ref_yotan.wav",
+      "status": "ready",
+      "size_bytes": 441044
+    },
+    {
+      "id": "1ce7fc32-b747-4b46-b193-a1fbafbb8b02",
+      "filename": "voice_ref_yametaro_v3.wav",
+      "status": "ready",
+      "size_bytes": 423404
+    },
+    {
+      "id": "0a42d188-41c0-4e1f-95a5-93718cd5fe0f",
+      "filename": "voice_ref_fukuchan_v3.wav",
+      "status": "ready",
+      "size_bytes": 457802
+    },
+    {
+      "id": "5b9770db-a7c0-4fd7-ac40-dd000d365a4f",
+      "filename": "voice_ref_yametaro.wav",
+      "status": "ready",
+      "size_bytes": 617444
+    },
+    {
+      "id": "94fa224b-63f5-4d6b-b02d-8f8704b5d710",
+      "filename": "sova-production-source.zip",
+      "status": "ready",
+      "size_bytes": 55598
+    }
+  ],
+  "local_video": "review_remotion_remake_19h_v2.mp4",
+  "verified_at": "2026-09-19"
+}

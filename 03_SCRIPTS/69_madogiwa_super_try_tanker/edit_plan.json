@@ -1,0 +1,27 @@
+{
+  "status": "rendered_v3",
+  "mainInput": "wan3_result_v3_seed690015_480p.mp4",
+  "composition": {
+    "width": 854,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 600
+  },
+  "verifyMainDimensionsBeforeRender": true,
+  "main": {
+    "from": 0,
+    "durationInFrames": 450
+  },
+  "endcard": {
+    "from": 450,
+    "durationInFrames": 150,
+    "templateDirectory": "../00_TEMPLATES/props/super_try_endcard",
+    "copy": "その渇きに、タンクで応えろ。",
+    "copySetting": "sampleCopy.text",
+    "productCallSource": "../00_TEMPLATES/props/super_try_endcard/remotion/public/product_call.wav",
+    "productCallFrom": 459
+  },
+  "overwriteSharedTemplate": false,
+  "output": "final_remotion_cm_v3.mp4",
+  "compositionId": "TankerCM"
+}

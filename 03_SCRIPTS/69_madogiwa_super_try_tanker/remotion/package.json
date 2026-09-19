@@ -1,0 +1,21 @@
+{
+  "name": "super-tsurai-tanker-cm",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "render": "remotion render src/index.tsx TankerCM ../final_remotion_cm_v3.mp4 --concurrency=2",
+    "render:final": "npm run render --",
+    "render:story": "remotion render src/index.tsx TankerStoryCM ../final_remotion_cm_story.mp4 --concurrency=2"
+  },
+  "dependencies": {
+    "remotion": "4.0.523",
+    "@remotion/cli": "4.0.523",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  },
+  "devDependencies": {
+    "typescript": "5.8.3",
+    "@types/react": "19.1.0"
+  }
+}

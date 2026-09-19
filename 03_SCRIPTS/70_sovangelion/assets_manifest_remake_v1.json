@@ -1,0 +1,119 @@
+{
+  "assets": [
+    {
+      "path": "character_yametaro_basic_sheet.png",
+      "sha256": "1e98502e8051bbacf482f273e551a7dd8b8fb79e2c153865d9e48df690eb91e6",
+      "bytes": 1471133,
+      "dimensions": [
+        1672,
+        941
+      ],
+      "canonical_source": "03_SCRIPTS/00_TEMPLATES/characters/character_yametaro_basic_sheet.png",
+      "matches_canonical": true
+    },
+    {
+      "path": "character_yotan_basic_sheet.png",
+      "sha256": "a5fcff5308da91a9690426b6a4028a0fdf537cf362b6fb1438fdf14c51878e5a",
+      "bytes": 2194921,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "canonical_source": "03_SCRIPTS/00_TEMPLATES/characters/character_yotan_basic_sheet.png",
+      "matches_canonical": true
+    },
+    {
+      "path": "character_fukuchan_basic_sheet.png",
+      "sha256": "a3e1f8f9feff43bf501617818f6e8652c2b6b39d72f7982716cbc550cb3b5866",
+      "bytes": 1982927,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "canonical_source": "03_SCRIPTS/00_TEMPLATES/characters/character_fukuchan_basic_sheet.png",
+      "matches_canonical": true
+    },
+    {
+      "path": "character_sobaya_basic_sheet.png",
+      "sha256": "6de96b8fe2ebf1ce88c2f966d77a1abd7f0c2632322dfe4c527135de67494def",
+      "bytes": 2019627,
+      "dimensions": [
+        1672,
+        941
+      ],
+      "canonical_source": "03_SCRIPTS/00_TEMPLATES/characters/character_sobaya_basic_sheet.png",
+      "matches_canonical": true
+    },
+    {
+      "path": "character_takosan_giant_core_sheet.png",
+      "sha256": "ae4ce061c82243802c122cc4243e5279ea7e9384f1c2e136845982ee167600d0",
+      "bytes": 1653725,
+      "dimensions": [
+        1672,
+        941
+      ]
+    },
+    {
+      "path": "remake_dock_20260919/scene_b.png",
+      "sha256": "92fc200c22eaca184638d508ee3682699b343af870b3ee51c384d0bea1a6a972",
+      "bytes": 2782442,
+      "dimensions": [
+        1672,
+        941
+      ]
+    },
+    {
+      "path": "remake_dock_20260919/scene_cockpit_v1.png",
+      "sha256": "6900d4fb783ebc9f2676d9d7069fa2a9a1a3a4b1f980bf96ead54fe98366f3f3",
+      "bytes": 2109359,
+      "dimensions": [
+        1672,
+        941
+      ]
+    },
+    {
+      "path": "voice_ref_yotan.wav",
+      "sha256": "f0389fbc29da60a8a8d5aab900e357ad15bd9fd7b3f0dc1c8a1797b22882f9fa",
+      "bytes": 441044,
+      "duration_seconds": 5.0,
+      "role": "voice_timbre_only"
+    },
+    {
+      "path": "voice_ref_yametaro_v3.wav",
+      "sha256": "911cafa556922b8d5487442a2816443634e1b7fada2d5e332258baf11dcd548e",
+      "bytes": 423404,
+      "duration_seconds": 4.8,
+      "role": "voice_timbre_only"
+    },
+    {
+      "path": "voice_ref_fukuchan_v3.wav",
+      "sha256": "6caf760f25cd5e747aead9ecb77c1afe0fcb80b199f1973c9af0bd17b0fcd3b2",
+      "bytes": 457802,
+      "duration_seconds": 5.19,
+      "role": "voice_timbre_only"
+    }
+  ],
+  "audio_provenance": [
+    {
+      "path": "voice_ref_yametaro_v3.wav",
+      "source": "02_CHARACTERS/Yametaro_voice.wav",
+      "source_start": 0,
+      "source_end": 4.8,
+      "sha256": "911cafa556922b8d5487442a2816443634e1b7fada2d5e332258baf11dcd548e",
+      "source_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "boundary": "detected pause 4.751383–4.871542s at -25dB, 0.08s; meaning boundary still needs listening confirmation"
+    },
+    {
+      "path": "voice_ref_fukuchan_v3.wav",
+      "source": "02_CHARACTERS/Fukuchan_voice.wav",
+      "source_start": 0,
+      "source_end": 5.19,
+      "sha256": "6caf760f25cd5e747aead9ecb77c1afe0fcb80b199f1973c9af0bd17b0fcd3b2",
+      "source_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "boundary": "detected pause 5.149184–5.243832s at -25dB, 0.08s; meaning boundary still needs listening confirmation"
+    }
+  ],
+  "yotan_provenance": "assets_manifest.json: voice_ref_yotan.wav",
+  "total_reference_audio_seconds": 14.99,
+  "audio_listening_status": "Existing v3 reference clips reused unchanged. Pause-boundary detection recorded; semantic boundary and timbre listening not newly certified."
+}

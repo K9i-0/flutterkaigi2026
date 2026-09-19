@@ -1,0 +1,39 @@
+{
+  "model": "wan3.0-video",
+  "audio_source": "wan3",
+  "audio_sync_strategy": "wan_generated_lip_sync",
+  "reference_audio_usage": "voice_timbre_only",
+  "project_duration": 10,
+  "generation_mode": "single",
+  "prompt_file": "prompt_wan3_fukuchan_wrap.txt",
+  "media": [
+    {
+      "type": "reference_image",
+      "path": "character_fukuchan_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "prop_tanker_production.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "reference_chase_environment.jpg"
+    },
+    {
+      "type": "reference_audio",
+      "path": "voice_ref_fukuchan.wav"
+    }
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 10,
+    "audio": true,
+    "seed": 690106,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_result_fukuchan_wrap_480p.mp4",
+  "postproduction": "remotion",
+  "reuse_contract": "User explicitly requested adding before and after the EXISTING video. Generate only 10 seconds of inserts in one task; preserve the 15-second adopted main film. Final edit 30 seconds including 5-second existing endcard."
+}

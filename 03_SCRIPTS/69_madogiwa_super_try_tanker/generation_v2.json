@@ -1,0 +1,15 @@
+{
+  "task_id": "9a4205e6-622e-4e83-8c28-5937d121cffc",
+  "status": "SUCCEEDED",
+  "model": "wan3.0-video",
+  "seed": 690015,
+  "duration": 15,
+  "resolution": "480P",
+  "prompt_file": "prompt_wan3_v2.txt",
+  "config_file": "wan3_config_v2.json",
+  "output": "wan3_result_v2_seed690015_480p.mp4",
+  "displayed_estimate_usd": 0.525,
+  "actual_charge_verified": false,
+  "submission_count": 1,
+  "adoption": "superseded_by_user_revision_v3"
+}

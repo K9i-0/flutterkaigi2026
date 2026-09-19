@@ -1,0 +1,44 @@
+{
+  "status": "generated_review_required",
+  "task_id": "c6ff83ed-e5d5-46e6-8497-a17489468923",
+  "task_status": "SUCCEEDED",
+  "date": "2026-09-19T10:36:05.238057",
+  "model": "wan3.0-video",
+  "seed": 700030,
+  "duration_seconds": 20,
+  "width": 854,
+  "height": 480,
+  "fps": 30,
+  "audio_duration_seconds": 20.039002,
+  "output": "wan3_result_remake_v1_seed700030_480p.mp4",
+  "sha256": "d76db473a3e64b11ca32bd8f3d27d200c1d4bfbf4197bc49c0eedc2660d10684",
+  "prompt_sha256": "c950435c47073147756e3759b8da529db83ea83fe5413df0a20f4801ecea3c9a",
+  "estimated_usd": 0.7,
+  "actual_invoice_usd": null,
+  "paid_submissions": 1,
+  "voice_strategy": "wan_generated_lip_sync",
+  "post_audio_repairs": [],
+  "review": {
+    "decode": "passed",
+    "visual_sampling": "1 fps full clip; 4 fps final two seconds",
+    "ending": "Seated Yametaro closes mouth; outside Takosan tentacles change pose and buildings/debris/dust keep moving through final samples.",
+    "identity": "Yametaro white lenses, Sova mask, live-action Yotan/Fukuchan and cockpit scene present in sampled frames. Not exhaustive frame-by-frame identity certification.",
+    "dialogue": "Four utterances detected by unprompted local Whisper; orthographic ASR substitutions present.",
+    "deviations": [
+      "Cockpit transition around 12 seconds is a short dissolve rather than requested hard cut.",
+      "Yametaro returns to a smile in silent ending, rather than intended exasperation."
+    ],
+    "unverified": [
+      "Auditory pronunciation, voice identity, and phoneme-level lip synchronization are not certified."
+    ]
+  },
+  "assembly": {
+    "output": "review_remotion_remake_v1.mp4",
+    "sha256": "4e448e9f072e6c1ef2f90a5fee29aa77eab3d3d6ea58b07a17cd43709a28e0ca",
+    "composition": "SovangelionRemake",
+    "duration_frames": 740,
+    "fps": 30,
+    "decode": "passed",
+    "status": "user_review_pending"
+  }
+}

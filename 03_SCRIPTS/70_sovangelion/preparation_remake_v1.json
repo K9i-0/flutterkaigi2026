@@ -1,0 +1,40 @@
+{
+  "status": "generated_review_required",
+  "paid_api_submitted": true,
+  "model": "wan3.0-video",
+  "new_generation_seconds": 20,
+  "final_duration_frames": 740,
+  "fps": 30,
+  "images": 7,
+  "audio_reference_seconds": 14.99,
+  "new_generation_tasks": 1,
+  "resolution": "480P",
+  "estimated_usd": 0.7,
+  "unit_price_usd_per_second": 0.035,
+  "pricing_checked_on": "2026-09-19",
+  "pricing_source": "https://www.qwencloud.com/models/wan3.0-video",
+  "api_source": "https://docs.qwencloud.com/api-reference/video-generation/wan30-video/create-task",
+  "account_model_access": "not rechecked via paid submission; prior generation succeeded",
+  "dry_run": "passed",
+  "pending_checks": [
+    "Existing v3 voice-reference semantic boundaries and timbre are not newly listening-certified.",
+    "Generated dialogue pronunciation, identity, lip synchronization, window animation and joins require post-generation review."
+  ],
+  "config": "wan3_config_remake_v1.json",
+  "prompt": "prompt_wan3_remake_v1.txt",
+  "input_manifest": "assets_manifest_remake_v1.json",
+  "edit_plan": "edit_plan_remake_v1.json",
+  "task_id": "c6ff83ed-e5d5-46e6-8497-a17489468923",
+  "execution_attempt": {
+    "user_instruction": "ok 生成して",
+    "first_attempt": "DNS resolution failed before task creation",
+    "escalated_attempt": "Rejected by automatic approval review: explicit authorization to export exact reference image and voice payloads to Qwen Cloud required.",
+    "required_approval": "Send 7 configured reference images and 3 canonical-derived voice clips (14.99 seconds) to Qwen Cloud for the approved 20-second generation.",
+    "no_workaround_attempted": true
+  },
+  "final_silent_action": "Takosan tentacle strikes facade, concrete falls, fresh dust rises through final frame; Yametaro seated and silent.",
+  "export_authorization": "User explicitly approved sending 7 reference images and 3 voice clips to Qwen Cloud after exact disclosure.",
+  "submission_date": "2026-09-19T10:31:25.148413",
+  "prompt_sha256": "c950435c47073147756e3759b8da529db83ea83fe5413df0a20f4801ecea3c9a",
+  "output": "wan3_result_remake_v1_seed700030_480p.mp4"
+}

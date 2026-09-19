@@ -1,0 +1,29 @@
+{
+  "task_id": "e22b2bf6-6833-471b-9a0a-9e8646b9ec32",
+  "status": "SUCCEEDED_review_pending",
+  "date": "2026-09-19T10:50:56.212591",
+  "model": "wan3.0-video",
+  "duration_seconds": 8,
+  "seed": 700030,
+  "estimated_usd": 0.28,
+  "actual_invoice_usd": null,
+  "paid_submissions": 1,
+  "output": "wan3_result_cockpit_19h_v2_480p.mp4",
+  "reason": "User requests final scene only remade for early evening 19:00.",
+  "edit_plan": "Keep original attack 140 frames and remake dock 372 frames; append new 240-frame ending.",
+  "studio_registration": "held during revision",
+  "sha256": "a2b1ba05f22877a2e55883be202e1d7a25436b9f43ecbc81c35418fbb632a876",
+  "width": 854,
+  "height": 480,
+  "fps": 30,
+  "audio_duration_seconds": 8.033991,
+  "review": {
+    "visual": "2fps全編で19時の濃青の空、点灯ビル、室内蛍光灯、窓際机と椅子、人物同一性を確認。最後も触手・建物破壊・粉塵が継続。",
+    "asr": "そば屋さん、中も窓際何回?（自動認識の表記揺れ。台詞の意味内容を検出）",
+    "unverified": "声質・発音の通し試聴と音素単位リップシンクは未認証。",
+    "decode": "passed"
+  },
+  "remotion_manifest": "remotion/src/edit-manifest.json",
+  "review_output": "review_remotion_remake_19h_v2.mp4",
+  "assembled_sha256": "69df8ad7a84945d0e1b8e4a3a07ade158ef941ccea3e7f99f4a202c44a5062e4"
+}

@@ -1,0 +1,28 @@
+{
+  "assets": [
+    {
+      "path": "character_yametaro_basic_sheet.png",
+      "type": "reference_image",
+      "sha256": "1e98502e8051bbacf482f273e551a7dd8b8fb79e2c153865d9e48df690eb91e6"
+    },
+    {
+      "path": "character_takosan_giant_core_sheet.png",
+      "type": "reference_image",
+      "sha256": "ae4ce061c82243802c122cc4243e5279ea7e9384f1c2e136845982ee167600d0"
+    },
+    {
+      "path": "remake_dock_20260919/scene_cockpit_19h_v2.png",
+      "type": "reference_image",
+      "sha256": "e94f7ff97b1aee270707e26fd5ab7f6ecca9a73a9883c04b164038e78f24e241"
+    },
+    {
+      "path": "voice_ref_yametaro.wav",
+      "type": "reference_audio",
+      "sha256": "f65b4b1226f7ab4351ba1154ed315dbeb10a87898af131a1f407a71abaa832cc"
+    }
+  ],
+  "voice_provenance": "assets_manifest.json: voice_ref_yametaro.wav, canonical source 02_CHARACTERS/Yametaro_voice.wav, 0–7 seconds",
+  "image_generator": "built-in imagegen",
+  "image_prompt": "remake_dock_20260919/prompt_cockpit_19h_v2.txt",
+  "scope": "User requested last scene only, overriding whole-short regeneration default."
+}

@@ -1,0 +1,17 @@
+{
+  "composition": {
+    "id": "TankerStoryCM",
+    "width": 854,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 900
+  },
+  "insertVideo": "fukuchan_wrap.mp4",
+  "mainVideo": "input_v3.mp4",
+  "introFrames": 180,
+  "mainFrames": 450,
+  "outroFrames": 120,
+  "endcardStartFrame": 750,
+  "signStartFrame": 30,
+  "signDurationFrames": 45
+}

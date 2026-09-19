@@ -1,0 +1,51 @@
+{
+  "source": "raw/output_model_url.fbx",
+  "mesh_objects": 1,
+  "vertices": 14510,
+  "polygons": 16105,
+  "height_units": 1.0,
+  "rigged": false,
+  "materials": [
+    {
+      "material": "Dots Stroke",
+      "maps": []
+    },
+    {
+      "material": "Material",
+      "maps": []
+    },
+    {
+      "material": "tripo_mat_0b2d13ac",
+      "maps": [
+        "color",
+        "normal",
+        "roughness",
+        "metallic"
+      ]
+    }
+  ],
+  "glb_bytes": 4795516,
+  "glb_sha256": "76f26401aa63c88f2843b80209491e9d6adbb50a21c4ca01cae76f3d9a27031d",
+  "export_reimport_verified": true,
+  "visual_review": {
+    "views": [
+      "front",
+      "three_quarter",
+      "left",
+      "back",
+      "right"
+    ],
+    "preserved": [
+      "Large round eyes",
+      "Rounded body",
+      "Short integrated nose",
+      "Low rear tail"
+    ],
+    "needs_refinement": [
+      "Eyes are glossier and more raised than matte reference.",
+      "Blue-white boundary has visible texture steps near underside.",
+      "Surface shading has local unevenness; sphere is approximate."
+    ],
+    "deployment": "Not deployed; static unrigged review model."
+  }
+}

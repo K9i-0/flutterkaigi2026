@@ -1,0 +1,21 @@
+{
+  "model": "openai/whisper-small",
+  "note": "Local automated transcript screening, no expected transcript prompt. Not listening or voice-identity approval.",
+  "segments": [
+    {
+      "start": 0,
+      "duration": 15,
+      "recognized": "ビーディー!"
+    },
+    {
+      "start": 0,
+      "duration": 3,
+      "recognized": "ビーディー"
+    },
+    {
+      "start": 10,
+      "duration": 5,
+      "recognized": "お肉を入れて"
+    }
+  ]
+}
