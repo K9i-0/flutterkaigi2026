@@ -1,0 +1,12 @@
+{
+  "source": "04_GAME_ASSETS/3d/characters/takosan/rig_radial_v5_clean/takosan.blend",
+  "source_sha256": "81b86b164564da818c3f974fd289f1f936731d58b066c086b4f66ee3c47dad4d",
+  "hood_darkened_faces": 212,
+  "socket_count": 6,
+  "bones": 27,
+  "clips": [
+    "Idle",
+    "Talk",
+    "Wave"
+  ]
+}
