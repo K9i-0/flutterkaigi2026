@@ -1,0 +1,180 @@
+{
+  "date": "2026-09-19",
+  "models": {
+    "sobaya": {
+      "source": "04_GAME_ASSETS/3d/hazard_adopted/v3_20260917/sobaya.glb",
+      "sourceSha256": "c0cdb21cd0505255a2722fa017eb679df16013fc865146f461864c5dde42fb7d",
+      "file": "04_GAME_ASSETS/3d/hazard_adopted/optimized_20260919/sobaya.glb",
+      "sha256": "8a35c9ea6cd0088f34e28d94516f056893b80d6d9ee553c7223c122e893ebe2c",
+      "beforeBytes": 26857096,
+      "afterBytes": 21002088,
+      "before": {
+        "triangles": 198688,
+        "vertices": 136514,
+        "primitives": 8,
+        "clips": 104,
+        "accessors": 6107,
+        "bufferViews": 6109
+      },
+      "after": {
+        "triangles": 127034,
+        "vertices": 99696,
+        "primitives": 8,
+        "clips": 104,
+        "accessors": 6096,
+        "bufferViews": 5751
+      },
+      "images": [
+        {
+          "name": "sobaya_body_color",
+          "size": [
+            4096,
+            4096
+          ],
+          "beforeBytes": 12229841,
+          "afterBytes": 8774048,
+          "decodedRgbaSha256": "ace653f1b630112146547d9bb9871b5e6217c91125c29cfbe9a3c15ba4a39c62",
+          "pixelsIdentical": true
+        },
+        {
+          "name": "sobaya_red_eye_edge",
+          "size": [
+            2048,
+            2304
+          ],
+          "beforeBytes": 95746,
+          "afterBytes": 19886,
+          "decodedRgbaSha256": "ac1d975f1c1191c6cd90b2acff32cac1784cda13e788b3c5fd4521914965f32d",
+          "pixelsIdentical": true
+        }
+      ]
+    },
+    "fukuchan": {
+      "source": "04_GAME_ASSETS/3d/hazard_adopted/v3_preview_20260917/fukuchan.glb",
+      "sourceSha256": "8ef167bc4b8f494aedcb7031adaadd25cc803a769b0b69cfcd105382663a363d",
+      "file": "04_GAME_ASSETS/3d/hazard_adopted/optimized_20260919/fukuchan.glb",
+      "sha256": "9886f69341e59670cd28bcaaa41203b51a96b04a50257db53cdd398cc84378bb",
+      "beforeBytes": 57935436,
+      "afterBytes": 34423212,
+      "before": {
+        "triangles": 37865,
+        "vertices": 37976,
+        "primitives": 10,
+        "clips": 23,
+        "accessors": 2401,
+        "bufferViews": 2445
+      },
+      "after": {
+        "triangles": 37865,
+        "vertices": 37976,
+        "primitives": 10,
+        "clips": 23,
+        "accessors": 2401,
+        "bufferViews": 2409
+      },
+      "images": [
+        {
+          "name": "fukuchan_finished_albedo",
+          "size": [
+            4096,
+            4096
+          ],
+          "beforeBytes": 11023268,
+          "afterBytes": 7766930,
+          "decodedRgbaSha256": "770ca1e59b30f052c30fa4a7c07e07e51945453c020925566cdfc1025fc85eaf",
+          "pixelsIdentical": true
+        },
+        {
+          "name": "texture_2",
+          "size": [
+            4096,
+            4096
+          ],
+          "beforeBytes": 4787489,
+          "afterBytes": 3301047,
+          "decodedRgbaSha256": "f409077d206446e0363310fb2d2c689758046f128e7c78d9fe87141884b3eedd",
+          "pixelsIdentical": true
+        },
+        {
+          "name": "front",
+          "size": [
+            832,
+            1108
+          ],
+          "beforeBytes": 456727,
+          "afterBytes": 420577,
+          "decodedRgbaSha256": "652549610512429a5c97e1d164584e1da9fbc422d083ebeed2014a188de29b42",
+          "pixelsIdentical": true
+        },
+        {
+          "name": "neck_atlas_10",
+          "size": [
+            4096,
+            4096
+          ],
+          "beforeBytes": 10899295,
+          "afterBytes": 7678521,
+          "decodedRgbaSha256": "6ad947d7a492678320fef0ddbf6f8d079d8060b7305fd48e03de12e1081c6753",
+          "pixelsIdentical": true
+        },
+        {
+          "name": "texture_10",
+          "size": [
+            4096,
+            4096
+          ],
+          "beforeBytes": 10796431,
+          "afterBytes": 7597255,
+          "decodedRgbaSha256": "d7b7ec601bfdbd5395cac2cc747a6b6eb1f0eb410ce7dffeaa954e1108846f58",
+          "pixelsIdentical": true
+        },
+        {
+          "name": "atlas_12",
+          "size": [
+            4096,
+            4096
+          ],
+          "beforeBytes": 4786812,
+          "afterBytes": 3300829,
+          "decodedRgbaSha256": "99c417f4bcdb7c108a8f41075dbd1b4f7403dcb4ecce23479560bb64ec38ef7f",
+          "pixelsIdentical": true
+        }
+      ]
+    }
+  },
+  "rigidSimplification": [
+    {
+      "material": "Mask porcelain nose",
+      "trianglesBefore": 63048,
+      "trianglesAfter": 3152,
+      "verticesBefore": 31889,
+      "verticesAfter": 1941,
+      "simplifierAttributeError": 4.425648512551561e-05,
+      "targetError": 0.00015,
+      "rigidBone": 6,
+      "retainedVertexAttributesExact": true
+    },
+    {
+      "material": "Mask medallion black satin",
+      "trianglesBefore": 3968,
+      "trianglesAfter": 992,
+      "verticesBefore": 2143,
+      "verticesAfter": 620,
+      "simplifierAttributeError": 8.184708713088185e-05,
+      "targetError": 0.00015,
+      "rigidBone": 6,
+      "retainedVertexAttributesExact": true
+    },
+    {
+      "material": "Hair clean charcoal",
+      "trianglesBefore": 52464,
+      "trianglesAfter": 43682,
+      "verticesBefore": 43470,
+      "verticesAfter": 38123,
+      "simplifierAttributeError": 0.00014972625649534166,
+      "targetError": 0.00015,
+      "rigidBone": 6,
+      "retainedVertexAttributesExact": true
+    }
+  ]
+}

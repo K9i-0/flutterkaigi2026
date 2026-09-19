@@ -1,0 +1,43 @@
+{
+  "sobaya": {
+    "sourceSha256": "c0cdb21cd0505255a2722fa017eb679df16013fc865146f461864c5dde42fb7d",
+    "sha256": "8a35c9ea6cd0088f34e28d94516f056893b80d6d9ee553c7223c122e893ebe2c",
+    "identicalAnimationClips": 104,
+    "identicalNodesAndBindMatrices": true,
+    "identicalMaterialsAndTexturePixels": true,
+    "exactPrimitives": [
+      "Mask absolute black",
+      "Mask absolute black",
+      "Mask absolute black",
+      "Sobaya_Imagegen_Mask_v1",
+      "Mask reference porcelain and red"
+    ],
+    "simplifiedRigidPrimitives": [
+      "Mask porcelain nose",
+      "Mask medallion black satin",
+      "Hair clean charcoal"
+    ],
+    "retainedVertexAttributesExact": true
+  },
+  "fukuchan": {
+    "sourceSha256": "8ef167bc4b8f494aedcb7031adaadd25cc803a769b0b69cfcd105382663a363d",
+    "sha256": "9886f69341e59670cd28bcaaa41203b51a96b04a50257db53cdd398cc84378bb",
+    "identicalAnimationClips": 23,
+    "identicalNodesAndBindMatrices": true,
+    "identicalMaterialsAndTexturePixels": true,
+    "exactPrimitives": [
+      "C soft skin, clean normals",
+      "C matte sculpted black hair",
+      "C matte fabric",
+      "Natural sclera",
+      "Name badge white",
+      "Name badge ink",
+      "Front faithful skin",
+      "Imagegen hair on corrected skin atlas",
+      "Balanced forehead skin",
+      "FukuchanOralLining"
+    ],
+    "simplifiedRigidPrimitives": [],
+    "retainedVertexAttributesExact": true
+  }
+}
