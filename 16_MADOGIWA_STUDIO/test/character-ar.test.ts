@@ -15,7 +15,7 @@ describe("AR handoff", () => {
     expect(isARCharacter("yumemin")).toBe(true);
     expect(arCharacters.yumemin.greeting).toBeNull();
     expect(cameraUrl("yumemin")).toBe("/camera/yumemin");
-    expect(modelUrl("yumemin")).toContain("yumemin.glb?v=clean-eyes-20260919");
+    expect(modelUrl("yumemin")).toContain("yumemin.glb?v=illustration-blue-20260919");
     expect(arHeight("yumemin", "life")).toBe(.6);
     expect(arHeight("yumemin", "selfie")).toBe(.12);
   });

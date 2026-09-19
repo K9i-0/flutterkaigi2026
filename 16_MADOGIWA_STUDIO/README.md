@@ -318,3 +318,5 @@ OAuthキャッシュやCloudflare API tokenをリポジトリ間・利用者間�
 ### ゆめみん3D・AR（2026-09-19）
 
 `/characters/yumemin` の3D表示と `/camera/yumemin` に採用済み修正版を追加。正本は `04_GAME_ASSETS/3d/characters/yumemin/eye_seams_20260919/yumemin_clean_v2.glb`、公開モデルは相対symlinkで参照。静的モデルのため動作・撮影ポーズの選択は表示しない。ARサイズは大きめ60cm、ぬいぐるみ20cm、自撮り12cm。USDZ生成は既存のQuick Look向け処理を共用する。
+
+2026-09-19色調整：ゆめみんの正本を `04_GAME_ASSETS/3d/characters/yumemin/color_20260919/yumemin.glb` へ更新。原典の水色 #5EB6E8 を3D・AR共通にし、サイトのゆめみん表示のみNeutralToneMapping・露出0.8で彩度を保持。

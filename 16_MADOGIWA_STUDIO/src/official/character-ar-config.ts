@@ -13,7 +13,7 @@ export function arHeight(character: ARCharacter, placement: ARPlacement) {
   return placement === "life" ? arCharacters[character].height : placement === "plush" ? 0.2 : 0.12;
 }
 export function modelUrl(character: string) {
-  const version = character === "yumemin" ? "clean-eyes-20260919" : character === "fukuchan" ? "rig-v3-even-skin-20260917" : character === "sobaya" ? "mug-motion-greeting-20260917" : character === "takosan" ? "tentacle-clean-20260917" : "20260916-2";
+  const version = character === "yumemin" ? "illustration-blue-20260919" : character === "fukuchan" ? "rig-v3-even-skin-20260917" : character === "sobaya" ? "mug-motion-greeting-20260917" : character === "takosan" ? "tentacle-clean-20260917" : "20260916-2";
   return `/models/characters/${character}.glb?v=${version}`;
 }
 

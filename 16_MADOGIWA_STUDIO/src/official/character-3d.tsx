@@ -77,7 +77,7 @@ function ModelView({ character }: { character: string }) {
         setStatus("error");
         instance?.dispose();
         scene.current = null;
-      }, character === "sobaya");
+      }, character === "sobaya", character === "yumemin" ? 0.8 : 1.25, character === "yumemin");
       scene.current = instance;
     }).catch(() => { if (!cancelled) setStatus("error"); });
     return () => { cancelled = true; instance?.dispose(); scene.current = null; };

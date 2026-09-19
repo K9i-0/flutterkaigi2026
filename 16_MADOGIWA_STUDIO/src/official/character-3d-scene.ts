@@ -44,6 +44,8 @@ export function createCharacterScene(
   onReady: (motions: string[]) => void,
   onError: () => void,
   withMug = false,
+  exposure = 1.25,
+  preserveColor = false,
 ): CharacterScene {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color("#eee9dd");
@@ -51,8 +53,8 @@ export function createCharacterScene(
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.25;
+  renderer.toneMapping = preserveColor ? THREE.NeutralToneMapping : THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = exposure;
   renderer.domElement.setAttribute("aria-label", "ドラッグで回転、2本指または右ドラッグで移動、ピンチやホイールで拡大。見たい場所をダブルタップでアップ");
   host.appendChild(renderer.domElement);
   const controls = new OrbitControls(camera, renderer.domElement);

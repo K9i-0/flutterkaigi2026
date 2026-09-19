@@ -157,3 +157,5 @@ AR用USDZは固定ファイルとして管理せず、GLBから**ブラウザ内
 2026-09-17採用更新：そば屋は承認済みの握り・立ちポーズ・歩走・攻撃・左手挨拶を反映。公式サイトは `characters/sobaya/web_motion_v3_20260917/sobaya.glb` を使用し、ゲーム採用版のテクスチャだけ可逆WebPへ変換。3DとARでジョッキのON/OFFが可能。
 
 2026-09-19採用更新：ゆめみんは `characters/yumemin/eye_seams_20260919/yumemin_clean_v2.glb` を公式サイトの3D・ARへ採用。球体の身体、白い服境界、両目の隙間を修正した静的モデル（リグ・モーションなし）。ARは大きめ60cm・ぬいぐるみ20cm・自撮り12cm。[採用記録](characters/yumemin/eye_seams_20260919/README.md)。
+
+2026-09-19色調整：ゆめみんの最新採用GLBは `characters/yumemin/color_20260919/yumemin.glb`。原典の水色 #5EB6E8 に合わせ、形状を維持。[調整記録](characters/yumemin/color_20260919/README.md)。
