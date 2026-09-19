@@ -30,6 +30,7 @@ import 'game_voice.dart';
 import 'game_voice_player.dart';
 import 'game_speech.dart';
 import 'game_motion_blend.dart';
+import 'game_model_assets.dart';
 import 'game_soundscape.dart';
 import '../lab/beer_mug_component.dart';
 import '../lab/simulation.dart' show FrameSamples;
@@ -139,6 +140,7 @@ class UpperBodyAim extends Component {
 }
 
 class HazardGameController extends ChangeNotifier {
+  final modelProfile = selectHazardModelProfile(defaultTargetPlatform);
   final scene = Scene();
   final lighting = HazardLighting();
   final frames = FrameSamples();
@@ -394,11 +396,12 @@ class HazardGameController extends ChangeNotifier {
       ['items', 'beer_mug', 'sobaya', 'fukuchan', 'yametaro', 'takosan'].map((
         n,
       ) async {
-        final node = await loadScene('assets/models/$n.glb');
+        final asset = hazardModelAsset(n, modelProfile);
+        final node = await loadScene(asset);
         if (disposed) {
-          await releaseScene('assets/models/$n.glb');
+          await releaseScene(asset);
         } else {
-          _sharedSceneClaims.add(n);
+          _sharedSceneClaims.add(asset);
         }
         return node;
       }),
@@ -2212,8 +2215,8 @@ class HazardGameController extends ChangeNotifier {
     unawaited(voice.dispose());
     unawaited(soundscape.dispose());
     scene.removeAll();
-    for (final name in _sharedSceneClaims) {
-      unawaited(releaseScene('assets/models/$name.glb'));
+    for (final asset in _sharedSceneClaims) {
+      unawaited(releaseScene(asset));
     }
     _sharedSceneClaims.clear();
     super.dispose();

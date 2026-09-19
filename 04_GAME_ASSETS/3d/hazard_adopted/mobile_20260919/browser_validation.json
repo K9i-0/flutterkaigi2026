@@ -1,0 +1,27 @@
+{
+  "renderer": "Three.js WebGL, 560x620 per panel, 0..255 RGB",
+  "method": "front/side/back, full-body and idle face closeup, clip phases 0.25/0.75",
+  "note": "Summary transcribed from visible comparison UI; background included. Not a perceptual equivalence guarantee.",
+  "models": {
+    "sobaya": {
+      "comparisons": 36,
+      "maxMeanRgbDifference": 0.3494700460829493,
+      "maxChangedFraction": 0.03368951612903226
+    },
+    "fukuchan": {
+      "comparisons": 30,
+      "maxMeanRgbDifference": 0.2420794930875576,
+      "maxChangedFraction": 0.02420794930875576
+    },
+    "yametaro": {
+      "comparisons": 30,
+      "maxMeanRgbDifference": 0.240284178187404,
+      "maxChangedFraction": 0.02089573732718894
+    },
+    "takosan": {
+      "comparisons": 24,
+      "maxMeanRgbDifference": 0.20722350230414746,
+      "maxChangedFraction": 0.00998847926267281
+    }
+  }
+}

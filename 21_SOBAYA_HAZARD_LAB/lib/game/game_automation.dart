@@ -182,6 +182,7 @@ void attachGameAutomation(HazardGameController game) {
                   _game!.fukuTemplate.getChildByName('Middle3.L') != null,
             },
             'frames': _game!.frames.toJson(),
+            'modelProfile': _game!.modelProfile.name,
             'settings': _game!.settings.encode(),
             'lighting': _game!.lighting.inspect(_game!.scene),
             'audioPlayback': _game!.audioPlayback,

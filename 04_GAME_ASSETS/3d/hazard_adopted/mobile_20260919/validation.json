@@ -1,0 +1,46 @@
+{
+  "sobaya": {
+    "sourceSha256": "8a35c9ea6cd0088f34e28d94516f056893b80d6d9ee553c7223c122e893ebe2c",
+    "sha256": "a42f0d2df9501c7e013db7fa617f79fdf7c194d1e09a4e1b45ca76b30db19198",
+    "animationClipsExact": 104,
+    "nodesAndBindPoseExact": true,
+    "materialsExact": true,
+    "retainedVertexAttributesExact": true,
+    "morphNamesAndRetainedDeltasExact": true,
+    "textureRecipeExact": true,
+    "weightsNormalized": true
+  },
+  "fukuchan": {
+    "sourceSha256": "9886f69341e59670cd28bcaaa41203b51a96b04a50257db53cdd398cc84378bb",
+    "sha256": "8888f9835091f7e2fd6553952d9e339d6c2b9c4fb58056a110d53df5f570e388",
+    "animationClipsExact": 23,
+    "nodesAndBindPoseExact": true,
+    "materialsExact": true,
+    "retainedVertexAttributesExact": true,
+    "morphNamesAndRetainedDeltasExact": true,
+    "textureRecipeExact": true,
+    "weightsNormalized": true
+  },
+  "yametaro": {
+    "sourceSha256": "c39417eb431bc76dd248b6959ca6636f0a90b542f94c3a56aab7941f3b9283df",
+    "sha256": "431254318c43bc2a9ca21a61a96c874f2a56cf59a1200fb9f376a2922394dca5",
+    "animationClipsExact": 4,
+    "nodesAndBindPoseExact": true,
+    "materialsExact": true,
+    "retainedVertexAttributesExact": true,
+    "morphNamesAndRetainedDeltasExact": true,
+    "textureRecipeExact": true,
+    "weightsNormalized": true
+  },
+  "takosan": {
+    "sourceSha256": "aae590ad14daedc9f24b0c9749d533646b8930c139357539822e1f88a2f92469",
+    "sha256": "b203c080c59ebde780fdcca88f6b8f5047999a4fbfe7b4b3a8a2b01b33b7f12a",
+    "animationClipsExact": 3,
+    "nodesAndBindPoseExact": true,
+    "materialsExact": true,
+    "retainedVertexAttributesExact": true,
+    "morphNamesAndRetainedDeltasExact": true,
+    "textureRecipeExact": true,
+    "weightsNormalized": true
+  }
+}

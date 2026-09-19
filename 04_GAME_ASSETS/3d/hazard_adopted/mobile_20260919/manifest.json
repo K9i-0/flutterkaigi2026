@@ -1,0 +1,601 @@
+{
+  "date": "2026-09-19",
+  "profile": "mobile",
+  "models": {
+    "sobaya": {
+      "source": "04_GAME_ASSETS/3d/hazard_adopted/optimized_20260919/sobaya.glb",
+      "sourceSha256": "8a35c9ea6cd0088f34e28d94516f056893b80d6d9ee553c7223c122e893ebe2c",
+      "file": "04_GAME_ASSETS/3d/hazard_adopted/mobile_20260919/sobaya.glb",
+      "sha256": "a42f0d2df9501c7e013db7fa617f79fdf7c194d1e09a4e1b45ca76b30db19198",
+      "beforeBytes": 21002088,
+      "afterBytes": 11974340,
+      "before": {
+        "triangles": 127034,
+        "vertices": 99696,
+        "primitives": 8,
+        "clips": 104,
+        "accessors": 6096,
+        "bufferViews": 5751
+      },
+      "after": {
+        "triangles": 62872,
+        "vertices": 58491,
+        "primitives": 8,
+        "clips": 104,
+        "accessors": 6096,
+        "bufferViews": 5751
+      },
+      "textures": [
+        {
+          "name": "sobaya_body_color",
+          "before": [
+            4096,
+            4096
+          ],
+          "after": [
+            2048,
+            2048
+          ],
+          "baseRgbaBytesBefore": 67108864,
+          "baseRgbaBytesAfter": 16777216
+        },
+        {
+          "name": "sobaya_red_eye_edge",
+          "before": [
+            2048,
+            2304
+          ],
+          "after": [
+            2048,
+            2304
+          ],
+          "baseRgbaBytesBefore": 18874368,
+          "baseRgbaBytesAfter": 18874368
+        }
+      ],
+      "geometry": [
+        {
+          "mesh": 0,
+          "primitive": 0,
+          "material": "Mask absolute black",
+          "trianglesBefore": 128,
+          "trianglesAfter": 128,
+          "verticesBefore": 231,
+          "verticesAfter": 231,
+          "protectedVertices": 231,
+          "errorLimit": 0.001,
+          "simplifierAttributeError": 0
+        },
+        {
+          "mesh": 1,
+          "primitive": 0,
+          "material": "Mask absolute black",
+          "trianglesBefore": 128,
+          "trianglesAfter": 128,
+          "verticesBefore": 225,
+          "verticesAfter": 225,
+          "protectedVertices": 225,
+          "errorLimit": 0.001,
+          "simplifierAttributeError": 0
+        },
+        {
+          "mesh": 2,
+          "primitive": 0,
+          "material": "Mask porcelain nose",
+          "trianglesBefore": 3152,
+          "trianglesAfter": 1418,
+          "verticesBefore": 1941,
+          "verticesAfter": 1074,
+          "protectedVertices": 0,
+          "errorLimit": 0.001,
+          "simplifierAttributeError": 0.00015772711776662618
+        },
+        {
+          "mesh": 3,
+          "primitive": 0,
+          "material": "Mask medallion black satin",
+          "trianglesBefore": 992,
+          "trianglesAfter": 446,
+          "verticesBefore": 620,
+          "verticesAfter": 312,
+          "protectedVertices": 0,
+          "errorLimit": 0.001,
+          "simplifierAttributeError": 0.0002248282398795709
+        },
+        {
+          "mesh": 4,
+          "primitive": 0,
+          "material": "Mask absolute black",
+          "trianglesBefore": 130,
+          "trianglesAfter": 130,
+          "verticesBefore": 291,
+          "verticesAfter": 291,
+          "protectedVertices": 291,
+          "errorLimit": 0.001,
+          "simplifierAttributeError": 0
+        },
+        {
+          "mesh": 5,
+          "primitive": 0,
+          "material": "Sobaya_Imagegen_Mask_v1",
+          "trianglesBefore": 75462,
+          "trianglesAfter": 37606,
+          "verticesBefore": 55696,
+          "verticesAfter": 31947,
+          "protectedVertices": 15511,
+          "errorLimit": 0.001,
+          "simplifierAttributeError": 0.000986384111456573
+        },
+        {
+          "mesh": 5,
+          "primitive": 1,
+          "material": "Hair clean charcoal",
+          "trianglesBefore": 43682,
+          "trianglesAfter": 19656,
+          "verticesBefore": 38123,
+          "verticesAfter": 21842,
+          "protectedVertices": 0,
+          "errorLimit": 0.0007,
+          "simplifierAttributeError": 0.0005252383416518569
+        },
+        {
+          "mesh": 5,
+          "primitive": 2,
+          "material": "Mask reference porcelain and red",
+          "trianglesBefore": 3360,
+          "trianglesAfter": 3360,
+          "verticesBefore": 2569,
+          "verticesAfter": 2569,
+          "protectedVertices": 2569,
+          "errorLimit": 0.001,
+          "simplifierAttributeError": 0
+        }
+      ]
+    },
+    "fukuchan": {
+      "source": "04_GAME_ASSETS/3d/hazard_adopted/optimized_20260919/fukuchan.glb",
+      "sourceSha256": "9886f69341e59670cd28bcaaa41203b51a96b04a50257db53cdd398cc84378bb",
+      "file": "04_GAME_ASSETS/3d/hazard_adopted/mobile_20260919/fukuchan.glb",
+      "sha256": "8888f9835091f7e2fd6553952d9e339d6c2b9c4fb58056a110d53df5f570e388",
+      "beforeBytes": 34423212,
+      "afterBytes": 21960604,
+      "before": {
+        "triangles": 37865,
+        "vertices": 37976,
+        "primitives": 10,
+        "clips": 23,
+        "accessors": 2401,
+        "bufferViews": 2409
+      },
+      "after": {
+        "triangles": 31725,
+        "vertices": 33843,
+        "primitives": 10,
+        "clips": 23,
+        "accessors": 2401,
+        "bufferViews": 2407
+      },
+      "textures": [
+        {
+          "name": "fukuchan_finished_albedo",
+          "before": [
+            4096,
+            4096
+          ],
+          "after": [
+            2048,
+            2048
+          ],
+          "baseRgbaBytesBefore": 67108864,
+          "baseRgbaBytesAfter": 16777216
+        },
+        {
+          "name": "texture_2",
+          "before": [
+            4096,
+            4096
+          ],
+          "after": [
+            2048,
+            2048
+          ],
+          "baseRgbaBytesBefore": 67108864,
+          "baseRgbaBytesAfter": 16777216
+        },
+        {
+          "name": "front",
+          "before": [
+            832,
+            1108
+          ],
+          "after": [
+            832,
+            1108
+          ],
+          "baseRgbaBytesBefore": 3687424,
+          "baseRgbaBytesAfter": 3687424
+        },
+        {
+          "name": "neck_atlas_10",
+          "before": [
+            4096,
+            4096
+          ],
+          "after": [
+            4096,
+            4096
+          ],
+          "baseRgbaBytesBefore": 67108864,
+          "baseRgbaBytesAfter": 67108864
+        },
+        {
+          "name": "texture_10",
+          "before": [
+            4096,
+            4096
+          ],
+          "after": [
+            2048,
+            2048
+          ],
+          "baseRgbaBytesBefore": 67108864,
+          "baseRgbaBytesAfter": 16777216
+        },
+        {
+          "name": "atlas_12",
+          "before": [
+            4096,
+            4096
+          ],
+          "after": [
+            2048,
+            2048
+          ],
+          "baseRgbaBytesBefore": 67108864,
+          "baseRgbaBytesAfter": 16777216
+        }
+      ],
+      "geometry": [
+        {
+          "mesh": 0,
+          "primitive": 0,
+          "material": "C soft skin, clean normals",
+          "trianglesBefore": 3806,
+          "trianglesAfter": 3806,
+          "verticesBefore": 3994,
+          "verticesAfter": 3994,
+          "protectedVertices": 3994,
+          "errorLimit": 0.001,
+          "simplifierAttributeError": 0
+        },
+        {
+          "mesh": 0,
+          "primitive": 1,
+          "material": "C matte sculpted black hair",
+          "trianglesBefore": 9245,
+          "trianglesAfter": 5719,
+          "verticesBefore": 9043,
+          "verticesAfter": 6651,
+          "protectedVertices": 0,
+          "errorLimit": 0.001,
+          "simplifierAttributeError": 0.0009983545169234276
+        },
+        {
+          "mesh": 0,
+          "primitive": 2,
+          "material": "C matte fabric",
+          "trianglesBefore": 14165,
+          "trianglesAfter": 11551,
+          "verticesBefore": 14151,
+          "verticesAfter": 12410,
+          "protectedVertices": 1006,
+          "errorLimit": 0.001,
+          "simplifierAttributeError": 0.0009927012724801898
+        },
+        {
+          "mesh": 0,
+          "primitive": 3,
+          "material": "Natural sclera",
+          "trianglesBefore": 4416,
+          "trianglesAfter": 4416,
+          "verticesBefore": 2446,
+          "verticesAfter": 2446,
+          "protectedVertices": 2446,
+          "errorLimit": 0.001,
+          "simplifierAttributeError": 0
+        },
+        {
+          "mesh": 0,
+          "primitive": 4,
+          "material": "Name badge white",
+          "trianglesBefore": 188,
+          "trianglesAfter": 188,
+          "verticesBefore": 372,
+          "verticesAfter": 372,
+          "protectedVertices": 372,
+          "errorLimit": 0.001,
+          "simplifierAttributeError": 0
+        },
+        {
+          "mesh": 0,
+          "primitive": 5,
+          "material": "Name badge ink",
+          "trianglesBefore": 1341,
+          "trianglesAfter": 1341,
+          "verticesBefore": 1813,
+          "verticesAfter": 1813,
+          "protectedVertices": 1813,
+          "errorLimit": 0.001,
+          "simplifierAttributeError": 0
+        },
+        {
+          "mesh": 0,
+          "primitive": 6,
+          "material": "Front faithful skin",
+          "trianglesBefore": 3975,
+          "trianglesAfter": 3975,
+          "verticesBefore": 4820,
+          "verticesAfter": 4820,
+          "protectedVertices": 4820,
+          "errorLimit": 0.001,
+          "simplifierAttributeError": 0
+        },
+        {
+          "mesh": 0,
+          "primitive": 7,
+          "material": "Imagegen hair on corrected skin atlas",
+          "trianglesBefore": 122,
+          "trianglesAfter": 122,
+          "verticesBefore": 219,
+          "verticesAfter": 219,
+          "protectedVertices": 219,
+          "errorLimit": 0.001,
+          "simplifierAttributeError": 0
+        },
+        {
+          "mesh": 0,
+          "primitive": 8,
+          "material": "Balanced forehead skin",
+          "trianglesBefore": 131,
+          "trianglesAfter": 131,
+          "verticesBefore": 166,
+          "verticesAfter": 166,
+          "protectedVertices": 166,
+          "errorLimit": 0.001,
+          "simplifierAttributeError": 0
+        },
+        {
+          "mesh": 0,
+          "primitive": 9,
+          "material": "FukuchanOralLining",
+          "trianglesBefore": 476,
+          "trianglesAfter": 476,
+          "verticesBefore": 952,
+          "verticesAfter": 952,
+          "protectedVertices": 952,
+          "errorLimit": 0.001,
+          "simplifierAttributeError": 0
+        }
+      ]
+    },
+    "yametaro": {
+      "source": "04_GAME_ASSETS/3d/characters/yametaro/rig_nose_v3/yametaro.glb",
+      "sourceSha256": "c39417eb431bc76dd248b6959ca6636f0a90b542f94c3a56aab7941f3b9283df",
+      "file": "04_GAME_ASSETS/3d/hazard_adopted/mobile_20260919/yametaro.glb",
+      "sha256": "431254318c43bc2a9ca21a61a96c874f2a56cf59a1200fb9f376a2922394dca5",
+      "beforeBytes": 3406920,
+      "afterBytes": 4851708,
+      "before": {
+        "triangles": 15299,
+        "vertices": 13134,
+        "primitives": 4,
+        "clips": 4,
+        "accessors": 182,
+        "bufferViews": 202
+      },
+      "after": {
+        "triangles": 12631,
+        "vertices": 11321,
+        "primitives": 4,
+        "clips": 4,
+        "accessors": 182,
+        "bufferViews": 187
+      },
+      "textures": [
+        {
+          "name": "Normal",
+          "before": [
+            1024,
+            1024
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "baseRgbaBytesBefore": 4194304,
+          "baseRgbaBytesAfter": 4194304
+        },
+        {
+          "name": "Color",
+          "before": [
+            2048,
+            2048
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "baseRgbaBytesBefore": 16777216,
+          "baseRgbaBytesAfter": 4194304
+        },
+        {
+          "name": "Metallic-Roughness",
+          "before": [
+            1024,
+            1024
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "baseRgbaBytesBefore": 4194304,
+          "baseRgbaBytesAfter": 4194304
+        },
+        {
+          "name": "YametaroNoseRepairedNormal",
+          "before": [
+            1024,
+            1024
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "baseRgbaBytesBefore": 4194304,
+          "baseRgbaBytesAfter": 4194304
+        },
+        {
+          "name": "Color",
+          "before": [
+            2048,
+            2048
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "baseRgbaBytesBefore": 16777216,
+          "baseRgbaBytesAfter": 4194304
+        }
+      ],
+      "geometry": [
+        {
+          "mesh": 0,
+          "primitive": 0,
+          "material": "tripo_mat_4a23c7b9",
+          "trianglesBefore": 11781,
+          "trianglesAfter": 9747,
+          "verticesBefore": 9525,
+          "verticesAfter": 8269,
+          "protectedVertices": 3202,
+          "errorLimit": 0.001,
+          "simplifierAttributeError": 0.000999253592453897
+        },
+        {
+          "mesh": 0,
+          "primitive": 1,
+          "material": "YametaroSkinWithoutInk",
+          "trianglesBefore": 1776,
+          "trianglesAfter": 1776,
+          "verticesBefore": 1736,
+          "verticesAfter": 1736,
+          "protectedVertices": 1736,
+          "errorLimit": 0.001,
+          "simplifierAttributeError": 0
+        },
+        {
+          "mesh": 0,
+          "primitive": 2,
+          "material": "YametaroLavenderTrim",
+          "trianglesBefore": 1603,
+          "trianglesAfter": 969,
+          "verticesBefore": 1709,
+          "verticesAfter": 1152,
+          "protectedVertices": 0,
+          "errorLimit": 0.001,
+          "simplifierAttributeError": 0.0009909230284392834
+        },
+        {
+          "mesh": 0,
+          "primitive": 3,
+          "material": "YametaroNoseInkRepair",
+          "trianglesBefore": 139,
+          "trianglesAfter": 139,
+          "verticesBefore": 164,
+          "verticesAfter": 164,
+          "protectedVertices": 164,
+          "errorLimit": 0.001,
+          "simplifierAttributeError": 0
+        }
+      ]
+    },
+    "takosan": {
+      "source": "04_GAME_ASSETS/3d/characters/takosan/rig_sheet_v2/takosan.glb",
+      "sourceSha256": "aae590ad14daedc9f24b0c9749d533646b8930c139357539822e1f88a2f92469",
+      "file": "04_GAME_ASSETS/3d/hazard_adopted/mobile_20260919/takosan.glb",
+      "sha256": "b203c080c59ebde780fdcca88f6b8f5047999a4fbfe7b4b3a8a2b01b33b7f12a",
+      "beforeBytes": 1535664,
+      "afterBytes": 2169136,
+      "before": {
+        "triangles": 18325,
+        "vertices": 16358,
+        "primitives": 2,
+        "clips": 3,
+        "accessors": 103,
+        "bufferViews": 105
+      },
+      "after": {
+        "triangles": 16281,
+        "vertices": 15052,
+        "primitives": 2,
+        "clips": 3,
+        "accessors": 103,
+        "bufferViews": 105
+      },
+      "textures": [
+        {
+          "name": "Normal",
+          "before": [
+            1024,
+            1024
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "baseRgbaBytesBefore": 4194304,
+          "baseRgbaBytesAfter": 4194304
+        },
+        {
+          "name": "Color",
+          "before": [
+            2048,
+            2048
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "baseRgbaBytesBefore": 16777216,
+          "baseRgbaBytesAfter": 4194304
+        }
+      ],
+      "geometry": [
+        {
+          "mesh": 0,
+          "primitive": 0,
+          "material": "tripo_mat_0b7260e5",
+          "trianglesBefore": 17445,
+          "trianglesAfter": 15401,
+          "verticesBefore": 15816,
+          "verticesAfter": 14510,
+          "protectedVertices": 4247,
+          "errorLimit": 0.001,
+          "simplifierAttributeError": 0.0009877873817458749
+        },
+        {
+          "mesh": 0,
+          "primitive": 1,
+          "material": "Shoulder cloth lining",
+          "trianglesBefore": 880,
+          "trianglesAfter": 880,
+          "verticesBefore": 542,
+          "verticesAfter": 542,
+          "protectedVertices": 0,
+          "errorLimit": 0.001,
+          "simplifierAttributeError": 0
+        }
+      ]
+    }
+  }
+}
