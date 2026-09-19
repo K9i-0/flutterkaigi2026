@@ -1,3 +1,5 @@
+import { characters } from "../lib/site-content";
+
 export const arCharacters = {
   yumemin: { name: "ゆめみん", greeting: null, height: 0.6 },
   sobaya: { name: "そば屋", greeting: "Greeting", height: 1.8 },
@@ -21,3 +23,9 @@ export function isARCharacter(value: string): value is ARCharacter {
 export function cameraUrl(character: string) {
   return `/camera/${isARCharacter(character) ? character : "sobaya"}`;
 }
+
+// Follow the character directory, showing only characters with a 3D/AR model.
+export const modelCharacters = characters
+  .map(({ id }) => id)
+  .filter(isARCharacter)
+  .map((id) => ({ id, ...arCharacters[id] }));

@@ -3,15 +3,8 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { Box, Camera, Pause, Play, RotateCcw, X } from "lucide-react";
 import type { CharacterScene } from "./character-3d-scene";
 import "./character-3d.css";
-import { cameraUrl, isARCharacter, modelUrl } from "./character-ar-config";
+import { cameraUrl, isARCharacter, modelUrl, modelCharacters as characters } from "./character-ar-config";
 
-const characters = [
-  { id: "yumemin", name: "ゆめみん" },
-  { id: "sobaya", name: "そば屋" },
-  { id: "fukuchan", name: "福ちゃん" },
-  { id: "takosan", name: "たこさん" },
-  { id: "yametaro", name: "やめ太郎" },
-];
 const motions = [
   { id: "CharacterSheet_MugStand", label: "立ちポーズ" },
   { id: "Hybrid_MugPunch", label: "パンチ" },
