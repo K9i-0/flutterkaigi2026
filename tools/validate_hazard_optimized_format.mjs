@@ -5,8 +5,9 @@ import {createRequire} from 'node:module';
 const root = path.resolve(import.meta.dirname, '..');
 const require = createRequire(root + '/.local/vrm-validation/package.json');
 const {validateBytes} = require('gltf-validator');
-const folder = root + '/04_GAME_ASSETS/3d/hazard_adopted/optimized_20260919';
-const build = JSON.parse(fs.readFileSync(folder + '/optimization.json'));
+const mobile = process.argv.includes('--mobile');
+const folder = root + '/04_GAME_ASSETS/3d/hazard_adopted/' + (mobile ? 'mobile_20260919' : 'optimized_20260919');
+const build = JSON.parse(fs.readFileSync(folder + (mobile ? '/manifest.json' : '/optimization.json')));
 const report = {};
 for (const [name, row] of Object.entries(build.models)) {
   report[name] = {};

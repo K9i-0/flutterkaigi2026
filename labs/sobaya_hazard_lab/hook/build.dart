@@ -20,6 +20,10 @@ void main(List<String> args) async {
         'assets/models/fukuchan.glb',
         'assets/models/yametaro.glb',
         'assets/models/takosan.glb',
+        'assets/models/mobile/sobaya.glb',
+        'assets/models/mobile/fukuchan.glb',
+        'assets/models/mobile/yametaro.glb',
+        'assets/models/mobile/takosan.glb',
       ],
       compressTextures: true,
     );
