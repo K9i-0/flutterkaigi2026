@@ -11,10 +11,10 @@ export function CharacterAR({ character }: { character: string }) {
   const id = character as ARCharacter;
   return <section className="j-ar" aria-label="窓際ARカメラ">
     <div className="j-ar-heading"><div><span className="j-model-eyebrow">いつもの景色に、窓際の仲間。</span><h3><Camera size={20} />窓際ARカメラ</h3></div></div>
-    <p className="j-ar-intro">テーブルにちょこんと。隣に、等身大で。<br />好きなサイズで、一緒の一枚を。</p>
+    <p className="j-ar-intro">テーブルにちょこんと。隣に、大きく。<br />好きなサイズで、一緒の一枚を。</p>
     <div className="j-ar-options" role="group" aria-label="ARの置き方">
       <button aria-pressed={placement === "plush"} onClick={() => setPlacement("plush")}><span>ぬいぐるみ</span><small>高さ20cm・机や料理のそばに</small></button>
-      <button aria-pressed={placement === "life"} onClick={() => setPlacement("life")}><span>等身大</span><small>高さ約{Math.round(arHeight(id, "life") * 100)}cm・隣に並んで</small></button>
+      <button aria-pressed={placement === "life"} onClick={() => setPlacement("life")}><span>{id === "yumemin" ? "大きめ" : "等身大"}</span><small>高さ約{Math.round(arHeight(id, "life") * 100)}cm・隣に並んで</small></button>
       <button aria-pressed={placement === "selfie"} onClick={() => setPlacement("selfie")}><span>顔の横で自撮り <em>実験版</em></span><small>高さ12cm・顔の動きについてくる</small></button>
     </div>
     {arCharacters[id].greeting && <div className="j-ar-poses" role="group" aria-label="撮影ポーズ"><span>ポーズ</span><button aria-pressed={pose === "Idle"} onClick={() => setPose("Idle")}>いつもの姿</button><button aria-pressed={pose === "Wave"} onClick={() => setPose("Wave")}>ごあいさつ</button></div>}

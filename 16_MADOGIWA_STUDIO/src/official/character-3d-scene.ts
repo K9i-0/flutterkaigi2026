@@ -117,6 +117,13 @@ export function createCharacterScene(
       return;
     }
     model.updateWorldMatrix(true, true);
+    const leftEye = model.getObjectByName("Eye_L");
+    const rightEye = model.getObjectByName("Eye_R");
+    if (leftEye && rightEye) {
+      const eyes = new THREE.Box3().setFromObject(leftEye).union(new THREE.Box3().setFromObject(rightEye));
+      focus(eyes.getCenter(new THREE.Vector3()), Math.max(eyes.getSize(new THREE.Vector3()).x * 0.7, height * 0.25), true);
+      return;
+    }
     const head = model.getObjectByName("Head");
     const point = head ? head.getWorldPosition(new THREE.Vector3()).add(new THREE.Vector3(0, height * 0.045, 0))
       : new THREE.Vector3(0, height * 0.86, 0);

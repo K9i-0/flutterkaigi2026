@@ -1,0 +1,12 @@
+{
+  "body_boundary_edges_before": 78,
+  "holes_filled": 2,
+  "eye_mesh_coordinates_unchanged": true,
+  "exported_boundaries": {
+    "tripo_node_0b2d13ac": 0,
+    "Eye_R": 0,
+    "Eye_L": 0
+  },
+  "sha256": "ec4a690ef6220277cabbcb41e6d9a3c8fce465e350b0f9f450053d1aa901ba83",
+  "glb_bytes": 1071944
+}

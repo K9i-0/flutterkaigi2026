@@ -1,4 +1,5 @@
 export const arCharacters = {
+  yumemin: { name: "ゆめみん", greeting: null, height: 0.6 },
   sobaya: { name: "そば屋", greeting: "Greeting", height: 1.8 },
   fukuchan: { name: "福ちゃん", greeting: "Greeting", height: 1.7 },
   takosan: { name: "たこさん", greeting: "Wave", height: 1.433 },
@@ -10,7 +11,7 @@ export function arHeight(character: ARCharacter, placement: ARPlacement) {
   return placement === "life" ? arCharacters[character].height : placement === "plush" ? 0.2 : 0.12;
 }
 export function modelUrl(character: string) {
-  const version = character === "fukuchan" ? "rig-v3-even-skin-20260917" : character === "sobaya" ? "mug-motion-greeting-20260917" : character === "takosan" ? "tentacle-clean-20260917" : "20260916-2";
+  const version = character === "yumemin" ? "clean-eyes-20260919" : character === "fukuchan" ? "rig-v3-even-skin-20260917" : character === "sobaya" ? "mug-motion-greeting-20260917" : character === "takosan" ? "tentacle-clean-20260917" : "20260916-2";
   return `/models/characters/${character}.glb?v=${version}`;
 }
 

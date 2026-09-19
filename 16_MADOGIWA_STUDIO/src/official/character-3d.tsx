@@ -6,6 +6,7 @@ import "./character-3d.css";
 import { cameraUrl, isARCharacter, modelUrl } from "./character-ar-config";
 
 const characters = [
+  { id: "yumemin", name: "ゆめみん" },
   { id: "sobaya", name: "そば屋" },
   { id: "fukuchan", name: "福ちゃん" },
   { id: "takosan", name: "たこさん" },
@@ -33,7 +34,7 @@ export function Character3D({ character }: { character: string }) {
   if (!characters.some((entry) => entry.id === character)) return null;
   return <Dialog.Root open={open} onOpenChange={setOpen}>
     <Dialog.Trigger asChild>
-      <button className="j-model-trigger"><Box size={18} /><span>3Dで見る</span><span className="j-model-trigger-note">{character === "sobaya" ? "回して、じっくり。" : "回して、動かして。"}</span></button>
+      <button className="j-model-trigger"><Box size={18} /><span>3Dで見る</span><span className="j-model-trigger-note">{(character === "sobaya" || character === "yumemin") ? "回して、じっくり。" : "回して、動かして。"}</span></button>
     </Dialog.Trigger>
     <Dialog.Portal>
       <Dialog.Overlay className="j-model-overlay" />
@@ -113,5 +114,5 @@ function ModelView({ character }: { character: string }) {
 
 export function CharacterCameraLink({ character }: { character: string }) {
   if (!isARCharacter(character)) return null;
-  return <a className="j-model-trigger j-camera-trigger" href={cameraUrl(character)}><Camera size={18} /><span>いっしょに撮る</span><span className="j-model-trigger-note">等身大でも、ぬいぐるみでも。</span></a>;
+  return <a className="j-model-trigger j-camera-trigger" href={cameraUrl(character)}><Camera size={18} /><span>いっしょに撮る</span><span className="j-model-trigger-note">{character === "yumemin" ? "大きくても、ぬいぐるみでも。" : "等身大でも、ぬいぐるみでも。"}</span></a>;
 }
