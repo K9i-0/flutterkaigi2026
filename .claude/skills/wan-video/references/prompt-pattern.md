@@ -20,6 +20,18 @@
 - 単一タスク内で人物、衣装、小道具、声、音響、照明、色調を連続させる。構図固定のために動画を分割しない。
 - 完成尺が30秒を超える場合だけ最大30秒単位へ必要最小数で分割する。
 
+## 自然な発話と尺の指定
+
+台詞のある通常の会話では、次の指示を実送信本文へ展開する。全体尺は設定値へ置き換える。ユーザーが指定した溜め・長音・早口・音楽同期・厳密な発話キューがある場合は、その部分だけ例外として明記する。
+
+```text
+Natural speech takes priority over approximate shot timestamps. Shot time ranges are editorial guides, not speech-duration targets or mandatory utterance start/end times. Deliver every line at a natural conversational pace appropriate to its emotion. Do not stretch syllables, vowels, final words or pauses to fill a time window, and do not rush speech to hit a timestamp. Let each utterance finish naturally, then close the mouth. Use remaining time for silent reactions, glances, small gestures, ambience or the final action; do not add dialogue to fill time. Adjust internal cut boundaries to complete natural utterances while preserving scene order and the total duration of <duration> seconds.
+```
+
+- 「やでー」等の表記は自然な語尾の伸びとして扱い、秒数を埋める持続音にしない。ただしユーザーが指定した意図的な長音は維持する。
+- 台詞には「入室後に」「相手が言い終わってから」等の発話順序を使い、各行へ秒単位の開始・終了窓を付けない。全体の自然発話指示と、各ショットの厳密な発話時間指定を併記しない。
+- 上限以内に収まればよい依頼では、自然な発話・必要動作から完成尺を決める。尺埋めだけの台詞追加はしない。全体尺、シーン目安、生成後の実測時刻は区別する。
+
 ## 基本式
 
 公式ガイドの考え方を使う。
@@ -39,6 +51,8 @@ References:
 - Audio 1: voice-timbre reference only. Do not copy its words.
 
 Overall continuity: <location, time, palette, physics, identity, prop state>.
+
+<Insert the natural-speech timing paragraph above, with the actual total duration and any user-specified timing exceptions.>
 
 Shot 1 [0.0-3.0 s] — <shot size, lens, camera, subject, motion, state>.
 Shot 2 [3.0-7.0 s] — Hard cut. <shot content and state transition>.
