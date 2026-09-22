@@ -14,6 +14,7 @@ for row in lines:
  secs=float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','csv=p=0',str(src)]))
  n=math.ceil(secs*24)
  dst=R/'public/audio'/src.name
+ if dst.exists() and not os.path.samefile(src,dst):dst.unlink()
  if not dst.exists():os.link(src,dst)
  row.update(start=frame,end=frame+n,audio='audio/'+src.name)
  # RMS mouth envelope: audio-driven, exactly one sample per output frame.
@@ -24,7 +25,7 @@ for row in lines:
   rms=math.sqrt(sum((x/32768)**2 for x in seg)/max(1,len(seg)))
   env.append(round(min(.8,rms*6),4))
  row['mouth']=env
- frame+=n+18
+ frame+=n+int(row.get('pauseAfterFrames',18))
 (R/'src/edit-manifest.json').write_text(json.dumps({'composition':{'width':1280,'height':720,'fps':24,'durationInFrames':frame+36},'lines':lines},ensure_ascii=False,indent=2)+'\n')
 (EP/'asset-provenance.json').write_text(json.dumps({k:{'source':v,'sha256':hashlib.sha256((ROOT/v).read_bytes()).hexdigest()} for k,v in assets.items()},indent=2)+'\n')
 print('duration frames',frame+36,'seconds',(frame+36)/24)

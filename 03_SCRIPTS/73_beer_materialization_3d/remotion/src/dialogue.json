@@ -18,7 +18,8 @@
     "speaker": "sobaya",
     "text": "ずっと眺めたり、なめたり、\n泡の音を聞いたり、嗅いでみたり。",
     "chapter": "見る・触れる・嗅ぐ",
-    "shot": "training"
+    "shot": "training",
+    "pauseAfterFrames": 42
   },
   {
     "id": "04",

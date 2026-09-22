@@ -1,0 +1,23 @@
+[
+  {
+    "line": "04",
+    "keepThroughSeconds": 3.88,
+    "fadeOutSeconds": 0.015,
+    "reason": "Remove off-script trailing speech after やん",
+    "method": "User-reported artifact + local Whisper token alignment + silence detection; not a claim of human listening",
+    "trailingSilenceSeconds": 0.1,
+    "sourceSha256": "e8ee864f0e513eb2a2c6cdac945860aa530b1231babb00bcb88ad8b29a7726a7",
+    "adoptedSha256": "25e8e4e964f0ef2c6d8dd580f6756e937d5c766b04ffc5d93603ecbc5ea3b073",
+    "adoptedSeconds": 3.98
+  },
+  {
+    "line": "08",
+    "keepThroughSeconds": 2.6,
+    "fadeOutSeconds": 0.015,
+    "reason": "Remove isolated trailing noises after final わ; cut lies inside silence after 2.478s",
+    "method": "User-reported artifact + local Whisper token alignment + silence detection; not a claim of human listening",
+    "sourceSha256": "c9307ed4f1e14fdce01d61a4dd1ede8411f3ba8a2452168d917a74fd4defc151",
+    "adoptedSha256": "9c092f91880523c536d71cbda686a56320a4af96b3d86a3e9be6ab3cb8e9bae8",
+    "adoptedSeconds": 2.6
+  }
+]
