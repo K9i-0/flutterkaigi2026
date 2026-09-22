@@ -5,7 +5,7 @@
   "scripts": {
     "studio": "remotion studio src/index.tsx",
     "typecheck": "tsc --noEmit",
-    "render": "remotion render src/index.tsx BeerTraining ../final_remotion_anime_v3.mp4 --gl=angle --concurrency=2",
+    "render": "remotion render src/index.tsx BeerTraining ../final_remotion_anime_v4.mp4 --gl=angle --concurrency=2",
     "prepare-assets": "python3 ../prepare.py"
   },
   "dependencies": {

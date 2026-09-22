@@ -6,12 +6,12 @@ import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 import {clone} from 'three/examples/jsm/utils/SkeletonUtils.js';
 import * as THREE from 'three';
 import manifest from './edit-manifest.json';
-import {applyDogLapping} from '../../../../04_GAME_ASSETS/3d/motions/skit_v1/flashback-motion';
+import {applyDogLapping,applyDogSniff,dogSniffOrbit} from '../../../../04_GAME_ASSETS/3d/motions/skit_v1/flashback-motion';
 import {applySkitMotion, catalog, type SkitMotion} from '../../../../04_GAME_ASSETS/3d/motions/skit_v1/motions';
 const {lines,composition}=manifest;
 const clamp={extrapolateLeft:'clamp',extrapolateRight:'clamp'} as const;
 const at=(f:number)=>lines.find(l=>f>=l.start&&f<l.end)??[...lines].reverse().find(l=>f>=l.start)??lines[0];
-function Actor({name,x,yaw,motion,t,speaking,holding=false,mouth=0,sketching=false,dog=false,z=0}:{name:string;x:number;yaw:number;motion:SkitMotion;t:number;speaking:boolean;holding?:boolean;mouth?:number;sketching?:boolean;dog?:boolean;z?:number}){
+function Actor({name,x,yaw,motion,t,speaking,holding=false,mouth=0,sketching=false,dog=false,sniff=false,z=0}:{name:string;x:number;yaw:number;motion:SkitMotion;t:number;speaking:boolean;holding?:boolean;mouth?:number;sketching?:boolean;dog?:boolean;sniff?:boolean;z?:number}){
  const gltf=useLoader(GLTFLoader,staticFile(`models/${name}.glb`));
  const {scene,mixer,rest,mouthAnchor}=useMemo(()=>{const scene=clone(gltf.scene);scene.traverse(o=>{if(o instanceof THREE.Mesh){o.castShadow=true;o.receiveShadow=true;o.frustumCulled=false;
  const old=Array.isArray(o.material)?o.material:[o.material];
@@ -24,7 +24,7 @@ function Actor({name,x,yaw,motion,t,speaking,holding=false,mouth=0,sketching=fal
   mixer.stopAllAction();rest.forEach(({o,p,q,s})=>{o.position.copy(p);o.quaternion.copy(q);o.scale.copy(s);});const anim=gltf.animations.find(a=>a.name===catalog[motion].base)??gltf.animations[0];
   if(anim&&!dog){const a=mixer.clipAction(anim);a.reset().play();mixer.setTime(t%anim.duration);}
   scene.traverse(o=>{if(o instanceof THREE.Mesh&&o.morphTargetDictionary&&o.morphTargetInfluences){const k=o.morphTargetDictionary.SpeechOpen;if(k!==undefined)o.morphTargetInfluences[k]=speaking?mouth:0;}});
-  if(dog)applyDogLapping(scene,t);else applySkitMotion(scene,motion,t);
+  if(dog){if(sniff)applyDogSniff(scene,t);else applyDogLapping(scene,t);}else applySkitMotion(scene,motion,t);
   if(sketching&&scene.parent){
    for(const [key,bone,offset] of [['sketch-book','LeftHand',new THREE.Vector3(-.05,.025,.10)],['sketch-pen','RightHand',new THREE.Vector3(.10,.005,.055)]] as const){
     const prop=scene.parent.getObjectByName(key),hand=scene.getObjectByName(bone);
@@ -32,9 +32,9 @@ function Actor({name,x,yaw,motion,t,speaking,holding=false,mouth=0,sketching=fal
    }
   }
   scene.updateMatrixWorld(true);
- },[scene,mixer,gltf,motion,t,speaking,holding,mouth,rest,sketching,dog]);
+ },[scene,mixer,gltf,motion,t,speaking,holding,mouth,rest,sketching,dog,sniff]);
  const socket=(scene.getObjectByName("PropSocketR")??scene.getObjectByName("PropSocket.R"));
- return <group position={[x,0,z]} rotation={[0,yaw,0]}><primitive object={scene}/>{holding&&socket&&createPortal(<RealMug held/>,socket)}{sketching&&<SketchProps scene={scene} t={t}/>} {dog&&scene.getObjectByName('Head')&&createPortal(<Tongue anchor={mouthAnchor} t={t}/>,scene.getObjectByName('Head')!)}</group>;
+ return <group position={[x,0,z]} rotation={[0,yaw,0]}><primitive object={scene}/>{holding&&socket&&createPortal(<RealMug held/>,socket)}{sketching&&<SketchProps scene={scene} t={t}/>} {dog&&!sniff&&scene.getObjectByName('Head')&&createPortal(<Tongue anchor={mouthAnchor} t={t}/>,scene.getObjectByName('Head')!)}</group>;
 }
 function Tongue({anchor,t}:{anchor:THREE.Matrix4;t:number}){
  const extend=.025+.035*(.5+.5*Math.sin(t*16));
@@ -106,11 +106,12 @@ function Camera({shot,f,progress}:{shot:string;f:number;progress:number}){
  if(shot==='inspect'){p=[.8,1.8,2.6];target=[0,1.35,.10];}
  if(shot==='sketch'){p=[.8,2.12,2.1];target=[0,1.16,.3];}
  if(shot==='dog-wide'){p=[2.05,1.04,2.4];target=[0,.43,-.34];}
+ if(shot==='dog-sniff'){p=[2.25,2.8,2.8];target=[.035,.2,.17];}
  if(shot==='dog-close'){p=[.84,.47,.62];target=[.035,.27,.10];}
  if(shot==='empty'){p=[.5,1.5,2.9];target=[0,1.1,0];}
  if(shot==='magic'){p=[1.55,1.40,2.6];target=[.12,1.02,.1];}
  if(shot==='reveal'){p=[.75,1.70,2.55];target=[0,1.28,.1];}
- const push=shot.startsWith('dog')?.12:.045;
+ const push=shot==='dog-sniff'?0:shot.startsWith('dog')?.12:.045;
  camera.position.set(p[0],p[1],p[2]-Math.min(1,progress)*push);camera.lookAt(...target);camera.updateProjectionMatrix();
  },[camera,shot,f,progress]);return null;
 }
@@ -121,24 +122,26 @@ function Stage(){
  let holding=false,sketching=false,shot=row.shot;
  if(row.id==='01'&&local<1.6)shot='present-two';
  if(row.id==='02'){sketching=progress>.48;holding=!sketching;motion=sketching?'SketchMug':'InspectMug';shot=sketching?'sketch':'inspect';}
- if(dog){shot=progress<.48?'dog-wide':'dog-close';}
+ const sniffOffset=('sniffStartOffsetFrames' in row?Number(row.sniffStartOffsetFrames):96);
+ const sniff=dog&&f-row.start>=sniffOffset,sniffTime=Math.max(0,(f-row.start-sniffOffset)/24);
+ const orbit=dogSniffOrbit(sniffTime);
+ if(dog){shot=sniff?'dog-sniff':progress<.48?'dog-wide':'dog-close';}
  if(row.id==='04'){yam='Tsukkomi';shot='yametaro';motion='EmptyHands';}
  if(row.id==='05'){motion='EmptyHands';shot='empty';}
  if(row.id==='06'){motion='Conjure';shot='magic';}
  if(row.id==='07'){motion='ProudToast';holding=true;shot='reveal';}
  if(row.id==='08'){yam='Wish';shot='yametaro';}
- if(row.id==='09')yam='DoubleTake';
  const actionTime=row.id==='02'&&progress>.48?local-(row.end-row.start)/24*.48:local;
  return <>
  <Camera shot={shot} f={original} progress={progress}/><Set memory={memory} dog={dog}/>
- <Actor name="sobaya" x={memory?0:-.70} yaw={memory?0:.43} motion={motion} t={actionTime} speaking={!memory&&row.speaker==='sobaya'} holding={holding} sketching={sketching} dog={dog}/>
+ <Actor name="sobaya" x={sniff?orbit.x:memory?0:-.70} z={sniff?orbit.z:0} yaw={sniff?orbit.yaw:memory?0:.43} motion={motion} t={sniff?sniffTime:actionTime} speaking={!memory&&row.speaker==='sobaya'} holding={holding} sketching={sketching} dog={dog} sniff={sniff}/>
  {!memory&&<Actor name="yametaro" x={.85} yaw={-.48} motion={yam} t={local} speaking={row.speaker==='yametaro'&&original<row.end} mouth={row.mouth?.[f-row.start]??0}/>}
  {!memory&&<Mug p={[0,.88,.4]} scale={.85}/>}
  {memory&&sketching&&<Mug p={[1.1,.88,-.05]} scale={.85}/>}
  {dog&&<>
   <Mug p={[.035,.095,.17]} scale={.6}/>
   <mesh rotation={[-Math.PI/2,0,0]} position={[.08,.007,.23]} scale={[.43,.27,1]}><circleGeometry args={[1,32]}/><meshToonMaterial color="#b99434" transparent opacity={.75}/></mesh>
-  {Array.from({length:8},(_,i)=><mesh key={i} position={[.03+Math.sin(i*2.1)*.12,.04+((i*.017+local*.08)%.17),.20+Math.cos(i*2.1)*.09]} scale={[.012,.023,.012]}><sphereGeometry args={[1,8,6]}/><meshToonMaterial color="#eadbb4"/></mesh>)}
+  {!sniff&&Array.from({length:8},(_,i)=><mesh key={i} position={[.03+Math.sin(i*2.1)*.12,.04+((i*.017+local*.08)%.17),.20+Math.cos(i*2.1)*.09]} scale={[.012,.023,.012]}><sphereGeometry args={[1,8,6]}/><meshToonMaterial color="#eadbb4"/></mesh>)}
  </>}
  {row.id==='06'&&<Mug p={[.6,1.03,.25]} scale={.9+.035*Math.sin(f*.12)} ghost/>}
  {(row.id==='06'||row.id==='07')&&Array.from({length:36},(_,i)=><mesh key={i} position={[.2+Math.sin(i*2.4+f*.035)*(.24+i*.008),.68+((i*.073+f*.012)%1.25),.25+Math.cos(i*2.4+f*.035)*.3]} scale={.009+(i%3)*.005}><sphereGeometry args={[1,6,6]}/><meshBasicMaterial color="#ffe4a1"/></mesh>)}
@@ -157,7 +160,7 @@ const Film=()=>{
  <div style={{position:'absolute',bottom:0,left:0,right:0,height:28,background:'#10121a'}}/>
  {f<100&&<div style={{position:'absolute',left:52,top:47,fontSize:18,letterSpacing:5,color:'#e9ddbb'}}>窓際族物語　ビールの記憶</div>}
  {memory&&f-memoryStart<45&&f>=memoryStart&&<div style={{position:'absolute',left:55,top:53,fontSize:23,letterSpacing:6,color:'#eee0bc'}}>あの頃――</div>}
- {dog&&<div style={{position:'absolute',left:70,top:80,transform:'rotate(-9deg)',fontFamily:'serif',fontSize:46,letterSpacing:8,color:'#3b2541',textShadow:'1px 1px #e5d6c9'}}>ぺろ… ぺろ…</div>}
+ {dog&&<div style={{position:'absolute',left:70,top:80,transform:'rotate(-9deg)',fontFamily:'serif',fontSize:46,letterSpacing:8,color:'#3b2541',textShadow:'1px 1px #e5d6c9'}}>{f-row.start>=('sniffStartOffsetFrames' in row?Number(row.sniffStartOffsetFrames):96)?'くん… くん…':'ぺろ… ぺろ…'}</div>}
  {talking&&<div style={{position:'absolute',left:95,right:95,bottom:47,textAlign:'center',whiteSpace:'pre-line',fontSize:30,fontWeight:600,lineHeight:1.45,textShadow:'0 2px 4px #101018, 1px 0 2px #101018, -1px 0 2px #101018'}}>{row.text}</div>}
  {lines.map(l=>l.audio&&<Sequence key={l.id} from={l.start}><Audio src={staticFile(l.audio)}/></Sequence>)}
  <AbsoluteFill style={{background:'#fff4df',opacity:entryFlash}}/>

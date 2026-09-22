@@ -19,7 +19,8 @@
     "text": "ずっと眺めたり、なめたり、\n泡の音を聞いたり、嗅いでみたり。",
     "chapter": "見る・触れる・嗅ぐ",
     "shot": "training",
-    "pauseAfterFrames": 42
+    "pauseAfterFrames": 140,
+    "sniffStartOffsetFrames": 96
   },
   {
     "id": "04",
@@ -56,12 +57,5 @@
     "text": "ワイも給料で、それやりたいわ。",
     "chapter": "応用の方向性。",
     "shot": "yametaro"
-  },
-  {
-    "id": "09",
-    "speaker": "sobaya",
-    "text": "まず、実際の給料を用意しろ。",
-    "chapter": "まずは、現物。",
-    "shot": "wide"
   }
 ]
