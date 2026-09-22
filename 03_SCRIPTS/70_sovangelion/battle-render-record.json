@@ -1,0 +1,39 @@
+{
+  "output": "final_remotion_battle.mp4",
+  "sha256": "243288c9943f950ca7f34904fbd691755dfad178ae1a747c2c2bce4852c0c2d4",
+  "bytes": 73761693,
+  "streams": [
+    {
+      "codec_name": "h264",
+      "width": 1280,
+      "height": 720,
+      "r_frame_rate": "24/1",
+      "duration": "180.000000",
+      "nb_read_frames": "4320",
+      "side_data_list": [
+        {}
+      ]
+    },
+    {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "r_frame_rate": "0/0",
+      "duration": "180.053333",
+      "nb_read_frames": "8440"
+    }
+  ],
+  "checks": {
+    "typecheck": "pass",
+    "python_compile": "pass",
+    "decode_to_end": "pass",
+    "shots_contiguous": 43,
+    "dialogue_nonoverlap": 15,
+    "canonical_assets_unchanged": "sha256 pass",
+    "visual_review": "43 shot midpoints; 600-frame continuous fight range; opening/launch/ending corrected and rechecked"
+  },
+  "limitations": [
+    "Communication portraits are still photos.",
+    "Yametaro uses RMS-driven mouth opening, not phoneme animation.",
+    "Audio screened by ASR and levels; listening and precise lip-sync audit not performed."
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "02": {
+    "keepThroughSeconds": 1.43,
+    "fadeOutSeconds": 0.015,
+    "reason": "Timestamped ASR: approved text ends 1.26s, extraneous speech starts 1.68s"
+  }
+}

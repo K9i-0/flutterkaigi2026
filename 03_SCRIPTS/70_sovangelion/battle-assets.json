@@ -1,0 +1,34 @@
+{
+  "sobaya.glb": {
+    "source": "04_GAME_ASSETS/3d/hazard_adopted/optimized_20260919/sobaya.glb",
+    "sha256": "8a35c9ea6cd0088f34e28d94516f056893b80d6d9ee553c7223c122e893ebe2c"
+  },
+  "yametaro.glb": {
+    "source": "04_GAME_ASSETS/3d/characters/yametaro/rig_nose_v3/yametaro.glb",
+    "sha256": "c39417eb431bc76dd248b6959ca6636f0a90b542f94c3a56aab7941f3b9283df"
+  },
+  "takosan.glb": {
+    "source": "04_GAME_ASSETS/voxel/models/takosan.glb",
+    "sha256": "48d9a2bc35757ab6bc5e0a45bc73bf4b73a90a51e567411fb941bb236ca9a202"
+  },
+  "mug.glb": {
+    "source": "04_GAME_ASSETS/3d/props/beer_mug_v2/beer_mug.glb",
+    "sha256": "3456dcd7a79ec55936e6141a2b51432d51f38084d62a636368216530de2972f4"
+  },
+  "yotan.jpg": {
+    "source": "02_CHARACTERS/Yotan.jpg",
+    "sha256": "594b893543993660849d1c9c5995d124f5f1c24ba2720dba54d83c62b8ee717c"
+  },
+  "fukuchan.jpg": {
+    "source": "02_CHARACTERS/Fukuchan.jpg",
+    "sha256": "0f65437d6352caa940e1d05972cc86f06e3c26497057760648f4f75752a24b48"
+  },
+  "dock.png": {
+    "source": "03_SCRIPTS/70_sovangelion/remake_dock_20260919/scene_b.png",
+    "sha256": "92fc200c22eaca184638d508ee3682699b343af870b3ee51c384d0bea1a6a972"
+  },
+  "takosan.png": {
+    "source": "03_SCRIPTS/70_sovangelion/character_takosan_giant_core_sheet.png",
+    "sha256": "ae4ce061c82243802c122cc4243e5279ea7e9384f1c2e136845982ee167600d0"
+  }
+}

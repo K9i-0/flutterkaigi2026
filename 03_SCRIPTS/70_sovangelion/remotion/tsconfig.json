@@ -11,7 +11,13 @@
     "lib": [
       "ES2020",
       "DOM"
-    ]
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "three": [
+        "node_modules/@types/three"
+      ]
+    }
   },
   "include": [
     "src"

@@ -1,0 +1,24 @@
+{
+  "method": "built-in image_gen",
+  "date": "2026-09-22",
+  "outputs": [
+    {
+      "asset": "battle_assets/city.png",
+      "generated_source": "/Users/kotahayashi/.codex/generated_images/01a0c748-bdb3-77d1-b07d-c404a5249dc1/exec-d76fdc1d-c2c4-4d9e-afab-cfda27305b77.png",
+      "sha256": "b743c81657e66d5210ad61649385c372306a7f636e62f5278780a5740025e84d",
+      "prompt": "prompt_imagegen_battle_city.txt"
+    },
+    {
+      "asset": "battle_assets/impact.png",
+      "generated_source": "/Users/kotahayashi/.codex/generated_images/01a0c748-bdb3-77d1-b07d-c404a5249dc1/exec-5cc3d8e5-e15c-4eae-a18a-a19089d292d8.png",
+      "sha256": "b4d7a1d9e8905db79d4c3da68f3e37501ff5f304f393a4ad9a982a9e85f6ecc6",
+      "prompt": "prompt_imagegen_battle_impact.txt"
+    },
+    {
+      "asset": "battle_assets/ending.png",
+      "generated_source": "/Users/kotahayashi/.codex/generated_images/01a0c748-bdb3-77d1-b07d-c404a5249dc1/exec-7ca48db0-a572-44fb-8159-0bd1475e7565.png",
+      "sha256": "659a5991def8305c327bf6b00347376861428607e2d11ff84d7c56ecb3db1079",
+      "prompt": "prompt_imagegen_battle_ending.txt"
+    }
+  ]
+}

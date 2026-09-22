@@ -1,5 +1,9 @@
 # 第70話 ソヴァンゲリオン — 定時なんで帰ります
 
+## 戦闘まで描く3分拡張版（2026-09-22）
+
+ユーザー承認の「終わらない残業」をRemotion + Three.js + Imagegenで制作。現行の拡張版台本・再現手順は[script_battle.md](script_battle.md)。Compositionは`SovangelionBattle`、出力は`final_remotion_battle.mp4`。以下のリメイクと旧版は制作履歴として保持。
+
 ## 最新リメイク方針（2026-09-19）
 
 ドック画像はユーザー選択のB案 `remake_dock_20260919/scene_b.png` を採用。最新シナリオは [script_remake.md](remake_dock_20260919/script_remake.md) を参照する。福ちゃん「やめちゃんソバーに乗るのよ！」の直後、漫画2話の窓際席を再現したソヴァ内部の搭乗席へカットし、着席したやめ太郎のツッコミで終える。以下は旧版の制作履歴。

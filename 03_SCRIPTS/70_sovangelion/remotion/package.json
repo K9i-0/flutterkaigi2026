@@ -4,16 +4,21 @@
   "private": true,
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "render": "remotion render src/index.tsx SovangelionRemake out/remake_review.mp4 --concurrency=2"
+    "render": "remotion render src/index.tsx SovangelionRemake out/remake_review.mp4 --concurrency=2",
+    "render:battle": "remotion render src/index.tsx SovangelionBattle ../final_remotion_battle.mp4 --gl=angle --concurrency=2"
   },
   "dependencies": {
     "remotion": "4.0.526",
     "@remotion/cli": "4.0.526",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "@remotion/three": "4.0.526",
+    "three": "0.180.0",
+    "@react-three/fiber": "9.3.0"
   },
   "devDependencies": {
     "typescript": "5.8.3",
-    "@types/react": "19.1.0"
+    "@types/react": "19.1.0",
+    "@types/three": "0.180.0"
   }
 }

@@ -17,3 +17,16 @@ npm run render -- --browser-executable='/Applications/Google Chrome.app/Contents
 ## 19時版 v2
 
 現行 `src/edit-manifest.json` は752フレーム。初回140＋既存ドック372＋19時版搭乗席240。`edit-manifest-remake-v1.json` に旧版を保持。`public/cockpit-19h.mp4` は `../wan3_result_cockpit_19h_v2_480p.mp4` へのhardlink。確認版は `../review_remotion_remake_19h_v2.mp4`。
+
+## 3分の戦闘拡張版
+
+`SovangelionBattle`はRemotion + Three.js + Imagegenによる180秒・720p・24fpsの独立Composition。旧`SovangelionRemake`は保持。
+
+```sh
+python3 ../prepare_battle.py
+npm ci
+npm run typecheck
+npm run render:battle
+```
+
+出力は`../final_remotion_battle.mp4`。台本と制作・監査記録は`../script_battle.md`。タイムラインは`src/battle-manifest.json`、映像は`BattleFilm.tsx` / `BattleScene.tsx`。正典モデルと採用音声・画像を`prepare_battle.py`が`public/battle/`へhardlinkする。

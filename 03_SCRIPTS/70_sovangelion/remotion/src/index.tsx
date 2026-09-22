@@ -1,6 +1,8 @@
 import React from 'react';
 import {AbsoluteFill, Composition, OffthreadVideo, Sequence, registerRoot, staticFile} from 'remotion';
 import manifest from './edit-manifest.json';
+import {BattleFilm} from './BattleFilm';
+import battleManifest from './battle-manifest.json';
 
 const Remake: React.FC = () => (
   <AbsoluteFill style={{backgroundColor: 'black'}}>
@@ -18,6 +20,9 @@ const Remake: React.FC = () => (
 );
 
 const Root: React.FC = () => (
+  <>
   <Composition {...manifest.composition} component={Remake} />
+  <Composition id="SovangelionBattle" component={BattleFilm} {...battleManifest.composition} />
+  </>
 );
 registerRoot(Root);
