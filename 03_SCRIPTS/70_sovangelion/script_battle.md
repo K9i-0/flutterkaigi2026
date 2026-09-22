@@ -61,7 +61,7 @@ npm run render:battle
 依存関係は既存70・73話と同じRemotion 4.0.526。素材は正典からpublicへhardlinkする。`public/battle/`は再構成可能なためGit対象外。採用台詞・効果音・入力画像・コード・lockfileを追跡する。日本語フォントはローカルのHiragino Sans。
 
 - Composition: `SovangelionBattle`
-- 最新出力: `final_remotion_battle_v3.mp4`（初版 `final_remotion_battle.mp4` は保持）
+- 最新出力: `final_remotion_battle_v4.mp4`（初版 `final_remotion_battle.mp4` は保持）
 - 確認版: `remotion/out/battle-review.mp4`（640×360）、`fight-final-review.mp4`（720pの拘束〜決着）
 
 ## v1/v2の検証履歴
@@ -96,3 +96,7 @@ npm run render:battle
 - v3完成版の詳細は `battle-render-record-v3.json`。
 
 - v3映像監査：全46カット中央フレームを確認。福ちゃんとやめ太郎の対面、搭乗口と移動表示、UIの文言、顔アップ、ビール液面、3D背景と決着を確認。破壊後のコア再表示を検出し修正。
+
+## v4 SNS用の冒頭修正
+
+先頭36フレーム（1.5秒）へ既存デザインのタイトルカードを不透明で表示。冒頭の黒フェードを廃止し、0フレーム目から「ソヴァンゲリオン／終わらない残業」が読める。全体尺196秒と音声・台詞・以降のタイミングは維持。旧v3出力は保持。

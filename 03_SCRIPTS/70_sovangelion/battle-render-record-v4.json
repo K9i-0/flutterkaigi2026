@@ -1,0 +1,33 @@
+{
+  "output": "final_remotion_battle_v4.mp4",
+  "sha256": "7e9a66c78354798cc53ff26ad8188e6aa73c4f50d19c41e221b6e47f1e41fdcb",
+  "streams": [
+    {
+      "codec_name": "h264",
+      "width": 1280,
+      "height": 720,
+      "r_frame_rate": "24/1",
+      "duration": "196.000000",
+      "nb_read_frames": "4704",
+      "side_data_list": [
+        {}
+      ]
+    },
+    {
+      "codec_name": "aac",
+      "r_frame_rate": "0/0",
+      "duration": "196.053333",
+      "nb_read_frames": "9190"
+    }
+  ],
+  "checks": {
+    "typecheck": "pass",
+    "decode_to_end": "pass",
+    "visual": "Frames 0 and 35 show fully visible title; frame 36 cuts to 3D opening.",
+    "title_frames": [
+      0,
+      35
+    ],
+    "duration_frames": 4704
+  }
+}

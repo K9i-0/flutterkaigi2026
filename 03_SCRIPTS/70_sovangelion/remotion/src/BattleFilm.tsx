@@ -105,6 +105,7 @@ export const BattleFilm:React.FC=()=>{
   {m.lines.map(l=><Sequence key={l.id} from={l.start} durationInFrames={l.end-l.start}><Audio src={staticFile(l.audio)} volume={.80}/></Sequence>)}
   {sfx.map((s,i)=><Sequence key={'s'+i} from={s.frame+(s.frame>=27*24?96:0)+(s.frame>=40*24?288:0)}><Audio src={staticFile('battle/'+s.name+'.wav')} volume={s.volume}/></Sequence>)}
   <AbsoluteFill style={{background:'#fff3da',opacity:flash,pointerEvents:'none'}}/>
-  <AbsoluteFill style={{background:'#070b11',opacity: f<14?1-f/14:f>m.composition.durationInFrames-30?(f-(m.composition.durationInFrames-30))/29:0,pointerEvents:'none'}}/>
+  <AbsoluteFill style={{background:'#070b11',opacity: f>m.composition.durationInFrames-30?(f-(m.composition.durationInFrames-30))/29:0,pointerEvents:'none'}}/>
+  {f<36&&<Title/>}
  </AbsoluteFill>
 };
