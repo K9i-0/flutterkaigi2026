@@ -26,42 +26,57 @@
     "id": "04",
     "speaker": "yametaro",
     "text": "そば屋さん、中も窓際なんかい。",
-    "start": 672,
+    "start": 768,
     "caption": "苛立った関西弁。理不尽な状況に呆れ、鋭くツッコむ。"
   },
   {
     "id": "05",
     "speaker": "yametaro",
     "text": "これ、どうやって動かすん？",
-    "start": 840,
+    "start": 936,
     "caption": "苛立った関西弁。理不尽な状況に呆れ、鋭くツッコむ。"
+  },
+  {
+    "id": "16",
+    "speaker": "yametaro",
+    "text": "このUI使いづらすぎるやろ。作ったやつの顔が見てみたいわ。",
+    "start": 1056,
+    "caption": "関西弁で使いづらい画面に呆れて文句を言う。明瞭に最後まで言い切る。",
+    "speechText": "このユーアイ、使いづらすぎるやろ。作ったやつの顔が見てみたいわ。"
+  },
+  {
+    "id": "17",
+    "speaker": "fukuchan",
+    "text": "やめちゃんが去年作ったのよ。",
+    "start": 1248,
+    "caption": "明るくさらっと事実を伝える。最後まで明瞭に言い切る。"
   },
   {
     "id": "06",
     "speaker": "fukuchan",
     "text": "まず勤怠を、出勤にして！",
-    "start": 960,
+    "start": 1344,
     "caption": "明るくハキハキと、切迫した状況で相手に指示する。"
   },
   {
     "id": "07",
     "speaker": "fukuchan",
     "text": "やめちゃん、まず歩いて！",
-    "start": 1368,
+    "start": 1752,
     "caption": "明るくハキハキと、切迫した状況で相手に指示する。"
   },
   {
     "id": "08",
     "speaker": "yametaro",
     "text": "歩くボタンどこや！",
-    "start": 1464,
+    "start": 1848,
     "caption": "苛立った関西弁。理不尽な状況に呆れ、鋭くツッコむ。"
   },
   {
     "id": "09",
     "speaker": "yotan",
     "text": "申請は確認した。",
-    "start": 1776,
+    "start": 2160,
     "caption": "落ち着いて、事務的に明瞭に言い切る。",
     "seed": 42,
     "speechText": "申請は、確認した。"
@@ -70,7 +85,7 @@
     "id": "10",
     "speaker": "yametaro",
     "text": "承認してから言えや！",
-    "start": 1872,
+    "start": 2256,
     "caption": "関西弁で強く抗議する。最後まで明瞭に言い切る。",
     "seed": 42,
     "speechText": "承認してから、言えや！"
@@ -79,14 +94,14 @@
     "id": "11",
     "speaker": "sobaya",
     "text": "何してくれてんだ。",
-    "start": 2496,
+    "start": 2880,
     "caption": "静かな怒り。低く、短く、怒りを噛みしめて言い切る。"
   },
   {
     "id": "12",
     "speaker": "yametaro",
     "text": "え、ワイ何も押してへんで。",
-    "start": 2616,
+    "start": 3000,
     "caption": "関西弁で戸惑いながら明瞭に話す。",
     "seed": 100,
     "speechText": "えっ、ワイ、なにもおしてへんで。"
@@ -95,21 +110,21 @@
     "id": "13",
     "speaker": "yametaro",
     "text": "ワイ、乗る必要あった！？",
-    "start": 3264,
+    "start": 3648,
     "caption": "苛立った関西弁。理不尽な状況に呆れ、鋭くツッコむ。"
   },
   {
     "id": "14",
     "speaker": "fukuchan",
     "text": "目標、沈黙！",
-    "start": 3792,
+    "start": 4176,
     "caption": "明るくハキハキと、切迫した状況で相手に指示する。"
   },
   {
     "id": "15",
     "speaker": "yametaro",
     "text": "世界救っても、日報いるんか。",
-    "start": 4056,
+    "start": 4440,
     "caption": "苛立った関西弁。理不尽な状況に呆れ、鋭くツッコむ。"
   }
 ]

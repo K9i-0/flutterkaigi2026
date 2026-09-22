@@ -208,5 +208,33 @@
     "duration_seconds": 3.600042,
     "sha256": "9c7cd8a8d5213b5e701b69a42d330c8f38a9cff7686674f3b0be1bb41203dc94",
     "postprocess": "none"
+  },
+  {
+    "id": "16",
+    "file": "battle_line16_yametaro.wav",
+    "speaker": "yametaro",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "reference": "02_CHARACTERS/Yametaro_voice.wav",
+    "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+    "seed": 7,
+    "caption": "関西弁で使いづらい画面に呆れて文句を言う。明瞭に最後まで言い切る。",
+    "speechText": "このユーアイ、使いづらすぎるやろ。作ったやつの顔が見てみたいわ。",
+    "duration_seconds": 5.040042,
+    "sha256": "5fd94f2e11f13d5cff6800e0c5bca064da2033223d5ce65ddedc5f4783b765df",
+    "postprocess": "none"
+  },
+  {
+    "id": "17",
+    "file": "battle_line17_fukuchan.wav",
+    "speaker": "fukuchan",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "reference": "02_CHARACTERS/Fukuchan_voice.wav",
+    "reference_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+    "seed": 100,
+    "caption": "明るくさらっと事実を伝える。最後まで明瞭に言い切る。",
+    "speechText": "やめちゃんが去年作ったのよ。",
+    "duration_seconds": 2.920042,
+    "sha256": "3c228527f9f934a50884e18a029e2646054fc15d950a17271aeab2a9168ac7c2",
+    "postprocess": "none"
   }
 ]

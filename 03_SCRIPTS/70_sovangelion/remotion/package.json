@@ -5,7 +5,7 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "render": "remotion render src/index.tsx SovangelionRemake out/remake_review.mp4 --concurrency=2",
-    "render:battle": "remotion render src/index.tsx SovangelionBattle ../final_remotion_battle_v2.mp4 --gl=angle --concurrency=2"
+    "render:battle": "remotion render src/index.tsx SovangelionBattle ../final_remotion_battle_v3.mp4 --gl=angle --concurrency=2"
   },
   "dependencies": {
     "remotion": "4.0.526",

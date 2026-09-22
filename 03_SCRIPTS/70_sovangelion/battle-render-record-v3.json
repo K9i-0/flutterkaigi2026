@@ -1,0 +1,40 @@
+{
+  "output": "final_remotion_battle_v3.mp4",
+  "sha256": "04d8f7d5a7c1d02f24e4badcf9e60f203ebd7f8a391758a5ab11d291431fc65e",
+  "bytes": 44509222,
+  "streams": [
+    {
+      "codec_name": "h264",
+      "width": 1280,
+      "height": 720,
+      "r_frame_rate": "24/1",
+      "duration": "196.000000",
+      "nb_read_frames": "4704",
+      "side_data_list": [
+        {}
+      ]
+    },
+    {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "r_frame_rate": "0/0",
+      "duration": "196.053333",
+      "nb_read_frames": "9190"
+    }
+  ],
+  "checks": {
+    "typecheck": "pass",
+    "decode_to_end": "pass",
+    "shots_contiguous": 46,
+    "dialogue_nonoverlap": 17,
+    "canonical_model_and_voice_hashes": "pass",
+    "additional_dialogue_asr": "16 and 17 match requested text without extra tail speech",
+    "imagegen_plates": "none referenced in BattleFilm or BattleScene",
+    "visual_review": "46 shot midpoint frames; dock face-to-face and boarding preview; final core-break particles and absent core in ending checked"
+  },
+  "limitations": [
+    "Voxel dialogue uses gestures, not lip sync.",
+    "Yametaro uses RMS mouth motion, not phoneme animation.",
+    "ASR/decode screening performed; auditory listening and precise lip-sync audit not performed."
+  ]
+}

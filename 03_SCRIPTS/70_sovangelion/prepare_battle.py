@@ -7,9 +7,9 @@ def link(src,dst):
  dst.parent.mkdir(parents=True,exist_ok=True)
  if dst.exists() and not os.path.samefile(src,dst):dst.unlink()
  if not dst.exists():os.link(src,dst)
-assets={'sobaya.glb':ROOT/'04_GAME_ASSETS/3d/hazard_adopted/optimized_20260919/sobaya.glb','yametaro.glb':ROOT/'04_GAME_ASSETS/3d/characters/yametaro/rig_nose_v3/yametaro.glb','takosan.glb':ROOT/'04_GAME_ASSETS/3d/characters/takosan/rig_sheet_v2/takosan.glb','mug.glb':ROOT/'04_GAME_ASSETS/3d/props/beer_mug_v2/beer_mug.glb','yotan.glb':ROOT/'04_GAME_ASSETS/voxel/models/yotan.glb','fukuchan.glb':ROOT/'04_GAME_ASSETS/voxel/models/fukuchan.glb','dock.png':E/'remake_dock_20260919/scene_b.png','takosan.png':E/'character_takosan_giant_core_sheet.png'}
+assets={'sobaya.glb':ROOT/'04_GAME_ASSETS/3d/hazard_adopted/optimized_20260919/sobaya.glb','yametaro.glb':ROOT/'04_GAME_ASSETS/3d/characters/yametaro/rig_nose_v3/yametaro.glb','takosan.glb':ROOT/'04_GAME_ASSETS/3d/characters/takosan/rig_sheet_v2/takosan.glb','mug.glb':ROOT/'04_GAME_ASSETS/3d/props/beer_mug_v2/beer_mug.glb','yotan.glb':ROOT/'04_GAME_ASSETS/voxel/models/yotan.glb','fukuchan.glb':ROOT/'04_GAME_ASSETS/voxel/models/fukuchan.glb'}
 for n,p in assets.items():link(p,P/n)
-for p in (E/'battle_assets').glob('*.png'):link(p,P/p.name)
+# v3 renders scenery and characters in Three.js; no image plates.
 rows=json.loads((E/'battle-dialogue.json').read_text())
 for r in rows:
  p=E/f"battle_line{r['id']}_{r['speaker']}.wav"
@@ -22,13 +22,16 @@ for r in rows:
  print(r['id'],r['start']/24,r['end']/24,r['text'])
 for a,b in zip(rows,rows[1:]):assert a['end']<b['start'],(a,b)
 shots=[
-('opening','battle',0,5),('title','title',5,8),('dock','dock3d',8,13),('commander','comms',13,19),('refuse','dock3d',19,23),('order','comms',23,27),
+('opening','battle',0,5),('title','title',5,8),('dock','dock3d',8,13),('commander','comms',13,19),('refuse','dock3d',19,23),('order','dock3d',23,27),
 ('inside','cockpit',27,34),('how','cockpit',34,40),('clockin','cockpit',40,44),('ui-start','ui',44,47),('release','launch',47,50),('lift','cockpit',50,53),('land','battle',53,57),
 ('walk-command','battle',57,61),('walk-question','cockpit',61,64),('ui-wait','ui',64,67),('whip','battle',67,71),('slide','cockpit',71,74),('confirmed','comms',74,78),('approve','cockpit',78,82),('counter','battle',82,90),
 ('mug','battle',90,94),('beam','battle',94,98),('spill','battle',98,102),('anger','battle',102,107),('override','ui',107,109),('confused','cockpit',109,114),
-('rush','battle',114,119),('dodge','battle',119,123),('shoulder','battle',123,127),('bind','battle',127,132),('struggle','battle',132,136),('passenger','cockpit',136,140),('pull','battle',140,145),('smash','battle',145,149),('impact','plate',149,151),('explosion','battle',151,155),('aftermath','battle',155,158),('silenced','comms',158,161),('exhausted','cockpit',161,165),('ui-report','ui',165,169),('lastline','cockpit',169,174),('ending','plate',174,180)
+('rush','battle',114,119),('dodge','battle',119,123),('shoulder','battle',123,127),('bind','battle',127,132),('struggle','battle',132,136),('passenger','cockpit',136,140),('pull','battle',140,145),('smash','battle',145,149),('impact','battle',149,151),('explosion','battle',151,155),('aftermath','battle',155,158),('silenced','comms',158,161),('exhausted','cockpit',161,165),('ui-report','ui',165,169),('lastline','cockpit',169,174),('ending','battle',174,180)
 ]
-manifest={'composition':{'width':1280,'height':720,'fps':24,'durationInFrames':4320},'lines':rows,'shots':[{'id':i,'kind':k,'start':int(s*24),'end':int(e*24)} for i,k,s,e in shots]}
+shots=[(i,k,s+(4 if s>=27 else 0)+(12 if s>=40 else 0),e+(4 if e>27 else 0)+(12 if e>40 else 0)) for i,k,s,e in shots]
+shots.extend([('boarding','dock3d',27,31),('bad-ui','ui',44,52),('ui-author','cockpit',52,56)])
+shots.sort(key=lambda s:s[2])
+manifest={'composition':{'width':1280,'height':720,'fps':24,'durationInFrames':4704},'lines':rows,'shots':[{'id':i,'kind':k,'start':int(s*24),'end':int(e*24)} for i,k,s,e in shots]}
 (E/'remotion/src/battle-manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
 (E/'battle-assets.json').write_text(json.dumps({n:{'source':str(p.relative_to(ROOT)),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for n,p in assets.items()},indent=2)+'\n')
 # Sound design uses only speech-free sections of the already generated Wan 70 soundtrack.

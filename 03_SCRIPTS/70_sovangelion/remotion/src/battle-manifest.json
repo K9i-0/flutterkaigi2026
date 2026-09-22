@@ -3,7 +3,7 @@
     "width": 1280,
     "height": 720,
     "fps": 24,
-    "durationInFrames": 4320
+    "durationInFrames": 4704
   },
   "lines": [
     {
@@ -232,10 +232,10 @@
       "id": "04",
       "speaker": "yametaro",
       "text": "そば屋さん、中も窓際なんかい。",
-      "start": 672,
+      "start": 768,
       "caption": "苛立った関西弁。理不尽な状況に呆れ、鋭くツッコむ。",
       "audio": "battle/battle_line04_yametaro.wav",
-      "end": 754,
+      "end": 850,
       "mouth": [
         0.1077,
         0.167,
@@ -325,10 +325,10 @@
       "id": "05",
       "speaker": "yametaro",
       "text": "これ、どうやって動かすん？",
-      "start": 840,
+      "start": 936,
       "caption": "苛立った関西弁。理不尽な状況に呆れ、鋭くツッコむ。",
       "audio": "battle/battle_line05_yametaro.wav",
-      "end": 917,
+      "end": 1013,
       "mouth": [
         0.168,
         0.85,
@@ -410,13 +410,228 @@
       ]
     },
     {
+      "id": "16",
+      "speaker": "yametaro",
+      "text": "このUI使いづらすぎるやろ。作ったやつの顔が見てみたいわ。",
+      "start": 1056,
+      "caption": "関西弁で使いづらい画面に呆れて文句を言う。明瞭に最後まで言い切る。",
+      "speechText": "このユーアイ、使いづらすぎるやろ。作ったやつの顔が見てみたいわ。",
+      "audio": "battle/battle_line16_yametaro.wav",
+      "end": 1177,
+      "mouth": [
+        0.0268,
+        0.0486,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.7934,
+        0.647,
+        0.2775,
+        0.105,
+        0.0669,
+        0.0412,
+        0.0438,
+        0.1182,
+        0.1504,
+        0.0601,
+        0.7999,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.3471,
+        0.5469,
+        0.85,
+        0.85,
+        0.85,
+        0.6628,
+        0.7791,
+        0.845,
+        0.85,
+        0.85,
+        0.85,
+        0.5703,
+        0.6678,
+        0.3834,
+        0.1186,
+        0.0448,
+        0.0343,
+        0.0252,
+        0.0184,
+        0.0166,
+        0.0218,
+        0.0178,
+        0.0214,
+        0.029,
+        0.0184,
+        0.046,
+        0.1592,
+        0.2087,
+        0.042,
+        0.0255,
+        0.492,
+        0.85,
+        0.85,
+        0.146,
+        0.0733,
+        0.2312,
+        0.85,
+        0.85,
+        0.85,
+        0.6812,
+        0.1195,
+        0.1836,
+        0.4503,
+        0.6371,
+        0.5581,
+        0.1002,
+        0.4784,
+        0.85,
+        0.85,
+        0.85,
+        0.5911,
+        0.85,
+        0.85,
+        0.85,
+        0.3916,
+        0.5472,
+        0.4109,
+        0.5483,
+        0.7271,
+        0.8,
+        0.5206,
+        0.5523,
+        0.3484,
+        0.7524,
+        0.85,
+        0.85,
+        0.6905,
+        0.3081,
+        0.3284,
+        0.2834,
+        0.4132,
+        0.4201,
+        0.3817,
+        0.3665,
+        0.4274,
+        0.2791
+      ]
+    },
+    {
+      "id": "17",
+      "speaker": "fukuchan",
+      "text": "やめちゃんが去年作ったのよ。",
+      "start": 1248,
+      "caption": "明るくさらっと事実を伝える。最後まで明瞭に言い切る。",
+      "audio": "battle/battle_line17_fukuchan.wav",
+      "end": 1319,
+      "mouth": [
+        0.1882,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.7994,
+        0.85,
+        0.85,
+        0.5411,
+        0.1854,
+        0.4748,
+        0.85,
+        0.85,
+        0.85,
+        0.8112,
+        0.85,
+        0.7694,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.3624,
+        0.2628,
+        0.2,
+        0.5792,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.6732,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.4274,
+        0.1933,
+        0.2236,
+        0.2363,
+        0.1998,
+        0.1793,
+        0.85,
+        0.85,
+        0.85,
+        0.3502,
+        0.1504,
+        0.1405,
+        0.1004,
+        0.85,
+        0.85,
+        0.85,
+        0.6898,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.85,
+        0.8046
+      ]
+    },
+    {
       "id": "06",
       "speaker": "fukuchan",
       "text": "まず勤怠を、出勤にして！",
-      "start": 960,
+      "start": 1344,
       "caption": "明るくハキハキと、切迫した状況で相手に指示する。",
       "audio": "battle/battle_line06_fukuchan.wav",
-      "end": 1031,
+      "end": 1415,
       "mouth": [
         0.2741,
         0.2208,
@@ -495,10 +710,10 @@
       "id": "07",
       "speaker": "fukuchan",
       "text": "やめちゃん、まず歩いて！",
-      "start": 1368,
+      "start": 1752,
       "caption": "明るくハキハキと、切迫した状況で相手に指示する。",
       "audio": "battle/battle_line07_fukuchan.wav",
-      "end": 1432,
+      "end": 1816,
       "mouth": [
         0.2809,
         0.85,
@@ -570,10 +785,10 @@
       "id": "08",
       "speaker": "yametaro",
       "text": "歩くボタンどこや！",
-      "start": 1464,
+      "start": 1848,
       "caption": "苛立った関西弁。理不尽な状況に呆れ、鋭くツッコむ。",
       "audio": "battle/battle_line08_yametaro.wav",
-      "end": 1540,
+      "end": 1924,
       "mouth": [
         0.1003,
         0.8116,
@@ -657,12 +872,12 @@
       "id": "09",
       "speaker": "yotan",
       "text": "申請は確認した。",
-      "start": 1776,
+      "start": 2160,
       "caption": "落ち着いて、事務的に明瞭に言い切る。",
       "seed": 42,
       "speechText": "申請は、確認した。",
       "audio": "battle/battle_line09_yotan.wav",
-      "end": 1828,
+      "end": 2212,
       "mouth": [
         0.2015,
         0.35,
@@ -722,12 +937,12 @@
       "id": "10",
       "speaker": "yametaro",
       "text": "承認してから言えや！",
-      "start": 1872,
+      "start": 2256,
       "caption": "関西弁で強く抗議する。最後まで明瞭に言い切る。",
       "seed": 42,
       "speechText": "承認してから、言えや！",
       "audio": "battle/battle_line10_yametaro.wav",
-      "end": 1957,
+      "end": 2341,
       "mouth": [
         0.0622,
         0.0966,
@@ -820,10 +1035,10 @@
       "id": "11",
       "speaker": "sobaya",
       "text": "何してくれてんだ。",
-      "start": 2496,
+      "start": 2880,
       "caption": "静かな怒り。低く、短く、怒りを噛みしめて言い切る。",
       "audio": "battle/battle_line11_sobaya.wav",
-      "end": 2530,
+      "end": 2914,
       "mouth": [
         0.0007,
         0.0031,
@@ -865,12 +1080,12 @@
       "id": "12",
       "speaker": "yametaro",
       "text": "え、ワイ何も押してへんで。",
-      "start": 2616,
+      "start": 3000,
       "caption": "関西弁で戸惑いながら明瞭に話す。",
       "seed": 100,
       "speechText": "えっ、ワイ、なにもおしてへんで。",
       "audio": "battle/battle_line12_yametaro.wav",
-      "end": 2692,
+      "end": 3076,
       "mouth": [
         0.2913,
         0.85,
@@ -954,10 +1169,10 @@
       "id": "13",
       "speaker": "yametaro",
       "text": "ワイ、乗る必要あった！？",
-      "start": 3264,
+      "start": 3648,
       "caption": "苛立った関西弁。理不尽な状況に呆れ、鋭くツッコむ。",
       "audio": "battle/battle_line13_yametaro.wav",
-      "end": 3334,
+      "end": 3718,
       "mouth": [
         0.0883,
         0.5887,
@@ -1035,10 +1250,10 @@
       "id": "14",
       "speaker": "fukuchan",
       "text": "目標、沈黙！",
-      "start": 3792,
+      "start": 4176,
       "caption": "明るくハキハキと、切迫した状況で相手に指示する。",
       "audio": "battle/battle_line14_fukuchan.wav",
-      "end": 3852,
+      "end": 4236,
       "mouth": [
         0.1897,
         0.85,
@@ -1106,10 +1321,10 @@
       "id": "15",
       "speaker": "yametaro",
       "text": "世界救っても、日報いるんか。",
-      "start": 4056,
+      "start": 4440,
       "caption": "苛立った関西弁。理不尽な状況に呆れ、鋭くツッコむ。",
       "audio": "battle/battle_line15_yametaro.wav",
-      "end": 4143,
+      "end": 4527,
       "mouth": [
         0.0932,
         0.2233,
@@ -1234,231 +1449,249 @@
     },
     {
       "id": "order",
-      "kind": "comms",
+      "kind": "dock3d",
       "start": 552,
       "end": 648
     },
     {
+      "id": "boarding",
+      "kind": "dock3d",
+      "start": 648,
+      "end": 744
+    },
+    {
       "id": "inside",
       "kind": "cockpit",
-      "start": 648,
-      "end": 816
+      "start": 744,
+      "end": 912
     },
     {
       "id": "how",
       "kind": "cockpit",
-      "start": 816,
-      "end": 960
+      "start": 912,
+      "end": 1056
+    },
+    {
+      "id": "bad-ui",
+      "kind": "ui",
+      "start": 1056,
+      "end": 1248
+    },
+    {
+      "id": "ui-author",
+      "kind": "cockpit",
+      "start": 1248,
+      "end": 1344
     },
     {
       "id": "clockin",
       "kind": "cockpit",
-      "start": 960,
-      "end": 1056
+      "start": 1344,
+      "end": 1440
     },
     {
       "id": "ui-start",
       "kind": "ui",
-      "start": 1056,
-      "end": 1128
+      "start": 1440,
+      "end": 1512
     },
     {
       "id": "release",
       "kind": "launch",
-      "start": 1128,
-      "end": 1200
+      "start": 1512,
+      "end": 1584
     },
     {
       "id": "lift",
       "kind": "cockpit",
-      "start": 1200,
-      "end": 1272
+      "start": 1584,
+      "end": 1656
     },
     {
       "id": "land",
       "kind": "battle",
-      "start": 1272,
-      "end": 1368
+      "start": 1656,
+      "end": 1752
     },
     {
       "id": "walk-command",
       "kind": "battle",
-      "start": 1368,
-      "end": 1464
+      "start": 1752,
+      "end": 1848
     },
     {
       "id": "walk-question",
       "kind": "cockpit",
-      "start": 1464,
-      "end": 1536
+      "start": 1848,
+      "end": 1920
     },
     {
       "id": "ui-wait",
       "kind": "ui",
-      "start": 1536,
-      "end": 1608
+      "start": 1920,
+      "end": 1992
     },
     {
       "id": "whip",
       "kind": "battle",
-      "start": 1608,
-      "end": 1704
+      "start": 1992,
+      "end": 2088
     },
     {
       "id": "slide",
       "kind": "cockpit",
-      "start": 1704,
-      "end": 1776
+      "start": 2088,
+      "end": 2160
     },
     {
       "id": "confirmed",
       "kind": "comms",
-      "start": 1776,
-      "end": 1872
-    },
-    {
-      "id": "approve",
-      "kind": "cockpit",
-      "start": 1872,
-      "end": 1968
-    },
-    {
-      "id": "counter",
-      "kind": "battle",
-      "start": 1968,
-      "end": 2160
-    },
-    {
-      "id": "mug",
-      "kind": "battle",
       "start": 2160,
       "end": 2256
     },
     {
-      "id": "beam",
-      "kind": "battle",
+      "id": "approve",
+      "kind": "cockpit",
       "start": 2256,
       "end": 2352
     },
     {
-      "id": "spill",
+      "id": "counter",
       "kind": "battle",
       "start": 2352,
-      "end": 2448
+      "end": 2544
+    },
+    {
+      "id": "mug",
+      "kind": "battle",
+      "start": 2544,
+      "end": 2640
+    },
+    {
+      "id": "beam",
+      "kind": "battle",
+      "start": 2640,
+      "end": 2736
+    },
+    {
+      "id": "spill",
+      "kind": "battle",
+      "start": 2736,
+      "end": 2832
     },
     {
       "id": "anger",
       "kind": "battle",
-      "start": 2448,
-      "end": 2568
+      "start": 2832,
+      "end": 2952
     },
     {
       "id": "override",
       "kind": "ui",
-      "start": 2568,
-      "end": 2616
+      "start": 2952,
+      "end": 3000
     },
     {
       "id": "confused",
       "kind": "cockpit",
-      "start": 2616,
-      "end": 2736
+      "start": 3000,
+      "end": 3120
     },
     {
       "id": "rush",
       "kind": "battle",
-      "start": 2736,
-      "end": 2856
+      "start": 3120,
+      "end": 3240
     },
     {
       "id": "dodge",
       "kind": "battle",
-      "start": 2856,
-      "end": 2952
+      "start": 3240,
+      "end": 3336
     },
     {
       "id": "shoulder",
       "kind": "battle",
-      "start": 2952,
-      "end": 3048
+      "start": 3336,
+      "end": 3432
     },
     {
       "id": "bind",
       "kind": "battle",
-      "start": 3048,
-      "end": 3168
+      "start": 3432,
+      "end": 3552
     },
     {
       "id": "struggle",
       "kind": "battle",
-      "start": 3168,
-      "end": 3264
+      "start": 3552,
+      "end": 3648
     },
     {
       "id": "passenger",
       "kind": "cockpit",
-      "start": 3264,
-      "end": 3360
+      "start": 3648,
+      "end": 3744
     },
     {
       "id": "pull",
       "kind": "battle",
-      "start": 3360,
-      "end": 3480
+      "start": 3744,
+      "end": 3864
     },
     {
       "id": "smash",
       "kind": "battle",
-      "start": 3480,
-      "end": 3576
-    },
-    {
-      "id": "impact",
-      "kind": "plate",
-      "start": 3576,
-      "end": 3624
-    },
-    {
-      "id": "explosion",
-      "kind": "battle",
-      "start": 3624,
-      "end": 3720
-    },
-    {
-      "id": "aftermath",
-      "kind": "battle",
-      "start": 3720,
-      "end": 3792
-    },
-    {
-      "id": "silenced",
-      "kind": "comms",
-      "start": 3792,
-      "end": 3864
-    },
-    {
-      "id": "exhausted",
-      "kind": "cockpit",
       "start": 3864,
       "end": 3960
     },
     {
+      "id": "impact",
+      "kind": "battle",
+      "start": 3960,
+      "end": 4008
+    },
+    {
+      "id": "explosion",
+      "kind": "battle",
+      "start": 4008,
+      "end": 4104
+    },
+    {
+      "id": "aftermath",
+      "kind": "battle",
+      "start": 4104,
+      "end": 4176
+    },
+    {
+      "id": "silenced",
+      "kind": "comms",
+      "start": 4176,
+      "end": 4248
+    },
+    {
+      "id": "exhausted",
+      "kind": "cockpit",
+      "start": 4248,
+      "end": 4344
+    },
+    {
       "id": "ui-report",
       "kind": "ui",
-      "start": 3960,
-      "end": 4056
+      "start": 4344,
+      "end": 4440
     },
     {
       "id": "lastline",
       "kind": "cockpit",
-      "start": 4056,
-      "end": 4176
+      "start": 4440,
+      "end": 4560
     },
     {
       "id": "ending",
-      "kind": "plate",
-      "start": 4176,
-      "end": 4320
+      "kind": "battle",
+      "start": 4560,
+      "end": 4704
     }
   ]
 }

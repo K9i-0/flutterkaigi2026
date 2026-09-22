@@ -22,13 +22,5 @@
   "fukuchan.glb": {
     "source": "04_GAME_ASSETS/voxel/models/fukuchan.glb",
     "sha256": "7818f168e98ecf4d7d8ab79c6b6edf1dcaad27a9268bbebf703d874d2e10ecf5"
-  },
-  "dock.png": {
-    "source": "03_SCRIPTS/70_sovangelion/remake_dock_20260919/scene_b.png",
-    "sha256": "92fc200c22eaca184638d508ee3682699b343af870b3ee51c384d0bea1a6a972"
-  },
-  "takosan.png": {
-    "source": "03_SCRIPTS/70_sovangelion/character_takosan_giant_core_sheet.png",
-    "sha256": "ae4ce061c82243802c122cc4243e5279ea7e9384f1c2e136845982ee167600d0"
   }
 }

@@ -1,12 +1,15 @@
 from pathlib import Path
-import json,subprocess
+import json,subprocess,sys
 import numpy as np,torch
 from transformers import WhisperProcessor,WhisperForConditionalGeneration
 E=Path(__file__).resolve().parent;ROOT=E.parents[1]
 p=WhisperProcessor.from_pretrained('openai/whisper-small',cache_dir=ROOT/'.local/hazard_voice/asr-cache',local_files_only=True)
 m=WhisperForConditionalGeneration.from_pretrained('openai/whisper-small',cache_dir=ROOT/'.local/hazard_voice/asr-cache',local_files_only=True,use_safetensors=True).to('cpu');torch.set_num_threads(4)
-out=[]
+selected=set(sys.argv[1:])
+out=json.loads((E/'battle-audio-audit.json').read_text()) if selected else []
+out=[r for r in out if r['id'] not in selected]
 for r in json.loads((E/'battle-dialogue.json').read_text()):
+ if selected and r['id'] not in selected:continue
  path=E/f"battle_line{r['id']}_{r['speaker']}.wav"
  data=subprocess.check_output(['ffmpeg','-v','error','-i',str(path),'-f','f32le','-ac','1','-ar','16000','-'])
  features=p(np.frombuffer(data,dtype='<f4'),sampling_rate=16000,return_tensors='pt',return_attention_mask=True)

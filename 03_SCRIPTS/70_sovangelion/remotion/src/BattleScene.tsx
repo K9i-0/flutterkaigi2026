@@ -38,7 +38,8 @@ export function Actor({name='sobaya',p=[0,0,0],yaw=0,scale=1,clip='Hybrid_Idle_A
   const anim=gltf.animations.find(a=>a.name===clip)??gltf.animations[0];if(anim){mixer.clipAction(anim).reset().play();mixer.setTime(loop?Math.max(0,time)%anim.duration:Math.min(Math.max(0,time),anim.duration-.005))}
   scene.updateWorldMatrix(true,true);
   if(name==='yametaro'){
-   if(pose==='stand')applySkitMotion(scene,'Tsukkomi',time);
+   if(pose==='walk'){deltaWorld(scene,'LeftUpLeg',Math.sin(time*9)*.38);deltaWorld(scene,'RightUpLeg',-Math.sin(time*9)*.38);deltaWorld(scene,'LeftArm',-Math.sin(time*9)*.22);deltaWorld(scene,'RightArm',Math.sin(time*9)*.22);}
+   else if(pose==='stand')applySkitMotion(scene,'Tsukkomi',time);
    else seat(scene,time,pose);
   }
   if(pose==='bound'){reach(scene,'Left',[.50,1.28,.15]);reach(scene,'Right',[-.50,1.28,.15]);deltaWorld(scene,'Head',.12)}
@@ -135,12 +136,15 @@ export function Battlefield({id,t}:{id:string;t:number}){
  if(id==='pull'){sx=-.4-ease(t/2)*.18;tx=.85-ease(t/2)*.42;clip='Library_Push';at=t*.55;loop=false;mug=true;empty=true;bind=t<2;fall=ease(t/3)*.22;charge=.85;pos=[0,1.6,2.75];target=[0,.92,0];blast=t-2.3}
  if(id==='smash'){sx=-.6+ease(t/2)*.28;tx=.5;clip='Hybrid_MugSmash';at=t<2.6?.6*ease(t/2.6):.6+.4*ease((t-2.6)/1.4);loop=false;mug=true;empty=true;fall=.18;charge=1;pos=[-.2,.7,2.55];target=[.0,.9,0];shake=.01}
  if(id==='explosion'||id==='aftermath'){sx=-.35;tx=.65;clip='Hybrid_MugHold';mug=true;empty=true;fall=1.1;pos=[-.4,1.15,4];target=[.0,.75,0];blast=id==='explosion'?t:-1;shake=id==='explosion'?.03*(1-ease(t/4)):0}
+ if(id==='impact'){sx=-.35;tx=.5;clip='Hybrid_MugSmash';at=1;loop=false;mug=true;empty=true;charge=1;fall=.2+ease(t/2)*.5;pos=[.8,.95,1.9];target=[.35,.85,0];blast=t;shake=.035;}
+ if(id==='ending'){sx=0;tx=3;clip='Hybrid_Idle_A';pos=[2.8,1.9,5.5+ease(t/6)];target=[0,.8,0];fall=1.1;}
  const beamOn=(id==='beam'&&t>1.2)||(id==='opening'&&t>2.2&&t<3.5);
- return <><City t={t} ruined/><BattleCamera pos={pos} target={target} shake={shake} t={t}/>
- {showSoba&&<Actor p={[sx,0,sz]} yaw={1.3} clip={clip} time={Math.floor(at*12)/12} loop={loop} pose={pose} mug={mug} empty={empty} lean={lean}/>}
- <Takosan yaw={id==='opening'?-.1:-1.02} x={tx} z={tz} t={t} attack={attack} bind={bind} fall={fall} charge={charge} broken={id==='explosion'||id==='aftermath'}/>
+ return <><color attach="background" args={['#101c30']}/><fog attach="fog" args={['#101c30',6,18]}/><City t={t} ruined/><BattleCamera pos={pos} target={target} shake={shake} t={t}/>
+ {showSoba&&<Actor p={[sx,0,sz]} yaw={id==='ending'?.2:1.3} clip={clip} time={Math.floor(at*12)/12} loop={loop} pose={pose} mug={mug} empty={empty} lean={lean}/>}
+ <Takosan yaw={id==='opening'?-.1:-1.02} x={tx} z={tz} t={t} attack={attack} bind={bind} fall={fall} charge={charge} broken={id==='explosion'||id==='aftermath'||id==='ending'||(id==='impact'&&t>.25)}/>
  {beamOn&&<Beam a={[tx-.30,1.26,0]} b={id==='opening'?[-1.6,.4,.1]:[sx+.24,1.18,.15]} power={1+.2*Math.sin(t*44)}/>}
  <Debris t={blast} origin={[id==='whip'?sx:id==='counter'?tx:0,.1,0]} power={id==='explosion'?2:1}/>
+ {id==='impact'&&t>.25&&Array.from({length:18},(_,i)=><Box key={'core'+i} p={[.35+Math.sin(i*2.4)*(t-.25)*.7,.85+Math.cos(i*1.8)*(t-.25)*.6,.1+Math.sin(i*3.1)*(t-.25)*.7]} s={[.025,.035,.025]} r={[i+t*4,i,0]} c="#ff3453" glow/>)}
  {id==='spill'&&Array.from({length:24},(_,i)=><mesh key={i} position={[sx+.35+Math.sin(i*2.4)*t*.1,Math.max(.04,1.3-t*.6-(i%4)*.1),.18+Math.cos(i)*t*.1]} scale={[.018,.045,.018]}><sphereGeometry args={[1,8,4]}/><meshBasicMaterial color="#efa52b"/></mesh>)}
  {id==='explosion'&&<mesh position={[tx,.8,0]} scale={.1+ease(t/1.2)*2.6}><sphereGeometry args={[1,24,16]}/><meshBasicMaterial color={t<.5?'#fff8e7':'#e58337'} transparent opacity={1-ease((t-.7)/2.7)}/></mesh>}
  </>
@@ -177,29 +181,38 @@ export function CommandRoom({person,t,speaking=false}:{person:'yotan'|'fukuchan'
  {Array.from({length:9},(_,i)=><Box key={i} p={[-.8+i*.2,.755,.66]} s={[.10,.01,.035]} c={i%3===0?'#d48854':'#65a6ac'} glow/>)}
  {[-1.5,1.5].map(x=><group key={x}><Box p={[x,1.7,-.9]} s={[1.1,1.15,.07]} c="#294b60"/><Box p={[x,1.7,-.85]} s={[.95,.95,.025]} c="#172e43"/>{[0,1,2].map(i=><Box key={i} p={[x,1.43+i*.21,-.827]} s={[.7,.012,.006]} c="#467f91" glow/>)}</group>)}
  </>}
-export function Dock3D({t,launch=false,mouth=0,wide=false}:{t:number;launch?:boolean;mouth?:number;wide?:boolean}){return <>
- <color attach="background" args={['#071721']}/><ambientLight intensity={.9}/><directionalLight position={[0,6,4]} intensity={3} color="#bbddf1"/><pointLight position={[2,3,-2]} intensity={25} color="#b299ef"/>
- <BattleCamera pos={launch?[3,2.8+ease(t/3)*1.05,7.2]:wide?[3.0,2.5,7.2]:[1.8,1.4,3.4]} target={launch?[0,2.2+ease(t/3)*1.3,0]:wide?[0,1.8,-.3]:[0,.85,.5]} t={t} shake={launch?.02:0}/>
- <Actor p={[0,launch?ease(t/3)*1.7-.6:-.4,-1.3]} scale={2.5} clip="Hybrid_MugHold" time={t} mug/>
- <Box p={[0,-.05,-1]} s={[6,.1,5]} c="#d89522"/>
- {[-2,2].map(x=><group key={x}><Box p={[x,2,-1.4]} s={[.65,4,1]} c="#403550"/><Box p={[x*(1+ease(t/1.3)*.45),2.8,-.9]} s={[1.2,.65,1.3]} c="#777d80"/>{Array.from({length:7},(_,i)=><Box key={i} p={[x,.4+i*.5,-.24]} s={[.65,.07,.02]} c="#c1493f" glow/>)}</group>)}
- <Box p={[0,.01,.8]} s={[6,.16,1]} c="#354451"/>
- {[-.05,1.4].map(z=><Box key={z} p={[0,.75,z]} s={[6,.045,.04]} c="#879697"/>)}
- {!launch&&<VoxelCast name="fukuchan" p={[.8,.1,.65]} scale={.38} yaw={-.7} t={t} gesture="block"/>}
- {!launch&&<Actor name="yametaro" p={[0,.12,.75]} yaw={-.4-ease((t-2)/1.5)*.7} clip="Talk" time={t} pose="stand" mouth={mouth}/>}
+export function Dock3D({t,launch=false,mouth=0,wide=false,id='dock'}:{t:number;launch?:boolean;mouth?:number;wide?:boolean;id?:string}){
+ const boarding=id==='boarding',order=id==='order',u=ease(t/3.5),water=.8;
+ return <>
+ <color attach="background" args={['#071721']}/><ambientLight intensity={1}/><directionalLight position={[0,6,4]} intensity={3} color="#bbddf1"/><pointLight position={[2,3,-2]} intensity={25} color="#b299ef"/>
+ <BattleCamera pos={launch?[3,3.3,7.2]:wide?[3.6,3.1,7.7]:boarding?[-2.8,2.5,4.2]:[0,1.85,3.7]} target={launch?[0,1.9,0]:wide?[0,1,-.5]:boarding?[0,1.3,-.3]:[0,1.32,.8]} t={t} shake={launch?.02:0}/>
+ <Actor p={[0,-2.15+(launch?ease(t/3)*3.6:Math.sin(t*1.2)*.018),-1.65]} scale={2.5} clip="Hybrid_Idle_A" time={t}/>
+ <Box p={[0,-1.1,-1.6]} s={[5,3.7,3.8]} c="#735124"/>
+ <Box p={[0,water,-1.6]} s={[4.85,.025,3.65]} c="#d99919"/>
+ {Array.from({length:32},(_,i)=><mesh key={i} position={[Math.sin(i*2.7)*2.2,water+.02+Math.sin(t*2+i)*.008,-1.6+Math.cos(i*4.7)*1.6]} rotation={[-Math.PI/2,0,0]}><circleGeometry args={[.045+(i%4)*.02,12]}/><meshBasicMaterial color="#fff0b9"/></mesh>)}
+ {[-2.5,2.5].map(x=><Box key={x} p={[x,.86,-1.6]} s={[.16,.26,3.9]} c="#777f80"/>)}
+ <Box p={[0,.87,.36]} s={[5.2,.26,.15]} c="#78868a"/>
+ {[-2.8,2.8].map(x=><group key={x}><Box p={[x,2,-1.8]} s={[.45,4,.6]} c="#403550"/>{Array.from({length:7},(_,i)=><Box key={i} p={[x,.4+i*.5,-1.48]} s={[.45,.07,.02]} c="#c1493f" glow/>)}</group>)}
+ <Box p={[0,.86,.92]} s={[6,.16,1.2]} c="#354451"/>
+ <Box p={[-.6,.88,-.25]} s={[.7,.13,1.5]} c="#66777c"/>
+ {!launch&&<group position={[-.6,1.4,-1.16]}><Box s={[.77,1.08,.12]} c="#5b6b6f"/><Box p={[0,0,.07]} s={[.6,.92,.025]} c="#07131c"/><Box p={[0,.57,.09]} s={[.7,.05,.04]} c="#b5f4b3" glow/>{(!boarding||t>3.5)&&<Box p={[0,0,.11]} s={[.58,.9,.04]} c="#abb4a9"/>}</group>}
+ {!launch&&<VoxelCast name="fukuchan" p={[.65,.96,.96]} scale={.38} yaw={-.75} t={t} speaking={order} gesture={order?'':'block'}/>}
+ {!launch&&t<(boarding?3.6:100)&&<Actor name="yametaro" p={boarding?[-.3-u*.3,.96,1.05-u*2.15]:[-.3,.96,1.05]} yaw={boarding?Math.PI:1.2} clip="Talk" time={t} pose={boarding?'walk':'stand'} mouth={mouth}/>}
  </>}
 export function Cockpit({id,t,mouth=0}:{id:string;t:number;mouth?:number}){
- const cityTexture=useLoader(THREE.TextureLoader,staticFile('battle/city.png'));cityTexture.colorSpace=THREE.SRGBColorSpace;
+
  const shaking=['lift','slide','passenger'].includes(id),panic=['slide','passenger','approve','walk-question'].includes(id),typing=['clockin','exhausted','lastline'].includes(id);
  const shift=id==='slide'?ease(t/1.4)*.25:0;
  let pos:P=[1.45,1.15,2.3],target:P=[0,.62,0];
  if(['how','confused','lastline','approve','walk-question'].includes(id)){pos=[.65,.95,1.65];target=[0,.70,-.03]}
+ if(id==='ui-author'){pos=[.06,.83,.88];target=[0,.78,-.07]}
  if(id==='lift'){pos=[1.5,1.45,2.0];target=[0,.60,0]}
  return <><color attach="background" args={['#9bacae']}/><ambientLight intensity={1.6}/><directionalLight position={[0,4,2]} intensity={2} color="#f1f5df"/>
  <BattleCamera pos={pos} target={target} t={t} shake={shaking?.025:0} fov={40}/>
  <Box p={[0,-.06,0]} s={[5,.12,4]} c="#727c7d"/>
  <Box p={[0,1.2,-1]} s={[4,2.4,.08]} c="#b2b8b0"/>
- <mesh position={[0,1.15,-.935]}><planeGeometry args={[2.8,1.45]}/><meshBasicMaterial map={cityTexture}/></mesh>
+ <Box p={[0,1.15,-.933]} s={[2.8,1.45,.012]} c="#15273b"/>
+ <group position={[0,.46,-.87]} scale={.44}>{Array.from({length:9},(_,i)=><Building key={i} x={(i-4)*.65} z={0} h={.6+(i*7%5)*.34}/>)}</group>
  {[-1.4,0,1.4].map(x=><Box key={x} p={[x,1.15,-.88]} s={[.055,1.5,.06]} c="#697373"/>)}
  <Box p={[0,1.16,-.88]} s={[2.8,.055,.06]} c="#697373"/>
  {!['exhausted','lastline'].includes(id)&&<group position={[.6,.56,-1.02]} scale={.28}><Takosan x={0} yaw={-.3} t={t} attack={.3}/></group>}

@@ -20,7 +20,7 @@ npm run render -- --browser-executable='/Applications/Google Chrome.app/Contents
 
 ## 3分の戦闘拡張版
 
-`SovangelionBattle`はRemotion + Three.js + Imagegenによる180秒・720p・24fpsの独立Composition。旧`SovangelionRemake`は保持。
+`SovangelionBattle`はRemotion + Three.jsによる196秒・720p・24fpsの独立Composition。旧`SovangelionRemake`は保持。
 
 ```sh
 python3 ../prepare_battle.py
@@ -29,4 +29,4 @@ npm run typecheck
 npm run render:battle
 ```
 
-出力は`../final_remotion_battle_v2.mp4`。台本と制作・監査記録は`../script_battle.md`。タイムラインは`src/battle-manifest.json`、映像は`BattleFilm.tsx` / `BattleScene.tsx`。正典モデルと採用音声・画像を`prepare_battle.py`が`public/battle/`へhardlinkする。
+出力は`../final_remotion_battle_v3.mp4`。台本と制作・監査記録は`../script_battle.md`。タイムラインは`src/battle-manifest.json`、映像は`BattleFilm.tsx` / `BattleScene.tsx`。正典モデルと採用音声・画像を`prepare_battle.py`が`public/battle/`へhardlinkする。
