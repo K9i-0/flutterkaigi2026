@@ -1,0 +1,266 @@
+[
+  {
+    "id": "n01",
+    "scene": "intro",
+    "speaker": "yametaro",
+    "text": "深いジャングルの奥地に、ひっそりと暮らす少数民族、マドギワ族。",
+    "pauseAfterFrames": 24,
+    "mode": "narration",
+    "caption": "静かなドキュメンタリーの語り。低く落ち着いた抑揚、明瞭な発音で、自然な速度で語る。煽らず、文末を丁寧に収める。"
+  },
+  {
+    "id": "n02",
+    "scene": "intro",
+    "speaker": "yametaro",
+    "text": "彼らは、ある身近なものを、神として崇めているという。",
+    "pauseAfterFrames": 24,
+    "mode": "narration",
+    "caption": "一語ずつ明瞭に、自然な速度で落ち着いて読む。台本の文だけを読み、最後に口を閉じて終える。",
+    "speechText": "彼らは、ある身近なものを、神としてあがめているという。"
+  },
+  {
+    "id": "n03",
+    "scene": "intro",
+    "speaker": "yametaro",
+    "text": "今回、私たちワイエイチケーの取材班は、彼らとの初めての接触に成功した。",
+    "pauseAfterFrames": 24,
+    "mode": "narration",
+    "caption": "静かなドキュメンタリーの語り。低く落ち着いた抑揚、明瞭な発音で、自然な速度で語る。煽らず、文末を丁寧に収める。"
+  },
+  {
+    "id": "p01",
+    "scene": "discovery",
+    "speaker": "sobaya",
+    "text": "アベイラブル。アベイラブル。",
+    "pauseAfterFrames": 96,
+    "mode": "chant",
+    "caption": "静かな祈り。真剣に、短い言葉を二度、落ち着いて唱える。歌わない。"
+  },
+  {
+    "id": "q01",
+    "scene": "offering",
+    "speaker": "yametaro",
+    "text": "お話、聞かせてもらえますか。",
+    "pauseAfterFrames": 48,
+    "mode": "dialogue"
+  },
+  {
+    "id": "s01",
+    "scene": "offering",
+    "speaker": "sobaya",
+    "text": "まず、こちらの期待値を合わせたい。",
+    "pauseAfterFrames": 29,
+    "mode": "dialogue"
+  },
+  {
+    "id": "s02",
+    "scene": "offering",
+    "speaker": "sobaya",
+    "text": "何本あります？",
+    "pauseAfterFrames": 72,
+    "mode": "dialogue"
+  },
+  {
+    "id": "n04",
+    "scene": "offering",
+    "speaker": "yametaro",
+    "text": "ビール一箱を献上し、ようやく、取材を許された。",
+    "pauseAfterFrames": 36,
+    "mode": "narration",
+    "caption": "一語ずつ明瞭に、自然な速度で落ち着いて読む。台本の文だけを読み、最後に口を閉じて終える。",
+    "speechText": "ビールひとはこをけんじょうし、ようやく、取材を許された。"
+  },
+  {
+    "id": "q02",
+    "scene": "window",
+    "speaker": "yametaro",
+    "text": "建物がないのに、窓だけあるんですね。",
+    "pauseAfterFrames": 29,
+    "mode": "dialogue"
+  },
+  {
+    "id": "s03",
+    "scene": "window",
+    "speaker": "sobaya",
+    "text": "建物は、必要ありません。窓があれば、ここが窓際です。",
+    "pauseAfterFrames": 36,
+    "mode": "dialogue"
+  },
+  {
+    "id": "q03",
+    "scene": "window",
+    "speaker": "yametaro",
+    "text": "向こうには、何があるんですか。",
+    "pauseAfterFrames": 29,
+    "mode": "dialogue"
+  },
+  {
+    "id": "s04",
+    "scene": "window",
+    "speaker": "sobaya",
+    "text": "可能性です。",
+    "pauseAfterFrames": 120,
+    "mode": "dialogue"
+  },
+  {
+    "id": "p02",
+    "scene": "prayer",
+    "speaker": "sobaya",
+    "text": "アベイラブル。アベイラブル。",
+    "pauseAfterFrames": 72,
+    "mode": "chant",
+    "caption": "静かな祈り。真剣に、短い言葉を二度、落ち着いて唱える。歌わない。"
+  },
+  {
+    "id": "q04",
+    "scene": "prayer",
+    "speaker": "yametaro",
+    "text": "どういう意味の言葉なんですか。",
+    "pauseAfterFrames": 24,
+    "mode": "dialogue"
+  },
+  {
+    "id": "s05",
+    "scene": "prayer",
+    "speaker": "sobaya",
+    "text": "いつでも、お受けできます、という意味です。",
+    "pauseAfterFrames": 26,
+    "mode": "dialogue"
+  },
+  {
+    "id": "q05",
+    "scene": "prayer",
+    "speaker": "yametaro",
+    "text": "何を、お受けするんですか。",
+    "pauseAfterFrames": 24,
+    "mode": "dialogue",
+    "caption": "一語ずつ明瞭に、自然な速度で落ち着いて読む。台本の文だけを読み、最後に口を閉じて終える。"
+  },
+  {
+    "id": "s06",
+    "scene": "prayer",
+    "speaker": "sobaya",
+    "text": "アサインです。",
+    "pauseAfterFrames": 60,
+    "mode": "dialogue",
+    "speechText": "アサイン、です。",
+    "caption": "一語ずつ明瞭に、自然な速度で落ち着いて読む。台本の文だけを読み、最後に口を閉じて終える。"
+  },
+  {
+    "id": "q06",
+    "scene": "waiting",
+    "speaker": "yametaro",
+    "text": "返事は、来るんですか。",
+    "pauseAfterFrames": 29,
+    "mode": "dialogue"
+  },
+  {
+    "id": "s07",
+    "scene": "waiting",
+    "speaker": "sobaya",
+    "text": "今のところ、確認できていません。",
+    "pauseAfterFrames": 31,
+    "mode": "dialogue"
+  },
+  {
+    "id": "q07",
+    "scene": "waiting",
+    "speaker": "yametaro",
+    "text": "どのくらい、待ってるんですか。",
+    "pauseAfterFrames": 48,
+    "mode": "dialogue"
+  },
+  {
+    "id": "s08",
+    "scene": "waiting",
+    "speaker": "sobaya",
+    "text": "三年ほど、アベイラブルでして。",
+    "pauseAfterFrames": 120,
+    "mode": "dialogue"
+  },
+  {
+    "id": "n05",
+    "scene": "identity",
+    "speaker": "yametaro",
+    "text": "彼らは、島流しにされた、元アクシデンチュア社員だった。",
+    "pauseAfterFrames": 8,
+    "mode": "narration",
+    "caption": "静かなドキュメンタリーの語り。低く落ち着いた抑揚、明瞭な発音で、自然な速度で語る。煽らず、文末を丁寧に収める。"
+  },
+  {
+    "id": "s09",
+    "scene": "identity",
+    "speaker": "sobaya",
+    "text": "長期オンサイトです。",
+    "pauseAfterFrames": 43,
+    "mode": "dialogue"
+  },
+  {
+    "id": "q08",
+    "scene": "identity",
+    "speaker": "yametaro",
+    "text": "ああ、それは失礼しました。",
+    "pauseAfterFrames": 72,
+    "mode": "dialogue",
+    "caption": "一語ずつ明瞭に、自然な速度で落ち着いて読む。台本の文だけを読み、最後に口を閉じて終える。"
+  },
+  {
+    "id": "q09",
+    "scene": "future",
+    "speaker": "yametaro",
+    "text": "これから、どうするんですか。",
+    "pauseAfterFrames": 29,
+    "mode": "dialogue"
+  },
+  {
+    "id": "s10",
+    "scene": "future",
+    "speaker": "sobaya",
+    "text": "ネクストアクションは、引き続き待機です。",
+    "pauseAfterFrames": 43,
+    "mode": "dialogue"
+  },
+  {
+    "id": "q10",
+    "scene": "future",
+    "speaker": "yametaro",
+    "text": "帰りたいとは、思わない？",
+    "pauseAfterFrames": 72,
+    "mode": "dialogue"
+  },
+  {
+    "id": "s11",
+    "scene": "future",
+    "speaker": "sobaya",
+    "text": "呼ばれたら、いつでも。",
+    "pauseAfterFrames": 96,
+    "mode": "dialogue"
+  },
+  {
+    "id": "n06",
+    "scene": "ending",
+    "speaker": "yametaro",
+    "text": "今日も、窓の向こうから返事はなかった。",
+    "pauseAfterFrames": 72,
+    "mode": "narration",
+    "caption": "静かなドキュメンタリーの語り。低く落ち着いた抑揚、明瞭な発音で、自然な速度で語る。煽らず、文末を丁寧に収める。"
+  },
+  {
+    "id": "n07",
+    "scene": "ending",
+    "speaker": "yametaro",
+    "text": "それでも、明日の朝、彼らはここに立つ。",
+    "pauseAfterFrames": 72,
+    "mode": "narration",
+    "caption": "静かなドキュメンタリーの語り。低く落ち着いた抑揚、明瞭な発音で、自然な速度で語る。煽らず、文末を丁寧に収める。"
+  },
+  {
+    "id": "p03",
+    "scene": "ending",
+    "speaker": "sobaya",
+    "text": "アベイラブル。",
+    "pauseAfterFrames": 144,
+    "mode": "chant",
+    "caption": "静かな祈り。真剣に、短い言葉を二度、落ち着いて唱える。歌わない。"
+  }
+]

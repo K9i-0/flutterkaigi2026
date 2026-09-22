@@ -15,5 +15,32 @@
     "file": "backgrounds/jungle_floor_v1.png",
     "generator": "built-in imagegen",
     "source": "/Users/kotahayashi/.codex/generated_images/01a0c9d8-08cc-73a2-8918-628128e6886f/exec-201a75da-8481-40b0-be26-4d0c2f610831.png"
+  },
+  "intro_images": [
+    {
+      "file": "backgrounds/intro_island.png",
+      "generator": "built-in imagegen",
+      "prompt": "backgrounds/prompt_intro_island.txt",
+      "sha256": "65a28c707cd5d085120abdf92c646dd5c29f73d3431354f32cecb02064b9c27e"
+    },
+    {
+      "file": "backgrounds/intro_trail.png",
+      "generator": "built-in imagegen",
+      "prompt": "backgrounds/prompt_intro_trail.txt",
+      "sha256": "c4df22af115323f7fe6c89c25f024a874fc6b8245b0d14734c9b9092addefd65"
+    },
+    {
+      "file": "backgrounds/intro_leaves.png",
+      "generator": "built-in imagegen",
+      "prompt": "backgrounds/prompt_intro_leaves.txt",
+      "sha256": "a8ff8f897b8701e96e9b5f7ca5f81248b9b1a9bd6b1a18f28a4d70a86dbfe7f2"
+    }
+  ],
+  "ambience": {
+    "file": "audio_sources/rainforest_cc0.ogg",
+    "license": "CC0-1.0",
+    "recordist": "Felix Blume",
+    "sha256": "ae89c56723bb7cff19a239232ed7b160d913b66b1ffcf59f167efedf80730c42",
+    "source": "https://commons.wikimedia.org/wiki/File:404114_felix-blume_toucans-singing-in-the-amazonian-rainforest-brazil.ogg"
   }
 }

@@ -1,0 +1,14 @@
+{
+  "q05": {
+    "keepThroughSeconds": 2.25,
+    "fadeOutSeconds": 0.025,
+    "trailingSilenceSeconds": 0.12,
+    "reason": "ASR first sentence ends 2.20s; silence 2.2057-2.3143s; discard subsequent invented speech"
+  },
+  "q08": {
+    "keepThroughSeconds": 2.39,
+    "fadeOutSeconds": 0.025,
+    "trailingSilenceSeconds": 0.12,
+    "reason": "word timestamps: sentence punctuation 2.32s, extra phrase starts 2.46s"
+  }
+}

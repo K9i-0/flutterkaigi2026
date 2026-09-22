@@ -21,7 +21,9 @@
   "scripts": {
     "typecheck": "tsc",
     "studio": "remotion studio src/index.ts",
-    "preview": "remotion render src/index.ts YhkSetStudy out/set-study.mp4 --gl=angle --concurrency=2 --codec=h264"
+    "preview": "remotion render src/index.ts YhkSetStudy out/set-study.mp4 --gl=angle --concurrency=2 --codec=h264",
+    "render": "remotion render src/index.ts YhkDocumentary out/documentary-master.mp4 --gl=angle --concurrency=2 --codec=h264 --crf=18 --audio-bitrate=192k",
+    "finish": "python3 ../finish_documentary.py"
   },
   "sideEffects": [
     "*.css"

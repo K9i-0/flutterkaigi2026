@@ -1,0 +1,314 @@
+[
+  {
+    "id": "n01",
+    "speaker": "yametaro",
+    "reference": "02_CHARACTERS/Yametaro_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 7,
+    "caption": "静かなドキュメンタリーの語り。低く落ち着いた抑揚、明瞭な発音で、自然な速度で語る。煽らず、文末を丁寧に収める。",
+    "duration": 5.920042,
+    "sha256": "567c29c57cc3e8a527164683374a28e22b56c507891d0211e21fe42f17424f91"
+  },
+  {
+    "id": "n02",
+    "speaker": "yametaro",
+    "reference": "02_CHARACTERS/Yametaro_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 7,
+    "caption": "一語ずつ明瞭に、自然な速度で落ち着いて読む。台本の文だけを読み、最後に口を閉じて終える。",
+    "duration": 6.400042,
+    "sha256": "0abee02c831cb9c4862a2b0ef9a268d73861962d1594b069da1d4d3240b5e636"
+  },
+  {
+    "id": "n03",
+    "speaker": "yametaro",
+    "reference": "02_CHARACTERS/Yametaro_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 7,
+    "caption": "静かなドキュメンタリーの語り。低く落ち着いた抑揚、明瞭な発音で、自然な速度で語る。煽らず、文末を丁寧に収める。",
+    "duration": 6.840042,
+    "sha256": "a1fd0595651706f85b84f15ac1c92f181146500b3989803615c3ef8adef1c117"
+  },
+  {
+    "id": "p01",
+    "speaker": "sobaya",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 42,
+    "caption": "静かな祈り。真剣に、短い言葉を二度、落ち着いて唱える。歌わない。",
+    "duration": 2.555938,
+    "sha256": "a21922572e9b9d568762412f2137c035d123d91f8ea4eaa508f6931bd010924b"
+  },
+  {
+    "id": "q01",
+    "speaker": "yametaro",
+    "reference": "02_CHARACTERS/Yametaro_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 7,
+    "caption": "落ち着いた自然な声で、静かに質問する。誇張しない。",
+    "duration": 3.400042,
+    "sha256": "7a37e799446a2f54c8d40d213f80c128da9d28a1329e76991da5fdb65d35c89e"
+  },
+  {
+    "id": "s01",
+    "speaker": "sobaya",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 42,
+    "caption": "大真面目に、穏やかに答える。短い言葉も明瞭に話す。",
+    "duration": 2.63175,
+    "sha256": "e4f7953dd9675f04dec919a3f50f8759ecb8d16790b19c9f8cd1e375de621ccd"
+  },
+  {
+    "id": "s02",
+    "speaker": "sobaya",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 42,
+    "caption": "大真面目に、穏やかに答える。短い言葉も明瞭に話す。",
+    "duration": 1.176438,
+    "sha256": "f8328264e65488145252f650fd77f8ae8864c1e1ae9bfd229665699a0cedf67b"
+  },
+  {
+    "id": "n04",
+    "speaker": "yametaro",
+    "reference": "02_CHARACTERS/Yametaro_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 7,
+    "caption": "一語ずつ明瞭に、自然な速度で落ち着いて読む。台本の文だけを読み、最後に口を閉じて終える。",
+    "duration": 6.600042,
+    "sha256": "38b50418a6c7e46df114545044e1954d8c3b294204a6a694879142e00255173c"
+  },
+  {
+    "id": "q02",
+    "speaker": "yametaro",
+    "reference": "02_CHARACTERS/Yametaro_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 7,
+    "caption": "落ち着いた自然な声で、静かに質問する。誇張しない。",
+    "duration": 3.840042,
+    "sha256": "3231f1b966c0b3a5f9fba65708f864dfbd74580fcc8b9b4f893c5835ed63fbc4"
+  },
+  {
+    "id": "s03",
+    "speaker": "sobaya",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 42,
+    "caption": "大真面目に、穏やかに答える。短い言葉も明瞭に話す。",
+    "duration": 5.103479,
+    "sha256": "9dbba99d9e38ad850b3a4188df5a7bc358b84e55ed346f8ced89dce23fe3d3e7"
+  },
+  {
+    "id": "q03",
+    "speaker": "yametaro",
+    "reference": "02_CHARACTERS/Yametaro_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 7,
+    "caption": "落ち着いた自然な声で、静かに質問する。誇張しない。",
+    "duration": 3.960042,
+    "sha256": "d269269a1b38710792928b9dc231cbd6c0fada1a727fbd62d66d7ab9dc368b5b"
+  },
+  {
+    "id": "s04",
+    "speaker": "sobaya",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 42,
+    "caption": "大真面目に、穏やかに答える。短い言葉も明瞭に話す。",
+    "duration": 1.453896,
+    "sha256": "85f5efba49956f88508216fd5709ceebfbe2b349ec66a89533e3bc8cd3796391"
+  },
+  {
+    "id": "p02",
+    "speaker": "sobaya",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 42,
+    "caption": "静かな祈り。真剣に、短い言葉を二度、落ち着いて唱える。歌わない。",
+    "duration": 2.555938,
+    "sha256": "a21922572e9b9d568762412f2137c035d123d91f8ea4eaa508f6931bd010924b"
+  },
+  {
+    "id": "q04",
+    "speaker": "yametaro",
+    "reference": "02_CHARACTERS/Yametaro_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 7,
+    "caption": "落ち着いた自然な声で、静かに質問する。誇張しない。",
+    "duration": 3.920042,
+    "sha256": "32f0be26e86ec65fa1ef576f0dcc55e20aea050352bb3a7b080757338966756b"
+  },
+  {
+    "id": "s05",
+    "speaker": "sobaya",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 42,
+    "caption": "大真面目に、穏やかに答える。短い言葉も明瞭に話す。",
+    "duration": 3.326208,
+    "sha256": "9215ca7b92c8a04d76be05ac666a3ede4d68b1dda73ae50818dd34a3e18bb0fa"
+  },
+  {
+    "id": "q05",
+    "speaker": "yametaro",
+    "reference": "02_CHARACTERS/Yametaro_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 7,
+    "caption": "一語ずつ明瞭に、自然な速度で落ち着いて読む。台本の文だけを読み、最後に口を閉じて終える。",
+    "duration": 2.37,
+    "sha256": "58aae31ba06f0ab0d1b11172e262f76cf4e273c35a4853f28217348464073a84",
+    "tail_edit": "audio-tail-edits.json"
+  },
+  {
+    "id": "s06",
+    "speaker": "sobaya",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 42,
+    "caption": "一語ずつ明瞭に、自然な速度で落ち着いて読む。台本の文だけを読み、最後に口を閉じて終える。",
+    "duration": 1.913854,
+    "sha256": "3ee3b0d50e94fce1c03d6480d2417f97c626889144f8d10dd1a736f3569c7863"
+  },
+  {
+    "id": "q06",
+    "speaker": "yametaro",
+    "reference": "02_CHARACTERS/Yametaro_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 7,
+    "caption": "落ち着いた自然な声で、静かに質問する。誇張しない。",
+    "duration": 3.520042,
+    "sha256": "39a6953ef043d5d5d15c041e054e7b3a22ed4ec29c36279d4f9177c568f45ea6"
+  },
+  {
+    "id": "s07",
+    "speaker": "sobaya",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 42,
+    "caption": "大真面目に、穏やかに答える。短い言葉も明瞭に話す。",
+    "duration": 2.439542,
+    "sha256": "231a70822fec18338e86c334793b337abe4905536a80f2738f08c2a032bd0e59"
+  },
+  {
+    "id": "q07",
+    "speaker": "yametaro",
+    "reference": "02_CHARACTERS/Yametaro_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 7,
+    "caption": "落ち着いた自然な声で、静かに質問する。誇張しない。",
+    "duration": 3.920042,
+    "sha256": "5afcf6041a948f0cf2e0d4aa6725903a46945eb405e7ebad9fc526fa178e13fa"
+  },
+  {
+    "id": "s08",
+    "speaker": "sobaya",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 42,
+    "caption": "大真面目に、穏やかに答える。短い言葉も明瞭に話す。",
+    "duration": 2.495417,
+    "sha256": "c9b3024d02f2bfcb6e17e670d6320de58144525138849b538e2a065cb626e7f9"
+  },
+  {
+    "id": "n05",
+    "speaker": "yametaro",
+    "reference": "02_CHARACTERS/Yametaro_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 7,
+    "caption": "静かなドキュメンタリーの語り。低く落ち着いた抑揚、明瞭な発音で、自然な速度で語る。煽らず、文末を丁寧に収める。",
+    "duration": 4.800042,
+    "sha256": "8f134078c1ea555c63b2cc03a20d5b5a4fa3b69e3801b59fc8a04dcbf82fc33c"
+  },
+  {
+    "id": "s09",
+    "speaker": "sobaya",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 42,
+    "caption": "大真面目に、穏やかに答える。短い言葉も明瞭に話す。",
+    "duration": 1.429333,
+    "sha256": "8fab1ac0a6bf15c98d451bd04ba2693f9ffb69d05dc8f60d2172d41569e4fa77"
+  },
+  {
+    "id": "q08",
+    "speaker": "yametaro",
+    "reference": "02_CHARACTERS/Yametaro_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 7,
+    "caption": "一語ずつ明瞭に、自然な速度で落ち着いて読む。台本の文だけを読み、最後に口を閉じて終える。",
+    "duration": 2.51,
+    "sha256": "010976cb56b2009661f4b6a3ac2d2fff58e816660e809d6f6e53d46a3c663067",
+    "tail_edit": "audio-tail-edits.json"
+  },
+  {
+    "id": "q09",
+    "speaker": "yametaro",
+    "reference": "02_CHARACTERS/Yametaro_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 7,
+    "caption": "落ち着いた自然な声で、静かに質問する。誇張しない。",
+    "duration": 3.760042,
+    "sha256": "152b5192f1720226b79e23442993faa1ce8e035439f4c5c93cb34887e80c684a"
+  },
+  {
+    "id": "s10",
+    "speaker": "sobaya",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 42,
+    "caption": "大真面目に、穏やかに答える。短い言葉も明瞭に話す。",
+    "duration": 2.874958,
+    "sha256": "71d44a22ce7e035cd9c311dbaed48bb1990e7486a266be1148759d1e02f4a9fa"
+  },
+  {
+    "id": "q10",
+    "speaker": "yametaro",
+    "reference": "02_CHARACTERS/Yametaro_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 7,
+    "caption": "落ち着いた自然な声で、静かに質問する。誇張しない。",
+    "duration": 3.560042,
+    "sha256": "8cdd7844a2866f938fce4b21bfe80fc90d80e583e61e39a7ebe26b8ffa7a23bf"
+  },
+  {
+    "id": "s11",
+    "speaker": "sobaya",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 42,
+    "caption": "大真面目に、穏やかに答える。短い言葉も明瞭に話す。",
+    "duration": 1.798625,
+    "sha256": "f4d03703276fb70984fee9cffe976becdc6c84ae337a862f35710f129a7d8d29"
+  },
+  {
+    "id": "n06",
+    "speaker": "yametaro",
+    "reference": "02_CHARACTERS/Yametaro_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 7,
+    "caption": "静かなドキュメンタリーの語り。低く落ち着いた抑揚、明瞭な発音で、自然な速度で語る。煽らず、文末を丁寧に収める。",
+    "duration": 3.880042,
+    "sha256": "fbef7a9f6bd2ed85cca7c8d2beccddfedae67f66855cb44d51bef34307158686"
+  },
+  {
+    "id": "n07",
+    "speaker": "yametaro",
+    "reference": "02_CHARACTERS/Yametaro_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 7,
+    "caption": "静かなドキュメンタリーの語り。低く落ち着いた抑揚、明瞭な発音で、自然な速度で語る。煽らず、文末を丁寧に収める。",
+    "duration": 3.960042,
+    "sha256": "d2c8f4b0f560b71dea149f5e118693d2e0a993813595f674abe3a0cd1f67561e"
+  },
+  {
+    "id": "p03",
+    "speaker": "sobaya",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 42,
+    "caption": "静かな祈り。真剣に、短い言葉を二度、落ち着いて唱える。歌わない。",
+    "duration": 1.262417,
+    "sha256": "023af801c3c7869bf91425837c5e4e309d8b14382897177c35f24e59f1894b06"
+  }
+]

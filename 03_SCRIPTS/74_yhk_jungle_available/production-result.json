@@ -1,0 +1,16 @@
+{
+  "file": "final_remotion_documentary.mp4",
+  "bytes": 42115938,
+  "sha256": "0e7ee2f40aad0caf1b36105b3ae751f58be9031312bc76a9b83867ec1610295d",
+  "width": 854,
+  "height": 480,
+  "fps": 24,
+  "frames": 5145,
+  "duration_seconds": 214.375,
+  "checks": {
+    "full_decode": "passed",
+    "contact_sheet": "20 frames visually inspected",
+    "speech_asr": "31 clips checked",
+    "human_listening": "not performed"
+  }
+}
