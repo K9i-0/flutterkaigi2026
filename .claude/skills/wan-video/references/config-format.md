@@ -78,7 +78,7 @@
 
 ## `post_audio_repairs`
 
-ニュース等の早口・文面固定原稿で、Wan音声の誤読、発音崩れ、欠落、反復、余計な語句を正典ローカル音声から部分修正した場合に記録する。APIパラメータではなく、完成編集の再現用メタデータである。
+ニュース等の早口・文面固定原稿で、Wan音声の誤読、発音崩れ、欠落、反復、余計な語句をIrodori修復マスターから部分修正した場合に記録する。参照選択は[動画内音声による部分修復](video-voice-patch.md)に従う。APIパラメータではなく、完成編集の再現用メタデータである。
 
 ```json
 "post_audio_repairs": {
@@ -96,12 +96,14 @@
 }
 ```
 
-- `local_audio_path`: `VOICE_CAST.md`準拠の採用済み正典ローカル音声。
+- `local_audio_path`: 正典モデルで生成した採用済み修復マスター。声質参照は同一話者の動画抽出音声または正典WAV。
 - 複数話者では、各話者の正典Irodori音声と必須後処理を完成タイムラインへ配置した統合修復マスターを`local_audio_path`へ指定する。
-- `source_start` / `source_end`: 正典音声から切り出す時刻。
+- `source_start` / `source_end`: 修復マスターから切り出す時刻。
 - `target_start` / `target_end`: 完成タイムライン上で置換する時刻。動画尺と後続音声の時刻を変えない。
 - `reason`: `mispronunciation`、`omission`、`repetition`、`paraphrase`、`extra_words`のいずれか。
 - `output`: 部分修正後の最終MP4。`hybrid_audio_edit`もある場合はこちらを最終完成版とする。
+
+動画参照を使った場合は別の修復記録へ`reference_source=generated_video`、抽出元・時刻・SHA-256、モデル/seed/caption、ゲイン、区間外PCM一致と比較評価も残す。既存API設定に新しい同期方式を追加しない。
 
 既定では差し替え元と先の長さを一致させ、時間伸縮を使わない。長さが合わない場合は無音の取り方または画面外への切替を再設計する。
 
