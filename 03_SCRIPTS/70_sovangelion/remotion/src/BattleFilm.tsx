@@ -7,12 +7,13 @@ const FPS=24;
 const color={ink:'#09161e',cyan:'#93c6cf',paper:'#eee9d9',red:'#ce3e39'};
 const font='"Hiragino Sans","Noto Sans JP",sans-serif';
 const mono='"Menlo",monospace';
-function Title(){const f=useCurrentFrame();return <AbsoluteFill style={{background:'#0b0e13',color:color.paper,justifyContent:'center',paddingLeft:95}}>
- <div style={{fontSize:18,letterSpacing:9,color:'#97aab1',marginBottom:28}}>窓際族物語　第70話 拡張版</div>
- <div style={{fontFamily:'"Hiragino Mincho ProN",serif',fontSize:92,fontWeight:900,letterSpacing:-7,lineHeight:1.1}}>ソヴァンゲリオン</div>
- <div style={{width:990,height:2,background:'#a13636',margin:'30px 0'}}/>
- <div style={{fontSize:32,letterSpacing:14}}>終わらない残業</div>
- <div style={{position:'absolute',right:78,bottom:80,color:'#704040',fontFamily:mono,fontSize:16}}>SOVA / OVERTIME</div>
+function Title(){return <AbsoluteFill style={{background:'#000',color:'#fff',fontFamily:'"Hiragino Mincho ProN","YuMincho",serif',fontWeight:900,overflow:'hidden'}}>
+ <div style={{position:'absolute',left:65,top:42,fontSize:86,letterSpacing:-9,lineHeight:1,WebkitTextStroke:'1.5px white'}}>第七拾話</div>
+ <div style={{position:'absolute',right:67,top:60,fontFamily:'Arial,sans-serif',fontSize:20,fontWeight:900,letterSpacing:-.5,lineHeight:1.12,textAlign:'right'}}>MADOGIWA<br/>SOVANGELION<br/>EPISODE:70</div>
+ <div style={{position:'absolute',left:55,top:187,fontSize:140,letterSpacing:-12,lineHeight:1,whiteSpace:'nowrap',transform:'scaleY(1.27)',transformOrigin:'left top',WebkitTextStroke:'2px white'}}>ソヴァンゲリオン</div>
+ <div style={{position:'absolute',right:67,top:395,fontSize:123,letterSpacing:-10,lineHeight:1,transform:'scaleY(1.12)',transformOrigin:'right top',WebkitTextStroke:'1.5px white'}}>終わらない</div>
+ <div style={{position:'absolute',right:63,top:524,fontSize:159,letterSpacing:-13,lineHeight:1,WebkitTextStroke:'2px white'}}>残業</div>
+ <div style={{position:'absolute',left:68,bottom:57,fontFamily:'Arial,sans-serif',fontSize:22,fontWeight:900,letterSpacing:-.6,lineHeight:1.05}}>THE OVERTIME<br/>NEVER ENDS.</div>
  </AbsoluteFill>}
 function Comms({person,t,label,speaking}:{person:'yotan'|'fukuchan';t:number;label:string;speaking:boolean}){return <AbsoluteFill style={{background:'radial-gradient(ellipse at 28% 45%,#294856,#0b1925 70%)',padding:'70px 80px',display:'flex',flexDirection:'row',gap:55}}>
  <div style={{width:460,height:525,position:'relative',overflow:'hidden',border:'1px solid #7b9caa',boxShadow:'0 0 60px #071420'}}>

@@ -1,0 +1,29 @@
+{
+  "output": "final_remotion_battle_v5.mp4",
+  "sha256": "f318d38de5885dde4068c9e3cd022533102909311b7f563c45ffb57ea5de32c9",
+  "streams": [
+    {
+      "codec_name": "h264",
+      "width": 1280,
+      "height": 720,
+      "r_frame_rate": "24/1",
+      "duration": "196.000000",
+      "nb_read_frames": "4704",
+      "side_data_list": [
+        {}
+      ]
+    },
+    {
+      "codec_name": "aac",
+      "r_frame_rate": "0/0",
+      "duration": "196.010667",
+      "nb_read_frames": "9188"
+    }
+  ],
+  "method": "Remotion Title rendered at frame 0; FFmpeg overlay on v4 at frames 0–35 and 120–191, libx264 fast CRF18, AAC stream copy, 196 seconds",
+  "checks": {
+    "typecheck": "pass",
+    "decode_to_end": "pass",
+    "visual": "Title and cut verified from output frames 0, 36, 150; no text clipping"
+  }
+}

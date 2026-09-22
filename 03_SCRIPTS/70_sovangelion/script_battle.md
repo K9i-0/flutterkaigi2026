@@ -61,7 +61,7 @@ npm run render:battle
 依存関係は既存70・73話と同じRemotion 4.0.526。素材は正典からpublicへhardlinkする。`public/battle/`は再構成可能なためGit対象外。採用台詞・効果音・入力画像・コード・lockfileを追跡する。日本語フォントはローカルのHiragino Sans。
 
 - Composition: `SovangelionBattle`
-- 最新出力: `final_remotion_battle_v4.mp4`（初版 `final_remotion_battle.mp4` は保持）
+- 最新出力: `final_remotion_battle_v5.mp4`（初版 `final_remotion_battle.mp4` は保持）
 - 確認版: `remotion/out/battle-review.mp4`（640×360）、`fight-final-review.mp4`（720pの拘束〜決着）
 
 ## v1/v2の検証履歴
@@ -100,3 +100,7 @@ npm run render:battle
 ## v4 SNS用の冒頭修正
 
 先頭36フレーム（1.5秒）へ既存デザインのタイトルカードを不透明で表示。冒頭の黒フェードを廃止し、0フレーム目から「ソヴァンゲリオン／終わらない残業」が読める。全体尺196秒と音声・台詞・以降のタイミングは維持。旧v3出力は保持。
+
+## v5 タイトルデザイン
+
+ユーザー指定のエヴァ風タイトル：黒地・白い極太明朝・詰めた字間と縦方向の拡大、「第七拾話」、右寄せ2段の「終わらない／残業」、小さな英字。0〜35フレームと120〜191フレームに表示。RemotionのTitleを更新し、0フレームの静止画をレンダーしてv4の該当区間へFFmpegで合成。音声はストリームコピー、196秒を維持。npm run render:battleでも同じタイトルと時間軸を再現できる。
