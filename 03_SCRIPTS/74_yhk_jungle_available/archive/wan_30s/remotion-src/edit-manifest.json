@@ -1,0 +1,84 @@
+{
+  "composition": {
+    "id": "YhkDocumentary",
+    "width": 854,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 900
+  },
+  "inputVideo": "input.mp4",
+  "timingStatus": "provisional_until_generated_audio_review",
+  "overlays": [
+    {
+      "kind": "title",
+      "startFrame": 18,
+      "endFrame": 163,
+      "kicker": "YHK ドキュメンタリー",
+      "text": "密林のアベイラブル",
+      "detail": "窓に祈る マドギワ族"
+    },
+    {
+      "kind": "name",
+      "startFrame": 207,
+      "endFrame": 370,
+      "kicker": "マドギワ族　族長",
+      "text": "そば屋"
+    },
+    {
+      "kind": "reveal",
+      "startFrame": 661,
+      "endFrame": 794,
+      "kicker": "マドギワ族の正体",
+      "text": "元アクシデンチュア社員",
+      "detail": "島流しから３年"
+    },
+    {
+      "kind": "credit",
+      "startFrame": 849,
+      "endFrame": 900,
+      "text": "制作・著作　YHK"
+    }
+  ],
+  "captions": [
+    {
+      "startFrame": 4,
+      "endFrame": 59,
+      "text": "アベイラブル…… アベイラブル……"
+    },
+    {
+      "startFrame": 183,
+      "endFrame": 224,
+      "text": "お話を伺えますか？"
+    },
+    {
+      "startFrame": 227,
+      "endFrame": 319,
+      "text": "まず、こちらの期待値を合わせたい"
+    },
+    {
+      "startFrame": 320,
+      "endFrame": 388,
+      "text": "何本あります？"
+    },
+    {
+      "startFrame": 420,
+      "endFrame": 475,
+      "text": "何を祈っているんですか？"
+    },
+    {
+      "startFrame": 480,
+      "endFrame": 535,
+      "text": "アサインです"
+    },
+    {
+      "startFrame": 537,
+      "endFrame": 631,
+      "text": "三年ほど、アベイラブルでして"
+    },
+    {
+      "startFrame": 795,
+      "endFrame": 855,
+      "text": "長期オンサイトです"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "composition": {"width":854,"height":480,"fps":24,"durationInFrames":576},
+  "purpose":"3D background-wall and performance study; not the finished documentary",
+  "shots":[
+    {"startFrame":0,"endFrame":168,"label":"01　密林の窓 — 祈り"},
+    {"startFrame":168,"endFrame":312,"label":"02　ビールを献上し、族長への取材"},
+    {"startFrame":312,"endFrame":432,"label":"03　建物のない窓 — 独立した立体サッシ"},
+    {"startFrame":432,"endFrame":576,"label":"04　族長そば屋 — 言葉を待つ"}
+  ]
+}

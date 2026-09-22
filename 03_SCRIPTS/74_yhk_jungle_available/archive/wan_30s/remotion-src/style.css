@@ -1,0 +1,18 @@
+.documentary{background:#101912;color:#fff;font-family:'Hiragino Sans',sans-serif;font-synthesis:none;-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}
+.layout-background{background:linear-gradient(115deg,#101b15 0%,#23392c 60%,#71816a 100%)}
+.preview-note{position:absolute;top:220px;width:100%;text-align:center;color:#c2c9c0;font-size:14px;letter-spacing:.05em}
+.station{position:absolute;right:43px;top:25px;font-family:Arial,sans-serif;font-size:24px;font-weight:500;letter-spacing:.12em;color:#ffffffbf;text-shadow:0 1px 4px #0008}
+.overlay{position:absolute;left:43px;text-shadow:0 2px 7px #000,0 1px 2px #0009}
+.kicker{font-size:16px;letter-spacing:.13em;margin-bottom:10px;font-weight:400}
+.main-text{white-space:pre-line}
+.title{top:78px;padding-left:18px;border-left:1px solid #e3e4d3b0}
+.title .main-text{font-family:'Hiragino Mincho ProN',serif;font-size:35px;letter-spacing:.035em;line-height:1.4;font-weight:600}
+.detail{margin-top:12px;font-size:17px;letter-spacing:.08em}
+.name{top:268px;padding:10px 34px 12px 13px;background:linear-gradient(90deg,#08150da6,transparent);border-left:2px solid #d5d6c4}
+.name .kicker{font-size:15px;margin-bottom:6px;letter-spacing:.06em}
+.name .main-text{font-size:28px;font-weight:500;letter-spacing:.13em}
+.reveal{top:266px;background:linear-gradient(90deg,#08150dbb,transparent);padding:12px 28px 12px 14px;border-left:2px solid #d5d6c4}
+.reveal .main-text{font-size:27px;font-family:'Hiragino Mincho ProN',serif;font-weight:600;letter-spacing:.035em}
+.reveal .detail{font-size:16px;margin-top:8px}
+.caption{position:absolute;left:43px;right:43px;bottom:43px;text-align:center;font-size:25px;font-weight:500;letter-spacing:.015em;line-height:1.35;white-space:pre-line;-webkit-text-stroke:1.1px #141814;paint-order:stroke fill;text-shadow:0 2px 5px #000,0 0 9px #0009}
+.credit{left:auto;right:43px;top:330px;font-size:17px;letter-spacing:.10em}

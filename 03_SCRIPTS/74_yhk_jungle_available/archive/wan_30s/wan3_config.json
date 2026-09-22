@@ -1,0 +1,16 @@
+{
+  "model": "wan3.0-video",
+  "audio_source": "wan3",
+  "audio_sync_strategy": "no_visible_speech",
+  "reference_audio_usage": "voice_timbre_only",
+  "project_duration": 30,
+  "generation_mode": "single",
+  "prompt_file": "prompt_wan3.txt",
+  "media": [
+    {"type": "reference_image", "path": "character_sobaya_basic_sheet.png"},
+    {"type": "reference_image", "path": "product_super_try.png"},
+    {"type": "reference_audio", "path": "Sobaya_voice.wav"}
+  ],
+  "parameters": {"resolution": "480P", "ratio": "16:9", "duration": 30, "audio": true, "seed": 740923, "watermark": false, "prompt_extend": false},
+  "output": "wan3_yhk_jungle_seed740923_480p.mp4"
+}
