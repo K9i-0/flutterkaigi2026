@@ -6,21 +6,41 @@ import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 import {clone} from 'three/examples/jsm/utils/SkeletonUtils.js';
 import * as THREE from 'three';
 import manifest from './edit-manifest.json';
+import {applySkitMotion, catalog, type SkitMotion} from '../../../../04_GAME_ASSETS/3d/motions/skit_v1/motions';
 const {lines,composition}=manifest;
 const clamp={extrapolateLeft:'clamp',extrapolateRight:'clamp'} as const;
 const at=(f:number)=>lines.find(l=>f>=l.start&&f<l.end)??[...lines].reverse().find(l=>f>=l.start)??lines[0];
-function Actor({name,x,yaw,clip,t,speaking,holding=false,mouth=0}:{name:string;x:number;yaw:number;clip:string;t:number;speaking:boolean;holding?:boolean;mouth?:number}){
+function Actor({name,x,yaw,motion,t,speaking,holding=false,mouth=0,sketching=false}:{name:string;x:number;yaw:number;motion:SkitMotion;t:number;speaking:boolean;holding?:boolean;mouth?:number;sketching?:boolean}){
  const gltf=useLoader(GLTFLoader,staticFile(`models/${name}.glb`));
- const {scene,mixer}=useMemo(()=>{const scene=clone(gltf.scene);scene.traverse(o=>{if(o instanceof THREE.Mesh){o.castShadow=true;o.receiveShadow=true;}});return {scene,mixer:new THREE.AnimationMixer(scene)};},[gltf]);
+ const {scene,mixer,rest}=useMemo(()=>{const scene=clone(gltf.scene);scene.traverse(o=>{if(o instanceof THREE.Mesh){o.castShadow=true;o.receiveShadow=true;}});const rest: {o:THREE.Object3D;p:THREE.Vector3;q:THREE.Quaternion;s:THREE.Vector3}[]=[];scene.traverse(o=>rest.push({o,p:o.position.clone(),q:o.quaternion.clone(),s:o.scale.clone()}));return {scene,mixer:new THREE.AnimationMixer(scene),rest};},[gltf]);
  useLayoutEffect(()=>{
-  mixer.stopAllAction();const anim=gltf.animations.find(a=>a.name===clip)??gltf.animations[0];
+  mixer.stopAllAction();rest.forEach(({o,p,q,s})=>{o.position.copy(p);o.quaternion.copy(q);o.scale.copy(s);});const anim=gltf.animations.find(a=>a.name===catalog[motion].base)??gltf.animations[0];
   if(anim){const a=mixer.clipAction(anim);a.reset().play();mixer.setTime(t%anim.duration);}
   scene.traverse(o=>{if(o instanceof THREE.Mesh&&o.morphTargetDictionary&&o.morphTargetInfluences){const k=o.morphTargetDictionary.SpeechOpen;if(k!==undefined)o.morphTargetInfluences[k]=speaking?mouth:0;}});
-  if(holding){const head=scene.getObjectByName("Head");if(head)head.rotateX(.12+.07*Math.sin(t*1.7));}
+  applySkitMotion(scene,motion,t);
+  if(sketching&&scene.parent){
+   for(const [key,bone,offset] of [['sketch-book','LeftHand',new THREE.Vector3(-.05,.025,.10)],['sketch-pen','RightHand',new THREE.Vector3(.10,.005,.055)]] as const){
+    const prop=scene.parent.getObjectByName(key),hand=scene.getObjectByName(bone);
+    if(prop?.parent&&hand)prop.position.copy(prop.parent.worldToLocal(hand.getWorldPosition(new THREE.Vector3()))).add(offset);
+   }
+  }
   scene.updateMatrixWorld(true);
- },[scene,mixer,gltf,clip,t,speaking,holding,mouth]);
+ },[scene,mixer,gltf,motion,t,speaking,holding,mouth,rest,sketching]);
  const socket=(scene.getObjectByName("PropSocketR")??scene.getObjectByName("PropSocket.R"));
- return <group position={[x,0,0]} rotation={[0,yaw,0]}><primitive object={scene}/>{holding&&socket&&createPortal(<RealMug held/>,socket)}</group>;
+ return <group position={[x,0,0]} rotation={[0,yaw,0]}><primitive object={scene}/>{holding&&socket&&createPortal(<RealMug held/>,socket)}{sketching&&<SketchProps scene={scene} t={t}/>}</group>;
+}
+function SketchProps({scene,t}:{scene:THREE.Object3D;t:number}){
+ const book=React.useRef<THREE.Group>(null),pen=React.useRef<THREE.Group>(null);
+ return <>
+  <group ref={book} name="sketch-book" rotation={[.2,0,0]}>
+   <Box p={[0,0,0]} s={[.30,.015,.24]} c="#f2e6bc"/>
+   <Box p={[0,.01,0]} s={[.24,.008,.19]} c="#fffdf4"/>
+   <mesh position={[0,.017,0]} rotation={[-Math.PI/2,0,0]}><ringGeometry args={[.045,.049,24]}/><meshBasicMaterial color="#4c4842"/></mesh>
+   <Box p={[-.045,.018,.035]} s={[.006,.002,.07]} c="#4c4842"/>
+   <Box p={[.045,.018,.035]} s={[.006,.002,.07]} c="#4c4842"/>
+  </group>
+  <group ref={pen} name="sketch-pen" rotation={[.55,0,-.5]}><mesh><cylinderGeometry args={[.005,.005,.18,6]}/><meshStandardMaterial color="#cf743a"/></mesh></group>
+ </>;
 }
 function RealMug({held=false}:{held?:boolean}){
  const gltf=useLoader(GLTFLoader,staticFile('models/beer_mug.glb'));
@@ -64,22 +84,36 @@ function Camera({shot,f}:{shot:string;f:number}){
  let p:[number,number,number]=[3.25,2.05,5.4],target:[number,number,number]=[0,1.02,0];
  if(shot==='sobaya'){p=[.1,1.7,3.1];target=[-.78,1.3,0];}
  if(shot==='yametaro'){p=[.0,1.37,2.7];target=[.82,.94,0];}
- if(shot==='training'){p=[1.25,2.2,3.5];target=[-.45,1.03,.1];}
+ if(shot==='inspect'){p=[.2,1.85,2.5];target=[-.75,1.3,.13];}
+ if(shot==='sketch'){p=[.55,2.25,2.3];target=[-.65,1.16,.25];}
  if(shot==='magic'||shot==='reveal'){p=[2.55,1.72,3.85];target=[-.1,1.02,.3];}
  camera.position.set(p[0]+move,p[1],p[2]);camera.lookAt(...target);camera.updateProjectionMatrix();
  },[camera,shot,f]);return null;
 }
 function Stage(){
- const f=useCurrentFrame(),row=at(f),t=f/24,local=(f-row.start)/24;
- const training=row.shot==='training',magic=row.shot==='magic',reveal=Number(row.id)>=7;
- const visible=Number(row.id)<5||magic||reveal;
- const sc=magic?(.85+.1*Math.sin(f*.12)):reveal?interpolate(f,[lines[6].start,lines[6].start+12],[.1,1],clamp):1;
+ const f=useCurrentFrame(),row=at(f),local=Math.max(0,(f-row.start)/24);
+ const progress=(f-row.start)/(row.end-row.start);
+ let motion:SkitMotion='Explain',yam:SkitMotion='Listen';
+ let holding=false,sketching=false,shot=row.shot;
+ if(row.id==='02'){sketching=progress>.48;holding=!sketching;motion=sketching?'SketchMug':'InspectMug';shot=sketching?'sketch':'inspect';}
+ if(row.id==='03'){holding=true;motion=progress<.53?'SniffMug':'ListenFoam';shot='inspect';}
+ if(row.id==='04'){yam='Tsukkomi';motion='EmptyHands';}
+ if(row.id==='05'){motion='EmptyHands';yam='DoubleTake';}
+ if(row.id==='06'){motion='Conjure';yam='DoubleTake';}
+ if(row.id==='07'){motion='ProudToast';holding=true;yam='DoubleTake';}
+ if(row.id==='08')yam='Wish';
+ if(row.id==='09')yam='DoubleTake';
+ const split=row.id==='02'?.48:row.id==='03'?.53:0;
+ const actionTime=split&&progress>split?local-(row.end-row.start)/24*split:local;
+ const magic=row.shot==='magic',reveal=Number(row.id)>=7;
+ const visible=(Number(row.id)<5||magic||reveal)&&!holding;
+ const sc=magic?(.85+.1*Math.sin(f*.12)):1;
  return <>
- <Camera shot={row.shot} f={f}/><Set/>
- <Actor name="sobaya" x={-.85} yaw={.24} clip={training?'CharacterSheet_MugStand':row.shot==='reveal'?'Greeting':'Hybrid_Idle_Talking'} t={t} speaking={row.speaker==='sobaya'} holding={training}/>
- <Actor name="yametaro" x={.9} yaw={-.35} clip={row.speaker==='yametaro'?'Talk':'Idle'} t={t} speaking={row.speaker==='yametaro'&&f<row.end} mouth={(row as typeof row & {mouth?:number[]}).mouth?.[f-row.start]??0}/>
- {visible&&!training&&<Mug p={[0,.86+(magic?.045*Math.sin(f*.1):0),.48]} scale={sc} ghost={magic}/>}
- {(magic||row.shot==='reveal')&&Array.from({length:24},(_,i)=><mesh key={i} position={[Math.sin(i*2.4+f*.02)*(.24+i*.009),.68+((i*.073+f*.007)%1.25),.48+Math.cos(i*2.4+f*.02)*.3]} scale={.009+(i%3)*.005}><sphereGeometry args={[1,6,6]}/><meshBasicMaterial color={magic?'#84fff0':'#ffe192'}/></mesh>)}
+ <Camera shot={shot} f={f}/><Set/>
+ <Actor name="sobaya" x={-.85} yaw={.24} motion={motion} t={actionTime} speaking={row.speaker==='sobaya'} holding={holding} sketching={sketching}/>
+ <Actor name="yametaro" x={.9} yaw={-.35} motion={yam} t={local} speaking={row.speaker==='yametaro'&&f<row.end} mouth={row.mouth?.[f-row.start]??0}/>
+ {visible&&<Mug p={[0,.86+(magic?.045*Math.sin(f*.1):0),.48]} scale={sc} ghost={magic}/>}
+ {(magic||row.shot==='reveal')&&Array.from({length:36},(_,i)=><mesh key={i} position={[Math.sin(i*2.4+f*.035)*(.24+i*.008),.68+((i*.073+f*.012)%1.25),.48+Math.cos(i*2.4+f*.035)*.3]} scale={.009+(i%3)*.005}><sphereGeometry args={[1,6,6]}/><meshBasicMaterial color={magic?'#84fff0':'#ffe192'}/></mesh>)}
  </>
 }
 const Film=()=>{

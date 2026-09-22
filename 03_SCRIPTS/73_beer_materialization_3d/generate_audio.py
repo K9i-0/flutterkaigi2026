@@ -8,6 +8,7 @@ for row in lines:
  out=EP/f"line{row['id']}_{row['speaker']}.wav"
  soba=row['speaker']=='sobaya'
  caption='大真面目に修業の経験を語る。落ち着いて、少し誇らしげに。' if soba else '脱力した関西弁で、呆れたようにユーモラスにツッコむ。'
+ caption=row.get('caption',caption)
  if not raw.exists():
   subprocess.run([str(ROOT/'tools/irodori_speak.sh'),row['text'].replace('\n',''),str(raw),str(ROOT/'02_CHARACTERS'/('Sobaya_voice.wav' if soba else 'Yametaro_voice.wav')),'42' if soba else '7',caption],cwd=ROOT,env={**os.environ,'HF_HUB_OFFLINE':'1'},check=True)
  if not out.exists():
