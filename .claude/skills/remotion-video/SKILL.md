@@ -14,7 +14,7 @@ description: Remotionで生成済み動画を編集し、正確な日本語字�
 - ニュースの局ロゴと放送時刻は原則Remotionで後付けし、生成素材には文字なしの右上・左上安全域を確保する。時刻は実時間ではなく編集仕様へ固定して再現可能にする。
 - Wanで制作するニュース、速報、架空報道、ニュース番組風のネタ動画は、スタイル指定がなければ[references/yume-tele-news-preset.md](references/yume-tele-news-preset.md)を読み、`yume_tele_news_v1`を確認なしで適用する。ユーザーの明示指定は該当項目だけ上書きする。
 - 顔、人物同一性、仮面、手指、物体数、背景、演技、カメラ、物理破綻はRemotionの文字編集で直した扱いにしない。映像素材の再生成・差し替え・クロップで解決する。
-- 音声を編集できることと、任意のローカルTTSを使えることを混同しない。音声生成元は`VOICE_CAST.md`、`wan-video`、`seedance`の規則を継承し、Remotionは許可済み音源を配置・切替・音量調整する。
+- 音声を編集できることと、任意のローカルTTSを使えることを混同しない。音声生成元は制作経路に従う。Wan/Seedance作品は`VOICE_CAST.md`と各生成スキル、Three.js舞台動画は`threejs-video`の音声方針を使い、Remotionは採用音源を配置・切替・音量調整する。
 - 匿名証言者・犯人風の音声加工では[references/anonymous-voice-presets.md](references/anonymous-voice-presets.md)を読み、許可済み原音へ`scripts/process_anonymous_voice.py`を使う。低め／高めの指定がなければ`random`を選び、実際に選ばれたmodeとrandom seedをsidecar JSONと制作記録へ残す。
 - タイミングは秒の浮動小数ではなく、最終的に`round(seconds * fps)`した整数フレームへ固定する。同じイベントに秒とフレームの二重正本を作らない。
 - 元動画、採用音声、ロゴ、フォントを上書きしない。編集コードとレンダーを分け、確認用・中間レンダーは`remotion/out/`、採用済み完成版はエピソード直下の`final_remotion_<用途>.mp4`へ置く。
