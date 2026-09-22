@@ -1216,7 +1216,7 @@
     },
     {
       "id": "dock",
-      "kind": "plate",
+      "kind": "dock3d",
       "start": 192,
       "end": 312
     },

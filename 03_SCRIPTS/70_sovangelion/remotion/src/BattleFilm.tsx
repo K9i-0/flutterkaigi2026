@@ -1,7 +1,7 @@
 import React from 'react';
 import {AbsoluteFill,Audio,Img,Loop,Sequence,staticFile,useCurrentFrame,interpolate} from 'remotion';
 import {ThreeCanvas} from '@remotion/three';
-import {Battlefield,Cockpit,Dock3D,ease} from './BattleScene';
+import {Battlefield,Cockpit,Dock3D,CommandRoom,ease} from './BattleScene';
 import m from './battle-manifest.json';
 const FPS=24;
 const color={ink:'#09161e',cyan:'#93c6cf',paper:'#eee9d9',red:'#ce3e39'};
@@ -15,9 +15,9 @@ function Title(){const f=useCurrentFrame();return <AbsoluteFill style={{backgrou
  <div style={{fontSize:32,letterSpacing:14}}>終わらない残業</div>
  <div style={{position:'absolute',right:78,bottom:80,color:'#704040',fontFamily:mono,fontSize:16}}>SOVA / OVERTIME</div>
  </AbsoluteFill>}
-function Comms({person,t,label}:{person:string;t:number;label:string}){return <AbsoluteFill style={{background:'radial-gradient(ellipse at 28% 45%,#294856,#0b1925 70%)',padding:'70px 80px',display:'flex',flexDirection:'row',gap:55}}>
+function Comms({person,t,label,speaking}:{person:'yotan'|'fukuchan';t:number;label:string;speaking:boolean}){return <AbsoluteFill style={{background:'radial-gradient(ellipse at 28% 45%,#294856,#0b1925 70%)',padding:'70px 80px',display:'flex',flexDirection:'row',gap:55}}>
  <div style={{width:460,height:525,position:'relative',overflow:'hidden',border:'1px solid #7b9caa',boxShadow:'0 0 60px #071420'}}>
-  <Img src={staticFile(`battle/${person}.jpg`)} style={{width:'100%',height:'100%',objectFit:'cover',objectPosition:person==='yotan'?'50% 4%':'50% 0%',filter:'saturate(.72) contrast(1.08) brightness(.85)',transform:`scale(${1.02+t*.004})`,transformOrigin:'50% 22%'}}/>
+  <ThreeCanvas width={460} height={525} shadows dpr={1} camera={{near:.05,far:30}} gl={{antialias:true}}><CommandRoom person={person} t={t} speaking={speaking}/></ThreeCanvas>
   <AbsoluteFill style={{background:'repeating-linear-gradient(0deg,transparent 0px,transparent 3px,#08252b55 4px)',pointerEvents:'none'}}/>
   <div style={{position:'absolute',bottom:0,left:0,right:0,padding:'15px 22px',background:'#091921e8',fontSize:23,letterSpacing:5}}>{person==='yotan'?'よーたん':'福ちゃん'}</div>
  </div>
@@ -63,19 +63,19 @@ export const BattleFilm:React.FC=()=>{
  const f=useCurrentFrame(),shot=m.shots.find(s=>f>=s.start&&f<s.end)??m.shots[m.shots.length-1],t=(f-shot.start)/FPS;
  const line=m.lines.find(l=>f>=l.start&&f<l.end),mouth=line?.speaker==='yametaro'?(line.mouth[f-line.start]??0):0;
  const battle=shot.kind==='battle',cockpit=shot.kind==='cockpit';
- let portrait=shot.id==='commander'||shot.id==='confirmed'?'yotan':'fukuchan';
+ let portrait:'yotan'|'fukuchan'=shot.id==='commander'||shot.id==='confirmed'?'yotan':'fukuchan';
  const flash=shot.id==='impact'?Math.max(0,1-t*5):shot.id==='explosion'?Math.max(0,.7-t*1.3):0;
  const shake=shot.id==='impact'?Math.sin(t*70)*5:0;
  return <AbsoluteFill style={{background:color.ink,color:color.paper,fontFamily:font,overflow:'hidden'}}>
   {battle&&<Plate src="city.png" t={t}/>}
   {(battle||cockpit||shot.kind==='dock3d'||shot.kind==='launch')&&<AbsoluteFill style={{transform:`translateX(${shake}px)`}}>
    <ThreeCanvas width={1280} height={720} shadows dpr={1} camera={{fov:39,near:.025,far:100}} gl={{antialias:true,alpha:true}}>
-    {battle?<Battlefield id={shot.id} t={t}/>:cockpit?<Cockpit id={shot.id} t={t} mouth={mouth}/>:<Dock3D t={t} launch={shot.kind==='launch'} mouth={mouth}/>}
+    {battle?<Battlefield id={shot.id} t={t}/>:cockpit?<Cockpit id={shot.id} t={t} mouth={mouth}/>:<Dock3D t={t} wide={shot.id==='dock'} launch={shot.kind==='launch'} mouth={mouth}/>}
    </ThreeCanvas>
   </AbsoluteFill>}
   {shot.id==='title'&&<Title/>}
   {shot.kind==='plate'&&<Plate src={shot.id==='dock'?'dock.png':shot.id==='impact'?'impact.png':'ending.png'} t={t} end={shot.id==='ending'}/>}
-  {shot.kind==='comms'&&<Comms person={portrait} t={t} label={shot.id==='commander'?'搭乗命令':shot.id==='confirmed'?'申請確認':shot.id==='silenced'?'目標、沈黙':'発進準備'}/>}
+  {shot.kind==='comms'&&<Comms person={portrait} t={t} speaking={line?.speaker===portrait} label={shot.id==='commander'?'搭乗命令':shot.id==='confirmed'?'申請確認':shot.id==='silenced'?'目標、沈黙':'発進準備'}/>}
   {shot.kind==='ui'&&<Desktop id={shot.id} t={t}/>}
   {battle&&<AbsoluteFill style={{background:'linear-gradient(0deg,#030c15aa,transparent 35%,transparent 80%,#04111c55)',pointerEvents:'none'}}/>}
   {(shot.id==='opening'||shot.id==='land')&&<div style={{position:'absolute',left:55,top:57,fontSize:17,letterSpacing:6,color:'#bed4d9'}}>{shot.id==='opening'?'19:00　第３窓際市':'ソヴァ、出撃'}</div>}

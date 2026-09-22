@@ -29,4 +29,4 @@ npm run typecheck
 npm run render:battle
 ```
 
-出力は`../final_remotion_battle.mp4`。台本と制作・監査記録は`../script_battle.md`。タイムラインは`src/battle-manifest.json`、映像は`BattleFilm.tsx` / `BattleScene.tsx`。正典モデルと採用音声・画像を`prepare_battle.py`が`public/battle/`へhardlinkする。
+出力は`../final_remotion_battle_v2.mp4`。台本と制作・監査記録は`../script_battle.md`。タイムラインは`src/battle-manifest.json`、映像は`BattleFilm.tsx` / `BattleScene.tsx`。正典モデルと採用音声・画像を`prepare_battle.py`が`public/battle/`へhardlinkする。

@@ -2,7 +2,7 @@
 
 ## 戦闘まで描く3分拡張版（2026-09-22）
 
-ユーザー承認の「終わらない残業」をRemotion + Three.js + Imagegenで制作。現行の拡張版台本・再現手順は[script_battle.md](script_battle.md)。Compositionは`SovangelionBattle`、出力は`final_remotion_battle.mp4`。以下のリメイクと旧版は制作履歴として保持。
+ユーザー承認の「終わらない残業」をRemotion + Three.js + Imagegenで制作。現行の拡張版台本・再現手順は[script_battle.md](script_battle.md)。Compositionは`SovangelionBattle`、出力は`final_remotion_battle_v2.mp4`。以下のリメイクと旧版は制作履歴として保持。
 
 ## 最新リメイク方針（2026-09-19）
 

@@ -53,27 +53,48 @@ function HeldMug({empty}:{empty:boolean}){
  const gltf=useLoader(GLTFLoader,staticFile('battle/mug.glb'));
  const scene=useMemo(()=>{const s=gltf.scene.clone(true);s.updateMatrixWorld(true);const grip=s.getObjectByName('Grip');if(grip){const m=grip.matrixWorld.clone().invert().multiply(s.matrixWorld);m.decompose(s.position,s.quaternion,s.scale)}s.traverse(o=>{if(o instanceof THREE.Mesh){o.castShadow=true;const old=Array.isArray(o.material)?o.material:[o.material];const mats=old.map(m=>{const c=m.clone() as THREE.MeshPhysicalMaterial;if(c.transmission){c.transmission=0;c.transparent=true;c.opacity=empty?.55:.28;if(empty){c.color.set('#b6d8e4');c.roughness=.18;c.metalness=.3;}}if(o.name==='BeerVolume'||o.name==='LiquidSurface'){if(empty)o.visible=false;else{c.color.set('#e7a032');c.opacity=1;c.transparent=false;}}if(empty&&/foam|bubble/i.test(o.name))o.visible=false;return c});o.material=Array.isArray(o.material)?mats:mats[0]}});return s},[gltf,empty]);return <primitive object={scene}/>
 }
-function Segment({a,b,width=.07,color='#303a47'}:{a:THREE.Vector3;b:THREE.Vector3;width?:number;color?:string}){
- const q=new THREE.Quaternion().setFromUnitVectors(v(0,1,0),b.clone().sub(a).normalize());return <mesh position={a.clone().add(b).multiplyScalar(.5)} quaternion={q} castShadow><boxGeometry args={[width,a.distanceTo(b)+.025,width]}/><meshToonMaterial color={color}/></mesh>
-}
-function Tentacle({index,t,attack,bind}:{index:number;t:number;attack:number;bind:boolean}){
- const angle=index/6*Math.PI*2;
- const base=v(Math.sin(angle)*.29,.38,Math.cos(angle)*.22);
- let tip=v(Math.sin(angle)*(.8+.12*Math.sin(t*2+index)),.11,Math.cos(angle)*.9);
- if(index===0&&attack>0)tip=v(.12,.55+attack*.6,.85+attack*1.3);
- if(bind&&index<3)tip=v((index-1)*.35,1.65+(index%2)*.20,1.45);
- const mid=base.clone().lerp(tip,.5);mid.y+=.16+Math.sin(t*3+index)*.07;
- if(bind&&index<3)mid.x+=(index-1)*.4;
- const curve=new THREE.QuadraticBezierCurve3(base,mid,tip),points=curve.getPoints(8);
- return <>{points.slice(1).map((b,i)=><Segment key={i} a={points[i]} b={b} width={.11-i*.008}/>)}{points.filter((_,i)=>i%2===0).map((a,i)=><Box key={'s'+i} p={[a.x,a.y-.04,a.z]} s={[.045,.018,.045]} c="#81837a"/>)}</>
+/** Animate the exact game-adopted skinned model; never replace its six tentacles. */
+function reachTentacle(scene:THREE.Object3D,index:number,goal:P,weight:number){
+ if(weight<=0)return;
+ const base=scene.getObjectByName(`Tentacle${index}Base`),mid=scene.getObjectByName(`Tentacle${index}Mid`),tip=scene.getObjectByName(`Tentacle${index}Tip`);
+ if(!base||!mid||!tip)return;
+ scene.updateWorldMatrix(true,true);
+ const origin=scene.worldToLocal(base.getWorldPosition(v(0,0,0)));
+ // Stretch translations between native joints for a cinematic whip, keeping the original mesh and skin.
+ const length=mid.position.length()+tip.position.length();
+ const stretch=1+(Math.min(3.3,v(...goal).distanceTo(origin)/length)-1)*weight;
+ mid.position.multiplyScalar(stretch);tip.position.multiplyScalar(stretch);
+ scene.updateMatrixWorld(true);
+ const target=tip.getWorldPosition(v(0,0,0)).lerp(scene.localToWorld(v(...goal)),weight);
+ for(let step=0;step<12;step++)for(const bone of [mid,base]){
+  const from=bone.getWorldPosition(v(0,0,0));
+  const dir=tip.getWorldPosition(v(0,0,0)).sub(from).normalize(),toward=target.clone().sub(from).normalize();
+  turnWorld(bone,new THREE.Quaternion().setFromUnitVectors(dir,toward).multiply(bone.getWorldQuaternion(new THREE.Quaternion())));scene.updateMatrixWorld(true);
+ }
 }
 function Takosan({x=1.15,z=0,yaw=-1.02,t=0,attack=0,bind=false,fall=0,charge=0,broken=false}:{x?:number;z?:number;yaw?:number;t?:number;attack?:number;bind?:boolean;fall?:number;charge?:number;broken?:boolean}){
  const gltf=useLoader(GLTFLoader,staticFile('battle/takosan.glb'));
- const scene=useMemo(()=>{const s=gltf.scene.clone(true);s.traverse(o=>{if(o.name.includes('Tentacle'))o.visible=false;if(o instanceof THREE.Mesh){o.castShadow=true;o.frustumCulled=false;}});return s},[gltf]);
- useLayoutEffect(()=>{const a=scene.getObjectByName('VoxelRig_ArmPrimary'),b=scene.getObjectByName('VoxelRig_ArmSecondary');if(a)a.rotation.z=.13+.12*Math.sin(t*2);if(b)b.rotation.z=-.13-.12*Math.sin(t*2)},[scene,t]);
- return <group position={[x,.025+Math.sin(t*1.8)*.018,z]} rotation={[fall*.9,yaw,fall*.8]} scale={.68}><primitive object={scene}/>{Array.from({length:6},(_,i)=><Tentacle key={i} index={i} t={t} attack={attack} bind={bind}/>)}
- {!broken&&<mesh position={[0,1.45,.35]}><sphereGeometry args={[.15,24,16]}/><meshStandardMaterial color="#a60824" emissive="#ff193a" emissiveIntensity={.5+charge*3} metalness={.35} roughness={.18}/></mesh>}
- {charge>0&&<pointLight position={[0,1.3,.5]} color="#ff3249" intensity={charge*3} distance={3}/>}
+ const {scene,mixer,rest}=useMemo(()=>{
+  const scene=clone(gltf.scene);
+  scene.traverse(o=>{if(o instanceof THREE.Mesh){o.castShadow=true;o.receiveShadow=true;o.frustumCulled=false;}});
+  const rest:{o:THREE.Object3D;p:THREE.Vector3;q:THREE.Quaternion;s:THREE.Vector3}[]=[];
+  scene.traverse(o=>rest.push({o,p:o.position.clone(),q:o.quaternion.clone(),s:o.scale.clone()}));
+  return {scene,mixer:new THREE.AnimationMixer(scene),rest};
+ },[gltf]);
+ useLayoutEffect(()=>{
+  mixer.stopAllAction();rest.forEach(({o,p,q,s})=>{o.position.copy(p);o.quaternion.copy(q);o.scale.copy(s)});
+  const idle=gltf.animations.find(a=>a.name==='Idle');if(idle){mixer.clipAction(idle).reset().play();mixer.setTime(Math.floor(t*12)/12%idle.duration)}
+  scene.updateWorldMatrix(true,true);
+  if(bind){
+   reachTentacle(scene,1,[-.32,.97,.95],.92);
+   reachTentacle(scene,2,[-.04,1.03,.95],.92);
+   reachTentacle(scene,3,[.22,.82,.94],.92);
+  }else if(attack>0){reachTentacle(scene,1,[-.20,.40+attack*.55,.50+attack*.85],attack);}
+  scene.updateMatrixWorld(true);
+ },[scene,mixer,rest,gltf,t,attack,bind]);
+ return <group position={[x,.025,z]} rotation={[fall*.9,yaw,fall*.8]} scale={1.25}><primitive object={scene}/>
+ {!broken&&<mesh position={[0,.64,.265]}><sphereGeometry args={[.085,24,16]}/><meshStandardMaterial color="#a60824" emissive="#ff193a" emissiveIntensity={.5+charge*3} metalness={.35} roughness={.18}/></mesh>}
+ {charge>0&&<pointLight position={[0,.82,.35]} color="#ff3249" intensity={charge*3} distance={3}/>}
  </group>
 }
 function Building({x,z,h,w=.42,broken=false}:{x:number;z:number;h:number;w?:number;broken?:boolean}){return <group position={[x,0,z]} rotation={[0,0,broken?-.22:0]}>
@@ -100,7 +121,7 @@ export function Battlefield({id,t}:{id:string;t:number}){
  let pos:P=[.15,1.2,4.5],target:P=[0,.85,0],shake=0,blast=-1;
  if(id==='opening'){showSoba=false;tx=0;pos=[1.7,.7,3];target=[0,.9,0];charge=ease((t-1)/1.2);attack=ease(t/2);blast=t-3.3;}
  if(id==='land'){sx=-1;clip='Library_Jump_Land';at=t*.6;loop=false;blast=t-.15;pos=[-2.4,.38,3.2];target=[-.6,.8,0];shake=.04*(1-ease(t/2));}
- if(id==='walk-command'){clip='Hybrid_Walk';sx=-1.15+Math.min(.25,t*.05);pos=[-.5,.65,3.9]}
+ if(id==='walk-command'){clip='Hybrid_Idle_A';sx=-1.05;pos=[-.5,.65,3.9]}
  if(id==='whip'){attack=Math.sin(Math.PI*ease(t/1.4));clip=t<1?'Hybrid_Idle_A':'Library_Hit_Chest';at=Math.max(0,t-1);loop=false;sx=-1.05-ease((t-1)/1.3)*.65;lean=-ease((t-1)/.4)*.13;blast=t-1.4;shake=.06*Math.sin(Math.PI*ease(t/4));pos=[-.1,.6,3.6]}
  if(id==='counter'){const u=ease(t/2);sx=-1.7+u*1.4;tx=.8;clip=t<2?'Hybrid_Walk':'Hybrid_Punch_Jab';at=t<2?t:(t-2)*.7;loop=t<2;tx+=ease((t-2.58)/.55)*.5;blast=t-2.58;pos=t<3?[-.2,1.3,3.4]:[.2,.95,3.6];target=[.1,.95,0]}
  if(id==='mug'){sx=-.7;tx=1.25;clip='Hybrid_MugHold';mug=true;pos=[-1.15,1.28,1.8];target=[-.65,1.3,0]}
@@ -111,8 +132,8 @@ export function Battlefield({id,t}:{id:string;t:number}){
  if(id==='dodge'){sx=-.7+ease(t/4)*.3;tx=.9;clip='Hybrid_Crouch_Walk';mug=true;empty=true;attack=Math.sin(Math.PI*ease(t/2));pos=[0,.42,3.1];target=[.15,.6,0];blast=t-1.4}
  if(id==='shoulder'){sx=-.45+ease(t/1.8)*.65;tx=.85+ease((t-1.4)/1.2)*.55;clip='Hybrid_MugRun';pose='shoulder';at=.4;loop=false;mug=true;empty=true;blast=t-1.4;pos=[-.2,.65,3.1];target=[.35,.85,0];shake=.03}
  if(id==='bind'||id==='struggle'){sx=-.4;tx=.65;clip='Hybrid_Idle_A';pose='bound';mug=true;empty=true;bind=true;charge=id==='struggle'?ease(t/3):.1;pos=id==='bind'?[.25,1.65,3.2]:[-.8,1.1,2.3];target=[.0,1.05,0];shake=id==='struggle'?.012:0}
- if(id==='pull'){sx=-.4-ease(t/2)*.18;tx=.65-ease(t/2)*.42;clip='Library_Push';at=t*.55;loop=false;mug=true;empty=true;bind=t<2;fall=ease(t/3)*.22;charge=.85;pos=[0,1.6,2.75];target=[0,.92,0];blast=t-2.3}
- if(id==='smash'){sx=-.6+ease(t/2)*.28;tx=.35;clip='Hybrid_MugSmash';at=t<2.6?.6*ease(t/2.6):.6+.4*ease((t-2.6)/1.4);loop=false;mug=true;empty=true;fall=.18;charge=1;pos=[-.2,.7,2.55];target=[.0,.9,0];shake=.01}
+ if(id==='pull'){sx=-.4-ease(t/2)*.18;tx=.85-ease(t/2)*.42;clip='Library_Push';at=t*.55;loop=false;mug=true;empty=true;bind=t<2;fall=ease(t/3)*.22;charge=.85;pos=[0,1.6,2.75];target=[0,.92,0];blast=t-2.3}
+ if(id==='smash'){sx=-.6+ease(t/2)*.28;tx=.5;clip='Hybrid_MugSmash';at=t<2.6?.6*ease(t/2.6):.6+.4*ease((t-2.6)/1.4);loop=false;mug=true;empty=true;fall=.18;charge=1;pos=[-.2,.7,2.55];target=[.0,.9,0];shake=.01}
  if(id==='explosion'||id==='aftermath'){sx=-.35;tx=.65;clip='Hybrid_MugHold';mug=true;empty=true;fall=1.1;pos=[-.4,1.15,4];target=[.0,.75,0];blast=id==='explosion'?t:-1;shake=id==='explosion'?.03*(1-ease(t/4)):0}
  const beamOn=(id==='beam'&&t>1.2)||(id==='opening'&&t>2.2&&t<3.5);
  return <><City t={t} ruined/><BattleCamera pos={pos} target={target} shake={shake} t={t}/>
@@ -124,14 +145,47 @@ export function Battlefield({id,t}:{id:string;t:number}){
  {id==='explosion'&&<mesh position={[tx,.8,0]} scale={.1+ease(t/1.2)*2.6}><sphereGeometry args={[1,24,16]}/><meshBasicMaterial color={t<.5?'#fff8e7':'#e58337'} transparent opacity={1-ease((t-.7)/2.7)}/></mesh>}
  </>
 }
-export function Dock3D({t,launch=false,mouth=0}:{t:number;launch?:boolean;mouth?:number}){return <>
+export function VoxelCast({name,t,speaking=false,p=[0,0,0],yaw=0,scale=1,gesture=''}:{name:'yotan'|'fukuchan';t:number;speaking?:boolean;p?:P;yaw?:number;scale?:number;gesture?:string}){
+ const gltf=useLoader(GLTFLoader,staticFile(`battle/${name}.glb`));
+ const {scene,head,rest}=useMemo(()=>{
+  const scene=gltf.scene.clone(true);scene.updateMatrixWorld(true);
+  const root=scene.getObjectByName(name==='yotan'?'YotanVoxel_Root':'FukuchanVoxel_Root')??scene;
+  const heads:THREE.Object3D[]=[];scene.traverse(o=>{if(o instanceof THREE.Mesh){o.castShadow=true;o.receiveShadow=true;o.frustumCulled=false;if(/Bang|FacePanel|Hair|HeadCube|Glasses/.test(o.name))heads.push(o)}});
+  const head=new THREE.Group();head.name='PerformanceHeadPivot';head.position.set(0,name==='yotan'?1.98:2.04,0);root.add(head);root.updateMatrixWorld(true);heads.forEach(o=>head.attach(o));
+  const rest:{o:THREE.Object3D;q:THREE.Quaternion}[]=[];scene.traverse(o=>rest.push({o,q:o.quaternion.clone()}));return {scene,head,rest};
+ },[gltf,name]);
+ useLayoutEffect(()=>{
+  rest.forEach(({o,q})=>o.quaternion.copy(q));
+  const arm=scene.getObjectByName('VoxelRig_ArmSecondary'),primary=scene.getObjectByName('VoxelRig_ArmPrimary');
+  const accent=speaking?(.5+.5*Math.sin(t*4)):0;
+  head.rotation.y=.09*Math.sin(t*1.2);head.rotation.x=(speaking?.035*Math.sin(t*5):0)+(name==='yotan'?.045:-.025);
+  if(name==='fukuchan'){
+   if(arm){arm.rotation.x=-.40-.50*accent;arm.rotation.z=-.24-.1*accent;}
+   if(primary){primary.rotation.x=-.20-.20*accent;primary.rotation.z=.2;}
+  }else{if(arm){arm.rotation.x=-.15-.52*accent;arm.rotation.z=-.14;}if(primary)primary.rotation.z=.06*Math.sin(t*2);}
+  if(gesture==='block'&&arm){arm.rotation.x=-.1;arm.rotation.z=-1.15;head.rotation.y=-.2;}
+  scene.updateMatrixWorld(true);
+ },[scene,head,rest,name,t,speaking,gesture]);
+ return <group position={p} rotation={[0,yaw,0]} scale={scale}><primitive object={scene}/></group>
+}
+export function CommandRoom({person,t,speaking=false}:{person:'yotan'|'fukuchan';t:number;speaking?:boolean}){return <>
+ <color attach="background" args={['#0a1c29']}/><ambientLight intensity={1}/><hemisphereLight args={['#c0dce7','#263240',1.3]}/><directionalLight position={[-2,4,3]} intensity={2.4} color="#dbe5e4"/><pointLight position={[2,1,-1]} color="#568dcb" intensity={5}/>
+ <BattleCamera pos={[.45,1.95,3.6]} target={[0,1.75,0]} fov={39} t={t}/>
+ <VoxelCast name={person} t={t} speaking={speaking} yaw={-.08}/>
+ <Box p={[0,.62,.65]} s={[3,.12,.70]} c="#263d49"/>
+ <Box p={[0,.72,.69]} s={[2,.055,.34]} c="#345563"/>
+ {Array.from({length:9},(_,i)=><Box key={i} p={[-.8+i*.2,.755,.66]} s={[.10,.01,.035]} c={i%3===0?'#d48854':'#65a6ac'} glow/>)}
+ {[-1.5,1.5].map(x=><group key={x}><Box p={[x,1.7,-.9]} s={[1.1,1.15,.07]} c="#294b60"/><Box p={[x,1.7,-.85]} s={[.95,.95,.025]} c="#172e43"/>{[0,1,2].map(i=><Box key={i} p={[x,1.43+i*.21,-.827]} s={[.7,.012,.006]} c="#467f91" glow/>)}</group>)}
+ </>}
+export function Dock3D({t,launch=false,mouth=0,wide=false}:{t:number;launch?:boolean;mouth?:number;wide?:boolean}){return <>
  <color attach="background" args={['#071721']}/><ambientLight intensity={.9}/><directionalLight position={[0,6,4]} intensity={3} color="#bbddf1"/><pointLight position={[2,3,-2]} intensity={25} color="#b299ef"/>
- <BattleCamera pos={launch?[3,2.8+ease(t/3)*1.05,7.2]:[1.8,1.4,3.4]} target={launch?[0,2.2+ease(t/3)*1.3,0]:[0,.85,.5]} t={t} shake={launch?.02:0}/>
+ <BattleCamera pos={launch?[3,2.8+ease(t/3)*1.05,7.2]:wide?[3.0,2.5,7.2]:[1.8,1.4,3.4]} target={launch?[0,2.2+ease(t/3)*1.3,0]:wide?[0,1.8,-.3]:[0,.85,.5]} t={t} shake={launch?.02:0}/>
  <Actor p={[0,launch?ease(t/3)*1.7-.6:-.4,-1.3]} scale={2.5} clip="Hybrid_MugHold" time={t} mug/>
  <Box p={[0,-.05,-1]} s={[6,.1,5]} c="#d89522"/>
  {[-2,2].map(x=><group key={x}><Box p={[x,2,-1.4]} s={[.65,4,1]} c="#403550"/><Box p={[x*(1+ease(t/1.3)*.45),2.8,-.9]} s={[1.2,.65,1.3]} c="#777d80"/>{Array.from({length:7},(_,i)=><Box key={i} p={[x,.4+i*.5,-.24]} s={[.65,.07,.02]} c="#c1493f" glow/>)}</group>)}
  <Box p={[0,.01,.8]} s={[6,.16,1]} c="#354451"/>
  {[-.05,1.4].map(z=><Box key={z} p={[0,.75,z]} s={[6,.045,.04]} c="#879697"/>)}
+ {!launch&&<VoxelCast name="fukuchan" p={[.8,.1,.65]} scale={.38} yaw={-.7} t={t} gesture="block"/>}
  {!launch&&<Actor name="yametaro" p={[0,.12,.75]} yaw={-.4-ease((t-2)/1.5)*.7} clip="Talk" time={t} pose="stand" mouth={mouth}/>}
  </>}
 export function Cockpit({id,t,mouth=0}:{id:string;t:number;mouth?:number}){

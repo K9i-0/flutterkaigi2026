@@ -1,0 +1,37 @@
+{
+  "output": "final_remotion_battle_v2.mp4",
+  "sha256": "ba9a97ea2d2c39fd98d2c53bcaeb69aa7020ae1877ea8038d2b7ecc70f07131f",
+  "bytes": 66487076,
+  "streams": [
+    {
+      "codec_name": "h264",
+      "width": 1280,
+      "height": 720,
+      "r_frame_rate": "24/1",
+      "duration": "180.000000",
+      "nb_read_frames": "4320",
+      "side_data_list": [
+        {}
+      ]
+    },
+    {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "r_frame_rate": "0/0",
+      "duration": "180.053333",
+      "nb_read_frames": "8440"
+    }
+  ],
+  "checks": {
+    "typecheck": "pass",
+    "decode_to_end": "pass",
+    "visual_review": "Dock, both voxel communications, walk-command frames 1370/1410/1450 with stationary feet, native tentacle binding, chest core and smash reviewed from final output",
+    "takosan_source": "21_SOBAYA_HAZARD_LAB/assets/models/takosan.glb resolves to 04_GAME_ASSETS/3d/characters/takosan/rig_sheet_v2/takosan.glb",
+    "walking": "57–61 seconds idle with fixed position; forward walking begins after approval at 82 seconds"
+  },
+  "limitations": [
+    "Voxel communication characters use head and arm gestures without lip sync.",
+    "Yametaro uses RMS mouth motion, not phoneme animation.",
+    "Audio unchanged from v1; listening and precise lip-sync audit not performed."
+  ]
+}

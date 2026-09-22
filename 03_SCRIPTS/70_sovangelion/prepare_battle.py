@@ -7,7 +7,7 @@ def link(src,dst):
  dst.parent.mkdir(parents=True,exist_ok=True)
  if dst.exists() and not os.path.samefile(src,dst):dst.unlink()
  if not dst.exists():os.link(src,dst)
-assets={'sobaya.glb':ROOT/'04_GAME_ASSETS/3d/hazard_adopted/optimized_20260919/sobaya.glb','yametaro.glb':ROOT/'04_GAME_ASSETS/3d/characters/yametaro/rig_nose_v3/yametaro.glb','takosan.glb':ROOT/'04_GAME_ASSETS/voxel/models/takosan.glb','mug.glb':ROOT/'04_GAME_ASSETS/3d/props/beer_mug_v2/beer_mug.glb','yotan.jpg':ROOT/'02_CHARACTERS/Yotan.jpg','fukuchan.jpg':ROOT/'02_CHARACTERS/Fukuchan.jpg','dock.png':E/'remake_dock_20260919/scene_b.png','takosan.png':E/'character_takosan_giant_core_sheet.png'}
+assets={'sobaya.glb':ROOT/'04_GAME_ASSETS/3d/hazard_adopted/optimized_20260919/sobaya.glb','yametaro.glb':ROOT/'04_GAME_ASSETS/3d/characters/yametaro/rig_nose_v3/yametaro.glb','takosan.glb':ROOT/'04_GAME_ASSETS/3d/characters/takosan/rig_sheet_v2/takosan.glb','mug.glb':ROOT/'04_GAME_ASSETS/3d/props/beer_mug_v2/beer_mug.glb','yotan.glb':ROOT/'04_GAME_ASSETS/voxel/models/yotan.glb','fukuchan.glb':ROOT/'04_GAME_ASSETS/voxel/models/fukuchan.glb','dock.png':E/'remake_dock_20260919/scene_b.png','takosan.png':E/'character_takosan_giant_core_sheet.png'}
 for n,p in assets.items():link(p,P/n)
 for p in (E/'battle_assets').glob('*.png'):link(p,P/p.name)
 rows=json.loads((E/'battle-dialogue.json').read_text())
@@ -22,7 +22,7 @@ for r in rows:
  print(r['id'],r['start']/24,r['end']/24,r['text'])
 for a,b in zip(rows,rows[1:]):assert a['end']<b['start'],(a,b)
 shots=[
-('opening','battle',0,5),('title','title',5,8),('dock','plate',8,13),('commander','comms',13,19),('refuse','dock3d',19,23),('order','comms',23,27),
+('opening','battle',0,5),('title','title',5,8),('dock','dock3d',8,13),('commander','comms',13,19),('refuse','dock3d',19,23),('order','comms',23,27),
 ('inside','cockpit',27,34),('how','cockpit',34,40),('clockin','cockpit',40,44),('ui-start','ui',44,47),('release','launch',47,50),('lift','cockpit',50,53),('land','battle',53,57),
 ('walk-command','battle',57,61),('walk-question','cockpit',61,64),('ui-wait','ui',64,67),('whip','battle',67,71),('slide','cockpit',71,74),('confirmed','comms',74,78),('approve','cockpit',78,82),('counter','battle',82,90),
 ('mug','battle',90,94),('beam','battle',94,98),('spill','battle',98,102),('anger','battle',102,107),('override','ui',107,109),('confused','cockpit',109,114),
