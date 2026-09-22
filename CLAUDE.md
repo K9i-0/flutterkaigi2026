@@ -30,12 +30,13 @@ Gitでは、Seedanceの再生成と同じ声の継続利用に必要な最小限
 
 ## スキル（制作ワークフロー）
 
-今後の動画制作は、あらすじからの制作を含め `wan-video` を標準とする。
+制作方式未指定の動画は `wan-video` を標準とする。Three.js / Remotionで既存3Dモデルを演技させる舞台動画、背景画像＋モデルの芝居、73型の動画は `threejs-video` を使う。後者は音声方針を含めWanとは独立した制作経路とする。
 制作物ごとのワークフローはスキルに分離している。該当する作業ではスキルを呼び出して従うこと。
 
 - **人型モーション** (`humanoid-motion`): リアル頭身のGLB/VRMへの動作適用、ローカルプレビュー、体格別比較、肩・腕のスキニング診断、そば屋ハザードへの採用時に使用する。詳細: `.claude/skills/humanoid-motion/SKILL.md`
 
 - **Wan動画制作** (`wan-video`): Wan 3.0、Qwen Cloud、Alibaba Cloud Model Studioで動画を新規制作・改修・生成・監査するときに使用する。台本、参照素材、プロンプト、従量課金API設定、生成結果を一体で管理する。詳細: `.claude/skills/wan-video/SKILL.md`
+- **Three.js舞台動画制作** (`threejs-video`): 既存GLB、共有演技・犬モーション、画像背景壁、React UIを用いて台本から完成動画まで制作する。詳細: `.claude/skills/threejs-video/SKILL.md`
 - **Remotion動画編集** (`remotion-video`): Wan・Seedance等の生成済み動画へ、正確な字幕、ニューステロップ、局ロゴ、ティッカー、音声差し替え、UI、効果音を再現可能なReactコードで合成し、レンダリング・監査するときに使用する。詳細: `.claude/skills/remotion-video/SKILL.md`
 - **画面差し替え** (`screen-replacement`): ユーザーが明示した場合に、モニター・テレビ・スマホ等の表示面をOpenCVで追跡し、画像・動画を透視合成する。グリーン画面生成、通常画面追跡、揺れ抑制、緑残り除去、Remotion統合を扱う。画面が映るだけでは自動適用しない。詳細: `.claude/skills/screen-replacement/SKILL.md`
 - **映画ポスター制作** (`create-movie-poster`): 映画ポスターの新規制作・改修・シリーズ統一では、独立した初回3案から方向性を選び、縦2:3正本、正確な日本語文字、キャラクター同一性を管理する。実写のよーたん、福ちゃん、とーくん、おかやまんは正典写真へ顔を厳密に一致させる。SNS安全域はユーザー指定時だけ調整し、生成画像への反復編集を避ける。詳細: `.claude/skills/create-movie-poster/SKILL.md`
