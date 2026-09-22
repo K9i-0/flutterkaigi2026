@@ -1,0 +1,11 @@
+[
+ {"id":"01","speaker":"sobaya","text":"まずビールを具現化しようと決めてからは、\nイメージ修業だな。","chapter":"ビール具現化への道","shot":"sobaya"},
+ {"id":"02","speaker":"sobaya","text":"最初は実際のビールを、一日中いじくってた。\n冷たさを確かめたり、何百枚も写生したり。","chapter":"一日中、ビール。","shot":"training"},
+ {"id":"03","speaker":"sobaya","text":"ずっと眺めたり、なめたり、\n泡の音を聞いたり、嗅いでみたり。","chapter":"見る・触れる・嗅ぐ","shot":"training"},
+ {"id":"04","speaker":"yametaro","text":"それ、ただの幸せな休日やないか。","chapter":"修業です。","shot":"yametaro"},
+ {"id":"05","speaker":"sobaya","text":"毎晩ビールの夢を見るようになって、\n実際のビールを取りあげられた。","chapter":"そして、禁ビール。","shot":"wide"},
+ {"id":"06","speaker":"sobaya","text":"すると幻覚でビールが見えてきた。\n冷たさも、重さも、泡の音も。","chapter":"幻覚が、現実になる。","shot":"magic"},
+ {"id":"07","speaker":"sobaya","text":"いつの間にか、幻覚じゃなく\n本物のビールが出ていたんだ。","chapter":"具現化、成功。","shot":"reveal"},
+ {"id":"08","speaker":"yametaro","text":"ワイも給料で、それやりたいわ。","chapter":"応用の方向性。","shot":"yametaro"},
+ {"id":"09","speaker":"sobaya","text":"まず、実際の給料を用意しろ。","chapter":"まずは、現物。","shot":"wide"}
+]

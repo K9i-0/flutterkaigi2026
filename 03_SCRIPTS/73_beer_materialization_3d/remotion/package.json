@@ -1,0 +1,25 @@
+{
+  "name": "beer-materialization-3d",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "studio": "remotion studio src/index.tsx",
+    "typecheck": "tsc --noEmit",
+    "render": "remotion render src/index.tsx BeerTraining ../final_remotion_3d.mp4 --gl=angle --concurrency=2",
+    "prepare-assets": "python3 ../prepare.py"
+  },
+  "dependencies": {
+    "remotion": "4.0.526",
+    "@remotion/cli": "4.0.526",
+    "@remotion/three": "4.0.526",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "three": "0.180.0",
+    "@react-three/fiber": "9.3.0"
+  },
+  "devDependencies": {
+    "typescript": "5.8.3",
+    "@types/react": "19.1.0",
+    "@types/three": "0.180.0"
+  }
+}

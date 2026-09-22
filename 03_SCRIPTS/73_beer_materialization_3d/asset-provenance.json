@@ -1,0 +1,14 @@
+{
+  "sobaya": {
+    "source": "04_GAME_ASSETS/3d/hazard_adopted/optimized_20260919/sobaya.glb",
+    "sha256": "8a35c9ea6cd0088f34e28d94516f056893b80d6d9ee553c7223c122e893ebe2c"
+  },
+  "yametaro": {
+    "source": "04_GAME_ASSETS/3d/characters/yametaro/rig_nose_v3/yametaro.glb",
+    "sha256": "c39417eb431bc76dd248b6959ca6636f0a90b542f94c3a56aab7941f3b9283df"
+  },
+  "beer_mug": {
+    "source": "04_GAME_ASSETS/3d/props/beer_mug_v2/beer_mug.glb",
+    "sha256": "3456dcd7a79ec55936e6141a2b51432d51f38084d62a636368216530de2972f4"
+  }
+}
