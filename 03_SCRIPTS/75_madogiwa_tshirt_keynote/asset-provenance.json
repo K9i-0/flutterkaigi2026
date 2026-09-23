@@ -27,5 +27,37 @@
       "modifications": "Extracts, fades, volume normalization, theatre reflection; endcard credit and README attribution",
       "sha256": "586deb9887a9ae134bb6d5ad5e682aec4577cd06314383280d50236751ef9970"
     }
-  ]
+  ],
+  "variants": {
+    "sobaya": {
+      "model": "04_GAME_ASSETS/3d/hazard_adopted/optimized_20260919/sobaya.glb",
+      "motions": [
+        "Explain",
+        "EmptyHands",
+        "Hybrid_Idle_A",
+        "Hybrid_Walk",
+        "Hybrid_Bow"
+      ]
+    },
+    "nojobs": {
+      "model": "04_GAME_ASSETS/3d/characters/yametaro/rig_nose_v3/yametaro.glb",
+      "motions": [
+        "Tsukkomi",
+        "Wish",
+        "Idle",
+        "Walk",
+        "Wave"
+      ],
+      "voiceReference": "02_CHARACTERS/Yametaro_voice.wav",
+      "mouth": "SpeechOpen driven by deterministic per-frame WAV RMS",
+      "costume": "Black top and blue trousers via cloned material shader; canonical face, geometry, skeleton and weights unchanged"
+    }
+  },
+  "productDetailCrop": {
+    "x": 784,
+    "y": 199,
+    "width": 200,
+    "height": 200,
+    "method": "CSS viewport over original 1200x630 product asset; artwork centered, source unchanged"
+  }
 }

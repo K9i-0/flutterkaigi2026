@@ -1,4 +1,4 @@
-import React,{useLayoutEffect,useMemo} from 'react';
+import React,{useLayoutEffect,useMemo,useContext,createContext} from 'react';
 import {AbsoluteFill,Audio,Img,Sequence,staticFile,useCurrentFrame,interpolate} from 'remotion';
 import {ThreeCanvas} from '@remotion/three';
 import {useLoader,useThree} from '@react-three/fiber';
@@ -6,15 +6,19 @@ import * as THREE from 'three';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 import {clone} from 'three/examples/jsm/utils/SkeletonUtils.js';
 import {createMotionPlayer} from '../../../../04_GAME_ASSETS/3d/stage_video/motion-player';
-import manifest from './edit-manifest.json';
+import sobayaManifest from './edit-manifest.json';
+import nojobsManifest from './edit-manifest-nojobs.json';
 const FPS=24;
 const clamp=(v:number)=>Math.max(0,Math.min(1,v));
 const ease=(v:number)=>{v=clamp(v);return v*v*(3-2*v)};
-type Line=typeof manifest.lines[number];
-const active=(f:number)=>manifest.lines.find(l=>f>=l.start&&f<l.end+l.pauseFrames)||manifest.lines[0];
+type Line=typeof sobayaManifest.lines[number] & {mouth?:number[]};
+type FilmManifest={durationInFrames:number;endcardStart:number;audioReady:boolean;lines:Line[]};
+const FilmContext=createContext<{manifest:FilmManifest;noJobs:boolean}>({manifest:sobayaManifest,noJobs:false});
+const active=(f:number,manifest:FilmManifest)=>manifest.lines.find(l=>f>=l.start&&f<l.end+l.pauseFrames)||manifest.lines[0];
 
 function Actor({frame,line}:{frame:number;line:Line}){
- const gltf=useLoader(GLTFLoader,staticFile('models/sobaya.glb'));
+ const {manifest,noJobs}=useContext(FilmContext);
+ const gltf=useLoader(GLTFLoader,staticFile(noJobs?'models/yametaro.glb':'models/sobaya.glb'));
  const actor=useMemo(()=>{
   const scene=clone(gltf.scene);
   scene.traverse(o=>{if(o instanceof THREE.Mesh){o.frustumCulled=false;o.castShadow=true;o.receiveShadow=true;
@@ -38,35 +42,55 @@ function Actor({frame,line}:{frame:number;line:Line}){
        diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.028,.065,.125)*weave,jeans);
       `);
      }; m.customProgramCacheKey=()=> 'keynote-costume-v1';
-    }return m;};
+    }
+    if(noJobs&&src.name==='YametaroLavenderTrim'){m.color.set('#11151a');}
+    if(noJobs&&src.name==='tripo_mat_4a23c7b9'){
+     m.roughness=.9;
+     m.onBeforeCompile=s=>{
+      s.vertexShader='varying vec3 nojobsPosition;\n'+s.vertexShader;
+      s.vertexShader=s.vertexShader.replace('#include <begin_vertex>','#include <begin_vertex>\nnojobsPosition=position;');
+      s.fragmentShader='varying vec3 nojobsPosition;\n'+s.fragmentShader;
+      s.fragmentShader=s.fragmentShader.replace('#include <map_fragment>',`#include <map_fragment>
+       vec3 p=nojobsPosition;
+       float purple=step(diffuseColor.g*1.12,diffuseColor.b)*step(diffuseColor.g*1.08,diffuseColor.r);
+       float torso=step(.28,p.y)*(1.-step(.625,p.y))*(1.-step(.18,abs(p.x)))*(1.-step(.165,p.z));
+       float shirt=max(torso,purple*(1.-step(.66,p.y)));
+       diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.016,.019,.025),shirt);
+       float denim=step(.065,p.y)*(1.-step(.26,p.y))*(1.-step(.19,abs(p.x)));
+       diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.035,.075,.145),denim);
+      `);
+     };m.customProgramCacheKey=()=> 'nojobs-costume-v1';
+    }
+    return m;};
    o.material=Array.isArray(o.material)?o.material.map(modify):modify(o.material);
   }});
-  const player=createMotionPlayer(scene,gltf.animations,'sobaya');
+  const player=createMotionPlayer(scene,gltf.animations,noJobs?'yametaro':'sobaya');
   const mixer=new THREE.AnimationMixer(scene);
   const clips=Object.fromEntries(gltf.animations.map(c=>[c.name,c]));
   const hand=scene.getObjectByName('RightHand');
   if(hand){const clicker=new THREE.Mesh(new THREE.BoxGeometry(.022,.07,.017),new THREE.MeshStandardMaterial({color:'#24272b',roughness:.5}));clicker.position.set(0,.027,.035);hand.add(clicker);}
   const rig:THREE.Object3D[]=[];scene.traverse(o=>{if(o instanceof THREE.Bone)rig.push(o)});
   return {scene,player,mixer,clips,rig};
- },[gltf]);
+ },[gltf,noJobs]);
  const local=(frame-line.start)/FPS,seconds=frame/FPS;
  const speaking=frame>=line.start&&frame<line.end;
  const walk=frame<52;
  const bow=frame>manifest.lines[manifest.lines.length-1].end;
  useLayoutEffect(()=>{
   actor.mixer.stopAllAction();
-  actor.player.sample(line.id==='arms'?'EmptyHands':'Explain',line.id==='arms'?Math.max(0,local):seconds);
+  actor.player.sample(noJobs?(line.id==='arms'?'Wish':'Tsukkomi'):(line.id==='arms'?'EmptyHands':'Explain'),line.id==='arms'?Math.max(0,local):seconds);
   const talk=actor.rig.map(o=>({p:o.position.clone(),q:o.quaternion.clone()}));
-  const name=walk?'Hybrid_Walk':bow?'Hybrid_Bow':'Hybrid_Idle_A';
+  const name=noJobs?(walk?'Walk':bow?'Wave':'Idle'):(walk?'Hybrid_Walk':bow?'Hybrid_Bow':'Hybrid_Idle_A');
   const clip=actor.clips[name];if(!clip)throw Error('Missing '+name);
   actor.mixer.clipAction(clip).reset().play();actor.mixer.setTime(walk?seconds:bow?(frame-manifest.lines[manifest.lines.length-1].end)/FPS:seconds%clip.duration);
   if(!walk&&!bow){
    const weight=ease((frame-line.start+5)/12)*ease((line.end+7-frame)/13);
    actor.rig.forEach((o,i)=>{o.position.lerp(talk[i].p,weight);o.quaternion.slerp(talk[i].q,weight);});
   }
+  if(noJobs)actor.scene.traverse(o=>{if(o instanceof THREE.Mesh&&o.morphTargetDictionary&&o.morphTargetInfluences){const k=o.morphTargetDictionary.SpeechOpen;if(k!==undefined)o.morphTargetInfluences[k]=speaking?(line.mouth?.[frame-line.start]??0):0;}});
   actor.scene.updateMatrixWorld(true);
- },[actor,frame,line.id,local,speaking,walk,bow,seconds]);
- return <group position={[-1.46-(walk?(1-ease(frame/52))*.8:0),0,0]} rotation={[0,walk?.4:.075,0]}><primitive object={actor.scene}/></group>;
+ },[actor,frame,line,local,speaking,walk,bow,seconds,noJobs]);
+ return <group scale={noJobs?1.35:1} position={[-1.46-(walk?(1-ease(frame/52))*.8:0),0,0]} rotation={[0,walk?.4:.075,0]}><primitive object={actor.scene}/></group>;
 }
 function Camera({close}:{close:boolean}){const {camera}=useThree();useLayoutEffect(()=>{camera.position.set(close?-.52:0,close?1.48:1.55,close?2.65:5.0);camera.lookAt(close?-.52:0,close?1.24:1.02,0);camera.updateProjectionMatrix();},[camera,close]);return null;}
 function Stage({frame,line,close}:{frame:number;line:Line;close:boolean}){
@@ -79,13 +103,14 @@ function Stage({frame,line,close}:{frame:number;line:Line;close:boolean}){
 function ShirtIcon({size=210}:{size?:number}){return <svg width={size} height={size} viewBox='0 0 240 240'><path d='M75 40 L35 66 L12 114 L52 137 L65 112 L65 211 L175 211 L175 112 L188 137 L228 114 L205 66 L165 40 Q120 67 75 40Z' fill='#f6f6f8' stroke='#d4d5d9' strokeWidth='2'/><path d='M92 48 Q120 76 148 48' fill='none' stroke='#c5c6cc' strokeWidth='3'/></svg>}
 function Product({width=500,detail=false}:{width?:number;detail?:boolean}){
  // CSS viewport only: preserve the original product asset; never raster-edit/repaint the print.
- const crop=detail?{x:808,y:207,w:213,h:235}:{x:620,y:92,w:556,h:485};
+ const crop=detail?{x:784,y:199,w:200,h:200}:{x:620,y:92,w:556,h:485};
  const scale=width/crop.w;
  return <div style={{position:'relative',width,height:crop.h*scale,overflow:'hidden',background:'white'}}><Img src={staticFile('goods/madogiwa-tshirt.webp')} style={{position:'absolute',width:1200*scale,maxWidth:'none',height:630*scale,left:-crop.x*scale,top:-crop.y*scale}}/></div>;
 }
 function Crew({size=220}:{size?:number}){return <div style={{width:size,height:size,overflow:'hidden',borderRadius:10,background:'white',display:'flex',justifyContent:'center',alignItems:'center'}}><Product width={size*.88} detail/></div>}
 const titleStyle:React.CSSProperties={fontSize:74,fontWeight:500,letterSpacing:-3,margin:0};
 function Slide({line,frame}:{line:Line;frame:number}){
+ const {noJobs}=useContext(FilmContext);
  const scene=line.scene,local=frame-line.start;
  const fade=ease(local/10);
  const repeat=scene==='repeat1'||scene==='repeat2'||scene==='understand'||scene==='notthree';
@@ -96,7 +121,7 @@ function Slide({line,frame}:{line:Line;frame:number}){
    <div style={{borderRadius:5,overflow:'hidden',boxShadow:'0 10px 50px #000',transform:`scale(${scene==='reveal'?.92+.08*ease(local/28):1})`}}><Product width={scene==='end'?392:340}/></div>
    <div style={{width:scene==='end'?360:290}}><div style={{fontSize:15,letterSpacing:4,color:'#aaa',marginBottom:20}}>WINDOW-SIDE CREW</div><div style={{fontSize:scene==='end'?65:53,lineHeight:1.2,fontWeight:600,letterSpacing:-2}}>窓際族<br/>Tシャツ</div>{['buy','end'].includes(scene)&&<><div style={{fontSize:27,marginTop:30}}>公式サイトから購入</div><div style={{width:42,height:2,background:'white',marginTop:20}}/></>}{scene==='closing'&&<div style={{display:'flex',gap:9,fontSize:25,marginTop:27}}>{items.map((s,i)=><span key={s} style={{opacity:i===index?1:.3}}>{s}</span>)}</div>}{scene==='end'&&<div style={{fontSize:25,color:'#c5c7cc',marginTop:27}}>すべてが、この1枚に。</div>}</div>
   </div>}
- if(scene==='intro') return <div style={{textAlign:'center'}}><div style={{fontSize:17,letterSpacing:8,color:'#a3a6ab',marginBottom:32}}>MADOGIWA</div><div style={{fontSize:72,fontWeight:300,letterSpacing:-2}}>Special Event</div></div>;
+ if(scene==='intro') return <div style={{textAlign:'center'}}><div style={{fontSize:17,letterSpacing:8,color:'#a3a6ab',marginBottom:32}}>MADOGIWA</div><div style={{fontSize:72,fontWeight:300,letterSpacing:-2}}>{noJobs?'No Jobs':'Special Event'}</div>{noJobs&&<div style={{fontSize:26,marginTop:28,color:'#c8cbd0'}}>ノージョブズ / 無職やめ太郎</div>}</div>;
  if(scene==='revolution')return <h1 style={titleStyle}>革命。</h1>;
  if(scene==='three')return <div style={{fontSize:230,fontWeight:300,lineHeight:1}}>3</div>;
  if(scene==='first')return <div style={{textAlign:'center',opacity:fade}}><Crew size={246}/><div style={{fontSize:43,marginTop:18}}>窓際族</div></div>;
@@ -114,17 +139,20 @@ function Slide({line,frame}:{line:Line;frame:number}){
  return null;
 }
 export function Film(){
- const frame=useCurrentFrame(),line=active(frame);
+ const {manifest,noJobs}=useContext(FilmContext);
+ const frame=useCurrentFrame(),line=active(frame,manifest);
  const endcard=frame>=manifest.endcardStart;
  const close=['lucky','understand','notthree','born','arms','perfect','when'].includes(line.id);
  const subtitle=frame>=line.start&&frame<line.end?line.text:'';
  return <AbsoluteFill style={{background:'radial-gradient(ellipse at 35% 87%,#19202b 0%,#050608 47%,#000 83%)',color:'white',fontFamily:'Helvetica Neue, Hiragino Kaku Gothic ProN, sans-serif'}}>
   {!endcard&&<Stage frame={frame} line={line} close={close}/>}
   <div style={{position:'absolute',left:endcard?75:505,top:endcard?90:53,width:endcard?1130:725,height:endcard?490:434,background:'#050506',border:endcard?'none':'1px solid #24272b',boxShadow:endcard?'none':'0 20px 65px #000',display:'flex',alignItems:'center',justifyContent:'center',overflow:'hidden'}}><Slide line={endcard?{...line,scene:'end'}:line} frame={frame}/></div>
-  {!endcard&&<div style={{position:'absolute',left:508,top:503,color:'#686e78',fontSize:11,letterSpacing:5}}>MADOGIWA SPECIAL EVENT</div>}
+  {!endcard&&<div style={{position:'absolute',left:508,top:503,color:'#686e78',fontSize:11,letterSpacing:5}}>{noJobs?'NO JOBS · MADOGIWA SPECIAL EVENT':'MADOGIWA SPECIAL EVENT'}</div>}
   {subtitle&&<div style={{position:'absolute',bottom:36,left:42,right:42,textAlign:'center',fontSize:30,fontWeight:500,lineHeight:1.5,textShadow:'0 2px 7px #000, 0 0 14px #000'}}><span style={{background:'rgba(0,0,0,.64)',padding:'7px 18px',borderRadius:3}}>{subtitle}</span></div>}
   {endcard&&<div style={{position:'absolute',bottom:17,left:40,right:40,textAlign:'center',fontSize:13,color:'#92969c'}}>Audience laughter: Kyster / Freesound 124028 / CC BY 4.0 · edited</div>}
-  {manifest.audioReady&&<Audio src={staticFile('audio/master.wav')}/>}
+  {manifest.audioReady&&<Audio src={staticFile(noJobs?'audio/master-nojobs.wav':'audio/master.wav')}/>}
   <AbsoluteFill style={{background:'black',opacity:frame<14?1-frame/14:frame>manifest.durationInFrames-16?(frame-(manifest.durationInFrames-16))/16:0,pointerEvents:'none'}}/>
  </AbsoluteFill>;
 }
+
+export function NoJobsFilm(){return <FilmContext.Provider value={{manifest:nojobsManifest,noJobs:true}}><Film/></FilmContext.Provider>;}

@@ -1,0 +1,34 @@
+{
+  "output": "final_remotion_nojobs.mp4",
+  "sha256": "539322edfcdc019186c1ace55957b3ee12a9b940b34f5456c582f18b41b07c14",
+  "bytes": 15694341,
+  "durationSeconds": 146.583333,
+  "frames": 3518,
+  "width": 1280,
+  "height": 720,
+  "fps": 24,
+  "videoCodec": "h264",
+  "audioCodec": "aac",
+  "audioSampleRate": 48000,
+  "audioChannels": 2,
+  "integratedLUFS": -16.1,
+  "truePeakDbFS": -1.8,
+  "checks": {
+    "typescript": "passed",
+    "canonicalAssetHashes": "all 3 unchanged; model geometry, skeleton, weights and original product image preserved",
+    "dialogueFileHashes": "32/32 passed",
+    "measuredAudioFrameAlignment": "32/32 passed; no overlaps; 2000 samples/frame at 48kHz",
+    "ASR": "32 adopted WAVs screened, seven lines regenerated; hashes and recognized text saved in speech-screening-nojobs.json",
+    "visual": "9 actual-timeline stills including intro, arms and endcard; 24.4-second preview filmstrip; 12 sampled final frames inspected",
+    "fullDecode": "passed all 3518 video frames to EOF",
+    "browserPlayback": "Chrome localhost review page loaded, NoJobs MP4 playing at 0:10/2:26 confirmed visually",
+    "auditoryListening": "not performed; ASR, loudness/peak measurements and visual playback do not constitute listening"
+  },
+  "limitations": [
+    "No full auditory review was possible in this execution environment.",
+    "Uses canonical shared gestures; no separate finger counting or simulated putting-on of the shirt."
+  ],
+  "reviewUrl": "http://127.0.0.1:8785/review.html",
+  "sourceCode": "remotion/src",
+  "manifest": "remotion/src/edit-manifest-nojobs.json"
+}

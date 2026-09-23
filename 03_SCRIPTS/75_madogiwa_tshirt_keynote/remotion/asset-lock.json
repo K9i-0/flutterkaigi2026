@@ -8,5 +8,10 @@
     "source": "16_MADOGIWA_STUDIO/public/site/goods/madogiwa-tshirt.webp",
     "target": "goods/madogiwa-tshirt.webp",
     "sha256": "d3de5d3a43185a547f135a90fc982659ee926155f7c4193a9f2aa413699d3699"
+  },
+  {
+    "source": "04_GAME_ASSETS/3d/characters/yametaro/rig_nose_v3/yametaro.glb",
+    "target": "models/yametaro.glb",
+    "sha256": "c39417eb431bc76dd248b6959ca6636f0a90b542f94c3a56aab7941f3b9283df"
   }
 ]

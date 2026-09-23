@@ -1,0 +1,206 @@
+{
+  "method": "Local Whisper-small ASR screening against all adopted WAV hashes. Not auditory listening. Kanji homophones (窓際属/窓際族 and 切られました/着られました) treated as spelling differences.",
+  "repairedLines": [
+    "second",
+    "arms",
+    "left",
+    "wear",
+    "perfect",
+    "today",
+    "buy"
+  ],
+  "rows": [
+    {
+      "id": "intro",
+      "expected": "今日という日を、私はずっと待っていました。",
+      "recognized": "今日という日を私はずっと待っていました",
+      "sha256": "51bf9b9e2630fe413b4a61beeb6bf19b26081c43655c8a69ccadfbf1ddd902a2"
+    },
+    {
+      "id": "revolution",
+      "expected": "時として、すべてを変えてしまう革命的な製品が現れます。",
+      "recognized": "時として全てを変えてしまう革命的な製品が現れます",
+      "sha256": "43817f86a39044c3026f76dd2005edc8684de05179f75970a4d1a433c91d9c5d"
+    },
+    {
+      "id": "lucky",
+      "expected": "そんな製品を、ひとつでも紹介できれば幸運です。",
+      "recognized": "そんな製品を一つでも紹介できれば幸運です",
+      "sha256": "6818fb76014635b5b40bbb3a40a18fab03dd195872d7c94685c2e6e4d854554d"
+    },
+    {
+      "id": "three",
+      "expected": "今日、私たちは、3つ、紹介します。",
+      "recognized": "今日私たちは3つ紹介します",
+      "sha256": "40126628ad679f2b7dec16c6733503c891c146468e2f86b7b011d6ca6bc1dd6b"
+    },
+    {
+      "id": "first",
+      "expected": "ひとつめ。窓際族。",
+      "recognized": "1つ目、窓際族",
+      "sha256": "2111624fdd1aa8f5b9d83aa071959caa51408447b68c04226870b8d5812a266c"
+    },
+    {
+      "id": "second",
+      "expected": "ふたつめ。T。",
+      "recognized": "2つ目、T",
+      "sha256": "3dcd88274e406ed98f81e79b396d2df8180aac6cae65a8cca581a636b2ca394d"
+    },
+    {
+      "id": "third",
+      "expected": "そして、みっつめ。シャツ。",
+      "recognized": "そして3つ目シャツ",
+      "sha256": "dfaa9b1c6acf24e83854753d33190782fcb2d96375b5f5117ce3393c226049b1"
+    },
+    {
+      "id": "repeat1",
+      "expected": "窓際族。T。シャツ。",
+      "recognized": "窓際属 Tシャツ",
+      "sha256": "de216902ae9ffdd3e5457b9a63e0733e2e5e86e63a1a4f5c23be66e18c41174f"
+    },
+    {
+      "id": "repeat2",
+      "expected": "窓際族。T。シャツ。",
+      "recognized": "窓際属 Tシャツ",
+      "sha256": "de216902ae9ffdd3e5457b9a63e0733e2e5e86e63a1a4f5c23be66e18c41174f"
+    },
+    {
+      "id": "understand",
+      "expected": "もう、おわかりですね？",
+      "recognized": "もうお分かりですね",
+      "sha256": "1dc9b103b6fe9a3e5d9971fc5b2e845e8c8090e3f45dd68c0087454d42419099"
+    },
+    {
+      "id": "notthree",
+      "expected": "これは、3つの別々の製品ではありません。",
+      "recognized": "これは3つの別々の製品ではありません",
+      "sha256": "94ed7f13e1f0cb0db86027cd2a0b9137b24c96b8d498b48c431c41eaf213623e"
+    },
+    {
+      "id": "one",
+      "expected": "ひとつの製品です。",
+      "recognized": "一つの製品です",
+      "sha256": "e35469f8f0cce8f412877e74fd18cd2dc51e155593c0c564fbfda2cf0d87fdfb"
+    },
+    {
+      "id": "reveal",
+      "expected": "私たちは、これを、窓際族Tシャツと呼びます。",
+      "recognized": "私たちはこれを窓際属Tシャツと呼びます",
+      "sha256": "e44071521b7652155816e5d27358f864878781f75b75134c6813ec45e834db45"
+    },
+    {
+      "id": "reinvent",
+      "expected": "今日、私たちはTシャツを再発明します。",
+      "recognized": "今日、私たちはTシャツを再発明します",
+      "sha256": "2b2c7d91ce7b14a3e9af23a0f5daf0109d926f6822b25d9a2d38642375b2b06e"
+    },
+    {
+      "id": "how",
+      "expected": "では、どうやって使うのか。",
+      "recognized": "ではどうやって使うのか",
+      "sha256": "6ba7d625f58fd41f2e46fb94c57a81738ebe91ef7873388d6e454e844f65d2e1"
+    },
+    {
+      "id": "learn",
+      "expected": "特別な操作を、覚える必要はありません。",
+      "recognized": "特別な操作を覚える必要はありません",
+      "sha256": "dbb4827d858a2eab01178a2dba288769d492015f67a1767bdf9d9c208047cd08"
+    },
+    {
+      "id": "born",
+      "expected": "私たちは、生まれたときから持っているものを使います。",
+      "recognized": "私たちは生まれた時から持っているものを使います",
+      "sha256": "d553186084b0ff7833f9540a6d0b109be9f57f7f12bcb224b89999a776688e82"
+    },
+    {
+      "id": "arms",
+      "expected": "腕です。",
+      "recognized": "腕です",
+      "sha256": "1ada1cf409a01cfecfbb5291a5f5e8fa76dfc4e83558fe908ebd0d643d24b7c7"
+    },
+    {
+      "id": "right",
+      "expected": "右腕を通す。",
+      "recognized": "右腕を通す",
+      "sha256": "bd60cb8b5d835f4fc8d6d37168a962fcc61d963e20c2a7f67481ae07b84084df"
+    },
+    {
+      "id": "left",
+      "expected": "左腕を通す。",
+      "recognized": "左腕を通す",
+      "sha256": "506709a64b24ec66ca4bfb82d18354f52750da39138d1eaf39163e4dd0ca54d9"
+    },
+    {
+      "id": "head",
+      "expected": "そして、頭を通す。",
+      "recognized": "そして頭を通す",
+      "sha256": "d6a1675be55d6c9c53c65625578fa71d44c1d9c25ae449a475bbfb0b6c0d2b05"
+    },
+    {
+      "id": "wear",
+      "expected": "着られました。",
+      "recognized": "切られました",
+      "sha256": "11b362c31b995cc72f5bb572c1e7223af5a350273c39a567bb98b524b6096e0f"
+    },
+    {
+      "id": "simple",
+      "expected": "実にシンプルです。",
+      "recognized": "実にシンプルです",
+      "sha256": "59859a16c8329ffa759c9dfaed054d7f5ebb6e018f316323c436cbb5d19e2dec"
+    },
+    {
+      "id": "detail",
+      "expected": "見てください。このディテール。",
+      "recognized": "見てくださいこのディテール",
+      "sha256": "fda22d14d55827f07ec954d7a940382bf6c85719cd479c27fcc3521f7ec7f450"
+    },
+    {
+      "id": "everyone",
+      "expected": "窓際族が、全員ここにいる。",
+      "recognized": "窓際族が全員ここにいる",
+      "sha256": "3293002548a37de825343a84f43ffc9e2436e372b44e06140d0b35a443b0cdcb"
+    },
+    {
+      "id": "nobody",
+      "expected": "しかも、誰も働いていません。",
+      "recognized": "しかも誰も働いていません",
+      "sha256": "92cd4ae9c269fc0d4598a81a3f3bf433354fa3026b63438073b41c1dad56baec"
+    },
+    {
+      "id": "perfect",
+      "expected": "完璧です。",
+      "recognized": "完璧です",
+      "sha256": "7b0049657a839fc5c2b6834c529d2886c52e824d9031600420e0321d1759a469"
+    },
+    {
+      "id": "when",
+      "expected": "さて。これが、いつ手に入るのか。",
+      "recognized": "さてこれがいつ手に入るのか",
+      "sha256": "249e2ee42c15ae6b940c8a9a0a6f19705758f8049d95ab52b4d42710accc24d7"
+    },
+    {
+      "id": "today",
+      "expected": "今日です。",
+      "recognized": "今日です",
+      "sha256": "8b254b4e0e82f046f6d4a4473f82b6ffafd14a23794fb7bcf2d633ae7cae0d27"
+    },
+    {
+      "id": "buy",
+      "expected": "公式サイトから、購入できます。",
+      "recognized": "公式サイトから購入できます",
+      "sha256": "eb3f666a2bdb24d9d0da3d0aff66faf26f980e71ad8878d921a49f4307d426b1"
+    },
+    {
+      "id": "closing",
+      "expected": "窓際族。T。シャツ。",
+      "recognized": "窓際属 Tシャツ",
+      "sha256": "de216902ae9ffdd3e5457b9a63e0733e2e5e86e63a1a4f5c23be66e18c41174f"
+    },
+    {
+      "id": "all",
+      "expected": "すべてが、この1枚に。",
+      "recognized": "全てがこの1枚に",
+      "sha256": "f8e8158099f726acdf025664c38a320ddbabef98f5096b022b00914219fcd233"
+    }
+  ]
+}

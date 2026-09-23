@@ -1,8 +1,9 @@
 from pathlib import Path
-import json,subprocess,hashlib
+import json,subprocess,hashlib,argparse
 import numpy as np
 EP=Path(__file__).resolve().parent;SR=48000
-mp=EP/'remotion/src/edit-manifest.json';m=json.loads(mp.read_text());N=round(m['durationInFrames']/24*SR)
+parser=argparse.ArgumentParser();parser.add_argument('--variant',default='sobaya',choices=['sobaya','nojobs']);args=parser.parse_args();suffix='-nojobs' if args.variant=='nojobs' else ''
+mp=EP/f'remotion/src/edit-manifest{suffix}.json';m=json.loads(mp.read_text());N=round(m['durationInFrames']/24*SR)
 master=np.zeros((N,2),np.float32);voice=np.zeros(N,np.float32)
 def decode(path,filters='anull',channels=2):
  b=subprocess.check_output(['ffmpeg','-v','error','-i',str(path),'-af',filters,'-ar',str(SR),'-ac',str(channels),'-f','f32le','-'])
@@ -37,7 +38,7 @@ echo=int(.075*SR);master[echo:]+=master[:-echo]*.045
 peak=float(np.max(np.abs(master)))
 if peak>.94:master*=.94/peak
 out=EP/'remotion/public/audio';out.mkdir(exist_ok=True)
-subprocess.run(['ffmpeg','-y','-v','error','-f','f32le','-ar',str(SR),'-ac','2','-i','-','-c:a','pcm_s16le',str(out/'master.wav')],input=master.astype('<f4').tobytes(),check=True)
+subprocess.run(['ffmpeg','-y','-v','error','-f','f32le','-ar',str(SR),'-ac','2','-i','-','-c:a','pcm_s16le',str(out/f'master{suffix}.wav')],input=master.astype('<f4').tobytes(),check=True)
 m['audioReady']=True;m['soundEvents']=events;mp.write_text(json.dumps(m,ensure_ascii=False,indent=2)+'\n')
-(EP/'audio-mix.json').write_text(json.dumps({'sampleRate':SR,'channels':2,'peakBeforeLimiter':peak,'dialogueLUFS':-18,'applauseLUFS':-20,'laughterLUFS':-23,'duckingWhenSpeaking':.18,'echoDelaySeconds':.075,'echoGain':.045,'masterSha256':hashlib.sha256((out/'master.wav').read_bytes()).hexdigest(),'events':events},ensure_ascii=False,indent=2)+'\n')
+(EP/f'audio-mix{suffix}.json').write_text(json.dumps({'sampleRate':SR,'channels':2,'peakBeforeLimiter':peak,'dialogueLUFS':-18,'applauseLUFS':-20,'laughterLUFS':-23,'duckingWhenSpeaking':.18,'echoDelaySeconds':.075,'echoGain':.045,'masterSha256':hashlib.sha256((out/f'master{suffix}.wav').read_bytes()).hexdigest(),'events':events},ensure_ascii=False,indent=2)+'\n')
 print('Mixed',N/SR,'seconds; peak',peak)

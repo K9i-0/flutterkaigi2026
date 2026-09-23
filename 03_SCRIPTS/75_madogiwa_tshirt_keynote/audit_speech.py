@@ -1,17 +1,18 @@
 """Automated ASR screening; not a replacement for auditory quality judgement."""
 from pathlib import Path
-import json, subprocess, hashlib
+import json, subprocess, hashlib, argparse
 import numpy as np
 import torch
 from transformers import WhisperProcessor,WhisperForConditionalGeneration
 EP=Path(__file__).resolve().parent;ROOT=EP.parents[1]
+parser=argparse.ArgumentParser();parser.add_argument('--variant',default='sobaya',choices=['sobaya','nojobs']);args=parser.parse_args();suffix='-nojobs' if args.variant=='nojobs' else ''
 processor=WhisperProcessor.from_pretrained('openai/whisper-small',cache_dir=ROOT/'.local/hazard_voice/asr-cache',local_files_only=True)
 model=WhisperForConditionalGeneration.from_pretrained('openai/whisper-small',cache_dir=ROOT/'.local/hazard_voice/asr-cache',local_files_only=True,use_safetensors=True).to('cpu')
 torch.set_num_threads(4)
-report=EP/'remotion/out/speech-audit.json'
+report=EP/f'remotion/out/speech-audit{suffix}.json'
 previous={r['id']:r for r in json.loads(report.read_text())} if report.exists() else {}
 result=[]
-for row in json.loads((EP/'remotion/src/dialogue.json').read_text()):
+for row in json.loads((EP/f'remotion/src/dialogue{suffix}.json').read_text()):
  p=EP/f"line_{row['id']}_{row['speaker']}.wav"
  if not p.exists():continue
  sha=hashlib.sha256(p.read_bytes()).hexdigest()

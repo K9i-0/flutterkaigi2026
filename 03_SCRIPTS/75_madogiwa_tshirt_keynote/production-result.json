@@ -1,7 +1,7 @@
 {
   "output": "final_remotion_keynote.mp4",
-  "sha256": "7d7a56b879f0b3ac70be0a9be10641d74edeced3db46caa3a0c268b2cfe3ff77",
-  "bytes": 12738239,
+  "sha256": "94a6929fb32238742430b79008c8e5564abdd3c0fe091eb39e989d5c7ab677fa",
+  "bytes": 12727417,
   "durationSeconds": 141.125,
   "frames": 3387,
   "width": 1280,
@@ -19,7 +19,7 @@
     "dialogueFileHashes": "32/32 passed",
     "measuredAudioFrameAlignment": "32/32 passed; no overlaps",
     "ASR": "32 lines screened; reinvent misreading regenerated and rechecked; notthree processed ASR error resolved in raw ASR",
-    "visual": "10 major stills + 24.2-second rendered preview filmstrip + final filmstrip + endcard inspected",
+    "visual": "10 major stills + 24.2-second rendered preview filmstrip + final filmstrip + endcard inspected; revised crop checked in first/detail stills and final frame",
     "fullDecode": "passed 3387 video frames to EOF",
     "browserPlayback": "Chrome localhost review page loaded and playing confirmed",
     "auditoryListening": "not performed; ASR, loudness/peak measurements and visual playback do not constitute listening"
@@ -30,5 +30,9 @@
   ],
   "reviewUrl": "http://127.0.0.1:8785/review.html",
   "sourceCode": "remotion/src",
-  "manifest": "remotion/src/edit-manifest.json"
+  "manifest": "remotion/src/edit-manifest.json",
+  "revision": "2026-09-23: centered 200x200 product-art crop at (784,199), same audio and timing",
+  "variants": {
+    "nojobs": "production-result-nojobs.json"
+  }
 }

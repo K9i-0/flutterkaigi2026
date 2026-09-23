@@ -6,5 +6,9 @@
   {
     "source": "16_MADOGIWA_STUDIO/public/site/goods/madogiwa-tshirt.webp",
     "target": "goods/madogiwa-tshirt.webp"
+  },
+  {
+    "source": "04_GAME_ASSETS/3d/characters/yametaro/rig_nose_v3/yametaro.glb",
+    "target": "models/yametaro.glb"
   }
 ]
