@@ -2,7 +2,7 @@
 
 キャラクターの正典参照WAVから、Seedanceへ渡すセリフ単位のボイスサンプルを生成する。
 配役、固定モデル、参照WAV、既定seedは`02_CHARACTERS/VOICE_CAST.md`を正本にする。
-発話時間はv4.1-Smallの自動尺推定に任せる。
+発話時間は既定でv4.1-Smallの自動尺推定に任せる。
 
 ## 初回セットアップ
 
@@ -29,8 +29,8 @@ tools/irodori_speak.sh \
 ```
 
 引数は`本文 出力WAV 参照WAV seed [caption]`。漢字の読みが揺れる語は、
-台本の表示本文を変えず、生成本文だけをかなにする。`--seconds`と
-`--duration-scale`は使わず、モデルが予測した自然な長さで生成する。
+台本の表示本文を変えず、生成本文だけをかなにする。通常はモデルの自動尺で生成する。
+ユーザー指定の語尾修復では、下記の生成尺補正を使える。
 
 別の場所へIrodori-TTSをcloneした場合だけ、`IRODORI_TTS_DIR`を指定する。
 
@@ -57,6 +57,26 @@ IRODORI_UNCUT=1 IRODORI_CFG_SCALE_TEXT=5 tools/irodori_speak.sh \
 - 比較音声と実行ログは`.local/yametaro-tail-20260923/`。候補WAVはGit管理外。
 
 詳細は[比較記録](irodori-yametaro-tail-20260923.md)を参照。
+
+### 短文の語尾引き伸ばし（2026-09-23追加）
+
+前記の「追加発話なし」は自然な語尾の保証ではなく、ユーザー試聴で引き伸ばしが指摘された。
+やめ太郎の短文では、同じ声・台詞・seedのまま生成尺を補正した候補を比較する。
+
+```bash
+IRODORI_UNCUT=1 IRODORI_CFG_SCALE_TEXT=5 IRODORI_DURATION_SCALE=0.70 \
+  tools/irodori_speak.sh \
+  '返事は、来るんですか。' \
+  .local/yametaro_short.wav \
+  02_CHARACTERS/Yametaro_voice.wav 7
+```
+
+`IRODORI_DURATION_SCALE`は自動推定された生成フレーム数への倍率。
+生成後のカット、タイムストレッチ、ピッチ変更は行わない。未指定は1.0。
+0.70は短文用の比較開始値であり、自然さの試聴合格や任意の台詞への適合を保証しない。
+急ぎすぎる場合は0.85と比較する。そば屋や長文へ自動的に適用しない。
+短文「ああ、それは失礼しました。」の「ああ」はASRが拾わないため、試聴で照合する。
+倍率、caption、本文CFG、実測秒数を生成記録へ残す。
 
 ## 採用手順
 

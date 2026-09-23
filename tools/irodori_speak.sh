@@ -1,7 +1,7 @@
 #!/bin/bash
 # Irodori-TTSで正典参照音声からセリフのボイスサンプルWAVを生成する。
 # Usage: IRODORI_TTS_DIR=/path/to/Irodori-TTS irodori_speak.sh TEXT OUT.wav REF.wav [SEED] [CAPTION]
-# v4.1-Smallの自動尺推定を使い、固定秒数や話速倍率は指定しない。
+# 既定は自動尺。明示的な語尾修復ではIRODORI_DURATION_SCALEで生成尺を補正できる。
 set -eu
 
 [ "$#" -le 5 ] || {
@@ -50,6 +50,13 @@ case "${IRODORI_UNCUT:-0}" in
   *) echo "ERROR: IRODORI_UNCUTは0か1を指定してください" >&2; exit 1 ;;
 esac
 [ -z "${IRODORI_CFG_SCALE_TEXT:-}" ] || INFERENCE_ARGS+=(--cfg-scale-text "$IRODORI_CFG_SCALE_TEXT")
+if [ -n "${IRODORI_DURATION_SCALE:-}" ]; then
+  awk -v value="$IRODORI_DURATION_SCALE" 'BEGIN { exit !(value ~ /^[0-9]+([.][0-9]+)?$/ && value > 0) }' || {
+    echo "ERROR: IRODORI_DURATION_SCALEは0より大きい小数で指定してください" >&2
+    exit 1
+  }
+  INFERENCE_ARGS+=(--duration-scale "$IRODORI_DURATION_SCALE")
+fi
 
 (cd "$TTS_DIR" && uv run --no-sync python infer.py \
   --hf-checkpoint "$CHECKPOINT" \
@@ -72,4 +79,4 @@ mv "$TRIMMED" "$OUT"
 fi
 
 DURATION="$(ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 "$OUT")"
-echo "OK: $OUT (${DURATION}s, checkpoint=$CHECKPOINT, ref=$(basename "$REF")${SEED:+, seed=$SEED}${CAPTION:+, caption=yes}, duration=auto, uncut=${IRODORI_UNCUT:-0}, text_cfg=${IRODORI_CFG_SCALE_TEXT:-3.0})"
+echo "OK: $OUT (${DURATION}s, checkpoint=$CHECKPOINT, ref=$(basename "$REF")${SEED:+, seed=$SEED}${CAPTION:+, caption=yes}, duration=auto, duration_scale=${IRODORI_DURATION_SCALE:-1.0}, uncut=${IRODORI_UNCUT:-0}, text_cfg=${IRODORI_CFG_SCALE_TEXT:-3.0})"
