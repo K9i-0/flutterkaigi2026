@@ -1,0 +1,322 @@
+[
+  {
+    "id": "intro",
+    "speaker": "sobaya",
+    "text": "今日という日を、私はずっと待っていました。",
+    "speechText": "今日という日を、私はずっと待っていました。",
+    "scene": "intro",
+    "pauseFrames": 36,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "revolution",
+    "speaker": "sobaya",
+    "text": "時として、すべてを変えてしまう革命的な製品が現れます。",
+    "speechText": "時として、すべてを変えてしまう革命的な製品が現れます。",
+    "scene": "revolution",
+    "pauseFrames": 18,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "lucky",
+    "speaker": "sobaya",
+    "text": "そんな製品を、ひとつでも紹介できれば幸運です。",
+    "speechText": "そんな製品を、ひとつでも紹介できれば幸運です。",
+    "scene": "revolution",
+    "pauseFrames": 24,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "three",
+    "speaker": "sobaya",
+    "text": "今日、私たちは、3つ、紹介します。",
+    "speechText": "今日、私たちは、3つ、紹介します。",
+    "scene": "three",
+    "pauseFrames": 65,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "first",
+    "speaker": "sobaya",
+    "text": "ひとつめ。窓際族。",
+    "speechText": "ひとつめ。窓際族。",
+    "scene": "first",
+    "pauseFrames": 62,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "second",
+    "speaker": "sobaya",
+    "text": "ふたつめ。T。",
+    "speechText": "ふたつめ。ティー。",
+    "scene": "second",
+    "pauseFrames": 65,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "third",
+    "speaker": "sobaya",
+    "text": "そして、みっつめ。シャツ。",
+    "speechText": "そして、みっつめ。シャツ。",
+    "scene": "third",
+    "pauseFrames": 85,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "repeat1",
+    "speaker": "sobaya",
+    "text": "窓際族。T。シャツ。",
+    "speechText": "窓際族。ティー。シャツ。",
+    "scene": "repeat1",
+    "pauseFrames": 22,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "repeat2",
+    "speaker": "sobaya",
+    "text": "窓際族。T。シャツ。",
+    "speechText": "窓際族。ティー。シャツ。",
+    "scene": "repeat2",
+    "pauseFrames": 38,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 43
+  },
+  {
+    "id": "understand",
+    "speaker": "sobaya",
+    "text": "もう、おわかりですね？",
+    "speechText": "もう、おわかりですね？",
+    "scene": "understand",
+    "pauseFrames": 60,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "notthree",
+    "speaker": "sobaya",
+    "text": "これは、3つの別々の製品ではありません。",
+    "speechText": "これは、3つの別々の製品ではありません。",
+    "scene": "notthree",
+    "pauseFrames": 25,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "one",
+    "speaker": "sobaya",
+    "text": "ひとつの製品です。",
+    "speechText": "ひとつの製品です。",
+    "scene": "one",
+    "pauseFrames": 30,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "reveal",
+    "speaker": "sobaya",
+    "text": "私たちは、これを、窓際族Tシャツと呼びます。",
+    "speechText": "私たちは、これを、窓際族ティーシャツと呼びます。",
+    "scene": "reveal",
+    "pauseFrames": 125,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "reinvent",
+    "speaker": "sobaya",
+    "text": "今日、私たちはTシャツを再発明します。",
+    "speechText": "きょう、私たちはティーシャツを再発明します。",
+    "scene": "reinvent",
+    "pauseFrames": 35,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "how",
+    "speaker": "sobaya",
+    "text": "では、どうやって使うのか。",
+    "speechText": "では、どうやって使うのか。",
+    "scene": "how",
+    "pauseFrames": 20,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "learn",
+    "speaker": "sobaya",
+    "text": "特別な操作を、覚える必要はありません。",
+    "speechText": "特別な操作を、覚える必要はありません。",
+    "scene": "how",
+    "pauseFrames": 20,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "born",
+    "speaker": "sobaya",
+    "text": "私たちは、生まれたときから持っているものを使います。",
+    "speechText": "私たちは、生まれたときから持っているものを使います。",
+    "scene": "born",
+    "pauseFrames": 45,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "arms",
+    "speaker": "sobaya",
+    "text": "腕です。",
+    "speechText": "腕です。",
+    "scene": "arms",
+    "pauseFrames": 62,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "right",
+    "speaker": "sobaya",
+    "text": "右腕を通す。",
+    "speechText": "右腕を通す。",
+    "scene": "right",
+    "pauseFrames": 8,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "left",
+    "speaker": "sobaya",
+    "text": "左腕を通す。",
+    "speechText": "左腕を通す。",
+    "scene": "left",
+    "pauseFrames": 8,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "head",
+    "speaker": "sobaya",
+    "text": "そして、頭を通す。",
+    "speechText": "そして、頭を通す。",
+    "scene": "head",
+    "pauseFrames": 16,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "wear",
+    "speaker": "sobaya",
+    "text": "着られました。",
+    "speechText": "着られました。",
+    "scene": "wear",
+    "pauseFrames": 65,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "simple",
+    "speaker": "sobaya",
+    "text": "実にシンプルです。",
+    "speechText": "実にシンプルです。",
+    "scene": "wear",
+    "pauseFrames": 22,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "detail",
+    "speaker": "sobaya",
+    "text": "見てください。このディテール。",
+    "speechText": "見てください。このディテール。",
+    "scene": "detail",
+    "pauseFrames": 25,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "everyone",
+    "speaker": "sobaya",
+    "text": "窓際族が、全員ここにいる。",
+    "speechText": "窓際族が、全員ここにいる。",
+    "scene": "detail",
+    "pauseFrames": 20,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "nobody",
+    "speaker": "sobaya",
+    "text": "しかも、誰も働いていません。",
+    "speechText": "しかも、誰も働いていません。",
+    "scene": "detail",
+    "pauseFrames": 62,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "perfect",
+    "speaker": "sobaya",
+    "text": "完璧です。",
+    "speechText": "完璧です。",
+    "scene": "detail",
+    "pauseFrames": 28,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "when",
+    "speaker": "sobaya",
+    "text": "さて。これが、いつ手に入るのか。",
+    "speechText": "さて。これが、いつ手に入るのか。",
+    "scene": "when",
+    "pauseFrames": 25,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "today",
+    "speaker": "sobaya",
+    "text": "今日です。",
+    "speechText": "今日です。",
+    "scene": "today",
+    "pauseFrames": 65,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "buy",
+    "speaker": "sobaya",
+    "text": "公式サイトから、購入できます。",
+    "speechText": "公式サイトから、購入できます。",
+    "scene": "buy",
+    "pauseFrames": 30,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "closing",
+    "speaker": "sobaya",
+    "text": "窓際族。T。シャツ。",
+    "speechText": "窓際族。ティー。シャツ。",
+    "scene": "closing",
+    "pauseFrames": 24,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  },
+  {
+    "id": "all",
+    "speaker": "sobaya",
+    "text": "すべてが、この1枚に。",
+    "speechText": "すべてが、この1枚に。",
+    "scene": "end",
+    "pauseFrames": 110,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "seed": 42
+  }
+]

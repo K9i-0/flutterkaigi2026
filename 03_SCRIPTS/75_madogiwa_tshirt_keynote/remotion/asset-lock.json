@@ -1,0 +1,12 @@
+[
+  {
+    "source": "04_GAME_ASSETS/3d/hazard_adopted/optimized_20260919/sobaya.glb",
+    "target": "models/sobaya.glb",
+    "sha256": "8a35c9ea6cd0088f34e28d94516f056893b80d6d9ee553c7223c122e893ebe2c"
+  },
+  {
+    "source": "16_MADOGIWA_STUDIO/public/site/goods/madogiwa-tshirt.webp",
+    "target": "goods/madogiwa-tshirt.webp",
+    "sha256": "d3de5d3a43185a547f135a90fc982659ee926155f7c4193a9f2aa413699d3699"
+  }
+]

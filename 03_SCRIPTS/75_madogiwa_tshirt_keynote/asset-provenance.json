@@ -1,0 +1,31 @@
+{
+  "model": "04_GAME_ASSETS/3d/hazard_adopted/optimized_20260919/sobaya.glb",
+  "product": "16_MADOGIWA_STUDIO/public/site/goods/madogiwa-tshirt.webp",
+  "costume": "Episode-local material shader, canonical geometry and skin weights unchanged",
+  "motions": [
+    "Explain",
+    "EmptyHands",
+    "Hybrid_Idle_A",
+    "Hybrid_Walk",
+    "Hybrid_Bow"
+  ],
+  "sfx": [
+    {
+      "file": "audio_sources/applause_cc0.ogg",
+      "source": "https://commons.wikimedia.org/wiki/File:Sound_Effects_-_Applause_after_a_concert.ogg",
+      "download": "https://upload.wikimedia.org/wikipedia/commons/3/32/Sound_Effects_-_Applause_after_a_concert.ogg",
+      "author": "Amada44",
+      "license": "CC0-1.0",
+      "sha256": "a9bed3afd89d66c3ce13edb9f2be2a548ab87a2cc70827624905be90044f8e72"
+    },
+    {
+      "file": "audio_sources/laughter_ccby4.mp3",
+      "source": "https://freesound.org/people/Kyster/sounds/124028/",
+      "download": "https://cdn.freesound.org/previews/124/124028_646701-hq.mp3",
+      "author": "Kyster",
+      "license": "CC-BY-4.0",
+      "modifications": "Extracts, fades, volume normalization, theatre reflection; endcard credit and README attribution",
+      "sha256": "586deb9887a9ae134bb6d5ad5e682aec4577cd06314383280d50236751ef9970"
+    }
+  ]
+}

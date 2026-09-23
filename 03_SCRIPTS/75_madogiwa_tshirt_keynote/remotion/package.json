@@ -1,0 +1,31 @@
+{
+  "name": "madogiwa-tshirt-keynote",
+  "version": "1.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@remotion/cli": "4.0.527",
+    "@remotion/media": "4.0.527",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "remotion": "4.0.527",
+    "@remotion/three": "4.0.527",
+    "three": "0.180.0",
+    "@react-three/fiber": "9.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.7",
+    "typescript": "5.9.3",
+    "@types/three": "0.180.0"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "studio": "remotion studio src/index.tsx",
+    "stills": "node render.mjs stills",
+    "preview": "node render.mjs preview",
+    "render": "node render.mjs full"
+  },
+  "sideEffects": [
+    "*.css"
+  ]
+}
