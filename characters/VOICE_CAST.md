@@ -10,8 +10,8 @@
 - 動作確認済みIrodori-TTS本体：`8224dafb46d0aba89209a8f905f1cb7e3299d9c1`（2026-08-11の`main`）
 - 生成方法：`tools/irodori_speak.sh`
 - 入力：実際に発話する日本語本文と、下表の正典参照WAV
-- 尺制御：`--seconds`と`--duration-scale`は使わず、v4.1-Smallの自動尺推定に任せる
-- 再現情報：モデルID、参照WAV、seed、caption、自動推定後の実測長を`script.md`へ記録する
+- 尺制御：既定はv4.1-Smallの自動尺推定。2026-09-23のユーザー指定による例外として、やめ太郎の短文で語尾が不自然に伸びる場合は生成時の`--duration-scale`補正を使える。候補は0.70から比較し、台詞の欠落・早口化・語尾を試聴する。全キャラへの一律適用や生成後の速度変更はしない。詳細は`tools/IRODORI_TTS.md`。
+- 再現情報：モデルID、参照WAV、seed、caption、尺補正倍率（既定1.0）、実測長を`script.md`へ記録する
 
 ## 配役
 
