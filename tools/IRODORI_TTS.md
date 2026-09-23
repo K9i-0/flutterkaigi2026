@@ -34,6 +34,30 @@ tools/irodori_speak.sh \
 
 別の場所へIrodori-TTSをcloneした場合だけ、`IRODORI_TTS_DIR`を指定する。
 
+## やめ太郎の追加発話を抑える比較設定
+
+2026-09-23の比較では、長いcaptionを外し、本文CFGを5へ上げる設定で
+台本外発話が減った。正典参照WAV・モデル・seed 7は維持する。
+短文への「台本の文だけを読む」「最後に口を閉じる」等の長いcaptionを
+追加発話対策として重ねない。captionは自動尺予測にも入力される。
+
+```bash
+IRODORI_UNCUT=1 IRODORI_CFG_SCALE_TEXT=5 tools/irodori_speak.sh \
+  '返事は、来るんですか。' \
+  .local/yametaro_uncut.wav \
+  02_CHARACTERS/Yametaro_voice.wav \
+  7
+```
+
+- `IRODORI_UNCUT=1`：モデル内部の末尾トリムと生成後の無音トリムを両方無効にする。
+- `IRODORI_CFG_SCALE_TEXT=5`：本文へのCFG強度を指定する。既定は従来どおり3。
+- captionが必要な演技では短い演技指定を個別検証する。自動的に指示を削除しない。
+- この設定は試聴・全文照合を省略できる保証ではない。ASRだけでは非言語の異音、
+  短い相づちの欠落、声質の維持を判定しきれない。
+- 比較音声と実行ログは`.local/yametaro-tail-20260923/`。候補WAVはGit管理外。
+
+詳細は[比較記録](irodori-yametaro-tail-20260923.md)を参照。
+
 ## 採用手順
 
 1. 正典seedと自動尺推定で候補を作る。

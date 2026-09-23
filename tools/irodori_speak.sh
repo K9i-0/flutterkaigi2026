@@ -42,22 +42,34 @@ SEED_ARGS=()
 CAPTION_ARGS=()
 [ -n "$CAPTION" ] && CAPTION_ARGS=(--caption "$CAPTION")
 
+# 比較・未加工納品用。既存の呼び出しは従来の動作を維持する。
+INFERENCE_ARGS=()
+case "${IRODORI_UNCUT:-0}" in
+  0) ;;
+  1) INFERENCE_ARGS+=(--no-trim-tail) ;;
+  *) echo "ERROR: IRODORI_UNCUTは0か1を指定してください" >&2; exit 1 ;;
+esac
+[ -z "${IRODORI_CFG_SCALE_TEXT:-}" ] || INFERENCE_ARGS+=(--cfg-scale-text "$IRODORI_CFG_SCALE_TEXT")
+
 (cd "$TTS_DIR" && uv run --no-sync python infer.py \
   --hf-checkpoint "$CHECKPOINT" \
   --text "$TEXT" \
   --ref-wav "$REF" \
   --output-wav "$OUT" \
   ${SEED_ARGS[@]+"${SEED_ARGS[@]}"} \
-  ${CAPTION_ARGS[@]+"${CAPTION_ARGS[@]}"} >&2)
+  ${CAPTION_ARGS[@]+"${CAPTION_ARGS[@]}"} \
+  ${INFERENCE_ARGS[@]+"${INFERENCE_ARGS[@]}"} >&2)
 
 [ "$(head -c 4 "$OUT")" = "RIFF" ] || { echo "ERROR: RIFF/WAVを生成できませんでした: $OUT" >&2; exit 1; }
 
+if [ "${IRODORI_UNCUT:-0}" != 1 ]; then
 TRIMMED="${OUT%.wav}.trim.wav"
 ffmpeg -y -v error -i "$OUT" \
   -af "silenceremove=start_periods=1:start_threshold=-40dB:start_silence=0.1,areverse,silenceremove=start_periods=1:start_threshold=-40dB:start_silence=0.2,areverse" \
   "$TRIMMED"
 [ "$(head -c 4 "$TRIMMED")" = "RIFF" ] || { echo "ERROR: 無音トリムに失敗しました: $TRIMMED" >&2; exit 1; }
 mv "$TRIMMED" "$OUT"
+fi
 
 DURATION="$(ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 "$OUT")"
-echo "OK: $OUT (${DURATION}s, checkpoint=$CHECKPOINT, ref=$(basename "$REF")${SEED:+, seed=$SEED}${CAPTION:+, caption=yes}, duration=auto)"
+echo "OK: $OUT (${DURATION}s, checkpoint=$CHECKPOINT, ref=$(basename "$REF")${SEED:+, seed=$SEED}${CAPTION:+, caption=yes}, duration=auto, uncut=${IRODORI_UNCUT:-0}, text_cfg=${IRODORI_CFG_SCALE_TEXT:-3.0})"
