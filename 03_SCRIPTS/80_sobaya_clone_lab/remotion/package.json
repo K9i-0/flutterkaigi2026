@@ -1,0 +1,21 @@
+{
+  "name": "madogiwa-clone-lab-ui",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "studio": "remotion studio src/index.tsx",
+    "typecheck": "tsc --noEmit",
+    "render": "node render.mjs",
+    "stills": "node render.mjs stills",
+    "alpha": "node render.mjs alpha"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.528",
+    "@remotion/bundler": "4.0.528",
+    "@remotion/renderer": "4.0.528",
+    "remotion": "4.0.528",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "devDependencies": {"@types/react": "19.2.7", "typescript": "5.9.3"}
+}
