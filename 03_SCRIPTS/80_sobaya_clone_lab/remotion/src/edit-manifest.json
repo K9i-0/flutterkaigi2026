@@ -1,9 +1,43 @@
 {
-  "composition": {"width":1920,"height":1080,"fps":30,"durationInFrames":300},
-  "timing": {"bootEnd":20,"fukuStart":30,"fukuEnd":85,"yameStart":100,"yameEnd":170,"capture":220},
-  "reference": {"standard":10,"sobaya":10247,"outlier":1000},
+  "composition": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "durationInFrames": 150
+  },
+  "timing": {
+    "bootEnd": 6,
+    "fukuStart": 6,
+    "fukuEnd": 35,
+    "yameStart": 38,
+    "yameEnd": 80,
+    "capture": 115
+  },
+  "reference": {
+    "standard": 10,
+    "sobaya": 10247,
+    "outlier": 1000
+  },
   "subjects": [
-    {"id":"01","name":"福ちゃん","value":213,"classification":"高値個体","x":135,"y":235,"w":470,"h":410},
-    {"id":"02","name":"やめ太郎","value":5082,"classification":"規格外","x":710,"y":235,"w":470,"h":410}
+    {
+      "id": "01",
+      "name": "福ちゃん",
+      "value": 213,
+      "classification": "高値",
+      "x": 155,
+      "y": 195,
+      "w": 690,
+      "h": 340
+    },
+    {
+      "id": "02",
+      "name": "やめ太郎",
+      "value": 5082,
+      "classification": "規格外",
+      "x": 1075,
+      "y": 195,
+      "w": 690,
+      "h": 340
+    }
   ]
 }

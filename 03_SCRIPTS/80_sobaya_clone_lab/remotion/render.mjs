@@ -10,10 +10,10 @@ try{
  const id=mode==='alpha'?'ScannerOverlay':'ScannerPreview';
  const composition=await selectComposition({serveUrl,id,puppeteerInstance:browser});
  if(mode==='stills'){
-  for(const frame of [29,85,120,169,170,219,220,270])await renderStill({serveUrl,composition,puppeteerInstance:browser,frame,imageFormat:'png',output:`out/scan-${frame}.png`});
+  for(const frame of [34,35,60,79,80,84,114,115,135])await renderStill({serveUrl,composition,puppeteerInstance:browser,frame,imageFormat:'png',output:`out/v2-scan-${frame}.png`});
   const overlay=await selectComposition({serveUrl,id:'ScannerOverlay',puppeteerInstance:browser});
-  await renderStill({serveUrl,composition:overlay,puppeteerInstance:browser,frame:270,imageFormat:'png',output:'out/overlay.png'});
- }else await renderMedia({serveUrl,composition,puppeteerInstance:browser,codec:mode==='alpha'?'prores':'h264',...(mode==='alpha'?{proResProfile:'4444',pixelFormat:'yuva444p10le',imageFormat:'png'}:{pixelFormat:'yuv420p'}),outputLocation:mode==='alpha'?'../scanner_overlay_alpha.mov':'../final_remotion_scanner_preview.mp4'});
+  await renderStill({serveUrl,composition:overlay,puppeteerInstance:browser,frame:135,imageFormat:'png',output:'out/v2-overlay.png'});
+ }else await renderMedia({serveUrl,composition,puppeteerInstance:browser,codec:mode==='alpha'?'prores':'h264',...(mode==='alpha'?{proResProfile:'4444',pixelFormat:'yuva444p10le',imageFormat:'png'}:{pixelFormat:'yuv420p'}),outputLocation:mode==='alpha'?'../scanner_overlay_alpha_v2.mov':'../final_remotion_scanner_preview_v2.mp4'});
 }finally{await browser.close({silent:true});}
 // Rendering and browser cleanup are complete; release bundler handles in this CLI.
 process.exit(0);
