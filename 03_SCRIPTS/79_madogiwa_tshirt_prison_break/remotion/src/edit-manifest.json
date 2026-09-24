@@ -1,12 +1,12 @@
 {
   "composition": {
-    "id": "MadogiwaPrisonBreakV2",
+    "id": "MadogiwaPrisonBreakV3",
     "width": 854,
     "height": 480,
     "fps": 30,
     "durationInFrames": 990
   },
-  "inputVideo": "input_v2.mp4",
+  "inputVideo": "input_v3.mp4",
   "endcard": {
     "from": 900,
     "durationInFrames": 90,
@@ -30,7 +30,7 @@
     }
   },
   "audio": {
-    "file": "final_audio_v2.wav",
+    "file": "final_audio_v3.wav",
     "source": "Wan generated soundtrack",
     "endcard_music_source_start_frame": 801,
     "crossfade_frames": 9,
@@ -43,7 +43,7 @@
       "replaceToFrame": 59
     }
   },
-  "status": "approved episode 76 voice; finishing edit",
+  "status": "completed v3 chase replacement",
   "captions": [
     {
       "startFrame": 17,
@@ -58,20 +58,20 @@
       "english": "Stop! Get on the ground!"
     },
     {
-      "startFrame": 328,
-      "endFrame": 381,
+      "startFrame": 331,
+      "endFrame": 390,
       "text": "対象は居酒屋へ進行中。",
       "english": "Suspect heading toward the roadhouse."
     },
     {
-      "startFrame": 382,
-      "endFrame": 435,
+      "startFrame": 391,
+      "endFrame": 436,
       "text": "目的は依然不明。",
       "english": "Motive still unknown."
     },
     {
-      "startFrame": 604,
-      "endFrame": 656,
+      "startFrame": 714,
+      "endFrame": 750,
       "text": "仕留めたか？",
       "english": "Did we get him?"
     }
@@ -81,5 +81,30 @@
     "startFrame": 240,
     "endFrame": 285,
     "text": "数分後"
+  },
+  "videoEdit": {
+    "intro": {
+      "source": "wan3_prison_break_v2_seed26092480_480p.mp4",
+      "startFrame": 0,
+      "endFrame": 330
+    },
+    "chase": {
+      "source": "wan3_chase_v3_seed26092481_480p.mp4",
+      "normalEndFrame": 255,
+      "slowEndFrame": 338,
+      "outputFrames": 420,
+      "crop": [
+        0,
+        42,
+        854,
+        394
+      ]
+    },
+    "bar": {
+      "source": "wan3_prison_break_v2_seed26092480_480p.mp4",
+      "startFrame": 750,
+      "endFrame": 900
+    },
+    "note": "Explosion tail slowed to fit 14 seconds; cut before dust clears. Bar starts after costume transformation."
   }
 }

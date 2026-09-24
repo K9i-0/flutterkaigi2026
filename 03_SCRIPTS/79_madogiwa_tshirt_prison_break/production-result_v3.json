@@ -1,0 +1,21 @@
+{
+  "output": "final_remotion_prison_break_v3.mp4",
+  "sha256": "c73028f8cf1a8628e58e5636e09270acf0e3992d9e74c127a2c1d6052713220c",
+  "width": 854,
+  "height": 480,
+  "fps": 30,
+  "frames": 990,
+  "video_seconds": 33,
+  "audio_rate": 48000,
+  "decode_pass": true,
+  "typecheck_pass": true,
+  "first_11_seconds_pcm_unchanged": true,
+  "episode76_beer_pcm_identical": true,
+  "visual_review": "subtitle boundaries, chase/bar cut, product endcard checked as rendered stills",
+  "auditory_review": false,
+  "limitations": [
+    "Generated helicopter geometry remains different from specified AH-1Z.",
+    "Dust hides rider but does not make every part of frame opaque."
+  ],
+  "edit_manifest": "remotion/src/edit-manifest.json"
+}

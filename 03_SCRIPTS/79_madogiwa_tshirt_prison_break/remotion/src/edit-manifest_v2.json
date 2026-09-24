@@ -1,0 +1,85 @@
+{
+  "composition": {
+    "id": "MadogiwaPrisonBreakV2",
+    "width": 854,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 990
+  },
+  "inputVideo": "input_v2.mp4",
+  "endcard": {
+    "from": 900,
+    "durationInFrames": 90,
+    "fadeInFrames": 6,
+    "productFrom": 30,
+    "copy": [
+      "世間の風当たりにも、",
+      "銃弾にも。"
+    ],
+    "product": "窓際族Tシャツ",
+    "image": {
+      "file": "prop_madogiwa_tshirt.webp",
+      "side": "left",
+      "crop": {
+        "x": 620,
+        "y": 90,
+        "width": 540,
+        "height": 470
+      },
+      "sourceWidth": 1200
+    }
+  },
+  "audio": {
+    "file": "final_audio_v2.wav",
+    "source": "Wan generated soundtrack",
+    "endcard_music_source_start_frame": 801,
+    "crossfade_frames": 9,
+    "original_dialogue_retained": "English retained; unwanted opening replaced",
+    "localOpening": {
+      "file": "line_beer_ep76.wav",
+      "fromFrame": 18,
+      "gainDb": 0,
+      "replaceFromFrame": 9,
+      "replaceToFrame": 59
+    }
+  },
+  "status": "approved episode 76 voice; finishing edit",
+  "captions": [
+    {
+      "startFrame": 17,
+      "endFrame": 56,
+      "text": "ビール……",
+      "english": "ビール（Japanese）"
+    },
+    {
+      "startFrame": 136,
+      "endFrame": 190,
+      "text": "止まれ！ 地面に伏せろ！",
+      "english": "Stop! Get on the ground!"
+    },
+    {
+      "startFrame": 328,
+      "endFrame": 381,
+      "text": "対象は居酒屋へ進行中。",
+      "english": "Suspect heading toward the roadhouse."
+    },
+    {
+      "startFrame": 382,
+      "endFrame": 435,
+      "text": "目的は依然不明。",
+      "english": "Motive still unknown."
+    },
+    {
+      "startFrame": 604,
+      "endFrame": 656,
+      "text": "仕留めたか？",
+      "english": "Did we get him?"
+    }
+  ],
+  "captionTimingStatus": "English aligned to full-context ASR and word timestamps; Japanese aligned to approved PCM placement",
+  "locationCaption": {
+    "startFrame": 240,
+    "endFrame": 285,
+    "text": "数分後"
+  }
+}

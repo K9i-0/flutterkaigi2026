@@ -4,8 +4,8 @@ No synthesis, voice processing or time stretching. Timing comes from manifest.
 from pathlib import Path
 import argparse,hashlib,json,subprocess,wave,array
 EP=Path(__file__).resolve().parent
-parser=argparse.ArgumentParser();parser.add_argument('--music-start-frame',type=int,required=True);args=parser.parse_args()
-m=json.loads((EP/'remotion/src/edit-manifest.json').read_text());fps=m['composition']['fps'];rate=48000
+parser=argparse.ArgumentParser();parser.add_argument('--music-start-frame',type=int,required=True);parser.add_argument('--manifest',default='remotion/src/edit-manifest.json');args=parser.parse_args()
+m=json.loads((EP/args.manifest).read_text());fps=m['composition']['fps'];rate=48000
 end=m['endcard']['from']/fps;total=m['composition']['durationInFrames']/fps;cross=m['audio']['crossfade_frames']/fps
 source=EP/json.loads((EP/'wan3_config.json').read_text())['output'];out=EP/'remotion/public'/m['audio']['file'];opening=m['audio']['localOpening'];voice=EP/opening['file']
 start=args.music_start_frame/fps;needed=total-end+cross
