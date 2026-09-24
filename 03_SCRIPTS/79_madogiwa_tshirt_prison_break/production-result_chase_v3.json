@@ -1,0 +1,23 @@
+{
+  "status": "generated_with_visual_deviations_not_integrated",
+  "output": "wan3_chase_v3_seed26092481_480p.mp4",
+  "sha256": "5278b1e8a9e29fb0b483db0288ea905ce45e11fa6b495aa08e1a373f69fa6f36",
+  "width": 854,
+  "height": 480,
+  "fps": 30,
+  "frames": 360,
+  "seconds": 12,
+  "decode_pass": true,
+  "task_id": "bf0523c5-8144-409e-b7aa-55aa84ee194f",
+  "visual_findings": [
+    "No roadhouse or other buildings in sampled frames.",
+    "Cannon and wing-pod rockets depicted; pursuit and impacts appear behind rider in lateral shots.",
+    "Large explosions and growing dust hide rider.",
+    "Aircraft fuselage/cockpit is too broad for requested AH-1Z; exact model fidelity failed.",
+    "End dust becomes translucent and road/helicopter are visible; full opaque end-frame requirement not achieved.",
+    "Generated letterboxing differs from existing footage."
+  ],
+  "asr": "Suspect heading toward the Roadhouse. Motives still unknown. Did we get him?",
+  "auditory_review": false,
+  "paid_generations": 1
+}
