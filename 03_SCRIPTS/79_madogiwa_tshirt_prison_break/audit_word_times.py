@@ -17,6 +17,6 @@ for start,duration in [(0,30)]:
  tokens=out['sequences'][0].tolist()
  stamps=out['token_timestamps'][0].tolist()
  text=processor.tokenizer.decode(tokens,skip_special_tokens=True,decode_with_timestamps=True)
- (EP/'remotion/out/asr-token-times.json').write_text(json.dumps([{'token':processor.tokenizer.decode([token],skip_special_tokens=False),'time':time} for token,time in zip(tokens,stamps)],indent=2))
+ (EP/'remotion/out/asr-v2-token-times.json').write_text(json.dumps([{'token':processor.tokenizer.decode([token],skip_special_tokens=False),'time':time} for token,time in zip(tokens,stamps)],indent=2))
  results.append({'start':start,'duration':duration,'recognized':text}); print(results[-1],flush=True)
-(EP/'remotion/out/asr-word-screening.json').write_text(json.dumps({'note':'Automated screening only; short music segments may hallucinate words.','clips':results},ensure_ascii=False,indent=2)+'\n')
+(EP/'remotion/out/asr-v2-word-screening.json').write_text(json.dumps({'note':'Automated screening only; short music segments may hallucinate words.','clips':results},ensure_ascii=False,indent=2)+'\n')

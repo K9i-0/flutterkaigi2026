@@ -13,7 +13,7 @@ wan = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(wan)
 wan.SUBMIT_URL = 'https://maas.qwencloudapi.com/api/v1/services/aigc/video-generation/video-synthesis'
 wan.QUERY_URL = 'https://maas.qwencloudapi.com/api/v1/tasks/{task_id}'
-record_path = EP / 'generation-record.json'
+record_path = EP / 'generation-record_v2.json'
 if '--submit' in sys.argv and record_path.exists():
     raise SystemExit('Existing task record found. Poll the existing task; do not resubmit.')
 record = {'model':'wan3.0-video','generation_seconds':30,'final_seconds':33,'resolution':'480P','estimated_usd':1.05,'standard_usd':1.50,'endpoint':wan.SUBMIT_URL}

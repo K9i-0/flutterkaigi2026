@@ -1,12 +1,12 @@
 {
   "composition": {
-    "id": "MadogiwaPrisonBreak",
+    "id": "MadogiwaPrisonBreakV2",
     "width": 854,
     "height": 480,
     "fps": 30,
     "durationInFrames": 990
   },
-  "inputVideo": "input.mp4",
+  "inputVideo": "input_v2.mp4",
   "endcard": {
     "from": 900,
     "durationInFrames": 90,
@@ -30,50 +30,56 @@
     }
   },
   "audio": {
-    "file": "final_audio.wav",
+    "file": "final_audio_v2.wav",
     "source": "Wan generated soundtrack",
     "endcard_music_source_start_frame": 801,
     "crossfade_frames": 9,
-    "original_dialogue_retained": true
+    "original_dialogue_retained": "English retained; unwanted opening replaced",
+    "localOpening": {
+      "file": "line_beer_ep76.wav",
+      "fromFrame": 18,
+      "gainDb": 0,
+      "replaceFromFrame": 9,
+      "replaceToFrame": 59
+    }
   },
-  "status": "rendered; technical and sampled visual validation passed; narrative deviations documented; auditory review unavailable",
+  "status": "approved episode 76 voice; finishing edit",
   "captions": [
     {
-      "startFrame": 8,
-      "endFrame": 72,
-      "text": "窓際の男が、塀際に接近。",
-      "english": "Prisoner approaching the perimeter."
+      "startFrame": 17,
+      "endFrame": 56,
+      "text": "ビール……",
+      "english": "ビール（Japanese）"
     },
     {
-      "startFrame": 210,
-      "endFrame": 275,
-      "text": "止まれ！ 持ち場に戻れ！",
-      "english": "Stop! Back to your cell!"
+      "startFrame": 136,
+      "endFrame": 190,
+      "text": "止まれ！ 地面に伏せろ！",
+      "english": "Stop! Get on the ground!"
     },
     {
-      "startFrame": 324,
-      "endFrame": 402,
-      "text": "退勤を止められない！ 応援を！",
-      "english": "He’s not stopping! We need backup!"
+      "startFrame": 328,
+      "endFrame": 381,
+      "text": "対象は居酒屋へ進行中。",
+      "english": "Suspect heading toward the roadhouse."
     },
     {
-      "startFrame": 405,
-      "endFrame": 467,
-      "text": "対象を確認。厳重注意を開始。",
-      "english": "Target acquired. Engaging."
+      "startFrame": 382,
+      "endFrame": 435,
+      "text": "目的は依然不明。",
+      "english": "Motive still unknown."
     },
     {
-      "startFrame": 593,
-      "endFrame": 687,
-      "text": "撃ち方やめ。これで終わりだ。",
-      "english": "Cease fire. Nobody survives that."
-    },
-    {
-      "startFrame": 695,
-      "endFrame": 763,
-      "text": "なんだ、あのTシャツ……。",
-      "english": "What the hell is that shirt?"
+      "startFrame": 604,
+      "endFrame": 656,
+      "text": "仕留めたか？",
+      "english": "Did we get him?"
     }
   ],
-  "captionTimingStatus": "Aligned using full-context and overlapping-clip ASR plus token timestamps; auditory verification unavailable"
+  "captionTimingStatus": "English aligned to full-context ASR and word timestamps; Japanese aligned to approved PCM placement",
+  "locationCaption": {
+    "startFrame": 240,
+    "endFrame": 285,
+    "text": "数分後"
+  }
 }

@@ -5,8 +5,8 @@ from PIL import Image, ImageDraw
 EP=Path(__file__).resolve().parent
 parser=argparse.ArgumentParser();parser.add_argument('--final',action='store_true');args=parser.parse_args()
 m=json.loads((EP/'remotion/src/edit-manifest.json').read_text())
-source=EP/('final_remotion_prison_break.mp4' if args.final else json.loads((EP/'wan3_config.json').read_text())['output'])
-out=EP/'remotion/out'/('final-audit' if args.final else 'raw-audit');out.mkdir(parents=True,exist_ok=True)
+source=EP/('final_remotion_prison_break_v2.mp4' if args.final else json.loads((EP/'wan3_config.json').read_text())['output'])
+out=EP/'remotion/out'/('final-v2-audit' if args.final else 'raw-v2-audit');out.mkdir(parents=True,exist_ok=True)
 times=list(range(33 if args.final else 30))
 if args.final:
  times=sorted(set(times+[c[k]/m['composition']['fps'] for c in m['captions'] for k in ('startFrame','endFrame')]))

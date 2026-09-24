@@ -1,1 +1,6 @@
 remotion/public/final_audio.wav
+remotion/public/final_audio_v2.wav
+
+# Unused local voice candidates and unused reference copy.
+line_beer_sobaya.wav
+voice_ref_sobaya.wav

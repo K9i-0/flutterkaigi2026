@@ -1,0 +1,14 @@
+{
+  "source": "../76_sobaya_yakisoba_quake/final_remotion_revision04.mp4",
+  "source_sha256": "a588883de25c1c0bd4ce674ec752c18d1a47ad1c574f87dc79d58f8fb3f0350e",
+  "start_sample": 480000,
+  "end_sample": 535200,
+  "sample_rate": 48000,
+  "channels": 2,
+  "duration_seconds": 1.15,
+  "output": "line_beer_ep76.wav",
+  "sha256": "a4e8644b192c887dbd381f284719f76a6dcc284810582e8c955d9942efe94671",
+  "processing": "PCM extraction only; no gain, pitch, speed, denoise or synthesis",
+  "source_pcm_match": true,
+  "status": "user-selected episode source; standalone preview delivered before video mix"
+}

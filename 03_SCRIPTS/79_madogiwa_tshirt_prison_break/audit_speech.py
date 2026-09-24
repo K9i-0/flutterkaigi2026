@@ -16,4 +16,4 @@ for start,duration in [(0,30),(0,9),(7,8),(12,9),(18,10),(26,4)]:
  with torch.inference_mode():out=model.generate(**feat,language='en',task='transcribe',max_new_tokens=220,return_timestamps=True)
  text=processor.tokenizer.decode(out[0].tolist(),skip_special_tokens=True,decode_with_timestamps=True)
  results.append({'start':start,'duration':duration,'recognized':text}); print(results[-1],flush=True)
-(EP/'remotion/out/asr-screening.json').write_text(json.dumps({'note':'Automated screening only; short music segments may hallucinate words.','clips':results},ensure_ascii=False,indent=2)+'\n')
+(EP/'remotion/out/asr-v2-screening.json').write_text(json.dumps({'note':'Automated screening only; short music segments may hallucinate words.','clips':results},ensure_ascii=False,indent=2)+'\n')

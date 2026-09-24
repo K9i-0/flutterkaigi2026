@@ -1,12 +1,22 @@
 {
-  "source": "wan3_prison_break_seed26092479_480p.mp4",
-  "source_sha256": "f5cadb71c5e9bdd82b1a6e986d389f90330a2127beee5725642d2b4c6b456bde",
+  "source": "wan3_prison_break_v2_seed26092480_480p.mp4",
+  "source_sha256": "102d39eb8154f2428abbd2dec34660a6c7c46f23d5573849563b378935f01678",
   "music_start_frame": 801,
   "music_duration_frames": 99,
   "crossfade_frames": 9,
   "output_frames": 990,
   "fps": 30,
-  "output": "remotion/public/final_audio.wav",
-  "output_sha256": "509e0749b51a2af5e971a763d14e9c0955776fa925535fb2fd465cce84b75c0e",
-  "method": "reuse generated music; no synthesis; no speech time stretch"
+  "output": "remotion/public/final_audio_v2.wav",
+  "output_sha256": "191d9cbd5a73257870974345af9dcd070a3b0919983cad7540c9219f60ef1e03",
+  "local_opening": {
+    "file": "line_beer_ep76.wav",
+    "fromFrame": 18,
+    "gainDb": 0,
+    "replaceFromFrame": 9,
+    "replaceToFrame": 59
+  },
+  "approved_clip_pcm_identical": true,
+  "unchanged_audio_after_seconds": 1.9766666666666666,
+  "unchanged_until_seconds": 29.7,
+  "method": "Replace generated opening utterance with unprocessed approved episode-76 clip; extend original Wan music under endcard"
 }

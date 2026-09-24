@@ -1,0 +1,18 @@
+{
+  "output": "final_remotion_prison_break.mp4",
+  "sha256": "e3ed1231232e94bd49c2a1fbad94483c68aab7f464afe6b96e84b5e0c0bf95a4",
+  "width": 854,
+  "height": 480,
+  "fps": 30,
+  "frames": 990,
+  "video_seconds": 33,
+  "audio_rate": 48000,
+  "caption_count": 6,
+  "decode_pass": true,
+  "auditory_review": "not performed; ASR screening only",
+  "narrative_deviations": [
+    "shirt visible before reveal",
+    "smoke does not fully obscure Sobaya",
+    "gate opens rather than fully shattering"
+  ]
+}

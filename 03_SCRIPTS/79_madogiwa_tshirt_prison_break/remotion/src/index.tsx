@@ -23,8 +23,11 @@ const Captions:React.FC=()=> {
  return <div style={{position:'absolute',left:'5%',right:'5%',bottom:38,textAlign:'center',color:'#fff',fontFamily:'"Hiragino Kaku Gothic ProN", sans-serif',fontSize:27,fontWeight:500,lineHeight:1.4,letterSpacing:'0.025em',WebkitTextStroke:'1.4px #080808',paintOrder:'stroke fill',textShadow:'0 2px 5px #000, 0 0 6px #000',whiteSpace:'pre-line',opacity}}>{caption.text}</div>;
 };
 const Film:React.FC=()=> <AbsoluteFill style={{backgroundColor:'black'}}>
- <Audio src={staticFile('final_audio.wav')}/>
+ <Audio src={staticFile(m.audio.file)}/>
  <Sequence durationInFrames={m.endcard.from}><OffthreadVideo src={staticFile(m.inputVideo)} muted style={{width:'100%',height:'100%',objectFit:'contain'}}/></Sequence>
+ <Sequence from={m.locationCaption.startFrame} durationInFrames={m.locationCaption.endFrame-m.locationCaption.startFrame}>
+  <div style={{position:'absolute',top:32,left:42,fontFamily:'"Hiragino Kaku Gothic ProN", sans-serif',fontSize:23,color:'white',textShadow:'0 2px 4px black'}}>{m.locationCaption.text}</div>
+ </Sequence>
  <Captions/>
  <Sequence from={m.endcard.from} durationInFrames={m.endcard.durationInFrames}><Endcard/></Sequence>
 </AbsoluteFill>;

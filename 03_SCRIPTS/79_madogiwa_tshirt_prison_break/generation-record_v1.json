@@ -1,0 +1,21 @@
+{
+  "model": "wan3.0-video",
+  "generation_seconds": 30,
+  "final_seconds": 33,
+  "resolution": "480P",
+  "estimated_usd": 1.05,
+  "standard_usd": 1.5,
+  "endpoint": "https://maas.qwencloudapi.com/api/v1/services/aigc/video-generation/video-synthesis",
+  "task_id": "80bf326c-e57e-434f-804f-7dd77a2ad0b3",
+  "status": "SUCCEEDED",
+  "updated_at": "2026-09-24T08:10:47.767327+00:00",
+  "usage": {
+    "duration": 30.0,
+    "input_video_duration": 0.0,
+    "output_video_duration": 30.0,
+    "fps": 30,
+    "video_count": 1,
+    "SR": 480,
+    "ratio": "16:9"
+  }
+}

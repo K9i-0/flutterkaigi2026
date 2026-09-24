@@ -1,0 +1,79 @@
+{
+  "composition": {
+    "id": "MadogiwaPrisonBreak",
+    "width": 854,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 990
+  },
+  "inputVideo": "input.mp4",
+  "endcard": {
+    "from": 900,
+    "durationInFrames": 90,
+    "fadeInFrames": 6,
+    "productFrom": 30,
+    "copy": [
+      "世間の風当たりにも、",
+      "銃弾にも。"
+    ],
+    "product": "窓際族Tシャツ",
+    "image": {
+      "file": "prop_madogiwa_tshirt.webp",
+      "side": "left",
+      "crop": {
+        "x": 620,
+        "y": 90,
+        "width": 540,
+        "height": 470
+      },
+      "sourceWidth": 1200
+    }
+  },
+  "audio": {
+    "file": "final_audio.wav",
+    "source": "Wan generated soundtrack",
+    "endcard_music_source_start_frame": 801,
+    "crossfade_frames": 9,
+    "original_dialogue_retained": true
+  },
+  "status": "rendered; technical and sampled visual validation passed; narrative deviations documented; auditory review unavailable",
+  "captions": [
+    {
+      "startFrame": 8,
+      "endFrame": 72,
+      "text": "窓際の男が、塀際に接近。",
+      "english": "Prisoner approaching the perimeter."
+    },
+    {
+      "startFrame": 210,
+      "endFrame": 275,
+      "text": "止まれ！ 持ち場に戻れ！",
+      "english": "Stop! Back to your cell!"
+    },
+    {
+      "startFrame": 324,
+      "endFrame": 402,
+      "text": "退勤を止められない！ 応援を！",
+      "english": "He’s not stopping! We need backup!"
+    },
+    {
+      "startFrame": 405,
+      "endFrame": 467,
+      "text": "対象を確認。厳重注意を開始。",
+      "english": "Target acquired. Engaging."
+    },
+    {
+      "startFrame": 593,
+      "endFrame": 687,
+      "text": "撃ち方やめ。これで終わりだ。",
+      "english": "Cease fire. Nobody survives that."
+    },
+    {
+      "startFrame": 695,
+      "endFrame": 763,
+      "text": "なんだ、あのTシャツ……。",
+      "english": "What the hell is that shirt?"
+    }
+  ],
+  "captionTimingStatus": "Aligned using full-context and overlapping-clip ASR plus token timestamps; auditory verification unavailable"
+}

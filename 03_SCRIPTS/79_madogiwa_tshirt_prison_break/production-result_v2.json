@@ -1,0 +1,30 @@
+{
+  "output": "wan3_prison_break_v2_seed26092480_480p.mp4",
+  "sha256": "102d39eb8154f2428abbd2dec34660a6c7c46f23d5573849563b378935f01678",
+  "width": 854,
+  "height": 480,
+  "fps": 30,
+  "frames": 900,
+  "video_seconds": 30,
+  "audio_rate": 44100,
+  "audio_untouched": true,
+  "decode_pass": true,
+  "status": "completed",
+  "task_id": "d8cb22dc-949f-4fb3-b5af-23d76007eb2f",
+  "final": {
+    "output": "final_remotion_prison_break_v2.mp4",
+    "sha256": "610c34a6c00ec43b0975422103d2a31a0600865e953b3f433adffd29d489002f",
+    "width": 854,
+    "height": 480,
+    "fps": 30,
+    "frames": 990,
+    "video_seconds": 33,
+    "audio_rate": 48000,
+    "decode_pass": true,
+    "typescript_pass": true,
+    "opening_audio": "line_beer_ep76.wav",
+    "opening_asr": "ビール",
+    "visual_check": "subtitle and endcard stills",
+    "auditory_review": false
+  }
+}
