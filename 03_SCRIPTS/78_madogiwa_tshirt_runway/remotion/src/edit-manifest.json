@@ -1,0 +1,40 @@
+{
+  "composition": {
+    "id": "MadogiwaRunway",
+    "width": 1280,
+    "height": 720,
+    "fps": 30,
+    "durationInFrames": 900
+  },
+  "inputVideo": "input.mp4",
+  "endcard": {
+    "from": 810,
+    "durationInFrames": 90,
+    "fadeInFrames": 6,
+    "productFrom": 30,
+    "copy": [
+      "流行の先端へ。",
+      "そば屋は署へ。"
+    ],
+    "product": "窓際族Tシャツ",
+    "image": {
+      "file": "prop_madogiwa_tshirt.webp",
+      "side": "left",
+      "crop": {
+        "x": 620,
+        "y": 90,
+        "width": 540,
+        "height": 470
+      },
+      "sourceWidth": 1200
+    }
+  },
+  "audio": {
+    "file": "final_audio.wav",
+    "source": "Wan generated soundtrack",
+    "endcard_music_source_start_frame": 180,
+    "crossfade_frames": 9,
+    "original_dialogue_retained": true
+  },
+  "status": "rendered; technical validation passed; auditory and fine lip-sync review pending"
+}

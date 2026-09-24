@@ -1,0 +1,12 @@
+{
+  "source": "wan3_runway_seed26092478_480p.mp4",
+  "source_sha256": "549b7961fa3d51bbdab62dfa103056dbc5197f76a868600f74c8859bfb037d5b",
+  "music_start_frame": 180,
+  "music_duration_frames": 99,
+  "crossfade_frames": 9,
+  "output_frames": 900,
+  "fps": 30,
+  "output": "remotion/public/final_audio.wav",
+  "output_sha256": "302b3864529f4e83caf320e74a91522308c78c95808a391536af7cc465610701",
+  "method": "reuse generated music; no synthesis; no speech time stretch"
+}

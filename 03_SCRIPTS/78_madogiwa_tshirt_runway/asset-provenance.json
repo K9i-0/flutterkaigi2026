@@ -1,0 +1,28 @@
+[
+  {
+    "source": "03_SCRIPTS/00_TEMPLATES/characters/character_sobaya_basic_sheet.png",
+    "file": "character_sobaya_basic_sheet.png",
+    "role": "Image 1: identity",
+    "sha256": "6de96b8fe2ebf1ce88c2f966d77a1abd7f0c2632322dfe4c527135de67494def"
+  },
+  {
+    "source": "03_SCRIPTS/00_TEMPLATES/characters/character_fukuchan_basic_sheet.png",
+    "file": "character_fukuchan_basic_sheet.png",
+    "role": "Image 2: identity",
+    "sha256": "a3e1f8f9feff43bf501617818f6e8652c2b6b39d72f7982716cbc550cb3b5866"
+  },
+  {
+    "source": "16_MADOGIWA_STUDIO/public/site/goods/madogiwa-tshirt.webp",
+    "file": "prop_madogiwa_tshirt.webp",
+    "role": "Image 3: garment print",
+    "sha256": "d3de5d3a43185a547f135a90fc982659ee926155f7c4193a9f2aa413699d3699"
+  },
+  {
+    "source": "02_CHARACTERS/Fukuchan_voice.wav",
+    "file": "voice_ref_fukuchan.wav",
+    "role": "Audio 1: voice-timbre only",
+    "sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+    "source_start": 0,
+    "duration": 9.0
+  }
+]

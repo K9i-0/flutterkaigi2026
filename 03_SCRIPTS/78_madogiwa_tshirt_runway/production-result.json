@@ -1,0 +1,27 @@
+{
+  "final": "final_remotion_runway.mp4",
+  "sha256": "3e64fda4134bb36504bc61e14bf76e30e26992c430902d2c23d8fc9c01d9dd5e",
+  "source_resolution": "854x480",
+  "edit_resolution": "1280x720",
+  "fps": 30,
+  "video_frames": 900,
+  "video_seconds": 30,
+  "decode": "passed",
+  "silence_detection": "no interval >=0.15s below -45dB",
+  "dialogue_asr": [
+    "これは流行るわね",
+    "ちょっと来てもらえるかな"
+  ],
+  "visual_checks": [
+    "runway",
+    "Sobaya mask and grey skin",
+    "Fukuchan",
+    "two officers backstage",
+    "product endcard"
+  ],
+  "limitations": [
+    "fine garment lettering varies in generated footage",
+    "auditory voice quality and fine lip sync not fully reviewed"
+  ],
+  "audio_edits": "audio-edit.json"
+}

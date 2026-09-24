@@ -1,0 +1,64 @@
+{
+  "studio_id": "MS-TTZBFJJY",
+  "episode_id": "ee15a254-21f0-4ae9-8785-4ebb9a7554a7",
+  "slug": "madogiwa-tshirt-runway",
+  "url": "https://madogiwa.work/episodes/madogiwa-tshirt-runway",
+  "generation_id": "1ec73c1e-35d2-424f-a615-872289ec5d03",
+  "version": 2,
+  "model": "wan3.0-video",
+  "video_id": "52757800-ce07-402c-8899-9e0c4fd48819",
+  "video_status": "ready",
+  "video_bytes": 15174093,
+  "inputs": [
+    {
+      "id": "0d413b54-46ec-48a3-b08f-920598ccfa4a",
+      "filename": "character_sobaya_basic_sheet.png",
+      "status": "ready",
+      "size_bytes": 2019627
+    },
+    {
+      "id": "3ef39236-9b4f-41f0-81b6-c0299f11ca17",
+      "filename": "character_fukuchan_basic_sheet.png",
+      "status": "ready",
+      "size_bytes": 1982927
+    },
+    {
+      "id": "03d390f5-e906-42ee-a96e-081b47ae76f8",
+      "filename": "prop_madogiwa_tshirt.webp",
+      "status": "ready",
+      "size_bytes": 73540
+    },
+    {
+      "id": "eb438418-8e8f-4e66-81d2-c833a06c0a4b",
+      "filename": "voice_ref_fukuchan.wav",
+      "status": "ready",
+      "size_bytes": 793878
+    },
+    {
+      "id": "8be6f4dc-fd11-416f-87e8-b4e5b2884307",
+      "filename": "script.md",
+      "status": "ready",
+      "size_bytes": 10694
+    },
+    {
+      "id": "5592659c-8c16-479c-9c9a-9f98faf520e7",
+      "filename": "wan3_config.json",
+      "status": "ready",
+      "size_bytes": 890
+    },
+    {
+      "id": "d16a680c-738d-41d0-94cb-b4f8cdd6a96a",
+      "filename": "edit-manifest.json",
+      "status": "ready",
+      "size_bytes": 910
+    },
+    {
+      "id": "47356750-b662-4b60-b493-7dad44453677",
+      "filename": "audio-edit.json",
+      "status": "ready",
+      "size_bytes": 469
+    }
+  ],
+  "archived_failed_video_id": "d750a615-218e-42bd-bb68-e099f3dd7e0b",
+  "verified": true
+}
