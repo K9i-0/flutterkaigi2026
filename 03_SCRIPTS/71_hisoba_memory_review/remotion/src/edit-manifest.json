@@ -1,0 +1,45 @@
+{
+  "composition": {
+    "id": "HisobaSubtitles",
+    "width": 854,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 720
+  },
+  "inputVideo": "input.mp4",
+  "inputVideoVolume": 1,
+  "replacementAudio": null,
+  "overlays": [],
+  "captions": [
+    {
+      "startFrame": 55,
+      "endFrame": 167,
+      "text": "アクシデンチュアのコーディング試験に\n提出するやでー"
+    },
+    {
+      "startFrame": 238,
+      "endFrame": 314,
+      "text": "うーん、君は不合格♥"
+    },
+    {
+      "startFrame": 345,
+      "endFrame": 415,
+      "text": "君の敗因はメモリの無駄遣い♠"
+    },
+    {
+      "startFrame": 428,
+      "endFrame": 469,
+      "text": "誰やお前！"
+    },
+    {
+      "startFrame": 479,
+      "endFrame": 510,
+      "text": "僕？"
+    },
+    {
+      "startFrame": 533,
+      "endFrame": 570,
+      "text": "僕はヒソバ"
+    }
+  ]
+}

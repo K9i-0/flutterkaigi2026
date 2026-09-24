@@ -1,0 +1,68 @@
+{
+  "status": "draft_not_submitted",
+  "project_duration": 30,
+  "generation_mode": "single",
+  "audio_source": "wan3",
+  "audio_sync_strategy": "wan_generated_lip_sync",
+  "reference_audio_usage": "voice_timbre_only",
+  "assets": [
+    {
+      "file": "character_fukuchan_basic_sheet.png",
+      "sha256": "a3e1f8f9feff43bf501617818f6e8652c2b6b39d72f7982716cbc550cb3b5866"
+    },
+    {
+      "file": "character_okayaman_basic_sheet.png",
+      "sha256": "fa257d0f3873525e61af40b2316992393a1aa57c4b1558112e366a7fe35fa72f"
+    },
+    {
+      "file": "character_sobaya_basic_sheet.png",
+      "sha256": "6de96b8fe2ebf1ce88c2f966d77a1abd7f0c2632322dfe4c527135de67494def"
+    },
+    {
+      "file": "character_takosan_basic_sheet.png",
+      "sha256": "527c6eabf2e50e8e82f825916d31bb4835ceb3750255f8fe9aac0cc9c9682d7f"
+    },
+    {
+      "file": "character_takosan_park_mascot_sheet.png",
+      "sha256": "95c7bbd838cd9daf677abd361e5fc59917345b86d9c204d4bf224a82db3c0184"
+    },
+    {
+      "file": "character_yametaro_basic_sheet.png",
+      "sha256": "1e98502e8051bbacf482f273e551a7dd8b8fb79e2c153865d9e48df690eb91e6"
+    },
+    {
+      "file": "character_yametaro_park_mascot_sheet.png",
+      "sha256": "4bcaa9597bcf0831cae774752b7649fb36340115757b986258117ea3046c0720"
+    },
+    {
+      "file": "character_yumemin_basic_sheet.png",
+      "sha256": "b6a9cb6c2c29a27c8df404882316b3c0e7714f20566050908902e5785127ee67"
+    },
+    {
+      "file": "character_yumemin_park_mascot_sheet.png",
+      "sha256": "ca7576054d434804af304917cb5f8855fce27c4caddeb371dcf2548af8adcf94"
+    },
+    {
+      "file": "environment_madogiwa_castle.png",
+      "sha256": "9ee287e5de612a12dd9078d086d8fb8736ce0d471b6f55c0d1be2a9a44b444ee"
+    },
+    {
+      "file": "environment_shops_theater_sheet.png",
+      "sha256": "a5d00918062d3068eac864d37266e4ac7f4e7f67d8af457ab32dd43ed404ce29"
+    },
+    {
+      "file": "prop_madogiwazoku_tshirt.webp",
+      "sha256": "d3de5d3a43185a547f135a90fc982659ee926155f7c4193a9f2aa413699d3699"
+    },
+    {
+      "file": "voice_fukuchan.wav",
+      "sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "seconds": 9.0
+    },
+    {
+      "file": "voice_okayaman.wav",
+      "sha256": "6939d8da2ce43a33ad672610fb9843481220b37010a968d76a98a0cbaf1ee357",
+      "seconds": 3.5
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "studio_id": "MS-WGA5F3G5",
+  "generation_id": "76fc7611-8577-413e-ae73-8d7cfe077d34",
+  "version": 2,
+  "video_id": "f91e9dab-41a6-4870-a32e-e6ca4a67274c",
+  "slug": "tokyo-madogiwa-land",
+  "inputs": [
+    {
+      "id": "8a336079-f34a-4bc9-ba23-35eddf9ea240",
+      "filename": "character_fukuchan_basic_sheet.png",
+      "status": "ready"
+    },
+    {
+      "id": "5408005f-d98a-4f4b-87d3-b3f908e2db6b",
+      "filename": "character_takosan_park_mascot_sheet.png",
+      "status": "ready"
+    },
+    {
+      "id": "376b9648-f462-4d52-be66-a2294eb4d336",
+      "filename": "character_yumemin_park_mascot_sheet.png",
+      "status": "ready"
+    },
+    {
+      "id": "598386a7-db58-4211-8527-936d8fc01ba6",
+      "filename": "character_yametaro_park_mascot_sheet.png",
+      "status": "ready"
+    },
+    {
+      "id": "7bf262bc-01e1-4d10-bd3b-6fddd1f09bd2",
+      "filename": "character_sobaya_basic_sheet.png",
+      "status": "ready"
+    },
+    {
+      "id": "02b2552a-4b98-4010-ad9b-cb31f921f467",
+      "filename": "character_okayaman_basic_sheet.png",
+      "status": "ready"
+    },
+    {
+      "id": "8b7c4ac3-0d08-47a4-8663-44f900ce023c",
+      "filename": "environment_madogiwa_castle.png",
+      "status": "ready"
+    },
+    {
+      "id": "2e709e7a-0745-4b6a-b862-ac681f3093d9",
+      "filename": "environment_shops_theater_sheet.png",
+      "status": "ready"
+    },
+    {
+      "id": "800d4686-37a1-455f-889e-16d881bb13b6",
+      "filename": "prop_madogiwazoku_tshirt.webp",
+      "status": "ready"
+    },
+    {
+      "id": "f63e33c2-c72b-4f97-a674-77c1de5a552b",
+      "filename": "voice_fukuchan.wav",
+      "status": "ready"
+    },
+    {
+      "id": "cf54fd36-7e30-493d-9bb5-c1a66beb1769",
+      "filename": "voice_okayaman.wav",
+      "status": "ready"
+    },
+    {
+      "id": "1712aa07-8c39-4c86-810e-c8cdd497c464",
+      "filename": "voice_sobaya.wav",
+      "status": "ready"
+    },
+    {
+      "id": "4a2c99be-eb09-4fa2-a844-e5600afc4e2f",
+      "filename": "cm_sobaya.wav",
+      "status": "ready"
+    },
+    {
+      "id": "f670c25e-2685-48cd-aef2-c69852f57c7d",
+      "filename": "studio_edit_package_v2.json",
+      "status": "ready"
+    }
+  ],
+  "video_status": "ready"
+}

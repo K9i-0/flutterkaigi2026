@@ -1,0 +1,61 @@
+{
+  "name_correction": "東京マドギワランド",
+  "scene01": {
+    "task_id": "58f534d2-5ada-402c-92de-4fcdaf431963",
+    "duration": 5,
+    "status": "SUCCEEDED",
+    "output": "wan3_scene01_v2_480p.mp4",
+    "sha256": "be5ec4ab5a755dab090dbd2ae79ad1630c05084d459d6704bab7463de8ce8c3f",
+    "asr": "今日は東京マドギワランドに来たわよ"
+  },
+  "scene05": {
+    "task_id": "d3997466-9ba7-459c-be41-4472aef89eab",
+    "duration": 7,
+    "status": "SUCCEEDED",
+    "output": "wan3_scene05_v2_480p.mp4",
+    "sha256": "835f715307a24bad625e6a8405393d5f409531620a9b9a819fddc6a44c6f1adb",
+    "visual_review": "Foreground Fukuchan remains Fukuchan; exactly one Okayaman inside wall screen. Checked every 0.5 seconds.",
+    "asr": "仕事抜け出してきちゃった!岡山大変驚いております!"
+  },
+  "estimated_total_usd": 0.42,
+  "resolution": "480P",
+  "scene03": {
+    "status": "adopted_by_user",
+    "preview": "../../.local/madogiwa_park_review/scene03_fukuchan_irodori.wav",
+    "text": "このTシャツ、公式サイトでも買えるんですって！",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 100,
+    "duration": 3.600042,
+    "reference": "02_CHARACTERS/Fukuchan_voice.wav",
+    "environment_note": "SciPy 1.15.3 macOS binary failed; isolated PYTHONPATH with SciPy 1.14.1, unchanged TTS model.",
+    "asr": "このTシャツ公式サイトでも買えるんですって",
+    "sha256": "02017097b2e5dfaac3ffb07226b96018bd23df66ee4327497afc601667de545f",
+    "note": "Full scene 3 approved Irodori line replaces original scene sound. No speech speed change; phoneme-level lip sync not guaranteed.",
+    "adopted_file": "scene03_fukuchan_irodori.wav",
+    "audio_start_frame": 390
+  },
+  "scene03_v4": {
+    "task_id": "6b3b2a11-9576-4086-b2b3-4ab351bc1369",
+    "status": "SUCCEEDED",
+    "resolution": "480P",
+    "duration": 6,
+    "seed": 720925,
+    "estimated_cost_usd": 0.21,
+    "audio_sync_strategy": "wan_generated_lip_sync",
+    "changes": [
+      "native generated speech and lip sync",
+      "explicit こうしきサイト pronunciation",
+      "Sobaya wears the same Madogiwazoku printed T-shirt"
+    ],
+    "output": "wan3_scene03_v4_480p.mp4",
+    "sha256": "e15f5ea7b86898f407af5b8b6e0f30be51892b7c7baf6e5057483a9ae603fc42",
+    "asr": "このTシャツ公式サイトでも買えるんですって",
+    "visual_review": "Fukuchan stays foreground; masked Sobaya wears matching printed white T-shirt. Checked 0.5-second frame samples.",
+    "edit_frames": {
+      "from": 373,
+      "duration": 155,
+      "source_start": 0
+    },
+    "audio": "Wan embedded synchronized audio retained; no Irodori overlay"
+  }
+}

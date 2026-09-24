@@ -1,0 +1,37 @@
+{
+  "composition": "MadogiwaCommercial",
+  "order": [
+    1,
+    2,
+    5,
+    4,
+    3
+  ],
+  "output": "remotion/out/review_cm_ending.mp4",
+  "frames": 1125,
+  "fps": 30,
+  "audio_source": "local_madogiwa_member_japanese",
+  "audio_sync_strategy": "local_post_mux_offscreen",
+  "model": "Aratako/Irodori-TTS-v4.1-Small",
+  "voices": [
+    {
+      "speaker": "そば屋",
+      "text": "窓際族Tシャツ、公式サイトで好評発売中！",
+      "reference": "02_CHARACTERS/Sobaya_voice.wav",
+      "seed": 42,
+      "caption": "勢いのある商品コマーシャル。明瞭で堂々と、楽しそうに宣伝する。",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "duration": 4.01625
+    },
+    {
+      "speaker": "福ちゃん",
+      "text": "シーエムだったんかい！",
+      "display": "CMだったんかい！",
+      "reference": "02_CHARACTERS/Fukuchan_voice.wav",
+      "seed": 100,
+      "caption": "宣伝だったと気づき、驚いて勢いよくツッコむ。短く歯切れよく、コミカルに話す。",
+      "duration": 2.360042
+    }
+  ],
+  "qa": "Typecheck and full decode passed. Product/punchline frames inspected. ASR: CMだったんかい; sobaya raw: 窓際属Tシャツ 公式サイトで公表発売中 (homophone transcription). Monsterized ASR inserts を after 公表; listening review remains user-facing. No visible talking mouths in new endcard."
+}

@@ -1,0 +1,15 @@
+Edit this manga page cleanly, changing exactly TWO areas and preserving all other drawings and text.
+1. TOP RIGHT SPEECH BALLOON: Professionally re-typeset the entire text inside this balloon instead of leaving the empty column from the earlier deletion. Keep the balloon outline and tail unchanged. Use four balanced, evenly spaced vertical Japanese columns, reading from right to left. Exact columns:
+rightmost: 「まずビールを」
+next: 「具現化しようと」
+next: 「決めてからは」
+leftmost: 「イメージ修業だな」
+Center the four-column text block naturally within the balloon with generous but balanced padding, matching the font weight and size of other balloons. The full sentence must read exactly 「まずビールを具現化しようと決めてからはイメージ修業だな」. ビール occurs exactly ONCE in this balloon. No orphan 「ビー」, no awkward empty column, no extra marks or text. Clean original manga lettering, crisp white background.
+2. LOWER RIGHT LISTENER YAMETARO: He should look thoroughly bewildered and uncomfortable, not cheerfully attentive or blank. Preserve the exact existing identity: center-parted black hair, forehead dot, round black glasses with opaque white lenses, round cheek blush, compact face proportions, patterned shirt. Convey bafflement with two modest manga sweat drops at his temple, a subtly tilted head and slightly recoiling shoulders, and a small crooked half-open worried mouth, as if thinking 'what on earth is he talking about?'. No written thought, no question-mark text, no speech balloon additions. Do NOT add pupils, realistic eyes, eyebrows or eyelids to his white glasses. Keep the same body size and position within the panel. No extreme face stretching.
+Preserve Sobaya's white mask, all Sobaya poses and tiny beer-training drawings, all other balloons and Japanese text verbatim, panel borders, composition, black-and-white manga linework and screentones. No red marks or annotations. Keep the same full image size and aspect ratio.
+
+Final lettering correction:
+画像を修正してください。右上の吹き出しの文字を全部いったん消して、次の正しい文章だけを新しく組み直してください：
+「まずビールを具現化しようと決めてからはイメージ修業だな」
+縦書き４列です。右から１列目「まずビールを」、２列目「具現化しようと」、３列目「決めてからは」、４列目「イメージ修業だな」。文字は吹き出しの中央に寄せ、４列を均等な間隔で配置。「まず」だけの孤立した列は作らない。「ビール」は必ず入れる。元の誤字は完全に消し、新しい正しい文章を描く。
+右下のやめ太郎は汗をかいて困惑した現在の表情を維持。右上の文字以外の全ての絵と他の吹き出し、コマ割りはそのまま。これは元画像の文字に追記する作業ではなく、一つの吹き出しの文字全体を清書する作業です。

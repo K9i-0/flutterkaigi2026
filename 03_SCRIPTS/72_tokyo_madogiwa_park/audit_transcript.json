@@ -1,0 +1,30 @@
+{
+  "note": "Local Whisper screening only; cuts may split phrases; not listening or lip-sync verification.",
+  "rows": [
+    {
+      "start": 0,
+      "end": 4,
+      "recognized": "今日は東京窓際パークに来たわよ!"
+    },
+    {
+      "start": 4,
+      "end": 12,
+      "recognized": "この木ぐるみ、窓際属がオフィスで浮いているエネルギーで飛んでいるらしいわよ"
+    },
+    {
+      "start": 12,
+      "end": 18,
+      "recognized": "このTシャツ、好奇次第でも買えるんですって"
+    },
+    {
+      "start": 18,
+      "end": 23,
+      "recognized": "練習サボってそうな人がいっぱいいるわね"
+    },
+    {
+      "start": 23,
+      "end": 30,
+      "recognized": "仕事抜け出してきちゃった!岡山大変驚いております"
+    }
+  ]
+}

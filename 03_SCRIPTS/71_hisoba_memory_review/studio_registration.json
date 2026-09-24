@@ -1,0 +1,29 @@
+{
+  "studio_id": "MS-2QNUQHX6",
+  "episode_id": "520ad75e-f1ff-4969-ab27-b8f2e9e7cb2a",
+  "slug": "hisoba-memory-review",
+  "generation_id": "9d7a64e6-480c-4c14-8aa3-2ba32078c121",
+  "version": 1,
+  "video_id": "41e71b0b-9085-474e-925e-8f53dca7d49d",
+  "video_file": "final_remotion_subtitles.mp4",
+  "episode_status": "archived",
+  "video_status": "ready",
+  "uploaded_inputs": [
+    "character_yametaro_basic_sheet.png",
+    "character_sobaya_basic_sheet.png",
+    "Yametaro_voice.wav",
+    "Sobaya_voice.wav",
+    "script.md",
+    "wan3_config.json",
+    "edit-manifest.json",
+    "hisoba_remotion_source.zip",
+    "wan3_hisoba_seed710920_480p.mp4"
+  ],
+  "prompt_registered": true,
+  "pending": [
+    "episode remains archived after automatic approval review rejected public creation",
+    "two unused upload_pending tickets remain; all required binaries separately uploaded and ready"
+  ],
+  "verified_ready_input_count": 9,
+  "all_required_files_uploaded": true
+}

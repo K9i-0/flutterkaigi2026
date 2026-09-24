@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "lib": [
+      "ES2020",
+      "DOM"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "three": [
+        "node_modules/@types/three"
+      ]
+    }
+  },
+  "include": [
+    "src"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "task_id": "71aad8ad-a3fb-4649-aae9-83da1cd98d25",
+  "status": "SUCCEEDED",
+  "recorded_at": "2026-09-23T07:16:36.273827+00:00",
+  "model": "wan3.0-video",
+  "duration": 30,
+  "resolution": "480P",
+  "ratio": "16:9",
+  "seed": 760923,
+  "prompt_sha256": "7f4787b489c0e449c32ebed0b70b19b5d56504a06c76bd435a7b044d57c56fd4",
+  "config_sha256": "19a47650b4cf5f4fd1a6b26406b48aaccbfe6da85526f67fe096e179c19d8631",
+  "paid_submission_authorized": true,
+  "submitted_tasks": 1,
+  "price_estimate_usd": 1.05,
+  "price_without_discount_usd": 1.5,
+  "completed_at": "2026-09-23T07:25:45.526924+00:00",
+  "output": "wan3_result_seed760923_480p.mp4",
+  "output_sha256": "3be8601b6e88f007b0a82e0bf4f1de716fcc16633073f78a4a8195133b8b95b8",
+  "measured_duration": 30.022993,
+  "width": 854,
+  "height": 480,
+  "fps": 30,
+  "audio_codec": "aac",
+  "audit_status": "needs_visual_revision",
+  "audit_notes": [
+    "Final crouching speaker visually matches Fukuchan, not intended Yotan.",
+    "Sobaya pours beer himself; intended pourer is Yametaro.",
+    "8 lines recovered by automated Whisper-small transcription; not a listening or lip-sync pass.",
+    "Office devastation and drinking sequence visible in one-second samples.",
+    "Continuous shake cessation, all-frame mask fidelity and thumbs-up need finer temporal review."
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "composition": {
+    "id": "MadogiwaRevisionV2",
+    "width": 854,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 1027
+  },
+  "inputVideo": "input.mp4",
+  "inputVideoVolume": 1,
+  "replacementAudio": null,
+  "overlays": [],
+  "captions": [],
+  "segments": [
+    {
+      "src": "scene01.mp4",
+      "from": 0,
+      "duration": 138,
+      "trimBefore": 0,
+      "muted": false
+    },
+    {
+      "src": "scene02_v3.mp4",
+      "from": 138,
+      "duration": 300,
+      "trimBefore": 0,
+      "muted": false
+    },
+    {
+      "src": "scene05_v4.mp4",
+      "from": 438,
+      "duration": 270,
+      "trimBefore": 0,
+      "muted": false
+    },
+    {
+      "src": "input.mp4",
+      "from": 708,
+      "duration": 164,
+      "trimBefore": 528,
+      "muted": false
+    },
+    {
+      "src": "scene03_v4.mp4",
+      "from": 872,
+      "duration": 155,
+      "trimBefore": 0,
+      "muted": false
+    }
+  ],
+  "reviewNote": "Single mascots; audience faces Okayaman screen. Existing other scenes and merchandise CM retained.",
+  "audioInserts": []
+}

@@ -1,0 +1,11 @@
+{
+  "source": "public/replacement03.mp4",
+  "source_sha256": "8349634805481feb8386e7ad4267a7f81ae66b83a8626adf46b14c654b9c9c27",
+  "sample_start": 3.55,
+  "sample_duration": 0.72,
+  "output": "public/quake-enhancement.wav",
+  "peak": 0.20617417991161346,
+  "zero_before_start": true,
+  "zero_after_stop": true,
+  "processing": "band filtering, crossfade loops, dialogue ducking; no speed or pitch changes, no synthesis"
+}

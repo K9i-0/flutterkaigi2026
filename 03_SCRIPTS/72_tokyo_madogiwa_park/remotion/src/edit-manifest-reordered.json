@@ -1,0 +1,53 @@
+{
+  "composition": {
+    "id": "MadogiwaReordered12543",
+    "width": 854,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 900
+  },
+  "inputVideo": "input.mp4",
+  "inputVideoVolume": 1,
+  "replacementAudio": null,
+  "overlays": [],
+  "captions": [],
+  "segments": [
+    {
+      "src": "scene01.mp4",
+      "from": 0,
+      "duration": 138,
+      "trimBefore": 0,
+      "muted": false
+    },
+    {
+      "src": "input.mp4",
+      "from": 138,
+      "duration": 235,
+      "trimBefore": 138,
+      "muted": false
+    },
+    {
+      "src": "scene05.mp4",
+      "from": 373,
+      "duration": 208,
+      "trimBefore": 0,
+      "muted": false
+    },
+    {
+      "src": "input.mp4",
+      "from": 581,
+      "duration": 164,
+      "trimBefore": 528,
+      "muted": false
+    },
+    {
+      "src": "scene03_v4.mp4",
+      "from": 745,
+      "duration": 155,
+      "trimBefore": 0,
+      "muted": false
+    }
+  ],
+  "reviewNote": "Preview only: approved v4 scenes reordered 1,2,5,4,3; original source trims, durations and native audio retained. No new ending.",
+  "audioInserts": []
+}

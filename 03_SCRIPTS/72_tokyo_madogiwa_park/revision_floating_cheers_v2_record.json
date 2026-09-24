@@ -1,0 +1,16 @@
+{
+  "scene02": {
+    "task_id": "b11cce3e-fdc0-4855-ae0a-20ca6ec58f6d",
+    "file": "wan3_scene02_v3_480p.mp4",
+    "qa": "1fps inspection: one of each mascot; Takosan ascends, Yametaro and Yumemin react. ASR confirms explanation with minor native inflection."
+  },
+  "scene05": {
+    "task_id": "d3ea9454-e4a6-42e7-bf39-229ab2065097",
+    "file": "wan3_scene05_v4_480p.mp4",
+    "qa": "1fps inspection: audience backs toward camera, facing screen, applause after Okayaman line. ASR dialogue checked; mixed gender cheer balance not independently certified."
+  },
+  "output": "remotion/out/review_floating_cheers_v2.mp4",
+  "frames": 1171,
+  "fps": 30,
+  "studio_updated": false
+}

@@ -1,0 +1,45 @@
+{
+  "model": "wan3.0-video",
+  "audio_source": "wan3",
+  "audio_sync_strategy": "wan_generated_lip_sync",
+  "reference_audio_usage": "voice_timbre_only",
+  "project_duration": 9,
+  "generation_mode": "single",
+  "repair_of": "wan3_result_seed720922_480p.mp4",
+  "repair_scene": "scene05",
+  "user_requested_individual_scene_regeneration": true,
+  "full_edit_duration": 30,
+  "prompt_file": "prompt_wan3_scene05_v4.txt",
+  "media": [
+    {
+      "type": "reference_image",
+      "path": "character_fukuchan_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_okayaman_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "environment_shops_theater_sheet.png"
+    },
+    {
+      "type": "reference_audio",
+      "path": "voice_fukuchan.wav"
+    },
+    {
+      "type": "reference_audio",
+      "path": "voice_okayaman.wav"
+    }
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 9,
+    "audio": true,
+    "seed": 720927,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_scene05_v4_480p.mp4"
+}

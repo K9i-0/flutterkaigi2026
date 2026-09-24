@@ -1,0 +1,29 @@
+{
+  "task_id": "61785a1a-5bda-411f-8115-c42760764b17",
+  "status": "SUCCEEDED",
+  "recorded_at": "2026-09-22T01:30:46.297259+00:00",
+  "model": "wan3.0-video",
+  "resolution": "480P",
+  "ratio": "16:9",
+  "duration": 30,
+  "seed": 720922,
+  "endpoint": "https://maas.qwencloudapi.com/api/v1/services/aigc/video-generation/video-synthesis",
+  "estimated_cost_usd": 1.05,
+  "price_source": "https://www.qwencloud.com/models/wan3.0-video",
+  "authorization": "User explicitly approved upload of 9 reference images and 2 voice references and paid generation, then replied ok.",
+  "prompt_sha256": "abb6095954b1ea436763655672c1fa6282ec4a2287a499818b99f3c64183289c",
+  "output": "wan3_result_seed720922_480p.mp4",
+  "review_status": "needs_revision",
+  "actual_duration_seconds": 30.022993,
+  "width": 854,
+  "height": 480,
+  "fps": 30,
+  "output_sha256": "6009a109bf1a2e4fbb17ba5f1b3c55030a67d91c0e8678617f162c86ecd9718a",
+  "review_notes": [
+    "Final theater shot incorrectly replaces foreground Fukuchan with Okayaman; screen also shows Okayaman.",
+    "Parade has beer drinkers and uncoordinated simple dancing, but no clearly demonstrated windmill or advanced breakdance.",
+    "Floating Takosan and Yumemin, grounded Yametaro, castle and T-shirt scene are present.",
+    "Dialogue and lip sync are not fully verified. Local Whisper screening failed due to existing SciPy binary import error."
+  ],
+  "completed_recorded_at": "2026-09-22T01:37:56.231752+00:00"
+}

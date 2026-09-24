@@ -1,0 +1,30 @@
+[
+  {
+    "image": 1,
+    "character": "sobaya",
+    "path": "character_sobaya_basic_sheet.png",
+    "source": "03_SCRIPTS/00_TEMPLATES/characters/character_sobaya_basic_sheet.png",
+    "sha256": "6de96b8fe2ebf1ce88c2f966d77a1abd7f0c2632322dfe4c527135de67494def"
+  },
+  {
+    "image": 2,
+    "character": "yametaro",
+    "path": "character_yametaro_basic_sheet.png",
+    "source": "03_SCRIPTS/00_TEMPLATES/characters/character_yametaro_basic_sheet.png",
+    "sha256": "1e98502e8051bbacf482f273e551a7dd8b8fb79e2c153865d9e48df690eb91e6"
+  },
+  {
+    "image": 3,
+    "character": "yotan",
+    "path": "character_yotan_basic_sheet.png",
+    "source": "03_SCRIPTS/00_TEMPLATES/characters/character_yotan_basic_sheet.png",
+    "sha256": "a5fcff5308da91a9690426b6a4028a0fdf537cf362b6fb1438fdf14c51878e5a"
+  },
+  {
+    "image": 4,
+    "character": "fukuchan",
+    "path": "character_fukuchan_basic_sheet.png",
+    "source": "03_SCRIPTS/00_TEMPLATES/characters/character_fukuchan_basic_sheet.png",
+    "sha256": "a3e1f8f9feff43bf501617818f6e8652c2b6b39d72f7982716cbc550cb3b5866"
+  }
+]

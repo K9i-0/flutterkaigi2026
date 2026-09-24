@@ -1,0 +1,11 @@
+Use case: compositing / identity-preserve. Create one landscape Japanese TV news screenshot parody based closely on reference image 1 (1600x960 composition), not a poster. Keep its early TV broadcast texture, street interview camera angle, storefront and line of shoppers, microphone entering from lower left, top-left weather, top-right white news banner, right vertical caption and huge yellow black-outlined bottom quote.
+Replace the interviewed bald man entirely with the actual man in reference image 2: carefully preserve his recognizable facial features, natural medium length side-parted black hair, clean-shaven face, slim build, and black graphic T-shirt. Show him chest-up large in the same foreground position, turned three-quarter left toward interviewer, speaking confidently. Do not preserve sunglasses, bald scalp, goatee or tattoo from original man. No laptop or presentation room.
+Replace the Mickey graphic on the left storefront with EXACT original flat 2D Yumemin illustration from reference image 3: thick black outline, round blue tapir body, tiny triangular ears, two black dot eyes, curved short nose at lower left, white crescent rear at right, small blue tail. Flat printed window decal, NOT 3D, not plush, no limbs added, recognizable silhouette. Make it visible in the same background location.
+Text replacements in Japanese, exact:
+Top left weather location: 「ゆめみ村」 with cloud icon and small 「あす予報」.
+Top right white banner two lines: 「窓際族Tシャツ 本日発売」 / 「早くも行列が…」, retain original red circular news mark.
+Right vertical caption: 「並んでいる人は―」.
+Bottom quote in large yellow text with thick black outline, two lines:
+「世界的ですもんね」
+「乗るしかない このビックウィンドウに」
+IMPORTANT spelling is ビックウィンドウ exactly as user requested, not ビッグ, not ウェーブ. Keep all text within frame without clipping. Preserve humorous earnest news-interview feel and closely match source layout. No extra headlines, no watermark.

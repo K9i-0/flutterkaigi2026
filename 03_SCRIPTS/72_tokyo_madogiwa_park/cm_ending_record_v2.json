@@ -1,0 +1,29 @@
+{
+  "composition": "MadogiwaCommercial",
+  "order": [
+    1,
+    2,
+    5,
+    4,
+    3
+  ],
+  "output": "remotion/out/review_cm_ending_v2.mp4",
+  "frames": 1044,
+  "fps": 30,
+  "audio_source": "local_madogiwa_member_japanese",
+  "audio_sync_strategy": "local_post_mux_offscreen",
+  "model": "Aratako/Irodori-TTS-v4.1-Small",
+  "voices": [
+    {
+      "speaker": "そば屋",
+      "text": "窓際族Tシャツ、公式サイトで好評発売中！",
+      "reference": "02_CHARACTERS/Sobaya_voice.wav",
+      "seed": 42,
+      "caption": "勢いのある商品コマーシャル。明瞭で堂々と、楽しそうに宣伝する。",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "duration": 4.01625
+    }
+  ],
+  "qa": "Typecheck and full decode passed. Product/punchline frames inspected. ASR: CMだったんかい; sobaya raw: 窓際属Tシャツ 公式サイトで公表発売中 (homophone transcription). Monsterized ASR inserts を after 公表; listening review remains user-facing. No visible talking mouths in new endcard.",
+  "revision": "Removed Fukuchan punchline audio and text at user request. Endcard lasts 144 frames, ending 15 frames after Sobaya audio."
+}

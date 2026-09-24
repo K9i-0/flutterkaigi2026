@@ -1,0 +1,22 @@
+{
+  "output": "final_remotion_revision04.mp4",
+  "sha256": "a588883de25c1c0bd4ce674ec752c18d1a47ad1c574f87dc79d58f8fb3f0350e",
+  "frames": 900,
+  "fps": 30,
+  "composition": "SobayaQuakeRevision04",
+  "edit_manifest": "remotion/src/edit-manifest-revision04.json",
+  "shake_start_frame": 382,
+  "shake_stop_frame": 704,
+  "audio_source": "Existing Wan-generated audio from revision03, filtered and crossfade-looped",
+  "additional_paid_generation": false,
+  "checks": {
+    "typescript": "passed",
+    "decode_to_end": "passed",
+    "output_canvas_coverage": "all shake frames within 1.065 overscan, no exposed edges",
+    "supplementary_audio_silent_after_frame704": true,
+    "max_volume_dbfs": -0.1,
+    "asr": "all eight dialogue lines recovered",
+    "listening_and_continuous_lipsync": "not independently audited"
+  },
+  "known_accepted_issue": "Mug duplication accepted by user."
+}

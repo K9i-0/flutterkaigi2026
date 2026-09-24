@@ -1,0 +1,18 @@
+{
+  "output": "final_remotion_revision03.mp4",
+  "sha256": "610f5bdbf8736be00c3d2b2e400ace609fdda2fed5066a56ec32c294afe6ae0c",
+  "frames": 900,
+  "fps": 30,
+  "approved_intro_frames": [
+    0,
+    277
+  ],
+  "replacement_frames": [
+    0,
+    623
+  ],
+  "approved_intro_source": "wan3_result_seed760923_480p.mp4",
+  "replacement_source": "revision03/wan3_revision03_seed760925_480p.mp4",
+  "status": "review_copy_with_prop_count_issue",
+  "audit": "revision03/audit.md"
+}

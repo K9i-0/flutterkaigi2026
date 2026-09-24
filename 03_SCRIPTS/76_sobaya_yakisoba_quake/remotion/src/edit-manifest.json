@@ -1,0 +1,23 @@
+{
+  "composition": {
+    "id": "SobayaQuakeRevision02",
+    "width": 854,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 900
+  },
+  "segments": [
+    {
+      "file": "approved_original.mp4",
+      "from": 0,
+      "durationInFrames": 277,
+      "trimBefore": 0
+    },
+    {
+      "file": "replacement02.mp4",
+      "from": 277,
+      "durationInFrames": 623,
+      "trimBefore": 0
+    }
+  ]
+}

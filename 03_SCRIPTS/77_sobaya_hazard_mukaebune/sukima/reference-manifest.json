@@ -1,0 +1,19 @@
+[
+  {
+    "path": "character_fukuchan_basic_sheet.png",
+    "source": "03_SCRIPTS/00_TEMPLATES/characters/character_fukuchan_basic_sheet.png",
+    "sha256": "a3e1f8f9feff43bf501617818f6e8652c2b6b39d72f7982716cbc550cb3b5866"
+  },
+  {
+    "path": "character_sobaya_basic_sheet.png",
+    "source": "03_SCRIPTS/00_TEMPLATES/characters/character_sobaya_basic_sheet.png",
+    "sha256": "6de96b8fe2ebf1ce88c2f966d77a1abd7f0c2632322dfe4c527135de67494def"
+  },
+  {
+    "path": "reference_door_lighting.png",
+    "source": "../22e19bd68545f6c5a7c2c23e24e0d3e4c3348f02.MP4",
+    "time_seconds": 155,
+    "role": "lighting and architecture only",
+    "sha256": "1a1d1aa5e7e3008052a782e15f06ffa6b2c07542686d994843325b92c4672356"
+  }
+]

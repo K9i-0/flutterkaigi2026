@@ -1,0 +1,44 @@
+{
+  "status": "SUCCEEDED",
+  "recorded_at": "2026-09-23T08:00:59.301692+00:00",
+  "submitted_tasks": 1,
+  "reason": "Automatic approval review requires explicit user approval to upload character images and voice-reference audio to Qwen Cloud. No workaround or retry attempted.",
+  "destination": "https://maas.qwencloudapi.com/api/v1/services/aigc/video-generation/video-synthesis",
+  "image_count": 5,
+  "image_characters": [
+    "そば屋",
+    "やめ太郎",
+    "よーたん",
+    "福ちゃん",
+    "とーくん"
+  ],
+  "audio_count": 4,
+  "audio_characters": [
+    "そば屋",
+    "やめ太郎",
+    "よーたん",
+    "福ちゃん"
+  ],
+  "audio_total_seconds": 14.76,
+  "model": "wan3.0-video",
+  "duration": 21,
+  "resolution": "480P",
+  "price_estimate_usd": 0.735,
+  "price_without_discount_usd": 1.05,
+  "prompt_sha256": "f8fb8edca81b8e551784a353bc0c69dabdb0c268b5e292503f2f95df7a4116c2",
+  "task_id": "dce71333-4ca3-44b2-9475-b9be039780a8",
+  "submitted_at": "2026-09-23T08:02:17.668291+00:00",
+  "explicit_upload_approval": "User replied ok to Qwen Cloud upload of 5 character images + 4 voice-reference files and approximately $0.74 generation.",
+  "completed_at": "2026-09-23T08:10:40.567818+00:00",
+  "output": "wan3_revision03_seed760925_480p.mp4",
+  "output_sha256": "8349634805481feb8386e7ad4267a7f81ae66b83a8626adf46b14c654b9c9c27",
+  "audit_status": "requested_changes_visible_prop_count_issue",
+  "audit_notes": [
+    "Window-seat desk directly against window confirmed.",
+    "Darker defined blacks and visible exterior; some pale atmospheric effect remains in wide wreckage shot.",
+    "Tokun enters with full mug in each hand; Yametaro remains speaking character.",
+    "After delivery Tokun retains two full mugs while Sobaya also has a full mug: duplicated prop.",
+    "Final speaker is blond Yotan under desk.",
+    "ASR recovered six requested lines; not a listening/lip-sync pass."
+  ]
+}

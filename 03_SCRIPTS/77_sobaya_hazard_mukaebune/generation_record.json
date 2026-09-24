@@ -1,0 +1,55 @@
+{
+  "task_id": "28a976b4-3a68-47c7-b14d-3c2e371f55ce",
+  "status": "SUCCEEDED",
+  "recorded_at": "2026-09-24T00:32:41.895393+09:00",
+  "model": "wan3.0-video",
+  "resolution": "480P",
+  "duration": 30,
+  "seed": 770924,
+  "paid_generation_authorized": true,
+  "submission_count": 1,
+  "endpoint": "https://dashscope-intl.aliyuncs.com/api/v1/services/aigc/video-generation/video-synthesis",
+  "price_estimate_usd": 1.05,
+  "billing_actual": "not_checked",
+  "download_confirmed_at": "2026-09-24T00:38:32.155214+09:00",
+  "output": "wan3_result_seed770924_480p.mp4",
+  "sha256": "b5ece6ed536cb9e43a698c19e2d585d90ce438dd60a42639549be8ae09cb37ea",
+  "video_duration_seconds": 30.0,
+  "container_duration_seconds": 30.022993,
+  "width": 854,
+  "height": 480,
+  "fps": 30,
+  "frames": 900,
+  "audio_codec": "aac",
+  "audit_status": "initial_take_needs_revision",
+  "asr": {
+    "model": "openai/whisper-small",
+    "note": "Automated transcript screening, not listening or voice quality approval.",
+    "segments": [
+      {
+        "start": 0,
+        "duration": 13,
+        "recognized": "ん"
+      },
+      {
+        "start": 13,
+        "duration": 9,
+        "recognized": "ふくちゃん"
+      },
+      {
+        "start": 22,
+        "duration": 8,
+        "recognized": "昔、この辺りから島流しの船が出てたらしい"
+      }
+    ]
+  },
+  "audit_findings": [
+    "Village to cedar trail to boat to empty water to final mask reveal present in sampled frames.",
+    "Gray hand visibly taps shoulder around 14-15 seconds; strict concealed rescuer condition fails.",
+    "Unrequested subtitle-like malformed text visible around 22-25 seconds.",
+    "Helper torso is visible around 27 seconds before mask, and helper is shirtless unlike specified dark work clothes.",
+    "Main sentence and call match via ASR; no direct listening quality approval.",
+    "Initial trail looks uphill rather than specified downhill.",
+    "Waist-area immersion is visible, though large rocks and shallows weaken intended deep-water danger."
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "file": "final_remotion_revision02.mp4",
+  "sha256": "38b00c797e665e4ecb636579851fa802c0dfc08c1bc05501a4529b1f954532f6",
+  "video_frames": 900,
+  "fps": 30,
+  "video_duration_seconds": 30,
+  "container_duration_seconds": 30.058667,
+  "width": 854,
+  "height": 480,
+  "approved_intro_source": "wan3_result_seed760923_480p.mp4",
+  "approved_intro_frames": [
+    0,
+    277
+  ],
+  "intro_edit": "Same source frames and original audio, no timing or content change; Remotion export re-encodes media",
+  "intro_ssim": 0.988605,
+  "revision_source": "revision02/wan3_revision02_seed760924_480p.mp4",
+  "revision_frames": [
+    0,
+    623
+  ],
+  "visual_audit": "Final contact sheet checked; hand-first opening, later destructive wide shot, Yametaro pours, Yotan ending confirmed. Continuous lip sync and audio listening not fully audited."
+}

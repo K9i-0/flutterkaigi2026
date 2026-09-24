@@ -1,0 +1,36 @@
+{
+  "composition": {
+    "id": "SobayaQuakeRevision04",
+    "width": 854,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 900
+  },
+  "segments": [
+    {
+      "file": "approved_original.mp4",
+      "from": 0,
+      "durationInFrames": 277,
+      "trimBefore": 0
+    },
+    {
+      "file": "replacement03.mp4",
+      "from": 277,
+      "durationInFrames": 623,
+      "trimBefore": 0
+    }
+  ],
+  "earthquake": {
+    "startFrame": 382,
+    "strongEndFrame": 476,
+    "stopFrame": 704,
+    "cropEndFrame": 742,
+    "finalSpeechFrame": 805,
+    "scale": 1.065,
+    "soundFile": "quake-enhancement.wav",
+    "source": "replacement03.mp4",
+    "sourceSampleStart": 3.55,
+    "sourceSampleDuration": 0.72,
+    "description": "Process existing Wan-generated earthquake audio only; no synthesized sound or new paid generation."
+  }
+}

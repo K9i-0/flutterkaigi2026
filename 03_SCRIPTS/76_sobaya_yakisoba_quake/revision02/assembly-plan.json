@@ -1,0 +1,21 @@
+{
+  "fps": 30,
+  "durationInFrames": 900,
+  "segments": [
+    {
+      "source": "../wan3_result_seed760923_480p.mp4",
+      "sourceStartFrame": 0,
+      "durationInFrames": 277,
+      "timelineStartFrame": 0,
+      "status": "user_approved_unchanged"
+    },
+    {
+      "source": "wan3_revision02_seed760924_480p.mp4",
+      "sourceStartFrame": 0,
+      "durationInFrames": 623,
+      "timelineStartFrame": 277,
+      "status": "replacement_pending"
+    }
+  ],
+  "note": "Discard last 7 frames of 21-second replacement black tail; no speed change. User preservation instruction takes precedence over default whole-film regeneration workflow."
+}

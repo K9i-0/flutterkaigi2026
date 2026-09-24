@@ -1,0 +1,102 @@
+{
+  "title": "美味しい焼きそば",
+  "studio_id": "MS-XD92RGLB",
+  "slug": "oishii-yakisoba",
+  "generation": "v1",
+  "video": "final_remotion_revision04.mp4",
+  "inputs": [
+    {
+      "path": "revision03/character_sobaya_basic_sheet.png",
+      "size": 2019627,
+      "sha256": "6de96b8fe2ebf1ce88c2f966d77a1abd7f0c2632322dfe4c527135de67494def"
+    },
+    {
+      "path": "revision03/character_yametaro_basic_sheet.png",
+      "size": 1471133,
+      "sha256": "1e98502e8051bbacf482f273e551a7dd8b8fb79e2c153865d9e48df690eb91e6"
+    },
+    {
+      "path": "revision03/character_yotan_basic_sheet.png",
+      "size": 2194921,
+      "sha256": "a5fcff5308da91a9690426b6a4028a0fdf537cf362b6fb1438fdf14c51878e5a"
+    },
+    {
+      "path": "revision03/character_fukuchan_basic_sheet.png",
+      "size": 1982927,
+      "sha256": "a3e1f8f9feff43bf501617818f6e8652c2b6b39d72f7982716cbc550cb3b5866"
+    },
+    {
+      "path": "revision03/character_tokun_basic_sheet.png",
+      "size": 2331547,
+      "sha256": "e15c47a0f207251fb4d7067984197f8e15160b52c04013a2d6fee018d2528c47"
+    },
+    {
+      "path": "revision03/voice_ref_sobaya.wav",
+      "size": 216168,
+      "sha256": "88aaec24c84fb5ba75d69c21ff3c8f48eb4f81d832357e736284065faa1f77dd"
+    },
+    {
+      "path": "revision03/voice_ref_yametaro.wav",
+      "size": 617478,
+      "sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b"
+    },
+    {
+      "path": "revision03/voice_ref_yotan.wav",
+      "size": 202938,
+      "sha256": "9c7b867d1a5f0a8b65cfcb094095d5deaf2d889f8fac20de725f926e01a56ab9"
+    },
+    {
+      "path": "revision03/voice_ref_fukuchan.wav",
+      "size": 265560,
+      "sha256": "12e64cf43941e4dd69d48c7d32b12f3e79900fbce92b43c9c66b46add82f68d3"
+    },
+    {
+      "path": "prompt_wan3.txt",
+      "size": 11524,
+      "sha256": "7f4787b489c0e449c32ebed0b70b19b5d56504a06c76bd435a7b044d57c56fd4"
+    },
+    {
+      "path": "revision03/prompt_wan3.txt",
+      "size": 15038,
+      "sha256": "f8fb8edca81b8e551784a353bc0c69dabdb0c268b5e292503f2f95df7a4116c2"
+    },
+    {
+      "path": "remotion/src/edit-manifest-revision04.json",
+      "size": 835,
+      "sha256": "7cf622bd414d047921f6eaf2ce9b4d87cd11a78ba43ca327472512c5e0915e1d"
+    },
+    {
+      "path": "remotion/quake-audio-manifest.json",
+      "size": 422,
+      "sha256": "855a30a32d0ca552584a7f7879319ed3b137888a0d10d8b21cde9d79e7f7bb95"
+    },
+    {
+      "path": "remotion/public/quake-enhancement.wav",
+      "size": 5760044,
+      "sha256": "9982a0400e6d59d4584f6c62022f1ac6c17a30fc352bfec7c1b9a68b291b973c"
+    },
+    {
+      "path": "wan3_config.json",
+      "size": 1210,
+      "sha256": "19a47650b4cf5f4fd1a6b26406b48aaccbfe6da85526f67fe096e179c19d8631"
+    },
+    {
+      "path": "revision03/wan3_config.json",
+      "size": 1565,
+      "sha256": "1e06a74d6f69eb02aed0c7df46d9afa095c57ffabf58e0eca6a21ac3190c775c"
+    }
+  ],
+  "status": "video_ready_inputs_pending_explicit_approval",
+  "video_id": "1ba7bdaf-9307-474d-a664-e67070a10599",
+  "url": "https://madogiwa.work/episodes/oishii-yakisoba",
+  "model": "wan3.0-video + Remotion 4.0.527",
+  "verified": {
+    "video_ready": true,
+    "poster_present": true,
+    "browser_video_ready_state": 4,
+    "browser_video_error": null,
+    "duration": 30.058667,
+    "uploaded_inputs": 0
+  },
+  "blocked_action": "Source character image upload denied by auto-review; bundled explicit approval requested. No retry or alternate route used."
+}

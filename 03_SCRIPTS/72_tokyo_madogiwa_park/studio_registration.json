@@ -1,0 +1,97 @@
+{
+  "title": "東京マドギワランド",
+  "studio_id": "MS-WGA5F3G5",
+  "slug": "tokyo-madogiwa-land",
+  "episode_id": "7d2e0464-18a4-4d2f-9c31-b5424a0aab9b",
+  "generation_id": "47911eb8-9737-49c8-9a9e-1e2d9962b6aa",
+  "video_id": "178a7ee0-1b92-426f-a8d6-eeb6b83d4c36",
+  "local_video": "final_remotion_cm.mp4",
+  "sha256": "e05792b29c1fe0913af6dba655cb4392c6f94dacf01945283309371e306e1c65",
+  "inputs_status": "14 adopted inputs uploaded and verified ready after explicit user approval",
+  "inputs": [
+    {
+      "id": "9c2cadc2-3cd1-42ee-a8b8-c7aba9bcffd3",
+      "filename": "character_fukuchan_basic_sheet.png",
+      "status": "ready",
+      "size_bytes": 1982927
+    },
+    {
+      "id": "a0285a96-1ec3-4d29-9a8c-261c9b480491",
+      "filename": "character_takosan_park_mascot_sheet.png",
+      "status": "ready",
+      "size_bytes": 2184398
+    },
+    {
+      "id": "0451da2f-125b-4ff8-a9b1-70821c76c719",
+      "filename": "character_yumemin_park_mascot_sheet.png",
+      "status": "ready",
+      "size_bytes": 1626064
+    },
+    {
+      "id": "d4126b42-c3f8-4e57-be0b-c4ffb0027c63",
+      "filename": "character_yametaro_park_mascot_sheet.png",
+      "status": "ready",
+      "size_bytes": 2093436
+    },
+    {
+      "id": "a5d16ab3-30a6-4c9b-a7f0-b0e6611d67b5",
+      "filename": "character_sobaya_basic_sheet.png",
+      "status": "ready",
+      "size_bytes": 2019627
+    },
+    {
+      "id": "6e732018-44e4-4dd7-b7bf-f98d8e33b612",
+      "filename": "character_okayaman_basic_sheet.png",
+      "status": "ready",
+      "size_bytes": 2132320
+    },
+    {
+      "id": "b45bbadb-a3e2-4d31-a79a-ee9a1e5ffa21",
+      "filename": "environment_madogiwa_castle.png",
+      "status": "ready",
+      "size_bytes": 2319637
+    },
+    {
+      "id": "acffb42b-4ae6-431a-9d7a-d4f011415590",
+      "filename": "environment_shops_theater_sheet.png",
+      "status": "ready",
+      "size_bytes": 2848804
+    },
+    {
+      "id": "1fc39621-629d-4d99-90ce-caf55b3c53a5",
+      "filename": "prop_madogiwazoku_tshirt.webp",
+      "status": "ready",
+      "size_bytes": 73540
+    },
+    {
+      "id": "96ba2b01-4068-4f6b-8c15-db5b8c06ae6f",
+      "filename": "voice_fukuchan.wav",
+      "status": "ready",
+      "size_bytes": 793878
+    },
+    {
+      "id": "e93134e0-f3ee-438a-ac8f-a44e01a17fe8",
+      "filename": "voice_okayaman.wav",
+      "status": "ready",
+      "size_bytes": 308778
+    },
+    {
+      "id": "71202580-6128-4f4d-bb82-ed3b0ac17a5f",
+      "filename": "voice_sobaya.wav",
+      "status": "ready",
+      "size_bytes": 705678
+    },
+    {
+      "id": "3266a8de-3cdd-42f8-9489-1e2321a4a5be",
+      "filename": "cm_sobaya.wav",
+      "status": "ready",
+      "size_bytes": 385638
+    },
+    {
+      "id": "a4950dca-3e78-4858-885f-43f594441a4c",
+      "filename": "studio_edit_package.json",
+      "status": "ready",
+      "size_bytes": 165515
+    }
+  ]
+}

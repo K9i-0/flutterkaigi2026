@@ -1,0 +1,15 @@
+{
+  "scene02": {
+    "task_id": "277b71eb-14af-46e2-8e16-37b7ad38cc84",
+    "status": "SUCCEEDED",
+    "qa": "Failed mascot count: duplicate Takosan at opening and duplicate Yametaro during reaction. Takosan floating away achieved."
+  },
+  "scene05": {
+    "task_id": "ab66316f-5fa7-4f32-ba64-c3cf331ae32a",
+    "status": "SUCCEEDED",
+    "qa": "Audience visible, reaction after dialogue. Transcript checked. Male/female cheer audio balance needs listening review."
+  },
+  "review": "remotion/out/review_floating_cheers.mp4",
+  "studio_updated": false,
+  "retry": "scene02 v3 prompt/config prepared, not submitted; additional generation approval pending"
+}
