@@ -1,0 +1,22 @@
+{
+  "name": "madogiwa-tshirt-prison-break",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "studio": "remotion studio src/index.tsx",
+    "preview": "node render.mjs preview",
+    "stills": "node render.mjs stills",
+    "render": "node render.mjs full"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.527",
+    "remotion": "4.0.527",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.7",
+    "typescript": "5.9.3"
+  }
+}

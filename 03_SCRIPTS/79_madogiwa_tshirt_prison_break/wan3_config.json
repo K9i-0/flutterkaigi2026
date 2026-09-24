@@ -1,0 +1,29 @@
+{
+  "model": "wan3.0-video",
+  "audio_source": "wan3",
+  "audio_sync_strategy": "no_visible_speech",
+  "project_duration": 30,
+  "generation_mode": "single",
+  "final_edit_duration": 33,
+  "prompt_file": "prompt_wan3.txt",
+  "media": [
+    {
+      "type": "reference_image",
+      "path": "character_sobaya_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "prop_madogiwa_tshirt.webp"
+    }
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 30,
+    "audio": true,
+    "seed": 26092479,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_prison_break_seed26092479_480p.mp4"
+}

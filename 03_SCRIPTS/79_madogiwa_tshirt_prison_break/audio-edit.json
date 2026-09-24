@@ -1,0 +1,12 @@
+{
+  "source": "wan3_prison_break_seed26092479_480p.mp4",
+  "source_sha256": "f5cadb71c5e9bdd82b1a6e986d389f90330a2127beee5725642d2b4c6b456bde",
+  "music_start_frame": 801,
+  "music_duration_frames": 99,
+  "crossfade_frames": 9,
+  "output_frames": 990,
+  "fps": 30,
+  "output": "remotion/public/final_audio.wav",
+  "output_sha256": "509e0749b51a2af5e971a763d14e9c0955776fa925535fb2fd465cce84b75c0e",
+  "method": "reuse generated music; no synthesis; no speech time stretch"
+}
