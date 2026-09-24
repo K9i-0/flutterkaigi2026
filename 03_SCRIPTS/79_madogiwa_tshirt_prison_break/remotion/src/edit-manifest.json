@@ -77,11 +77,6 @@
     }
   ],
   "captionTimingStatus": "English aligned to full-context ASR and word timestamps; Japanese aligned to approved PCM placement",
-  "locationCaption": {
-    "startFrame": 240,
-    "endFrame": 285,
-    "text": "数分後"
-  },
   "videoEdit": {
     "intro": {
       "source": "wan3_prison_break_v2_seed26092480_480p.mp4",

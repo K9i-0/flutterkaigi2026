@@ -25,9 +25,7 @@ const Captions:React.FC=()=> {
 const Film:React.FC=()=> <AbsoluteFill style={{backgroundColor:'black'}}>
  <Audio src={staticFile(m.audio.file)}/>
  <Sequence durationInFrames={m.endcard.from}><OffthreadVideo src={staticFile(m.inputVideo)} muted style={{width:'100%',height:'100%',objectFit:'contain'}}/></Sequence>
- <Sequence from={m.locationCaption.startFrame} durationInFrames={m.locationCaption.endFrame-m.locationCaption.startFrame}>
-  <div style={{position:'absolute',top:32,left:42,fontFamily:'"Hiragino Kaku Gothic ProN", sans-serif',fontSize:23,color:'white',textShadow:'0 2px 4px black'}}>{m.locationCaption.text}</div>
- </Sequence>
+
  <Captions/>
  <Sequence from={m.endcard.from} durationInFrames={m.endcard.durationInFrames}><Endcard/></Sequence>
 </AbsoluteFill>;

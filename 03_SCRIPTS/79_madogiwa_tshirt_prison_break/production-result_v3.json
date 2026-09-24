@@ -1,6 +1,6 @@
 {
   "output": "final_remotion_prison_break_v3.mp4",
-  "sha256": "c73028f8cf1a8628e58e5636e09270acf0e3992d9e74c127a2c1d6052713220c",
+  "sha256": "3a4574be6dd6214499b0d56fae8aebb13673b8a341932a21ddcb3f455611a9df",
   "width": 854,
   "height": 480,
   "fps": 30,
@@ -17,5 +17,6 @@
     "Generated helicopter geometry remains different from specified AH-1Z.",
     "Dust hides rider but does not make every part of frame opaque."
   ],
-  "edit_manifest": "remotion/src/edit-manifest.json"
+  "edit_manifest": "remotion/src/edit-manifest.json",
+  "revision": "Removed 数分後 location caption; other captions and soundtrack unchanged"
 }
