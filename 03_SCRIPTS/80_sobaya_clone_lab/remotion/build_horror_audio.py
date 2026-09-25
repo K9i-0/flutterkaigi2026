@@ -21,6 +21,11 @@ def write(path,data):
 
 def samples(frame):return round(frame*RATE/M['fps'])
 original=decode(ROOT/M['originalVideo'])[:samples(M['titleStartFrame'])]
+extension=M.get('scanExtension')
+if extension:
+    cut=samples(extension['sourceCutFrame'])
+    # This inserted region is replaced below by the continuous quiet laboratory bed.
+    original=np.concatenate([original[:cut],np.zeros((samples(extension['extraFrames']),2),dtype=original.dtype),original[cut:]])
 patched=original.copy()
 voice=M.get('takosanVoiceA')
 if voice:

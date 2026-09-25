@@ -41,10 +41,10 @@ const Target: React.FC<{index: number}> = ({index}) => {
   </>;
 };
 
-export const MadogiwaScanner: React.FC<{preview?: boolean}> = ({preview = false}) => {
+export const MadogiwaScanner: React.FC<{preview?: boolean; captureDelay?: number}> = ({preview = false, captureDelay = 0}) => {
   const frame = useCurrentFrame();
   const alarm = frame >= m.timing.yameEnd;
-  const capture = frame >= m.timing.capture;
+  const capture = frame >= m.timing.capture + captureDelay;
   return <AbsoluteFill style={{fontFamily: font, color: C.white, background: preview ? '#071416' : 'transparent'}}>
     {preview && <AbsoluteFill style={{backgroundImage: 'radial-gradient(ellipse at 45% 45%,#173b36 0%,transparent 70%),linear-gradient(#21443e22 1px,transparent 1px),linear-gradient(90deg,#21443e22 1px,transparent 1px)', backgroundSize: '100% 100%,80px 80px,80px 80px'}}/>}
     <AbsoluteFill style={{opacity: progress(frame, 0, m.timing.bootEnd)}}>
@@ -64,9 +64,14 @@ export const MadogiwaScanner: React.FC<{preview?: boolean}> = ({preview = false}
   </AbsoluteFill>;
 };
 
-export const CloneLabFilm: React.FC = () => <AbsoluteFill style={{background: '#000'}}>
-  <OffthreadVideo src={staticFile(production.inputVideo)} style={{width: '100%', height: '100%', objectFit: 'contain'}}/>
-  <Sequence from={production.scannerStartFrame} durationInFrames={production.scannerDurationInFrames}>
+export const CloneLabFilm: React.FC<{extraFrames?: number}> = ({extraFrames = 0}) => <AbsoluteFill style={{background: '#000'}}>
+  <Sequence durationInFrames={horror.scanExtension.sourceCutFrame}>
+    <OffthreadVideo src={staticFile(production.inputVideo)} style={{width:'100%',height:'100%',objectFit:'contain'}}/>
+  </Sequence>
+  <Sequence from={horror.scanExtension.sourceCutFrame+extraFrames} durationInFrames={production.composition.durationInFrames-horror.scanExtension.sourceCutFrame}>
+    <OffthreadVideo src={staticFile(production.inputVideo)} startFrom={horror.scanExtension.sourceCutFrame} style={{width:'100%',height:'100%',objectFit:'contain'}}/>
+  </Sequence>
+  <Sequence from={production.scannerStartFrame} durationInFrames={production.scannerDurationInFrames+extraFrames}>
     <AbsoluteFill style={{background: 'radial-gradient(ellipse at center,#16302d,#061214 75%)'}}>
       {production.scannerPortraits.map((p, i) => {
         const scale = p.size / p.cropSize;
@@ -75,7 +80,7 @@ export const CloneLabFilm: React.FC = () => <AbsoluteFill style={{background: '#
         </div>;
       })}
     </AbsoluteFill>
-    <MadogiwaScanner/>
+    <MadogiwaScanner captureDelay={extraFrames}/>
   </Sequence>
 </AbsoluteFill>;
 
@@ -94,7 +99,7 @@ const HorrorTitle: React.FC = () => {
   </AbsoluteFill>;
 };
 export const CloneLabHorror: React.FC = () => <AbsoluteFill style={{background:'#000'}}>
-  <Sequence durationInFrames={production.composition.durationInFrames}><CloneLabFilm/></Sequence>
+  <Sequence durationInFrames={production.composition.durationInFrames+horror.scanExtension.extraFrames}><CloneLabFilm extraFrames={horror.scanExtension.extraFrames}/></Sequence>
   <Sequence from={horror.titleStartFrame} durationInFrames={horror.durationFrames-horror.titleStartFrame}><HorrorTitle/></Sequence>
 </AbsoluteFill>;
 

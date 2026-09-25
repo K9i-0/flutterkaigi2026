@@ -74,3 +74,10 @@
 ### 2026-09-26 締めの間と余韻を延長
 
 `final_remotion_clone_lab_title_extended.mp4`：1095f／36.5秒。本編後の暗転・無音を18f（0.6秒）、タイトル＋重低音を918f、コールを954f（衝撃音の1.2秒後）へ変更。タイトル表示は177f（5.9秒）、コール終了後も約3.3秒確保し、最後30fでゆっくり暗転。元音源・音量・本編は維持。タイミング正本は `remotion/src/horror-edit.json`。
+
+
+### 2026-09-26 測定台詞へ「窓際力」を追加
+
+「窓際力、五千。そば屋の半分近いな。」へ変更。`takosan_a_scan_madogiwaryoku.wav`（4.92秒）。ユーザー採用Aの `takosan_a_reference.wav`、Irodori v4.1-Small、seed42、captionなし、CFG5、UNCUT1、duration_scale1。生成本文は「まどぎわりょく、五千。そば屋の半分近いな。」。48kHz stereo PCM16、loudnorm I=-18/TP=-2/LRA=7。音声の速度変更・トリムなし。Whisper-smallは「窓際力、5000。そば屋の半分近いな。」と認識（試聴承認とは別）。
+
+測定UIを54f／1.8秒延長し、元486f以降の映像・音声・効果音・タイトルを同じ54fだけ後ろへ移動。測定音声は384f開始、UIは348〜539f、次のホログラムは540fから。数値5,082の確定375fを維持。後続映像の再生成なし。タイトルの間・余韻は前回と同じ。完成版 `final_remotion_clone_lab_madogiwaryoku.mp4`、1149f／38.3秒。

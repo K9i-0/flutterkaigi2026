@@ -1,10 +1,10 @@
 {
   "fps": 30,
-  "durationFrames": 1095,
-  "titleStartFrame": 918,
+  "durationFrames": 1149,
+  "titleStartFrame": 972,
   "titleImage": "logo_sobaya_hazard_master.png",
   "originalVideo": "wan3_clone_lab_seed26092580_480p.mp4",
-  "output": "final_remotion_clone_lab_title_extended.mp4",
+  "output": "final_remotion_clone_lab_madogiwaryoku.mp4",
   "repair": {
     "asset": "takosan_repair_sentence.wav",
     "reference": "takosan_repair_reference.wav",
@@ -29,8 +29,8 @@
     "status": "superseded_by_user_adopted_voice_a"
   },
   "quietBeforeBreak": {
-    "startFrame": 696,
-    "endFrame": 700,
+    "startFrame": 750,
+    "endFrame": 754,
     "gainDb": -14,
     "rampFrames": 1
   },
@@ -39,14 +39,14 @@
       "name": "break_body_impact",
       "sourceStartFrame": 724,
       "sourceDurationFrames": 20,
-      "startFrame": 720,
+      "startFrame": 774,
       "gainDb": -10,
       "lowpassHz": 300
     }
   ],
   "titleCall": {
     "asset": "sobaya_hazard_title_call.wav",
-    "startFrame": 954,
+    "startFrame": 1008,
     "gainDb": -1.5,
     "source": "04_GAME_ASSETS/audio/hazard/voice/2b3687b44fb1d838.wav",
     "speaker": "そば屋",
@@ -66,7 +66,8 @@
     "opening_dialogue_isolated.wav": "2b6f983bd70ffdd68dbaa247dcc5efc07cb07ba4050e8cae000815e679374bdd",
     "pod_ambience_loop.wav": "83b59a81de1fbc357d4070bb931e61c3ff0b1a4ed866e56620122dd0ca975d20",
     "reference_lab_hologram_adopted.png": "d321384e84ebf497ecfdfd1f6361fa517a363cdbbbf42dbbc562bbebd031814d",
-    "title_boom_from_wan.wav": "0244df35b6ce32827a6dc8e27e7ddb45977f2d1be26cf1ab32079d6e497a1597"
+    "title_boom_from_wan.wav": "0244df35b6ce32827a6dc8e27e7ddb45977f2d1be26cf1ab32079d6e497a1597",
+    "takosan_a_scan_madogiwaryoku.wav": "25b5c41d503e30f2846fd5f1134479b9ac8093aedb345782f84b33946c6cf606"
   },
   "takosanVoiceA": {
     "adoptedByUser": true,
@@ -80,21 +81,23 @@
     "uncut": true,
     "durationScale": 1,
     "replaceStartFrame": 348,
-    "replaceEndFrame": 697,
+    "replaceEndFrame": 751,
     "ambienceSourceStartFrame": 0,
     "ambienceSourceDurationFrames": 24,
     "ambienceGainDb": -22,
     "lines": [
       {
-        "asset": "takosan_a_scan.wav",
-        "text": "五千。そば屋の半分近いな。",
+        "asset": "takosan_a_scan_madogiwaryoku.wav",
+        "text": "窓際力、五千。そば屋の半分近いな。",
         "startFrame": 384,
-        "gainDb": 0
+        "gainDb": 0,
+        "generationText": "まどぎわりょく、五千。そば屋の半分近いな。",
+        "durationSeconds": 4.92
       },
       {
         "asset": "takosan_a_hologram.wav",
         "text": "二人とも、実にきょうみぶかい。そば屋くん、傷つけずに回収したまえ。",
-        "startFrame": 498,
+        "startFrame": 552,
         "gainDb": 0
       }
     ],
@@ -102,7 +105,7 @@
   },
   "titleBackground": "reference_lab_hologram_adopted.png",
   "quietLab": {
-    "endFrame": 697,
+    "endFrame": 751,
     "dialogueAsset": "opening_dialogue_isolated.wav",
     "dialogueSource": "Wan original 0-11.6s; Demucs htdemucs vocals; shifts=0 cpu",
     "dialogueFrames": 348,
@@ -151,10 +154,10 @@
     "dialogueEdgeFadeSamples": 480
   },
   "endingImpact": {
-    "silenceStartFrame": 900,
-    "silenceEndFrame": 918,
+    "silenceStartFrame": 954,
+    "silenceEndFrame": 972,
     "asset": "title_boom_from_wan.wav",
-    "startFrame": 918,
+    "startFrame": 972,
     "gainDb": 0,
     "sourceVideo": "wan3_clone_lab_seed26092580_480p.mp4",
     "sourceStartSeconds": 24.133333,
@@ -187,5 +190,9 @@
       6
     ]
   },
-  "titleFadeOutFrames": 30
+  "titleFadeOutFrames": 30,
+  "scanExtension": {
+    "sourceCutFrame": 486,
+    "extraFrames": 54
+  }
 }
