@@ -1,0 +1,2 @@
+# Unadopted visual concepts stay local; only adopted production inputs enter Git.
+*.png
