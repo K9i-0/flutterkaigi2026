@@ -4,7 +4,7 @@
   "titleStartFrame": 900,
   "titleImage": "logo_sobaya_hazard_master.png",
   "originalVideo": "wan3_clone_lab_seed26092580_480p.mp4",
-  "output": "final_remotion_clone_lab_horror.mp4",
+  "output": "final_remotion_clone_lab_takosan_a.mp4",
   "repair": {
     "asset": "takosan_repair_sentence.wav",
     "reference": "takosan_repair_reference.wav",
@@ -25,11 +25,12 @@
     "durationSamples": 48000,
     "gainDb": -0.4,
     "timeStretch": false,
-    "crossfade": false
+    "crossfade": false,
+    "status": "superseded_by_user_adopted_voice_a"
   },
   "quietBeforeBreak": {
-    "startFrame": 690,
-    "endFrame": 697,
+    "startFrame": 696,
+    "endFrame": 700,
     "gainDb": -14,
     "rampFrames": 1
   },
@@ -81,6 +82,42 @@
     "takosan_repair_reference.wav": "7d689de8bdcef90cb44026be9fc993e24f07dbf53a1413201c75680130a2cfd9",
     "takosan_repair_sentence.wav": "b1bb2e0c11aaedcefeaff9fb0951fd922346f597cc8a1b6113fecf2022a870c9",
     "sobaya_hazard_title_call.wav": "9f318212280dcd2d8dcf467a703168c26d84333d74ed16f35a7ef9f6f352a14b",
-    "logo_sobaya_hazard_master.png": "56865c15ca9ad83afa91429a93f2f3bea055db68824fb50cd234b1c9790442ae"
+    "logo_sobaya_hazard_master.png": "56865c15ca9ad83afa91429a93f2f3bea055db68824fb50cd234b1c9790442ae",
+    "takosan_a_reference.wav": "05cdaa0c3c83ae930dcb9bb8bc5985aa65fe6bf3210b228a4a08ac04c11f11c0",
+    "takosan_a_scan.wav": "159d30b21cb35096fa7fc746741ca45ffb889583c2c6120a6b950f68ffca993b",
+    "takosan_a_hologram.wav": "87b1edb850713396932052f2469b066740082e3070550e0fef080a0f139c2240",
+    "scanner_closed_mouth_frame348.png": "d53ca911f612994531de5c55ee5008b795c4788d6fa611b19e4f318095f6904e"
+  },
+  "takosanVoiceA": {
+    "adoptedByUser": true,
+    "reference": "takosan_a_reference.wav",
+    "referenceOrigin": "04_GAME_ASSETS/audio/hazard/voice/f9bade3c3cb8638e.wav",
+    "referenceModel": "VOICEVOX:Voidoll",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 42,
+    "caption": "",
+    "textCfg": 5,
+    "uncut": true,
+    "durationScale": 1,
+    "replaceStartFrame": 348,
+    "replaceEndFrame": 697,
+    "ambienceSourceStartFrame": 0,
+    "ambienceSourceDurationFrames": 24,
+    "ambienceGainDb": -22,
+    "lines": [
+      {
+        "asset": "takosan_a_scan.wav",
+        "text": "五千。そば屋の半分近いな。",
+        "startFrame": 384,
+        "gainDb": 0
+      },
+      {
+        "asset": "takosan_a_hologram.wav",
+        "text": "二人とも、実にきょうみぶかい。そば屋くん、傷つけずに回収したまえ。",
+        "startFrame": 498,
+        "gainDb": 0
+      }
+    ],
+    "timeStretch": false
   }
 }

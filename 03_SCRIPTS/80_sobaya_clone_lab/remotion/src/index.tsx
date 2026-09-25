@@ -70,7 +70,7 @@ export const CloneLabFilm: React.FC = () => <AbsoluteFill style={{background: '#
       {production.scannerPortraits.map((p, i) => {
         const scale = p.size / p.cropSize;
         return <div key={i} style={{position: 'absolute',left:p.left,top:p.top,width:p.size,height:p.size,overflow:'hidden'}}>
-          <OffthreadVideo muted trimBefore={production.scannerStartFrame} src={staticFile(production.inputVideo)} style={{position:'absolute',maxWidth:'none',width:854*scale,height:480*scale,left:-p.cropX*scale,top:-p.cropY*scale}}/>
+          <Img src={staticFile(production.scannerStillImage)} style={{position:'absolute',maxWidth:'none',width:854*scale,height:480*scale,left:-p.cropX*scale,top:-p.cropY*scale}}/>
         </div>;
       })}
     </AbsoluteFill>

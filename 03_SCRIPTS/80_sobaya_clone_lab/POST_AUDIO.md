@@ -47,3 +47,20 @@ IRODORI_UNCUT=1 IRODORI_CFG_SCALE_TEXT=5 tools/irodori_speak.sh '二人とも、
 再現：`remotion/`で `npm run render:horror`。音声構築には既存 `.local/Irodori-TTS/.venv/bin/python` のNumPyを使用（`HORROR_AUDIO_PYTHON`で代替可能）。入力MP4は `public/input.mp4` へ原版をhardlinkまたは実コピーしておく。ロゴはレンダー時に `public/` へ実コピー。音声を33秒PCMとして構築し、Remotionの映像へFFmpegで一回だけAACエンコードしてmuxする。
 
 最終MP4検証：映像・音声とも33.000秒、990フレーム、全編デコード成功。最終AACとミックスPCMの相互相関による遅延は0サンプル（8kHz測定）。比較ページはHTTP200とChromeでの修復台詞区間の再生表示を確認。音を聴いた判定とは区別する。
+
+## A採用と測定人物の静止化（同日追記・現行）
+
+ユーザーが音声比較A（既存ゲームのVOICEVOX:Voidollを参照したIrodori）を採用。たこさんの全発話を同じ声へ統一する。旧33秒版は残し、現行は `final_remotion_clone_lab_takosan_a.mp4`。
+
+- `takosan_a_reference.wav` はゲーム正本 `f9bade3c3cb8638e.wav` の実コピー。正典VOICE_CASTへは未登録。
+- `takosan_a_hologram.wav` はユーザーが聞いたAの正規化済みWAVそのもの（6.60秒）。16.60秒から配置。新規の声質加工・速度変更はしない。
+- `takosan_a_scan.wav` は同じ参照・モデル・seed42・captionなし・CFG5・UNCUT1・duration_scale1で「五千。そば屋の半分近いな。」を生成。3.28秒、12.80秒から配置。ASR「ごせん。そばやの半分近いな。」。
+- 両音声とも−18LUFS / −2dBTP目標で正規化。旧たこさん音声は11.6〜23.233秒から除き、同じWanの冒頭の非発話環境音を低音量で敷き直す。元の声を二重再生しない。環境音のみループ接続を50msでクロスフェードし、台詞は時間伸縮・クロスフェードしない。
+- 声の差し替え工程の区間外PCMは一致。効果音・そば屋タイトルコールは前回と同じ。
+- 測定画像はWan原版348f（11.60秒）を `scanner_closed_mouth_frame348.png` として採用。福ちゃんとやめ太郎の閉口を目視し、348〜485f全区間で同じ画像を使用。UI数値・走査線・警告は従来どおりアニメーションする。
+- ホログラム側の口の動きはWan映像を保持。Aの発話尺は元と異なり、完全な音素同期の合格は主張しない。
+- 再現は引き続き `npm run render:horror`。`horror-edit.json`の`takosanVoiceA`が現行の音声正本で、旧`repair`は履歴として保持。
+
+Aの語尾を保つため、破砕前の短い音量低下を23.20〜23.333秒（696〜699f）へ移動。台詞素材の末尾23.20秒より後だけへ適用。
+
+現行版の検証：TypeScript成功、合成PNG432fと480fで両顔の画素が完全一致。最終MP4は映像・音声33.000秒、990フレーム、全編デコード成功。ミックスPCMと最終AACの相互相関で遅延0サンプル（8kHz測定）。

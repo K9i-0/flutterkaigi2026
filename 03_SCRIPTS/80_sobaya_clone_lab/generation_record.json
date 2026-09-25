@@ -120,5 +120,46 @@
     "final_audio_lag_samples_8khz": 0,
     "final_audio_correlation": 0.9998652338981628,
     "browser_comparison_playback_verified": true
+  },
+  "current_revision": {
+    "date": "2026-09-26",
+    "output": "final_remotion_clone_lab_takosan_a.mp4",
+    "sha256": "c25cc0cf0fd15d3cc8faa657bb5582a2c4769d61a49723d85d84b395881d42e6",
+    "duration_seconds": 33,
+    "frames": 990,
+    "takosanVoice": "user_adopted_A",
+    "voiceManifest": "remotion/src/horror-edit.json#takosanVoiceA",
+    "scannerFrozenFrames": [
+      348,
+      486
+    ],
+    "scannerSourceFrame": 348,
+    "scannerImage": "scanner_closed_mouth_frame348.png",
+    "closedMouthImageVisuallyChecked": true,
+    "portraitPixelsIdenticalBetweenFrames432And480": true,
+    "fullDecodePassed": true,
+    "finalAudioLagSamples8kHz": 0,
+    "asrNewScanLine": "ごせん。そばやの半分近いな。",
+    "lipSyncHologramApproved": false,
+    "additionalPaidGeneration": false,
+    "audio_report": {
+      "sampleRate": 48000,
+      "channels": 2,
+      "durationSamples": 1584000,
+      "seconds": 33.0,
+      "replacementOutsidePcmIdentical": true,
+      "replacementMode": "adopted_takosan_voice_a",
+      "insertVerified": true,
+      "targetSamples": [
+        556800,
+        1115200
+      ],
+      "timeStretch": false,
+      "speechCrossfade": false,
+      "peakDbfs": -3.1092552103685263,
+      "extraSfxGain": 1.0,
+      "audioSources": "Wan original effects; Irodori member speech only",
+      "review": "ASR and PCM checks; listening and lip-sync approval remain separate"
+    }
   }
 }

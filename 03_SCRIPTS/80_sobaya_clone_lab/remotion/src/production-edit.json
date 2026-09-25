@@ -27,5 +27,7 @@
       "cropY": 120,
       "cropSize": 220
     }
-  ]
+  ],
+  "scannerStillImage": "scanner_closed_mouth_frame348.png",
+  "scannerStillSourceFrame": 348
 }
