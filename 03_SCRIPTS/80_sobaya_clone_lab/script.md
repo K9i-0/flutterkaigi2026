@@ -44,7 +44,7 @@
 
 ## 生成前準備
 
-- `wan3_config.json` / `prompt_wan3.txt`：Wan 3.0、30秒単一生成、720P・16:9、seed 26092580。複数人物・仮面・ガラス破砕の視認性を考慮して720Pで準備。
+- `wan3_config.json` / `prompt_wan3.txt`：Wan 3.0、30秒単一生成、480P・16:9、seed 26092580。ユーザー指定により480Pへ変更。
 - `audio_source=wan3`、`audio_sync_strategy=wan_generated_lip_sync`。声質参照：Audio 1福ちゃん7.45秒、Audio 2やめ太郎7秒、合計14.45秒。元の語句・時間軸はコピーしない。
 - たこさんはVOICE_CAST.mdに声の正典がないため、落ち着いた中低域の成人男性研究者としてWanへ声を指定。正典声の新規登録は行っていない。そば屋は台詞なし。
 - 全台詞と効果音はWan生成、BGMなし。映像内で口が見える区間は同期させ、生成後の発音破綻だけ必要に応じて修復する。
