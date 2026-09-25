@@ -1,0 +1,56 @@
+{
+  "task_id": "662fd306-bc22-4a43-84a2-8900ae1c8a37",
+  "date": "2026-09-25",
+  "model": "wan3.0-video",
+  "resolution": "480P",
+  "duration_seconds": 30,
+  "seed": 26092580,
+  "status": "SUCCEEDED",
+  "config": "wan3_config.json",
+  "output": "wan3_clone_lab_seed26092580_480p.mp4",
+  "estimated_usd": 1.05,
+  "actual_charge_verified": false,
+  "audio_source": "wan3",
+  "audio_sync_strategy": "wan_generated_lip_sync",
+  "source_sha256": "070ed609e4e748e41e202dc1a5a8519f99f870dce1279dd4958c694d0bfee1da",
+  "actual_video": {
+    "width": 854,
+    "height": 480,
+    "fps": 30,
+    "frames": 900,
+    "video_seconds": 30,
+    "container_seconds": 30.022993,
+    "video_codec": "h264",
+    "audio_codec": "aac"
+  },
+  "postproduction": "remotion",
+  "composition_id": "CloneLabFilm",
+  "edited_output": "final_remotion_clone_lab.mp4",
+  "scanner_start_frame": 348,
+  "scanner_end_frame_exclusive": 486,
+  "post_audio_repairs": [],
+  "audit_status": "review_copy_with_known_visual_deviations",
+  "known_issues": [
+    "序盤約3〜5秒のやめ太郎の顔・髪が変形し、ガラス内に重複像が現れる。人物同一性は全編合格ではない。",
+    "ホログラム上部に大きな投影設備が生成され、採用A4の控えめな設備指定から外れる。",
+    "監視シーンへ不要な文字と数値が焼き込まれたため、同一区間の二人の顔を切り出してRemotionの測定画面へ再構成した。",
+    "台詞はローカルWhisperで確認したが、通し試聴・リップシンク合格判定は未実施。興味深い等のASR表記に揺れがあるため音声修復の確定根拠にしない。"
+  ],
+  "checks": [
+    "ソース854x480・30fps・映像30秒・音声あり。",
+    "1秒ごとの全編コンタクトシート、測定カット境界とUI静止画を目視。",
+    "測定カット実測11.6〜16.2秒。元タイムライン・Wan音声を維持。",
+    "TypeScriptチェック成功。",
+    "UI合成版900フレーム・30秒・全編デコード成功。冒頭・末尾・UI境界を目視。",
+    "Remotion音声の約42.6ms遅延を検出し、原版AACを再mux。最終30秒デコードPCMは原版と完全一致。"
+  ],
+  "edited_sha256": "ed000d62b6fc5ed352b13f503b592c133bb4f24edd35787a3fe942fc2e324b99",
+  "edited_video": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "frames": 900,
+    "video_seconds": 30
+  },
+  "audio_pcm_30s_identical": true
+}

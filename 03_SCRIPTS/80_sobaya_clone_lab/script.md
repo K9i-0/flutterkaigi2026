@@ -35,11 +35,11 @@
 
 通常は静かなカメラ移動、異音への反応のみ少し乱す。序盤の動きは覚醒の前兆、本格覚醒・襲撃は命令後。仮面自体を表情変形させず、首・指・身体で不気味さを作る。
 
-秒数は編集目安。最後の採用台詞に約5秒の枠を確保し、自然な発話終端を優先して動作と配分を調整する。音声未生成・未実測のため30秒への厳密な収まりは制作時に確認。研究の最終目的はまだ明かさない。
+秒数は編集目安。最後の採用台詞に約5秒の枠を確保し、自然な発話終端を優先して動作と配分を調整する。初回生成は30秒。ASRで台詞の大筋を確認したが、通し試聴と同期の合格判定は未実施。研究の最終目的はまだ明かさない。
 
 ## 制作状況
 
-本編動画・音声は未生成。UIは `remotion/` の5秒v2が現行。postproduction=remotion。動画生成は別工程であり、今回の台詞採用だけを有料実行の許可とは扱わない。
+本編動画・音声は2026-09-25に初回生成済み（既知の差異あり、確認用）。UIは `remotion/` の5秒v2が現行。postproduction=remotion。動画生成は別工程であり、今回の台詞採用だけを有料実行の許可とは扱わない。
 
 
 ## 生成前準備
@@ -54,4 +54,6 @@
 - UIは本編11〜16秒（予定）に重ねる。編集タイミング正本は`remotion/src/production-edit.json`。生成後に実際の監視カット境界を確認し、必要ならUI開始と測定尺を調整する。
 - 完成編集のcomposition ID：`CloneLabFilm`。入力`remotion/public/input.mp4`、完成出力`final_remotion_clone_lab.mp4`。
 
-検証内容・仕様確認・価格は`PRE_FLIGHT.md`、素材出所・ハッシュは`input_manifest.json`を参照。本編未生成、API未送信。
+検証内容・仕様確認・価格は`PRE_FLIGHT.md`、素材出所・ハッシュは`input_manifest.json`を参照。初回生成成功。実測仕様・既知の差異は `generation_record.json` を参照。
+
+生成原版: `wan3_clone_lab_seed26092580_480p.mp4`。UI合成: `final_remotion_clone_lab.mp4` / `CloneLabFilm`。postproduction=remotion。

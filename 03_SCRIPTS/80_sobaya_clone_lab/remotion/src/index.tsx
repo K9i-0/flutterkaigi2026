@@ -64,7 +64,15 @@ export const MadogiwaScanner: React.FC<{preview?: boolean}> = ({preview = false}
 
 export const CloneLabFilm: React.FC = () => <AbsoluteFill style={{background: '#000'}}>
   <OffthreadVideo src={staticFile(production.inputVideo)} style={{width: '100%', height: '100%', objectFit: 'contain'}}/>
-  <Sequence from={production.scannerStartFrame} durationInFrames={m.composition.durationInFrames}>
+  <Sequence from={production.scannerStartFrame} durationInFrames={production.scannerDurationInFrames}>
+    <AbsoluteFill style={{background: 'radial-gradient(ellipse at center,#16302d,#061214 75%)'}}>
+      {production.scannerPortraits.map((p, i) => {
+        const scale = p.size / p.cropSize;
+        return <div key={i} style={{position: 'absolute',left:p.left,top:p.top,width:p.size,height:p.size,overflow:'hidden'}}>
+          <OffthreadVideo muted trimBefore={production.scannerStartFrame} src={staticFile(production.inputVideo)} style={{position:'absolute',maxWidth:'none',width:854*scale,height:480*scale,left:-p.cropX*scale,top:-p.cropY*scale}}/>
+        </div>;
+      })}
+    </AbsoluteFill>
     <MadogiwaScanner/>
   </Sequence>
 </AbsoluteFill>;

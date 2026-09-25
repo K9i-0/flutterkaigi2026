@@ -1,6 +1,8 @@
 # そば屋クローン研究所 — 採用ステージと窓際力UI
 
-本編生成前のステージ参照画像とUI。現行v2は1920×1080 / 30fps / 150フレーム（5秒）、音声なし。
+本編初回生成済み。UI合成版は `final_remotion_clone_lab.mp4`、480Pの生成原版は `wan3_clone_lab_seed26092580_480p.mp4`。既知の映像差異がある確認用テイク。詳細は `generation_record.json`。
+
+ステージ参照画像と単体UIも保持。現行v2は1920×1080 / 30fps / 150フレーム（5秒）、音声なし。
 
 窓際力は標準的な窓際社員を **10 MW** と定義した相対尺度。福ちゃん **213 MW**、やめ太郎 **5,082 MW**、そば屋 **10,247 MW**。福ちゃんは高値、やめ太郎とそば屋は規格外。
 
@@ -53,12 +55,24 @@ npm run alpha
 
 Remotion関連パッケージは4.0.528へ統一固定。日本語フォントはmacOSのHiragino Sansを使用。他OSでは同フォントの用意、または日本語フォントの明示的な差し替えが必要。
 
-postproduction=remotion。元動画入力なし。字幕・ニュースプリセット・音声は使用しない。
+単体UIは字幕・ニュースプリセット・音声なし。本編はpostproduction=remotionでWan埋め込み音声を維持。
 
 v2検証：TypeScriptチェック成功。測定確定と警告・捕獲の切替前後をPNG出力し、主要警告画面の文字・数値配置を目視確認。MP4と透過MOVは双方1920×1080・30fps・150フレーム・5秒、全編デコード成功。透過PNGの人物映像領域はalpha=0。ProResはアルファ付き画素形式を確認。
 
 ## 生成準備パッケージ
 
-最終準備は[`PRE_FLIGHT.md`](PRE_FLIGHT.md)参照。送信本文`prompt_wan3.txt`、設定`wan3_config.json`、本番素材台帳`input_manifest.json`を配置。480P・30秒単一タスクの乾式検証済み。本編APIは未送信。
+最終準備は[`PRE_FLIGHT.md`](PRE_FLIGHT.md)参照。送信本文`prompt_wan3.txt`、設定`wan3_config.json`、本番素材台帳`input_manifest.json`を配置。480P・30秒単一タスクの乾式検証済み。本編APIは2026-09-25に送信し成功。生成記録は `generation_record.json`。
 
 `CloneLabFilm`は30秒本編にUIを重ねる構成。`remotion/public/input.mp4`へ採用動画を配置し、監視カットの実測時刻に`remotion/src/production-edit.json`を合わせた後、`npm run render:film`で完成版を出力する。タイミングが一致するまでは完成版扱いにしない。
+
+## 初回生成・UI合成（2026-09-25）
+
+Wan原版は854×480・30fps・30秒。生成タスクは一回のみ、見積$1.05（実請求未確認）。UI合成版は1920×1080・30fps・30秒。元映像の細部は480Pのまま。
+
+実カット348〜485f（11.6〜16.2秒）のみ、生成された不正確なUIを除き、同時刻の二人の顔を切り出して測定UIへ配置。カウントアップは単体UIの既存タイミングを維持し、捕獲表示はカット末尾まで。配置・区間の正本は `remotion/src/production-edit.json`。全体の音声・再生速度を維持。
+
+序盤のやめ太郎の顔変形とガラス内の重複像、ホログラム上部の大型設備は未修正。ASRで台詞の大筋を照合したが、通し試聴・発音・リップシンク合格は未判定。採用確定ではなく確認用テイクとして扱う。
+
+再現: `remotion/`で `npm run typecheck`、`node render.mjs film-stills`、`npm run render:film`。生成原版を`public/input.mp4`にhardlink済み。
+
+最終検証: 合成版900フレーム・30秒、全編デコード成功。Remotion再エンコード音声に約42.6ms遅延があったため原版AACをコピーして再mux。最終30秒のデコードPCMは原版と完全一致。`render.mjs`も同じ手順を再現する。

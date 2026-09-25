@@ -1,7 +1,31 @@
 {
-  "composition": {"width":1920,"height":1080,"fps":30,"durationInFrames":900},
+  "composition": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "durationInFrames": 900
+  },
   "inputVideo": "input.mp4",
-  "scannerStartFrame": 330,
-  "timingStatus": "planned_adjust_to_actual_surveillance_cut_after_generation",
-  "output": "../final_remotion_clone_lab.mp4"
+  "scannerStartFrame": 348,
+  "timingStatus": "measured_cut_348_to_485_inclusive",
+  "output": "../final_remotion_clone_lab.mp4",
+  "scannerDurationInFrames": 138,
+  "scannerPortraits": [
+    {
+      "left": 285,
+      "top": 145,
+      "size": 430,
+      "cropX": 175,
+      "cropY": 20,
+      "cropSize": 220
+    },
+    {
+      "left": 1205,
+      "top": 145,
+      "size": 430,
+      "cropX": 445,
+      "cropY": 120,
+      "cropSize": 220
+    }
+  ]
 }
