@@ -1,10 +1,10 @@
 {
   "fps": 30,
-  "durationFrames": 998,
-  "titleStartFrame": 908,
+  "durationFrames": 1095,
+  "titleStartFrame": 918,
   "titleImage": "logo_sobaya_hazard_master.png",
   "originalVideo": "wan3_clone_lab_seed26092580_480p.mp4",
-  "output": "final_remotion_clone_lab_title_boom.mp4",
+  "output": "final_remotion_clone_lab_title_extended.mp4",
   "repair": {
     "asset": "takosan_repair_sentence.wav",
     "reference": "takosan_repair_reference.wav",
@@ -46,7 +46,7 @@
   ],
   "titleCall": {
     "asset": "sobaya_hazard_title_call.wav",
-    "startFrame": 920,
+    "startFrame": 954,
     "gainDb": -1.5,
     "source": "04_GAME_ASSETS/audio/hazard/voice/2b3687b44fb1d838.wav",
     "speaker": "そば屋",
@@ -152,9 +152,9 @@
   },
   "endingImpact": {
     "silenceStartFrame": 900,
-    "silenceEndFrame": 908,
+    "silenceEndFrame": 918,
     "asset": "title_boom_from_wan.wav",
-    "startFrame": 908,
+    "startFrame": 918,
     "gainDb": 0,
     "sourceVideo": "wan3_clone_lab_seed26092580_480p.mp4",
     "sourceStartSeconds": 24.133333,
@@ -186,5 +186,6 @@
       4,
       6
     ]
-  }
+  },
+  "titleFadeOutFrames": 30
 }

@@ -100,3 +100,8 @@ Wan原版は854×480・30fps・30秒。生成タスクは一回のみ、見積$1
 再現: `remotion/`で `npm run typecheck`、`node render.mjs film-stills`、`npm run render:film`。生成原版を`public/input.mp4`にhardlink済み。
 
 最終検証: 合成版900フレーム・30秒、全編デコード成功。Remotion再エンコード音声に約42.6ms遅延があったため原版AACをコピーして再mux。最終30秒のデコードPCMは原版と完全一致。`render.mjs`も同じ手順を再現する。
+
+
+### 2026-09-26 締めの間と余韻を延長
+
+`final_remotion_clone_lab_title_extended.mp4`：1095f／36.5秒。本編後の暗転・無音を18f（0.6秒）、タイトル＋重低音を918f、コールを954f（衝撃音の1.2秒後）へ変更。タイトル表示は177f（5.9秒）、コール終了後も約3.3秒確保し、最後30fでゆっくり暗転。元音源・音量・本編は維持。タイミング正本は `remotion/src/horror-edit.json`。

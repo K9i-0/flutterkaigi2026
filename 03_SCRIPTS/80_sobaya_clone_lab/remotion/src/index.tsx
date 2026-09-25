@@ -81,9 +81,10 @@ export const CloneLabFilm: React.FC = () => <AbsoluteFill style={{background: '#
 
 const HorrorTitle: React.FC = () => {
   const frame = useCurrentFrame();
-  const opacity = 1-progress(frame,82,89);
+  const titleFrames = horror.durationFrames-horror.titleStartFrame;
+  const opacity = 1-progress(frame,titleFrames-horror.titleFadeOutFrames,titleFrames-1);
   const shake = interpolate(frame,horror.endingImpact.shakeFrames,horror.endingImpact.shakePixels,{extrapolateRight:'clamp'});
-  const scale = interpolate(frame,[0,90],[1,1.025],{extrapolateRight:'clamp'});
+  const scale = interpolate(frame,[0,titleFrames-1],[1,1.025],{extrapolateRight:'clamp'});
   return <AbsoluteFill style={{background:'#000',overflow:'hidden',opacity}}>
     <Img src={staticFile(horror.titleBackground)} style={{width:'100%',height:'100%',objectFit:'cover',transform:`scale(${scale})`}}/>
     <AbsoluteFill style={{background:'linear-gradient(transparent 42%,rgba(0,0,0,.15) 62%,rgba(0,0,0,.72) 100%)'}}/>

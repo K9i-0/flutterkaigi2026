@@ -18,7 +18,7 @@ try{
  const id=(mode==='horror'||mode==='horror-stills')?'CloneLabHorror':(mode==='full'||mode==='film-stills')?'CloneLabFilm':mode==='alpha'?'ScannerOverlay':'ScannerPreview';
  const composition=await selectComposition({serveUrl,id,puppeteerInstance:browser});
  if(mode==='horror-stills'){
-  for(const frame of [899,900,907,908,909,914,920,960,997])await renderStill({serveUrl,composition,puppeteerInstance:browser,frame,imageFormat:'png',output:`out/audit/horror-${frame}.png`});
+  for(const frame of [899,900,horror.titleStartFrame-1,horror.titleStartFrame,horror.titleCall.startFrame,horror.durationFrames-horror.titleFadeOutFrames,horror.durationFrames-1])await renderStill({serveUrl,composition,puppeteerInstance:browser,frame,imageFormat:'png',output:`out/audit/horror-${frame}.png`});
  }else if(mode==='film-stills'){
   for(const frame of [348,360,375,384,410,432,480,486])await renderStill({serveUrl,composition,puppeteerInstance:browser,frame,imageFormat:'png',output:`out/audit/film-${frame}.png`});
  }else if(mode==='stills'){
