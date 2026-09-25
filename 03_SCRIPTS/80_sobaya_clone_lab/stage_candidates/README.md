@@ -42,3 +42,7 @@ built-in image_gen使用。実送信プロンプトはprompt_A3.txt / prompt_B3.
 - B4_discreet_projector.png：円形室と外周ポッド。中央の機械ピット・多重手すりを平らな床へ変更し、小さな床面投影点へ。
 
 built-in image_genを使用。Image 1は各A/B初版、Image 2はユーザー添付のreference_hologram_hierarchy.png（見せ方だけを参照）。人物・字幕を元ネタからコピーしない。実送信文はprompt_A4.txt / prompt_B4.txt。大型投影装置の除去・培養ポッドとたこさんの視認性を目視確認。未採用候補と参照画像はローカル保持。
+
+## 採用結果
+
+ユーザーがA4を採用。`../reference_lab_hologram_adopted.png`へ同一画像をコピーし、本番環境参照の正本としてGit管理へ昇格。候補ディレクトリの画像は比較履歴としてローカル保持。
