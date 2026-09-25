@@ -80,9 +80,15 @@ export const CloneLabFilm: React.FC = () => <AbsoluteFill style={{background: '#
 
 const HorrorTitle: React.FC = () => {
   const frame = useCurrentFrame();
-  const opacity = Math.min(progress(frame,0,2), 1-progress(frame,80,90));
-  const scale = interpolate(frame,[0,12,90],[1.045,1.015,1],{extrapolateRight:'clamp'});
-  return <AbsoluteFill style={{background:'#000',overflow:'hidden'}}><Img src={staticFile(horror.titleImage)} style={{width:'100%',height:'100%',objectFit:'contain',opacity,transform:`scale(${scale})`}}/></AbsoluteFill>;
+  const opacity = Math.min(progress(frame,0,3), 1-progress(frame,82,90));
+  const scale = interpolate(frame,[0,90],[1,1.025],{extrapolateRight:'clamp'});
+  return <AbsoluteFill style={{background:'#000',overflow:'hidden',opacity}}>
+    <Img src={staticFile(horror.titleBackground)} style={{width:'100%',height:'100%',objectFit:'cover',transform:`scale(${scale})`}}/>
+    <AbsoluteFill style={{background:'linear-gradient(transparent 42%,rgba(0,0,0,.15) 62%,rgba(0,0,0,.72) 100%)'}}/>
+    <div style={{position:'absolute',left:180,bottom:52,width:1560,height:350,overflow:'hidden',mixBlendMode:'screen',maskImage:'linear-gradient(transparent,black 12%,black 91%,transparent)',opacity:progress(frame,2,8)}}>
+      <Img src={staticFile(horror.titleImage)} style={{position:'absolute',left:0,top:-260,width:1560,height:'auto',maskImage:'linear-gradient(to right,transparent,black 6%,black 94%,transparent)'}}/>
+    </div>
+  </AbsoluteFill>;
 };
 export const CloneLabHorror: React.FC = () => <AbsoluteFill style={{background:'#000'}}>
   <Sequence durationInFrames={production.composition.durationInFrames}><CloneLabFilm/></Sequence>

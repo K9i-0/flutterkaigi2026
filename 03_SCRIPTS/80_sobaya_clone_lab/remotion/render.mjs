@@ -7,6 +7,7 @@ const mode=process.argv[2]||'preview';
 fs.mkdirSync('public',{recursive:true});
 fs.copyFileSync('../logo_sobaya_hazard_master.png','public/logo_sobaya_hazard_master.png');
 fs.copyFileSync('../scanner_closed_mouth_frame348.png','public/scanner_closed_mouth_frame348.png');
+fs.copyFileSync('../reference_lab_hologram_adopted.png','public/reference_lab_hologram_adopted.png');
 const horror=JSON.parse(fs.readFileSync('src/horror-edit.json','utf8'));
 if(mode==='horror') execFileSync(process.env.HORROR_AUDIO_PYTHON||'../../../.local/Irodori-TTS/.venv/bin/python',['build_horror_audio.py'],{stdio:'inherit'});
 if(mode==='full'&&!fs.existsSync('public/input.mp4'))throw new Error('本編未生成。採用した30秒映像をpublic/input.mp4へ配置してください。');

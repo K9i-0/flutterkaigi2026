@@ -63,3 +63,5 @@
 「興味深い」の誤読を同一テイクのたこさん参照でIrodori部分修復。ホラー効果音を追加し、末尾にそば屋の声の「そば屋ハザード」と既存タイトルを3秒追加。改善候補は33秒 `final_remotion_clone_lab_horror.mp4`。詳細 `POST_AUDIO.md`、正本 `remotion/src/horror-edit.json`。元30秒版は保持。
 
 現行追記：ユーザーがAの声を採用。たこさんの全台詞を同声へ変更し、測定区間348〜485fの二人を閉口静止画へ変更。`final_remotion_clone_lab_takosan_a.mp4`、33秒。旧ファイルは比較用に保持。
+
+現行音響・タイトル追記：警報前を小さな培養ポッド音に組み直し、序盤の二人の元発話へ室内残響を追加。末尾は採用A4画像＋タイトル。出力 `final_remotion_clone_lab_quiet_lab.mp4`、33秒。

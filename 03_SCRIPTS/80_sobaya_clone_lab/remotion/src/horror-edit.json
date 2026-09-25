@@ -4,7 +4,7 @@
   "titleStartFrame": 900,
   "titleImage": "logo_sobaya_hazard_master.png",
   "originalVideo": "wan3_clone_lab_seed26092580_480p.mp4",
-  "output": "final_remotion_clone_lab_takosan_a.mp4",
+  "output": "final_remotion_clone_lab_quiet_lab.mp4",
   "repair": {
     "asset": "takosan_repair_sentence.wav",
     "reference": "takosan_repair_reference.wav",
@@ -35,22 +35,6 @@
     "rampFrames": 1
   },
   "effects": [
-    {
-      "name": "distant_glass_tap",
-      "sourceStartFrame": 724,
-      "sourceDurationFrames": 10,
-      "startFrame": 258,
-      "gainDb": -18,
-      "lowpassHz": 650
-    },
-    {
-      "name": "near_glass_tap",
-      "sourceStartFrame": 724,
-      "sourceDurationFrames": 13,
-      "startFrame": 333,
-      "gainDb": -14,
-      "lowpassHz": 1000
-    },
     {
       "name": "break_body_impact",
       "sourceStartFrame": 724,
@@ -86,7 +70,10 @@
     "takosan_a_reference.wav": "05cdaa0c3c83ae930dcb9bb8bc5985aa65fe6bf3210b228a4a08ac04c11f11c0",
     "takosan_a_scan.wav": "159d30b21cb35096fa7fc746741ca45ffb889583c2c6120a6b950f68ffca993b",
     "takosan_a_hologram.wav": "87b1edb850713396932052f2469b066740082e3070550e0fef080a0f139c2240",
-    "scanner_closed_mouth_frame348.png": "d53ca911f612994531de5c55ee5008b795c4788d6fa611b19e4f318095f6904e"
+    "scanner_closed_mouth_frame348.png": "d53ca911f612994531de5c55ee5008b795c4788d6fa611b19e4f318095f6904e",
+    "opening_dialogue_isolated.wav": "2b6f983bd70ffdd68dbaa247dcc5efc07cb07ba4050e8cae000815e679374bdd",
+    "pod_ambience_loop.wav": "83b59a81de1fbc357d4070bb931e61c3ff0b1a4ed866e56620122dd0ca975d20",
+    "reference_lab_hologram_adopted.png": "d321384e84ebf497ecfdfd1f6361fa517a363cdbbbf42dbbc562bbebd031814d"
   },
   "takosanVoiceA": {
     "adoptedByUser": true,
@@ -119,5 +106,55 @@
       }
     ],
     "timeStretch": false
+  },
+  "titleBackground": "reference_lab_hologram_adopted.png",
+  "quietLab": {
+    "endFrame": 697,
+    "dialogueAsset": "opening_dialogue_isolated.wav",
+    "dialogueSource": "Wan original 0-11.6s; Demucs htdemucs vocals; shifts=0 cpu",
+    "dialogueFrames": 348,
+    "podAsset": "pod_ambience_loop.wav",
+    "podSourceSeconds": [
+      0.15,
+      3.05
+    ],
+    "podRmsDbfs": -36,
+    "podLoopCrossfadeSeconds": 0.2,
+    "dialogueGainDb": 0,
+    "reverb": {
+      "preDelaySeconds": 0.038,
+      "rt60Seconds": 1.6,
+      "wetGainDb": -11,
+      "lowpassHz": 4800,
+      "highpassHz": 180,
+      "seed": 80,
+      "earlyReflectionsSeconds": [
+        0.064,
+        0.093,
+        0.131,
+        0.179
+      ],
+      "earlyReflectionsGains": [
+        0.22,
+        0.17,
+        0.13,
+        0.09
+      ]
+    },
+    "dialogueWindowsFrames": [
+      [
+        97,
+        177
+      ],
+      [
+        180,
+        251
+      ],
+      [
+        255,
+        348
+      ]
+    ],
+    "dialogueEdgeFadeSamples": 480
   }
 }
