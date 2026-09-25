@@ -123,8 +123,8 @@
   },
   "current_revision": {
     "date": "2026-09-26",
-    "output": "final_remotion_clone_lab_quiet_lab.mp4",
-    "sha256": "816a177bc32b9dc9df635b52920810e8952cebb0c2ff7f1b2d536b166032c4c5",
+    "output": "final_remotion_clone_lab_scan_order.mp4",
+    "sha256": "9e2de16d1717df896f2bd76eb432c5a2cfb7c0472f7aba6ab02004fea1d6fd79",
     "duration_seconds": 33,
     "frames": 990,
     "takosanVoice": "user_adopted_A",
@@ -183,7 +183,15 @@
         ]
       },
       "review": "ASR and PCM checks; listening and lip-sync approval remain separate"
-    }
+    },
+    "scannerOrder": [
+      "やめ太郎",
+      "福ちゃん"
+    ],
+    "yametaroResultFrame": 375,
+    "takosanScanAudioStartFrame": 384,
+    "resultLeadFrames": 9,
+    "audioIdenticalToPreviousVersion": true
   },
   "revision_history": [
     {
@@ -224,6 +232,70 @@
         "peakDbfs": -3.1092552103685263,
         "extraSfxGain": 1.0,
         "audioSources": "Wan original effects; Irodori member speech only",
+        "review": "ASR and PCM checks; listening and lip-sync approval remain separate"
+      }
+    },
+    {
+      "date": "2026-09-26",
+      "output": "final_remotion_clone_lab_quiet_lab.mp4",
+      "sha256": "816a177bc32b9dc9df635b52920810e8952cebb0c2ff7f1b2d536b166032c4c5",
+      "duration_seconds": 33,
+      "frames": 990,
+      "takosanVoice": "user_adopted_A",
+      "scannerFrozenFrames": [
+        348,
+        486
+      ],
+      "titleBackground": "reference_lab_hologram_adopted.png",
+      "podOnlyBackgroundBeforeAlarm": true,
+      "openingDialogueReverb": true,
+      "openingAsrPerLine": [
+        "これ、全部そば屋さんのクローン?",
+        "ギュンギュンどころじゃないわね",
+        "窓際族、増やしてどうすんね?"
+      ],
+      "fullDecodePassed": true,
+      "finalAudioLagSamples8kHz": 0,
+      "listeningApproved": false,
+      "audio_report": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "durationSamples": 1584000,
+        "seconds": 33.0,
+        "replacementOutsidePcmIdentical": true,
+        "replacementMode": "adopted_takosan_voice_a",
+        "insertVerified": true,
+        "targetSamples": [
+          556800,
+          1115200
+        ],
+        "timeStretch": false,
+        "speechCrossfade": false,
+        "peakDbfs": -3.1092552103685263,
+        "extraSfxGain": 1.0,
+        "audioSources": "Wan original effects; Irodori member speech only",
+        "quietLabEnabled": true,
+        "openingSpeechIsolated": true,
+        "openingReverb": {
+          "preDelaySeconds": 0.038,
+          "rt60Seconds": 1.6,
+          "wetGainDb": -11,
+          "lowpassHz": 4800,
+          "highpassHz": 180,
+          "seed": 80,
+          "earlyReflectionsSeconds": [
+            0.064,
+            0.093,
+            0.131,
+            0.179
+          ],
+          "earlyReflectionsGains": [
+            0.22,
+            0.17,
+            0.13,
+            0.09
+          ]
+        },
         "review": "ASR and PCM checks; listening and lip-sync approval remain separate"
       }
     }

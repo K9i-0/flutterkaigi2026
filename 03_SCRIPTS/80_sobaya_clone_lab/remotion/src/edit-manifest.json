@@ -7,10 +7,10 @@
   },
   "timing": {
     "bootEnd": 6,
-    "fukuStart": 6,
-    "fukuEnd": 35,
-    "yameStart": 38,
-    "yameEnd": 80,
+    "fukuStart": 35,
+    "fukuEnd": 62,
+    "yameStart": 6,
+    "yameEnd": 27,
     "capture": 115
   },
   "reference": {
@@ -20,20 +20,20 @@
   },
   "subjects": [
     {
-      "id": "01",
-      "name": "福ちゃん",
-      "value": 213,
-      "classification": "高値",
+      "id": "02",
+      "name": "やめ太郎",
+      "value": 5082,
+      "classification": "規格外",
       "x": 155,
       "y": 195,
       "w": 690,
       "h": 340
     },
     {
-      "id": "02",
-      "name": "やめ太郎",
-      "value": 5082,
-      "classification": "規格外",
+      "id": "01",
+      "name": "福ちゃん",
+      "value": 213,
+      "classification": "高値",
       "x": 1075,
       "y": 195,
       "w": 690,

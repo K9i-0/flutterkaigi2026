@@ -4,7 +4,7 @@
   "titleStartFrame": 900,
   "titleImage": "logo_sobaya_hazard_master.png",
   "originalVideo": "wan3_clone_lab_seed26092580_480p.mp4",
-  "output": "final_remotion_clone_lab_quiet_lab.mp4",
+  "output": "final_remotion_clone_lab_scan_order.mp4",
   "repair": {
     "asset": "takosan_repair_sentence.wav",
     "reference": "takosan_repair_reference.wav",

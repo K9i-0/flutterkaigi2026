@@ -14,12 +14,13 @@ const fmt = (n: number) => Math.round(n).toLocaleString('en-US');
 const Target: React.FC<{index: number}> = ({index}) => {
   const frame = useCurrentFrame();
   const subject = m.subjects[index];
-  const start = index ? m.timing.yameStart : m.timing.fukuStart;
-  const end = index ? m.timing.yameEnd : m.timing.fukuEnd;
+  const isYametaro = subject.id === "02";
+  const start = isYametaro ? m.timing.yameStart : m.timing.fukuStart;
+  const end = isYametaro ? m.timing.yameEnd : m.timing.fukuEnd;
   const p = progress(frame, start, end);
   const active = frame >= start;
   const done = frame >= end;
-  const color = done ? (index ? C.red : C.amber) : C.cyan;
+  const color = done ? (isYametaro ? C.red : C.amber) : C.cyan;
   return <>
     <div style={{position: 'absolute', left: subject.x, top: subject.y, width: subject.w, height: subject.h}}>
       <svg width={subject.w} height={subject.h} style={{position: 'absolute', opacity: 0.7}}>

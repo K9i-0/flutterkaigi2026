@@ -20,7 +20,7 @@ try{
  if(mode==='horror-stills'){
   for(const frame of [552,567,580,899,900,902,915,960,989])await renderStill({serveUrl,composition,puppeteerInstance:browser,frame,imageFormat:'png',output:`out/audit/horror-${frame}.png`});
  }else if(mode==='film-stills'){
-  for(const frame of [348,360,390,432,480,486])await renderStill({serveUrl,composition,puppeteerInstance:browser,frame,imageFormat:'png',output:`out/audit/film-${frame}.png`});
+  for(const frame of [348,360,375,384,410,432,480,486])await renderStill({serveUrl,composition,puppeteerInstance:browser,frame,imageFormat:'png',output:`out/audit/film-${frame}.png`});
  }else if(mode==='stills'){
   for(const frame of [34,35,60,79,80,84,114,115,135])await renderStill({serveUrl,composition,puppeteerInstance:browser,frame,imageFormat:'png',output:`out/v2-scan-${frame}.png`});
   const overlay=await selectComposition({serveUrl,id:'ScannerOverlay',puppeteerInstance:browser});

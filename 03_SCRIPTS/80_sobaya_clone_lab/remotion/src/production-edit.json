@@ -12,7 +12,7 @@
   "scannerDurationInFrames": 138,
   "scannerPortraits": [
     {
-      "left": 285,
+      "left": 1205,
       "top": 145,
       "size": 430,
       "cropX": 175,
@@ -20,7 +20,7 @@
       "cropSize": 220
     },
     {
-      "left": 1205,
+      "left": 285,
       "top": 145,
       "size": 430,
       "cropX": 445,
