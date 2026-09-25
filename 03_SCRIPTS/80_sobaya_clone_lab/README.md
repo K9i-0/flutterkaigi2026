@@ -112,3 +112,8 @@ Wan原版は854×480・30fps・30秒。生成タスクは一回のみ、見積$1
 「窓際力、五千。そば屋の半分近いな。」へ変更。`takosan_a_scan_madogiwaryoku.wav`（4.92秒）。ユーザー採用Aの `takosan_a_reference.wav`、Irodori v4.1-Small、seed42、captionなし、CFG5、UNCUT1、duration_scale1。生成本文は「まどぎわりょく、五千。そば屋の半分近いな。」。48kHz stereo PCM16、loudnorm I=-18/TP=-2/LRA=7。音声の速度変更・トリムなし。Whisper-smallは「窓際力、5000。そば屋の半分近いな。」と認識（試聴承認とは別）。
 
 測定UIを54f／1.8秒延長し、元486f以降の映像・音声・効果音・タイトルを同じ54fだけ後ろへ移動。測定音声は384f開始、UIは348〜539f、次のホログラムは540fから。数値5,082の確定375fを維持。後続映像の再生成なし。タイトルの間・余韻は前回と同じ。完成版 `final_remotion_clone_lab_madogiwaryoku.mp4`、1149f／38.3秒。
+
+
+### 2026-09-26 コール後の余韻だけ短縮
+
+`final_remotion_clone_lab_title_tempo.mp4`、1089f／36.3秒。ドゥーン972f→コール1008fの36f（1.2秒）は維持。末尾を60f（2秒）削り、コール後を約1.3秒に短縮。最後15fで暗転。台詞・測定画面・タイトル前の間は前回どおり。
