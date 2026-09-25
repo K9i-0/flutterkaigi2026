@@ -1,0 +1,58 @@
+{
+  "assets": [
+    {
+      "path": "character_sobaya_basic_sheet.png",
+      "source": "03_SCRIPTS/00_TEMPLATES/characters/character_sobaya_basic_sheet.png",
+      "sha256": "6de96b8fe2ebf1ce88c2f966d77a1abd7f0c2632322dfe4c527135de67494def",
+      "copy_verified": true
+    },
+    {
+      "path": "character_fukuchan_basic_sheet.png",
+      "source": "03_SCRIPTS/00_TEMPLATES/characters/character_fukuchan_basic_sheet.png",
+      "sha256": "a3e1f8f9feff43bf501617818f6e8652c2b6b39d72f7982716cbc550cb3b5866",
+      "copy_verified": true
+    },
+    {
+      "path": "character_yametaro_basic_sheet.png",
+      "source": "03_SCRIPTS/00_TEMPLATES/characters/character_yametaro_basic_sheet.png",
+      "sha256": "1e98502e8051bbacf482f273e551a7dd8b8fb79e2c153865d9e48df690eb91e6",
+      "copy_verified": true
+    },
+    {
+      "path": "character_takosan_basic_sheet.png",
+      "source": "03_SCRIPTS/00_TEMPLATES/characters/character_takosan_basic_sheet.png",
+      "sha256": "527c6eabf2e50e8e82f825916d31bb4835ceb3750255f8fe9aac0cc9c9682d7f",
+      "copy_verified": true
+    },
+    {
+      "path": "fukuchan_voice_timbre.wav",
+      "source": "02_CHARACTERS/Fukuchan_voice.wav",
+      "source_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "start": 0,
+      "end": 7.45,
+      "duration": 7.45,
+      "sha256": "68a3affc775884229ef35841fd8ec37470947a57f3c7d14481ad04c35959f308",
+      "usage": "voice_timbre_only",
+      "boundary": "Fukuchan: silence 7.337823–7.560476 at -22dB, cut 7.45; Yametaro: entire canonical clip"
+    },
+    {
+      "path": "yametaro_voice_timbre.wav",
+      "source": "02_CHARACTERS/Yametaro_voice.wav",
+      "source_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "start": 0,
+      "end": 7,
+      "duration": 7.0,
+      "sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "usage": "voice_timbre_only",
+      "boundary": "Fukuchan: silence 7.337823–7.560476 at -22dB, cut 7.45; Yametaro: entire canonical clip"
+    },
+    {
+      "path": "reference_lab_hologram_adopted.png",
+      "sha256": "d321384e84ebf497ecfdfd1f6361fa517a363cdbbbf42dbbc562bbebd031814d",
+      "usage": "environment_and_hologram_scale_only"
+    }
+  ],
+  "reference_audio_total_seconds": 14.45,
+  "takosan_voice": "No canonical voice in VOICE_CAST.md; Wan-generated restrained adult male researcher voice",
+  "audio_reference_listening": "No human audition in this preparation; source hashes and cut silence verified"
+}

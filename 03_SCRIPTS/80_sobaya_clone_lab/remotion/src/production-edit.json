@@ -1,0 +1,7 @@
+{
+  "composition": {"width":1920,"height":1080,"fps":30,"durationInFrames":900},
+  "inputVideo": "input.mp4",
+  "scannerStartFrame": 330,
+  "timingStatus": "planned_adjust_to_actual_surveillance_cut_after_generation",
+  "output": "../final_remotion_clone_lab.mp4"
+}

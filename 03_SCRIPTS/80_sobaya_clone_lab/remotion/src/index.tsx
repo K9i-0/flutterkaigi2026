@@ -1,6 +1,7 @@
 import React from 'react';
-import {AbsoluteFill, Composition, interpolate, registerRoot, useCurrentFrame} from 'remotion';
+import {AbsoluteFill, Composition, OffthreadVideo, Sequence, staticFile, interpolate, registerRoot, useCurrentFrame} from 'remotion';
 import m from './edit-manifest.json';
+import production from './production-edit.json';
 
 const C = {cyan: '#78f5df', dim: '#73918b', white: '#ecf7f1', amber: '#ffc66b', red: '#ff685d'};
 const mono = '"SFMono-Regular", Menlo, monospace';
@@ -61,5 +62,12 @@ export const MadogiwaScanner: React.FC<{preview?: boolean}> = ({preview = false}
   </AbsoluteFill>;
 };
 
-const Root: React.FC = () => <>{[true, false].map(preview => <Composition key={String(preview)} id={preview ? 'ScannerPreview' : 'ScannerOverlay'} component={MadogiwaScanner} {...m.composition} defaultProps={{preview}}/>)}</>;
+export const CloneLabFilm: React.FC = () => <AbsoluteFill style={{background: '#000'}}>
+  <OffthreadVideo src={staticFile(production.inputVideo)} style={{width: '100%', height: '100%', objectFit: 'contain'}}/>
+  <Sequence from={production.scannerStartFrame} durationInFrames={m.composition.durationInFrames}>
+    <MadogiwaScanner/>
+  </Sequence>
+</AbsoluteFill>;
+
+const Root: React.FC = () => <><Composition id="CloneLabFilm" component={CloneLabFilm} {...production.composition}/>{[true, false].map(preview => <Composition key={String(preview)} id={preview ? 'ScannerPreview' : 'ScannerOverlay'} component={MadogiwaScanner} {...m.composition} defaultProps={{preview}}/>)}</>;
 registerRoot(Root);

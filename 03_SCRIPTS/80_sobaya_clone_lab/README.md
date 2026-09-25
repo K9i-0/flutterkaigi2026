@@ -56,3 +56,9 @@ Remotion関連パッケージは4.0.528へ統一固定。日本語フォント�
 postproduction=remotion。元動画入力なし。字幕・ニュースプリセット・音声は使用しない。
 
 v2検証：TypeScriptチェック成功。測定確定と警告・捕獲の切替前後をPNG出力し、主要警告画面の文字・数値配置を目視確認。MP4と透過MOVは双方1920×1080・30fps・150フレーム・5秒、全編デコード成功。透過PNGの人物映像領域はalpha=0。ProResはアルファ付き画素形式を確認。
+
+## 生成準備パッケージ
+
+最終準備は[`PRE_FLIGHT.md`](PRE_FLIGHT.md)参照。送信本文`prompt_wan3.txt`、設定`wan3_config.json`、本番素材台帳`input_manifest.json`を配置。720P・30秒単一タスクの乾式検証済み。本編APIは未送信。
+
+`CloneLabFilm`は30秒本編にUIを重ねる構成。`remotion/public/input.mp4`へ採用動画を配置し、監視カットの実測時刻に`remotion/src/production-edit.json`を合わせた後、`npm run render:film`で完成版を出力する。タイミングが一致するまでは完成版扱いにしない。
