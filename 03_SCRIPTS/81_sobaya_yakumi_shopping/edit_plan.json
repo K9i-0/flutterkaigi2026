@@ -1,0 +1,28 @@
+{
+  "status": "rendered_review_required",
+  "fps": 30,
+  "width": 854,
+  "height": 480,
+  "new_generation": {
+    "path": "wan3_yakumi_seed810925_480p.mp4",
+    "planned_frames": 900,
+    "trim_after": "心の声の最終音と自然な余韻。生成後に実測してフレーム確定",
+    "actual_frames": 900
+  },
+  "ending": {
+    "source": "../71_hisoba_memory_review/wan3_hisoba_seed710920_480p.mp4",
+    "source_sha256": "93989f671ae6a7d6bb4d3824ea752666dfe2c1d5249785277f73db78e8485bfe",
+    "start_frame": 583,
+    "end_frame_exclusive": 720,
+    "frames": 137,
+    "transition": "hard_cut",
+    "audio": "retain original door / engine / siren; check no previous dialogue leakage by listening"
+  },
+  "planned_total_frames": 1037,
+  "postproduction": "remotion",
+  "final_output": "final_remotion_yakumi.mp4",
+  "subtitles": "not burned in; timing to be measured after generation",
+  "task_id": "ab64461e-3822-4dd1-824b-80b1c53df1fc",
+  "actual_total_frames": 1037,
+  "final_timing_manifest": "remotion/src/edit-manifest.json"
+}

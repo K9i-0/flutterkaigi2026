@@ -1,0 +1,16 @@
+{
+  "model": "openai/whisper-small",
+  "note": "Automatic screening only, not direct listening; fixed windows may cut words.",
+  "segments": [
+    {
+      "start": 18.8,
+      "duration": 7.03,
+      "recognized": "はい、北京マスクを被った男が包丁で店員をおどしてます"
+    },
+    {
+      "start": 25.833333,
+      "duration": 4.166667,
+      "recognized": "早くしないと昼休み終わっちゃうよ"
+    }
+  ]
+}

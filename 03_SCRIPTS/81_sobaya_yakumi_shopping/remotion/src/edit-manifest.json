@@ -1,0 +1,23 @@
+{
+  "composition": {
+    "id": "SobayaYakumi",
+    "width": 854,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 1037
+  },
+  "clips": [
+    {
+      "file": "input.mp4",
+      "from": 0,
+      "duration": 900,
+      "trimBefore": 0
+    },
+    {
+      "file": "ending71.mp4",
+      "from": 900,
+      "duration": 137,
+      "trimBefore": 583
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "model": "openai/whisper-small",
+  "note": "Automatic screening only, not direct listening; fixed windows may cut words.",
+  "segments": [
+    {
+      "start": 0,
+      "duration": 10,
+      "recognized": "あ、役身買い忘れた。コンビニで行ってきます。すみません。役身とかってあります?"
+    },
+    {
+      "start": 10,
+      "duration": 7,
+      "recognized": "いや、役?こ、殺さないで!お金なら全部渡します!"
+    },
+    {
+      "start": 17,
+      "duration": 8,
+      "recognized": "はい、北京マスクを被った大人が包丁で店員を落としてます"
+    },
+    {
+      "start": 25,
+      "duration": 5,
+      "recognized": "早くしないと昼休み終わっちゃうよ"
+    }
+  ]
+}
