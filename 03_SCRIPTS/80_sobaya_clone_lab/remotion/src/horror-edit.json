@@ -1,10 +1,10 @@
 {
   "fps": 30,
-  "durationFrames": 990,
-  "titleStartFrame": 900,
+  "durationFrames": 998,
+  "titleStartFrame": 908,
   "titleImage": "logo_sobaya_hazard_master.png",
   "originalVideo": "wan3_clone_lab_seed26092580_480p.mp4",
-  "output": "final_remotion_clone_lab_scan_order.mp4",
+  "output": "final_remotion_clone_lab_title_boom.mp4",
   "repair": {
     "asset": "takosan_repair_sentence.wav",
     "reference": "takosan_repair_reference.wav",
@@ -42,19 +42,11 @@
       "startFrame": 720,
       "gainDb": -10,
       "lowpassHz": 300
-    },
-    {
-      "name": "title_impact",
-      "sourceStartFrame": 724,
-      "sourceDurationFrames": 25,
-      "startFrame": 902,
-      "gainDb": -10,
-      "lowpassHz": 1600
     }
   ],
   "titleCall": {
     "asset": "sobaya_hazard_title_call.wav",
-    "startFrame": 909,
+    "startFrame": 920,
     "gainDb": -1.5,
     "source": "04_GAME_ASSETS/audio/hazard/voice/2b3687b44fb1d838.wav",
     "speaker": "そば屋",
@@ -73,7 +65,8 @@
     "scanner_closed_mouth_frame348.png": "d53ca911f612994531de5c55ee5008b795c4788d6fa611b19e4f318095f6904e",
     "opening_dialogue_isolated.wav": "2b6f983bd70ffdd68dbaa247dcc5efc07cb07ba4050e8cae000815e679374bdd",
     "pod_ambience_loop.wav": "83b59a81de1fbc357d4070bb931e61c3ff0b1a4ed866e56620122dd0ca975d20",
-    "reference_lab_hologram_adopted.png": "d321384e84ebf497ecfdfd1f6361fa517a363cdbbbf42dbbc562bbebd031814d"
+    "reference_lab_hologram_adopted.png": "d321384e84ebf497ecfdfd1f6361fa517a363cdbbbf42dbbc562bbebd031814d",
+    "title_boom_from_wan.wav": "0244df35b6ce32827a6dc8e27e7ddb45977f2d1be26cf1ab32079d6e497a1597"
   },
   "takosanVoiceA": {
     "adoptedByUser": true,
@@ -156,5 +149,42 @@
       ]
     ],
     "dialogueEdgeFadeSamples": 480
+  },
+  "endingImpact": {
+    "silenceStartFrame": 900,
+    "silenceEndFrame": 908,
+    "asset": "title_boom_from_wan.wav",
+    "startFrame": 908,
+    "gainDb": 0,
+    "sourceVideo": "wan3_clone_lab_seed26092580_480p.mp4",
+    "sourceStartSeconds": 24.133333,
+    "lowSourceSeconds": 0.72,
+    "attackSourceSeconds": 0.22,
+    "lowPitchRate": 0.4,
+    "lowBandHz": [
+      35,
+      280
+    ],
+    "attackBandHz": [
+      600,
+      4500
+    ],
+    "mixedPeakDbfs": -4,
+    "shakePixels": [
+      0,
+      5,
+      -3,
+      2,
+      -1,
+      0
+    ],
+    "shakeFrames": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      6
+    ]
   }
 }

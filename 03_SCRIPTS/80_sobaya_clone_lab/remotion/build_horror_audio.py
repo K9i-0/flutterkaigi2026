@@ -96,6 +96,12 @@ for e in M['effects']:
     clip=decode(ROOT/M['originalVideo'],filters)/32768
     start=samples(e['startFrame']);fx[start:start+len(clip)]+=clip
 call=M['titleCall'];clip=decode(ROOT/call['asset'])/32768*10**(call['gainDb']/20);start=samples(call['startFrame']);base[start:start+len(clip)]+=clip
+ending=M.get('endingImpact')
+if ending:
+    clip=decode(ROOT/ending['asset'])/32768*10**(ending['gainDb']/20)
+    start=samples(ending['startFrame']);fx[start:start+len(clip)]+=clip
+    gap_start=samples(ending['silenceStartFrame']);gap_end=samples(ending['silenceEndFrame'])
+    base[gap_start:gap_end]=0;fx[gap_start:gap_end]=0
 fxgain=1.0
 while np.max(np.abs(base+fx*fxgain))>0.985 and fxgain>0.01:fxgain*=0.9
 mix=base+fx*fxgain
