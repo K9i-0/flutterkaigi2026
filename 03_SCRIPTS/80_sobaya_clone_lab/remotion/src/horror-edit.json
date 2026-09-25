@@ -1,0 +1,86 @@
+{
+  "fps": 30,
+  "durationFrames": 990,
+  "titleStartFrame": 900,
+  "titleImage": "logo_sobaya_hazard_master.png",
+  "originalVideo": "wan3_clone_lab_seed26092580_480p.mp4",
+  "output": "final_remotion_clone_lab_horror.mp4",
+  "repair": {
+    "asset": "takosan_repair_sentence.wav",
+    "reference": "takosan_repair_reference.wav",
+    "referenceSource": "generated_video",
+    "referenceStartSeconds": 11.6,
+    "referenceDurationSeconds": 4.6,
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 42,
+    "seedNote": "たこさんはVOICE_CAST未登録のため本修復で42を選定。正典の追加・変更なし。",
+    "text": "二人とも、実にきょうみぶかい。",
+    "caption": "",
+    "textCfg": 5,
+    "uncut": true,
+    "durationScale": 1.0,
+    "sampleRate": 48000,
+    "targetStartSample": 881280,
+    "sourceStartSample": 100800,
+    "durationSamples": 48000,
+    "gainDb": -0.4,
+    "timeStretch": false,
+    "crossfade": false
+  },
+  "quietBeforeBreak": {
+    "startFrame": 690,
+    "endFrame": 697,
+    "gainDb": -14,
+    "rampFrames": 1
+  },
+  "effects": [
+    {
+      "name": "distant_glass_tap",
+      "sourceStartFrame": 724,
+      "sourceDurationFrames": 10,
+      "startFrame": 258,
+      "gainDb": -18,
+      "lowpassHz": 650
+    },
+    {
+      "name": "near_glass_tap",
+      "sourceStartFrame": 724,
+      "sourceDurationFrames": 13,
+      "startFrame": 333,
+      "gainDb": -14,
+      "lowpassHz": 1000
+    },
+    {
+      "name": "break_body_impact",
+      "sourceStartFrame": 724,
+      "sourceDurationFrames": 20,
+      "startFrame": 720,
+      "gainDb": -10,
+      "lowpassHz": 300
+    },
+    {
+      "name": "title_impact",
+      "sourceStartFrame": 724,
+      "sourceDurationFrames": 25,
+      "startFrame": 902,
+      "gainDb": -10,
+      "lowpassHz": 1600
+    }
+  ],
+  "titleCall": {
+    "asset": "sobaya_hazard_title_call.wav",
+    "startFrame": 909,
+    "gainDb": -1.5,
+    "source": "04_GAME_ASSETS/audio/hazard/voice/2b3687b44fb1d838.wav",
+    "speaker": "そば屋",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "seed": 42,
+    "canonicalMonsterProcessing": true
+  },
+  "assetsSha256": {
+    "takosan_repair_reference.wav": "7d689de8bdcef90cb44026be9fc993e24f07dbf53a1413201c75680130a2cfd9",
+    "takosan_repair_sentence.wav": "b1bb2e0c11aaedcefeaff9fb0951fd922346f597cc8a1b6113fecf2022a870c9",
+    "sobaya_hazard_title_call.wav": "9f318212280dcd2d8dcf467a703168c26d84333d74ed16f35a7ef9f6f352a14b",
+    "logo_sobaya_hazard_master.png": "56865c15ca9ad83afa91429a93f2f3bea055db68824fb50cd234b1c9790442ae"
+  }
+}

@@ -1,3 +1,9 @@
+## 現行の改善候補（2026-09-26）
+
+`final_remotion_clone_lab_horror.mp4`：33秒。たこさんの「興味深い」をIrodoriで1秒だけ修復し、ガラスの異音・破砕前の静けさ・衝撃音を追加。末尾3秒に既存ロゴとそば屋の声のタイトルコール。前回30秒版は保持。
+
+[比較ページ](review.html) / [修復・音響の詳細](POST_AUDIO.md)。`remotion/`で `npm run render:horror` により再現。ASR・PCM検証と試聴の合格は区別し、現時点は比較試聴用。
+
 # そば屋クローン研究所 — 採用ステージと窓際力UI
 
 本編初回生成済み。UI合成版は `final_remotion_clone_lab.mp4`、480Pの生成原版は `wan3_clone_lab_seed26092580_480p.mp4`。既知の映像差異がある確認用テイク。詳細は `generation_record.json`。

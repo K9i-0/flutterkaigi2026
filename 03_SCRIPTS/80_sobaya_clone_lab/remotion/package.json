@@ -8,7 +8,8 @@
     "render": "node render.mjs",
     "stills": "node render.mjs stills",
     "alpha": "node render.mjs alpha",
-    "render:film": "node render.mjs full"
+    "render:film": "node render.mjs full",
+    "render:horror": "node render.mjs horror"
   },
   "dependencies": {
     "@remotion/cli": "4.0.528",

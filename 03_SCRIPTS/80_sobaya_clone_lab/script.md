@@ -57,3 +57,7 @@
 検証内容・仕様確認・価格は`PRE_FLIGHT.md`、素材出所・ハッシュは`input_manifest.json`を参照。初回生成成功。実測仕様・既知の差異は `generation_record.json` を参照。
 
 生成原版: `wan3_clone_lab_seed26092580_480p.mp4`。UI合成: `final_remotion_clone_lab.mp4` / `CloneLabFilm`。postproduction=remotion。
+
+## 2026-09-26 音声・末尾編集
+
+「興味深い」の誤読を同一テイクのたこさん参照でIrodori部分修復。ホラー効果音を追加し、末尾にそば屋の声の「そば屋ハザード」と既存タイトルを3秒追加。改善候補は33秒 `final_remotion_clone_lab_horror.mp4`。詳細 `POST_AUDIO.md`、正本 `remotion/src/horror-edit.json`。元30秒版は保持。

@@ -28,7 +28,30 @@
   "edited_output": "final_remotion_clone_lab.mp4",
   "scanner_start_frame": 348,
   "scanner_end_frame_exclusive": 486,
-  "post_audio_repairs": [],
+  "post_audio_repairs": [
+    {
+      "asset": "takosan_repair_sentence.wav",
+      "reference": "takosan_repair_reference.wav",
+      "referenceSource": "generated_video",
+      "referenceStartSeconds": 11.6,
+      "referenceDurationSeconds": 4.6,
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "seed": 42,
+      "seedNote": "たこさんはVOICE_CAST未登録のため本修復で42を選定。正典の追加・変更なし。",
+      "text": "二人とも、実にきょうみぶかい。",
+      "caption": "",
+      "textCfg": 5,
+      "uncut": true,
+      "durationScale": 1.0,
+      "sampleRate": 48000,
+      "targetStartSample": 881280,
+      "sourceStartSample": 100800,
+      "durationSamples": 48000,
+      "gainDb": -0.4,
+      "timeStretch": false,
+      "crossfade": false
+    }
+  ],
   "audit_status": "review_copy_with_known_visual_deviations",
   "known_issues": [
     "序盤約3〜5秒のやめ太郎の顔・髪が変形し、ガラス内に重複像が現れる。人物同一性は全編合格ではない。",
@@ -52,5 +75,50 @@
     "frames": 900,
     "video_seconds": 30
   },
-  "audio_pcm_30s_identical": true
+  "audio_pcm_30s_identical": true,
+  "horror_edit": {
+    "date": "2026-09-26",
+    "output": "final_remotion_clone_lab_horror.mp4",
+    "composition": "CloneLabHorror",
+    "duration_seconds": 33,
+    "additional_paid_generation": false,
+    "audio_report": {
+      "sampleRate": 48000,
+      "channels": 2,
+      "durationSamples": 1584000,
+      "seconds": 33.0,
+      "wordRepairOutsidePcmIdentical": true,
+      "wordRepairInsertMatchesGeneratedGainApplied": true,
+      "targetSamples": [
+        881280,
+        929280
+      ],
+      "sourceSamples": [
+        100800,
+        148800
+      ],
+      "timeStretch": false,
+      "speechCrossfade": false,
+      "peakDbfs": -3.1092552103685263,
+      "extraSfxGain": 1.0,
+      "audioSources": "Wan original effects; Irodori member speech only",
+      "review": "ASR and PCM checks; listening and lip-sync approval remain separate"
+    },
+    "manifest": "remotion/src/horror-edit.json",
+    "notes": "POST_AUDIO.md",
+    "listening_approved": false,
+    "sha256": "fc9a573cbeba405ac47367f1f6fa5376530d234a64d735388c1e751945fd5c6a",
+    "actual_video": {
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "frames": 990,
+      "video_seconds": 33,
+      "audio_seconds": 33
+    },
+    "full_decode_passed": true,
+    "final_audio_lag_samples_8khz": 0,
+    "final_audio_correlation": 0.9998652338981628,
+    "browser_comparison_playback_verified": true
+  }
 }

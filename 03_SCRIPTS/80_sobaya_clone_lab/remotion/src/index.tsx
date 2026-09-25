@@ -1,7 +1,8 @@
 import React from 'react';
-import {AbsoluteFill, Composition, OffthreadVideo, Sequence, staticFile, interpolate, registerRoot, useCurrentFrame} from 'remotion';
+import {AbsoluteFill, Composition, Img, OffthreadVideo, Sequence, staticFile, interpolate, registerRoot, useCurrentFrame} from 'remotion';
 import m from './edit-manifest.json';
 import production from './production-edit.json';
+import horror from './horror-edit.json';
 
 const C = {cyan: '#78f5df', dim: '#73918b', white: '#ecf7f1', amber: '#ffc66b', red: '#ff685d'};
 const mono = '"SFMono-Regular", Menlo, monospace';
@@ -77,5 +78,16 @@ export const CloneLabFilm: React.FC = () => <AbsoluteFill style={{background: '#
   </Sequence>
 </AbsoluteFill>;
 
-const Root: React.FC = () => <><Composition id="CloneLabFilm" component={CloneLabFilm} {...production.composition}/>{[true, false].map(preview => <Composition key={String(preview)} id={preview ? 'ScannerPreview' : 'ScannerOverlay'} component={MadogiwaScanner} {...m.composition} defaultProps={{preview}}/>)}</>;
+const HorrorTitle: React.FC = () => {
+  const frame = useCurrentFrame();
+  const opacity = Math.min(progress(frame,0,2), 1-progress(frame,80,90));
+  const scale = interpolate(frame,[0,12,90],[1.045,1.015,1],{extrapolateRight:'clamp'});
+  return <AbsoluteFill style={{background:'#000',overflow:'hidden'}}><Img src={staticFile(horror.titleImage)} style={{width:'100%',height:'100%',objectFit:'contain',opacity,transform:`scale(${scale})`}}/></AbsoluteFill>;
+};
+export const CloneLabHorror: React.FC = () => <AbsoluteFill style={{background:'#000'}}>
+  <Sequence durationInFrames={production.composition.durationInFrames}><CloneLabFilm/></Sequence>
+  <Sequence from={horror.titleStartFrame} durationInFrames={horror.durationFrames-horror.titleStartFrame}><HorrorTitle/></Sequence>
+</AbsoluteFill>;
+
+const Root: React.FC = () => <><Composition id="CloneLabHorror" component={CloneLabHorror} {...production.composition} durationInFrames={horror.durationFrames}/><Composition id="CloneLabFilm" component={CloneLabFilm} {...production.composition}/>{[true, false].map(preview => <Composition key={String(preview)} id={preview ? 'ScannerPreview' : 'ScannerOverlay'} component={MadogiwaScanner} {...m.composition} defaultProps={{preview}}/>)}</>;
 registerRoot(Root);
