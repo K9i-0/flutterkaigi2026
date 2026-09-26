@@ -125,7 +125,7 @@ class IslandGame {
   }
 
   void look(double dx, double dy) {
-    yaw -= dx * .003;
+    yaw += dx * .003;
     pitch = (pitch - dy * .003).clamp(-1.45, 1.45);
     syncCamera();
   }
