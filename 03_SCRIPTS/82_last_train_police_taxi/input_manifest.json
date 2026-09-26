@@ -80,17 +80,15 @@
     },
     {
       "reference": "Image 6",
-      "path": "reference_izakaya_drinks.png",
-      "source": "built-in image_gen",
-      "generation_prompt_file": "prompt_izakaya_reference.txt",
+      "path": "reference_izakaya_drinks_v2.png",
+      "source": "built-in image_gen edit",
+      "generation_prompt_file": "prompt_izakaya_reference_v2.txt",
       "input_images": [
-        "character_sobaya_basic_sheet.png",
-        "character_yametaro_basic_sheet.png",
-        "character_fukuchan_basic_sheet.png"
+        "reference_izakaya_drinks.png"
       ],
-      "sha256": "3c5932d7c8637e3c96cd490c6bd7eb1b734042eb3367b99bb4d06f988d50a042",
-      "usage": "Shot 1 composition, environment, three assigned drinks and exact Japanese menu/order tag; character identity still follows Images 1–3",
-      "visual_qa": "Three characters and distinct drinks present; チェイサーの水割り and ゆめみんの姿揚げ 時価 legible; no actual Yumemin dish. Character sheets remain identity authority."
+      "sha256": "944fd745e9b7b56b7b2854ea1c98ff361bff141eadb694ab9d84c8c838bbf1b7",
+      "usage": "Shot 1 composition, environment, drinks and four ordinary wall menus; identity follows Images 1–3",
+      "visual_qa": "No mug tag. Four wall strips read 生ビール, 青汁, チェイサーの水割り, ゆめみんの姿揚げ with 時価. Three assigned drinks retained."
     }
   ],
   "reference_audio_total_seconds": 12.46,

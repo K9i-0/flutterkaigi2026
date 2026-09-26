@@ -42,7 +42,7 @@
 | Image 3 | 福ちゃん | `character_fukuchan_basic_sheet.png` |
 | Image 4 | タクシー | `reference_taxi_japan.png`：日本語表記と車体デザイン |
 | Image 5 | パトカー | `reference_police_car_tokyo.png`：警視庁の日本語表記と白黒車体 |
-| Image 6 | 飲み会 | `reference_izakaya_drinks.png`：冒頭の構図・飲み物・日本語小ネタ |
+| Image 6 | 飲み会 | `reference_izakaya_drinks_v2.png`：冒頭の構図・飲み物・日本語小ネタ |
 | Audio 1 | そば屋 | 正典 `Sobaya_voice.wav` の0–2.45秒 |
 | Audio 2 | やめ太郎 | 正典 `Yametaro_voice.wav` 全7秒 |
 | Audio 3 | 福ちゃん | 正典 `Fukuchan_voice.wav` の0–3.01秒 |
@@ -91,11 +91,13 @@ python3 -u .claude/skills/wan-video/scripts/qwen_wan3_generate.py 03_SCRIPTS/82_
 
 ## 冒頭の飲み会参照（2026-09-26）
 
-ユーザー指定の小ネタを画像で固定するため、`reference_izakaya_drinks.png` をbuilt-in image_genで作成し、Image 6として設定へ追加。生成本文は `prompt_izakaya_reference.txt`。３人のエピソード内正典シートを画像入力に使用。
+ユーザー指定の小ネタを画像で固定するため、`reference_izakaya_drinks_v2.png` をbuilt-in image_genで作成し、Image 6として設定へ追加。初回生成本文は `prompt_izakaya_reference.txt`、採用改訂の編集本文は `prompt_izakaya_reference_v2.txt`。３人のエピソード内正典シートを画像入力に使用。
 
 - 画面左のそば屋：通常の大型ビールジョッキ、金色のビールと泡。
-- 中央のやめ太郎：無色透明な水。ジョッキの注文札に「チェイサーの水割り」。
+- 中央のやめ太郎：無色透明な水。ジョッキの札は外し、壁の短冊に「チェイサーの水割り」。
 - 画面右の福ちゃん：濃い緑の青汁をジョッキで。
-- 背後の短冊：「ゆめみんの姿揚げ」「時価」。料理の実物・写真・ゆめみん本人は出さない。
+- 背後に同じ体裁の短冊４枚：「生ビール」「青汁」「チェイサーの水割り」「ゆめみんの姿揚げ」（最後だけ「時価」）。料理の実物・写真・ゆめみん本人は出さない。
 - ３人とも小ネタには触れず、採用した終電の会話から乾杯へ進む。台詞と全体30秒は維持。
-- Image 6は冒頭の構図・照明・小道具参照。人物同一性は引き続きImages 1–3を優先し、静止画の顔を新しい正典にしない。背景文字・注文札は目視確認済み。動画内での文字維持は生成後に確認する。
+- Image 6は冒頭の構図・照明・小道具参照。人物同一性は引き続きImages 1–3を優先し、静止画の顔を新しい正典にしない。背景の４枚の短冊とジョッキに札がないことを目視確認済み。動画内での文字維持は生成後に確認する。
+
+改訂2：ジョッキの注文札は露骨とのユーザー指定で除去。全員の飲み物と料理名を同じ壁のお品書きへ移し、特定のネタを強調しない構図へ更新。旧画像は履歴として保持し、動画にはv2のみを入力する。
