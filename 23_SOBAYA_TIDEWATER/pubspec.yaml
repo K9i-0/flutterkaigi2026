@@ -1,0 +1,28 @@
+name: sobaya_tidewater
+description: First-person Sobaya Hazard island port, using stock Flutter GPU.
+publish_to: none
+version: 0.1.0+1
+environment:
+  sdk: ^3.13.2
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_scene:
+    git:
+      url: https://github.com/K9i-0/flutter_scene.git
+      ref: 93d420be938213d19744723f8f6bb56be301187d
+      path: packages/flutter_scene
+  hooks: ^2.0.2
+  vector_math: ^2.4.2
+  marionette_flutter: ^0.6.0
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/island.glb
+    - assets/world.json
+    - assets/heights.bin
+    - flutter_scene_generated/

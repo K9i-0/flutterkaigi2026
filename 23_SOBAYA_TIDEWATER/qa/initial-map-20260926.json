@@ -1,0 +1,44 @@
+{
+  "date": "2026-09-26",
+  "platform": "macOS debug / Metal Impeller",
+  "flutter": "3.47.2",
+  "flutterGpu": "stock SDK, no modifications",
+  "flutterSceneFork": "K9i-0/flutter_scene@93d420be938213d19744723f8f6bb56be301187d",
+  "tidewater": "4811ba48d795197de5621985f404e765c0b7c0ef",
+  "checks": {
+    "flutterAnalyze": "passed, no issues",
+    "flutterTest": "5 passed",
+    "nativeLaunch": "Dart MCP",
+    "nativeInspection": "Marionette, ready=true, buildings=21",
+    "views": [
+      "pier",
+      "village",
+      "overview"
+    ],
+    "movement": {
+      "input": "on-screen forward held for 1200 ms",
+      "before": [
+        53.599998474121094,
+        2.82771372795105,
+        -77
+      ],
+      "after": [
+        53.599998474121094,
+        2.82771372795105,
+        -76.11334228515625
+      ]
+    },
+    "runtimeErrors": "none in Dart MCP collected logs after final restart"
+  },
+  "limits": [
+    "Mac debug functional checks only; no FPS or thermal claim",
+    "No iOS/Android native validation",
+    "Basic vertex-color map appearance; original materials, vegetation and FFT ocean not ported",
+    "Characters, dialogue and combat not yet integrated"
+  ],
+  "assetSha256": {
+    "island.glb": "59ba2aa0b3e0aba74920703481bd7b754d927548586cd61fc52ff30826dd0b2e",
+    "heights.bin": "be03f5db50e1fb328ac2c030348626103b52887efad27a3014505d37583594a3",
+    "world.json": "40655d60fd8e5739d30191d49fcad704956f39edd1c5172c72a7504b544d0224"
+  }
+}
