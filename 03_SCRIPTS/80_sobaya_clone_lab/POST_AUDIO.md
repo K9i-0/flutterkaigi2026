@@ -120,3 +120,8 @@ TypeScript成功。暗転900〜907f、登場908f、揺れ、最後997fの静止�
 ### 2026-09-26 コール後の余韻だけ短縮
 
 `final_remotion_clone_lab_title_tempo.mp4`、1089f／36.3秒。ドゥーン972f→コール1008fの36f（1.2秒）は維持。末尾を60f（2秒）削り、コール後を約1.3秒に短縮。最後15fで暗転。台詞・測定画面・タイトル前の間は前回どおり。
+
+
+### 水中音声A/B候補
+
+`remotion/underwater_previews.py` で再現。`opening_dialogue_isolated.wav` の3〜6秒を切り出し、無音を1秒足して4秒比較。生成音声ではなく既存本編の台詞。AはLPF 2000Hz／揺らぎ深さ0.05／培養音-34LUFS、BはLPF 950Hz／深さ0.14／培養音-29LUFS。声は共通-19LUFS、揺らぎは0.8Hzの音量変調。室内リバーブは追加せず、既存Wan由来の `pod_ambience_loop.wav` を加工して重ねる。新たな効果音生成なし。比較動画とWAVは `remotion/out/underwater/`、比較ページ `underwater_review.html`。映像は顔へ寄る平滑化版。音の質感比較であり、既存音声と新映像の口同期は未調整・未承認。本編は未変更。
