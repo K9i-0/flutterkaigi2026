@@ -135,4 +135,4 @@ python3 -u .claude/skills/wan-video/scripts/qwen_wan3_generate.py 03_SCRIPTS/82_
 - 音声は採用済み動画の元タイムラインを維持。最後の台詞・サイレンを残し、最終5フレームのみフェード。Wan再生成や台詞再合成なし。
 - composition `LastTrainExteriorPunchline`、時刻正本 `remotion/src/ending-edit.json`。`npm run render:ending`で再現。
 - カット周辺を6fpsで目視し、車外へ切り替わった後にやめ太郎の発話映像へ戻らないことを確認。音声はRemotion経由のAACデコード遅延を避け、元音声から直接mux。検証記録 `remotion/ending-qa.json`。
-- Studio既登録版はサイレン追加30秒版のまま。今回の新編集版はローカル出力。
+- ユーザー採用後、Studioの同一エピソードv2へ26.533秒修正版を登録済み。旧v1も保持。登録記録は `studio_registration_v2.json`。
