@@ -1,6 +1,8 @@
 # たこさん — そば屋ハザード用
 
-ゲーム正本は `rig_sheet_v2/takosan.glb`。2026-09-06、標準キャラクターシート `03_SCRIPTS/00_TEMPLATES/characters/character_takosan_basic_sheet.png` を基にTripo P2で作り直し、Blenderで修整・リギングした。白い顔と黒い丸目、閉じた黒いフード、刺繍入りローブ、人間型の腕2本と白い丸い手、巻いた触手6本を維持する。
+ゲーム正本は `rig_radial_v6_lined/takosan.glb`（2026-09-26採用）。前斜め左右・真横左右・後ろ斜め左右への放射状6脚、丸い手、暗い内張りと触手接続の修正を含む。ゲームの相対symlinkを更新し、モバイル版もこのモデルから再生成した。公式サイトのローカル参照先は放射状配置済みの `rig_radial_v5_clean/`。
+
+以下はベースモデル `rig_sheet_v2/takosan.glb` の制作記録。2026-09-06、標準キャラクターシート `03_SCRIPTS/00_TEMPLATES/characters/character_takosan_basic_sheet.png` を基にTripo P2で作り直し、Blenderで修整・リギングした。白い顔と黒い丸目、閉じた黒いフード、刺繍入りローブ、人間型の腕2本と白い丸い手、巻いた触手6本を維持する。
 
 - 1.433m、18,325三角面、27骨、2材質、1,535,664 bytes。カラー2K・法線1K、roughness 0.85 / metallic 0のマットな質感。
 - P2が生成した8本の触手から後方の余分な2本を取り除き、前方5本・後方1本のシルエットへ修整。ローブ本体を切断せず、袖の付け根には内側の布を追加。

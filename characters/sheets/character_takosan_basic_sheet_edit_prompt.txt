@@ -1,0 +1,7 @@
+2026-09-26 / built-in Imagegen edit
+Target: character_takosan_basic_sheet.png
+Geometry references: front and underside renders of 04_GAME_ASSETS/3d/characters/takosan/rig_radial_v6_lined/takosan.blend.
+
+Correct only lower tentacle anatomy and replace the lower-right tentacle closeup with BOTTOM VIEW - SIX RADIAL TENTACLES. Preserve faces, expressions, hood, robe embroidery, arms, round hands, toy materials and sheet layout.
+Six tentacles radiate around 360 degrees: front diagonal left/right, lateral left/right, rear diagonal left/right, roughly 60 degrees apart. Do not fan all six toward the viewer. Front view shows four main feet, with the rear pair occluded. All views must project the same geometry.
+Bottom view shows six separate roots and six tips at approximately 10, 2, 3, 5, 7, 9 o'clock around the circular underside, with suckers and a dark center. No central front or rear leg. Do not copy mesh artifacts from model renders.
