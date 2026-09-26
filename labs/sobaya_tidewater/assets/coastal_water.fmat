@@ -9,6 +9,11 @@ material {
   culling: none,
   engine_inputs: [ scene_color, scene_depth, planar_reflection ],
   parameters: [
+    {type: float,name: daylight,default: 1.0},
+    {type: float,name: sun_strength,default: 1.0},
+    {type: float,name: wind,default: 0.4},
+    {type: float,name: rain,default: 0.0},
+    {type: vec3,name: sun_color,default: [1.0,0.92,0.74]},
     { type: float, name: time, default: 0.0 },
     { type: vec3, name: sun_direction, default: [0.6, 1.0, 0.4] },
   ],
@@ -24,7 +29,7 @@ vertex {
     float c=dot(p.xz,vec2(0.42,0.29))-t*1.85;
     float shore=smoothstep(0.0,4.0,max(-bed_height,0.0));
     float wave=(0.24*sin(a)+0.12*sin(b)+0.055*sin(c))*shore;
-    p.y+=wave;
+    p.y+=wave*(.45+material_params.wind*1.4);
     vec2 slope=(0.24*vec2(0.055,0.19)*cos(a)
         +0.12*vec2(-0.23,0.13)*cos(b)+0.055*vec2(0.42,0.29)*cos(c))*shore;
     vertex.world_position=p;
@@ -63,6 +68,10 @@ fragment {
     float hz=noise2(uv+vec2(0.0,.12))
       +.4*noise2((uv+vec2(0.0,.12))*2.3+phase);
     vec2 slope=vec2(hx-h,hz-h)*1.3*detail+swellSlope;
+    vec2 cell=floor(p.xz*2.0), local=fract(p.xz*2.0)-.5;
+    float drop=fract(t*1.8+hash21(cell));
+    float ring=cos(length(local)*38.0-drop*18.0)*exp(-drop*4.0);
+    slope+=normalize(local+vec2(.0001))*ring*.09*material_params.rain*detail;
     vec3 N=normalize(vec3(-slope.x,0.0,-slope.y)+GetWorldNormal());
     if(N.y<0.0) N=-N;
     float ndv=clamp(dot(N,V),0.0,1.0);
@@ -75,7 +84,7 @@ fragment {
     offset*=smoothstep(0.0,.35,shiftedGap);
     float pathLength=min(max(GetSceneDepth(offset)-own,0.0),80.0);
     vec3 transmission=exp(-vec3(.29,.085,.055)*pathLength);
-    vec3 deep=vec3(.006,.095,.125);
+    vec3 deep=vec3(.006,.095,.125)*material_params.daylight;
     vec3 shallow=GetSceneColor(offset);
     // Small moving caustic modulation on the visible shallow bed only.
     float caustic=pow(max(0.0,sin(dot(p.xz,vec2(1.8,.7))+t*.9)
@@ -87,7 +96,7 @@ fragment {
     vec3 waterLight=body*(1.0-fresnel)+reflected.rgb*fresnel*reflected.a;
     vec3 L=normalize(material_params.sun_direction);
     float glint=pow(max(dot(reflect(-L,N),V),0.0),450.0)*2.8;
-    waterLight+=vec3(1.0,.92,.74)*glint*reflected.a;
+    waterLight+=material_params.sun_color*glint*reflected.a*material_params.sun_strength;
     // Interrupted shallow breakers travel toward decreasing depth. Fine noise
     // breaks the white strip into lace instead of an opaque coastline outline.
     float foamNoise=noise2(p.xz*2.4+vec2(t*.13,-t*.09));

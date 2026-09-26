@@ -1,0 +1,30 @@
+material {
+ name: "IslandRain", shading_model: unlit, blending: alpha, depth_write: false, culling: none,
+ parameters: [
+  {type: float,name: time,default: 0.0},
+  {type: float,name: rain,default: 0.0},
+  {type: float,name: wind,default: 0.4},
+  {type: float,name: eye_y,default: 3.0},
+  {type: float,name: brightness,default: 1.0},
+  {type: vec3,name: right,default: [1.0,0.0,0.0]},
+ ],
+ attributes: [{type: float,name: floor_height}],
+ varyings: [{type: float,name: floor_y}],
+}
+vertex {
+ void Vertex(inout VertexInputs vertex) {
+  vec3 p=vertex.world_position;
+  vec2 uv=vertex.uv;
+  p.y=material_params.eye_y+15.0-fract(p.y+material_params.time*(.65+material_params.wind*.4))*25.0;
+  p+=material_params.right*(uv.x-.5)*.024+vec3(-material_params.wind*.35,1.0,.08)*(uv.y-.5)*.8;
+  vertex.world_position=p;floor_y=floor_height;
+ }
+}
+fragment {
+ void Surface(inout MaterialInputs material) {
+  if(GetWorldPosition().y<floor_y+.035) discard;
+  vec2 uv=GetUV0();
+  float streak=(1.0-abs(uv.x*2.0-1.0))*sin(uv.y*3.14159);
+  material.base_color=vec4(vec3(.55,.66,.78)*material_params.brightness,streak*.38*material_params.rain);
+ }
+}

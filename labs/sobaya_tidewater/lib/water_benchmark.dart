@@ -42,6 +42,7 @@ class WaterBenchmark {
           'WATER_BENCHMARK ${jsonEncode({
             'profile': kProfileMode,
             'water': IslandGame.legacyWater ? 'legacy-material-same-grid' : 'coastal-v2',
+            'atmosphere': game.atmosphere?.inspect(),
             'reflection': game.reflector?.enabled ?? false,
             'scenario': const String.fromEnvironment('WATER_SCENARIO', defaultValue: 'overview'),
             'frames': frames.length,

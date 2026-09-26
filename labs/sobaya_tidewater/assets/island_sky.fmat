@@ -1,0 +1,68 @@
+material {
+ name: "IslandWeatherSky",
+ parameters: [
+  {type: float,name: time,default: 0.0},
+  {type: float,name: daylight,default: 1.0},
+  {type: float,name: clouds,default: 0.22},
+  {type: float,name: storm,default: 0.0},
+  {type: float,name: wind,default: 0.4},
+  {type: float,name: flash,default: 0.0},
+  {type: vec3,name: sun_direction,default: [0.3,0.8,0.4]},
+  {type: vec3,name: zenith,default: [0.04,0.18,0.46]},
+  {type: vec3,name: horizon,default: [0.5,0.65,0.8]},
+  {type: vec3,name: sun_color,default: [1.0,0.95,0.8]},
+ ]
+}
+sky {
+ float hash2(vec2 p) {return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+ float noise2(vec2 p) {
+  vec2 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);
+  return mix(mix(hash2(i),hash2(i+vec2(1,0)),f.x),mix(hash2(i+vec2(0,1)),hash2(i+vec2(1,1)),f.x),f.y);
+ }
+ float cloudNoise(vec2 p) {
+  float sum=0.0,amp=.55;
+  mat2 rotate=mat2(.8,.6,-.6,.8);
+  for(int i=0;i<5;i++){sum+=noise2(p)*amp;p=rotate*p*2.03+7.1;amp*=.49;}
+  return sum;
+ }
+ vec3 Sky(vec3 direction) {
+  vec3 d=normalize(direction),sun=normalize(material_params.sun_direction);
+  float day=material_params.daylight,cover=material_params.clouds;
+  float elevation=max(d.y,0.0);
+  vec3 sky=mix(material_params.horizon,material_params.zenith,pow(elevation,.42));
+  float toward=max(dot(d,sun),0.0);
+  float twilight=exp(-abs(sun.y)*9.0);
+  sky+=material_params.sun_color*pow(toward,14.0)*(.16+.6*twilight)*(1.0-cover*.75);
+  // Forward atmospheric scattering and a soft HDR solar disc.
+  sky+=material_params.sun_color*pow(toward,180.0)*.14*day;
+  sky+=material_params.sun_color*smoothstep(cos(.016),cos(.011),dot(d,sun))*8.0*smoothstep(-.08,.04,sun.y);
+  vec3 moon=-sun;
+  float moonDisc=smoothstep(cos(.019),cos(.015),dot(d,moon));
+  sky+=vec3(.6,.72,.95)*moonDisc*(1.0-day)*1.7;
+  sky+=vec3(.04,.07,.14)*pow(max(dot(d,moon),0.0),70.0)*(1.0-day);
+  // Direction-based star cells remain fixed while the camera turns.
+  vec2 starUV=vec2(atan(d.z,d.x)*.159155+.5,acos(clamp(d.y,-1.0,1.0))*.31831)*vec2(700,350);
+  vec2 cell=floor(starUV),f=fract(starUV)-.5;
+  float star=step(.994,hash2(cell))*(1.0-smoothstep(.04,.19,length(f)));
+  sky+=vec3(.55,.65,.9)*star*pow(1.0-day,4.0)*smoothstep(.02,.15,d.y);
+  if(d.y>-.01) {
+   // Two drifting cloud layers. Sun-facing edge illumination and a dense base
+   // give the clouds depth without compute or a full volumetric simulation.
+   vec2 p=d.xz/(max(d.y,.025)+.16)*2.3+vec2(material_params.time*.005*(.2+material_params.wind),material_params.time*.0015);
+   float shape=cloudNoise(p+cloudNoise(p*.4)*2.0);
+   float edge=1.0-cover;
+   float density=smoothstep(edge*.8,edge*.8+.24,shape)*smoothstep(-.01,.09,d.y);
+   float facing=cloudNoise(p+sun.xz*.25)-shape;
+   float lining=pow(max(toward,0.0),6.0)*(1.0-density)*.7;
+   vec3 base=mix(vec3(.014,.023,.043),vec3(.6,.67,.73),day);
+   base*=1.0-material_params.storm*.64;
+   base*=.58+clamp(facing*3.0+.25,0.0,.6);
+   base+=material_params.sun_color*(max(facing,0.0)*2.1+lining)*day*(1.0-material_params.storm);
+   sky=mix(sky,base,density);
+   float veil=smoothstep(.6,.85,cloudNoise(p*.48+19.0))*.15*cover;
+   sky=mix(sky,base,veil);
+  }
+  sky=mix(material_params.horizon*.28,sky,smoothstep(-.12,.03,d.y));
+  return max(sky+vec3(.5,.6,.85)*material_params.flash,vec3(.0001));
+ }
+}
