@@ -4,7 +4,7 @@
   "titleStartFrame": 972,
   "titleImage": "logo_sobaya_hazard_master.png",
   "originalVideo": "wan3_clone_lab_seed26092580_480p.mp4",
-  "output": "final_remotion_clone_lab_title_tempo.mp4",
+  "output": "final_remotion_clone_lab_pov_underwater.mp4",
   "repair": {
     "asset": "takosan_repair_sentence.wav",
     "reference": "takosan_repair_reference.wav",
@@ -67,7 +67,8 @@
     "pod_ambience_loop.wav": "83b59a81de1fbc357d4070bb931e61c3ff0b1a4ed866e56620122dd0ca975d20",
     "reference_lab_hologram_adopted.png": "d321384e84ebf497ecfdfd1f6361fa517a363cdbbbf42dbbc562bbebd031814d",
     "title_boom_from_wan.wav": "0244df35b6ce32827a6dc8e27e7ddb45977f2d1be26cf1ab32079d6e497a1597",
-    "takosan_a_scan_madogiwaryoku.wav": "25b5c41d503e30f2846fd5f1134479b9ac8093aedb345782f84b33946c6cf606"
+    "takosan_a_scan_madogiwaryoku.wav": "25b5c41d503e30f2846fd5f1134479b9ac8093aedb345782f84b33946c6cf606",
+    "yametaro_pov_underwater_mild.wav": "a8031c57222918ce4348aaa82679eede980d2c62664a6e2e9a276e1f5f655cf2"
   },
   "takosanVoiceA": {
     "adoptedByUser": true,
@@ -194,5 +195,14 @@
   "scanExtension": {
     "sourceCutFrame": 486,
     "extraFrames": 54
+  },
+  "povReplacement": {
+    "video": "final_remotion_pov_face_smooth.mp4",
+    "audio": "yametaro_pov_underwater_mild.wav",
+    "startFrame": 90,
+    "durationFrames": 90,
+    "playbackRate": 1.3333333333333333,
+    "audioCrossfadeSamples": 480,
+    "lipSyncApproved": false
   }
 }

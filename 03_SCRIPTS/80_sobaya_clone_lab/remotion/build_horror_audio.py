@@ -107,6 +107,15 @@ if ending:
     start=samples(ending['startFrame']);fx[start:start+len(clip)]+=clip
     gap_start=samples(ending['silenceStartFrame']);gap_end=samples(ending['silenceEndFrame'])
     base[gap_start:gap_end]=0;fx[gap_start:gap_end]=0
+pov=M.get('povReplacement')
+if pov:
+    start=samples(pov['startFrame']);end=start+samples(pov['durationFrames'])
+    clip=decode(ROOT/pov['audio']).astype(float)/32768
+    replacement=clip[:end-start]
+    assert len(replacement)==end-start
+    edge=pov['audioCrossfadeSamples'];weight=np.ones(end-start)
+    weight[:edge]=np.linspace(0,1,edge);weight[-edge:]=np.linspace(1,0,edge)
+    base[start:end]=base[start:end]*(1-weight[:,None])+replacement*weight[:,None]
 fxgain=1.0
 while np.max(np.abs(base+fx*fxgain))>0.985 and fxgain>0.01:fxgain*=0.9
 mix=base+fx*fxgain

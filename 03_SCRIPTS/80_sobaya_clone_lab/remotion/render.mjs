@@ -9,6 +9,7 @@ fs.copyFileSync('../logo_sobaya_hazard_master.png','public/logo_sobaya_hazard_ma
 fs.copyFileSync('../scanner_closed_mouth_frame348.png','public/scanner_closed_mouth_frame348.png');
 fs.copyFileSync('../reference_lab_hologram_adopted.png','public/reference_lab_hologram_adopted.png');
 const horror=JSON.parse(fs.readFileSync('src/horror-edit.json','utf8'));
+fs.copyFileSync('../'+horror.povReplacement.video,'public/pov-replacement.mp4');
 if(mode==='horror') execFileSync(process.env.HORROR_AUDIO_PYTHON||'../../../.local/Irodori-TTS/.venv/bin/python',['build_horror_audio.py'],{stdio:'inherit'});
 if(mode==='full'&&!fs.existsSync('public/input.mp4'))throw new Error('本編未生成。採用した30秒映像をpublic/input.mp4へ配置してください。');
 fs.mkdirSync('out',{recursive:true});
@@ -18,7 +19,7 @@ try{
  const id=(mode==='horror'||mode==='horror-stills')?'CloneLabHorror':(mode==='full'||mode==='film-stills')?'CloneLabFilm':mode==='alpha'?'ScannerOverlay':'ScannerPreview';
  const composition=await selectComposition({serveUrl,id,puppeteerInstance:browser});
  if(mode==='horror-stills'){
-  for(const frame of [375,384,485,486,539,540,552,horror.endingImpact.silenceStartFrame,horror.titleStartFrame-1,horror.titleStartFrame,horror.durationFrames-1])await renderStill({serveUrl,composition,puppeteerInstance:browser,frame,imageFormat:'png',output:`out/audit/horror-${frame}.png`});
+  for(const frame of [89,90,105,135,165,179,180,horror.durationFrames-1])await renderStill({serveUrl,composition,puppeteerInstance:browser,frame,imageFormat:'png',output:`out/audit/horror-${frame}.png`});
  }else if(mode==='film-stills'){
   for(const frame of [348,360,375,384,410,432,480,486])await renderStill({serveUrl,composition,puppeteerInstance:browser,frame,imageFormat:'png',output:`out/audit/film-${frame}.png`});
  }else if(mode==='stills'){

@@ -122,3 +122,8 @@ Wan原版は854×480・30fps・30秒。生成タスクは一回のみ、見積$1
 ## 冒頭POVカットの差し替え準備
 
 採用画像・4秒生成設定・映像のみの差し替え案を [POV_REPLACEMENT_PREP.md](POV_REPLACEMENT_PREP.md) に保存。乾式検証済み、API未送信。現行完成版は維持。
+
+
+### 採用：控えめな水中音声とPOVカットの通し版
+
+`final_remotion_clone_lab_pov_underwater.mp4`、1089f／36.3秒。90〜179fへ滑らかな顔アップPOV映像を挿入（4秒素材を映像のみ4/3倍で3秒へ）。既存本編由来の採用A音声 `yametaro_pov_underwater_mild.wav` の先頭3秒を同区間へ配置し、境界10msだけクロスフェード。180fから福ちゃんの元映像・通常音響に復帰。台詞音声は速度変更なし。音声生成追加なし。生成映像と既存音声の音素単位リップシンクは未承認。口同期の完全一致とは扱わない。再現素材映像は `remotion/smooth_pov_face_preview.py` で生成原版から再構築する。

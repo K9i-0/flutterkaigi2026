@@ -125,3 +125,8 @@ TypeScript成功。暗転900〜907f、登場908f、揺れ、最後997fの静止�
 ### 水中音声A/B候補
 
 `remotion/underwater_previews.py` で再現。`opening_dialogue_isolated.wav` の3〜6秒を切り出し、無音を1秒足して4秒比較。生成音声ではなく既存本編の台詞。AはLPF 2000Hz／揺らぎ深さ0.05／培養音-34LUFS、BはLPF 950Hz／深さ0.14／培養音-29LUFS。声は共通-19LUFS、揺らぎは0.8Hzの音量変調。室内リバーブは追加せず、既存Wan由来の `pod_ambience_loop.wav` を加工して重ねる。新たな効果音生成なし。比較動画とWAVは `remotion/out/underwater/`、比較ページ `underwater_review.html`。映像は顔へ寄る平滑化版。音の質感比較であり、既存音声と新映像の口同期は未調整・未承認。本編は未変更。
+
+
+### 採用：控えめな水中音声とPOVカットの通し版
+
+`final_remotion_clone_lab_pov_underwater.mp4`、1089f／36.3秒。90〜179fへ滑らかな顔アップPOV映像を挿入（4秒素材を映像のみ4/3倍で3秒へ）。既存本編由来の採用A音声 `yametaro_pov_underwater_mild.wav` の先頭3秒を同区間へ配置し、境界10msだけクロスフェード。180fから福ちゃんの元映像・通常音響に復帰。台詞音声は速度変更なし。音声生成追加なし。生成映像と既存音声の音素単位リップシンクは未承認。口同期の完全一致とは扱わない。再現素材映像は `remotion/smooth_pov_face_preview.py` で生成原版から再構築する。

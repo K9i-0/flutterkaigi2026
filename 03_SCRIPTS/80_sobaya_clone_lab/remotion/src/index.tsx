@@ -100,6 +100,9 @@ const HorrorTitle: React.FC = () => {
 };
 export const CloneLabHorror: React.FC = () => <AbsoluteFill style={{background:'#000'}}>
   <Sequence durationInFrames={production.composition.durationInFrames+horror.scanExtension.extraFrames}><CloneLabFilm extraFrames={horror.scanExtension.extraFrames}/></Sequence>
+  <Sequence from={horror.povReplacement.startFrame} durationInFrames={horror.povReplacement.durationFrames}>
+    <OffthreadVideo muted src={staticFile('pov-replacement.mp4')} playbackRate={horror.povReplacement.playbackRate} style={{width:'100%',height:'100%',objectFit:'contain'}}/>
+  </Sequence>
   <Sequence from={horror.titleStartFrame} durationInFrames={horror.durationFrames-horror.titleStartFrame}><HorrorTitle/></Sequence>
 </AbsoluteFill>;
 
