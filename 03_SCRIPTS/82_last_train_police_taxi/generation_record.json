@@ -1,0 +1,70 @@
+{
+  "started_at": "2026-09-26T05:43:44.145448+00:00",
+  "endpoint": "https://maas.qwencloudapi.com/api/v1/services/aigc/video-generation/video-synthesis",
+  "estimated_usd": 1.05,
+  "price_usd_per_second": 0.035,
+  "pricing_source": "https://www.qwencloud.com/models/wan3.0-video",
+  "model": "wan3.0-video",
+  "seed": 820926,
+  "resolution": "480P",
+  "duration": 30,
+  "status": "SUCCEEDED",
+  "prompt_sha256": "75e4005c6fdfcfab2f87fc9860a2b5f854fb9858c224c7ac71c64844c622d378",
+  "config_sha256": "67bce701e712b4f8f3cce03d9f1f4bcd755ac67ba482461afc648b1dda03750b",
+  "task_id": "17c46913-daa5-42bd-8f0f-b8f8b51cab16",
+  "task_status": "SUCCEEDED",
+  "submit_time": "2026-09-26 13:43:50.826",
+  "scheduled_time": "2026-09-26 13:43:50.886",
+  "end_time": "2026-09-26 13:48:57.617",
+  "exit_code": 0,
+  "downloaded": true,
+  "output": "wan3_last_train_seed820926_480p.mp4",
+  "updated_at": "2026-09-26T05:49:00.885573+00:00",
+  "output_sha256": "39337ff34ee1f912b69710da03d377caf4372630d02f2c439b5c6fc448dd016d",
+  "technical_probe": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "30/1",
+        "duration": "30.000000"
+      },
+      {
+        "codec_name": "aac",
+        "codec_type": "audio",
+        "r_frame_rate": "0/0",
+        "duration": "30.022993"
+      }
+    ],
+    "format": {
+      "duration": "30.022993",
+      "size": "16650418"
+    }
+  },
+  "review_status": "generated_with_visual_deviations",
+  "audit": {
+    "method": "1 fps overview and 5 fps impact frame inspection plus local Whisper ASR; not full audiovisual listening or phoneme sync approval",
+    "confirmed": [
+      "Three drink colors and four wall menus present in opening",
+      "Closed station scene follows toast",
+      "Taxi interception followed by three rear-seat passengers",
+      "Japanese taxi and patrol markings, red patrol light",
+      "All nine expected dialogue lines found by automated ASR"
+    ],
+    "deviations": [
+      "Sobaya bends forward to stop taxi instead of remaining upright",
+      "Rear-wheel lift not seen in sampled impact frames",
+      "Ordinary-speed approach and force of stop need playback review; not marked as requirement pass"
+    ],
+    "unverified": [
+      "Frame-perfect character consistency and lip sync",
+      "Japanese menu lettering clarity throughout moving video",
+      "Full listening and voice-timbre review"
+    ],
+    "asr_tail_recheck": "24–30 s independently transcribed as タクシーちゃうねん only. Full-file ASR appended a spurious 30–32 s line outside the actual video duration; not treated as generated dialogue."
+  }
+}
