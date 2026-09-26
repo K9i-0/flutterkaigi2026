@@ -9,6 +9,8 @@ import 'package:vector_math/vector_math.dart' as vm;
 import 'island_world.dart';
 import 'coastal_grid.dart';
 import 'island_soundscape.dart';
+import 'player_controller.dart';
+import 'footprints.dart';
 
 class IslandGame {
   static const legacyWater = bool.fromEnvironment('WATER_LEGACY');
@@ -30,6 +32,10 @@ class IslandGame {
     fovNear: .08,
   );
   late IslandWorld world;
+  late PlayerController player;
+  Footprints? footprints;
+  double playerTime = 0, strideDistance = 0, bob = 0;
+  bool leftFoot = false;
   PreprocessedMaterial? water;
   bool ready = false, disposed = false, flying = false;
   double yaw = math.pi, pitch = 0, forward = 0, strafe = 0, vertical = 0;
@@ -42,6 +48,12 @@ class IslandGame {
       await rootBundle.loadString('assets/world.json'),
     ) as Map<String, dynamic>;
     world = IslandWorld(metadata, await rootBundle.load('assets/heights.bin'));
+    player = PlayerController(world, feet);
+    footprints = Footprints(
+      scene,
+      world,
+      await loadFmatMaterial('assets/footprint.fmat'),
+    );
     final island = await Node.fromGlbAsset('assets/island.glb');
     water = await loadFmatMaterial(
       legacyWater
@@ -130,7 +142,11 @@ class IslandGame {
     // outside the spawn camera. Shader source is already built into bundles;
     // this primes runtime pipeline variants and resource uploads.
     ready = false;
+    // Include the sole shader in startup preparation before the first step.
+    // The expired mark is invisible and removed before revealing the scene.
+    footprints?.add(feet.x, feet.z, yaw, -20, false);
     await scene.warmUp([RenderView(camera: camera)], includeOffscreen: true);
+    footprints?.clear();
     if (disposed) return;
     warmedUp = true;
     if (!benchmark) await sound.load(world);
@@ -167,6 +183,9 @@ class IslandGame {
         feet.setValues(53.6, world.groundAt(53.6, -77, 100), -77);
         yaw = math.pi;
     }
+    player.reset(onGround: !flying);
+    strideDistance = 0;
+    bob = 0;
     syncCamera();
   }
 
@@ -175,6 +194,7 @@ class IslandGame {
     strafe = 0;
     vertical = 0;
     sprint = false;
+    if (ready) player.stop();
   }
 
   void look(double dx, double dy) {
@@ -195,38 +215,51 @@ class IslandGame {
       yaw,
       frozen: freezeWater,
     );
-    final dt = delta.clamp(0.0, .05),
-        speed = flying ? (sprint ? 60.0 : 20.0) : (sprint ? 5.5 : 2.8);
-    final len = math.max(1.0, math.sqrt(forward * forward + strafe * strafe));
-    final dx =
-        (-math.sin(yaw) * forward + math.cos(yaw) * strafe) / len * speed * dt;
-    final dz =
-        (-math.cos(yaw) * forward - math.sin(yaw) * strafe) / len * speed * dt;
+    final dt = delta.clamp(0.0, .05);
+    playerTime += dt;
+    footprints?.update(playerTime);
     if (flying) {
-      feet.x += dx;
-      feet.z += dz;
-      feet.y += vertical * speed * dt;
+      final motion =
+          PlayerController.direction(yaw, forward, strafe) *
+          (sprint ? 60.0 : 20.0) *
+          dt;
+      feet.add(motion);
+      feet.y += vertical * (sprint ? 60 : 20) * dt;
+      bob = 0;
     } else {
-      final count = math.max(1, (math.sqrt(dx * dx + dz * dz) / .08).ceil());
-      for (var i = 0; i < count; i++) {
-        final before = feet.clone();
-        feet.x += dx / count;
-        feet.z += dz / count;
-        world.resolve(feet);
-        final ground = world.groundAt(feet.x, feet.z, feet.y + .4);
-        // First milestone is dry-land walking; keep sea entry and steep rises blocked.
-        if (ground < -.2 || ground > feet.y + .45) {
-          feet.setFrom(before);
-        } else {
-          feet.y = math.max(ground, feet.y - 9.8 * dt / count);
+      player.update(dt, yaw, forward, strafe, sprint);
+      strideDistance += player.travelled;
+      final stride = sprint ? .92 : .68;
+      if (player.landed || strideDistance >= stride) {
+        strideDistance %= stride;
+        final surface = world.surfaceAt(feet.x, feet.z, feet.y);
+        sound.footstep(surface, landing: player.landed, left: leftFoot);
+        if (surface == 'sand' || surface == 'wetsand') {
+          footprints?.add(feet.x, feet.z, yaw, playerTime, leftFoot);
         }
+        leftFoot = !leftFoot;
       }
+      final targetBob = player.grounded && player.travelled > .001
+          ? math.sin(strideDistance / stride * math.pi * 2) * .022
+          : 0.0;
+      bob += (targetBob - bob) * (1 - math.exp(-dt * 14));
     }
     syncCamera();
   }
 
+  void jump() {
+    if (ready && !flying) player.jump();
+  }
+
+  void toggleFlight() {
+    flying = !flying;
+    if (ready) player.reset(onGround: false);
+    bob = 0;
+    clearInput();
+  }
+
   void syncCamera() {
-    camera.position = feet + vm.Vector3(0, 1.7, 0);
+    camera.position = feet + vm.Vector3(0, 1.62 + bob, 0);
     camera.target =
         camera.position +
         vm.Vector3(
@@ -239,6 +272,12 @@ class IslandGame {
   Map<String, Object?> inspect() => {
     'ready': ready,
     'flying': flying,
+    'grounded': ready ? player.grounded : false,
+    'verticalVelocity': ready ? player.velocity.y : 0,
+    'jumps': ready ? player.jumps : 0,
+    'landings': ready ? player.landings : 0,
+    'footprints': footprints?.marks.length ?? 0,
+    'playerTime': playerTime,
     'position': [feet.x, feet.y, feet.z],
     'yaw': yaw,
     'pitch': pitch,

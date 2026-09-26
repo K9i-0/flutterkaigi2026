@@ -43,7 +43,7 @@ class CoastalAudioMix {
     final distance = math.sqrt(best + y * y);
     final horizontal = math.max(1.0, math.sqrt(best));
     final pan =
-        (((sx - x) * math.cos(yaw) - (sz - z) * math.sin(yaw)) / horizontal)
+        ((-(sx - x) * math.cos(yaw) + (sz - z) * math.sin(yaw)) / horizontal)
             .clamp(-.8, .8);
     final pierDistance = math.sqrt(
       (x - 53.6) * (x - 53.6) +

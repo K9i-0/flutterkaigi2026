@@ -49,6 +49,83 @@ class IslandWorld {
     return best;
   }
 
+  bool overlapsBox(Map<dynamic, dynamic> b, double x, double z, double radius) {
+    final dx = x - (b['center']['x'] as num),
+        dz = z - (b['center']['z'] as num);
+    final co = b['cos'] as num, si = b['sin'] as num;
+    final lx = dx * co - dz * si, lz = dx * si + dz * co;
+    final hx = (b['half']['x'] as num).toDouble(),
+        hz = (b['half']['z'] as num).toDouble();
+    final ex = lx - lx.clamp(-hx, hx), ez = lz - lz.clamp(-hz, hz);
+    return ex * ex + ez * ez <= radius * radius;
+  }
+
+  /// A solid object's top is a landing surface even if it is not a stair.
+  double supportAt(double x, double z, double maxY) {
+    var floor = heightAt(x, z);
+    for (final b in boxes) {
+      final top = (b['top'] as num).toDouble();
+      if ((b['solid'] == true || b['walkable'] == true) &&
+          top <= maxY + .001 &&
+          overlapsBox(b, x, z, 0)) {
+        floor = math.max(floor, top);
+      }
+    }
+    for (final c in cylinders) {
+      final top = (c['yMax'] as num).toDouble();
+      if (top <= maxY + .001 &&
+          math.pow(x - (c['x'] as num), 2) + math.pow(z - (c['z'] as num), 2) <=
+              math.pow(c['radius'] as num, 2)) {
+        floor = math.max(floor, top);
+      }
+    }
+    return floor;
+  }
+
+  double ceilingAt(double x, double z, double head) {
+    var ceiling = double.infinity;
+    for (final b in boxes) {
+      final bottom = (b['bottom'] as num).toDouble();
+      if (b['solid'] == true &&
+          bottom >= head - .002 &&
+          overlapsBox(b, x, z, .28)) {
+        ceiling = math.min(ceiling, bottom);
+      }
+    }
+    for (final c in cylinders) {
+      final bottom = (c['yMin'] as num).toDouble();
+      if (bottom >= head - .002 &&
+          math.pow(x - (c['x'] as num), 2) + math.pow(z - (c['z'] as num), 2) <=
+              math.pow((c['radius'] as num) + .28, 2)) {
+        ceiling = math.min(ceiling, bottom);
+      }
+    }
+    return ceiling;
+  }
+
+  String surfaceAt(double x, double z, double feetY) {
+    for (final b in boxes) {
+      if ((feetY - (b['top'] as num)).abs() < .06 && overlapsBox(b, x, z, 0)) {
+        return 'wood';
+      }
+    }
+    for (final c in cylinders) {
+      if ((feetY - (c['yMax'] as num)).abs() < .06 &&
+          math.pow(x - (c['x'] as num), 2) + math.pow(z - (c['z'] as num), 2) <=
+              math.pow(c['radius'] as num, 2)) {
+        return 'wood';
+      }
+    }
+    final h = heightAt(x, z);
+    final slope =
+        (heightAt(x + .5, z) - heightAt(x - .5, z)).abs() +
+        (heightAt(x, z + .5) - heightAt(x, z - .5)).abs();
+    if (slope > 1.1) return 'rock';
+    if (h < .5) return 'wetsand';
+    if (h < 2.5) return 'sand';
+    return 'grass';
+  }
+
   /// Sliding capsule, with substeps handled by the caller.
   void resolve(
     Vector3 p, {
@@ -58,8 +135,8 @@ class IslandWorld {
   }) {
     for (final b in boxes) {
       if (b['solid'] != true ||
-          p.y + height < (b['bottom'] as num) ||
-          p.y + step > (b['top'] as num)) {
+          p.y + height <= (b['bottom'] as num) + .001 ||
+          p.y + step >= (b['top'] as num) - .001) {
         continue;
       }
       final dx = p.x - (b['center']['x'] as num),
@@ -90,8 +167,8 @@ class IslandWorld {
       p.z += (-nx * si + nz * co) * pen;
     }
     for (final c in cylinders) {
-      if (p.y + height < (c['yMin'] as num) ||
-          p.y + step > (c['yMax'] as num)) {
+      if (p.y + height <= (c['yMin'] as num) + .001 ||
+          p.y + step >= (c['yMax'] as num) - .001) {
         continue;
       }
       final dx = p.x - (c['x'] as num),
