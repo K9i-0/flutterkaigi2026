@@ -1,0 +1,10 @@
+{
+  "source": "03_SCRIPTS/71_hisoba_memory_review/wan3_hisoba_seed710920_480p.mp4",
+  "source_sha256": "93989f671ae6a7d6bb4d3824ea752666dfe2c1d5249785277f73db78e8485bfe",
+  "source_start_seconds": 22.22,
+  "source_end_seconds": 23.97,
+  "audio_origin": "existing Wan 3.0 output, episode 71",
+  "processing": "380–2400 Hz bandpass; peak 0.85; original rise + reversed fall; 60ms edge fades; no synthesized audio",
+  "output": "public/police_siren_wan71.wav",
+  "sha256": "81cec7ff6c0547ffc79f73f08cee3b5fbb14634a2a4ed64a270558aeda8294d2"
+}

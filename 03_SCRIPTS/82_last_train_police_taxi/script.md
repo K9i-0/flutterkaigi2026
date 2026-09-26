@@ -113,3 +113,15 @@ python3 -u .claude/skills/wan-video/scripts/qwen_wan3_generate.py 03_SCRIPTS/82_
 - 演出差分：そば屋は前かがみで車を止めており、直立したままの停止ではない。後輪の浮きもサンプルフレームでは確認できない。速度感と衝突の強さは再生での確認が必要。
 - 自動ASRには採用した９行の台詞が含まれるが、通し試聴・声質・音素単位リップシンクの合格を意味しない。ASR表記には終電や関西弁の誤変換がある。
 - ハッシュ、実測仕様と監査範囲は `generation_record.json`。有料再生成は実行していない。
+
+## サイレン後付け（2026-09-26）
+
+ユーザー指定：最後までパトカーと分かりづらいため、車内シーンからサイレンを追加。
+
+- postproduction=remotion。プロジェクト `remotion/`、composition `LastTrainSiren`、Remotion 4.0.529（npm registry確認）。
+- 入力は初回Wan動画。完成版 `final_remotion_siren.mp4`。
+- カットの実測559フレーム（18.633秒）からサイレン開始。短い立ち上がりの後、会話中は音量を下げ、末尾でフェード。整数フレームの正本は `remotion/src/edit-manifest.json`。
+- 音源は第71話のWan生成パトカー区間22.22–23.97秒。380–2400Hzを通し、上昇音と反転した下降音をつないで反復。新しい音声合成・有料生成なし。出典とハッシュは `remotion/siren-source.json`。
+- Remotionで音声だけをレンダーし、元のH.264映像をstream copyしてAAC音声とmux。映像ストリームSHA-256一致。画角・タイミング・映像は不変。
+- 会話区間20–26秒の追加音RMSは元音声比で約-18.3dB。ミックスピーク0.986、クリップなし。追加前のPCM差分は最大1 LSB程度。
+- TypeScript・manifest検証合格。出力を末尾までデコードしエラーなし。直接試聴は未実施のため、聞こえ方・自然さの最終合格は宣言していない。詳細 `remotion/qa.json`。

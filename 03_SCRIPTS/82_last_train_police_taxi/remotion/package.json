@@ -1,0 +1,27 @@
+{
+  "name": "madogiwa-remotion-edit",
+  "version": "1.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@remotion/cli": "4.0.529",
+    "@remotion/media": "4.0.529",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "remotion": "4.0.529"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.7",
+    "typescript": "5.9.3"
+  },
+  "scripts": {
+    "studio": "remotion studio",
+    "typecheck": "tsc",
+    "bundle": "remotion bundle",
+    "render": "npm run render:audio && ffmpeg -y -v error -i public/input.mp4 -i out/mixed.wav -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac -b:a 192k -t 30 -movflags +faststart ../final_remotion_siren.mp4",
+    "render:audio": "remotion render src/index.ts LastTrainSiren out/mixed.wav --codec=wav --overwrite"
+  },
+  "sideEffects": [
+    "*.css"
+  ]
+}

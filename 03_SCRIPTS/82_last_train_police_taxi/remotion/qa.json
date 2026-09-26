@@ -1,0 +1,10 @@
+{
+  "video_stream_unchanged": true,
+  "mix_peak": 0.9857177734375,
+  "before_siren_max_difference": 3.0517549021169543e-05,
+  "siren_rms_during_dialogue": 0.02305692434310913,
+  "original_dialogue_rms": 0.18904492259025574,
+  "full_decode": "passed",
+  "listening": "Not directly auditioned; signal and source-provenance checks only",
+  "output_sha256": "807652e398b2941c148ad8e224112d500c91f6d6343bd9c12d2d0bbeee995dce"
+}

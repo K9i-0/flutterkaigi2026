@@ -1,0 +1,41 @@
+{
+  "composition": {
+    "id": "LastTrainSiren",
+    "width": 854,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 900
+  },
+  "inputVideo": "input.mp4",
+  "inputVideoVolume": 1,
+  "replacementAudio": null,
+  "overlays": [],
+  "captions": [],
+  "siren": {
+    "file": "police_siren_wan71.wav",
+    "startFrame": 559,
+    "endFrame": 900,
+    "volumeFrames": [
+      0,
+      2,
+      9,
+      17,
+      221,
+      233,
+      285,
+      332,
+      341
+    ],
+    "volumes": [
+      0,
+      0.24,
+      0.24,
+      0.09,
+      0.09,
+      0.08,
+      0.15,
+      0.15,
+      0
+    ]
+  }
+}
