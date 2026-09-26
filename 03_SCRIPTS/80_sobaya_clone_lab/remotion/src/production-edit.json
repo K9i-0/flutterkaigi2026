@@ -17,7 +17,8 @@
       "size": 430,
       "cropX": 175,
       "cropY": 20,
-      "cropSize": 220
+      "cropSize": 220,
+      "image": "scanner_fukuchan_lab_pose.png"
     },
     {
       "left": 285,

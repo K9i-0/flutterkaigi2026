@@ -76,7 +76,7 @@ export const CloneLabFilm: React.FC<{extraFrames?: number}> = ({extraFrames = 0}
       {production.scannerPortraits.map((p, i) => {
         const scale = p.size / p.cropSize;
         return <div key={i} style={{position: 'absolute',left:p.left,top:p.top,width:p.size,height:p.size,overflow:'hidden'}}>
-          <Img src={staticFile(production.scannerStillImage)} style={{position:'absolute',maxWidth:'none',width:854*scale,height:480*scale,left:-p.cropX*scale,top:-p.cropY*scale}}/>
+          {'image' in p && p.image ? <Img src={staticFile(p.image)} style={{width:'100%',height:'100%',objectFit:'cover'}}/> : <Img src={staticFile(production.scannerStillImage)} style={{position:'absolute',maxWidth:'none',width:854*scale,height:480*scale,left:-p.cropX*scale,top:-p.cropY*scale}}/>}
         </div>;
       })}
     </AbsoluteFill>

@@ -123,8 +123,8 @@
   },
   "current_revision": {
     "date": "2026-09-26",
-    "output": "final_remotion_clone_lab_pov_underwater.mp4",
-    "sha256": "2fd7140253c875aa27d572f2907d39861a907bc7999ea415725c680b057a28a0",
+    "output": "final_remotion_clone_lab_fukuchan_portrait.mp4",
+    "sha256": "6147566b867da9b4c2f6ab663effa919958a2e1a66054e20c1192f7aa9727a4d",
     "duration_seconds": 36.3,
     "frames": 1089,
     "takosanVoice": "user_adopted_A",
@@ -233,7 +233,10 @@
       "playbackRate": 1.3333333333333333,
       "audioCrossfadeSamples": 480,
       "lipSyncApproved": false
-    }
+    },
+    "scannerFukuchanImage": "scanner_fukuchan_lab_pose.png",
+    "scannerFukuchanImageSha256": "67c31f84d6049d78bd195f077924c51c1933f0b9bf13abad9a0d884293446442",
+    "audioIdenticalToPreviousVersion": true
   },
   "revision_history": [
     {
@@ -801,6 +804,120 @@
       "scanTextCfg": 5,
       "scanUncut": true,
       "scanDurationScale": 1
+    },
+    {
+      "date": "2026-09-26",
+      "output": "final_remotion_clone_lab_pov_underwater.mp4",
+      "sha256": "2fd7140253c875aa27d572f2907d39861a907bc7999ea415725c680b057a28a0",
+      "duration_seconds": 36.3,
+      "frames": 1089,
+      "takosanVoice": "user_adopted_A",
+      "scannerFrozenFrames": [
+        348,
+        540
+      ],
+      "titleBackground": "reference_lab_hologram_adopted.png",
+      "podOnlyBackgroundBeforeAlarm": true,
+      "openingDialogueReverb": true,
+      "openingAsrPerLine": [
+        "これ、全部そば屋さんのクローン?",
+        "ギュンギュンどころじゃないわね",
+        "窓際族、増やしてどうすんね?"
+      ],
+      "fullDecodePassed": true,
+      "finalAudioLagSamples8kHz": 0,
+      "listeningApproved": false,
+      "audio_report": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "durationSamples": 1742400,
+        "seconds": 36.3,
+        "replacementOutsidePcmIdentical": true,
+        "replacementMode": "adopted_takosan_voice_a",
+        "insertVerified": true,
+        "targetSamples": [
+          556800,
+          1201600
+        ],
+        "timeStretch": false,
+        "speechCrossfade": false,
+        "peakDbfs": -1.9962709722161818,
+        "extraSfxGain": 1.0,
+        "audioSources": "Wan original effects; Irodori member speech only",
+        "quietLabEnabled": true,
+        "openingSpeechIsolated": true,
+        "openingReverb": {
+          "preDelaySeconds": 0.038,
+          "rt60Seconds": 1.6,
+          "wetGainDb": -11,
+          "lowpassHz": 4800,
+          "highpassHz": 180,
+          "seed": 80,
+          "earlyReflectionsSeconds": [
+            0.064,
+            0.093,
+            0.131,
+            0.179
+          ],
+          "earlyReflectionsGains": [
+            0.22,
+            0.17,
+            0.13,
+            0.09
+          ]
+        },
+        "review": "ASR and PCM checks; listening and lip-sync approval remain separate"
+      },
+      "scannerOrder": [
+        "やめ太郎",
+        "福ちゃん"
+      ],
+      "yametaroResultFrame": 375,
+      "takosanScanAudioStartFrame": 384,
+      "resultLeadFrames": 9,
+      "additionalPaidGeneration": false,
+      "ending": {
+        "silenceFrames": [
+          954,
+          972
+        ],
+        "titleAndBoomFrame": 972,
+        "titleCallFrame": 1008,
+        "titleShakeFrames": 6,
+        "effectAsset": "title_boom_from_wan.wav",
+        "source": "processed original Wan glass effect",
+        "masterGapPcmSilent": true,
+        "blackFramesChecked": [
+          954,
+          971,
+          1088
+        ],
+        "titleDurationFrames": 117,
+        "fadeOutFrames": 15,
+        "postCallTailSeconds": 1.318417
+      },
+      "scanExtensionFrames": 54,
+      "scanLine": "窓際力、五千。そば屋の半分近いな。",
+      "scanAudioAsset": "takosan_a_scan_madogiwaryoku.wav",
+      "scanAudioDurationSeconds": 4.92,
+      "scanAsr": "窓際力、5000。そば屋の半分近いな。",
+      "scanGenerationText": "まどぎわりょく、五千。そば屋の半分近いな。",
+      "scanReference": "takosan_a_reference.wav",
+      "scanModel": "Aratako/Irodori-TTS-v4.1-Small",
+      "scanSeed": 42,
+      "scanCaption": "",
+      "scanTextCfg": 5,
+      "scanUncut": true,
+      "scanDurationScale": 1,
+      "povReplacement": {
+        "video": "final_remotion_pov_face_smooth.mp4",
+        "audio": "yametaro_pov_underwater_mild.wav",
+        "startFrame": 90,
+        "durationFrames": 90,
+        "playbackRate": 1.3333333333333333,
+        "audioCrossfadeSamples": 480,
+        "lipSyncApproved": false
+      }
     }
   ]
 }

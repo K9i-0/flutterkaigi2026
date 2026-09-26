@@ -5,6 +5,7 @@ import {execFileSync} from 'node:child_process';
 import path from 'node:path';
 const mode=process.argv[2]||'preview';
 fs.mkdirSync('public',{recursive:true});
+fs.copyFileSync('../scanner_fukuchan_lab_pose.png','public/scanner_fukuchan_lab_pose.png');
 fs.copyFileSync('../logo_sobaya_hazard_master.png','public/logo_sobaya_hazard_master.png');
 fs.copyFileSync('../scanner_closed_mouth_frame348.png','public/scanner_closed_mouth_frame348.png');
 fs.copyFileSync('../reference_lab_hologram_adopted.png','public/reference_lab_hologram_adopted.png');
@@ -19,7 +20,7 @@ try{
  const id=(mode==='horror'||mode==='horror-stills')?'CloneLabHorror':(mode==='full'||mode==='film-stills')?'CloneLabFilm':mode==='alpha'?'ScannerOverlay':'ScannerPreview';
  const composition=await selectComposition({serveUrl,id,puppeteerInstance:browser});
  if(mode==='horror-stills'){
-  for(const frame of [89,90,105,135,165,179,180,horror.durationFrames-1])await renderStill({serveUrl,composition,puppeteerInstance:browser,frame,imageFormat:'png',output:`out/audit/horror-${frame}.png`});
+  for(const frame of [348,375,432,539])await renderStill({serveUrl,composition,puppeteerInstance:browser,frame,imageFormat:'png',output:`out/audit/horror-${frame}.png`});
  }else if(mode==='film-stills'){
   for(const frame of [348,360,375,384,410,432,480,486])await renderStill({serveUrl,composition,puppeteerInstance:browser,frame,imageFormat:'png',output:`out/audit/film-${frame}.png`});
  }else if(mode==='stills'){
