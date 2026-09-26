@@ -1,0 +1,10 @@
+{
+  "audio_final_line_correlation": 0.9995122743332239,
+  "cutFrame": 733,
+  "durationInFrames": 796,
+  "exteriorFrames": 63,
+  "visual_review": "6 fps ending frames: only departing car after cut, no return to talking Yametaro",
+  "decode": "passed",
+  "direct_listening": "not performed",
+  "audio_mux": "Original approved audio directly muxed with final 5-frame fade; bypasses Remotion AAC decode offset"
+}

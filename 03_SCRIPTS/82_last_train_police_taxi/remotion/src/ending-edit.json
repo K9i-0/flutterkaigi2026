@@ -1,0 +1,17 @@
+{
+  "composition": {
+    "id": "LastTrainExteriorPunchline",
+    "width": 854,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 796
+  },
+  "inputVideo": "siren-approved.mp4",
+  "cutFrame": 733,
+  "exteriorSourceStartFrame": 847,
+  "exteriorSourceEndFrame": 900,
+  "exteriorDurationFrames": 63,
+  "audioFadeStartFrame": 791,
+  "audioEndFrame": 796,
+  "notes": "Original adopted audio remains on its original timeline, including the final line. Replace visuals from frame 733 with departing police-car shot; 53 source frames played over 63 output frames."
+}

@@ -19,7 +19,8 @@
     "typecheck": "tsc",
     "bundle": "remotion bundle",
     "render": "npm run render:audio && ffmpeg -y -v error -i public/input.mp4 -i out/mixed.wav -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac -b:a 192k -t 30 -movflags +faststart ../final_remotion_siren.mp4",
-    "render:audio": "remotion render src/index.ts LastTrainSiren out/mixed.wav --codec=wav --overwrite"
+    "render:audio": "remotion render src/index.ts LastTrainSiren out/mixed.wav --codec=wav --overwrite",
+    "render:ending": "remotion render src/index.ts LastTrainExteriorPunchline out/ending_picture.mp4 --codec=h264 --crf=16 --muted --overwrite && python3 scripts/mux_ending.py"
   },
   "sideEffects": [
     "*.css"

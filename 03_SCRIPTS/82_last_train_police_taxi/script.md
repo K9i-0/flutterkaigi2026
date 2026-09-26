@@ -125,3 +125,14 @@ python3 -u .claude/skills/wan-video/scripts/qwen_wan3_generate.py 03_SCRIPTS/82_
 - Remotionで音声だけをレンダーし、元のH.264映像をstream copyしてAAC音声とmux。映像ストリームSHA-256一致。画角・タイミング・映像は不変。
 - 会話区間20–26秒の追加音RMSは元音声比で約-18.3dB。ミックスピーク0.986、クリップなし。追加前のPCM差分は最大1 LSB程度。
 - TypeScript・manifest検証合格。出力を末尾までデコードしエラーなし。直接試聴は未実施のため、聞こえ方・自然さの最終合格は宣言していない。詳細 `remotion/qa.json`。
+
+## 最後の台詞を車外映像へ変更
+
+ユーザー指定により、やめ太郎が最後の台詞を話す車内映像をカットし、走り去るパトカーへ差し替え。
+- 出力：`final_remotion_exterior_punchline.mp4`、854×480、30fps、796フレーム（26.533秒）。
+- 入力：採用済み `final_remotion_siren.mp4`。733フレーム（24.433秒）で車外へ切り替える。
+- 元動画847–900フレームの車外映像を63フレームで再生（約0.841倍速）。最後の台詞が収まる長さを確保し、車内の無言の余韻を省く。
+- 音声は採用済み動画の元タイムラインを維持。最後の台詞・サイレンを残し、最終5フレームのみフェード。Wan再生成や台詞再合成なし。
+- composition `LastTrainExteriorPunchline`、時刻正本 `remotion/src/ending-edit.json`。`npm run render:ending`で再現。
+- カット周辺を6fpsで目視し、車外へ切り替わった後にやめ太郎の発話映像へ戻らないことを確認。音声はRemotion経由のAACデコード遅延を避け、元音声から直接mux。検証記録 `remotion/ending-qa.json`。
+- Studio既登録版はサイレン追加30秒版のまま。今回の新編集版はローカル出力。
