@@ -1,14 +1,27 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math' as math;
-import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_scene/scene.dart';
 import 'package:vector_math/vector_math.dart' as vm;
 
 import 'island_world.dart';
+import 'coastal_grid.dart';
+import 'island_soundscape.dart';
 
 class IslandGame {
+  static const legacyWater = bool.fromEnvironment('WATER_LEGACY');
+  static const benchmark = bool.fromEnvironment('WATER_BENCHMARK');
+  static const planarEnabled = bool.fromEnvironment(
+    'WATER_REFLECTION',
+    defaultValue: true,
+  );
+  final sound = IslandSoundscape();
+  double waterTime = 0;
+  bool freezeWater = false;
+  bool warmedUp = false;
+  PlanarReflectorComponent? reflector;
   final scene = Scene();
   final camera = PerspectiveCamera(
     position: vm.Vector3(53.6, 5, -77),
@@ -30,15 +43,36 @@ class IslandGame {
     ) as Map<String, dynamic>;
     world = IslandWorld(metadata, await rootBundle.load('assets/heights.bin'));
     final island = await Node.fromGlbAsset('assets/island.glb');
-    water = await loadFmatMaterial('assets/coastal_water.fmat');
+    water = await loadFmatMaterial(
+      legacyWater
+          ? 'assets/coastal_water_legacy.fmat'
+          : 'assets/coastal_water.fmat',
+    );
     if (disposed) return;
     // The runtime importer supplies a glTF Z-mirror at its root. This port
     // deliberately keeps Tidewater world coordinates for terrain/collisions.
     // Cancel only that boundary transform; preserve source indices/normals.
     island.localTransform = vm.Matrix4.identity();
+    if (!legacyWater) {
+      void markStatic(Node node) {
+        node.shadowStatic = true;
+        for (final child in node.children) {
+          markStatic(child);
+        }
+      }
+
+      markStatic(island);
+    }
     scene.add(island);
     scene.environmentSettings = EnvironmentSettings(
-      exposure: 1,
+      exposure: legacyWater ? 1 : .95,
+      toneMapping: legacyWater
+          ? ToneMappingMode.pbrNeutral
+          : ToneMappingMode.aces,
+      bloomEnabled: !legacyWater,
+      bloomThreshold: 1.25,
+      bloomIntensity: .07,
+      bloomScatter: .5,
       ambientOcclusionEnabled: false,
     );
     final sky = GradientSkySource(
@@ -46,6 +80,9 @@ class IslandGame {
       horizonColor: vm.Vector3(.63, .75, .78),
       groundColor: vm.Vector3(.15, .21, .23),
       sunColor: vm.Vector3(4, 3.6, 2.6),
+      sunDirection: legacyWater
+          ? vm.Vector3(.4, .5, .6)
+          : vm.Vector3(.6, 1, .4),
     );
     scene.skybox = Skybox(sky);
     scene.skyEnvironment = SkyEnvironment(sky);
@@ -59,48 +96,64 @@ class IslandGame {
       cacheStaticShadows: true,
     );
     scene.renderScale = .85;
-    // The fixed grid is centred on the bay. Vertex animation stays entirely on Flutter GPU.
-    const n = 180, size = 3000.0;
-    final positions = Float32List((n + 1) * (n + 1) * 3),
-        normals = Float32List((n + 1) * (n + 1) * 3);
-    final indices = <int>[];
-    for (var z = 0; z <= n; z++) {
-      for (var x = 0; x <= n; x++) {
-        final i = (z * (n + 1) + x) * 3;
-        positions[i] = (x / n - .5) * size;
-        positions[i + 2] = (z / n - .5) * size;
-        normals[i + 1] = 1;
-      }
-    }
-    for (var z = 0; z < n; z++) {
-      for (var x = 0; x < n; x++) {
-        final i = z * (n + 1) + x, j = i + n + 1;
-        indices.addAll([i, j, i + 1, i + 1, j, j + 1]);
-      }
-    }
-    scene.add(
-      Node(
-        name: 'Coastal water',
-        mesh: Mesh(
-          MeshGeometry.fromArrays(
-            positions: positions,
-            normals: normals,
-            indices: indices,
-          ),
-          water!,
-        ),
+    final grid = CoastalGrid(world);
+    final geometry = MeshGeometry.fromArrays(
+      positions: grid.positions,
+      normals: grid.normals,
+      indices: grid.indices,
+      bounds: vm.Aabb3.minMax(
+        vm.Vector3(-1760, -1, -1820),
+        vm.Vector3(1840, 1, 1780),
       ),
     );
+    if (!legacyWater) {
+      geometry.setCustomAttribute('bed_height', grid.bedHeights, components: 1);
+    }
+    final ocean = Node(name: 'Coastal water', mesh: Mesh(geometry, water!))
+      ..castsShadows = false
+      ..layers = 2;
+    if (!legacyWater && planarEnabled) {
+      reflector = PlanarReflectorComponent(resolutionScale: .35, layerMask: 1);
+      ocean.addComponent(reflector!);
+    }
+    scene.add(ocean);
     ready = true;
-    open('pier');
+    open(
+      benchmark
+          ? const String.fromEnvironment(
+              'WATER_SCENARIO',
+              defaultValue: 'overview',
+            )
+          : 'pier',
+    );
+    // Use the real lighting/material/pass configuration, including objects
+    // outside the spawn camera. Shader source is already built into bundles;
+    // this primes runtime pipeline variants and resource uploads.
+    ready = false;
+    await scene.warmUp([RenderView(camera: camera)], includeOffscreen: true);
+    if (disposed) return;
+    warmedUp = true;
+    if (!benchmark) await sound.load(world);
+    if (disposed) return;
+    ready = true;
   }
 
   void open(String name) {
     if (!ready) return;
     clearInput();
     pitch = 0;
-    flying = name == 'overview';
+    flying = name == 'overview' || name == 'water';
     switch (name) {
+      case 'shore':
+        feet.setValues(5, world.groundAt(5, -45, 100), -45);
+        yaw = math.pi;
+        pitch = -.24;
+        break;
+      case 'water':
+        feet.setValues(55, 2.3, 35);
+        yaw = math.pi;
+        pitch = -.2;
+        break;
       case 'village':
         feet.setValues(42, world.groundAt(42, -107, 100), -107);
         yaw = 0;
@@ -132,7 +185,16 @@ class IslandGame {
 
   void tick(Duration elapsed, double delta) {
     if (!ready || disposed) return;
-    water?.parameters.setFloat('time', elapsed.inMicroseconds / 1e6);
+    waterTime = freezeWater ? 12 : elapsed.inMicroseconds / 1e6;
+    water?.parameters.setFloat('time', waterTime);
+    sound.update(
+      elapsed.inMicroseconds / 1e6,
+      feet.x,
+      camera.position.y,
+      feet.z,
+      yaw,
+      frozen: freezeWater,
+    );
     final dt = delta.clamp(0.0, .05),
         speed = flying ? (sprint ? 60.0 : 20.0) : (sprint ? 5.5 : 2.8);
     final len = math.max(1.0, math.sqrt(forward * forward + strafe * strafe));
@@ -181,12 +243,18 @@ class IslandGame {
     'yaw': yaw,
     'pitch': pitch,
     'flutterGpu': 'stock',
+    'water': legacyWater ? 'legacy' : 'coastal-v2',
+    'planarReflection': reflector?.enabled ?? false,
+    'waterFrozen': freezeWater,
+    'waterTime': waterTime,
+    'warmedUp': warmedUp,
     'sceneFork': '93d420be938213d19744723f8f6bb56be301187d',
     'source': ready ? world.metadata['revision'] : null,
     'buildings': ready ? (world.metadata['buildings'] as List).length : 0,
   };
   void dispose() {
     disposed = true;
+    unawaited(sound.dispose());
     clearInput();
     scene.removeAll();
   }

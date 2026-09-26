@@ -1,6 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'water_benchmark.dart';
+
 import 'package:flutter_scene/scene.dart' show SceneView;
 import 'package:marionette_flutter/marionette_flutter.dart';
 
@@ -33,6 +36,7 @@ class _IslandPageState extends State<IslandPage> {
   final keys = <LogicalKeyboardKey>{};
   String? error;
   bool active = true;
+  WaterBenchmark? benchmark;
   AppLifecycleListener? lifecycle;
   @override
   void initState() {
@@ -40,11 +44,37 @@ class _IslandPageState extends State<IslandPage> {
     lifecycle = AppLifecycleListener(
       onStateChange: (state) {
         active = state == AppLifecycleState.resumed;
+        game.sound.setActive(active);
         clear();
         if (mounted) setState(() {});
       },
     );
     if (kDebugMode) {
+      registerMarionetteExtension(
+        name: 'madogiwa.inspectSoundscape',
+        description:
+            'Audio readiness, bed positions, levels, and surf event counts.',
+        callback: (_) async =>
+            MarionetteExtensionResult.success(await game.sound.inspect()),
+      );
+      registerMarionetteExtension(
+        name: 'madogiwa.setWaterPreview',
+        description: 'frozen=true|false; reflection=true|false. For deterministic screenshots.',
+        callback: (p) async {
+          for (final key in ['frozen', 'reflection']) {
+            if (p[key] != null && !['true', 'false'].contains('${p[key]}')) {
+              return MarionetteExtensionResult.invalidParams('$key=true|false');
+            }
+          }
+          if (p['frozen'] != null) {
+            game.freezeWater = '${p['frozen']}' == 'true';
+          }
+          if (p['reflection'] != null && game.reflector != null) {
+            game.reflector!.enabled = '${p['reflection']}' == 'true';
+          }
+          return MarionetteExtensionResult.success(game.inspect());
+        },
+      );
       registerMarionetteExtension(
         name: 'madogiwa.inspectTidewater',
         description: 'Island port readiness, camera and source versions.',
@@ -53,12 +83,18 @@ class _IslandPageState extends State<IslandPage> {
       );
       registerMarionetteExtension(
         name: 'madogiwa.openTidewater',
-        description: 'name= pier | village | overview',
+        description: 'name= pier | village | overview | shore | water',
         callback: (p) async {
           final name = p['name'];
-          if (!['pier', 'village', 'overview'].contains(name)) {
+          if (![
+            'pier',
+            'village',
+            'overview',
+            'shore',
+            'water',
+          ].contains(name)) {
             return MarionetteExtensionResult.invalidParams(
-              'name=pier|village|overview',
+              'name=pier|village|overview|shore|water',
             );
           }
           if (!game.ready) {
@@ -73,6 +109,9 @@ class _IslandPageState extends State<IslandPage> {
     game
         .load()
         .then((_) {
+          if (mounted && IslandGame.benchmark) {
+            benchmark = WaterBenchmark(game, () => active);
+          }
           if (mounted) setState(() {});
         })
         .catchError((Object e, StackTrace s) {
@@ -167,7 +206,7 @@ class _IslandPageState extends State<IslandPage> {
                       children: [
                         CircularProgressIndicator(),
                         SizedBox(height: 16),
-                        Text('島を読み込んでいます…'),
+                        Text('島と描画を準備しています…'),
                       ],
                     ),
                   )
@@ -263,6 +302,22 @@ class _IslandPageState extends State<IslandPage> {
               ),
             ),
             Positioned(
+              bottom: 86,
+              right: 24,
+              child: SafeArea(
+                child: IconButton.filledTonal(
+                  tooltip: game.sound.muted ? '環境音をオン' : '環境音をミュート',
+                  onPressed: () async {
+                    await game.sound.toggleMute();
+                    if (mounted) setState(() {});
+                  },
+                  icon: Icon(
+                    game.sound.muted ? Icons.volume_off : Icons.volume_up,
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
               bottom: 24,
               right: 24,
               child: SafeArea(
@@ -282,6 +337,7 @@ class _IslandPageState extends State<IslandPage> {
   );
   @override
   void dispose() {
+    benchmark?.dispose();
     lifecycle?.dispose();
     game.dispose();
     focus.dispose();

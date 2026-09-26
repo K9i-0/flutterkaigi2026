@@ -1,25 +1,108 @@
-// Stock Flutter GPU: two analytic wave bands, no compute or SDK patches.
+// Raster-only coastal water: no compute dispatch, SDK or Impeller changes.
+// Alpha routing is required to sample the opaque scene; radiance already
+// contains transmission, so alpha=1 avoids blending the background twice.
 material {
   name: "CoastalWater",
   shading_model: lit,
+  blending: alpha,
+  depth_write: true,
   culling: none,
-  parameters: [{type: float, name: time, default: 0.0}],
+  engine_inputs: [ scene_color, scene_depth, planar_reflection ],
+  parameters: [
+    { type: float, name: time, default: 0.0 },
+    { type: vec3, name: sun_direction, default: [0.6, 1.0, 0.4] },
+  ],
+  attributes: [{type: float, name: bed_height}],
+  varyings: [{type: float, name: bed_y}],
 }
 vertex {
   void Vertex(inout VertexInputs vertex) {
     vec3 p=vertex.world_position;
-    float a=p.x*0.12+p.z*0.07-material_params.time*0.9;
-    float b=p.x*-0.06+p.z*0.16-material_params.time*1.1;
-    p.y+=0.12*sin(a)+0.06*sin(b);
+    float t=material_params.time;
+    float a=dot(p.xz,vec2(0.055,0.19))-t*1.1;
+    float b=dot(p.xz,vec2(-0.23,0.13))-t*1.5;
+    float c=dot(p.xz,vec2(0.42,0.29))-t*1.85;
+    float shore=smoothstep(0.0,4.0,max(-bed_height,0.0));
+    float wave=(0.24*sin(a)+0.12*sin(b)+0.055*sin(c))*shore;
+    p.y+=wave;
+    vec2 slope=(0.24*vec2(0.055,0.19)*cos(a)
+        +0.12*vec2(-0.23,0.13)*cos(b)+0.055*vec2(0.42,0.29)*cos(c))*shore;
     vertex.world_position=p;
-    vertex.world_normal=normalize(vertex.world_normal+vec3(-0.0144*cos(a)+0.0036*cos(b),0.0,-0.0084*cos(a)-0.0096*cos(b)));
+    vertex.world_normal=normalize(vertex.world_normal+vec3(-slope.x,0.0,-slope.y));
+    bed_y=bed_height;
   }
 }
 fragment {
+  float hash21(vec2 p) {
+    p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);
+    return fract(p.x*p.y);
+  }
+  float noise2(vec2 p) {
+    vec2 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);
+    return mix(mix(hash21(i),hash21(i+vec2(1.0,0.0)),f.x),
+      mix(hash21(i+vec2(0.0,1.0)),hash21(i+vec2(1.0,1.0)),f.x),f.y);
+  }
   void Surface(inout MaterialInputs material) {
-    material.base_color=vec4(0.018,0.19,0.23,1.0);
+    vec3 p=GetWorldPosition(),V=GetViewDirection();
+    float t=material_params.time;
+    float depth=max(p.y-bed_y,0.0);
+    // Analytic normal waves, evaluated per pixel and attenuated before they
+    // become subpixel, rather than aliasing tiny geometry at the horizon.
+    float footprint=max(length(dFdx(p.xz)),length(dFdy(p.xz)));
+    float detail=1.0-smoothstep(0.15,1.2,footprint);
+    float phase=noise2(p.xz*0.21+t*vec2(.03,-.02))*6.0;
+    float swell=noise2(p.xz*.065+vec2(t*.015,-t*.008));
+    float q=dot(p.xz,vec2(.31,-.18))-t*.75+swell*4.0;
+    vec2 swellSlope=vec2(.055,-.04)*cos(q)
+      +vec2(.025,.04)*sin(dot(p.xz,vec2(.12,.27))+t*.65+phase*.3);
+    // Advected two-scale noise avoids parallel, evenly spaced ripple bands.
+    vec2 uv=p.xz*.9+vec2(t*.17,-t*.11);
+    float h=noise2(uv)+.4*noise2(uv*2.3+phase);
+    float hx=noise2(uv+vec2(.12,0.0))
+      +.4*noise2((uv+vec2(.12,0.0))*2.3+phase);
+    float hz=noise2(uv+vec2(0.0,.12))
+      +.4*noise2((uv+vec2(0.0,.12))*2.3+phase);
+    vec2 slope=vec2(hx-h,hz-h)*1.3*detail+swellSlope;
+    vec3 N=normalize(vec3(-slope.x,0.0,-slope.y)+GetWorldNormal());
+    if(N.y<0.0) N=-N;
+    float ndv=clamp(dot(N,V),0.0,1.0);
+    float fresnel=.0204+.9796*pow(1.0-ndv,5.0);
+    float own=GetFragmentViewDepth();
+    float rawGap=max(GetSceneDepth(vec2(0.0))-own,0.0);
+    vec2 offset=N.xz*.009*smoothstep(0.0,1.0,rawGap);
+    // Never drag foreground pilings/land into the water by refraction.
+    float shiftedGap=GetSceneDepth(offset)-own;
+    offset*=smoothstep(0.0,.35,shiftedGap);
+    float pathLength=min(max(GetSceneDepth(offset)-own,0.0),80.0);
+    vec3 transmission=exp(-vec3(.29,.085,.055)*pathLength);
+    vec3 deep=vec3(.006,.095,.125);
+    vec3 shallow=GetSceneColor(offset);
+    // Small moving caustic modulation on the visible shallow bed only.
+    float caustic=pow(max(0.0,sin(dot(p.xz,vec2(1.8,.7))+t*.9)
+        *sin(dot(p.xz,vec2(-.6,2.1))-t*.7)),6.0);
+    shallow*=1.0+.2*caustic*exp(-depth*.45)*detail;
+    vec3 body=shallow*transmission+deep*(1.0-transmission);
+    vec4 reflected=GetPlanarReflection();
+    // Sky fallback is supplied by the engine's IBL when capture is disabled.
+    vec3 waterLight=body*(1.0-fresnel)+reflected.rgb*fresnel*reflected.a;
+    vec3 L=normalize(material_params.sun_direction);
+    float glint=pow(max(dot(reflect(-L,N),V),0.0),450.0)*2.8;
+    waterLight+=vec3(1.0,.92,.74)*glint*reflected.a;
+    // Interrupted shallow breakers travel toward decreasing depth. Fine noise
+    // breaks the white strip into lace instead of an opaque coastline outline.
+    float foamNoise=noise2(p.xz*2.4+vec2(t*.13,-t*.09));
+    float breakPhase=depth*3.8+t*1.05+noise2(p.xz*.22)*1.8;
+    float breaker=smoothstep(.62,.94,sin(breakPhase))
+      *(1.0-smoothstep(.2,2.0,depth));
+    float contact=(1.0-smoothstep(.04,.32,rawGap))*.5;
+    float foam=clamp(max(breaker*.75,contact)*smoothstep(.26,.66,foamNoise),0.0,.9);
+    float edge=smoothstep(0.0,.10,rawGap);
+    material.base_color=vec4(vec3(.62,.68,.65)*foam,edge);
+    material.emissive=waterLight*(1.0-foam);
+    material.normal=N;
     material.metallic=0.0;
-    material.roughness=0.18;
+    material.specular=.5*(1.0-reflected.a)*(1.0-foam);
+    material.roughness=mix(.17,.65,foam);
     PrepareMaterial(material);
   }
 }

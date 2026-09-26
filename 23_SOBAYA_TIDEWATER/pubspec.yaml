@@ -15,6 +15,7 @@ dependencies:
   hooks: ^2.0.2
   vector_math: ^2.4.2
   marionette_flutter: ^0.6.0
+  audioplayers: ^6.5.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -24,5 +25,6 @@ flutter:
   assets:
     - assets/island.glb
     - assets/world.json
+    - assets/audio/
     - assets/heights.bin
     - flutter_scene_generated/

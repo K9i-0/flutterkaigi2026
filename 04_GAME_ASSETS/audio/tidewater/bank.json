@@ -1,0 +1,295 @@
+{
+  "source": "https://github.com/dgreenheck/tidewater",
+  "revision": "4811ba48d795197de5621985f404e765c0b7c0ef",
+  "format": "PCM s16le, mono, 32000 Hz",
+  "bank": {
+    "surf_far": {
+      "loop": true,
+      "clips": [
+        {
+          "file": "surf_far.wav",
+          "lufs": -23
+        }
+      ],
+      "sourceSha256": "a4c0068c83ae7752c0b666cf06548ac917aefd61bb49f970d9f19d52b4f7eaa4"
+    },
+    "wind": {
+      "loop": true,
+      "clips": [
+        {
+          "file": "wind.wav",
+          "lufs": -23.6
+        }
+      ],
+      "sourceSha256": "3e5d45f75364bf797f375061ed0232724e0570c1ff8f64c4c97498093e1789ec"
+    },
+    "pier_lap": {
+      "loop": true,
+      "clips": [
+        {
+          "file": "pier_lap.wav",
+          "lufs": -30.7
+        }
+      ],
+      "sourceSha256": "e020be075543b148dfb2b47540a605c1a30d25e5d18206b945b949b96a32079a"
+    },
+    "surf_crash": {
+      "loop": false,
+      "clips": [
+        {
+          "file": "surf_crash_0.wav",
+          "lufs": -13,
+          "start": 0.08,
+          "duration": 3.254
+        },
+        {
+          "file": "surf_crash_1.wav",
+          "lufs": -13.4,
+          "start": 3.414,
+          "duration": 2.504
+        },
+        {
+          "file": "surf_crash_2.wav",
+          "lufs": -14.1,
+          "start": 5.998,
+          "duration": 2.554
+        },
+        {
+          "file": "surf_crash_3.wav",
+          "lufs": -17,
+          "start": 8.632,
+          "duration": 1.304
+        },
+        {
+          "file": "surf_crash_4.wav",
+          "lufs": -13,
+          "start": 10.016,
+          "duration": 2.804
+        },
+        {
+          "file": "surf_crash_5.wav",
+          "lufs": -14,
+          "start": 12.9,
+          "duration": 2.204
+        },
+        {
+          "file": "surf_crash_6.wav",
+          "lufs": -12.7,
+          "start": 15.184,
+          "duration": 2.7493
+        }
+      ],
+      "sourceSha256": "9e09d4ec25c4b31114f7c44c1a2a57e8d84589caa64592817df5b79d8174e6ea"
+    },
+    "surf_wash": {
+      "loop": false,
+      "clips": [
+        {
+          "file": "surf_wash_0.wav",
+          "lufs": -12.4,
+          "start": 0.08,
+          "duration": 1.404
+        },
+        {
+          "file": "surf_wash_1.wav",
+          "lufs": -11.3,
+          "start": 1.564,
+          "duration": 2.054
+        },
+        {
+          "file": "surf_wash_2.wav",
+          "lufs": -16.5,
+          "start": 3.698,
+          "duration": 1.504
+        },
+        {
+          "file": "surf_wash_3.wav",
+          "lufs": -13.7,
+          "start": 5.282,
+          "duration": 1.354
+        },
+        {
+          "file": "surf_wash_4.wav",
+          "lufs": -14.5,
+          "start": 6.716,
+          "duration": 1.904
+        },
+        {
+          "file": "surf_wash_5.wav",
+          "lufs": -22.3,
+          "start": 8.7,
+          "duration": 1.154
+        }
+      ],
+      "sourceSha256": "cad02b8c23a584290da4a7e73742e9477d4088d927aae19c1b852f1cf53619c7"
+    },
+    "surf_backwash": {
+      "loop": false,
+      "clips": [
+        {
+          "file": "surf_backwash_0.wav",
+          "lufs": -13.1,
+          "start": 0.08,
+          "duration": 1.804
+        },
+        {
+          "file": "surf_backwash_1.wav",
+          "lufs": -17.7,
+          "start": 1.964,
+          "duration": 1.904
+        },
+        {
+          "file": "surf_backwash_2.wav",
+          "lufs": -22.1,
+          "start": 3.948,
+          "duration": 3.804
+        },
+        {
+          "file": "surf_backwash_3.wav",
+          "lufs": -16.6,
+          "start": 7.832,
+          "duration": 2.254
+        },
+        {
+          "file": "surf_backwash_4.wav",
+          "lufs": -14.4,
+          "start": 10.166,
+          "duration": 2.394
+        },
+        {
+          "file": "surf_backwash_5.wav",
+          "lufs": -15.9,
+          "start": 12.64,
+          "duration": 2.404
+        }
+      ],
+      "sourceSha256": "9e771de117448c7d672c888a472777a9074b63ab904a5c121f5624f4f4fa4b81"
+    },
+    "gull": {
+      "loop": false,
+      "clips": [
+        {
+          "file": "gull_0.wav",
+          "lufs": -15.9,
+          "start": 0.08,
+          "duration": 1.001
+        },
+        {
+          "file": "gull_1.wav",
+          "lufs": -16.2,
+          "start": 1.161,
+          "duration": 1.404
+        },
+        {
+          "file": "gull_2.wav",
+          "lufs": -18.1,
+          "start": 2.645,
+          "duration": 0.904
+        },
+        {
+          "file": "gull_3.wav",
+          "lufs": -11.8,
+          "start": 3.629,
+          "duration": 1.114
+        },
+        {
+          "file": "gull_4.wav",
+          "lufs": -12.8,
+          "start": 4.823,
+          "duration": 1.044
+        },
+        {
+          "file": "gull_5.wav",
+          "lufs": -12.8,
+          "start": 5.947,
+          "duration": 0.5267
+        }
+      ],
+      "sourceSha256": "467dd8e48f66c5b497f051c622ca7f753b9bf30eaf1ca7b9162b8e234bb674bb"
+    },
+    "bird_forest": {
+      "loop": false,
+      "clips": [
+        {
+          "file": "bird_forest_0.wav",
+          "lufs": -12.8,
+          "start": 0.08,
+          "duration": 1.47
+        },
+        {
+          "file": "bird_forest_1.wav",
+          "lufs": -12,
+          "start": 1.63,
+          "duration": 1.45
+        },
+        {
+          "file": "bird_forest_2.wav",
+          "lufs": -10.9,
+          "start": 3.16,
+          "duration": 1.23
+        },
+        {
+          "file": "bird_forest_3.wav",
+          "lufs": -11.8,
+          "start": 4.47,
+          "duration": 1.59
+        },
+        {
+          "file": "bird_forest_4.wav",
+          "lufs": -12,
+          "start": 6.14,
+          "duration": 1.55
+        },
+        {
+          "file": "bird_forest_5.wav",
+          "lufs": -11.3,
+          "start": 7.77,
+          "duration": 1.38
+        },
+        {
+          "file": "bird_forest_6.wav",
+          "lufs": -11.9,
+          "start": 9.23,
+          "duration": 1.16
+        },
+        {
+          "file": "bird_forest_7.wav",
+          "lufs": -13.4,
+          "start": 10.47,
+          "duration": 1.3
+        },
+        {
+          "file": "bird_forest_8.wav",
+          "lufs": -13.7,
+          "start": 11.85,
+          "duration": 1.12
+        },
+        {
+          "file": "bird_forest_9.wav",
+          "lufs": -11.9,
+          "start": 13.05,
+          "duration": 1.45
+        },
+        {
+          "file": "bird_forest_10.wav",
+          "lufs": -7.7,
+          "start": 14.58,
+          "duration": 1.99
+        },
+        {
+          "file": "bird_forest_11.wav",
+          "lufs": -12.1,
+          "start": 16.65,
+          "duration": 1.2
+        },
+        {
+          "file": "bird_forest_12.wav",
+          "lufs": -11,
+          "start": 17.93,
+          "duration": 1.06
+        }
+      ],
+      "sourceSha256": "a5368bcbbaae5b7521322f225cab99f644abab975c6c5db1a17b9232ada6f032"
+    }
+  }
+}

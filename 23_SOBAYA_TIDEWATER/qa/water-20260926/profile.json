@@ -1,0 +1,57 @@
+{
+  "device": "MacBook Air M4, 32 GB",
+  "date": "2026-09-26",
+  "flutter": "3.47.2",
+  "backend": "Metal/Impeller, stock Flutter GPU",
+  "scope": "Single fixed overview sample per mode, audio disabled; CPU FrameTiming only. Not GPU execution time, FPS, or mobile validation.",
+  "samples": [
+    {
+      "profile": true,
+      "water": "coastal-v2",
+      "reflection": true,
+      "scenario": "overview",
+      "frames": 360,
+      "warmupFrames": 120,
+      "physicalSize": [
+        1600,
+        1200
+      ],
+      "dpr": 2,
+      "renderScale": 0.85,
+      "buildMs": {
+        "p50": 2.311,
+        "p95": 2.752,
+        "max": 3.834
+      },
+      "rasterMs": {
+        "p50": 0.296,
+        "p95": 0.354,
+        "max": 0.558
+      }
+    },
+    {
+      "profile": true,
+      "water": "coastal-v2",
+      "reflection": false,
+      "scenario": "overview",
+      "frames": 360,
+      "warmupFrames": 120,
+      "physicalSize": [
+        1600,
+        1200
+      ],
+      "dpr": 2,
+      "renderScale": 0.85,
+      "buildMs": {
+        "p50": 1.412,
+        "p95": 2.667,
+        "max": 2.9
+      },
+      "rasterMs": {
+        "p50": 3.549,
+        "p95": 12.027,
+        "max": 14.63
+      }
+    }
+  ]
+}
