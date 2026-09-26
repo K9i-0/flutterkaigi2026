@@ -3,41 +3,90 @@
   "episode_id": "30951c34-2703-40bf-a993-928226dabb7c",
   "slug": "sobaya-fun-soba-making",
   "title": "そば屋の楽しいそば作り",
-  "generation_id": "14bade5b-6cac-4753-98a3-355978d7091b",
-  "version": 1,
+  "generation_id": "4f2884de-619f-440f-896a-6476a7985f29",
+  "version": 2,
   "model": "wan3.0-video",
-  "video_id": "100bc305-cac3-46f3-b8e2-589e9a08b59a",
+  "video_id": "9a81e0fc-ac3d-4bb3-af30-4bfef3d0f307",
   "video_status": "ready",
   "inputs": [
     {
       "file": "character_sobaya_basic_sheet.png",
-      "assetId": "ec5f8728-fe40-40c2-bd84-ec06f38372bc"
+      "assetId": "a0c9a0ce-44b0-4023-b7fd-c6cc2b211641"
     },
     {
       "file": "Sobaya_voice.wav",
-      "assetId": "cb7a10c5-801d-4ab9-a99b-96abcf5beab4"
+      "assetId": "da624a8b-fa88-45b2-a7c6-d50635642ad0"
     },
     {
       "file": "script.md",
-      "assetId": "f8b0ae6e-68b6-45ae-964a-a69568ffee83"
+      "assetId": "4d492f94-b52e-43d1-941a-c3edf1247ec5"
     },
     {
       "file": "wan3_config.json",
-      "assetId": "ff9db611-6736-4416-a77e-d128c0210424"
+      "assetId": "959f7cda-e4f0-474d-a9d9-ce3acb3f3fb1"
     },
     {
       "file": "input_manifest.json",
-      "assetId": "79f14d41-c714-4c2b-9d87-1cf01f3da7e4"
-    },
-    {
-      "file": "edit_plan.json",
-      "assetId": "30ae7ee2-716b-424e-af72-ffe65fdad2a0"
+      "assetId": "8260d89b-d074-4246-bb6e-a17ccb0217c0"
     },
     {
       "file": "remotion/src/edit-manifest.json",
-      "assetId": "ab3daeef-ab60-4d0b-a4ac-eb3137a5b5a8"
+      "assetId": "f9ac2763-5464-4292-9ab4-caa832ad1a70"
+    },
+    {
+      "file": "remotion/src/Composition.tsx",
+      "assetId": "5d5d8e5e-f85c-48ab-9731-42c6b3f5f452"
+    },
+    {
+      "file": "remotion/README.md",
+      "assetId": "4bf28382-2110-4c54-8a7d-e0017d872783"
     }
   ],
   "verified": true,
-  "url": "https://madogiwa.work/episodes/sobaya-fun-soba-making"
+  "url": "https://madogiwa.work/episodes/sobaya-fun-soba-making",
+  "previous_versions": [
+    {
+      "studio_id": "MS-9JP26FSH",
+      "episode_id": "30951c34-2703-40bf-a993-928226dabb7c",
+      "slug": "sobaya-fun-soba-making",
+      "title": "そば屋の楽しいそば作り",
+      "generation_id": "14bade5b-6cac-4753-98a3-355978d7091b",
+      "version": 1,
+      "model": "wan3.0-video",
+      "video_id": "100bc305-cac3-46f3-b8e2-589e9a08b59a",
+      "video_status": "ready",
+      "inputs": [
+        {
+          "file": "character_sobaya_basic_sheet.png",
+          "assetId": "ec5f8728-fe40-40c2-bd84-ec06f38372bc"
+        },
+        {
+          "file": "Sobaya_voice.wav",
+          "assetId": "cb7a10c5-801d-4ab9-a99b-96abcf5beab4"
+        },
+        {
+          "file": "script.md",
+          "assetId": "f8b0ae6e-68b6-45ae-964a-a69568ffee83"
+        },
+        {
+          "file": "wan3_config.json",
+          "assetId": "ff9db611-6736-4416-a77e-d128c0210424"
+        },
+        {
+          "file": "input_manifest.json",
+          "assetId": "79f14d41-c714-4c2b-9d87-1cf01f3da7e4"
+        },
+        {
+          "file": "edit_plan.json",
+          "assetId": "30ae7ee2-716b-424e-af72-ffe65fdad2a0"
+        },
+        {
+          "file": "remotion/src/edit-manifest.json",
+          "assetId": "ab3daeef-ab60-4d0b-a4ac-eb3137a5b5a8"
+        }
+      ],
+      "verified": true,
+      "url": "https://madogiwa.work/episodes/sobaya-fun-soba-making"
+    }
+  ]
 }

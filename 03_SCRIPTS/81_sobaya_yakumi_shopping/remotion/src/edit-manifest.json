@@ -19,5 +19,14 @@
       "duration": 137,
       "trimBefore": 583
     }
+  ],
+  "reframes": [
+    {
+      "startFrame": 564,
+      "endFrame": 775,
+      "scale": 1.2558823529411764,
+      "origin": "top left",
+      "reason": "通報カット右端の窓とパトカーを画角外へ。顔・電話・音声は保持。"
+    }
   ]
 }

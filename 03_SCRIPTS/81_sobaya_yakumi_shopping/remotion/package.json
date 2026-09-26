@@ -18,7 +18,7 @@
     "studio": "remotion studio",
     "typecheck": "tsc",
     "bundle": "remotion bundle",
-    "render": "remotion render src/index.ts SobayaYakumi ../final_remotion_yakumi.mp4 --codec=h264 --crf=16 --concurrency=2 --overwrite"
+    "render": "remotion render src/index.ts SobayaYakumi ../final_remotion_yakumi_call_crop.mp4 --codec=h264 --crf=16 --concurrency=2 --overwrite"
   },
   "sideEffects": [
     "*.css"
