@@ -76,7 +76,12 @@ export const CloneLabFilm: React.FC<{extraFrames?: number}> = ({extraFrames = 0}
       {production.scannerPortraits.map((p, i) => {
         const scale = p.size / p.cropSize;
         return <div key={i} style={{position: 'absolute',left:p.left,top:p.top,width:p.size,height:p.size,overflow:'hidden'}}>
-          {'image' in p && p.image ? <Img src={staticFile(p.image)} style={{width:'100%',height:'100%',objectFit:'cover'}}/> : <Img src={staticFile(production.scannerStillImage)} style={{position:'absolute',maxWidth:'none',width:854*scale,height:480*scale,left:-p.cropX*scale,top:-p.cropY*scale}}/>}
+          {'image' in p && p.image ? <Img src={staticFile(p.image)} style={{width:'100%',height:'100%',objectFit:'cover',filter:'saturate(0.72) contrast(0.86) brightness(0.96) blur(0.9px)'}}/> : <Img src={staticFile(production.scannerStillImage)} style={{position:'absolute',maxWidth:'none',width:854*scale,height:480*scale,left:-p.cropX*scale,top:-p.cropY*scale}}/>}
+          {'image' in p && p.image && <>
+            <AbsoluteFill style={{background:'rgba(38,93,88,0.16)',mixBlendMode:'color'}}/>
+            <AbsoluteFill style={{background:'rgba(19,49,48,0.08)'}}/>
+            <AbsoluteFill style={{background:'repeating-linear-gradient(to bottom,transparent 0px,transparent 2px,rgba(6,25,22,0.10) 2px,rgba(6,25,22,0.10) 3px)'}}/>
+          </>}
         </div>;
       })}
     </AbsoluteFill>
