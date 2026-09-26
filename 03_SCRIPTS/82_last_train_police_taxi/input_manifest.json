@@ -59,6 +59,24 @@
       "boundary": "episode 76 verified pause 2.963129–3.064422 s at -25 dB",
       "usage": "voice_timbre_only",
       "processing": "PCM slice only; no pitch, speed, gain or voice generation"
+    },
+    {
+      "reference": "Image 4",
+      "path": "reference_taxi_japan.png",
+      "source": "built-in image_gen",
+      "generation_prompt_file": "prompt_vehicle_references.txt",
+      "sha256": "d8cc768dafd5fdacef232359be57e0aca808de0c61d73eb58a6a3712ed7124f1",
+      "usage": "vehicle design, livery and Japanese lettering only; not shot composition or number of vehicles",
+      "visual_qa": "Japanese main lettering and registration plate checked; three views of one vehicle, not three vehicles"
+    },
+    {
+      "reference": "Image 5",
+      "path": "reference_police_car_tokyo.png",
+      "source": "built-in image_gen",
+      "generation_prompt_file": "prompt_vehicle_references.txt",
+      "sha256": "6e0ac50adbf3a1b43f60837af17b3355941457e3856c9914d8c2e4e9ce250dfc",
+      "usage": "vehicle design, livery and Japanese lettering only; not shot composition or number of vehicles",
+      "visual_qa": "Japanese main lettering and registration plate checked; three views of one vehicle, not three vehicles"
     }
   ],
   "reference_audio_total_seconds": 12.46,

@@ -20,6 +20,14 @@
       "path": "character_fukuchan_basic_sheet.png"
     },
     {
+      "type": "reference_image",
+      "path": "reference_taxi_japan.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "reference_police_car_tokyo.png"
+    },
+    {
       "type": "reference_audio",
       "path": "voice_ref_sobaya.wav"
     },
