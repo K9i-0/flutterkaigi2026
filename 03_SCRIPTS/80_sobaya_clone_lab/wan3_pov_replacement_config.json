@@ -1,0 +1,46 @@
+{
+  "model": "wan3.0-video",
+  "audio_source": "wan3",
+  "audio_sync_strategy": "wan_generated_lip_sync",
+  "reference_audio_usage": "voice_timbre_only",
+  "project_duration": 4,
+  "generation_mode": "single",
+  "prompt_file": "prompt_wan3_pov_replacement.txt",
+  "media": [
+    {
+      "type": "reference_image",
+      "path": "reference_lab_pod_pov_adopted.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_yametaro_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_sobaya_basic_sheet.png"
+    },
+    {
+      "type": "reference_audio",
+      "path": "yametaro_pov_existing_voice_reference.wav"
+    }
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 4,
+    "audio": true,
+    "seed": 26092680,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_pov_replacement_seed26092680_480p.mp4",
+  "replacement_scope": {
+    "parent_edited_duration_seconds": 36.3,
+    "unit": "single user-requested replacement shot",
+    "target_start_frame": 90,
+    "target_end_frame_exclusive": 180,
+    "fps": 30,
+    "final_audio_policy": "retain_existing_master; generated speech for alignment review only",
+    "sync_status": "unverified; exact existing audio lip-sync is not guaranteed"
+  }
+}
