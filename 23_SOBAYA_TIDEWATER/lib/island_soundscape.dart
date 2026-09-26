@@ -10,8 +10,9 @@ import 'coastal_audio_mix.dart';
 import 'island_world.dart';
 
 /// Recorded surf, wind, dock water and intermittent birds. Assets are local;
-/// at most 3 beds + 3 surf stages + 1 bird + 1 footstep, with bounded async mixer updates.
+/// at most 4 beds + 3 surf stages + 1 bird + 1 footstep + 1 thunder, with bounded async mixer updates.
 class IslandSoundscape {
+  double daylight = 1, rain = 0, wind = .4, volume = .8;
   final _beds = <String, AudioPlayer>{};
   final _voices = <String, AudioPlayer>{};
   final _levels = <String, double>{};
@@ -47,7 +48,13 @@ class IslandSoundscape {
         await p.setSourceAsset('audio/${_bank[name]['clips'][0]['file']}');
         if (_audible) await p.resume();
       }
-      for (final name in ['crash', 'wash', 'back', 'bird', 'step']) {
+      final rainPlayer = AudioPlayer();
+      _beds['rain'] = rainPlayer;
+      await rainPlayer.setReleaseMode(ReleaseMode.loop);
+      await rainPlayer.setVolume(0);
+      await rainPlayer.setSourceAsset('weather_audio/rain.wav');
+      if (_audible) await rainPlayer.resume();
+      for (final name in ['thunder', 'crash', 'wash', 'back', 'bird', 'step']) {
         if (_disposed) return;
         _voices[name] = AudioPlayer();
       }
@@ -122,7 +129,10 @@ class IslandSoundscape {
     final near = CoastalAudioMix.surfWeight(distance);
     final gust = .55 + .25 * math.sin(time * .13) + .2 * math.sin(time * .37);
     await _bed('surf_far', -31, .25 + .75 / (1 + distance / 120));
-    await _bed('wind', -36, gust.clamp(.1, 1.0));
+    await _bed('wind', -36, gust.clamp(.1, 1.0) * (.25 + wind * 1.8));
+    final rainGain = rain * .25 * volume;
+    _levels['rain'] = rainGain;
+    await _beds['rain']!.setVolume(_audible ? rainGain : 0);
     await _bed('pier_lap', -32, mix.pier);
     if (!_audible) return;
     final cycle = CoastalAudioMix.waveCycle(time);
@@ -141,7 +151,7 @@ class IslandSoundscape {
       _backAt = null;
       await _shot('back', 'surf_backwash', -27, near, mix.pan);
     }
-    if (time >= _nextBird) {
+    if (time >= _nextBird && daylight > .2 && rain < .4) {
       _nextBird = time + 9 + _random.nextDouble() * 12;
       final forest = mix.inland > .5;
       await _shot(
@@ -153,6 +163,21 @@ class IslandSoundscape {
       );
       birdEvents++;
     }
+  }
+
+  void thunder(double strength) {
+    if (!ready || !_audible) return;
+    unawaited(() async {
+      try {
+        final p = _voices['thunder']!;
+        await p.stop();
+        await p.setVolume(strength * volume * .45);
+        await p.setSourceAsset('weather_audio/thunder.wav');
+        if (_audible) await p.resume();
+      } catch (e) {
+        if (!_disposed) _failed(e);
+      }
+    }());
   }
 
   void footstep(String surface, {bool landing = false, bool left = false}) {
@@ -177,7 +202,8 @@ class IslandSoundscape {
           target,
           (_bank[name]['clips'][0]['lufs'] as num).toDouble(),
         ) *
-        weight;
+        weight *
+        volume;
     final old = _levels[name] ?? 0;
     final next = old + (gain - old) * .25;
     if ((next - old).abs() > .0005) {
@@ -200,7 +226,9 @@ class IslandSoundscape {
     await player.stop();
     await player.setBalance(pan);
     await player.setVolume(
-      CoastalAudioMix.gain(target, (clip['lufs'] as num).toDouble()) * weight,
+      CoastalAudioMix.gain(target, (clip['lufs'] as num).toDouble()) *
+          weight *
+          volume,
     );
     await player.setSourceAsset('audio/${clip['file']}');
     if (_audible) await player.resume();

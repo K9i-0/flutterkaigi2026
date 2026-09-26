@@ -8,6 +8,8 @@ import 'package:flutter_scene/scene.dart' show SceneView;
 import 'package:marionette_flutter/marionette_flutter.dart';
 
 import 'island_game.dart';
+import 'atmosphere_panel.dart';
+import 'atmosphere_settings.dart';
 
 void main() {
   if (kDebugMode) {
@@ -35,21 +37,49 @@ class _IslandPageState extends State<IslandPage> {
   final focus = FocusNode();
   final keys = <LogicalKeyboardKey>{};
   String? error;
-  bool active = true;
+  bool active = true, settingsOpen = false;
+  void toggleSettings() {
+    if (game.atmosphere == null) return;
+    clear();
+    setState(() => settingsOpen = !settingsOpen);
+    if (!settingsOpen) {
+      game.atmosphere?.save();
+      focus.requestFocus();
+    }
+  }
+
   WaterBenchmark? benchmark;
   AppLifecycleListener? lifecycle;
   @override
   void initState() {
     super.initState();
+    FocusManager.instance.addEarlyKeyEventHandler(settingsKey);
     lifecycle = AppLifecycleListener(
       onStateChange: (state) {
         active = state == AppLifecycleState.resumed;
         game.sound.setActive(active);
+        if (!active) game.atmosphere?.save();
         clear();
         if (mounted) setState(() {});
       },
     );
     if (kDebugMode) {
+      registerMarionetteExtension(
+        name: 'madogiwa.setAtmosphere',
+        description: 'hour=0..23.99, weather=clear|cloudy|mist|rain|storm; other AtmosphereSettings fields.',
+        callback: (p) async {
+          final a = game.atmosphere;
+          if (a == null) return MarionetteExtensionResult.error(1, 'Not ready');
+          final values = <String, dynamic>{...a.settings.toJson()};
+          for (final e in p.entries) {
+            values[e.key] = e.key == 'autoTime'
+                ? e.value == 'true'
+                : double.tryParse(e.value) ?? e.value;
+          }
+          a.set(AtmosphereSettings.fromJson(values));
+          return MarionetteExtensionResult.success(a.inspect());
+        },
+      );
       registerMarionetteExtension(
         name: 'madogiwa.drivePlayer',
         description: 'Deterministic collision/jump QA: seconds 0..3, forward/right -1..1, jump=true, pitch optional.',
@@ -164,7 +194,18 @@ class _IslandPageState extends State<IslandPage> {
         keys.contains(LogicalKeyboardKey.shiftRight);
   }
 
+  KeyEventResult settingsKey(KeyEvent e) {
+    if (e is KeyDownEvent &&
+        e.logicalKey == LogicalKeyboardKey.escape &&
+        game.ready) {
+      toggleSettings();
+      return KeyEventResult.handled;
+    }
+    return KeyEventResult.ignored;
+  }
+
   KeyEventResult key(FocusNode _, KeyEvent e) {
+    if (settingsOpen) return KeyEventResult.ignored;
     final movement = {
       LogicalKeyboardKey.keyW,
       LogicalKeyboardKey.keyA,
@@ -246,7 +287,9 @@ class _IslandPageState extends State<IslandPage> {
                     behavior: HitTestBehavior.opaque,
                     onTap: () => focus.requestFocus(),
                     onPanStart: (_) => focus.requestFocus(),
-                    onPanUpdate: (d) => game.look(d.delta.dx, d.delta.dy),
+                    onPanUpdate: (d) {
+                      if (!settingsOpen) game.look(d.delta.dx, d.delta.dy);
+                    },
                     child: TickerMode(
                       enabled: active,
                       child: RepaintBoundary(
@@ -259,7 +302,7 @@ class _IslandPageState extends State<IslandPage> {
                     ),
                   ),
           ),
-          if (game.ready) ...[
+          if (game.ready && !settingsOpen) ...[
             const Center(
               child: Text(
                 '·',
@@ -291,6 +334,13 @@ class _IslandPageState extends State<IslandPage> {
                       ],
                     ),
                     const Spacer(),
+                    if (game.atmosphere != null)
+                      IconButton.filledTonal(
+                        key: const ValueKey('open-atmosphere'),
+                        tooltip: '時間と天気の設定',
+                        onPressed: toggleSettings,
+                        icon: const Icon(Icons.tune),
+                      ),
                     for (final item in [
                       ('pier', '桟橋'),
                       ('village', '村'),
@@ -379,12 +429,34 @@ class _IslandPageState extends State<IslandPage> {
               ),
             ),
           ],
+          if (settingsOpen && game.atmosphere != null) ...[
+            Positioned.fill(
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: toggleSettings,
+                child: const ColoredBox(color: Color(0x16000000)),
+              ),
+            ),
+            Positioned(
+              top: 16,
+              bottom: 16,
+              right: 16,
+              width: (MediaQuery.sizeOf(context).width - 32).clamp(0.0, 400.0),
+              child: SafeArea(
+                child: AtmospherePanel(
+                  atmosphere: game.atmosphere!,
+                  onClose: toggleSettings,
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     ),
   );
   @override
   void dispose() {
+    FocusManager.instance.removeEarlyKeyEventHandler(settingsKey);
     benchmark?.dispose();
     lifecycle?.dispose();
     game.dispose();

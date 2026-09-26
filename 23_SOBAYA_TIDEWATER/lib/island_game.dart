@@ -11,6 +11,7 @@ import 'coastal_grid.dart';
 import 'island_soundscape.dart';
 import 'player_controller.dart';
 import 'footprints.dart';
+import 'island_atmosphere.dart';
 
 class IslandGame {
   static const legacyWater = bool.fromEnvironment('WATER_LEGACY');
@@ -19,6 +20,7 @@ class IslandGame {
     'WATER_REFLECTION',
     defaultValue: true,
   );
+  IslandAtmosphere? atmosphere;
   final sound = IslandSoundscape();
   double waterTime = 0;
   bool freezeWater = false;
@@ -129,6 +131,10 @@ class IslandGame {
       ocean.addComponent(reflector!);
     }
     scene.add(ocean);
+    if (!legacyWater) {
+      atmosphere = IslandAtmosphere(scene, world, sound, water, reflector);
+      await atmosphere!.load(island, persist: !benchmark);
+    }
     ready = true;
     open(
       benchmark
@@ -141,6 +147,7 @@ class IslandGame {
     // Use the real lighting/material/pass configuration, including objects
     // outside the spawn camera. Shader source is already built into bundles;
     // this primes runtime pipeline variants and resource uploads.
+    atmosphere?.update(0, camera.position, yaw);
     ready = false;
     // Include the sole shader in startup preparation before the first step.
     // The expired mark is invisible and removed before revealing the scene.
@@ -216,6 +223,7 @@ class IslandGame {
       frozen: freezeWater,
     );
     final dt = delta.clamp(0.0, .05);
+    atmosphere?.update(dt, camera.position, yaw);
     playerTime += dt;
     footprints?.update(playerTime);
     if (flying) {
@@ -270,6 +278,7 @@ class IslandGame {
   }
 
   Map<String, Object?> inspect() => {
+    'atmosphere': atmosphere?.inspect(),
     'ready': ready,
     'flying': flying,
     'grounded': ready ? player.grounded : false,
@@ -293,6 +302,8 @@ class IslandGame {
   };
   void dispose() {
     disposed = true;
+    atmosphere?.save();
+    atmosphere?.dispose();
     unawaited(sound.dispose());
     clearInput();
     scene.removeAll();
