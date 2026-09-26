@@ -1,0 +1,127 @@
+{
+  "title": "窓際力研究所",
+  "studio_id": "MS-TWPXKPRC",
+  "episode_id": "42caf00b-13c5-4ed2-948c-de2bb714a7a9",
+  "slug": "madogiwaryoku-laboratory",
+  "url": "https://madogiwa.work/episodes/madogiwaryoku-laboratory",
+  "generation_id": "fa0ad1d4-2659-4eac-8c97-0f8dc047e1d4",
+  "version": 2,
+  "model": "Wan 3.0 + Irodori-TTS v4.1-Small + Remotion",
+  "video_id": "a94dbd1b-3645-46af-897b-c486cb14772e",
+  "video_status": "ready",
+  "final_video": "final_remotion_clone_lab_scanner_camera.mp4",
+  "size_bytes": 39591974,
+  "duration_seconds": 36.3,
+  "inputs": [
+    {
+      "file": "character_sobaya_basic_sheet.png",
+      "assetId": "8d8cda89-f95a-4604-8870-0e7f35fc5ac0"
+    },
+    {
+      "file": "character_fukuchan_basic_sheet.png",
+      "assetId": "3ccee905-7127-4317-90c6-4c37a7384c41"
+    },
+    {
+      "file": "character_yametaro_basic_sheet.png",
+      "assetId": "a2772e8d-4038-4b6c-934b-50fbc1039f0c"
+    },
+    {
+      "file": "character_takosan_basic_sheet.png",
+      "assetId": "274f47fe-f448-40ca-964d-756cc4c43125"
+    },
+    {
+      "file": "reference_lab_hologram_adopted.png",
+      "assetId": "12a4a66a-fb19-4e2d-8933-dda1f943bbac"
+    },
+    {
+      "file": "reference_lab_pod_pov_adopted.png",
+      "assetId": "1102859e-53e6-46d6-9985-445979ac6ec6"
+    },
+    {
+      "file": "scanner_closed_mouth_frame348.png",
+      "assetId": "6c91ea33-af65-4110-a1ed-9ecbf5dc473b"
+    },
+    {
+      "file": "scanner_fukuchan_lab_pose.png",
+      "assetId": "97345166-d121-4848-9ca1-70ab0a3ad321"
+    },
+    {
+      "file": "logo_sobaya_hazard_master.png",
+      "assetId": "0f6b2220-7c55-4c97-8ad0-5264b9247222"
+    },
+    {
+      "file": "fukuchan_voice_timbre.wav",
+      "assetId": "9fabc08e-f960-4f1f-84f9-7a3e151d1d60"
+    },
+    {
+      "file": "yametaro_voice_timbre.wav",
+      "assetId": "2b5ac2dd-3267-423f-9432-62c84f6abb1f"
+    },
+    {
+      "file": "yametaro_pov_existing_voice_reference.wav",
+      "assetId": "34cf63bd-846f-4a51-bfd5-cb82be70a9bd"
+    },
+    {
+      "file": "takosan_a_reference.wav",
+      "assetId": "7f2eab7a-fddc-476c-aded-f79fbc84f051"
+    },
+    {
+      "file": "takosan_a_scan_madogiwaryoku.wav",
+      "assetId": "6ada22b5-ae4c-4e10-8fcd-24c0bf2d5fa1"
+    },
+    {
+      "file": "takosan_a_hologram.wav",
+      "assetId": "3d1eb6e4-db7c-40e7-afdc-4a6d169cd270"
+    },
+    {
+      "file": "sobaya_hazard_title_call.wav",
+      "assetId": "cc4ef0ee-2985-40f1-83ff-bd1b0a4893e4"
+    },
+    {
+      "file": "opening_dialogue_isolated.wav",
+      "assetId": "52892350-ecf6-43c5-a3e1-f857df8cbe81"
+    },
+    {
+      "file": "pod_ambience_loop.wav",
+      "assetId": "3c561d3b-309c-4053-9321-7eade6bec097"
+    },
+    {
+      "file": "title_boom_from_wan.wav",
+      "assetId": "00213e64-5025-4912-8961-efb3bf9408dc"
+    },
+    {
+      "file": "yametaro_pov_underwater_mild.wav",
+      "assetId": "e0c359bf-14c3-4094-9753-458d5a4da4f9"
+    },
+    {
+      "file": "prompt_wan3.txt",
+      "assetId": "9de004ce-9b9c-4a9e-8a02-1ad606c60c44"
+    },
+    {
+      "file": "prompt_wan3_pov_replacement.txt",
+      "assetId": "811bad71-847d-45d3-bca5-d01e232ce746"
+    },
+    {
+      "file": "wan3_config.json",
+      "assetId": "caaa1fb6-625f-4fff-affd-adb92fa41c27"
+    },
+    {
+      "file": "wan3_pov_replacement_config.json",
+      "assetId": "4a2f128d-ed49-4c39-8cbe-1bd8ba73b484"
+    },
+    {
+      "file": "remotion/src/edit-manifest.json",
+      "assetId": "32350754-fb27-4e91-88c2-4c171a2a9ede"
+    },
+    {
+      "file": "remotion/src/production-edit.json",
+      "assetId": "0e7f9868-17b5-4e9a-91e0-23e04d0530d4"
+    },
+    {
+      "file": "remotion/src/horror-edit.json",
+      "assetId": "4a9070a5-6f94-4c47-8636-140b1d4cbd27"
+    }
+  ],
+  "verified_at": "2026-09-26",
+  "notes": "初回PUTが403となりv1動画をarchived。同一v1再発行はD1制約エラーのため、スキルに従い同一エピソードv2へ再登録。v2の動画・サムネイル・27素材がreadyであることをget_episodeで確認。"
+}
