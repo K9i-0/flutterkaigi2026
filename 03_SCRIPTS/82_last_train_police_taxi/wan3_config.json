@@ -28,6 +28,10 @@
       "path": "reference_police_car_tokyo.png"
     },
     {
+      "type": "reference_image",
+      "path": "reference_izakaya_drinks.png"
+    },
+    {
       "type": "reference_audio",
       "path": "voice_ref_sobaya.wav"
     },

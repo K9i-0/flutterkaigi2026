@@ -6,16 +6,19 @@
   "audio_pcm_slices_verified": 3,
   "reference_audio_total_seconds": 12.46,
   "adopted_dialogue_lines_verified": 9,
-  "prompt_characters": 11681,
-  "validator_stdout": "Prompt: 11,681 characters\nMedia: {'reference_image': 5, 'reference_audio': 3} (10.3 MiB raw)\nRequest: wan3.0-video, 30 s, 480P, 16:9, audio=True\nAudio source: wan3\nAudio sync strategy: wan_generated_lip_sync\nGeneration: single; project duration=30 s; request duration=30 s\nSeed: 820926; prompt_extend=False; watermark=False\nOutput: /Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/03_SCRIPTS/82_last_train_police_taxi/wan3_last_train_seed820926_480p.mp4\nDry-run complete. Add --submit to make the paid request.\n",
+  "prompt_characters": 12720,
+  "validator_stdout": "Prompt: 12,720 characters\nMedia: {'reference_image': 6, 'reference_audio': 3} (12.2 MiB raw)\nRequest: wan3.0-video, 30 s, 480P, 16:9, audio=True\nAudio source: wan3\nAudio sync strategy: wan_generated_lip_sync\nGeneration: single; project duration=30 s; request duration=30 s\nSeed: 820926; prompt_extend=False; watermark=False\nOutput: /Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/03_SCRIPTS/82_last_train_police_taxi/wan3_last_train_seed820926_480p.mp4\nDry-run complete. Add --submit to make the paid request.\n",
   "visual_generation_qa": "not applicable: video not generated",
   "files_sha256": {
-    "script.md": "bd7d01c29ff5d3ff427a283d2075811f4fe2f34c382d3a19780574f42ef85370",
-    "prompt_wan3.txt": "341bbfe08d07f64da820aab20c95225eb4674dc0639489309df373d18b82052b",
-    "wan3_config.json": "6fa1a98764ea132f6f6de84fcfcbff728f6dbf9137e4f677a4cd913b30b20683",
-    "input_manifest.json": "70cc6661ce7830aacdeb0ee395361ebd82f2000db0fa8f0b169b6e7decf96ac6",
-    "prompt_vehicle_references.txt": "b2cc5a55c78c6bc5e065df72efa9625b7db5ed63a369f050f33ff00472e53886"
+    "script.md": "1d2e078e8edc5ec4ea4f4e1b6477e493bb9b3c31b97e700229e1409283cc32e6",
+    "prompt_wan3.txt": "e4a53ddda8446072ddb5591e3ef7846b785bbfe34c32b2232c7b9283c4c37f65",
+    "wan3_config.json": "ceb6091d230cc3555b54e3d352ca35345e1a14fca3d1a78ff4d0a5f1969c7e64",
+    "input_manifest.json": "1645e08c0bd4d67caafae2862e76a88d5d66ebce20aa6fc1d70c390fe55699ed",
+    "prompt_vehicle_references.txt": "b2cc5a55c78c6bc5e065df72efa9625b7db5ed63a369f050f33ff00472e53886",
+    "prompt_izakaya_reference.txt": "dc0649c7bdd4b345ab2c9650233fe86fb7381d9413d6ad280ce671969a2d4482"
   },
   "vehicle_reference_images": 2,
-  "vehicle_lettering_visual_qa": "passed for reference images; video not generated"
+  "vehicle_lettering_visual_qa": "passed for reference images; video not generated",
+  "izakaya_reference_images": 1,
+  "izakaya_reference_visual_qa": "Three assigned drinks and Japanese gag lettering checked; no Yumemin dish"
 }
