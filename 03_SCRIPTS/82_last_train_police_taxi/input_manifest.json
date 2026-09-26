@@ -1,0 +1,66 @@
+{
+  "assets": [
+    {
+      "reference": "Image 1",
+      "path": "character_sobaya_basic_sheet.png",
+      "source": "03_SCRIPTS/00_TEMPLATES/characters/character_sobaya_basic_sheet.png",
+      "sha256": "6de96b8fe2ebf1ce88c2f966d77a1abd7f0c2632322dfe4c527135de67494def",
+      "copy_verified": true
+    },
+    {
+      "reference": "Image 2",
+      "path": "character_yametaro_basic_sheet.png",
+      "source": "03_SCRIPTS/00_TEMPLATES/characters/character_yametaro_basic_sheet.png",
+      "sha256": "1e98502e8051bbacf482f273e551a7dd8b8fb79e2c153865d9e48df690eb91e6",
+      "copy_verified": true
+    },
+    {
+      "reference": "Image 3",
+      "path": "character_fukuchan_basic_sheet.png",
+      "source": "03_SCRIPTS/00_TEMPLATES/characters/character_fukuchan_basic_sheet.png",
+      "sha256": "a3e1f8f9feff43bf501617818f6e8652c2b6b39d72f7982716cbc550cb3b5866",
+      "copy_verified": true
+    },
+    {
+      "reference": "Audio 1",
+      "path": "voice_ref_sobaya.wav",
+      "source": "02_CHARACTERS/Sobaya_voice.wav",
+      "source_sha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "start": 0,
+      "end": 2.45,
+      "duration": 2.45,
+      "sha256": "54d090ff1843d513e2ac2b5520d71c3df102a0ba2e662ee8f09f730fd5b5a338",
+      "boundary": "pause 2.269773–2.617823 s at -32 dB",
+      "usage": "voice_timbre_only",
+      "processing": "PCM slice only; no pitch, speed, gain or voice generation"
+    },
+    {
+      "reference": "Audio 2",
+      "path": "voice_ref_yametaro.wav",
+      "source": "02_CHARACTERS/Yametaro_voice.wav",
+      "source_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "start": 0,
+      "end": 7.0,
+      "duration": 7.0,
+      "sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "boundary": "entire canonical file",
+      "usage": "voice_timbre_only",
+      "processing": "PCM slice only; no pitch, speed, gain or voice generation"
+    },
+    {
+      "reference": "Audio 3",
+      "path": "voice_ref_fukuchan.wav",
+      "source": "02_CHARACTERS/Fukuchan_voice.wav",
+      "source_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "start": 0,
+      "end": 3.01,
+      "duration": 3.01,
+      "sha256": "ffc1cf31f034195ae9676c0d014611d3ab549a3cc1ccf8294660b8789b8a82e4",
+      "boundary": "episode 76 verified pause 2.963129–3.064422 s at -25 dB",
+      "usage": "voice_timbre_only",
+      "processing": "PCM slice only; no pitch, speed, gain or voice generation"
+    }
+  ],
+  "reference_audio_total_seconds": 12.46,
+  "audio_audition": "Not auditioned in this preparation; canonical sources, historical pause selection and PCM boundaries used."
+}

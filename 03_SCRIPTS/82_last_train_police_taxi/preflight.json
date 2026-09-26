@@ -1,0 +1,18 @@
+{
+  "status": "dry_run_passed",
+  "paid_api_submitted": false,
+  "video_generated": false,
+  "image_copies_sha256_verified": 3,
+  "audio_pcm_slices_verified": 3,
+  "reference_audio_total_seconds": 12.46,
+  "adopted_dialogue_lines_verified": 9,
+  "prompt_characters": 10115,
+  "validator_stdout": "Prompt: 10,115 characters\nMedia: {'reference_image': 3, 'reference_audio': 3} (6.3 MiB raw)\nRequest: wan3.0-video, 30 s, 480P, 16:9, audio=True\nAudio source: wan3\nAudio sync strategy: wan_generated_lip_sync\nGeneration: single; project duration=30 s; request duration=30 s\nSeed: 820926; prompt_extend=False; watermark=False\nOutput: /Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/03_SCRIPTS/82_last_train_police_taxi/wan3_last_train_seed820926_480p.mp4\nDry-run complete. Add --submit to make the paid request.\n",
+  "visual_generation_qa": "not applicable: video not generated",
+  "files_sha256": {
+    "script.md": "9d29742bfca8081f18e475b3658b7646a6339380f7330dd6d0a4e22b18c3612a",
+    "prompt_wan3.txt": "0f807046418abdf1360b980e4199b97ed7cf6dd7b74e2b06c52488044f095996",
+    "wan3_config.json": "0f1f8fe0919eca499104812472619d97b4373338378cf06feed9bc717388d3fe",
+    "input_manifest.json": "c219c710dce38dd5a51e85cf0656a4c3dad81701bcc15f8bda371b30b254164a"
+  }
+}
