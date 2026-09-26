@@ -1,0 +1,90 @@
+{
+  "studio_id": "MS-FDSCQ8ZD",
+  "episode_id": "8bc6092a-e71d-4075-ad99-9eccbf08c4d6",
+  "slug": "last-train-police-taxi",
+  "generation_id": "611513d2-62d9-46b1-85da-c387b721e7e4",
+  "version": 1,
+  "model": "wan3.0-video",
+  "video_id": "620f9770-8ce9-4f8c-bed7-aee59f1b3b4d",
+  "video_file": "final_remotion_siren.mp4",
+  "video_status": "ready",
+  "featured": true,
+  "poster_verified": true,
+  "inputs": [
+    {
+      "path": "character_sobaya_basic_sheet.png",
+      "assetId": "d29f39e7-1893-413a-8566-414a43302851"
+    },
+    {
+      "path": "character_yametaro_basic_sheet.png",
+      "assetId": "8bb3dadf-1433-4a9c-802f-ba04e94f2495"
+    },
+    {
+      "path": "character_fukuchan_basic_sheet.png",
+      "assetId": "383070e6-f7bc-4279-a702-495ab1727b0d"
+    },
+    {
+      "path": "reference_taxi_japan.png",
+      "assetId": "f456cc52-db8b-4d23-b7e8-e0e9ef0ca93a"
+    },
+    {
+      "path": "reference_police_car_tokyo.png",
+      "assetId": "041d2758-d8cf-456f-9aa9-c35c7bdd40c1"
+    },
+    {
+      "path": "reference_izakaya_drinks_v2.png",
+      "assetId": "2438cd4b-b5f4-4490-b236-554e579a4f8e"
+    },
+    {
+      "path": "voice_ref_sobaya.wav",
+      "assetId": "0311360a-64ab-4d40-bb4d-0c3abc5ae635"
+    },
+    {
+      "path": "voice_ref_yametaro.wav",
+      "assetId": "e637645c-2922-4714-af12-cdb71b0f205d"
+    },
+    {
+      "path": "voice_ref_fukuchan.wav",
+      "assetId": "6b2ec00c-adfa-43d4-8da7-69f45de0a938"
+    },
+    {
+      "path": "script.md",
+      "assetId": "804bea47-5391-4066-beea-2061435bba2c"
+    },
+    {
+      "path": "wan3_config.json",
+      "assetId": "9d2ceff3-b8d4-42dc-ab19-db7ef6550c5d"
+    },
+    {
+      "path": "input_manifest.json",
+      "assetId": "d3583b7c-8354-4bcb-ac6e-8912b970811b"
+    },
+    {
+      "path": "generation_record.json",
+      "assetId": "03a98adc-62b7-4eb0-a09a-ffad15169182"
+    },
+    {
+      "path": "remotion/src/edit-manifest.json",
+      "assetId": "d75b7931-483b-4263-a288-bf4787937cf5"
+    },
+    {
+      "path": "remotion/siren-source.json",
+      "assetId": "2942668a-84e5-406d-8cde-1c8b62cb4591"
+    },
+    {
+      "path": "remotion/public/police_siren_wan71.wav",
+      "assetId": "a1569ad8-c00e-4f8f-8bb0-55d99a1d501c"
+    },
+    {
+      "path": "remotion/src/Composition.tsx",
+      "assetId": "5e2c26c6-a0e5-40df-b0bf-907952b4fd3a"
+    },
+    {
+      "path": "remotion/package.json",
+      "assetId": "107f9985-97a5-4a53-be84-2b9c5c480139"
+    }
+  ],
+  "all_inputs_ready": true,
+  "prompt_matches": true,
+  "url": "https://madogiwa.work/episodes/last-train-police-taxi"
+}
