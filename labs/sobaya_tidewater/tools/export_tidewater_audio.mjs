@@ -10,7 +10,7 @@ const {BANK}=await import(pathToFileURL(path.join(source,'src/audio/soundBank.js
 const out=path.resolve('../04_GAME_ASSETS/audio/tidewater');
 fs.mkdirSync(out,{recursive:true});
 const manifest={source:'https://github.com/dgreenheck/tidewater',revision,format:'PCM s16le, mono, 32000 Hz',bank:{}};
-for(const name of ['surf_far','wind','pier_lap','surf_crash','surf_wash','surf_backwash','gull','bird_forest']) {
+for(const name of ['surf_far','wind','pier_lap','surf_crash','surf_wash','surf_backwash','gull','bird_forest','step_sand','step_wetsand','step_wood','step_grass','step_rock']) {
  const bank=BANK[name], input=path.join(source,'public/audio',bank.file);
  const entry={loop:bank.loop===true,clips:[],sourceSha256:crypto.createHash('sha256').update(fs.readFileSync(input)).digest('hex')};
  const slices=bank.slices ?? [null];

@@ -51,6 +51,33 @@ class _IslandPageState extends State<IslandPage> {
     );
     if (kDebugMode) {
       registerMarionetteExtension(
+        name: 'madogiwa.drivePlayer',
+        description: 'Deterministic collision/jump QA: seconds 0..3, forward/right -1..1, jump=true, pitch optional.',
+        callback: (p) async {
+          if (!game.ready) {
+            return MarionetteExtensionResult.error(1, 'Not ready');
+          }
+          double num(String k, double fallback) =>
+              double.tryParse('${p[k]}') ?? fallback;
+          final seconds = num('seconds', 0).clamp(0.0, 3.0);
+          game.forward = num('forward', 0).clamp(-1.0, 1.0);
+          game.strafe = num('right', 0).clamp(-1.0, 1.0);
+          if (p['pitch'] != null) {
+            game.pitch = num('pitch', 0).clamp(-1.45, 1.45);
+          }
+          if (p['jump'] == 'true') game.jump();
+          for (var i = 0; i < (seconds * 120).round(); i++) {
+            game.tick(
+              Duration(microseconds: (game.waterTime * 1e6).round()),
+              1 / 120,
+            );
+          }
+          game.clearInput();
+          game.syncCamera();
+          return MarionetteExtensionResult.success(game.inspect());
+        },
+      );
+      registerMarionetteExtension(
         name: 'madogiwa.inspectSoundscape',
         description:
             'Audio readiness, bed positions, levels, and surf event counts.',
@@ -149,9 +176,14 @@ class _IslandPageState extends State<IslandPage> {
       LogicalKeyboardKey.shiftRight,
     };
     if (e is KeyDownEvent && e.logicalKey == LogicalKeyboardKey.keyF) {
-      setState(() => game.flying = !game.flying);
+      setState(game.toggleFlight);
       clear();
       return KeyEventResult.handled;
+    }
+    if (e is KeyDownEvent &&
+        e.logicalKey == LogicalKeyboardKey.space &&
+        !game.flying) {
+      game.jump();
     }
     if (!movement.contains(e.logicalKey)) return KeyEventResult.ignored;
     if (e is KeyUpEvent) {
@@ -302,6 +334,22 @@ class _IslandPageState extends State<IslandPage> {
               ),
             ),
             Positioned(
+              bottom: 142,
+              right: 24,
+              child: SafeArea(
+                child: FilledButton.tonal(
+                  key: const ValueKey('jump'),
+                  onPressed: game.flying
+                      ? null
+                      : () {
+                          game.jump();
+                          focus.requestFocus();
+                        },
+                  child: const Text('ジャンプ'),
+                ),
+              ),
+            ),
+            Positioned(
               bottom: 86,
               right: 24,
               child: SafeArea(
@@ -324,7 +372,7 @@ class _IslandPageState extends State<IslandPage> {
                 child: Text(
                   game.flying
                       ? '飛行中 · WASD / Space 上昇 / C 下降 / F 歩行へ\nドラッグで見回す・Shiftで加速'
-                      : 'WASD / 画面の矢印で移動 · ドラッグで見回す\nShiftで走る · Fで飛行',
+                      : 'WASD / 画面の矢印で移動 · ドラッグで見回す\nSpaceでジャンプ · Shiftで走る · Fで飛行',
                   textAlign: TextAlign.right,
                   style: const TextStyle(shadows: [Shadow(blurRadius: 5)]),
                 ),

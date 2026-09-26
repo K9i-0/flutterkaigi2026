@@ -1,0 +1,22 @@
+material {
+  name: "SandFootprint", shading_model: unlit, blending: alpha,
+  depth_write: false, culling: none,
+  parameters: [{type: float, name: time, default: 0.0}],
+  attributes: [{type: float, name: birth}],
+  varyings: [{type: float, name: born}],
+}
+vertex {
+  void Vertex(inout VertexInputs vertex) { born=birth; }
+}
+fragment {
+  void Surface(inout MaterialInputs material) {
+    vec2 uv=GetUV0();
+    float toe=length((uv-vec2(.5,.67))/vec2(.43,.29));
+    float heel=length((uv-vec2(.5,.24))/vec2(.29,.21));
+    float sole=min(toe,heel);
+    float mask=1.0-smoothstep(.8,1.0,sole);
+    float tread=mix(.72,1.0,smoothstep(.35,.5,fract(uv.y*13.0)));
+    float fade=1.0-smoothstep(9.0,18.0,material_params.time-born);
+    material.base_color=vec4(.16,.115,.055,mask*tread*fade*.4);
+  }
+}

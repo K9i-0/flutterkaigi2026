@@ -10,7 +10,7 @@ import 'coastal_audio_mix.dart';
 import 'island_world.dart';
 
 /// Recorded surf, wind, dock water and intermittent birds. Assets are local;
-/// at most 3 beds + 3 surf stages + 1 bird, with bounded async mixer updates.
+/// at most 3 beds + 3 surf stages + 1 bird + 1 footstep, with bounded async mixer updates.
 class IslandSoundscape {
   final _beds = <String, AudioPlayer>{};
   final _voices = <String, AudioPlayer>{};
@@ -24,7 +24,9 @@ class IslandSoundscape {
   double distance = 0, _nextUpdate = 0, _nextBird = 4;
   double? _washAt, _backAt;
   int? _lastCycle;
-  int surfEvents = 0, birdEvents = 0;
+  int surfEvents = 0, birdEvents = 0, footstepEvents = 0;
+  bool _stepBusy = false;
+  String lastSurface = "";
 
   Iterable<AudioPlayer> get _players => [..._beds.values, ..._voices.values];
   bool get _audible => _active && !muted && !_disposed;
@@ -45,7 +47,7 @@ class IslandSoundscape {
         await p.setSourceAsset('audio/${_bank[name]['clips'][0]['file']}');
         if (_audible) await p.resume();
       }
-      for (final name in ['crash', 'wash', 'back', 'bird']) {
+      for (final name in ['crash', 'wash', 'back', 'bird', 'step']) {
         if (_disposed) return;
         _voices[name] = AudioPlayer();
       }
@@ -153,6 +155,22 @@ class IslandSoundscape {
     }
   }
 
+  void footstep(String surface, {bool landing = false, bool left = false}) {
+    if (!ready || !_audible || _stepBusy) return;
+    _stepBusy = true;
+    lastSurface = surface;
+    unawaited(
+      _shot('step', 'step_$surface', landing ? -29 : -34, 1, left ? -.12 : .12)
+          .then((_) {
+            footstepEvents++;
+          })
+          .catchError((Object e) {
+            if (!_disposed) _failed(e);
+          })
+          .whenComplete(() => _stepBusy = false),
+    );
+  }
+
   Future<void> _bed(String name, double target, double weight) async {
     final gain =
         CoastalAudioMix.gain(
@@ -195,6 +213,8 @@ class IslandSoundscape {
     'error': error,
     'coastDistance': distance,
     'surfEvents': surfEvents,
+    'footstepEvents': footstepEvents,
+    'lastSurface': lastSurface,
     'birdEvents': birdEvents,
     'levels': Map<String, double>.from(_levels),
     'players': {

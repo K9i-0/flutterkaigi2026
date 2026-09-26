@@ -290,6 +290,186 @@
         }
       ],
       "sourceSha256": "a5368bcbbaae5b7521322f225cab99f644abab975c6c5db1a17b9232ada6f032"
+    },
+    "step_sand": {
+      "loop": false,
+      "clips": [
+        {
+          "file": "step_sand_0.wav",
+          "lufs": -25,
+          "start": 0.08,
+          "duration": 0.191
+        },
+        {
+          "file": "step_sand_1.wav",
+          "lufs": -25.4,
+          "start": 0.351,
+          "duration": 0.3153
+        },
+        {
+          "file": "step_sand_2.wav",
+          "lufs": -27,
+          "start": 0.7463,
+          "duration": 0.2237
+        },
+        {
+          "file": "step_sand_3.wav",
+          "lufs": -22.5,
+          "start": 1.05,
+          "duration": 0.516
+        },
+        {
+          "file": "step_sand_4.wav",
+          "lufs": -19.8,
+          "start": 1.646,
+          "duration": 0.436
+        }
+      ],
+      "sourceSha256": "3128efca52668d0aad8ec243963a691b969e2327c5c740f41c71fe624c96242e"
+    },
+    "step_wetsand": {
+      "loop": false,
+      "clips": [
+        {
+          "file": "step_wetsand_0.wav",
+          "lufs": -27.4,
+          "start": 0.08,
+          "duration": 0.171
+        },
+        {
+          "file": "step_wetsand_1.wav",
+          "lufs": -19.6,
+          "start": 0.331,
+          "duration": 0.376
+        },
+        {
+          "file": "step_wetsand_2.wav",
+          "lufs": -21.7,
+          "start": 0.787,
+          "duration": 0.226
+        },
+        {
+          "file": "step_wetsand_3.wav",
+          "lufs": -20.9,
+          "start": 1.093,
+          "duration": 0.246
+        },
+        {
+          "file": "step_wetsand_4.wav",
+          "lufs": -20.1,
+          "start": 1.419,
+          "duration": 0.221
+        }
+      ],
+      "sourceSha256": "c48ebf1ee3124be44d5348689b0e2c32513370c6975d27bde509d6a42a05c9b4"
+    },
+    "step_wood": {
+      "loop": false,
+      "clips": [
+        {
+          "file": "step_wood_0.wav",
+          "lufs": -22.5,
+          "start": 0.08,
+          "duration": 0.4267
+        },
+        {
+          "file": "step_wood_1.wav",
+          "lufs": -20.9,
+          "start": 0.5867,
+          "duration": 0.424
+        },
+        {
+          "file": "step_wood_2.wav",
+          "lufs": -20.8,
+          "start": 1.0907,
+          "duration": 0.424
+        },
+        {
+          "file": "step_wood_3.wav",
+          "lufs": -20.2,
+          "start": 1.5947,
+          "duration": 0.417
+        },
+        {
+          "file": "step_wood_4.wav",
+          "lufs": -20.8,
+          "start": 2.0917,
+          "duration": 0.4326
+        }
+      ],
+      "sourceSha256": "90cb5daf01a8f122bf0a08504f2216869008b0943e588c4bc637f1bd187210d8"
+    },
+    "step_grass": {
+      "loop": false,
+      "clips": [
+        {
+          "file": "step_grass_0.wav",
+          "lufs": -20.7,
+          "start": 0.08,
+          "duration": 0.304
+        },
+        {
+          "file": "step_grass_1.wav",
+          "lufs": -18,
+          "start": 0.464,
+          "duration": 0.3553
+        },
+        {
+          "file": "step_grass_2.wav",
+          "lufs": -19.3,
+          "start": 0.8993,
+          "duration": 0.284
+        },
+        {
+          "file": "step_grass_3.wav",
+          "lufs": -19.5,
+          "start": 1.2633,
+          "duration": 0.254
+        },
+        {
+          "file": "step_grass_4.wav",
+          "lufs": -18.6,
+          "start": 1.5973,
+          "duration": 0.2473
+        }
+      ],
+      "sourceSha256": "31be902e1ddf2530867d447cc3ae602a03c9aa60293d515f27359dbafd5ceb87"
+    },
+    "step_rock": {
+      "loop": false,
+      "clips": [
+        {
+          "file": "step_rock_0.wav",
+          "lufs": -27.1,
+          "start": 0.08,
+          "duration": 0.504
+        },
+        {
+          "file": "step_rock_1.wav",
+          "lufs": -24.8,
+          "start": 0.664,
+          "duration": 0.504
+        },
+        {
+          "file": "step_rock_2.wav",
+          "lufs": -24.7,
+          "start": 1.248,
+          "duration": 0.504
+        },
+        {
+          "file": "step_rock_3.wav",
+          "lufs": -24.8,
+          "start": 1.832,
+          "duration": 0.504
+        },
+        {
+          "file": "step_rock_4.wav",
+          "lufs": -25.6,
+          "start": 2.416,
+          "duration": 0.504
+        }
+      ],
+      "sourceSha256": "82b0a1bb6344b982c789988d99d9d324493ea0a1e7fd1668c0ca2081e8895157"
     }
   }
 }
