@@ -42,3 +42,8 @@
 ## 顔へ寄るアニメーション候補
 
 `final_remotion_pov_face_zoom.mp4`。冒頭0.4秒は奥の3体が見える構図を保持し、その後2秒かけて滑らかにやめ太郎の顔へ寄る。最終切り出しは元854×480上の概ねx235/y168/w352/h198。前景の肩・頭を除外し、終盤は顔アップ。4fpsサンプル静止画で確認、全編デコード成功、音声デコードPCMは生成原版と一致。再現 `python3 remotion/zoom_pov_face_preview.py`。480P素材の拡大により細部は軟らかくなる。本編は未変更。
+
+
+## ズーム描画のガタつき修正
+
+`final_remotion_pov_face_smooth.mp4`。FFmpeg zoompanの整数クロップではなく、各フレームの浮動小数点アフィン逆写像とbicubic補間で描画。位置・倍率の丸めによる段差を避ける。開始0.4秒待機、2秒で顔へ寄るタイミングは維持。再現 `.local/Irodori-TTS/.venv/bin/python 03_SCRIPTS/80_sobaya_clone_lab/remotion/smooth_pov_face_preview.py`。120f／30fps、全編デコード成功、生成原版の音声PCMと一致。元の生成映像自体の動き・造形変化は残る。本編は未変更。
