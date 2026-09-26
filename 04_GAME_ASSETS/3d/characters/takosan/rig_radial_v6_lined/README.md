@@ -13,7 +13,7 @@
 
 検証: `validation.json`のGLB構造・ウェイト・既存ループ端点PASS。`node tools/validate_takosan_float.mjs`で5候補の18関節と実メッシュ変形を検証。ChromeでEの斜め上、A振幅1.5の下面・側面を目視確認。全時刻・全角度の無交差を保証する検査ではない。
 
-適用先: `tools/preview_takosan_float.html`。公式サイトやゲーム本編のsymlinkは未変更。
+適用先: `tools/preview_takosan_float.html`。2026-09-26にそば屋ハザード本編のsymlinkへ採用し、モバイル版も再生成。公式サイトのsymlinkはv5のまま。
 
 追加修正: 拡大画像で確認された縁の奥側の色残りと顎の裏も一度暗色化したが、下記修正で撤回。フード拡大ボタンを追加し、赤枠2か所をChromeの近接表示で確認。
 

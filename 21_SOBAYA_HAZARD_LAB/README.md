@@ -100,6 +100,8 @@ mise exec -- flutter run -d macos
 
 ## モデルと軽量化
 
+2026-09-26: たこさんの参照先を `rig_sheet_v2` から `rig_radial_v6_lined/takosan.glb` へ更新。放射状6脚・暗い内張り・触手接続を反映した。モバイル用も `uv run --with pillow python tools/build_hazard_mobile_models.py --model takosan` で同じ最新版から再生成する。通常版・モバイル版とも27骨、Idle / Talk / Waveを維持し、GLB構造・ウェイト・ループ端点検証PASS。
+
 肩・顔・握り・ガラス／液体表現と、Tripo複数画像入力の調査は[品質改善方針](ASSET_QUALITY_PLAN.md)を参照。
 
 `assets/models/sobaya.glb`は[本編採用GLB正本](../04_GAME_ASSETS/3d/hazard_adopted/sobaya.glb)への相対symlink。ゲーム側へコピーしない。採用したGLBをGit管理対象にし、Tripo生レスポンス・署名付きURL・APIキーは含めない。

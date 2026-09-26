@@ -1,4 +1,5 @@
 """Build separate mobile models, preserving the current game's source assets."""
+import argparse
 import io
 import json
 import struct
@@ -15,7 +16,7 @@ SOURCES = {
     'sobaya': '04_GAME_ASSETS/3d/hazard_adopted/optimized_20260919/sobaya.glb',
     'fukuchan': '04_GAME_ASSETS/3d/hazard_adopted/optimized_20260919/fukuchan.glb',
     'yametaro': '04_GAME_ASSETS/3d/characters/yametaro/rig_nose_v3/yametaro.glb',
-    'takosan': '04_GAME_ASSETS/3d/characters/takosan/rig_sheet_v2/takosan.glb',
+    'takosan': '04_GAME_ASSETS/3d/characters/takosan/rig_radial_v6_lined/takosan.glb',
 }
 # Keep the main face atlas of both realistic characters at its original resolution.
 TEXTURE_LIMITS = {'sobaya': [2048, None], 'fukuchan': [2048, 2048, None, None, 2048, 2048],
@@ -57,9 +58,16 @@ def textures(name, path, output):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--model', choices=list(SOURCES), help='Rebuild only this model, preserving other manifest entries')
+    args = parser.parse_args()
     OUT.mkdir(parents=True, exist_ok=True); WORK.mkdir(parents=True, exist_ok=True)
     report = {'date': '2026-09-19', 'profile': 'mobile', 'models': {}}
+    if args.model and (OUT / 'manifest.json').exists():
+        report = json.loads((OUT / 'manifest.json').read_text())
     for name, relative in SOURCES.items():
+        if args.model and name != args.model:
+            continue
         source = ROOT / relative
         subprocess.run(['node', str(ROOT / 'tools/simplify_hazard_mobile.mjs'), name,
                         str(source), str(WORK / f'{name}-mesh.glb'), str(WORK / f'{name}-mesh.json')],

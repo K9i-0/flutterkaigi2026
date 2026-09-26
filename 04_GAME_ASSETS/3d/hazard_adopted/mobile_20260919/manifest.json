@@ -520,27 +520,27 @@
       ]
     },
     "takosan": {
-      "source": "04_GAME_ASSETS/3d/characters/takosan/rig_sheet_v2/takosan.glb",
-      "sourceSha256": "aae590ad14daedc9f24b0c9749d533646b8930c139357539822e1f88a2f92469",
+      "source": "04_GAME_ASSETS/3d/characters/takosan/rig_radial_v6_lined/takosan.glb",
+      "sourceSha256": "1686140bf716bfc2fe48ce70f4072780f586eac00306132e2bd0b972eceaa0d9",
       "file": "04_GAME_ASSETS/3d/hazard_adopted/mobile_20260919/takosan.glb",
-      "sha256": "b203c080c59ebde780fdcca88f6b8f5047999a4fbfe7b4b3a8a2b01b33b7f12a",
-      "beforeBytes": 1535664,
-      "afterBytes": 2169136,
+      "sha256": "0198e35597e79eebae6be0e87430a887ff4b63107dbb41901bae16ac2cfea111",
+      "beforeBytes": 1908080,
+      "afterBytes": 2476860,
       "before": {
-        "triangles": 18325,
-        "vertices": 16358,
-        "primitives": 2,
+        "triangles": 25839,
+        "vertices": 21744,
+        "primitives": 5,
         "clips": 3,
-        "accessors": 103,
-        "bufferViews": 105
+        "accessors": 122,
+        "bufferViews": 124
       },
       "after": {
-        "triangles": 16281,
-        "vertices": 15052,
-        "primitives": 2,
+        "triangles": 21995,
+        "vertices": 19535,
+        "primitives": 5,
         "clips": 3,
-        "accessors": 103,
-        "bufferViews": 105
+        "accessors": 122,
+        "bufferViews": 124
       },
       "textures": [
         {
@@ -575,25 +575,61 @@
           "mesh": 0,
           "primitive": 0,
           "material": "tripo_mat_0b7260e5",
-          "trianglesBefore": 17445,
-          "trianglesAfter": 15401,
-          "verticesBefore": 15816,
-          "verticesAfter": 14510,
-          "protectedVertices": 4247,
+          "trianglesBefore": 14729,
+          "trianglesAfter": 12835,
+          "verticesBefore": 13151,
+          "verticesAfter": 11938,
+          "protectedVertices": 2260,
           "errorLimit": 0.001,
-          "simplifierAttributeError": 0.0009877873817458749
+          "simplifierAttributeError": 0.0009882044978439808
         },
         {
           "mesh": 0,
           "primitive": 1,
           "material": "Shoulder cloth lining",
-          "trianglesBefore": 880,
-          "trianglesAfter": 880,
-          "verticesBefore": 542,
-          "verticesAfter": 542,
-          "protectedVertices": 0,
+          "trianglesBefore": 1023,
+          "trianglesAfter": 1023,
+          "verticesBefore": 699,
+          "verticesAfter": 699,
+          "protectedVertices": 32,
           "errorLimit": 0.001,
           "simplifierAttributeError": 0
+        },
+        {
+          "mesh": 0,
+          "primitive": 2,
+          "material": "Takosan ivory round hands",
+          "trianglesBefore": 3552,
+          "trianglesAfter": 3008,
+          "verticesBefore": 1780,
+          "verticesAfter": 1508,
+          "protectedVertices": 1386,
+          "errorLimit": 0.001,
+          "simplifierAttributeError": 0.0009893840178847313
+        },
+        {
+          "mesh": 0,
+          "primitive": 3,
+          "material": "Takosan lightless inner cloth",
+          "trianglesBefore": 6113,
+          "trianglesAfter": 4741,
+          "verticesBefore": 5707,
+          "verticesAfter": 5002,
+          "protectedVertices": 898,
+          "errorLimit": 0.001,
+          "simplifierAttributeError": 0.0009933641413226724
+        },
+        {
+          "mesh": 0,
+          "primitive": 4,
+          "material": "Takosan clean dark hood rim",
+          "trianglesBefore": 422,
+          "trianglesAfter": 388,
+          "verticesBefore": 407,
+          "verticesAfter": 388,
+          "protectedVertices": 177,
+          "errorLimit": 0.001,
+          "simplifierAttributeError": 0.0009780608816072345
         }
       ]
     }
