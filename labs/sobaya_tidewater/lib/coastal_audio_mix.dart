@@ -25,7 +25,7 @@ class CoastalAudioMix {
   }
   final coast = <(double, double)>[];
 
-  ({double distance, double pan, double pier, double inland}) at(
+  ({double distance, double pan, double pier, double inland, double phase}) at(
     double x,
     double y,
     double z,
@@ -51,6 +51,7 @@ class CoastalAudioMix {
           y * y,
     );
     return (
+      phase: math.sin(sx * .025 + sz * .013) * .65,
       distance: distance,
       pan: pan,
       pier: math.exp(-pierDistance / 12),

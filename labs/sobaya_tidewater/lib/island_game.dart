@@ -12,6 +12,10 @@ import 'island_soundscape.dart';
 import 'player_controller.dart';
 import 'footprints.dart';
 import 'island_atmosphere.dart';
+import 'island_nature.dart';
+import 'shore_field.dart';
+import 'beach_swash.dart';
+import 'atmosphere_settings.dart';
 
 class IslandGame {
   static const legacyWater = bool.fromEnvironment('WATER_LEGACY');
@@ -21,9 +25,13 @@ class IslandGame {
     defaultValue: true,
   );
   IslandAtmosphere? atmosphere;
+  IslandNature? nature;
+  BeachSwash? swash;
+  int shorelineSegments = 0;
   final sound = IslandSoundscape();
   double waterTime = 0;
   bool freezeWater = false;
+  double previewTime = 12;
   bool warmedUp = false;
   PlanarReflectorComponent? reflector;
   final scene = Scene();
@@ -110,18 +118,25 @@ class IslandGame {
       cacheStaticShadows: true,
     );
     scene.renderScale = .85;
-    final grid = CoastalGrid(world);
+    final shore = legacyWater ? null : ShoreField(world);
+    shorelineSegments = shore?.segments ?? 0;
+    final grid = CoastalGrid(world, shore: shore);
     final geometry = MeshGeometry.fromArrays(
       positions: grid.positions,
       normals: grid.normals,
       indices: grid.indices,
       bounds: vm.Aabb3.minMax(
-        vm.Vector3(-1760, -1, -1820),
-        vm.Vector3(1840, 1, 1780),
+        vm.Vector3(-1760, -1.5, -1820),
+        vm.Vector3(1840, 1.5, 1780),
       ),
     );
     if (!legacyWater) {
       geometry.setCustomAttribute('bed_height', grid.bedHeights, components: 1);
+      geometry.setCustomAttribute(
+        'shore_distance',
+        grid.shoreDistances,
+        components: 1,
+      );
     }
     final ocean = Node(name: 'Coastal water', mesh: Mesh(geometry, water!))
       ..castsShadows = false
@@ -134,6 +149,17 @@ class IslandGame {
     if (!legacyWater) {
       atmosphere = IslandAtmosphere(scene, world, sound, water, reflector);
       await atmosphere!.load(island, persist: !benchmark);
+      nature = IslandNature(
+        scene,
+        world,
+        await loadFmatMaterial('assets/foliage.fmat'),
+      );
+      swash = BeachSwash(
+        scene,
+        world,
+        shore!,
+        await loadFmatMaterial('assets/beach_swash.fmat'),
+      );
     }
     ready = true;
     open(
@@ -212,7 +238,7 @@ class IslandGame {
 
   void tick(Duration elapsed, double delta) {
     if (!ready || disposed) return;
-    waterTime = freezeWater ? 12 : elapsed.inMicroseconds / 1e6;
+    waterTime = freezeWater ? previewTime : elapsed.inMicroseconds / 1e6;
     water?.parameters.setFloat('time', waterTime);
     sound.update(
       elapsed.inMicroseconds / 1e6,
@@ -224,6 +250,13 @@ class IslandGame {
     );
     final dt = delta.clamp(0.0, .05);
     atmosphere?.update(dt, camera.position, yaw);
+    nature?.update(
+      waterTime,
+      camera.position,
+      atmosphere?.wind ?? .4,
+      atmosphere?.settings.quality == WeatherQuality.high,
+    );
+    swash?.update(waterTime, atmosphere?.wind ?? .4, atmosphere?.day ?? 1);
     playerTime += dt;
     footprints?.update(playerTime);
     if (flying) {
@@ -278,6 +311,9 @@ class IslandGame {
   }
 
   Map<String, Object?> inspect() => {
+    'nature': nature?.inspect(),
+    'shorelineSegments': shorelineSegments,
+    'swashTriangles': swash?.triangles,
     'atmosphere': atmosphere?.inspect(),
     'ready': ready,
     'flying': flying,

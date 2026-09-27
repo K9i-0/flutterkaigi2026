@@ -116,12 +116,19 @@ class _IslandPageState extends State<IslandPage> {
       );
       registerMarionetteExtension(
         name: 'madogiwa.setWaterPreview',
-        description: 'frozen=true|false; reflection=true|false. For deterministic screenshots.',
+        description: 'frozen=true|false; time=0..10000; reflection=true|false. For deterministic screenshots.',
         callback: (p) async {
           for (final key in ['frozen', 'reflection']) {
             if (p[key] != null && !['true', 'false'].contains('${p[key]}')) {
               return MarionetteExtensionResult.invalidParams('$key=true|false');
             }
+          }
+          if (p['time'] != null) {
+            final time = double.tryParse('${p['time']}');
+            if (time == null || !time.isFinite || time < 0 || time > 10000) {
+              return MarionetteExtensionResult.invalidParams('time=0..10000');
+            }
+            game.previewTime = time;
           }
           if (p['frozen'] != null) {
             game.freezeWater = '${p['frozen']}' == 'true';
@@ -343,6 +350,7 @@ class _IslandPageState extends State<IslandPage> {
                       ),
                     for (final item in [
                       ('pier', '桟橋'),
+                      ('shore', '浜辺'),
                       ('village', '村'),
                       ('overview', '島を見渡す'),
                     ])

@@ -17,8 +17,8 @@ material {
     { type: float, name: time, default: 0.0 },
     { type: vec3, name: sun_direction, default: [0.6, 1.0, 0.4] },
   ],
-  attributes: [{type: float, name: bed_height}],
-  varyings: [{type: float, name: bed_y}],
+  attributes: [{type: float, name: bed_height},{type:float,name:shore_distance}],
+  varyings: [{type: float, name: bed_y},{type:float,name:coast_d}],
 }
 vertex {
   void Vertex(inout VertexInputs vertex) {
@@ -29,12 +29,15 @@ vertex {
     float c=dot(p.xz,vec2(0.42,0.29))-t*1.85;
     float shore=smoothstep(0.0,4.0,max(-bed_height,0.0));
     float wave=(0.24*sin(a)+0.12*sin(b)+0.055*sin(c))*shore;
-    p.y+=wave*(.45+material_params.wind*1.4);
+    float coastPhase=t*1.05-shore_distance*.75+sin(p.x*.025+p.z*.013)*.65;
+    float nearShore=smoothstep(-22.0,-9.0,shore_distance)*(1.0-smoothstep(-1.0,2.0,shore_distance));
+    float crest=pow(.5+.5*sin(coastPhase),3.0);
+    p.y+=wave*(.45+material_params.wind*1.4)+nearShore*(crest-.22)*(.35+material_params.wind*.45);
     vec2 slope=(0.24*vec2(0.055,0.19)*cos(a)
         +0.12*vec2(-0.23,0.13)*cos(b)+0.055*vec2(0.42,0.29)*cos(c))*shore;
     vertex.world_position=p;
     vertex.world_normal=normalize(vertex.world_normal+vec3(-slope.x,0.0,-slope.y));
-    bed_y=bed_height;
+    bed_y=bed_height;coast_d=shore_distance;
   }
 }
 fragment {
@@ -99,12 +102,13 @@ fragment {
     waterLight+=material_params.sun_color*glint*reflected.a*material_params.sun_strength;
     // Interrupted shallow breakers travel toward decreasing depth. Fine noise
     // breaks the white strip into lace instead of an opaque coastline outline.
-    float foamNoise=noise2(p.xz*2.4+vec2(t*.13,-t*.09));
-    float breakPhase=depth*3.8+t*1.05+noise2(p.xz*.22)*1.8;
-    float breaker=smoothstep(.62,.94,sin(breakPhase))
-      *(1.0-smoothstep(.2,2.0,depth));
+    float foamNoise=noise2(p.xz*2.4+vec2(t*.13,-t*.09))*.35+noise2(p.xz*13.0+vec2(-t*.2,t*.16))*.65;
+    float breakPhase=t*1.05-coast_d*.75+sin(p.x*.025+p.z*.013)*.65;
+    float breaker=smoothstep(.65,.95,sin(breakPhase))
+      *smoothstep(-18.0,-7.0,coast_d)*(1.0-smoothstep(-.2,1.7,coast_d))
+      *(1.0-smoothstep(1.5,5.0,depth));
     float contact=(1.0-smoothstep(.04,.32,rawGap))*.5;
-    float foam=clamp(max(breaker*.75,contact)*smoothstep(.26,.66,foamNoise),0.0,.9);
+    float foam=clamp(max(breaker*.95,contact)*smoothstep(.30,.63,foamNoise),0.0,.9);
     float edge=smoothstep(0.0,.10,rawGap);
     material.base_color=vec4(vec3(.62,.68,.65)*foam,edge);
     material.emissive=waterLight*(1.0-foam);
