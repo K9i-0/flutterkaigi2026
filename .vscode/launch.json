@@ -4,6 +4,8 @@
 // 退勤作戦: iOS / Android、GRID: iOS / Android / Web、モーションラボ: macOS専用。
 // 共有ライブラリ packages/flutter_scene_vrm は19の検証室から確認する。
 // 計測専用の dart-define は通常起動に含めない。
+// Tidewater: 通常起動は保存した設定を復元。右上の設定／Escで時間・天気を変更。
+// Tidewater・嵐の描画計測: 保存設定を無視し、13時・桟橋・嵐を固定。音声なし。
 {
   "version": "0.2.0",
   "configurations": [
@@ -261,6 +263,64 @@
         "order": 7
       },
       "deviceId": "macos"
+    },
+    {
+      "name": "そば屋ハザード / Tidewater・時間と天気 / macOS (debug)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/23_SOBAYA_TIDEWATER",
+      "program": "${workspaceFolder}/23_SOBAYA_TIDEWATER/lib/main.dart",
+      "flutterMode": "debug",
+      "presentation": {
+        "group": "01 ゲーム",
+        "order": 8
+      },
+      "deviceId": "macos"
+    },
+    {
+      "name": "そば屋ハザード / Tidewater・時間と天気 / macOS (profile)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/23_SOBAYA_TIDEWATER",
+      "program": "${workspaceFolder}/23_SOBAYA_TIDEWATER/lib/main.dart",
+      "flutterMode": "profile",
+      "presentation": {
+        "group": "03 性能確認 (profile)",
+        "order": 8
+      },
+      "deviceId": "macos"
+    },
+    {
+      "name": "そば屋ハザード / Tidewater・時間と天気 / macOS (release)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/23_SOBAYA_TIDEWATER",
+      "program": "${workspaceFolder}/23_SOBAYA_TIDEWATER/lib/main.dart",
+      "flutterMode": "release",
+      "presentation": {
+        "group": "04 配布相当 (release)",
+        "order": 8
+      },
+      "deviceId": "macos"
+    },
+    {
+      "name": "そば屋ハザード / Tidewater・嵐の描画計測 / macOS (profile)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/23_SOBAYA_TIDEWATER",
+      "program": "${workspaceFolder}/23_SOBAYA_TIDEWATER/lib/main.dart",
+      "flutterMode": "profile",
+      "deviceId": "macos",
+      "toolArgs": [
+        "--dart-define=WATER_BENCHMARK=true",
+        "--dart-define=WATER_SCENARIO=pier",
+        "--dart-define=WEATHER_SCENARIO=storm",
+        "--dart-define=WEATHER_HOUR=13"
+      ],
+      "presentation": {
+        "group": "03 性能確認 (profile)",
+        "order": 9
+      }
     }
   ]
 }
