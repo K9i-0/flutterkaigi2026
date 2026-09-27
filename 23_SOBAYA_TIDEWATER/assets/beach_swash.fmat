@@ -1,0 +1,46 @@
+material {
+ name: "BeachSwash", shading_model: lit, blending: alpha, depth_write: false, culling: none,
+ engine_inputs: [scene_color],
+ parameters: [{type:float,name:daylight,default:1.0},{type:float,name:time,default:0.0},{type:float,name:wind,default:0.4}],
+ attributes: [{type:float,name:shore_distance}],
+ varyings: [{type:float,name:coast_d}],
+}
+vertex {void Vertex(inout VertexInputs vertex) {coast_d=shore_distance;}}
+fragment {
+ float hash(vec2 p) {return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+ float noise(vec2 p) {
+  vec2 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);
+  return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),mix(hash(i+vec2(0,1)),hash(i+1.0),f.x),f.y);
+ }
+ void Surface(inout MaterialInputs material) {
+  vec3 p=GetWorldPosition();float t=material_params.time;
+  float phase=t*1.05+sin(p.x*.025+p.z*.013)*.65;
+  float reach=4.5+material_params.wind*3.0;
+  float pulse=pow(.5+.5*sin(phase),1.7);
+  float front=-1.7+reach*pulse;
+  float lace=noise(p.xz*1.7+vec2(t*.12,-t*.09));
+  float distance=coast_d+(noise(p.xz*.6)-.5)*.6;
+  float film=1.0-smoothstep(front-.25,front+.2,distance);
+  float lip=exp(-pow((distance-front)/.35,2.0));
+  float trailing=(1.0-smoothstep(front-2.0,front,distance))*(.5+.5*sin(distance*5.0+t*2.0));
+  float fine=noise(p.xz*18.0+vec2(t*.1,-t*.16));
+  float bubbles=smoothstep(.32,.64,lace*.35+fine*.65);
+  float foam=(lip*.95+trailing*.17*film)*bubbles;
+  // A wet upper band persists through backwash; its sheen slowly breathes
+  // with the preceding wave instead of vanishing with the white leading edge.
+  float wet=1.0-smoothstep(reach-2.2,reach-.6,distance);
+  wet*=.75+.25*(.5+.5*sin(phase-.9));
+  float beach= smoothstep(-1.0,.12,p.y)*(1.0-smoothstep(1.2,1.8,p.y));
+  float alpha=max(wet*.30,film*.38)+foam*.60;
+  alpha*=beach;
+  if(alpha<.003) discard;
+  float grain=noise(p.xz*35.0);
+  vec3 ground=GetSceneColor(vec2(0.0));
+  vec3 wetColor=ground*(.55+grain*.05)+vec3(.006,.009,.012)*film*material_params.daylight;
+  vec3 foamColor=vec3(.72,.78,.74)*(.05+.95*material_params.daylight);
+  material.base_color=vec4(0.0,0.0,0.0,clamp(alpha,0.0,.88));
+  material.emissive=mix(wetColor,foamColor,clamp(foam*1.7,0.0,1.0));
+  material.specular=0.0;material.metallic=0.0;material.roughness=1.0;
+  PrepareMaterial(material);
+ }
+}

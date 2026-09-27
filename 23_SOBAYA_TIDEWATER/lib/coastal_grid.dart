@@ -2,12 +2,13 @@ import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'island_world.dart';
+import 'shore_field.dart';
 
 /// Fixed, continuous grid: 1.5 m cells around the bay, logarithmic far spacing.
 /// No overlapping rings or per-frame CPU remeshing. The fragment stage supplies
 /// sub-metre waves. Heights match the exported 4 m terrain triangles.
 class CoastalGrid {
-  CoastalGrid(IslandWorld world) {
+  CoastalGrid(IslandWorld world, {ShoreField? shore}) {
     const innerSteps = 96, outerSteps = 32, innerRadius = 144.0;
     const farRadius = 1800.0;
     final half = <double>[
@@ -20,6 +21,7 @@ class CoastalGrid {
     positions = Float32List(count * 3);
     normals = Float32List(count * 3);
     bedHeights = Float32List(count);
+    shoreDistances = Float32List(count);
     for (var z = 0; z < axis.length; z++) {
       for (var x = 0; x < axis.length; x++) {
         final i = z * axis.length + x;
@@ -28,6 +30,7 @@ class CoastalGrid {
         positions[i * 3 + 2] = wz;
         normals[i * 3 + 1] = 1;
         bedHeights[i] = renderedTerrainHeight(world, wx, wz);
+        shoreDistances[i] = shore?.distance(wx, wz) ?? -40;
       }
     }
     indices = <int>[];
@@ -39,7 +42,7 @@ class CoastalGrid {
     }
   }
   late final List<double> axis;
-  late final Float32List positions, normals, bedHeights;
+  late final Float32List positions, normals, bedHeights, shoreDistances;
   late final List<int> indices;
 
   static double renderedTerrainHeight(IslandWorld world, double x, double z) {

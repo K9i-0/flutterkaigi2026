@@ -135,7 +135,7 @@ class IslandSoundscape {
     await _beds['rain']!.setVolume(_audible ? rainGain : 0);
     await _bed('pier_lap', -32, mix.pier);
     if (!_audible) return;
-    final cycle = CoastalAudioMix.waveCycle(time);
+    final cycle = CoastalAudioMix.waveCycle(time + mix.phase / 1.05);
     if (!frozen && _lastCycle != null && cycle > _lastCycle! && near > .02) {
       await _shot('crash', 'surf_crash', -20, near, mix.pan);
       surfEvents++;

@@ -1,0 +1,26 @@
+material {
+ name: "CoastalFoliage", shading_model: lit, culling: none,
+ parameters: [{type:float,name:time,default:0.0},{type:float,name:wind,default:0.4}],
+ attributes: [{type:float,name:flex}],
+}
+vertex {
+ void Vertex(inout VertexInputs vertex) {
+  vec3 p=vertex.world_position;
+  float gust=sin(material_params.time*1.3-p.x*.047-p.z*.032);
+  float flutter=sin(material_params.time*3.7+p.x*1.2+p.z*.6);
+  p.xz+=vec2(.8,.35)*(gust*.22+flutter*.055)*flex*(.2+material_params.wind);
+  vertex.world_position=p;
+ }
+}
+fragment {
+ void Surface(inout MaterialInputs material) {
+  vec3 n=GetWorldNormal();
+  if(dot(n,GetViewDirection())<0.0) n=-n;
+  material.base_color=GetVertexColor();
+  material.normal=n;
+  material.roughness=.86;
+  material.metallic=0.0;
+  material.specular=.16;
+  PrepareMaterial(material);
+ }
+}
