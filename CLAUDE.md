@@ -25,6 +25,7 @@ Gitでは、Seedanceの再生成と同じ声の継続利用に必要な最小限
 
 ## GitHub運用方針
 
+- 元リポジトリは、同僚のそば屋さんが管理する https://github.com/sobaya-0141/Seedance_Madogiwa 。作成経緯とリンクはREADMEに保持する。リポジトリ全体の同期は行わず、Madogiwa Studioスキルのみ必要に応じてURLから個別に同期する。通常運用で`upstream` remoteを追加する必要はない。
 - このリポジトリは`main`単一ブランチで運用する。通常の変更は検証後に`origin/main`へ直接pushし、PRや作業ブランチは作成しない
 - ユーザーが明示的に依頼した場合のみPRを作成する
 
