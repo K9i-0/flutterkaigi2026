@@ -20,4 +20,7 @@ const Film:React.FC=()=> <AbsoluteFill style={{backgroundColor:'black'}}>
  <Sequence durationInFrames={m.endcard.from}><OffthreadVideo src={staticFile(m.inputVideo)} muted style={{width:'100%',height:'100%',objectFit:'contain'}}/></Sequence>
  <Sequence from={m.endcard.from} durationInFrames={m.endcard.durationInFrames}><Endcard/></Sequence>
 </AbsoluteFill>;
-registerRoot(()=> <><Composition component={Film} {...m.composition}/><Composition id="RunwayEndcard" component={EndcardPreview} width={m.composition.width} height={m.composition.height} fps={m.composition.fps} durationInFrames={m.endcard.durationInFrames}/></>);
+const FukuchanClip:React.FC=()=> <AbsoluteFill style={{backgroundColor:'black'}}>
+ <OffthreadVideo src={staticFile(m.fukuchanClip.source)} startFrom={m.fukuchanClip.startFrame} endAt={m.fukuchanClip.endFrameExclusive} style={{width:'100%',height:'100%'}}/>
+</AbsoluteFill>;
+registerRoot(()=> <><Composition id={m.fukuchanClip.id} component={FukuchanClip} width={m.composition.width} height={m.composition.height} fps={m.composition.fps} durationInFrames={m.fukuchanClip.endFrameExclusive-m.fukuchanClip.startFrame}/><Composition component={Film} {...m.composition}/><Composition id="RunwayEndcard" component={EndcardPreview} width={m.composition.width} height={m.composition.height} fps={m.composition.fps} durationInFrames={m.endcard.durationInFrames}/></>);

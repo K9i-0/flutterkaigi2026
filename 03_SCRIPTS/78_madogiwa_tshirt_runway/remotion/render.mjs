@@ -4,12 +4,13 @@ import fs from 'node:fs';
 import path from 'node:path';
 const mode=process.argv[2]||'preview';
 if(mode==='full'&&(!fs.existsSync('public/input.mp4')||!fs.existsSync('public/final_audio.wav')))throw new Error('Wan映像を生成・監査し、public/input.mp4へhardlinkまたはコピーしてから実行してください。');
+if(mode==='fukuchan'&&!fs.existsSync('public/completed_runway.mp4'))fs.linkSync('../final_remotion_runway.mp4','public/completed_runway.mp4');
 fs.mkdirSync('out',{recursive:true});
 const serveUrl=await bundle({entryPoint:path.resolve('src/index.tsx')});
 const browser=await openBrowser('chrome',{browserExecutable:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'});
 try{
- const composition=await selectComposition({serveUrl,id:mode==='full'?'MadogiwaRunway':'RunwayEndcard',puppeteerInstance:browser});
+ const composition=await selectComposition({serveUrl,id:mode==='fukuchan'?'FukuchanClip':mode==='full'?'MadogiwaRunway':'RunwayEndcard',puppeteerInstance:browser});
  if(mode==='stills'){
   for(const frame of [0,6,29,36,89])await renderStill({serveUrl,composition,puppeteerInstance:browser,frame,imageFormat:'png',output:`out/endcard-${frame}.png`});
- }else await renderMedia({serveUrl,composition,puppeteerInstance:browser,codec:'h264',pixelFormat:'yuv420p',outputLocation:mode==='full'?'../final_remotion_runway.mp4':'out/endcard-preview.mp4'});
+ }else await renderMedia({serveUrl,composition,puppeteerInstance:browser,codec:'h264',pixelFormat:'yuv420p',outputLocation:mode==='fukuchan'?'../final_remotion_fukuchan.mp4':mode==='full'?'../final_remotion_runway.mp4':'out/endcard-preview.mp4'});
 }finally{await browser.close({silent:true});}

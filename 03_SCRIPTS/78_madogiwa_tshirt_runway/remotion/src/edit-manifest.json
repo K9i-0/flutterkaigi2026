@@ -36,5 +36,11 @@
     "crossfade_frames": 9,
     "original_dialogue_retained": true
   },
-  "status": "rendered; technical validation passed; auditory and fine lip-sync review pending"
+  "status": "rendered; technical validation passed; auditory and fine lip-sync review pending",
+  "fukuchanClip": {
+    "id": "FukuchanClip",
+    "source": "completed_runway.mp4",
+    "startFrame": 420,
+    "endFrameExclusive": 513
+  }
 }

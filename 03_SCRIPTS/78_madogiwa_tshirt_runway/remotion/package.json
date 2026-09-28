@@ -7,7 +7,8 @@
     "studio": "remotion studio src/index.tsx",
     "preview": "node render.mjs preview",
     "stills": "node render.mjs stills",
-    "render": "node render.mjs full"
+    "render": "node render.mjs full",
+    "render:fukuchan": "node render.mjs fukuchan"
   },
   "dependencies": {
     "@remotion/cli": "4.0.527",
