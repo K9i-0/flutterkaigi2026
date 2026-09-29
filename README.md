@@ -63,3 +63,7 @@
 ## 原作漫画
 
 [原作漫画（全15話）](https://madogiwa.work/story)は各話1枚で、縦スクロールで通して読めます。世界観と各話の説明は[WORLD BIBLE](01_WORLD/WORLD_BIBLE.md)と[STORY TIMELINE](01_WORLD/STORY_TIMELINE.md)を参照してください。
+
+## 新しい共有エンジンと再設計版
+
+[Madogiwa Engine](packages/madogiwa_engine/) と、最初の利用作品 [そば屋ハザード再設計版](24_SOBAYA_HAZARD/) を開発中。既存版は保持し、まず1区画の探索・隠密・射撃・脱出を仕上げる。
