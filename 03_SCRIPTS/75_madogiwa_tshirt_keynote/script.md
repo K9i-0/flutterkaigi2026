@@ -146,3 +146,16 @@ Irodori-TTS v4.1 Small、02_CHARACTERS/Sobaya_voice.wav、seed42（2回目反復
 - video: 0ea3ead4-9e7a-428f-8f56-3e3127b4c5f4（ready、featured）
 - https://madogiwa.work/episodes/madogiwa-tshirt-keynote-sobaya
 - Large完成動画・サムネイル、正典参照音声、商品画像、そば屋GLB、採用32音声と生成設定・編集タイムラインZIPを登録。
+
+## v3の先頭1フレーム差し替え（2026-09-30）
+
+ユーザーの「もっといい感じのものに変えて」に基づき、元の黒画面から、そば屋とSpecial Eventスクリーンが見える登壇カットを選定。候補の中から本編83フレーム（3.4583秒）の「今日という日を、私はずっと待っていました。」を採用。商品・結末の先出しを避け、登壇者と発表会の主題を伝える。
+
+- 本番入力: first_frame_sobaya_v3.png
+- 元動画: final_remotion_keynote_large.mp4（Studio v3と同じ元ファイル）
+- 出力: final_remotion_sns.mp4
+- composition: MadogiwaKeynoteLargeFirstFrame
+- 編集正本: remotion/src/first-frame.json / FirstFrame.tsx
+- 再生成: remotion/で node render-first-frame.mjs
+- 置換対象はフレーム0のみ。フレーム1以降は元動画の同時刻。音声AACは再エンコードせずコピー。3357フレーム・24fps・139.875秒を維持する。
+- Studioの登録動画・サムネイルはこのローカル編集では更新していない。

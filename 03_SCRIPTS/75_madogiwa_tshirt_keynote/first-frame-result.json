@@ -1,0 +1,11 @@
+{
+  "inputSha256": "cfc42752a009be6d39b1accfb8ea6b4b3b38c2c3aadef4d6db87ddf68aa968d9",
+  "outputSha256": "f36f72bc54e5919692232e3f3c621f9dacf136fd19a5d38e581ab5617d4c8382",
+  "audioAacSha256": "865baf06af6dc4b556cdb5a20c77a3925984bdf8077f06a817c7a059aa3f5926",
+  "audioBitIdentical": true,
+  "duration": "139.875000",
+  "frames": "3357",
+  "fps": "24/1",
+  "fullDecode": true,
+  "selectedSourceFrame": 83
+}

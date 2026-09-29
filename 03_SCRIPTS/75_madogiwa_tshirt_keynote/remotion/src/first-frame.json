@@ -1,0 +1,12 @@
+{
+  "inputVideo": "keynote_large_base.mp4",
+  "image": "first_frame_sobaya_v3.png",
+  "sourceFrame": 83,
+  "sourceSeconds": 3.4583333333333335,
+  "replacementFrame": 0,
+  "durationInFrames": 3357,
+  "fps": 24,
+  "width": 1280,
+  "height": 720,
+  "selection": "User requested an aesthetically improved first frame; selected the presenter and Special Event screen with anticipation subtitle, without product reveal."
+}
