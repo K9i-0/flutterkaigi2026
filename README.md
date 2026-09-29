@@ -1,6 +1,17 @@
-# 窓際族物語 Production Kit
+# Madogiwa Multimedia Universe（MMU）
 
-「窓際族物語」のIP（世界観・キャラクター設定）と、それを使った制作物（Seedance向け動画・ゲーム）を管理するモノレポ。
+「窓際族物語」を漫画・動画・ゲーム・Webサイトなど、さまざまなメディアへ展開する制作プロジェクトです。世界観・キャラクター設定から、台本、共有アセット、各作品の実装、制作ワークフローまでを管理するモノレポです。
+
+## メディアと作品への入口
+
+| メディア | 入口 |
+|---|---|
+| 漫画 | [原作漫画](https://madogiwa.work/story) |
+| 動画 | [台本・プロンプト・制作素材](03_SCRIPTS/) |
+| ゲーム | [ゲーム一覧](#ゲーム)・[共有エンジン](packages/madogiwa_engine/) |
+| Webサイト | [窓際族物語](https://madogiwa.work/)・[Madogiwa Studio](16_MADOGIWA_STUDIO/README.md) |
+
+作品・IPの名前は「窓際族物語」、制作プロジェクト全体の名前は「Madogiwa Multimedia Universe（MMU）」です。
 
 ## 作成経緯・関連リポジトリ
 
@@ -57,8 +68,9 @@
 - **共有3Dモデル（非ボクセル・4体の採用パス／完成度／AR）:** [モデル一覧](04_GAME_ASSETS/3d/CHARACTER_MODELS.md)
 - ゲーム用アセット（共用ボクセル）: [04_GAME_ASSETS/voxel/](04_GAME_ASSETS/voxel/)
 
-## For Claude Code
-プロジェクトのワークフローやSeedanceプロンプト作成ルールは [CLAUDE.md](CLAUDE.md) を参照。
+## 制作エージェント向け
+
+制作方針・参照資料・ワークフローは [CLAUDE.md](CLAUDE.md) を参照。Codex向けの `AGENTS.md` も同じファイルを参照します。
 
 ## 原作漫画
 
