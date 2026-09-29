@@ -13,7 +13,7 @@ for row in lines:
  caption='大真面目に修業の経験を語る。落ち着いて、少し誇らしげに。' if soba else '脱力した関西弁で、呆れたようにユーモラスにツッコむ。'
  caption=row.get('caption',caption)
  if not out.exists() and not raw.exists():
-  subprocess.run([str(ROOT/'tools/irodori_speak.sh'),row['text'].replace('\n',''),str(raw),str(ROOT/'02_CHARACTERS'/('Sobaya_voice.wav' if soba else 'Yametaro_voice.wav')),'42' if soba else '7',caption],cwd=ROOT,env={**os.environ,'HF_HUB_OFFLINE':'1'},check=True)
+  subprocess.run([str(ROOT/'tools/irodori_speak.sh'),row['text'].replace('\n',''),str(raw),str(ROOT/'02_CHARACTERS'/('Sobaya_voice.wav' if soba else 'Yametaro_voice.wav')),'42' if soba else '7',caption],cwd=ROOT,env={**os.environ,'HF_HUB_OFFLINE':'1','IRODORI_TTS_CHECKPOINT':'Aratako/Irodori-TTS-v4.1-Small'},check=True)
  if not out.exists():
   if soba: subprocess.run([str(ROOT/'tools/sobaya_monsterize.sh'),str(raw),str(out)],check=True)
   else: out.write_bytes(raw.read_bytes())

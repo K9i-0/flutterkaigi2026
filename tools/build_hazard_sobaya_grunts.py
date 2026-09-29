@@ -11,12 +11,12 @@ for i,(text,caption) in enumerate([
  ('ビール、ビール。','息を切らし、ビールを求める低い声。二回のビールを、それぞれはっきり発音する。'),
  ('ビール！','相手に迫りながら、低く荒い声で短く叫ぶ。'),
 ], start=1):
- request={'text':text,'caption':caption,'seed':42,'reference':'02_CHARACTERS/Sobaya_voice.wav','model':'Aratako/Irodori-TTS-v4.1-Small'}
+ request={'text':text,'caption':caption,'seed':42,'reference':'02_CHARACTERS/Sobaya_voice.wav','model':'Aratako/Irodori-TTS-v4-Large'}
  ident=hashlib.sha256(json.dumps(request,ensure_ascii=False).encode()).hexdigest()[:16]
  raw=RAW/f'{ident}.wav'
  if not raw.exists():
   with (RAW/f'{ident}.log').open('w') as log:
-   subprocess.run([str(ROOT/'tools/irodori_speak.sh'),text,str(raw),str(ref),'42',caption],cwd=ROOT,env={**os.environ,'HF_HUB_OFFLINE':'1'},stdout=log,stderr=subprocess.STDOUT,check=True)
+   subprocess.run([str(ROOT/'tools/irodori_speak.sh'),text,str(raw),str(ref),'42',caption],cwd=ROOT,env={**os.environ,'HF_HUB_OFFLINE':'1','IRODORI_TTS_CHECKPOINT':request['model']},stdout=log,stderr=subprocess.STDOUT,check=True)
  monster=RAW/f'{ident}-monster.wav'
  subprocess.run([str(ROOT/'tools/sobaya_monsterize.sh'),str(raw),str(monster)],check=True)
  dest=OUT/f'enemy_{i}.wav'

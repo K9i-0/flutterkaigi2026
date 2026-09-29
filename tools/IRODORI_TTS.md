@@ -2,7 +2,9 @@
 
 キャラクターの正典参照WAVから、Seedanceへ渡すセリフ単位のボイスサンプルを生成する。
 配役、固定モデル、参照WAV、既定seedは`02_CHARACTERS/VOICE_CAST.md`を正本にする。
-発話時間は既定でv4.1-Smallの自動尺推定に任せる。
+発話時間は既定で選択モデルの自動尺推定に任せる。
+
+そば屋は `Aratako/Irodori-TTS-v4-Large`、その他は v4.1-Small。ラッパーが参照WAVのSHA-256でそば屋を判定するため、同じWAVを別名で渡してもLargeになる。切り出しなどで参照が変わる場合は `IRODORI_SPEAKER=sobaya` を指定する。既存作品の再現は `IRODORI_TTS_CHECKPOINT` に記録済みモデルを明示する（この指定を最優先）。
 
 ## 初回セットアップ
 
@@ -10,6 +12,7 @@ macOSではリポジトリルートから次を実行する。
 
 ```bash
 tools/setup_irodori_tts.sh
+tools/setup_irodori_tts.sh --large
 ```
 
 公式`Aratako/Irodori-TTS`を`.local/Irodori-TTS`へcloneし、公式のmacOS向け手順
@@ -98,3 +101,5 @@ IRODORI_UNCUT=1 IRODORI_CFG_SCALE_TEXT=5 IRODORI_DURATION_SCALE=0.70 \
 
 候補WAVはSeedanceの`@Audio N`へ渡すボイスサンプルであり、最終動画へ重ねる音声ではない。
 Seedanceが生成したクリップ埋め込み音声を最終音声とする。
+
+Largeは `.local/Irodori-TTS-large` の専用環境を使用する。M4・32GBのMPSで動作確認済み。本体revisionはVOICE_CAST.mdに記録。そば屋の生成後は従来どおり `tools/sobaya_monsterize.sh` を適用する。

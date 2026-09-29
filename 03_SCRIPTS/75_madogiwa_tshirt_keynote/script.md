@@ -138,3 +138,11 @@ Irodori-TTS v4.1 Small、02_CHARACTERS/Sobaya_voice.wav、seed42（2回目反復
 - 音声尺から字幕・身振り・拍手・カット時刻を再計算。仮面は従来どおり固定。
 - 旧Small版・やめ太郎版と共通既定モデルは維持。採用の範囲はこのエピソードのそば屋版。
 - 比較時のASR指摘は `large-comparison-result.json` に保持。ユーザーの話者全体への肯定的評価と採用指示は、全行の個別発音確認とは区別する。
+
+## Studio登録（2026-09-30）
+
+- Studio ID: MS-JNMSYU6Y / v3
+- generation: 4c5badc3-d9be-4e58-8636-db7092dbd32a
+- video: 0ea3ead4-9e7a-428f-8f56-3e3127b4c5f4（ready、featured）
+- https://madogiwa.work/episodes/madogiwa-tshirt-keynote-sobaya
+- Large完成動画・サムネイル、正典参照音声、商品画像、そば屋GLB、採用32音声と生成設定・編集タイムラインZIPを登録。

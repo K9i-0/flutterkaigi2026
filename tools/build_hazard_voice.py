@@ -26,7 +26,7 @@ def caption(row):
  return '焦りを少し抑えて、友人へ道案内する。柔らかい関西イントネーションで、聞き取りやすく自然に話す。'
 rows=json.loads((OUT/'voice-lines.json').read_text())
 revision=subprocess.check_output(['git','-C',str(ROOT/'.local/Irodori-TTS'),'rev-parse','HEAD'],text=True).strip()
-manifest={'version':1,'model':'Aratako/Irodori-TTS-v4.1-Small','engine_revision':revision,'clips':[]}
+manifest={'version':1,'model':'per-clip','small_engine_revision':revision,'large_engine_revision':subprocess.check_output(['git','-C',str(ROOT/'.local/Irodori-TTS-large'),'rev-parse','HEAD'],text=True).strip(),'clips':[]}
 for index,row in enumerate(rows):
  ident=hashlib.sha256((row['speaker']+'\n'+row['text']).encode()).hexdigest()[:16]
  if row['speaker']=='たこさん':
@@ -56,12 +56,12 @@ for index,row in enumerate(rows):
   speech=speech.replace('CHAPTER 02 —', '第二章。').replace('LAST ORDER —', 'ラストオーダー。').replace('CHAPTER 03 —', '第三章。').replace('撤収対象外 ', '撤収対象外。').replace('そば屋エンジン中枢 ', 'そば屋エンジン中枢。')
  if row['text']=='え、また集まるの？':speech='えっ、また集まるの？'
  for label,spoken in [('Xで','エックスで'),('Fで','エフで'),('Eで','イーで'),('Cで','シーで')]:speech=speech.replace(label,spoken)
- request={'text':speech,'speaker':row['speaker'],'caption':caption(row),'seed':seed,'reference':str(ref.relative_to(ROOT)),'reference_sha256':expected,'model':manifest['model']}
+ request={'text':speech,'speaker':row['speaker'],'caption':caption(row),'seed':seed,'reference':str(ref.relative_to(ROOT)),'reference_sha256':expected,'model':'Aratako/Irodori-TTS-v4-Large' if row['speaker']=='そば屋' else 'Aratako/Irodori-TTS-v4.1-Small'}
  raw=RAW/f'{ident}.wav';meta=RAW/f'{ident}.json';log=RAW/f'{ident}.log'
  if not raw.exists() or not meta.exists() or json.loads(meta.read_text())!=request:
   print(f'GENERATE {index+1}/{len(rows)} {row["speaker"]} {ident}',flush=True)
   with log.open('w') as output:
-   subprocess.run([str(ROOT/'tools/irodori_speak.sh'),speech,str(raw),str(ref),str(seed),request['caption']],cwd=ROOT,env={**os.environ,'HF_HUB_OFFLINE':'1'},stdout=output,stderr=subprocess.STDOUT,check=True)
+   subprocess.run([str(ROOT/'tools/irodori_speak.sh'),speech,str(raw),str(ref),str(seed),request['caption']],cwd=ROOT,env={**os.environ,'HF_HUB_OFFLINE':'1','IRODORI_TTS_CHECKPOINT':request['model']},stdout=output,stderr=subprocess.STDOUT,check=True)
   meta.write_text(json.dumps(request,ensure_ascii=False,indent=2)+'\n')
  source=raw
  if row['speaker']=='そば屋':
@@ -78,7 +78,7 @@ pending.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
 pending.replace(OUT/'voice-manifest.json')
 script=['# そば屋ハザード — 採用音声台本', '',
  f'全{len(manifest["clips"])}本、合計{sum(c["seconds"] for c in manifest["clips"]):.1f}秒。正本台詞はゲームのDartコード、生成入力は voice-lines.json、採用条件は voice-manifest.json。', '',
- '福ちゃん・やめ太郎・そば屋・ナレーションは Irodori-TTS v4.1-Small と正典参照音声。たこさんは VOICEVOX:Voidoll（style 89）。24kHz mono PCM16、-18LUFS/-2dBTP。', '',
+ 'そば屋は Irodori-TTS v4-Large、福ちゃん・やめ太郎・ナレーションは v4.1-Small と正典参照音声。たこさんは VOICEVOX:Voidoll（style 89）。24kHz mono PCM16、-18LUFS/-2dBTP。', '',
  'この台本は build_hazard_voice.py が採用manifestから生成する。使用箇所には章・話題・既読分岐を記録する。購入失敗時の文言は字幕と返答音。', '']
 for clip in manifest['clips']:
  script += [f'## {clip["speaker"]} — {clip["id"]}', '', clip['text'], '', f'{clip["seconds"]:.3f}秒 / {", ".join(clip["uses"])}', '']

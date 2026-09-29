@@ -17,7 +17,7 @@ for row in rows:
   out.rename(candidates/f"{row['id']}{suffix}_previous_{previous}.wav")
   if raw.exists():raw.rename(candidates/f"{row['id']}{suffix}_previous_{previous}_raw.wav")
  if not out.exists():
-  subprocess.run([str(ROOT/'tools/irodori_speak.sh'),row['speechText'],str(raw),str(ref),str(row['seed']),row['caption']],cwd=ROOT,env={**os.environ,'HF_HUB_OFFLINE':'1','UV_CACHE_DIR':str(ROOT/'.local/keynote-uv-cache'),'IRODORI_UNCUT':'1' if is_nojobs else '0','IRODORI_DURATION_SCALE':str(ident['durationScale']),'IRODORI_CFG_SCALE_TEXT':str(ident['textCFG'])},check=True)
+  subprocess.run([str(ROOT/'tools/irodori_speak.sh'),row['speechText'],str(raw),str(ref),str(row['seed']),row['caption']],cwd=ROOT,env={**os.environ,'HF_HUB_OFFLINE':'1','IRODORI_TTS_CHECKPOINT':'Aratako/Irodori-TTS-v4.1-Small','UV_CACHE_DIR':str(ROOT/'.local/keynote-uv-cache'),'IRODORI_UNCUT':'1' if is_nojobs else '0','IRODORI_DURATION_SCALE':str(ident['durationScale']),'IRODORI_CFG_SCALE_TEXT':str(ident['textCFG'])},check=True)
   if is_nojobs:out.write_bytes(raw.read_bytes())
   else:subprocess.run([str(ROOT/'tools/sobaya_monsterize.sh'),str(raw),str(out)],check=True)
  duration=float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','csv=p=0',str(out)]))

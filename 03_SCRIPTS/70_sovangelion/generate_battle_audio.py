@@ -11,7 +11,7 @@ for r in json.loads((E/'battle-dialogue.json').read_text()):
  raw=E/'voice_candidates/battle'/f"{r['id']}.wav"
  if out.exists():continue
  if not raw.exists():
-  subprocess.run([str(ROOT/'tools/irodori_speak.sh'),r.get('speechText',r['text']),str(raw),str(ROOT/f'02_CHARACTERS/{name}_voice.wav'),str(seed),r['caption']],cwd=ROOT,env={**os.environ,'HF_HUB_OFFLINE':'1'},check=True)
+  subprocess.run([str(ROOT/'tools/irodori_speak.sh'),r.get('speechText',r['text']),str(raw),str(ROOT/f'02_CHARACTERS/{name}_voice.wav'),str(seed),r['caption']],cwd=ROOT,env={**os.environ,'HF_HUB_OFFLINE':'1','IRODORI_TTS_CHECKPOINT':'Aratako/Irodori-TTS-v4.1-Small'},check=True)
  if name=='Sobaya':subprocess.run([str(ROOT/'tools/sobaya_monsterize.sh'),str(raw),str(out)],check=True)
  else:out.write_bytes(raw.read_bytes())
  edits=json.loads((E/'battle-audio-tail-edits.json').read_text()) if (E/'battle-audio-tail-edits.json').exists() else {}

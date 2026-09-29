@@ -14,7 +14,7 @@ for row in rows:
     ref,seed=refs[who]
     caption=row.get('caption') or ('大真面目に、穏やかに答える。短い言葉も明瞭に話す。' if who=='sobaya' else '落ち着いた自然な声で、静かに質問する。誇張しない。')
     if not raw.exists() and not out.exists():
-        subprocess.run([str(ROOT/'tools/irodori_speak.sh'),row.get('speechText',row['text']).replace('\n',''),str(raw),str(ROOT/'02_CHARACTERS'/ref),str(seed),caption],cwd=ROOT,env={**os.environ,'HF_HUB_OFFLINE':'1'},check=True)
+        subprocess.run([str(ROOT/'tools/irodori_speak.sh'),row.get('speechText',row['text']).replace('\n',''),str(raw),str(ROOT/'02_CHARACTERS'/ref),str(seed),caption],cwd=ROOT,env={**os.environ,'HF_HUB_OFFLINE':'1','IRODORI_TTS_CHECKPOINT':'Aratako/Irodori-TTS-v4.1-Small'},check=True)
     if not out.exists():
         if who=='sobaya':subprocess.run([str(ROOT/'tools/sobaya_monsterize.sh'),str(raw),str(out)],check=True)
         else:out.write_bytes(raw.read_bytes())

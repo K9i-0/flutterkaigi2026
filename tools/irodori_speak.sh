@@ -16,11 +16,19 @@ SEED="${4:-}"
 CAPTION="${5:-}"
 SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 PROJECT_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null || true)"
-DEFAULT_TTS_DIR="${PROJECT_ROOT:+$PROJECT_ROOT/.local/Irodori-TTS}"
-TTS_DIR="${IRODORI_TTS_DIR:-$DEFAULT_TTS_DIR}"
-CHECKPOINT="${IRODORI_TTS_CHECKPOINT:-Aratako/Irodori-TTS-v4.1-Small}"
-
 [ -f "$REF" ] || { echo "ERROR: 参照WAVが見つかりません: $REF" >&2; exit 1; }
+DEFAULT_CHECKPOINT="Aratako/Irodori-TTS-v4.1-Small"
+REF_SHA="$(shasum -a 256 "$REF" | awk '{print $1}')"
+if [ "${IRODORI_SPEAKER:-}" = sobaya ] || [ "$REF_SHA" = 976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58 ]; then
+  DEFAULT_CHECKPOINT="Aratako/Irodori-TTS-v4-Large"
+fi
+CHECKPOINT="${IRODORI_TTS_CHECKPOINT:-$DEFAULT_CHECKPOINT}"
+DEFAULT_TTS_DIR="${PROJECT_ROOT:+$PROJECT_ROOT/.local/Irodori-TTS}"
+case "$CHECKPOINT" in
+  *Irodori-TTS-v4-Large*) DEFAULT_TTS_DIR="${DEFAULT_TTS_DIR}-large" ;;
+esac
+TTS_DIR="${IRODORI_TTS_DIR:-$DEFAULT_TTS_DIR}"
+
 [ -n "$TTS_DIR" ] || { echo "ERROR: IRODORI_TTS_DIRを指定してください" >&2; exit 1; }
 [ -f "$TTS_DIR/infer.py" ] || { echo "ERROR: Irodori-TTSのinfer.pyが見つかりません: $TTS_DIR（tools/setup_irodori_tts.shを実行するか、IRODORI_TTS_DIRを指定してください）" >&2; exit 1; }
 command -v uv >/dev/null || { echo "ERROR: uvが必要です" >&2; exit 1; }
