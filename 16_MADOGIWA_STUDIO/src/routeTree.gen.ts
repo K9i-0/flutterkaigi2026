@@ -18,6 +18,8 @@ import { Route as StoryRouteImport } from './routes/story'
 import { Route as CameraCharacterRouteImport } from './routes/camera/$character'
 import { Route as CharactersIndexRouteImport } from './routes/characters/index'
 import { Route as CharactersSlugRouteImport } from './routes/characters/$slug'
+import { Route as ClipsIndexRouteImport } from './routes/clips/index'
+import { Route as ClipsSlugRouteImport } from './routes/clips/$slug'
 import { Route as EpisodesIndexRouteImport } from './routes/episodes/index'
 import { Route as EpisodesSlugRouteImport } from './routes/episodes/$slug'
 import { Route as GalleryIndexRouteImport } from './routes/gallery/index'
@@ -68,6 +70,16 @@ const CharactersSlugRoute = CharactersSlugRouteImport.update({
   path: '/characters/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ClipsIndexRoute = ClipsIndexRouteImport.update({
+  id: '/clips/',
+  path: '/clips/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClipsSlugRoute = ClipsSlugRouteImport.update({
+  id: '/clips/$slug',
+  path: '/clips/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EpisodesIndexRoute = EpisodesIndexRouteImport.update({
   id: '/episodes/',
   path: '/episodes/',
@@ -98,9 +110,11 @@ export interface FileRoutesByFullPath {
   '/story': typeof StoryRoute
   '/camera/$character': typeof CameraCharacterRoute
   '/characters/$slug': typeof CharactersSlugRoute
+  '/clips/$slug': typeof ClipsSlugRoute
   '/episodes/$slug': typeof EpisodesSlugRoute
   '/gallery/$slug': typeof GallerySlugRoute
   '/characters/': typeof CharactersIndexRoute
+  '/clips/': typeof ClipsIndexRoute
   '/episodes/': typeof EpisodesIndexRoute
   '/gallery/': typeof GalleryIndexRoute
 }
@@ -113,9 +127,11 @@ export interface FileRoutesByTo {
   '/story': typeof StoryRoute
   '/camera/$character': typeof CameraCharacterRoute
   '/characters/$slug': typeof CharactersSlugRoute
+  '/clips/$slug': typeof ClipsSlugRoute
   '/episodes/$slug': typeof EpisodesSlugRoute
   '/gallery/$slug': typeof GallerySlugRoute
   '/characters': typeof CharactersIndexRoute
+  '/clips': typeof ClipsIndexRoute
   '/episodes': typeof EpisodesIndexRoute
   '/gallery': typeof GalleryIndexRoute
 }
@@ -129,9 +145,11 @@ export interface FileRoutesById {
   '/story': typeof StoryRoute
   '/camera/$character': typeof CameraCharacterRoute
   '/characters/$slug': typeof CharactersSlugRoute
+  '/clips/$slug': typeof ClipsSlugRoute
   '/episodes/$slug': typeof EpisodesSlugRoute
   '/gallery/$slug': typeof GallerySlugRoute
   '/characters/': typeof CharactersIndexRoute
+  '/clips/': typeof ClipsIndexRoute
   '/episodes/': typeof EpisodesIndexRoute
   '/gallery/': typeof GalleryIndexRoute
 }
@@ -146,9 +164,11 @@ export interface FileRouteTypes {
     | '/story'
     | '/camera/$character'
     | '/characters/$slug'
+    | '/clips/$slug'
     | '/episodes/$slug'
     | '/gallery/$slug'
     | '/characters/'
+    | '/clips/'
     | '/episodes/'
     | '/gallery/'
   fileRoutesByTo: FileRoutesByTo
@@ -161,9 +181,11 @@ export interface FileRouteTypes {
     | '/story'
     | '/camera/$character'
     | '/characters/$slug'
+    | '/clips/$slug'
     | '/episodes/$slug'
     | '/gallery/$slug'
     | '/characters'
+    | '/clips'
     | '/episodes'
     | '/gallery'
   id:
@@ -176,9 +198,11 @@ export interface FileRouteTypes {
     | '/story'
     | '/camera/$character'
     | '/characters/$slug'
+    | '/clips/$slug'
     | '/episodes/$slug'
     | '/gallery/$slug'
     | '/characters/'
+    | '/clips/'
     | '/episodes/'
     | '/gallery/'
   fileRoutesById: FileRoutesById
@@ -192,9 +216,11 @@ export interface RootRouteChildren {
   StoryRoute: typeof StoryRoute
   CameraCharacterRoute: typeof CameraCharacterRoute
   CharactersSlugRoute: typeof CharactersSlugRoute
+  ClipsSlugRoute: typeof ClipsSlugRoute
   EpisodesSlugRoute: typeof EpisodesSlugRoute
   GallerySlugRoute: typeof GallerySlugRoute
   CharactersIndexRoute: typeof CharactersIndexRoute
+  ClipsIndexRoute: typeof ClipsIndexRoute
   EpisodesIndexRoute: typeof EpisodesIndexRoute
   GalleryIndexRoute: typeof GalleryIndexRoute
 }
@@ -264,6 +290,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CharactersSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/clips/': {
+      id: '/clips/'
+      path: '/clips'
+      fullPath: '/clips/'
+      preLoaderRoute: typeof ClipsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/clips/$slug': {
+      id: '/clips/$slug'
+      path: '/clips/$slug'
+      fullPath: '/clips/$slug'
+      preLoaderRoute: typeof ClipsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/episodes/': {
       id: '/episodes/'
       path: '/episodes'
@@ -304,9 +344,11 @@ const rootRouteChildren: RootRouteChildren = {
   StoryRoute: StoryRoute,
   CameraCharacterRoute: CameraCharacterRoute,
   CharactersSlugRoute: CharactersSlugRoute,
+  ClipsSlugRoute: ClipsSlugRoute,
   EpisodesSlugRoute: EpisodesSlugRoute,
   GallerySlugRoute: GallerySlugRoute,
   CharactersIndexRoute: CharactersIndexRoute,
+  ClipsIndexRoute: ClipsIndexRoute,
   EpisodesIndexRoute: EpisodesIndexRoute,
   GalleryIndexRoute: GalleryIndexRoute,
 }

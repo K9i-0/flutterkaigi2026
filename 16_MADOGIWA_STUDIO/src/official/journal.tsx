@@ -368,6 +368,7 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
           "j-brand",
         )}
         <nav aria-label="メインメニュー">
+          {import.meta.env.DEV && <span><a href="/clips">迷言・迷場面集</a></span>}
           {(["movies", "characters", "world", "story"] as Page[]).map(
             (page) => (
               <span key={page}>
@@ -392,6 +393,7 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
       </div>
       {menu && (
         <nav className="j-mobile-nav" aria-label="スマホメニュー">
+          {import.meta.env.DEV && <span><a href="/clips">迷言・迷場面集</a></span>}
           {(
             [
               "home",

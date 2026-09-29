@@ -23,6 +23,7 @@ export function Layout() {
   }, [pathname, hash]);
 
   if (admin) return <StudioLayout />;
+  if (pathname === "/clips" || pathname.startsWith("/clips/")) return <Outlet />;
   if (pathname.startsWith("/camera/")) return <Outlet />;
   if (/^\/episodes\/[^/]+\/?$/.test(pathname)) return <main className="production-shell"><Outlet /></main>;
 

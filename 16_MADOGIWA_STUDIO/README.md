@@ -320,3 +320,25 @@ OAuthキャッシュやCloudflare API tokenをリポジトリ間・利用者間�
 `/characters/yumemin` の3D表示と `/camera/yumemin` に採用済み修正版を追加。正本は `04_GAME_ASSETS/3d/characters/yumemin/eye_seams_20260919/yumemin_clean_v2.glb`、公開モデルは相対symlinkで参照。静的モデルのため動作・撮影ポーズの選択は表示しない。ARサイズは大きめ60cm、ぬいぐるみ20cm、自撮り12cm。USDZ生成は既存のQuick Look向け処理を共用する。
 
 2026-09-19色調整：ゆめみんの正本を `04_GAME_ASSETS/3d/characters/yumemin/color_20260919/yumemin.glb` へ更新。原典の水色 #5EB6E8 を3D・AR共通にし、サイトのゆめみん表示のみNeutralToneMapping・露出0.8で彩度を保持。
+
+## 迷言・迷場面集（ローカル試作）
+
+Node 24 と ffmpeg、`03_SCRIPTS/00_REPLY_CLIPS/` の16本および各エピソードの元動画が必要。
+
+```sh
+cd 16_MADOGIWA_STUDIO
+npm run dev:clips -- --port 5180
+# http://127.0.0.1:5180/clips
+```
+
+- `/clips`: サムネイル、クリック再生、人物・迷言/迷場面・セリフ/話数検索。
+- `/clips/:slug`: 1本の詳細、元動画の開始位置から再生、登録済みエピソードへのリンク。
+- MP4保存、MP4ファイルのWeb Share、ページURLコピーを分離。共有はファイル準備→再クリックでユーザー操作の有効期間を維持。非対応・権限エラー時は保存を案内し、キャンセルはエラー表示しない。
+- `src/features/clips/catalog.json` が表示データ、`tools/clip-media.json` がローカル素材対応表。元動画は制作時の版で、公式掲載版と異なる場合がある。79話は公式の対応先を未確認のためローカル元動画のみ。
+- `prepare:clips` は `.local/clips/` にsymlinkとサムネイルを生成。MP4は複製せずGit管理外。配信はVite開発用middlewareのみ（HTTP Range・HEAD・添付保存対応）。
+- コーナー・メニューリンクは開発時のみ有効。本番ビルドのクリップURLは404。D1/R2への登録・アップロード・デプロイは行わない。URLコピーは現在のローカルoriginを使うため、他の人への公開共有にはまだ使えない。
+- 本番化時は永続的なクリップ・元動画ID、R2配信、公開URL、個別OGPを接続し、iPhone Safariで写真への保存と共有先アプリを実機検証する。
+
+ローカル確認: PC/390px幅、検索・人物フィルター、再生、URLコピー、保存ダイアログ→MP4保存、元動画へのシーク、全16本のメディアRangeレスポンス。ChromeではcanShare成功後に共有がNotAllowedErrorとなり、保存へのフォールバックを確認。共有メニューから各アプリへの受け渡しは実機での検証を残す。
+
+検証メモ（2026-09-29）: `npm run check` と `npm run build` は成功。既存の `npm test` はSSRメタデータ試験の15秒タイムアウトとWorkersのリクエスト間I/Oエラーで完走せず。変更前HEADを別ディレクトリに展開して `test/public-data.test.ts` を実行し、同じタイムアウト（1失敗・3成功）を再現した。

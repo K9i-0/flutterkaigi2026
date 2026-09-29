@@ -1,0 +1,98 @@
+[
+  {
+    "id": "taxi",
+    "clip": "03_SCRIPTS/00_REPLY_CLIPS/82_やめ太郎_タクシーちゃうねん.mp4",
+    "source": "03_SCRIPTS/82_last_train_police_taxi/final_remotion_exterior_punchline.mp4",
+    "episode": 82
+  },
+  {
+    "id": "police",
+    "clip": "03_SCRIPTS/00_REPLY_CLIPS/71_そば屋_パトカーで連行.mp4",
+    "source": "03_SCRIPTS/71_hisoba_memory_review/final_remotion_subtitles.mp4",
+    "episode": 71
+  },
+  {
+    "id": "first-class",
+    "clip": "03_SCRIPTS/00_REPLY_CLIPS/59_そば屋_一流の窓際族は窓際を作り出す.mp4",
+    "source": "03_SCRIPTS/59_sobaya_professional_window_side/final_remotion_documentary_irodori_16x9.mp4",
+    "episode": 59
+  },
+  {
+    "id": "okayaman",
+    "clip": "03_SCRIPTS/00_REPLY_CLIPS/72_おかやまん_おかやまん大変驚いております.mp4",
+    "source": "03_SCRIPTS/72_tokyo_madogiwa_park/wan3_scene05_v4_480p.mp4",
+    "episode": 72
+  },
+  {
+    "id": "lunch",
+    "clip": "03_SCRIPTS/00_REPLY_CLIPS/81_そば屋_昼休み終わっちゃうからの連行.mp4",
+    "source": "03_SCRIPTS/81_sobaya_yakumi_shopping/final_remotion_yakumi_call_crop.mp4",
+    "episode": 81
+  },
+  {
+    "id": "runway",
+    "clip": "03_SCRIPTS/00_REPLY_CLIPS/78_そば屋_モデル歩きで連行.mp4",
+    "source": "03_SCRIPTS/78_madogiwa_tshirt_runway/final_remotion_runway.mp4",
+    "episode": 78
+  },
+  {
+    "id": "prison-break",
+    "clip": "03_SCRIPTS/00_REPLY_CLIPS/79_そば屋_ビールのために脱獄.mp4",
+    "source": "03_SCRIPTS/79_madogiwa_tshirt_prison_break/final_remotion_prison_break_v3.mp4",
+    "episode": 79
+  },
+  {
+    "id": "fired",
+    "clip": "03_SCRIPTS/00_REPLY_CLIPS/76_よーたん_あいつらクビ.mp4",
+    "source": "03_SCRIPTS/76_sobaya_yakisoba_quake/final_remotion_revision04.mp4",
+    "episode": 76
+  },
+  {
+    "id": "beer-quake",
+    "clip": "03_SCRIPTS/00_REPLY_CLIPS/76_そば屋_ビール切れでオフィス地震.mp4",
+    "source": "03_SCRIPTS/76_sobaya_yakisoba_quake/final_remotion_revision04.mp4",
+    "episode": 76
+  },
+  {
+    "id": "working-sobaya",
+    "clip": "03_SCRIPTS/00_REPLY_CLIPS/80_やめ太郎_指示どおり働くなんてそば屋さんやない.mp4",
+    "source": "03_SCRIPTS/80_sobaya_clone_lab/final_remotion_clone_lab_scanner_camera.mp4",
+    "episode": 80
+  },
+  {
+    "id": "invasion",
+    "clip": "03_SCRIPTS/00_REPLY_CLIPS/66_おかやまん_宇宙侵略に大変驚いております.mp4",
+    "source": "03_SCRIPTS/66_madogiwa_super_try_invasion/final_remotion_part1_subtitles.mp4",
+    "episode": 66
+  },
+  {
+    "id": "trending",
+    "clip": "03_SCRIPTS/00_REPLY_CLIPS/78_福ちゃん_これは流行るわね.mp4",
+    "source": "03_SCRIPTS/78_madogiwa_tshirt_runway/final_remotion_runway.mp4",
+    "episode": 78
+  },
+  {
+    "id": "gyungyun",
+    "clip": "03_SCRIPTS/00_REPLY_CLIPS/80_福ちゃん_ギュンギュンどころじゃないわね.mp4",
+    "source": "03_SCRIPTS/80_sobaya_clone_lab/final_remotion_clone_lab_scanner_camera.mp4",
+    "episode": 80
+  },
+  {
+    "id": "more-madogiwa",
+    "clip": "03_SCRIPTS/00_REPLY_CLIPS/80_やめ太郎_窓際族増やしてどうすんねん.mp4",
+    "source": "03_SCRIPTS/80_sobaya_clone_lab/final_remotion_clone_lab_scanner_camera.mp4",
+    "episode": 80
+  },
+  {
+    "id": "surprised",
+    "clip": "03_SCRIPTS/00_REPLY_CLIPS/66_おかやまん_大変驚いております.mp4",
+    "source": "03_SCRIPTS/66_madogiwa_super_try_invasion/final_remotion_part1_subtitles.mp4",
+    "episode": 66
+  },
+  {
+    "id": "cold-treatment",
+    "clip": "03_SCRIPTS/00_REPLY_CLIPS/63_そば屋_冷えてる待遇も.mp4",
+    "source": "03_SCRIPTS/63_madogiwa_super_try_commute/final_remotion_cm.mp4",
+    "episode": 63
+  }
+]
