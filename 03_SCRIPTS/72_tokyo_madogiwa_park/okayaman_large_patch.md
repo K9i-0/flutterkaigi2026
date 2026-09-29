@@ -51,3 +51,11 @@ tools/irodori_speak.sh 'おかやまん！大変驚いていません！' \
 他の候補はmanifestの文面・モデル・seed・ファイル名に対応させて生成する。`okayaman_patch_experiment.py package` で全候補を配置、末尾に候補名を指定すると対象だけを処理。PCM helperは既存出力の上書きを拒否するため、再実行時は以前の候補を別ディレクトリへ保管する。`remotion/`で `npm run typecheck`、`node render-okayaman-patch.mjs`。
 
 検証: 個別動画の全141フレーム一致、全編デコード、等尺・区間外PCM一致、Remotion TypeScript検査。比較動画の4/5表示フレームを目視し、文字切れ・顔への重なりがないことを確認。比較動画も全編デコード成功（映像23.5秒、AACを含むコンテナ23.552秒）。生成・候補WAV/MP4と監査データはローカル保持。
+
+## SNS投稿用・3本比較
+
+ユーザー指定で、元動画→Large否定形seed43→Largeギュンギュンseed42の3本に絞った。各141フレーム、計423フレーム（14.1秒）。下部に「元動画のセリフ」「Irodori v4 Largeでセリフを改変①／②」と台詞を表示。SNS向けにseed等の実験情報を省略した。
+
+- 出力: `final_remotion_okayaman_large_sns.mp4`
+- 編集: `remotion/src/okayaman-patch-sns.tsx`
+- 再現: `remotion/`で`node render-okayaman-patch-sns.mjs`
