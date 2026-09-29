@@ -62,6 +62,8 @@ Gemini（`generate_image`）は、テキストプロンプトだけを渡すと�
 | おかやまん | `02_CHARACTERS/Okayaman.jpg` | `02_CHARACTERS/07_Okayaman.md` |
 
 ### 共通指定構文
+福ちゃんに適用するときは、[肌と年齢感の共通基準](../../../../02_CHARACTERS/references/fukuchan-skin-standard.md)も読む。下記の `skin texture` と `Do NOT beautify` はそのまま使わず、同基準の英文へ置き換える。シートと同じ綺麗さ・自然なシワを維持し、若返りや別人化はさせない。
+
 ```text
 STRICT FACIAL IDENTITY MANDATE:
 The character must be the exact same real person as shown in the canonical reference photo [Person_Name.jpg].

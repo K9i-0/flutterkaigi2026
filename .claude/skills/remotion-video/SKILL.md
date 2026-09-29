@@ -14,6 +14,7 @@ description: Remotionで生成済み動画を編集し、正確な日本語字�
 - ニュースの局ロゴと放送時刻は原則Remotionで後付けし、生成素材には文字なしの右上・左上安全域を確保する。時刻は実時間ではなく編集仕様へ固定して再現可能にする。
 - Wanで制作するニュース、速報、架空報道、ニュース番組風のネタ動画は、スタイル指定がなければ[references/yume-tele-news-preset.md](references/yume-tele-news-preset.md)を読み、`yume_tele_news_v1`を確認なしで適用する。ユーザーの明示指定は該当項目だけ上書きする。
 - 顔、人物同一性、仮面、手指、物体数、背景、演技、カメラ、物理破綻はRemotionの文字編集で直した扱いにしない。映像素材の再生成・差し替え・クロップで解決する。
+- 福ちゃんの肌を扱う編集・監査では[肌と年齢感の共通基準](../../../02_CHARACTERS/references/fukuchan-skin-standard.md)を読む。シートにない斑点・肌荒れは追跡マスクや局所補修で後編集できるが、自然なシワ・表情・年齢感を残す。肌の補正と顔形状の破綻修正を混同しない。
 - 音声を編集できることと、任意のローカルTTSを使えることを混同しない。音声生成元は制作経路に従う。Wan/Seedance作品は`VOICE_CAST.md`と各生成スキル、Three.js舞台動画は`threejs-video`の音声方針を使い、Remotionは採用音源を配置・切替・音量調整する。
 - Irodori音声に追加発話や語尾の引き伸ばしがある場合は[共通音声手順](../../../tools/IRODORI_TTS.md)へ戻り、生成条件で修復する。特にやめ太郎の短文は採用済み設定を使い、カット・早送りでの解消を既定にしない。差し替え後は実測尺と同期を再確認し、ASR一致だけで自然さの合格にしない。
 - 匿名証言者・犯人風の音声加工では[references/anonymous-voice-presets.md](references/anonymous-voice-presets.md)を読み、許可済み原音へ`scripts/process_anonymous_voice.py`を使う。低め／高めの指定がなければ`random`を選び、実際に選ばれたmodeとrandom seedをsidecar JSONと制作記録へ残す。

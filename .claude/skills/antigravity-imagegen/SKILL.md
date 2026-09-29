@@ -70,6 +70,7 @@ Gemini の画像生成モデルは、テキストプロンプト（例: `sobaya 
   - リアルな人間顔、5本指、リアルな生々しいタコ肌、腕の触手化。
 
 ### C. 実写メンバー（とーくん、よーたん、福ちゃん、おかやまん）
+- 福ちゃんは[肌と年齢感の共通基準](../../../02_CHARACTERS/references/fukuchan-skin-standard.md)を併用する。下記の肌質維持・美化禁止はシート基準の美肌を妨げる意味には使わず、シートにない斑点・肌荒れを増やさずに自然なシワ・年齢感を残す。顔の同一性は正典写真を維持する。
 - **参照画像**: `02_CHARACTERS/{Tokun,Yotan,Fukuchan,Okayaman}.jpg` の正典写真。
 - **必須指定**:
   - `STRICT FACIAL IDENTITY MANDATE: same real person as shown in canonical reference photo.`
