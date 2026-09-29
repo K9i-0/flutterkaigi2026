@@ -1583,5 +1583,19 @@
         "large": "全てがこの1枚で"
       }
     }
-  ]
+  ],
+  "userListeningReview": {
+    "date": "2026-09-30",
+    "reviewer": "user",
+    "scope": "話者ごとの総評。全32行の個別合格を意味しない。",
+    "sobaya": {
+      "feedback": "迫力が増して良くなってると思う",
+      "assessment": "Largeに肯定的"
+    },
+    "yametaro": {
+      "feedback": "元から微妙だった部分がそのままで強調されてるので微妙",
+      "assessment": "Largeへの単純変更では改善しない"
+    },
+    "adoption": "モデル切替・既存音声差替えは未実施"
+  }
 }
