@@ -1,6 +1,6 @@
-# 窓際族物語 Production Kit
+# Madogiwa Multimedia Universe（MMU）
 
-「窓際族物語」のIP（世界観・キャラクター設定）と、それを使った制作物（Seedance向け動画、今後はゲームも）を管理するモノレポ。
+「窓際族物語」を漫画・動画・ゲーム・Webサイトなど、さまざまなメディアへ展開する制作プロジェクトです。世界観・キャラクター設定から、台本、共有アセット、各作品の実装、制作ワークフローまでを管理するモノレポです。
 
 ## 制作時の参照ファイル
 - 窓際スーパーつらいの標準缶: `03_SCRIPTS/00_TEMPLATES/props/product_super_try.png`（2026-09-10採用のA案修正版。上部は黒い「労働」。「辛口」「350ml」は表示しない。銀地・赤いひらがな「つらい」・黒い筆記体Madogiwa・小さめの丸ゴシックの「生」。次回以降はこれを使い、エピソード63〜66の旧缶を参照元にしない。詳細: `03_SCRIPTS/00_TEMPLATES/props/README.md`）
@@ -24,6 +24,9 @@ Gitでは、Seedanceの再生成と同じ声の継続利用に必要な最小限
 - 例外：ゲームへ実際に組み込むことを決定した完成動画だけは`04_GAME_ASSETS/videos/`を正典として追跡する。エピソードディレクトリへ同じ動画を複製しない
 
 ## GitHub運用方針
+
+- 正式名称は`Madogiwa Multimedia Universe`（MMU）、作品・IP名は「窓際族物語」。GitHubは https://github.com/K9i-0/madogiwa-multimedia-universe 。旧名は`Seedance_Madogiwa-voxel-game`。
+- 2026-09-29の改名ではCodexの履歴との関連や既存の絶対パスを維持するため、ローカルフォルダ名`Seedance_Madogiwa-voxel-game`を保持する。GitHub名とローカル名が異なるのは意図した状態。既存Codexプロジェクトを継続利用し、履歴・メモリDBは移動・書き換えない。
 
 - 元リポジトリは、同僚のそば屋さんが管理する https://github.com/sobaya-0141/Seedance_Madogiwa 。作成経緯とリンクはREADMEに保持する。リポジトリ全体の同期は行わず、Madogiwa Studioスキルのみ必要に応じてURLから個別に同期する。通常運用で`upstream` remoteを追加する必要はない。
 - このリポジトリは`main`単一ブランチで運用する。通常の変更は検証後に`origin/main`へ直接pushし、PRや作業ブランチは作成しない
