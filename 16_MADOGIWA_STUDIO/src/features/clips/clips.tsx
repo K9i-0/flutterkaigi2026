@@ -7,7 +7,6 @@ import {
   Check,
   Copy,
   Play,
-  Search,
   Share2,
   X,
 } from "lucide-react";
@@ -16,14 +15,7 @@ import "./clips.css";
 
 export const clips = catalog;
 type Clip = (typeof clips)[number];
-const characters = [
-  "すべて",
-  "そば屋",
-  "やめ太郎",
-  "福ちゃん",
-  "おかやまん",
-  "よーたん",
-];
+export const CLIPS_PER_PAGE = 18;
 const seconds = (clip: Clip) => `${clip.seconds.toFixed(1)}秒`;
 
 function Player({ clip }: { clip: Clip }) {
@@ -224,18 +216,11 @@ function Guide() {
   );
 }
 
-export function ClipsPage() {
-  const [query, setQuery] = useState("");
-  const [character, setCharacter] = useState("すべて");
-  const [kind, setKind] = useState("すべて");
-  const filtered = clips.filter(
-    (clip) =>
-      (character === "すべて" || clip.character === character) &&
-      (kind === "すべて" || clip.kind === kind) &&
-      `${clip.title} ${clip.character} ${clip.tag} ${clip.episode}話`.includes(
-        query.trim(),
-      ),
-  );
+export function ClipsPage({ page }: { page: number }) {
+  const pageCount = Math.max(1, Math.ceil(clips.length / CLIPS_PER_PAGE));
+  const currentPage = Math.min(page, pageCount);
+  const offset = (currentPage - 1) * CLIPS_PER_PAGE;
+  const visibleClips = clips.slice(offset, offset + CLIPS_PER_PAGE);
   return (
     <Shell>
       <main className="clips-main">
@@ -243,48 +228,12 @@ export function ClipsPage() {
           <h1>迷言・迷場面集</h1>
           <p>SNS、チャットツールにおすすめ</p>
         </header>
-        <section className="clips-selection" aria-label="クリップを探す">
-          <div className="clips-filter-top">
-            <div className="clips-kind">
-              {["すべて", "迷場面", "迷言"].map((item) => (
-                <button
-                  key={item}
-                  aria-pressed={kind === item}
-                  onClick={() => setKind(item)}
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
-            <label className="clips-search">
-              <Search size={18} />
-              <input
-                type="search"
-                placeholder="セリフ・人物・話数で探す"
-                aria-label="クリップを検索"
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-              />
-            </label>
-          </div>
-          <div className="clips-character-filter">
-            {characters.map((item) => (
-              <button
-                key={item}
-                aria-pressed={character === item}
-                onClick={() => setCharacter(item)}
-              >
-                {item}
-              </button>
-            ))}
-          </div>
-        </section>
         <div className="clips-results">
           <h2>クリップ一覧</h2>
-          <span aria-live="polite">{filtered.length} 本</span>
+          <span aria-live="polite">{clips.length} 本</span>
         </div>
         <div className="clips-grid">
-          {filtered.map((clip) => (
+          {visibleClips.map((clip) => (
             <article className="clips-card" key={clip.id}>
               <Player clip={clip} />
               <div className="clips-card-body">
@@ -317,21 +266,26 @@ export function ClipsPage() {
             </article>
           ))}
         </div>
-        {!filtered.length && (
-          <div className="clips-empty">
-            <Search size={30} />
-            <h3>見つかりませんでした</h3>
-            <p>セリフの一部や、人物名で探してみてください。</p>
-            <button
-              onClick={() => {
-                setQuery("");
-                setKind("すべて");
-                setCharacter("すべて");
-              }}
-            >
-              絞り込みをリセット
-            </button>
-          </div>
+        {pageCount > 1 && (
+          <nav className="clips-pagination" aria-label="クリップのページ送り">
+            {currentPage > 1 ? (
+              <Link to="/clips" search={{ page: currentPage - 1 }} resetScroll>
+                前へ
+              </Link>
+            ) : (
+              <span aria-disabled="true">前へ</span>
+            )}
+            <span aria-live="polite">
+              {currentPage} / {pageCount}
+            </span>
+            {currentPage < pageCount ? (
+              <Link to="/clips" search={{ page: currentPage + 1 }} resetScroll>
+                次へ
+              </Link>
+            ) : (
+              <span aria-disabled="true">次へ</span>
+            )}
+          </nav>
         )}
       </main>
     </Shell>

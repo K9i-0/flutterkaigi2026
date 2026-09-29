@@ -2,6 +2,10 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { ClipsPage } from "@/features/clips/clips";
 
 export const Route = createFileRoute("/clips/")({
+  validateSearch: (search: Record<string, unknown>): { page?: number } => {
+    const page = Number(search.page);
+    return { page: Number.isSafeInteger(page) && page > 1 ? page : undefined };
+  },
   beforeLoad: () => {
     if (!import.meta.env.DEV) throw notFound();
   },
@@ -11,5 +15,5 @@ export const Route = createFileRoute("/clips/")({
       { name: "robots", content: "noindex" },
     ],
   }),
-  component: ClipsPage,
+  component: () => <ClipsPage page={Route.useSearch().page ?? 1} />,
 });
