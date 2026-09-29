@@ -14,7 +14,7 @@
     },
     {
       "id": "YametaroDialogue",
-      "startFrame": 255,
+      "startFrame": 258,
       "endFrameExclusive": 348,
       "text": "窓際族、増やしてどうすんねん",
       "output": "final_remotion_yametaro.mp4"

@@ -107,6 +107,8 @@ Remotionの福ちゃん画像レイヤーへ彩度0.72・コントラスト0.86�
 現行 `final_remotion_clone_lab_scanner_camera.mp4` を入力に、Remotionで元音声付きの2本を作成。タイミング正本は `remotion/src/dialogue-clips.json`。
 
 - 福ちゃん「ギュンギュンどころじゃないわね」：180〜254f（6.0〜8.5秒）、75f／2.5秒。`final_remotion_fukuchan.mp4`。
-- やめ太郎「窓際族、増やしてどうすんねん」：255〜347f（8.5〜11.6秒）、93f／3.1秒。`final_remotion_yametaro.mp4`。音声編集の発話窓255fに合わせ、画面の切替258fより3f前から保持。
+- やめ太郎「窓際族、増やしてどうすんねん」：258〜347f（8.6〜11.6秒）、90f／3.0秒。`final_remotion_yametaro.mp4`。ユーザー指定で、やめ太郎が映るカット先頭258fから開始するよう冒頭3fを映像・音声とも短縮。
 - 再現：`cd remotion && npm run render:dialogues`。入力完成版をpublicへhardlinkする。元動画は変更なし。
 - 検証：TypeScript合格。両方1920×1080・30fps・H.264/AAC 48kHz、全編デコード成功、冒頭・中央・末尾画像を確認。元の環境音と反響を維持。聴覚による試聴は未実施。
+
+やめ太郎のみの再レンダー：`cd remotion && npm run render:dialogues -- YametaroDialogue`。開始境界257f／258fを画像で照合。
