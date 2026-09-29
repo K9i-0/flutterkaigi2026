@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import * as Dialog from "@radix-ui/react-dialog";
 import { Link } from "@tanstack/react-router";
 import {
   ArrowDownToLine,
@@ -50,6 +51,75 @@ function Player({ clip }: { clip: Clip }) {
         </button>
       )}
     </div>
+  );
+}
+
+function MainVideoDialog({ clip }: { clip: Clip }) {
+  const [open, setOpen] = useState(false);
+  const [failed, setFailed] = useState(false);
+  return (
+    <Dialog.Root
+      open={open}
+      onOpenChange={(nextOpen) => {
+        if (nextOpen) {
+          document
+            .querySelectorAll("video, audio")
+            .forEach((media) => (media as HTMLMediaElement).pause());
+          setFailed(false);
+        }
+        setOpen(nextOpen);
+      }}
+    >
+      <Dialog.Trigger asChild>
+        <button className="clips-source-link">
+          <Play size={14} />
+          本編を再生
+        </button>
+      </Dialog.Trigger>
+      <Dialog.Portal>
+        <Dialog.Overlay className="clips-dialog-overlay" />
+        <Dialog.Content
+          className="clips-video-dialog"
+          aria-describedby={undefined}
+        >
+          <div className="clips-dialog-heading">
+            <Dialog.Title>第{clip.episode}話 · 本編</Dialog.Title>
+            <Dialog.Close asChild>
+              <button aria-label="本編を閉じる">
+                <X size={22} />
+              </button>
+            </Dialog.Close>
+          </div>
+          {open && (
+            <video
+              src={clip.source}
+              controls
+              autoPlay
+              playsInline
+              preload="metadata"
+              aria-label={`第${clip.episode}話の本編`}
+              onError={() => setFailed(true)}
+            />
+          )}
+          {failed && (
+            <p role="alert">
+              本編を読み込めませんでした。閉じてからもう一度お試しください。
+            </p>
+          )}
+          {clip.episodeSlug && (
+            <a
+              className="clips-dialog-episode"
+              href={`https://madogiwa.work/episodes/${clip.episodeSlug}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              本編の詳細を見る
+              <ArrowUpRight size={14} />
+            </a>
+          )}
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 }
 
@@ -255,13 +325,7 @@ export function ClipsPage({ page }: { page: number }) {
                   </span>
                 </div>
                 <Actions clip={clip} />
-                <Link
-                  className="clips-source-link"
-                  to="/clips/$slug"
-                  params={{ slug: clip.id }}
-                >
-                  切り抜き元・クリップ詳細 <ArrowUpRight size={14} />
-                </Link>
+                <MainVideoDialog clip={clip} />
               </div>
             </article>
           ))}
@@ -293,7 +357,6 @@ export function ClipsPage({ page }: { page: number }) {
 }
 
 export function ClipPage({ clip }: { clip: Clip }) {
-  const [sourceOpen, setSourceOpen] = useState(false);
   return (
     <Shell>
       <main className="clips-main clips-detail">
@@ -319,15 +382,8 @@ export function ClipPage({ clip }: { clip: Clip }) {
             <p>この一幕を、会話のおともに。</p>
             <Actions clip={clip} />
             <div className="clips-source-box">
-              <span>この場面のつづきは…</span>
-              <h2>切り抜き元を見る</h2>
-              <p>
-                第{clip.episode}話 · {Math.floor(clip.startSeconds)}秒付近から
-              </p>
-              <button onClick={() => setSourceOpen(!sourceOpen)}>
-                {sourceOpen ? <X size={16} /> : <Play size={16} />}
-                {sourceOpen ? "元動画を閉じる" : "元動画をこの場面から再生"}
-              </button>
+              <h2>第{clip.episode}話</h2>
+              <MainVideoDialog clip={clip} />
               {clip.episodeSlug && (
                 <a
                   href={`https://madogiwa.work/episodes/${clip.episodeSlug}`}
@@ -341,25 +397,6 @@ export function ClipPage({ clip }: { clip: Clip }) {
             </div>
           </section>
         </div>
-        {sourceOpen && (
-          <section className="clips-original">
-            <h2>切り抜き元動画 ／ 第{clip.episode}話</h2>
-            <video
-              src={`${clip.source}#t=${clip.startSeconds}`}
-              controls
-              autoPlay
-              playsInline
-              onPlay={() => {
-                document
-                  .querySelectorAll(".clips-player video")
-                  .forEach((video) => (video as HTMLVideoElement).pause());
-              }}
-            />
-            <p>
-              制作時のローカル動画です。公式サイトの掲載版と編集が異なる場合があります。
-            </p>
-          </section>
-        )}
         <Guide />
         <aside className="clips-detail-next">
           <b>ほかの一幕も、のぞいていく？</b>
