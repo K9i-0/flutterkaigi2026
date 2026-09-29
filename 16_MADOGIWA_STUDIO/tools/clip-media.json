@@ -1,5 +1,29 @@
 [
   {
+    "id": "hisoba-fail",
+    "clip": "03_SCRIPTS/00_REPLY_CLIPS/71_そば屋_うーん、君は不合格♥.mp4",
+    "source": "03_SCRIPTS/71_hisoba_memory_review/final_remotion_subtitles.mp4",
+    "episode": 71
+  },
+  {
+    "id": "hisoba-memory",
+    "clip": "03_SCRIPTS/00_REPLY_CLIPS/71_そば屋_君の敗因はメモリの無駄遣い♠.mp4",
+    "source": "03_SCRIPTS/71_hisoba_memory_review/final_remotion_subtitles.mp4",
+    "episode": 71
+  },
+  {
+    "id": "who-are-you",
+    "clip": "03_SCRIPTS/00_REPLY_CLIPS/71_やめ太郎_誰やお前！.mp4",
+    "source": "03_SCRIPTS/71_hisoba_memory_review/final_remotion_subtitles.mp4",
+    "episode": 71
+  },
+  {
+    "id": "im-hisoba",
+    "clip": "03_SCRIPTS/00_REPLY_CLIPS/71_そば屋_僕？ 僕はヒソバ.mp4",
+    "source": "03_SCRIPTS/71_hisoba_memory_review/final_remotion_subtitles.mp4",
+    "episode": 71
+  },
+  {
     "id": "taxi",
     "clip": "03_SCRIPTS/00_REPLY_CLIPS/82_やめ太郎_タクシーちゃうねん.mp4",
     "source": "03_SCRIPTS/82_last_train_police_taxi/final_remotion_exterior_punchline.mp4",

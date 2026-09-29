@@ -12,6 +12,42 @@
       "endFrameExclusive": 720,
       "output": "71_そば屋_パトカーで連行.mp4",
       "label": "パトカーで連行"
+    },
+    {
+      "id": "HisobaFail",
+      "source": "final_remotion_subtitles.mp4",
+      "publicSource": "story-source.mp4",
+      "startFrame": 228,
+      "endFrameExclusive": 326,
+      "output": "71_そば屋_うーん、君は不合格♥.mp4",
+      "label": "うーん、君は不合格♥"
+    },
+    {
+      "id": "HisobaMemory",
+      "source": "final_remotion_subtitles.mp4",
+      "publicSource": "story-source.mp4",
+      "startFrame": 335,
+      "endFrameExclusive": 423,
+      "output": "71_そば屋_君の敗因はメモリの無駄遣い♠.mp4",
+      "label": "君の敗因はメモリの無駄遣い♠"
+    },
+    {
+      "id": "WhoAreYou",
+      "source": "final_remotion_subtitles.mp4",
+      "publicSource": "story-source.mp4",
+      "startFrame": 423,
+      "endFrameExclusive": 475,
+      "output": "71_やめ太郎_誰やお前！.mp4",
+      "label": "誰やお前！"
+    },
+    {
+      "id": "ImHisoba",
+      "source": "final_remotion_subtitles.mp4",
+      "publicSource": "story-source.mp4",
+      "startFrame": 475,
+      "endFrameExclusive": 580,
+      "output": "71_そば屋_僕？ 僕はヒソバ.mp4",
+      "label": "僕？ 僕はヒソバ"
     }
   ]
 }

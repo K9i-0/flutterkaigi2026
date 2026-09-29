@@ -60,3 +60,14 @@ npm --prefix 03_SCRIPTS/80_sobaya_clone_lab/remotion run render:stories
 npm --prefix 03_SCRIPTS/66_madogiwa_super_try_invasion/remotion run render:stories
 npm --prefix 03_SCRIPTS/59_sobaya_professional_window_side/remotion run render:stories
 ```
+
+## ヒソバ回の迷言（2026-09-29追加）
+
+| セリフ | キャラクター | 尺 |
+| --- | --- | --- |
+| [うーん、君は不合格♥](71_そば屋_うーん、君は不合格♥.mp4) | そば屋 | 3.27秒 |
+| [君の敗因はメモリの無駄遣い♠](71_そば屋_君の敗因はメモリの無駄遣い♠.mp4) | そば屋 | 2.93秒 |
+| [誰やお前！](71_やめ太郎_誰やお前！.mp4) | やめ太郎 | 1.73秒 |
+| [僕？ 僕はヒソバ](71_そば屋_僕？ 僕はヒソバ.mp4) | そば屋 | 3.50秒 |
+
+再出力は71話の `npm run render:stories`。字幕・元音声を保持。
