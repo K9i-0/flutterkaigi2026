@@ -80,7 +80,7 @@
   {
     "id": "working-sobaya",
     "clip": "03_SCRIPTS/00_REPLY_CLIPS/80_やめ太郎_指示どおり働くなんてそば屋さんやない.mp4",
-    "source": "03_SCRIPTS/80_sobaya_clone_lab/final_remotion_clone_lab_scanner_camera.mp4",
+    "source": "03_SCRIPTS/80_sobaya_clone_lab/final_remotion_clone_lab_skin.mp4",
     "episode": 80
   },
   {
@@ -98,13 +98,13 @@
   {
     "id": "gyungyun",
     "clip": "03_SCRIPTS/00_REPLY_CLIPS/80_福ちゃん_ギュンギュンどころじゃないわね.mp4",
-    "source": "03_SCRIPTS/80_sobaya_clone_lab/final_remotion_clone_lab_scanner_camera.mp4",
+    "source": "03_SCRIPTS/80_sobaya_clone_lab/final_remotion_clone_lab_skin.mp4",
     "episode": 80
   },
   {
     "id": "more-madogiwa",
     "clip": "03_SCRIPTS/00_REPLY_CLIPS/80_やめ太郎_窓際族増やしてどうすんねん.mp4",
-    "source": "03_SCRIPTS/80_sobaya_clone_lab/final_remotion_clone_lab_scanner_camera.mp4",
+    "source": "03_SCRIPTS/80_sobaya_clone_lab/final_remotion_clone_lab_skin.mp4",
     "episode": 80
   },
   {

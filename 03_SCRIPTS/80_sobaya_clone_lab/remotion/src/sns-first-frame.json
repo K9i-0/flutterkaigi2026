@@ -1,0 +1,13 @@
+{
+  "source": "final_remotion_clone_lab_skin.mp4",
+  "publicSource": "sns-source-skin.mp4",
+  "thumbnail": "sns-thumbnail-skin.png",
+  "selectedCandidate": "A",
+  "sourceFrame": 210,
+  "sourceSeconds": 7,
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "durationInFrames": 1089,
+  "output": "final_remotion_sns_skin.mp4"
+}

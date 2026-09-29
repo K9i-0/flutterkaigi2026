@@ -406,5 +406,29 @@
     "bytes": 11794126,
     "contentType": "video/mp4",
     "downloadName": "source-63.mp4"
+  },
+  {
+    "name": "gyungyun.mp4",
+    "path": "/clip-media/da8e4e0c1fb9fb475b7ae09feec58c2747449a4e1d0f7c49e9180abb114f95ca/gyungyun.mp4",
+    "key": "clips/da8e4e0c1fb9fb475b7ae09feec58c2747449a4e1d0f7c49e9180abb114f95ca/gyungyun.mp4",
+    "bytes": 2627322,
+    "contentType": "video/mp4",
+    "downloadName": "80_福ちゃん_ギュンギュンどころじゃないわね.mp4"
+  },
+  {
+    "name": "gyungyun.jpg",
+    "path": "/clip-media/a69e21be18b32bf747b06c8facd4e88bd28255cbe04545f0f37fdec4ca6ac5a2/gyungyun.jpg",
+    "key": "clips/a69e21be18b32bf747b06c8facd4e88bd28255cbe04545f0f37fdec4ca6ac5a2/gyungyun.jpg",
+    "bytes": 20531,
+    "contentType": "image/jpeg",
+    "downloadName": "gyungyun.jpg"
+  },
+  {
+    "name": "source-80.mp4",
+    "path": "/clip-media/c7350e36441d832e00ec6c42bedfaf8f141b938ac03041a37e9dd65574c0a315/source-80.mp4",
+    "key": "clips/c7350e36441d832e00ec6c42bedfaf8f141b938ac03041a37e9dd65574c0a315/source-80.mp4",
+    "bytes": 36590677,
+    "contentType": "video/mp4",
+    "downloadName": "source-80.mp4"
   }
 ]

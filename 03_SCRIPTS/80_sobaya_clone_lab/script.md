@@ -127,3 +127,19 @@ Remotionの福ちゃん画像レイヤーへ彩度0.72・コントラスト0.86�
 元映像・元音声を同区間で切り出す。タイミング正本は `remotion/src/story-clips.json`、再出力は `npm run render:stories`。元ファイルは保持。
 
 切り抜き検証：TypeScript合格、指定フレーム数・元解像度・30fps・音声トラックを確認し、終端までデコード成功。冒頭・中央・末尾画像を目視。音声認識で主要台詞の収録を補助確認（聴覚による試聴とは区別）。
+
+### SNS用先頭1フレーム（2026-09-29）
+
+- ユーザーが候補A（福ちゃんと背後のそば屋）を採用。現行完成版 `final_remotion_clone_lab_scanner_camera.mp4` の210f／7.0秒を抽出し、`remotion/public/sns-thumbnail.png` に保持。
+- `final_remotion_sns.mp4` は先頭0fだけ採用PNGに置換し、1f以降は同時刻の元映像。通常完成版は保持。1920×1080・30fps・1089f／36.3秒。静止画保持・尺追加なし。
+- 正本設定 `remotion/src/sns-first-frame.json`、composition `CloneLabSns`。再現は `cd remotion && npm run render:sns`。Remotionで映像をレンダー後、元AACをコピーしてmuxする。
+- 検証：TypeScript合格。出力0fと採用PNG、出力1fと元1fを画像比較・目視確認。映像・音声の開始時刻、尺、フレーム数、fpsが元と一致。デコードPCMのSHA-256完全一致、全編デコード成功。実時間再生でのちらつき確認とSNS側サムネイル採用確認は未実施。
+
+### 採用：福ちゃんの美容肌補正v2（2026-09-29）
+
+- ユーザーが両頬・目の下の斑点補修を含むv2を採用し、Studio更新を指示。180〜254fの75fへ追跡肌マスク・斑点補間・平滑化を適用。顔立ち・演技・音声・尺を維持。
+- 現行本編 `final_remotion_clone_lab_skin.mp4`、SNS版 `final_remotion_sns_skin.mp4`。SNS先頭0fとStudioポスターは補正後210f（採用Aと同じ構図）。各1089f／36.3秒。
+- 迷言集 `../00_REPLY_CLIPS/80_福ちゃん_ギュンギュンどころじゃないわね.mp4` も採用済み75fに更新。旧短編を `remotion/out/skin-preview/original_reply.mp4` に保持。
+- 再現コード `remotion/preview_skin_correction.py --beauty`、詳細 `remotion/SKIN_PREVIEW.md`。SNS・切り抜き設定も補正後の本編へ変更。
+- Studioは同一エピソード `MS-TWPXKPRC` / `madogiwaryoku-laboratory` のv4。動画・ポスター・32入力readyを確認。旧v3は保持。登録IDは `studio_registration.json`。
+- 全出力のフレーム数・30fps・1920×1080・全編デコードを確認。短編・本編・SNS版とも対応する元音声とのPCMハッシュ一致。SNS先頭と発話中の肌を静止画確認。

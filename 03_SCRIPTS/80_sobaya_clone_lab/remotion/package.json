@@ -11,7 +11,8 @@
     "render:film": "node render.mjs full",
     "render:horror": "node render.mjs horror",
     "render:dialogues": "node render-dialogues.mjs",
-    "render:stories": "node render-stories.mjs"
+    "render:stories": "node render-stories.mjs",
+    "render:sns": "node render-sns.mjs"
   },
   "dependencies": {
     "@remotion/cli": "4.0.528",

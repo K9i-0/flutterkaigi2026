@@ -4,124 +4,162 @@
   "episode_id": "42caf00b-13c5-4ed2-948c-de2bb714a7a9",
   "slug": "madogiwaryoku-laboratory",
   "url": "https://madogiwa.work/episodes/madogiwaryoku-laboratory",
-  "generation_id": "fa0ad1d4-2659-4eac-8c97-0f8dc047e1d4",
-  "version": 2,
-  "model": "Wan 3.0 + Irodori-TTS v4.1-Small + Remotion",
-  "video_id": "a94dbd1b-3645-46af-897b-c486cb14772e",
+  "generation_id": "3a34013e-3efb-4c44-a3ba-624e4d65d362",
+  "version": 4,
+  "model": "Wan 3.0 + Irodori-TTS v4.1-Small + Remotion + OpenCV",
+  "video_id": "3791c8e8-00ac-418a-b0a6-f46163510006",
   "video_status": "ready",
-  "final_video": "final_remotion_clone_lab_scanner_camera.mp4",
-  "size_bytes": 39591974,
+  "final_video": "final_remotion_sns_skin.mp4",
+  "size_bytes": 39372823,
   "duration_seconds": 36.3,
   "inputs": [
     {
+      "file": "remotion/public/sns-thumbnail-skin.png",
+      "assetId": "07ef71f8-ef72-4631-8f03-85229b9693c3"
+    },
+    {
+      "file": "remotion/src/sns-first-frame.json",
+      "assetId": "9641031f-d46a-43ac-bd41-de993a926c8c"
+    },
+    {
       "file": "character_sobaya_basic_sheet.png",
-      "assetId": "8d8cda89-f95a-4604-8870-0e7f35fc5ac0"
+      "assetId": "993b3a67-577f-4e30-b9bd-35827f485af3"
     },
     {
       "file": "character_fukuchan_basic_sheet.png",
-      "assetId": "3ccee905-7127-4317-90c6-4c37a7384c41"
+      "assetId": "d9b74910-8775-43de-a71a-8f991ec3683b"
     },
     {
       "file": "character_yametaro_basic_sheet.png",
-      "assetId": "a2772e8d-4038-4b6c-934b-50fbc1039f0c"
+      "assetId": "e9174f5d-5b1d-4558-85d8-b19505895423"
     },
     {
       "file": "character_takosan_basic_sheet.png",
-      "assetId": "274f47fe-f448-40ca-964d-756cc4c43125"
+      "assetId": "017be346-e9e2-4419-ae92-f56c824c9b7d"
     },
     {
       "file": "reference_lab_hologram_adopted.png",
-      "assetId": "12a4a66a-fb19-4e2d-8933-dda1f943bbac"
+      "assetId": "46fea7e6-bd95-466d-bdfc-33ed4d89307b"
     },
     {
       "file": "reference_lab_pod_pov_adopted.png",
-      "assetId": "1102859e-53e6-46d6-9985-445979ac6ec6"
+      "assetId": "aeee1ff1-f9e1-48a4-8a73-05e9112381b8"
     },
     {
       "file": "scanner_closed_mouth_frame348.png",
-      "assetId": "6c91ea33-af65-4110-a1ed-9ecbf5dc473b"
+      "assetId": "8954a5b5-25cb-44a3-8e3e-b9ca1cd532fc"
     },
     {
       "file": "scanner_fukuchan_lab_pose.png",
-      "assetId": "97345166-d121-4848-9ca1-70ab0a3ad321"
+      "assetId": "85c81282-6056-41fd-afad-77de80b27642"
     },
     {
       "file": "logo_sobaya_hazard_master.png",
-      "assetId": "0f6b2220-7c55-4c97-8ad0-5264b9247222"
+      "assetId": "755f1170-37b8-410f-8771-a3835ec5e901"
     },
     {
       "file": "fukuchan_voice_timbre.wav",
-      "assetId": "9fabc08e-f960-4f1f-84f9-7a3e151d1d60"
+      "assetId": "66330293-4d26-4e50-899b-43854a635549"
     },
     {
       "file": "yametaro_voice_timbre.wav",
-      "assetId": "2b5ac2dd-3267-423f-9432-62c84f6abb1f"
+      "assetId": "b81c82d1-4535-4b55-b7e1-014932d2f7ae"
     },
     {
       "file": "yametaro_pov_existing_voice_reference.wav",
-      "assetId": "34cf63bd-846f-4a51-bfd5-cb82be70a9bd"
+      "assetId": "2b1a784e-e8b2-448f-b76f-955563c2fd35"
     },
     {
       "file": "takosan_a_reference.wav",
-      "assetId": "7f2eab7a-fddc-476c-aded-f79fbc84f051"
+      "assetId": "a67b885f-e82a-491b-b5a2-8c05c8463cb2"
     },
     {
       "file": "takosan_a_scan_madogiwaryoku.wav",
-      "assetId": "6ada22b5-ae4c-4e10-8fcd-24c0bf2d5fa1"
+      "assetId": "dac93df0-b527-44df-941f-fedfd1af18dd"
     },
     {
       "file": "takosan_a_hologram.wav",
-      "assetId": "3d1eb6e4-db7c-40e7-afdc-4a6d169cd270"
+      "assetId": "b3fa2ff3-f3b2-4074-a3bb-c8ea46bea69d"
     },
     {
       "file": "sobaya_hazard_title_call.wav",
-      "assetId": "cc4ef0ee-2985-40f1-83ff-bd1b0a4893e4"
+      "assetId": "27a9a8c7-b5da-4242-b650-13f5ed0efcc6"
     },
     {
       "file": "opening_dialogue_isolated.wav",
-      "assetId": "52892350-ecf6-43c5-a3e1-f857df8cbe81"
+      "assetId": "12082bea-a7a1-42d5-9ea0-04bd2a4ffb13"
     },
     {
       "file": "pod_ambience_loop.wav",
-      "assetId": "3c561d3b-309c-4053-9321-7eade6bec097"
+      "assetId": "eec5d0b8-2cdc-4317-86a3-946644a906e1"
     },
     {
       "file": "title_boom_from_wan.wav",
-      "assetId": "00213e64-5025-4912-8961-efb3bf9408dc"
+      "assetId": "779244b4-0fbc-4a1b-a66b-6123d26181ba"
     },
     {
       "file": "yametaro_pov_underwater_mild.wav",
-      "assetId": "e0c359bf-14c3-4094-9753-458d5a4da4f9"
+      "assetId": "44e6b498-d3f0-4847-ba32-c750b041f792"
     },
     {
       "file": "prompt_wan3.txt",
-      "assetId": "9de004ce-9b9c-4a9e-8a02-1ad606c60c44"
+      "assetId": "ea2fb303-131f-40c6-88bb-012e2fd35312"
     },
     {
       "file": "prompt_wan3_pov_replacement.txt",
-      "assetId": "811bad71-847d-45d3-bca5-d01e232ce746"
+      "assetId": "1bfeecfc-aa0b-49ad-80ea-289d16e83a38"
     },
     {
       "file": "wan3_config.json",
-      "assetId": "caaa1fb6-625f-4fff-affd-adb92fa41c27"
+      "assetId": "bbc38342-2872-45ad-ba0c-43fef67d8dcc"
     },
     {
       "file": "wan3_pov_replacement_config.json",
-      "assetId": "4a2f128d-ed49-4c39-8cbe-1bd8ba73b484"
+      "assetId": "7b6b73c1-db6f-45bb-8843-8f71d386e4b2"
     },
     {
       "file": "remotion/src/edit-manifest.json",
-      "assetId": "32350754-fb27-4e91-88c2-4c171a2a9ede"
+      "assetId": "3222a952-c5f6-4f91-b7df-f168670d4a04"
     },
     {
       "file": "remotion/src/production-edit.json",
-      "assetId": "0e7f9868-17b5-4e9a-91e0-23e04d0530d4"
+      "assetId": "036a3af6-5904-4af8-9ceb-08afd7581466"
     },
     {
       "file": "remotion/src/horror-edit.json",
-      "assetId": "4a9070a5-6f94-4c47-8636-140b1d4cbd27"
+      "assetId": "394e6198-1691-49d6-ac1a-7ce9f2f0d6aa"
+    },
+    {
+      "file": "remotion/preview_skin_correction.py",
+      "assetId": "18ee5993-b6e5-4990-b57b-f71b88baa63e"
+    },
+    {
+      "file": "remotion/SKIN_PREVIEW.md",
+      "assetId": "22c7b4df-feaa-433f-92aa-5691535052ee"
+    },
+    {
+      "file": "remotion/src/dialogue-clips.json",
+      "assetId": "fed574b7-7491-4271-95fb-8a8a50a72fb2"
     }
   ],
-  "verified_at": "2026-09-26",
-  "notes": "初回PUTが403となりv1動画をarchived。同一v1再発行はD1制約エラーのため、スキルに従い同一エピソードv2へ再登録。v2の動画・サムネイル・27素材がreadyであることをget_episodeで確認。"
+  "verified_at": "2026-09-29",
+  "notes": "v4: ユーザー採用の福ちゃん肌補正v2。75fを補正し、SNS先頭・ポスターへ補正後210fを使用。動画・ポスター・32入力readyを確認。v3を履歴として保持。",
+  "history": [
+    {
+      "generation_id": "fa0ad1d4-2659-4eac-8c97-0f8dc047e1d4",
+      "version": 2,
+      "video_id": "a94dbd1b-3645-46af-897b-c486cb14772e",
+      "final_video": "final_remotion_clone_lab_scanner_camera.mp4",
+      "verified_at": "2026-09-26",
+      "notes": "初回PUTが403となりv1動画をarchived。同一v1再発行はD1制約エラーのため、スキルに従い同一エピソードv2へ再登録。v2の動画・サムネイル・27素材がreadyであることをget_episodeで確認。"
+    },
+    {
+      "generation_id": "f3982319-bc64-4207-bb98-fafec9f20872",
+      "version": 3,
+      "video_id": "50a5a217-87c3-45bc-b283-5ae1f3a60410",
+      "final_video": "final_remotion_sns.mp4",
+      "verified_at": "2026-09-29",
+      "notes": "v3: 採用Aを先頭1フレームとサイトサムネイルへ反映。v2を保持。動画・ポスター・29入力ready、一覧のprimary_video_idがv3を指すことを確認。"
+    }
+  ]
 }
