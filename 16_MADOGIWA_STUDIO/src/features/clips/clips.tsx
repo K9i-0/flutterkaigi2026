@@ -12,6 +12,17 @@ import {
   X,
 } from "lucide-react";
 import catalog from "./catalog.json";
+import { Route as RootRoute } from "@/routes/__root";
+import { useSiteTheme } from "@/official/site-theme";
+import {
+  ThemeSwitcher,
+  DesktopChrome,
+  ExcelFormula,
+  WorkSheet,
+} from "@/official/episode-themes";
+import { Noren } from "@/official/sakaba-entrance";
+import "@/official/journal.css";
+import "@/official/sakaba.css";
 import "./clips.css";
 
 export const clips = catalog;
@@ -235,29 +246,65 @@ function Actions({ clip }: { clip: Clip }) {
 }
 
 function Shell({ children }: { children: React.ReactNode }) {
+  const { clipTheme } = RootRoute.useLoaderData();
+  const { theme, changeTheme } = useSiteTheme(clipTheme ?? undefined);
+  const [working, setWorking] = useState(false);
   return (
     <div className="clips-shell">
-      <header className="clips-header">
-        <a href="/" className="clips-brand">
-          <img src="/site/sobaya-icon.jpg" alt="" />
-          <span>
-            窓際族物語<small>働かない。でも、物語は動き出す。</small>
-          </span>
-        </a>
-        <nav>
-          <a href="/episodes">
-            本編一覧
-            <ArrowUpRight size={14} />
+      <DesktopChrome
+        theme={theme}
+        working={working}
+        onToggleWork={() => {
+          document
+            .querySelectorAll("video, audio")
+            .forEach((media) => (media as HTMLMediaElement).pause());
+          setWorking((value) => !value);
+        }}
+      />
+      <header className="j-header clips-site-header">
+        {theme === "sakaba" && <Noren />}
+        <div className="j-header-main">
+          <a href={`/?theme=${theme}`} className="j-brand">
+            <img src="/site/sobaya-icon.jpg" alt="" />
+            <span>
+              窓際族物語<small>公式サイト</small>
+              {theme === "sakaba" && (
+                <i className="j-sakaba-seal" aria-hidden="true">
+                  窓際
+                </i>
+              )}
+            </span>
           </a>
-          <span className="clips-preview">ローカルプレビュー</span>
-        </nav>
+          <nav aria-label="作品メニュー">
+            <a href={`/?theme=${theme}`}>ホーム</a>
+            <a href={`/episodes?theme=${theme}`}>本編一覧</a>
+          </nav>
+          <ThemeSwitcher
+            theme={theme}
+            onChange={changeTheme}
+            onOpen={() => {}}
+          />
+        </div>
       </header>
-      {children}
+      {theme === "excel" && <ExcelFormula title="迷言・迷場面集" />}
+      {theme === "excel" && working && (
+        <WorkSheet onClose={() => setWorking(false)} />
+      )}
+      <div hidden={theme === "excel" && working}>{children}</div>
       <footer className="clips-footer">
         <b>窓際族物語</b>
-        <span>迷言も、迷場面も、日常のひとコマに。</span>
+        <span>ローカルプレビュー</span>
         <small>© MADOGIWAZOKU MONOGATARI</small>
       </footer>
+      {theme === "excel" && (
+        <nav className="e-sheet-tabs" aria-label="ワークシート">
+          <a href="/?theme=excel">ホーム</a>
+          <a href="/episodes?theme=excel">動画</a>
+          <a href="/clips?theme=excel" aria-current="page">
+            迷言・迷場面集
+          </a>
+        </nav>
+      )}
     </div>
   );
 }

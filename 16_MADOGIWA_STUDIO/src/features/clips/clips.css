@@ -1,9 +1,9 @@
 .clips-shell {
-  --ink: #27291e;
-  --muted: #787b6e;
-  --paper: #f4f1e8;
-  --line: #dcdccf;
-  --green: #344c37;
+  --paper: var(--bg, #f7f1e5);
+  --green: var(--theme-accent, #b53426);
+  --clip-card: #fffaf0;
+  --clip-hover: #efe5d3;
+  --j-serif: "Noto Serif JP", serif;
   background: var(--paper);
   color: var(--ink);
   font-family: "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
@@ -37,54 +37,6 @@
 .clips-shell input:focus-visible {
   outline: 3px solid #b57932;
   outline-offset: 4px;
-}
-.clips-header {
-  max-width: 1280px;
-  margin: auto;
-  padding: 24px 36px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid var(--line);
-}
-.clips-brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-weight: 800;
-  font-size: 19px;
-  letter-spacing: 0.08em;
-}
-.clips-brand img {
-  height: 44px;
-  width: 44px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-.clips-brand small {
-  display: block;
-  font-size: 10px;
-  font-weight: 400;
-  color: var(--muted);
-  letter-spacing: 0.02em;
-}
-.clips-header nav {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  font-size: 12px;
-}
-.clips-header nav a {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-.clips-preview {
-  border: 1px solid var(--line);
-  padding: 4px 9px;
-  border-radius: 4px;
-  color: var(--muted);
-  font-size: 10px;
 }
 .clips-main {
   max-width: 1208px;
@@ -157,8 +109,8 @@
   gap: 23px;
 }
 .clips-card {
-  background: #fffdf7;
-  border: 1px solid #deded1;
+  background: var(--clip-card);
+  border: 1px solid var(--line);
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 2px #343f2603;
@@ -229,11 +181,11 @@
   align-items: center;
   justify-content: space-between;
   font-size: 10px;
-  color: #858977;
+  color: var(--muted);
 }
 .clips-card-meta > span:first-child {
   font-weight: 700;
-  color: #5f6a4e;
+  color: var(--ink);
 }
 .clips-card h3 {
   font-size: 16px;
@@ -244,11 +196,11 @@
   letter-spacing: -0.02em;
 }
 .clips-card h3 a:hover {
-  color: #647745;
+  color: var(--green);
 }
 .clips-card-info {
   font-size: 10px;
-  color: #8b8f7e;
+  color: var(--muted);
   display: flex;
   justify-content: space-between;
   margin-bottom: 15px;
@@ -265,7 +217,7 @@
   justify-content: center;
   gap: 5px;
   border: 1px solid var(--line);
-  background: #fffdf7;
+  background: var(--clip-card);
   border-radius: 5px;
   padding: 9px 5px;
   font-size: 10px;
@@ -282,10 +234,10 @@
   font-size: 12px;
 }
 .clips-actions button:hover {
-  background: #f1f0e6;
+  background: var(--clip-hover);
 }
 .clips-actions > .clips-download:hover {
-  background: #456447;
+  filter: brightness(1.1);
 }
 .clips-actions button:disabled {
   opacity: 0.6;
@@ -297,13 +249,13 @@
   justify-content: center;
   gap: 4px;
   font-size: 10px;
-  color: #757f64 !important;
+  color: var(--muted) !important;
   margin-top: 13px;
   padding: 5px;
 }
 .clips-status {
   font-size: 11px;
-  color: #6f755e;
+  color: var(--muted);
   margin: 10px 0 0;
   line-height: 1.6;
 }
@@ -437,7 +389,6 @@
   .clips-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .clips-header,
   .clips-main {
     padding-left: 22px;
     padding-right: 22px;
@@ -457,29 +408,6 @@
   }
 }
 @media (max-width: 540px) {
-  .clips-header {
-    padding: 17px 18px;
-  }
-  .clips-brand {
-    font-size: 15px;
-    gap: 8px;
-  }
-  .clips-brand img {
-    width: 36px;
-    height: 36px;
-  }
-  .clips-brand small {
-    font-size: 8px;
-  }
-  .clips-header nav {
-    gap: 10px;
-  }
-  .clips-header nav > a {
-    font-size: 10px;
-  }
-  .clips-preview {
-    display: none;
-  }
   .clips-main {
     padding: 0 18px 35px;
   }
@@ -665,4 +593,222 @@ button.clips-source-link:hover {
 .clips-video-dialog :focus-visible {
   outline: 2px solid #d4b47c;
   outline-offset: 2px;
+}
+/* Shared home-page theme components, with a compact collection layout. */
+.clips-site-header .j-header-main {
+  width: min(1180px, 92%);
+}
+.clips-site-header nav {
+  margin-left: auto;
+}
+.clips-site-header .t-theme-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 0;
+  padding: 8px;
+  min-width: 38px;
+  min-height: 38px;
+  background: transparent;
+  color: inherit;
+  font-size: 11px;
+}
+.clips-site-header .j-brand {
+  flex-shrink: 0;
+}
+.clips-site-header .j-brand img {
+  object-fit: cover;
+}
+.clips-shell .e-sheet-top {
+  width: min(1180px, 94%);
+  margin-inline: auto;
+}
+.clips-shell .e-work-sheet {
+  width: min(1136px, 94%);
+  margin: 24px auto;
+}
+.clips-shell .e-sheet-tabs a {
+  padding: 9px 20px;
+  border-right: 1px solid #c4cec6;
+  font-size: 12px;
+}
+.clips-shell .e-sheet-tabs a[aria-current="page"] {
+  background: #fff;
+  color: #217346;
+  border-bottom: 3px solid #217346;
+  font-weight: 700;
+}
+[data-theme="sakaba"] .clips-shell {
+  background: #f7f1e590 url("/themes/sakaba/washi.webp") center/768px;
+}
+[data-theme="sakaba"] .clips-heading h1 {
+  font-family: "Sakaba Brush", "Noto Serif JP", serif;
+  font-weight: 400;
+  font-size: 38px;
+}
+[data-theme="sakaba"] .clips-card {
+  border-radius: 4px;
+  border-bottom: 3px solid #c6ac83;
+}
+[data-theme="sakaba"] .clips-results {
+  padding-bottom: 10px;
+  border-bottom: 2px solid #b53426;
+}
+[data-theme="sakaba"] .clips-video-dialog {
+  background: #142b40;
+  color: #fff2d6;
+  border-color: #c7aa75;
+}
+[data-theme="excel"] .clips-shell {
+  --clip-card: #fff;
+  --clip-hover: #edf5ef;
+  padding-bottom: 47px;
+  background-color: #fff;
+  background-image:
+    linear-gradient(#d9e2dc88 1px, transparent 1px),
+    linear-gradient(90deg, #d9e2dc88 1px, transparent 1px);
+  background-size: 88px 32px;
+}
+[data-theme="excel"] .clips-card {
+  border-radius: 0;
+  box-shadow: none;
+  border-color: #b7c8bc;
+}
+[data-theme="excel"] .clips-card-meta {
+  background: #eef5ef;
+  padding: 8px 10px;
+  margin: -18px -16px 10px;
+  border-bottom: 1px solid #c4cec6;
+}
+[data-theme="excel"] .clips-heading {
+  padding: 22px 0;
+}
+[data-theme="excel"] .clips-results {
+  padding: 8px 12px;
+  background: #e6efe8;
+  border: 1px solid #c4cec6;
+}
+[data-theme="excel"] .clips-actions > a,
+[data-theme="excel"] .clips-actions > button {
+  border-radius: 0;
+}
+[data-theme="excel"] .clips-video-dialog {
+  border-radius: 0;
+  background: #fff;
+  color: #242c29;
+  border-color: #217346;
+}
+[data-theme="excel"] .clips-dialog-heading {
+  background: #217346;
+  color: #fff;
+}
+[data-theme="excel"] .clips-dialog-episode {
+  color: #217346;
+}
+[data-theme="underground"] .clips-shell {
+  --clip-card: #fff9e9;
+  --clip-hover: #eae0c8;
+  background: transparent;
+}
+[data-theme="underground"] .clips-main {
+  margin-block: 26px;
+  padding-top: 2px;
+  background: #f4eedf;
+  border: 1px solid #584f4160;
+  box-shadow: 0 8px 28px #0002;
+}
+[data-theme="underground"] .clips-heading {
+  border-bottom: 5px solid #314155;
+  margin-bottom: 24px;
+}
+[data-theme="underground"] .clips-card {
+  border-radius: 2px;
+  border-color: #ac9b79;
+  box-shadow: 3px 3px 0 #0001;
+}
+[data-theme="underground"] .clips-card-meta {
+  color: #746447;
+}
+[data-theme="underground"] .clips-card-info {
+  border-bottom: 1px dashed #b3a17e;
+  padding-bottom: 12px;
+}
+[data-theme="underground"] .clips-actions > a {
+  border-radius: 2px;
+}
+[data-theme="underground"] .clips-footer {
+  color: #fff4da;
+  border-color: #eee1c355;
+}
+[data-theme="underground"] .clips-footer b {
+  color: #fff4da;
+}
+[data-theme="underground"] .clips-video-dialog {
+  background: #eae0c8;
+  color: #24364c;
+  border-radius: 2px;
+  border-color: #8c7e63;
+}
+[data-theme="underground"] .clips-dialog-heading {
+  border-bottom: 4px solid #314155;
+}
+[data-theme="underground"] .clips-dialog-episode {
+  color: #304762;
+}
+@media (max-width: 760px) {
+  .clips-site-header .j-brand small {
+    display: none;
+  }
+  .clips-site-header .j-header-main {
+    gap: 10px;
+  }
+  .clips-site-header nav {
+    display: flex !important;
+    gap: 14px !important;
+    font-size: 11px !important;
+  }
+  .clips-site-header .t-theme-trigger span {
+    display: none;
+  }
+  .clips-site-header .j-brand > span {
+    font-size: 22px !important;
+    gap: 6px;
+  }
+  .clips-site-header .j-brand img {
+    width: 32px;
+    height: 32px;
+  }
+  [data-theme="sakaba"] .clips-site-header .j-brand > span {
+    font-size: 26px !important;
+  }
+  .clips-site-header .j-sakaba-seal {
+    display: none;
+  }
+  [data-theme="underground"] .clips-main {
+    margin: 16px 10px;
+  }
+  [data-theme="sakaba"] .clips-heading h1 {
+    font-size: 32px;
+  }
+}
+@media (max-width: 390px) {
+  .clips-site-header nav a:first-child {
+    display: none;
+  }
+}
+[data-theme="sakaba"] .clips-site-header .j-header-main {
+  padding-left: 0;
+}
+.clips-shell .e-ribbon button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #185a34;
+  background: #fff;
+  border: 1px solid #a4b9aa;
+  padding: 5px 11px;
+  font-size: 11px;
+  min-height: 32px;
+  white-space: nowrap;
 }

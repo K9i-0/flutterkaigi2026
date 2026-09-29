@@ -1,3 +1,4 @@
+import { ClipsEntry } from "../features/clips/clips-entry";
 import { useEffect, useRef, useState } from "react";
 import { Character3D, CharacterCameraLink } from "./character-3d";
 import { useMediaViewport } from "./use-media-viewport";
@@ -368,7 +369,7 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
           "j-brand",
         )}
         <nav aria-label="メインメニュー">
-          {import.meta.env.DEV && <span><a href="/clips">迷言・迷場面集</a></span>}
+          {import.meta.env.DEV && <span><a href={`/clips?theme=${theme}`}>迷言・迷場面集</a></span>}
           {(["movies", "characters", "world", "story"] as Page[]).map(
             (page) => (
               <span key={page}>
@@ -393,7 +394,7 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
       </div>
       {menu && (
         <nav className="j-mobile-nav" aria-label="スマホメニュー">
-          {import.meta.env.DEV && <span><a href="/clips">迷言・迷場面集</a></span>}
+          {import.meta.env.DEV && <span><a href={`/clips?theme=${theme}`}>迷言・迷場面集</a></span>}
           {(
             [
               "home",
@@ -490,6 +491,7 @@ export default function Journal({ episodes: publicEpisodes, galleryItems, initia
                   .map((e) => movie(e))}
               </div>
             </section>
+            {import.meta.env.DEV && <ClipsEntry theme={theme} />}
             <section className="j-section j-feature-person">
               {heading("人物特集", { page: "characters" }, "8人の登場人物")}
               <div className="j-person-editorial">
