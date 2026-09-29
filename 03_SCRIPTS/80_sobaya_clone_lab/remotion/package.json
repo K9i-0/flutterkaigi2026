@@ -9,7 +9,8 @@
     "stills": "node render.mjs stills",
     "alpha": "node render.mjs alpha",
     "render:film": "node render.mjs full",
-    "render:horror": "node render.mjs horror"
+    "render:horror": "node render.mjs horror",
+    "render:dialogues": "node render-dialogues.mjs"
   },
   "dependencies": {
     "@remotion/cli": "4.0.528",

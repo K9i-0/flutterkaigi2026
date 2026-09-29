@@ -1,0 +1,23 @@
+{
+  "source": "final_remotion_clone_lab_scanner_camera.mp4",
+  "publicSource": "dialogue-source.mp4",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "clips": [
+    {
+      "id": "FukuchanDialogue",
+      "startFrame": 180,
+      "endFrameExclusive": 255,
+      "text": "ギュンギュンどころじゃないわね",
+      "output": "final_remotion_fukuchan.mp4"
+    },
+    {
+      "id": "YametaroDialogue",
+      "startFrame": 255,
+      "endFrameExclusive": 348,
+      "text": "窓際族、増やしてどうすんねん",
+      "output": "final_remotion_yametaro.mp4"
+    }
+  ]
+}

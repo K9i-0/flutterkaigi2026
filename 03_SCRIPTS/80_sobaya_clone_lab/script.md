@@ -101,3 +101,12 @@
 ### 福ちゃんの監視カメラ質感
 
 Remotionの福ちゃん画像レイヤーへ彩度0.72・コントラスト0.86・明度0.96・ぼけ0.9px、薄い青緑の色調と3px周期の弱い走査線を追加。元の採用画像は無加工で維持。出力 `final_remotion_clone_lab_scanner_camera.mp4`、36.3秒。
+
+### セリフ別切り抜き（2026-09-29）
+
+現行 `final_remotion_clone_lab_scanner_camera.mp4` を入力に、Remotionで元音声付きの2本を作成。タイミング正本は `remotion/src/dialogue-clips.json`。
+
+- 福ちゃん「ギュンギュンどころじゃないわね」：180〜254f（6.0〜8.5秒）、75f／2.5秒。`final_remotion_fukuchan.mp4`。
+- やめ太郎「窓際族、増やしてどうすんねん」：255〜347f（8.5〜11.6秒）、93f／3.1秒。`final_remotion_yametaro.mp4`。音声編集の発話窓255fに合わせ、画面の切替258fより3f前から保持。
+- 再現：`cd remotion && npm run render:dialogues`。入力完成版をpublicへhardlinkする。元動画は変更なし。
+- 検証：TypeScript合格。両方1920×1080・30fps・H.264/AAC 48kHz、全編デコード成功、冒頭・中央・末尾画像を確認。元の環境音と反響を維持。聴覚による試聴は未実施。
