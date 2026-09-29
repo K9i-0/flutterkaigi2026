@@ -107,3 +107,9 @@
 - タイミング正本：`remotion/src/edit-manifest.json` の `fukuchanClip`。composition `FukuchanClip`、再レンダーは `cd remotion && npm run render:fukuchan`。入力動画はpublicへhardlinkし、元映像・音声は変更しない。
 - 出力：`final_remotion_fukuchan.mp4`、1280×720、30fps、93フレーム、映像3.100秒、H.264/AAC 48kHz。音声パディング込み3.157秒。
 - 検証：TypeScript合格、終端までデコード成功。元動画の前後カット境界と完成版の冒頭・中央・末尾画像を目視し、福ちゃんのカットだけであることを確認。音声差し替えなし。聴覚による試聴は未実施。
+
+### 返信用動画の保管先変更（2026-09-29）
+
+- `final_remotion_fukuchan.mp4` は [`../00_REPLY_CLIPS/78_福ちゃん_これは流行るわね.mp4`](../00_REPLY_CLIPS/78_福ちゃん_これは流行るわね.mp4) へ移動。再レンダーも移動先へ出力。
+
+移動前後のSHA-256一致を確認。映像・音声・尺の変更なし。

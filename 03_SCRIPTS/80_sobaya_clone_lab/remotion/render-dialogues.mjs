@@ -10,6 +10,7 @@ const serveUrl=await bundle({entryPoint:path.resolve('src/dialogue-clips.tsx')})
 const browser=await openBrowser('chrome',{browserExecutable:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'});
 try{
  for(const clip of m.clips.filter(clip=>!process.argv[2]||clip.id===process.argv[2])){
+  fs.mkdirSync(path.dirname(path.resolve('..',clip.output)),{recursive:true});
   const composition=await selectComposition({serveUrl,id:clip.id,puppeteerInstance:browser});
   await renderMedia({serveUrl,composition,puppeteerInstance:browser,codec:'h264',pixelFormat:'yuv420p',outputLocation:path.resolve('..',clip.output)});
   console.log(clip.output);

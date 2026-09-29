@@ -10,14 +10,14 @@
       "startFrame": 180,
       "endFrameExclusive": 255,
       "text": "ギュンギュンどころじゃないわね",
-      "output": "final_remotion_fukuchan.mp4"
+      "output": "../00_REPLY_CLIPS/80_福ちゃん_ギュンギュンどころじゃないわね.mp4"
     },
     {
       "id": "YametaroDialogue",
       "startFrame": 258,
       "endFrameExclusive": 348,
       "text": "窓際族、増やしてどうすんねん",
-      "output": "final_remotion_yametaro.mp4"
+      "output": "../00_REPLY_CLIPS/80_やめ太郎_窓際族増やしてどうすんねん.mp4"
     }
   ]
 }
