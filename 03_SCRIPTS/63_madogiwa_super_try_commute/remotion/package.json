@@ -5,7 +5,8 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "preview:endcard": "remotion still src/index.ts SuperTryCM out/endcard_preview.png --frame=810 --props=preview-props.json",
-    "render": "remotion render src/index.ts SuperTryCM ../final_remotion_cm.mp4"
+    "render": "remotion render src/index.ts SuperTryCM ../final_remotion_cm.mp4",
+    "render:reply": "node render-reply.mjs"
   },
   "dependencies": {
     "remotion": "4.0.522",

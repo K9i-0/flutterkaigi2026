@@ -175,3 +175,9 @@ src/full-manifest.jsonが完成版のフレーム正本。後半字幕は可視�
 
 ## スペースオペラ調BGM・3候補
 スターウォーズで流れそうな方向を受け、金管ファンファーレ、弦の刻み、ティンパニ中心のオリジナル3曲を作成。1「銀河艦隊の出航」112BPM、2「星海を駆ける冒険」156BPM、3「宇宙の戴冠式」92BPM。既存の旋律や録音は使用せずDSP合成。格納庫以降を変更し、前半と暗転音声を保持。フル61.2秒、比較用後半22.5秒。全動画デコード合格、フル映像hash一致。音楽の主観的評価は未認定。再現: remotion/scripts/spaceopera_candidates.py、譜面: remotion/src/spaceopera-candidates-manifest.json。未採用、Studio未変更。
+
+### 返信用切り抜き（2026-09-29、候補2）
+
+- 入力：`final_remotion_part1_subtitles.mp4`、279〜334f、1.867秒。映像と元音声を同時に切り出し。新規音声・字幕なし。
+- 出力：`../00_REPLY_CLIPS/66_おかやまん_大変驚いております.mp4`。タイミング正本は `remotion/src/reply-clip.json`。`npm run render:reply` で再出力。
+- 検証：TypeScript合格、854×480／30fps／H.264・AAC 48kHz、終端までデコード成功、冒頭・中央・末尾画像確認。聴覚による試聴は未実施。

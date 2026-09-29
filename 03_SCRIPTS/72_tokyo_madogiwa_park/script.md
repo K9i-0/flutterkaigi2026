@@ -100,3 +100,9 @@ Remotionのフレーム373–527へ新素材先頭155フレームを配置し、
 ### 飛去・歓声v2 — 人数・客席方向修正
 
 シーン2 v3 / シーン5 v4を生成し、1fps監査で着ぐるみ各1体・たこさん上昇と残り2体の反応、スクリーン向きの観客と拍手を確認。台詞はASR確認。通し39.03秒、1171フレーム、MadogiwaRevisionV2。出力: remotion/out/review_floating_cheers_v2.mp4。Studioは未更新。詳細: revision_floating_cheers_v2_record.json。
+
+### 返信用切り抜き（2026-09-29、候補1）
+
+- 入力：`wan3_scene05_v4_480p.mp4`、99〜239f、4.700秒。映像と元音声を同時に切り出し。新規音声・字幕なし。
+- 出力：`../00_REPLY_CLIPS/72_おかやまん_おかやまん大変驚いております.mp4`。タイミング正本は `remotion/src/reply-clip.json`。`npm run render:reply` で再出力。
+- 検証：TypeScript合格、854×480／30fps／H.264・AAC 48kHz、終端までデコード成功、冒頭・中央・末尾画像確認。聴覚による試聴は未実施。

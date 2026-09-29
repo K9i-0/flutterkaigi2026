@@ -10,7 +10,8 @@
     "render:trailer:v2": "remotion render src/index.tsx InvasionTrailerV2 out/trailer_v2_picture.mp4 --concurrency=2 && python3 scripts/mix_trailer_v2.py",
     "render:trailer:voice": "remotion render src/index.tsx InvasionTrailerVoice out/trailer_voice_picture.mp4 --concurrency=2 && python3 scripts/mix_trailer_v2.py --voice",
     "render:trailer:v3": "remotion render src/index.tsx InvasionTrailerV3 out/trailer_v3_picture.mp4 --concurrency=2 && python3 scripts/mix_trailer_v3.py",
-    "render:trailer:voice-v3": "remotion render src/index.tsx InvasionTrailerVoiceV3 out/trailer_voice-v3_picture.mp4 --concurrency=2 && python3 scripts/mix_trailer_v3.py --voice"
+    "render:trailer:voice-v3": "remotion render src/index.tsx InvasionTrailerVoiceV3 out/trailer_voice-v3_picture.mp4 --concurrency=2 && python3 scripts/mix_trailer_v3.py --voice",
+    "render:reply": "node render-reply.mjs"
   },
   "dependencies": {
     "remotion": "4.0.522",

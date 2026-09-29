@@ -1,0 +1,13 @@
+{
+  "id": "ReplyClip",
+  "selectionNumber": 1,
+  "source": "wan3_scene05_v4_480p.mp4",
+  "publicSource": "reply-source.mp4",
+  "width": 854,
+  "height": 480,
+  "fps": 30,
+  "startFrame": 99,
+  "endFrameExclusive": 240,
+  "output": "72_おかやまん_おかやまん大変驚いております.mp4",
+  "text": "おかやまん。大変驚いております"
+}

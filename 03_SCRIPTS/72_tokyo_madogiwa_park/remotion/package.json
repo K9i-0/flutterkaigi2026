@@ -18,7 +18,8 @@
     "studio": "remotion studio",
     "typecheck": "tsc",
     "bundle": "remotion bundle",
-    "render": "remotion render src/index.ts MadogiwaEdit ../final_remotion_vlog_v4.mp4 --codec=h264 --overwrite"
+    "render": "remotion render src/index.ts MadogiwaEdit ../final_remotion_vlog_v4.mp4 --codec=h264 --overwrite",
+    "render:reply": "node render-reply.mjs"
   },
   "sideEffects": [
     "*.css"

@@ -1,0 +1,13 @@
+{
+  "id": "ReplyClip",
+  "selectionNumber": 2,
+  "source": "final_remotion_part1_subtitles.mp4",
+  "publicSource": "reply-source.mp4",
+  "width": 854,
+  "height": 480,
+  "fps": 30,
+  "startFrame": 279,
+  "endFrameExclusive": 335,
+  "output": "66_おかやまん_大変驚いております.mp4",
+  "text": "大変驚いております！"
+}
