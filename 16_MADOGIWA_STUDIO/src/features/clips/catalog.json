@@ -11,9 +11,9 @@
     "filename": "82_やめ太郎_タクシーちゃうねん.mp4",
     "bytes": 876715,
     "episodeSlug": "last-train-police-taxi",
-    "video": "/__local-clips/taxi.mp4",
-    "poster": "/__local-clips/taxi.jpg",
-    "source": "/__local-clips/source-82.mp4"
+    "video": "/clip-media/420950b183d4f6c61a5bd30d2cd00366dccfcd4349ff4ab4a5b33e7c0138601f/taxi.mp4",
+    "poster": "/clip-media/1a7de20eda7981314ddd56d9c208e83769bdccb905e192b4c88d5cdb64eb174e/taxi.jpg",
+    "source": "/clip-media/206abfe2fe7b6567802764242a87271dca5f72faa1fc1ea77b78aa3d6e21820d/source-82.mp4"
   },
   {
     "id": "police",
@@ -27,9 +27,9 @@
     "filename": "71_そば屋_パトカーで連行.mp4",
     "bytes": 1731522,
     "episodeSlug": "hisoba-memory-review",
-    "video": "/__local-clips/police.mp4",
-    "poster": "/__local-clips/police.jpg",
-    "source": "/__local-clips/source-71.mp4"
+    "video": "/clip-media/9a1f7d8dc5d380f95426274db2a2a2eaea1e4f130754b0e4a72861e70d7a2f23/police.mp4",
+    "poster": "/clip-media/8cc85ccc11ad223ec8c8f2e9afb5075ace66e443897d91248452c1cd99b3b2eb/police.jpg",
+    "source": "/clip-media/cd3fa19111dea4c9378ca6be145ac4862875e31a7f9900537012dfb7bbc03543/source-71.mp4"
   },
   {
     "id": "first-class",
@@ -39,13 +39,13 @@
     "tag": "労働",
     "kind": "迷言",
     "seconds": 7.4,
-    "startSeconds": 23.0,
+    "startSeconds": 23,
     "filename": "59_そば屋_一流の窓際族は窓際を作り出す.mp4",
     "bytes": 1582021,
     "episodeSlug": "professional-window-side-sobaya",
-    "video": "/__local-clips/first-class.mp4",
-    "poster": "/__local-clips/first-class.jpg",
-    "source": "/__local-clips/source-59.mp4"
+    "video": "/clip-media/642d080e304ab331f3ad7eb81db383a1b6894610f0504c0c78fa60effe81109b/first-class.mp4",
+    "poster": "/clip-media/4b123e354aab500271e5712594d4a759fb74281a4a973ed40ff443ff183712cc/first-class.jpg",
+    "source": "/clip-media/60193cd8223073549f927404de9a364e297e7643870d5bfae48b8d54452419f2/source-59.mp4"
   },
   {
     "id": "okayaman",
@@ -59,9 +59,9 @@
     "filename": "72_おかやまん_おかやまん大変驚いております.mp4",
     "bytes": 2000050,
     "episodeSlug": "tokyo-madogiwa-land",
-    "video": "/__local-clips/okayaman.mp4",
-    "poster": "/__local-clips/okayaman.jpg",
-    "source": "/__local-clips/source-72.mp4"
+    "video": "/clip-media/97c72b30576483a0ef43d59c76df18a9bdb72bdb09cda20d89ad572a58c3a24a/okayaman.mp4",
+    "poster": "/clip-media/258bdf4834f3367bdf4aebda6465f379ad5cb0254f61712d8ff612d9459af0ba/okayaman.jpg",
+    "source": "/clip-media/eedd71110179afa2edc0a7da1bac4c3e3e84cf0d9808090b1f3e2db29a2d8c10/source-72.mp4"
   },
   {
     "id": "lunch",
@@ -75,9 +75,9 @@
     "filename": "81_そば屋_昼休み終わっちゃうからの連行.mp4",
     "bytes": 2884733,
     "episodeSlug": "sobaya-fun-soba-making",
-    "video": "/__local-clips/lunch.mp4",
-    "poster": "/__local-clips/lunch.jpg",
-    "source": "/__local-clips/source-81.mp4"
+    "video": "/clip-media/59a90efb4e3f717795c32594074d0111ca03eba383d20b5527e026a8dc652f30/lunch.mp4",
+    "poster": "/clip-media/e82cfcc041318f4a17715282cb236368760d35e0e4534663788b2d351172740d/lunch.jpg",
+    "source": "/clip-media/2a93ab54fdf2a75aa17cfe6dede34621c4802ad7d5c89bd21f4cd27c739978a4/source-81.mp4"
   },
   {
     "id": "runway",
@@ -91,9 +91,9 @@
     "filename": "78_そば屋_モデル歩きで連行.mp4",
     "bytes": 5310416,
     "episodeSlug": "madogiwa-tshirt-runway",
-    "video": "/__local-clips/runway.mp4",
-    "poster": "/__local-clips/runway.jpg",
-    "source": "/__local-clips/source-78.mp4"
+    "video": "/clip-media/5ee5d48f4ed8cf12a14b24c8b3f43c1986b7f95a2e3ddc08e9cddc500d6830ef/runway.mp4",
+    "poster": "/clip-media/d2bceec61a3ea70cbd0256a2757d6ca9ada8d6b402708b2d76871488c0d91771/runway.jpg",
+    "source": "/clip-media/3e64fda4134bb36504bc61e14bf76e30e26992c430902d2c23d8fc9c01d9dd5e/source-78.mp4"
   },
   {
     "id": "prison-break",
@@ -103,13 +103,13 @@
     "tag": "ビール",
     "kind": "迷場面",
     "seconds": 4.27,
-    "startSeconds": 0.0,
+    "startSeconds": 0,
     "filename": "79_そば屋_ビールのために脱獄.mp4",
     "bytes": 1527744,
     "episodeSlug": null,
-    "video": "/__local-clips/prison-break.mp4",
-    "poster": "/__local-clips/prison-break.jpg",
-    "source": "/__local-clips/source-79.mp4"
+    "video": "/clip-media/4433352c9cc99b75c43d8da10e396a008397469b21395fa2f1e2da6c3ac55d6f/prison-break.mp4",
+    "poster": "/clip-media/9a48c24e3290ad3498fc0416f89f13b732150c28057fd9fd338ad038219d7dcc/prison-break.jpg",
+    "source": "/clip-media/3a4574be6dd6214499b0d56fae8aebb13673b8a341932a21ddcb3f455611a9df/source-79.mp4"
   },
   {
     "id": "fired",
@@ -123,9 +123,9 @@
     "filename": "76_よーたん_あいつらクビ.mp4",
     "bytes": 1296914,
     "episodeSlug": "oishii-yakisoba",
-    "video": "/__local-clips/fired.mp4",
-    "poster": "/__local-clips/fired.jpg",
-    "source": "/__local-clips/source-76.mp4"
+    "video": "/clip-media/1aabf6ae33834ac83d7ed5e1d3e0d7616ef6d1e2c3c1026e9380ed2f17ec865a/fired.mp4",
+    "poster": "/clip-media/2455cc8978770576eda8d27222c2103af812ece804804850edaf89955fd55678/fired.jpg",
+    "source": "/clip-media/a588883de25c1c0bd4ce674ec752c18d1a47ad1c574f87dc79d58f8fb3f0350e/source-76.mp4"
   },
   {
     "id": "beer-quake",
@@ -139,9 +139,9 @@
     "filename": "76_そば屋_ビール切れでオフィス地震.mp4",
     "bytes": 1947889,
     "episodeSlug": "oishii-yakisoba",
-    "video": "/__local-clips/beer-quake.mp4",
-    "poster": "/__local-clips/beer-quake.jpg",
-    "source": "/__local-clips/source-76.mp4"
+    "video": "/clip-media/8afeec2913528fda7906040dace3b3c5037379807123036646f8d80f5e7cac75/beer-quake.mp4",
+    "poster": "/clip-media/36a1d00245cc2eea9099387971a29eafc81f3f9cd80ba8460320f65e38ed7bc9/beer-quake.jpg",
+    "source": "/clip-media/a588883de25c1c0bd4ce674ec752c18d1a47ad1c574f87dc79d58f8fb3f0350e/source-76.mp4"
   },
   {
     "id": "working-sobaya",
@@ -155,9 +155,9 @@
     "filename": "80_やめ太郎_指示どおり働くなんてそば屋さんやない.mp4",
     "bytes": 11229102,
     "episodeSlug": "madogiwaryoku-laboratory",
-    "video": "/__local-clips/working-sobaya.mp4",
-    "poster": "/__local-clips/working-sobaya.jpg",
-    "source": "/__local-clips/source-80.mp4"
+    "video": "/clip-media/14e2824b906cd3cbb3f6e5417436278a70059fef43caea8a71881f48752663b3/working-sobaya.mp4",
+    "poster": "/clip-media/3cd0cad9e46b400db566aab22421d13608d39e3e9443f2b47eb03b17a3e4ae50/working-sobaya.jpg",
+    "source": "/clip-media/c913bcb420b8d77ca6233fc9027357d94fecff2ee5894c58448367b19ce2cabc/source-80.mp4"
   },
   {
     "id": "invasion",
@@ -167,13 +167,13 @@
     "tag": "驚き",
     "kind": "迷場面",
     "seconds": 6.17,
-    "startSeconds": 5.0,
+    "startSeconds": 5,
     "filename": "66_おかやまん_宇宙侵略に大変驚いております.mp4",
     "bytes": 2622053,
     "episodeSlug": "madogiwa-super-try-sobaya-invasion",
-    "video": "/__local-clips/invasion.mp4",
-    "poster": "/__local-clips/invasion.jpg",
-    "source": "/__local-clips/source-66.mp4"
+    "video": "/clip-media/12c3c6761f2172a087ea7ad2c4bbec42dd9d448a72efe83d8d2841c03bdf6bef/invasion.mp4",
+    "poster": "/clip-media/0bb8c7c96845dfa52138d145b4b1ea41fa9e85cb07a4f7f5727e9ae51b3de786/invasion.jpg",
+    "source": "/clip-media/9bdf09cf8be2d3e86f92b3fa8c82b102adb234dc6324bcf3292e3d2682be70ac/source-66.mp4"
   },
   {
     "id": "trending",
@@ -183,13 +183,13 @@
     "tag": "流行",
     "kind": "迷言",
     "seconds": 3.1,
-    "startSeconds": 14.0,
+    "startSeconds": 14,
     "filename": "78_福ちゃん_これは流行るわね.mp4",
     "bytes": 1160990,
     "episodeSlug": "madogiwa-tshirt-runway",
-    "video": "/__local-clips/trending.mp4",
-    "poster": "/__local-clips/trending.jpg",
-    "source": "/__local-clips/source-78.mp4"
+    "video": "/clip-media/8eb9caf12391ca1f4c666023a3e67cfb47d8eea4b90cf0208bf957926af0a721/trending.mp4",
+    "poster": "/clip-media/366e77a7a4d6ddf5f56b06d0f0515927f312f19ad3fa033f344c2292ea4f9d42/trending.jpg",
+    "source": "/clip-media/3e64fda4134bb36504bc61e14bf76e30e26992c430902d2c23d8fc9c01d9dd5e/source-78.mp4"
   },
   {
     "id": "gyungyun",
@@ -199,13 +199,13 @@
     "tag": "驚き",
     "kind": "迷言",
     "seconds": 2.5,
-    "startSeconds": 6.0,
+    "startSeconds": 6,
     "filename": "80_福ちゃん_ギュンギュンどころじゃないわね.mp4",
     "bytes": 2562787,
     "episodeSlug": "madogiwaryoku-laboratory",
-    "video": "/__local-clips/gyungyun.mp4",
-    "poster": "/__local-clips/gyungyun.jpg",
-    "source": "/__local-clips/source-80.mp4"
+    "video": "/clip-media/5e53014648b9489f6f4f9e775ff79986847a3d67db8a78ed4f8eaabff3733963/gyungyun.mp4",
+    "poster": "/clip-media/78d8b2427df0ff4ac63f375085226b3333ec162d39d68c6c38d9f2a390ad4866/gyungyun.jpg",
+    "source": "/clip-media/c913bcb420b8d77ca6233fc9027357d94fecff2ee5894c58448367b19ce2cabc/source-80.mp4"
   },
   {
     "id": "more-madogiwa",
@@ -214,14 +214,14 @@
     "title": "窓際族、増やしてどうすんねん。",
     "tag": "労働",
     "kind": "迷言",
-    "seconds": 3.0,
+    "seconds": 3,
     "startSeconds": 8.6,
     "filename": "80_やめ太郎_窓際族増やしてどうすんねん.mp4",
     "bytes": 3962619,
     "episodeSlug": "madogiwaryoku-laboratory",
-    "video": "/__local-clips/more-madogiwa.mp4",
-    "poster": "/__local-clips/more-madogiwa.jpg",
-    "source": "/__local-clips/source-80.mp4"
+    "video": "/clip-media/c67ac5238421c4fc1e80c658b6e91e22d7a0ee4294f29aa7219f28f99cfa6288/more-madogiwa.mp4",
+    "poster": "/clip-media/4971f6b95d11be72d973a4da27949676823648870df1b926a3f9aa025838b504/more-madogiwa.jpg",
+    "source": "/clip-media/c913bcb420b8d77ca6233fc9027357d94fecff2ee5894c58448367b19ce2cabc/source-80.mp4"
   },
   {
     "id": "surprised",
@@ -235,9 +235,9 @@
     "filename": "66_おかやまん_大変驚いております.mp4",
     "bytes": 869070,
     "episodeSlug": "madogiwa-super-try-sobaya-invasion",
-    "video": "/__local-clips/surprised.mp4",
-    "poster": "/__local-clips/surprised.jpg",
-    "source": "/__local-clips/source-66.mp4"
+    "video": "/clip-media/32ba1539c38f7205e96fdba4c470227ec5d2dcfcfef6d54cdb05871e0b7a835e/surprised.mp4",
+    "poster": "/clip-media/e6c24e23f4ba72dc621fca94c866ae9a8d01520b149f7a8b7a8f0ea93d8db64b/surprised.jpg",
+    "source": "/clip-media/9bdf09cf8be2d3e86f92b3fa8c82b102adb234dc6324bcf3292e3d2682be70ac/source-66.mp4"
   },
   {
     "id": "cold-treatment",
@@ -251,8 +251,8 @@
     "filename": "63_そば屋_冷えてる待遇も.mp4",
     "bytes": 820623,
     "episodeSlug": "madogiwa-super-try-commute",
-    "video": "/__local-clips/cold-treatment.mp4",
-    "poster": "/__local-clips/cold-treatment.jpg",
-    "source": "/__local-clips/source-63.mp4"
+    "video": "/clip-media/3bcae1d27080567ac0b4d8e37fe3091fa92cb7d8ee988f499bc127f505f6aa7f/cold-treatment.mp4",
+    "poster": "/clip-media/2c35d3778426fe8acdac32bb6500c84b0300ae1d736df7982e0098eb405c291b/cold-treatment.jpg",
+    "source": "/clip-media/49f900dd6321413fab8fa3ee7bafb5d1c5355409e968cc6871186bc91faabf11/source-63.mp4"
   }
 ]

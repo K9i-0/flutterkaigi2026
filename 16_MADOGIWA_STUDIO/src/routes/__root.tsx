@@ -12,7 +12,7 @@ import { validTheme } from "@/official/site-theme";
 export const Route = createRootRoute({
   loader: async ({ location }) => {
     const path = location.pathname.replace(/\/$/, "") || "/";
-    if (import.meta.env.DEV && (path === "/clips" || path.startsWith("/clips/"))) {
+    if ((path === "/clips" || path.startsWith("/clips/"))) {
       const explicit = new URL(location.href, "https://madogiwa.work").searchParams.get("theme");
       const clipTheme = validTheme(explicit) ? explicit : await getInitialSiteTheme();
       return { official: null, clipTheme };

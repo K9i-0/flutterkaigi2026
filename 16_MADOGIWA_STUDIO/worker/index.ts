@@ -1,3 +1,4 @@
+import { serveClipAsset } from "./clip-media";
 import startHandler from "@tanstack/react-start/server-entry";
 import { requireAdmin } from "./auth";
 import { handleApi } from "./api";
@@ -11,6 +12,8 @@ export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
     try {
+      if (url.pathname.startsWith("/clip-media/")) return await serveClipAsset(request, env.MEDIA);
+
       if (url.pathname === "/mcp" || url.pathname.startsWith("/mcp/")) {
         const admin = await requireAdmin(request, env, ctx);
         return await handleMcp(request, env, ctx, admin.email);

@@ -293,7 +293,7 @@ function Shell({ children }: { children: React.ReactNode }) {
       <div hidden={theme === "excel" && working}>{children}</div>
       <footer className="clips-footer">
         <b>窓際族物語</b>
-        <span>ローカルプレビュー</span>
+        <span>迷言・迷場面集</span>
         <small>© MADOGIWAZOKU MONOGATARI</small>
       </footer>
       {theme === "excel" && (
@@ -326,7 +326,7 @@ function Guide() {
         </p>
         <p>
           <b>URLをコピー</b>
-          このクリップのページを紹介するリンクです。動画ファイルの添付とは異なります。今はローカル版のため、この端末で開く確認用URLです。
+          このクリップのページを紹介するリンクです。動画ファイルの添付とは異なります。
         </p>
       </div>
     </details>

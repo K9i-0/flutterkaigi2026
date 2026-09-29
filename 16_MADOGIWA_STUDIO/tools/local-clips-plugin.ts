@@ -2,6 +2,7 @@ import { createReadStream, readFileSync } from "node:fs";
 import { stat } from "node:fs/promises";
 import path from "node:path";
 import type { Plugin } from "vite";
+import assets from "../worker/clip-assets.json";
 
 // Dev server only. The allowlist prevents access to arbitrary workspace files.
 export function localClips(): Plugin {
@@ -24,8 +25,8 @@ export function localClips(): Plugin {
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
         const url = new URL(req.url ?? "/", "http://localhost");
-        if (!url.pathname.startsWith("/__local-clips/")) return next();
-        const filename = url.pathname.slice("/__local-clips/".length);
+        if (!url.pathname.startsWith("/clip-media/")) return next();
+        const filename = assets.find((asset) => asset.path === url.pathname)?.name ?? "";
         if (!allowed.has(filename)) {
           res.statusCode = 404;
           res.end();
