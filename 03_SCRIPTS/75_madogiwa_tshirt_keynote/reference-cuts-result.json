@@ -1,0 +1,508 @@
+{
+  "model": "Aratako/Irodori-TTS-v4-Large",
+  "date": "2026-09-30",
+  "protocol": "参照のみをA/B/Cで変更。発表会caption・CFG3・尺倍率1・FP32・同じseedとトリム。短文2つ、長文1つ、腕ですはseed42でも確認。",
+  "conclusion": "今回の末尾カットでは両者とも短文の改善をASRで確認できず。やめ太郎の別参照は腕ですseed7だけ台本に対応し、seed42では崩れた。安定した改善・原因特定とはしない。",
+  "auditoryReview": "未確認。ASRは異音や自然さの判定ではない。比較WAVをユーザー試聴用に納品。",
+  "adopted": false,
+  "references": {
+    "fukuchan/A_original": {
+      "file": ".local/irodori-large-ep75/reference-cuts/fukuchan_A_original_reference.wav",
+      "sha256": "b2131bb057e8b16682dadb6092c9053c271d35f40529c00ba2d8dcaf25e21bcd",
+      "source": "02_CHARACTERS/Fukuchan_voice.wav",
+      "sourceSha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "start": 0,
+      "end": null,
+      "seconds": 9.0,
+      "label": "A 現在の参照",
+      "note": "正典PCM全長、内容変更なし"
+    },
+    "fukuchan/B_cut": {
+      "file": ".local/irodori-large-ep75/reference-cuts/fukuchan_B_cut_reference.wav",
+      "sha256": "b7b4f666dacc5867d54b34b76a80aa55f8857f2d82ff03537020cdee75e2e05d",
+      "source": "02_CHARACTERS/Fukuchan_voice.wav",
+      "sourceSha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "start": 0,
+      "end": 5.16,
+      "seconds": 5.16,
+      "label": "B 現在の参照の末尾をカット",
+      "note": "自己紹介の終わりを残し、挨拶・決め台詞・次のCCO説明の言いかけを除く。"
+    },
+    "fukuchan/C_alternate": {
+      "file": ".local/irodori-large-ep75/reference-cuts/fukuchan_C_alternate_reference.wav",
+      "sha256": "a79a238b431d23d880e04bfc5af1e8c6bd1fead96aed3d2ae2e9d5caaa941719",
+      "source": "02_CHARACTERS/voice_references/Fukuchan_ref_company.wav",
+      "sourceSha256": "b8437a5a99aac2bf32d5ec1ff3100586cad30bba95875a5fabf6769861384fb5",
+      "start": 0,
+      "end": 4.84,
+      "seconds": 4.84,
+      "label": "C 別の完結した一文",
+      "note": "株式会社ゆめみは2000年に創業をした会社です。"
+    },
+    "yametaro/A_original": {
+      "file": ".local/irodori-large-ep75/reference-cuts/yametaro_A_original_reference.wav",
+      "sha256": "f65b4b1226f7ab4351ba1154ed315dbeb10a87898af131a1f407a71abaa832cc",
+      "source": "02_CHARACTERS/Yametaro_voice.wav",
+      "sourceSha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "start": 0,
+      "end": null,
+      "seconds": 7.0,
+      "label": "A 現在の参照",
+      "note": "正典PCM全長、内容変更なし"
+    },
+    "yametaro/B_cut": {
+      "file": ".local/irodori-large-ep75/reference-cuts/yametaro_B_cut_reference.wav",
+      "sha256": "131d0ab403c59f0862c3011ce4be1256771d61d190df1c63f2221a3ef351f7d7",
+      "source": "02_CHARACTERS/Yametaro_voice.wav",
+      "sourceSha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "start": 0,
+      "end": 6.25,
+      "seconds": 6.25,
+      "label": "B 現在の参照の末尾をカット",
+      "note": "後端の次の句の断片を除く。ただし元の内容は「渡り歩いて」と続く会話なので、この切り出しだけでは完結文にならない。"
+    },
+    "yametaro/C_alternate": {
+      "file": ".local/irodori-large-ep75/reference-cuts/yametaro_C_alternate_reference.wav",
+      "sha256": "0bd8cb115a283c9b6b717cc777c5cbcfd2a6bed21ecbc4ef05c536ae5897361f",
+      "source": "02_CHARACTERS/voice_references/Yametaro_ref_intro_short.wav",
+      "sourceSha256": "fab3dae1f02a7541034e0623af2b785d1a44d3297bc6b639a15b61fc6f5f3f60",
+      "start": 0,
+      "end": 6.02,
+      "seconds": 6.02,
+      "label": "C 別の完結した一文",
+      "note": "私は株式会社ゆめみのフロントエンドエンジニアの無職やめ太郎と申します。末尾の次の「30歳」を除く。"
+    }
+  },
+  "outputs": [
+    {
+      "speaker": "fukuchan",
+      "name": "福ちゃん",
+      "file": ".local/irodori-large-ep75/reference-cuts/fukuchan_ABC_comparison.wav",
+      "duration": 70.5205,
+      "sha256": "82d79f6eede8730c205b8ee37d8d29bbd0c7298b9da0f6c45909cef2f86891ac",
+      "timeline": [
+        {
+          "start": 0.0,
+          "end": 5.440041666666667,
+          "condition": "A_original",
+          "text": "腕です。",
+          "seed": 100
+        },
+        {
+          "start": 6.440041666666667,
+          "end": 11.040083333333333,
+          "condition": "B_cut",
+          "text": "腕です。",
+          "seed": 100
+        },
+        {
+          "start": 12.040083333333333,
+          "end": 16.960125,
+          "condition": "C_alternate",
+          "text": "腕です。",
+          "seed": 100
+        },
+        {
+          "start": 18.960125,
+          "end": 24.360166666666668,
+          "condition": "A_original",
+          "text": "完璧です。",
+          "seed": 100
+        },
+        {
+          "start": 25.360166666666668,
+          "end": 29.920208333333335,
+          "condition": "B_cut",
+          "text": "完璧です。",
+          "seed": 100
+        },
+        {
+          "start": 30.920208333333335,
+          "end": 35.68025,
+          "condition": "C_alternate",
+          "text": "完璧です。",
+          "seed": 100
+        },
+        {
+          "start": 37.68025,
+          "end": 40.96029166666667,
+          "condition": "A_original",
+          "text": "今日という日を、私はずっと待っていました。",
+          "seed": 100
+        },
+        {
+          "start": 41.96029166666667,
+          "end": 45.160333333333334,
+          "condition": "B_cut",
+          "text": "今日という日を、私はずっと待っていました。",
+          "seed": 100
+        },
+        {
+          "start": 46.160333333333334,
+          "end": 49.560375,
+          "condition": "C_alternate",
+          "text": "今日という日を、私はずっと待っていました。",
+          "seed": 100
+        },
+        {
+          "start": 51.560375,
+          "end": 57.000416666666666,
+          "condition": "A_original",
+          "text": "腕です。",
+          "seed": 42
+        },
+        {
+          "start": 58.000416666666666,
+          "end": 62.600458333333336,
+          "condition": "B_cut",
+          "text": "腕です。",
+          "seed": 42
+        },
+        {
+          "start": 63.600458333333336,
+          "end": 68.5205,
+          "condition": "C_alternate",
+          "text": "腕です。",
+          "seed": 42
+        }
+      ],
+      "auditoryReview": "未確認・ユーザー比較試聴用"
+    },
+    {
+      "speaker": "yametaro",
+      "name": "やめ太郎",
+      "file": ".local/irodori-large-ep75/reference-cuts/yametaro_ABC_comparison.wav",
+      "duration": 77.5605,
+      "sha256": "8c5adaa3c0090a2df77ab4b47d3d76a42a6bfe19944f8a461e8f58d80626811a",
+      "timeline": [
+        {
+          "start": 0.0,
+          "end": 5.720041666666667,
+          "condition": "A_original",
+          "text": "腕です。",
+          "seed": 7
+        },
+        {
+          "start": 6.720041666666667,
+          "end": 12.880083333333333,
+          "condition": "B_cut",
+          "text": "腕です。",
+          "seed": 7
+        },
+        {
+          "start": 13.880083333333333,
+          "end": 18.840125,
+          "condition": "C_alternate",
+          "text": "腕です。",
+          "seed": 7
+        },
+        {
+          "start": 20.840125,
+          "end": 26.640166666666666,
+          "condition": "A_original",
+          "text": "完璧です。",
+          "seed": 7
+        },
+        {
+          "start": 27.640166666666666,
+          "end": 33.80020833333333,
+          "condition": "B_cut",
+          "text": "完璧です。",
+          "seed": 7
+        },
+        {
+          "start": 34.80020833333333,
+          "end": 39.72025,
+          "condition": "C_alternate",
+          "text": "完璧です。",
+          "seed": 7
+        },
+        {
+          "start": 41.72025,
+          "end": 45.44029166666667,
+          "condition": "A_original",
+          "text": "今日という日を、私はずっと待っていました。",
+          "seed": 7
+        },
+        {
+          "start": 46.44029166666667,
+          "end": 50.24033333333333,
+          "condition": "B_cut",
+          "text": "今日という日を、私はずっと待っていました。",
+          "seed": 7
+        },
+        {
+          "start": 51.24033333333333,
+          "end": 54.720375,
+          "condition": "C_alternate",
+          "text": "今日という日を、私はずっと待っていました。",
+          "seed": 7
+        },
+        {
+          "start": 56.720375,
+          "end": 62.440416666666664,
+          "condition": "A_original",
+          "text": "腕です。",
+          "seed": 42
+        },
+        {
+          "start": 63.440416666666664,
+          "end": 69.60045833333334,
+          "condition": "B_cut",
+          "text": "腕です。",
+          "seed": 42
+        },
+        {
+          "start": 70.60045833333334,
+          "end": 75.5605,
+          "condition": "C_alternate",
+          "text": "腕です。",
+          "seed": 42
+        }
+      ],
+      "auditoryReview": "未確認・ユーザー比較試聴用"
+    }
+  ],
+  "comparisons": [
+    {
+      "key": "fukuchan/A_original/arms",
+      "text": "腕です。",
+      "seed": 100,
+      "seconds": 5.440041666666667,
+      "recognized": "CCをごく夢にしめにしだしゃる仕事ですのは 僕のことを言ったのは",
+      "sha256": "25235d1b17f514ab751f59abbba287685b0d681436a77b7f064d9cf890fbd517",
+      "referenceSha256": "b2131bb057e8b16682dadb6092c9053c271d35f40529c00ba2d8dcaf25e21bcd",
+      "fingerprint": "44894c104189e3f46333bf012ce9d296d6bf1695d1df1c3d64b569d4c4d435ea"
+    },
+    {
+      "key": "fukuchan/B_cut/arms",
+      "text": "腕です。",
+      "seed": 100,
+      "seconds": 4.600041666666667,
+      "recognized": "シラシーを含めにシビーした出る ショークタラマロック飛行です",
+      "sha256": "80183da0c7f0ba46e985e7bf6c251fdc660bef72dd587d58f5ec6b191e75a2bb",
+      "referenceSha256": "b7b4f666dacc5867d54b34b76a80aa55f8857f2d82ff03537020cdee75e2e05d",
+      "fingerprint": "30f43a3548607d9ac0c3f18e5e34f97383ad645ae42eb5d7237088eda96a6663"
+    },
+    {
+      "key": "fukuchan/C_alternate/arms",
+      "text": "腕です。",
+      "seed": 100,
+      "seconds": 4.920041666666667,
+      "recognized": "次回は2人目にあげる量を折りしよう",
+      "sha256": "c1ffbdf52d5679c312ebbd7a6e1d7c5768f143b4b6977ed888135c14afe4289d",
+      "referenceSha256": "a79a238b431d23d880e04bfc5af1e8c6bd1fead96aed3d2ae2e9d5caaa941719",
+      "fingerprint": "ff2db3c1b63f6627a539eef91785a5b466015e0422ae780592c2c79ba3de3426"
+    },
+    {
+      "key": "fukuchan/A_original/perfect",
+      "text": "完璧です。",
+      "seed": 100,
+      "seconds": 5.400041666666667,
+      "recognized": "CCをリメにしめにし出しある上手しのは 布の奥重の奥です",
+      "sha256": "513e624252d3e83322d072a72fd495cd775104841035bba1ea6d76c6990b6ef9",
+      "referenceSha256": "b2131bb057e8b16682dadb6092c9053c271d35f40529c00ba2d8dcaf25e21bcd",
+      "fingerprint": "4497e39a950458b09710a1123f85934afefcbf68bc871b49418fd112ea88b3bf"
+    },
+    {
+      "key": "fukuchan/B_cut/perfect",
+      "text": "完璧です。",
+      "seed": 100,
+      "seconds": 4.560041666666667,
+      "recognized": "シラシーを引き目に知られるショークタルナを完璧です",
+      "sha256": "e69250c71a6a8426a28e95bee6ba2a97d0d7e729fadcd4005b544b4e2db4044c",
+      "referenceSha256": "b7b4f666dacc5867d54b34b76a80aa55f8857f2d82ff03537020cdee75e2e05d",
+      "fingerprint": "07ace70cf57420611f5ef08214b92a281648cec9175a78f5a6374ba961c06940"
+    },
+    {
+      "key": "fukuchan/C_alternate/perfect",
+      "text": "完璧です。",
+      "seed": 100,
+      "seconds": 4.760041666666667,
+      "recognized": "千切りには2個麺にもぎあげる量間は和歌用です",
+      "sha256": "2c05912f0e8327932e81155adf0802dbad3e9f32760e0d9d0ffda431a5ba5a7b",
+      "referenceSha256": "a79a238b431d23d880e04bfc5af1e8c6bd1fead96aed3d2ae2e9d5caaa941719",
+      "fingerprint": "d4ab73f9cb35437b078c0033c25835e79eafe017328d600517f6eb000ad7062c"
+    },
+    {
+      "key": "fukuchan/A_original/intro",
+      "text": "今日という日を、私はずっと待っていました。",
+      "seed": 100,
+      "seconds": 3.2800416666666665,
+      "recognized": "今日という日を私はずっと待っていました",
+      "sha256": "d6495932e65f564f6a9f7437fc0e9e1eaf8960cb554c1e9573f3f0f04a8d18ac",
+      "referenceSha256": "b2131bb057e8b16682dadb6092c9053c271d35f40529c00ba2d8dcaf25e21bcd",
+      "fingerprint": "8a9263448aacd789936edf17832faeece81a35ff69b81dfd1614677187b84513"
+    },
+    {
+      "key": "fukuchan/B_cut/intro",
+      "text": "今日という日を、私はずっと待っていました。",
+      "seed": 100,
+      "seconds": 3.2000416666666665,
+      "recognized": "今日という日を、私はずっと待っていました",
+      "sha256": "26e484cd713ae9a515358778cf7cf805c05fea08229e38dc7d555cae7549af20",
+      "referenceSha256": "b7b4f666dacc5867d54b34b76a80aa55f8857f2d82ff03537020cdee75e2e05d",
+      "fingerprint": "25d64fadfb80b1b79a29ef13b5dcf2e39a5a052d7cee793a496bdb7b6cda5918"
+    },
+    {
+      "key": "fukuchan/C_alternate/intro",
+      "text": "今日という日を、私はずっと待っていました。",
+      "seed": 100,
+      "seconds": 3.4000416666666666,
+      "recognized": "今日という日を私はずっと待っていました",
+      "sha256": "27739f92b6ffeb35032c61d7b7aff1ca604d66de61a79157229d4560deb25ac5",
+      "referenceSha256": "a79a238b431d23d880e04bfc5af1e8c6bd1fead96aed3d2ae2e9d5caaa941719",
+      "fingerprint": "cf660ce1ae07fad5a72d53370bab25a2e9a96d4d88a0816c2caf41b890fce15e"
+    },
+    {
+      "key": "fukuchan/A_original/arms_seed42",
+      "text": "腕です。",
+      "seed": 42,
+      "seconds": 5.440041666666667,
+      "recognized": "小銭です。Gurunoです。CCCを弾くのはGurunoもやっぱり",
+      "sha256": "280ec09d70e227109d024d2ccf48668c5c3e1bf1453d1c069180557e3f66e602",
+      "referenceSha256": "b2131bb057e8b16682dadb6092c9053c271d35f40529c00ba2d8dcaf25e21bcd",
+      "fingerprint": "5b62734b86c1f2bf75d360dc547955cbcdbfa1980bd938b18b4662e0fb53a042"
+    },
+    {
+      "key": "fukuchan/B_cut/arms_seed42",
+      "text": "腕です。",
+      "seed": 42,
+      "seconds": 4.600041666666667,
+      "recognized": "施行成人士攻略等を上にCCCオフコーウォン倒します",
+      "sha256": "57902d7019212d576d4301bc0e3f01445db447a1dbd8aa179658c110c16a7e83",
+      "referenceSha256": "b7b4f666dacc5867d54b34b76a80aa55f8857f2d82ff03537020cdee75e2e05d",
+      "fingerprint": "18b673f0b855eca552f3d3f54f8914dff78cdf79712019be601a166207c0da61"
+    },
+    {
+      "key": "fukuchan/C_alternate/arms_seed42",
+      "text": "腕です。",
+      "seed": 42,
+      "seconds": 4.920041666666667,
+      "recognized": "そうのために、メントウ系会社に内面が応応したたです",
+      "sha256": "d10234ca101ba85b35fa808ae02f6c34776ea197bd4922e075d763f485fc1a6d",
+      "referenceSha256": "a79a238b431d23d880e04bfc5af1e8c6bd1fead96aed3d2ae2e9d5caaa941719",
+      "fingerprint": "2848a75f16a9ddcef2bec0d3cc82da3f0326b92fcf3fcb88a5e0a81e5ff6eaee"
+    },
+    {
+      "key": "yametaro/A_original/arms",
+      "text": "腕です。",
+      "seed": 7,
+      "seconds": 5.720041666666667,
+      "recognized": "これから腕ですか?広部や先輩を買い",
+      "sha256": "02f934bbb75f32671e1759ca0626f90cc1f7a3c53ba52932ab461de41659b13f",
+      "referenceSha256": "f65b4b1226f7ab4351ba1154ed315dbeb10a87898af131a1f407a71abaa832cc",
+      "fingerprint": "b29f187443e2e05b60d02ead2323ddcf59c967e31f1266daeb5af2297c5ddfeb"
+    },
+    {
+      "key": "yametaro/B_cut/arms",
+      "text": "腕です。",
+      "seed": 7,
+      "seconds": 6.160041666666666,
+      "recognized": "手元金ズにたいから、NGMTEN下に仲を耐え合いをやりつめるこれから腕ですか?飛行機で転秘もく安心で",
+      "sha256": "ca5563c8be46a79f0afc57aafb97a528f2f5e38abe6932bf962da37075f57c31",
+      "referenceSha256": "131d0ab403c59f0862c3011ce4be1256771d61d190df1c63f2221a3ef351f7d7",
+      "fingerprint": "82c8ea55f2182e03ea6f15c8b8bc5645a0daaef7bea4abf8e7cba99695e14f08"
+    },
+    {
+      "key": "yametaro/C_alternate/arms",
+      "text": "腕です。",
+      "seed": 7,
+      "seconds": 4.960041666666666,
+      "recognized": "腕です",
+      "sha256": "3ee6750cdfca6faa3ddf705afff671a8b135ecc3f5bce9cf3116d377c59c5fa5",
+      "referenceSha256": "0bd8cb115a283c9b6b717cc777c5cbcfd2a6bed21ecbc4ef05c536ae5897361f",
+      "fingerprint": "e91958c631fc8e33e4c6180517728fb1d41c3fc99799dfd65af2ed23fa3a1c65"
+    },
+    {
+      "key": "yametaro/A_original/perfect",
+      "text": "完璧です。",
+      "seed": 7,
+      "seconds": 5.800041666666667,
+      "recognized": "横聞いてみたいのは花家にいて2社にあるお互いウェイス選顔は完璧です完璧編成にしています",
+      "sha256": "52bc4aa809d560d363c7e0b8ad27398f812d13a460646c036fc3c298a1194e0f",
+      "referenceSha256": "f65b4b1226f7ab4351ba1154ed315dbeb10a87898af131a1f407a71abaa832cc",
+      "fingerprint": "0fc7c4bd28acc9786e43225954bd57d190912cebb44f89c7364d4559179facf6"
+    },
+    {
+      "key": "yametaro/B_cut/perfect",
+      "text": "完璧です。",
+      "seed": 7,
+      "seconds": 6.160041666666666,
+      "recognized": "横近的大脳、花家に転してになることがより全然こうやっと来いです完璧です、陰神。半瓶です。",
+      "sha256": "6990268c34a20d01b131a568376418dea39b41c3c6c87ff264df285d2a8893fb",
+      "referenceSha256": "131d0ab403c59f0862c3011ce4be1256771d61d190df1c63f2221a3ef351f7d7",
+      "fingerprint": "5bb67d6cd6055c644a01a64c97390d5df18c28dbd4b099b05d478eed6d35d442"
+    },
+    {
+      "key": "yametaro/C_alternate/perfect",
+      "text": "完璧です。",
+      "seed": 7,
+      "seconds": 4.920041666666667,
+      "recognized": "完璧内蔵のオネギチャインシャインやのソメンですけれども完璧です私",
+      "sha256": "baffacaa635d76677903042bf210b60ed77e0e3611135d05825baed34f818b96",
+      "referenceSha256": "0bd8cb115a283c9b6b717cc777c5cbcfd2a6bed21ecbc4ef05c536ae5897361f",
+      "fingerprint": "1405e0c511bdff9e18225c334b99a501d854aca52483c16b63fca5ce08c8876b"
+    },
+    {
+      "key": "yametaro/A_original/intro",
+      "text": "今日という日を、私はずっと待っていました。",
+      "seed": 7,
+      "seconds": 3.7200416666666665,
+      "recognized": "今日という日を私はずっと待っていました",
+      "sha256": "8ade763747beffe56076979bce552acaa719182009eae346686f99915ba59a73",
+      "referenceSha256": "f65b4b1226f7ab4351ba1154ed315dbeb10a87898af131a1f407a71abaa832cc",
+      "fingerprint": "bd1eae7acf1675ec51bd78dc641d349dcf7992408821dccf9030f234ff58e324"
+    },
+    {
+      "key": "yametaro/B_cut/intro",
+      "text": "今日という日を、私はずっと待っていました。",
+      "seed": 7,
+      "seconds": 3.8000416666666665,
+      "recognized": "今日という日を私はずっと待っていました",
+      "sha256": "0a1d1334b6b570b955cc7aa5c455ce4ac7bdfd1874ebac4150b8cf1d96990fba",
+      "referenceSha256": "131d0ab403c59f0862c3011ce4be1256771d61d190df1c63f2221a3ef351f7d7",
+      "fingerprint": "f54c9c2182533114906fc7e9df72c752b7bfd580babebcae9bc22681ded9341e"
+    },
+    {
+      "key": "yametaro/C_alternate/intro",
+      "text": "今日という日を、私はずっと待っていました。",
+      "seed": 7,
+      "seconds": 3.4800416666666667,
+      "recognized": "今日と夕日を私はずっと待っていました",
+      "sha256": "e8ac54bbf331e109d7636bdfaec44064ed5d422ed5e80755c1ed58d411a7cd45",
+      "referenceSha256": "0bd8cb115a283c9b6b717cc777c5cbcfd2a6bed21ecbc4ef05c536ae5897361f",
+      "fingerprint": "ec6b3a6eeb2784ac87b61f1619ece0a4c5bb08463f12aec2764f76a0bf6e9dcb"
+    },
+    {
+      "key": "yametaro/A_original/arms_seed42",
+      "text": "腕です。",
+      "seed": 42,
+      "seconds": 5.720041666666667,
+      "recognized": "今こま3人の早く腕は3人2,000人の内緒私ので毎人腕です",
+      "sha256": "1b3e9ecffba77976852c307282a715174c78f6fe624736cc24b7f2261b4aba8c",
+      "referenceSha256": "f65b4b1226f7ab4351ba1154ed315dbeb10a87898af131a1f407a71abaa832cc",
+      "fingerprint": "405043005917745060c31c1d6040890f289aa07470838f9ca0853a75bba957ca"
+    },
+    {
+      "key": "yametaro/B_cut/arms_seed42",
+      "text": "腕です。",
+      "seed": 42,
+      "seconds": 6.160041666666666,
+      "recognized": "セラオワサンフィンがフラット腕はちゃん2000年1000人の相性私の出会い全員ラガイススイープ",
+      "sha256": "f0e1304df362e381a89270e42299286f44778d3a8044398984353b22e9a67b65",
+      "referenceSha256": "131d0ab403c59f0862c3011ce4be1256771d61d190df1c63f2221a3ef351f7d7",
+      "fingerprint": "c647c269f8c07b4ffe1eaa01e2f8d4f340862a9022330fcfb29d72f2f26f7621"
+    },
+    {
+      "key": "yametaro/C_alternate/arms_seed42",
+      "text": "腕です。",
+      "seed": 42,
+      "seconds": 4.960041666666666,
+      "recognized": "ホロモン戦車員のウーデイは 範囲中の成人にの日をマクしておけます",
+      "sha256": "c5180cc0f8ab1a86d8581ca35f63c6c3c467323f1a92f49681fd8c6e78b3b3c2",
+      "referenceSha256": "0bd8cb115a283c9b6b717cc777c5cbcfd2a6bed21ecbc4ef05c536ae5897361f",
+      "fingerprint": "0d1ba956eeee4efd31c17772c40aeb670d8543946d5be8f19e40ac1f84ecb9ef"
+    }
+  ]
+}
