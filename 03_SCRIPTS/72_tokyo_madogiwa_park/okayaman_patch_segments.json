@@ -1,0 +1,47 @@
+{
+  "small_not": {
+    "text": "おかやまん！大変驚いていません！",
+    "model": "Aratako/Irodori-TTS-v4.1-Small",
+    "target": 1.25,
+    "source": 1.26,
+    "duration": 1.65,
+    "voiced": [
+      1.461,
+      2.79
+    ]
+  },
+  "large_not": {
+    "text": "おかやまん！大変驚いていません！",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "target": 1.25,
+    "source": 1.05,
+    "duration": 1.65,
+    "voiced": [
+      1.245,
+      2.4
+    ]
+  },
+  "large_gyun": {
+    "text": "おかやまん！ギュンギュンしています！",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "target": 1.25,
+    "source": 1.23,
+    "duration": 1.65,
+    "voiced": [
+      1.429,
+      2.354
+    ]
+  },
+  "large_not_seed43": {
+    "text": "おかやまん！大変驚いていません！",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 43,
+    "target": 1.25,
+    "source": 1.03,
+    "duration": 1.65,
+    "voiced": [
+      1.2275,
+      2.4113
+    ]
+  }
+}

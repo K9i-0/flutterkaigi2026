@@ -1,0 +1,85 @@
+{
+  "reference_source": "generated_video",
+  "reference_start_in_reply": 0.24,
+  "reference_duration": 2.5,
+  "reply_source_start_in_scene": 3.3,
+  "reference_sha256": "72892447720ec8a3008404468c190dbcdd2e264516ef083d682c1c4d497105c6",
+  "source_sha256": "97c72b30576483a0ef43d59c76df18a9bdb72bdb09cda20d89ad572a58c3a24a",
+  "seed": 42,
+  "caption": null,
+  "duration_scale": 1,
+  "text_cfg": 3,
+  "time_stretch": false,
+  "takes": [
+    {
+      "name": "small_not",
+      "gain_db": -2.072847,
+      "text": "おかやまん！大変驚いていません！",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "target": 1.25,
+      "source": 1.26,
+      "duration": 1.65,
+      "voiced": [
+        1.461,
+        2.79
+      ],
+      "generated_sha256": "82c07e258847abb21fc7b7045c7698bc8b7758ed090569930da93dc95a467849",
+      "video_sha256": "e8647e3229e932245dbe6df4c6f0cf28ee0ce8a609828162b8ba3003879a1f76"
+    },
+    {
+      "name": "large_not",
+      "gain_db": -1.359228,
+      "text": "おかやまん！大変驚いていません！",
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "target": 1.25,
+      "source": 1.05,
+      "duration": 1.65,
+      "voiced": [
+        1.245,
+        2.4
+      ],
+      "generated_sha256": "3231d84888b28998950d930816e65a71f912ec0bdd925a7b3411ed2ab0d11c66",
+      "video_sha256": "819b5a622f19160bb93e620fd57ecdf973918e9d7f2348031d7e6a37b66b1392"
+    },
+    {
+      "name": "large_gyun",
+      "gain_db": 1.39257,
+      "text": "おかやまん！ギュンギュンしています！",
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "target": 1.25,
+      "source": 1.23,
+      "duration": 1.65,
+      "voiced": [
+        1.429,
+        2.354
+      ],
+      "generated_sha256": "a7ebb791059911e668f97bb4f69d149f8fdc4061a826d02edc0eed97bfcd6451",
+      "video_sha256": "3827a47ea3987ae4b7ee6adf11f2d51a011f23ff3ad62cf0fbbb12f7a832dc86"
+    },
+    {
+      "name": "large_not_seed43",
+      "gain_db": -2.242457,
+      "text": "おかやまん！大変驚いていません！",
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "seed": 43,
+      "target": 1.25,
+      "source": 1.03,
+      "duration": 1.65,
+      "voiced": [
+        1.2275,
+        2.4113
+      ],
+      "generated_sha256": "250b7f0631158eb3a73e5cc3526af9db84bcbd3c49474bc7926e7b51caad85c0",
+      "video_sha256": "a590263396fa82c469570a55e36e8c77d5848afe87ba7e0087c54d2721d4e972"
+    }
+  ],
+  "model_revisions": {
+    "Aratako/Irodori-TTS-v4-Large": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+    "Aratako/Irodori-TTS-v4.1-Small": "2b28324dc263ed5e6638b3cf3dd94c82ead07b4b"
+  },
+  "runtime_commits": {
+    "large": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+    "small": "8224dafb46d0aba89209a8f905f1cb7e3299d9c1"
+  },
+  "seed_note": "large_not_seed43 only: 43"
+}
