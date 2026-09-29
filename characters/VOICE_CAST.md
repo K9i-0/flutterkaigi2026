@@ -6,11 +6,12 @@
 ## 共通設定
 
 - エンジン：Irodori-TTSのゼロショットボイスクローン
-- 固定モデル：`Aratako/Irodori-TTS-v4.1-Small`
-- 動作確認済みIrodori-TTS本体：`8224dafb46d0aba89209a8f905f1cb7e3299d9c1`（2026-08-11の`main`）
+- 固定モデル：**そば屋は `Aratako/Irodori-TTS-v4-Large`**。その他（やめ太郎を含む）は `Aratako/Irodori-TTS-v4.1-Small`。2026-09-30、エピソード75の比較試聴でユーザーがそば屋のLargeを採用。参照WAV・seed・monsterize処理は維持する。
+- Large本体：`89f9d8fbd4d51ea019867ee1197725ede1df13c5`（`.local/Irodori-TTS-large`）。旧Small本体ではLargeを実行しない。
+- Small動作確認済みIrodori-TTS本体：`8224dafb46d0aba89209a8f905f1cb7e3299d9c1`（2026-08-11の`main`）
 - 生成方法：`tools/irodori_speak.sh`
 - 入力：実際に発話する日本語本文と、下表の正典参照WAV
-- 尺制御：既定はv4.1-Smallの自動尺推定。2026-09-23にユーザーが採用した、正典参照のやめ太郎の短い通常会話は、captionなし・本文CFG 5・生成尺倍率0.70・トリムなしを第一候補にする。台詞の欠落・早口化・語尾を試聴し、演技指定があれば維持して個別調整する。全キャラへの一律適用や生成後の速度変更はしない。詳細は`tools/IRODORI_TTS.md`。
+- 尺制御：既定は選択モデルの自動尺推定。2026-09-23にユーザーが採用した、正典参照のやめ太郎の短い通常会話は、captionなし・本文CFG 5・生成尺倍率0.70・トリムなしを第一候補にする。台詞の欠落・早口化・語尾を試聴し、演技指定があれば維持して個別調整する。全キャラへの一律適用や生成後の速度変更はしない。詳細は`tools/IRODORI_TTS.md`。
 - 再現情報：モデルID、参照WAV、seed、caption、尺補正倍率（既定1.0）、実測長を`script.md`へ記録する
 
 ## 配役
