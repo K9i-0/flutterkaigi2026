@@ -1,0 +1,662 @@
+[
+  {
+    "input": {
+      "action": "reset"
+    },
+    "state": {
+      "player": [
+        -5,
+        14
+      ],
+      "yaw": 3.141592653589793,
+      "health": 100,
+      "ammo": 6,
+      "reserve": 18,
+      "crouching": false,
+      "unlocked": false,
+      "won": false,
+      "shots": 0,
+      "elapsed": 0,
+      "guards": [
+        {
+          "position": [
+            0,
+            5
+          ],
+          "health": 100,
+          "awareness": "patrol",
+          "suspicion": 0,
+          "lastKnown": null
+        },
+        {
+          "position": [
+            -10,
+            -3
+          ],
+          "health": 100,
+          "awareness": "patrol",
+          "suspicion": 0,
+          "lastKnown": null
+        },
+        {
+          "position": [
+            2,
+            -7
+          ],
+          "health": 100,
+          "awareness": "patrol",
+          "suspicion": 0,
+          "lastKnown": null
+        }
+      ],
+      "type": "_extensionType",
+      "method": "ext.flutter.madogiwa.shooterAction",
+      "status": "Success"
+    }
+  },
+  {
+    "input": {
+      "action": "step",
+      "seconds": 4.83,
+      "forward": 1,
+      "yaw": 1.5707963267948966
+    },
+    "state": {
+      "player": [
+        9.983333333333318,
+        14
+      ],
+      "yaw": 1.5707963267948966,
+      "health": 100,
+      "ammo": 6,
+      "reserve": 18,
+      "crouching": false,
+      "unlocked": false,
+      "won": false,
+      "shots": 0,
+      "elapsed": 4.8333333333333215,
+      "guards": [
+        {
+          "position": [
+            5.803729374026343,
+            13.202302312660827
+          ],
+          "health": 100,
+          "awareness": "chase",
+          "suspicion": 1,
+          "lastKnown": [
+            9.983333333333318,
+            14
+          ]
+        },
+        {
+          "position": [
+            -10,
+            -8.316666666666709
+          ],
+          "health": 100,
+          "awareness": "patrol",
+          "suspicion": 0,
+          "lastKnown": null
+        },
+        {
+          "position": [
+            5.759451053308505,
+            -10.759451053308473
+          ],
+          "health": 100,
+          "awareness": "patrol",
+          "suspicion": 0,
+          "lastKnown": null
+        }
+      ],
+      "type": "_extensionType",
+      "method": "ext.flutter.madogiwa.shooterAction",
+      "status": "Success"
+    }
+  },
+  {
+    "input": {
+      "action": "step",
+      "seconds": 0,
+      "yaw": -1.7593832090951764
+    },
+    "state": {
+      "player": [
+        9.983333333333318,
+        14
+      ],
+      "yaw": -1.7593832090951764,
+      "health": 100,
+      "ammo": 6,
+      "reserve": 18,
+      "crouching": false,
+      "unlocked": false,
+      "won": false,
+      "shots": 0,
+      "elapsed": 4.8333333333333215,
+      "guards": [
+        {
+          "position": [
+            5.803729374026343,
+            13.202302312660827
+          ],
+          "health": 100,
+          "awareness": "chase",
+          "suspicion": 1,
+          "lastKnown": [
+            9.983333333333318,
+            14
+          ]
+        },
+        {
+          "position": [
+            -10,
+            -8.316666666666709
+          ],
+          "health": 100,
+          "awareness": "patrol",
+          "suspicion": 0,
+          "lastKnown": null
+        },
+        {
+          "position": [
+            5.759451053308505,
+            -10.759451053308473
+          ],
+          "health": 100,
+          "awareness": "patrol",
+          "suspicion": 0,
+          "lastKnown": null
+        }
+      ],
+      "type": "_extensionType",
+      "method": "ext.flutter.madogiwa.shooterAction",
+      "status": "Success"
+    }
+  },
+  {
+    "input": {
+      "action": "fire"
+    },
+    "state": {
+      "player": [
+        9.983333333333318,
+        14
+      ],
+      "yaw": -1.7593832090951764,
+      "health": 100,
+      "ammo": 5,
+      "reserve": 18,
+      "crouching": false,
+      "unlocked": false,
+      "won": false,
+      "shots": 1,
+      "elapsed": 4.8333333333333215,
+      "guards": [
+        {
+          "position": [
+            5.803729374026343,
+            13.202302312660827
+          ],
+          "health": 50,
+          "awareness": "chase",
+          "suspicion": 1,
+          "lastKnown": [
+            9.983333333333318,
+            14
+          ]
+        },
+        {
+          "position": [
+            -10,
+            -8.316666666666709
+          ],
+          "health": 100,
+          "awareness": "patrol",
+          "suspicion": 0,
+          "lastKnown": null
+        },
+        {
+          "position": [
+            5.759451053308505,
+            -10.759451053308473
+          ],
+          "health": 100,
+          "awareness": "patrol",
+          "suspicion": 0,
+          "lastKnown": null
+        }
+      ],
+      "type": "_extensionType",
+      "method": "ext.flutter.madogiwa.shooterAction",
+      "status": "Success"
+    }
+  },
+  {
+    "input": {
+      "action": "step",
+      "seconds": 0.3,
+      "yaw": -1.7593832090951764
+    },
+    "state": {
+      "player": [
+        9.983333333333318,
+        14
+      ],
+      "yaw": -1.7593832090951764,
+      "health": 100,
+      "ammo": 5,
+      "reserve": 18,
+      "crouching": false,
+      "unlocked": false,
+      "won": false,
+      "shots": 1,
+      "elapsed": 5.13333333333332,
+      "guards": [
+        {
+          "position": [
+            6.599368182884614,
+            13.354153838298874
+          ],
+          "health": 50,
+          "awareness": "chase",
+          "suspicion": 1,
+          "lastKnown": [
+            9.983333333333318,
+            14
+          ]
+        },
+        {
+          "position": [
+            -10,
+            -8.646666666666697
+          ],
+          "health": 100,
+          "awareness": "patrol",
+          "suspicion": 0,
+          "lastKnown": null
+        },
+        {
+          "position": [
+            5.992796291100067,
+            -10.992796291100039
+          ],
+          "health": 100,
+          "awareness": "patrol",
+          "suspicion": 0,
+          "lastKnown": null
+        }
+      ],
+      "type": "_extensionType",
+      "method": "ext.flutter.madogiwa.shooterAction",
+      "status": "Success"
+    }
+  },
+  {
+    "input": {
+      "action": "fire"
+    },
+    "state": {
+      "player": [
+        9.983333333333318,
+        14
+      ],
+      "yaw": -1.7593832090951764,
+      "health": 100,
+      "ammo": 4,
+      "reserve": 18,
+      "crouching": false,
+      "unlocked": false,
+      "won": false,
+      "shots": 2,
+      "elapsed": 5.13333333333332,
+      "guards": [
+        {
+          "position": [
+            6.599368182884614,
+            13.354153838298874
+          ],
+          "health": 0,
+          "awareness": "chase",
+          "suspicion": 1,
+          "lastKnown": [
+            9.983333333333318,
+            14
+          ]
+        },
+        {
+          "position": [
+            -10,
+            -8.646666666666697
+          ],
+          "health": 100,
+          "awareness": "patrol",
+          "suspicion": 0,
+          "lastKnown": null
+        },
+        {
+          "position": [
+            5.992796291100067,
+            -10.992796291100039
+          ],
+          "health": 100,
+          "awareness": "patrol",
+          "suspicion": 0,
+          "lastKnown": null
+        }
+      ],
+      "type": "_extensionType",
+      "method": "ext.flutter.madogiwa.shooterAction",
+      "status": "Success"
+    }
+  },
+  {
+    "input": {
+      "action": "step",
+      "seconds": 8.06,
+      "forward": 1,
+      "yaw": 3.141592653589793
+    },
+    "state": {
+      "player": [
+        9.983333333333318,
+        -11.006666666666547
+      ],
+      "yaw": 3.141592653589793,
+      "health": 100,
+      "ammo": 4,
+      "reserve": 18,
+      "crouching": false,
+      "unlocked": false,
+      "won": false,
+      "shots": 2,
+      "elapsed": 13.200000000000236,
+      "guards": [
+        {
+          "position": [
+            6.599368182884614,
+            13.354153838298874
+          ],
+          "health": 0,
+          "awareness": "chase",
+          "suspicion": 1,
+          "lastKnown": [
+            9.983333333333318,
+            14
+          ]
+        },
+        {
+          "position": [
+            -10,
+            -6.006666666666699
+          ],
+          "health": 100,
+          "awareness": "patrol",
+          "suspicion": 0,
+          "lastKnown": null
+        },
+        {
+          "position": [
+            3.400071426749374,
+            -8.400071426749395
+          ],
+          "health": 100,
+          "awareness": "patrol",
+          "suspicion": 0,
+          "lastKnown": null
+        }
+      ],
+      "type": "_extensionType",
+      "method": "ext.flutter.madogiwa.shooterAction",
+      "status": "Success"
+    }
+  },
+  {
+    "input": {
+      "action": "step",
+      "seconds": 0.64,
+      "forward": 1,
+      "yaw": -1.5707963267948966
+    },
+    "state": {
+      "player": [
+        8.020000000000016,
+        -11.006666666666547
+      ],
+      "yaw": -1.5707963267948966,
+      "health": 100,
+      "ammo": 4,
+      "reserve": 18,
+      "crouching": false,
+      "unlocked": false,
+      "won": false,
+      "shots": 2,
+      "elapsed": 13.8333333333336,
+      "guards": [
+        {
+          "position": [
+            6.599368182884614,
+            13.354153838298874
+          ],
+          "health": 0,
+          "awareness": "chase",
+          "suspicion": 1,
+          "lastKnown": [
+            9.983333333333318,
+            14
+          ]
+        },
+        {
+          "position": [
+            -10,
+            -5.3100000000000245
+          ],
+          "health": 100,
+          "awareness": "patrol",
+          "suspicion": 0,
+          "lastKnown": null
+        },
+        {
+          "position": [
+            2.9074537025227425,
+            -7.907453702522757
+          ],
+          "health": 100,
+          "awareness": "patrol",
+          "suspicion": 0,
+          "lastKnown": null
+        }
+      ],
+      "type": "_extensionType",
+      "method": "ext.flutter.madogiwa.shooterAction",
+      "status": "Success"
+    }
+  },
+  {
+    "input": {
+      "action": "interact"
+    },
+    "state": {
+      "player": [
+        8.020000000000016,
+        -11.006666666666547
+      ],
+      "yaw": -1.5707963267948966,
+      "health": 100,
+      "ammo": 4,
+      "reserve": 18,
+      "crouching": false,
+      "unlocked": true,
+      "won": false,
+      "shots": 2,
+      "elapsed": 13.8333333333336,
+      "guards": [
+        {
+          "position": [
+            6.599368182884614,
+            13.354153838298874
+          ],
+          "health": 0,
+          "awareness": "chase",
+          "suspicion": 1,
+          "lastKnown": [
+            9.983333333333318,
+            14
+          ]
+        },
+        {
+          "position": [
+            -10,
+            -5.3100000000000245
+          ],
+          "health": 100,
+          "awareness": "patrol",
+          "suspicion": 0,
+          "lastKnown": null
+        },
+        {
+          "position": [
+            2.9074537025227425,
+            -7.907453702522757
+          ],
+          "health": 100,
+          "awareness": "patrol",
+          "suspicion": 0,
+          "lastKnown": null
+        }
+      ],
+      "type": "_extensionType",
+      "method": "ext.flutter.madogiwa.shooterAction",
+      "status": "Success"
+    }
+  },
+  {
+    "input": {
+      "action": "step",
+      "seconds": 1.61,
+      "forward": 1,
+      "yaw": 3.141592653589793
+    },
+    "state": {
+      "player": [
+        8.020000000000016,
+        -16.018333333333135
+      ],
+      "yaw": 3.141592653589793,
+      "health": 100,
+      "ammo": 4,
+      "reserve": 18,
+      "crouching": false,
+      "unlocked": true,
+      "won": false,
+      "shots": 2,
+      "elapsed": 15.450000000000347,
+      "guards": [
+        {
+          "position": [
+            6.599368182884614,
+            13.354153838298874
+          ],
+          "health": 0,
+          "awareness": "chase",
+          "suspicion": 1,
+          "lastKnown": [
+            9.983333333333318,
+            14
+          ]
+        },
+        {
+          "position": [
+            -10,
+            -3.5316666666666716
+          ],
+          "health": 100,
+          "awareness": "patrol",
+          "suspicion": 0,
+          "lastKnown": null
+        },
+        {
+          "position": [
+            2.6870720890529443,
+            -7.687072089052948
+          ],
+          "health": 100,
+          "awareness": "patrol",
+          "suspicion": 0.9285714285714293,
+          "lastKnown": [
+            8.020000000000016,
+            -16.018333333333135
+          ]
+        }
+      ],
+      "type": "_extensionType",
+      "method": "ext.flutter.madogiwa.shooterAction",
+      "status": "Success"
+    }
+  },
+  {
+    "input": {
+      "action": "step",
+      "seconds": 2.58,
+      "forward": 1,
+      "yaw": -1.5707963267948966
+    },
+    "state": {
+      "player": [
+        1.4583333333333384,
+        -16.018333333333135
+      ],
+      "yaw": -1.5707963267948966,
+      "health": 100,
+      "ammo": 4,
+      "reserve": 18,
+      "crouching": false,
+      "unlocked": true,
+      "won": true,
+      "shots": 2,
+      "elapsed": 17.56666666666695,
+      "guards": [
+        {
+          "position": [
+            6.599368182884614,
+            13.354153838298874
+          ],
+          "health": 0,
+          "awareness": "chase",
+          "suspicion": 1,
+          "lastKnown": [
+            9.983333333333318,
+            14
+          ]
+        },
+        {
+          "position": [
+            -10,
+            -5.273333333333357
+          ],
+          "health": 100,
+          "awareness": "patrol",
+          "suspicion": 0,
+          "lastKnown": null
+        },
+        {
+          "position": [
+            3.2726107184033406,
+            -13.017952927333809
+          ],
+          "health": 100,
+          "awareness": "chase",
+          "suspicion": 1,
+          "lastKnown": [
+            1.4583333333333384,
+            -16.018333333333135
+          ]
+        }
+      ],
+      "type": "_extensionType",
+      "method": "ext.flutter.madogiwa.shooterAction",
+      "status": "Success"
+    }
+  }
+]

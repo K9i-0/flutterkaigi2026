@@ -1,0 +1,24 @@
+{
+  "fukuchan": {
+    "inputSha256": "3dd4c05287a181de369869eccb0731343d9f8a3908838bbdfc288575e1d2d25d",
+    "outputSha256": "625baead4ace887033682c14a41549cbf6d1bd3c274b0c65009c1615c3678b5d",
+    "clips": [
+      "Idle",
+      "Walk",
+      "Run"
+    ],
+    "geometry": "Existing approved character body; no vertex edits",
+    "motion": "Independently authored locomotion; previous game walking clips not reused"
+  },
+  "sobaya": {
+    "inputSha256": "3f4b2505637824bae768ea7cc3f397d6821d4d2ebf2a579169060845529125bd",
+    "outputSha256": "f73e7ebf5b46074b5def89d026ad779693f6a39be3acb0b3f51ce3e65bf4ede1",
+    "clips": [
+      "Idle",
+      "Walk",
+      "Run"
+    ],
+    "geometry": "Existing approved character body; no vertex edits",
+    "motion": "Independently authored locomotion; previous game walking clips not reused"
+  }
+}
