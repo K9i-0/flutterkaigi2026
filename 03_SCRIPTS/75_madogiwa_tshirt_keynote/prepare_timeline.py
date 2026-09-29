@@ -1,11 +1,11 @@
 from pathlib import Path
 import json,subprocess,math,argparse
 EP=Path(__file__).resolve().parent
-parser=argparse.ArgumentParser();parser.add_argument('--variant',default='sobaya',choices=['sobaya','nojobs']);args=parser.parse_args();nojobs=args.variant=='nojobs';suffix='-nojobs' if nojobs else '';speaker='yametaro' if nojobs else 'sobaya'
-rows=json.loads((EP/f'remotion/src/dialogue{suffix}.json').read_text());cursor=58
+parser=argparse.ArgumentParser();parser.add_argument('--variant',default='sobaya',choices=['sobaya','nojobs','large']);args=parser.parse_args();nojobs=args.variant=='nojobs';suffix='-nojobs' if nojobs else '-large' if args.variant=='large' else '';speaker='yametaro' if nojobs else 'sobaya'
+rows=json.loads((EP/f'remotion/src/dialogue{"-nojobs" if nojobs else ""}.json').read_text());cursor=58
 lines=[]
 for row in rows:
- p=EP/f"line_{row['id']}_{speaker}.wav"
+ p=EP/f"line_{row['id']}_{speaker}{'_large' if args.variant=='large' else ''}.wav"
  duration=float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','csv=p=0',str(p)])) if p.exists() else max(1.0,len(row['text'])/6)
  frames=math.ceil(duration*24)
  mouth=[]

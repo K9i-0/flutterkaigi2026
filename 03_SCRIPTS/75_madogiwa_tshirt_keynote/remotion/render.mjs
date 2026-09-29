@@ -5,13 +5,13 @@ import path from 'node:path';
 import {createRequire} from 'node:module';
 const require=createRequire(import.meta.url);
 const mode=process.argv[2]||'stills';
-const noJobs=process.argv[3]==='nojobs';const suffix=noJobs?'-nojobs':'';const prefix=noJobs?'nojobs':'keynote';
+const noJobs=process.argv[3]==='nojobs';const large=process.argv[3]==='large';const suffix=noJobs?'-nojobs':large?'-large':'';const prefix=noJobs?'nojobs':large?'keynote_large':'keynote';
 const browserExecutable='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const chromiumOptions={gl:'angle'};
 const serveUrl=await bundle({entryPoint:path.resolve('src/index.tsx'),webpackOverride:c=>({...c,resolve:{...c.resolve,alias:{...c.resolve?.alias,'three$':require.resolve('three').replace('three.cjs','three.module.js')}}})});
 const browser=await openBrowser('chrome',{browserExecutable,chromiumOptions});
 try{
- const composition=await selectComposition({serveUrl,id:noJobs?'MadogiwaNoJobs':'MadogiwaKeynote',puppeteerInstance:browser});
+ const composition=await selectComposition({serveUrl,id:noJobs?'MadogiwaNoJobs':large?'MadogiwaKeynoteLarge':'MadogiwaKeynote',puppeteerInstance:browser});
  const m=JSON.parse(fs.readFileSync(`src/edit-manifest${suffix}.json`,'utf8'));
  if(mode==='stills'||mode==='crop'){
   for(const id of (mode==='crop'?['first','detail']:['intro','first','repeat1','understand','reveal','arms','detail','all'])){

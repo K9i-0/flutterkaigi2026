@@ -2,7 +2,7 @@ from pathlib import Path
 import json,subprocess,hashlib,argparse
 import numpy as np
 EP=Path(__file__).resolve().parent;SR=48000
-parser=argparse.ArgumentParser();parser.add_argument('--variant',default='sobaya',choices=['sobaya','nojobs']);args=parser.parse_args();suffix='-nojobs' if args.variant=='nojobs' else ''
+parser=argparse.ArgumentParser();parser.add_argument('--variant',default='sobaya',choices=['sobaya','nojobs','large']);args=parser.parse_args();suffix='-nojobs' if args.variant=='nojobs' else '-large' if args.variant=='large' else ''
 mp=EP/f'remotion/src/edit-manifest{suffix}.json';m=json.loads(mp.read_text());N=round(m['durationInFrames']/24*SR)
 master=np.zeros((N,2),np.float32);voice=np.zeros(N,np.float32)
 def decode(path,filters='anull',channels=2):

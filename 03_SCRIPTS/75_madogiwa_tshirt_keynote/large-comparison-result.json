@@ -1596,6 +1596,14 @@
       "feedback": "元から微妙だった部分がそのままで強調されてるので微妙",
       "assessment": "Largeへの単純変更では改善しない"
     },
-    "adoption": "モデル切替・既存音声差替えは未実施"
+    "adoption": "2026-09-30の後続依頼で75話そば屋Large動画へ32本を採用。共通既定モデル・既存Small音声は維持。"
+  },
+  "episodeAdoption": {
+    "date": "2026-09-30",
+    "speaker": "sobaya",
+    "audioCount": 32,
+    "record": "audio-generation-large.json",
+    "output": "final_remotion_keynote_large.mp4",
+    "globalModelChanged": false
   }
 }

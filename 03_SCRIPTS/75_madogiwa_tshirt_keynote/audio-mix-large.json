@@ -1,0 +1,105 @@
+{
+  "sampleRate": 48000,
+  "channels": 2,
+  "peakBeforeLimiter": 0.5729761123657227,
+  "dialogueLUFS": -18,
+  "applauseLUFS": -20,
+  "laughterLUFS": -23,
+  "duckingWhenSpeaking": 0.18,
+  "echoDelaySeconds": 0.075,
+  "echoGain": 0.045,
+  "masterSha256": "c1713d12d4a892fb7f0438800ba1a3588238ee46304e7e571635d60b5e01d0f3",
+  "events": [
+    {
+      "kind": "applause",
+      "start": 0,
+      "durationInFrames": 57,
+      "sourceOffsetSeconds": 0,
+      "gain": 0.8
+    },
+    {
+      "kind": "applause",
+      "start": 477,
+      "durationInFrames": 64,
+      "sourceOffsetSeconds": 9,
+      "gain": 0.8
+    },
+    {
+      "kind": "applause",
+      "start": 599,
+      "durationInFrames": 61,
+      "sourceOffsetSeconds": 12,
+      "gain": 0.8
+    },
+    {
+      "kind": "applause",
+      "start": 708,
+      "durationInFrames": 64,
+      "sourceOffsetSeconds": 15,
+      "gain": 0.8
+    },
+    {
+      "kind": "applause",
+      "start": 830,
+      "durationInFrames": 84,
+      "sourceOffsetSeconds": 18,
+      "gain": 1.2
+    },
+    {
+      "kind": "laughter",
+      "start": 1073,
+      "durationInFrames": 50,
+      "sourceOffsetSeconds": 0,
+      "gain": 1
+    },
+    {
+      "kind": "applause",
+      "start": 1156,
+      "durationInFrames": 59,
+      "sourceOffsetSeconds": 27,
+      "gain": 0.8
+    },
+    {
+      "kind": "applause",
+      "start": 1482,
+      "durationInFrames": 124,
+      "sourceOffsetSeconds": 36,
+      "gain": 1.2
+    },
+    {
+      "kind": "applause",
+      "start": 2060,
+      "durationInFrames": 61,
+      "sourceOffsetSeconds": 13,
+      "gain": 0.8
+    },
+    {
+      "kind": "applause",
+      "start": 2304,
+      "durationInFrames": 64,
+      "sourceOffsetSeconds": 25,
+      "gain": 0.8
+    },
+    {
+      "kind": "laughter",
+      "start": 2673,
+      "durationInFrames": 50,
+      "sourceOffsetSeconds": 0,
+      "gain": 1
+    },
+    {
+      "kind": "applause",
+      "start": 2928,
+      "durationInFrames": 64,
+      "sourceOffsetSeconds": 8,
+      "gain": 0.8
+    },
+    {
+      "kind": "applause",
+      "start": 3226,
+      "durationInFrames": 109,
+      "sourceOffsetSeconds": 17,
+      "gain": 0.8
+    }
+  ]
+}

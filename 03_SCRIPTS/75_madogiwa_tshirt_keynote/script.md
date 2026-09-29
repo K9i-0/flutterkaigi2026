@@ -123,3 +123,18 @@ Irodori-TTS v4.1 Small、02_CHARACTERS/Sobaya_voice.wav、seed42（2回目反復
 ## ノージョブズ版（2026-09-23）
 
 同じ台詞と展開を無職やめ太郎ひとりで演じる。役名はノージョブズ、オープニング表示は「No Jobs / ノージョブズ / 無職やめ太郎」。正典モデルの顔・身体比率を保持し、黒いトップスとジーンズへ作品内で着替える。やめ太郎の正典音声で全32行を再生成し、その実測尺を使う。退場前は既存Waveで手を振る。窓際族イラストは両版とも中央へ切り抜きを修正。
+
+## そば屋 Large音声採用版（2026-09-30）
+
+ユーザーが比較音声を「迫力が増して良くなってる」と評価し、新しい音声を採用した動画を依頼。
+75話そば屋の32行へ `Aratako/Irodori-TTS-v4-Large` を採用した。
+正典参照WAV、seed（通常42、2回目反復43）、caption、本文CFG3、尺倍率1.0、トリム、
+そば屋モンスターボイス加工は比較時のまま。追加生成・速度変更は行っていない。
+
+- 採用WAV: `line_*_sobaya_large.wav`。条件・hash: `audio-generation-large.json`。
+- 編集正本: `remotion/src/edit-manifest-large.json`。3357フレーム、139.875秒、1280×720、24fps。
+- Remotion composition: `MadogiwaKeynoteLarge`。
+- 完成版: `final_remotion_keynote_large.mp4`。
+- 音声尺から字幕・身振り・拍手・カット時刻を再計算。仮面は従来どおり固定。
+- 旧Small版・やめ太郎版と共通既定モデルは維持。採用の範囲はこのエピソードのそば屋版。
+- 比較時のASR指摘は `large-comparison-result.json` に保持。ユーザーの話者全体への肯定的評価と採用指示は、全行の個別発音確認とは区別する。

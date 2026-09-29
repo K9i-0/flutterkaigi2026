@@ -1,7 +1,7 @@
 from pathlib import Path
 import subprocess,json,hashlib,argparse
 EP=Path(__file__).resolve().parent
-parser=argparse.ArgumentParser();parser.add_argument('--variant',default='sobaya',choices=['sobaya','nojobs']);args=parser.parse_args();suffix='-nojobs' if args.variant=='nojobs' else '';prefix='nojobs' if suffix else 'keynote'
+parser=argparse.ArgumentParser();parser.add_argument('--variant',default='sobaya',choices=['sobaya','nojobs','large']);args=parser.parse_args();suffix='-nojobs' if args.variant=='nojobs' else '-large' if args.variant=='large' else '';prefix='nojobs' if args.variant=='nojobs' else 'keynote_large' if args.variant=='large' else 'keynote'
 out=EP/f'final_remotion_{prefix}.mp4'
 subprocess.run(['ffmpeg','-y','-v','error','-i',str(EP/f'remotion/out/{prefix}-master.mp4'),'-i',str(EP/f'remotion/public/audio/master{suffix}.wav'),'-map','0:v:0','-map','1:a:0','-c:v','copy','-af','volume=3dB','-c:a','aac','-b:a','192k','-movflags','+faststart',str(out)],check=True)
 subprocess.run(['ffmpeg','-v','error','-i',str(out),'-f','null','-'],check=True)

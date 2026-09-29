@@ -1,0 +1,3842 @@
+[
+  {
+    "id": "intro",
+    "speaker": "sobaya",
+    "text": "今日という日を、私はずっと待っていました。",
+    "speechText": "今日という日を、私はずっと待っていました。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "f4ac277c13ef133025eb850ad62511ee2f92260189765ee07ef119f65c543a8c",
+    "duration": 3.192521,
+    "sha256": "1170a7b00be1660db505901f01f0130749cc6d51a1d0db7049a5c5b007b8ab49",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "74d953f3d664e47317d31114ec10ce59358310a2824df9e5aee368bfb8ab3e8c",
+    "baselineDuration": 3.448646,
+    "identity": {
+      "request": {
+        "text": "今日という日を、私はずっと待っていました。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "74d953f3d664e47317d31114ec10ce59358310a2824df9e5aee368bfb8ab3e8c"
+    },
+    "synthesisSeconds": 20.643861584016122,
+    "realTimeFactor": 6.466319746688,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.000423458986915648
+      ],
+      [
+        "prepare_reference",
+        0.5743934999918565
+      ],
+      [
+        "predict_duration",
+        0.7660610829479992
+      ],
+      [
+        "sample_rf",
+        18.347459500073455
+      ],
+      [
+        "unpatchify_latent",
+        1.7499551177024841e-06
+      ],
+      [
+        "decode_latent",
+        0.7960815000114962
+      ],
+      [
+        "silentcipher_watermark",
+        0.156722208019346
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=81.5, scale=1.000, using_frames=82 (3.280s)."
+    ],
+    "smallFile": "sobaya/intro_small.wav",
+    "largeFile": "sobaya/intro_large.wav",
+    "rawFile": "sobaya/intro_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_intro_sobaya_large.wav"
+  },
+  {
+    "id": "revolution",
+    "speaker": "sobaya",
+    "text": "時として、すべてを変えてしまう革命的な製品が現れます。",
+    "speechText": "時として、すべてを変えてしまう革命的な製品が現れます。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "b32c5753a7f37cade4bea853dfa9191adb290ff2200f353fe25c17635c8d8f00",
+    "duration": 4.373313,
+    "sha256": "60dccaf7c7752ef4dd1affb27a8da55dcdd1eacde91dcb07e28ff1e22733d5b4",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "e6668d7f0a80b0713647853f21dd3333e4200885779fd02185ffd4458dd0c6d9",
+    "baselineDuration": 4.372271,
+    "identity": {
+      "request": {
+        "text": "時として、すべてを変えてしまう革命的な製品が現れます。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "e6668d7f0a80b0713647853f21dd3333e4200885779fd02185ffd4458dd0c6d9"
+    },
+    "synthesisSeconds": 33.52554704097565,
+    "realTimeFactor": 7.665938166551458,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.0005984170129522681
+      ],
+      [
+        "prepare_reference",
+        1.5809515829896554
+      ],
+      [
+        "predict_duration",
+        0.9433588749961928
+      ],
+      [
+        "sample_rf",
+        28.926857582991943
+      ],
+      [
+        "unpatchify_latent",
+        3.5830307751893997e-06
+      ],
+      [
+        "decode_latent",
+        1.4698598330141976
+      ],
+      [
+        "silentcipher_watermark",
+        0.5986959169385955
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=111.3, scale=1.000, using_frames=111 (4.440s)."
+    ],
+    "smallFile": "sobaya/revolution_small.wav",
+    "largeFile": "sobaya/revolution_large.wav",
+    "rawFile": "sobaya/revolution_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_revolution_sobaya_large.wav"
+  },
+  {
+    "id": "lucky",
+    "speaker": "sobaya",
+    "text": "そんな製品を、ひとつでも紹介できれば幸運です。",
+    "speechText": "そんな製品を、ひとつでも紹介できれば幸運です。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "293b9215d19ec79bf3ce6ffb79861788a3a173676176d476fa86031b583ae8ca",
+    "duration": 3.647021,
+    "sha256": "7775f848a84888d0b2865769ce6986a96eb9b6d498acdd591122e8dcd5351174",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "90af62bbd804be5f17161390fb1a576d6bc5c9a0e38eec0449fe12f20b8e95bd",
+    "baselineDuration": 3.732854,
+    "identity": {
+      "request": {
+        "text": "そんな製品を、ひとつでも紹介できれば幸運です。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "90af62bbd804be5f17161390fb1a576d6bc5c9a0e38eec0449fe12f20b8e95bd"
+    },
+    "synthesisSeconds": 32.623482916969806,
+    "realTimeFactor": 8.945241312558881,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.006015332997776568
+      ],
+      [
+        "prepare_reference",
+        0.5356769999489188
+      ],
+      [
+        "predict_duration",
+        2.50601241691038
+      ],
+      [
+        "sample_rf",
+        28.315808999934234
+      ],
+      [
+        "unpatchify_latent",
+        5.292007699608803e-06
+      ],
+      [
+        "decode_latent",
+        1.1592164169996977
+      ],
+      [
+        "silentcipher_watermark",
+        0.09709125000517815
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=92.8, scale=1.000, using_frames=93 (3.720s)."
+    ],
+    "smallFile": "sobaya/lucky_small.wav",
+    "largeFile": "sobaya/lucky_large.wav",
+    "rawFile": "sobaya/lucky_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_lucky_sobaya_large.wav"
+  },
+  {
+    "id": "three",
+    "speaker": "sobaya",
+    "text": "今日、私たちは、3つ、紹介します。",
+    "speechText": "今日、私たちは、3つ、紹介します。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "c17813a14cf65747239b6bb0dfb98b6bd8d45e3e0741a9273e13762f23cefacc",
+    "duration": 2.792917,
+    "sha256": "df9270453dc16e185680f0bace3c3469740589fb12a55882fc0be86f4ff2d43d",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "4a3cc9ac9d3ab4f99756ed4ee89656a3ac8464881f828c131be73fe4685848de",
+    "baselineDuration": 3.432771,
+    "identity": {
+      "request": {
+        "text": "今日、私たちは、3つ、紹介します。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "4a3cc9ac9d3ab4f99756ed4ee89656a3ac8464881f828c131be73fe4685848de"
+    },
+    "synthesisSeconds": 23.928887833026238,
+    "realTimeFactor": 8.567704601685707,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.0006917919963598251
+      ],
+      [
+        "prepare_reference",
+        0.5516241249861196
+      ],
+      [
+        "predict_duration",
+        1.1868074169615284
+      ],
+      [
+        "sample_rf",
+        20.930443541961722
+      ],
+      [
+        "unpatchify_latent",
+        3.4250086173415184e-05
+      ],
+      [
+        "decode_latent",
+        1.132074249908328
+      ],
+      [
+        "silentcipher_watermark",
+        0.1233820830238983
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=71.3, scale=1.000, using_frames=71 (2.840s)."
+    ],
+    "smallFile": "sobaya/three_small.wav",
+    "largeFile": "sobaya/three_large.wav",
+    "rawFile": "sobaya/three_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_three_sobaya_large.wav"
+  },
+  {
+    "id": "first",
+    "speaker": "sobaya",
+    "text": "ひとつめ。窓際族。",
+    "speechText": "ひとつめ。窓際族。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "18808670f023cb06360395600682b0af635a550729b802291931fd86748f2432",
+    "duration": 2.368375,
+    "sha256": "d6dd05cea1fb93a1448ad8dd294a441860c2cd26cc06ff12c235fbc50f5f7824",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "654b0501819d0af8199014db0199a75f35c33b84069aad3b4620ca0ffa0c6967",
+    "baselineDuration": 2.363125,
+    "identity": {
+      "request": {
+        "text": "ひとつめ。窓際族。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "654b0501819d0af8199014db0199a75f35c33b84069aad3b4620ca0ffa0c6967"
+    },
+    "synthesisSeconds": 19.538312874967232,
+    "realTimeFactor": 8.249670290797376,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.0006953750271350145
+      ],
+      [
+        "prepare_reference",
+        0.5170154999941587
+      ],
+      [
+        "predict_duration",
+        0.9531538340961561
+      ],
+      [
+        "sample_rf",
+        17.239234374952503
+      ],
+      [
+        "unpatchify_latent",
+        2.874992787837982e-06
+      ],
+      [
+        "decode_latent",
+        0.7522206669673324
+      ],
+      [
+        "silentcipher_watermark",
+        0.0730009590042755
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=61.8, scale=1.000, using_frames=62 (2.480s)."
+    ],
+    "smallFile": "sobaya/first_small.wav",
+    "largeFile": "sobaya/first_large.wav",
+    "rawFile": "sobaya/first_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_first_sobaya_large.wav"
+  },
+  {
+    "id": "second",
+    "speaker": "sobaya",
+    "text": "ふたつめ。T。",
+    "speechText": "ふたつめ。ティー。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "672483398f51af338d1c127d5630b7adea602c9f17790a2c5227c6c0423f3692",
+    "duration": 1.949917,
+    "sha256": "50f67b3b573ffe0400da996e4a1b592e6b6ee8bd54dc4054107f15c15ee63409",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "50e471ac5e8a57e3dc8f6dda2a550ff61a201cc80d6d094ca46e38031dbd9f59",
+    "baselineDuration": 2.065479,
+    "identity": {
+      "request": {
+        "text": "ふたつめ。ティー。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "50e471ac5e8a57e3dc8f6dda2a550ff61a201cc80d6d094ca46e38031dbd9f59"
+    },
+    "synthesisSeconds": 21.626753458054736,
+    "realTimeFactor": 11.091114882353832,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.0012482079910114408
+      ],
+      [
+        "prepare_reference",
+        0.6131490420084447
+      ],
+      [
+        "predict_duration",
+        0.9769827499985695
+      ],
+      [
+        "sample_rf",
+        17.475778374937363
+      ],
+      [
+        "unpatchify_latent",
+        1.383305061608553e-05
+      ],
+      [
+        "decode_latent",
+        1.2650887089548633
+      ],
+      [
+        "silentcipher_watermark",
+        1.2872454579919577
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=53.2, scale=1.000, using_frames=53 (2.120s)."
+    ],
+    "smallFile": "sobaya/second_small.wav",
+    "largeFile": "sobaya/second_large.wav",
+    "rawFile": "sobaya/second_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_second_sobaya_large.wav"
+  },
+  {
+    "id": "third",
+    "speaker": "sobaya",
+    "text": "そして、みっつめ。シャツ。",
+    "speechText": "そして、みっつめ。シャツ。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "2060e0442860842ae2522027880626c95c827ff56e82d372d5bcd4095c80c573",
+    "duration": 2.36475,
+    "sha256": "7e11dec9507387e81093053812ec6df6a28ced84dc0b0e08b6693eab9b0a49bf",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "0ecbe4b34336c23c8d0f29c65cda7deb34694a0f55904b0b5b44bdf13a44fe54",
+    "baselineDuration": 2.502667,
+    "identity": {
+      "request": {
+        "text": "そして、みっつめ。シャツ。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "0ecbe4b34336c23c8d0f29c65cda7deb34694a0f55904b0b5b44bdf13a44fe54"
+    },
+    "synthesisSeconds": 23.555899458006024,
+    "realTimeFactor": 9.961264175073909,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.0009919579606503248
+      ],
+      [
+        "prepare_reference",
+        0.6362715839641169
+      ],
+      [
+        "predict_duration",
+        1.2808841249207035
+      ],
+      [
+        "sample_rf",
+        20.534237417043187
+      ],
+      [
+        "unpatchify_latent",
+        5.332985892891884e-06
+      ],
+      [
+        "decode_latent",
+        0.9435684579657391
+      ],
+      [
+        "silentcipher_watermark",
+        0.154018416069448
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=61.1, scale=1.000, using_frames=61 (2.440s)."
+    ],
+    "smallFile": "sobaya/third_small.wav",
+    "largeFile": "sobaya/third_large.wav",
+    "rawFile": "sobaya/third_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_third_sobaya_large.wav"
+  },
+  {
+    "id": "repeat1",
+    "speaker": "sobaya",
+    "text": "窓際族。T。シャツ。",
+    "speechText": "窓際族。ティー。シャツ。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "3919060f5be49c665a5461599ed438f758570c75b64becdea4ae283389cd9b6b",
+    "duration": 2.865604,
+    "sha256": "58a892ffdf4666d16f63ead2b1e68351f59a53946da41a7b6610cd5ff8d34a8d",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "72ba88f9c6832850db58e7fe884746f0dfb3e84718596637a6267d8780a1c170",
+    "baselineDuration": 3.687229,
+    "identity": {
+      "request": {
+        "text": "窓際族。ティー。シャツ。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "72ba88f9c6832850db58e7fe884746f0dfb3e84718596637a6267d8780a1c170"
+    },
+    "synthesisSeconds": 27.99185258394573,
+    "realTimeFactor": 9.768220795317752,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.0008002910763025284
+      ],
+      [
+        "prepare_reference",
+        0.6580712909344584
+      ],
+      [
+        "predict_duration",
+        1.235033250064589
+      ],
+      [
+        "sample_rf",
+        24.73452608298976
+      ],
+      [
+        "unpatchify_latent",
+        4.4874963350594044e-05
+      ],
+      [
+        "decode_latent",
+        1.1933240840444341
+      ],
+      [
+        "silentcipher_watermark",
+        0.1625372919952497
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=73.3, scale=1.000, using_frames=73 (2.920s)."
+    ],
+    "smallFile": "sobaya/repeat1_small.wav",
+    "largeFile": "sobaya/repeat1_large.wav",
+    "rawFile": "sobaya/repeat1_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_repeat1_sobaya_large.wav"
+  },
+  {
+    "id": "repeat2",
+    "speaker": "sobaya",
+    "text": "窓際族。T。シャツ。",
+    "speechText": "窓際族。ティー。シャツ。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 43,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "fa6bc376cdcc1792ad7214c69ac142be47f92237d6140a0994c47a1f8d8d8c0d",
+    "duration": 2.802396,
+    "sha256": "4fbdd937ce2c44b3939bc16a47d3e50cf7d2037f3510d2deae694267046d9fdc",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "c7607904ea6fd5630fc22820883afdf934a1c3aba5e91ff4f280b37ae8a6fed9",
+    "baselineDuration": 3.665104,
+    "identity": {
+      "request": {
+        "text": "窓際族。ティー。シャツ。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 43,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "c7607904ea6fd5630fc22820883afdf934a1c3aba5e91ff4f280b37ae8a6fed9"
+    },
+    "synthesisSeconds": 28.846174499951303,
+    "realTimeFactor": 10.293396971716811,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.0008827910060063004
+      ],
+      [
+        "prepare_reference",
+        0.5861637919442728
+      ],
+      [
+        "predict_duration",
+        2.3262070839991793
+      ],
+      [
+        "sample_rf",
+        24.760672500007786
+      ],
+      [
+        "unpatchify_latent",
+        8.082948625087738e-06
+      ],
+      [
+        "decode_latent",
+        1.0679694170830771
+      ],
+      [
+        "silentcipher_watermark",
+        0.097425208077766
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=73.3, scale=1.000, using_frames=73 (2.920s)."
+    ],
+    "smallFile": "sobaya/repeat2_small.wav",
+    "largeFile": "sobaya/repeat2_large.wav",
+    "rawFile": "sobaya/repeat2_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_repeat2_sobaya_large.wav"
+  },
+  {
+    "id": "understand",
+    "speaker": "sobaya",
+    "text": "もう、おわかりですね？",
+    "speechText": "もう、おわかりですね？",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "761c5a77b072e3200cc7994cef29254580938183ffc79dfc2338dc80c7e0f22f",
+    "duration": 1.810583,
+    "sha256": "db5b906477da4e7f33133b92ba8f9b59160b924f25431ad89e0d5773f9c95c5b",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "2a5630d7137c8e80923b9b39b1d120f1e282d584ab83ab4b9bfcb170be3f35e9",
+    "baselineDuration": 1.7895,
+    "identity": {
+      "request": {
+        "text": "もう、おわかりですね？",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "2a5630d7137c8e80923b9b39b1d120f1e282d584ab83ab4b9bfcb170be3f35e9"
+    },
+    "synthesisSeconds": 20.34800408303272,
+    "realTimeFactor": 11.238371332898144,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.0010874159634113312
+      ],
+      [
+        "prepare_reference",
+        0.6200363339157775
+      ],
+      [
+        "predict_duration",
+        1.3116797910770401
+      ],
+      [
+        "sample_rf",
+        17.64069912501145
+      ],
+      [
+        "unpatchify_latent",
+        2.125045284628868e-06
+      ],
+      [
+        "decode_latent",
+        0.6294809579849243
+      ],
+      [
+        "silentcipher_watermark",
+        0.13861945795360953
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=47.1, scale=1.000, using_frames=47 (1.880s)."
+    ],
+    "smallFile": "sobaya/understand_small.wav",
+    "largeFile": "sobaya/understand_large.wav",
+    "rawFile": "sobaya/understand_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_understand_sobaya_large.wav"
+  },
+  {
+    "id": "notthree",
+    "speaker": "sobaya",
+    "text": "これは、3つの別々の製品ではありません。",
+    "speechText": "これは、3つの別々の製品ではありません。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "c119a612ac8b02a581b17921eeca21f267e56ead0135f1fc1a0f43fb3da4409f",
+    "duration": 3.2,
+    "sha256": "3c3219a2877cbeb0e78823bbba8b51ba046dba5ca9a846c2c239e60999a1fd69",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "bcfa98b2bb599f3850e7ca07bba2c6d99d8b67e9d0c398cde9a1d04f803d4296",
+    "baselineDuration": 3.029333,
+    "identity": {
+      "request": {
+        "text": "これは、3つの別々の製品ではありません。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "bcfa98b2bb599f3850e7ca07bba2c6d99d8b67e9d0c398cde9a1d04f803d4296"
+    },
+    "synthesisSeconds": 26.836615042062476,
+    "realTimeFactor": 8.386442200644524,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.0008920420659705997
+      ],
+      [
+        "prepare_reference",
+        0.5279727500164881
+      ],
+      [
+        "predict_duration",
+        1.2154952909331769
+      ],
+      [
+        "sample_rf",
+        24.007812916999683
+      ],
+      [
+        "unpatchify_latent",
+        2.874992787837982e-06
+      ],
+      [
+        "decode_latent",
+        0.9504405839834362
+      ],
+      [
+        "silentcipher_watermark",
+        0.1298175419215113
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=83.3, scale=1.000, using_frames=83 (3.320s)."
+    ],
+    "smallFile": "sobaya/notthree_small.wav",
+    "largeFile": "sobaya/notthree_large.wav",
+    "rawFile": "sobaya/notthree_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_notthree_sobaya_large.wav"
+  },
+  {
+    "id": "one",
+    "speaker": "sobaya",
+    "text": "ひとつの製品です。",
+    "speechText": "ひとつの製品です。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "4a82af58f325088459c8f8d8b756f56361f6b318a1ef08b928d000b115de66b1",
+    "duration": 1.821854,
+    "sha256": "36d498076b4e556584e92127ef80755686633358399b3f772b7f7b3dd72367c4",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "ff722e05da832579319ea2c81381207ce3dfab301949d796e0c72e02ae921350",
+    "baselineDuration": 1.767708,
+    "identity": {
+      "request": {
+        "text": "ひとつの製品です。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "ff722e05da832579319ea2c81381207ce3dfab301949d796e0c72e02ae921350"
+    },
+    "synthesisSeconds": 19.095316666993313,
+    "realTimeFactor": 10.481255175767823,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.000616749981418252
+      ],
+      [
+        "prepare_reference",
+        0.5201530000194907
+      ],
+      [
+        "predict_duration",
+        0.842827667016536
+      ],
+      [
+        "sample_rf",
+        16.81407504202798
+      ],
+      [
+        "unpatchify_latent",
+        2.708984538912773e-06
+      ],
+      [
+        "decode_latent",
+        0.6590660829097033
+      ],
+      [
+        "silentcipher_watermark",
+        0.2556724169990048
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=49.7, scale=1.000, using_frames=50 (2.000s)."
+    ],
+    "smallFile": "sobaya/one_small.wav",
+    "largeFile": "sobaya/one_large.wav",
+    "rawFile": "sobaya/one_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_one_sobaya_large.wav"
+  },
+  {
+    "id": "reveal",
+    "speaker": "sobaya",
+    "text": "私たちは、これを、窓際族Tシャツと呼びます。",
+    "speechText": "私たちは、これを、窓際族ティーシャツと呼びます。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "0c46943aeef74a7af248ebdb83057f3f28d3678efb7c3745e5a8edf555b788be",
+    "duration": 3.740125,
+    "sha256": "a56eb890a3d2edbdd81d9449b1e6cb50ad09b2fbe1cf0c56e0f717b6407cd6a4",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "aac0e173340668b9ba9c3f68688af646497906fc28ed38a9d5c9a1293daa3640",
+    "baselineDuration": 3.89325,
+    "identity": {
+      "request": {
+        "text": "私たちは、これを、窓際族ティーシャツと呼びます。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "aac0e173340668b9ba9c3f68688af646497906fc28ed38a9d5c9a1293daa3640"
+    },
+    "synthesisSeconds": 28.633169166976586,
+    "realTimeFactor": 7.655671713372303,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.0007610829779878259
+      ],
+      [
+        "prepare_reference",
+        0.5456798749510199
+      ],
+      [
+        "predict_duration",
+        1.1055796250002459
+      ],
+      [
+        "sample_rf",
+        25.51368858292699
+      ],
+      [
+        "unpatchify_latent",
+        6.875023245811462e-06
+      ],
+      [
+        "decode_latent",
+        1.2242789580486715
+      ],
+      [
+        "silentcipher_watermark",
+        0.23589104192797095
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=94.6, scale=1.000, using_frames=95 (3.800s)."
+    ],
+    "smallFile": "sobaya/reveal_small.wav",
+    "largeFile": "sobaya/reveal_large.wav",
+    "rawFile": "sobaya/reveal_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_reveal_sobaya_large.wav"
+  },
+  {
+    "id": "reinvent",
+    "speaker": "sobaya",
+    "text": "今日、私たちはTシャツを再発明します。",
+    "speechText": "きょう、私たちはティーシャツを再発明します。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "6c493face88c2e457153d4188df25344b7826a2c2581b9b70dc27c87c4917ca1",
+    "duration": 3.626979,
+    "sha256": "e404b69e78a3f3e9593f1a879a0b33e9277f3a008f844531be99bb985bbf70ab",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "9657edea21c71b62c57b6f6a5392f4c792a04b88203555ed21b6fef1e14cd0ef",
+    "baselineDuration": 3.303188,
+    "identity": {
+      "request": {
+        "text": "きょう、私たちはティーシャツを再発明します。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "9657edea21c71b62c57b6f6a5392f4c792a04b88203555ed21b6fef1e14cd0ef"
+    },
+    "synthesisSeconds": 30.268963459064253,
+    "realTimeFactor": 8.345502816273337,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.0006517500150948763
+      ],
+      [
+        "prepare_reference",
+        0.5142324169864878
+      ],
+      [
+        "predict_duration",
+        0.9020867089275271
+      ],
+      [
+        "sample_rf",
+        27.321223167004064
+      ],
+      [
+        "unpatchify_latent",
+        9.582960046827793e-06
+      ],
+      [
+        "decode_latent",
+        1.2716524159768596
+      ],
+      [
+        "silentcipher_watermark",
+        0.25608304201159626
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=92.2, scale=1.000, using_frames=92 (3.680s)."
+    ],
+    "smallFile": "sobaya/reinvent_small.wav",
+    "largeFile": "sobaya/reinvent_large.wav",
+    "rawFile": "sobaya/reinvent_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_reinvent_sobaya_large.wav"
+  },
+  {
+    "id": "how",
+    "speaker": "sobaya",
+    "text": "では、どうやって使うのか。",
+    "speechText": "では、どうやって使うのか。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "42f51f8ef4768884ce3b3e9b2fb415968f9b29f9d65b7dafe9d7f1b8a5c0c43e",
+    "duration": 2.150563,
+    "sha256": "fd247e9b37879d64bfd08d1b676750cb1c4f7e2cdfafb59316a539bf2bd8d614",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "9b79afa2bbd25e21be1108dd0c799448b2e84b1fdc37f2dfc60f6831c482c4ab",
+    "baselineDuration": 1.953667,
+    "identity": {
+      "request": {
+        "text": "では、どうやって使うのか。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "9b79afa2bbd25e21be1108dd0c799448b2e84b1fdc37f2dfc60f6831c482c4ab"
+    },
+    "synthesisSeconds": 22.49782079202123,
+    "realTimeFactor": 10.461363276510026,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.0006907499628141522
+      ],
+      [
+        "prepare_reference",
+        0.536464084056206
+      ],
+      [
+        "predict_duration",
+        1.0059986669803038
+      ],
+      [
+        "sample_rf",
+        20.052387792035006
+      ],
+      [
+        "unpatchify_latent",
+        2.7919886633753777e-06
+      ],
+      [
+        "decode_latent",
+        0.7491100420011207
+      ],
+      [
+        "silentcipher_watermark",
+        0.15013129194267094
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=56.4, scale=1.000, using_frames=56 (2.240s)."
+    ],
+    "smallFile": "sobaya/how_small.wav",
+    "largeFile": "sobaya/how_large.wav",
+    "rawFile": "sobaya/how_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_how_sobaya_large.wav"
+  },
+  {
+    "id": "learn",
+    "speaker": "sobaya",
+    "text": "特別な操作を、覚える必要はありません。",
+    "speechText": "特別な操作を、覚える必要はありません。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "ee56fd9677f92d3cf8e46425422a3cfda88c3292c73cf8fca8462412bdad9f70",
+    "duration": 3.024833,
+    "sha256": "e69036bf18e5affc7e5e05aecac085966408d8ce1482cc6b5baf288f56ba0acf",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "cb5a74a469bb87d947d61c3831fc6c6ae045f05f2b4fcff57b085b9b67fb7747",
+    "baselineDuration": 2.773958,
+    "identity": {
+      "request": {
+        "text": "特別な操作を、覚える必要はありません。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "cb5a74a469bb87d947d61c3831fc6c6ae045f05f2b4fcff57b085b9b67fb7747"
+    },
+    "synthesisSeconds": 24.274844583007507,
+    "realTimeFactor": 8.025185054185638,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.0007420839974656701
+      ],
+      [
+        "prepare_reference",
+        0.5411077499156818
+      ],
+      [
+        "predict_duration",
+        1.1047710409620777
+      ],
+      [
+        "sample_rf",
+        21.54252062505111
+      ],
+      [
+        "unpatchify_latent",
+        3.3330870792269707e-06
+      ],
+      [
+        "decode_latent",
+        0.991662250016816
+      ],
+      [
+        "silentcipher_watermark",
+        0.0871349589433521
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=77.5, scale=1.000, using_frames=77 (3.080s)."
+    ],
+    "smallFile": "sobaya/learn_small.wav",
+    "largeFile": "sobaya/learn_large.wav",
+    "rawFile": "sobaya/learn_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_learn_sobaya_large.wav"
+  },
+  {
+    "id": "born",
+    "speaker": "sobaya",
+    "text": "私たちは、生まれたときから持っているものを使います。",
+    "speechText": "私たちは、生まれたときから持っているものを使います。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "aba1300cc59d6caaa7dc75391f8ab2985ce6842d12dadfed9cb76f0d4179827d",
+    "duration": 3.711979,
+    "sha256": "3e43a19b96b511228730f6f93fe30a4fd1709ecca95bdeae9f8684162bf24824",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "5e074910fb85a3d1e0a53abfba76ddc0bd5985bc05d611a9ebdbefa00f59c8f7",
+    "baselineDuration": 3.610583,
+    "identity": {
+      "request": {
+        "text": "私たちは、生まれたときから持っているものを使います。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "5e074910fb85a3d1e0a53abfba76ddc0bd5985bc05d611a9ebdbefa00f59c8f7"
+    },
+    "synthesisSeconds": 28.808487667003646,
+    "realTimeFactor": 7.76095114412114,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.0006062500178813934
+      ],
+      [
+        "prepare_reference",
+        0.5347404590575024
+      ],
+      [
+        "predict_duration",
+        0.9751034589717165
+      ],
+      [
+        "sample_rf",
+        25.932914667064324
+      ],
+      [
+        "unpatchify_latent",
+        2.2080494090914726e-06
+      ],
+      [
+        "decode_latent",
+        1.2494237499777228
+      ],
+      [
+        "silentcipher_watermark",
+        0.111274833092466
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=95.2, scale=1.000, using_frames=95 (3.800s)."
+    ],
+    "smallFile": "sobaya/born_small.wav",
+    "largeFile": "sobaya/born_large.wav",
+    "rawFile": "sobaya/born_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_born_sobaya_large.wav"
+  },
+  {
+    "id": "arms",
+    "speaker": "sobaya",
+    "text": "腕です。",
+    "speechText": "腕です。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "727978c479aeef872effd09f7e5a77610de7280f452d020ec7514e2697e650bd",
+    "duration": 1.236438,
+    "sha256": "9859a267b10e206e9d1ae615b85eef0fd0291bc518f9814b36d5c3c3388b540f",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "f6eec1f7fbdb29b069425b06e6661014efaa6e89e7d45f9b15c4af6c16705534",
+    "baselineDuration": 1.107104,
+    "identity": {
+      "request": {
+        "text": "腕です。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "f6eec1f7fbdb29b069425b06e6661014efaa6e89e7d45f9b15c4af6c16705534"
+    },
+    "synthesisSeconds": 16.6374452089658,
+    "realTimeFactor": 13.455947818625601,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.0010260420385748148
+      ],
+      [
+        "prepare_reference",
+        0.5521439999574795
+      ],
+      [
+        "predict_duration",
+        0.9922671249369159
+      ],
+      [
+        "sample_rf",
+        13.874953625025228
+      ],
+      [
+        "unpatchify_latent",
+        5.250098183751106e-06
+      ],
+      [
+        "decode_latent",
+        0.5302935419604182
+      ],
+      [
+        "silentcipher_watermark",
+        0.6807622920023277
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=33.8, scale=1.000, using_frames=34 (1.360s)."
+    ],
+    "smallFile": "sobaya/arms_small.wav",
+    "largeFile": "sobaya/arms_large.wav",
+    "rawFile": "sobaya/arms_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_arms_sobaya_large.wav"
+  },
+  {
+    "id": "right",
+    "speaker": "sobaya",
+    "text": "右腕を通す。",
+    "speechText": "右腕を通す。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "998b1cb7fcae67cd1fbea2d7200b321bb9079454f754cb1a4104a17d6ec156ea",
+    "duration": 1.524542,
+    "sha256": "bc9d5bdd98cd7796f03f586b06ce1303f1f8595b948713c8b90be44263970fd4",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "c5ba435763bad8060b1dfe65d5e6015c651c33f9a85cc588582b732f453a802d",
+    "baselineDuration": 1.272438,
+    "identity": {
+      "request": {
+        "text": "右腕を通す。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "c5ba435763bad8060b1dfe65d5e6015c651c33f9a85cc588582b732f453a802d"
+    },
+    "synthesisSeconds": 17.330203208955936,
+    "realTimeFactor": 11.367481649541919,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.0006017920095473528
+      ],
+      [
+        "prepare_reference",
+        0.605420709005557
+      ],
+      [
+        "predict_duration",
+        0.8660592079395428
+      ],
+      [
+        "sample_rf",
+        15.049174042069353
+      ],
+      [
+        "unpatchify_latent",
+        2.166023477911949e-06
+      ],
+      [
+        "decode_latent",
+        0.6457350839627907
+      ],
+      [
+        "silentcipher_watermark",
+        0.15546458307653666
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=43.3, scale=1.000, using_frames=43 (1.720s)."
+    ],
+    "smallFile": "sobaya/right_small.wav",
+    "largeFile": "sobaya/right_large.wav",
+    "rawFile": "sobaya/right_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_right_sobaya_large.wav"
+  },
+  {
+    "id": "left",
+    "speaker": "sobaya",
+    "text": "左腕を通す。",
+    "speechText": "左腕を通す。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "9148cc3a2dc5f2c70f6c6df9122ef8e110b163cf1ada15b3da852a4c98cce3fb",
+    "duration": 1.495292,
+    "sha256": "2a88f11217259a7f00ecb65b62da677d871a3ee1ab2558c4f9d20ae584d50516",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "4d8d126e6fb03360a8d358c36dd18e5e50f4157ff0e7ea986a3ffc3d8a4ca5cb",
+    "baselineDuration": 1.377542,
+    "identity": {
+      "request": {
+        "text": "左腕を通す。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "4d8d126e6fb03360a8d358c36dd18e5e50f4157ff0e7ea986a3ffc3d8a4ca5cb"
+    },
+    "synthesisSeconds": 20.029636000050232,
+    "realTimeFactor": 13.39513352579311,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.000931750051677227
+      ],
+      [
+        "prepare_reference",
+        0.556580499978736
+      ],
+      [
+        "predict_duration",
+        1.0021212080027908
+      ],
+      [
+        "sample_rf",
+        17.157772041973658
+      ],
+      [
+        "unpatchify_latent",
+        6.959075108170509e-06
+      ],
+      [
+        "decode_latent",
+        1.1920397080248222
+      ],
+      [
+        "silentcipher_watermark",
+        0.11221883399412036
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=43.5, scale=1.000, using_frames=44 (1.760s)."
+    ],
+    "smallFile": "sobaya/left_small.wav",
+    "largeFile": "sobaya/left_large.wav",
+    "rawFile": "sobaya/left_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_left_sobaya_large.wav"
+  },
+  {
+    "id": "head",
+    "speaker": "sobaya",
+    "text": "そして、頭を通す。",
+    "speechText": "そして、頭を通す。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "d2d52639152119cf6a6329f657491e6711724fe69f7ad0bd52e156940bf26e78",
+    "duration": 1.992146,
+    "sha256": "dbca14ccdd3a04fec8004ae90dad5b37425e06ba17c90bb05b1965dc87aac08e",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "518587d0870582dc28d14d7e34eb0a746054f129b27622952b5b494068250d45",
+    "baselineDuration": 2.084896,
+    "identity": {
+      "request": {
+        "text": "そして、頭を通す。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "518587d0870582dc28d14d7e34eb0a746054f129b27622952b5b494068250d45"
+    },
+    "synthesisSeconds": 24.695438708993606,
+    "realTimeFactor": 12.396400017364996,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.0007930840365588665
+      ],
+      [
+        "prepare_reference",
+        0.5524264159612358
+      ],
+      [
+        "predict_duration",
+        1.0998279999475926
+      ],
+      [
+        "sample_rf",
+        21.611922707990743
+      ],
+      [
+        "unpatchify_latent",
+        9.584007784724236e-06
+      ],
+      [
+        "decode_latent",
+        1.04418624995742
+      ],
+      [
+        "silentcipher_watermark",
+        0.37809466605540365
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=52.3, scale=1.000, using_frames=52 (2.080s)."
+    ],
+    "smallFile": "sobaya/head_small.wav",
+    "largeFile": "sobaya/head_large.wav",
+    "rawFile": "sobaya/head_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_head_sobaya_large.wav"
+  },
+  {
+    "id": "wear",
+    "speaker": "sobaya",
+    "text": "着られました。",
+    "speechText": "着られました。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "c54f8ec8041b4bb0121f6e571cd51c89ffb36bd1a8fcb10f04e49c0c387fdb88",
+    "duration": 1.190979,
+    "sha256": "35b07040f2c5eca6fe7f97eb93d9e42ff8a544e92da84e72fb919e16810f57d8",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "84705f50d6f2e5f31f2fc84cf61b38cc12da5e5a1806fc4d0ef3885395473f20",
+    "baselineDuration": 1.216,
+    "identity": {
+      "request": {
+        "text": "着られました。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "84705f50d6f2e5f31f2fc84cf61b38cc12da5e5a1806fc4d0ef3885395473f20"
+    },
+    "synthesisSeconds": 20.915787332924083,
+    "realTimeFactor": 17.561843939250046,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.0017062920378521085
+      ],
+      [
+        "prepare_reference",
+        0.6313206249615178
+      ],
+      [
+        "predict_duration",
+        1.3098311249632388
+      ],
+      [
+        "sample_rf",
+        17.795425708056428
+      ],
+      [
+        "unpatchify_latent",
+        9.37492586672306e-06
+      ],
+      [
+        "decode_latent",
+        0.7903738749446347
+      ],
+      [
+        "silentcipher_watermark",
+        0.37711700005456805
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=34.6, scale=1.000, using_frames=35 (1.400s)."
+    ],
+    "smallFile": "sobaya/wear_small.wav",
+    "largeFile": "sobaya/wear_large.wav",
+    "rawFile": "sobaya/wear_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_wear_sobaya_large.wav"
+  },
+  {
+    "id": "simple",
+    "speaker": "sobaya",
+    "text": "実にシンプルです。",
+    "speechText": "実にシンプルです。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "f08edc400d9fcb598d8a085719c95149078a8544aa0e22ee26d973af6d1f111e",
+    "duration": 2.17275,
+    "sha256": "978a10563773ee789dc165e1cc8eb68d88eb21d5a75c6300205b58bf41e93eb6",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "0b8a1e35ef575d4a9ef6fc3754a481cf3f0a67ca3476cbe7b8008b757fc609b2",
+    "baselineDuration": 1.686875,
+    "identity": {
+      "request": {
+        "text": "実にシンプルです。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "0b8a1e35ef575d4a9ef6fc3754a481cf3f0a67ca3476cbe7b8008b757fc609b2"
+    },
+    "synthesisSeconds": 22.397154417005368,
+    "realTimeFactor": 10.308205921990734,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.000814375001937151
+      ],
+      [
+        "prepare_reference",
+        0.6099460000405088
+      ],
+      [
+        "predict_duration",
+        1.4232923749368638
+      ],
+      [
+        "sample_rf",
+        19.427922083996236
+      ],
+      [
+        "unpatchify_latent",
+        1.6660196706652641e-06
+      ],
+      [
+        "decode_latent",
+        0.7427101669600233
+      ],
+      [
+        "silentcipher_watermark",
+        0.1834392079617828
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=57.0, scale=1.000, using_frames=57 (2.280s)."
+    ],
+    "smallFile": "sobaya/simple_small.wav",
+    "largeFile": "sobaya/simple_large.wav",
+    "rawFile": "sobaya/simple_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_simple_sobaya_large.wav"
+  },
+  {
+    "id": "detail",
+    "speaker": "sobaya",
+    "text": "見てください。このディテール。",
+    "speechText": "見てください。このディテール。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "57fa8133b6ac1f24ff612194de672e04908f9f47076efcdace01c1c2f951db29",
+    "duration": 2.498542,
+    "sha256": "c20f237aa7edc2c09922c281c6976be314b8e82ec57e15e5aa0afa42db884e64",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "4c533137e55cda94d9214ad1ef29cd47075f5c72a4476dab3426021277b1820d",
+    "baselineDuration": 2.282667,
+    "identity": {
+      "request": {
+        "text": "見てください。このディテール。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "4c533137e55cda94d9214ad1ef29cd47075f5c72a4476dab3426021277b1820d"
+    },
+    "synthesisSeconds": 24.465376208070666,
+    "realTimeFactor": 9.791861096619815,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.0006322080735117197
+      ],
+      [
+        "prepare_reference",
+        0.5559396249009296
+      ],
+      [
+        "predict_duration",
+        1.2413366669788957
+      ],
+      [
+        "sample_rf",
+        21.80259020801168
+      ],
+      [
+        "unpatchify_latent",
+        1.9579892978072166e-06
+      ],
+      [
+        "decode_latent",
+        0.782928166911006
+      ],
+      [
+        "silentcipher_watermark",
+        0.07490062504075468
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=64.6, scale=1.000, using_frames=65 (2.600s)."
+    ],
+    "smallFile": "sobaya/detail_small.wav",
+    "largeFile": "sobaya/detail_large.wav",
+    "rawFile": "sobaya/detail_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_detail_sobaya_large.wav"
+  },
+  {
+    "id": "everyone",
+    "speaker": "sobaya",
+    "text": "窓際族が、全員ここにいる。",
+    "speechText": "窓際族が、全員ここにいる。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "d4506903c379d45c8c3274be7e8751ff6d4c8623ea772c00b04508fcea2480b6",
+    "duration": 2.733417,
+    "sha256": "75abf0d9c0dd16b421c464d3ef01c8aebeefad852d12bce4825112aed3831766",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "992d629a437ec089f5a5d6633c67fd93cb52a1ff350bf9ad4ab935aaee8068e6",
+    "baselineDuration": 2.599292,
+    "identity": {
+      "request": {
+        "text": "窓際族が、全員ここにいる。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "992d629a437ec089f5a5d6633c67fd93cb52a1ff350bf9ad4ab935aaee8068e6"
+    },
+    "synthesisSeconds": 26.67323391593527,
+    "realTimeFactor": 9.758201516978664,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.0006315830396488309
+      ],
+      [
+        "prepare_reference",
+        0.5539468339411542
+      ],
+      [
+        "predict_duration",
+        1.0332170000765473
+      ],
+      [
+        "sample_rf",
+        23.861333250068128
+      ],
+      [
+        "unpatchify_latent",
+        3.917026333510876e-06
+      ],
+      [
+        "decode_latent",
+        1.0802969579817727
+      ],
+      [
+        "silentcipher_watermark",
+        0.13607283297460526
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=70.1, scale=1.000, using_frames=70 (2.800s)."
+    ],
+    "smallFile": "sobaya/everyone_small.wav",
+    "largeFile": "sobaya/everyone_large.wav",
+    "rawFile": "sobaya/everyone_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_everyone_sobaya_large.wav"
+  },
+  {
+    "id": "nobody",
+    "speaker": "sobaya",
+    "text": "しかも、誰も働いていません。",
+    "speechText": "しかも、誰も働いていません。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "1f7b95ddd5c291a3545d9a26b5ebc46679ea5ae896067ce0330d3f0e84123ff4",
+    "duration": 2.431479,
+    "sha256": "8c0bc061a7109f9f572555381c21a97cb77fc784e5ff2373bb6297b448438325",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "16f5ba63fcdc040f08e583894dc47b7f432b23b46f08d09c1ebaebdcc593c1ad",
+    "baselineDuration": 2.393146,
+    "identity": {
+      "request": {
+        "text": "しかも、誰も働いていません。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "16f5ba63fcdc040f08e583894dc47b7f432b23b46f08d09c1ebaebdcc593c1ad"
+    },
+    "synthesisSeconds": 20.950075582950376,
+    "realTimeFactor": 8.616186108516823,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.0006532500265166163
+      ],
+      [
+        "prepare_reference",
+        0.5598427500808612
+      ],
+      [
+        "predict_duration",
+        0.8484877909068018
+      ],
+      [
+        "sample_rf",
+        18.67376587493345
+      ],
+      [
+        "unpatchify_latent",
+        4.375004209578037e-06
+      ],
+      [
+        "decode_latent",
+        0.7716290840180591
+      ],
+      [
+        "silentcipher_watermark",
+        0.08890204201452434
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=63.5, scale=1.000, using_frames=64 (2.560s)."
+    ],
+    "smallFile": "sobaya/nobody_small.wav",
+    "largeFile": "sobaya/nobody_large.wav",
+    "rawFile": "sobaya/nobody_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_nobody_sobaya_large.wav"
+  },
+  {
+    "id": "perfect",
+    "speaker": "sobaya",
+    "text": "完璧です。",
+    "speechText": "完璧です。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "40475c8d487f1f30db1241e9d91a0012f3989ccca30a3c3db4e3c5869ba71504",
+    "duration": 1.472,
+    "sha256": "ca23f745224108237ca84b86891f0ef1919cc0f647fdd1d68983564fc27ce078",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "04bb05f89917206e6dfdc0ded482aabfdedc25c4851ecec3c2b246715d6f7d88",
+    "baselineDuration": 1.260396,
+    "identity": {
+      "request": {
+        "text": "完璧です。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "04bb05f89917206e6dfdc0ded482aabfdedc25c4851ecec3c2b246715d6f7d88"
+    },
+    "synthesisSeconds": 18.678987000021152,
+    "realTimeFactor": 12.689529211970891,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.0018055409891530871
+      ],
+      [
+        "prepare_reference",
+        0.5475404160097241
+      ],
+      [
+        "predict_duration",
+        1.0675178749952465
+      ],
+      [
+        "sample_rf",
+        16.333663708064705
+      ],
+      [
+        "unpatchify_latent",
+        2.249958924949169e-06
+      ],
+      [
+        "decode_latent",
+        0.5514248330146074
+      ],
+      [
+        "silentcipher_watermark",
+        0.17065554193686694
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=39.0, scale=1.000, using_frames=39 (1.560s)."
+    ],
+    "smallFile": "sobaya/perfect_small.wav",
+    "largeFile": "sobaya/perfect_large.wav",
+    "rawFile": "sobaya/perfect_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_perfect_sobaya_large.wav"
+  },
+  {
+    "id": "when",
+    "speaker": "sobaya",
+    "text": "さて。これが、いつ手に入るのか。",
+    "speechText": "さて。これが、いつ手に入るのか。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "85f0b60400c709b529311c1df99b09dff8d2608240928290250523ae77a39c17",
+    "duration": 3.038438,
+    "sha256": "118df85a2f921974a2c1d4325d5205ef7df0a8e3725b8097ae07a9f076e9c646",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "d1f0764226d753ddf9509fb3acc587d453a32a6f739232f85285929fd28e018b",
+    "baselineDuration": 3.050417,
+    "identity": {
+      "request": {
+        "text": "さて。これが、いつ手に入るのか。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "d1f0764226d753ddf9509fb3acc587d453a32a6f739232f85285929fd28e018b"
+    },
+    "synthesisSeconds": 26.553977124975063,
+    "realTimeFactor": 8.739351313067788,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.0007202910492196679
+      ],
+      [
+        "prepare_reference",
+        0.5661649579415098
+      ],
+      [
+        "predict_duration",
+        1.0298322499729693
+      ],
+      [
+        "sample_rf",
+        23.695374457980506
+      ],
+      [
+        "unpatchify_latent",
+        2.0830193534493446e-06
+      ],
+      [
+        "decode_latent",
+        1.133450624998659
+      ],
+      [
+        "silentcipher_watermark",
+        0.12062679091468453
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=79.0, scale=1.000, using_frames=79 (3.160s)."
+    ],
+    "smallFile": "sobaya/when_small.wav",
+    "largeFile": "sobaya/when_large.wav",
+    "rawFile": "sobaya/when_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_when_sobaya_large.wav"
+  },
+  {
+    "id": "today",
+    "speaker": "sobaya",
+    "text": "今日です。",
+    "speechText": "今日です。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "a56791dfbde25041abaa10dda5d81380f235866fc06cfef6d4919317f933255a",
+    "duration": 1.228458,
+    "sha256": "28b8853ca2c12daa01109a3205053fd48f9d7029f3b3a4b80dfa3d97a336b07d",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "b43450b5bdf3aa4207287eeae76859553cf4bebbc55eaf129045ab4744f86285",
+    "baselineDuration": 1.129708,
+    "identity": {
+      "request": {
+        "text": "今日です。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "b43450b5bdf3aa4207287eeae76859553cf4bebbc55eaf129045ab4744f86285"
+    },
+    "synthesisSeconds": 19.862664542044513,
+    "realTimeFactor": 16.16877788418042,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.001042832969687879
+      ],
+      [
+        "prepare_reference",
+        0.5570024999324232
+      ],
+      [
+        "predict_duration",
+        0.8848584580700845
+      ],
+      [
+        "sample_rf",
+        17.413058332982473
+      ],
+      [
+        "unpatchify_latent",
+        2.1332991309463978e-05
+      ],
+      [
+        "decode_latent",
+        0.6916736250277609
+      ],
+      [
+        "silentcipher_watermark",
+        0.30750479199923575
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=32.9, scale=1.000, using_frames=33 (1.320s)."
+    ],
+    "smallFile": "sobaya/today_small.wav",
+    "largeFile": "sobaya/today_large.wav",
+    "rawFile": "sobaya/today_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_today_sobaya_large.wav"
+  },
+  {
+    "id": "buy",
+    "speaker": "sobaya",
+    "text": "公式サイトから、購入できます。",
+    "speechText": "公式サイトから、購入できます。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "91e624bfe8d814bafebca5d9422b3ee29bd203b7fad8a4217cc22d4a655126f7",
+    "duration": 2.400625,
+    "sha256": "ab9a59db483f310da1049509e2b782f272939d413c114c955f27242621a4efc0",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "ca84ce9ea28598b9a6c3533b7e8f50c147af0798419887a4de460c93edff76a2",
+    "baselineDuration": 2.3125,
+    "identity": {
+      "request": {
+        "text": "公式サイトから、購入できます。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "ca84ce9ea28598b9a6c3533b7e8f50c147af0798419887a4de460c93edff76a2"
+    },
+    "synthesisSeconds": 25.224409334012307,
+    "realTimeFactor": 10.507434244837203,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.0025931670097634196
+      ],
+      [
+        "prepare_reference",
+        0.7579086669720709
+      ],
+      [
+        "predict_duration",
+        1.6664567500120029
+      ],
+      [
+        "sample_rf",
+        21.893973415950313
+      ],
+      [
+        "unpatchify_latent",
+        3.5830307751893997e-06
+      ],
+      [
+        "decode_latent",
+        0.8071592090418562
+      ],
+      [
+        "silentcipher_watermark",
+        0.08450312505010515
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=64.5, scale=1.000, using_frames=64 (2.560s)."
+    ],
+    "smallFile": "sobaya/buy_small.wav",
+    "largeFile": "sobaya/buy_large.wav",
+    "rawFile": "sobaya/buy_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_buy_sobaya_large.wav"
+  },
+  {
+    "id": "closing",
+    "speaker": "sobaya",
+    "text": "窓際族。T。シャツ。",
+    "speechText": "窓際族。ティー。シャツ。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "3919060f5be49c665a5461599ed438f758570c75b64becdea4ae283389cd9b6b",
+    "duration": 2.865604,
+    "sha256": "58a892ffdf4666d16f63ead2b1e68351f59a53946da41a7b6610cd5ff8d34a8d",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "72ba88f9c6832850db58e7fe884746f0dfb3e84718596637a6267d8780a1c170",
+    "baselineDuration": 3.687229,
+    "identity": {
+      "request": {
+        "text": "窓際族。ティー。シャツ。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "72ba88f9c6832850db58e7fe884746f0dfb3e84718596637a6267d8780a1c170"
+    },
+    "synthesisSeconds": 25.632383916992694,
+    "realTimeFactor": 8.944845106648614,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.0006339999381452799
+      ],
+      [
+        "prepare_reference",
+        0.5378790419781581
+      ],
+      [
+        "predict_duration",
+        1.1716045000357553
+      ],
+      [
+        "sample_rf",
+        22.924637124990113
+      ],
+      [
+        "unpatchify_latent",
+        2.125045284628868e-06
+      ],
+      [
+        "decode_latent",
+        0.9037222500192001
+      ],
+      [
+        "silentcipher_watermark",
+        0.08666487503796816
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=73.3, scale=1.000, using_frames=73 (2.920s)."
+    ],
+    "smallFile": "sobaya/closing_small.wav",
+    "largeFile": "sobaya/closing_large.wav",
+    "rawFile": "sobaya/closing_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_closing_sobaya_large.wav"
+  },
+  {
+    "id": "all",
+    "speaker": "sobaya",
+    "text": "すべてが、この1枚に。",
+    "speechText": "すべてが、この1枚に。",
+    "reference": "02_CHARACTERS/Sobaya_voice.wav",
+    "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 42,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "uncut": false,
+    "postprocess": "tools/sobaya_monsterize.sh",
+    "fingerprint": "2a68638f6d1ba530940855d4093634c2a491abcb650858f3a95bd2763c8bd8b7",
+    "duration": 2.139125,
+    "sha256": "1fe5d219c0c7633a8d44632e807853509b16ce112b53bbd66451bbd5f56c0a6c",
+    "baselineModel": "Aratako/Irodori-TTS-v4.1-Small",
+    "baselineSha256": "fa13f7e75e90de4a5e751f99de1c9947a041f04b839090e53c1b401902691d99",
+    "baselineDuration": 2.165792,
+    "identity": {
+      "request": {
+        "text": "すべてが、この1枚に。",
+        "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+        "ref_wav": "/Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/Sobaya_voice.wav",
+        "ref_wavs": null,
+        "ref_latent": null,
+        "ref_latents": null,
+        "ref_embed": null,
+        "no_ref": false,
+        "ref_normalize_db": -16.0,
+        "ref_ensure_max": true,
+        "num_candidates": 1,
+        "decode_mode": "sequential",
+        "seconds": null,
+        "duration_scale": 1.0,
+        "min_seconds": 0.5,
+        "max_seconds": 30.0,
+        "max_ref_seconds": null,
+        "max_text_len": null,
+        "max_caption_len": null,
+        "num_steps": null,
+        "cfg_scale_text": 3.0,
+        "cfg_scale_caption": 3.0,
+        "cfg_scale_speaker": 5.0,
+        "cfg_guidance_mode": "independent",
+        "cfg_scale": null,
+        "cfg_min_t": 0.5,
+        "cfg_max_t": 1.0,
+        "truncation_factor": null,
+        "rescale_k": null,
+        "rescale_sigma": null,
+        "context_kv_cache": true,
+        "speaker_kv_scale": null,
+        "speaker_kv_min_t": null,
+        "speaker_kv_max_layers": null,
+        "speaker_uncond_mode": "mask",
+        "seed": 42,
+        "t_schedule_mode": "linear",
+        "sway_coeff": -1.0,
+        "trim_tail": true,
+        "tail_window_size": 20,
+        "tail_std_threshold": 0.05,
+        "tail_mean_threshold": 0.1,
+        "lora_adapter": null
+      },
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+      "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+      "referenceSha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "precision": "fp32",
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "uncut": false,
+      "baselineSha256": "fa13f7e75e90de4a5e751f99de1c9947a041f04b839090e53c1b401902691d99"
+    },
+    "synthesisSeconds": 20.253090832964517,
+    "realTimeFactor": 9.467932370929477,
+    "stageTimings": [
+      [
+        "tokenize_text",
+        0.0006636669859290123
+      ],
+      [
+        "prepare_reference",
+        0.5513330840039998
+      ],
+      [
+        "predict_duration",
+        1.0668787920149043
+      ],
+      [
+        "sample_rf",
+        17.869586375076324
+      ],
+      [
+        "unpatchify_latent",
+        2.249958924949169e-06
+      ],
+      [
+        "decode_latent",
+        0.6818840829655528
+      ],
+      [
+        "silentcipher_watermark",
+        0.0786546670133248
+      ]
+    ],
+    "messages": [
+      "info: reference loudness normalize enabled per clip (target_db=-16.00, includes peak safety scaling).",
+      "info: predicted duration frames=56.2, scale=1.000, using_frames=56 (2.240s)."
+    ],
+    "smallFile": "sobaya/all_small.wav",
+    "largeFile": "sobaya/all_large.wav",
+    "rawFile": "sobaya/all_large_raw.wav",
+    "auditoryReview": "未確認",
+    "adopted": true,
+    "adoptionDate": "2026-09-30",
+    "adoptionScope": "75話そば屋Large音声版",
+    "audio": "line_all_sobaya_large.wav"
+  }
+]

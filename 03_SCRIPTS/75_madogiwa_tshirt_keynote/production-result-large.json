@@ -1,0 +1,44 @@
+{
+  "output": "final_remotion_keynote_large.mp4",
+  "sha256": "cfc42752a009be6d39b1accfb8ea6b4b3b38c2c3aadef4d6db87ddf68aa968d9",
+  "bytes": 12649871,
+  "durationSeconds": 139.875,
+  "frames": 3357,
+  "width": 1280,
+  "height": 720,
+  "fps": 24,
+  "videoCodec": "h264",
+  "audioCodec": "aac",
+  "audioSampleRate": 48000,
+  "audioChannels": 2,
+  "integratedLUFS": -16.42,
+  "truePeakDbFS": -1.23,
+  "date": "2026-09-30",
+  "adoption": {
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "speaker": "sobaya",
+    "audioCount": 32,
+    "source": "audio-generation-large.json",
+    "userFeedback": "迫力が増して良くなってると思う",
+    "userInstruction": "そば屋は新しい音声を採用した動画を作って",
+    "scope": "75話そば屋版のみ。共通既定モデル・旧Small版・やめ太郎版は維持。"
+  },
+  "manifest": "remotion/src/edit-manifest-large.json",
+  "composition": "MadogiwaKeynoteLarge",
+  "checks": {
+    "typescript": "passed",
+    "adoptedAudioHashes": "32/32 matched comparison candidates",
+    "baselineAudioHashes": "64/64 unchanged",
+    "measuredAudioFrameAlignment": "32/32 passed; no overlaps",
+    "ASR": "comparison candidates already screened; previous uncertainty flags preserved in large-comparison-result.json",
+    "visual": "9 major stills, 23.4-second preview filmstrip, full-video 12-frame filmstrip inspected",
+    "fullDecode": "passed to EOF; 3357 video frames; exactly one video and one audio stream",
+    "browserPlayback": "Chrome review page shown playing at 0:07",
+    "auditoryListening": "user gave character-level positive feedback on Large candidate audio and instructed adoption; full finished-video auditory review not performed by agent"
+  },
+  "reviewUrl": "http://127.0.0.1:8785/review.html",
+  "limitations": [
+    "Prior ASR-only pronunciation concerns remain recorded; they were not silently represented as human-verified pronunciation.",
+    "The Sobaya mask stays fixed; timing updates affect gestures, subtitles, slides and reactions."
+  ]
+}

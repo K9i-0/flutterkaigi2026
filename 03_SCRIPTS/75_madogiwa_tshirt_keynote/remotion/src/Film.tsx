@@ -8,12 +8,13 @@ import {clone} from 'three/examples/jsm/utils/SkeletonUtils.js';
 import {createMotionPlayer} from '../../../../04_GAME_ASSETS/3d/stage_video/motion-player';
 import sobayaManifest from './edit-manifest.json';
 import nojobsManifest from './edit-manifest-nojobs.json';
+import largeManifest from './edit-manifest-large.json';
 const FPS=24;
 const clamp=(v:number)=>Math.max(0,Math.min(1,v));
 const ease=(v:number)=>{v=clamp(v);return v*v*(3-2*v)};
 type Line=typeof sobayaManifest.lines[number] & {mouth?:number[]};
 type FilmManifest={durationInFrames:number;endcardStart:number;audioReady:boolean;lines:Line[]};
-const FilmContext=createContext<{manifest:FilmManifest;noJobs:boolean}>({manifest:sobayaManifest,noJobs:false});
+const FilmContext=createContext<{manifest:FilmManifest;noJobs:boolean;audioFile?:string}>({manifest:sobayaManifest,noJobs:false});
 const active=(f:number,manifest:FilmManifest)=>manifest.lines.find(l=>f>=l.start&&f<l.end+l.pauseFrames)||manifest.lines[0];
 
 function Actor({frame,line}:{frame:number;line:Line}){
@@ -139,7 +140,7 @@ function Slide({line,frame}:{line:Line;frame:number}){
  return null;
 }
 export function Film(){
- const {manifest,noJobs}=useContext(FilmContext);
+ const {manifest,noJobs,audioFile}=useContext(FilmContext);
  const frame=useCurrentFrame(),line=active(frame,manifest);
  const endcard=frame>=manifest.endcardStart;
  const close=['lucky','understand','notthree','born','arms','perfect','when'].includes(line.id);
@@ -150,9 +151,11 @@ export function Film(){
   {!endcard&&<div style={{position:'absolute',left:508,top:503,color:'#686e78',fontSize:11,letterSpacing:5}}>{noJobs?'NO JOBS · MADOGIWA SPECIAL EVENT':'MADOGIWA SPECIAL EVENT'}</div>}
   {subtitle&&<div style={{position:'absolute',bottom:36,left:42,right:42,textAlign:'center',fontSize:30,fontWeight:500,lineHeight:1.5,textShadow:'0 2px 7px #000, 0 0 14px #000'}}><span style={{background:'rgba(0,0,0,.64)',padding:'7px 18px',borderRadius:3}}>{subtitle}</span></div>}
   {endcard&&<div style={{position:'absolute',bottom:17,left:40,right:40,textAlign:'center',fontSize:13,color:'#92969c'}}>Audience laughter: Kyster / Freesound 124028 / CC BY 4.0 · edited</div>}
-  {manifest.audioReady&&<Audio src={staticFile(noJobs?'audio/master-nojobs.wav':'audio/master.wav')}/>}
+  {manifest.audioReady&&<Audio src={staticFile(audioFile??(noJobs?'audio/master-nojobs.wav':'audio/master.wav'))}/>}
   <AbsoluteFill style={{background:'black',opacity:frame<14?1-frame/14:frame>manifest.durationInFrames-16?(frame-(manifest.durationInFrames-16))/16:0,pointerEvents:'none'}}/>
  </AbsoluteFill>;
 }
 
 export function NoJobsFilm(){return <FilmContext.Provider value={{manifest:nojobsManifest,noJobs:true}}><Film/></FilmContext.Provider>;}
+
+export function LargeFilm(){return <FilmContext.Provider value={{manifest:largeManifest,noJobs:false,audioFile:'audio/master-large.wav'}}><Film/></FilmContext.Provider>;}

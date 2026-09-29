@@ -2,6 +2,7 @@
 
 そば屋ひとりが「窓際族」「T」「シャツ」を3つの革新的製品として紹介し、ひとつの商品へ合体させる基調講演パロディ。72話と同じ窓際族Tシャツを使用。福ちゃんの出演なし。
 
+- Large音声採用版: `final_remotion_keynote_large.mp4`（そば屋、139.875秒。2026-09-30採用）
 - ノージョブズ版: `final_remotion_nojobs.mp4`（無職やめ太郎、146.583秒。正典の顔・声、黒いトップスと青いズボン）
 - 完成動画: `final_remotion_keynote.mp4`（ローカル保持、Git対象外）
 - 台本: `script.md` / `remotion/src/dialogue.json`
@@ -91,4 +92,19 @@ MPSメモリは0.5秒ごとの観測最大で、OS全体の消費量ではない
 
 話者ごとの総評として記録し、全セリフの個別合格やモデル切替の指示とは区別する。
 キャラ別に採用を検討し、やめ太郎はLargeへの単純変更では改善していないと扱う。
-モデル切替・既存音声差替えは未実施。
+この評価を記録した時点ではモデル切替・既存音声差替えは未実施。後続のユーザー指示による動画への採用は下記参照。
+
+## そば屋 Large音声採用動画（2026-09-30）
+
+ユーザー指定で比較済みのLarge音声32本をこの動画へ採用。旧版と別のcomposition・manifest・完成MP4として保持する。
+再生は `review.html`、実測・検証は `production-result-large.json`、採用条件は `audio-generation-large.json`。
+
+```sh
+.local/Irodori-TTS/.venv/bin/python 03_SCRIPTS/75_madogiwa_tshirt_keynote/prepare_timeline.py --variant large
+.local/Irodori-TTS/.venv/bin/python 03_SCRIPTS/75_madogiwa_tshirt_keynote/mix_audio.py --variant large
+cd 03_SCRIPTS/75_madogiwa_tshirt_keynote/remotion
+npm run typecheck
+node render.mjs full large
+cd ../../..
+python3 03_SCRIPTS/75_madogiwa_tshirt_keynote/finish_video.py --variant large
+```
