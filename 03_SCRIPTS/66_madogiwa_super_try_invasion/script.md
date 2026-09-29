@@ -181,3 +181,11 @@ src/full-manifest.jsonが完成版のフレーム正本。後半字幕は可視�
 - 入力：`final_remotion_part1_subtitles.mp4`、279〜334f、1.867秒。映像と元音声を同時に切り出し。新規音声・字幕なし。
 - 出力：`../00_REPLY_CLIPS/66_おかやまん_大変驚いております.mp4`。タイミング正本は `remotion/src/reply-clip.json`。`npm run render:reply` で再出力。
 - 検証：TypeScript合格、854×480／30fps／H.264・AAC 48kHz、終端までデコード成功、冒頭・中央・末尾画像確認。聴覚による試聴は未実施。
+
+### 返信用の短編切り抜き（2026-09-29）
+
+- 短編候補15：`final_remotion_part1_subtitles.mp4` の [150, 335)f → `../00_REPLY_CLIPS/66_おかやまん_宇宙侵略に大変驚いております.mp4`、6.167秒。
+
+元映像・元音声を同区間で切り出す。タイミング正本は `remotion/src/story-clips.json`、再出力は `npm run render:stories`。元ファイルは保持。
+
+切り抜き検証：TypeScript合格、指定フレーム数・元解像度・30fps・音声トラックを確認し、終端までデコード成功。冒頭・中央・末尾画像を目視。音声認識で主要台詞の収録を補助確認（聴覚による試聴とは区別）。

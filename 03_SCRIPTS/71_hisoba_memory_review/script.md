@@ -90,3 +90,11 @@ API仕様: https://docs.qwencloud.com/api-reference/video-generation/wan30-video
 ### 字幕記号の改訂
 
 ユーザー指定で♥・♠を該当台詞末尾に追加。字幕の時刻とその他の台詞は維持。
+
+### 返信用の短編切り抜き（2026-09-29）
+
+- 短編候補1：`final_remotion_subtitles.mp4` の [583, 720)f → `../00_REPLY_CLIPS/71_そば屋_パトカーで連行.mp4`、4.567秒。
+
+元映像・元音声を同区間で切り出す。タイミング正本は `remotion/src/story-clips.json`、再出力は `npm run render:stories`。元ファイルは保持。
+
+切り抜き検証：TypeScript合格、指定フレーム数・元解像度・30fps・音声トラックを確認し、終端までデコード成功。冒頭・中央・末尾画像を目視。音声認識で主要台詞の収録を補助確認（聴覚による試聴とは区別）。

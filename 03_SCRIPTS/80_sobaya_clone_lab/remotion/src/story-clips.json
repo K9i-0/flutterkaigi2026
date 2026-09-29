@@ -1,0 +1,17 @@
+{
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "clips": [
+    {
+      "id": "Story12",
+      "selection": 12,
+      "source": "final_remotion_clone_lab_scanner_camera.mp4",
+      "publicSource": "story-source.mp4",
+      "startFrame": 751,
+      "endFrameExclusive": 954,
+      "output": "80_やめ太郎_指示どおり働くなんてそば屋さんやない.mp4",
+      "label": "指示どおり働くなんてそば屋さんやない"
+    }
+  ]
+}

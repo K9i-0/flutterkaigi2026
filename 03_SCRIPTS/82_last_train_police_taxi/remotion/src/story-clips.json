@@ -1,0 +1,17 @@
+{
+  "fps": 30,
+  "width": 854,
+  "height": 480,
+  "clips": [
+    {
+      "id": "Story2",
+      "selection": 2,
+      "source": "final_remotion_exterior_punchline.mp4",
+      "publicSource": "story-source.mp4",
+      "startFrame": 733,
+      "endFrameExclusive": 796,
+      "output": "82_やめ太郎_タクシーちゃうねん.mp4",
+      "label": "タクシーちゃうねん"
+    }
+  ]
+}

@@ -37,3 +37,11 @@
 編集再現：`python3 prepare_edit_v3.py` → `cd remotion && npm run render`。旧編集音声がない場合はv2 manifestを使う`finish_audio.py`で先に作成する。実聴は未実施。
 
 ユーザー追加修正：「数分後」の字幕を削除。その他の字幕・音声・尺は維持。
+
+### 返信用の短編切り抜き（2026-09-29）
+
+- 短編候補7：`final_remotion_prison_break_v3.mp4` の [0, 128)f → `../00_REPLY_CLIPS/79_そば屋_ビールのために脱獄.mp4`、4.267秒。
+
+元映像・元音声を同区間で切り出す。タイミング正本は `remotion/src/story-clips.json`、再出力は `npm run render:stories`。元ファイルは保持。
+
+切り抜き検証：TypeScript合格、指定フレーム数・元解像度・30fps・音声トラックを確認し、終端までデコード成功。冒頭・中央・末尾画像を目視。音声認識で主要台詞の収録を補助確認（聴覚による試聴とは区別）。

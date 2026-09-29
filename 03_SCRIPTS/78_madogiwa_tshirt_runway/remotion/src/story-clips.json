@@ -1,0 +1,17 @@
+{
+  "fps": 30,
+  "width": 1280,
+  "height": 720,
+  "clips": [
+    {
+      "id": "Story5",
+      "selection": 5,
+      "source": "final_remotion_runway.mp4",
+      "publicSource": "story-source.mp4",
+      "startFrame": 577,
+      "endFrameExclusive": 810,
+      "output": "78_そば屋_モデル歩きで連行.mp4",
+      "label": "モデル歩きで連行"
+    }
+  ]
+}

@@ -20,7 +20,8 @@
     "typecheck": "tsc",
     "bundle": "remotion bundle",
     "render": "remotion render src/index.ts ProfessionalWindowSide ../final_remotion_documentary_16x9.mp4 --codec=h264 --audio-codec=aac --crf=17 --overwrite",
-    "render:irodori": "remotion render src/index.ts ProfessionalWindowSideIrodori ../final_remotion_documentary_irodori_16x9.mp4 --codec=h264 --audio-codec=aac --crf=17 --overwrite"
+    "render:irodori": "remotion render src/index.ts ProfessionalWindowSideIrodori ../final_remotion_documentary_irodori_16x9.mp4 --codec=h264 --audio-codec=aac --crf=17 --overwrite",
+    "render:stories": "node render-stories.mjs"
   },
   "sideEffects": [
     "*.css"

@@ -111,3 +111,12 @@ python3 -u .claude/skills/wan-video/scripts/qwen_wan3_generate.py 03_SCRIPTS/76_
 ## Studio登録
 
 タイトル「美味しい焼きそば」、Studio ID MS-XD92RGLB、slug oishii-yakisoba、v1「採用版・揺れ強調編集」。URL: https://madogiwa.work/episodes/oishii-yakisoba 。最終動画とサムネイルは登録済み。動画ID 1ba7bdaf-9307-474d-a664-e67070a10599、ready、公開ページで30.059秒・readyState 4・再生エラーなしを確認。人物参照画像の送信は自動承認レビューで拒否され、採用素材一式の明示承認待ち。MCPツール非公開のためログイン済み管理画面を利用。
+
+### 返信用の短編切り抜き（2026-09-29）
+
+- 短編候補10：`final_remotion_revision04.mp4` の [742, 900)f → `../00_REPLY_CLIPS/76_よーたん_あいつらクビ.mp4`、5.267秒。
+- 短編候補11：`final_remotion_revision04.mp4` の [277, 476)f → `../00_REPLY_CLIPS/76_そば屋_ビール切れでオフィス地震.mp4`、6.633秒。
+
+元映像・元音声を同区間で切り出す。タイミング正本は `remotion/src/story-clips.json`、再出力は `npm run render:stories`。元ファイルは保持。
+
+切り抜き検証：TypeScript合格、指定フレーム数・元解像度・30fps・音声トラックを確認し、終端までデコード成功。冒頭・中央・末尾画像を目視。音声認識で主要台詞の収録を補助確認（聴覚による試聴とは区別）。

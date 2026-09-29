@@ -1,0 +1,17 @@
+{
+  "fps": 30,
+  "width": 832,
+  "height": 480,
+  "clips": [
+    {
+      "id": "FirstClass",
+      "selection": "追加",
+      "source": "final_remotion_documentary_irodori_16x9.mp4",
+      "publicSource": "story-source.mp4",
+      "startFrame": 690,
+      "endFrameExclusive": 912,
+      "output": "59_そば屋_一流の窓際族は窓際を作り出す.mp4",
+      "label": "一流の窓際族は窓際を作り出す"
+    }
+  ]
+}

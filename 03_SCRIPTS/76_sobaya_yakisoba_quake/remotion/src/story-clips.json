@@ -1,0 +1,27 @@
+{
+  "fps": 30,
+  "width": 854,
+  "height": 480,
+  "clips": [
+    {
+      "id": "Story10",
+      "selection": 10,
+      "source": "final_remotion_revision04.mp4",
+      "publicSource": "story-source.mp4",
+      "startFrame": 742,
+      "endFrameExclusive": 900,
+      "output": "76_よーたん_あいつらクビ.mp4",
+      "label": "あいつらクビ"
+    },
+    {
+      "id": "Story11",
+      "selection": 11,
+      "source": "final_remotion_revision04.mp4",
+      "publicSource": "story-source.mp4",
+      "startFrame": 277,
+      "endFrameExclusive": 476,
+      "output": "76_そば屋_ビール切れでオフィス地震.mp4",
+      "label": "ビール切れでオフィス地震"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "fps": 30,
+  "width": 854,
+  "height": 480,
+  "clips": [
+    {
+      "id": "Story15",
+      "selection": 15,
+      "source": "final_remotion_part1_subtitles.mp4",
+      "publicSource": "story-source.mp4",
+      "startFrame": 150,
+      "endFrameExclusive": 335,
+      "output": "66_おかやまん_宇宙侵略に大変驚いております.mp4",
+      "label": "宇宙侵略に大変驚いております"
+    }
+  ]
+}

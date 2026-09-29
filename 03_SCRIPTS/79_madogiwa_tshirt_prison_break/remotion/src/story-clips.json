@@ -1,0 +1,17 @@
+{
+  "fps": 30,
+  "width": 854,
+  "height": 480,
+  "clips": [
+    {
+      "id": "Story7",
+      "selection": 7,
+      "source": "final_remotion_prison_break_v3.mp4",
+      "publicSource": "story-source.mp4",
+      "startFrame": 0,
+      "endFrameExclusive": 128,
+      "output": "79_そば屋_ビールのために脱獄.mp4",
+      "label": "ビールのために脱獄"
+    }
+  ]
+}

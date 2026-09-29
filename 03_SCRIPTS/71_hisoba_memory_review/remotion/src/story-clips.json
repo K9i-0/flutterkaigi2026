@@ -1,0 +1,17 @@
+{
+  "fps": 30,
+  "width": 854,
+  "height": 480,
+  "clips": [
+    {
+      "id": "Story1",
+      "selection": 1,
+      "source": "final_remotion_subtitles.mp4",
+      "publicSource": "story-source.mp4",
+      "startFrame": 583,
+      "endFrameExclusive": 720,
+      "output": "71_そば屋_パトカーで連行.mp4",
+      "label": "パトカーで連行"
+    }
+  ]
+}
