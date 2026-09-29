@@ -1,0 +1,466 @@
+{
+  "model": "Aratako/Irodori-TTS-v4-Large",
+  "modelRevision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+  "runtimeCommit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+  "settings": {
+    "precision": "fp32",
+    "device": "mps",
+    "durationScale": 1.0,
+    "textCFG": 3.0,
+    "caption": "自信に満ちた製品発表。落ち着いて堂々と、明瞭に話す。",
+    "trim": "wrapper silence trim",
+    "pauses": "dialogue.json pauseFrames / 24",
+    "loudness": "-16 LUFS / -1.5 dBTP target",
+    "format": "48 kHz mono PCM16 WAV"
+  },
+  "generatedLines": 128,
+  "asrLines": 128,
+  "adopted": false,
+  "auditoryReview": "未確認。ASRは補助検査のみ。原設定の初回候補として、不安定箇所も残した試聴用。",
+  "speakers": [
+    {
+      "speaker": "fukuchan",
+      "name": "福ちゃん",
+      "file": ".local/irodori-large-ep75/cast-keynotes/keynote_fukuchan_large.wav",
+      "seconds": 187.323,
+      "sha256": "fc280d3986096c1977869f663edc2547376b9e939e85b428c2ff23073501cce2",
+      "reference": "02_CHARACTERS/Fukuchan_voice.wav",
+      "referenceSha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "seed": 100,
+      "reviewFlags": [
+        {
+          "id": "second",
+          "startSeconds": 27.461875,
+          "expected": "ふたつめ。ティー。",
+          "recognized": "2つ目はCTC 下セル 勝負",
+          "sha256": "1af2ce2e39ebfcc19c8a951356c4d235e826c6ee5c85df3a2c65140fb92bb69d",
+          "decoded": true,
+          "peak": 0.9407142996788025,
+          "rms": 0.17411881685256958,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "understand",
+          "startSeconds": 51.73204166666667,
+          "expected": "もう、おわかりですね？",
+          "recognized": "CCを目目にしてくれるジョークがあるのは、これもお分かりですね",
+          "sha256": "ba16fab5f1ac6bff7c3e113b8980215ec2bb87d5db0ebce0b6f4c74b5e847c97",
+          "decoded": true,
+          "peak": 0.9904561638832092,
+          "rms": 0.1705266237258911,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "one",
+          "startSeconds": 65.43379166666666,
+          "expected": "ひとつの製品です。",
+          "recognized": "1つの製品です。CC修上を作るのは",
+          "sha256": "425466e4548dcc029a2df7f05a7b3a1912cfd8ba3582363c0f2a856be14301cf",
+          "decoded": true,
+          "peak": 0.8559492230415344,
+          "rms": 0.17243020236492157,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "reinvent",
+          "startSeconds": 79.85220833333334,
+          "expected": "きょう、私たちはティーシャツを再発明します。",
+          "recognized": "今日私たちはTシャツを再発令します",
+          "sha256": "9b84894ee3c12e34ef215702b4dc27a1f5a3d0c51147fdd2970b0f7d1bdad661",
+          "decoded": true,
+          "peak": 0.9228126406669617,
+          "rms": 0.17379669845104218,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "arms",
+          "startSeconds": 100.612375,
+          "expected": "腕です。",
+          "recognized": "CCをごく夢にしめにしだしゃる仕事ですのは 僕のことを言ったのは",
+          "sha256": "22c187c726f984503b38181de7e09d258809e8da07978197ed47ee9e7d215fb4",
+          "decoded": true,
+          "peak": 0.8930076956748962,
+          "rms": 0.1702178418636322,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "right",
+          "startSeconds": 108.63575,
+          "expected": "右腕を通す。",
+          "recognized": "CCオークルに、右腕を通す",
+          "sha256": "0e135c6e5f3a0b1de2aa1a929241395ffae1329fa3d68fe0369499fd27e33912",
+          "decoded": true,
+          "peak": 0.6988623738288879,
+          "rms": 0.17530204355716705,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "left",
+          "startSeconds": 112.489125,
+          "expected": "左腕を通す。",
+          "recognized": "CC要請 左腕を通す",
+          "sha256": "2d1430b99ad1ac64110306e9de96c28ba094f0f7d56e5726bdc9ec854d72d8df",
+          "decoded": true,
+          "peak": 0.7464479804039001,
+          "rms": 0.17126896977424622,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "wear",
+          "startSeconds": 121.16920833333333,
+          "expected": "着られました。",
+          "recognized": "ひられないスクルの真面目に きられる仕置いているのは きられました",
+          "sha256": "b9c33dde6e2f03ade85db4630ce7ac00f6875b320b2af09fb1bea50bf0f12e41",
+          "decoded": true,
+          "peak": 0.9034777283668518,
+          "rms": 0.17274387180805206,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "simple",
+          "startSeconds": 128.67758333333333,
+          "expected": "実にシンプルです。",
+          "recognized": "実にシンプルです。CCを見出したくてロープくるのは、くるのは、かわいい。",
+          "sha256": "6b00c8b05a7887a1ce7214bbd0e079b74ca653884350ae40f5ba6916af7e6a21",
+          "decoded": true,
+          "peak": 0.8649746775627136,
+          "rms": 0.17220242321491241,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "perfect",
+          "startSeconds": 150.29275,
+          "expected": "完璧です。",
+          "recognized": "CCをリメにしめにし出しある上手しのは 布の奥重の奥です",
+          "sha256": "513e624252d3e83322d072a72fd495cd775104841035bba1ea6d76c6990b6ef9",
+          "decoded": true,
+          "peak": 0.8719552159309387,
+          "rms": 0.17140720784664154,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "today",
+          "startSeconds": 161.34116666666668,
+          "expected": "今日です。",
+          "recognized": "CCをめめにCCをひなしゃる調整のワークるのは",
+          "sha256": "f6a5a1d0ce4210f9a9b0968336ceacfe0b87f5e6933bfef195b2a04cbb55ed68",
+          "decoded": true,
+          "peak": 0.8518692255020142,
+          "rms": 0.17187218368053436,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "all",
+          "startSeconds": 178.259625,
+          "expected": "すべてが、この1枚に。",
+          "recognized": "CCを押す全てがこの1枚に",
+          "sha256": "582a293f338b63e1c5f12c0faf638725520f634ba943bc695158ba3433ff3a50",
+          "decoded": true,
+          "peak": 0.8564460277557373,
+          "rms": 0.1672956496477127,
+          "auditoryReview": "未確認"
+        }
+      ]
+    },
+    {
+      "speaker": "yotan",
+      "name": "よーたん",
+      "file": ".local/irodori-large-ep75/cast-keynotes/keynote_yotan_large.wav",
+      "seconds": 149.51485416666668,
+      "sha256": "36427cec5b96e6d5321e7d27be1a74e7237b55aea0003f6bc51555c695a3a41d",
+      "reference": "02_CHARACTERS/Yotan_voice.wav",
+      "referenceSha256": "9bd48c5577f5c70c7ed1ff7d684cca3f98ed23f24e89a02eee20907b47c1ec0c",
+      "seed": 100,
+      "reviewFlags": [
+        {
+          "id": "simple",
+          "startSeconds": 103.77945833333334,
+          "expected": "実にシンプルです。",
+          "recognized": "実にシンプルです踊りには",
+          "sha256": "a6d568b4002efe3d9b9e480fbb8ed4fa53a0dbd311840a1153594cf8b7068143",
+          "decoded": true,
+          "peak": 0.9796003103256226,
+          "rms": 0.10470467060804367,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "buy",
+          "startSeconds": 134.04139583333333,
+          "expected": "公式サイトから、購入できます。",
+          "recognized": "教室サイトから購入できます",
+          "sha256": "bcd30316979fad64e380d017ad7d51fc52e36de17f2ef35628e94963386d21a4",
+          "decoded": true,
+          "peak": 0.9351614117622375,
+          "rms": 0.14476484060287476,
+          "auditoryReview": "未確認"
+        }
+      ]
+    },
+    {
+      "speaker": "okayaman",
+      "name": "窓際王おかやまん",
+      "file": ".local/irodori-large-ep75/cast-keynotes/keynote_okayaman_large.wav",
+      "seconds": 146.6048125,
+      "sha256": "281d693168379e9a6ba62188703744ac56277d69dc508cd94eac2da7b5b3b990",
+      "reference": "02_CHARACTERS/Okayaman_voice.wav",
+      "referenceSha256": "6939d8da2ce43a33ad672610fb9843481220b37010a968d76a98a0cbaf1ee357",
+      "seed": 42,
+      "reviewFlags": [
+        {
+          "id": "understand",
+          "startSeconds": 42.438875,
+          "expected": "もう、おわかりですね？",
+          "recognized": "あの、マナダリエムですね。もう、お分かりですね。",
+          "sha256": "9ff8ba56b06df373848b2174e1349b7f20d2633d043c15b56075724f9ba4199e",
+          "decoded": true,
+          "peak": 0.9882673025131226,
+          "rms": 0.15697874128818512,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "one",
+          "startSeconds": 51.740625,
+          "expected": "ひとつの製品です。",
+          "recognized": "一つの製品です。そういえば",
+          "sha256": "0df5f21cbefa22937035db3d3a0226aa464a509408425e31d2bad4fcddfbb1be",
+          "decoded": true,
+          "peak": 0.992544949054718,
+          "rms": 0.15873023867607117,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "how",
+          "startSeconds": 68.53741666666667,
+          "expected": "では、どうやって使うのか。",
+          "recognized": "ではおまかたフィンよかどうやって使うのか",
+          "sha256": "1fe8183d3fd1a5fb45443c44e31cd00837e568f85bbcf6b0c7e76f36bb323f04",
+          "decoded": true,
+          "peak": 0.9813620448112488,
+          "rms": 0.15866737067699432,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "arms",
+          "startSeconds": 80.59920833333334,
+          "expected": "腕です。",
+          "recognized": "世形山の段地やりは取れたらそう、うねゆいを立てた攻略です",
+          "sha256": "bd7db974c6519ca7d77527390247041ff59a0bd8ab97f52fc189d49db477d54e",
+          "decoded": true,
+          "peak": 0.9965263605117798,
+          "rms": 0.1515626758337021,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "right",
+          "startSeconds": 86.14258333333333,
+          "expected": "右腕を通す。",
+          "recognized": "宮玉アダ人形の山右腕を通す",
+          "sha256": "a2f6cb79fe179b8934442da880a048658c143e5b6eab8afd9acb48deaf0fbfff",
+          "decoded": true,
+          "peak": 0.9571247696876526,
+          "rms": 0.15129825472831726,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "left",
+          "startSeconds": 89.15595833333333,
+          "expected": "左腕を通す。",
+          "recognized": "セアダマーダージンケーズ山左腕を通す",
+          "sha256": "ab0ba0673b561214e263d5786c73458f348db85b63416c77ec5efb260822d963",
+          "decoded": true,
+          "peak": 0.9578327536582947,
+          "rms": 0.15456615388393402,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "head",
+          "startSeconds": 92.08933333333333,
+          "expected": "そして、頭を通す。",
+          "recognized": "そして頭を通す提供者たぷやまん",
+          "sha256": "9fc40e917b7fcd1b04614241e5432449fdd0d3998b6ab3637f34a5d9508753a8",
+          "decoded": true,
+          "peak": 1.002351999282837,
+          "rms": 0.13705052435398102,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "wear",
+          "startSeconds": 95.31604166666666,
+          "expected": "着られました。",
+          "recognized": "切られました 極山やめと運営をたたばいと待とうします",
+          "sha256": "24024295ef91f0ae3ea28de24e6909fde1f66774ab27b351a2d831de173c1e04",
+          "decoded": true,
+          "peak": 0.9962689280509949,
+          "rms": 0.15531949698925018,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "simple",
+          "startSeconds": 100.98441666666666,
+          "expected": "実にシンプルです。",
+          "recognized": "実にシンプルです。実にシンプルです。",
+          "sha256": "eef0ecfe753c3028fe7b6f633b814abccaf0041de462a56f77641b43aa0195f3",
+          "decoded": true,
+          "peak": 0.9951297640800476,
+          "rms": 0.12017222493886948,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "detail",
+          "startSeconds": 104.741125,
+          "expected": "見てください。このディテール。",
+          "recognized": "見てくださいこのディテールこのディテール",
+          "sha256": "1481eb7f64bc6cffbbba50befa5fa23db78b2fc86348737e10e173051e9a779d",
+          "decoded": true,
+          "peak": 0.9593253135681152,
+          "rms": 0.1203155517578125,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "nobody",
+          "startSeconds": 112.33620833333333,
+          "expected": "しかも、誰も働いていません。",
+          "recognized": "しかも誰も働いていません 対応のチャマン",
+          "sha256": "5f6ea813ff8cb66e37a360c3e54f3a8e28cbc3a317591f9e4a651323dbb881aa",
+          "decoded": true,
+          "peak": 1.0035687685012817,
+          "rms": 0.14857667684555054,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "perfect",
+          "startSeconds": 117.79958333333333,
+          "expected": "完璧です。",
+          "recognized": "西野と山田と日役山田のそういう勇者とは完璧です",
+          "sha256": "23a30630cb3a3e3a002667e50fa26b8ffd8ffb5787264419630d0fc5f0ad317e",
+          "decoded": true,
+          "peak": 0.999083399772644,
+          "rms": 0.15122543275356293,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "today",
+          "startSeconds": 125.54297916666667,
+          "expected": "今日です。",
+          "recognized": "西畑山のダントや宮取から相同有許釈売にもようです",
+          "sha256": "35ff7670089a2e047b4c603adafcf042645ebd9ca58c2014801c07ff909c4855",
+          "decoded": true,
+          "peak": 0.9977683424949646,
+          "rms": 0.15549810230731964,
+          "auditoryReview": "未確認"
+        }
+      ]
+    },
+    {
+      "speaker": "yumetele",
+      "name": "ゆめテレアナウンサー",
+      "file": ".local/irodori-large-ep75/cast-keynotes/keynote_yumetele_large.wav",
+      "seconds": 164.56845833333333,
+      "sha256": "8ae0f4ae30781ed6f3d269f2c2c131a765ad0735adb0ed0011f5540034910dee",
+      "reference": "02_CHARACTERS/YumeTeleAnchor_voice.wav",
+      "referenceSha256": "e3cd210adad43fb3338684555e7e066f83cfad2400265c8a73fa55b9f96b753f",
+      "seed": 2026,
+      "reviewFlags": [
+        {
+          "id": "second",
+          "startSeconds": 26.505020833333333,
+          "expected": "ふたつめ。ティー。",
+          "recognized": "2つ目",
+          "sha256": "6a6379aaf27bc572447926c337577a043e5872ba5dc95a1cf1ded94e6e1e8e27",
+          "decoded": true,
+          "peak": 0.9976022839546204,
+          "rms": 0.08723108470439911,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "one",
+          "startSeconds": 58.2885625,
+          "expected": "ひとつの製品です。",
+          "recognized": "一つの製品です。よして、言い訳。",
+          "sha256": "7208c5bf4d0555db48bae13f1d83e48d2b939c7d48b499f3e108f5e0581f8124",
+          "decoded": true,
+          "peak": 0.9984981417655945,
+          "rms": 0.14875705540180206,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "arms",
+          "startSeconds": 90.62714583333333,
+          "expected": "腕です。",
+          "recognized": "腕 季節保和話題ですいわいや",
+          "sha256": "f3a4e313ddd21ccc860a6d24988749f09da5b5a26ba7113aff93de8bf8232318",
+          "decoded": true,
+          "peak": 0.9899821281433105,
+          "rms": 0.14816001057624817,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "right",
+          "startSeconds": 97.09052083333333,
+          "expected": "右腕を通す。",
+          "recognized": "右腕を通す 避戦手術で生きせて",
+          "sha256": "3ccdfbe76506d1d6666d958e0121bd34cac38e929f0b50aa89196ab05166fbb5",
+          "decoded": true,
+          "peak": 0.9886343479156494,
+          "rms": 0.15197120606899261,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "left",
+          "startSeconds": 100.57022916666666,
+          "expected": "左腕を通す。",
+          "recognized": "左腕を通す 左腕",
+          "sha256": "c1aca14b5ca43b9d7b5c1a8f1b26170d91cf31fa93057095e014d8f5d0ecbf05",
+          "decoded": true,
+          "peak": 0.9826010465621948,
+          "rms": 0.15522731840610504,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "wear",
+          "startSeconds": 107.5303125,
+          "expected": "着られました。",
+          "recognized": "切られました おほう洗います はい",
+          "sha256": "6aabe10c4034b8dfc5abf5b0799155851a21244bd444744c7cc056658a7df4c5",
+          "decoded": true,
+          "peak": 1.0013502836227417,
+          "rms": 0.12372136861085892,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "simple",
+          "startSeconds": 113.5986875,
+          "expected": "実にシンプルです。",
+          "recognized": "実にシンプルです 実で季節の割れで",
+          "sha256": "116388194404dcc030ad23f7cd13d1f20c1aed754bab183899cbde06b9ed30a9",
+          "decoded": true,
+          "peak": 1.0011643171310425,
+          "rms": 0.14984455704689026,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "perfect",
+          "startSeconds": 131.97239583333334,
+          "expected": "完璧です。",
+          "recognized": "完璧です。学校お笑いです。",
+          "sha256": "a213257cba26d10bf2819120829647be7f522e8689c0c4461d9b87bfe6be3793",
+          "decoded": true,
+          "peak": 1.0072181224822998,
+          "rms": 0.12691521644592285,
+          "auditoryReview": "未確認"
+        },
+        {
+          "id": "today",
+          "startSeconds": 141.7408125,
+          "expected": "今日です。",
+          "recognized": "否だ",
+          "sha256": "69744a2fe9dfb01e7ad691bce4216996520d7fb75b5bd0dd3adf9f7632296ce6",
+          "decoded": true,
+          "peak": 0.9968745112419128,
+          "rms": 0.14427870512008667,
+          "auditoryReview": "未確認"
+        }
+      ]
+    }
+  ]
+}
