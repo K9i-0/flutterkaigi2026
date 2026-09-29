@@ -4,7 +4,9 @@
 配役、固定モデル、参照WAV、既定seedは`02_CHARACTERS/VOICE_CAST.md`を正本にする。
 発話時間は既定で選択モデルの自動尺推定に任せる。
 
-そば屋は `Aratako/Irodori-TTS-v4-Large`、その他は v4.1-Small。ラッパーが参照WAVのSHA-256でそば屋を判定するため、同じWAVを別名で渡してもLargeになる。切り出しなどで参照が変わる場合は `IRODORI_SPEAKER=sobaya` を指定する。既存作品の再現は `IRODORI_TTS_CHECKPOINT` に記録済みモデルを明示する（この指定を最優先）。
+新規発話の声づくりでは、そば屋は `Aratako/Irodori-TTS-v4-Large`、その他は v4.1-Small。ラッパーが参照WAVのSHA-256でそば屋を判定するため、同じWAVを別名で渡してもLargeになる。切り出しなどで参照が変わる場合は `IRODORI_SPEAKER=sobaya` を指定する。既存作品の再現は `IRODORI_TTS_CHECKPOINT` に記録済みモデルを明示する（この指定を最優先）。
+
+既存動画のセリフ修正・内容改変は、話者によらず `IRODORI_TTS_CHECKPOINT=Aratako/Irodori-TTS-v4-Large` を明示して生成する（2026-09-30ユーザー採用）。動画内の同一話者を参照し、一文生成から必要部分を切り出す。詳細は[wan-videoの部分修復手順](../.claude/skills/wan-video/references/video-voice-patch.md)。
 
 ## 初回セットアップ
 

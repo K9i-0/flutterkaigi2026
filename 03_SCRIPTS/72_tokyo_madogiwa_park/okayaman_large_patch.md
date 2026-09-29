@@ -59,3 +59,7 @@ tools/irodori_speak.sh 'おかやまん！大変驚いていません！' \
 - 出力: `final_remotion_okayaman_large_sns.mp4`
 - 編集: `remotion/src/okayaman-patch-sns.tsx`
 - 再現: `remotion/`で`node render-okayaman-patch-sns.mjs`
+
+## ユーザー評価・運用採用
+
+2026-09-30、SNS比較を試聴したユーザーが「smallよりかなり良く感じた」と評価し、今後のセリフ修正はLargeへ更新するよう指示。`wan-video`の部分修復手順に反映した。モデル選択の運用採用であり、本編差し替えやキャラクターの新規発話用配役変更とは別。
