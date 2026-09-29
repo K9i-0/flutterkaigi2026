@@ -6,7 +6,6 @@ import {
   ArrowUpRight,
   Check,
   Copy,
-  Film,
   Play,
   Search,
   Share2,
@@ -240,42 +239,10 @@ export function ClipsPage() {
   return (
     <Shell>
       <main className="clips-main">
-        <section className="clips-hero">
-          <div>
-            <div className="clips-eyebrow">
-              <span /> 窓際から、おすそわけ。
-            </div>
-            <h1>
-              迷言<span>・</span>迷場面集
-              <span className="clips-period">。</span>
-            </h1>
-            <p>
-              あのひと言も、あの騒動も。
-              <br />
-              お気に入りの一幕を、会話のおともに。
-            </p>
-            <div className="clips-hero-meta">
-              <span>
-                <Film size={16} />
-                {clips.length} CLIPS
-              </span>
-              <span>音声つきMP4</span>
-              <span>2〜9秒の短編</span>
-            </div>
-          </div>
-          <div className="clips-hero-note">
-            <span>本日の窓際心得</span>
-            <p>
-              一流の窓際族は、
-              <br />
-              窓際を作り出す。
-            </p>
-            <Link to="/clips/$slug" params={{ slug: "first-class" }}>
-              そば屋 ／ 第59話 <ArrowUpRight size={16} />
-            </Link>
-          </div>
-        </section>
-        <Guide />
+        <header className="clips-heading">
+          <h1>迷言・迷場面集</h1>
+          <p>SNS、チャットツールにおすすめ</p>
+        </header>
         <section className="clips-selection" aria-label="クリップを探す">
           <div className="clips-filter-top">
             <div className="clips-kind">
@@ -313,7 +280,7 @@ export function ClipsPage() {
           </div>
         </section>
         <div className="clips-results">
-          <h2>窓際の名場面を、ひとつ。</h2>
+          <h2>クリップ一覧</h2>
           <span aria-live="polite">{filtered.length} 本</span>
         </div>
         <div className="clips-grid">
