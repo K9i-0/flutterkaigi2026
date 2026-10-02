@@ -244,7 +244,7 @@ class _RainState extends State<RainPage> {
         turn++;
       }
     }
-    if (demo && game.lane) {
+    if (demo && game.lane && game.time > 3) {
       final targets = game.drops
           .where((d) => !d.resolved && d.spawn <= game.time)
           .toList();
@@ -362,7 +362,7 @@ class _RainState extends State<RainPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              game.lane ? 'そば屋のビール雨 / 鉄骨編' : 'そば屋のビール雨',
+                              game.lane ? 'そば屋のビール雨 / 赤坂・鉄骨編' : 'そば屋のビール雨',
                               style: TextStyle(
                                 color: cream,
                                 fontSize: 22,
