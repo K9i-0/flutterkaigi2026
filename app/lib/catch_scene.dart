@@ -16,7 +16,9 @@ class CatchScene {
     fovNear: .1,
     fovFar: 100,
   );
-  late Node sobaya, halo, laneStrip;
+  late Node sobaya, halo;
+  final planeScenery = <Node>[], beamScenery = <Node>[];
+  List<Node>? scenery;
   final laneCans = <Node>[];
   late CharacterMotionPlayer motion;
   final cans = <Node>[], rings = <Node>[], dots = <Node>[];
@@ -33,6 +35,7 @@ class CatchScene {
   Node mesh(Geometry geo, Material material, vm.Vector3 pos) {
     final n = Node(mesh: Mesh(geo, material))..position = pos;
     scene.add(n);
+    scenery?.add(n);
     return n;
   }
 
@@ -54,6 +57,7 @@ class CatchScene {
       direction: vm.Vector3(-.5, -1, -.3),
       intensity: 2.4,
     );
+    scenery = planeScenery;
     final wood = mat(.18, .10, .055),
         edge = mat(.49, .32, .13, metal: .4),
         teal = mat(.055, .16, .15);
@@ -107,7 +111,72 @@ class CatchScene {
       final n = box(.055, .015, .4, s * .13, .016, -2.87, edge);
       n.rotation = vm.Quaternion.axisAngle(vm.Vector3(0, 1, 0), s * .75);
     }
-    laneStrip = box(8.6, .035, 1.5, 0, .015, 0, mat(.32, .32, .20));
+    scenery = beamScenery;
+    final steel = mat(.32, .13, .055, metal: .7),
+        topSteel = mat(.46, .25, .09, metal: .65),
+        bolt = mat(.18, .20, .21, metal: .85),
+        yellow = mat(.85, .58, .08),
+        concrete = mat(.12, .17, .21);
+    // A single I-beam, top surface at foot height. No surrounding floor.
+    box(9.6, .10, .95, 0, -.05, 0, topSteel);
+    box(9.6, .52, .12, 0, -.36, 0, steel);
+    box(9.6, .10, .95, 0, -.67, 0, steel);
+    for (final side in [-1.0, 1.0]) {
+      box(9.4, .009, .035, 0, .007, side * .43, yellow);
+      box(1.8, .45, 2.5, side * 5.3, -.225, 0, concrete);
+      box(1.3, 15, 1.8, side * 5.5, -7.8, 0, concrete);
+      // Fixed end stops explain the longitudinal movement limit too.
+      box(.16, .32, .94, side * 4.4, .16, 0, steel);
+      for (var i = 0; i < 5; i++) {
+        box(
+          .09,
+          .012,
+          .7,
+          side * (3.8 + i * .11),
+          .012,
+          0,
+          i.isEven ? yellow : bolt,
+        );
+      }
+    }
+    for (var x = -3; x <= 3; x++) {
+      for (final z in [-.32, .32]) {
+        mesh(
+          CylinderGeometry(
+            topRadius: .045,
+            bottomRadius: .045,
+            height: .022,
+            radialSegments: 6,
+          ),
+          bolt,
+          vm.Vector3(x.toDouble(), .013, z),
+        );
+      }
+    }
+    // Street and roof tops are far below the playable beam.
+    box(110, .4, 110, 0, -17, 0, mat(.025, .045, .065));
+    for (var i = 0; i < 24; i++) {
+      final x = ((i % 6) - 2.5) * 6.0,
+          z = ((i ~/ 6) - 1.5) * 8.0,
+          h = 2.0 + (i % 5) * .8;
+      box(3.8, h, 4.8, x, -16.7 + h / 2, z, concrete);
+      box(3.9, .12, 4.9, x, -16.6 + h, z, mat(.20, .25, .28));
+      for (var w = 0; w < 3; w++) {
+        box(
+          .38,
+          .55,
+          .025,
+          x - 1 + w,
+          -16 + h / 2,
+          z + 2.41,
+          mat(.65, .49, .21),
+        );
+      }
+    }
+    for (var i = -6; i <= 6; i++) {
+      box(.14, .015, 1.0, 0, -16.77, i * 3.0, yellow);
+    }
+    scenery = null;
     sobaya = await loadScene('assets/models/sobaya.glb');
     scene.add(sobaya);
     motion = CharacterMotionPlayer(
@@ -173,7 +242,12 @@ class CatchScene {
 
   void update(CatchGame g, double dt) {
     clock += dt;
-    laneStrip.visible = g.lane;
+    for (final n in planeScenery) {
+      n.visible = !g.lane;
+    }
+    for (final n in beamScenery) {
+      n.visible = g.lane;
+    }
     final speed = math.sqrt(g.vx * g.vx + g.vz * g.vz);
     motion.controller.select(
       speed > .15
@@ -196,14 +270,15 @@ class CatchScene {
     }
     sobaya.position = vm.Vector3(g.x, 0, g.z);
     sobaya.rotation = vm.Quaternion.axisAngle(vm.Vector3(0, 1, 0), facing);
-    halo.position = vm.Vector3(g.x, .07, g.z);
+    halo.position = vm.Vector3(g.x, .04, g.z);
+    halo.scale = vm.Vector3(1, 1, g.lane ? .52 : 1);
     final zoom = 1 + .18 * math.sin(g.yaw * 2).abs();
     camera.position = vm.Vector3(
       math.sin(g.yaw) * 10.8 * zoom,
-      (g.lane ? 6.2 : 9.6) * zoom,
+      (g.lane ? 7.6 : 9.6) * zoom,
       math.cos(g.yaw) * 10.8 * zoom,
     );
-    camera.target = vm.Vector3(0, 1.6, 0);
+    camera.target = vm.Vector3(0, g.lane ? .65 : 1.6, 0);
     for (var i = 0; i < cans.length; i++) {
       final active =
           i < g.drops.length &&
@@ -216,7 +291,13 @@ class CatchScene {
       if (!active) continue;
       final d = g.drops[i], age = g.time - d.spawn;
       final can = g.lane ? laneCans[i] : cans[i];
-      can.position = vm.Vector3(d.x, d.height(g.time), d.z);
+      can.position = vm.Vector3(
+        d.x,
+        g.lane && d.resolved && !d.caught
+            ? 1.15 - math.pow((g.time - d.landing) * 5, 2).toDouble()
+            : d.height(g.time),
+        d.z,
+      );
       can.rotation =
           vm.Quaternion.axisAngle(
             vm.Vector3(0, 1, 0),
@@ -227,7 +308,12 @@ class CatchScene {
             math.sin(age * 3 + i) * .10,
           );
       rings[i].position = vm.Vector3(d.x, .065, d.z);
-      rings[i].scale = vm.Vector3.all(.8 + .2 * math.sin(age * 7));
+      final ringSize = .8 + .2 * math.sin(age * 7);
+      rings[i].scale = vm.Vector3(
+        ringSize,
+        1,
+        g.lane ? ringSize * .65 : ringSize,
+      );
       dots[i].position = vm.Vector3(d.x, .051, d.z);
       dots[i].scale = vm.Vector3.all(1 + (1 - d.height(g.time) / 6) * .9);
     }
