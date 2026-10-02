@@ -5,10 +5,10 @@ enum Phase { ready, countdown, playing, result }
 enum CanKind { superTry, light, happoshu }
 
 class Drop {
-  Drop(this.id, this.kind, this.x, this.z, this.spawn);
+  Drop(this.id, this.kind, this.x, this.z, this.spawn, {this.facing = 0});
   final int id;
   final CanKind kind;
-  final double x, z, spawn;
+  final double x, z, spawn, facing;
   bool resolved = false, caught = false;
   double get landing => spawn + 3.1;
   double height(double time) {
@@ -23,6 +23,7 @@ class Drop {
 
 class CatchGame {
   static const duration = 20.0, halfX = 3.9, halfZ = 2.8;
+  bool lane = false;
   Phase phase = Phase.ready;
   double time = 0,
       countdown = 0,
@@ -42,7 +43,7 @@ class CatchGame {
     time = 0;
     countdown = 2;
     x = 0;
-    z = 1;
+    z = lane ? 0 : 1;
     vx = 0;
     vz = 0;
     yaw = 0;
@@ -69,14 +70,23 @@ class CatchGame {
           i,
           kind,
           (r.nextDouble() - .5) * 6.2,
-          (r.nextDouble() - .5) * 4.2,
+          lane ? 0 : (r.nextDouble() - .5) * 4.2,
           i * 1.03,
+          facing: lane
+              ? ((r.nextDouble() < .5 ? -1 : 1) *
+                    (70 + r.nextDouble() * 40) *
+                    math.pi /
+                    180)
+              : 0,
         ),
       );
     }
   }
 
-  void rotate(int direction) => targetYaw += direction.sign * math.pi / 4;
+  void rotate(int direction) {
+    targetYaw += direction.sign * (lane ? math.pi / 6 : math.pi / 4);
+    if (lane) targetYaw = targetYaw.clamp(-math.pi / 3, math.pi / 3);
+  }
 
   /// Input x is screen right; y is screen up (away from the camera).
   static ({double x, double z}) toWorld(double x, double y, double yaw) => (
@@ -106,13 +116,15 @@ class CatchGame {
     }
     if (phase != Phase.playing) return;
     time += dt;
+    if (lane) iy = 0;
     final len = math.sqrt(ix * ix + iy * iy);
     if (len > 1) {
       ix /= len;
       iy /= len;
     }
-    final dir = toWorld(ix, iy, yaw), a = 1 - math.exp(-12 * dt);
-    vx += (dir.x * 3.5 - vx) * a;
+    final dir = lane ? (x: -ix, z: 0.0) : toWorld(ix, iy, yaw),
+        a = 1 - math.exp(-12 * dt);
+    vx += (dir.x * (lane ? 2.6 : 3.5) - vx) * a;
     vz += (dir.z * 3.5 - vz) * a;
     x = (x + vx * dt).clamp(-halfX, halfX);
     z = (z + vz * dt).clamp(-halfZ, halfZ);
@@ -157,6 +169,7 @@ class CatchGame {
   }
 
   Map<String, Object> inspect() => {
+    'mode': lane ? 'lane' : 'plane',
     'phase': phase.name,
     'time': time,
     'x': x,
@@ -173,6 +186,7 @@ class CatchGame {
           (d) => {
             'id': d.id,
             'kind': d.kind.name,
+            'facing': d.facing,
             'x': d.x,
             'z': d.z,
             'height': d.height(time),
@@ -197,6 +211,7 @@ class CatchGame {
           ..sort((a, b) => a.landing.compareTo(b.landing));
     if (candidates.isEmpty) return (x: 0, y: 0);
     final d = candidates.first;
+    if (lane) return (x: -(d.x - x) * 2.6, y: 0);
     return toScreen((d.x - x) * 2.6, (d.z - z) * 2.6, yaw);
   }
 }
