@@ -1,4 +1,10 @@
 import 'dart:math' as math;
+import 'dart:convert';
+
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'balance.dart';
+import 'balance_panel.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +50,9 @@ class RainPage extends StatefulWidget {
 }
 
 class _RainState extends State<RainPage> {
-  final game = CatchGame()..lane = true;
+  final game = CatchGame()
+    ..lane = true
+    ..z = 0;
   final world = CatchScene(), tilt = TiltInput(), sound = AudioPlayer();
   bool ready = false,
       paused = false,
@@ -80,10 +88,29 @@ class _RainState extends State<RainPage> {
       );
       registerMarionetteExtension(
         name: 'madogiwa.catchAction',
-        description: 'action=start|demo|step|rotate|pause|resume. step seconds 0..25 x/y -1..1. Demo supplies inputs only.',
+        description: 'action=configure|start|demo|step|rotate|pause|resume. configure: json settings, seed. step seconds 0..25 x/y -1..1. Demo supplies inputs only.',
         callback: (p) async {
           if (!ready) return MarionetteExtensionResult.error(1, 'Not ready');
           switch (p['action']) {
+            case 'configure':
+              try {
+                final data =
+                    jsonDecode(p['json'] ?? '{}') as Map<String, dynamic>;
+                final next = Balance.fromMap({...game.balance.values, ...data});
+                final nextSeed = int.tryParse(p['seed'] ?? '$seed');
+                if (nextSeed == null || nextSeed < 0 || nextSeed > 999999999) {
+                  return MarionetteExtensionResult.invalidParams(
+                    'Invalid seed',
+                  );
+                }
+                game.balance = next;
+                seed = nextSeed;
+                await saveBalance();
+                start();
+                frozen = true;
+              } catch (e) {
+                return MarionetteExtensionResult.invalidParams('$e');
+              }
             case 'start':
               if (p['mode'] != null) game.lane = p['mode'] == 'lane';
               start();
@@ -132,6 +159,24 @@ class _RainState extends State<RainPage> {
 
   Future<void> load() async {
     try {
+      final prefs = await SharedPreferences.getInstance();
+      final saved = prefs.getString('beerRain.balance.v1');
+      if (saved != null) {
+        try {
+          final data = jsonDecode(saved) as Map<String, dynamic>;
+          final b = Balance.fromMap(
+            Map<String, dynamic>.from(data['balance'] as Map),
+          );
+          final n = data['seed'];
+          if (n is int && n >= 0 && n <= 999999999) {
+            game.balance = b;
+            seed = n;
+          }
+        } catch (_) {
+          /* Invalid saved settings fall back to defaults. */
+        }
+      }
+      game.seed = seed;
       await world.load();
       if (mounted) setState(() => ready = true);
     } catch (e, st) {
@@ -140,8 +185,37 @@ class _RainState extends State<RainPage> {
     }
   }
 
+  Future<void> saveBalance() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(
+      'beerRain.balance.v1',
+      jsonEncode({'seed': seed, 'balance': game.balance.values}),
+    );
+  }
+
+  Future<void> openBalance() async {
+    final wasPaused = paused;
+    setState(() => paused = true);
+    final selected = await showDialog<BalanceSelection>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => BalancePanel(balance: game.balance, seed: seed),
+    );
+    if (!mounted) return;
+    if (selected == null) {
+      setState(() => paused = wasPaused);
+      return;
+    }
+    game.balance = selected.balance;
+    seed = selected.seed;
+    await saveBalance();
+    if (!mounted) return;
+    setState(start);
+  }
+
   void start() {
     game.start(seed: seed);
+    tilt.maxDegrees = game.balance['tiltDegrees'];
     tilt.calibrate();
     inputX = 0;
     inputY = 0;
@@ -175,7 +249,11 @@ class _RainState extends State<RainPage> {
           .where((d) => !d.resolved && d.spawn <= game.time)
           .toList();
       if (targets.isNotEmpty) {
-        final target = targets.first.facing.sign * math.pi / 3;
+        final target =
+            targets.first.facing.sign *
+            game.balance['cameraLimit'] *
+            math.pi /
+            180;
         if ((game.targetYaw - target).abs() > .1) {
           game.rotate(target > game.targetYaw ? 1 : -1);
         }
@@ -244,9 +322,12 @@ class _RainState extends State<RainPage> {
   Widget legend() => Row(
     mainAxisSize: MainAxisSize.min,
     children: [
-      chip('ビール +100〜', color: gold),
+      chip('ビール +${game.balance['beerPoints'].round()}〜', color: gold),
       const SizedBox(width: 6),
-      chip('紫帯の発泡酒 −200', color: const Color(0xffcca8fa)),
+      chip(
+        '紫帯の発泡酒 −${game.balance['penalty'].round()}',
+        color: const Color(0xffcca8fa),
+      ),
     ],
   );
   @override
@@ -311,10 +392,17 @@ class _RainState extends State<RainPage> {
                         child: Row(
                           children: [
                             chip(
-                              '残り ${(CatchGame.duration - game.time).ceil()} 秒',
+                              '残り ${(game.roundSeconds - game.time).ceil()} 秒',
                             ),
                             const SizedBox(width: 8),
                             chip('${game.score} pt', color: gold),
+                            if (kDebugMode)
+                              IconButton(
+                                key: const ValueKey('balance_debug'),
+                                tooltip: 'バランス調整',
+                                onPressed: openBalance,
+                                icon: const Icon(Icons.tune),
+                              ),
                             IconButton(
                               key: const ValueKey('pause'),
                               onPressed: () => setState(() {
@@ -384,13 +472,17 @@ class _RainState extends State<RainPage> {
                           child: Row(
                             children: [
                               button(
-                                game.lane ? '↶ 30°' : '↶ 45°',
+                                game.lane
+                                    ? '↶ ${game.balance['cameraStep'].round()}°'
+                                    : '↶ 45°',
                                 () => game.rotate(-1),
                                 'camera_left',
                               ),
                               const SizedBox(width: 8),
                               button(
-                                game.lane ? '30° ↷' : '45° ↷',
+                                game.lane
+                                    ? '${game.balance['cameraStep'].round()}° ↷'
+                                    : '45° ↷',
                                 () => game.rotate(1),
                                 'camera_right',
                               ),

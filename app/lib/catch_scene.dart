@@ -204,14 +204,16 @@ class CatchScene {
     for (final n in ['super_try', 'light', 'happoshu']) {
       lanePrototypes.add(await loadScene('assets/models/${n}_lane.glb'));
     }
-    final demo = CatchGame()..start();
-    for (final d in demo.drops) {
-      final n = prototypes[d.kind.index].clone();
-      scene.add(n);
-      cans.add(n);
-      final laneCan = lanePrototypes[d.kind.index].clone();
-      scene.add(laneCan);
-      laneCans.add(laneCan);
+    // At most ceil((6 + .65) / .5) = 14 simultaneously visible drops.
+    for (var slot = 0; slot < 16; slot++) {
+      for (var kind = 0; kind < 3; kind++) {
+        final n = prototypes[kind].clone();
+        scene.add(n);
+        cans.add(n);
+        final laneCan = lanePrototypes[kind].clone();
+        scene.add(laneCan);
+        laneCans.add(laneCan);
+      }
       final ring = mesh(
         TorusGeometry(
           radius: .45,
@@ -271,7 +273,11 @@ class CatchScene {
     sobaya.position = vm.Vector3(g.x, 0, g.z);
     sobaya.rotation = vm.Quaternion.axisAngle(vm.Vector3(0, 1, 0), facing);
     halo.position = vm.Vector3(g.x, .04, g.z);
-    halo.scale = vm.Vector3(1, 1, g.lane ? .52 : 1);
+    halo.scale = vm.Vector3(
+      g.balance['catchRadius'] / .7,
+      1,
+      g.lane ? .52 : g.balance['catchRadius'] / .7,
+    );
     final zoom = 1 + .18 * math.sin(g.yaw * 2).abs();
     camera.position = vm.Vector3(
       math.sin(g.yaw) * 10.8 * zoom,
@@ -279,18 +285,22 @@ class CatchScene {
       math.cos(g.yaw) * 10.8 * zoom,
     );
     camera.target = vm.Vector3(0, g.lane ? .65 : 1.6, 0);
-    for (var i = 0; i < cans.length; i++) {
-      final active =
-          i < g.drops.length &&
-          g.drops[i].visible(g.time) &&
-          g.phase != Phase.ready;
-      cans[i].visible = active && !g.lane;
-      laneCans[i].visible = active && g.lane;
+    final visible = g.phase == Phase.ready
+        ? <Drop>[]
+        : g.drops.where((d) => d.visible(g.time)).toList();
+    for (var i = 0; i < rings.length; i++) {
+      final active = i < visible.length;
+      for (var kind = 0; kind < 3; kind++) {
+        cans[i * 3 + kind].visible =
+            active && !g.lane && visible[i].kind.index == kind;
+        laneCans[i * 3 + kind].visible =
+            active && g.lane && visible[i].kind.index == kind;
+      }
       rings[i].visible = active;
       dots[i].visible = active;
       if (!active) continue;
-      final d = g.drops[i], age = g.time - d.spawn;
-      final can = g.lane ? laneCans[i] : cans[i];
+      final d = visible[i], age = g.time - d.spawn;
+      final can = (g.lane ? laneCans : cans)[i * 3 + d.kind.index];
       can.position = vm.Vector3(
         d.x,
         g.lane && d.resolved && !d.caught
@@ -305,7 +315,7 @@ class CatchScene {
           ) *
           vm.Quaternion.axisAngle(
             vm.Vector3(0, 0, 1),
-            math.sin(age * 3 + i) * .10,
+            math.sin(age * 3 + d.id) * .10,
           );
       rings[i].position = vm.Vector3(d.x, .065, d.z);
       final ringSize = .8 + .2 * math.sin(age * 7);

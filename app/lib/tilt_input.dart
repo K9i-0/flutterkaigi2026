@@ -17,8 +17,9 @@ class TiltInput {
   // Accelerometers report proper acceleration, opposite gravity.
   double get ax => math.atan2(gy, math.sqrt(gx * gx + gz * gz));
   double get ay => math.atan2(-gx, math.sqrt(gy * gy + gz * gz));
+  double maxDegrees = 13.75;
   double response(double angle) {
-    final n = angle / .24;
+    final n = angle / (maxDegrees * math.pi / 180);
     return n.abs() < .06
         ? 0
         : (n.sign * (n.abs() - .06) / .94).clamp(-1.0, 1.0);
