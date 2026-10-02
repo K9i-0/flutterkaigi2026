@@ -1,0 +1,23 @@
+Edit the most recent Outlook email screenshot. Keep same authentic sober Outlook desktop interface, sender 総務部 安全衛生管理室, recipient 全社員, timestamp 10月2日 8:30, importance high. Replace subject and entire body with the exact SHORT Japanese email below. This is a same-day repeated reminder, strictly formal corporate language, absurd wild-animal handling instructions delivered deadpan. Do not retain old long body or appearance description. Use large crisp readable Japanese sans-serif, normal business spacing, white space beneath short body. Preserve landscape screenshot style, blue Outlook header, left folder sidebar. No illustrations.
+
+Subject:
+【再周知】本日のそば屋出社に伴う注意事項
+
+Body exactly:
+社員各位
+
+繰り返し周知しておりますとおり、本日はそば屋の出社日です。
+下記の注意事項を改めて徹底いただきますようお願いいたします。
+
+・大声や急な動作など、刺激を与える行為はお控えください。
+・窓際エリアへの不要不急の接近・立入りは禁止します。
+・危険を感じた場合は、ビールをその場に置き、速やかに退避してください。
+　※発泡酒は不可です。必ず「ビール」を使用してください。
+
+退避後は、安全な場所から総務部へご連絡ください。
+以上、ご協力のほどよろしくお願いいたします。
+
+総務部 安全衛生管理室
+Accidenchua Inc.
+
+Bold the ※発泡酒 warning only and subject; normal restrained formatting elsewhere. All text fits fully, exact Japanese text.

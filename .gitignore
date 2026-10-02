@@ -49,3 +49,7 @@ node_modules
 # Local episode 83 image experiments and episode 84 review frames
 output/imagegen/edo-ai-ikki-20260930/
 03_SCRIPTS/84_madogiwa_tribe_origin/audit_*/*.png
+
+# Local generated images; retain prompt records in Git.
+output/imagegen/madogiwa-party/*.png
+output/imagegen/sobaya_attendance_notice/*.png
