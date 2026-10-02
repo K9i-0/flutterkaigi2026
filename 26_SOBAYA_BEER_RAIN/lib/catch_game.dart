@@ -1,18 +1,28 @@
 import 'dart:math' as math;
 
+import 'balance.dart';
+
 enum Phase { ready, countdown, playing, result }
 
 enum CanKind { superTry, light, happoshu }
 
 class Drop {
-  Drop(this.id, this.kind, this.x, this.z, this.spawn, {this.facing = 0});
+  Drop(
+    this.id,
+    this.kind,
+    this.x,
+    this.z,
+    this.spawn, {
+    this.facing = 0,
+    this.fallSeconds = 3.1,
+  });
   final int id;
   final CanKind kind;
-  final double x, z, spawn, facing;
+  final double x, z, spawn, facing, fallSeconds;
   bool resolved = false, caught = false;
-  double get landing => spawn + 3.1;
+  double get landing => spawn + fallSeconds;
   double height(double time) {
-    final p = ((time - spawn) / 3.1).clamp(0.0, 1.0);
+    final p = ((time - spawn) / fallSeconds).clamp(0.0, 1.0);
     return resolved && !caught
         ? math.max(.35, 1.15 - (time - landing) * 4)
         : 1.15 + 4.7 * (1 - math.pow(p, 1.25));
@@ -23,6 +33,9 @@ class Drop {
 
 class CatchGame {
   static const duration = 20.0, halfX = 3.9, halfZ = 2.8;
+  Balance balance = Balance.defaults();
+  int seed = 1;
+  double get roundSeconds => balance['roundSeconds'];
   bool lane = false;
   Phase phase = Phase.ready;
   double time = 0,
@@ -39,6 +52,7 @@ class CatchGame {
   final drops = <Drop>[];
   final events = <Map<String, Object>>[];
   void start({int seed = 1}) {
+    this.seed = seed;
     phase = Phase.countdown;
     time = 0;
     countdown = 2;
@@ -59,8 +73,14 @@ class CatchGame {
     message = 'ビールだけ、持ってこい。';
     messageUntil = 2;
     final r = math.Random(seed);
-    for (var i = 0; i < 16; i++) {
-      final kind = i % 4 == 3
+    for (
+      var i = 0;
+      i * balance['spawnInterval'] <= roundSeconds - balance['fallSeconds'] - 1;
+      i++
+    ) {
+      final kind =
+          ((i + 1) * balance['badRatio']).floor() >
+              (i * balance['badRatio']).floor()
           ? CanKind.happoshu
           : i % 3 == 1
           ? CanKind.light
@@ -71,10 +91,13 @@ class CatchGame {
           kind,
           (r.nextDouble() - .5) * 6.2,
           lane ? 0 : (r.nextDouble() - .5) * 4.2,
-          i * 1.03,
+          i * balance['spawnInterval'],
+          fallSeconds: balance['fallSeconds'],
           facing: lane
               ? ((r.nextDouble() < .5 ? -1 : 1) *
-                    (70 + r.nextDouble() * 40) *
+                    (balance['facingMin'] +
+                        r.nextDouble() *
+                            (balance['facingMax'] - balance['facingMin'])) *
                     math.pi /
                     180)
               : 0,
@@ -84,8 +107,15 @@ class CatchGame {
   }
 
   void rotate(int direction) {
-    targetYaw += direction.sign * (lane ? math.pi / 6 : math.pi / 4);
-    if (lane) targetYaw = targetYaw.clamp(-math.pi / 3, math.pi / 3);
+    targetYaw +=
+        direction.sign *
+        (lane ? balance['cameraStep'] * math.pi / 180 : math.pi / 4);
+    if (lane) {
+      targetYaw = targetYaw.clamp(
+        -balance['cameraLimit'] * math.pi / 180,
+        balance['cameraLimit'] * math.pi / 180,
+      );
+    }
   }
 
   /// Input x is screen right; y is screen up (away from the camera).
@@ -123,26 +153,30 @@ class CatchGame {
       iy /= len;
     }
     final dir = lane ? (x: -ix, z: 0.0) : toWorld(ix, iy, yaw),
-        a = 1 - math.exp(-12 * dt);
-    vx += (dir.x * (lane ? 2.6 : 3.5) - vx) * a;
+        a = 1 - math.exp(-balance['acceleration'] * dt);
+    vx += (dir.x * (lane ? balance['moveSpeed'] : 3.5) - vx) * a;
     vz += (dir.z * 3.5 - vz) * a;
     x = (x + vx * dt).clamp(-halfX, halfX);
     z = (z + vz * dt).clamp(-halfZ, halfZ);
     for (final d in drops) {
       if (d.resolved || time < d.landing) continue;
       d.resolved = true;
-      d.caught = math.pow(d.x - x, 2) + math.pow(d.z - z, 2) < .72 * .72;
+      d.caught =
+          math.pow(d.x - x, 2) + math.pow(d.z - z, 2) <
+          math.pow(balance['catchRadius'], 2);
       if (d.caught) {
         eventId++;
         if (d.kind == CanKind.happoshu) {
           bad++;
-          score -= 200;
+          score -= balance['penalty'].round();
           combo = 0;
-          message = 'これ、発泡酒やないか！  −200';
+          message = 'これ、発泡酒やないか！  −${balance['penalty'].round()}';
         } else {
           caught++;
           combo++;
-          final points = 100 + math.min(combo - 1, 4) * 25;
+          final points =
+              balance['beerPoints'].round() +
+              math.min(combo - 1, 4) * balance['comboBonus'].round();
           score += points;
           message = 'ナイスキャッチ！  +$points';
         }
@@ -160,8 +194,8 @@ class CatchGame {
         combo = 0;
       }
     }
-    if (time >= duration) {
-      time = duration;
+    if (time >= roundSeconds) {
+      time = roundSeconds;
       phase = Phase.result;
       vx = 0;
       vz = 0;
@@ -169,6 +203,9 @@ class CatchGame {
   }
 
   Map<String, Object> inspect() => {
+    'balance': balance.values,
+    'seed': seed,
+    'dropCount': drops.length,
     'mode': lane ? 'lane' : 'plane',
     'phase': phase.name,
     'time': time,
