@@ -28,7 +28,7 @@ for edit in M['voiceEdits']:
   mix[at:at+len(clip)]+=clip
  report['voiceEdits'].append({'name':edit['name'],'sha256':hashlib.sha256((HERE/edit['file']).resolve().read_bytes()).hexdigest(),'gainDb':edit['gainDb'],'timeStretch':False,'segments':edit['segments']})
 voice_only=mix.copy()
-# Existing Wan office ambience only: no synthesized noise or substitute TTS.
+# Existing recorded office effects; source and license are recorded in office_sound_source.json.
 b=M['officeAmbience'];bed=read((HERE/b['source']).resolve());bed=bed[sample(b['sourceStartFrame']):sample(b['sourceEndFrame'])];length=sample(b['endFrame']-b['startFrame']);overlap=sample(b['crossfadeFrames']);loop=bed.copy()
 while len(loop)<length:
  f=np.linspace(0,1,overlap)[:,None];loop=np.concatenate([loop[:-overlap],loop[-overlap:]*(1-f)+bed[:overlap]*f,bed[overlap:]])

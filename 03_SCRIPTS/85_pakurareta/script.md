@@ -58,3 +58,9 @@ ASRで台詞3本の内容一致を確認。X・YouTube猫動画・四足姿勢�
 - 元のやめ太郎音声を差し替える箇所はDemucsの環境音側で下地を保持。たこさんの声は元音声を維持。最後の新しい声は自然な尺のまま、確保映像に重なる位置へ配置。
 - 再現: `remotion/mix_audio.py --prepare-stems` → `npm run typecheck` → `npm run render`。PythonはNumPyのあるローカルIrodori環境を使用。
 - 全尺デコードと映像ストリーム一致確認済み。直接の試聴・厳密な音素同期・感情の聴感評価は未実施。詳細 `audio_edit_record.json`。
+
+## 音声編集v2（2026-10-02）
+
+ユーザー修正: オフィス音はタイピングや電話が鳴る雑音へ変更、最後のセリフは元へ戻す。最新出力: `final_remotion_audio_v2.mp4`。前版は保持。
+
+オフィス音をFupicatの「Busy Office No People Loop」（Freesound 534123、CC0）の先頭14秒へ差し替え、-6dBで追加。タイピング・電話・プリンターが含まれる既存効果音素材で、新たな音声合成はしていない。出典・ライセンスは `office_sound_source.json`。冒頭の悔しそうな声はv1から維持。最後の淡々とした差し替えを削除し、14秒以降は元動画の音声をPCMで保持して再エンコードする。

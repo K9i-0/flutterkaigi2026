@@ -1,0 +1,40 @@
+{
+  "voiceEdits": [
+    {
+      "name": "frustrated",
+      "sha256": "26feb2308ea75d4d9b7f96fc88669bc9efe4027438f96eb77a585f649c96f633",
+      "gainDb": 0,
+      "timeStretch": false,
+      "segments": [
+        {
+          "sourceStartFrame": 0,
+          "sourceEndFrame": 35,
+          "targetStartFrame": 88
+        },
+        {
+          "sourceStartFrame": 35,
+          "sourceEndFrame": 63,
+          "targetStartFrame": 125
+        },
+        {
+          "file": "../yametaro_kuso_original.wav",
+          "sourceStartFrame": 0,
+          "sourceEndFrame": 27,
+          "targetStartFrame": 156,
+          "gainDb": -2
+        }
+      ]
+    }
+  ],
+  "peakDbfs": -0.12097061425447464,
+  "officeBedRmsDbfs": -35.23834991455078,
+  "unchangedOutsideEditIntervals": true,
+  "officeBedOrigin": "Fupicat: Busy Office No People Loop, Freesound 534123, CC0; recorded sound collage with typing, telephones and printer",
+  "directListening": false,
+  "output": "final_remotion_audio_v2.mp4",
+  "lastLine": "Original Wan audio restored with original timing; PCM unchanged from 14 seconds onward before encoding.",
+  "previousVersion": "final_remotion_audio.mp4",
+  "videoStreamIdentical": true,
+  "decodedToEnd": true,
+  "lastScenePcm16MaxDifference": 1
+}
