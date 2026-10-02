@@ -1,0 +1,2 @@
+# Unselected generated concepts are kept locally, not production input assets.
+*.png
