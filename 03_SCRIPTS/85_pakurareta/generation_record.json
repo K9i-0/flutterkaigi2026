@@ -1,0 +1,38 @@
+{
+  "task_id": "18309704-2788-48a9-88c6-ebb36c0f8040",
+  "status": "SUCCEEDED",
+  "model": "wan3.0-video",
+  "duration_requested": 24,
+  "resolution": "480P",
+  "seed": 851002,
+  "user_authorized": true,
+  "submitted_on": "2026-10-02",
+  "audio_source": "wan3",
+  "audio_sync_strategy": "wan_generated_lip_sync",
+  "price_estimate_usd": 0.84,
+  "price_source": "https://www.qwencloud.com/models/wan3.0-video",
+  "output": "wan3_result_seed851002_480p.mp4",
+  "output_sha256": "f4172ca05f7933f35c046030d73c28ff16d764951c49c9c817252d2dfb5767bd",
+  "actual_probe": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "30/1"
+      },
+      {
+        "codec_name": "aac",
+        "sample_rate": "44100",
+        "r_frame_rate": "0/0"
+      }
+    ],
+    "format": {
+      "duration": "24.031995"
+    }
+  },
+  "audit_status": "initial_take_needs_motion_improvement",
+  "actual_billing_verified": false
+}

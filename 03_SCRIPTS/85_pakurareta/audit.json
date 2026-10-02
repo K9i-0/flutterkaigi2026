@@ -1,0 +1,66 @@
+{
+  "decoded_to_end": true,
+  "probe": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "30/1"
+      },
+      {
+        "codec_name": "aac",
+        "sample_rate": "44100",
+        "r_frame_rate": "0/0"
+      }
+    ],
+    "format": {
+      "duration": "24.031995"
+    }
+  },
+  "asr_model": "openai/whisper-small",
+  "asr": {
+    "text": "ああ、パクられた!くそ!どうしたんですか?やめたろうさんのアイディアが誰かにパクられたんですか?いや、そば屋さんが酔って暴れて警察にパクられたんや!",
+    "chunks": [
+      {
+        "timestamp": [
+          0.0,
+          6.0
+        ],
+        "text": "ああ、パクられた!くそ!"
+      },
+      {
+        "timestamp": [
+          6.0,
+          13.0
+        ],
+        "text": "どうしたんですか?やめたろうさんのアイディアが誰かにパクられたんですか?"
+      },
+      {
+        "timestamp": [
+          13.0,
+          22.0
+        ],
+        "text": "いや、そば屋さんが酔って暴れて警察にパクられたんや!"
+      }
+    ]
+  },
+  "dialogue_content": "Automated transcript matches the three requested lines, ignoring orthography and punctuation. ASR timestamps are approximate.",
+  "visual_review": "1 fps full-video contact sheet and 4 fps action frames reviewed.",
+  "observed": [
+    "Office pair seated side by side, X-style social feed and YouTube cat video visible.",
+    "Yametaro retains white glasses lenses and overall identity; head/hair proportions somewhat exaggerated.",
+    "Takosan toy design and speaking mouth retained in close-up.",
+    "Street shot shows Sobaya on hands and knees crawling and turning, followed by police restraint; mask remains attached in sampled frames.",
+    "Police restrain Sobaya kneeling, rather than pinning him fully prone."
+  ],
+  "limitations": [
+    "Animal-like rampage insufficient: mostly knee-crawling; no clearly forceful chair scattering or violent escape attempt.",
+    "Office close-up monitor sometimes resembles dense text/code rather than the clearer social feed in opening.",
+    "No direct auditory listening or voice identity comparison performed; ASR is not proof of pronunciation quality or canonical voice match.",
+    "Exact lip sync and the final voice-over cut timing not independently verified."
+  ],
+  "overall": "Initial generated take, not full creative acceptance. No paid regeneration submitted."
+}
