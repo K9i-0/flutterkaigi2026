@@ -44,10 +44,8 @@ class RainPage extends StatefulWidget {
 }
 
 class _RainState extends State<RainPage> {
-  final game = CatchGame(),
-      world = CatchScene(),
-      tilt = TiltInput(),
-      sound = AudioPlayer();
+  final game = CatchGame()..lane = true;
+  final world = CatchScene(), tilt = TiltInput(), sound = AudioPlayer();
   bool ready = false,
       paused = false,
       demo = false,
@@ -87,9 +85,11 @@ class _RainState extends State<RainPage> {
           if (!ready) return MarionetteExtensionResult.error(1, 'Not ready');
           switch (p['action']) {
             case 'start':
+              if (p['mode'] != null) game.lane = p['mode'] == 'lane';
               start();
               frozen = true;
             case 'demo':
+              if (p['mode'] != null) game.lane = p['mode'] == 'lane';
               start();
               demo = true;
             case 'rotate':
@@ -161,13 +161,24 @@ class _RainState extends State<RainPage> {
       final length = math.max(1.0, math.sqrt(x * x + y * y));
       inputX = x / length;
       inputY = y / length;
-      if (game.time > 6 && turn == 0) {
+      if (!game.lane && game.time > 6 && turn == 0) {
         game.rotate(1);
         turn++;
       }
-      if (game.time > 12 && turn == 1) {
+      if (!game.lane && game.time > 12 && turn == 1) {
         game.rotate(-1);
         turn++;
+      }
+    }
+    if (demo && game.lane) {
+      final targets = game.drops
+          .where((d) => !d.resolved && d.spawn <= game.time)
+          .toList();
+      if (targets.isNotEmpty) {
+        final target = targets.first.facing.sign * math.pi / 3;
+        if ((game.targetYaw - target).abs() > .1) {
+          game.rotate(target > game.targetYaw ? 1 : -1);
+        }
       }
     }
     game.tick(dt, inputX: x, inputY: y);
@@ -269,8 +280,8 @@ class _RainState extends State<RainPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              'そば屋のビール雨',
+                            Text(
+                              game.lane ? 'そば屋のビール雨 / 左右版' : 'そば屋のビール雨',
                               style: TextStyle(
                                 color: cream,
                                 fontSize: 22,
@@ -357,7 +368,7 @@ class _RainState extends State<RainPage> {
                               legend(),
                               const SizedBox(width: 10),
                               Text(
-                                '影の位置へ先回り',
+                                game.lane ? '見回して表ラベルを確認' : '影の位置へ先回り',
                                 style: TextStyle(
                                   color: cream.withValues(alpha: .8),
                                   fontSize: 11,
@@ -373,13 +384,13 @@ class _RainState extends State<RainPage> {
                           child: Row(
                             children: [
                               button(
-                                '↶ 45°',
+                                game.lane ? '↶ 30°' : '↶ 45°',
                                 () => game.rotate(-1),
                                 'camera_left',
                               ),
                               const SizedBox(width: 8),
                               button(
-                                '45° ↷',
+                                game.lane ? '30° ↷' : '45° ↷',
                                 () => game.rotate(1),
                                 'camera_right',
                               ),
@@ -399,10 +410,12 @@ class _RainState extends State<RainPage> {
                                   -1,
                                   1,
                                 );
-                                inputY = ((48 - e.localPosition.dy) / 40).clamp(
-                                  -1,
-                                  1,
-                                );
+                                inputY = game.lane
+                                    ? 0
+                                    : ((48 - e.localPosition.dy) / 40).clamp(
+                                        -1,
+                                        1,
+                                      );
                               });
                             },
                             onPanCancel: () => setState(() {
@@ -439,7 +452,9 @@ class _RainState extends State<RainPage> {
                                               ? tilt.x
                                               : inputX) *
                                           28,
-                                      -(tilt.available && !demo
+                                      -(game.lane
+                                              ? 0
+                                              : tilt.available && !demo
                                               ? tilt.y
                                               : inputY) *
                                           28,
@@ -507,13 +522,30 @@ class _RainState extends State<RainPage> {
                                     style: const TextStyle(color: gold),
                                   )
                                 else if (!paused)
-                                  const Text(
-                                    '小さく傾けて、前後左右へ。\n左右のカメラボタンで見回そう。紫帯の発泡酒は避けろ！',
+                                  Text(
+                                    game.lane
+                                        ? '左右に傾けて一本道を歩こう。\n缶の向きはばらばら。カメラで表ラベルを見て、発泡酒を避けろ！'
+                                        : '小さく傾けて、前後左右へ。\n左右のカメラボタンで見回そう。紫帯の発泡酒は避けろ！',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(fontSize: 14, height: 1.6),
                                   ),
                                 const SizedBox(height: 12),
                                 if (!paused) legend(),
+                                if (!paused)
+                                  TextButton(
+                                    key: const ValueKey('mode_toggle'),
+                                    onPressed: () => setState(() {
+                                      game.lane = !game.lane;
+                                      start();
+                                      game.phase = Phase.ready;
+                                      world.update(game, 0);
+                                    }),
+                                    child: Text(
+                                      game.lane
+                                          ? '左右移動版  ↔  面移動版に切替'
+                                          : '面移動版  ↔  左右移動版に切替',
+                                    ),
+                                  ),
                                 const SizedBox(height: 12),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,

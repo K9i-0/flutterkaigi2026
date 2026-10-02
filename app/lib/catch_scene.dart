@@ -16,7 +16,8 @@ class CatchScene {
     fovNear: .1,
     fovFar: 100,
   );
-  late Node sobaya, halo;
+  late Node sobaya, halo, laneStrip;
+  final laneCans = <Node>[];
   late CharacterMotionPlayer motion;
   final cans = <Node>[], rings = <Node>[], dots = <Node>[];
   double facing = math.pi, clock = 0;
@@ -106,6 +107,7 @@ class CatchScene {
       final n = box(.055, .015, .4, s * .13, .016, -2.87, edge);
       n.rotation = vm.Quaternion.axisAngle(vm.Vector3(0, 1, 0), s * .75);
     }
+    laneStrip = box(8.6, .035, 1.5, 0, .015, 0, mat(.32, .32, .20));
     sobaya = await loadScene('assets/models/sobaya.glb');
     scene.add(sobaya);
     motion = CharacterMotionPlayer(
@@ -129,11 +131,18 @@ class CatchScene {
     for (final n in ['super_try', 'light', 'happoshu']) {
       prototypes.add(await loadScene('assets/models/$n.glb'));
     }
+    final lanePrototypes = <Node>[];
+    for (final n in ['super_try', 'light', 'happoshu']) {
+      lanePrototypes.add(await loadScene('assets/models/${n}_lane.glb'));
+    }
     final demo = CatchGame()..start();
     for (final d in demo.drops) {
       final n = prototypes[d.kind.index].clone();
       scene.add(n);
       cans.add(n);
+      final laneCan = lanePrototypes[d.kind.index].clone();
+      scene.add(laneCan);
+      laneCans.add(laneCan);
       final ring = mesh(
         TorusGeometry(
           radius: .45,
@@ -164,9 +173,16 @@ class CatchScene {
 
   void update(CatchGame g, double dt) {
     clock += dt;
+    laneStrip.visible = g.lane;
     final speed = math.sqrt(g.vx * g.vx + g.vz * g.vz);
     motion.controller.select(
-      speed > .15 ? (speed > 2 ? 'Run' : 'Walk') : 'Idle',
+      speed > .15
+          ? (g.lane
+                ? 'Walk'
+                : speed > 2
+                ? 'Run'
+                : 'Walk')
+          : 'Idle',
     );
     motion.controller.advance(dt, groundSpeed: speed);
     motion.sample();
@@ -180,11 +196,11 @@ class CatchScene {
     }
     sobaya.position = vm.Vector3(g.x, 0, g.z);
     sobaya.rotation = vm.Quaternion.axisAngle(vm.Vector3(0, 1, 0), facing);
-    halo.position = vm.Vector3(g.x, .045, g.z);
+    halo.position = vm.Vector3(g.x, .07, g.z);
     final zoom = 1 + .18 * math.sin(g.yaw * 2).abs();
     camera.position = vm.Vector3(
       math.sin(g.yaw) * 10.8 * zoom,
-      9.6 * zoom,
+      (g.lane ? 6.2 : 9.6) * zoom,
       math.cos(g.yaw) * 10.8 * zoom,
     );
     camera.target = vm.Vector3(0, 1.6, 0);
@@ -193,24 +209,26 @@ class CatchScene {
           i < g.drops.length &&
           g.drops[i].visible(g.time) &&
           g.phase != Phase.ready;
-      cans[i].visible = active;
+      cans[i].visible = active && !g.lane;
+      laneCans[i].visible = active && g.lane;
       rings[i].visible = active;
       dots[i].visible = active;
       if (!active) continue;
       final d = g.drops[i], age = g.time - d.spawn;
-      cans[i].position = vm.Vector3(d.x, d.height(g.time), d.z);
-      cans[i].rotation =
+      final can = g.lane ? laneCans[i] : cans[i];
+      can.position = vm.Vector3(d.x, d.height(g.time), d.z);
+      can.rotation =
           vm.Quaternion.axisAngle(
             vm.Vector3(0, 1, 0),
-            g.yaw + math.pi + math.sin(age * 2) * .18,
+            (g.lane ? d.facing : g.yaw) + math.pi + math.sin(age * 2) * .08,
           ) *
           vm.Quaternion.axisAngle(
             vm.Vector3(0, 0, 1),
             math.sin(age * 3 + i) * .10,
           );
-      rings[i].position = vm.Vector3(d.x, .035, d.z);
+      rings[i].position = vm.Vector3(d.x, .065, d.z);
       rings[i].scale = vm.Vector3.all(.8 + .2 * math.sin(age * 7));
-      dots[i].position = vm.Vector3(d.x, .021, d.z);
+      dots[i].position = vm.Vector3(d.x, .051, d.z);
       dots[i].scale = vm.Vector3.all(1 + (1 - d.height(g.time) / 6) * .9);
     }
   }
