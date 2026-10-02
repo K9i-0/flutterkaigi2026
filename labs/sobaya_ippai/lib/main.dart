@@ -52,6 +52,8 @@ class _IppaiPageState extends State<IppaiPage> {
   String? error;
   double manual = 0, accumulator = 0;
   int best = 0, lastMilestone = 0;
+  double? captureTilt;
+  int captureTicks = 0;
   SharedPreferences? preferences;
   final _rasterTimes = <double>[], _buildTimes = <double>[];
   void recordTimings(List<FrameTiming> timings) {
@@ -118,10 +120,16 @@ class _IppaiPageState extends State<IppaiPage> {
       );
       registerMarionetteExtension(
         name: 'madogiwa.pourAction',
-        description: 'action=start|step|serve|resume|pause. step seconds 0..22, tilt 0..1. Runs real fixed-step rules and freezes; never injects scores.',
+        description: 'action=start|step|serve|resume|pause|capture. capture take=perfect|spill replays real input in real time. step seconds 0..22, tilt 0..1. Runs real fixed-step rules and freezes; never injects scores.',
         callback: (p) async {
           if (!ready) return MarionetteExtensionResult.error(1, 'Not ready');
           switch (p['action']) {
+            case 'capture':
+              start();
+              touch = true;
+              captureTilt = p['take'] == 'spill' ? 1 : .694;
+              manual = captureTilt!;
+              captureTicks = 0;
             case 'start':
               start();
               frozen = true;
@@ -182,6 +190,7 @@ class _IppaiPageState extends State<IppaiPage> {
 
   void start() {
     audio.flow(0);
+    captureTilt = null;
     sensor.calibrate();
     manual = 0;
     lastMilestone = 0;
@@ -194,6 +203,17 @@ class _IppaiPageState extends State<IppaiPage> {
 
   void advance(double dt, double value) {
     final previous = game.phase;
+    if (kDebugMode && captureTilt != null) {
+      if (captureTilt == .694 && captureTicks == 1429) {
+        game.serve();
+        manual = 0;
+      }
+      value =
+          game.phase == PourPhase.pouring || game.phase == PourPhase.approach
+          ? captureTilt!
+          : 0;
+      captureTicks++;
+    }
     game.tick(dt, input: value);
     renderer.advance(game, dt);
     if (!frozen) audio.flow(game.flow);
@@ -208,7 +228,7 @@ class _IppaiPageState extends State<IppaiPage> {
       } else {
         HapticFeedback.mediumImpact();
       }
-      if (!frozen && game.score > best) {
+      if (!frozen && captureTilt == null && game.score > best) {
         best = game.score;
         preferences?.setInt('best', best);
       }
