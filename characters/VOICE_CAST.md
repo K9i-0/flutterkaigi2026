@@ -23,6 +23,7 @@
 | 無職やめたろう | `Yametaro_voice.wav`（7.0秒） | 7 | なし | `ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b` |
 | よーたん | `Yotan_voice.wav`（5.0秒） | 100 | なし | `9bd48c5577f5c70c7ed1ff7d684cca3f98ed23f24e89a02eee20907b47c1ec0c` |
 | 窓際王おかやまん | `Okayaman_voice.wav`（3.5秒） | 42 | なし | `6939d8da2ce43a33ad672610fb9843481220b37010a968d76a98a0cbaf1ee357` |
+| たこさん | `Takosan_voice.wav`（3.84秒） | 43 | なし | `f0663c8e8cebb5c0b700b8399d2ce22c744ca8b8d68ab3b7e0b5ee016c30741c` |
 | ゆめテレアナウンサー | `YumeTeleAnchor_voice.wav`（3.65秒） | 2026 | ニュース読みcaptionを使用 | `e3cd210adad43fb3338684555e7e066f83cfad2400265c8a73fa55b9f96b753f` |
 
 ユーザー指定により、窓際族メンバーではない「ゆめテレアナウンサー」もニュース用途に限って正典話者として固定する。ニュース動画では別の配役指定がない限り、この参照WAV、既定seed、下記captionを使う。それ以外のナレーション／非メンバー音声は正典参照WAVを固定せず、作品ごとの時代、ジャンル、語り口に合わせて選ぶ。
@@ -63,3 +64,12 @@ Seedance動画のセリフ（台本）作成やIrodori-TTSプロンプト（capt
   - エンジニア視点：「フロントエンドばっかりやってたんで」「〜って言われる可能性が…」
 - **セリフ作成のコツ**: 自虐・逃走・ツッコミ・ぼやき・関西弁を効かせるとやめ太郎らしさが際立つ。
 - **Irodori-TTS caption例**: `落ち着いた成人男性。やや脱力感のある関西弁交じりで、飄々としたユーモアを含んで話す。`
+
+## たこさん（2026-10-02 正典採用）
+
+ユーザー指定により、第84話完成版で使った `takosan_irodori_line.wav` を `02_CHARACTERS/Takosan_voice.wav` へ無加工コピーして正典声質参照に採用。「なかまなる。ぎゅんされる。えらべ。」の採用音声であり、84話のWan未修正版の声ではない。今回の採用により、過去の「全体正典は変更しない」「試聴確認未実施」という記録とは別に、今後の作品で継続する正典が確定した。片言は84話の演技であり、今後の台詞へ強制しない。
+
+- 今後の新規音声: `Aratako/Irodori-TTS-v4.1-Small`、正典参照 `Takosan_voice.wav`、既定seed 43、固有後処理なし。captionなし・本文CFG 5・尺倍率1・トリムなしを初期設定とし、今回の台詞の演技に合わせて確認する。
+- Wanでは正典参照を声質だけに使用し、参照元の言葉・片言・文間をコピーさせない。
+- 84話採用音声そのものの再生成用参照は `voice_references/Takosan_ref_ep84_regeneration.wav`（元は84話の `takosan_irodori_reference_ep80.wav`）。SHA-256: `05cdaa0c3c83ae930dcb9bb8bc5985aa65fe6bf3210b228a4a08ac04c11f11c0`。
+- 84話の再生成条件: seed 43、caption空、CFG text 5、uncut true、duration scale 1。詳細は `03_SCRIPTS/84_madogiwa_tribe_origin/takosan_audio_patch.json`。採用元は無加工WAVで、完成映像では文間配置と一定ゲインのみ変更されている。
