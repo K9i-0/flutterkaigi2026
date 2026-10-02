@@ -281,7 +281,7 @@ class _RainState extends State<RainPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              game.lane ? 'そば屋のビール雨 / 左右版' : 'そば屋のビール雨',
+                              game.lane ? 'そば屋のビール雨 / 鉄骨編' : 'そば屋のビール雨',
                               style: TextStyle(
                                 color: cream,
                                 fontSize: 22,
@@ -524,7 +524,7 @@ class _RainState extends State<RainPage> {
                                 else if (!paused)
                                   Text(
                                     game.lane
-                                        ? '左右に傾けて一本道を歩こう。\n缶の向きはばらばら。カメラで表ラベルを見て、発泡酒を避けろ！'
+                                        ? '足場は細い鉄骨一本。左右に傾けて歩こう。\n缶の向きはばらばら。カメラで表ラベルを見て、発泡酒を避けろ！'
                                         : '小さく傾けて、前後左右へ。\n左右のカメラボタンで見回そう。紫帯の発泡酒は避けろ！',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(fontSize: 14, height: 1.6),
@@ -542,8 +542,8 @@ class _RainState extends State<RainPage> {
                                     }),
                                     child: Text(
                                       game.lane
-                                          ? '左右移動版  ↔  面移動版に切替'
-                                          : '面移動版  ↔  左右移動版に切替',
+                                          ? '鉄骨編  ↔  面移動版に切替'
+                                          : '面移動版  ↔  鉄骨編に切替',
                                     ),
                                   ),
                                 const SizedBox(height: 12),
