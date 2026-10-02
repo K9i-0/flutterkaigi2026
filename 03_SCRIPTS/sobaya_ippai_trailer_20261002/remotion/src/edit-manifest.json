@@ -152,5 +152,28 @@
       "volume": 0.5,
       "loop": false
     }
+  ],
+  "verticalComposition": {
+    "id": "IppaiTrailerVertical",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "durationInFrames": 1020
+  },
+  "verticalHeadlines": [
+    "そば屋の一杯",
+    "傾けて、一気に注ぐ。",
+    "ビール７：泡３",
+    "こぼしたら、即OUT。",
+    "最後の一滴まで。",
+    "次は、お前の番や。"
+  ],
+  "verticalCaptions": [
+    "そば屋の一杯。\n俺のビール、うまく注げるか？",
+    "スマホを傾けて、\n一気に注ぐ。",
+    "ビール七、泡三。\n最後は、ぴたりと止めろ。",
+    "あっ！\n何こぼしとんねん！",
+    "止めた後の一滴まで、\n気を抜くなよ。",
+    "百点！完璧やな。\n次は、お前の番や。"
   ]
 }

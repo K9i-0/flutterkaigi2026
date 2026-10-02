@@ -63,3 +63,19 @@ Remotion / @remotion各パッケージは `4.0.532` へ固定（npm安定版確�
 - 試聴と実時間動画再生による聴覚・同期評価は未実施。ASR・フレーム監査・デコード検証と区別する。
 
 公式API確認: https://www.remotion.dev/docs/offthreadvideo / https://www.remotion.dev/docs/html5-audio
+
+## 縦版（ユーザー指定の再編集）
+
+`IppaiTrailerVertical` / 1080×1920 / 9:16 / 30fps / 34秒。
+スマホの録画を幅1080pxで全面表示し、上下のみ意図的にクロップ（元1206×2622、表示2348px高、上へ170px）。側面の枠や説明用の余白は使用せず、映像へ直接テロップを重ねる。上部のゲームタイトル領域は不透明な見出し帯に置き換え、充填率・泡の比率・ジョッキ・結果スコアを残す。下部は2行字幕と短い収録注記。ナレーション・BGM・効果音・カットのタイミングは横版と共通。
+
+```sh
+cd 03_SCRIPTS/sobaya_ippai_trailer_20261002/remotion
+npm run stills -- --vertical
+npm run render -- --vertical
+python3 audit_video.py --vertical
+```
+
+完成版: `final_remotion_trailer_9x16.mp4`。検査結果は `video-audit-vertical.json`。縦版の見出し・字幕本文も `edit-manifest.json` で管理する。
+
+縦版検証: TypeScript検査成功。1080×1920・1020フレームを確認し、MP4を終端までデコード。カット／字幕境界60枚と代表6画面を抽出し、ジョッキ・充填表示・OUT・100点とテロップの位置を確認。音声のデコード後MD5は横版と一致（`5be8308a9d71e0b26cea3ded46449f5c`）。
