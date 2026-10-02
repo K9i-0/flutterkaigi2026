@@ -1,0 +1,29 @@
+{
+  "generationResolution": "480P",
+  "sourceDimensions": [
+    854,
+    480
+  ],
+  "output": "final_remotion_audio_v2_720p.mp4",
+  "outputDimensions": [
+    1280,
+    720
+  ],
+  "fps": 30,
+  "durationSeconds": 24,
+  "sizeBytes": 7923897,
+  "videoCodec": "h264",
+  "scale": "lanczos",
+  "preset": "slow",
+  "crf": 18,
+  "pixelFormat": "yuv420p",
+  "audioCodec": "aac",
+  "audioBitrate": "192k",
+  "audioSource": "remotion/out/rendered.wav",
+  "audioEditVersion": "v2",
+  "decodedToEnd": true,
+  "visualCheckSeconds": [
+    7.5
+  ],
+  "studioReuploaded": false
+}
