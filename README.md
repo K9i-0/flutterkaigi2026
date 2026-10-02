@@ -79,3 +79,7 @@
 ## 新しい共有エンジンと再設計版
 
 [Madogiwa Engine](packages/madogiwa_engine/) と、最初の利用作品 [そば屋ハザード再設計版](24_SOBAYA_HAZARD/) を開発中。既存版は保持し、まず1区画の探索・隠密・射撃・脱出を仕上げる。
+
+## そば屋の一杯
+
+[そば屋の一杯](25_SOBAYA_IPPAI/) は、スマホの傾きでビールを注ぐFlutter Scene製3Dミニゲーム。18秒でビール7：泡3の満杯を狙う。iOS・Android向け、Macでのタッチ代替操作にも対応。
