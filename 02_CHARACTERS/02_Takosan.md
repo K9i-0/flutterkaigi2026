@@ -16,3 +16,5 @@
 人物同一性の原典画像：`Takosan.png`
 標準キャラクターシート：`03_SCRIPTS/00_TEMPLATES/characters/character_takosan_basic_sheet.png`
 ボクセルモデル：`04_GAME_ASSETS/voxel/models/takosan.glb`（両腕＋触手6本リグ。再生成は`04_GAME_ASSETS/voxel/tools/build_takosan_voxel_model.py`）
+
+声の正典（2026-10-02ユーザー採用）: `Takosan_voice.wav`。第84話完成版のIrodori採用音声。モデル・seed・再生成元は `VOICE_CAST.md` を参照。声質を維持し、84話の片言は固定しない。

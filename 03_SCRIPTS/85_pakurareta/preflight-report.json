@@ -1,0 +1,13 @@
+{
+  "status": "ready_for_generation_request",
+  "paid_api_submitted": false,
+  "dry_run_exit_code": 0,
+  "dry_run_output": "Prompt: 8,804 characters\nMedia: {'reference_image': 3, 'reference_audio': 2} (5.8 MiB raw)\nRequest: wan3.0-video, 24 s, 480P, 16:9, audio=True\nAudio source: wan3\nAudio sync strategy: wan_generated_lip_sync\nGeneration: single; project duration=24 s; request duration=24 s\nSeed: 851002; prompt_extend=False; watermark=False\nOutput: /Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/03_SCRIPTS/85_pakurareta/wan3_result_seed851002_480p.mp4\nDry-run complete. Add --submit to make the paid request.\n",
+  "character_sheets_visually_reviewed": true,
+  "canonical_sheet_copies_sha256_match": true,
+  "reference_audio_total_seconds": 10.84,
+  "takosan_canonical_adopted_from": "episode84 final Irodori source WAV",
+  "generated_audio_audited": false,
+  "official_endpoint_checked": "https://maas.qwencloudapi.com/api/v1/services/aigc/video-generation/video-synthesis",
+  "account_access_verified": false
+}

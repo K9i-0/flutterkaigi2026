@@ -1,0 +1,39 @@
+[
+  {
+    "file": "character_yametaro_basic_sheet.png",
+    "source": "03_SCRIPTS/00_TEMPLATES/characters/character_yametaro_basic_sheet.png",
+    "sha256": "1e98502e8051bbacf482f273e551a7dd8b8fb79e2c153865d9e48df690eb91e6",
+    "matches_source": true
+  },
+  {
+    "file": "character_takosan_basic_sheet.png",
+    "source": "03_SCRIPTS/00_TEMPLATES/characters/character_takosan_basic_sheet.png",
+    "sha256": "62e6a6a9a92250b564b2ea8c7ffa90333ac0182f86d53e240d70399bf50da99d",
+    "matches_source": true
+  },
+  {
+    "file": "character_sobaya_basic_sheet.png",
+    "source": "03_SCRIPTS/00_TEMPLATES/characters/character_sobaya_basic_sheet.png",
+    "sha256": "54c890e9b7714e6cf964b98f790b407fdebe0e32bf5c494c5568c2c7acd27f96",
+    "matches_source": true
+  },
+  {
+    "file": "yametaro_voice_timbre.wav",
+    "source": "02_CHARACTERS/Yametaro_voice.wav",
+    "start": 0,
+    "end": 7.0,
+    "duration": 7.0,
+    "sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+    "role": "voice-timbre only; full canonical reference, no trim"
+  },
+  {
+    "file": "takosan_voice_timbre.wav",
+    "source": "02_CHARACTERS/Takosan_voice.wav",
+    "adopted_from": "03_SCRIPTS/84_madogiwa_tribe_origin/takosan_irodori_line.wav",
+    "duration": 3.84,
+    "start": 0,
+    "end": 3.84,
+    "sha256": "f0663c8e8cebb5c0b700b8399d2ce22c744ca8b8d68ab3b7e0b5ee016c30741c",
+    "role": "voice-timbre only; full canonical reference, no trim"
+  }
+]
