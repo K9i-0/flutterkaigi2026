@@ -1,0 +1,5 @@
+public/*.wav
+public/*.mp4
+out/
+node_modules/
+.remotion/

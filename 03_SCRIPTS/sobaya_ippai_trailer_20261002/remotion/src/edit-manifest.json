@@ -1,0 +1,156 @@
+{
+  "composition": {
+    "id": "IppaiTrailer",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "durationInFrames": 1020
+  },
+  "inputVideo": "perfect.mp4",
+  "inputVideoVolume": 0,
+  "replacementAudio": null,
+  "overlays": [],
+  "shots": [
+    {
+      "startFrame": 0,
+      "endFrame": 150,
+      "source": "perfect.mp4",
+      "trimBefore": 60,
+      "view": "phone",
+      "kicker": "MADOGIWA / NEW MINI GAME",
+      "headline": "そば屋の一杯",
+      "detail": "勢いよく。繊細に。",
+      "tag": "18秒の真剣勝負"
+    },
+    {
+      "startFrame": 150,
+      "endFrame": 300,
+      "source": "perfect.mp4",
+      "trimBefore": 810,
+      "view": "phone",
+      "kicker": "01 / POUR",
+      "headline": "傾けて、\n一気に注ぐ。",
+      "detail": "傾きが大きいほど、流れも泡も増える。",
+      "tag": "スマホの傾きで操作"
+    },
+    {
+      "startFrame": 300,
+      "endFrame": 450,
+      "source": "perfect.mp4",
+      "trimBefore": 1050,
+      "view": "macro",
+      "kicker": "02 / BALANCE",
+      "headline": "ビール 7。\n泡は 3。",
+      "detail": "量だけじゃない。泡まで、ぴたり。",
+      "tag": "理想の一杯を狙え"
+    },
+    {
+      "startFrame": 450,
+      "endFrame": 600,
+      "source": "spill.mp4",
+      "trimBefore": 390,
+      "view": "phone",
+      "kicker": "WARNING / OVERFLOW",
+      "headline": "こぼしたら、\n即 OUT。",
+      "detail": "そば屋の機嫌も、限界突破。",
+      "tag": "注ぎすぎ注意"
+    },
+    {
+      "startFrame": 600,
+      "endFrame": 780,
+      "source": "perfect.mp4",
+      "trimBefore": 1200,
+      "view": "macro",
+      "kicker": "03 / STOP",
+      "headline": "最後の一滴が、\n勝負を決める。",
+      "detail": "止めても、空中のビールは落ちてくる。",
+      "tag": "勢いと、繊細さ"
+    },
+    {
+      "startFrame": 780,
+      "endFrame": 1020,
+      "source": "perfect.mp4",
+      "trimBefore": 1500,
+      "view": "phone",
+      "kicker": "PERFECT POUR / 100",
+      "headline": "次は、\nお前の番や。",
+      "detail": "そば屋の一杯",
+      "tag": "iOS / Android 向け開発中"
+    }
+  ],
+  "captions": [
+    {
+      "startFrame": 12,
+      "endFrame": 147,
+      "text": "そば屋の一杯。俺のビール、うまく注げるか？",
+      "audio": "clip01_line1_sobaya.wav"
+    },
+    {
+      "startFrame": 160,
+      "endFrame": 249,
+      "text": "スマホを傾けて、一気に注ぐ。",
+      "audio": "clip02_line1_sobaya.wav"
+    },
+    {
+      "startFrame": 306,
+      "endFrame": 435,
+      "text": "ビール七、泡三。最後は、ぴたりと止めろ。",
+      "audio": "clip03_line1_sobaya.wav"
+    },
+    {
+      "startFrame": 476,
+      "endFrame": 548,
+      "text": "あっ！何こぼしとんねん！",
+      "audio": "clip04_line1_sobaya.wav"
+    },
+    {
+      "startFrame": 620,
+      "endFrame": 716,
+      "text": "止めた後の一滴まで、気を抜くなよ。",
+      "audio": "clip05_line1_sobaya.wav"
+    },
+    {
+      "startFrame": 805,
+      "endFrame": 962,
+      "text": "百点！完璧やな。次は、お前の番や。",
+      "audio": "clip06_line1_sobaya.wav"
+    }
+  ],
+  "soundtrack": [
+    {
+      "startFrame": 0,
+      "endFrame": 1020,
+      "audio": "music.wav",
+      "volume": 0.3,
+      "loop": false
+    },
+    {
+      "startFrame": 170,
+      "endFrame": 445,
+      "audio": "pour.wav",
+      "volume": 0.12,
+      "loop": true
+    },
+    {
+      "startFrame": 486,
+      "endFrame": 516,
+      "audio": "spill.wav",
+      "volume": 0.5,
+      "loop": false
+    },
+    {
+      "startFrame": 600,
+      "endFrame": 750,
+      "audio": "pour.wav",
+      "volume": 0.1,
+      "loop": true
+    },
+    {
+      "startFrame": 791,
+      "endFrame": 830,
+      "audio": "clink.wav",
+      "volume": 0.5,
+      "loop": false
+    }
+  ]
+}

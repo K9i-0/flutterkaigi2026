@@ -1,0 +1,42 @@
+{
+  "model": "openai/whisper-small",
+  "listening": "Not performed: this runtime cannot receive audio. ASR is screening only.",
+  "clips": [
+    {
+      "file": "01_raw.wav",
+      "recognized": "そば屋の一杯。俺のビールうまくつけるか",
+      "duration": 4.0635,
+      "sha256": "fa7fd0e136a5748f476bc07bd6765a547036ec6590b276199cff10d21b1ea872"
+    },
+    {
+      "file": "02_raw.wav",
+      "recognized": "スマホを傾けて一気に注ぐ",
+      "duration": 2.73325,
+      "sha256": "3fbaacfc403f9a5734eeb8a557e480c2626b980c2cc66adbd8dfdc580bc80f7f"
+    },
+    {
+      "file": "03_raw.wav",
+      "recognized": "ビール7合わさん最後はピタリと止めろ",
+      "duration": 4.0924375,
+      "sha256": "da34605a3665966c09cff2eafdad80418358a854b3aa0e9cad7117ab6f50699e"
+    },
+    {
+      "file": "04_raw.wav",
+      "recognized": "ああ!何こぼしとんねん!",
+      "duration": 2.1945625,
+      "sha256": "0b186c3108b03c82b4cd457a4c35eb25e96ba938bfb0a8997ffb6dc51f5dd8dc"
+    },
+    {
+      "file": "05_raw.wav",
+      "recognized": "止めた後の一滴まで気を抜くなよ",
+      "duration": 2.976,
+      "sha256": "8e5f63b85b4f1bfc2194f3dfdebfbd51f8c52594d47ec05b48009295ddaa9458"
+    },
+    {
+      "file": "06_raw.wav",
+      "recognized": "100点!完璧やな。次はお前の番や!",
+      "duration": 5.00125,
+      "sha256": "bab5495867d92b591e4c0f297d0fa6cef18d1ee73775d685284d501dfb811b92"
+    }
+  ]
+}

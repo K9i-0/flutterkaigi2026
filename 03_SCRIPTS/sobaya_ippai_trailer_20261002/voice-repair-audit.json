@@ -1,0 +1,12 @@
+{
+  "model": "openai/whisper-small",
+  "listening": "Not performed: this runtime cannot receive audio. ASR is screening only.",
+  "clips": [
+    {
+      "file": "clip01_line1_sobaya.wav",
+      "recognized": "そば屋の一杯。俺のビール、うまく注げるか?",
+      "duration": 4.2706875,
+      "sha256": "f6def593daa6e985db303e3f40afe0b9d5e7513f567d2f86338c008e4ccc9f82"
+    }
+  ]
+}

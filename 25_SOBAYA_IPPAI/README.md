@@ -63,8 +63,9 @@ mise exec -- dart run tool/balance.dart
 Dart MCPでdebug起動後、Marionetteで接続する。
 
 - `madogiwa.inspectPour`: ロード、センサー、泡、充填率、空中の量、波頭、スコア、直近180フレームのFlutter build/raster時間。時間はCPU側の測定で、GPU実行時間・実機fpsの保証ではない。
-- `madogiwa.pourAction`: `action=start|step|serve|pause|resume`。
+- `madogiwa.pourAction`: `action=start|step|serve|pause|resume|capture`。
 - `step`: `seconds=0..22`, `tilt=0..1`。通常処理を120Hzで進めて描画を固定。値や勝敗の直接注入はしない。
+- `capture`: `take=perfect|spill` で通常の傾き入力を実時間再生し、シミュレーター録画に使う。スコアを注入せず、ベスト記録は更新しない。
 - `start` は導入から開始。約1.6秒のカメラ移動後に注ぎが有効になる。
 - `resume` は実時間に戻す。ボタンのKeyは `start / pour_slider / serve / retry / pause / resume`。
 

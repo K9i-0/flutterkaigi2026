@@ -1,0 +1,33 @@
+[
+  {
+    "id": "01",
+    "text": "そば屋の一杯。俺のビール、うまく注げるか？",
+    "audio": "clip01_line1_sobaya.wav",
+    "generationText": "そば屋の一杯。俺のビール、うまくそそげるか？"
+  },
+  {
+    "id": "02",
+    "text": "スマホを傾けて、一気に注ぐ。",
+    "audio": "clip02_line1_sobaya.wav"
+  },
+  {
+    "id": "03",
+    "text": "ビール七、泡三。最後は、ぴたりと止めろ。",
+    "audio": "clip03_line1_sobaya.wav"
+  },
+  {
+    "id": "04",
+    "text": "あっ！何こぼしとんねん！",
+    "audio": "clip04_line1_sobaya.wav"
+  },
+  {
+    "id": "05",
+    "text": "止めた後の一滴まで、気を抜くなよ。",
+    "audio": "clip05_line1_sobaya.wav"
+  },
+  {
+    "id": "06",
+    "text": "百点！完璧やな。次は、お前の番や。",
+    "audio": "clip06_line1_sobaya.wav"
+  }
+]

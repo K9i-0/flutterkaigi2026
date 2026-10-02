@@ -1,0 +1,43 @@
+{
+  "model": "openai/whisper-small",
+  "listening": "Not performed: this runtime cannot receive audio. ASR is screening only.",
+  "clips": [
+    {
+      "file": "clip01_line1_sobaya.wav",
+      "recognized": "そば屋の一杯。俺のビール、うまく注げるか?",
+      "duration": 4.2706875,
+      "sha256": "f6def593daa6e985db303e3f40afe0b9d5e7513f567d2f86338c008e4ccc9f82"
+    },
+    {
+      "file": "clip02_line1_sobaya.wav",
+      "recognized": "スマホを傾けて一気に注ぐ",
+      "duration": 2.7375,
+      "sha256": "e7da76387ded87ce621599c394aab2d694a3e4ed95827ce37cf8e6c4f6b46fa2"
+    },
+    {
+      "file": "clip03_line1_sobaya.wav",
+      "recognized": "ビール7、合わさん! サイドはピタリと止めろ!",
+      "duration": 4.094875,
+      "sha256": "d1704b86ce723d6316e436f73850f1710d7fe866bd11e1b428d70865d926787b"
+    },
+    {
+      "file": "clip04_line1_sobaya.wav",
+      "recognized": "あ! なにこぼしたんだよ!",
+      "duration": 2.197,
+      "sha256": "4a35c27b543b14f41ac108ea03a6160368b01d074a35d0f5a6a8d2e9be84b3b6"
+    },
+    {
+      "file": "clip05_line1_sobaya.wav",
+      "recognized": "止めた後の行ってきまで 気を抜くなよ",
+      "duration": 2.98,
+      "sha256": "e6427574fafe45640f5e1fde484936fef3059fd6fc4e2e13916afb068683855f"
+    },
+    {
+      "file": "clip06_line1_sobaya.wav",
+      "recognized": "100点!完璧やな。次は、お前の番や!",
+      "duration": 5.0046875,
+      "sha256": "70c8f1810f925052b04684ce530cc5d390e9a99309469e5f0453f02bb600475f"
+    }
+  ],
+  "note": "Final adopted WAV hashes. ASR homophone / dialect mismatches remain in processed 03, 04, 05; see raw audit and script.md. Not a listening approval."
+}
