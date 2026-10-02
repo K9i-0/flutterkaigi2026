@@ -1,0 +1,67 @@
+{
+  "studio_id": "MS-XVM8PJ4P",
+  "episode_id": "6f45bc48-47c2-43d2-a787-afb1bdc1d842",
+  "slug": "yametaro-pakurareta",
+  "title": "やめ太郎「あー、パクられた！クソッ！」",
+  "generation_id": "ae3366f9-d7e6-4ed3-8275-b4929b9c0584",
+  "version": 1,
+  "video_id": "27b4a419-315b-4127-a80b-5ca1d5b6c949",
+  "video_file": "final_remotion_audio_v2.mp4",
+  "video_status": "ready",
+  "url": "https://madogiwa.work/episodes/yametaro-pakurareta",
+  "inputs": [
+    {
+      "file": "character_yametaro_basic_sheet.png",
+      "assetId": "ffb49506-d546-4b78-8a38-945a1cf320e7"
+    },
+    {
+      "file": "character_takosan_basic_sheet.png",
+      "assetId": "8a570993-509f-45ff-8a4a-be29d22e4814"
+    },
+    {
+      "file": "character_sobaya_basic_sheet.png",
+      "assetId": "1406e240-2fc1-4d88-89e8-2187dc177efa"
+    },
+    {
+      "file": "yametaro_voice_timbre.wav",
+      "assetId": "089beb61-53bd-42a6-b703-d68dc4c4500b"
+    },
+    {
+      "file": "takosan_voice_timbre.wav",
+      "assetId": "7bbe03d7-5b90-4c4d-bf0f-e7fce57e5b85"
+    },
+    {
+      "file": "yametaro_edit_reference.wav",
+      "assetId": "5fbbe2f8-ea62-4806-b7e6-3b88db9ec5e5"
+    },
+    {
+      "file": "yametaro_frustrated.wav",
+      "assetId": "76e3102b-0040-47c0-acd3-a85c8e5c711b"
+    },
+    {
+      "file": "yametaro_kuso_original.wav",
+      "assetId": "048211fd-f4cd-473e-81fe-56c6f8979119"
+    },
+    {
+      "file": "office_typing_phones.wav",
+      "assetId": "f201018c-3ade-43d8-bc56-9ed6e2c26f18"
+    },
+    {
+      "file": "wan3_config.json",
+      "assetId": "1fdde3dc-c73b-45db-ae62-53c2b9fd1349"
+    },
+    {
+      "file": "remotion/src/edit-manifest.json",
+      "assetId": "2e26c57b-7835-4d66-917c-60a983365dfa"
+    },
+    {
+      "file": "office_sound_source.json",
+      "assetId": "93e0cfa2-d9cb-479b-ac4d-7e01b85d2e3e"
+    },
+    {
+      "file": "audio_edit_v2_record.json",
+      "assetId": "2075ec90-6767-4bc0-9ddc-28c21205207a"
+    }
+  ],
+  "verified": true
+}
