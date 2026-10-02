@@ -8,6 +8,7 @@ void main(List<String> args) async {
       buildOutput: output,
       inputFilePaths: [
         'assets/models/sobaya.glb',
+        'assets/models/akasaka.glb',
         'assets/models/super_try.glb',
         'assets/models/light.glb',
         'assets/models/happoshu.glb',
