@@ -47,3 +47,14 @@
 `wan3_result_seed851002_480p.mp4` を保存。854×480、30fps、約24.03秒、AAC音声あり。全尺デコード成功。タスク・SHA-256・料金見積もりは `generation_record.json`、監査は `audit.json`。生成MP4はGit対象外。
 
 ASRで台詞3本の内容一致を確認。X・YouTube猫動画・四足姿勢から警察による確保という構成は出ている。ただしそば屋は膝をついた這い回りが主で、獣のような突進・椅子を蹴散らす激しい暴れ方は不足。確保も地面に完全に伏せるのではなく膝立ちで押さえられる。初回確認用であり全面合格ではない。直接試聴、正典声質比較、厳密な口パク・音声切替時刻は未確認。追加有料生成は未送信。
+
+## 後付け音声編集（2026-10-02）
+
+- 完成編集版: `final_remotion_audio.mp4`、24秒・854×480・30fps。
+- postproduction: remotion。`remotion/src/edit-manifest.json` が整数フレームのタイミング正本。composition: `PakuraretaAudioEdit`。Remotionで音声を書き出し、元映像をstream copyでmux。映像ストリームSHA-256一致。
+- オフィス区間へ59話の採用済みWan室内音をループ・クロスフェードで追加。音源は `../59_sobaya_professional_window_side/sobaya_ambient_bed.wav`。新しい効果音の合成や有料生成はしていない。
+- やめ太郎はこの動画の2.7–6.1秒を参照し、Irodori v4 Large・seed7・CFG5・尺倍率1・トリムなしで再生成。冒頭は「悔しさを噛みしめ、低く吐き捨てる。」、最後は「感情を抑え、事実だけを淡々と説明する。」。正典声質は変更していない。
+- 冒頭は文節の無音で配置を合わせ、声の速度・ピッチは変更していない。「クソッ」は生成候補のASRに曖昧さがあり、元の分離音声を-2dBで採用。
+- 元のやめ太郎音声を差し替える箇所はDemucsの環境音側で下地を保持。たこさんの声は元音声を維持。最後の新しい声は自然な尺のまま、確保映像に重なる位置へ配置。
+- 再現: `remotion/mix_audio.py --prepare-stems` → `npm run typecheck` → `npm run render`。PythonはNumPyのあるローカルIrodori環境を使用。
+- 全尺デコードと映像ストリーム一致確認済み。直接の試聴・厳密な音素同期・感情の聴感評価は未実施。詳細 `audio_edit_record.json`。

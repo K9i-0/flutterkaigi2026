@@ -1,0 +1,117 @@
+{
+  "voiceEdits": [
+    {
+      "name": "frustrated",
+      "sha256": "26feb2308ea75d4d9b7f96fc88669bc9efe4027438f96eb77a585f649c96f633",
+      "gainDb": 0,
+      "timeStretch": false,
+      "segments": [
+        {
+          "sourceStartFrame": 0,
+          "sourceEndFrame": 35,
+          "targetStartFrame": 88
+        },
+        {
+          "sourceStartFrame": 35,
+          "sourceEndFrame": 63,
+          "targetStartFrame": 125
+        },
+        {
+          "file": "../yametaro_kuso_original.wav",
+          "sourceStartFrame": 0,
+          "sourceEndFrame": 27,
+          "targetStartFrame": 156,
+          "gainDb": -2
+        }
+      ]
+    },
+    {
+      "name": "matter_of_fact",
+      "sha256": "8104c81c17d682659523e09308a08cd4ec5d11c36bb7436ea0f4eb3a29a455e9",
+      "gainDb": 0,
+      "timeStretch": false,
+      "segments": [
+        {
+          "sourceStartFrame": 0,
+          "sourceEndFrame": 137,
+          "targetStartFrame": 518
+        }
+      ]
+    }
+  ],
+  "peakDbfs": -0.2167077511548996,
+  "officeBedRmsDbfs": -40.6458771903116,
+  "unchangedOutsideEditIntervals": true,
+  "officeBedOrigin": "Wan episode59 non-dialogue office B-roll, already adopted ambience asset",
+  "directListening": false,
+  "videoStreamIdentical": true,
+  "videoStreamSha256": "SHA256=08289520338385644bf3d39c0c31fbfbb6bf9acaba77e2b20fd5b0a14b2a4c47",
+  "model": "Aratako/Irodori-TTS-v4-Large",
+  "seed": 7,
+  "cfgText": 5,
+  "durationScale": 1,
+  "uncut": true,
+  "referenceSource": "generated_video",
+  "referenceVideo": "wan3_result_seed851002_480p.mp4",
+  "referenceSeconds": [
+    2.7,
+    6.1
+  ],
+  "referenceFile": "yametaro_edit_reference.wav",
+  "referenceSha256": "63cc849ca1edb42da237380b45bc892716ee71baa7afbae94439dc099ae96187",
+  "final": "final_remotion_audio.mp4",
+  "composition": "PakuraretaAudioEdit",
+  "mouthSync": "Phrase starts aligned to original, no time-stretch. Exact phoneme sync and perceptual emotion not independently verified.",
+  "note": "Generated first-line クソッ had ambiguous ASR; used the original isolated word at -2 dB. The rest of the first line uses the frustrated generated delivery. Last line uses the matter-of-fact generated delivery.",
+  "asrSegments": [
+    {
+      "start": 2.8,
+      "length": 3.5,
+      "result": {
+        "text": "あー、パクられた。くっそ。",
+        "chunks": [
+          {
+            "timestamp": [
+              0.0,
+              3.44
+            ],
+            "text": "あー、パクられた。くっそ。"
+          }
+        ]
+      }
+    },
+    {
+      "start": 6.7,
+      "length": 6.6,
+      "result": {
+        "text": "どうしたんですか?やめたろうさんのアイディアが誰かにパクられたんですか?",
+        "chunks": [
+          {
+            "timestamp": [
+              0.0,
+              6.5
+            ],
+            "text": "どうしたんですか?やめたろうさんのアイディアが誰かにパクられたんですか?"
+          }
+        ]
+      }
+    },
+    {
+      "start": 14.2,
+      "length": 9,
+      "result": {
+        "text": "いやそば屋さんがよって暴れて警察にパクられたんや",
+        "chunks": [
+          {
+            "timestamp": [
+              0.0,
+              9.3
+            ],
+            "text": "いやそば屋さんがよって暴れて警察にパクられたんや"
+          }
+        ]
+      }
+    }
+  ],
+  "asrResult": "All three dialogue lines recognized in segment-wise screening; this is not direct listening."
+}

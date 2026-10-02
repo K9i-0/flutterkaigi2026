@@ -1,0 +1,70 @@
+{
+  "composition": {
+    "id": "PakuraretaAudioEdit",
+    "width": 854,
+    "height": 480,
+    "fps": 30,
+    "durationInFrames": 720
+  },
+  "inputVideo": "input.mp4",
+  "inputVideoVolume": 1,
+  "replacementAudio": "mixed.wav",
+  "overlays": [],
+  "captions": [],
+  "officeAmbience": {
+    "source": "../../59_sobaya_professional_window_side/sobaya_ambient_bed.wav",
+    "sourceStartFrame": 0,
+    "sourceEndFrame": 120,
+    "startFrame": 0,
+    "endFrame": 420,
+    "crossfadeFrames": 9,
+    "gainDb": 0,
+    "fadeInFrames": 6,
+    "fadeOutFrames": 8,
+    "origin": "Wan episode59 non-dialogue office B-roll, already adopted ambience asset"
+  },
+  "voiceEdits": [
+    {
+      "name": "frustrated",
+      "file": "../yametaro_frustrated.wav",
+      "replaceStartFrame": 87,
+      "replaceEndFrame": 188,
+      "gainDb": 0,
+      "caption": "悔しさを噛みしめ、低く吐き捨てる。",
+      "segments": [
+        {
+          "sourceStartFrame": 0,
+          "sourceEndFrame": 35,
+          "targetStartFrame": 88
+        },
+        {
+          "sourceStartFrame": 35,
+          "sourceEndFrame": 63,
+          "targetStartFrame": 125
+        },
+        {
+          "file": "../yametaro_kuso_original.wav",
+          "sourceStartFrame": 0,
+          "sourceEndFrame": 27,
+          "targetStartFrame": 156,
+          "gainDb": -2
+        }
+      ]
+    },
+    {
+      "name": "matter_of_fact",
+      "file": "../yametaro_matter_of_fact.wav",
+      "replaceStartFrame": 435,
+      "replaceEndFrame": 679,
+      "gainDb": 0,
+      "caption": "感情を抑え、事実だけを淡々と説明する。",
+      "segments": [
+        {
+          "sourceStartFrame": 0,
+          "sourceEndFrame": 137,
+          "targetStartFrame": 518
+        }
+      ]
+    }
+  ]
+}
