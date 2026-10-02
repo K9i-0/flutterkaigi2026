@@ -1,0 +1,22 @@
+{
+  "model": "Aratako/Irodori-TTS-v4-Large",
+  "reference": "../../../02_CHARACTERS/Sobaya_voice.wav",
+  "seed": 42,
+  "postprocess": "sobaya_monsterize.sh",
+  "text": "ナイス。",
+  "caption": null,
+  "text_cfg": 5,
+  "duration_scale": 1.0,
+  "trim": true,
+  "insertion_sample_48000": 56640,
+  "replacement_samples_48000": [
+    51840,
+    109440
+  ],
+  "gain_db": -2.163600980932156,
+  "voice_sha256": "a8870cd9b38a4e4d751fb788063fada06339271e5c832bd44d21e3ac263c6a18",
+  "video_stream_identical": true,
+  "outside_patch_pcm_identical": true,
+  "asr": "ナイス",
+  "listening_and_exact_lip_sync": "not_verified"
+}

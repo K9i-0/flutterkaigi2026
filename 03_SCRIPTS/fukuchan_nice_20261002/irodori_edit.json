@@ -1,0 +1,21 @@
+{
+  "model": "Aratako/Irodori-TTS-v4-Large",
+  "reference": "../../02_CHARACTERS/Fukuchan_voice.wav",
+  "seed": 100,
+  "text": "ナイス。",
+  "caption": null,
+  "text_cfg": 5,
+  "duration_scale": 0.22,
+  "trim": true,
+  "insertion_sample_48000": 56640,
+  "replacement_samples_48000": [
+    51840,
+    109440
+  ],
+  "gain_db": -9.694004608348832,
+  "voice_sha256": "12136e47ca5c4ebab6d58997b07f9c6dd7cc5df0c2adc1b0717677f243ec5d72",
+  "video_stream_identical": true,
+  "outside_patch_pcm_identical": true,
+  "asr": "ナイス",
+  "listening_and_exact_lip_sync": "not_verified"
+}

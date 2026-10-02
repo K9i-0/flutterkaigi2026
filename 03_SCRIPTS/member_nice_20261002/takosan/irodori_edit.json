@@ -1,0 +1,22 @@
+{
+  "model": "Aratako/Irodori-TTS-v4-Large",
+  "reference": "takosan_a_reference.wav",
+  "seed": 42,
+  "postprocess": "none",
+  "text": "ナイス。",
+  "caption": null,
+  "text_cfg": 5,
+  "duration_scale": 1.0,
+  "trim": true,
+  "insertion_sample_48000": 56640,
+  "replacement_samples_48000": [
+    51840,
+    109440
+  ],
+  "gain_db": -10.739273126116345,
+  "voice_sha256": "195b8384bb49fe3dc7dd223af2375b55f4c3f44b70169fd5ff0502aec9c2b88a",
+  "video_stream_identical": true,
+  "outside_patch_pcm_identical": true,
+  "asr": "ナイス",
+  "listening_and_exact_lip_sync": "not_verified"
+}
