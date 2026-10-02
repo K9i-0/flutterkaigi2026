@@ -1,0 +1,49 @@
+material {
+  name: "MicrocellularBeerFoam",
+  shading_model: lit,
+  blending: opaque,
+  culling: back,
+  parameters: [
+    {type: float, name: time, default: 0.0},
+    {type: float, name: wetness, default: 0.0},
+  ],
+}
+fragment {
+  vec2 hash22(vec2 p) {
+    return fract(sin(vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3))))*43758.5453);
+  }
+  vec2 cells(vec2 p) {
+    vec2 base=floor(p),f=fract(p);
+    float nearest=2.0,second=2.0;
+    for(int y=-1;y<=1;y++) for(int x=-1;x<=1;x++) {
+      vec2 q=vec2(float(x),float(y));
+      vec2 offset=hash22(base+q);
+      float d=length(q+offset-f);
+      if(d<nearest){second=nearest;nearest=d;}else{second=min(second,d);}
+    }
+    return vec2(nearest,second);
+  }
+  void Surface(inout MaterialInputs material) {
+    vec3 p=GetWorldPosition(),N=GetWorldNormal();
+    vec2 uv=GetUV(0);
+    vec2 c=cells(uv*1450.0);
+    float footprint=max(length(dFdx(uv)),length(dFdy(uv)))*1450.0;
+    float detail=1.0-smoothstep(.25,1.3,footprint);
+    float film=smoothstep(.015,.11,c.y-c.x);
+    float pores=pow(clamp(1.0-c.x,0.0,1.0),3.0);
+    float micro=fract(sin(dot(floor(uv*11000.0),vec2(12.9898,78.233)))*43758.5453);
+    float relief=(pores*.000035 + micro*.000002)*detail;
+    vec3 dpdx=dFdx(p),dpdy=dFdy(p);
+    vec3 r1=cross(dpdy,N),r2=cross(N,dpdx);
+    float det=dot(dpdx,r1);
+    N=normalize(abs(det)*N-sign(det)*(dFdx(relief)*r1+dFdy(relief)*r2));
+    float tone=1.0-.10*pores*detail-.025*(1.0-film)*detail;
+    material.base_color=vec4(vec3(.91,.89,.81)*tone,1.0);
+    material.emissive=vec3(.055,.051,.039);
+    material.roughness=mix(.46,.70,film);
+    material.metallic=0.0;
+    material.specular=.35;
+    material.normal=N;
+    PrepareMaterial(material);
+  }
+}

@@ -1,0 +1,53 @@
+material {
+  name: "BeerOpticalVolume",
+  shading_model: lit,
+  blending: opaque,
+  culling: back,
+  parameters: [
+    {type: float, name: time, default: 0.0},
+    {type: float, name: agitation, default: 0.0},
+  ],
+}
+fragment {
+  vec2 hash22(vec2 p) {
+    return fract(sin(vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3))))*43758.5453);
+  }
+  void Surface(inout MaterialInputs material) {
+    vec3 p=GetWorldPosition(),N=normalize(GetWorldNormal()),V=GetViewDirection();
+    // Analytic chord through the cylindrical liquid. RGB extinction models
+    // wavelength-dependent Beer–Lambert absorption rather than an orange coat.
+    vec3 ray=refract(-V,N,1.0/1.333);
+    float radialView=max(.05,length(ray.xz));
+    float chord=.125*max(.04,abs(dot(normalize(N.xz+vec2(.00001)),normalize(ray.xz))))/radialView;
+    chord=clamp(chord,.003,.23);
+    vec3 extinction=vec3(2.8,8.5,36.0);
+    vec3 T=exp(-extinction*chord);
+    vec3 backlight=vec3(.82,.70,.46);
+    vec3 scatter=vec3(.19,.072,.007)*(1.0-T);
+    float density=.96+.04*sin(p.y*95.0+sin(p.x*43.0+material_params.time*.7));
+    vec3 body=(backlight*T*density+scatter)*mix(.64,1.0,smoothstep(1.027,1.17,p.y));
+    // Sparse advected gas bubbles at multiple depths; derivative filtering
+    // keeps subpixel bubbles from sparkling. They are attenuated by their
+    // travel distance through the beer, unlike white dots on its surface.
+    float footprint=max(length(dFdx(p)),length(dFdy(p)));
+    for(int k=0;k<6;k++) {
+      float depth=(float(k)+.5)/6.0*chord;
+      vec3 q=p+ray*depth;
+      vec2 uv=vec2(q.x+q.z*.32,q.y-material_params.time*(.019+float(k)*.003));
+      vec2 grid=uv*150.0, cell=floor(grid),rnd=hash22(cell+float(k)*37.0);
+      vec2 delta=(fract(grid)-(.18+.64*rnd))/150.0;
+      float r=.00012+.00030*rnd.x;
+      float d=length(delta),aa=max(.000035,footprint*.65);
+      float bubble=1.0-smoothstep(r-aa,r+aa,d);
+      float glint=1.0-smoothstep(r*.24,r*.65+aa,length(delta-vec2(-r*.3,r*.35)));
+      body+=vec3(.55,.65,.5)*(bubble*.11+glint*.55)*step(.86,rnd.y)*exp(-extinction*depth);
+    }
+    material.base_color=vec4(.028,.008,.001,1.0);
+    material.emissive=body;
+    material.normal=N;
+    material.roughness=.11;
+    material.metallic=0.0;
+    material.specular=.04;
+    PrepareMaterial(material);
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "date": "2026-10-02",
+  "device": "iPhone 18 Pro Simulator / iOS 27",
+  "perfect": {
+    "phase": "result",
+    "beer": 0.6909027282540203,
+    "foam": 0.30584618478945536,
+    "fill": 0.9967489130434757,
+    "foamRatio": 0.30684376053702817,
+    "score": 100,
+    "spilled": false,
+    "remaining": 6.891666666666657,
+    "airborne": 0,
+    "flow": 0,
+    "slope": 6.861406641452007e-05,
+    "verdict": "……完璧やな。",
+    "type": "_extensionType",
+    "method": "ext.flutter.madogiwa.pourAction",
+    "status": "Success",
+    "wavePeakMetres": 0.00021639369915610822
+  },
+  "spill": {
+    "phase": "result",
+    "beer": 0.426913164306573,
+    "foam": 0.5711701690267597,
+    "fill": 0.9980833333333327,
+    "foamRatio": 0.5722670141371896,
+    "score": 0,
+    "spilled": true,
+    "remaining": 10.874999999999856,
+    "airborne": 0,
+    "flow": 0,
+    "slope": -0.002685348319500776,
+    "verdict": "何こぼしとんねん！",
+    "type": "_extensionType",
+    "method": "ext.flutter.madogiwa.pourAction",
+    "status": "Success",
+    "wavePeakMetres": 0.00045789163922229254
+  },
+  "inputs": {
+    "perfect": [
+      {
+        "action": "start"
+      },
+      {
+        "action": "step",
+        "seconds": 10.9,
+        "tilt": 0.694
+      },
+      {
+        "action": "step",
+        "seconds": 1.008333333,
+        "tilt": 0.694
+      },
+      {
+        "action": "serve"
+      },
+      {
+        "action": "step",
+        "seconds": 3,
+        "tilt": 0
+      }
+    ],
+    "spill": [
+      {
+        "action": "start"
+      },
+      {
+        "action": "step",
+        "seconds": 12,
+        "tilt": 1
+      }
+    ]
+  }
+}
