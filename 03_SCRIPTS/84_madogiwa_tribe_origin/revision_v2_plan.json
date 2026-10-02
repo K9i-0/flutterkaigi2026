@@ -1,0 +1,23 @@
+{
+  "status": "superseded_by_user_requested_full_past_regeneration",
+  "source": "wan3_past_seed840102_480p.mp4",
+  "source_fps": 30,
+  "replace_opening_frames": [
+    0,
+    327
+  ],
+  "preserve_captors_frames": [
+    327,
+    766
+  ],
+  "replace_final_reaction_frames": [
+    766,
+    840
+  ],
+  "replacement_config": "wan3_config_past_captives_v2.json",
+  "replacement_split": "Find silent gap after Tokun before Okayaman; planned near 11s, must measure generated utterance boundaries",
+  "background_reference": false,
+  "shirt_cleanup": "Separate local retouch of nipple-shaped shirt bumps desired, preserve actor/cloth/motion/audio; not yet executed",
+  "estimated_new_generation_seconds": 15,
+  "active_config": "wan3_config_past_v2.json"
+}

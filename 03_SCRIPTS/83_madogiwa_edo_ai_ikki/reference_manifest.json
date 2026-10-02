@@ -1,0 +1,124 @@
+{
+  "status": "generated_first_take_with_visual_issues",
+  "generation_mode": "single",
+  "project_duration": 30,
+  "planned_resolution": "480P",
+  "scene_images_as_inputs": false,
+  "references": [
+    {
+      "image_number": 1,
+      "file": "character_yametaro_edo_sheet.png",
+      "roles": [
+        "identity",
+        "wardrobe"
+      ],
+      "sha256": "6bab8f90f0a0e237eb14f00eb527f82ebe5fcff458a34d1664d197718d64fac6"
+    },
+    {
+      "image_number": 2,
+      "file": "character_fukuchan_edo_sheet.png",
+      "roles": [
+        "identity",
+        "wardrobe"
+      ],
+      "sha256": "fea52d00a6689eae4a51c48e4d60cf32f48dbecfc2c1cccccfef7e3c86c63028"
+    },
+    {
+      "image_number": 3,
+      "file": "character_sobaya_edo_sheet.png",
+      "roles": [
+        "identity",
+        "wardrobe"
+      ],
+      "sha256": "c4d116abbee74d66339adc021e39fcbd76b4a5d535802f384a82c52290409055"
+    },
+    {
+      "image_number": 4,
+      "file": "character_takosan_ikki_sheet.png",
+      "roles": [
+        "identity",
+        "wardrobe"
+      ],
+      "sha256": "a451188c7247a8922c74b4a1fa5925ae4bd706b7f95f30960dd757608494a98c"
+    },
+    {
+      "image_number": 5,
+      "file": "character_okayaman_ai_bugyo_sheet.png",
+      "roles": [
+        "identity",
+        "wardrobe"
+      ],
+      "sha256": "03bb29273ac474b2c604de5612c34398723ca62158e848e3e6ffb7abc308f8d9"
+    },
+    {
+      "image_number": 6,
+      "file": "prop_edo_ikki_sheet.png",
+      "roles": [
+        "prop"
+      ],
+      "sha256": "e70594a4fabe3b76cd0abf76b4171026fa9a45d18db643519e121a8e91189c0e"
+    }
+  ],
+  "notes": [
+    "Image 6 is authoritative for prop shape/material, overriding small accessory insets in character sheets. Bamboo spear is sharpened bamboo, not fitted metal or stone spearhead.",
+    "Image 5 solid bust views define face/clothes only; in video Okayaman appears exclusively as a gigantic translucent blue upper-body hologram. Head and kamishimo shoulders dominate the magistrate room, with the head near the ceiling. Lower chest dissolves into light; no legs, full-body projection, physical human or screen.",
+    "Sheet backgrounds, panels, labels and repeated views must not appear in video."
+  ],
+  "prompt_file": "prompt_wan3.txt",
+  "audio_sync_strategy": "wan_generated_lip_sync",
+  "audio_source": "wan3",
+  "audio_references": [
+    {
+      "audio_number": 1,
+      "speaker": "Yametaro",
+      "file": "voice_ref_yametaro.wav",
+      "source": "02_CHARACTERS/Yametaro_voice.wav",
+      "source_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "start": 0,
+      "end": 4.8,
+      "duration": 4.8,
+      "sha256": "4c08926676b891bfabfe2f774b7fb8c39f4b4957d7f39410f157f884184a31a6",
+      "usage": "voice-timbre",
+      "boundary": "previously used canonical excerpt boundary; Okayaman full canonical clip"
+    },
+    {
+      "audio_number": 2,
+      "speaker": "Fukuchan",
+      "file": "voice_ref_fukuchan.wav",
+      "source": "02_CHARACTERS/Fukuchan_voice.wav",
+      "source_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "start": 0,
+      "end": 3.01,
+      "duration": 3.01,
+      "sha256": "12e64cf43941e4dd69d48c7d32b12f3e79900fbce92b43c9c66b46add82f68d3",
+      "usage": "voice-timbre",
+      "boundary": "previously used canonical excerpt boundary; Okayaman full canonical clip"
+    },
+    {
+      "audio_number": 3,
+      "speaker": "Sobaya",
+      "file": "voice_ref_sobaya.wav",
+      "source": "02_CHARACTERS/Sobaya_voice.wav",
+      "source_sha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "start": 0,
+      "end": 2.45,
+      "duration": 2.45,
+      "sha256": "88aaec24c84fb5ba75d69c21ff3c8f48eb4f81d832357e736284065faa1f77dd",
+      "usage": "voice-timbre",
+      "boundary": "previously used canonical excerpt boundary; Okayaman full canonical clip"
+    },
+    {
+      "audio_number": 4,
+      "speaker": "Okayaman",
+      "file": "voice_ref_okayaman.wav",
+      "source": "02_CHARACTERS/Okayaman_voice.wav",
+      "source_sha256": "6939d8da2ce43a33ad672610fb9843481220b37010a968d76a98a0cbaf1ee357",
+      "start": 0,
+      "end": 3.5,
+      "duration": 3.5,
+      "sha256": "7fb3d0978b8ac883b52d6f24e3c1e512552c740f43226acb08090fe376872db2",
+      "usage": "voice-timbre",
+      "boundary": "previously used canonical excerpt boundary; Okayaman full canonical clip"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+# マドギワ族の刺股 v3
+
+最新参照: `madogiwa_sasumata_cyan_yumemin_v3.png`。
+ユーザー指定: 福ちゃん用は長い柄、たこさん用は短い柄。水色と頭部のデザインを統一。両方のゆめみんロゴを接合部から少し下の直線の柄へ移す。v2を置き換える。
+
+内蔵 image_gen でv2画像を編集。ロゴ正本: `02_CHARACTERS/Yumemin.jpg`。長さの具体的な数値は未指定であり、画像の長短をデザイン案とする。
+
+## 使用プロンプト
+
+Edit the prop design in reference 1. Reference 2 is ONLY an annotated location guide: the red circle specifies new logo position on the straight SHAFT BELOW the thick fork-junction collar. Do not reproduce phone UI or red annotations. Reference 3 is exact Yumemin logo artwork. Produce a clean photorealistic studio prop sheet. Left two thirds: two complete sasumata standing side by side on the SAME ground line at the SAME scale. LEFT is Fukuchan's original LONG pole version. RIGHT is Takosan's SHORT pole version, overall approximately 60 percent of the long version's height, achieved by shortening only the straight shaft; keep the fork HEAD SIZE and shape identical, same sharp inward steel teeth, same cyan chipped industrial enamel and black grip. Both tips and bases in frame. Clearly show the major length difference. Right third: one large close-up of the shared fork head AND upper shaft. For BOTH weapons remove Yumemin logo entirely from the thick joining collar. Relocate a small flat printed Yumemin decal to the FRONT of the narrow straight shaft, centered roughly two shaft-diameters BELOW the collar's bottom edge, exactly the region indicated by red circle in reference 2. Logo small enough to fit shaft width; no enlarged plate, no bulge or hanging tag. Collar remains plain chipped cyan metal without logo. Same exact blue creature logo with black outline and eyes, white crescent, little ears and snout as reference 3. Preserve original frightening pointed steel spikes, crowbar-like materials, cyan palette and worn black grips. Neutral warm gray background, soft realistic studio lighting. Minimal labels under full props: FUKUCHAN / TAKOSAN. No characters, no dimensions, no additional logos, no pink. The enlarged closeup must show the relocated logo on straight shaft clearly with visible blank gap beneath collar.

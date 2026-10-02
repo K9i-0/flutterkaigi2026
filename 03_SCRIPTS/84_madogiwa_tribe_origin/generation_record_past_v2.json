@@ -1,0 +1,31 @@
+{
+  "task_id": "2ccb6056-8bd1-433a-b5e4-59953d13c0a4",
+  "status": "SUCCEEDED",
+  "recorded_at": "2026-10-01T00:24:10.453089+00:00",
+  "config": "wan3_config_past_v2.json",
+  "prompt": "prompt_wan3_past_v2.txt",
+  "output": "wan3_past_v2_seed840102_480p.mp4",
+  "model": "wan3.0-video",
+  "resolution": "480P",
+  "duration": 28,
+  "seed": 840102,
+  "estimated_usd": 0.98,
+  "feedback": [
+    "three seated against one shared thick trunk",
+    "text-only office jungle environment",
+    "sheet-faithful Yotan/Tokun faces without added age/stubble",
+    "updated Sobaya pinpoint chest cleanup"
+  ],
+  "reference_image_count": 7,
+  "reference_audio_count": 4,
+  "config_sha256": "b09420baf226687996b6de4f2d3f60e9602eb264964caca8065daf2bbbd389bb",
+  "prompt_sha256": "f475a600dc400a190e33af1b2623107092b5c33edcdfed7d536413378445d209",
+  "saved_at": "2026-10-01T00:29:16.979693+00:00",
+  "actual_duration": 28.026009,
+  "width": 854,
+  "height": 480,
+  "fps": 30,
+  "audio_codec": "aac",
+  "output_sha256": "cb389125b8a1b750aca86cd923be4c4b2b6e08044952abe50f37131acfeb1d01",
+  "audit": "audit_past_v2.md"
+}

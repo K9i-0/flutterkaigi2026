@@ -1,0 +1,28 @@
+{
+  "present": {
+    "dry_run": "passed",
+    "reference_images": 4,
+    "reference_audio_seconds": 13.61,
+    "duration": 24,
+    "prompt_characters": 6665,
+    "asset_integrity": "passed",
+    "reference_separation": "passed"
+  },
+  "past": {
+    "dry_run": "passed",
+    "reference_images": 8,
+    "reference_audio_seconds": 13.84,
+    "duration": 28,
+    "prompt_characters": 8745,
+    "asset_integrity": "passed",
+    "reference_separation": "passed",
+    "reference_audio_count": 4
+  },
+  "api_submitted": true,
+  "generated_video_audit": "See audit_past_v2.md, TAKOSAN_AUDIO_PATCH.md, audit_present.md",
+  "voice_clip_selection": "PCM-preserving cuts at measured low-energy pauses; perceptual audition not recorded",
+  "submitted_parts": [
+    "past",
+    "present"
+  ]
+}

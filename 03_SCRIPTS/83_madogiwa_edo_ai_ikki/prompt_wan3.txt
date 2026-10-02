@@ -1,0 +1,62 @@
+Create one continuous 30-second, 16:9 Japanese comedy video with synchronized Japanese dialogue and sound. Photorealistic, austere Edo-period historical cinema: weathered dark timber, earthen walls, tatami, muddy ground, mist, overcast natural light, subdued brown, charcoal and indigo hemp/cotton clothing. Somber material realism comparable to the grounded historical environments of Ghost of Tsushima. Yametaro and Takosan retain their canonical toy-like designs integrated into this realistic world. Do not humanize them. The absurd contrast comes from a modern laptop, modern glass beer mug and futuristic hologram inside an otherwise convincing Edo world. No cyberpunk buildings or neon city lighting.
+
+REFERENCE ASSIGNMENT
+Image 1: Yametaro, episode Edo character sheet; exact face/body identity and purple Edo clothing, headband, straw protest banner.
+Image 2: Fukuchan, episode Edo character sheet; exact real person's face, age, skin, body and muted Edo clothes.
+Image 3: Sobaya, episode Edo character sheet; muscular gray body, fitted white mask with red markings, brown Edo clothing. Keep the mask correctly fitted throughout, including speech and the wall impact; never reveal a human face. Preserve chest musculature and natural fabric folds without nipple protrusions, outlines or point-like shading through clothing.
+Image 4: Takosan, episode uprising character sheet; black hood, white face, simple black circular eyes, two humanoid arms with white rounded hands, exactly six radial tentacles. Maintain the toy-diorama identity and proportions.
+Image 5: Okayaman AI magistrate bust sheet; exact real person's face and kamishimo shoulders. Solid portraits are identity/clothing studies only. His only appearance in the movie is ONE enormous translucent blue UPPER-BODY hologram, head near the ceiling, broad shoulders dominating the room, lower chest dissolving into scan lines and light particles. No legs, lower-body projection, solid human double, television or screen border. Gentle reassuring smile.
+Image 6: exact prop shapes and materials, overriding accessory insets in character sheets: sharpened bamboo spear without metal/stone head, wooden-handled farming hoe, menacing large curved iron sickle, ordinary conch shell, straw banner reading 「仕事を返せ」, contemporary thick clear glass beer mug with handle, golden beer and foam.
+Extract only identity, body, clothing and props from sheets. Do not reproduce panel layouts, labels, studio backgrounds or multiple views as duplicate people. All scenery, extras, action and camera compositions are generated from this text, not scene reference images.
+Audio 1: Yametaro, voice-timbre reference only.
+Audio 2: Fukuchan, voice-timbre reference only.
+Audio 3: Sobaya, voice-timbre reference only.
+Audio 4: Okayaman, voice-timbre reference only.
+Preserve each reference speaker's vocal identity. Do not copy reference words or their timing. Generate only the Japanese dialogue below. Takosan and all guards/extras have no dialogue.
+
+IDENTITY LOCKS
+Yametaro identity lock — Image 1 is the exact design authority, not loose inspiration. Preserve its head width-to-height ratio, hair silhouette and hairline, cheek and ear placement, short neck and compact body proportions in every frame. Keep the round black spectacle frames and the sheet's simple white lens/eye areas; do not invent visible pupils, irises, realistic eyeballs, eye sockets, eyelids or eyebrows. Keep the tiny black forehead mark separate from the low, subtle skin-colored nose; no black nose dot, outlined nostrils or projecting nose. Preserve the round cheeks and flat pink blush marks, smooth skin-colored chin, ears and nape, with no black contour bands or facial creases. Do not lengthen the forehead/head, inflate the hair, enlarge ears or add realistic lips. Animate the small inset mouth using the sheet's rest and A/I/U/E/O views as articulation guidance, with visible mouth interior when speaking; do not freeze the smile, protrude the lips or stretch the mouth into a new facial design. Emotion and cinematic lighting must not redesign the face. Wardrobe follows the scene instructions independently of identity. A previous generated take is not an identity reference.
+Fukuchan's skin quality and apparent age must match the close-up portraits in his canonical character sheet. Keep his well-cared-for, clean, even complexion and natural fine skin texture. Preserve the sheet's subtle forehead lines, eye-area wrinkles, smile lines and nasolabial folds, including their natural changes with expression. Do not add or exaggerate dark spots, freckles, blemishes, rough pores or mottled skin beyond the sheet. Do not erase all wrinkles, de-age him, reshape his face, or give him plastic, waxy or porcelain skin. Preserve the scene's lighting and natural facial shading without turning shadows into blemishes.
+Make Yametaro's shouts forceful through voice, posture and reference-based speaking mouth; keep white lenses, head proportions and hair silhouette, without bulging eyes or enlarged face.
+
+CONTINUITY AND PERFORMANCE
+Exactly four uprising members: Yametaro, Fukuchan, Sobaya and Takosan. Only one of each. Okayaman is the fifth named character and appears only as the hologram in Shot 5. Yametaro carries one bamboo spear and one back-mounted straw banner during the uprising. Fukuchan carries one hoe. Takosan carries one sickle and wears one conch on a cord; he puts the sickle down while blowing with both hands, then retrieves it for the breach. Sobaya is unarmed and holds only his modern beer mug; he believes the entire uprising is a drinking celebration. Do not swap weapons or give Fukuchan the conch. Weapons are not held at the laptop or on the boat: on the boat, guards have gathered them away from the four, with the banner in the boat bottom; Sobaya alone still holds his mug. No added restraints or beatings.
+Use everyday Japanese delivery, not formal period-drama dialect. Yametaro has his usual relaxed Kansai voice, anxious first, forceful during revolt, complacently delighted on the boat. Fukuchan is energetic, then innocently curious. Sobaya cheers happily. Okayaman calmly reassures them with a friendly smile while delivering the insulting line.
+
+Natural speech takes priority over approximate shot timestamps. Shot time ranges are editorial guides, not speech-duration targets or mandatory utterance start/end times. Deliver every line at a natural conversational pace appropriate to its emotion. Do not stretch syllables, vowels, final words or pauses to fill a time window, and do not rush speech to hit a timestamp. Let each utterance finish naturally, then close the mouth. Use remaining time for silent reactions, glances, small gestures, ambience or the final action. Speak only the dialogue written in this prompt; do not invent additional lines. Adjust internal cut boundaries to complete natural utterances while preserving scene order and the total duration of 30 seconds. The short shouted long vowels are intentional cheers, not sustained time-filling notes.
+
+Shot 1 [0-7 s] — Begin immediately with Yametaro and an open modern laptop visible together in a dim Edo dwelling, no fade-in or title card. Medium close-up with his speaking face readable and the laptop foreground. He looks despondent, then worried.
+Yametaro says: 「AIのせいで、コーディングの仕事がない……このままじゃ島流しや……」
+The ellipses are brief natural breaths, not long dramatic pauses.
+
+Shot 2 [7-9.5 s] — Hard cut to the armed four gathering to revolt outside. Yametaro raises his bamboo spear and shouts, then Fukuchan raises his hoe and answers. Keep each speaker identifiable.
+Yametaro: 「一揆やー！」
+Then Fukuchan: 「打ち壊すわよー！」
+
+Shot 3 [9.5-11 s] — Takosan blows the ordinary conch with both hands, sickle momentarily placed beside him. Sobaya beside him raises his modern glass mug with delighted misunderstanding.
+Start the real conch sound first; WHILE IT IS STILL SOUNDING, Sobaya cheers: 「一気ー！」
+Do not wait for the conch to end before the cheer. Lower the conch under his voice so every syllable remains clear; its brief tail ends as the action moves on. The conch is an actual shell-horn sound, never a human vocal imitation, never Fukuchan saying “gyun.” This is the intentional sound-effect/dialogue overlap; do not overlap two spoken lines.
+
+Shot 4 [11-16 s] — Hard cut to inside the magistrate's room, facing its intact earthen-and-timber wall. Sobaya bursts shoulder-first THROUGH THE WALL, not through a doorway. He holds the modern mug upright without spilling beer. Debris and dust burst inward. The other three armed members surge through the fresh opening; Takosan has retrieved his sickle.
+Sobaya cheers during the actual impact: 「かんぱーい！」
+Keep the impact sound underneath the cheer. Once Sobaya finishes, show Yametaro confronting the magistrate's position, face and speaking mouth clearly visible, spear in hand.
+Yametaro: 「AI奉行！ ワイらの仕事返してくれ！」
+Keep the broken wall and settled debris consistent thereafter. No injuries or additional combat beat.
+
+Shot 5 [16-21 s] — In the same room, the gigantic blue Okayaman upper-body hologram appears as he begins his answer, without an extra silent reveal pause. Establish the four looking upward, then favor the hologram's face and shoulders while he speaks. Head nearly reaches the ceiling, shoulders dwarf the four; the lower chest dissolves into light. His friendly face is clearly readable through the projection and moves with the speech.
+Okayaman: 「安心してください！ 窓際族の仕事は奪う価値ないですよ！」
+
+Shot 6 [21-26 s] — Hard cut to Yametaro's face in close-up on the exile escort boat. Keep the background defocused: hints of wind and gentle movement, but do not reveal the full boat or guards yet. He feels completely secure, unaware of the irony.
+Yametaro: 「ワイら窓際族は安泰やな！ ガハハ！」
+HOLD Yametaro's close-up for his entire line AND laugh. No pullback or premature wide shot during “ガハハ”.
+
+Shot 7 [26-29 s] — EXACT CUT CUE: on Fukuchan's first audible 「これ、」, cut directly to a wide view revealing the entire wooden escort boat at sea, all four members and silent Edo guards transporting them into exile. Keep Fukuchan visible among the four; the whole-boat reveal takes priority over a close-up of his mouth. He looks around with innocent curiosity.
+Fukuchan: 「これ、どこに向かってるギュン？」
+No destination name, explanatory caption or guard response. Sobaya happily holds up his mug; Takosan sits quietly.
+
+Shot 8 [29-30 s] — Hold the boat-wide composition as it continues across muted gray water. Only waves, wind and timber creaks. Let the visual exile joke land; no additional spoken toast or line, no fade to a title.
+
+AUDIO AND SYNCHRONIZATION
+Generate Japanese speech and visible mouth/jaw/cheek motion together. For Yametaro use his small reference-based inset mouth; do not add realistic lips. For the human speakers preserve likeness during articulation. Before and after speech, close mouths. Hold the visible speaker through their utterance's final phoneme; Shot 7's explicitly requested wide reveal remains the exception to close framing. Sobaya speaks behind his fixed mask: preserve the rigid mask without creating a moving human mouth or shifting it. No other characters mouth another speaker's words.
+Pronunciations: AI = エーアイ; 一揆 and 一気 both = いっき; AI奉行 = エーアイぶぎょう; 窓際族 = まどぎわぞく; 島流し = しまながし; 安泰 = あんたい; ギュン = ぎゅん. Reading notes are pronunciation guidance, not additional dialogue.
+Ordinary conch overlaps only Sobaya's 「一気ー！」 as specified. Wall impact overlaps his 「かんぱーい！」. Both effects duck beneath speech. Keep every spoken line sequential without cross-talk. Quiet realistic ambience elsewhere; no background music, narrator, crowd chants, extra laughter, subtitles, speech bubbles, watermark or title cards. Only Yametaro's written “ガハハ” is spoken laughter. No readable laptop text is required. Preserve the one referenced protest banner without adding other slogans.

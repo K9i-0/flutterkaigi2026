@@ -1,0 +1,37 @@
+{
+  "task_id": "34ba06ae-ad37-4fb2-8bc8-b1dd9c995d5f",
+  "status": "SUCCEEDED",
+  "recorded_at": "2026-10-01T09:33:46.315473+00:00",
+  "model": "wan3.0-video",
+  "seed": 831001,
+  "resolution": "480P",
+  "duration": 30,
+  "estimated_cost_usd": 1.05,
+  "pricing_source": "https://www.qwencloud.com/models/wan3.0-video",
+  "audio_reference_total_seconds": 13.76,
+  "output": "wan3_edo_ikki_seed831001_480p.mp4",
+  "measured_video_seconds": 30,
+  "width": 854,
+  "height": 480,
+  "fps": 30,
+  "audio_present": true,
+  "audit": {
+    "method": "1 fps contact sheet and local Whisper small transcript screening",
+    "dialogue": "All intended lines represented in automated transcript; ASR spelling is not proof of exact pronunciation.",
+    "issues": [
+      "Rally at approximately 6–9 seconds duplicates Fukuchan-like humans instead of the intended four distinct members.",
+      "Additional human members appear in magistrate room shots.",
+      "Solid magistrate visible before hologram, contrary to hologram-only design.",
+      "Yametaro holds spear/banner at laptop and spear in boat closeup, contrary to equipment continuity."
+    ],
+    "present": [
+      "Wall breach",
+      "Blue upper-body hologram",
+      "Yametaro boat closeup followed by full boat reveal"
+    ],
+    "not_verified": [
+      "Full listening, voice identity and continuous lip sync",
+      "Exact conch/dialogue overlap and final cut/audio synchronization"
+    ]
+  }
+}

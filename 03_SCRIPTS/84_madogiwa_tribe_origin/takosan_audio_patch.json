@@ -1,0 +1,45 @@
+{
+  "output": "final_past_takosan_irodori.mp4",
+  "model": "Aratako/Irodori-TTS-v4.1-Small",
+  "model_reason": "reproduce episode80 user-adopted A voice",
+  "seed": 43,
+  "text": "なかまなる。ぎゅんされる。えらべ。",
+  "caption": "",
+  "cfg_text": 5,
+  "uncut": true,
+  "duration_scale": 1,
+  "reference": "takosan_irodori_reference_ep80.wav",
+  "source_audio": "takosan_irodori_line.wav",
+  "reference_sha256": "05cdaa0c3c83ae930dcb9bb8bc5985aa65fe6bf3210b228a4a08ac04c11f11c0",
+  "source_sha256": "f0663c8e8cebb5c0b700b8399d2ce22c744ca8b8d68ab3b7e0b5ee016c30741c",
+  "replacement_frames": [
+    580,
+    690
+  ],
+  "fps": 30,
+  "segments": [
+    {
+      "source_start": 0,
+      "source_end": 1.0,
+      "target_start_frame": 585
+    },
+    {
+      "source_start": 1.45,
+      "source_end": 2.5,
+      "target_start_frame": 620
+    },
+    {
+      "source_start": 3.2,
+      "source_end": 3.84,
+      "target_start_frame": 666
+    }
+  ],
+  "gain_db": -2.5164490032785265,
+  "time_stretch": false,
+  "pitch_shift": false,
+  "outside_interval_pcm_identical": true,
+  "video": "stream copy",
+  "ambience": "htdemucs no_vocals from source seconds18-24, shifts0 CPU; 50ms ambience-only boundary fades",
+  "auditory_review": "not independently verified",
+  "lip_sync": "phrase anchors aligned; exact phoneme sync not guaranteed"
+}

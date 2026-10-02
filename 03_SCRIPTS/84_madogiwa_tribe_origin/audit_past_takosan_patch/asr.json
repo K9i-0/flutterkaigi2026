@@ -1,0 +1,25 @@
+{
+  "note": "Automated transcript screening only, not auditory or lip-sync approval",
+  "clips": [
+    {
+      "start": 0,
+      "duration": 28,
+      "text": "どこだここここって 窓際族の縄張りじゃないですかお前ら 窓際入った仲間なる リューンされる 選べ大変驚いております"
+    },
+    {
+      "start": 0,
+      "duration": 12,
+      "text": "どこだここここって 窓際族の縄張りじゃないですか"
+    },
+    {
+      "start": 12,
+      "duration": 11,
+      "text": "お前ら、窓際、入った仲間なる、ぎゅんされる、選べ"
+    },
+    {
+      "start": 23,
+      "duration": 5,
+      "text": "大変驚いております"
+    }
+  ]
+}

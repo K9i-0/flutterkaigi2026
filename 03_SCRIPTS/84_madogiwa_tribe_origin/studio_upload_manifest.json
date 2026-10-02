@@ -1,0 +1,220 @@
+[
+  {
+    "file": "character_fukuchan_present_tshirt_sheet.png",
+    "kind": "image",
+    "groups": [
+      "現代"
+    ],
+    "size": 1992688
+  },
+  {
+    "file": "character_yametaro_basic_sheet.png",
+    "kind": "image",
+    "groups": [
+      "現代"
+    ],
+    "size": 1471133
+  },
+  {
+    "file": "character_yotan_basic_sheet.png",
+    "kind": "image",
+    "groups": [
+      "現代",
+      "過去"
+    ],
+    "size": 2194921
+  },
+  {
+    "file": "prop_madogiwa_tshirt.png",
+    "kind": "image",
+    "groups": [
+      "現代"
+    ],
+    "size": 6222727
+  },
+  {
+    "file": "voice_ref_fukuchan.wav",
+    "kind": "audio",
+    "groups": [
+      "現代"
+    ],
+    "size": 457802
+  },
+  {
+    "file": "voice_ref_yametaro.wav",
+    "kind": "audio",
+    "groups": [
+      "現代"
+    ],
+    "size": 301688
+  },
+  {
+    "file": "voice_ref_yotan.wav",
+    "kind": "audio",
+    "groups": [
+      "現代",
+      "過去"
+    ],
+    "size": 441044
+  },
+  {
+    "file": "character_okayaman_full_body_sheet.png",
+    "kind": "image",
+    "groups": [
+      "過去"
+    ],
+    "size": 1802599
+  },
+  {
+    "file": "character_tokun_basic_sheet.png",
+    "kind": "image",
+    "groups": [
+      "過去"
+    ],
+    "size": 2331547
+  },
+  {
+    "file": "character_sobaya_basic_sheet_updated.png",
+    "kind": "image",
+    "groups": [
+      "過去"
+    ],
+    "size": 1846365
+  },
+  {
+    "file": "character_takosan_basic_sheet.png",
+    "kind": "image",
+    "groups": [
+      "過去"
+    ],
+    "size": 1742566
+  },
+  {
+    "file": "character_fukuchan_basic_sheet.png",
+    "kind": "image",
+    "groups": [
+      "過去"
+    ],
+    "size": 1982927
+  },
+  {
+    "file": "prop_sasumata_long_short.png",
+    "kind": "image",
+    "groups": [
+      "過去"
+    ],
+    "size": 1760483
+  },
+  {
+    "file": "voice_ref_sobaya.wav",
+    "kind": "audio",
+    "groups": [
+      "過去"
+    ],
+    "size": 215252
+  },
+  {
+    "file": "voice_ref_okayaman.wav",
+    "kind": "audio",
+    "groups": [
+      "過去"
+    ],
+    "size": 308744
+  },
+  {
+    "file": "voice_ref_takosan_ep80.wav",
+    "kind": "audio",
+    "groups": [
+      "過去"
+    ],
+    "size": 278444
+  },
+  {
+    "file": "takosan_irodori_reference_ep80.wav",
+    "kind": "audio",
+    "groups": [
+      "完成編集"
+    ],
+    "size": 430158
+  },
+  {
+    "file": "takosan_irodori_line.wav",
+    "kind": "audio",
+    "groups": [
+      "完成編集"
+    ],
+    "size": 368718
+  },
+  {
+    "file": "script.md",
+    "kind": "document",
+    "groups": [
+      "完成編集"
+    ],
+    "size": 7649
+  },
+  {
+    "file": "prompt_wan3_present.txt",
+    "kind": "document",
+    "groups": [
+      "完成編集"
+    ],
+    "size": 7008
+  },
+  {
+    "file": "prompt_wan3_past_v2.txt",
+    "kind": "document",
+    "groups": [
+      "完成編集"
+    ],
+    "size": 10954
+  },
+  {
+    "file": "wan3_config_present.json",
+    "kind": "document",
+    "groups": [
+      "完成編集"
+    ],
+    "size": 1148
+  },
+  {
+    "file": "wan3_config_past_v2.json",
+    "kind": "document",
+    "groups": [
+      "完成編集"
+    ],
+    "size": 1527
+  },
+  {
+    "file": "takosan_audio_patch.json",
+    "kind": "document",
+    "groups": [
+      "完成編集"
+    ],
+    "size": 1343
+  },
+  {
+    "file": "TAKOSAN_AUDIO_PATCH.md",
+    "kind": "document",
+    "groups": [
+      "完成編集"
+    ],
+    "size": 2997
+  },
+  {
+    "file": "remotion/src/edit-manifest.json",
+    "kind": "document",
+    "groups": [
+      "完成編集"
+    ],
+    "size": 546
+  },
+  {
+    "file": "remotion/EDIT_NOTES.md",
+    "kind": "document",
+    "groups": [
+      "完成編集"
+    ],
+    "size": 1223
+  }
+]

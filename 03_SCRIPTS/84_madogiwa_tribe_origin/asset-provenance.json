@@ -1,0 +1,125 @@
+[
+  {
+    "path": "character_yotan_basic_sheet.png",
+    "source": "03_SCRIPTS/00_TEMPLATES/characters/character_yotan_basic_sheet.png",
+    "sha256": "a5fcff5308da91a9690426b6a4028a0fdf537cf362b6fb1438fdf14c51878e5a"
+  },
+  {
+    "path": "character_yametaro_basic_sheet.png",
+    "source": "03_SCRIPTS/00_TEMPLATES/characters/character_yametaro_basic_sheet.png",
+    "sha256": "1e98502e8051bbacf482f273e551a7dd8b8fb79e2c153865d9e48df690eb91e6"
+  },
+  {
+    "path": "character_tokun_basic_sheet.png",
+    "source": "03_SCRIPTS/00_TEMPLATES/characters/character_tokun_basic_sheet.png",
+    "sha256": "e15c47a0f207251fb4d7067984197f8e15160b52c04013a2d6fee018d2528c47"
+  },
+  {
+    "path": "character_sobaya_basic_sheet.png",
+    "source": "03_SCRIPTS/00_TEMPLATES/characters/character_sobaya_basic_sheet.png",
+    "sha256": "6de96b8fe2ebf1ce88c2f966d77a1abd7f0c2632322dfe4c527135de67494def"
+  },
+  {
+    "path": "character_takosan_basic_sheet.png",
+    "source": "03_SCRIPTS/00_TEMPLATES/characters/character_takosan_basic_sheet.png",
+    "sha256": "62e6a6a9a92250b564b2ea8c7ffa90333ac0182f86d53e240d70399bf50da99d"
+  },
+  {
+    "path": "character_fukuchan_basic_sheet.png",
+    "source": "03_SCRIPTS/00_TEMPLATES/characters/character_fukuchan_basic_sheet.png",
+    "sha256": "a3e1f8f9feff43bf501617818f6e8652c2b6b39d72f7982716cbc550cb3b5866"
+  },
+  {
+    "path": "character_okayaman_full_body_sheet.png",
+    "source": "03_SCRIPTS/00_TEMPLATES/characters/character_okayaman_full_body_sheet.png",
+    "sha256": "6d4f2ad170c2bc4d72c4dce4de20727747c07a209ac2d4135cc61f7c0e7b6f16"
+  },
+  {
+    "path": "character_fukuchan_present_tshirt_sheet.png",
+    "source": "03_SCRIPTS/00_TEMPLATES/characters/character_fukuchan_present_tshirt_sheet.png",
+    "sha256": "15a7fbd0d8bd78e86c4d1d0d55ccc785c3254bed0b26fdf0d7a955e0f607c037"
+  },
+  {
+    "path": "prop_madogiwa_tshirt.png",
+    "source": "03_SCRIPTS/00_TEMPLATES/characters/references/fukuchan_present_tshirt/tshirt_photo.png",
+    "sha256": "fb422abe9df78d0fb138458858da44b35789ae422e881af4264f20194463d29c"
+  },
+  {
+    "path": "environment_office_jungle.png",
+    "source": "03_SCRIPTS/00_TEMPLATES/backgrounds/madogiwa_office_jungle.png",
+    "sha256": "08b4c9cf0c8602026354c8cf6b14449941c3f8766bc32abc33c3e5feb3aebced"
+  },
+  {
+    "path": "prop_sasumata_long_short.png",
+    "source": "03_SCRIPTS/00_TEMPLATES/props/madogiwa_sasumata_cyan_yumemin_v3.png",
+    "sha256": "db99812c17855250d2f56cef3296eba008339059959864f979bf1bd46fcf3de9"
+  },
+  {
+    "path": "voice_ref_fukuchan.wav",
+    "source": "02_CHARACTERS/Fukuchan_voice.wav",
+    "source_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+    "sha256": "6caf760f25cd5e747aead9ecb77c1afe0fcb80b199f1973c9af0bd17b0fcd3b2",
+    "start": 0,
+    "end": 5.19,
+    "duration": 5.19,
+    "boundary": "cut inside measured low-energy pause; PCM preserved; no time stretch"
+  },
+  {
+    "path": "voice_ref_yametaro.wav",
+    "source": "02_CHARACTERS/Yametaro_voice.wav",
+    "source_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+    "sha256": "637dcc33de07ebcbef90b32e4ffe32d03b4a1b90fe49f519199f32b67ee4bbf8",
+    "start": 0,
+    "end": 3.42,
+    "duration": 3.42,
+    "boundary": "cut inside measured low-energy pause; PCM preserved; no time stretch"
+  },
+  {
+    "path": "voice_ref_yotan.wav",
+    "source": "02_CHARACTERS/Yotan_voice.wav",
+    "source_sha256": "9bd48c5577f5c70c7ed1ff7d684cca3f98ed23f24e89a02eee20907b47c1ec0c",
+    "sha256": "f0389fbc29da60a8a8d5aab900e357ad15bd9fd7b3f0dc1c8a1797b22882f9fa",
+    "start": 0,
+    "end": 5.0,
+    "duration": 5.0,
+    "boundary": "original full clip"
+  },
+  {
+    "path": "voice_ref_okayaman.wav",
+    "source": "02_CHARACTERS/Okayaman_voice.wav",
+    "source_sha256": "6939d8da2ce43a33ad672610fb9843481220b37010a968d76a98a0cbaf1ee357",
+    "sha256": "2ce66149b65a83827e70e1c3cdff464f79271927fb279642e57883cdfb9e90ec",
+    "start": 0,
+    "end": 3.5,
+    "duration": 3.5,
+    "boundary": "original full clip"
+  },
+  {
+    "path": "voice_ref_takosan_ep80.wav",
+    "source": "03_SCRIPTS/80_sobaya_clone_lab/takosan_a_hologram.wav",
+    "source_sha256": "87b1edb850713396932052f2469b066740082e3070550e0fef080a0f139c2240",
+    "sha256": "d390efbe694068343d60d207a11652256e7f4937706a0491e7c28331acb92ed4",
+    "start": 0,
+    "end": 2.9,
+    "duration": 2.9,
+    "boundary": "80話ユーザー採用Aの完成台詞。二人とも、実に興味深い。文後の無音内で切出し。",
+    "usage": "voice-timbre only"
+  },
+  {
+    "path": "voice_ref_sobaya.wav",
+    "source": "02_CHARACTERS/Sobaya_voice.wav",
+    "source_sha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+    "sha256": "c6b7fc4c82d0e9a98272952104394cd64584cc29d4bbc4c561a5217c5b1c229e",
+    "start": 0,
+    "end": 2.44,
+    "duration": 2.44,
+    "boundary": "参照合計15秒枠に合わせ、2.269773〜2.617823秒の無音区間内で切出し。",
+    "usage": "voice-timbre only"
+  },
+  {
+    "path": "character_sobaya_basic_sheet_updated.png",
+    "source": "03_SCRIPTS/00_TEMPLATES/characters/character_sobaya_basic_sheet.png",
+    "sha256": "54c890e9b7714e6cf964b98f790b407fdebe0e32bf5c494c5568c2c7acd27f96",
+    "note": "latest original-based pinpoint nipple shadow removal; broad pectoral shading preserved"
+  }
+]

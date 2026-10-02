@@ -1,0 +1,19 @@
+{
+  "task_id": "ab5092aa-864a-483d-b6c9-f0e938d64e13",
+  "status": "SUCCEEDED",
+  "model": "wan3.0-video",
+  "config": "wan3_config_present.json",
+  "prompt": "prompt_wan3_present.txt",
+  "duration": 24,
+  "resolution": "480P",
+  "seed": 840101,
+  "estimated_cost_usd": 0.84,
+  "price_checked_date": "2026-10-01",
+  "price_source": "https://www.qwencloud.com/models/wan3.0-video",
+  "output": "wan3_present_seed840101_480p.mp4",
+  "actual_duration": 24.031995,
+  "width": 854,
+  "height": 480,
+  "fps": 30,
+  "audit": "audit_present.md"
+}

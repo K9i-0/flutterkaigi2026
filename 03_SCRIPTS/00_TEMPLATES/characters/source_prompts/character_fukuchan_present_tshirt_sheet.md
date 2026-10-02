@@ -1,0 +1,14 @@
+# 福ちゃん・現在パート用Tシャツシート
+
+生成: 内蔵 image_gen、2026-10-01。
+
+出力: `../character_fukuchan_present_tshirt_sheet.png`
+参照: `../references/fukuchan_present_tshirt/wearing_photo.png`（ユーザー着用写真）、`../references/fukuchan_present_tshirt/tshirt_photo.png`（ユーザーTシャツ単体写真）、`../character_fukuchan_basic_sheet.png`（肌・年齢感のみ）。
+
+現在パート（普通のオフィス）のみ使用。本シートとTシャツ単体写真をセットで動画生成に渡す。生成シートの細かな文字・図柄には差異があるため、プリントの正本は単体写真とする。過去パートに本シートを渡さない。現在側には過去専用人物シート・ジャングル・刺股を渡さない。
+黒のパンツと白スニーカーは全身シート用に補完。
+
+## 使用プロンプト
+
+Use case: identity-preserve. Create a photorealistic landscape character reference sheet for Fukuchan's PRESENT DAY ordinary office scene. Reference 1 is the user photo of Fukuchan wearing the navy printed T-shirt and red-orange mirrored wraparound sunglasses: primary reference for his face, swept-back raised black hair, sunglasses, navy tee fit and black wristwatch. Reference 2 is the actual flat-lay navy T-shirt: strict source for exact chest illustration, its relative size and placement, colors and the text 窓際族 and WINDOW-SIDE CREW. Reference 3 is the canonical character sheet: use ONLY to guide skin quality and apparent age, not clothing or hairstyle. Preserve his actual identity and facial structure from reference 1. Skin quality and apparent age must match close-up portraits in reference 3: well-cared-for clean even complexion with fine natural skin texture, retain natural forehead lines, smile lines and nasolabial folds. Do not add spots, freckles, mottling or rough pores, do not de-age, reshape or create waxy skin.
+Layout: clean pale gray studio background, three organized panels. Large left panel head-to-toe FRONT relaxed stance with arms down and the complete chest design unobstructed. Center panel head-to-toe THREE-QUARTER view same scale and outfit. Right panel two stacked portraits, neutral friendly expression and cheerful smiling chest-up pose lightly holding the lower side edges of the tee to show its graphic without stretching/distorting it. Both hands belong only to him; anatomically correct. Keep red-orange mirror sunglasses ON in every view. No jacket, no lanyard, no necklace. Slim natural 170cm male build, navy loosely fitting short-sleeve crewneck T-shirt, simple black straight casual trousers, plain white low-top sneakers. Faithfully reproduce reference 2's colorful group print and Japanese text as a fabric print, not separate people. Print positioned centrally on chest at the reference's proportions; do not enlarge to cover entire torso. Clearly reproduce the small character montage and cream 窓際族 letters with red outlines and WINDOW-SIDE CREW underneath. No handheld bags, trinkets, cards, food, extra person's hands, weapons, jungle, office set or props. Neutral even studio illumination, realistic fabric drape, consistent face and styling in all panels. Minimal labels 'FUKUCHAN — PRESENT', 'FRONT', 'THREE-QUARTER'. This is a specific wardrobe reference for the present day only.

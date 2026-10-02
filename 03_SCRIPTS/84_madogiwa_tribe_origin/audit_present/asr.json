@@ -1,0 +1,20 @@
+{
+  "note": "Automated transcript screening only, not auditory or lip-sync approval",
+  "clips": [
+    {
+      "start": 0,
+      "duration": 24,
+      "text": "窓際族Tシャツ!買ったわよ!おー!かっこええな!そういえば、なんでヨータン達まで窓際族なん?実はだな。ということがあったんだ。ギュンギュンどころじゃなかったわね。"
+    },
+    {
+      "start": 0,
+      "duration": 13,
+      "text": "窓際族Tシャツ!買ったわよ!おーかっこええなぁ。そういえば、なんでヨータン達まで窓際族なん?"
+    },
+    {
+      "start": 12,
+      "duration": 12,
+      "text": "まとぎわぞくなん?実はだなあ…という事があったんだ…ぎゅんぎゅんどころじゃなかったわねえ"
+    }
+  ]
+}
