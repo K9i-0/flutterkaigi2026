@@ -1,0 +1,41 @@
+{
+  "generation": "built-in imagegen",
+  "assets": [
+    {
+      "label": "創刊号・段ボール束の材料キット",
+      "file": "product_first_issue_new_cardboard_reference.png",
+      "sha256": "cd0c31644f5254a6f27a5bd3393361563ed734436b4dcfc648fc161bdd51fa07"
+    },
+    {
+      "label": "アーロンチュア完成形",
+      "file": "prop_aeron_chua_reference.png",
+      "sha256": "3a88ecf6d8a28ce0629cba14644ae89f3d7d6f2feb8a5d728b8d3aab321447c4"
+    },
+    {
+      "label": "そば屋の仮面",
+      "file": "prop_sobaya_mask_reference.png",
+      "sha256": "a40942c6cec2b2ce3cb83b4f0f8a7e5bd920f12e21b9935887cc8784b1713a7d"
+    },
+    {
+      "label": "やめ太郎・仮面着用",
+      "file": "character_yametaro_sobaya_mask_sheet.png",
+      "sha256": "cd3a6c36324bbb2f0ead80f462b9a90d6b2b2007d0e28c3dded2db29904a0e12"
+    },
+    {
+      "label": "自宅の窓際・完成イメージ",
+      "file": "environment_completed_home_with_can_reference.png",
+      "sha256": "dda54e387483d47cffea5df4b482f7429c33c871913ec09ca10de47c0208b2fe"
+    },
+    {
+      "label": "指名手配ポスター",
+      "file": "prop_yametaro_wanted_poster.png",
+      "sha256": "45ab31a7db47e5f37a3c51d3bc33d643e55f76de3707f610bc4e3ffa5ba16b8d"
+    }
+  ],
+  "prompts": "reference_prompts/",
+  "superseded_packaging": "product_first_issue_reference.png",
+  "wanted_poster_source": "git 3f8f4c3:01_WORLD/props/yametaro_wanted_poster.png; current canonical file unexpectedly contains a contact sheet, shared file left unchanged",
+  "note": "Appearance references, not structural or safety-certified DIY engineering plans.",
+  "completed_room_prop": "窓際スーパーつらいの正典缶を机に1本。創刊号の付属品ではなく完成した部屋の小道具。",
+  "first_issue_materials": "段ボール最前面の面いっぱいにアーロン／チュアを記入済み。材料画像を先に生成してから創刊号を追加。冊子で文字の一部が隠れてよい。ペンなし、ガムテープ付き。 新品の段ボール板のみ。紐は連続した十字掛け。"
+}

@@ -1,0 +1,74 @@
+{
+  "images": [
+    {
+      "file": "scene_01_room.png",
+      "sha256": "da9b87f220905eb3d6d43c2fae50a858bc4675bc3540ea95730740297d67fbe9",
+      "generator": "built-in imagegen"
+    },
+    {
+      "file": "scene_02_issue.png",
+      "sha256": "397ffbbb0aee06cbde1e54fd281df81e71bfc6bc6059d8316578fe502dcb9b1e",
+      "generator": "built-in imagegen"
+    },
+    {
+      "file": "scene_03_build.png",
+      "sha256": "0f4080bb07150db230eeb398252ce51177950ae359c091b853f870fdfd25f010",
+      "generator": "built-in imagegen"
+    },
+    {
+      "file": "scene_04_mask.png",
+      "sha256": "c6311c1ece9e0ab9e856c97221128a26868ac0c1337c02ebc6823792da53d184",
+      "generator": "built-in imagegen"
+    },
+    {
+      "file": "scene_05_excel.png",
+      "sha256": "9ecd7b3b065ebc44e40c416899b1f16232026df00d85098c1f918f9ab90ad90f",
+      "generator": "built-in imagegen"
+    },
+    {
+      "file": "scene_06_read_fixed.png",
+      "sha256": "9d284190deef3bb584e92b85d01794817387ed2f07edf6892b1f47e44982d60d",
+      "generator": "built-in imagegen"
+    },
+    {
+      "file": "scene_07_offer.png",
+      "sha256": "cb7b8345dcf680609e1a8c864cd25e8a55ae5e4f238b98e0ca7c87c7ef01e2c5",
+      "generator": "built-in imagegen"
+    },
+    {
+      "file": "scene_08_end.png",
+      "sha256": "3be44ff563e40dcda0cc7d6722e72da3c9855cbe2d718066a92e7a634e1903ff",
+      "generator": "built-in imagegen"
+    }
+  ],
+  "audio": {
+    "engine": "Aratako/Irodori-TTS-v4.1-Small",
+    "voice_design_seed": 2026,
+    "reference": "narrator_reference.wav",
+    "reference_sha256": "150711386acd8414bb4650a452a11bb6b6f0e6817a773a3172b830221bab637e",
+    "seed": 2026,
+    "cfg_text": 5,
+    "duration_scale": 0.85,
+    "caption": "明瞭でテンポのよい、落ち着いた男性のコマーシャルナレーション。",
+    "normalization": "public narration WAVs: ffmpeg loudnorm I=-17 TP=-1.5 LRA=7, 48000 Hz; original WAVs preserved",
+    "source_cm_voice_cloned": false,
+    "listening_verified": false,
+    "asr_note": "内容おおむね一致。創刊／材料一式にASR表記揺れあり。価格行をかな読みで再生成、実聴は未確認。"
+  },
+  "video": "final_remotion_cm.mp4",
+  "composition": "ChuaCM",
+  "timingAuthority": "remotion/src/edit-manifest.json",
+  "music": "No background music added; narration and adopted ending only.",
+  "validation": {
+    "typecheck": "pass",
+    "full_decode": "pass",
+    "resolution": "1280x720",
+    "fps": 30,
+    "video_frames": 900,
+    "container_duration": 30.016,
+    "codec": "H264/AAC",
+    "playback_page_http": 200,
+    "visual_review": "contact sheet, offer, Excel final frame inspected",
+    "listening": "not performed"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "files": [
+    {
+      "file": ".local/chuagostini-20261003/source_call.wav",
+      "sha256": "5b9b47488c6773c9014b9ebd5a7a9695e8e98cb36d70db75a70a684cf830581e",
+      "duration": 1.8210204081632653,
+      "sample_rate": 44100,
+      "peak_dbfs": -15.933984004401054,
+      "decode_ok": true,
+      "preview_file": ".local/chuagostini-20261003/source_call_preview.wav",
+      "preview_gain_db": 9.933984004401054,
+      "preview_sha256": "d0096aae349152e8cc6556439b12b22bf5c7be6aef600632413e288a578e6449"
+    },
+    {
+      "file": ".local/chuagostini-20261003/deagostini_seedvc_sobaya.wav",
+      "sha256": "08b7b120d71196e77b35f47d07c37019bf85e3e19d9587862863bca8654ce1dc",
+      "duration": 1.811156462585034,
+      "sample_rate": 44100,
+      "peak_dbfs": 0.0,
+      "decode_ok": true,
+      "preview_file": ".local/chuagostini-20261003/deagostini_seedvc_sobaya_preview.wav",
+      "preview_gain_db": -6.0,
+      "preview_sha256": "79794fea8c4298c0a7d2772963bced1d1b1f6ebbb09dfaf0695d38431e3128d0"
+    },
+    {
+      "file": ".local/chuagostini-20261003/deagostini_seedvc_sobaya_monster.wav",
+      "sha256": "6612dee282c04d55b2c96e613f5afe19b31d1c65661bd1d2678ffa95b28605fa",
+      "duration": 1.8004761904761906,
+      "sample_rate": 44100,
+      "peak_dbfs": -0.46580865806006544,
+      "decode_ok": true,
+      "preview_file": ".local/chuagostini-20261003/deagostini_seedvc_sobaya_monster_preview.wav",
+      "preview_gain_db": -5.534191341939935,
+      "preview_sha256": "afb38717164a2a5862ad1dcbe9c0d4c1a52260cd4bf5c995d6e5594a18d43ba5"
+    }
+  ],
+  "human_listening_verified": false,
+  "source_interval": [
+    36.2,
+    38.021
+  ],
+  "source_separated": false,
+  "checkpoint_load_warning": "Upstream loader reports shape-mismatched estimator keys; retained in local seedvc.log.",
+  "melody_timbre_quality": "Awaiting user comparison"
+}

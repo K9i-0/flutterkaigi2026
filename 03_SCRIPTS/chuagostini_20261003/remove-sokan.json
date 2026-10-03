@@ -1,0 +1,16 @@
+{
+  "source_video": "final_remotion_cm_sobaya.mp4",
+  "output": "final_remotion_cm_sobaya_no_sokan.mp4",
+  "master": "narration_master_sobaya_no_sokan.wav",
+  "removed_text": "創刊",
+  "source_interval": [
+    5.0,
+    5.56
+  ],
+  "target_interval": [
+    5.205,
+    5.765
+  ],
+  "outside_pcm_unchanged": true,
+  "visual_text_unchanged": true
+}

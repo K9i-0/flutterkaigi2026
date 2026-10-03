@@ -1,0 +1,252 @@
+{
+  "method": "user-requested full narration repair using Wan narrator reference and Irodori Large",
+  "model": "Aratako/Irodori-TTS-v4-Large",
+  "cfg_text": 5,
+  "seed": 2026,
+  "caption": "明瞭でテンポのよい、落ち着いた男性のCMナレーション。",
+  "reference_source": "generated_video",
+  "source": "wan3_cm_v2_seed310003_480p_28s.mp4",
+  "reference_interval": [
+    6.466667,
+    10.566667
+  ],
+  "reference": "wan_narrator_repair_reference.wav",
+  "reference_sha256": "c816218cd1a28e26c94962f7cfc62784cbbb40f97fa57c1d95791f805372efac",
+  "separation": "htdemucs two-stems vocals shifts=0 CPU",
+  "takes": [
+    {
+      "id": "01",
+      "text": "あなたのへやを、あこがれのまどぎわに。",
+      "start": 0,
+      "end": 3.4,
+      "file": "wan_narration_repaired_01.wav",
+      "duration": 2.699479,
+      "duration_scale": 1.0,
+      "seed": 2026,
+      "target_start_sample": 1920,
+      "sample_count": 129575,
+      "sample_rate": 48000,
+      "sha256": "aa8a1f37c111c0174f3c58f2a8060cf7dc3154877389f8a84ca2d110b36d7260"
+    },
+    {
+      "id": "02",
+      "text": "しゅうかん、まどぎわをつくる。そうかん。",
+      "start": 3.4,
+      "end": 6.466667,
+      "file": "wan_narration_repaired_02.wav",
+      "duration": 3.067542,
+      "duration_scale": 0.86,
+      "seed": 2026,
+      "target_start_sample": 162198,
+      "sample_count": 147242,
+      "sample_rate": 48000,
+      "sha256": "ddd69a5088f16325eb9b55182e76733ebdbf97d15c15e699c11c16e20b63af8b"
+    },
+    {
+      "id": "03",
+      "text": "組み立てるたび、理想のまどぎわに近づいていく。",
+      "start": 6.466667,
+      "end": 10.566667,
+      "file": "wan_narration_repaired_03.wav",
+      "duration": 3.398646,
+      "duration_scale": 1.0,
+      "seed": 2027,
+      "target_start_sample": 312320,
+      "sample_count": 163135,
+      "sample_rate": 48000,
+      "sha256": "209fc1a09664687246483cf43d2e04acb7b1e8295d4e168090ecff030909e158"
+    },
+    {
+      "id": "04",
+      "text": "アーロンチュアから、そばやのかめんまで。じつぶつだいでさいげん。",
+      "start": 10.566667,
+      "end": 15.466667,
+      "file": "wan_narration_repaired_04.wav",
+      "duration": 4.257896,
+      "duration_scale": 1.0,
+      "seed": 2026,
+      "target_start_sample": 509120,
+      "sample_count": 204379,
+      "sample_rate": 48000,
+      "sha256": "4e5326fadb880c81d7540db4bd43fcae5c6e032d6aa69df4b5e65022a70cca60"
+    },
+    {
+      "id": "05",
+      "text": "まどぎわぞくのにちじょうを、リアルにたいかん。",
+      "start": 15.466667,
+      "end": 18.733333,
+      "file": "wan_narration_repaired_05.wav",
+      "duration": 3.078333,
+      "duration_scale": 1.0,
+      "seed": 2026,
+      "target_start_sample": 744320,
+      "sample_count": 147760,
+      "sample_rate": 48000,
+      "sha256": "9247da7685cea68f6478a15fed41f0e38ff5a89493bd682113a30f0715b75837"
+    },
+    {
+      "id": "06",
+      "text": "まどぎわのたのしみかたも、くわしくかいせつ。",
+      "start": 18.733333,
+      "end": 22.333333,
+      "file": "wan_narration_repaired_06.wav",
+      "duration": 3.006146,
+      "duration_scale": 1.0,
+      "seed": 2026,
+      "target_start_sample": 901120,
+      "sample_count": 144295,
+      "sample_rate": 48000,
+      "sha256": "4f7d8011e6fcf7b7de9c86fd5c6e64ee3879b945e15c21f43f82b7db2d63720b"
+    },
+    {
+      "id": "07",
+      "text": "アーロンチュアのざいりょういっしきがついて、そうかんごうは、さんびゃくきゅうじゅうきゅうえん。",
+      "start": 22.333333,
+      "end": 28,
+      "file": "wan_narration_repaired_07.wav",
+      "duration": 5.505417,
+      "duration_scale": 1.0,
+      "seed": 2026,
+      "target_start_sample": 1073920,
+      "sample_count": 264260,
+      "sample_rate": 48000,
+      "sha256": "205720fcae3026fe3afeb835a8f916ea9f6b581434b84aefa4f2b95eb491263a"
+    }
+  ],
+  "ending_pcm_equal_from_seconds": 28,
+  "time_stretch": false,
+  "peak": 0.5633544921875,
+  "output": "wan_narration_repaired_master.wav",
+  "listening_verified": false,
+  "asr": [
+    {
+      "id": "01",
+      "target": "あなたのへやを、あこがれのまどぎわに。",
+      "result": {
+        "text": "あなたの部屋を憧れの窓際に",
+        "chunks": [
+          {
+            "timestamp": [
+              0.0,
+              4.32
+            ],
+            "text": "あなたの部屋を憧れの窓際に"
+          }
+        ]
+      }
+    },
+    {
+      "id": "02",
+      "target": "しゅうかん、まどぎわをつくる。そうかん。",
+      "result": {
+        "text": "週刊、窓際を作る。双刊。",
+        "chunks": [
+          {
+            "timestamp": [
+              0.0,
+              2.0
+            ],
+            "text": "週刊、窓際を作る。"
+          },
+          {
+            "timestamp": [
+              2.0,
+              3.0
+            ],
+            "text": "双刊。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "03",
+      "target": "組み立てるたび、理想のまどぎわに近づいていく。",
+      "result": {
+        "text": "組み立てるたび、理想の窓際に近づいていく。",
+        "chunks": [
+          {
+            "timestamp": [
+              0.0,
+              3.4
+            ],
+            "text": "組み立てるたび、理想の窓際に近づいていく。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "04",
+      "target": "アーロンチュアから、そばやのかめんまで。じつぶつだいでさいげん。",
+      "result": {
+        "text": "アーロンチュアからそば屋の仮面まで 実物台で再現",
+        "chunks": [
+          {
+            "timestamp": [
+              0.0,
+              6.0
+            ],
+            "text": "アーロンチュアからそば屋の仮面まで 実物台で再現"
+          }
+        ]
+      }
+    },
+    {
+      "id": "05",
+      "target": "まどぎわぞくのにちじょうを、リアルにたいかん。",
+      "result": {
+        "text": "窓際属の日常をリアルに体感",
+        "chunks": [
+          {
+            "timestamp": [
+              0.0,
+              4.76
+            ],
+            "text": "窓際属の日常をリアルに体感"
+          }
+        ]
+      }
+    },
+    {
+      "id": "06",
+      "target": "まどぎわのたのしみかたも、くわしくかいせつ。",
+      "result": {
+        "text": "窓際の楽しみ方も詳しく解説。",
+        "chunks": [
+          {
+            "timestamp": [
+              0.0,
+              3.0
+            ],
+            "text": "窓際の楽しみ方も詳しく解説。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "07",
+      "target": "アーロンチュアのざいりょういっしきがついて、そうかんごうは、さんびゃくきゅうじゅうきゅうえん。",
+      "result": {
+        "text": "アーロンチュアの材料一式がついて 双管号は399円",
+        "chunks": [
+          {
+            "timestamp": [
+              0.0,
+              7.26
+            ],
+            "text": "アーロンチュアの材料一式がついて 双管号は399円"
+          }
+        ]
+      }
+    }
+  ],
+  "validation": {
+    "asr": "All seven lines match intended readings; homophone spellings 双刊/双管号/実物台/窓際属 treated as same pronunciation.",
+    "listening_verified": false,
+    "no_time_stretch": true,
+    "ending_pcm_equal": true,
+    "video_stream_hash_equal": true,
+    "video_stream_hash": "SHA256=538844f592ce5420066f23a5a281a51c84db9341e35e5c2a149a65e59c4adff2",
+    "full_decode": "pass",
+    "duration": 30
+  }
+}

@@ -1,0 +1,34 @@
+diff --git a/inference.py b/inference.py
+index 84d673b..ee0ad3c 100644
+--- a/inference.py
++++ b/inference.py
+@@ -33,6 +33,7 @@ elif torch.backends.mps.is_available():
+ else:
+     device = torch.device("cpu")
+ 
++torch.set_num_threads(4)
+ fp16 = False
+ def load_models(args):
+     global fp16
+@@ -101,8 +102,8 @@ def load_models(args):
+         bigvgan_model = bigvgan.BigVGAN.from_pretrained(bigvgan_name, use_cuda_kernel=False)
+         # remove weight norm in the model and set to eval mode
+         bigvgan_model.remove_weight_norm()
+-        bigvgan_model = bigvgan_model.eval().to(device)
+-        vocoder_fn = bigvgan_model
++        bigvgan_model = bigvgan_model.eval().to('cpu' if device.type == 'mps' else device)
++        vocoder_fn = lambda mel: bigvgan_model(mel.to(next(bigvgan_model.parameters()).device))
+     elif vocoder_type == 'hifigan':
+         from modules.hifigan.generator import HiFTGenerator
+         from modules.hifigan.f0_predictor import ConvRNNF0Predictor
+@@ -326,8 +327,8 @@ def main(args):
+         F0_ori = f0_fn(ori_waves_16k[0], thred=0.03)
+         F0_alt = f0_fn(converted_waves_16k[0], thred=0.03)
+ 
+-        F0_ori = torch.from_numpy(F0_ori).to(device)[None]
+-        F0_alt = torch.from_numpy(F0_alt).to(device)[None]
++        F0_ori = torch.from_numpy(F0_ori.astype(np.float32)).to(device)[None]
++        F0_alt = torch.from_numpy(F0_alt.astype(np.float32)).to(device)[None]
+ 
+         voiced_F0_ori = F0_ori[F0_ori > 1]
+         voiced_F0_alt = F0_alt[F0_alt > 1]

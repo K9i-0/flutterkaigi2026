@@ -36,6 +36,10 @@ description: Remotionで生成済み動画を編集し、正確な日本語字�
 
 ニュース、字幕、レイアウトと監査基準は[references/design-and-qa.md](references/design-and-qa.md)を読む。Wanニュースの標準見た目は[references/yume-tele-news-preset.md](references/yume-tele-news-preset.md)を使う。Remotion APIや更新確認には[references/official-remotion.md](references/official-remotion.md)を使う。
 
+## 元の演技を残す声質変更
+
+パロディで「Aの音源をBの声に」「節や間を残して声だけ変更」と言われたら、[meme-videoの音声変換手順](../meme-video/references/parody-voice-conversion.md)へ進む。TTS再発話と音声変換を区別し、採用音声を同じ映像へ差し替える。映像変更がなければFFmpegの映像ストリームコピーでよい。
+
 ## `wan-video`・`seedance`との連携
 
 1. 生成前に完成編集を設計し、生成プロンプトから正確な字幕・テロップ・UI文字を外す。

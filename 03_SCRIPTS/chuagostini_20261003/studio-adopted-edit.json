@@ -1,0 +1,25 @@
+{
+  "title": "週刊 窓際を作る",
+  "adopted_video": "final_remotion_cm_sobaya_blurred.mp4",
+  "voice": {
+    "id": "sobaya",
+    "label": "そば屋",
+    "seed": 42,
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "ref": "02_CHARACTERS/Sobaya_voice.wav",
+    "caption": "落ち着いたコマーシャルナレーション。明瞭に、堂々と商品を紹介する。",
+    "file": ".local/chuagostini-20261003/voice-casting/sobaya.wav",
+    "duration": 26.250438,
+    "sha256": "26d76ac24b89f1fbe8c1dcc0201a2e92eb3b3e07beaa230c90a2ef03e95895b1",
+    "text": "あなたのへやを、あこがれのまどぎわに。しゅうかん、まどぎわをつくる。そうかん。組み立てるたび、理想のまどぎわに近づいていく。アーロンチュアから、そばやのかめんまで。じつぶつだいでさいげん。まどぎわぞくのにちじょうを、リアルにたいかん。まどぎわのたのしみかたも、くわしくかいせつ。アーロンチュアのざいりょういっしきがついて、そうかんごうは、さんびゃくきゅうじゅうきゅうえん。",
+    "adopted": true
+  },
+  "audio_master": "narration_master_sobaya_no_sokan.wav",
+  "composition": "ChuaSobayaCM",
+  "postprocess": "blur_cover.py",
+  "removed_speech": "タイトル後の単独「創刊」",
+  "ending": "ending_chuagostini_v3.wav",
+  "resolution": "1280x720",
+  "fps": 30,
+  "seconds": 30
+}

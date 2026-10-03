@@ -1,0 +1,64 @@
+{
+  "status": "narration_repaired",
+  "composition": {
+    "width": 1280,
+    "height": 720,
+    "fps": 30,
+    "durationInFrames": 900
+  },
+  "inputVideo": "wan_main_720p.mp4",
+  "sourceVideo": "wan3_cm_v2_seed310003_480p_28s.mp4",
+  "mainEndFrame": 840,
+  "endingAudio": "ending_chuagostini_v3.wav",
+  "endingAudioStartFrame": 846,
+  "endingImage": "scene_08_end.png",
+  "searchStartFrame": 102,
+  "priceSwitchFrame": 781,
+  "overlays": [
+    {
+      "id": "intro",
+      "from": 0,
+      "to": 102,
+      "text": "あなたの部屋を、\n憧れの窓際に。"
+    },
+    {
+      "id": "title",
+      "from": 102,
+      "to": 194,
+      "text": "週刊 窓際を作る",
+      "sub": "創刊"
+    },
+    {
+      "id": "chair",
+      "from": 194,
+      "to": 317,
+      "text": "アーロンチュア"
+    },
+    {
+      "id": "mask",
+      "from": 317,
+      "to": 464,
+      "text": "そば屋の仮面",
+      "sub": "実物大で再現"
+    },
+    {
+      "id": "excel",
+      "from": 464,
+      "to": 562,
+      "text": "窓際族の日常を、リアルに体感。"
+    },
+    {
+      "id": "book",
+      "from": 562,
+      "to": 670,
+      "text": "マガジンで詳しく解説"
+    },
+    {
+      "id": "offer",
+      "from": 670,
+      "to": 840,
+      "text": "アーロンチュアの材料一式付き"
+    }
+  ],
+  "replacementAudio": "wan_narration_repaired_master.wav"
+}

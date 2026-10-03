@@ -1,0 +1,201 @@
+[
+  {
+    "voice": "female_cm",
+    "source": "narration_selected_female_cm.wav",
+    "source_sha256": "5136d256f9de386660acc64ec5067d73de542d6b8a87503b7b3b8fe430c398f9",
+    "master": "narration_master_female_cm.wav",
+    "output": "final_remotion_cm_female_cm.mp4",
+    "sample_rate": 48000,
+    "placements": [
+      {
+        "line": 1,
+        "source_start_sample": 0,
+        "source_end_sample": 157440,
+        "target_start_sample": 1680,
+        "duration_samples": 157440
+      },
+      {
+        "line": 2,
+        "source_start_sample": 190560,
+        "source_end_sample": 359520,
+        "target_start_sample": 164880,
+        "duration_samples": 141120
+      },
+      {
+        "line": 3,
+        "source_start_sample": 377760,
+        "source_end_sample": 554880,
+        "target_start_sample": 312080,
+        "duration_samples": 177120
+      },
+      {
+        "line": 4,
+        "source_start_sample": 577440,
+        "source_end_sample": 791520,
+        "target_start_sample": 508880,
+        "duration_samples": 214080
+      },
+      {
+        "line": 5,
+        "source_start_sample": 810240,
+        "source_end_sample": 959040,
+        "target_start_sample": 744080,
+        "duration_samples": 148800
+      },
+      {
+        "line": 6,
+        "source_start_sample": 977280,
+        "source_end_sample": 1126560,
+        "target_start_sample": 900880,
+        "duration_samples": 149280
+      },
+      {
+        "line": 7,
+        "source_start_sample": 1153440,
+        "source_end_sample": 1440000,
+        "target_start_sample": 1073680,
+        "duration_samples": 269280
+      }
+    ],
+    "removed_silence_seconds": [
+      [
+        4.8,
+        5.1
+      ],
+      [
+        6.39,
+        6.67
+      ],
+      [
+        26.72,
+        26.98
+      ],
+      [
+        28.06,
+        28.16
+      ]
+    ],
+    "time_stretch": false,
+    "ending_pcm_equal_from_seconds": 28,
+    "peak": 0.681976318359375,
+    "validation": {
+      "video_stream_identical": true,
+      "ending_pcm_identical": true,
+      "decode": "pass",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 1280,
+            "height": 720,
+            "r_frame_rate": "30/1",
+            "side_data_list": [
+              {}
+            ]
+          },
+          {
+            "codec_name": "aac",
+            "r_frame_rate": "0/0"
+          }
+        ],
+        "format": {
+          "duration": "30.000000"
+        }
+      },
+      "listening_verified": false
+    }
+  },
+  {
+    "voice": "sobaya",
+    "source": "narration_selected_sobaya.wav",
+    "source_sha256": "26d76ac24b89f1fbe8c1dcc0201a2e92eb3b3e07beaa230c90a2ef03e95895b1",
+    "master": "narration_master_sobaya.wav",
+    "output": "final_remotion_cm_sobaya.mp4",
+    "sample_rate": 48000,
+    "placements": [
+      {
+        "line": 1,
+        "source_start_sample": 0,
+        "source_end_sample": 119040,
+        "target_start_sample": 1680,
+        "duration_samples": 119040
+      },
+      {
+        "line": 2,
+        "source_start_sample": 155040,
+        "source_end_sample": 266880,
+        "target_start_sample": 164880,
+        "duration_samples": 111840
+      },
+      {
+        "line": 3,
+        "source_start_sample": 300960,
+        "source_end_sample": 439200,
+        "target_start_sample": 312080,
+        "duration_samples": 138240
+      },
+      {
+        "line": 4,
+        "source_start_sample": 463200,
+        "source_end_sample": 656640,
+        "target_start_sample": 508880,
+        "duration_samples": 193440
+      },
+      {
+        "line": 5,
+        "source_start_sample": 678720,
+        "source_end_sample": 810720,
+        "target_start_sample": 744080,
+        "duration_samples": 132000
+      },
+      {
+        "line": 6,
+        "source_start_sample": 841440,
+        "source_end_sample": 997440,
+        "target_start_sample": 900880,
+        "duration_samples": 156000
+      },
+      {
+        "line": 7,
+        "source_start_sample": 1021440,
+        "source_end_sample": 1260021,
+        "target_start_sample": 1073680,
+        "duration_samples": 238581
+      }
+    ],
+    "removed_silence_seconds": [],
+    "time_stretch": false,
+    "ending_pcm_equal_from_seconds": 28,
+    "peak": 0.79571533203125,
+    "validation": {
+      "video_stream_identical": true,
+      "ending_pcm_identical": true,
+      "decode": "pass",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 1280,
+            "height": 720,
+            "r_frame_rate": "30/1",
+            "side_data_list": [
+              {}
+            ]
+          },
+          {
+            "codec_name": "aac",
+            "r_frame_rate": "0/0"
+          }
+        ],
+        "format": {
+          "duration": "30.000000"
+        }
+      },
+      "listening_verified": false
+    }
+  }
+]

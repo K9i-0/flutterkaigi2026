@@ -1,0 +1,180 @@
+{
+  "status": "rendered_review",
+  "visualPipeline": "imagegen stills + Remotion editorial motion",
+  "composition": {
+    "width": 1280,
+    "height": 720,
+    "fps": 30,
+    "durationInFrames": 900
+  },
+  "timingStatus": "measured_audio_frame_locked",
+  "shots": [
+    {
+      "id": "01_room",
+      "startFrame": 0,
+      "endFrame": 94,
+      "narration": "あなたの部屋を、憧れの窓際に。",
+      "references": [
+        "character_yametaro_basic_sheet.png",
+        "environment_completed_home_with_can_reference.png"
+      ],
+      "prompt": "generation_prompts/prompt_01_room.txt",
+      "output": "scene_01_room.png",
+      "status": "generated",
+      "audio": "narration_01_room.wav",
+      "audioStartOffsetFrames": 2
+    },
+    {
+      "id": "02_issue",
+      "startFrame": 94,
+      "endFrame": 198,
+      "narration": "週刊、窓際を作る。創刊。",
+      "references": [
+        "product_first_issue_new_cardboard_reference.png"
+      ],
+      "prompt": "generation_prompts/prompt_02_issue.txt",
+      "output": "scene_02_issue.png",
+      "status": "generated",
+      "audio": "narration_02_issue.wav",
+      "audioStartOffsetFrames": 2
+    },
+    {
+      "id": "03_build",
+      "startFrame": 198,
+      "endFrame": 309,
+      "narration": "組み立てるたび、理想の窓際に近づいていく。",
+      "references": [
+        "character_yametaro_basic_sheet.png",
+        "product_first_issue_new_cardboard_reference.png",
+        "prop_aeron_chua_reference.png",
+        "environment_completed_home_with_can_reference.png"
+      ],
+      "prompt": "generation_prompts/prompt_03_build.txt",
+      "output": "scene_03_build.png",
+      "status": "generated",
+      "audio": "narration_03_build.wav",
+      "audioStartOffsetFrames": 2
+    },
+    {
+      "id": "04_mask",
+      "startFrame": 309,
+      "endFrame": 454,
+      "narration": "アーロンチュアから、そば屋の仮面まで。実物大で再現。",
+      "references": [
+        "character_yametaro_basic_sheet.png",
+        "prop_sobaya_mask_reference.png",
+        "character_yametaro_sobaya_mask_sheet.png",
+        "environment_completed_home_with_can_reference.png"
+      ],
+      "prompt": "generation_prompts/prompt_04_mask.txt",
+      "output": "scene_04_mask.png",
+      "status": "generated",
+      "audio": "narration_04_mask.wav",
+      "audioStartOffsetFrames": 2
+    },
+    {
+      "id": "05_excel",
+      "startFrame": 454,
+      "endFrame": 556,
+      "narration": "窓際族の日常を、リアルに体感。",
+      "references": [
+        "character_yametaro_basic_sheet.png",
+        "character_yametaro_sobaya_mask_sheet.png",
+        "environment_completed_home_with_can_reference.png",
+        "product_super_try.png"
+      ],
+      "prompt": "generation_prompts/prompt_05_excel.txt",
+      "output": "scene_05_excel.png",
+      "status": "generated",
+      "audio": "narration_05_excel.wav",
+      "audioStartOffsetFrames": 2
+    },
+    {
+      "id": "06_read",
+      "startFrame": 556,
+      "endFrame": 650,
+      "narration": "窓際の楽しみ方も、詳しく解説。",
+      "references": [
+        "character_yametaro_basic_sheet.png",
+        "environment_completed_home_with_can_reference.png",
+        "prop_sobaya_mask_reference.png"
+      ],
+      "prompt": "generation_prompts/prompt_06_read.txt",
+      "output": "scene_06_read_fixed.png",
+      "status": "generated",
+      "audio": "narration_06_read.wav",
+      "audioStartOffsetFrames": 2
+    },
+    {
+      "id": "07_offer",
+      "startFrame": 650,
+      "endFrame": 840,
+      "narration": "アーロンチュアの材料一式が付いて、創刊号は399円。",
+      "references": [
+        "product_first_issue_new_cardboard_reference.png"
+      ],
+      "prompt": "generation_prompts/prompt_07_offer.txt",
+      "output": "scene_07_offer.png",
+      "status": "generated",
+      "audio": "narration_07_offer_v2.wav",
+      "audioStartOffsetFrames": 2
+    },
+    {
+      "id": "08_end",
+      "startFrame": 840,
+      "endFrame": 900,
+      "narration": "チュアゴスティーニ",
+      "references": [],
+      "prompt": "generation_prompts/prompt_08_end.txt",
+      "output": "scene_08_end.png",
+      "status": "generated"
+    }
+  ],
+  "endingAudio": {
+    "file": "ending_chuagostini_v3.wav",
+    "samples": 79401,
+    "sampleRate": 44100,
+    "durationSeconds": 1.8004761904761906,
+    "startFrame": 846,
+    "sha256": "472dff76fdd453c8cdc36f9e1d75853e5b102dce78dee0ac7719cc73b528ca7b",
+    "regenerate": false
+  },
+  "narrator": {
+    "status": "direction_approved",
+    "defaultDirection": "落ち着いた男性の通販CM風。明瞭で自信ある商品紹介。笑わず真面目に。",
+    "voiceReference": "narrator_reference.wav",
+    "casting": "Non-character adult male commercial narrator; choose voice at audio generation, no source-CM cloning.",
+    "engine": "Irodori-TTS v4.1 Small",
+    "seed": 2026,
+    "durationScale": 0.85,
+    "cfgText": 5
+  },
+  "editing": {
+    "excel": "05: same still with spreadsheet overlay visible frames 480–520, closed 520–555, visible 555–600; align display plane manually for still.",
+    "motion": "Slow 100–104% push-ins, assembly detail crops and hard cuts. No lip-sync needed.",
+    "text": "All commercial titles, feature captions, price transition, search CTA and brand logo are Remotion overlays. Physical prop lettering remains on props. Exact timing adjusted after narration.",
+    "music": "Optional original/licensed light orchestral bed; duck beneath narration and end logo. Do not reuse source CM music.",
+    "timingAuthority": "remotion/src/edit-manifest.json"
+  },
+  "graphics": {
+    "renderer": "Remotion",
+    "frameRanges": "start inclusive, end exclusive; provisional until narration measured",
+    "regularPriceYen": 1490,
+    "introductoryPriceYen": 399,
+    "search": {
+      "query": "チュア　窓際族",
+      "button": "検索",
+      "position": "bottom-right",
+      "startFrame": 94,
+      "endFrame": 900,
+      "rightPx": 48,
+      "bottomPx": 36,
+      "widthPx": 380,
+      "heightPx": 48,
+      "style": "modern rounded white search field, subtle gray border and shadow, leading magnifier, navy rounded 検索 button; no bevel or glossy gradient",
+      "borderRadiusPx": 12,
+      "fontSizePx": 25
+    },
+    "priceSwitchFrame": 790
+  }
+}

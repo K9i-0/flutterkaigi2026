@@ -1,0 +1,50 @@
+{
+  "model": "wan3.0-video",
+  "audio_source": "wan3",
+  "audio_sync_strategy": "no_visible_speech",
+  "project_duration": 28,
+  "generation_mode": "single",
+  "prompt_file": "prompt_wan3.txt",
+  "media": [
+    {
+      "type": "reference_image",
+      "path": "character_yametaro_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "prop_aeron_chua_reference.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "prop_sobaya_mask_reference.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_yametaro_sobaya_mask_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "product_first_issue_new_cardboard_reference.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "environment_completed_home_with_can_reference.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "product_super_try.png"
+    }
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 28,
+    "audio": true,
+    "seed": 310003,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_cm_v2_seed310003_480p_28s.mp4",
+  "postproduction": "remotion",
+  "existing_end_audio": "ending_chuagostini_v3.wav"
+}

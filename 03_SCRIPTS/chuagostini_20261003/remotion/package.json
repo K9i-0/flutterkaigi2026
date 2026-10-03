@@ -1,0 +1,21 @@
+{
+  "name": "chuagostini-cm",
+  "private": true,
+  "scripts": {
+    "render": "remotion render src/index.tsx ChuaCM ../final_remotion_cm.mp4 --codec h264",
+    "typecheck": "tsc --noEmit",
+    "render:wan": "remotion render src/index_wan.tsx ChuaWanCM ../final_remotion_cm_wan.mp4 --codec h264",
+    "render:female": "remotion render src/index_wan.tsx ChuaFemaleCM ../final_remotion_cm_female_cm.mp4 --codec h264",
+    "render:sobaya": "remotion render src/index_wan.tsx ChuaSobayaCM ../final_remotion_cm_sobaya.mp4 --codec h264"
+  },
+  "dependencies": {
+    "remotion": "4.0.532",
+    "@remotion/cli": "4.0.532",
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "@types/react": "19.0.0"
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "method": "Irodori prefix, Praat PSOLA pitch/duration matching, prefix splice",
+  "donor_file": "ending_raw.wav",
+  "donor_interval": [
+    0.07,
+    0.47
+  ],
+  "v2_join": 0.39,
+  "crossfade": 0.012,
+  "prefix_gain": 1.7886263615594953,
+  "files": [
+    {
+      "file": ".local/chuagostini-20261003/chuagostini_seedvc_v2_preview.wav",
+      "sha256": "ca819a10e82c5dd8aab59f3cf362a76391bf586c92bcef1aca89e053cc1e8913",
+      "duration": 1.811156462585034,
+      "unchanged_suffix_from": 0.39,
+      "suffix_samples_equal": true,
+      "preview_gain_db": -6.0
+    },
+    {
+      "file": ".local/chuagostini-20261003/chuagostini_seedvc_v3_preview.wav",
+      "sha256": "472dff76fdd453c8cdc36f9e1d75853e5b102dce78dee0ac7719cc73b528ca7b",
+      "duration": 1.8004761904761906,
+      "unchanged_suffix_from": 0.42,
+      "suffix_samples_equal": true,
+      "preview_gain_db": -5.534191341939935
+    }
+  ],
+  "listening_verified": false,
+  "asr": [
+    {
+      "file": ".local/chuagostini-20261003/chuagostini_seedvc_v2_preview.wav",
+      "result": {
+        "text": "チュアガスティーディ",
+        "chunks": [
+          {
+            "timestamp": [
+              0.0,
+              1.4
+            ],
+            "text": "チュアガスティーディ"
+          }
+        ]
+      }
+    },
+    {
+      "file": ".local/chuagostini-20261003/chuagostini_seedvc_v3_preview.wav",
+      "result": {
+        "text": "チュアガスティーディ",
+        "chunks": [
+          {
+            "timestamp": [
+              0.0,
+              2.0
+            ],
+            "text": "チュアガスティーディ"
+          }
+        ]
+      }
+    }
+  ],
+  "asr_note": "Both recognize prefix チュア; full name not exact in ASR. Suffix is unchanged from user-reviewed version. Listening remains unverified."
+}

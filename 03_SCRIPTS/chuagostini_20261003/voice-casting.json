@@ -1,0 +1,62 @@
+{
+  "purpose": "User-requested audio-only casting comparison; do not change video until selection.",
+  "candidates": [
+    {
+      "id": "female_cm",
+      "label": "CM風の女声",
+      "seed": 121,
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "ref": null,
+      "caption": "明るく華やかな成人女性の声。テレビCMのプロの女性ナレーター。澄んだ中高音で、笑顔が伝わる親しみやすい響き。標準語の明瞭な発音、軽快なテンポ、商品への期待が膨らむ自然な抑揚。",
+      "file": ".local/chuagostini-20261003/voice-casting/female_cm.wav",
+      "duration": 30.000021,
+      "sha256": "5136d256f9de386660acc64ec5067d73de542d6b8a87503b7b3b8fe430c398f9",
+      "text": "あなたのへやを、あこがれのまどぎわに。しゅうかん、まどぎわをつくる。そうかん。組み立てるたび、理想のまどぎわに近づいていく。アーロンチュアから、そばやのかめんまで。じつぶつだいでさいげん。まどぎわぞくのにちじょうを、リアルにたいかん。まどぎわのたのしみかたも、くわしくかいせつ。アーロンチュアのざいりょういっしきがついて、そうかんごうは、さんびゃくきゅうじゅうきゅうえん。",
+      "adopted": true
+    },
+    {
+      "id": "female_announcer",
+      "label": "女性アナウンサー",
+      "seed": 2028,
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "ref": null,
+      "caption": "知的で落ち着いた成人女性の声。放送局の女性アナウンサー。安定した中音域、端正な標準語、滑らかで明瞭な発音。抑揚を抑えた上品で信頼感のある読み。",
+      "file": ".local/chuagostini-20261003/voice-casting/female_announcer.wav",
+      "duration": 29.840021,
+      "sha256": "07136929f75838f76b031fd3054bac19bda6bcc1530f9262e3ea1f38cbd3b41e",
+      "text": "あなたのへやを、あこがれのまどぎわに。しゅうかん、まどぎわをつくる。そうかん。組み立てるたび、理想のまどぎわに近づいていく。アーロンチュアから、そばやのかめんまで。じつぶつだいでさいげん。まどぎわぞくのにちじょうを、リアルにたいかん。まどぎわのたのしみかたも、くわしくかいせつ。アーロンチュアのざいりょういっしきがついて、そうかんごうは、さんびゃくきゅうじゅうきゅうえん。",
+      "adopted": false
+    },
+    {
+      "id": "fukuchan",
+      "label": "福ちゃん",
+      "seed": 100,
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "ref": "02_CHARACTERS/Fukuchan_voice.wav",
+      "caption": "明るくハキハキとした、笑顔のコマーシャルナレーション。テンポよく、商品を楽しそうに紹介する。",
+      "file": ".local/chuagostini-20261003/voice-casting/fukuchan.wav",
+      "duration": 25.120063,
+      "sha256": "2514b21ec308aea9e5baad2132f2e4252bb818b0bb77d005a0f9a07401b75482",
+      "text": "あなたのへやを、あこがれのまどぎわに。しゅうかん、まどぎわをつくる。そうかん。組み立てるたび、理想のまどぎわに近づいていく。アーロンチュアから、そばやのかめんまで。じつぶつだいでさいげん。まどぎわぞくのにちじょうを、リアルにたいかん。まどぎわのたのしみかたも、くわしくかいせつ。アーロンチュアのざいりょういっしきがついて、そうかんごうは、さんびゃくきゅうじゅうきゅうえん。",
+      "adopted": false
+    },
+    {
+      "id": "sobaya",
+      "label": "そば屋",
+      "seed": 42,
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "ref": "02_CHARACTERS/Sobaya_voice.wav",
+      "caption": "落ち着いたコマーシャルナレーション。明瞭に、堂々と商品を紹介する。",
+      "file": ".local/chuagostini-20261003/voice-casting/sobaya.wav",
+      "duration": 26.250438,
+      "sha256": "26d76ac24b89f1fbe8c1dcc0201a2e92eb3b3e07beaa230c90a2ef03e95895b1",
+      "text": "あなたのへやを、あこがれのまどぎわに。しゅうかん、まどぎわをつくる。そうかん。組み立てるたび、理想のまどぎわに近づいていく。アーロンチュアから、そばやのかめんまで。じつぶつだいでさいげん。まどぎわぞくのにちじょうを、リアルにたいかん。まどぎわのたのしみかたも、くわしくかいせつ。アーロンチュアのざいりょういっしきがついて、そうかんごうは、さんびゃくきゅうじゅうきゅうえん。",
+      "adopted": true
+    }
+  ],
+  "normalization": "-17 LUFS, -2 dBTP, 48kHz mono",
+  "music": false,
+  "ending_jingle": false,
+  "listening_verified": false,
+  "preview": "https://kotamacbook-air.tailb7d942.ts.net/chuagostini/voice-casting/"
+}

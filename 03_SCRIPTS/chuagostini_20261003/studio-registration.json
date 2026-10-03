@@ -1,0 +1,98 @@
+{
+  "title": "週刊 窓際を作る",
+  "studio_id": "MS-3RXFZWQ7",
+  "slug": "weekly-madogiwa-kit",
+  "episode_id": "b5ba5da9-8d10-426e-8c88-97b27e485328",
+  "generation_id": "cf0e76ef-2afd-4655-b4ec-7ca8fcdbdc9d",
+  "version": 1,
+  "video_id": "7adcebbc-09fc-4e15-bbc8-266c72a1c533",
+  "adopted_video": "final_remotion_cm_sobaya_blurred.mp4",
+  "inputs": [
+    {
+      "file": "character_yametaro_basic_sheet.png",
+      "id": "16ead590-5c05-40b3-91a6-309820c07d70"
+    },
+    {
+      "file": "prop_aeron_chua_reference.png",
+      "id": "80286cc3-eebe-4aea-a0af-fbf2bcdb816c"
+    },
+    {
+      "file": "prop_sobaya_mask_reference.png",
+      "id": "05d97994-bdbe-49fe-8c36-94ab03aa812a"
+    },
+    {
+      "file": "character_yametaro_sobaya_mask_sheet.png",
+      "id": "58331983-7cee-45b1-8b37-4c387bdef8b5"
+    },
+    {
+      "file": "product_first_issue_new_cardboard_reference.png",
+      "id": "c835a1e6-97bf-4d75-b95d-226863eb6583"
+    },
+    {
+      "file": "environment_completed_home_with_can_reference.png",
+      "id": "44baa2fc-50b4-4d5b-95a8-24fb0d58e926"
+    },
+    {
+      "file": "product_super_try.png",
+      "id": "7e7e04f1-efae-411d-8204-dbc0ac189d3a"
+    },
+    {
+      "file": "scene_08_end.png",
+      "id": "eb50d35e-96fb-497d-a266-575411ebab54"
+    },
+    {
+      "file": "narration_selected_sobaya.wav",
+      "id": "3711375a-07fe-4e1f-88fb-033f226ddcf5"
+    },
+    {
+      "file": "narration_master_sobaya_no_sokan.wav",
+      "id": "abe9defd-cb53-4fdd-bda8-23f7489aa1e2"
+    },
+    {
+      "file": "ending_chuagostini_v3.wav",
+      "id": "958d3f23-c7ea-446f-9cb3-8628fd29054f"
+    },
+    {
+      "file": "wan3_config.json",
+      "id": "9657c9f2-5f37-4a0e-9e73-1840bf9c1f13"
+    },
+    {
+      "file": "studio-adopted-edit.json",
+      "id": "c3ae0a60-b8d7-4b9a-8785-e17c01d3db15"
+    },
+    {
+      "file": "remotion/src/wan-edit-manifest.json",
+      "id": "492aed27-5791-4002-8df8-b2562009b7c1"
+    },
+    {
+      "file": "remove-sokan.json",
+      "id": "35e92c15-4062-4b6a-8ce5-8c65d872bb28"
+    },
+    {
+      "file": "cover-blur.json",
+      "id": "30852ed9-fc9e-43c4-a586-0ce1da94661d"
+    },
+    {
+      "file": "blur_cover.py",
+      "id": "b55faf0c-227d-4578-9931-1537c74698cd"
+    },
+    {
+      "file": "remotion/src/index_wan.tsx",
+      "id": "f7cc258f-9d51-4a89-a36d-c9859a5ad222"
+    },
+    {
+      "file": "remotion/package.json",
+      "id": "751cd75c-297e-4039-84aa-b5f514a810aa"
+    },
+    {
+      "file": "remotion/package-lock.json",
+      "id": "f9282741-b98f-46f5-a41e-ddbed7515505"
+    },
+    {
+      "file": "../../02_CHARACTERS/Sobaya_voice.wav",
+      "id": "443d6851-a034-4bd2-8858-d3e317a9ac04"
+    }
+  ],
+  "verified": "All 21 inputs and video ready; poster present; 13606261 bytes",
+  "url": "https://madogiwa.work/episodes/weekly-madogiwa-kit"
+}

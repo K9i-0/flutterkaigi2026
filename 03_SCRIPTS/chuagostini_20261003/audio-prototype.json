@@ -1,0 +1,103 @@
+{
+  "files": [
+    {
+      "path": ".local/chuagostini-20261003/source.mp4",
+      "sha256": "20bb1ff65987fcd814ac55563790ae22bbf08d0b2b3f5ec284ec5356b0349984",
+      "duration_seconds": 38.021
+    },
+    {
+      "path": ".local/chuagostini-20261003/source_ending.wav",
+      "sha256": "53b53e9f592b117f9f119b8727705c1666d50ae66c650671ed2e2a9b3e650547",
+      "duration_seconds": 4.021
+    },
+    {
+      "path": ".local/chuagostini-20261003/ending_raw.wav",
+      "sha256": "38b5dd69abe11169c30c9e817b36f18b70e4116d1f72d470bf29fe5f3aee3865",
+      "duration_seconds": 1.919375
+    },
+    {
+      "path": ".local/chuagostini-20261003/chuagostini_sobaya.wav",
+      "sha256": "3cf35b4dcd2467536c764d15e645c52734a9973f2288f213e241d226825a94a6",
+      "duration_seconds": 1.921979
+    }
+  ],
+  "model": "Aratako/Irodori-TTS-v4-Large",
+  "seed": 42,
+  "text": "チュアゴスティーニ。",
+  "caption": "CMの最後の短いサウンドロゴ。軽快な節をつけて、チュアゴスティーニ、と明瞭に歌う。",
+  "reference": "02_CHARACTERS/Sobaya_voice.wav",
+  "duration_scale": 1,
+  "cfg_text": 3,
+  "uncut": false,
+  "postprocess": "tools/sobaya_monsterize.sh",
+  "listening_verified": false,
+  "melody_timing_matched_to_source": false,
+  "status": "prototype_for_user_listening",
+  "automated_asr": [
+    {
+      "file": ".local/chuagostini-20261003/chuagostini_sobaya.wav",
+      "result": {
+        "text": "チュアドスティーニ",
+        "chunks": [
+          {
+            "timestamp": [
+              0.0,
+              2.0
+            ],
+            "text": "チュアドスティーニ"
+          }
+        ]
+      }
+    },
+    {
+      "file": ".local/chuagostini-20261003/source_ending.wav",
+      "result": {
+        "text": "東韓号は399円",
+        "chunks": [
+          {
+            "timestamp": [
+              0.0,
+              2.0
+            ],
+            "text": "東韓号は399円"
+          }
+        ]
+      }
+    }
+  ],
+  "audit_note": "WAV decodes successfully, peak -6.2 dBFS. ASR recognized チュアドスティーニ; ゴ pronunciation requires listening. No human listening verification or exact melody match claimed.",
+  "english_variants": [
+    {
+      "text": "Chuagostini.",
+      "path": ".local/chuagostini-20261003/english_word_sobaya.wav",
+      "caption": "Sing a short, catchy commercial brand jingle.",
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "seed": 42,
+      "reference": "02_CHARACTERS/Sobaya_voice.wav",
+      "cfg_text": 3,
+      "duration_scale": 1,
+      "uncut": false,
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "sha256": "0a1303dbf542a3d7523ed9b62d165846ff1c21ffccaef5ff54b31d15aa5c661d",
+      "duration_seconds": 1.536,
+      "listening_verified": false,
+      "status": "awaiting_user_comparison"
+    },
+    {
+      "text": "Chua-go-stee-nee.",
+      "path": ".local/chuagostini-20261003/english_syllables_sobaya.wav",
+      "caption": "Sing a short, catchy commercial brand jingle.",
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "seed": 42,
+      "reference": "02_CHARACTERS/Sobaya_voice.wav",
+      "cfg_text": 3,
+      "duration_scale": 1,
+      "uncut": false,
+      "postprocess": "tools/sobaya_monsterize.sh",
+      "sha256": "25a2a17a5f4193a12cbe5308621b510d175e5cbe993cbd66f5bd9a985a13792e",
+      "duration_seconds": 2.033146,
+      "listening_verified": false,
+      "status": "awaiting_user_comparison"
+    }
+  ]
+}

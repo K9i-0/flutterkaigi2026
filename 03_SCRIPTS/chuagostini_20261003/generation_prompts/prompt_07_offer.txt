@@ -1,0 +1,7 @@
+Create one landscape 16:9 commercial still, no collage or reference-sheet layout. Photographic warm daylight apartment background with the exact stylized toy character where specified. Reserve lower 15 percent for editorial captions; no generated subtitles, logos or extra advertising text. Preserve referenced product lettering as physical prop detail.
+Image 1: product_first_issue_new_cardboard_reference.png
+Landscape studio pack shot of exact Image 1 kit. Keep all product details including huge full-panel prelettered cardboard, magazine obscuring lettering, packing tape and twine. No marker, no mask, no can. Product left two thirds, clean right third for editorial 399円 price. No extra generated text.
+
+All cardboard supplied in the kit is brand-new clean factory-cut kraft panels: no shipping print, used tape, stains or crushed edges. Keep continuous cross-tied parcel string.
+
+Editorial graphics safe areas: reserve bottom-right rectangle (last 34% of width, last 14% of height) for a search box added in Remotion. Do not generate search boxes, search icons, CTA text, floating price numerals, promotional captions or brand wordmarks. Keep faces, hands and key product details outside this zone. For offer shots, reserve right-middle area above this box for regular-to-introductory price animation. Existing physical book-cover text and cardboard lettering remain part of props.

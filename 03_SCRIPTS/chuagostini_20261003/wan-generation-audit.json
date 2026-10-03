@@ -1,0 +1,39 @@
+{
+  "model": "wan3.0-video",
+  "task_id": "a2eabafa-f50b-4712-97b3-31d086c067c2",
+  "generation_seconds": 28,
+  "resolution": "480P",
+  "actual_dimensions": [
+    854,
+    480
+  ],
+  "seed": 310003,
+  "audio_source": "wan3",
+  "narration_replaced": false,
+  "existing_end_audio": "ending_chuagostini_v3.wav",
+  "quoted_cost_usd": 0.98,
+  "pricing_source": "https://www.qwencloud.com/models/wan3.0-video",
+  "source_sha256": "b9ea550d1a7a38d64d7dd1ce16d4ecfed74fd565c38f8d8543abbe3501a753d4",
+  "postproduction": "Remotion ChuaWanCM; Lanczos upscale once to 1280x720; append existing 2s ending",
+  "timing_authority": "remotion/src/wan-edit-manifest.json",
+  "visual_notes": [
+    "Low-angle chair shots, overhead kit, dark chair studio, spotlight mask display and over-shoulder spreadsheet confirmed in sampled frames.",
+    "Wan invented price text on white pack shot; opaque Remotion price panel covers it.",
+    "Mask cut has spectacles partly visible inside eye openings; retained as generated."
+  ],
+  "audio_validation": {
+    "asr": "Whisper-small contains garbled recognition and homophones; full transcript stored locally. Not treated as pronunciation approval.",
+    "listening_verified": false
+  },
+  "validation": {
+    "typecheck": "pass",
+    "full_decode": "pass",
+    "final_resolution": "1280x720",
+    "fps": 30,
+    "frames": 900,
+    "container_duration": 30.016,
+    "visual_contact_sheet": "reviewed",
+    "price_overlay": "generated incorrect text covered; 1490 to 399 confirmed",
+    "playback_page_http": 200
+  }
+}
