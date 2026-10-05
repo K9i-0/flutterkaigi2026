@@ -190,3 +190,7 @@ tools/sobaya_monsterize.sh .local/gyungyun86-voice/line2c_context_raw.wav .local
 採用声 `yametaro_hospital_d.wav` は比較で再生した音量調整済みDそのもの。元生成 `yametaro_hospital_d_raw.wav` と再生成用参照 `yametaro_hospital_d_reference_ep80.wav` を保存。モデルLarge・seed7・CFG5・captionなし・duration_scale1・uncut。新規発話生成なし。元Dの0.8–2.75秒を使用し、先頭末尾の無音余白だけ除く。発話内容・内部の間・速度・ピッチを保持。
 
 `finalize_yametaro_d.py` と `final_yametaro_d_edit.json` が再現用。やめ太郎区間のみ既存声を分離した背景＋採用声に置換し、区間外PCMは一致。映像はストリームコピーで全パケットのハッシュ一致（廊下を含む映像完全維持）。全編デコード成功。音素単位の完全同期・通し試聴の合格とは区別する。
+
+## 最終短縮：やめ太郎の心配台詞カット（2026-10-05）
+
+ユーザー指定で「そば屋さん、大丈夫か？」の寄りシーンを映像・音声ごと削除。現行完成版 `final_gyungyun_kingdom_no_yametaro_line_720p.mp4`、36.3秒／1089f／720p／30fps。病室素材の114–194f（本編916–996f、約2.667秒）を除き、福ちゃんからそば屋へ接続。福ちゃんの語尾保護のため音声だけ8f後ろの924–1004fを除く。採用Dの発話は削除範囲内。そば屋台詞と廊下は保持。`cut_yametaro_scene.py`／`cut_yametaro_scene.json` で再現。旧D採用版も保持。全編デコードとフレーム数確認、カット前後・廊下接続を目視確認済み。

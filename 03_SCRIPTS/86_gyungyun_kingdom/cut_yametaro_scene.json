@@ -1,0 +1,45 @@
+{
+  "source": "final_gyungyun_kingdom_720p.mp4",
+  "output": "final_gyungyun_kingdom_no_yametaro_line_720p.mp4",
+  "fps": 30,
+  "removed_video_frames": [
+    916,
+    996
+  ],
+  "audio_kept_frames": [
+    [
+      0,
+      924
+    ],
+    [
+      1004,
+      1169
+    ]
+  ],
+  "reason": "Remove entire Yametaro dialogue shot; preserve Fukuchan final8 audio frames over quiet start of Sobaya shot. Sobaya line and corridor unchanged in content and relative sync.",
+  "frames": 1089,
+  "seconds": 36.3,
+  "probe": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "30/1",
+        "nb_frames": "1089"
+      },
+      {
+        "codec_type": "audio",
+        "r_frame_rate": "0/0",
+        "nb_frames": "1565"
+      }
+    ],
+    "format": {
+      "duration": "36.300000"
+    }
+  },
+  "full_decode": "passed",
+  "sha256": "3fbbc124eb0e384125e26976f228baad7232f17d93b19928b44ff8da0ea3b709"
+}
