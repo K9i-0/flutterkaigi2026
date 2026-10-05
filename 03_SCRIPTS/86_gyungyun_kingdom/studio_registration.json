@@ -1,0 +1,109 @@
+{
+  "title": "マ族そば屋",
+  "studio_id": "MS-UESB877P",
+  "slug": "mazoku-sobaya",
+  "url": "https://madogiwa.work/episodes/mazoku-sobaya",
+  "generation_id": "8e833dd1-20bd-47f7-91f6-a97eee9a5b31",
+  "version": 2,
+  "model": "Wan 3.0 + Irodori-TTS v4 Large",
+  "video_id": "9c035ad5-8561-4af5-85e5-e6c1a4030476",
+  "status": "ready",
+  "source": "final_gyungyun_kingdom_no_yametaro_line_720p.mp4",
+  "upload_file": ".local/studio-mazoku-sobaya/mazoku_sobaya_720p.mp4",
+  "duration": 36.3,
+  "width": 1280,
+  "height": 720,
+  "fps": 30,
+  "frames": 1089,
+  "bytes": 16316233,
+  "encode": "libx264 -preset slow -crf 16 -pix_fmt yuv420p -c:a copy -movflags +faststart",
+  "audio_stream_sha256": "970973c0cde44ea33502e576cc15a5dc40bee2b6b0d87119e4ac1f53b93899f8",
+  "verification": "full decode passed; frame count, duration, fps and audio stream hash match source; Studio video/poster/21 inputs ready",
+  "archived_failed_video_id": "5537f503-0ef1-4b25-8096-b13a44c1b743",
+  "inputs": [
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/character_sobaya_basic_sheet.png",
+      "id": "bd8dfcf9-9cc6-4a2e-82a4-f1c6aa608597"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/character_fukuchan_hero_sheet.png",
+      "id": "0bd97115-bfdb-4ea0-bea8-1ffd70189226"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/character_sage_sheet.png",
+      "id": "997e1a41-b54e-411d-9e5a-b68c4ba7ac71"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/character_archer_sheet.png",
+      "id": "dbf2e80d-5cf6-4d90-b658-695806fe3bcf"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/character_yumemin_basic_sheet.png",
+      "id": "d4c77413-4def-4943-b2e2-5d9a451e24da"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/sobaya_voice_timbre.wav",
+      "id": "645d070c-0892-4871-8698-add0bc96ea4c"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/fukuchan_voice_timbre.wav",
+      "id": "7a2c235c-88fb-4b56-a40d-3c5b428c6d64"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/character_fukuchan_basic_sheet.png",
+      "id": "dd80e09e-57f4-4561-b813-c5134d960ddd"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/character_yametaro_basic_sheet.png",
+      "id": "068d0b8e-8927-4398-86ce-e5f1ac04ac6c"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/yametaro_voice_timbre.wav",
+      "id": "40430690-979b-4b1b-95b1-9a59e1c22916"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/patch_return_first_frame.png",
+      "id": "b63eefba-5046-4a19-909f-61b15c97888c"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/sobaya_line1_irodori.wav",
+      "id": "6f08a94f-6cd2-475d-87b4-538c07c5fe12"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/sobaya_line2_irodori.wav",
+      "id": "bae62439-53b9-49be-99cf-e3319bbb7857"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/sobaya_modern_dream_irodori.wav",
+      "id": "ad34717e-cf7b-4a7e-96bd-d6dc19b1b5e4"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/wan3_config_isekai.json",
+      "id": "79458da5-88ec-4260-bb85-35e0a68e3660"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/wan3_config_modern.json",
+      "id": "83d85346-d071-4281-b525-05551623a777"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/wan3_config_patch_return.json",
+      "id": "fb4a20bb-e103-475c-8b37-bef440933eb4"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/wan3_config_hospital_patch.json",
+      "id": "f7f3abbb-96b3-47c8-8798-f4ecfb8083f2"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/cut_yametaro_scene.json",
+      "id": "8f32bd9d-1abe-4793-8e60-8e02f6d294dc"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/sobaya_audio_patch.json",
+      "id": "59b3e136-221e-417c-8b7f-6b1695ebdacc"
+    },
+    {
+      "file": "02_CHARACTERS/Sobaya_voice.wav",
+      "id": "80b4fe1e-fa54-41a3-a8f6-f6c2c42a5eda"
+    }
+  ]
+}
