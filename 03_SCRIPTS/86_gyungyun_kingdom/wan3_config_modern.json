@@ -1,12 +1,12 @@
 {
   "model": "wan3.0-video",
   "audio_source": "wan3",
-  "audio_sync_strategy": "no_visible_speech",
+  "audio_sync_strategy": "wan_generated_lip_sync",
   "reference_audio_usage": "voice_timbre_only",
-  "project_duration": 40,
+  "project_duration": 43,
   "generation_mode": "segmented_over_30",
   "segment": "modern",
-  "segment_duration": 11,
+  "segment_duration": 14,
   "prompt_file": "prompt_wan3_modern.txt",
   "media": [
     {
@@ -18,18 +18,41 @@
       "path": "character_yumemin_basic_sheet.png"
     },
     {
+      "type": "reference_image",
+      "path": "character_fukuchan_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_yametaro_basic_sheet.png"
+    },
+    {
       "type": "reference_audio",
-      "path": "sobaya_voice_timbre.wav"
+      "path": "fukuchan_voice_timbre.wav"
+    },
+    {
+      "type": "reference_audio",
+      "path": "yametaro_voice_timbre.wav"
     }
   ],
   "parameters": {
     "resolution": "480P",
     "ratio": "16:9",
-    "duration": 11,
+    "duration": 14,
     "audio": true,
-    "seed": 861006,
+    "seed": 861201,
     "watermark": false,
     "prompt_extend": false
   },
-  "output": "wan3_modern_seed861006_480p.mp4"
+  "output": "wan3_modern_seed861201_480p.mp4",
+  "planned_masked_speech_edit": {
+    "speaker": "Sobaya",
+    "audio": "sobaya_modern_dream_irodori.wav",
+    "text": "変な夢を見てた気がする",
+    "planned_window": [
+      7,
+      11
+    ],
+    "strategy": "local canonical Japanese voice over rigid fully masked character; Wan generates room tone only; choose actual quiet shot after inspection",
+    "mouth_visible": false
+  }
 }

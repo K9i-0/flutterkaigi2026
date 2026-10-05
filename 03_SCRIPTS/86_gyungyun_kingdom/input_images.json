@@ -28,5 +28,15 @@
     "path": "party_design_approved.png",
     "sha256": "c705c5a52a5fb26f9badf31f90fc595b48354b5ce22f489d041c259d2365d61a",
     "source": "built-in image_gen; approved party concept or derived individual sheet"
+  },
+  {
+    "path": "character_fukuchan_basic_sheet.png",
+    "sha256": "a3e1f8f9feff43bf501617818f6e8652c2b6b39d72f7982716cbc550cb3b5866",
+    "source": "03_SCRIPTS/00_TEMPLATES/characters/character_fukuchan_basic_sheet.png"
+  },
+  {
+    "path": "character_yametaro_basic_sheet.png",
+    "sha256": "1e98502e8051bbacf482f273e551a7dd8b8fb79e2c153865d9e48df690eb91e6",
+    "source": "03_SCRIPTS/00_TEMPLATES/characters/character_yametaro_basic_sheet.png"
   }
 ]

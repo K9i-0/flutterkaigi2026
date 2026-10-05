@@ -1,6 +1,6 @@
 {
   "status": "planned_not_rendered",
-  "duration_seconds": 40,
+  "duration_seconds": 43,
   "ratio": "16:9",
   "generation_resolution": "480P",
   "export": {
@@ -11,31 +11,34 @@
   },
   "clips": [
     {
-      "input": "wan3_modern_seed861006_480p.mp4",
+      "input": "wan3_modern_seed861201_480p.mp4",
       "source_in": 0,
-      "source_out": 3,
+      "source_out": 2,
       "timeline_in": 0,
-      "timeline_out": 3
+      "timeline_out": 2
     },
     {
-      "input": "wan3_isekai_seed861005_480p.mp4",
+      "input": "isekai_visual_fixed_sobaya_irodori_720p.mp4",
       "source_in": 0,
       "source_out": 29,
-      "timeline_in": 3,
-      "timeline_out": 32
+      "timeline_in": 2,
+      "timeline_out": 31
     },
     {
-      "input": "wan3_modern_seed861006_480p.mp4",
-      "source_in": 3,
-      "source_out": 11,
-      "timeline_in": 32,
-      "timeline_out": 40
+      "input": "wan3_modern_seed861201_480p.mp4",
+      "source_in": 2,
+      "source_out": 14,
+      "timeline_in": 31,
+      "timeline_out": 43
     }
   ],
   "notes": [
     "All times are planned. Inspect actual modern hard-cut frame before final assembly; do not cut dialogue to enforce a nominal timestamp.",
     "Preserve synchronized embedded audio. No AI upscaling.",
     "No burned-in subtitles requested.",
-    "Final corridor reveal must remain last."
+    "Final corridor reveal must remain last.",
+    "Use approved repaired isekai video at native 720p, do not downscale or upscale again.",
+    "Modern hospital local Sobaya line: use planned_masked_speech_edit in modern config, natural timing after generation.",
+    "43 seconds planned; no final render yet."
   ]
 }
