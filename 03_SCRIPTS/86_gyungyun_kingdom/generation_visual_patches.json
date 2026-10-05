@@ -1,0 +1,91 @@
+{
+  "date": "2026-10-05",
+  "user_authorization": "一部のシーンだけ再生成／冒頭3人歩行／24秒あたりから最後までそば屋中心で作り直す",
+  "requested_scope": "only opening and ending; retain corrected audio and middle",
+  "rule_override": "Explicit user partial-regeneration instruction takes precedence over default single-generation skill rule",
+  "estimated_usd": 0.35,
+  "billed_amount": "not retrieved",
+  "price_source": "https://www.qwencloud.com/models/wan3.0-video",
+  "tasks": [
+    {
+      "segment": "opening",
+      "task_id": "80a17a97-11af-4811-b73c-c41092d40b37",
+      "status": "SUCCEEDED",
+      "config": "wan3_config_patch_opening.json",
+      "prompt_sha256": "e051fce4e93d5dd2b3b3ede49364848ad8cced2a5c6df7af9792496c5f9a3e2b",
+      "first_frame_sha256": "8448072e20441f60c31ba86bcba8b8cdec2bc194f3637ada8a14b86fc26869ce",
+      "parameters": {
+        "resolution": "480P",
+        "ratio": "16:9",
+        "duration": 4,
+        "audio": true,
+        "seed": 861101,
+        "watermark": false,
+        "prompt_extend": false
+      },
+      "output": "wan3_patch_opening_seed861101_480p.mp4",
+      "output_sha256": "4ba0a545339d8d8cc2ba5dde984b06c734a9a44c3e859e7de33d57aec36910dc",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 854,
+            "height": 480,
+            "r_frame_rate": "30/1"
+          },
+          {
+            "r_frame_rate": "0/0"
+          }
+        ],
+        "format": {
+          "duration": "4.040000"
+        }
+      }
+    },
+    {
+      "segment": "return",
+      "task_id": "31166258-1ece-46e5-8490-69126c836603",
+      "status": "SUCCEEDED",
+      "config": "wan3_config_patch_return.json",
+      "prompt_sha256": "71364be4b581b883d3e903d27c15fbd8b1e3e6c17e825d808c0aeba6b3142e6e",
+      "first_frame_sha256": "908afaa313b9856a2eacd454bf98a3a220333df8ffb9745d19384b002736bc9c",
+      "parameters": {
+        "resolution": "480P",
+        "ratio": "16:9",
+        "duration": 6,
+        "audio": true,
+        "seed": 861102,
+        "watermark": false,
+        "prompt_extend": false
+      },
+      "output": "wan3_patch_return_seed861102_480p.mp4",
+      "output_sha256": "62c71126397e57f2e2381fba8bfffbb9a6e22efbff7cc4d650a1ec0170f0ccf3",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 854,
+            "height": 480,
+            "r_frame_rate": "30/1"
+          },
+          {
+            "r_frame_rate": "0/0"
+          }
+        ],
+        "format": {
+          "duration": "6.037007"
+        }
+      }
+    }
+  ],
+  "visual_review": {
+    "method": "Both outputs sampled3fps; return final second sampled10fps",
+    "opening": "Exactly3 distinct party members remain visible and walk; hero, sage, single female archer. Three native Yumemins appear.",
+    "return": "Sobaya remains dominant adult central subject, both feet in circle, one small Yumemin beside ankle. No shrink to distant tiny subject; all party members remain outside. Both are obscured by shared bright light in final0.4s.",
+    "ending_limit": "Ends in bright column occlusion, not a clear empty-circle aftermath; next hospital cut can use light transition.",
+    "source_selection": "Opening first110 frames, return frames15–179. Keeps29s timeline.",
+    "audio": "Generated patch audio discarded; original corrected track retained exactly."
+  }
+}

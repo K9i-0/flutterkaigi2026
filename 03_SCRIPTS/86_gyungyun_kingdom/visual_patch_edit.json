@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-05",
+  "fps": 30,
+  "duration_frames": 870,
+  "output": "isekai_visual_fixed_sobaya_irodori_720p.mp4",
+  "audio_input": "isekai_sobaya_irodori_720p.mp4",
+  "audio_policy": "Copy original corrected AAC in full, including Irodori lines, sage spell, all other voices and effects; generated patch audio discarded",
+  "user_scope": "Opening has duplicate female archer; replace with hero/sage/archer walking. Replace around24sec to end: Sobaya centered in magic circle and adult full size.",
+  "clips": [
+    {
+      "input": "wan3_patch_opening_seed861101_480p.mp4",
+      "source_start_frame": 0,
+      "source_end_frame": 110,
+      "timeline_start_frame": 0,
+      "timeline_end_frame": 110
+    },
+    {
+      "input": "wan3_isekai_seed861005_480p.mp4",
+      "source_start_frame": 110,
+      "source_end_frame": 705,
+      "timeline_start_frame": 110,
+      "timeline_end_frame": 705
+    },
+    {
+      "input": "wan3_patch_return_seed861102_480p.mp4",
+      "source_start_frame": 15,
+      "source_end_frame": 180,
+      "timeline_start_frame": 705,
+      "timeline_end_frame": 870,
+      "selection_note": "Use last5.5s of6s generated shot so shared light occlusion completes; no speed change."
+    }
+  ],
+  "generation_rule_override": "User explicitly requested partial regeneration, overriding skill default single task for whole29s sequence. Only two requested replacement regions generated.",
+  "verification": {
+    "frames": 870,
+    "final_media": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "r_frame_rate": "30/1"
+        },
+        {
+          "codec_name": "aac",
+          "r_frame_rate": "0/0"
+        }
+      ],
+      "format": {
+        "duration": "29.025011"
+      }
+    },
+    "audio_aac_packet_hash_unchanged": true,
+    "audio_decoded_pcm_hash_unchanged": true,
+    "full_decode": "passed",
+    "output_sha256": "1839c19d7a1e0b5fbcfc8e6f4eba19628b36dc69af9318810d01bfa9ecbee72d",
+    "video_scale": "one Lanczos upscale per original 480p segment; no scale-up from previously upscaled720p",
+    "visual_review": "Opening0 and109, join110, original704, new705 and final869 inspected in720p render. Party3 distinct, no duplicate archer. Sobaya full-size centered in circle; finalshared light occlusion. No black frames at joins."
+  }
+}

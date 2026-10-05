@@ -1,0 +1,26 @@
+{
+  "model": "wan3.0-video",
+  "audio_source": "wan3",
+  "audio_sync_strategy": "no_visible_speech",
+  "project_duration": 40,
+  "generation_mode": "segmented_over_30",
+  "partial_regeneration_authorization": "User explicitly requested only opening and approximately24s-to-end; overrides default all-in-one rule for this repair",
+  "prompt_file": "prompt_wan3_patch_return.txt",
+  "media": [
+    {
+      "type": "first_frame",
+      "path": "patch_return_first_frame.png"
+    }
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 6,
+    "audio": true,
+    "seed": 861102,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_patch_return_seed861102_480p.mp4",
+  "edit_audio": "retain full prior Irodori-corrected audio, discard candidate audio; no new lines"
+}
