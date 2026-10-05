@@ -182,3 +182,11 @@ tools/sobaya_monsterize.sh .local/gyungyun86-voice/line2c_context_raw.wav .local
 `combined_no_walk_hospital_fixed_720p.mp4` が最新結合版（約38.967秒、720p、30fps）。`assemble_hospital_fixed.py` で旧カット版の冒頭802フレーム＋新病室300フレーム＋既存廊下67フレームを結合。病室7秒から正典そば屋音声を重ねた。新病室だけ一度Lanczos拡大。損失なしH.264で書き出し、冒頭〜異世界と廊下のデコード画素ハッシュが旧カット版の対応区間と完全一致することを確認。
 
 病室を5fpsで目視し、3名のみ・ゆめみんなし・仮面装着を確認。福ちゃん・やめ太郎の台詞はASR一致。全編デコード合格。音声の通し試聴／完全な口パク一致の承認とは区別する。詳細 `generation_hospital_patch.json`。
+
+## 完成版：やめ太郎D採用（2026-10-05）
+
+ユーザー「Dを採用 完成させて」により、D（80話「指示どおり働くなんて…」の無音を含む参照から生成した候補）を採用。Eではない。`final_gyungyun_kingdom_720p.mp4` が完成版、歩行カット・病室修正版の約38.967秒／720p／30fps。
+
+採用声 `yametaro_hospital_d.wav` は比較で再生した音量調整済みDそのもの。元生成 `yametaro_hospital_d_raw.wav` と再生成用参照 `yametaro_hospital_d_reference_ep80.wav` を保存。モデルLarge・seed7・CFG5・captionなし・duration_scale1・uncut。新規発話生成なし。元Dの0.8–2.75秒を使用し、先頭末尾の無音余白だけ除く。発話内容・内部の間・速度・ピッチを保持。
+
+`finalize_yametaro_d.py` と `final_yametaro_d_edit.json` が再現用。やめ太郎区間のみ既存声を分離した背景＋採用声に置換し、区間外PCMは一致。映像はストリームコピーで全パケットのハッシュ一致（廊下を含む映像完全維持）。全編デコード成功。音素単位の完全同期・通し試聴の合格とは区別する。

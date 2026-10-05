@@ -1,0 +1,35 @@
+{
+  "status": "user_selected_D_completed",
+  "output": "final_gyungyun_kingdom_720p.mp4",
+  "source": "combined_no_walk_hospital_fixed_720p.mp4",
+  "adopted_voice": "yametaro_hospital_d.wav",
+  "raw_voice": "yametaro_hospital_d_raw.wav",
+  "reference": "yametaro_hospital_d_reference_ep80.wav",
+  "model": "Aratako/Irodori-TTS-v4-Large",
+  "seed": 7,
+  "text": "そばやさん、だいじょうぶか？",
+  "cfg_text": 5,
+  "duration_scale": 1,
+  "uncut": true,
+  "caption": "",
+  "reference_trimmed": false,
+  "source_voice_slice_seconds": [
+    0.8,
+    2.75
+  ],
+  "voice_destination_sample": 1360632,
+  "replacement_samples": [
+    1358280,
+    1465590
+  ],
+  "audio_sample_rate": 44100,
+  "processing": "Adopted D listen-copy loudnorm -18LUFS/-2dBTP; silence margins only removed, internal pause retained; no new TTS, pitch or time stretch",
+  "checks": {
+    "video_encoded_packets_unchanged": true,
+    "pcm_outside_replacement_exactly_unchanged": true,
+    "peak": 1.0855697393417358,
+    "full_decode": "passed",
+    "phoneme_lip_sync": "original visual performance retained; exact phoneme alignment not certified"
+  },
+  "sha256": "d1d90929af3c15fca37390cf2dc18de624ab66bc49e3c7f9f9676a901b5d0598"
+}

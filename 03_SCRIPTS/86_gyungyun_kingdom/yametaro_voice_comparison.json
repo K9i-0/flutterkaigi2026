@@ -1,5 +1,5 @@
 {
-  "status": "awaiting_user_voice_choice",
+  "status": "D_adopted_by_user",
   "line": "そば屋さん、大丈夫か？",
   "model": "Aratako/Irodori-TTS-v4-Large",
   "seed": 7,
@@ -101,5 +101,7 @@
     "sha256": "2da4d4a620e4ae431b2808c5c77bb32e55d97ea99263270c89bf292e597780f1",
     "main_film": "unchanged pending user choice",
     "auditory_review": "user comparison pending; not inferred from ASR"
-  }
+  },
+  "adopted": "D, not E",
+  "final": "final_gyungyun_kingdom_720p.mp4"
 }
