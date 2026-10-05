@@ -114,3 +114,28 @@ python3 -u .claude/skills/wan-video/scripts/qwen_wan3_generate.py 03_SCRIPTS/86_
 - **要確認／修正候補**：ゆめみんに脚状の青い突起。福ちゃんの肌が正典より荒く、斑点・凹凸が増加。ゆめみんがそば屋より先に光へ隠れ、厳密な同時消失は未確認。
 - ローカルWhisperで台詞をスクリーニング。主要台詞と呪文は認識。「強いて」が「すいて」、一部の掛け声等に自動認識上の曖昧さがある。これは試聴や誤読確定ではない。声質・発音・リップシンクを合格扱いしない。
 - 詳細：`generation_isekai.json`。監査画像・自動認識の作業物は `.local/gyungyun86-audit/`。生成結果は未採用テイクとして提示し、無断で再課金しない。
+
+## そば屋の正典音声へ差し替え（2026-10-05）
+
+ユーザー指示「そば屋のセリフの読みが間違ってるのでirodoriで修正／他のセリフも普段のそば屋ボイスに寄せて」により、そば屋の2台詞だけを修正。今回の「普段の声」の指定を優先し、Wan動画抽出音声ではなく正典 `02_CHARACTERS/Sobaya_voice.wav` を参照した。勇者・賢者の台詞は対象外。
+
+- 出力：`isekai_sobaya_irodori_720p.mp4`。1280×720、30fps、870フレーム、29.025011秒、AACステレオ。元480pからLanczosで一度のみ拡大。動画再生成・追加課金なし。
+- 「強いていうなら、窓際族かな」：生成本文を「しいていうなら、まどぎわぞくかな。」に固定。Large、seed42、短い落ち着いた演技caption、CFG5、自動尺、uncut。採用音声 `sobaya_line1_irodori.wav`。
+- 「え、もう？」：Large、seed43、captionなし、CFG5、自動尺、uncut。「え、もう？まだ、なにもしてないよ。」の文脈付き生成から、正典低音加工後の0–0.5秒と0.9–1.7秒を連結。語間無音だけを0.4秒減らし、補助文は一切挿入しない。採用音声 `sobaya_line2_irodori.wav`。
+- 両方に `tools/sobaya_monsterize.sh` の正典加工（-5半音・70Hz tremolo等）。通常の尺合わせの早送り・音素切断はなし。
+- 置換範囲は30fpsの355–448フレーム、779–822フレーム。挿入アンカー356／780フレーム。音声レベルは同じ固定ゲイン+2.1377dB。
+- htdemucsの元動画背景成分を置換区間だけ残す。背景分離は効果音を減衰させる可能性がある。区間外はPCMで元音声と完全一致。ピーク-1.30dBFS、クリッピングなし。
+- 確認：終端までデコード合格、元と同じ870フレーム、変更区間外PCM一致。長い台詞の「しいて」は最終音声のASRで確認。短い台詞は加工前切出音声で「え、もう？」、加工後の文脈付き全音声でも一致。ただし低音加工後の短い抜粋はASRが不安定で、独立した試聴を未実施。最終の聞き取り・自然さは要試聴。ASRのみで合格とは記録しない。
+- 正典参照・生成条件・切出・ハッシュ・検証：`sobaya_audio_patch.json`。再構築：`patch_sobaya_audio.py`。作業物と不採用候補は `.local/gyungyun86-voice/` のみ。
+- 生成元のゆめみん造形・福ちゃんの肌の課題は今回の音声編集では修正していない。
+
+### 再生成する場合の音声コマンド
+
+```sh
+IRODORI_TTS_CHECKPOINT=Aratako/Irodori-TTS-v4-Large IRODORI_UNCUT=1 IRODORI_CFG_SCALE_TEXT=5 tools/irodori_speak.sh 'しいていうなら、まどぎわぞくかな。' .local/gyungyun86-voice/line1_raw.wav 02_CHARACTERS/Sobaya_voice.wav 42 '落ち着いて淡々と、自然な会話の速さで話す。'
+IRODORI_TTS_CHECKPOINT=Aratako/Irodori-TTS-v4-Large IRODORI_UNCUT=1 IRODORI_CFG_SCALE_TEXT=5 tools/irodori_speak.sh 'え、もう？まだ、なにもしてないよ。' .local/gyungyun86-voice/line2c_context_raw.wav 02_CHARACTERS/Sobaya_voice.wav 43
+tools/sobaya_monsterize.sh .local/gyungyun86-voice/line1_raw.wav .local/gyungyun86-voice/line1.wav
+tools/sobaya_monsterize.sh .local/gyungyun86-voice/line2c_context_raw.wav .local/gyungyun86-voice/line2c_context.wav
+```
+
+切出範囲は上記とJSONが正本。採用WAVは既にエピソード直下に保存。編集再現は元動画から44.1kHz stereo PCMを `.local/gyungyun86-voice/original.wav` へ抽出し、スクリプト冒頭のDemucsコマンドで背景成分を準備して実行する。出力動画の上書きは拒否する。

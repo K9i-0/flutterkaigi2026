@@ -1,0 +1,117 @@
+{
+  "date": "2026-10-05",
+  "request": "誤読をIrodoriで修正し、他のそば屋台詞も普段の声へ寄せる",
+  "model": "Aratako/Irodori-TTS-v4-Large",
+  "checkpoint_revision": "2e0c55428ce97268a507f1feeb2478f8d9148e8b",
+  "reference_source": "canonical, explicitly requested usual Sobaya voice rather than generated video voice",
+  "reference": "02_CHARACTERS/Sobaya_voice.wav",
+  "reference_sha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+  "fps": 30,
+  "sample_rate": 44100,
+  "cfg_text": 5,
+  "uncut": true,
+  "duration_scale": 1.0,
+  "lines": [
+    {
+      "text": "強いていうなら、窓際族かな",
+      "tts_text": "しいていうなら、まどぎわぞくかな。",
+      "seed": 42,
+      "caption": "落ち着いて淡々と、自然な会話の速さで話す。",
+      "audio": "sobaya_line1_irodori.wav",
+      "source_selection": "full postprocessed output",
+      "replacement_frames": [
+        355,
+        448
+      ],
+      "insert_frame": 356,
+      "reason": "user-confirmed mispronunciation and canonical voice alignment",
+      "audio_sha256": "d14cfe5c77f9a1b770fe6c2c3c716824ba93acfb65e0528ed0a4f47a060ba50d",
+      "gain_db": 2.137687487826208,
+      "duration_seconds": 2.762312925170068,
+      "insert_sample": 523320,
+      "replacement_samples": [
+        521850,
+        658560
+      ]
+    },
+    {
+      "text": "え、もう？",
+      "tts_text": "え、もう？まだ、なにもしてないよ。",
+      "seed": 43,
+      "caption": "",
+      "audio": "sobaya_line2_irodori.wav",
+      "source_selection_seconds": [
+        [
+          0,
+          0.5
+        ],
+        [
+          0.9,
+          1.7
+        ]
+      ],
+      "source_selection_note": "From monsterized contextual output; remove only middle silence, exclude all added context speech; no speech speed change",
+      "replacement_frames": [
+        779,
+        822
+      ],
+      "insert_frame": 780,
+      "reason": "canonical voice alignment",
+      "audio_sha256": "fc8dd2fac902dd38075fab59299edcf22a1f8201275628e86bcbe7590bb1679b",
+      "gain_db": 2.137687487826208,
+      "duration_seconds": 1.3,
+      "insert_sample": 1146600,
+      "replacement_samples": [
+        1145130,
+        1208340
+      ]
+    }
+  ],
+  "output": "isekai_sobaya_irodori_720p.mp4",
+  "output_sha256": "dfdce92dc6703dea7bab80f9be534d5775e8f4b986b2f22e00c7ebff688c363b",
+  "original_video_sha256": "fdc46bff769389801d852834b41dc0dae176e34d65d9c889fd9afbe1eb7b3af0",
+  "pcm_frames": 1280000,
+  "outside_intervals_pcm_identical": true,
+  "peak_dbfs": -1.2953965239524325,
+  "background": "source htdemucs no_vocals, CPU shifts0; 15ms boundary ambience-only fades",
+  "ordinary_timestretch": false,
+  "postprocess": "canonical sobaya_monsterize.sh only: -5 semitones, atempo compensation, 70Hz tremolo, dynaudnorm",
+  "video": "single Lanczos upscale from original 480p to 1280x720; original 30fps and all video frames preserved",
+  "auditory_review": "not independently verified; ASR and PCM checks are separate from listening",
+  "source_video_unchanged": true,
+  "verification": {
+    "final_media": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "r_frame_rate": "30/1",
+          "nb_read_frames": "870"
+        },
+        {
+          "codec_name": "aac",
+          "sample_rate": "44100",
+          "channels": 2,
+          "r_frame_rate": "0/0",
+          "nb_read_frames": "1250"
+        }
+      ],
+      "format": {
+        "duration": "29.025011"
+      }
+    },
+    "full_decode": "passed",
+    "frame_count": "870, identical count to source",
+    "line1_final_asr": "シーて言うなら、窓際族かな? (phonetic shiite confirmed by ASR)",
+    "line2_raw_excerpt_asr": "え? もう?",
+    "line2_full_context_processed_asr": "えっ?もう?まだ何もしてないよ",
+    "line2_processed_excerpt_asr": "unstable: あ、リン!; full ending context recognized only え?",
+    "line2_status": "raw articulation and processed contextual source checked; processed short-line intelligibility requires listening",
+    "listening": "not independently performed; do not equate ASR with listening",
+    "visual_check": "one final 720p speaking frame inspected; no reframing beyond standard upscale",
+    "effects_limitation": "demucs can attenuate effects inside the two edited windows; outside-window audio is PCM-identical"
+  }
+}

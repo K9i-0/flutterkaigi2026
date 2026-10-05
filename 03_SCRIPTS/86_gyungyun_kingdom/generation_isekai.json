@@ -161,5 +161,10 @@
     ]
   },
   "modern_status": "not submitted",
-  "retry_submitted": false
+  "retry_submitted": false,
+  "latest_audio_edit": {
+    "output": "isekai_sobaya_irodori_720p.mp4",
+    "record": "sobaya_audio_patch.json",
+    "source_generated_video_retained": true
+  }
 }
