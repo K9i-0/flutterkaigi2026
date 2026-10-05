@@ -37,5 +37,45 @@
     "Voice choice comparison only: video stays identical between candidates, phoneme lip-sync not finalized.",
     "Main film unchanged; candidates untracked until user chooses.",
     "No auditory approval inferred from ASR."
-  ]
+  ],
+  "previous_feedback": "User rejected A and B as not satisfactory; requested other episode80 lines.",
+  "round2": {
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 7,
+    "caption": "",
+    "cfg_text": 5,
+    "duration_scale": 1,
+    "uncut": true,
+    "text": "そばやさん、だいじょうぶか？",
+    "candidates": [
+      {
+        "label": "C",
+        "path": ".local/gyungyun86-yametaro-compare/c_ep80_madogiwa.wav",
+        "duration": 2.68,
+        "sha256": "9400c1419bd50c17f371b2c228485078e800c65b4584e079e31942d689efdd86",
+        "reference": ".local/gyungyun86-yametaro-compare/ref_c_madogiwa.wav",
+        "reference_sha256": "dd030f0e7c153ef54d1c89346c299cc96cc10f0a38930aa29181695d41bb93d8",
+        "source": "03_SCRIPTS/80_sobaya_clone_lab/opening_dialogue_isolated.wav",
+        "source_seconds": [
+          8.5,
+          11.6
+        ],
+        "preparation": "C: existing separated dialogue; D: Demucs htdemucs vocals shifts0 CPU; mono48kHz reference"
+      },
+      {
+        "label": "D",
+        "path": ".local/gyungyun86-yametaro-compare/d_ep80_work.wav",
+        "duration": 3.64,
+        "sha256": "b14dddd245c04a0756cd1f526cd442e4e9e76137bde2246fffde844a86499f60",
+        "reference": ".local/gyungyun86-yametaro-compare/ref_d_work.wav",
+        "reference_sha256": "ac514b64a5197e23777973cba3fa8f32637cd120a35add509e89445b69436960",
+        "source": "03_SCRIPTS/00_REPLY_CLIPS/80_やめ太郎_指示どおり働くなんてそば屋さんやない.mp4",
+        "source_seconds": [
+          0,
+          6.766667
+        ],
+        "preparation": "C: existing separated dialogue; D: Demucs htdemucs vocals shifts0 CPU; mono48kHz reference"
+      }
+    ]
+  }
 }
