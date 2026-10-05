@@ -77,5 +77,29 @@
         "preparation": "C: existing separated dialogue; D: Demucs htdemucs vocals shifts0 CPU; mono48kHz reference"
       }
     ]
+  },
+  "round3": {
+    "feedback": "User prefers D relatively but questions silence in reference",
+    "label": "E",
+    "reference": ".local/gyungyun86-yametaro-compare/ref_d_trimmed.wav",
+    "reference_from_D_seconds": [
+      2.95,
+      6.4
+    ],
+    "reference_duration": 3.45,
+    "reference_sha256": "123f6042c0fa573a0b10be08c7d0566fbf3adb8ec20861c8da2ff60d2a8b4c17",
+    "cut_method": "PCM excerpt; onset near3.03 and offset near6.34 at -45dB, retaining short margins; internal speech unchanged",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 7,
+    "caption": "",
+    "cfg_text": 5,
+    "duration_scale": 1,
+    "uncut": true,
+    "text": "そばやさん、だいじょうぶか？",
+    "candidate": ".local/gyungyun86-yametaro-compare/e_d_trimmed.wav",
+    "duration": 2.8,
+    "sha256": "2da4d4a620e4ae431b2808c5c77bb32e55d97ea99263270c89bf292e597780f1",
+    "main_film": "unchanged pending user choice",
+    "auditory_review": "user comparison pending; not inferred from ASR"
   }
 }
