@@ -162,3 +162,9 @@ tools/sobaya_monsterize.sh .local/gyungyun86-voice/line2c_context_raw.wav .local
 ユーザーの衝突寸前の先頭フレーム、病室の福ちゃん・やめ太郎追加を反映。通常形2名のシートをエピソードへコピーし、参照番号と顔・肌の共通文をプロンプトへ展開。声質参照と生成済みそば屋台詞の条件・ハッシュは `preparation_modern.json`。そば屋のASR結果は指定文に一致、通し試聴の合格とは区別する。
 
 現代seedは861201、480P／14秒／単一タスク。2026-10-05に[公式価格](https://www.qwencloud.com/models/wan3.0-video)と[作成API](https://docs.qwencloud.com/api-reference/video-generation/wan30-video/create-task)を再確認。表示単価$0.035/秒で現代1回の見積もりは **$0.49**。動画APIは未送信。先頭が本当に衝突寸前か、病室の3名の同一性・人数・口パク・音声・廊下のゆめみんは生成後の監査項目。採用済み異世界の再生成は不要。
+
+## 現代初回生成（2026-10-05）
+
+ユーザー「生成して」に基づき14秒480Pを1回送信し成功。task `76fb26d3-7d5e-46d1-b0ad-8be23c26a355`、seed861201。原本 `wan3_modern_seed861201_480p.mp4`。そば屋正典音声を配置した確認用は `modern_sobaya_irodori_preview_720p.mp4`（720p／30fps／14秒）。再現コード `render_modern_preview.py`、記録 `generation_modern.json`。
+
+要修正：冒頭の車との距離が指定より広い、ゆめみんが病室にも先に登場、病室の冒頭はそば屋の寄りで3名が同時には出ない。初回結果を最終採用とはせず、全編結合は保留。再課金の自動再生成なし。福ちゃん・やめ太郎の指定台詞はASRで確認。そば屋区間の余計な発話らしき音をDemucs分離し、8.8秒から正典の夢のセリフを重ねた。聴覚による自然さ・完全リップシンクの合格は未判定。
