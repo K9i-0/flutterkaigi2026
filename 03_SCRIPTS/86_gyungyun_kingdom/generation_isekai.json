@@ -1,0 +1,165 @@
+{
+  "task_id": "599dcce2-54ae-4d5c-b3c2-33342295c758",
+  "date": "2026-10-05",
+  "status": "SUCCEEDED",
+  "user_authorization": "先に異世界パートを生成しよう",
+  "scope": "isekai only; no modern request; no regeneration",
+  "model": "wan3.0-video",
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 29,
+    "audio": true,
+    "seed": 861005,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "config_file": "wan3_config_isekai.json",
+  "prompt_file": "prompt_wan3_isekai.txt",
+  "prompt_sha256": "7b1c184cd635bbcec7a4b2eb3d5c49833f674c8afb189c44d60a1bd47402850f",
+  "media": [
+    {
+      "type": "reference_image",
+      "path": "character_sobaya_basic_sheet.png",
+      "sha256": "54c890e9b7714e6cf964b98f790b407fdebe0e32bf5c494c5568c2c7acd27f96"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_fukuchan_hero_sheet.png",
+      "sha256": "0fe206ce64d86c65299b403865248c2fb423d388142f36b959681c423d45fd36"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_sage_sheet.png",
+      "sha256": "44e07d58042b27b2c5ba350332c8e51fc38563be166d3b544d6c1062d6a68afa"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_archer_sheet.png",
+      "sha256": "90934e5df497dfab347990696df0fd0334873249c82121ca42df96f55743ebf7"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_yumemin_basic_sheet.png",
+      "sha256": "b6a9cb6c2c29a27c8df404882316b3c0e7714f20566050908902e5785127ee67"
+    },
+    {
+      "type": "reference_audio",
+      "path": "sobaya_voice_timbre.wav",
+      "sha256": "81f04d60f17ef0b9485b300292e35ec5b2d70570996b8c5706d9f53bc23c27f3"
+    },
+    {
+      "type": "reference_audio",
+      "path": "fukuchan_voice_timbre.wav",
+      "sha256": "b2131bb057e8b16682dadb6092c9053c271d35f40529c00ba2d8dcaf25e21bcd"
+    }
+  ],
+  "output": "wan3_isekai_seed861005_480p.mp4",
+  "estimated_usd": 1.015,
+  "price_checked_date": "2026-10-05",
+  "price_source": "https://www.qwencloud.com/models/wan3.0-video",
+  "actual_billed_amount": "not retrieved",
+  "audio_source": "wan3",
+  "audio_sync_strategy": "wan_generated_lip_sync",
+  "audit_status": "preliminary_review_with_issues; not final approval",
+  "output_sha256": "fdc46bff769389801d852834b41dc0dae176e34d65d9c889fd9afbe1eb7b3af0",
+  "actual_media": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "30/1"
+      },
+      {
+        "index": 1,
+        "codec_name": "aac",
+        "sample_rate": "44100",
+        "channels": 2,
+        "r_frame_rate": "0/0"
+      }
+    ],
+    "format": {
+      "duration": "29.025011",
+      "size": "18940680"
+    }
+  },
+  "visual_review": {
+    "method": "1 fps contact sheet, opening and hero close-ups, 4 fps final 3 seconds",
+    "confirmed": [
+      "Three Yumemins shown before rift",
+      "Sobaya arrives from rift; hero and sage conversation; forceful sage expression",
+      "Sobaya and one Yumemin enclosed by return magic, then disappear; party remains",
+      "Sobaya mask stays on in inspected frames; no mug; no modern scenes"
+    ],
+    "issues": [
+      "Yumemins have small blue appendages resembling feet/legs, contrary to canonical legless silhouette",
+      "Fukuchan face has more roughness, spots and deeper-looking skin texture than canonical sheet",
+      "Return sequence: Yumemin disappears into glow before Sobaya is fully obscured; strictly simultaneous disappearance not established",
+      "3–7s spatial continuity of rift differs from rigid planned geometry; not a locked physical portal throughout"
+    ],
+    "not_verified": [
+      "All-frame mask continuity",
+      "Phoneme-level lip sync",
+      "Voice identity and quality by listening",
+      "Exact Japanese pronunciation and complete absence of extra vocalization"
+    ]
+  },
+  "audio_screening": {
+    "method": "local cached openai/whisper-small, overlapping and targeted crops; not listening",
+    "passes": [
+      {
+        "model": "openai/whisper-small",
+        "note": "Automated screening only; overlap intentional; not auditory or voice identity approval",
+        "segments": [
+          {
+            "start": 0,
+            "duration": 10,
+            "text": "おぉ! 遺界から来たのか!怪しい仮面だな"
+          },
+          {
+            "start": 9,
+            "duration": 10,
+            "text": "マ、マド?なんだお前?こう!"
+          },
+          {
+            "start": 18,
+            "duration": 11,
+            "text": "こ、こいつ魔族じゃ!送り返せ!ギュンギュン!おうちかえれ!え、もう?"
+          }
+        ]
+      },
+      {
+        "model": "openai/whisper-small",
+        "note": "Automated screening only; overlap intentional; not auditory or voice identity approval",
+        "segments": [
+          {
+            "start": 8,
+            "duration": 4,
+            "text": "怪しい仮面だな 貴様何者だ"
+          },
+          {
+            "start": 11.5,
+            "duration": 4,
+            "text": "すいて言うなら、窓際族かな?"
+          },
+          {
+            "start": 20.5,
+            "duration": 6,
+            "text": "お送り返せ!ギュンギュン!おうちかえれ!"
+          }
+        ]
+      }
+    ],
+    "notes": [
+      "Most intended dialogue recognized, including ギュンギュン おうちかえれ",
+      "Strong automated read ambiguity on 強いて: recognized すいて in crop; do not call this confirmed mispronunciation without listening",
+      "Possible extra おぉ / お on some crops; may be ASR artifact, unconfirmed"
+    ]
+  },
+  "modern_status": "not submitted",
+  "retry_submitted": false
+}
