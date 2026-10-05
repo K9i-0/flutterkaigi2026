@@ -60,6 +60,17 @@ IDs accepted by mutation tools are UUIDs returned by earlier tools. `studio_id` 
 
 ## Binary PUT
 
+Prepare and validate a lossy delivery MP4 before requesting upload tickets. Keep the original master. For a master with AAC audio (the optional audio mapping also supports silent video):
+
+```sh
+ffmpeg -hide_banner -loglevel error -n \
+  -i path/to/master.mp4 -map 0:v:0 -map '0:a:0?' \
+  -c:v libx264 -preset slow -crf 16 -pix_fmt yuv420p \
+  -c:a copy -movflags +faststart path/to/studio_delivery.mp4
+```
+
+Preserve dimensions, frame rate, duration and frame count. If audio is not suitable for MP4/web playback, replace `-c:a copy` with `-c:a aac -b:a 192k`. Reuse a verified delivery file made from the same master/settings; never repeatedly encode the delivery copy. Check size before issuing tickets: CRF does not enforce a size limit. Upload this delivery file and generate its poster below. Record encoding settings and validation results locally without upload URLs.
+
 Send the file body to the returned one-time URL with its actual MIME type. Keep the URL out of command output.
 
 ```sh
