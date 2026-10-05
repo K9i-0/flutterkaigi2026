@@ -1,0 +1,113 @@
+{
+  "fps": 30,
+  "resolution": [
+    1280,
+    720
+  ],
+  "method": "FFmpeg frame-accurate trim and concat; no scaling, speed changes or added transitions",
+  "modern_split": {
+    "accident_end_exclusive": 42,
+    "hospital_start_inclusive": 54,
+    "reason": "Remove source baked accident/hospital dissolve to avoid hospital glimpse before isekai."
+  },
+  "known_source_issues": "Modern hospital includes Yumemin prematurely and opening truck gap is wider than requested; retained per user request to combine current takes.",
+  "versions": [
+    {
+      "name": "full",
+      "output": "combined_full_720p.mp4",
+      "clips": [
+        {
+          "input": "modern_sobaya_irodori_preview_720p.mp4",
+          "start_frame": 0,
+          "end_frame": 42
+        },
+        {
+          "input": "isekai_visual_fixed_sobaya_irodori_720p.mp4",
+          "start_frame": 0,
+          "end_frame": 870
+        },
+        {
+          "input": "modern_sobaya_irodori_preview_720p.mp4",
+          "start_frame": 54,
+          "end_frame": 420
+        }
+      ],
+      "verification": {
+        "expected_frames": 1278,
+        "duration_seconds": 42.6,
+        "probe": {
+          "programs": [],
+          "stream_groups": [],
+          "streams": [
+            {
+              "codec_type": "video",
+              "width": 1280,
+              "height": 720,
+              "r_frame_rate": "30/1",
+              "nb_frames": "1278"
+            },
+            {
+              "codec_type": "audio",
+              "r_frame_rate": "0/0",
+              "nb_frames": "1836"
+            }
+          ],
+          "format": {
+            "duration": "42.600000"
+          }
+        },
+        "full_decode": "passed",
+        "sha256": "f737222a3eb45f3bea48a915b964da185eaa3308f48bca8040346cae5b0c96a9"
+      }
+    },
+    {
+      "name": "no_walk",
+      "output": "combined_no_walk_720p.mp4",
+      "clips": [
+        {
+          "input": "modern_sobaya_irodori_preview_720p.mp4",
+          "start_frame": 0,
+          "end_frame": 42
+        },
+        {
+          "input": "isekai_visual_fixed_sobaya_irodori_720p.mp4",
+          "start_frame": 110,
+          "end_frame": 870
+        },
+        {
+          "input": "modern_sobaya_irodori_preview_720p.mp4",
+          "start_frame": 54,
+          "end_frame": 420
+        }
+      ],
+      "verification": {
+        "expected_frames": 1168,
+        "duration_seconds": 38.93333333333333,
+        "probe": {
+          "programs": [],
+          "stream_groups": [],
+          "streams": [
+            {
+              "codec_type": "video",
+              "width": 1280,
+              "height": 720,
+              "r_frame_rate": "30/1",
+              "nb_frames": "1168"
+            },
+            {
+              "codec_type": "audio",
+              "r_frame_rate": "0/0",
+              "nb_frames": "1678"
+            }
+          ],
+          "format": {
+            "duration": "38.933333"
+          }
+        },
+        "full_decode": "passed",
+        "sha256": "cc7dc810bbb55e9565d6594aca3fe5135914193b0386ea4c7764a131230ce7bf"
+      }
+    }
+  ],
+  "join_frame_review": "Both versions: last accident frame, first isekai frame, last isekai frame, first hospital frame inspected; no unintended hospital preview or black gap."
+}
