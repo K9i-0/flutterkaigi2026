@@ -103,5 +103,31 @@
     "auditory_review": "user comparison pending; not inferred from ASR"
   },
   "adopted": "D, not E",
-  "final": "final_gyungyun_kingdom_720p.mp4"
+  "final": "final_gyungyun_kingdom_720p.mp4",
+  "colleague_settings_trial": {
+    "label": "F",
+    "status": "comparison_only_not_adopted",
+    "colleague_repository": "sobaya-0141/Seedance_Madogiwa",
+    "colleague_commit": "af92df24b277a45450cda975b0549d4c6ee890e4",
+    "script": ".claude/skills/seedance/irodori_speak.sh",
+    "script_sha256": "422a1ab6bbd3e82ff8185d1470ab20f12b157975c9b3a9df99748292573094d7",
+    "execution": "Downloaded colleague script executed with IRODORI_TTS_DIR pointing to existing local Large environment; IRODORI_TTS_NO_UPDATE=1 prevents changing shared runtime. No synthesis options altered.",
+    "runtime_commit": "89f9d8fbd4d51ea019867ee1197725ede1df13c5",
+    "model": "Aratako/Irodori-TTS-v4-Large",
+    "seed": 7,
+    "text": "そばやさん、だいじょうぶか？",
+    "reference": "02_CHARACTERS/Yametaro_voice.wav",
+    "reference_identical_to_colleague": true,
+    "cfg_text": 3,
+    "duration_scale": 1,
+    "caption": "",
+    "trim": "model default plus colleague ffmpeg -40dB start0.1/end0.2 silence trim",
+    "candidate": ".local/gyungyun86-yametaro-compare/f_colleague.wav",
+    "duration": 5.040041666666666,
+    "sha256": "a25f4ccfd3c80a9288207f0f86040f9f01fb9cdf490b768d840edf730779ca9f",
+    "main_film": "unchanged; question remains cut",
+    "runtime_equivalence": "colleague installed runtime/hardware unknown; no promise of identical output",
+    "asr": "よく見たいじゃない点じゃねことないですねそば屋さん大丈夫か",
+    "finding": "ASR flags extra leading utterance; not a successful improvement or adoption."
+  }
 }
