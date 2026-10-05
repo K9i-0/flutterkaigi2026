@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-05",
+  "status": "prepared_dry_run_passed",
+  "paid_api_submitted": false,
+  "checks": [
+    "Sobaya and Yumemin template copies: byte-identical",
+    "isekai: all media local real files, image constraints passed, audio total 13.95s",
+    "Prompt: 8,824 characters\nMedia: {'reference_image': 5, 'reference_audio': 2} (11.8 MiB raw)\nRequest: wan3.0-video, 29 s, 480P, 16:9, audio=True\nAudio source: wan3\nAudio sync strategy: wan_generated_lip_sync\nGeneration: segmented_over_30; project duration=40 s; request duration=29 s\nSeed: 861005; prompt_extend=False; watermark=False\nOutput: /Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/03_SCRIPTS/86_gyungyun_kingdom/wan3_isekai_seed861005_480p.mp4\nDry-run complete. Add --submit to make the paid request.",
+    "modern: all media local real files, image constraints passed, audio total 4.95s",
+    "Prompt: 4,658 characters\nMedia: {'reference_image': 2, 'reference_audio': 1} (3.6 MiB raw)\nRequest: wan3.0-video, 11 s, 480P, 16:9, audio=True\nAudio source: wan3\nAudio sync strategy: no_visible_speech\nGeneration: segmented_over_30; project duration=40 s; request duration=11 s\nSeed: 861006; prompt_extend=False; watermark=False\nOutput: /Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/03_SCRIPTS/86_gyungyun_kingdom/wan3_modern_seed861006_480p.mp4\nDry-run complete. Add --submit to make the paid request."
+  ],
+  "visual_review": "Viewed current canonical sheets, approved party concept and all 3 derived sheets. Costume, face identity, body and equipment checked. Video face continuity, Japanese delivery and voice similarity remain post-generation checks.",
+  "audio_review": "Canonical PCM source copy, hashes and silence boundary verified. No new dialogue audio generated or claimed auditioned.",
+  "planned_total_seconds": 40,
+  "estimated_usd_at_displayed_rate": 1.4
+}

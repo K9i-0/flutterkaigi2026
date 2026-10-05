@@ -1,0 +1,26 @@
+Tool: built-in image_gen (not CLI). 2026-10-05.
+Each prompt below was sent as the COMMON PREFIX, one space, then its CHARACTER TEXT.
+transparent_background=false for all three calls.
+
+COMMON PREFIX:
+Create a production character reference sheet, landscape, photorealistic live-action costume photography, plain light gray background, clean separated views of ONE individual, full body views have heads and feet intact. No text, no other characters.
+
+HERO INPUTS (ordered):
+1. 02_CHARACTERS/Fukuchan.jpg
+2. Approved party concept, now stored as party_design_approved.png
+3. 03_SCRIPTS/00_TEMPLATES/characters/character_fukuchan_basic_sheet.png
+HERO CHARACTER TEXT:
+One character only: the central hero. Image 1 is sole facial identity authority: the exact same Fukuchan, same eyes nose mouth jaw face silhouette and black center-parted hairstyle, no generic replacement. Image 2 determines the selected hero costume ONLY: elaborate silver armor, navy blue gold embroidered tunic, red cape, leather boots, long sword. Image 3 determines skin texture and apparent age: clean even well-cared-for skin, natural forehead eye smile lines and nasolabial folds; no added spots freckles rough pores mottling, no erased wrinkles de-aging reshaping waxy porcelain skin. Do not copy modern clothing. No helmet. Front full body, three-quarter full body, large close-up neutral face, large close-up speaking sternly. All same man.
+HERO OUTPUT: character_fukuchan_hero_sheet.png
+
+SAGE INPUT:
+1. Approved party concept, now stored as party_design_approved.png
+SAGE CHARACTER TEXT:
+One character only: extract and faithfully preserve the elderly sage on the LEFT of the reference image, exact same elderly Japanese man's face, long grey-white hair and beard, dignified heavy brows, deep purple hooded robe with gold embroidery, brown belt pouches, gnarled wooden staff with violet gem. Front full body and three-quarter full body, large close-up neutral dignified face and close-up face yelling a spell with utterly serious desperate intensity, furrowed brow, widened eyes, mouth clearly visible through beard. Keep same elderly man across views. No hero or archer.
+SAGE OUTPUT: character_sage_sheet.png
+
+ARCHER INPUT:
+1. Approved party concept, now stored as party_design_approved.png
+ARCHER CHARACTER TEXT:
+One character only: extract and faithfully preserve the adult female Japanese archer on the RIGHT of the reference image, exact same face and brown tied-back hair, forest-green hooded cape, fitted brown leather armor with brass fittings, belt, trousers and knee-high boots, wooden bow and back quiver. Front full body and three-quarter full body, large neutral face close-up. Same woman across views. No hero or sage.
+ARCHER OUTPUT: character_archer_sheet.png

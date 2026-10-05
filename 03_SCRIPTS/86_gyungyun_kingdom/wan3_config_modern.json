@@ -1,0 +1,35 @@
+{
+  "model": "wan3.0-video",
+  "audio_source": "wan3",
+  "audio_sync_strategy": "no_visible_speech",
+  "reference_audio_usage": "voice_timbre_only",
+  "project_duration": 40,
+  "generation_mode": "segmented_over_30",
+  "segment": "modern",
+  "segment_duration": 11,
+  "prompt_file": "prompt_wan3_modern.txt",
+  "media": [
+    {
+      "type": "reference_image",
+      "path": "character_sobaya_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_yumemin_basic_sheet.png"
+    },
+    {
+      "type": "reference_audio",
+      "path": "sobaya_voice_timbre.wav"
+    }
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 11,
+    "audio": true,
+    "seed": 861006,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_modern_seed861006_480p.mp4"
+}

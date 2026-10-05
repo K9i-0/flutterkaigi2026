@@ -1,0 +1,31 @@
+{
+  "references": [
+    {
+      "speaker": "Sobaya",
+      "source": "02_CHARACTERS/Sobaya_voice.wav",
+      "source_sha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "start": 0,
+      "end": 4.95,
+      "duration": 4.95,
+      "path": "sobaya_voice_timbre.wav",
+      "sha256": "81f04d60f17ef0b9485b300292e35ec5b2d70570996b8c5706d9f53bc23c27f3",
+      "usage": "voice-timbre only",
+      "processing": "PCM sample copy; no resampling, pitch, gain or speed changes",
+      "boundary": "Sobaya end is inside detected silence 4.833447–5.045011; Fukuchan uses entire canonical clip"
+    },
+    {
+      "speaker": "Fukuchan",
+      "source": "02_CHARACTERS/Fukuchan_voice.wav",
+      "source_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "start": 0,
+      "end": 9.0,
+      "duration": 9.0,
+      "path": "fukuchan_voice_timbre.wav",
+      "sha256": "b2131bb057e8b16682dadb6092c9053c271d35f40529c00ba2d8dcaf25e21bcd",
+      "usage": "voice-timbre only",
+      "processing": "PCM sample copy; no resampling, pitch, gain or speed changes",
+      "boundary": "Sobaya end is inside detected silence 4.833447–5.045011; Fukuchan uses entire canonical clip"
+    }
+  ],
+  "total_seconds": 13.95
+}

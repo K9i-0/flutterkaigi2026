@@ -1,0 +1,41 @@
+{
+  "status": "planned_not_rendered",
+  "duration_seconds": 40,
+  "ratio": "16:9",
+  "generation_resolution": "480P",
+  "export": {
+    "width": 1280,
+    "height": 720,
+    "scaling": "single Lanczos resize from original generated sources",
+    "fps": "preserve generated source fps; inspect before edit"
+  },
+  "clips": [
+    {
+      "input": "wan3_modern_seed861006_480p.mp4",
+      "source_in": 0,
+      "source_out": 3,
+      "timeline_in": 0,
+      "timeline_out": 3
+    },
+    {
+      "input": "wan3_isekai_seed861005_480p.mp4",
+      "source_in": 0,
+      "source_out": 29,
+      "timeline_in": 3,
+      "timeline_out": 32
+    },
+    {
+      "input": "wan3_modern_seed861006_480p.mp4",
+      "source_in": 3,
+      "source_out": 11,
+      "timeline_in": 32,
+      "timeline_out": 40
+    }
+  ],
+  "notes": [
+    "All times are planned. Inspect actual modern hard-cut frame before final assembly; do not cut dialogue to enforce a nominal timestamp.",
+    "Preserve synchronized embedded audio. No AI upscaling.",
+    "No burned-in subtitles requested.",
+    "Final corridor reveal must remain last."
+  ]
+}
