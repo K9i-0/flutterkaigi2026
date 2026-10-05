@@ -1,0 +1,55 @@
+{
+  "model": "wan3.0-video",
+  "audio_source": "wan3",
+  "audio_sync_strategy": "wan_generated_lip_sync",
+  "reference_audio_usage": "voice_timbre_only",
+  "project_duration": 10,
+  "generation_mode": "single",
+  "segment": "hospital_patch",
+  "segment_duration": 10,
+  "prompt_file": "prompt_wan3_hospital_patch.txt",
+  "media": [
+    {
+      "type": "reference_image",
+      "path": "character_sobaya_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_fukuchan_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_yametaro_basic_sheet.png"
+    },
+    {
+      "type": "reference_audio",
+      "path": "fukuchan_voice_timbre.wav"
+    },
+    {
+      "type": "reference_audio",
+      "path": "yametaro_voice_timbre.wav"
+    }
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 10,
+    "audio": true,
+    "seed": 861301,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_hospital_patch_seed861301_480p.mp4",
+  "planned_masked_speech_edit": {
+    "speaker": "Sobaya",
+    "audio": "sobaya_modern_dream_irodori.wav",
+    "text": "変な夢を見てた気がする",
+    "planned_window": [
+      6.5,
+      10
+    ],
+    "strategy": "local canonical Japanese voice over rigid fully masked character; Wan generates room tone only; choose actual quiet shot after inspection",
+    "mouth_visible": false
+  },
+  "user_scope": "User explicitly requests only hospital replacement; omit Yumemin from all references; preserve existing corridor and walking-cut edit."
+}

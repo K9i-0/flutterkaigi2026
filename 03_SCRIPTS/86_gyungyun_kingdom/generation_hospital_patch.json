@@ -1,0 +1,40 @@
+{
+  "task_id": "9e5cdd16-9fe9-463c-a506-b8d1d4fba69a",
+  "status": "SUCCEEDED",
+  "seed": 861301,
+  "generation_resolution": "480P",
+  "generated_seconds": 10,
+  "estimated_usd": 0.35,
+  "output": "combined_no_walk_hospital_fixed_720p.mp4",
+  "fps": 30,
+  "frames": 1169,
+  "seconds": 38.96666666666667,
+  "edit": {
+    "base": "combined_no_walk_720p.mp4",
+    "prefix_frames": [
+      0,
+      802
+    ],
+    "hospital": "wan3_hospital_patch_seed861301_480p.mp4",
+    "hospital_frames": [
+      0,
+      300
+    ],
+    "sobaya_voice": "sobaya_modern_dream_irodori.wav",
+    "sobaya_voice_start_patch_frame": 210,
+    "corridor_base_frames": [
+      1101,
+      1168
+    ]
+  },
+  "checks": {
+    "full_decode": "passed",
+    "prefix_decoded_pixels_exactly_unchanged": true,
+    "corridor_decoded_pixels_exactly_unchanged": true,
+    "hospital_visual": "5fps sample review: only Sobaya, Fukuchan and Yametaro; no Yumemin; mask remains worn",
+    "patch_asr": "目が覚めたぎゅん!そば屋さん、大丈夫か?",
+    "auditory_review": "not performed; ASR not listening or exact lip-sync approval",
+    "final_hospital_asr": "目が覚めた、ギュン!そば屋さん、大丈夫か?変な夢を、見てた気がする"
+  },
+  "sha256": "5e2daebb48a0ff06aa0b0e9817570587ee36eb4ef754eb00fcdf23e3901e61ed"
+}
