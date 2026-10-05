@@ -1,0 +1,41 @@
+{
+  "status": "awaiting_user_voice_choice",
+  "line": "そば屋さん、大丈夫か？",
+  "model": "Aratako/Irodori-TTS-v4-Large",
+  "seed": 7,
+  "caption": "",
+  "cfg_text": 5,
+  "uncut": true,
+  "postprocessing": "listen copies loudnorm -18 LUFS -2 dBTP; no speed or pitch changes",
+  "page": "http://127.0.0.1:8786/",
+  "local_dir": ".local/gyungyun86-yametaro-compare",
+  "candidates": [
+    {
+      "label": "A",
+      "file": ".local/gyungyun86-yametaro-compare/a_canonical_v2.wav",
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "reference_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "duration_scale": 0.7,
+      "tts_text": "そばやさんだいじょうぶか？",
+      "duration": 3.44,
+      "sha256": "3df133b3326c0c0c7947c6a99b46c2322c912dded134cb29dff7e2b07d76c5da"
+    },
+    {
+      "label": "B",
+      "file": ".local/gyungyun86-yametaro-compare/b_ep80.wav",
+      "reference": "03_SCRIPTS/80_sobaya_clone_lab/yametaro_pov_existing_voice_reference.wav",
+      "reference_sha256": "0093f923b7739356531dcee531c2fb9f8b2dc609730ff45bef86bcfc620d50ff",
+      "duration_scale": 1,
+      "tts_text": "そばやさん、だいじょうぶか？",
+      "duration": 2.36,
+      "sha256": "16728e5fc6c9379308e8791c6087e93f295ca6c37ed8c69874f4ac55696d2dbd"
+    }
+  ],
+  "notes": [
+    "Episode80 reference is isolated original dialogue 3–6s, not canonical reference duplicate.",
+    "A initial comma version had a long pause; no-comma version is presented.",
+    "Voice choice comparison only: video stays identical between candidates, phoneme lip-sync not finalized.",
+    "Main film unchanged; candidates untracked until user chooses.",
+    "No auditory approval inferred from ASR."
+  ]
+}
