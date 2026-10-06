@@ -1,0 +1,125 @@
+{
+  "title": "マ族そば屋",
+  "studio_id": "MS-UESB877P",
+  "slug": "mazoku-sobaya",
+  "version": 3,
+  "generation_id": "9818c67a-80ef-40d0-98e5-109dbf0baeab",
+  "video_id": "d96abed9-0501-4fec-9101-7c682262d23e",
+  "status": "ready",
+  "url": "https://madogiwa.work/episodes/mazoku-sobaya",
+  "source": "final_gyungyun_kingdom_loop_launch_720p.mp4",
+  "duration": 42.9,
+  "frames": 1287,
+  "width": 1280,
+  "height": 720,
+  "fps": 30,
+  "bytes": 20930666,
+  "encoding": "Existing verified libx264 CRF16 slow yuv420p / AAC192k faststart delivery render reused without re-encoding",
+  "verification": "Video, poster and all26 input assets uploaded and verified ready",
+  "inputs": [
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/character_sobaya_basic_sheet.png",
+      "id": "528c4d16-5b80-4957-8d42-de9227289cbc"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/character_fukuchan_hero_sheet.png",
+      "id": "b37c8a53-2d2b-4392-a2d5-cbb3464565c6"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/character_sage_sheet.png",
+      "id": "22afc10d-550a-45be-bdf9-2a2890baf9e2"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/character_archer_sheet.png",
+      "id": "3a2c5513-9d89-428f-91f4-6042a7bec45e"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/character_yumemin_basic_sheet.png",
+      "id": "c09fae61-8f17-4e63-850e-9891a23dbef7"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/sobaya_voice_timbre.wav",
+      "id": "4a9c5636-734a-4c95-b4ba-1998be5d58b4"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/fukuchan_voice_timbre.wav",
+      "id": "cd707f1d-dad6-45a0-b35f-3155045bf655"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/character_fukuchan_basic_sheet.png",
+      "id": "09582d60-6927-4f61-b775-62157af5c593"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/character_yametaro_basic_sheet.png",
+      "id": "67526ce6-d693-43a3-839e-2c1ddb9b74ac"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/yametaro_voice_timbre.wav",
+      "id": "7bc91f9b-2636-4414-a9dd-7e1a6bbb6729"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/patch_return_first_frame.png",
+      "id": "85c52966-2503-40cf-b803-6cce7303a458"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/sobaya_line1_irodori.wav",
+      "id": "71ced5d7-48d7-432f-be18-746ed363e92b"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/sobaya_line2_irodori.wav",
+      "id": "dba15aa3-6554-42d4-9152-d4174286cf4f"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/sobaya_modern_dream_irodori.wav",
+      "id": "330f8dc6-ba3b-4986-9d1b-ad6aa25750e2"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/wan3_config_isekai.json",
+      "id": "8e359b70-0b7e-421e-afe9-d6c59f1d144b"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/wan3_config_modern.json",
+      "id": "c2003b94-2a61-4378-8842-6484d5010b83"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/wan3_config_patch_return.json",
+      "id": "f1bde6e4-430c-4763-8e25-fb27d554c551"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/wan3_config_hospital_patch.json",
+      "id": "fe4b8245-3795-4edc-8589-f4706269e359"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/cut_yametaro_scene.json",
+      "id": "cb6edb7e-805e-4c8a-b159-9ead8ae6dcaf"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/sobaya_audio_patch.json",
+      "id": "8ce5400e-b87b-4df2-8a7e-f25629a7a7ec"
+    },
+    {
+      "file": "02_CHARACTERS/Sobaya_voice.wav",
+      "id": "c848610e-95e3-4bb6-8880-3f6d6ddd728a"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/character_sobaya_loop_20261005_sheet.png",
+      "id": "a99c4c13-3490-41f3-9568-2629a9bd071d"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/wan3_config_loop_launch.json",
+      "id": "942dfba1-0a14-4892-8ecd-a79815dd2908"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/loop_launch_edit.json",
+      "id": "83c44663-dcdc-4ff6-b416-81cbc7c23719"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/generation_loop_launch.json",
+      "id": "f4b7cf0a-8720-4322-a3d4-c97a1ceb79f4"
+    },
+    {
+      "file": "03_SCRIPTS/86_gyungyun_kingdom/assemble_loop.py",
+      "id": "c2736073-25e8-478b-9c59-d4d1b9973f87"
+    }
+  ]
+}
