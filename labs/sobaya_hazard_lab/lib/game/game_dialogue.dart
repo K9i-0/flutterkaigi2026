@@ -6,13 +6,13 @@ class DialogueLine {
 const yametaroDialogue = <String, List<DialogueLine>>{
   "intro": [
     DialogueLine("やめ太郎", "ワイは未完成の画面を、完成しました言うて納品したんや。そしたら出向の手続きだけ、一日で完成したわ。"),
-    DialogueLine("福ちゃん", "僕は本番で全社員を窓際配属にしてしまって。社長にも通知が行きました。"),
+    DialogueLine("福ギュン", "僕は本番で全社員を窓際配属にしてしまって。社長にも通知が行きました。"),
     DialogueLine("やめ太郎", "そら船も出るわ。帰りの船は、まだ来んけどな。"),
   ],
   "greeting": [DialogueLine("やめ太郎", "次の船をここで待っとくわ。そば屋さんを連れて戻ってくるのだけは勘弁な。")],
   "route": [
     DialogueLine("やめ太郎", "北の漁具倉庫で鍵を拾って、北東の門から商店街へ。右手の二階建てにはショットガンもあるで。"),
-    DialogueLine("福ちゃん", "たこさんの店で準備して、神社のことも聞いてみます。"),
+    DialogueLine("福ギュン", "たこさんの店で準備して、神社のことも聞いてみます。"),
   ],
   "combat": [
     DialogueLine("やめ太郎", "ジョッキを上げたら横へ避けるんや。囲まれたら、先に逃げ道を探すんや。"),
@@ -21,12 +21,12 @@ const yametaroDialogue = <String, List<DialogueLine>>{
   ],
   "records": [
     DialogueLine("やめ太郎", "会社が来た頃は、店も社宅も人でいっぱいやったらしいで。貼り紙ばっかり残っとる。"),
-    DialogueLine("福ちゃん", "退去の通知より、新しい着任の案内が目立ちますね。"),
+    DialogueLine("福ギュン", "退去の通知より、新しい着任の案内が目立ちますね。"),
   ],
   "engine": [DialogueLine("やめ太郎", "原因はまだ分からん。神社に行ったら何か分かるやろ。")],
   "evidence": [
     DialogueLine("やめ太郎", "そば屋が呪いの祠でも壊したんやろ。ビール置くのに邪魔や言うて。"),
-    DialogueLine("福ちゃん", "それ、考察というより悪口では？"),
+    DialogueLine("福ギュン", "それ、考察というより悪口では？"),
     DialogueLine("やめ太郎", "経験則や。"),
   ],
   "supplies": [DialogueLine("やめ太郎", "弾十発、持っていき。商店街までこれでしのぐんや。")],
@@ -36,15 +36,15 @@ const yametaroDialogue = <String, List<DialogueLine>>{
 const takosanDialogue = <String, List<DialogueLine>>{
   "intro": [
     DialogueLine("たこさん", "空き店舗を借りて、店らしくしてみました。ビールと弾やハーブを交換します。"),
-    DialogueLine("福ちゃん", "どうして、たこさんまで島流しに？"),
+    DialogueLine("福ギュン", "どうして、たこさんまで島流しに？"),
     DialogueLine("たこさん", "社員の画像をフリー素材として配っていたのがバレました。背景透過版が人気でした。"),
-    DialogueLine("福ちゃん", "勝手に透過しないでください。"),
+    DialogueLine("福ギュン", "勝手に透過しないでください。"),
   ],
   "greeting": [DialogueLine("たこさん", "お帰りなさい。神社へ向かう前に、補給していってください。")],
   "engine": [DialogueLine("たこさん", "山の音の正体は、まだ分かりません。私は店を開けておきます。")],
   "evidence": [
     DialogueLine("たこさん", "会社が事業を引き揚げて、お店も人も減ったそうです。私たちの出向だけは続いていますけど。"),
-    DialogueLine("福ちゃん", "住む人を増やす方法が、独特ですね。"),
+    DialogueLine("福ギュン", "住む人を増やす方法が、独特ですね。"),
   ],
 };
 
@@ -60,7 +60,7 @@ const farmMissionDialogue = <String, List<DialogueLine>>{
       "たこさん",
       "これが参道の鍵ですね。案内図では、東の門の先に神社があります。山から大きな音がするのは、そのあたりです。",
     ),
-    DialogueLine("福ちゃん", "祠が無事か、確かめてきます。"),
+    DialogueLine("福ギュン", "祠が無事か、確かめてきます。"),
     DialogueLine("たこさん", "壊れていても修理は受注しないでくださいね。帰りが遅くなります。"),
   ],
   "complete": [
@@ -72,12 +72,12 @@ const companionReactions = <String, List<DialogueLine>>{
   "yametaro": [
     DialogueLine("やめ太郎", "うわー！ そば屋さん、やめてくれー！"),
     DialogueLine("やめ太郎", "痛いって！ ワイ、ビール持ってへん！"),
-    DialogueLine("やめ太郎", "福ちゃん……まだ、帰れてへんやん……。"),
+    DialogueLine("やめ太郎", "福ギュン……まだ、帰れてへんやん……。"),
   ],
   "takosan": [
     DialogueLine("たこさん", "いたっ！ そば屋さん、落ち着いて！"),
     DialogueLine("たこさん", "殴らないで。ビールは渡せません。"),
-    DialogueLine("たこさん", "福ちゃん……補給所を、頼みます……。"),
+    DialogueLine("たこさん", "福ギュン……補給所を、頼みます……。"),
   ],
 };
 
@@ -93,7 +93,7 @@ const tradeOffers = [
   TradeOffer('shells', 'shells', 5, 3, 2),
 ];
 
-const unreadKeeperReply = DialogueLine('福ちゃん', '会社が撤退しても、着任者は送られてくるんですね。');
+const unreadKeeperReply = DialogueLine('福ギュン', '会社が撤退しても、着任者は送られてくるんですね。');
 
 const rocketOffer = TradeOffer('rocket', 'rocket', 1, 10, 1);
 
@@ -113,7 +113,7 @@ const purchaseLines = <String, DialogueLine>{
 /// Successful herb purchases continue as a short two-person exchange.
 const purchaseReplies = <String, List<DialogueLine>>{
   'herb': [
-    DialogueLine('福ちゃん', 'それってギュンギュンってこと？'),
+    DialogueLine('福ギュン', 'それってギュンギュンってこと？'),
     DialogueLine('たこさん', 'ギュンギュンです。'),
   ],
 };
@@ -136,8 +136,8 @@ const mountainYametaroBefore = <String, List<DialogueLine>>{
 
 const mountainYametaroAfter = <String, List<DialogueLine>>{
   "reunion": [
-    DialogueLine("やめ太郎", "福ちゃん、無事やったか。祠、別に壊れてへんな。"),
-    DialogueLine("福ちゃん", "巨大そば屋さん、会社の名前を言っていました。"),
+    DialogueLine("やめ太郎", "福ギュン、無事やったか。祠、別に壊れてへんな。"),
+    DialogueLine("福ギュン", "巨大そば屋さん、会社の名前を言っていました。"),
     DialogueLine("やめ太郎", "祟りやなくて、うちの案件かいな。"),
   ],
   "greeting": [DialogueLine("やめ太郎", "裏手に道が続いとるな。あの機械の音、どこからやろ。")],

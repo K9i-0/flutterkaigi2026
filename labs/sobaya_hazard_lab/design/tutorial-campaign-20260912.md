@@ -50,7 +50,7 @@
 5. manifestの全台詞対応・WAVハッシュ・用途IDを検査し、変更台詞の聞き取りを確認する。自動文字起こしは補助であり、人の聴取や音声同一性の承認とは区別する。
 6. `tool/export_hazard_text.py`で`scenario/game_text.json`を再生成し、`--check`で正本との一致を確認する。
 
-やめ太郎・福ちゃん・そば屋・ナレーションは既存Irodoriと正典参照WAV、たこさんはVOICEVOX:Voidoll style 89を維持する。声のない新台詞、古い本文の音声、たこさんの汎用返答音への代替で完成扱いにしない。`VoiceCatalog.cue`のたこさん用fallbackは音声欠損検査では成功とみなさず、manifestの本文完全一致を直接調べる。
+やめ太郎・福ギュン・そば屋・ナレーションは既存Irodoriと正典参照WAV、たこさんはVOICEVOX:Voidoll style 89を維持する。声のない新台詞、古い本文の音声、たこさんの汎用返答音への代替で完成扱いにしない。`VoiceCatalog.cue`のたこさん用fallbackは音声欠損検査では成功とみなさず、manifestの本文完全一致を直接調べる。
 
 ## 実装と検証
 

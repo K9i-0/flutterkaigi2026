@@ -238,7 +238,7 @@ void main() {
               (i) => {
                 ...deviceSnapshot(cpu: i * 25.5, uptime: 10000 + i * 10.0),
                 'caseElapsedMs': i * 10000,
-                'note': '福ちゃん／そば屋、"改行"\nとタブ\tも保持',
+                'note': '福ギュン／そば屋、"改行"\nとタブ\tも保持',
               },
             ),
           },

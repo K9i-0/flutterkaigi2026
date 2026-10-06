@@ -622,7 +622,7 @@ class HazardGameController extends ChangeNotifier {
       }
     }
 
-    for (final entry in {'福ちゃん': player, 'やめ太郎': npcs['yametaro']!}.entries) {
+    for (final entry in {'福ギュン': player, 'やめ太郎': npcs['yametaro']!}.entries) {
       final nodes = <Node>[];
       collect(entry.value.node, nodes);
       if (nodes.isEmpty) {
@@ -1337,7 +1337,7 @@ class HazardGameController extends ChangeNotifier {
     }
     if (s.phase == PlayPhase.dialogue && npcs.containsKey(s.talkingTo)) {
       final n = npcs[s.talkingTo]!.node.position;
-      if (s.dialogueLine.speaker == '福ちゃん') {
+      if (s.dialogueLine.speaker == '福ギュン') {
         final position = vm.Vector3(s.x, s.y, s.z);
         final angle = math.atan2(n.x - s.x, n.z - s.z) - .2;
         return frameAboveCaptions(
@@ -1572,7 +1572,7 @@ class HazardGameController extends ChangeNotifier {
         );
         node.setMorphWeight(
           node.morphTargetNames.indexOf('SpeechNarrow'),
-          entry.key == '福ちゃん'
+          entry.key == '福ギュン'
               ? opening * (.12 + .55 * (1 - opening))
               : opening * .2,
         );
@@ -1730,7 +1730,7 @@ class HazardGameController extends ChangeNotifier {
         (playerCamera(s).position - vm.Vector3(s.x, s.y + 1.25, s.z)).length <
             .8;
     player.node.visible = s.phase == PlayPhase.dialogue
-        ? s.dialogueLine.speaker == '福ちゃん'
+        ? s.dialogueLine.speaker == '福ギュン'
         : !closeCamera;
     player.node.rotation = vm.Quaternion.axisAngle(
       vm.Vector3(0, 1, 0),

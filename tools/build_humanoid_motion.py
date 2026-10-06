@@ -490,7 +490,7 @@ def build_character(name,sources,preview,hybrid_only=False):
     use_action(rig,None);clear_pose(rig)
     body=Body(rig,meshes,name)
     weights=optimize_weights(rig,meshes)
-    profile=dict(id=name,label='そば屋' if name=='sobaya' else '福ちゃん',
+    profile=dict(id=name,label='そば屋' if name=='sobaya' else '福ギュン',
         heightM=1.8 if name=='sobaya' else 1.7,legM=body.leg,armM=body.arm,shoulderM=body.width,
         bones=len(rig.data.bones),boneMap={v:k for k,v in body.map.items()},weights=weights,
         source=str(canonical.relative_to(ROOT)),sourceSha256=hashlib.sha256(canonical.read_bytes()).hexdigest(),

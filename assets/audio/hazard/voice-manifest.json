@@ -176,7 +176,7 @@
     },
     {
       "speaker": "ナレーション",
-      "text": "ゆめみ港。特別研修、帰任日未定。福ちゃんを降ろした船は、銃と辞令を残して岸を離れた。",
+      "text": "ゆめみ港。特別研修、帰任日未定。福ギュンを降ろした船は、銃と辞令を残して岸を離れた。",
       "uses": [
         "event:opening:0"
       ],
@@ -194,7 +194,7 @@
       "raw_sha256": "a886ef19c0442aa4d967d1b892fd07d9081bca855590f9da25ba536f1ef20ac2"
     },
     {
-      "speaker": "福ちゃん",
+      "speaker": "福ギュン",
       "text": "着任受付へ行けばいいんですね。研修の支給品が銃なのは、少し気になります。",
       "uses": [
         "event:opening:1"
@@ -251,7 +251,7 @@
       "raw_sha256": "189e343b1230349789ae69ace9c71438ccb700fbe2296305927c9a5c31d3f757"
     },
     {
-      "speaker": "福ちゃん",
+      "speaker": "福ギュン",
       "text": "そんな理由で壊します？",
       "uses": [
         "event:opening:4"
@@ -308,7 +308,7 @@
       "raw_sha256": "066f363ee3e01d056605ec24596cc08011d0a9e1a38b2e2a9fddd4890fe18c15"
     },
     {
-      "speaker": "福ちゃん",
+      "speaker": "福ギュン",
       "text": "村の様子を見てきます。受付に誰かいるといいんですが。",
       "uses": [
         "event:chapter1intro:1"
@@ -365,7 +365,7 @@
       "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
     },
     {
-      "speaker": "福ちゃん",
+      "speaker": "福ギュン",
       "text": "空き店舗で営業してるんですね。村のそば屋さんたち、どうしたんですか？",
       "uses": [
         "event:farm:2"
@@ -460,7 +460,7 @@
       "raw_sha256": "6ecde2428d24d8ba4b4d1adecd9f9104208efffd9a601aad9e3fc2c3bfe75944"
     },
     {
-      "speaker": "福ちゃん",
+      "speaker": "福ギュン",
       "text": "あれが音の正体ですか。祠より、そば屋さんの方が大きいですね。",
       "uses": [
         "event:last_order:2"
@@ -517,7 +517,7 @@
       "raw_sha256": "8080f18dadd48a9f13710f2ac834cc938f9c8f50145914def06086b7a4d725fa"
     },
     {
-      "speaker": "福ちゃん",
+      "speaker": "福ギュン",
       "text": "今、うちの会社の名前を……？",
       "uses": [
         "event:boss_confession:2"
@@ -536,7 +536,7 @@
       "raw_sha256": "c137737974ed8c5e8842fdd5dec26bc822581a9ee382a007a0fd14a33836a059"
     },
     {
-      "speaker": "福ちゃん",
+      "speaker": "福ギュン",
       "text": "祠は壊れていませんね。……裏手から、まだ機械の音がします。",
       "uses": [
         "event:boss_defeated:0"
@@ -574,7 +574,7 @@
       "raw_sha256": "868d484a0b2802bfb53280515a7c5ce9a65bfc8e45c337c29c0479898acf7c84"
     },
     {
-      "speaker": "福ちゃん",
+      "speaker": "福ギュン",
       "text": "アクシデンチュア……。さっき、ここの名前を言っていましたね。",
       "uses": [
         "event:ending:1"
@@ -593,7 +593,7 @@
       "raw_sha256": "b13578a57a9b2519dc00e56a2410da171dd98a09793fed7e1deded0bbfa97409"
     },
     {
-      "speaker": "福ちゃん",
+      "speaker": "福ギュン",
       "text": "……研修先って、こっちですか？",
       "uses": [
         "event:ending:2"
@@ -650,7 +650,7 @@
       "raw_sha256": "d0c7929818b6173f06ab3c4623ba74c4fc70f8a0fc0377426eec3e6d2732c950"
     },
     {
-      "speaker": "福ちゃん",
+      "speaker": "福ギュン",
       "text": "僕は本番で全社員を窓際配属にしてしまって。社長にも通知が行きました。",
       "uses": [
         "dialogue:yametaro:intro:1"
@@ -726,7 +726,7 @@
       "raw_sha256": "6ff109a140789a30a2a1c47f32cb35c29cb8a61f30189542067609981ee5b34b"
     },
     {
-      "speaker": "福ちゃん",
+      "speaker": "福ギュン",
       "text": "たこさんの店で準備して、神社のことも聞いてみます。",
       "uses": [
         "dialogue:yametaro:route:1"
@@ -821,7 +821,7 @@
       "raw_sha256": "6a29afecbc2b774d89d0bee63d8c6efef5ed84f3885ecd0981225f59043d3c64"
     },
     {
-      "speaker": "福ちゃん",
+      "speaker": "福ギュン",
       "text": "退去の通知より、新しい着任の案内が目立ちますね。",
       "uses": [
         "dialogue:yametaro:records:1"
@@ -878,7 +878,7 @@
       "raw_sha256": "759c6044369858b3e4d9b73cf35b0c419ecbc6467bc8af7c50e345a68fab3963"
     },
     {
-      "speaker": "福ちゃん",
+      "speaker": "福ギュン",
       "text": "それ、考察というより悪口では？",
       "uses": [
         "dialogue:yametaro:evidence:1"
@@ -973,7 +973,7 @@
       "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
     },
     {
-      "speaker": "福ちゃん",
+      "speaker": "福ギュン",
       "text": "どうして、たこさんまで島流しに？",
       "uses": [
         "dialogue:takosan:intro:1"
@@ -1011,7 +1011,7 @@
       "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
     },
     {
-      "speaker": "福ちゃん",
+      "speaker": "福ギュン",
       "text": "勝手に透過しないでください。",
       "uses": [
         "dialogue:takosan:intro:3"
@@ -1087,7 +1087,7 @@
       "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
     },
     {
-      "speaker": "福ちゃん",
+      "speaker": "福ギュン",
       "text": "住む人を増やす方法が、独特ですね。",
       "uses": [
         "dialogue:takosan:evidence:1"
@@ -1163,7 +1163,7 @@
       "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
     },
     {
-      "speaker": "福ちゃん",
+      "speaker": "福ギュン",
       "text": "祠が無事か、確かめてきます。",
       "uses": [
         "dialogue:farm_mission:ready:1"
@@ -1259,7 +1259,7 @@
     },
     {
       "speaker": "やめ太郎",
-      "text": "福ちゃん……まだ、帰れてへんやん……。",
+      "text": "福ギュン……まだ、帰れてへんやん……。",
       "uses": [
         "dialogue:reaction:yametaro:2"
       ],
@@ -1316,7 +1316,7 @@
     },
     {
       "speaker": "たこさん",
-      "text": "福ちゃん……補給所を、頼みます……。",
+      "text": "福ギュン……補給所を、頼みます……。",
       "uses": [
         "dialogue:reaction:takosan:2"
       ],
@@ -1469,7 +1469,7 @@
     },
     {
       "speaker": "やめ太郎",
-      "text": "福ちゃん、無事やったか。祠、別に壊れてへんな。",
+      "text": "福ギュン、無事やったか。祠、別に壊れてへんな。",
       "uses": [
         "dialogue:mountain_yametaro_after:reunion:0"
       ],
@@ -1487,7 +1487,7 @@
       "raw_sha256": "6f0b36ae99c24f572b349ee0ae28bd707b029b2995a67eec240df6b99373d3f7"
     },
     {
-      "speaker": "福ちゃん",
+      "speaker": "福ギュン",
       "text": "巨大そば屋さん、会社の名前を言っていました。",
       "uses": [
         "dialogue:mountain_yametaro_after:reunion:1"
@@ -1735,7 +1735,7 @@
       "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
     },
     {
-      "speaker": "福ちゃん",
+      "speaker": "福ギュン",
       "text": "会社が撤退しても、着任者は送られてくるんですね。",
       "uses": [
         "dialogue:takosan:evidence:unread"
@@ -1830,7 +1830,7 @@
       "provenance": "Same casting as episode 21; VOICEVOX:Voidoll credit shown in game journal"
     },
     {
-      "speaker": "福ちゃん",
+      "speaker": "福ギュン",
       "text": "それってギュンギュンってこと？",
       "uses": [
         "dialogue:purchase:herb:reply:0"

@@ -20,7 +20,7 @@ python3 -m http.server 8766 --bind 127.0.0.1
 - `?motion=Dance%20Body%20Roll&time=2.37`：指定秒で停止
 - `?motion=Dance%20Charleston&time=0&revision=baseline`：修正前。比較用ローカル素材が必要
 
-`camera` は position / target / yaw のJSONをURLエンコードして保存できる。UIで2人比較・単独表示、速度、一時停止、シーク、正面・側面、回転・拡大、福ちゃんの口パクを操作する。両モデルは同じ経過秒で再生。その場再生なので、ゲーム内の移動速度はここでは判断しない。
+`camera` は position / target / yaw のJSONをURLエンコードして保存できる。UIで2人比較・単独表示、速度、一時停止、シーク、正面・側面、回転・拡大、福ギュンの口パクを操作する。両モデルは同じ経過秒で再生。その場再生なので、ゲーム内の移動速度はここでは判断しない。
 
 実装は `tools/preview_humanoid_vrm.{html,mjs}`、骨表示は `tools/vrm_bone_overlay.mjs`。公式のVRMLoaderPlugin / VRMAnimationLoaderPlugin → createVRMAnimationClip → AnimationMixer → vrm.update の適用経路を維持する。
 

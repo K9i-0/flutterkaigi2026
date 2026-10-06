@@ -116,7 +116,7 @@ void main() {
       advance(s, 4.8);
       expect(s.fallenCompanion, isNotNull);
       expect(s.reactionSerial, greaterThan(first));
-      expect(s.reaction!.text, contains('福ちゃん'));
+      expect(s.reaction!.text, contains('福ギュン'));
     }
   });
   test('engine remains unknown after every demo clue and backtracking', () {

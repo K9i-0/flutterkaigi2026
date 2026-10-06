@@ -3,7 +3,8 @@
 「窓際族物語」を漫画・動画・ゲーム・Webサイトなど、さまざまなメディアへ展開する制作プロジェクトです。世界観・キャラクター設定から、台本、共有アセット、各作品の実装、制作ワークフローまでを管理するモノレポです。
 
 ## 制作時の参照ファイル
-- そば屋の白Tシャツ: `02_CHARACTERS/01_Sobaya.md` の描画基準と2026-10-01更新の `03_SCRIPTS/00_TEMPLATES/characters/character_sobaya_basic_sheet.png` を使う。服越しの乳首の突起・輪郭・点状陰影を描かず、胸筋と自然な布のシワは保つ。新規画像・動画のプロンプトと監査へ反映する。
+- 福ギュンの表記（2026-10-06改名）: 旧名は福ちゃん。新規の台本・字幕・名札・表示名は「福ギュン」。内部IDと既存素材パスの `fukuchan` / `Fukuchan` は維持。過去生成入力・実発話の書き起こしは改変しない。
+- そば屋の白Tシャツ: `02_CHARACTERS/01_Sobaya.md` の描画基準と2026-10-05更新の `03_SCRIPTS/00_TEMPLATES/characters/character_sobaya_basic_sheet.png` を使う。服越しの乳首の突起・輪郭・点状陰影を描かず、胸筋と自然な布のシワは保つ。新規画像・動画のプロンプトと監査へ反映する。
 - 窓際スーパーつらいの標準缶: `03_SCRIPTS/00_TEMPLATES/props/product_super_try.png`（2026-09-10採用のA案修正版。上部は黒い「労働」。「辛口」「350ml」は表示しない。銀地・赤いひらがな「つらい」・黒い筆記体Madogiwa・小さめの丸ゴシックの「生」。次回以降はこれを使い、エピソード63〜66の旧缶を参照元にしない。詳細: `03_SCRIPTS/00_TEMPLATES/props/README.md`）
 - 固有名詞の表記: `01_WORLD/WORLD_BIBLE.md` の「固有名詞の表記」を正本にする。架空企業は `Accidenchua`（ロゴ `ACCIDENCHUA`、法人 `Accidenchua Inc.`）。椅子は「アーロンチュア」/ `AERON CHUA`。新規制作・該当箇所の改修で使う。
 - 世界観の基本資料: `01_WORLD/WORLD_BIBLE.md`（ユーザー指定がないときの出発点。改変可能）
@@ -45,7 +46,7 @@ Gitでは、Seedanceの再生成と同じ声の継続利用に必要な最小限
 - **Three.js舞台動画制作** (`threejs-video`): 既存GLB、共有演技・犬モーション、画像背景壁、React UIを用いて台本から完成動画まで制作する。詳細: `.claude/skills/threejs-video/SKILL.md`
 - **Remotion動画編集** (`remotion-video`): Wan・Seedance等の生成済み動画へ、正確な字幕、ニューステロップ、局ロゴ、ティッカー、音声差し替え、UI、効果音を再現可能なReactコードで合成し、レンダリング・監査するときに使用する。詳細: `.claude/skills/remotion-video/SKILL.md`
 - **画面差し替え** (`screen-replacement`): ユーザーが明示した場合に、モニター・テレビ・スマホ等の表示面をOpenCVで追跡し、画像・動画を透視合成する。グリーン画面生成、通常画面追跡、揺れ抑制、緑残り除去、Remotion統合を扱う。画面が映るだけでは自動適用しない。詳細: `.claude/skills/screen-replacement/SKILL.md`
-- **映画ポスター制作** (`create-movie-poster`): 映画ポスターの新規制作・改修・シリーズ統一では、独立した初回3案から方向性を選び、縦2:3正本、正確な日本語文字、キャラクター同一性を管理する。実写のよーたん、福ちゃん、とーくん、おかやまんは正典写真へ顔を厳密に一致させる。SNS安全域はユーザー指定時だけ調整し、生成画像への反復編集を避ける。詳細: `.claude/skills/create-movie-poster/SKILL.md`
+- **映画ポスター制作** (`create-movie-poster`): 映画ポスターの新規制作・改修・シリーズ統一では、独立した初回3案から方向性を選び、縦2:3正本、正確な日本語文字、キャラクター同一性を管理する。実写のよーたん、福ギュン、とーくん、おかやまんは正典写真へ顔を厳密に一致させる。SNS安全域はユーザー指定時だけ調整し、生成画像への反復編集を避ける。詳細: `.claude/skills/create-movie-poster/SKILL.md`
 - **ボクセルモデル制作** (`build-voxel-character-from-image`): キャラクターの参照画像からリグ付きボクセルGLBを作成・修正するときに使用する。成果物は`04_GAME_ASSETS/voxel/`に配置する。詳細: `.claude/skills/build-voxel-character-from-image/SKILL.md`
 - **2Dゲーム制作** (`/2d-game`): 2Dゲームを新規作成するとき、およびSeedanceで制作した完成動画（添付mp4）をオープニング/イベントのカットシーンとしてゲームに組み込むときに使用する。完成動画の正典置き場は`04_GAME_ASSETS/videos/`（ゲームからは`public/videos/`の相対symlinkで参照）。詳細: `.claude/skills/2d-game/SKILL.md`
 - **Madogiwa Studio登録** (`madogiwa-studio`): Remote Web MCP経由でエピソード、生成バージョン、使用モデル、プロンプト、入力画像・参照音声、生成動画をStudioへ登録・確認するときに使用する。詳細: `.claude/skills/madogiwa-studio/SKILL.md`
