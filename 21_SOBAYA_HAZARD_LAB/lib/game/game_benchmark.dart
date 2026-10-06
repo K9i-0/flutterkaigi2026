@@ -870,7 +870,7 @@ class GameBenchmark {
             (windowMotionTicks >= 60 && completedPassages > 0)) &&
         (c.event != 'opening' ||
             [
-              '福ちゃん',
+              '福ギュン',
               'やめ太郎',
             ].every((name) => (speechMorphTicks[name] ?? 0) > 5));
   }

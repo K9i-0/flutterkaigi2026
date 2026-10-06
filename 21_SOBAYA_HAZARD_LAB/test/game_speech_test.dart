@@ -46,22 +46,22 @@ void main() {
     () async {
       late ClockVoice port;
       final voice = VoiceSession((done) => port = ClockVoice(done));
-      const cue = VoiceCue('a', 'a.wav', speaker: '福ちゃん');
+      const cue = VoiceCue('a', 'a.wav', speaker: '福ギュン');
       voice.sync(cue, paused: false, volume: 1);
       await voice.idle;
-      expect(samples.opening(voice, '福ちゃん'), 0);
+      expect(samples.opening(voice, '福ギュン'), 0);
       port.position = .02;
-      expect(samples.opening(voice, '福ちゃん'), 1);
+      expect(samples.opening(voice, '福ギュン'), 1);
       expect(samples.opening(voice, 'やめ太郎'), 0);
       voice.sync(cue, paused: true, volume: 1);
-      expect(samples.opening(voice, '福ちゃん'), 0);
+      expect(samples.opening(voice, '福ギュン'), 0);
       await voice.idle;
       voice.sync(cue, paused: false, volume: 0);
       await voice.idle;
       // Muting audio does not erase the character's articulation.
-      expect(samples.opening(voice, '福ちゃん'), 1);
+      expect(samples.opening(voice, '福ギュン'), 1);
       port.complete();
-      expect(samples.opening(voice, '福ちゃん'), 0);
+      expect(samples.opening(voice, '福ギュン'), 0);
       voice.sync(
         const VoiceCue('b', 'missing', speaker: 'やめ太郎'),
         paused: false,
@@ -69,7 +69,7 @@ void main() {
       );
       await voice.idle;
       port.position = .02;
-      expect(samples.opening(voice, '福ちゃん'), 0);
+      expect(samples.opening(voice, '福ギュン'), 0);
       expect(samples.opening(voice, 'やめ太郎'), 0);
       await voice.dispose();
     },

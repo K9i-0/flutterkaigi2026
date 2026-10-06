@@ -73,9 +73,9 @@ function make(
 export const SOBAYA = make("sobaya", "そば屋", "#ffffff", 1.28);
 
 // Enemies who might spot the escaping soba shop owner.
-export const FUKUCHAN = make("fukuchan", "福ちゃん", "#ff5a5a", 1.28, {
-  spotText: "福ちゃん「ギュン！ そば屋さん、もう帰るの？」",
-  caughtText: "福ちゃん「せっかくだから一枚撮ろう！」— 笑顔の自撮りタイムが始まった。",
+export const FUKUCHAN = make("fukuchan", "福ギュン", "#ff5a5a", 1.28, {
+  spotText: "福ギュン「ギュン！ そば屋さん、もう帰るの？」",
+  caughtText: "福ギュン「せっかくだから一枚撮ろう！」— 笑顔の自撮りタイムが始まった。",
 });
 export const YOTAN = make("yotan", "よーたん", "#ffd24a", 1.28, {
   spotText: "よーたん「その退社ルート、見逃さないぜ！」",

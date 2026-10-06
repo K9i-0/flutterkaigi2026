@@ -1,0 +1,25 @@
+{
+  "output": "final_remotion_subtitles_part2_v2.mp4",
+  "sha256": "452c797afea21d9fc5a5025de163349450170e22ac1a5d28d4184ff1ceab0d4f",
+  "width": 1280,
+  "height": 720,
+  "fps": 30,
+  "frames": 663,
+  "duration_seconds": 22.1,
+  "decode": "passed",
+  "typecheck": "passed",
+  "manifest_validation": "passed",
+  "visual_review": "Final sampled Yametaro and Takosan shots: no opaque band; generated text obscured with feathered local 10px backdrop blur; plain white outlined subtitles fit. Blur is concealment, not restoration.",
+  "asr": [
+    {
+      "file": "03_SCRIPTS/87_mado_kizoku/remotion/public/repaired_audio.wav",
+      "transcript": "今度のプロジェクトは、オーコードがクソでしたわ。ペットのおサルニでも書かせたのかしら?あのコードなら、全部ワイが書いてましたよ。AIには出せない、人のぬくもりを感じましたわ。本番も、思えになってますわ。"
+    }
+  ],
+  "asr_caveats": "Whisper-small normalizes 書いてましてよ to 書いてましたよ, and お燃え to 思え. Cannot resolve phonetic accuracy by ASR alone.",
+  "listening": "Direct listening unavailable; ASR reads 本番も思えになってますわ (homophone rendering). Voice identity and precise lip sync not certified.",
+  "lip_sync": "Original Wan mouth movement retained; phoneme-level match not established.",
+  "video_regeneration": false,
+  "first_half": "not generated",
+  "takosan_voice": "Canonical Takosan_voice.wav, Irodori v4.1 Small, seed43, no caption, CFG5, duration scale1, uncut; user requested usual voice instead of Large repair voice."
+}

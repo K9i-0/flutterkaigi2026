@@ -1,0 +1,68 @@
+{
+  "status": "text_locked_timing_pending_generated_audio",
+  "lines": [
+    {
+      "id": 1,
+      "speaker": "sobaya",
+      "displaySpeaker": "そば屋",
+      "text": "やはり、労働をサボっていただくおビールは格別ですわね",
+      "segment": 1,
+      "startFrame": null,
+      "endFrame": null
+    },
+    {
+      "id": 2,
+      "speaker": "fukuchan",
+      "displaySpeaker": "福ギュン",
+      "text": "こちらのお菓子もギュンですわ",
+      "segment": 1,
+      "startFrame": null,
+      "endFrame": null
+    },
+    {
+      "id": 3,
+      "speaker": "yametaro",
+      "displaySpeaker": "やめ太郎",
+      "text": "来客用ですわ",
+      "segment": 1,
+      "startFrame": null,
+      "endFrame": null
+    },
+    {
+      "id": 4,
+      "speaker": "sobaya",
+      "displaySpeaker": "そば屋",
+      "text": "今度のプロジェクト、おコードがクソでしたわ。ペットのお猿にでも書かせたのかしら？",
+      "segment": 2,
+      "startFrame": null,
+      "endFrame": null
+    },
+    {
+      "id": 5,
+      "speaker": "yametaro",
+      "displaySpeaker": "プログラマー猿",
+      "text": "あのコードなら、全部ワイが書いてましてよ",
+      "segment": 2,
+      "startFrame": null,
+      "endFrame": null
+    },
+    {
+      "id": 6,
+      "speaker": "sobaya",
+      "displaySpeaker": "そば屋",
+      "text": "……AIには出せない、人の温もりを感じましたわ",
+      "segment": 2,
+      "startFrame": null,
+      "endFrame": null
+    },
+    {
+      "id": 7,
+      "speaker": "takosan",
+      "displaySpeaker": "たこさん",
+      "text": "本番もお燃えになってますわ",
+      "segment": 2,
+      "startFrame": null,
+      "endFrame": null
+    }
+  ]
+}

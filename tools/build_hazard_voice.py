@@ -8,7 +8,7 @@ ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'04_GAME_ASSETS/audio/hazard'
 RAW=ROOT/'.local/hazard_voice/raw';RAW.mkdir(parents=True,exist_ok=True)
 CAST={
- '福ちゃん':('Fukuchan_voice.wav',100,'3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35'),
+ '福ギュン':('Fukuchan_voice.wav',100,'3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35'),
  'やめ太郎':('Yametaro_voice.wav',7,'ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b'),
  'そば屋':('Sobaya_voice.wav',42,'976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58'),
  'ナレーション':('YumeTeleAnchor_voice.wav',2026,'e3cd210adad43fb3338684555e7e066f83cfad2400265c8a73fa55b9f96b753f'),
@@ -22,7 +22,7 @@ def caption(row):
  if row['text']=='え、また集まるの？':return '驚いて、短く聞き返す。'
  if row['speaker']=='そば屋':return '言葉をうまくつなげられない怪物。単語ごとに途切れ、息を漏らして低くうなる。ビールへの渇望。文章を流暢にせず、指定された単語だけを明瞭に言う。'
  if any(u.startswith('event:ending') for u in row['uses']):return '不審な施設を見つけ、静かに驚きながら独り言のように話す。疑問を残す抑制した声。'
- if row['speaker']=='福ちゃん':return '友人に話しかける。少し呆れながらも明瞭に、言葉の最後まで自然に話す。'
+ if row['speaker']=='福ギュン':return '友人に話しかける。少し呆れながらも明瞭に、言葉の最後まで自然に話す。'
  return '焦りを少し抑えて、友人へ道案内する。柔らかい関西イントネーションで、聞き取りやすく自然に話す。'
 rows=json.loads((OUT/'voice-lines.json').read_text())
 revision=subprocess.check_output(['git','-C',str(ROOT/'.local/Irodori-TTS'),'rev-parse','HEAD'],text=True).strip()
@@ -78,7 +78,7 @@ pending.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
 pending.replace(OUT/'voice-manifest.json')
 script=['# そば屋ハザード — 採用音声台本', '',
  f'全{len(manifest["clips"])}本、合計{sum(c["seconds"] for c in manifest["clips"]):.1f}秒。正本台詞はゲームのDartコード、生成入力は voice-lines.json、採用条件は voice-manifest.json。', '',
- 'そば屋は Irodori-TTS v4-Large、福ちゃん・やめ太郎・ナレーションは v4.1-Small と正典参照音声。たこさんは VOICEVOX:Voidoll（style 89）。24kHz mono PCM16、-18LUFS/-2dBTP。', '',
+ 'そば屋は Irodori-TTS v4-Large、福ギュン・やめ太郎・ナレーションは v4.1-Small と正典参照音声。たこさんは VOICEVOX:Voidoll（style 89）。24kHz mono PCM16、-18LUFS/-2dBTP。', '',
  'この台本は build_hazard_voice.py が採用manifestから生成する。使用箇所には章・話題・既読分岐を記録する。購入失敗時の文言は字幕と返答音。', '']
 for clip in manifest['clips']:
  script += [f'## {clip["speaker"]} — {clip["id"]}', '', clip['text'], '', f'{clip["seconds"]:.3f}秒 / {", ".join(clip["uses"])}', '']

@@ -102,8 +102,8 @@ const SOURCES: LevelSource[] = [
     id: "document-lanes",
     name: "書類レーン",
     subtitle: "通過回収できるラインを読む",
-    intro: "福ちゃん「資料と一緒にギュンギュンしよ！」",
-    clearText: "福ちゃん「凍ってても映えるね！」",
+    intro: "福ギュン「資料と一緒にギュンギュンしよ！」",
+    clearText: "福ギュン「凍ってても映えるね！」",
     map: [
       "##############",
       "#......#B...E#",
@@ -120,7 +120,7 @@ const SOURCES: LevelSource[] = [
       "##############",
     ],
     helpers: [
-      helper("fukuchan", 9, 5, "福ちゃん「ギュン！ ここで止まれるよ！」"),
+      helper("fukuchan", 9, 5, "福ギュン「ギュン！ ここで止まれるよ！」"),
     ],
     parMoves: 10,
   },

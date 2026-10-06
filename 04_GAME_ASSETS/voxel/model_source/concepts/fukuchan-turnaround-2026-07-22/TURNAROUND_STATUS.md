@@ -1,4 +1,4 @@
-# 福ちゃん turnaround status
+# 福ギュン turnaround status
 
 Status: **pending user review — imagegen unavailable in the build environment (2026-07-22)**
 
@@ -10,7 +10,7 @@ PRレビューでの承認をもって approved に更新すること。
 
 - 黒髪センターパートのミディアムヘア、にこにこの笑顔
 - 紺のロングコート＋白いモノクログラフィックTシャツ＋黒パンツ＋白スニーカー
-- 首から青いSPONSORストラップと「福ちゃん」名札
+- 首から青いSPONSORストラップと「福ギュン」名札
   （テクスチャ内の文字は禁止のため、名札は白地＋赤枠＋赤バーの形状のみで表現）
 
 ## Inferred side/back details（承認待ちの推定）

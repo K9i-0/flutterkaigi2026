@@ -127,7 +127,7 @@ void main() {
           expect(
             shot.actor,
             {
-              '福ちゃん': 'fukuchan',
+              '福ギュン': 'fukuchan',
               'やめ太郎': 'yametaro',
               'たこさん': 'takosan',
               'そば屋': 'sobaya',

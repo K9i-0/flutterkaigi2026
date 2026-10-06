@@ -1,4 +1,4 @@
-# 福ちゃんの独立頭部
+# 福ギュンの独立頭部
 
 正典 `02_CHARACTERS/Fukuchan.jpg` を参照。built-in Imagegenで大きな頭部の正面・左側面・背面を個別に制作した。`inputs/`が採用入力、`imagegen_prompts.json`が全プロンプト。側面・背面は写真を直接計測した形状ではなく、正面からの生成による補完。
 

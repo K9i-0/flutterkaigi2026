@@ -1,6 +1,6 @@
-# 福ちゃんの肌：キャラクターシート基準
+# 福ギュンの肌：キャラクターシート基準
 
-福ちゃんが登場する画像・動画の新規制作、改修、肌補正、監査で使う共通基準。2026-09-29のユーザー指定：美容キャラとしてシート通りの綺麗な肌にし、適度なシワと年齢感は残す。ユーザーが別の肌・年齢表現を明示した場合は、その指定範囲を優先する。
+福ギュンが登場する画像・動画の新規制作、改修、肌補正、監査で使う共通基準。2026-09-29のユーザー指定：美容キャラとしてシート通りの綺麗な肌にし、適度なシワと年齢感は残す。ユーザーが別の肌・年齢表現を明示した場合は、その指定範囲を優先する。
 
 ## 参照と仕上がり
 
@@ -13,7 +13,7 @@
 
 ## 生成プロンプト
 
-福ちゃんが登場する生成では、顔同一性の指定に加えて、次の要点を実送信本文へ入れる。参照名・番号は実際の入力へ合わせる。「美肌」「smooth skin」だけに省略しない。
+福ギュンが登場する生成では、顔同一性の指定に加えて、次の要点を実送信本文へ入れる。参照名・番号は実際の入力へ合わせる。「美肌」「smooth skin」だけに省略しない。
 
 ```text
 Fukuchan's skin quality and apparent age must match the close-up portraits in his canonical character sheet. Keep his well-cared-for, clean, even complexion and natural fine skin texture. Preserve the sheet's subtle forehead lines, eye-area wrinkles, smile lines and nasolabial folds, including their natural changes with expression. Do not add or exaggerate dark spots, freckles, blemishes, rough pores or mottled skin beyond the sheet. Do not erase all wrinkles, de-age him, reshape his face, or give him plastic, waxy or porcelain skin. Preserve the scene's lighting and natural facial shading without turning shadows into blemishes.

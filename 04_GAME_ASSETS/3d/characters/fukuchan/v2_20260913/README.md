@@ -1,4 +1,4 @@
-# 福ちゃん v2 — Astra / Tripo 3パーツ制作
+# 福ギュン v2 — Astra / Tripo 3パーツ制作
 
 [Tripo公式の手順](https://www.tripo3d.ai/blog/gpt-6-astra-3d-character-workflow)に沿い、正典写真から全身基準を作り、**体・髪のない頭・髪を別々に生成**したモデル。体のTripoリグへ頭と髪を接続し、Blenderで首・肩・手首を調整した。
 

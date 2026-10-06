@@ -49,7 +49,7 @@ Gemini（`generate_image`）は、テキストプロンプトだけを渡すと�
 
 ---
 
-## 3. 実写メンバー（とーくん、よーたん、福ちゃん、おかやまん）
+## 3. 実写メンバー（とーくん、よーたん、福ギュン、おかやまん）
 
 実写メンバーは「似ている別人」や「アニメ風」にしてはならず、本人の顔立ちを最優先で維持します。
 
@@ -58,11 +58,11 @@ Gemini（`generate_image`）は、テキストプロンプトだけを渡すと�
 |---|---|---|
 | とーくん | `02_CHARACTERS/Tokun.jpg` | `02_CHARACTERS/03_Tokun.md` |
 | よーたん | `02_CHARACTERS/Yotan.jpg` | `02_CHARACTERS/04_Yotan.md` |
-| 福ちゃん | `02_CHARACTERS/Fukuchan.jpg` | `02_CHARACTERS/05_Fukuchan.md` |
+| 福ギュン | `02_CHARACTERS/Fukuchan.jpg` | `02_CHARACTERS/05_Fukuchan.md` |
 | おかやまん | `02_CHARACTERS/Okayaman.jpg` | `02_CHARACTERS/07_Okayaman.md` |
 
 ### 共通指定構文
-福ちゃんに適用するときは、[肌と年齢感の共通基準](../../../../02_CHARACTERS/references/fukuchan-skin-standard.md)も読む。下記の `skin texture` と `Do NOT beautify` はそのまま使わず、同基準の英文へ置き換える。シートと同じ綺麗さ・自然なシワを維持し、若返りや別人化はさせない。
+福ギュンに適用するときは、[肌と年齢感の共通基準](../../../../02_CHARACTERS/references/fukuchan-skin-standard.md)も読む。下記の `skin texture` と `Do NOT beautify` はそのまま使わず、同基準の英文へ置き換える。シートと同じ綺麗さ・自然なシワを維持し、若返りや別人化はさせない。
 
 ```text
 STRICT FACIAL IDENTITY MANDATE:

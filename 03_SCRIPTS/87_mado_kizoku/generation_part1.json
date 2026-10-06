@@ -1,0 +1,20 @@
+{
+  "task_id": "b6f56be3-015a-4a9f-8f17-82b8d5149af6",
+  "status": "SUCCEEDED",
+  "model": "wan3.0-video",
+  "duration": 14,
+  "resolution": "480P",
+  "seed": 871007,
+  "estimated_cost_usd": 0.49,
+  "authorization": "User: ok 前半を作って 後半の反省も活かして",
+  "submit_count": 1,
+  "output": "wan3_part1_480p.mp4",
+  "changes": [
+    "Removed subtitle and postproduction explanation from Wan prompt",
+    "Added accepted part2 composition frame as seating reference",
+    "Retained canonical identity and voice references"
+  ],
+  "sha256": "40193623c16d59f114bc86444c0ed1f71dbb09860a1f07439d66a554292b9b00",
+  "visual_audit": "1-second samples: no unintended text; four cast members and tea set maintained. Camera angle changes for Fukuchan; windows visible at left in that shot.",
+  "audio": "ASR detects all three expected Wan lines; final edition uses canonical Irodori voices for continuity. Direct listening unavailable."
+}

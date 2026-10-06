@@ -1,0 +1,49 @@
+{
+  "outputs": {
+    "final_remotion_subtitles_part1.mp4": {
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1280,
+            "height": 720,
+            "r_frame_rate": "30/1",
+            "duration": "12.200000",
+            "nb_frames": "366",
+            "side_data_list": [
+              {}
+            ]
+          }
+        ]
+      },
+      "sha256": "b59e8c88aa3e2dda443b08bbb19f79eda6184601a5490229df074ff500772ac6",
+      "full_decode": "pass"
+    },
+    "final_remotion_subtitles.mp4": {
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1280,
+            "height": 720,
+            "r_frame_rate": "30/1",
+            "duration": "34.300000",
+            "nb_frames": "1029",
+            "side_data_list": [
+              {}
+            ]
+          }
+        ]
+      },
+      "sha256": "177aba8f85123fe1a2aa9b6f7a2fb3a08d0b814e1bebcfedb37e7d34cdc3c746",
+      "full_decode": "pass"
+    }
+  },
+  "typecheck": "pass",
+  "visual_review": "contact sheets inspected; no generated captions observed in part1",
+  "audio_review": "ASR and waveform only; direct listening unavailable",
+  "lip_sync": "not precision verified",
+  "part2": "approved v3 included intact"
+}

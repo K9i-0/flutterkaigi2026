@@ -1,0 +1,25 @@
+{
+  "output": "final_remotion_subtitles_v4.mp4",
+  "frames": 1120,
+  "fps": 30,
+  "crop": {
+    "sourceFrames": [
+      218,
+      322
+    ],
+    "compositionFrames": [
+      180,
+      284
+    ],
+    "x": 360,
+    "y": 35,
+    "width": 365,
+    "aspect": "16:9"
+  },
+  "audio": "unchanged from v3",
+  "checks": {
+    "typecheck": "pass",
+    "caption_frame": "reviewed",
+    "full_decode": "pass"
+  }
+}

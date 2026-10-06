@@ -1,0 +1,132 @@
+{
+  "composition": {
+    "id": "MadoKizokuPart2",
+    "width": 1280,
+    "height": 720,
+    "fps": 30,
+    "durationInFrames": 671
+  },
+  "inputVideo": "input.mp4",
+  "replacementAudio": "repaired_audio.wav",
+  "overlays": [],
+  "captions": [
+    {
+      "startFrame": 17,
+      "endFrame": 130,
+      "speaker": "そば屋",
+      "text": "今度のプロジェクト、\nおコードがクソでしたわ。"
+    },
+    {
+      "startFrame": 130,
+      "endFrame": 196,
+      "speaker": "そば屋",
+      "text": "ペットのお猿にでも\n書かせたのかしら？"
+    },
+    {
+      "startFrame": 244,
+      "endFrame": 344,
+      "speaker": "プログラマー猿",
+      "text": "あのコードなら、\n全部ワイが書いてましてよ"
+    },
+    {
+      "startFrame": 428,
+      "endFrame": 540,
+      "speaker": "そば屋",
+      "text": "……AIには出せない、\n人の温もりを感じましたわ"
+    },
+    {
+      "startFrame": 580,
+      "endFrame": 671,
+      "speaker": "たこさん",
+      "text": "本番もお燃えになってますわ"
+    }
+  ],
+  "sourceSegments": [
+    {
+      "startFrame": 0,
+      "endFrame": 225
+    },
+    {
+      "startFrame": 338,
+      "endFrame": 784
+    }
+  ],
+  "audioRepairs": [
+    {
+      "id": "sobaya_insult",
+      "file": "part2_sobaya_insult_irodori.wav",
+      "startFrame": 17,
+      "endFrame": 196,
+      "replaceStartFrame": 0,
+      "replaceEndFrame": 225,
+      "gain": 1.3070682579194872,
+      "duration": 5.952,
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "reference": "02_CHARACTERS/Sobaya_voice.wav",
+      "seed": 42,
+      "duration_scale": 1.0,
+      "caption": "優雅なお嬢様口調で、平然と毒舌を言う。自然な会話。",
+      "cfg_text": 5,
+      "uncut": false,
+      "postprocess": "sobaya_monsterize.sh",
+      "sha256": "586e0eb387a26340e5a2e040fd3131640b90391bcc530dba9994f565c7522c57"
+    },
+    {
+      "id": "yametaro",
+      "file": "part2_yametaro_irodori.wav",
+      "startFrame": 357,
+      "endFrame": 457,
+      "replaceStartFrame": 338,
+      "replaceEndFrame": 485,
+      "gain": 1.2620488762909872,
+      "duration": 3.32,
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "seed": 7,
+      "duration_scale": 1.0,
+      "caption": "淡々と静かな圧をかける。自慢しない。",
+      "cfg_text": 5,
+      "uncut": true,
+      "postprocess": "none",
+      "sha256": "f09aff5a587471b66e725adae80fc118ac0e2555606d6ff204fd2a98c2088e8c"
+    },
+    {
+      "id": "sobaya_praise",
+      "file": "part2_sobaya_praise_irodori.wav",
+      "startFrame": 541,
+      "endFrame": 653,
+      "replaceStartFrame": 485,
+      "replaceEndFrame": 666,
+      "gain": 1.5250815684542445,
+      "duration": 3.702,
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "reference": "02_CHARACTERS/Sobaya_voice.wav",
+      "seed": 42,
+      "duration_scale": 1.0,
+      "caption": "一瞬ためらい、丁寧なお嬢様口調で取り繕う。",
+      "cfg_text": 5,
+      "uncut": false,
+      "postprocess": "sobaya_monsterize.sh",
+      "sha256": "cf5b7056521a71b49a3e39c3384dc6623b6922e4b2eed07f57c830e55bb18ec0"
+    },
+    {
+      "id": "takosan",
+      "file": "part2_takosan_irodori.wav",
+      "startFrame": 693,
+      "endFrame": 784,
+      "replaceStartFrame": 690,
+      "replaceEndFrame": 810,
+      "gain": 1.289904288108036,
+      "duration": 3.0000416666666667,
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "reference": "02_CHARACTERS/Takosan_voice.wav",
+      "seed": 43,
+      "duration_scale": 1.0,
+      "caption": "",
+      "cfg_text": 5,
+      "uncut": false,
+      "postprocess": "none",
+      "sha256": "412dc2d56e4bc3356287886bedb2ebb18037ad1ea58a4eb9bef94241bf6efcbe"
+    }
+  ]
+}

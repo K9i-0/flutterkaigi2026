@@ -1,0 +1,24 @@
+{
+  "output": "final_remotion_subtitles_part2.mp4",
+  "sha256": "32595f7a34e7ad08c859f0d0e2124af52077d7bffc2767979fa4d97d54fb5b5c",
+  "width": 1280,
+  "height": 720,
+  "fps": 30,
+  "frames": 671,
+  "duration_seconds": 22.366666666666667,
+  "decode": "passed",
+  "typecheck": "passed",
+  "manifest_validation": "passed",
+  "visual_review": "Final Yametaro and Takosan frames inspected: generated text fully covered, caption name and approved text fit; faces remain visible. Lower table/cup portions covered by band.",
+  "asr": [
+    {
+      "file": "03_SCRIPTS/87_mado_kizoku/remotion/public/repaired_audio.wav",
+      "transcript": "今度のプロジェクトは、オーコードがクソでしたわ。ペットのおサルニでも書かせたのかしら?あのコードなら、全部ワイが書いてましたよ。AIには出せない、人のぬくもりを感じましたわ。本番も、思えになってますわ。"
+    }
+  ],
+  "asr_caveats": "Whisper-small normalizes 書いてましてよ to 書いてましたよ, and お燃え to 思え. Cannot resolve phonetic accuracy by ASR alone.",
+  "listening": "Unavailable: audio tool explicitly reports unsupported audio input. No listening pass claimed.",
+  "lip_sync": "Original Wan mouth movement retained; phoneme-level match not established.",
+  "video_regeneration": false,
+  "first_half": "not generated"
+}

@@ -13,7 +13,7 @@ const cinematicImages = [
 const cinematicDocuments = <String, (String, String, String)>{
   'gun-receipt': (
     '船内支給品　受領票',
-    'ハンドガン　一丁・予備弾\n受領者　福ちゃん',
+    'ハンドガン　一丁・予備弾\n受領者　福ギュン',
     '船長の伝言\n「村にはバケモノがいる。いざとなったら使え」',
   ),
   'return-ticket': (
@@ -33,7 +33,7 @@ const cinematicDocuments = <String, (String, String, String)>{
     '「帰任票は要りません。そこにいる人、全員乗せます」',
   ),
   'decree': (
-    '辞令　福ちゃん殿',
+    '辞令　福ギュン殿',
     'ゆめみ村・特別研修所へ出向を命ずる。\n帰任日：未定',
     '村のそば屋は銃で撃ってOK。\nよろしく！　よーたん',
   ),
@@ -45,7 +45,7 @@ const cinematicDocuments = <String, (String, String, String)>{
   ),
   'arrivals': (
     '特別研修　着任予定',
-    '九月十四日　やめ太郎\n九月二十一日　たこさん\n九月二十八日　福ちゃん',
+    '九月十四日　やめ太郎\n九月二十一日　たこさん\n九月二十八日　福ギュン',
     '受入停止の連絡票：未送信',
   ),
   'radio': (
@@ -60,7 +60,7 @@ const cinematicDocuments = <String, (String, String, String)>{
   ),
   'rescue': (
     '避難者名簿　照合済み',
-    '宿舎の社員　桟橋へ誘導\n前任の世話係　乗船確認\n福ちゃん・やめ太郎・たこさん　最終乗船の準備中',
+    '宿舎の社員　桟橋へ誘導\n前任の世話係　乗船確認\n福ギュン・やめ太郎・たこさん　最終乗船の準備中',
     '食事と水を配布\n待機中の三名を確認　／　たこさん',
   ),
 };

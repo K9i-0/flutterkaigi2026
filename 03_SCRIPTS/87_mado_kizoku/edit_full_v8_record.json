@@ -1,0 +1,20 @@
+{
+  "output": "final_remotion_subtitles_v8.mp4",
+  "frames": 1252,
+  "fps": 30,
+  "endFadeFrames": [
+    1090,
+    1102
+  ],
+  "creditFrames": [
+    1102,
+    1252
+  ],
+  "credit": "music_credit.txt",
+  "license_basis": "https://incompetech.com/music/royalty-free/faq.html",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "credit_placement": "In-video accepted explicitly by licensor FAQ; includes title, author, source, license URL and modification notice",
+  "checks": {
+    "typecheck": "pass"
+  }
+}

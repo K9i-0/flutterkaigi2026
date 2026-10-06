@@ -13,9 +13,9 @@
 | たこさん | **かなり完成度が高い**。放射状の6本脚、中央残骸の除去、丸い手＋突起1本を反映 | [takosan.glb](characters/takosan/rig_radial_v4_hands/takosan.glb) | 約1.45 MiB | 3本: Idle / Talk / Wave |
 | やめ太郎 | **かなり完成度が高い**。鼻は黒点ではなく肌色の膨らみ。ARの側面の三角形状のムラも修正済み | [yametaro.glb](characters/yametaro/rig_nose_v3/yametaro.glb) | 約3.25 MiB | 4本: Idle / Talk / Walk / Wave |
 | そば屋 | **改善の余地あり**。姿勢補正済みv3・リグ付き | [sobaya.glb](hazard_adopted/v3_20260917/sobaya.glb) | 約25.61 MiB | 104本。立ちポーズ / Walk / Run / 左手Greeting / ジョッキ攻撃など |
-| 福ちゃん | **課題が多い**。Tripo由来の実写系v2。完成版の品質基準として扱わず、用途ごとに見た目・動作を確認 | [fukuchan.glb](hazard_adopted/v2_20260913/fukuchan.glb) | 約18.51 MiB | 99本。Idle / Walk / Run / Greetingなど |
+| 福ギュン | **課題が多い**。Tripo由来の実写系v2。完成版の品質基準として扱わず、用途ごとに見た目・動作を確認 | [fukuchan.glb](hazard_adopted/v2_20260913/fukuchan.glb) | 約18.51 MiB | 99本。Idle / Walk / Run / Greetingなど |
 
-そば屋・福ちゃんの詳細な改善項目はこの一覧では未確定です。制作記録は、それぞれ[そば屋v3姿勢・リグ](characters/sobaya/rig_v3_20260917/README.md)、[福ちゃんv2](characters/fukuchan/v2_20260913/README.md)を参照してください。
+そば屋・福ギュンの詳細な改善項目はこの一覧では未確定です。制作記録は、それぞれ[そば屋v3姿勢・リグ](characters/sobaya/rig_v3_20260917/README.md)、[福ギュンv2](characters/fukuchan/v2_20260913/README.md)を参照してください。
 
 ### コピーして使えるリポジトリ内パス
 
@@ -37,17 +37,17 @@
 | たこさん | [紹介](https://madogiwa.work/characters/takosan) | [AR](https://madogiwa.work/camera/takosan) | [GLB](https://madogiwa.work/models/characters/takosan.glb) |
 | やめ太郎 | [紹介](https://madogiwa.work/characters/yametaro) | [AR](https://madogiwa.work/camera/yametaro) | [GLB](https://madogiwa.work/models/characters/yametaro.glb) |
 | そば屋 | [紹介](https://madogiwa.work/characters/sobaya) | [AR](https://madogiwa.work/camera/sobaya) | [GLB](https://madogiwa.work/models/characters/sobaya.glb) |
-| 福ちゃん | [紹介](https://madogiwa.work/characters/fukuchan) | [AR](https://madogiwa.work/camera/fukuchan) | [GLB](https://madogiwa.work/models/characters/fukuchan.glb) |
+| 福ギュン | [紹介](https://madogiwa.work/characters/fukuchan) | [AR](https://madogiwa.work/camera/fukuchan) | [GLB](https://madogiwa.work/models/characters/fukuchan.glb) |
 
 公式サイトのそば屋は2026-09-17に **握り・立ちポーズ・歩走・攻撃・左手挨拶版** へ更新。[サイト用GLB](characters/sobaya/web_motion_v3_20260917/sobaya.glb) はゲーム採用版と同じ形状・動作を保持し、テクスチャだけ可逆WebPへ変換。3DとARでジョッキをON/OFFできます。
 
 ## 別の制作物で使う
 
 - **Blender:** GLBをglTF 2.0としてインポートすれば形状・材質・リグ・収録動作を利用できます。元の編集履歴やBlender固有の設定まで復元するものではありません。
-- **Three.js:** `GLTFLoader`で読み込み、`gltf.scene`を配置。動作は`gltf.animations`を`AnimationMixer`で再生します。手振りは、たこさん・やめ太郎が`Wave`、動作入りそば屋v3・福ちゃんが`Greeting`です。公式サイトのそば屋v3にも同じ動作を収録しています。
+- **Three.js:** `GLTFLoader`で読み込み、`gltf.scene`を配置。動作は`gltf.animations`を`AnimationMixer`で再生します。手振りは、たこさん・やめ太郎が`Wave`、動作入りそば屋v3・福ギュンが`Greeting`です。公式サイトのそば屋v3にも同じ動作を収録しています。
 - **Flutter Scene:** 同じGLBをビルド時に変換し、`loadScene()`で読み込んで`Scene`へ追加。`SceneView`で表示します。導入手順と短いコード例は下記を参照。
 - **このモノレポの別プロジェクト:** モデルの重複コピーを避け、`public/models/`などから上記GLBへ相対symlinkを張ります。既存の[公式サイトの参照先](../../16_MADOGIWA_STUDIO/public/models/characters/)もこの方式です。
-- **ゲーム用動作:** そば屋・福ちゃんは動作入りの`hazard_adopted`版を使用。制作元のGLBには同じ動作が揃っていない場合があります。[採用モデルの説明](hazard_adopted/README.md)を参照。
+- **ゲーム用動作:** そば屋・福ギュンは動作入りの`hazard_adopted`版を使用。制作元のGLBには同じ動作が揃っていない場合があります。[採用モデルの説明](hazard_adopted/README.md)を参照。
 - **モデルの区別:** 本一覧は非ボクセル版です。ボクセル版は別の[VOXEL_CHARACTER_KIT](../voxel/VOXEL_CHARACTER_KIT.md)を使用します。
 
 キャラクターの人物同一性は[キャラクター設定](../../02_CHARACTERS/)を参照。たこさん・やめ太郎の最新版は公式サイトに採用済みですが、各ゲームの参照先が自動でこの版になるわけではありません。
@@ -97,7 +97,7 @@ API単価は[Tripo公式料金表](https://docs.tripo3d.ai/get-started/pricing.h
 | たこさん・2026-09-06 | 正面＋背面の複数画像から1体生成120。リグはBlenderで制作 | 120 | $1.20 | 約180円 | [生成記録](characters/takosan/tripo_sheet_p2_20260906/provenance.json)、[制作記録](characters/takosan/README.md) |
 | やめ太郎・2026-09-06 | 正面＋背面から生成120＋自動リグ25 | 145 | $1.45 | 約218円 | [生成記録](characters/yametaro/tripo_sheet_p2_20260906/provenance.json)、[リグを含む費用記録](characters/yametaro/README.md) |
 | そば屋v2・2026-09-13 | 体120＋頭（髪・仮面込み）120＋体の自動リグ25 | 265 | $2.65 | 約398円 | [費用・タスク記録](characters/sobaya/v2_20260913/provenance.json) |
-| 福ちゃんv2・2026-09-13 | 体120＋髪のない頭120＋髪120＋体の自動リグ25 | 385 | $3.85 | 約578円 | [費用・タスク記録](characters/fukuchan/v2_20260913/provenance.json) |
+| 福ギュンv2・2026-09-13 | 体120＋髪のない頭120＋髪120＋体の自動リグ25 | 385 | $3.85 | 約578円 | [費用・タスク記録](characters/fukuchan/v2_20260913/provenance.json) |
 | **上記の採用生成回の合計** | 生成7回＋自動リグ3回 | **915** | **$9.15** | **約1,373円** | 丸め前の合計から換算 |
 
 **全開発費の合計ではありません。** 旧版や不採用の試行、Imagegen等の参照画像生成費、作業者・AIエージェントの費用、Blenderでの調整時間は含めていません。そば屋v2は採用前の不採用試行240クレジット（$2.40／参考約360円）が別途記録されており、これだけを足すとそば屋v2関連は505クレジットです。全キャラの過去試行を網羅した総額ではありません。
@@ -119,9 +119,9 @@ API単価は[Tripo公式料金表](https://docs.tripo3d.ai/get-started/pricing.h
 | たこさん | 余分な触手の除去、6本を放射状に配置、中央残骸の除去、袖の裏地、丸い手＋突起1本、触手リグとIdle/Talk/Wave制作 | 脚の本数・方向や手の突起は参照だけでは狙いどおりにならず、形状を直接修正した。非人型の触手は専用リグをローカル制作 |
 | やめ太郎 | 顔の不要な黒い帯と溝を除去、肌と襟の色補修、頬・髪が腕について伸びるウェイト修正、口モーフ、黒点鼻を肌色の膨らみに変更 | 不要な線は形状・色・法線の複数に残る場合がある。顔を直す際は形状だけでなく材質も確認。自動リグは頭部のウェイト検査が必要 |
 | そば屋 | 体と頭を接合、首・襟の補完、頭ボーン位置・肩ウェイト調整、仮面の縁と顎を修正、既存モーションの転写 | 顔・仮面の同一性が品質を左右する。体と頭を分けると個別に調整できるが、接合・首・動作転写の作業は増える。現状も改善余地あり |
-| 福ちゃん | 体・頭・髪の3パーツを接合、首・肩・手首と腕の長さを調整、両手の指ボーン・ウェイト追加、表情・挨拶の制作 | 部位別生成でも実写人物の顔・髪・体格・関節の自然さが自動で完成するわけではない。API消費が増えても完成度を保証せず、現状は課題が多い |
+| 福ギュン | 体・頭・髪の3パーツを接合、首・肩・手首と腕の長さを調整、両手の指ボーン・ウェイト追加、表情・挨拶の制作 | 部位別生成でも実写人物の顔・髪・体格・関節の自然さが自動で完成するわけではない。API消費が増えても完成度を保証せず、現状は課題が多い |
 
-これはこの4体での制作経験です。Tripo全般の実写人物への性能を断定する比較試験ではありません。今回の傾向として、**たこさん・やめ太郎は後調整でかなり良い仕上がりになり、そば屋・福ちゃんは引き続き調整が必要**です。生成クレジットだけでなく、参照準備と後調整・検証も制作コストとして見積もります。
+これはこの4体での制作経験です。Tripo全般の実写人物への性能を断定する比較試験ではありません。今回の傾向として、**たこさん・やめ太郎は後調整でかなり良い仕上がりになり、そば屋・福ギュンは引き続き調整が必要**です。生成クレジットだけでなく、参照準備と後調整・検証も制作コストとして見積もります。
 
 ### 再利用・再生成時の注意
 
@@ -140,13 +140,13 @@ GLB4体はGitから取得できます。`.blend`の共有状況は異なりま�
 | たこさん | `04_GAME_ASSETS/3d/characters/takosan/rig_radial_v4_hands/takosan.blend` | ローカル保持。[修正記録](characters/takosan/rig_radial_v4_hands/README.md) |
 | やめ太郎 | `04_GAME_ASSETS/3d/characters/yametaro/rig_nose_v3/yametaro.blend` | ローカル保持。[修正記録](characters/yametaro/rig_nose_v3/README.md) |
 | そば屋 | `04_GAME_ASSETS/3d/characters/sobaya/rig_v3_20260917/sobaya_animated.blend` | Git管理済み。[編集ファイル](characters/sobaya/rig_v3_20260917/sobaya_animated.blend)。103本のゲーム動作入り |
-| 福ちゃん | `04_GAME_ASSETS/3d/characters/fukuchan/v2_20260913/fukuchan_v2.blend` | ローカル保持。[制作・再現手順](characters/fukuchan/v2_20260913/README.md) |
+| 福ギュン | `04_GAME_ASSETS/3d/characters/fukuchan/v2_20260913/fukuchan_v2.blend` | ローカル保持。[制作・再現手順](characters/fukuchan/v2_20260913/README.md) |
 
 ## ARで使う場合
 
 AR用USDZは固定ファイルとして管理せず、GLBから**ブラウザ内で生成**しています。AppleのQuick Lookへ渡すときだけポーズを固定するため、元GLBのアニメーションは残っています。写真・カメラ映像をサーバーへ送信する処理はありません。
 
-- 初期サイズは等身大。そば屋180cm、福ちゃん170cm、たこさん約143cm、やめ太郎130cm。ぬいぐるみ20cm、自撮り用12cmも選択可能。
+- 初期サイズは等身大。そば屋180cm、福ギュン170cm、たこさん約143cm、やめ太郎130cm。ぬいぐるみ20cm、自撮り用12cmも選択可能。
 - 変換はThree.js `USDZExporter`と補助処理を使用。元の法線の保持、両面材質の裏面追加、肌色と反射・光沢のUV分離、テクスチャ上限4096pxを反映済み。
 - 修正前の変換を再実装すると、フードの内側の消失や肌の三角形状のムラが再発します。共有の[AR変換実装](../../16_MADOGIWA_STUDIO/src/official/character-ar-export.ts)を参照してください。
 - SafariのAR画面から「オブジェクト」表示に切り替えると、カメラ背景なしで回転・拡大確認できます。Androidは動作未保証。

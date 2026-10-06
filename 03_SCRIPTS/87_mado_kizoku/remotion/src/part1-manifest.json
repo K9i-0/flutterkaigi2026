@@ -1,0 +1,87 @@
+{
+  "composition": {
+    "id": "MadoKizokuPart1",
+    "width": 1280,
+    "height": 720,
+    "fps": 30,
+    "durationInFrames": 382
+  },
+  "inputVideo": "part1.mp4",
+  "replacementAudio": "part1_audio.wav",
+  "overlays": [],
+  "sourceSegments": [
+    {
+      "startFrame": 0,
+      "endFrame": 180
+    },
+    {
+      "startFrame": 218,
+      "endFrame": 420
+    }
+  ],
+  "captions": [
+    {
+      "startFrame": 26,
+      "endFrame": 155,
+      "speaker": "そば屋",
+      "text": "やはり、労働をサボっていただく\nおビールは格別ですわね"
+    },
+    {
+      "startFrame": 214,
+      "endFrame": 283,
+      "speaker": "福ギュン",
+      "text": "こちらのお菓子もギュンですわ"
+    },
+    {
+      "startFrame": 300,
+      "endFrame": 337,
+      "speaker": "やめ太郎",
+      "text": "来客用ですわ"
+    }
+  ],
+  "audioRepairs": [
+    {
+      "speaker": "sobaya",
+      "file": "part1_sobaya_irodori.wav",
+      "model": "Aratako/Irodori-TTS-v4-Large",
+      "reference": "02_CHARACTERS/Sobaya_voice.wav",
+      "seed": 42,
+      "cfg_text": 5,
+      "duration_scale": 1,
+      "startFrame": 26,
+      "endFrame": 155,
+      "gain": 1.8921942493915327,
+      "postprocessing": "sobaya_monsterize.sh",
+      "sha256": "3187caaafbb63660e3966a0e02b4386507faa3d0616c9c8dce6e15b8b8f48e8b"
+    },
+    {
+      "speaker": "fukuchan",
+      "file": "part1_fukuchan_irodori.wav",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "reference": "02_CHARACTERS/Fukuchan_voice.wav",
+      "seed": 100,
+      "cfg_text": 5,
+      "duration_scale": 0.65,
+      "startFrame": 252,
+      "endFrame": 321,
+      "gain": 1.5356649995498741,
+      "postprocessing": "none",
+      "sha256": "cea1c8fcf0981b03800fe13a484cd841fd7963169a784e3c1f9cb562dc55b818"
+    },
+    {
+      "speaker": "yametaro",
+      "file": "part1_yametaro_irodori.wav",
+      "model": "Aratako/Irodori-TTS-v4.1-Small",
+      "reference": "02_CHARACTERS/Yametaro_voice.wav",
+      "seed": 7,
+      "cfg_text": 5,
+      "duration_scale": 0.35,
+      "startFrame": 338,
+      "endFrame": 375,
+      "gain": 1.2026321124601655,
+      "postprocessing": "none",
+      "sha256": "1f4a51bf3d9b9ea5aee29fc8f0e62e7e47b062ecd89cc29ec71181bd3a60a508"
+    }
+  ],
+  "notes": "Canonical voices for continuity. No audio/video time stretching. Shortened silent gap; 31 frames after final dialogue before part2."
+}

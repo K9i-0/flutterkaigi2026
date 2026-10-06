@@ -1,0 +1,26 @@
+{
+  "status": "dry_run_passed_not_submitted",
+  "date": "2026-10-06",
+  "paid_requests": 0,
+  "validation": [
+    {
+      "segment": 1,
+      "exit_code": 0,
+      "stdout": "Prompt: 7,512 characters\nMedia: {'reference_image': 5, 'reference_audio': 3} (9.9 MiB raw)\nRequest: wan3.0-video, 14 s, 480P, 16:9, audio=True\nAudio source: wan3\nAudio sync strategy: wan_generated_lip_sync\nGeneration: segmented_over_30; project duration=41 s; request duration=14 s\nSeed: 871007; prompt_extend=False; watermark=False\nOutput: /Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/03_SCRIPTS/87_mado_kizoku/wan3_part1_480p.mp4\nDry-run complete. Add --submit to make the paid request.\n",
+      "stderr": ""
+    },
+    {
+      "segment": 2,
+      "exit_code": 0,
+      "stdout": "Prompt: 8,023 characters\nMedia: {'reference_image': 5, 'reference_audio': 3} (10.0 MiB raw)\nRequest: wan3.0-video, 27 s, 480P, 16:9, audio=True\nAudio source: wan3\nAudio sync strategy: wan_generated_lip_sync\nGeneration: segmented_over_30; project duration=41 s; request duration=27 s\nSeed: 871008; prompt_extend=False; watermark=False\nOutput: /Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/03_SCRIPTS/87_mado_kizoku/wan3_part2_480p.mp4\nDry-run complete. Add --submit to make the paid request.\n",
+      "stderr": ""
+    }
+  ],
+  "reference_audio_seconds": {
+    "part1": 12.46,
+    "part2": 13.29
+  },
+  "asset_hashes_verified": true,
+  "generated_video_audit": "not_applicable_not_generated",
+  "account_access": "not_tested"
+}

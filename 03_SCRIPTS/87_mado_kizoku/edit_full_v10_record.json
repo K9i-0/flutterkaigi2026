@@ -1,0 +1,12 @@
+{
+  "output": "final_remotion_subtitles_v10.mp4",
+  "durationInFrames": 1162,
+  "fps": 30,
+  "change": "caption speaker 福ちゃん -> 福ギュン",
+  "checks": {
+    "typecheck": "pass",
+    "full_decode": "pass",
+    "visual_caption": "pass"
+  },
+  "audio": "unchanged"
+}

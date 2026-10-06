@@ -52,7 +52,7 @@ MCPによる本編での検証記録は `21_SOBAYA_HAZARD_LAB/qa/sobaya-v3-20260
 
 ## 軽い挨拶への作り直し（2026-09-17）
 
-上記の旧Greetingと手首補正は `casual-hey-20260917` で置換。短く片手を上げて応える2.2秒の新規動作。手の表裏を修正し、上げ下げを同じ関節経路に揃える。福ちゃんも同時更新。正本・再生成・QAは `04_GAME_ASSETS/3d/motions/casual_greeting_20260917/README.md`。`sobaya_animated.blend` とフルリターゲット経路も更新済み。
+上記の旧Greetingと手首補正は `casual-hey-20260917` で置換。短く片手を上げて応える2.2秒の新規動作。手の表裏を修正し、上げ下げを同じ関節経路に揃える。福ギュンも同時更新。正本・再生成・QAは `04_GAME_ASSETS/3d/motions/casual_greeting_20260917/README.md`。`sobaya_animated.blend` とフルリターゲット経路も更新済み。
 
 ## ジョッキ握りの仕上げ用モデル（2026-09-17）
 

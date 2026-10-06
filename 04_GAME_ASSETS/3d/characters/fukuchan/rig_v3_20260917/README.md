@@ -1,4 +1,4 @@
-# 福ちゃんv3 — 首補修・リグ・ギュンギュン
+# 福ギュンv3 — 首補修・リグ・ギュンギュン
 
 2026-09-17。承認済み `../likeness_finish_20260917/fukuchan_final.blend` を入力に、首の斑点を補修し、既存動作を使用できる54骨のリグを追加した。全身と顔の頂点位置・面・UVは完全一致を検証済み。ローカル公式サイトの表示モデルはこのフォルダの `fukuchan.glb`。
 
@@ -10,7 +10,7 @@
 
 - 54骨。Mixamo系の全身骨名、左右5指×3骨、RootとPropSocket.R。最大4ウェイトで正規化。
 - このAポーズの肩・肘・手首・股関節へ骨を配置。UVで分裂した同位置点のウェイトを揃え、隣り合う指は表面距離で分ける。靴を腕・腰へ誤分類しない。名札と文字は同一骨で保持。
-- 旧福ちゃんの `hazard_adopted/fukuchan.glb` から、元姿勢と脚長を考慮して17動作をリターゲット。ローカル回転をそのままコピーしない。元クリップ名・SHA・長さは `motions.json`。
+- 旧福ギュンの `hazard_adopted/fukuchan.glb` から、元姿勢と脚長を考慮して17動作をリターゲット。ローカル回転をそのままコピーしない。元クリップ名・SHA・長さは `motions.json`。
 - 既存動作：Idle / Walk / Run / Aim / AimShotgun / ReloadHandgun / ReloadShotgun / Hit / Evade / Kick / Climb / Vault / Struggle / BreakFree / DanceStep / DanceDisco / DanceVictory。
 - Greeting：新しい手の向きに合わせた2.2秒の短い挨拶。
 - GyunGyunPose：1秒の固定ポーズ。頬下の両こぶし、肘を低く・前腕を立て、左腿を体の前で交差させて左膝を画面左へ出し、すねを下へ垂らす。右足で支持。骨盤と下半身は35度横へ向け、腰・背中・胸の3段でひねりを戻して胸と顔を正面へ向ける。

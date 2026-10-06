@@ -1,0 +1,25 @@
+{
+  "output": "final_remotion_subtitles_v3.mp4",
+  "fps": 30,
+  "frames": 1120,
+  "yametaro_cleanup": {
+    "source": "part1_yametaro_irodori.wav",
+    "retain_seconds": 1.23,
+    "fade_out_seconds": 0.025,
+    "trimmed_asr": "来客用ですわ",
+    "original_preserved": true
+  },
+  "between_parts": {
+    "extra_hold_frames": 45,
+    "held_source_frame": 419
+  },
+  "ending": {
+    "extra_frames": 30,
+    "source_end_frame": 806,
+    "audio": "silence after adopted dialogue"
+  },
+  "checks": {
+    "typecheck": "pass",
+    "listening": "unavailable; tail trim checked with ASR and waveform"
+  }
+}

@@ -68,7 +68,7 @@ Future<Map<String, Object?>> probeConversation(
       await Future<void>.delayed(const Duration(milliseconds: 100));
       checkSession();
     }
-    final other = speaker == '福ちゃん' ? 'やめ太郎' : '福ちゃん';
+    final other = speaker == '福ギュン' ? 'やめ太郎' : '福ギュン';
     if (game.speechWeights[other] != 0) {
       throw StateError('Silent actor moved: $other');
     }
@@ -100,11 +100,11 @@ Future<Map<String, Object?>> probeConversation(
     game.startEvent('opening');
     final shots = game.director!.shots;
     final firstShot = shots.indexWhere(
-      (shot) => ['福ちゃん', 'やめ太郎'].contains(shot.speaker),
+      (shot) => ['福ギュン', 'やめ太郎'].contains(shot.speaker),
     );
     if (firstShot < 0) throw StateError('Opening has no playable speaker');
     final firstSpeaker = shots[firstShot].speaker;
-    final secondSpeaker = firstSpeaker == '福ちゃん' ? 'やめ太郎' : '福ちゃん';
+    final secondSpeaker = firstSpeaker == '福ギュン' ? 'やめ太郎' : '福ギュン';
     final secondShot = shots.indexWhere(
       (shot) => shot.speaker == secondSpeaker,
     );

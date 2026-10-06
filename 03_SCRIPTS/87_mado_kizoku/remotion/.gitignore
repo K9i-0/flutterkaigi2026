@@ -1,0 +1,14 @@
+node_modules/
+out/
+.remotion/
+
+public/input.mp4
+public/repaired_audio.wav
+
+public/audio_notifications.wav
+
+public/part2_approved.mp4
+public/part1.mp4
+public/part1_audio.wav
+
+public/bgm_mix.wav

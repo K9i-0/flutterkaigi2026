@@ -619,7 +619,7 @@ export class BeerRunnerGame {
     // とーくん: アロハ・帽子・ウクレレ、よーたん: ギター・金髪・ロック服を維持。
     this.loadCameo("models/tokun.glb", 1.05, -5.5, -66, Math.PI / 2, "ALOHA BOOST!");
     this.loadCameo("models/yotan.glb", 1.05, 5.7, -132, -Math.PI / 2, "ROCK CLEAR!");
-    // 福ちゃん: おしゃれ服・ギュンギュンポーズを維持。
+    // 福ギュン: おしゃれ服・ギュンギュンポーズを維持。
     this.loadCameo("models/fukuchan.glb", 1.05, -5.7, -198, Math.PI / 2, "ギュンギュン GUARD!");
     // ゆめみん: 青い体・点目・自由に動く鼻・木槌を維持。
     this.loadCameo("models/yumemin.glb", 1.08, 5.5, -276, -Math.PI / 2, "BONK!");
@@ -1039,7 +1039,7 @@ export class BeerRunnerGame {
       this.shieldReady = false;
       this.root.classList.remove("has-shield");
       this.createGoldBurst();
-      this.showAnnouncement("福ちゃんGUARD！ ギュンギュン！", "blue");
+      this.showAnnouncement("福ギュンGUARD！ ギュンギュン！", "blue");
       return;
     }
     this.hitTime = COLLISION_DURATION;
@@ -1076,7 +1076,7 @@ export class BeerRunnerGame {
       case "fukuchan":
         this.shieldReady = true;
         this.root.classList.add("has-shield");
-        this.showAnnouncement("福ちゃんのギュンギュンGUARD！", "blue");
+        this.showAnnouncement("福ギュンのギュンギュンGUARD！", "blue");
         break;
       case "okayaman":
         this.showOkayamanBroadcast();

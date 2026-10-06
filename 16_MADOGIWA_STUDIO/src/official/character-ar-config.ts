@@ -3,7 +3,7 @@ import { characters } from "../lib/site-content";
 export const arCharacters = {
   yumemin: { name: "ゆめみん", greeting: null, height: 0.6 },
   sobaya: { name: "そば屋", greeting: "Greeting", height: 1.8 },
-  fukuchan: { name: "福ちゃん", greeting: "Greeting", height: 1.7 },
+  fukuchan: { name: "福ギュン", greeting: "Greeting", height: 1.7 },
   takosan: { name: "たこさん", greeting: "Wave", height: 1.433 },
   yametaro: { name: "やめ太郎", greeting: "Wave", height: 1.3 },
 } as const;

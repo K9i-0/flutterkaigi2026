@@ -1,4 +1,4 @@
-# そば屋・福ちゃん VRM 1.0
+# そば屋・福ギュン VRM 1.0
 
 ゲームの共通GLBから再生成するVRM 1.0対応版。既存の顔・体格・メッシュ・テクスチャ・初期姿勢・骨名を維持し、肩周辺のスキンウェイトを局所的に整えて、VRM Humanoidの役割を明示する。ゲーム用GLBは引き続き `04_GAME_ASSETS/3d/motion_library/` が正本。
 
@@ -7,7 +7,7 @@
 | `sobaya.vrm` | 41（必須15を含む） | なし。仮面・顔の変形は追加しない |
 | `fukuchan.vrm` | 22（必須15を含む） | `aa` → SpeechOpen、`ou` → SpeechNarrow |
 
-そば屋は既存の左右2節の指骨を対応付ける。福ちゃんは指骨なし。指・眼球・まばたき・揺れ物はVRM 1.0の任意機能で、今回新設していない。そば屋の小道具ソケットと裾骨は一般ノードとして保持し、人型ボーンへ誤登録しない。そば屋のChestはVRMのchest、福ちゃんのSpine1/Spine2はchest/upperChestへ対応する。
+そば屋は既存の左右2節の指骨を対応付ける。福ギュンは指骨なし。指・眼球・まばたき・揺れ物はVRM 1.0の任意機能で、今回新設していない。そば屋の小道具ソケットと裾骨は一般ノードとして保持し、人型ボーンへ誤登録しない。そば屋のChestはVRMのchest、福ギュンのSpine1/Spine2はchest/upperChestへ対応する。
 
 ## モーションとの関係
 
@@ -29,7 +29,7 @@ done
 node tools/validate_humanoid_vrm.mjs
 ```
 
-`validation.json`：公式VRM JSON Schema、必須15ボーン、一意性、親子関係、祖先を含む正のscale、glTF Validator（エラー0）、Three-VRMの読み込みと標準head駆動、福ちゃんのaa表情適用を検証する。Node検査ではテクスチャを代替し、画像の実表示はブラウザで別途確認済み。
+`validation.json`：公式VRM JSON Schema、必須15ボーン、一意性、親子関係、祖先を含む正のscale、glTF Validator（エラー0）、Three-VRMの読み込みと標準head駆動、福ギュンのaa表情適用を検証する。Node検査ではテクスチャを代替し、画像の実表示はブラウザで別途確認済み。
 
 glTF Validatorの警告は、実行時生成の接線と、恒等変換の親の下にあるスキンメッシュ。前者はVRM 1.0で許容される。Three-VRMのブラウザ表示でテクスチャ・外観・腕駆動・口パクを確認し、コンソールエラー0。すべてのVRMアプリへの互換性を保証する検証ではない。
 

@@ -1,0 +1,51 @@
+{
+  "task_id": "c3476f26-09c7-4ecc-bd3c-484535ca380b",
+  "status": "SUCCEEDED",
+  "requested_at": "2026-10-06T08:05:36.667541+00:00",
+  "config": "wan3_config_part2.json",
+  "model": "wan3.0-video",
+  "duration": 27,
+  "resolution": "480P",
+  "seed": 871008,
+  "estimated_cost_usd": 0.945,
+  "price_usd_per_second": 0.035,
+  "pricing_source": "https://www.qwencloud.com/models/wan3.0-video",
+  "authorization": "User: まずは後半を生成して",
+  "submit_count": 1,
+  "output": "wan3_part2_480p.mp4",
+  "sha256": "3ed1f8d4ef156e8a643e1bdf6f76b7f5a0ef11fa3e62cb996c27b1427940590b",
+  "audit_status": "review_required",
+  "actual_charge": "not queried; estimate only",
+  "media_probe": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "30/1"
+      },
+      {
+        "codec_name": "aac",
+        "sample_rate": "44100",
+        "r_frame_rate": "0/0"
+      }
+    ],
+    "format": {
+      "duration": "27.028005"
+    }
+  },
+  "audit": {
+    "decode": "passed",
+    "visual": "3-second sampled contact sheet: four intended characters, shared window set and table preserved; unwanted generated subtitle-like text appears in Yametaro and final shots. Not approved as clean plate.",
+    "transcript_screening": {
+      "model": "openai/whisper-small",
+      "transcript": "今度のプロジェクト、オコードがクソでしたわ。ペットのおさるにでも書かせたのかしら?あのコードなら、全部Yが書いてましてよ。AIには出せない、人のヌタモリを感じましたわ。本番も思えになってますわ。",
+      "note": "Automated screening only; listening, voice identity and exact lip sync not verified."
+    },
+    "listening_and_precise_lip_sync": "not verified; ASR is not a listening audit",
+    "postproduction": "No final subtitles or 720p edit applied. Raw generated clip preserved.",
+    "regeneration": "not submitted"
+  }
+}

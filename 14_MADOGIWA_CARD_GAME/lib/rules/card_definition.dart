@@ -105,7 +105,7 @@ abstract final class CardCatalog {
 
   static const fukuchan = CardDefinition(
     id: 'fukuchan',
-    name: '福ちゃん',
+    name: '福ギュン',
     epithet: '常連第一号',
     quote: 'ギュンギュン！',
     power: 2,

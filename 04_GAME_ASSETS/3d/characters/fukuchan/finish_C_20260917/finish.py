@@ -198,9 +198,9 @@ bpy.ops.object.transform_apply(location=False,rotation=False,scale=True)
 plate.data.materials.append(white)
 bev=plate.modifiers.new('Subtle rounded card corners','BEVEL');bev.width=.0013;bev.segments=3
 bpy.context.view_layer.objects.active=plate;bpy.ops.object.modifier_apply(modifier=bev.name)
-curve=bpy.data.curves.new('Exact Japanese 福ちゃん','FONT');curve.body='福ちゃん';curve.align_x='CENTER';curve.align_y='CENTER'
+curve=bpy.data.curves.new('Exact Japanese 福ギュン','FONT');curve.body='福ギュン';curve.align_x='CENTER';curve.align_y='CENTER'
 curve.font=bpy.data.fonts.load('/System/Library/Fonts/ヒラギノ角ゴシック W6.ttc');curve.size=.03;curve.resolution_u=12
-text=bpy.data.objects.new('福ちゃん',curve);s.collection.objects.link(text)
+text=bpy.data.objects.new('福ギュン',curve);s.collection.objects.link(text)
 text.rotation_euler=(math.pi/2,0,0);text.location=(center[0],badge_y-.00065,center[1])
 text.data.materials.append(black)
 bpy.context.view_layer.update();text.scale*=min(.083/text.dimensions.x,.022/text.dimensions.y)
@@ -213,7 +213,7 @@ bpy.context.view_layer.objects.active=o;bpy.ops.object.join();o.name='Fukuchan_C
 remaining=original_P[[i for i in range(len(original_P)) if i not in eye_ids]]
 after_P=np.array([tuple(o.matrix_world@v.co) for v in o.data.vertices[:len(remaining)]])
 assert np.allclose(remaining,after_P,atol=1e-7),'Geometry outside eyeballs moved'
-(OUT/'finish_report.json').write_text(json.dumps({'original_vertices':len(P),'geometry_outside_eyeballs_unchanged':True,'removed_coarse_eye_vertices':len(eye_ids),'eye_bounds':[ [a.tolist(),b.tolist()] for a,b in eye_bounds],'repainted_texels':int(painted.sum()),'material_faces':counts,'badge_text':'福ちゃん','badge_center':[center[0],badge_y,center[1]],'badge_font':'Hiragino Kaku Gothic W6','source_glb':str(BASE/'fukuchan_wholebody.glb')},ensure_ascii=False,indent=2)+'\n')
+(OUT/'finish_report.json').write_text(json.dumps({'original_vertices':len(P),'geometry_outside_eyeballs_unchanged':True,'removed_coarse_eye_vertices':len(eye_ids),'eye_bounds':[ [a.tolist(),b.tolist()] for a,b in eye_bounds],'repainted_texels':int(painted.sum()),'material_faces':counts,'badge_text':'福ギュン','badge_center':[center[0],badge_y,center[1]],'badge_font':'Hiragino Kaku Gothic W6','source_glb':str(BASE/'fukuchan_wholebody.glb')},ensure_ascii=False,indent=2)+'\n')
 bpy.ops.export_scene.gltf(filepath=str(OUT/'fukuchan_finished.glb'),export_format='GLB',use_selection=True,export_animations=False)
 bpy.ops.wm.save_as_mainfile(filepath=str(OUT/'fukuchan_finished.blend'))
 print('FINISH_MODEL_DONE',flush=True)

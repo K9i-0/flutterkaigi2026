@@ -1,0 +1,100 @@
+{
+  "assets": [
+    {
+      "reference": "Image 1",
+      "path": "character_sobaya_basic_sheet.png",
+      "source": "03_SCRIPTS/00_TEMPLATES/characters/character_sobaya_basic_sheet.png",
+      "sha256": "9c44e1486fd9fbb9f3a793b4f56979eef7701ead4a75ec79952d81a2e4f0a058",
+      "copy_verified": true
+    },
+    {
+      "reference": "Image 2",
+      "path": "character_yametaro_basic_sheet.png",
+      "source": "03_SCRIPTS/00_TEMPLATES/characters/character_yametaro_basic_sheet.png",
+      "sha256": "1e98502e8051bbacf482f273e551a7dd8b8fb79e2c153865d9e48df690eb91e6",
+      "copy_verified": true
+    },
+    {
+      "reference": "Image 3",
+      "path": "character_fukuchan_basic_sheet.png",
+      "source": "03_SCRIPTS/00_TEMPLATES/characters/character_fukuchan_basic_sheet.png",
+      "sha256": "a3e1f8f9feff43bf501617818f6e8652c2b6b39d72f7982716cbc550cb3b5866",
+      "copy_verified": true
+    },
+    {
+      "reference": "Image 4",
+      "path": "character_takosan_basic_sheet.png",
+      "source": "03_SCRIPTS/00_TEMPLATES/characters/character_takosan_basic_sheet.png",
+      "sha256": "62e6a6a9a92250b564b2ea8c7ffa90333ac0182f86d53e240d70399bf50da99d",
+      "copy_verified": true
+    },
+    {
+      "reference": "Image 5",
+      "path": "window_tea_environment.png",
+      "source": "/Users/kotahayashi/.codex/generated_images/01a10f80-d6ab-74d1-b994-5c580360d937/exec-3f187550-9503-41dd-a538-4bfd14b35026.png",
+      "sha256": "dc36b1cddc5608bf20d2680cd4c0bc58dd5f084a6843dad21cd88c60d0c0fa59",
+      "role": "shared empty environment and prop reference; only three drinking cups; laptop screen faces Takosan",
+      "generation_tool": "built-in image_gen",
+      "prompt_file": "prompt_imagegen_environment.txt"
+    },
+    {
+      "path": "voice_ref_sobaya.wav",
+      "source": "02_CHARACTERS/Sobaya_voice.wav",
+      "source_sha256": "976916e670fea5fcf0f741d45e150eaf055c3b0e11d240e3be656dd724166b58",
+      "sha256": "54d090ff1843d513e2ac2b5520d71c3df102a0ba2e662ee8f09f730fd5b5a338",
+      "start": 0,
+      "end": 2.45,
+      "duration": 2.45,
+      "usage": "voice_timbre_only",
+      "boundary": "verified silence 2.269773–2.617823 s; same cut as episode82",
+      "processing": "PCM slice only"
+    },
+    {
+      "path": "voice_ref_yametaro.wav",
+      "source": "02_CHARACTERS/Yametaro_voice.wav",
+      "source_sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "sha256": "ede825a58cf1920f1bdfb353eea17d0feb24f20592d7f36d7c5c22c5ab60530b",
+      "start": 0,
+      "end": 7.0,
+      "duration": 7.0,
+      "usage": "voice_timbre_only",
+      "boundary": "entire canonical file",
+      "processing": "unchanged copy"
+    },
+    {
+      "path": "voice_ref_takosan.wav",
+      "source": "02_CHARACTERS/Takosan_voice.wav",
+      "source_sha256": "f0663c8e8cebb5c0b700b8399d2ce22c744ca8b8d68ab3b7e0b5ee016c30741c",
+      "sha256": "f0663c8e8cebb5c0b700b8399d2ce22c744ca8b8d68ab3b7e0b5ee016c30741c",
+      "start": 0,
+      "end": 3.84,
+      "duration": 3.84,
+      "usage": "voice_timbre_only",
+      "boundary": "entire canonical file",
+      "processing": "unchanged copy"
+    },
+    {
+      "path": "voice_ref_fukuchan_short.wav",
+      "source": "02_CHARACTERS/Fukuchan_voice.wav",
+      "source_sha256": "3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35",
+      "sha256": "ffc1cf31f034195ae9676c0d014611d3ab549a3cc1ccf8294660b8789b8a82e4",
+      "start": 0,
+      "end": 3.01,
+      "duration": 3.01,
+      "usage": "voice_timbre_only",
+      "boundary": "episode 76/82 verified pause 2.963129–3.064422 s at -25 dB",
+      "processing": "PCM slice only; no speed/pitch/gain change"
+    },
+    {
+      "reference": "Image 6 (part1 only)",
+      "path": "part2_seating_reference.png",
+      "source": "wan3_part2_480p.mp4 @ 0 s",
+      "sha256": "c1d2efacefe5b97337a1fbda69fea4077628491f911699d8336cd32868e70bc3",
+      "role": "composition and seating continuity only; canonical sheets remain identity authority"
+    }
+  ],
+  "audio_seconds": {
+    "part1": 12.46,
+    "part2": 13.29
+  }
+}

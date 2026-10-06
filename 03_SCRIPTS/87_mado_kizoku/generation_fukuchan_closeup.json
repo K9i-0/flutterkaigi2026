@@ -1,0 +1,27 @@
+{
+  "task_id": "cd812739-e214-4d26-87eb-8f008770efda",
+  "status": "SUCCEEDED",
+  "config": "wan3_config_fukuchan_closeup.json",
+  "prompt": "prompt_wan3_fukuchan_closeup.txt",
+  "purpose": "replace soft enlarged closeup with newly generated native closeup",
+  "estimated_usd": 0.14,
+  "pricing_source": "https://www.qwencloud.com/models/wan3.0-video",
+  "resolution": "480P",
+  "duration": 4,
+  "inputs": [
+    {
+      "path": "character_fukuchan_basic_sheet.png",
+      "sha256": "a3e1f8f9feff43bf501617818f6e8652c2b6b39d72f7982716cbc550cb3b5866"
+    },
+    {
+      "path": "window_tea_environment.png",
+      "sha256": "dc36b1cddc5608bf20d2680cd4c0bc58dd5f084a6843dad21cd88c60d0c0fa59"
+    },
+    {
+      "path": "voice_ref_fukuchan_short.wav",
+      "sha256": "ffc1cf31f034195ae9676c0d014611d3ab549a3cc1ccf8294660b8789b8a82e4"
+    }
+  ],
+  "output_sha256": "84213354526dabe8ecd8989712726c3f29811b7587a4664c69a8d273a81a2f81",
+  "review": "Native closeup, canonical likeness, windows and chair; no visible generated captions. Adopted prior Irodori dialogue preserved for user-requested established voice. Precise lip sync not verified."
+}

@@ -1,6 +1,6 @@
-# YouTube実発話セリフ集＆素材対応表（福ちゃん・無職やめ太郎）
+# YouTube実発話セリフ集＆素材対応表（福ギュン・無職やめ太郎）
 
-YouTube対談動画（ゆめみ×いえらぶ コラボ動画）から、**福ちゃん**と**無職やめ太郎**の使い勝手が良い実発話フレーズを厳選抽出し、ノイズ除去・音量正規化（EBU R128）を行った音声素材とテキストの対応表です。
+YouTube対談動画（ゆめみ×いえらぶ コラボ動画）から、**福ギュン**と**無職やめ太郎**の使い勝手が良い実発話フレーズを厳選抽出し、ノイズ除去・音量正規化（EBU R128）を行った音声素材とテキストの対応表です。
 
 台本作成時にそのまま使うか、一部の単語を差し替えて活用することで、本人のリアルな発話リズム・抑揚を最大限に活かした自然なセリフが制作できます。
 
@@ -8,17 +8,17 @@ YouTube対談動画（ゆめみ×いえらぶ コラボ動画）から、**福�
 
 ---
 
-## 1. 福ちゃん（福太郎 / CCO）
+## 1. 福ギュン（福太郎 / CCO）
 
 | ID / 音声ファイル | 尺 | カテゴリ | 原典発話テキスト | 動画制作・台本への活用・改変例 |
 |---|---|---|---|---|
-| [`fukuchan_q01_self_intro.wav`](file:///Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/voice_quotes/fukuchan_q01_self_intro.wav) | 9.05秒 | 自己紹介・挨拶 | 「株式会社ゆめみ執行役員CCOを担当している福太郎、通称福ちゃんです。よろしくお願いします。ぎゅぎゅんです。」 | **【王道挨拶】**<br>・「窓際族の福ちゃんです。よろしくお願いします。ぎゅぎゅんです！」<br>・冒頭や登場時の定番挨拶。 |
+| [`fukuchan_q01_self_intro.wav`](file:///Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/voice_quotes/fukuchan_q01_self_intro.wav) | 9.05秒 | 自己紹介・挨拶 | 「株式会社ゆめみ執行役員CCOを担当している福太郎、通称福ちゃんです。よろしくお願いします。ぎゅぎゅんです。」 | **【王道挨拶】**<br>・「窓際族の福ギュンです。よろしくお願いします。ぎゅぎゅんです！」<br>・冒頭や登場時の定番挨拶。 |
 | [`fukuchan_q02_cco_crazy.wav`](file:///Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/voice_quotes/fukuchan_q02_cco_crazy.wav) | 11.30秒 | 天然・クレイジー | 「CCOっていうのはコミュニケーション担当役員という説が濃厚なんですけれども、もしかしたらクレイジーのCかもしれないっていう説もあって、その点今代表にどっちって確認中です。」 | **【役職・珍説ボケ】**<br>・「〜という説が濃厚なんですけれども、もしかしたら〜かもしれないっていう説もあって」の構文で珍説を語らせる。 |
 | [`fukuchan_q03_hikawa_kiyoshi.wav`](file:///Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/voice_quotes/fukuchan_q03_hikawa_kiyoshi.wav) | 4.00秒 | 天然・誇張 | 「あとは氷川きよしと幼馴染と言っても過言ではないっていうことだったり。」 | **【過言ではない構文】**<br>・「そば屋のバッテリーと言っても過言ではないっていうことだったりぎゅん！」<br>・突拍子もない関係性を大真面目に主張する。 |
 | [`fukuchan_q04_kitte_mitsume.wav`](file:///Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/voice_quotes/fukuchan_q04_kitte_mitsume.wav) | 6.90秒 | 天然・マイペース | 「あと趣味がちょっと変わってて、切手見つめと映画館鑑賞が趣味です。集めじゃなくて見つめることも。」 | **【奇行・見つめボケ】**<br>・「ビール見つめが趣味です。飲むんじゃなくて見つめることも」<br>・マイペースな行動の言い訳。 |
 | [`fukuchan_q05_slack_no1.wav`](file:///Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/voice_quotes/fukuchan_q05_slack_no1.wav) | 10.70秒 | 組織・自慢 | 「実はゆめみはSlackというツールを社内コミュニケーションに使っていまして、Slackの活用度が日本一なんですよ。」 | **【日本一アピール】**<br>・「実は窓際族は〜が日本一なんですよ！」 |
 | [`fukuchan_q06_slack_asobiteru.wav`](file:///Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/voice_quotes/fukuchan_q06_slack_asobiteru.wav) | 5.50秒 | 関西弁ツッコミ | 「どんだけみんな日々Slackで遊んでんねんっていう風にも思うくらい。」 | **【遊んでんねんツッコミ】**<br>・「どんだけみんな日々ビール飲んでんねんっていう風にも思うくらい」 |
-| [`fukuchan_q07_social_outcast.wav`](file:///Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/voice_quotes/fukuchan_q07_social_outcast.wav) | 22.48秒 | メッセージ・決め台詞 | 「全国の就活生の皆さん、自分が異端児、異常者、社会不適合者だと思って夢を諦めていませんか？大丈夫です、ゆめみで受け入れます。福ちゃんもやめちゃんも働けている、そんな会社が世の中にはあるんです！ぎゅぎゅん！」 | **【窓際受け入れ宣言】**<br>・「大丈夫です、窓際族で受け入れます！福ちゃんもやめちゃんも働けている、そんな場所があるんです！ぎゅぎゅん！」 |
+| [`fukuchan_q07_social_outcast.wav`](file:///Users/kotahayashi/Workspace/Seedance_Madogiwa-voxel-game/02_CHARACTERS/voice_quotes/fukuchan_q07_social_outcast.wav) | 22.48秒 | メッセージ・決め台詞 | 「全国の就活生の皆さん、自分が異端児、異常者、社会不適合者だと思って夢を諦めていませんか？大丈夫です、ゆめみで受け入れます。福ちゃんもやめちゃんも働けている、そんな会社が世の中にはあるんです！ぎゅぎゅん！」 | **【窓際受け入れ宣言】**<br>・「大丈夫です、窓際族で受け入れます！福ギュンもやめちゃんも働けている、そんな場所があるんです！ぎゅぎゅん！」 |
 
 ---
 

@@ -1,0 +1,54 @@
+{
+  "model": "wan3.0-video",
+  "audio_source": "wan3",
+  "audio_sync_strategy": "wan_generated_lip_sync",
+  "reference_audio_usage": "voice_timbre_only",
+  "project_duration": 41,
+  "generation_mode": "segmented_over_30",
+  "segment_index": 2,
+  "prompt_file": "prompt_wan3_part2.txt",
+  "media": [
+    {
+      "type": "reference_image",
+      "path": "character_sobaya_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_yametaro_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_fukuchan_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "character_takosan_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "window_tea_environment.png"
+    },
+    {
+      "type": "reference_audio",
+      "path": "voice_ref_sobaya.wav"
+    },
+    {
+      "type": "reference_audio",
+      "path": "voice_ref_yametaro.wav"
+    },
+    {
+      "type": "reference_audio",
+      "path": "voice_ref_takosan.wav"
+    }
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 27,
+    "audio": true,
+    "seed": 871008,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_part2_480p.mp4"
+}

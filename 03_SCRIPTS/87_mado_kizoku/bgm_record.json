@@ -1,0 +1,13 @@
+{
+  "title": "Divertissement - Pizzicato (from the ballet Sylvia)",
+  "artist": "Kevin MacLeod",
+  "source": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Divertissement.mp3",
+  "license": "CC BY 4.0",
+  "source_sha256": "0ca1c3fbd4f7829396e0b60818f6af01a34e33fa1c40f24a53ed7109506db109",
+  "stopFrame": 985,
+  "fadeInFrames": 8,
+  "fadeOutFrames": 3,
+  "processing": "gain 5, soft peak ceiling 0.075; stereo preserved",
+  "peak": 0.07500000298023224,
+  "listening": "not available in runtime"
+}

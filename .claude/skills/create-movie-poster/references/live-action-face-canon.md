@@ -6,12 +6,12 @@
 |---|---|---|
 | とーくん | `02_CHARACTERS/Tokun.jpg` | `02_CHARACTERS/03_Tokun.md` |
 | よーたん | `02_CHARACTERS/Yotan.jpg` | `02_CHARACTERS/04_Yotan.md` |
-| 福ちゃん | `02_CHARACTERS/Fukuchan.jpg` | `02_CHARACTERS/05_Fukuchan.md` |
+| 福ギュン | `02_CHARACTERS/Fukuchan.jpg` | `02_CHARACTERS/05_Fukuchan.md` |
 | おかやまん | `02_CHARACTERS/Okayaman.jpg` | `02_CHARACTERS/07_Okayaman.md` |
 
 この4枚を顔の最上位ソースとする。エピソード用キャラクターシート、過去のポスター、生成済み画像は衣装や構図の補助参照には使えるが、顔の正典を置き換えない。
 
-福ちゃんの肌の綺麗さと自然なシワ・年齢感は、ユーザー指定の[基本シート基準](../../../../02_CHARACTERS/references/fukuchan-skin-standard.md)に従う。これは顔の骨格や人物同一性の参照を置き換える指定ではない。シミ・斑点を抑えることと、シワを消して若返らせることを分ける。
+福ギュンの肌の綺麗さと自然なシワ・年齢感は、ユーザー指定の[基本シート基準](../../../../02_CHARACTERS/references/fukuchan-skin-standard.md)に従う。これは顔の骨格や人物同一性の参照を置き換える指定ではない。シミ・斑点を抑えることと、シワを消して若返らせることを分ける。
 
 ## ImageGenへの渡し方
 

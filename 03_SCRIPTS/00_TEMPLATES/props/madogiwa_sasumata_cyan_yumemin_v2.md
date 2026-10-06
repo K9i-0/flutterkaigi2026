@@ -3,7 +3,7 @@
 後続改修あり。最新は `madogiwa_sasumata_cyan_yumemin_v3.png`。たこさん用は柄が短く、両方のロゴを接合部下の柄へ移動。
 
 2026-10-01 ユーザー指示で改修。最新参照: `madogiwa_sasumata_cyan_yumemin_v2.png`。
-福ちゃん・たこさんともに同じ水色のデザインを使用。旧ピンク／水色の色分けを置き換える。鋭利なトゲ、バールのような工業用品の質感を維持。分岐の根元の正面に `02_CHARACTERS/Yumemin.jpg` を参照したゆめみんロゴを配置。
+福ギュン・たこさんともに同じ水色のデザインを使用。旧ピンク／水色の色分けを置き換える。鋭利なトゲ、バールのような工業用品の質感を維持。分岐の根元の正面に `02_CHARACTERS/Yumemin.jpg` を参照したゆめみんロゴを配置。
 
 生成: 内蔵 image_gen。編集元: `madogiwa_sasumata_pink_cyan.png`、ロゴ参照: `02_CHARACTERS/Yumemin.jpg`。
 

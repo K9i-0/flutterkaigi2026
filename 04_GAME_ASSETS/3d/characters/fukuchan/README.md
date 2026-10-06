@@ -1,4 +1,4 @@
-# 福ちゃん — そば屋ハザード用
+# 福ギュン — そば屋ハザード用
 
 制作知見：[実写キャラの本人らしさと浅い顔形状](../../FUKUCHAN_V3_LIKENESS_LESSONS.md)。frontへの忠実度、顔の奥行きと陰影の切り分け、採用係数、リグ・口パクへの引き継ぎを記録。
 
@@ -8,7 +8,7 @@
 
 2026-09-17: リアル頭身C案の全身一体モデルを制作し、[frontに合わせた顔の改善](front_fidelity_20260917/README.md)と[Imagegenによる髪テクスチャ修正](imagegen_texture_20260917/README.md)を実施。髪修正時点の静的候補は `imagegen_texture_20260917/fukuchan_texture_fixed.glb`（ローカル保持）。
 
-2026-09-13: [福ちゃんv2](v2_20260913/README.md)を体・頭・髪の独立生成で制作。瞬き・笑顔と22動作を備えた比較用GLBと確認ページを追加した。以下はv1の制作記録。本編の採用状態は `04_GAME_ASSETS/3d/hazard_adopted/manifest.json` を参照。
+2026-09-13: [福ギュンv2](v2_20260913/README.md)を体・頭・髪の独立生成で制作。瞬き・笑顔と22動作を備えた比較用GLBと確認ページを追加した。以下はv1の制作記録。本編の採用状態は `04_GAME_ASSETS/3d/hazard_adopted/manifest.json` を参照。
 
 正典 `02_CHARACTERS/Fukuchan.jpg` の顔を参照し、built-in Imagegenで正面・背面のAポーズ画像を作成。入力正本は `tripo_p2_20260905/inputs/`、プロンプトは同ディレクトリの `imagegen_prompt.txt`。
 
@@ -42,4 +42,4 @@ python3 tools/tripo_multiview.py download 04_GAME_ASSETS/3d/characters/fukuchan/
 
 窓越え用に`Vault`（1.6秒、実行時にそば屋は2.1秒へ速度調整）を追加。`tools/hazard_vault_motion.py`の手付けIKで膝を折り畳み、ゲーム側の`WindowTraversal`と同期する。MixamoのWalk／Runは維持する。手の窓台接触は今後の仕上げ対象。
 
-Vaultは片手を窓枠に添え、左右の足を順に抜く軌道へ改訂。書き出し後の97姿勢の検査条件と限界は `21_SOBAYA_HAZARD_LAB/qa/window-contact-20260906.json` を参照。最終版のmacOS debugで、福ちゃんの窓の往復とそば屋の順次追跡を実描画フレームで確認済み。そば屋の掌の隙間と腰・裾の服の変形、全編通し・profileは仕上げ対象。
+Vaultは片手を窓枠に添え、左右の足を順に抜く軌道へ改訂。書き出し後の97姿勢の検査条件と限界は `21_SOBAYA_HAZARD_LAB/qa/window-contact-20260906.json` を参照。最終版のmacOS debugで、福ギュンの窓の往復とそば屋の順次追跡を実描画フレームで確認済み。そば屋の掌の隙間と腰・裾の服の変形、全編通し・profileは仕上げ対象。

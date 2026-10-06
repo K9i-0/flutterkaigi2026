@@ -537,7 +537,7 @@ export const LEVELS: LevelDefinition[] = [
       {
         id: "heavy-laptop",
         label: "非常に重いPC",
-        detail: "福ちゃんの忘れ物",
+        detail: "福ギュンの忘れ物",
         kind: "loot",
         at: { x: 6, z: 16 },
         color: "#b0bec5",

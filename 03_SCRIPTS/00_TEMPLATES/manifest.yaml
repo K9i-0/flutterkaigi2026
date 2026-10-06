@@ -1,7 +1,8 @@
-version: 9
+version: 10
 purpose: 共通素材と過去のSeedance制作テンプレート。新規動画制作の設定は .claude/skills/wan-video/SKILL.md を正本とし、以下のSeedance固有設定は過去作の参照用とする
 
 policy:
+  fukugyun_name: 2026-10-06より表示名・名札は福ギュン。内部IDと素材名はfukuchanを維持。過去エピソードの入力画像コピーは更新しない
   super_try_product: 窓際スーパーつらいの次回以降の標準缶は 03_SCRIPTS/00_TEMPLATES/props/product_super_try.png（2026-09-10採用A案修正版。上部の旧「辛口」位置に黒い「労働」を表示。「350ml」は削除し、「生」は小さめの丸ゴシック）。エピソード63〜66の旧缶を新作へ流用しない。必要なエピソードへ実ファイルとしてコピーし、過去の入力スナップショットは保持する
   creative_control: 人物同一性だけをハード条件とする。衣装、小道具、表情、ポーズ、性格、口調、役割、能力、ジャンル、結末、過去作との整合性、夢オチ、復活、再登場、パロディ・オマージュの参照度はユーザー指定に従い、基本シートや過去作から制約を追加しない
   basic_character_sheet: 03_SCRIPTS/00_TEMPLATES/characters/character_<name>_basic_sheet.png を再利用する

@@ -552,7 +552,7 @@ class HazardGameState {
       return [
         for (final line in takosanDialogue[dialogueTopic]!)
           if (dialogueTopic == 'evidence' &&
-              line.speaker == '福ちゃん' &&
+              line.speaker == '福ギュン' &&
               !foundMemos.any(
                 (id) => ['night_shift', 'diary_mid', 'diary_end'].contains(id),
               ))

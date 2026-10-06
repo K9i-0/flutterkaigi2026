@@ -1,0 +1,47 @@
+{
+  "output": "final_remotion_subtitles_part2_v3.mp4",
+  "sourceVideo": "final_remotion_subtitles_part2_v2.mp4",
+  "videoProcessing": "stream copy; same captions, frames, timing",
+  "notificationBurst": {
+    "source": "wan3_part2_480p.mp4",
+    "sourceStartSeconds": 22.4,
+    "sourceEndSeconds": 22.86,
+    "events": [
+      {
+        "startFrame": 558,
+        "peakAmplitude": 0.25
+      },
+      {
+        "startFrame": 575,
+        "peakAmplitude": 0.21
+      },
+      {
+        "startFrame": 590,
+        "peakAmplitude": 0.12
+      },
+      {
+        "startFrame": 604,
+        "peakAmplitude": 0.12
+      },
+      {
+        "startFrame": 616,
+        "peakAmplitude": 0.12
+      },
+      {
+        "startFrame": 626,
+        "peakAmplitude": 0.12
+      }
+    ],
+    "method": "reuse generated notification, fixed gain, 8ms edge fades; no new synthesis",
+    "speechStartFrame": 580,
+    "replaceOriginalPingFrames": [
+      553,
+      577
+    ]
+  },
+  "peakAmplitude": 0.849945068359375,
+  "sampleCount": 1108800,
+  "duration": 23.1,
+  "speechOutsideBurstUnchanged": true,
+  "listening": "not available in this runtime"
+}

@@ -39,7 +39,7 @@
 
 ## 本編で確認すること
 
-`hazard_adopted/README.md` とmanifest、`lib/game/game_motion_blend.dart` が採用経路の入口。2026-09-08の選択は福ちゃんRun、そば屋Candidate_Chase_Run。逃走・追跡はJogを周期・腕振り・前傾で調整した派生で、新収録素材ではない。
+`hazard_adopted/README.md` とmanifest、`lib/game/game_motion_blend.dart` が採用経路の入口。2026-09-08の選択は福ギュンRun、そば屋Candidate_Chase_Run。逃走・追跡はJogを周期・腕振り・前傾で調整した派生で、新収録素材ではない。
 
 その場プレビューと移動ゲームは別。manifestの足の後退速度から求めた再生基準を、衝突解決後の実移動量へ合わせる。クリップを変えたら再生基準、歩走の位相継承、ジョッキ握りオーバーライドとソケット追従を確認する。
 
