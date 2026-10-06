@@ -364,7 +364,7 @@
     }
   ],
   "scope": "Current docs, source display text, reusable prompts, episode87 captions; historical generation inputs and recorded speech are retained",
-  "remote_database": "migration prepared only; not applied or deployed",
+  "remote_database": "Applied migration 0014 by GitHub Actions; canonical member verified via Studio MCP",
   "updated_tracked_files": [
     ".claude/skills/antigravity-imagegen/SKILL.md",
     ".claude/skills/antigravity-imagegen/references/identity-prompts.md",
@@ -518,5 +518,36 @@
     "migration": "SQLite in-memory verified; ID and slug retained",
     "git_diff_check": "pass"
   },
-  "legacy_notes": "Physical clip filenames, previous episode prompts/assets, source transcripts, benchmark/QA logs and old SQL migrations remain historical. Existing recorded voices can still pronounce the old name; no mass audio regeneration performed."
+  "legacy_notes": "Physical clip filenames, previous episode prompts/assets, source transcripts, benchmark/QA logs and old SQL migrations remain historical. Existing recorded voices can still pronounce the old name; no mass audio regeneration performed.",
+  "production": {
+    "commit": "d814d618fbda96deac0839b01d4f80704e6ae643",
+    "worker_version": "2f669029-b896-4e89-9cc3-d22556a11614",
+    "workflow": "https://github.com/K9i-0/madogiwa-multimedia-universe/actions/runs/37449308190",
+    "status": "success",
+    "public_checks": [
+      {
+        "path": "/",
+        "curl_exit": 0,
+        "new_name_mentions": 99,
+        "legacy_name_mentions": 0
+      },
+      {
+        "path": "/characters/fukuchan",
+        "curl_exit": 0,
+        "new_name_mentions": 105,
+        "legacy_name_mentions": 0
+      },
+      {
+        "path": "/episodes",
+        "curl_exit": 0,
+        "new_name_mentions": 34,
+        "legacy_name_mentions": 0
+      }
+    ],
+    "other_workflow": {
+      "url": "https://github.com/K9i-0/madogiwa-multimedia-universe/actions/runs/37449308053",
+      "status": "failure",
+      "reason": "Games Pages configure step: Pages site not found / not enabled. Separate from successful official-site Worker deploy."
+    }
+  }
 }
