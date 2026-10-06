@@ -1,0 +1,55 @@
+{
+  "fps": 30,
+  "output": "final_gyungyun_kingdom_loop_720p.mp4",
+  "split_frame": 189,
+  "clips": [
+    {
+      "input": "wan3_loop_exit_seed861601_480p.mp4",
+      "start_frame": 189,
+      "end_frame": 228
+    },
+    {
+      "input": "final_gyungyun_kingdom_no_yametaro_line_720p.mp4",
+      "start_frame": 42,
+      "end_frame": 1089
+    },
+    {
+      "input": "wan3_loop_exit_seed861601_480p.mp4",
+      "start_frame": 0,
+      "end_frame": 189
+    }
+  ],
+  "notes": "Continuous source frames188→189 meet at playback wrap. Trim surplus final white flash after frame227. Preserve existing main story and corridor. No speed change, no frame overlap or loop fade. Only new 480p source enlarged once with Lanczos.",
+  "verification": {
+    "frames": 1275,
+    "duration": 42.5,
+    "full_decode": "passed",
+    "loop_boundary": "adjacent source frames and PCM samples, no overlap/duplicate/fade",
+    "probe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_type": "video",
+          "width": 1280,
+          "height": 720,
+          "r_frame_rate": "30/1",
+          "nb_frames": "1275"
+        },
+        {
+          "codec_type": "audio",
+          "r_frame_rate": "0/0",
+          "nb_frames": "1994"
+        }
+      ],
+      "format": {
+        "duration": "42.500000",
+        "size": "20475708"
+      }
+    },
+    "sha256": "7aadd640a41ed9e09118fc7080182a45380f7299272d5d6037b5d17f5e0f33aa",
+    "loop_pcm_half_second_each_side_exact": true,
+    "visual_review": "final first/last frames, white flash→dungeon and corridor→hospital exit inspected",
+    "listening": "not independently listened; no new dialogue; PCM continuity checked before AAC encoding"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-06",
+  "task_id": "f8e1fc1c-6d2e-4a3a-bf44-f7a1b6f4c662",
+  "model": "wan3.0-video",
+  "seed": 861601,
+  "duration": 8,
+  "resolution": "480P",
+  "estimated_usd": 0.28,
+  "price_source": "https://www.qwencloud.com/models/wan3.0-video",
+  "actual_charge": "not retrieved",
+  "reference": "character_sobaya_loop_20261005_sheet.png",
+  "reference_sha256": "9c44e1486fd9fbb9f3a793b4f56979eef7701ead4a75ec79952d81a2e4f0a058",
+  "prompt": "prompt_wan3_loop_exit.txt",
+  "config": "wan3_config_loop_exit.json",
+  "status": "SUCCEEDED",
+  "output": "wan3_loop_exit_seed861601_480p.mp4",
+  "edit": "split one continuous shot before impact; tail at beginning, head at end; retain existing final frames42:1089",
+  "postproduction": "ffmpeg, frame-accurate cuts only",
+  "visual_review": "3fps full contact sheet plus impact sampled every3frames: one masked Sobaya exits hospital, enters road, truck approaches and contacts before white flash; identity/scale retained. Shirt small-area artifacts not independently certified at full motion.",
+  "actual_video_frames": 240,
+  "actual_video_fps": 30,
+  "actual_dimensions": [
+    854,
+    480
+  ]
+}
