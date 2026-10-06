@@ -202,3 +202,9 @@ tools/sobaya_monsterize.sh .local/gyungyun86-voice/line2c_context_raw.wav .local
 完成版 `final_gyungyun_kingdom_loop_720p.mp4` は42.5秒／1275フレーム／1280×720／30fps。新素材189–227f（衝突直前〜白フラッシュ）→旧完成版42–1088f（異世界・病室・廊下）→新素材0–188f（病院出口〜衝突直前）の順。末尾188f→冒頭189fが元の連続フレーム。余った白フラッシュ228–239fは除外。従来版は保持。単純なカット編集なのでFFmpegを使用し、整数フレーム正本 `loop_edit.json` と `assemble_loop.py` で再現。新480p素材だけLanczosで一度720p化、H.264 CRF16／AAC192kbps。
 
 3fps全編と衝突前後10fpsで新素材を目視、最終接続フレームも確認。仮面・体格を維持して病院を出て道路へ進み、トラック接触後に白フラッシュ。全編デコード、尺・フレーム数・解像度の検証合格。ループ境界前後0.5秒の編集PCMが元素材の連続PCMと完全一致。AACエンコード後の通し試聴の合格とは区別する。確認用 `.local/gyungyun86-loop/loop_boundary_preview.mp4` は末尾3秒→冒頭3秒を結合した6秒。Studioは既存採用版を維持し、この試作ループ版はまだ登録していない。
+
+## 派手に吹き飛ばされるループ版（2026-10-06）
+
+ユーザー指定で衝突後の全身の吹き飛び・空中回転を強めた別版。8秒480P、同じシート・seed861601で動作指示を変更。task592758b4-a6e0-42a3-9219-30dfcca34a5a成功、見積$0.28、実請求額未取得。`generation_loop_launch.json` に記録。生成映像は病院出口から車道へ進み、接触後に両足が浮き、トラックのキャビン付近の高さで後方回転して白フラッシュへ至る。モデルが途中のカメラカット・背景通行人・病院文字を追加したが、ループ境界の接近部分は連続。
+
+完成 `final_gyungyun_kingdom_loop_launch_720p.mp4`、42.9秒／1287f／1280×720／30fps。新素材129–239f→旧完成版42–1088f→新素材0–128f。ループ境界128→129f、音声も同一点で切断。`python3 03_SCRIPTS/86_gyungyun_kingdom/assemble_loop.py loop_launch_edit.json` で再現。前版は保持。新素材だけLanczosで一度拡大。全編デコードと仕様合格、境界前後0.5秒の編集PCMが元素材と完全一致。4fpsの全体と境界・空中フレームを目視、独立した通し試聴は未実施。確認用 `.local/gyungyun86-loop/launch_boundary_preview.mp4` は末尾3秒→冒頭4.7秒。Studio登録は未実施。

@@ -1,0 +1,55 @@
+{
+  "fps": 30,
+  "output": "final_gyungyun_kingdom_loop_launch_720p.mp4",
+  "split_frame": 129,
+  "clips": [
+    {
+      "input": "wan3_loop_launch_seed861601_480p.mp4",
+      "start_frame": 129,
+      "end_frame": 240
+    },
+    {
+      "input": "final_gyungyun_kingdom_no_yametaro_line_720p.mp4",
+      "start_frame": 42,
+      "end_frame": 1089
+    },
+    {
+      "input": "wan3_loop_launch_seed861601_480p.mp4",
+      "start_frame": 0,
+      "end_frame": 129
+    }
+  ],
+  "notes": "Spectacular airborne-launch variant. Playback wrap joins adjacent source frames128→129 at4.3s. Main story preserved. New source enlarged once using Lanczos.",
+  "verification": {
+    "frames": 1287,
+    "duration": 42.9,
+    "full_decode": "passed",
+    "loop_boundary": "adjacent source frames and PCM samples, no overlap/duplicate/fade",
+    "probe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_type": "video",
+          "width": 1280,
+          "height": 720,
+          "r_frame_rate": "30/1",
+          "nb_frames": "1287"
+        },
+        {
+          "codec_type": "audio",
+          "r_frame_rate": "0/0",
+          "nb_frames": "2012"
+        }
+      ],
+      "format": {
+        "duration": "42.900000",
+        "size": "20930666"
+      }
+    },
+    "sha256": "44c00632e8f56a3443bd47d427552ddc1c1a3d8667c0f8924224bf139f4970ea",
+    "loop_pcm_half_second_each_side_exact": true,
+    "visual_review": "source frames128/129 contiguous; airborne launch and backward rotation inspected",
+    "listening": "not independently listened"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "model": "wan3.0-video",
+  "audio_source": "wan3",
+  "audio_sync_strategy": "no_visible_speech",
+  "project_duration": 43,
+  "generation_mode": "segmented_over_30",
+  "segment": "hospital_exit_collision_loop",
+  "segment_duration": 8,
+  "prompt_file": "prompt_wan3_loop_launch.txt",
+  "media": [
+    {
+      "type": "reference_image",
+      "path": "character_sobaya_loop_20261005_sheet.png"
+    }
+  ],
+  "parameters": {
+    "resolution": "480P",
+    "ratio": "16:9",
+    "duration": 8,
+    "audio": true,
+    "seed": 861601,
+    "watermark": false,
+    "prompt_extend": false
+  },
+  "output": "wan3_loop_launch_seed861601_480p.mp4",
+  "user_scope": "User requests more spectacular airborne launch variant; preserve loop design. Same seed and reference, change collision action."
+}

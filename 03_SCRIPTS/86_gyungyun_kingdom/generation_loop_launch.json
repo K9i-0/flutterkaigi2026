@@ -1,0 +1,18 @@
+{
+  "date": "2026-10-06",
+  "task_id": "592758b4-a6e0-42a3-9219-30dfcca34a5a",
+  "status": "SUCCEEDED",
+  "model": "wan3.0-video",
+  "seed": 861601,
+  "duration": 8,
+  "resolution": "480P",
+  "estimated_usd": 0.28,
+  "actual_charge": "not retrieved",
+  "price_source": "https://www.qwencloud.com/models/wan3.0-video",
+  "reference": "character_sobaya_loop_20261005_sheet.png",
+  "prompt": "prompt_wan3_loop_launch.txt",
+  "config": "wan3_config_loop_launch.json",
+  "output": "wan3_loop_launch_seed861601_480p.mp4",
+  "sha256": "d637322595dbcc0f5fa833f93d61f3c7a64696446f38a25f3416a8157394e0c6",
+  "visual_review": "4fps contact sheet: exits hospital, enters road, truck contact lifts feet, body flies near/above cab and tumbles backward before white flash. Mask remains present. Model introduced camera cuts and background pedestrians/hospital text despite prompt; approach around loop split remains continuous. No independent listening claim."
+}

@@ -2,9 +2,9 @@
 The manifest stores all cuts as integer frames, with exclusive end frames.
 """
 from pathlib import Path
-import hashlib,json,subprocess
+import hashlib,json,subprocess,sys
 EP=Path(__file__).resolve().parent
-PLAN=EP/'loop_edit.json'
+PLAN=EP/(sys.argv[1] if len(sys.argv)>1 else 'loop_edit.json')
 p=json.loads(PLAN.read_text())
 fps=p['fps']; sr=48000
 assert sr % fps == 0
@@ -22,7 +22,7 @@ for i,c in enumerate(p['clips']):
     chunks.append(segment)
 # Do not fade at the final-to-first boundary: both sides are contiguous source samples.
 master=b''.join(chunks)
-raw=work/'loop_master.f32'; raw.write_bytes(master)
+raw=work/(PLAN.stem+'_master.f32'); raw.write_bytes(master)
 args+=['-f','f32le','-ar',str(sr),'-ac','2','-i',str(raw)]
 filters.append(''.join(f'[v{i}]' for i in range(len(p['clips'])))+f'concat=n={len(p["clips"])}:v=1:a=0[v]')
 out=EP/p['output']
