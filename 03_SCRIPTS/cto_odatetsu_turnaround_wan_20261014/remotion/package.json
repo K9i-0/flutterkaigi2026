@@ -1,0 +1,31 @@
+{
+  "name": "cto-odatetsu-turntable",
+  "version": "1.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@remotion/cli": "4.0.527",
+    "@remotion/media": "4.0.527",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "remotion": "4.0.527",
+    "@remotion/three": "4.0.527",
+    "three": "0.180.0",
+    "@react-three/fiber": "9.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.7",
+    "typescript": "5.9.3",
+    "@types/three": "0.180.0"
+  },
+  "scripts": {
+    "prepare-assets": "python3 prepare_assets.py",
+    "typecheck": "tsc --noEmit",
+    "studio": "npm run prepare-assets && remotion studio src/index.tsx",
+    "render": "npm run prepare-assets && remotion render src/index.tsx CtoOdatetsuTurntable out/cto-odatetsu-turntable.mp4 --gl=angle --concurrency=2 --codec=h264 --crf=18 --pixel-format=yuv420p --muted",
+    "still": "npm run prepare-assets && remotion still src/index.tsx CtoOdatetsuTurntable out/still.png --gl=angle"
+  },
+  "sideEffects": [
+    "*.css"
+  ]
+}

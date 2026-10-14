@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "title": "CTOおだてつ・3Dモデル回転プレビュー",
+  "scope": "flutterkaigi2026 only; PR #20; do not merge into main",
+  "composition": {
+    "id": "CtoOdatetsuTurntable",
+    "width": 720,
+    "height": 1280,
+    "fps": 30,
+    "durationInFrames": 360
+  },
+  "model": "models/cto_odatetsu.glb",
+  "rotation": {
+    "startFrame": 0,
+    "endFrameExclusive": 360,
+    "turns": 1,
+    "startYawRadians": 0,
+    "interpolation": "linear"
+  },
+  "camera": {
+    "type": "orthographic",
+    "position": [0, 1.08, 5],
+    "target": [0, 0.875, 0],
+    "verticalViewMeters": 2.1,
+    "near": 0.05,
+    "far": 30
+  },
+  "background": "#e6e6e6",
+  "audio": "silent; no audio stream",
+  "overlays": [],
+  "qaFrames": [0, 90, 180, 270, 359],
+  "output": "out/cto-odatetsu-turntable.mp4"
+}
