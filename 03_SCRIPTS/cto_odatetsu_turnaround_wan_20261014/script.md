@@ -1,10 +1,10 @@
-# CTOおだてつ：本人用Tripo入力制作
+# CTOおだてつ：本人モデル制作記録
 
 ## 利用範囲
 flutterkaigi2026専用。作業PRのbaseはflutterkaigi2026。mainへマージ・転用しない。
 
 ## 状態
-本人の4方向入力、Tripo生成、静的GLBの仕上げ、Three.js / Remotionによる回転プレビューまで完了。Wanが約半周で停止したため、不足側面はユーザー指定のImagegen補完を採用した。リグと別体カメラは未制作。下記は入力制作から仕上げまでの経緯。
+本人の4方向入力、Tripo生成、静的GLBの仕上げ、54骨・20動作のリグ、Three.js / Remotionによる回転・動作プレビューまで完了。Wanが約半周で停止したため、不足側面はユーザー指定のImagegen補完を採用した。別体カメラとゲームへの組み込みは未実施。下記は入力制作から仕上げまでの経緯。
 元資料はユーザー添付「CTOおだてつ.png」。顔・茶色い巻き髪・成人の細身体型・アニメ調を維持。
 
 ## 本人の仕様
@@ -52,3 +52,10 @@ Wanの公式仕様と1080Pの料金を実行直前に再確認し、従量課金
 ## Three.js / Remotion回転プレビュー
 2026-10-14、完成GLBを読み込み、固定の正投影カメラで正面から一周させた。`final_remotion_turntable.mp4` は720×1280・30fps・12秒・360フレーム・無音。正面・両側面・背面・終端フレームを確認し、全編のデコード検証に合格。モデルと動画のハッシュ、実際の生成コマンド、検証結果は `remotion/render_validation.json` に保持する。
 回転はフレーム番号から決定し、リグを使用しない。完成MP4と監査画像はローカル保持、再生成できるソース・依存lockfile・素材参照・監査記録をGit管理する。
+
+## リグと福ギュン互換の動作
+2026-10-14、ユーザー指定により福ギュンv3の54骨・20クリップに対応。静的GLBの頂点位置・UV・材質・テクスチャを保持したまま、肩・肘・手首・指・脚の位置をおだてつの体型へ合わせ、元姿勢と骨長を考慮してモーションを転写した。顔・髪とフードを分け、挙手時に袖と前腕が胴体へ引かれるウェイトを修正。成果物は `04_GAME_ASSETS/3d/characters/cto_odatetsu/rig_v1_20261014/`。
+
+Idle、Walk、Run、Greeting、GyunGyun、GyunGyunPose、DanceStep、DanceDisco、DanceVictory、Aim、AimShotgun、ReloadHandgun、ReloadShotgun、Hit、Evade、Kick、Climb、Vault、Struggle、BreakFreeを同名で収録。動作入力はGit管理済みの `04_GAME_ASSETS/3d/characters/fukuchan/web_v3_20260917/fukuchan.glb`、出典は `motions.json` に保持する。
+
+`final_remotion_rig_motion.mp4` は代表6動作を各4秒収録した720×1280・30fps・24秒・無音のプレビュー。ローカル確認ページでは全20動作の切替・シーク・骨表示ができる。生成モデルへの追加送信は行っていない。布シミュレーションや、武器・カメラの把持位置、窓との接触、ゲーム内移動速度の調整は別工程。

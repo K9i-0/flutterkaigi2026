@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "title": "CTOおだてつ・リグ動作プレビュー",
+  "scope": "flutterkaigi2026 only; PR #20; do not merge into main",
+  "composition": {
+    "id": "RigMotionPreview",
+    "width": 720,
+    "height": 1280,
+    "fps": 30,
+    "durationInFrames": 720
+  },
+  "model": "models/cto_odatetsu_rig.glb",
+  "expectedBones": 54,
+  "expectedClipCount": 20,
+  "segments": [
+    {
+      "clip": "Idle",
+      "startFrame": 0,
+      "endFrameExclusive": 120
+    },
+    {
+      "clip": "Walk",
+      "startFrame": 120,
+      "endFrameExclusive": 240
+    },
+    {
+      "clip": "Run",
+      "startFrame": 240,
+      "endFrameExclusive": 360
+    },
+    {
+      "clip": "Greeting",
+      "startFrame": 360,
+      "endFrameExclusive": 480
+    },
+    {
+      "clip": "DanceDisco",
+      "startFrame": 480,
+      "endFrameExclusive": 600
+    },
+    {
+      "clip": "GyunGyun",
+      "startFrame": 600,
+      "endFrameExclusive": 720
+    }
+  ],
+  "camera": {
+    "type": "orthographic",
+    "position": [
+      3.08,
+      1.3,
+      5
+    ],
+    "target": [
+      0.08,
+      0.9,
+      0
+    ],
+    "verticalViewMeters": 3.4,
+    "near": 0.05,
+    "far": 30
+  },
+  "background": "#e6e6e6",
+  "audio": "silent; no audio stream",
+  "qaFrames": [
+    0,
+    60,
+    119,
+    120,
+    180,
+    239,
+    240,
+    300,
+    359,
+    360,
+    420,
+    479,
+    480,
+    540,
+    599,
+    600,
+    660,
+    719
+  ],
+  "output": "out/cto-odatetsu-rig-motion.mp4"
+}

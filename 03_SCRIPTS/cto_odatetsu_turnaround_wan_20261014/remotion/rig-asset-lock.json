@@ -1,0 +1,9 @@
+[
+  {
+    "source": "04_GAME_ASSETS/3d/characters/cto_odatetsu/rig_v1_20261014/cto_odatetsu_rig.glb",
+    "target": "models/cto_odatetsu_rig.glb",
+    "sha256": "a00e99144f2fba32ae4a777a6084ebe56594828df13ae04fc33ee9cd9962ffd4",
+    "bytes": 20348912,
+    "materialization": "existing-hardlink"
+  }
+]

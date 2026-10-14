@@ -1,4 +1,5 @@
 """Stage immutable model inputs under public without editing the source GLB."""
+import argparse
 import hashlib
 import json
 import os
@@ -6,11 +7,11 @@ import shutil
 from pathlib import Path
 
 
-def prepare():
+def prepare(manifest="assets.json", lock="asset-lock.json"):
     project = Path(__file__).resolve().parent
     root = project.parents[2]
     public = project / 'public'
-    rows = json.loads((project / 'assets.json').read_text())
+    rows = json.loads((project / manifest).read_text())
     records = []
     for row in rows:
         source = (root / row['source']).resolve()
@@ -34,9 +35,13 @@ def prepare():
             method = 'existing-hardlink'
         records.append({**row, 'sha256': hashlib.sha256(source.read_bytes()).hexdigest(),
                         'bytes': source.stat().st_size, 'materialization': method})
-    (project / 'asset-lock.json').write_text(json.dumps(records, ensure_ascii=False, indent=2) + '\n')
+    (project / lock).write_text(json.dumps(records, ensure_ascii=False, indent=2) + '\n')
     print(json.dumps(records, ensure_ascii=False, indent=2))
 
 
 if __name__ == '__main__':
-    prepare()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--manifest", default="assets.json")
+    parser.add_argument("--lock", default="asset-lock.json")
+    args = parser.parse_args()
+    prepare(args.manifest, args.lock)

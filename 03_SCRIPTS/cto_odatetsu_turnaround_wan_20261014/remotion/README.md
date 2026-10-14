@@ -45,3 +45,36 @@ npm run render -- --browser-executable='/Applications/Google Chrome.app/Contents
 ```
 
 MP4はH.264・yuv420p・720×1280・30fps・360フレーム・12.000秒、音声ストリームなし。四方向と最終フレームの画角・フード・接地・靴のAを目視確認し、ffmpegの全編デコードがエラーなしで完了した。素材正本・publicコピー・asset-lockのSHA-256一致、および動画SHA-256は `render_validation.json` に保存。
+
+## リグ動作プレビュー
+
+`RigMotionPreview`は720×1280・30fps・24秒。Idle、Walk、Run、Greeting、DanceDisco、GyunGyunを各120フレームずつ再生する。正面斜めの固定カメラで全身を表示し、字幕は動作名だけ。`src/rig-manifest.json`をタイミングと画角の正本とする。既存の回転動画のmanifestとasset-lockは維持し、リグは`rig-assets.json`と`rig-asset-lock.json`で分離する。
+
+`SkeletonUtils.clone`で表示用の骨を複製し、`src/rig-sampler.ts`で毎フレーム初期姿勢を復元してからAnimationMixerへ`frame / 30`を渡す。クリップ切り替え・逆向きseek・非連続レンダーも同じ姿勢を返し、未収録のクリップへはfallbackしない。54骨・20クリップを読み込み時に検査する。
+
+```sh
+npm run typecheck
+npm run verify-rig-viewport
+npm run still-rig -- --frame=420 --browser-executable='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+npm run render-rig -- --browser-executable='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+```
+
+リグ正本が存在しない段階では`prepare-rig-assets`が明示的に失敗する。既存の`prepare-assets`と回転動画レンダーはリグ正本に依存しない。監査済み完成版の置き場はエピソード直下の`final_remotion_rig_motion.mp4`。
+
+リグ動画はJPEG品質95・同時描画1で書き出す。この環境ではPNG・同時描画2の動画に画面上部の反復が混入したため、単独の静止画成功だけでは完成判定しない。代表ポーズ・境界の抽出画像と全編デコードに加え、全フレームで身体が描画されていることも検査する。
+
+`verify-rig-viewport`は動画と同じsampler・カメラで720フレームの全変形頂点を投影し、画面内への収まりを検査する。Nodeで画像読込を省くため材質だけを除外し、元の形状・ウェイト・骨・モーションはそのまま評価する。`rig_viewport_validation.json`へモデルのSHA-256と各動作の最大範囲を記録する。最も右へ伸びるのはDanceDiscoの515フレームで、手先に約49pxの余白を確保した。
+
+### ローカルで20動作を確認
+
+```sh
+npm run rig-viewer
+```
+
+[ローカル確認ページ](http://127.0.0.1:8138/rig-preview.html)を開く。クリップ選択、再生・停止、フレームseek、骨表示、視点回転・拡大を使用できる。全素材とThree.jsはローカルから読み込み、外部CDNにはアクセスしない。`viewer/`がページの正本、`public/`は再生成可能な管理外コピー。動画と同じsamplerをTypeScriptから書き出す。ブラウザーの`window.rigPreview.sample(clip, frame)`/`snapshot()`は姿勢の再現性を確認するためのAPI。
+
+「全動作のseek検証」で、各クリップの37%地点を保存→別の全20クリップの79%地点→対象の91%→0%→37%へ移動し、54骨すべてのworld matrixを完全一致で比較する。`rig_seek_validation.json`は2026-10-14の実機結果で、20動作とも一致し、NaN・Three.jsの警告はない。実測尺はGLTFLoaderの値を保持する。GyunGyunは4.000秒／120フレームで、最後の描画フレームの時刻は119/30＝3.967秒。UIの総尺には最終フレーム時刻ではなく実測尺を表示する。
+
+### 2026-10-14のリグ動画の確認結果
+
+最終GLB（SHA-256 `a00e99144f2fba32ae4a777a6084ebe56594828df13ae04fc33ee9cd9962ffd4`）から24.000秒・720フレームを書き出した。H.264・720×1280・30fps・音声なし。JPEG入力由来のフルレンジ4:2:0としてffprobeでは`yuvj420p`と表示される。全編decode、全720フレームの身体表示検査、全変形頂点の画角検査、21枚の代表ポーズと境界の目視確認が通過。詳細と完成動画SHAは`rig_render_validation.json`に記録した。

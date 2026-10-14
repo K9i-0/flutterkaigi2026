@@ -1,0 +1,171 @@
+{
+  "passed": true,
+  "fps": 30,
+  "checks": [
+    {
+      "clip": "Aim",
+      "durationSeconds": 2,
+      "frameCount": 60,
+      "frame": 22,
+      "repeatable": true,
+      "finite": true
+    },
+    {
+      "clip": "AimShotgun",
+      "durationSeconds": 2,
+      "frameCount": 60,
+      "frame": 22,
+      "repeatable": true,
+      "finite": true
+    },
+    {
+      "clip": "BreakFree",
+      "durationSeconds": 0.699999988079071,
+      "frameCount": 21,
+      "frame": 7,
+      "repeatable": true,
+      "finite": true
+    },
+    {
+      "clip": "Climb",
+      "durationSeconds": 1,
+      "frameCount": 30,
+      "frame": 11,
+      "repeatable": true,
+      "finite": true
+    },
+    {
+      "clip": "DanceDisco",
+      "durationSeconds": 2.299999952316284,
+      "frameCount": 69,
+      "frame": 25,
+      "repeatable": true,
+      "finite": true
+    },
+    {
+      "clip": "DanceStep",
+      "durationSeconds": 1.2666666507720947,
+      "frameCount": 38,
+      "frame": 14,
+      "repeatable": true,
+      "finite": true
+    },
+    {
+      "clip": "DanceVictory",
+      "durationSeconds": 6.4666666984558105,
+      "frameCount": 194,
+      "frame": 71,
+      "repeatable": true,
+      "finite": true
+    },
+    {
+      "clip": "Evade",
+      "durationSeconds": 0.4333333373069763,
+      "frameCount": 13,
+      "frame": 4,
+      "repeatable": true,
+      "finite": true
+    },
+    {
+      "clip": "Greeting",
+      "durationSeconds": 2.200000047683716,
+      "frameCount": 66,
+      "frame": 24,
+      "repeatable": true,
+      "finite": true
+    },
+    {
+      "clip": "GyunGyun",
+      "durationSeconds": 4,
+      "frameCount": 120,
+      "frame": 44,
+      "repeatable": true,
+      "finite": true
+    },
+    {
+      "clip": "GyunGyunPose",
+      "durationSeconds": 1,
+      "frameCount": 30,
+      "frame": 11,
+      "repeatable": true,
+      "finite": true
+    },
+    {
+      "clip": "Hit",
+      "durationSeconds": 0.46666666865348816,
+      "frameCount": 14,
+      "frame": 5,
+      "repeatable": true,
+      "finite": true
+    },
+    {
+      "clip": "Idle",
+      "durationSeconds": 3.133333444595337,
+      "frameCount": 94,
+      "frame": 34,
+      "repeatable": true,
+      "finite": true
+    },
+    {
+      "clip": "Kick",
+      "durationSeconds": 0.800000011920929,
+      "frameCount": 24,
+      "frame": 8,
+      "repeatable": true,
+      "finite": true
+    },
+    {
+      "clip": "ReloadHandgun",
+      "durationSeconds": 1.2999999523162842,
+      "frameCount": 39,
+      "frame": 14,
+      "repeatable": true,
+      "finite": true
+    },
+    {
+      "clip": "ReloadShotgun",
+      "durationSeconds": 2,
+      "frameCount": 60,
+      "frame": 22,
+      "repeatable": true,
+      "finite": true
+    },
+    {
+      "clip": "Run",
+      "durationSeconds": 0.8333333134651184,
+      "frameCount": 25,
+      "frame": 9,
+      "repeatable": true,
+      "finite": true
+    },
+    {
+      "clip": "Struggle",
+      "durationSeconds": 1,
+      "frameCount": 30,
+      "frame": 11,
+      "repeatable": true,
+      "finite": true
+    },
+    {
+      "clip": "Vault",
+      "durationSeconds": 1.600000023841858,
+      "frameCount": 48,
+      "frame": 17,
+      "repeatable": true,
+      "finite": true
+    },
+    {
+      "clip": "Walk",
+      "durationSeconds": 1.6666666269302368,
+      "frameCount": 50,
+      "frame": 18,
+      "repeatable": true,
+      "finite": true
+    }
+  ],
+  "modelSha256": "a00e99144f2fba32ae4a777a6084ebe56594828df13ae04fc33ee9cd9962ffd4",
+  "boneCount": 54,
+  "method": "For each clip: sample at 37%; sample all 20 clips at 79%; sample target at 91%, 0%, then 37%; compare all bone matrixWorld values exactly.",
+  "browserWarnings": 0,
+  "date": "2026-10-14"
+}

@@ -23,7 +23,13 @@
     "typecheck": "tsc --noEmit",
     "studio": "npm run prepare-assets && remotion studio src/index.tsx",
     "render": "npm run prepare-assets && remotion render src/index.tsx CtoOdatetsuTurntable out/cto-odatetsu-turntable.mp4 --gl=angle --concurrency=2 --codec=h264 --crf=18 --pixel-format=yuv420p --muted",
-    "still": "npm run prepare-assets && remotion still src/index.tsx CtoOdatetsuTurntable out/still.png --gl=angle"
+    "still": "npm run prepare-assets && remotion still src/index.tsx CtoOdatetsuTurntable out/still.png --gl=angle",
+    "prepare-rig-assets": "python3 prepare_assets.py --manifest rig-assets.json --lock rig-asset-lock.json",
+    "render-rig": "npm run prepare-rig-assets && remotion render src/index.tsx RigMotionPreview out/cto-odatetsu-rig-motion.mp4 --gl=angle --concurrency=1 --image-format=jpeg --jpeg-quality=95 --codec=h264 --crf=18 --pixel-format=yuv420p --muted",
+    "still-rig": "npm run prepare-rig-assets && remotion still src/index.tsx RigMotionPreview out/rig-still.png --gl=angle",
+    "prepare-rig-viewer": "npm run prepare-rig-assets && python3 prepare_viewer.py",
+    "rig-viewer": "npm run prepare-rig-viewer && python3 -m http.server 8138 --bind 127.0.0.1 --directory public",
+    "verify-rig-viewport": "npm run prepare-rig-viewer && node verify_rig_viewport.mjs"
   },
   "sideEffects": [
     "*.css"
