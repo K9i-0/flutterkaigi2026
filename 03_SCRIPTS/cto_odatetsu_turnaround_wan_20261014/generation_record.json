@@ -31,5 +31,12 @@
     "rotation": "FAIL: approximately 180 degrees only; ends at back, opposite profile missing",
     "multiview_ready": false,
     "audio": "not listened; not used for image extraction"
+  },
+  "multiview_completion": {
+    "method": "3 video frames plus imagegen inferred opposite profile",
+    "inputs_dir": "tripo_inputs",
+    "wan_retry": false,
+    "tripo_submitted": false,
+    "limitations": "Not calibrated; hand/fold/hair differences, shoe lettering requires texture cleanup"
   }
 }
