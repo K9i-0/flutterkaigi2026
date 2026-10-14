@@ -1,0 +1,192 @@
+{
+  "name": "ODATETSU O7 V + 70–200mm O II",
+  "scope": "flutterkaigi2026 only; do not merge into main",
+  "file": "odatetsu_camera.glb",
+  "sha256": "a7a0badde286105db34765758f269e9806de1422705a20e240808d99ed75f42b",
+  "units": "metres",
+  "axes": {
+    "up": "+Y",
+    "lens_optical_axis": "+Z",
+    "hand_grip": "-X"
+  },
+  "bounds": {
+    "min": [
+      -0.06515000015497208,
+      -0.06757602095603943,
+      -0.03707144036889076
+    ],
+    "max": [
+      0.082454152405262,
+      0.050123076885938644,
+      0.3025341033935547
+    ],
+    "size": [
+      0.14760415256023407,
+      0.11769909784197807,
+      0.33960554376244545
+    ]
+  },
+  "anchors": {
+    "GripAnchor": {
+      "position": [
+        -0.046,
+        -0.005,
+        0.02
+      ],
+      "rotation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "purpose": "Right-hand palm contact centre on physical camera grip (-X side)."
+    },
+    "LensTip": {
+      "position": [
+        0.034,
+        0.002,
+        0.3026
+      ],
+      "rotation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "purpose": "Front rim centre of the cylindrical lens hood."
+    },
+    "StrapAnchorLeft": {
+      "position": [
+        -0.062,
+        0.025,
+        -0.004
+      ],
+      "rotation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "purpose": "Body shoulder lug at negative X; physical grip side."
+    },
+    "StrapAnchorRight": {
+      "position": [
+        0.062,
+        0.025,
+        -0.004
+      ],
+      "rotation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "purpose": "Body shoulder lug at positive X; connector side."
+    }
+  },
+  "reference_dimensions_metres": {
+    "body_width": 0.1303,
+    "body_height": 0.0964,
+    "body_depth": 0.0824,
+    "lens_diameter": 0.088,
+    "lens_length_without_hood": 0.2,
+    "hood_length_approximate": 0.07
+  },
+  "dimension_note": "Body uniformly scaled to 130.3 mm width. Lens locally lengthened and widened to reference proportions; approximate generated geometry, not CAD tolerances.",
+  "source": {
+    "path": "tripo_20261014/raw/output_model_url.fbx",
+    "sha256": "43aa3f1f6ea6ae70d7f534f8385659792affb512fdf0859812eaa9fdd1d29033"
+  },
+  "shape_policy": "Body uniformly scaled. Lens radial/axial proportions corrected; original faces and UVs retained. Exact text labels are separate thin meshes.",
+  "lens_proportion_correction": {
+    "mount_source_y": 0.245,
+    "minimum_source_x": -0.06,
+    "axis_source_x": 0.122,
+    "axis_source_z": 0.018,
+    "radial_scale": 1.25,
+    "radial_transition_source_units": 0.1,
+    "axial_scale": 1.5
+  },
+  "focus_ring": {
+    "centre_x": 0.034,
+    "centre_y": 0.002,
+    "z_min": 0.212,
+    "z_max": 0.232,
+    "radius": 0.0449
+  },
+  "labels": [
+    {
+      "name": "BrandLabel",
+      "text": "ODATETSU",
+      "position": [
+        0.02199999988079071,
+        0.03664472699165344,
+        0.016893047839403152
+      ],
+      "width": 0.055,
+      "height": 0.011
+    },
+    {
+      "name": "ModelLabel",
+      "text": "O7\nV",
+      "position": [
+        0.0560000017285347,
+        0.02199999988079071,
+        0.013948412612080574
+      ],
+      "width": 0.01,
+      "height": 0.014
+    },
+    {
+      "name": "LensBadge",
+      "text": "O",
+      "position": [
+        0.07130249589681625,
+        0.022188972681760788,
+        0.20200000703334808
+      ],
+      "width": 0.009,
+      "height": 0.01
+    }
+  ],
+  "source_mesh_counts": {
+    "vertices": 16125,
+    "polygons": 16742
+  },
+  "material_changes": [
+    {
+      "name": "tripo_mat_9b40f61c",
+      "settings": {
+        "Metallic": 0.0,
+        "Roughness": 0.54,
+        "Normal": null
+      }
+    }
+  ],
+  "text_policy": {
+    "SONY": "ODATETSU",
+    "alpha7_V": "O7 V",
+    "G_Master": "O"
+  },
+  "strap": "Separate accessory; not included in the camera GLB"
+}

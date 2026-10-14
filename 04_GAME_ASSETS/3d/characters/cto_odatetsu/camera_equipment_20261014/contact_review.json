@@ -1,0 +1,35 @@
+{
+  "cameraSha256": "a7a0badde286105db34765758f269e9806de1422705a20e240808d99ed75f42b",
+  "rigSha256": "2376c9e183d6809291fa2a433876feb89f713644db1cceeda853532ac3f2f5fe",
+  "attachmentSha256": "4d72b0803d2d9ed1f86b9f96184932fbde52b20ed20d3a1a1f0e0312ea95a8fb",
+  "gripAnchorErrorM": 7.450580596923828e-09,
+  "clearances": {
+    "head_and_hair": {
+      "sampledVertices": 20232,
+      "surfaceIntersectionPairs": 0,
+      "minimumBodyVertexToCameraDistanceM": 0.040148571133613586,
+      "bodyVerticesWithin2mm": 0
+    },
+    "back_hood": {
+      "sampledVertices": 1773,
+      "surfaceIntersectionPairs": 0,
+      "minimumBodyVertexToCameraDistanceM": 0.079673171043396,
+      "bodyVerticesWithin2mm": 0
+    },
+    "body_excluding_right_grip": {
+      "sampledVertices": 35968,
+      "surfaceIntersectionPairs": 0,
+      "minimumBodyVertexToCameraDistanceM": 0.040148571133613586,
+      "bodyVerticesWithin2mm": 0
+    },
+    "right_grip": {
+      "sampledVertices": 1162,
+      "surfaceIntersectionPairs": 1738,
+      "minimumBodyVertexToCameraDistanceM": 1.3023497558606323e-05,
+      "bodyVerticesWithin2mm": 194,
+      "maximumSignedNearestSurfacePenetrationM": 0.012862230825703591,
+      "verticesBeyond2mmInsideNearestSurface": 205
+    }
+  },
+  "notes": "Triangle intersection check plus one-way vertex-to-surface distances. Generated meshes are not guaranteed watertight: signed nearest-normal statistics are diagnostics, not closed-volume penetration depths. Does not certify physical hand contact or cloth simulation."
+}

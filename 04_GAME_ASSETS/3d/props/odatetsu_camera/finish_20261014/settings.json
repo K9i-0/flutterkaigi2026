@@ -1,0 +1,35 @@
+{
+  "source": "tripo_20261014/raw/output_model_url.fbx",
+  "source_sha256": "43aa3f1f6ea6ae70d7f534f8385659792affb512fdf0859812eaa9fdd1d29033",
+  "blender_source_to_gltf_axes": [[1,0,0],[0,0,1],[0,-1,0]],
+  "origin_in_rotated_source": [-0.015380859375,0.01,-0.35],
+  "scale_metres_per_source_unit": 0.24754583024118744,
+  "material_overrides": {"Metallic": 0.0, "Roughness": 0.54, "Normal": null},
+  "lens_proportion_correction": {
+    "mount_source_y": 0.245,
+    "minimum_source_x": -0.06,
+    "axis_source_x": 0.122,
+    "axis_source_z": 0.018,
+    "radial_scale": 1.25,
+    "radial_transition_source_units": 0.10,
+    "axial_scale": 1.50
+  },
+  "labels": [
+    {"name":"BrandLabel","text":"ODATETSU","centre":[0.022,0.038,0.020],"normal":[0,0.40,0.917],"right":[1,0,0],"width":0.055,"height":0.011},
+    {"name":"ModelLabel","text":"O7\nV","centre":[0.056,0.022,0.013],"normal":[0,0,1],"right":[1,0,0],"width":0.010,"height":0.014},
+    {"name":"LensBadge","text":"O","centre":[0.073,0.023,0.202],"normal":[0.90,0.43,0],"right":[0,0,-1],"width":0.009,"height":0.010,"red":true}
+  ],
+  "focus_ring": {"centre_x":0.034,"centre_y":0.002,"z_min":0.212,"z_max":0.232,"radius":0.0449},
+  "anchors": {
+    "GripAnchor": [-0.046,-0.005,0.020],
+    "LensTip": [0.0340,0.0020,0.3026],
+    "StrapAnchorLeft": [-0.062,0.025,-0.004],
+    "StrapAnchorRight": [0.062,0.025,-0.004]
+  },
+  "anchor_purposes": {
+    "GripAnchor": "Right-hand palm contact centre on physical camera grip (-X side).",
+    "LensTip": "Front rim centre of the cylindrical lens hood.",
+    "StrapAnchorLeft": "Body shoulder lug at negative X; physical grip side.",
+    "StrapAnchorRight": "Body shoulder lug at positive X; connector side."
+  }
+}

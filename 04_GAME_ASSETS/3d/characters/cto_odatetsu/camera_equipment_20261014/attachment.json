@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "units": "metres",
+  "rig": "cto_odatetsu_camera.glb",
+  "socket": "PropSocket.R",
+  "threeSocketName": "PropSocketR",
+  "cameraGripNode": "GripAnchor",
+  "cameraAxes": "-X grip side (operator right), +Y top, +Z lens optical axis; no reflection",
+  "matrixConvention": "column-major; cameraWorld = socketWorld * socketToGrip * inverse(gripInCamera)",
+  "socketToGrip": [
+    -0.9311420321464539,
+    0.02303360588848591,
+    -0.36392712593078613,
+    0.0,
+    -0.12511050701141357,
+    0.91724693775177,
+    0.3781604766845703,
+    0.0,
+    0.342521607875824,
+    0.39765259623527527,
+    -0.8512056469917297,
+    0.0,
+    -0.00809646025300026,
+    0.022808587178587914,
+    -0.0190566536039114,
+    1.0
+  ],
+  "authoredPose": "CameraCarry",
+  "defaultEquipped": true,
+  "contactFitOffsetBlenderMetres": [
+    0,
+    0,
+    -0.005
+  ],
+  "rightGripPose": [
+    {
+      "node": "Thumb1.R",
+      "quaternion": [
+        0.23593206703662872,
+        0.052123088389635086,
+        0.3458738327026367,
+        0.9066369533538818
+      ]
+    },
+    {
+      "node": "Thumb2.R",
+      "quaternion": [
+        -0.16538922488689423,
+        -0.013159620575606823,
+        0.0815325379371643,
+        0.9827643036842346
+      ]
+    },
+    {
+      "node": "Thumb3.R",
+      "quaternion": [
+        -0.014482664875686169,
+        0.014453842304646969,
+        0.17319390177726746,
+        0.9846751689910889
+      ]
+    },
+    {
+      "node": "Index1.R",
+      "quaternion": [
+        0.007672468200325966,
+        0.0067679425701498985,
+        0.24416784942150116,
+        0.969679057598114
+      ]
+    },
+    {
+      "node": "Index2.R",
+      "quaternion": [
+        -0.007743353955447674,
+        0.01262061856687069,
+        0.40638768672943115,
+        0.9135807752609253
+      ]
+    },
+    {
+      "node": "Index3.R",
+      "quaternion": [
+        -0.07209109514951706,
+        -0.006909813731908798,
+        0.2664619982242584,
+        0.9611207842826843
+      ]
+    },
+    {
+      "node": "Middle1.R",
+      "quaternion": [
+        -0.0017928817542269826,
+        0.009766997769474983,
+        0.433865487575531,
+        0.900922954082489
+      ]
+    },
+    {
+      "node": "Middle2.R",
+      "quaternion": [
+        -0.012467489577829838,
+        -0.0014714522985741496,
+        0.5948103070259094,
+        0.8037680387496948
+      ]
+    },
+    {
+      "node": "Middle3.R",
+      "quaternion": [
+        0.010112915188074112,
+        0.0050302292220294476,
+        -0.18647408485412598,
+        0.9823949933052063
+      ]
+    },
+    {
+      "node": "Ring1.R",
+      "quaternion": [
+        -0.008466414175927639,
+        0.013126250356435776,
+        0.4898712635040283,
+        0.8716548681259155
+      ]
+    },
+    {
+      "node": "Ring2.R",
+      "quaternion": [
+        -0.012032957747578621,
+        -0.0037663064431399107,
+        0.5767899751663208,
+        0.8167951703071594
+      ]
+    },
+    {
+      "node": "Ring3.R",
+      "quaternion": [
+        0.029818322509527206,
+        0.020229604095220566,
+        -0.17600330710411072,
+        0.9837298393249512
+      ]
+    },
+    {
+      "node": "Little1.R",
+      "quaternion": [
+        -0.05574138090014458,
+        0.027749324217438698,
+        0.5088999271392822,
+        0.8585707545280457
+      ]
+    },
+    {
+      "node": "Little2.R",
+      "quaternion": [
+        -0.06262347847223282,
+        -0.04453263431787491,
+        0.4801230728626251,
+        0.8738289475440979
+      ]
+    },
+    {
+      "node": "Little3.R",
+      "quaternion": [
+        0.07193804532289505,
+        0.027520572766661644,
+        -0.10413443297147751,
+        0.9915763139724731
+      ]
+    }
+  ],
+  "gripApplication": "After sampling an existing clip, apply rightGripPose local quaternions only while equipped; update world matrices and skeleton. Do not override RightHand.",
+  "status": "actual camera alignment; audit hashes are recorded in contact_review.json and pose_review.json",
+  "placeholderCamera": {
+    "bodySize": [
+      0.13,
+      0.1,
+      0.08
+    ],
+    "lensLength": 0.2,
+    "hoodLength": 0.07,
+    "lensDiameter": 0.09,
+    "gripInCamera": [
+      -0.05,
+      -0.005,
+      -0.02
+    ]
+  },
+  "camera": "../../../props/odatetsu_camera/finish_20261014/odatetsu_camera.glb",
+  "cameraSha256": "a7a0badde286105db34765758f269e9806de1422705a20e240808d99ed75f42b"
+}

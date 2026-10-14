@@ -3,6 +3,8 @@ import {Turntable} from './turntable';
 import manifest from './edit-manifest.json';
 import {RigMotionPreview} from './rig-preview';
 import rigManifest from './rig-manifest.json';
+import {CameraEquipmentPreview} from './camera-preview';
+import cameraManifest from './camera-manifest.json';
 
 const Root = () => (
   <><Composition
@@ -19,6 +21,13 @@ const Root = () => (
     height={rigManifest.composition.height}
     fps={rigManifest.composition.fps}
     durationInFrames={rigManifest.composition.durationInFrames}
+  /><Composition
+    id={cameraManifest.composition.id}
+    component={CameraEquipmentPreview}
+    width={cameraManifest.composition.width}
+    height={cameraManifest.composition.height}
+    fps={cameraManifest.composition.fps}
+    durationInFrames={cameraManifest.composition.durationInFrames}
   /></>
 );
 

@@ -1,0 +1,27 @@
+{
+  "reviewedGlbSha256": "2376c9e183d6809291fa2a433876feb89f713644db1cceeda853532ac3f2f5fe",
+  "cameraGlbSha256": "a7a0badde286105db34765758f269e9806de1422705a20e240808d99ed75f42b",
+  "attachmentSha256": "4d72b0803d2d9ed1f86b9f96184932fbde52b20ed20d3a1a1f0e0312ea95a8fb",
+  "scope": "CameraCarry static pose with the final separate camera GLB. Runtime equipment across other motions is audited by the viewer separately.",
+  "reviewedViews": [
+    "front",
+    "three_quarter",
+    "back",
+    "right_grip_close",
+    "left_waist_hand_close"
+  ],
+  "observations": [
+    "The anatomical right forearm is raised with the lens upright beside the shoulder, and the anatomical left hand rests on the waist.",
+    "The camera negative-X grip convention is handled with equipment rotation, without mirroring the camera geometry.",
+    "Right fingers curve around the actual camera grip/body, with the thumb visibly separated from the other fingers. The camera does not visibly float away from the hand.",
+    "The final 5 mm downward equipment adjustment retains the visible grip and reduces negative-side nearest-surface distance diagnostics. The character pose and finger rotations are unchanged by this final adjustment.",
+    "The torso, front lettering, back hood and left-hand placement retain the original character appearance.",
+    "No camera triangle intersections were found with the head/hair, back hood or body outside the right grip region. See contact_review.json for the sampled distances and actual audit hashes."
+  ],
+  "visualContactAcceptedByReview": true,
+  "limits": [
+    "Small surface intersections remain in the right grip region; exact physical contact or zero interpenetration is not claimed.",
+    "Generated meshes are not guaranteed watertight. Signed nearest-normal distances are diagnostic values, not certified closed-volume penetration depths.",
+    "No cloth simulation, face animation, strap simulation or game integration is included."
+  ]
+}

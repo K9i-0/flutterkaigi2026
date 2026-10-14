@@ -4,7 +4,7 @@
 flutterkaigi2026専用。作業PRのbaseはflutterkaigi2026。mainへマージ・転用しない。
 
 ## 状態
-本人の4方向入力、Tripo生成、静的GLBの仕上げ、54骨・20動作のリグ、Three.js / Remotionによる回転・動作プレビューまで完了。Wanが約半周で停止したため、不足側面はユーザー指定のImagegen補完を採用した。別体カメラとゲームへの組み込みは未実施。下記は入力制作から仕上げまでの経緯。
+本人の4方向入力、Tripo生成、静的GLBの仕上げ、54骨・20動作のリグ、Three.js / Remotionによる回転・動作プレビューを制作。Wanが約半周で停止したため、不足側面はユーザー指定のImagegen補完を採用した。続いて別体カメラと装備用の派生モデルを追加。ゲームへの組み込みは未実施。下記は入力制作から仕上げまでの経緯。
 元資料はユーザー添付「CTOおだてつ.png」。顔・茶色い巻き髪・成人の細身体型・アニメ調を維持。
 
 ## 本人の仕様
@@ -59,3 +59,17 @@ Wanの公式仕様と1080Pの料金を実行直前に再確認し、従量課金
 Idle、Walk、Run、Greeting、GyunGyun、GyunGyunPose、DanceStep、DanceDisco、DanceVictory、Aim、AimShotgun、ReloadHandgun、ReloadShotgun、Hit、Evade、Kick、Climb、Vault、Struggle、BreakFreeを同名で収録。動作入力はGit管理済みの `04_GAME_ASSETS/3d/characters/fukuchan/web_v3_20260917/fukuchan.glb`、出典は `motions.json` に保持する。
 
 `final_remotion_rig_motion.mp4` は代表6動作を各4秒収録した720×1280・30fps・24秒・無音のプレビュー。ローカル確認ページでは全20動作の切替・シーク・骨表示ができる。生成モデルへの追加送信は行っていない。布シミュレーションや、武器・カメラの把持位置、窓との接触、ゲーム内移動速度の調整は別工程。
+
+## 別体カメラと元絵のポーズ
+
+2026-10-14、指定されたILCE-7M5とSEL70200GM2の公式写真を参照し、Imagegenで前後の3/4入力を制作。カメラ文字は `ODATETSU`、型名は `O7 V`、レンズのバッジは `O`。採用入力とプロンプトは `03_SCRIPTS/cto_odatetsu_camera_20261014/`。本人とは別のTripoタスクを1件実行し、実消費120 credits。原型・設定・タスクIDは `04_GAME_ASSETS/3d/props/odatetsu_camera/tripo_20261014/` に記録する。
+
+原型の短い鏡胴を局所的に伸長し、径・黒いリング・材質を整理。文字は正確な薄い3Dラベルへ置き換え、手の把持点・レンズ先端・ストラップ留め具のアンカーを追加。仕上げGLBと再生成コードは `04_GAME_ASSETS/3d/props/odatetsu_camera/finish_20261014/`。実機を参考にした生成モデルであり、寸法精度を保証するCADモデルではない。
+
+本人の派生モデル `04_GAME_ASSETS/3d/characters/cto_odatetsu/camera_equipment_20261014/cto_odatetsu_camera.glb` に1秒の固定ポーズ `CameraCarry` を追加。元絵の左端に近づけ、右手でカメラを持ってレンズを肩の横で上へ向け、左手を腰へ添える。元20クリップと本人の形状・材質は保持する。装備中のみ右手の指の握りを重ね、装備を外した場合は選択中クリップの指へ戻す。
+
+カメラ・本人・黒いストラップは独立して扱う。ストラップはコードで重力方向へ垂らす簡易形状で、布や身体との衝突計算は行わない。接触を詰める対象は `CameraCarry` とし、21クリップの機能検証と、任意の動作での干渉確認は区別する。装備の確認ページは `remotion/` の `camera-preview.html`。
+
+`CameraCarry` は実カメラで握りと左手腰を調整し、頭髪・フード・右握りを除く身体との三角形交差は0。握り部分の小さい面交差は残る。元20動作×3位相の全頂点差0を確認した。最終本人GLB・カメラ・装備設定のハッシュと接触確認は `camera_equipment_20261014/validation.json`・`contact_review.json`・`pose_review.json` に記録する。
+
+`final_remotion_camera_equipment.mp4` は720×1280・30fps・16秒・480フレーム・無音。肩持ち全身6秒、上半身4秒、WalkとGreetingを各3秒収録。全21クリップ×3位相の装備ON/OFF・シーク、全480フレームの画角と既知の描画破損、代表15枚の目視、全編デコードを確認。動画SHA-256は `89b158824875c72e7ef6f6eef6208feaf017ff84f213195fca46849414f472f9`。再生成コード・最終入力ハッシュ・動画監査は `remotion/camera_render_validation.json` に保持し、完成MP4はローカル保持とPR添付に用いる。

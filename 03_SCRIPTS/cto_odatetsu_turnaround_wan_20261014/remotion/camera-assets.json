@@ -1,0 +1,5 @@
+[
+  {"source": "04_GAME_ASSETS/3d/characters/cto_odatetsu/camera_equipment_20261014/cto_odatetsu_camera.glb", "target": "models/cto_odatetsu_camera.glb"},
+  {"source": "04_GAME_ASSETS/3d/props/odatetsu_camera/finish_20261014/odatetsu_camera.glb", "target": "models/odatetsu_camera.glb"},
+  {"source": "04_GAME_ASSETS/3d/characters/cto_odatetsu/camera_equipment_20261014/attachment.json", "target": "camera/attachment.json"}
+]

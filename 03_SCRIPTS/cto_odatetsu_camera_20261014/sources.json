@@ -1,0 +1,74 @@
+{
+  "retrieved": "2026-10-14",
+  "body_spec": "https://www.sony.jp/ichigan/products/ILCE-7M5/spec.html",
+  "lens_spec": "https://www.sony.jp/ichigan/products/SEL70200GM2/",
+  "references": [
+    {
+      "url": "https://www.sony.jp/products/picture/ILCE-7M5.jpg",
+      "file_name": "ILCE-7M5.jpg"
+    },
+    {
+      "url": "https://www.sony.jp/products/picture/ILCE-7M5_rightside.jpg",
+      "file_name": "ILCE-7M5_rightside.jpg"
+    },
+    {
+      "url": "https://www.sony.jp/products/picture/ILCE-7M5_rear.jpg",
+      "file_name": "ILCE-7M5_rear.jpg"
+    },
+    {
+      "url": "https://www.sony.jp/products/picture/ILCE-7M5_leftside.jpg",
+      "file_name": "ILCE-7M5_leftside.jpg"
+    },
+    {
+      "url": "https://www.sony.jp/products/picture/ILCE-7M5_top.jpg",
+      "file_name": "ILCE-7M5_top.jpg"
+    },
+    {
+      "url": "https://www.sony.jp/products/picture/ILCE-7M5_SEL70200GM2_right.jpg",
+      "file_name": "ILCE-7M5_SEL70200GM2_right.jpg"
+    },
+    {
+      "url": "https://www.sony.jp/products/picture/SEL70200GM2.jpg",
+      "file_name": "SEL70200GM2.jpg"
+    },
+    {
+      "url": "https://www.sony.jp/products/picture/SEL70200GM2_side.jpg",
+      "file_name": "SEL70200GM2_side.jpg"
+    },
+    {
+      "url": "https://www.sony.jp/products/picture/SEL70200GM2_with_ALC-SH167.jpg",
+      "file_name": "SEL70200GM2_with_ALC-SH167.jpg"
+    },
+    {
+      "url": "https://www.sony.jp/products/picture/SEL70200GM2_with_ILCE-1_01.jpg",
+      "file_name": "SEL70200GM2_with_ILCE-1_01.jpg"
+    },
+    {
+      "url": "https://www.sony.jp/products/picture/SEL70200GM2_with_ILCE-1_02.jpg",
+      "file_name": "SEL70200GM2_with_ILCE-1_02.jpg"
+    },
+    {
+      "url": "https://www.sony.jp/products/picture/SEL70200GM2_with_ILCE-1_03.jpg",
+      "file_name": "SEL70200GM2_with_ILCE-1_03.jpg"
+    }
+  ],
+  "body_dimensions_mm": [
+    130.3,
+    96.4,
+    82.4
+  ],
+  "lens_diameter_length_mm": [
+    88,
+    200
+  ],
+  "text_replacements": {
+    "SONY": "ODATETSU",
+    "alpha7V": "O7 V",
+    "G": "O"
+  },
+  "selected_images": [
+    "camera_front.png",
+    "camera_back.png"
+  ],
+  "view_notes": "Two generated opposite three-quarter views; not calibrated orthographic views. Rear tripod-foot placement corrected before submission. White round hood included; strap is a separate 3D part."
+}

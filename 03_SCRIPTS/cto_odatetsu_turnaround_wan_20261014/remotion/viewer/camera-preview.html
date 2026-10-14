@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ja">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CTOおだてつ — カメラ装備</title>
+<style>
+  *{box-sizing:border-box}body{margin:0;font:14px system-ui,sans-serif;color:#222;background:#e6e6e6}
+  canvas{display:block;width:100vw;height:100vh}section{position:fixed;top:16px;left:16px;right:16px;max-width:430px;
+    padding:14px 18px;background:#fffffff0;border:1px solid #ddd;border-radius:12px;box-shadow:0 4px 20px #0001}
+  h1{font-size:18px;margin:0 0 10px}.row{display:flex;gap:12px;align-items:center;margin:8px 0;flex-wrap:wrap}
+  button,select{padding:7px 10px;font:inherit;border:1px solid #bbb;border-radius:6px;background:white}
+  input[type=range]{flex:1;min-width:140px}#status,.note{font-size:12px;color:#555}#time{font-variant-numeric:tabular-nums}
+  @media(max-width:600px){section{top:auto;bottom:12px;padding:10px 14px}h1{font-size:15px}.row{gap:8px;margin:5px 0}}
+</style>
+<script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.js","three/addons/":"./vendor/three/examples/jsm/"}}</script>
+<canvas id="scene"></canvas>
+<section>
+  <h1>CTOおだてつ · カメラ装備</h1>
+  <div class="row"><select id="clip" aria-label="アニメーション" disabled></select><button id="play" disabled>再生</button>
+    <button id="reset">全身</button><button id="detail">カメラに寄る</button></div>
+  <div class="row"><label><input id="equipped" type="checkbox" checked> カメラ装備</label>
+    <label><input id="strap" type="checkbox" checked> ストラップ</label>
+    <label><input id="bones" type="checkbox"> 骨を表示</label></div>
+  <div class="row"><input id="seek" type="range" min="0" max="1" value="0" step="1" aria-label="フレーム" disabled><span id="time">0.00 s</span></div>
+  <div id="status">モデルを読み込み中…</div>
+  <p class="note">CameraCarry は元イラストの肩持ちポーズ。既存の動作では右手に追従します。ストラップは簡易表現です。</p>
+  <button id="validate" disabled>装備切替・全動作のseek検証</button>
+  <details id="validation" hidden><summary>検証結果</summary><pre id="validation-result" style="white-space:pre-wrap;max-height:180px;overflow:auto"></pre></details>
+</section>
+<script type="module" src="./camera-viewer.js"></script>
+</html>

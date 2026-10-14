@@ -1,0 +1,23 @@
+[
+  {
+    "source": "04_GAME_ASSETS/3d/characters/cto_odatetsu/camera_equipment_20261014/cto_odatetsu_camera.glb",
+    "target": "models/cto_odatetsu_camera.glb",
+    "sha256": "2376c9e183d6809291fa2a433876feb89f713644db1cceeda853532ac3f2f5fe",
+    "bytes": 20389840,
+    "materialization": "existing-hardlink"
+  },
+  {
+    "source": "04_GAME_ASSETS/3d/props/odatetsu_camera/finish_20261014/odatetsu_camera.glb",
+    "target": "models/odatetsu_camera.glb",
+    "sha256": "a7a0badde286105db34765758f269e9806de1422705a20e240808d99ed75f42b",
+    "bytes": 2543668,
+    "materialization": "existing-hardlink"
+  },
+  {
+    "source": "04_GAME_ASSETS/3d/characters/cto_odatetsu/camera_equipment_20261014/attachment.json",
+    "target": "camera/attachment.json",
+    "sha256": "4d72b0803d2d9ed1f86b9f96184932fbde52b20ed20d3a1a1f0e0312ea95a8fb",
+    "bytes": 4355,
+    "materialization": "existing-hardlink"
+  }
+]

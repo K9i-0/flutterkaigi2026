@@ -1,0 +1,23 @@
+{
+  "glb_sha256": "a7a0badde286105db34765758f269e9806de1422705a20e240808d99ed75f42b",
+  "reviewed_views": [
+    "qa/front.png",
+    "qa/back.png",
+    "qa/grip.png",
+    "qa/switches.png",
+    "qa/hero.png",
+    "qa/body.png"
+  ],
+  "passed": true,
+  "findings": [
+    "ODATETSU, O7 V and O labels are legible.",
+    "The original malformed brand text is covered in the final body close-up.",
+    "No readable SONY/alpha/G branding remains in the reviewed views.",
+    "Two black rubber rings, cylindrical white hood, tripod foot, back screen, EVF and body grip remain distinct."
+  ],
+  "limitations": [
+    "Small generated control markings and buttons are simplified.",
+    "Body dimensions are approximate apart from the calibrated width.",
+    "The nameplates are thin separate meshes and remain visible as plates in close-ups."
+  ]
+}
