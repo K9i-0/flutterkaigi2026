@@ -1,0 +1,562 @@
+[
+  {
+    "name": "Aim",
+    "seconds": 2,
+    "fps": 30,
+    "sampleCount": 61,
+    "loop": true,
+    "source": "04_GAME_ASSETS/3d/characters/fukuchan/web_v3_20260917/fukuchan.glb",
+    "sourceClip": "Aim",
+    "sourceGlbSha256": "1af54694c3f35898ead6ba701f4faa10e001e7ff362c2eda41dec053eab92ab5",
+    "sourceProvenance": "Canonical Fukugyun v3; existing Mixamo, CC0 and authored motions remain mixed, not collectively CC0.",
+    "retargetMethod": "World rest-aware rotations with minimum limb swing; parent-local finger flexion; target bone lengths retained.",
+    "palmPolicy": "Target rest palm roll retained; no fixed 180-degree wrist correction.",
+    "retargetLegScale": 0.9554264790474384,
+    "floorPolicy": "Preserve scaled source sole clearance, with a minimum 3 mm floor gap.",
+    "floorCorrectionRangeM": [
+      0.01618405215619293,
+      0.01618405215619293
+    ],
+    "sourceSoleRangeM": [
+      0.0029995998803510077,
+      0.0029995998803510077
+    ],
+    "targetSoleRangeM": [
+      0.0029999947083166507,
+      0.0029999947083166507
+    ],
+    "maxBoneLengthErrorM": 1.317500142872241e-07
+  },
+  {
+    "name": "AimShotgun",
+    "seconds": 2,
+    "fps": 30,
+    "sampleCount": 61,
+    "loop": true,
+    "source": "04_GAME_ASSETS/3d/characters/fukuchan/web_v3_20260917/fukuchan.glb",
+    "sourceClip": "AimShotgun",
+    "sourceGlbSha256": "1af54694c3f35898ead6ba701f4faa10e001e7ff362c2eda41dec053eab92ab5",
+    "sourceProvenance": "Canonical Fukugyun v3; existing Mixamo, CC0 and authored motions remain mixed, not collectively CC0.",
+    "retargetMethod": "World rest-aware rotations with minimum limb swing; parent-local finger flexion; target bone lengths retained.",
+    "palmPolicy": "Target rest palm roll retained; no fixed 180-degree wrist correction.",
+    "retargetLegScale": 0.9554264790474384,
+    "floorPolicy": "Preserve scaled source sole clearance, with a minimum 3 mm floor gap.",
+    "floorCorrectionRangeM": [
+      0.01618405215619293,
+      0.01618405215619293
+    ],
+    "sourceSoleRangeM": [
+      0.0029995998803510077,
+      0.0029995998803510077
+    ],
+    "targetSoleRangeM": [
+      0.0029999947083166507,
+      0.0029999947083166507
+    ],
+    "maxBoneLengthErrorM": 1.317500142872241e-07
+  },
+  {
+    "name": "BreakFree",
+    "seconds": 0.7,
+    "fps": 30,
+    "sampleCount": 22,
+    "loop": false,
+    "source": "04_GAME_ASSETS/3d/characters/fukuchan/web_v3_20260917/fukuchan.glb",
+    "sourceClip": "BreakFree",
+    "sourceGlbSha256": "1af54694c3f35898ead6ba701f4faa10e001e7ff362c2eda41dec053eab92ab5",
+    "sourceProvenance": "Canonical Fukugyun v3; existing Mixamo, CC0 and authored motions remain mixed, not collectively CC0.",
+    "retargetMethod": "World rest-aware rotations with minimum limb swing; parent-local finger flexion; target bone lengths retained.",
+    "palmPolicy": "Target rest palm roll retained; no fixed 180-degree wrist correction.",
+    "retargetLegScale": 0.9554264790474384,
+    "floorPolicy": "Preserve scaled source sole clearance, with a minimum 3 mm floor gap.",
+    "floorCorrectionRangeM": [
+      0.01905014150021759,
+      0.01905014150021759
+    ],
+    "sourceSoleRangeM": [
+      -2.422865496269519e-07,
+      -2.422865496269519e-07
+    ],
+    "targetSoleRangeM": [
+      0.0029999947083166507,
+      0.0029999947083166507
+    ],
+    "maxBoneLengthErrorM": 1.5023609123421267e-07
+  },
+  {
+    "name": "Climb",
+    "seconds": 1,
+    "fps": 30,
+    "sampleCount": 31,
+    "loop": false,
+    "source": "04_GAME_ASSETS/3d/characters/fukuchan/web_v3_20260917/fukuchan.glb",
+    "sourceClip": "Climb",
+    "sourceGlbSha256": "1af54694c3f35898ead6ba701f4faa10e001e7ff362c2eda41dec053eab92ab5",
+    "sourceProvenance": "Canonical Fukugyun v3; existing Mixamo, CC0 and authored motions remain mixed, not collectively CC0.",
+    "retargetMethod": "World rest-aware rotations with minimum limb swing; parent-local finger flexion; target bone lengths retained.",
+    "palmPolicy": "Target rest palm roll retained; no fixed 180-degree wrist correction.",
+    "retargetLegScale": 0.9554264790474384,
+    "floorPolicy": "Preserve scaled source sole clearance, with a minimum 3 mm floor gap.",
+    "floorCorrectionRangeM": [
+      0.0039291750340207585,
+      0.010231400231769189
+    ],
+    "sourceSoleRangeM": [
+      0.057089943552666333,
+      0.22130699059637782
+    ],
+    "targetSoleRangeM": [
+      0.05454523676798555,
+      0.21144256377399026
+    ],
+    "maxBoneLengthErrorM": 1.292729208124399e-07
+  },
+  {
+    "name": "DanceDisco",
+    "seconds": 2.3,
+    "fps": 30,
+    "sampleCount": 70,
+    "loop": true,
+    "source": "04_GAME_ASSETS/3d/characters/fukuchan/web_v3_20260917/fukuchan.glb",
+    "sourceClip": "DanceDisco",
+    "sourceGlbSha256": "1af54694c3f35898ead6ba701f4faa10e001e7ff362c2eda41dec053eab92ab5",
+    "sourceProvenance": "Canonical Fukugyun v3; existing Mixamo, CC0 and authored motions remain mixed, not collectively CC0.",
+    "retargetMethod": "World rest-aware rotations with minimum limb swing; parent-local finger flexion; target bone lengths retained.",
+    "palmPolicy": "Target rest palm roll retained; no fixed 180-degree wrist correction.",
+    "retargetLegScale": 0.9554264790474384,
+    "floorPolicy": "Preserve scaled source sole clearance, with a minimum 3 mm floor gap.",
+    "floorCorrectionRangeM": [
+      0.03687969976929469,
+      0.06819616003733756
+    ],
+    "sourceSoleRangeM": [
+      -0.05399143641914679,
+      -0.023461625512462076
+    ],
+    "targetSoleRangeM": [
+      0.002999992641868999,
+      0.003000007567279796
+    ],
+    "maxBoneLengthErrorM": 1.6508500261247505e-07
+  },
+  {
+    "name": "DanceStep",
+    "seconds": 1.2666666666666666,
+    "fps": 30,
+    "sampleCount": 39,
+    "loop": true,
+    "source": "04_GAME_ASSETS/3d/characters/fukuchan/web_v3_20260917/fukuchan.glb",
+    "sourceClip": "DanceStep",
+    "sourceGlbSha256": "1af54694c3f35898ead6ba701f4faa10e001e7ff362c2eda41dec053eab92ab5",
+    "sourceProvenance": "Canonical Fukugyun v3; existing Mixamo, CC0 and authored motions remain mixed, not collectively CC0.",
+    "retargetMethod": "World rest-aware rotations with minimum limb swing; parent-local finger flexion; target bone lengths retained.",
+    "palmPolicy": "Target rest palm roll retained; no fixed 180-degree wrist correction.",
+    "retargetLegScale": 0.9554264790474384,
+    "floorPolicy": "Preserve scaled source sole clearance, with a minimum 3 mm floor gap.",
+    "floorCorrectionRangeM": [
+      0.013276022324636105,
+      0.019116712751986252
+    ],
+    "sourceSoleRangeM": [
+      0.00033623915445193974,
+      0.012079733371577266
+    ],
+    "targetSoleRangeM": [
+      0.0029999931209529797,
+      0.011541300451287245
+    ],
+    "maxBoneLengthErrorM": 1.484891604119909e-07
+  },
+  {
+    "name": "DanceVictory",
+    "seconds": 6.466666666666667,
+    "fps": 30,
+    "sampleCount": 195,
+    "loop": true,
+    "source": "04_GAME_ASSETS/3d/characters/fukuchan/web_v3_20260917/fukuchan.glb",
+    "sourceClip": "DanceVictory",
+    "sourceGlbSha256": "1af54694c3f35898ead6ba701f4faa10e001e7ff362c2eda41dec053eab92ab5",
+    "sourceProvenance": "Canonical Fukugyun v3; existing Mixamo, CC0 and authored motions remain mixed, not collectively CC0.",
+    "retargetMethod": "World rest-aware rotations with minimum limb swing; parent-local finger flexion; target bone lengths retained.",
+    "palmPolicy": "Target rest palm roll retained; no fixed 180-degree wrist correction.",
+    "retargetLegScale": 0.9554264790474384,
+    "floorPolicy": "Preserve scaled source sole clearance, with a minimum 3 mm floor gap.",
+    "floorCorrectionRangeM": [
+      0.028197231705195985,
+      0.07080316440041676
+    ],
+    "sourceSoleRangeM": [
+      -0.055816784233930196,
+      -0.02239806099128859
+    ],
+    "targetSoleRangeM": [
+      0.0029999921315761974,
+      0.003000007385557543
+    ],
+    "maxBoneLengthErrorM": 2.2622757028800677e-07
+  },
+  {
+    "name": "Evade",
+    "seconds": 0.43333333333333335,
+    "fps": 30,
+    "sampleCount": 14,
+    "loop": false,
+    "source": "04_GAME_ASSETS/3d/characters/fukuchan/web_v3_20260917/fukuchan.glb",
+    "sourceClip": "Evade",
+    "sourceGlbSha256": "1af54694c3f35898ead6ba701f4faa10e001e7ff362c2eda41dec053eab92ab5",
+    "sourceProvenance": "Canonical Fukugyun v3; existing Mixamo, CC0 and authored motions remain mixed, not collectively CC0.",
+    "retargetMethod": "World rest-aware rotations with minimum limb swing; parent-local finger flexion; target bone lengths retained.",
+    "palmPolicy": "Target rest palm roll retained; no fixed 180-degree wrist correction.",
+    "retargetLegScale": 0.9554264790474384,
+    "floorPolicy": "Preserve scaled source sole clearance, with a minimum 3 mm floor gap.",
+    "floorCorrectionRangeM": [
+      0.0019205756575008124,
+      0.017626841793010353
+    ],
+    "sourceSoleRangeM": [
+      -0.009319256053118001,
+      -0.00046788670304320247
+    ],
+    "targetSoleRangeM": [
+      0.0029999943143517284,
+      0.003000001639869648
+    ],
+    "maxBoneLengthErrorM": 1.091832142474658e-07
+  },
+  {
+    "name": "Greeting",
+    "seconds": 2.2,
+    "fps": 30,
+    "sampleCount": 67,
+    "loop": false,
+    "source": "04_GAME_ASSETS/3d/characters/fukuchan/web_v3_20260917/fukuchan.glb",
+    "sourceClip": "Greeting",
+    "sourceGlbSha256": "1af54694c3f35898ead6ba701f4faa10e001e7ff362c2eda41dec053eab92ab5",
+    "sourceProvenance": "Canonical Fukugyun v3; existing Mixamo, CC0 and authored motions remain mixed, not collectively CC0.",
+    "retargetMethod": "World rest-aware rotations with minimum limb swing; parent-local finger flexion; target bone lengths retained.",
+    "palmPolicy": "Target rest palm roll retained; no fixed 180-degree wrist correction.",
+    "retargetLegScale": 0.9554264790474384,
+    "floorPolicy": "Preserve scaled source sole clearance, with a minimum 3 mm floor gap.",
+    "floorCorrectionRangeM": [
+      0.01654486960065244,
+      0.01654486960065244
+    ],
+    "sourceSoleRangeM": [
+      0.0029997435672794847,
+      0.0029997435672794847
+    ],
+    "targetSoleRangeM": [
+      0.0029999939810049676,
+      0.0029999939810049676
+    ],
+    "maxBoneLengthErrorM": 1.257790588904406e-07
+  },
+  {
+    "name": "GyunGyun",
+    "seconds": 4,
+    "fps": 30,
+    "sampleCount": 121,
+    "loop": false,
+    "source": "04_GAME_ASSETS/3d/characters/fukuchan/web_v3_20260917/fukuchan.glb",
+    "sourceClip": "GyunGyun",
+    "sourceGlbSha256": "1af54694c3f35898ead6ba701f4faa10e001e7ff362c2eda41dec053eab92ab5",
+    "sourceProvenance": "Canonical Fukugyun v3; existing Mixamo, CC0 and authored motions remain mixed, not collectively CC0.",
+    "retargetMethod": "World rest-aware rotations with minimum limb swing; parent-local finger flexion; target bone lengths retained.",
+    "palmPolicy": "Target rest palm roll retained; no fixed 180-degree wrist correction.",
+    "retargetLegScale": 0.9554264790474384,
+    "floorPolicy": "Preserve scaled source sole clearance, with a minimum 3 mm floor gap.",
+    "floorCorrectionRangeM": [
+      0.01654486960065244,
+      0.036152855172417855
+    ],
+    "sourceSoleRangeM": [
+      -0.02086981106137947,
+      0.0029997435672794847
+    ],
+    "targetSoleRangeM": [
+      0.00299999269069064,
+      0.003000007362854596
+    ],
+    "maxBoneLengthErrorM": 2.4711526075416046e-07
+  },
+  {
+    "name": "GyunGyunPose",
+    "seconds": 1,
+    "fps": 30,
+    "sampleCount": 31,
+    "loop": false,
+    "source": "04_GAME_ASSETS/3d/characters/fukuchan/web_v3_20260917/fukuchan.glb",
+    "sourceClip": "GyunGyunPose",
+    "sourceGlbSha256": "1af54694c3f35898ead6ba701f4faa10e001e7ff362c2eda41dec053eab92ab5",
+    "sourceProvenance": "Canonical Fukugyun v3; existing Mixamo, CC0 and authored motions remain mixed, not collectively CC0.",
+    "retargetMethod": "World rest-aware rotations with minimum limb swing; parent-local finger flexion; target bone lengths retained.",
+    "palmPolicy": "Target rest palm roll retained; no fixed 180-degree wrist correction.",
+    "retargetLegScale": 0.9554264790474384,
+    "floorPolicy": "Preserve scaled source sole clearance, with a minimum 3 mm floor gap.",
+    "floorCorrectionRangeM": [
+      0.017341517800026275,
+      0.017341517800026275
+    ],
+    "sourceSoleRangeM": [
+      0.002999804449031943,
+      0.002999804449031943
+    ],
+    "targetSoleRangeM": [
+      0.003000006562537811,
+      0.003000006562537811
+    ],
+    "maxBoneLengthErrorM": 2.0318364579718917e-07
+  },
+  {
+    "name": "Hit",
+    "seconds": 0.4666666666666667,
+    "fps": 30,
+    "sampleCount": 15,
+    "loop": false,
+    "source": "04_GAME_ASSETS/3d/characters/fukuchan/web_v3_20260917/fukuchan.glb",
+    "sourceClip": "Hit",
+    "sourceGlbSha256": "1af54694c3f35898ead6ba701f4faa10e001e7ff362c2eda41dec053eab92ab5",
+    "sourceProvenance": "Canonical Fukugyun v3; existing Mixamo, CC0 and authored motions remain mixed, not collectively CC0.",
+    "retargetMethod": "World rest-aware rotations with minimum limb swing; parent-local finger flexion; target bone lengths retained.",
+    "palmPolicy": "Target rest palm roll retained; no fixed 180-degree wrist correction.",
+    "retargetLegScale": 0.9554264790474384,
+    "floorPolicy": "Preserve scaled source sole clearance, with a minimum 3 mm floor gap.",
+    "floorCorrectionRangeM": [
+      0.016309460328800353,
+      0.016309460328800353
+    ],
+    "sourceSoleRangeM": [
+      0.00286832065023321,
+      0.00286832065023321
+    ],
+    "targetSoleRangeM": [
+      0.0029999947083166507,
+      0.0029999947083166507
+    ],
+    "maxBoneLengthErrorM": 1.4019123895092633e-07
+  },
+  {
+    "name": "Idle",
+    "seconds": 3.1333333333333333,
+    "fps": 30,
+    "sampleCount": 95,
+    "loop": true,
+    "source": "04_GAME_ASSETS/3d/characters/fukuchan/web_v3_20260917/fukuchan.glb",
+    "sourceClip": "Idle",
+    "sourceGlbSha256": "1af54694c3f35898ead6ba701f4faa10e001e7ff362c2eda41dec053eab92ab5",
+    "sourceProvenance": "Canonical Fukugyun v3; existing Mixamo, CC0 and authored motions remain mixed, not collectively CC0.",
+    "retargetMethod": "World rest-aware rotations with minimum limb swing; parent-local finger flexion; target bone lengths retained.",
+    "palmPolicy": "Target rest palm roll retained; no fixed 180-degree wrist correction.",
+    "retargetLegScale": 0.9554264790474384,
+    "floorPolicy": "Preserve scaled source sole clearance, with a minimum 3 mm floor gap.",
+    "floorCorrectionRangeM": [
+      0.015978300081085736,
+      0.016551039216344446
+    ],
+    "sourceSoleRangeM": [
+      0.002999668388929121,
+      0.0030000998173741722
+    ],
+    "targetSoleRangeM": [
+      0.002999992604111764,
+      0.0030000073657250083
+    ],
+    "maxBoneLengthErrorM": 1.6766082072683375e-07
+  },
+  {
+    "name": "Kick",
+    "seconds": 0.8,
+    "fps": 30,
+    "sampleCount": 25,
+    "loop": false,
+    "source": "04_GAME_ASSETS/3d/characters/fukuchan/web_v3_20260917/fukuchan.glb",
+    "sourceClip": "Kick",
+    "sourceGlbSha256": "1af54694c3f35898ead6ba701f4faa10e001e7ff362c2eda41dec053eab92ab5",
+    "sourceProvenance": "Canonical Fukugyun v3; existing Mixamo, CC0 and authored motions remain mixed, not collectively CC0.",
+    "retargetMethod": "World rest-aware rotations with minimum limb swing; parent-local finger flexion; target bone lengths retained.",
+    "palmPolicy": "Target rest palm roll retained; no fixed 180-degree wrist correction.",
+    "retargetLegScale": 0.9554264790474384,
+    "floorPolicy": "Preserve scaled source sole clearance, with a minimum 3 mm floor gap.",
+    "floorCorrectionRangeM": [
+      0.009539266841988796,
+      0.016309460328800353
+    ],
+    "sourceSoleRangeM": [
+      0.0007308288769545855,
+      0.003815021223200739
+    ],
+    "targetSoleRangeM": [
+      0.0029999946183154637,
+      0.0036449765694311527
+    ],
+    "maxBoneLengthErrorM": 9.695469649351196e-08
+  },
+  {
+    "name": "ReloadHandgun",
+    "seconds": 1.3,
+    "fps": 30,
+    "sampleCount": 40,
+    "loop": false,
+    "source": "04_GAME_ASSETS/3d/characters/fukuchan/web_v3_20260917/fukuchan.glb",
+    "sourceClip": "ReloadHandgun",
+    "sourceGlbSha256": "1af54694c3f35898ead6ba701f4faa10e001e7ff362c2eda41dec053eab92ab5",
+    "sourceProvenance": "Canonical Fukugyun v3; existing Mixamo, CC0 and authored motions remain mixed, not collectively CC0.",
+    "retargetMethod": "World rest-aware rotations with minimum limb swing; parent-local finger flexion; target bone lengths retained.",
+    "palmPolicy": "Target rest palm roll retained; no fixed 180-degree wrist correction.",
+    "retargetLegScale": 0.9554264790474384,
+    "floorPolicy": "Preserve scaled source sole clearance, with a minimum 3 mm floor gap.",
+    "floorCorrectionRangeM": [
+      0.016309460328800353,
+      0.016309460328800353
+    ],
+    "sourceSoleRangeM": [
+      0.00286832065023321,
+      0.00286832065023321
+    ],
+    "targetSoleRangeM": [
+      0.0029999947083166507,
+      0.0029999947083166507
+    ],
+    "maxBoneLengthErrorM": 9.433429976057894e-08
+  },
+  {
+    "name": "ReloadShotgun",
+    "seconds": 2,
+    "fps": 30,
+    "sampleCount": 61,
+    "loop": false,
+    "source": "04_GAME_ASSETS/3d/characters/fukuchan/web_v3_20260917/fukuchan.glb",
+    "sourceClip": "ReloadShotgun",
+    "sourceGlbSha256": "1af54694c3f35898ead6ba701f4faa10e001e7ff362c2eda41dec053eab92ab5",
+    "sourceProvenance": "Canonical Fukugyun v3; existing Mixamo, CC0 and authored motions remain mixed, not collectively CC0.",
+    "retargetMethod": "World rest-aware rotations with minimum limb swing; parent-local finger flexion; target bone lengths retained.",
+    "palmPolicy": "Target rest palm roll retained; no fixed 180-degree wrist correction.",
+    "retargetLegScale": 0.9554264790474384,
+    "floorPolicy": "Preserve scaled source sole clearance, with a minimum 3 mm floor gap.",
+    "floorCorrectionRangeM": [
+      0.016309460328800353,
+      0.016309460328800353
+    ],
+    "sourceSoleRangeM": [
+      0.00286832065023321,
+      0.00286832065023321
+    ],
+    "targetSoleRangeM": [
+      0.0029999947083166507,
+      0.0029999947083166507
+    ],
+    "maxBoneLengthErrorM": 9.433429976057894e-08
+  },
+  {
+    "name": "Run",
+    "seconds": 0.8333333333333334,
+    "fps": 30,
+    "sampleCount": 26,
+    "loop": true,
+    "source": "04_GAME_ASSETS/3d/characters/fukuchan/web_v3_20260917/fukuchan.glb",
+    "sourceClip": "Run",
+    "sourceGlbSha256": "1af54694c3f35898ead6ba701f4faa10e001e7ff362c2eda41dec053eab92ab5",
+    "sourceProvenance": "Canonical Fukugyun v3; existing Mixamo, CC0 and authored motions remain mixed, not collectively CC0.",
+    "retargetMethod": "World rest-aware rotations with minimum limb swing; parent-local finger flexion; target bone lengths retained.",
+    "palmPolicy": "Target rest palm roll retained; no fixed 180-degree wrist correction.",
+    "retargetLegScale": 0.9554264790474384,
+    "floorPolicy": "Preserve scaled source sole clearance, with a minimum 3 mm floor gap.",
+    "floorCorrectionRangeM": [
+      -0.007078721510944763,
+      0.01592878873382425
+    ],
+    "sourceSoleRangeM": [
+      0.00299948889753018,
+      0.0029998667083841676
+    ],
+    "targetSoleRangeM": [
+      0.0029999932549007284,
+      0.003000006153562388
+    ],
+    "maxBoneLengthErrorM": 1.161709384245313e-07
+  },
+  {
+    "name": "Struggle",
+    "seconds": 1,
+    "fps": 30,
+    "sampleCount": 31,
+    "loop": false,
+    "source": "04_GAME_ASSETS/3d/characters/fukuchan/web_v3_20260917/fukuchan.glb",
+    "sourceClip": "Struggle",
+    "sourceGlbSha256": "1af54694c3f35898ead6ba701f4faa10e001e7ff362c2eda41dec053eab92ab5",
+    "sourceProvenance": "Canonical Fukugyun v3; existing Mixamo, CC0 and authored motions remain mixed, not collectively CC0.",
+    "retargetMethod": "World rest-aware rotations with minimum limb swing; parent-local finger flexion; target bone lengths retained.",
+    "palmPolicy": "Target rest palm roll retained; no fixed 180-degree wrist correction.",
+    "retargetLegScale": 0.9554264790474384,
+    "floorPolicy": "Preserve scaled source sole clearance, with a minimum 3 mm floor gap.",
+    "floorCorrectionRangeM": [
+      0.01905014150021759,
+      0.01905014150021759
+    ],
+    "sourceSoleRangeM": [
+      -2.422865496269519e-07,
+      -2.422865496269519e-07
+    ],
+    "targetSoleRangeM": [
+      0.0029999947083166507,
+      0.0029999947083166507
+    ],
+    "maxBoneLengthErrorM": 1.1355054191364289e-07
+  },
+  {
+    "name": "Vault",
+    "seconds": 1.6,
+    "fps": 30,
+    "sampleCount": 49,
+    "loop": false,
+    "source": "04_GAME_ASSETS/3d/characters/fukuchan/web_v3_20260917/fukuchan.glb",
+    "sourceClip": "Vault",
+    "sourceGlbSha256": "1af54694c3f35898ead6ba701f4faa10e001e7ff362c2eda41dec053eab92ab5",
+    "sourceProvenance": "Canonical Fukugyun v3; existing Mixamo, CC0 and authored motions remain mixed, not collectively CC0.",
+    "retargetMethod": "World rest-aware rotations with minimum limb swing; parent-local finger flexion; target bone lengths retained.",
+    "palmPolicy": "Target rest palm roll retained; no fixed 180-degree wrist correction.",
+    "retargetLegScale": 0.9554264790474384,
+    "floorPolicy": "Preserve scaled source sole clearance, with a minimum 3 mm floor gap.",
+    "floorCorrectionRangeM": [
+      0.0027913922974124265,
+      0.050632712991788426
+    ],
+    "sourceSoleRangeM": [
+      -0.051400911684245654,
+      0.6443077067928945
+    ],
+    "targetSoleRangeM": [
+      0.002999995249362405,
+      0.6155886321215917
+    ],
+    "maxBoneLengthErrorM": 4.4853853192750037e-07
+  },
+  {
+    "name": "Walk",
+    "seconds": 1.6666666666666667,
+    "fps": 30,
+    "sampleCount": 51,
+    "loop": true,
+    "source": "04_GAME_ASSETS/3d/characters/fukuchan/web_v3_20260917/fukuchan.glb",
+    "sourceClip": "Walk",
+    "sourceGlbSha256": "1af54694c3f35898ead6ba701f4faa10e001e7ff362c2eda41dec053eab92ab5",
+    "sourceProvenance": "Canonical Fukugyun v3; existing Mixamo, CC0 and authored motions remain mixed, not collectively CC0.",
+    "retargetMethod": "World rest-aware rotations with minimum limb swing; parent-local finger flexion; target bone lengths retained.",
+    "palmPolicy": "Target rest palm roll retained; no fixed 180-degree wrist correction.",
+    "retargetLegScale": 0.9554264790474384,
+    "floorPolicy": "Preserve scaled source sole clearance, with a minimum 3 mm floor gap.",
+    "floorCorrectionRangeM": [
+      -0.008007252126773515,
+      0.016743464406074136
+    ],
+    "sourceSoleRangeM": [
+      0.0029995298509228503,
+      0.002999979966592947
+    ],
+    "targetSoleRangeM": [
+      0.0029999945643253943,
+      0.0030000048582631673
+    ],
+    "maxBoneLengthErrorM": 1.4281163523977014e-07
+  }
+]

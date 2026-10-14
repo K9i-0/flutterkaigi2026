@@ -1,0 +1,327 @@
+{
+  "beforeRigGlbSha256": "8b29bc89c1b5f02254808eaca7ee8652194dff83590c812f2db53f0de51a88c6",
+  "afterRigGlbSha256": "a00e99144f2fba32ae4a777a6084ebe56594828df13ae04fc33ee9cd9962ffd4",
+  "method": "Independent raw glTF LBS, identical bind geometry and 20 clips, phases 0/0.25/0.5/0.75/1. Maximum across the five phases of each statistic.",
+  "change": "Surface-based arm/sleeve weights, component-based hood/hair separation; geometry, UVs, image and material preserved.",
+  "interpretation": "Edge metrics diagnose stretching but are not a measure of perceptual or anatomical quality. Final numerical validation is recorded separately in validation.json.",
+  "neckCorrection": {
+    "beforeRigGlbSha256": "6807197099b42a1a2a96721d28729273cbc103270364660cfed94fce41e64ddb",
+    "afterRigGlbSha256": "a00e99144f2fba32ae4a777a6084ebe56594828df13ae04fc33ee9cd9962ffd4",
+    "clip": "DanceVictory",
+    "before": {
+      "maxEdgeExtensionM": 0.13335370886865935,
+      "p99EdgeExtensionM": 0.010143150836900814,
+      "p99EdgeLengthRatioOver1mm": 1.7784737214219957,
+      "edgesOver3xAnd20mmExtension": 152
+    },
+    "after": {
+      "maxEdgeExtensionM": 0.038262315840897995,
+      "p99EdgeExtensionM": 0.006551576958497642,
+      "p99EdgeLengthRatioOver1mm": 1.410424954271996,
+      "edgesOver3xAnd20mmExtension": 5
+    },
+    "note": "The previous 133 mm extension came from one continuous hood edge split between Head/Neck and torso weights across a coordinate cutoff. Hood and hair components now follow torso and Head respectively."
+  },
+  "clips": [
+    {
+      "clip": "Aim",
+      "before": {
+        "maxEdgeExtensionM": 0.1168318692154317,
+        "p99EdgeExtensionM": 0.03096311645651481,
+        "p99EdgeLengthRatioOver1mm": 2.973940088081746,
+        "edgesOver3xAnd20mmExtension": 594
+      },
+      "after": {
+        "maxEdgeExtensionM": 0.0851514804858973,
+        "p99EdgeExtensionM": 0.002921996547995932,
+        "p99EdgeLengthRatioOver1mm": 1.225240553867288,
+        "edgesOver3xAnd20mmExtension": 58
+      }
+    },
+    {
+      "clip": "AimShotgun",
+      "before": {
+        "maxEdgeExtensionM": 0.1168318692154317,
+        "p99EdgeExtensionM": 0.030063231285274074,
+        "p99EdgeLengthRatioOver1mm": 2.9357178433635758,
+        "edgesOver3xAnd20mmExtension": 587
+      },
+      "after": {
+        "maxEdgeExtensionM": 0.081061783668939,
+        "p99EdgeExtensionM": 0.0029223699589786285,
+        "p99EdgeLengthRatioOver1mm": 1.2257994430728154,
+        "edgesOver3xAnd20mmExtension": 54
+      }
+    },
+    {
+      "clip": "BreakFree",
+      "before": {
+        "maxEdgeExtensionM": 0.09190218542410722,
+        "p99EdgeExtensionM": 0.02338845226526832,
+        "p99EdgeLengthRatioOver1mm": 2.490558803694242,
+        "edgesOver3xAnd20mmExtension": 394
+      },
+      "after": {
+        "maxEdgeExtensionM": 0.05779852007818133,
+        "p99EdgeExtensionM": 0.003182978963294548,
+        "p99EdgeLengthRatioOver1mm": 1.2479315229603138,
+        "edgesOver3xAnd20mmExtension": 12
+      }
+    },
+    {
+      "clip": "Climb",
+      "before": {
+        "maxEdgeExtensionM": 0.142160758494452,
+        "p99EdgeExtensionM": 0.0303739878795977,
+        "p99EdgeLengthRatioOver1mm": 3.0172643431997628,
+        "edgesOver3xAnd20mmExtension": 614
+      },
+      "after": {
+        "maxEdgeExtensionM": 0.08811641210900506,
+        "p99EdgeExtensionM": 0.007241320750281218,
+        "p99EdgeLengthRatioOver1mm": 1.468474826868085,
+        "edgesOver3xAnd20mmExtension": 44
+      }
+    },
+    {
+      "clip": "DanceDisco",
+      "before": {
+        "maxEdgeExtensionM": 0.10309159973670162,
+        "p99EdgeExtensionM": 0.026246145041018694,
+        "p99EdgeLengthRatioOver1mm": 2.7088573275376113,
+        "edgesOver3xAnd20mmExtension": 489
+      },
+      "after": {
+        "maxEdgeExtensionM": 0.0628485418097045,
+        "p99EdgeExtensionM": 0.006255966443810484,
+        "p99EdgeLengthRatioOver1mm": 1.398327501103311,
+        "edgesOver3xAnd20mmExtension": 15
+      }
+    },
+    {
+      "clip": "DanceStep",
+      "before": {
+        "maxEdgeExtensionM": 0.028265465600858714,
+        "p99EdgeExtensionM": 0.00691675136546477,
+        "p99EdgeLengthRatioOver1mm": 1.4131968510080404,
+        "edgesOver3xAnd20mmExtension": 0
+      },
+      "after": {
+        "maxEdgeExtensionM": 0.021361488793340308,
+        "p99EdgeExtensionM": 0.004047368859006372,
+        "p99EdgeLengthRatioOver1mm": 1.2893113191682715,
+        "edgesOver3xAnd20mmExtension": 0
+      }
+    },
+    {
+      "clip": "DanceVictory",
+      "before": {
+        "maxEdgeExtensionM": 0.13335370886865935,
+        "p99EdgeExtensionM": 0.018634458275373057,
+        "p99EdgeLengthRatioOver1mm": 2.2231295158455087,
+        "edgesOver3xAnd20mmExtension": 249
+      },
+      "after": {
+        "maxEdgeExtensionM": 0.038262315840897995,
+        "p99EdgeExtensionM": 0.006551576958497642,
+        "p99EdgeLengthRatioOver1mm": 1.410424954271996,
+        "edgesOver3xAnd20mmExtension": 5
+      }
+    },
+    {
+      "clip": "Evade",
+      "before": {
+        "maxEdgeExtensionM": 0.052502359632846246,
+        "p99EdgeExtensionM": 0.013419713131305397,
+        "p99EdgeLengthRatioOver1mm": 1.8757850722525762,
+        "edgesOver3xAnd20mmExtension": 48
+      },
+      "after": {
+        "maxEdgeExtensionM": 0.022067117491903654,
+        "p99EdgeExtensionM": 0.003294668251515278,
+        "p99EdgeLengthRatioOver1mm": 1.2411311077268334,
+        "edgesOver3xAnd20mmExtension": 0
+      }
+    },
+    {
+      "clip": "Greeting",
+      "before": {
+        "maxEdgeExtensionM": 0.1039879866578162,
+        "p99EdgeExtensionM": 0.011569498736840338,
+        "p99EdgeLengthRatioOver1mm": 1.7102403354825433,
+        "edgesOver3xAnd20mmExtension": 329
+      },
+      "after": {
+        "maxEdgeExtensionM": 0.0739488877581927,
+        "p99EdgeExtensionM": 0.003925433605035001,
+        "p99EdgeLengthRatioOver1mm": 1.2575803372464618,
+        "edgesOver3xAnd20mmExtension": 31
+      }
+    },
+    {
+      "clip": "GyunGyun",
+      "before": {
+        "maxEdgeExtensionM": 0.10135439833821694,
+        "p99EdgeExtensionM": 0.023736503112356113,
+        "p99EdgeLengthRatioOver1mm": 2.5193410051099283,
+        "edgesOver3xAnd20mmExtension": 433
+      },
+      "after": {
+        "maxEdgeExtensionM": 0.07970729794739442,
+        "p99EdgeExtensionM": 0.0078107318615939555,
+        "p99EdgeLengthRatioOver1mm": 1.585478397806466,
+        "edgesOver3xAnd20mmExtension": 46
+      }
+    },
+    {
+      "clip": "GyunGyunPose",
+      "before": {
+        "maxEdgeExtensionM": 0.10135450346294211,
+        "p99EdgeExtensionM": 0.02373650217245456,
+        "p99EdgeLengthRatioOver1mm": 2.5193378916121123,
+        "edgesOver3xAnd20mmExtension": 433
+      },
+      "after": {
+        "maxEdgeExtensionM": 0.07970734099388463,
+        "p99EdgeExtensionM": 0.007810747211711845,
+        "p99EdgeLengthRatioOver1mm": 1.58547903711969,
+        "edgesOver3xAnd20mmExtension": 46
+      }
+    },
+    {
+      "clip": "Hit",
+      "before": {
+        "maxEdgeExtensionM": 0.00939345535435937,
+        "p99EdgeExtensionM": 0.00237384056977474,
+        "p99EdgeLengthRatioOver1mm": 1.153516050231461,
+        "edgesOver3xAnd20mmExtension": 0
+      },
+      "after": {
+        "maxEdgeExtensionM": 0.00939345535435937,
+        "p99EdgeExtensionM": 0.0017695555754947022,
+        "p99EdgeLengthRatioOver1mm": 1.1248416769452574,
+        "edgesOver3xAnd20mmExtension": 0
+      }
+    },
+    {
+      "clip": "Idle",
+      "before": {
+        "maxEdgeExtensionM": 0.02695597813254397,
+        "p99EdgeExtensionM": 0.0050248898158787025,
+        "p99EdgeLengthRatioOver1mm": 1.3353021596360053,
+        "edgesOver3xAnd20mmExtension": 0
+      },
+      "after": {
+        "maxEdgeExtensionM": 0.012619574924034475,
+        "p99EdgeExtensionM": 0.003401062847661732,
+        "p99EdgeLengthRatioOver1mm": 1.2069044872564403,
+        "edgesOver3xAnd20mmExtension": 0
+      }
+    },
+    {
+      "clip": "Kick",
+      "before": {
+        "maxEdgeExtensionM": 0.04341462705308338,
+        "p99EdgeExtensionM": 0.011540935635984196,
+        "p99EdgeLengthRatioOver1mm": 1.7404491556558068,
+        "edgesOver3xAnd20mmExtension": 18
+      },
+      "after": {
+        "maxEdgeExtensionM": 0.02136784860494243,
+        "p99EdgeExtensionM": 0.0030614542344492256,
+        "p99EdgeLengthRatioOver1mm": 1.2243559405484832,
+        "edgesOver3xAnd20mmExtension": 0
+      }
+    },
+    {
+      "clip": "ReloadHandgun",
+      "before": {
+        "maxEdgeExtensionM": 0.11312336636749909,
+        "p99EdgeExtensionM": 0.022599447288997803,
+        "p99EdgeLengthRatioOver1mm": 2.4566030624053488,
+        "edgesOver3xAnd20mmExtension": 382
+      },
+      "after": {
+        "maxEdgeExtensionM": 0.08497353749486752,
+        "p99EdgeExtensionM": 0.0030349103047618287,
+        "p99EdgeLengthRatioOver1mm": 1.2253747031634066,
+        "edgesOver3xAnd20mmExtension": 29
+      }
+    },
+    {
+      "clip": "ReloadShotgun",
+      "before": {
+        "maxEdgeExtensionM": 0.10979219581280433,
+        "p99EdgeExtensionM": 0.02227310626563103,
+        "p99EdgeLengthRatioOver1mm": 2.431254502046328,
+        "edgesOver3xAnd20mmExtension": 375
+      },
+      "after": {
+        "maxEdgeExtensionM": 0.08087195518947164,
+        "p99EdgeExtensionM": 0.003022223372811721,
+        "p99EdgeLengthRatioOver1mm": 1.2257994430728154,
+        "edgesOver3xAnd20mmExtension": 25
+      }
+    },
+    {
+      "clip": "Run",
+      "before": {
+        "maxEdgeExtensionM": 0.05420277249232647,
+        "p99EdgeExtensionM": 0.010220838362708939,
+        "p99EdgeLengthRatioOver1mm": 1.6759447125349478,
+        "edgesOver3xAnd20mmExtension": 67
+      },
+      "after": {
+        "maxEdgeExtensionM": 0.031985578306239854,
+        "p99EdgeExtensionM": 0.005620521185536548,
+        "p99EdgeLengthRatioOver1mm": 1.388056410254062,
+        "edgesOver3xAnd20mmExtension": 1
+      }
+    },
+    {
+      "clip": "Struggle",
+      "before": {
+        "maxEdgeExtensionM": 0.060007262475519296,
+        "p99EdgeExtensionM": 0.015073088824149584,
+        "p99EdgeLengthRatioOver1mm": 1.9729607300671264,
+        "edgesOver3xAnd20mmExtension": 78
+      },
+      "after": {
+        "maxEdgeExtensionM": 0.034618390280403005,
+        "p99EdgeExtensionM": 0.0032398555624635443,
+        "p99EdgeLengthRatioOver1mm": 1.2492029861534306,
+        "edgesOver3xAnd20mmExtension": 0
+      }
+    },
+    {
+      "clip": "Vault",
+      "before": {
+        "maxEdgeExtensionM": 0.11732493303503791,
+        "p99EdgeExtensionM": 0.034168982433553645,
+        "p99EdgeLengthRatioOver1mm": 3.247781289097747,
+        "edgesOver3xAnd20mmExtension": 699
+      },
+      "after": {
+        "maxEdgeExtensionM": 0.06821369003990632,
+        "p99EdgeExtensionM": 0.007107054582127096,
+        "p99EdgeLengthRatioOver1mm": 1.4588780945039577,
+        "edgesOver3xAnd20mmExtension": 45
+      }
+    },
+    {
+      "clip": "Walk",
+      "before": {
+        "maxEdgeExtensionM": 0.024508170675415167,
+        "p99EdgeExtensionM": 0.006906506005227781,
+        "p99EdgeLengthRatioOver1mm": 1.4218679520062356,
+        "edgesOver3xAnd20mmExtension": 0
+      },
+      "after": {
+        "maxEdgeExtensionM": 0.019158105187560892,
+        "p99EdgeExtensionM": 0.003543815140272445,
+        "p99EdgeLengthRatioOver1mm": 1.2112834867410647,
+        "edgesOver3xAnd20mmExtension": 0
+      }
+    }
+  ]
+}
