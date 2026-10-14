@@ -1,0 +1,18 @@
+{
+  "images": {
+    "front": "../../../../../03_SCRIPTS/cto_odatetsu_turnaround_wan_20261014/tripo_inputs/front.png",
+    "left": "../../../../../03_SCRIPTS/cto_odatetsu_turnaround_wan_20261014/tripo_inputs/profile_facing_left.png",
+    "back": "../../../../../03_SCRIPTS/cto_odatetsu_turnaround_wan_20261014/tripo_inputs/back.png",
+    "right": "../../../../../03_SCRIPTS/cto_odatetsu_turnaround_wan_20261014/tripo_inputs/profile_facing_right.png"
+  },
+  "generation": {
+    "model": "P2-20260801",
+    "quad": true,
+    "face_limit": 15000,
+    "texture": true,
+    "pbr": true,
+    "texture_quality": "detailed",
+    "model_seed": 1014030,
+    "texture_seed": 1014030
+  }
+}

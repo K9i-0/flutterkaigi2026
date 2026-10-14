@@ -36,7 +36,8 @@
     "method": "3 video frames plus imagegen inferred opposite profile",
     "inputs_dir": "tripo_inputs",
     "wan_retry": false,
-    "tripo_submitted": false,
-    "limitations": "Not calibrated; hand/fold/hair differences, shoe lettering requires texture cleanup"
+    "tripo_submitted": true,
+    "limitations": "Not calibrated; hand/fold/hair differences, shoe lettering requires texture cleanup",
+    "tripo_task_id": "cd95bfcc-257e-409b-9f5a-8e031c892c72"
   }
 }

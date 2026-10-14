@@ -1,0 +1,21 @@
+{
+  "task_id": "cd95bfcc-257e-409b-9f5a-8e031c892c72",
+  "input_sha256": {
+    "front": "5f6c9affd04b6456a800b7182a5966ab1cb9a22eb0ce813ce189382c923b6842",
+    "left": "c16b07550a730d13efdcb2db50112a9fc86a7fc9444dccd6995bd95854602284",
+    "back": "545db4e1d2a6c06fedefce29c8e683296236796ba3c637fd7cbcd67e413edf2c",
+    "right": "41908c8d0a5bc0ca68e20aa338759db21e8bf48784d1c3ff8960410e7a5fabea"
+  },
+  "balance_before": {
+    "balance": 415.0,
+    "frozen": 0.0
+  },
+  "model": "P2-20260801",
+  "status": "success",
+  "progress": 100,
+  "credits_consumed": 120.0,
+  "balance_after": {
+    "balance": 295.0,
+    "frozen": 0.0
+  }
+}
