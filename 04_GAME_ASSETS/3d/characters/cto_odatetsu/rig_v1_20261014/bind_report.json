@@ -1,0 +1,104 @@
+{
+  "source": "04_GAME_ASSETS/3d/characters/cto_odatetsu/finish_20261014/cto_odatetsu_static.glb",
+  "source_sha256": "0442fa963ce6a1b2aa6fe8afa2227b6d60a5678125650842ca5ce32e2fbb31f2",
+  "bones": 54,
+  "vertices": 37121,
+  "shape_uv_topology_preserved": true,
+  "materials_and_textures_unedited": true,
+  "max_influences": 4,
+  "normalized_weights": true,
+  "coincident_vertex_groups": 16456,
+  "finger_weight_vertices": {
+    "Little.L": 251,
+    "Thumb.L": 239,
+    "Index.L": 220,
+    "Middle.L": 150,
+    "Ring.L": 179,
+    "Index.R": 216,
+    "Thumb.R": 238,
+    "Middle.R": 166,
+    "Ring.R": 187,
+    "Little.R": 253
+  },
+  "rig_coordinates": "Z up, forward -Y, anatomical left +X, metres",
+  "arm_surface_separation": {
+    "method": "UV-position-welded surface distance",
+    "graph_vertices": 16456,
+    "torso_seeds": 447,
+    "geometry_changed": false,
+    "sides": {
+      "Left": {
+        "arm_seeds": 121,
+        "full_arm_nodes": 1106,
+        "root_transition_nodes": 144,
+        "protected_lower_torso_nodes": 55
+      },
+      "Right": {
+        "arm_seeds": 103,
+        "full_arm_nodes": 1138,
+        "root_transition_nodes": 138,
+        "protected_lower_torso_nodes": 48
+      }
+    }
+  },
+  "neck_surface_separation": {
+    "method": "separate torso-garment and crown-hair surface components",
+    "graph_vertices": 16456,
+    "surface_components": 28,
+    "garment_components": [
+      {
+        "nodes": 5534,
+        "seeds": 70,
+        "z_min": 0.09233023971319199,
+        "z_max": 1.4644602537155151
+      },
+      {
+        "nodes": 48,
+        "seeds": 48,
+        "z_min": 1.14130437374115,
+        "z_max": 1.1789203882217407
+      },
+      {
+        "nodes": 84,
+        "seeds": 29,
+        "z_min": 1.1669516563415527,
+        "z_max": 1.367855429649353
+      },
+      {
+        "nodes": 48,
+        "seeds": 48,
+        "z_min": 1.153273105621338,
+        "z_max": 1.1908891201019287
+      },
+      {
+        "nodes": 85,
+        "seeds": 30,
+        "z_min": 1.179775357246399,
+        "z_max": 1.3695652484893799
+      }
+    ],
+    "selected_position_nodes": 1231,
+    "selected_render_vertices": 2389,
+    "selected_bounds_xyz": [
+      [
+        -0.21842941641807556,
+        0.23039814829826355
+      ],
+      [
+        -0.10472643375396729,
+        0.21415486931800842
+      ],
+      [
+        1.3105764389038086,
+        1.4644602537155151
+      ]
+    ],
+    "hair_position_nodes": 6490,
+    "rigid_hair_render_vertices": 16964,
+    "hair_below_old_head_cutoff_vertices": 114,
+    "protected_face_neck_render_vertices": 3578,
+    "garment_core_bone": "Spine2",
+    "shoulder_arm_mix_preserved": true,
+    "geometry_uv_texture_unchanged": true
+  }
+}

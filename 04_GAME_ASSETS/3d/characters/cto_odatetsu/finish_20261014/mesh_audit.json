@@ -1,0 +1,21 @@
+{
+  "height_note": "1.75 m presentation normalization; not a measured personal height",
+  "materials": [
+    {
+      "name": "tripo_mat_cd95bfcc",
+      "inputs": {
+        "Base Color": "Image Texture",
+        "Metallic": "Image Texture.003",
+        "Roughness": "Image Texture.002",
+        "Normal": "Normal Map"
+      }
+    }
+  ],
+  "mesh": {
+    "vertices": 16456,
+    "faces": 18150,
+    "boundary_edges": 648,
+    "nonmanifold_edges": 678,
+    "degenerate_faces": 0
+  }
+}

@@ -1,0 +1,5 @@
+qa/
+preview.png
+*.blend
+*.blend1
+__pycache__/

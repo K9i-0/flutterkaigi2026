@@ -1,0 +1,98 @@
+{
+  "passed": true,
+  "sha256": "a7a0badde286105db34765758f269e9806de1422705a20e240808d99ed75f42b",
+  "file_bytes": 2543668,
+  "mesh_count": 8,
+  "vertices_after_export_splits": 36563,
+  "triangles": 35096,
+  "bounds": {
+    "min": [
+      -0.06515000015497208,
+      -0.06757602095603943,
+      -0.03707144036889076
+    ],
+    "max": [
+      0.082454152405262,
+      0.050123076885938644,
+      0.3025341033935547
+    ],
+    "size": [
+      0.14760415256023407,
+      0.11769909784197807,
+      0.33960554376244545
+    ]
+  },
+  "body_bounds": {
+    "min": [
+      -0.06515000015497208,
+      -0.03964359685778618,
+      -0.03707144036889076
+    ],
+    "max": [
+      0.06515000015497208,
+      0.04871382191777229,
+      0.025902865454554558
+    ],
+    "size": [
+      0.13030000030994415,
+      0.08835741877555847,
+      0.06297430582344532
+    ]
+  },
+  "anchors": {
+    "GripAnchor": {
+      "position": [
+        -0.04600000008940697,
+        -0.004999999888241291,
+        0.019999999552965164
+      ],
+      "identity_axes": true,
+      "error_metres": 4.693865781755208e-10
+    },
+    "LensTip": {
+      "position": [
+        0.03400000184774399,
+        0.0020000000949949026,
+        0.3025999963283539
+      ],
+      "identity_axes": true,
+      "error_metres": 4.1114677353407744e-09
+    },
+    "StrapAnchorLeft": {
+      "position": [
+        -0.06199999898672104,
+        0.02500000037252903,
+        -0.004000000189989805
+      ],
+      "identity_axes": true,
+      "error_metres": 1.0961789340130684e-09
+    },
+    "StrapAnchorRight": {
+      "position": [
+        0.06199999898672104,
+        0.02500000037252903,
+        -0.004000000189989805
+      ],
+      "identity_axes": true,
+      "error_metres": 1.0961789340130684e-09
+    }
+  },
+  "embedded_images": [
+    {
+      "name": "Color",
+      "mime_type": "image/jpeg",
+      "bytes": 1171491,
+      "sha256": "f42d0bde44c2e43e949c2acb1e605cc5edc7970f565cfb7a7b0c32eed2209611"
+    }
+  ],
+  "checks": [
+    "GLB chunk lengths and embedded buffer",
+    "finite mesh/UV data and valid triangle indices",
+    "body width and assembled length",
+    "identity anchor axes and documented positions",
+    "exact-label mesh presence",
+    "embedded textures",
+    "asset SHA matches"
+  ],
+  "visual_audit": "Separate rendered views; structural validation does not recognize text or certify watertight geometry."
+}

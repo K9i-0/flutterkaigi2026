@@ -1,0 +1,121 @@
+{
+  "date": "2026-10-14",
+  "composition": "CameraEquipmentPreview",
+  "renderedOutput": "out/cto-odatetsu-camera-equipment.mp4",
+  "adoptedOutput": "../final_remotion_camera_equipment.mp4",
+  "assetSha256": {
+    "models/cto_odatetsu_camera.glb": "2376c9e183d6809291fa2a433876feb89f713644db1cceeda853532ac3f2f5fe",
+    "models/odatetsu_camera.glb": "a7a0badde286105db34765758f269e9806de1422705a20e240808d99ed75f42b",
+    "camera/attachment.json": "4d72b0803d2d9ed1f86b9f96184932fbde52b20ed20d3a1a1f0e0312ea95a8fb"
+  },
+  "videoSha256": "89b158824875c72e7ef6f6eef6208feaf017ff84f213195fca46849414f472f9",
+  "bytes": 1413644,
+  "width": 720,
+  "height": 1280,
+  "fps": "30/1",
+  "frames": 480,
+  "durationSeconds": 16.0,
+  "codec": "h264",
+  "pixelFormat": "yuvj420p",
+  "audioStreams": 0,
+  "renderSettings": {
+    "gl": "angle",
+    "imageFormat": "jpeg",
+    "jpegQuality": 95,
+    "concurrency": 1
+  },
+  "fullDecode": "passed",
+  "captureArtifactCheck": {
+    "method": "Count visible blue denim pixels in each 90x160 RGB frame, threshold 20, to detect the previously observed repeated-head capture corruption; this is not a deformation/collision certificate.",
+    "frames": 480,
+    "minimumPixels": 484,
+    "maximumPixels": 664,
+    "rejectedFrames": []
+  },
+  "functionalValidation": "camera_equipment_validation.json",
+  "browserUiValidation": {
+    "result": "passed",
+    "clips": 21,
+    "checks": [
+      "non-sequential seek",
+      "equipment OFF and ON visibly updates",
+      "right-hand grip reset on unequip",
+      "no browser warnings or errors"
+    ]
+  },
+  "qaFrames": [
+    {
+      "frame": 0,
+      "image": "out/camera-qa-final/frame-001.png"
+    },
+    {
+      "frame": 179,
+      "image": "out/camera-qa-final/frame-002.png"
+    },
+    {
+      "frame": 180,
+      "image": "out/camera-qa-final/frame-003.png"
+    },
+    {
+      "frame": 240,
+      "image": "out/camera-qa-final/frame-004.png"
+    },
+    {
+      "frame": 299,
+      "image": "out/camera-qa-final/frame-005.png"
+    },
+    {
+      "frame": 300,
+      "image": "out/camera-qa-final/frame-006.png"
+    },
+    {
+      "frame": 312,
+      "image": "out/camera-qa-final/frame-007.png"
+    },
+    {
+      "frame": 345,
+      "image": "out/camera-qa-final/frame-008.png"
+    },
+    {
+      "frame": 389,
+      "image": "out/camera-qa-final/frame-009.png"
+    },
+    {
+      "frame": 390,
+      "image": "out/camera-qa-final/frame-010.png"
+    },
+    {
+      "frame": 405,
+      "image": "out/camera-qa-final/frame-011.png"
+    },
+    {
+      "frame": 417,
+      "image": "out/camera-qa-final/frame-012.png"
+    },
+    {
+      "frame": 435,
+      "image": "out/camera-qa-final/frame-013.png"
+    },
+    {
+      "frame": 455,
+      "image": "out/camera-qa-final/frame-014.png"
+    },
+    {
+      "frame": 479,
+      "image": "out/camera-qa-final/frame-015.png"
+    }
+  ],
+  "visualReview": {
+    "result": "passed",
+    "sampledFrames": 15,
+    "checks": [
+      "CameraCarry right-hand shoulder carry and left hand on hip, full-body and detail views",
+      "Walk and Greeting representative phases: camera remains in hand without a large face/body intersection",
+      "black ODATETSU strap, hood, hair, GROW with YUMEMI lettering and shoe A remain visible",
+      "labels remain readable across all cuts, including the detail shot",
+      "no repeated-head capture corruption or missing character in sampled frames"
+    ],
+    "limitations": "Representative visual review of CameraCarry, Walk and Greeting. All 21 clips pass functional attachment/seek tests, but all-motion camera/body collision avoidance and cloth physics are not implemented."
+  },
+  "passed": true
+}

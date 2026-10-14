@@ -1,0 +1,2814 @@
+{
+  "passed": true,
+  "fps": 30,
+  "coordinateSystem": "glTF right-handed Y-up; distances in metres",
+  "scope": "Numerical export and skin audit. Artistic deformation quality requires separate rendered review.",
+  "sourceGlbSha256": "1af54694c3f35898ead6ba701f4faa10e001e7ff362c2eda41dec053eab92ab5",
+  "staticGlbSha256": "0442fa963ce6a1b2aa6fe8afa2227b6d60a5678125650842ca5ce32e2fbb31f2",
+  "rigGlbSha256": "a00e99144f2fba32ae4a777a6084ebe56594828df13ae04fc33ee9cd9962ffd4",
+  "skinCount": 1,
+  "boneCount": 54,
+  "boneNamesAndHierarchyMatchSource": true,
+  "animationCount": 20,
+  "animationNamesAndDurationsMatchSource": true,
+  "staticIdentity": {
+    "staticVertexCount": 37121,
+    "rigVertexCount": 37130,
+    "triangleCount": 32346,
+    "comparison": "Indexed triangle corners; export may split vertices for normals or weights.",
+    "attributes": {
+      "POSITION": {
+        "sameOrder": true,
+        "bitIdenticalValues": true,
+        "maxAbsDifference": 0.0
+      },
+      "NORMAL": {
+        "sameOrder": true,
+        "bitIdenticalValues": false,
+        "maxAbsDifference": 0.009700561873614788,
+        "maxAngularDifferenceDegrees": 0.6889864206314087,
+        "p99AngularDifferenceDegrees": 0.01978234015405178
+      },
+      "TEXCOORD_0": {
+        "sameOrder": true,
+        "bitIdenticalValues": true,
+        "maxAbsDifference": 0.0
+      }
+    },
+    "triangleCornerOrderIdentical": true,
+    "rawTriangleIndicesIdentical": false,
+    "materialJsonIdentical": true,
+    "embeddedImageBytesIdentical": true,
+    "embeddedImageSha256": "87886013e876143340b051a45261b71cd45be9261b5b0bad4a40271d1c8b456b"
+  },
+  "weights": {
+    "maxInfluences": 4,
+    "maxWeightSumError": 1.379376044496894e-07,
+    "coincidentPositionGroups": 13371,
+    "coincidentPositionVertices": 34045,
+    "maxCoincidentWeightDifference": 0.0
+  },
+  "bindPoseMaxVertexDistanceM": 5.710865100153049e-07,
+  "animationPhaseSamples": 100,
+  "animations": [
+    {
+      "name": "Aim",
+      "seconds": 2.0,
+      "samples": [
+        {
+          "phase": 0,
+          "seconds": 0.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.24448027335468847,
+            0.0030001028888130728,
+            -0.21415533882695517
+          ],
+          "boundsMaxM": [
+            0.23274259318262547,
+            1.7690511884295024,
+            0.5224116932845642
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.08497353749486752,
+          "maxExtensionEdgeBindMidpointM": [
+            0.15944065153598785,
+            1.1810576915740967,
+            -0.02051782375201583
+          ],
+          "p99EdgeExtensionM": 0.0029192641706011985,
+          "maxEdgeLengthRatioOver1mm": 6.912110556725691,
+          "p99EdgeLengthRatioOver1mm": 1.225240553867288,
+          "edgesOver3xAnd20mmExtension": 57
+        },
+        {
+          "phase": 0.25,
+          "seconds": 0.5,
+          "finite": true,
+          "boundsMinM": [
+            -0.24497135147172128,
+            0.0030001028888130728,
+            -0.2129666015019674
+          ],
+          "boundsMaxM": [
+            0.23274259318262547,
+            1.7687740833557362,
+            0.5220111095804149
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.0851514804858973,
+          "maxExtensionEdgeBindMidpointM": [
+            0.15944065153598785,
+            1.1810576915740967,
+            -0.02051782375201583
+          ],
+          "p99EdgeExtensionM": 0.002921996547995932,
+          "maxEdgeLengthRatioOver1mm": 6.927531069573881,
+          "p99EdgeLengthRatioOver1mm": 1.224895024089446,
+          "edgesOver3xAnd20mmExtension": 54
+        },
+        {
+          "phase": 0.5,
+          "seconds": 1.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.24448027335468847,
+            0.0030001028888130728,
+            -0.21415533882695517
+          ],
+          "boundsMaxM": [
+            0.23274259318262547,
+            1.7690511884295024,
+            0.5224116711887573
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.08497353566747852,
+          "maxExtensionEdgeBindMidpointM": [
+            0.15944065153598785,
+            1.1810576915740967,
+            -0.02051782375201583
+          ],
+          "p99EdgeExtensionM": 0.0029192641706011985,
+          "maxEdgeLengthRatioOver1mm": 6.912110270142612,
+          "p99EdgeLengthRatioOver1mm": 1.225240553867288,
+          "edgesOver3xAnd20mmExtension": 57
+        },
+        {
+          "phase": 0.75,
+          "seconds": 1.5,
+          "finite": true,
+          "boundsMinM": [
+            -0.24448027335468847,
+            0.0030001028888130728,
+            -0.2153392509123567
+          ],
+          "boundsMaxM": [
+            0.23274259318262547,
+            1.7693173499289323,
+            0.5228186956730942
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.0847956342184363,
+          "maxExtensionEdgeBindMidpointM": [
+            0.15944065153598785,
+            1.1810576915740967,
+            -0.02051782375201583
+          ],
+          "p99EdgeExtensionM": 0.0029192641706011985,
+          "maxEdgeLengthRatioOver1mm": 6.896695475925088,
+          "p99EdgeLengthRatioOver1mm": 1.225240553867288,
+          "edgesOver3xAnd20mmExtension": 58
+        },
+        {
+          "phase": 1,
+          "seconds": 2.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.24448027335468847,
+            0.0030001028888130728,
+            -0.21415533882695517
+          ],
+          "boundsMaxM": [
+            0.23274259318262547,
+            1.7690511884295024,
+            0.5224116932845642
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.08497353749486752,
+          "maxExtensionEdgeBindMidpointM": [
+            0.15944065153598785,
+            1.1810576915740967,
+            -0.02051782375201583
+          ],
+          "p99EdgeExtensionM": 0.0029192641706011985,
+          "maxEdgeLengthRatioOver1mm": 6.912110556725691,
+          "p99EdgeLengthRatioOver1mm": 1.225240553867288,
+          "edgesOver3xAnd20mmExtension": 57
+        }
+      ]
+    },
+    {
+      "name": "AimShotgun",
+      "seconds": 2.0,
+      "samples": [
+        {
+          "phase": 0,
+          "seconds": 0.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.24448027335468847,
+            0.0030001028888130728,
+            -0.21415533882695517
+          ],
+          "boundsMaxM": [
+            0.23274259318262547,
+            1.7690511884295024,
+            0.5224116932845642
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.08087195518947164,
+          "maxExtensionEdgeBindMidpointM": [
+            0.15944065153598785,
+            1.1810576915740967,
+            -0.02051782375201583
+          ],
+          "p99EdgeExtensionM": 0.0029168234283454726,
+          "maxEdgeLengthRatioOver1mm": 6.800212929098131,
+          "p99EdgeLengthRatioOver1mm": 1.2257994430728154,
+          "edgesOver3xAnd20mmExtension": 53
+        },
+        {
+          "phase": 0.25,
+          "seconds": 0.5,
+          "finite": true,
+          "boundsMinM": [
+            -0.24497135147172128,
+            0.0030001028888130728,
+            -0.2129666015019674
+          ],
+          "boundsMaxM": [
+            0.23274259318262547,
+            1.7687740833557362,
+            0.5220111095804149
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.081061783668939,
+          "maxExtensionEdgeBindMidpointM": [
+            0.15944065153598785,
+            1.1810576915740967,
+            -0.02051782375201583
+          ],
+          "p99EdgeExtensionM": 0.0029223699589786285,
+          "maxEdgeLengthRatioOver1mm": 6.817978967995879,
+          "p99EdgeLengthRatioOver1mm": 1.2252415919667596,
+          "edgesOver3xAnd20mmExtension": 50
+        },
+        {
+          "phase": 0.5,
+          "seconds": 1.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.24448027335468847,
+            0.0030001028888130728,
+            -0.21415533882695517
+          ],
+          "boundsMaxM": [
+            0.23274259318262547,
+            1.7690511884295024,
+            0.5224116711887573
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.08087194833736702,
+          "maxExtensionEdgeBindMidpointM": [
+            0.15944065153598785,
+            1.1810576915740967,
+            -0.02051782375201583
+          ],
+          "p99EdgeExtensionM": 0.002916822263030169,
+          "maxEdgeLengthRatioOver1mm": 6.800212456029403,
+          "p99EdgeLengthRatioOver1mm": 1.2257994430728154,
+          "edgesOver3xAnd20mmExtension": 53
+        },
+        {
+          "phase": 0.75,
+          "seconds": 1.5,
+          "finite": true,
+          "boundsMinM": [
+            -0.24448027335468847,
+            0.0030001028888130728,
+            -0.2153392509123567
+          ],
+          "boundsMaxM": [
+            0.23274259318262547,
+            1.7693173499289323,
+            0.5228186956730942
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.08068195019165518,
+          "maxExtensionEdgeBindMidpointM": [
+            0.15944065153598785,
+            1.1810576915740967,
+            -0.02051782375201583
+          ],
+          "p99EdgeExtensionM": 0.002909873255076881,
+          "maxEdgeLengthRatioOver1mm": 6.782446039244878,
+          "p99EdgeLengthRatioOver1mm": 1.2256670242163343,
+          "edgesOver3xAnd20mmExtension": 54
+        },
+        {
+          "phase": 1,
+          "seconds": 2.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.24448027335468847,
+            0.0030001028888130728,
+            -0.21415533882695517
+          ],
+          "boundsMaxM": [
+            0.23274259318262547,
+            1.7690511884295024,
+            0.5224116932845642
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.08087195518947164,
+          "maxExtensionEdgeBindMidpointM": [
+            0.15944065153598785,
+            1.1810576915740967,
+            -0.02051782375201583
+          ],
+          "p99EdgeExtensionM": 0.0029168234283454726,
+          "maxEdgeLengthRatioOver1mm": 6.800212929098131,
+          "p99EdgeLengthRatioOver1mm": 1.2257994430728154,
+          "edgesOver3xAnd20mmExtension": 53
+        }
+      ]
+    },
+    {
+      "name": "BreakFree",
+      "seconds": 0.699999988079071,
+      "samples": [
+        {
+          "phase": 0,
+          "seconds": 0.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.3836634455645175,
+            0.0030001028888130728,
+            -0.19455790466260292
+          ],
+          "boundsMaxM": [
+            0.38504759703282987,
+            1.7655026365822437,
+            0.3671119637050101
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.033508569287476864,
+          "maxExtensionEdgeBindMidpointM": [
+            0.15944065153598785,
+            1.1810576915740967,
+            -0.02051782375201583
+          ],
+          "p99EdgeExtensionM": 0.003182978963294548,
+          "maxEdgeLengthRatioOver1mm": 3.5641929713151366,
+          "p99EdgeLengthRatioOver1mm": 1.2479315229603138,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.25,
+          "seconds": 0.17499999701976776,
+          "finite": true,
+          "boundsMinM": [
+            -0.3337288456676444,
+            0.0030001028888130728,
+            -0.19455888165732244
+          ],
+          "boundsMaxM": [
+            0.3524284936754056,
+            1.7655030689466302,
+            0.49390104612135666
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.05779852007818133,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.154738649725914,
+            1.1750733256340027,
+            -0.023082568310201168
+          ],
+          "p99EdgeExtensionM": 0.0028727161755726974,
+          "maxEdgeLengthRatioOver1mm": 5.2703813489836095,
+          "p99EdgeLengthRatioOver1mm": 1.2134901291161955,
+          "edgesOver3xAnd20mmExtension": 12
+        },
+        {
+          "phase": 0.5,
+          "seconds": 0.3499999940395355,
+          "finite": true,
+          "boundsMinM": [
+            -0.38509481569456394,
+            0.0030001028888130728,
+            -0.19905835741237693
+          ],
+          "boundsMaxM": [
+            0.3858695546902989,
+            1.7664958349817685,
+            0.2837479691877644
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.013175757308526097,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.19962140917778015,
+            1.2173913717269897,
+            -0.08805570006370544
+          ],
+          "p99EdgeExtensionM": 0.002845481325389402,
+          "maxEdgeLengthRatioOver1mm": 2.297307848361083,
+          "p99EdgeLengthRatioOver1mm": 1.2141804343340319,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.75,
+          "seconds": 0.5249999910593033,
+          "finite": true,
+          "boundsMinM": [
+            -0.38475120272485536,
+            0.0030001028888130728,
+            -0.20881711929678742
+          ],
+          "boundsMaxM": [
+            0.39288828561267064,
+            1.7682902716625633,
+            0.24083292187441174
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.020560230032157845,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.18936248868703842,
+            1.2370542287826538,
+            -0.08762824535369873
+          ],
+          "p99EdgeExtensionM": 0.0026203327277793806,
+          "maxEdgeLengthRatioOver1mm": 2.560169050799795,
+          "p99EdgeLengthRatioOver1mm": 1.1985125963932375,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 1,
+          "seconds": 0.699999988079071,
+          "finite": true,
+          "boundsMinM": [
+            -0.33583233037547877,
+            0.0030001028888130728,
+            -0.21415533882695473
+          ],
+          "boundsMaxM": [
+            0.340336649859797,
+            1.7690511884295024,
+            0.24083292187441174
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.014245608330503548,
+          "maxExtensionEdgeBindMidpointM": [
+            0.3406814932823181,
+            0.9459575116634369,
+            -0.01025890070013702
+          ],
+          "p99EdgeExtensionM": 0.001859439378982721,
+          "maxEdgeLengthRatioOver1mm": 1.745978383276461,
+          "p99EdgeLengthRatioOver1mm": 1.1352250048893504,
+          "edgesOver3xAnd20mmExtension": 0
+        }
+      ]
+    },
+    {
+      "name": "Climb",
+      "seconds": 1.0,
+      "samples": [
+        {
+          "phase": 0,
+          "seconds": 0.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.39004441914041416,
+            0.05454556368066163,
+            -0.20081138141382565
+          ],
+          "boundsMaxM": [
+            0.3799405608876917,
+            1.7520422361614063,
+            0.5086917370893994
+          ],
+          "minimumSoleYM": 0.05454556368066163,
+          "maxEdgeExtensionM": 0.08811641210900506,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.154738649725914,
+            1.1750733256340027,
+            -0.023082568310201168
+          ],
+          "p99EdgeExtensionM": 0.006598430911558462,
+          "maxEdgeLengthRatioOver1mm": 6.21588610477499,
+          "p99EdgeLengthRatioOver1mm": 1.4332068066842565,
+          "edgesOver3xAnd20mmExtension": 44
+        },
+        {
+          "phase": 0.25,
+          "seconds": 0.25,
+          "finite": true,
+          "boundsMinM": [
+            -0.39415594062843406,
+            0.20873163978819173,
+            -0.20081138186085962
+          ],
+          "boundsMaxM": [
+            0.4311445475217014,
+            1.7569881049673626,
+            0.502630085135124
+          ],
+          "minimumSoleYM": 0.20873163978819173,
+          "maxEdgeExtensionM": 0.0685593931175589,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.154738649725914,
+            1.1750733256340027,
+            -0.023082568310201168
+          ],
+          "p99EdgeExtensionM": 0.007193458034159992,
+          "maxEdgeLengthRatioOver1mm": 6.059099237953405,
+          "p99EdgeLengthRatioOver1mm": 1.468474826868085,
+          "edgesOver3xAnd20mmExtension": 39
+        },
+        {
+          "phase": 0.5,
+          "seconds": 0.5,
+          "finite": true,
+          "boundsMinM": [
+            -0.35910656861320545,
+            0.05864650574721755,
+            -0.20081138141382565
+          ],
+          "boundsMaxM": [
+            0.404952841597667,
+            1.7523587964298084,
+            0.5056696631612527
+          ],
+          "minimumSoleYM": 0.05864650574721755,
+          "maxEdgeExtensionM": 0.08732319629298987,
+          "maxExtensionEdgeBindMidpointM": [
+            0.15944065153598785,
+            1.1810576915740967,
+            -0.02051782375201583
+          ],
+          "p99EdgeExtensionM": 0.006486334874384247,
+          "maxEdgeLengthRatioOver1mm": 7.817086032197469,
+          "p99EdgeLengthRatioOver1mm": 1.4285177452067697,
+          "edgesOver3xAnd20mmExtension": 42
+        },
+        {
+          "phase": 0.75,
+          "seconds": 0.75,
+          "finite": true,
+          "boundsMinM": [
+            -0.42439539045459834,
+            0.21030593371950027,
+            -0.20081138141382565
+          ],
+          "boundsMaxM": [
+            0.4081505405969194,
+            1.7573446951629474,
+            0.5023278771755348
+          ],
+          "minimumSoleYM": 0.21030593371950027,
+          "maxEdgeExtensionM": 0.06961434349769016,
+          "maxExtensionEdgeBindMidpointM": [
+            0.15944065153598785,
+            1.1810576915740967,
+            -0.02051782375201583
+          ],
+          "p99EdgeExtensionM": 0.007241320750281218,
+          "maxEdgeLengthRatioOver1mm": 6.422403494315919,
+          "p99EdgeLengthRatioOver1mm": 1.4664210876353303,
+          "edgesOver3xAnd20mmExtension": 39
+        },
+        {
+          "phase": 1,
+          "seconds": 1.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.39004441914041416,
+            0.05454556368066163,
+            -0.20081138141382565
+          ],
+          "boundsMaxM": [
+            0.3799405608876917,
+            1.7520422361614063,
+            0.5086917370893994
+          ],
+          "minimumSoleYM": 0.05454556368066163,
+          "maxEdgeExtensionM": 0.08811641210900506,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.154738649725914,
+            1.1750733256340027,
+            -0.023082568310201168
+          ],
+          "p99EdgeExtensionM": 0.006598430911558462,
+          "maxEdgeLengthRatioOver1mm": 6.21588610477499,
+          "p99EdgeLengthRatioOver1mm": 1.4332068066842565,
+          "edgesOver3xAnd20mmExtension": 44
+        }
+      ]
+    },
+    {
+      "name": "DanceDisco",
+      "seconds": 2.299999952316284,
+      "samples": [
+        {
+          "phase": 0,
+          "seconds": 0.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.2331153059567626,
+            0.0029996625792857966,
+            -0.2708519952810617
+          ],
+          "boundsMaxM": [
+            0.4182923073884122,
+            1.6907704377770174,
+            0.5075223521021521
+          ],
+          "minimumSoleYM": 0.0029996625792857966,
+          "maxEdgeExtensionM": 0.0628485418097045,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.154738649725914,
+            1.1750733256340027,
+            -0.023082568310201168
+          ],
+          "p99EdgeExtensionM": 0.006255966443810484,
+          "maxEdgeLengthRatioOver1mm": 4.381250758528398,
+          "p99EdgeLengthRatioOver1mm": 1.398327501103311,
+          "edgesOver3xAnd20mmExtension": 15
+        },
+        {
+          "phase": 0.25,
+          "seconds": 0.574999988079071,
+          "finite": true,
+          "boundsMinM": [
+            -0.5334246000703649,
+            0.0027945576560200053,
+            -0.5798098850133782
+          ],
+          "boundsMaxM": [
+            0.3728319941962199,
+            1.6784364829337266,
+            0.04233655199921338
+          ],
+          "minimumSoleYM": 0.0027945576560200053,
+          "maxEdgeExtensionM": 0.0250216197196135,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.19021739810705185,
+            1.1973009705543518,
+            0.04360038600862026
+          ],
+          "p99EdgeExtensionM": 0.005405956043947211,
+          "maxEdgeLengthRatioOver1mm": 3.4522044520707564,
+          "p99EdgeLengthRatioOver1mm": 1.3530692160959605,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.5,
+          "seconds": 1.149999976158142,
+          "finite": true,
+          "boundsMinM": [
+            -0.24652782010649976,
+            0.002855274371352131,
+            -0.9186405608952884
+          ],
+          "boundsMaxM": [
+            0.5515317402803218,
+            1.609331983246529,
+            -0.11127449272613218
+          ],
+          "minimumSoleYM": 0.002855274371352131,
+          "maxEdgeExtensionM": 0.0360263209404645,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.154738649725914,
+            1.1750733256340027,
+            -0.023082568310201168
+          ],
+          "p99EdgeExtensionM": 0.005996538982284786,
+          "maxEdgeLengthRatioOver1mm": 3.387351112593789,
+          "p99EdgeLengthRatioOver1mm": 1.3874340792968138,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.75,
+          "seconds": 1.7249999642372131,
+          "finite": true,
+          "boundsMinM": [
+            -0.5340963213247159,
+            0.002799000272042093,
+            -0.5835946228477512
+          ],
+          "boundsMaxM": [
+            0.362764007572941,
+            1.6701030097734089,
+            0.029102248210814703
+          ],
+          "minimumSoleYM": 0.002799000272042093,
+          "maxEdgeExtensionM": 0.025584660765285733,
+          "maxExtensionEdgeBindMidpointM": [
+            0.03419638145714998,
+            0.7672814130783081,
+            0.08078896254301071
+          ],
+          "p99EdgeExtensionM": 0.005411779491473982,
+          "maxEdgeLengthRatioOver1mm": 2.8008161569473358,
+          "p99EdgeLengthRatioOver1mm": 1.353443680774884,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 1,
+          "seconds": 2.299999952316284,
+          "finite": true,
+          "boundsMinM": [
+            -0.2331153059567626,
+            0.0029996625792857966,
+            -0.2708519952810617
+          ],
+          "boundsMaxM": [
+            0.4182923073884122,
+            1.6907704377770174,
+            0.5075223521021521
+          ],
+          "minimumSoleYM": 0.0029996625792857966,
+          "maxEdgeExtensionM": 0.0628485418097045,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.154738649725914,
+            1.1750733256340027,
+            -0.023082568310201168
+          ],
+          "p99EdgeExtensionM": 0.006255966443810484,
+          "maxEdgeLengthRatioOver1mm": 4.381250758528398,
+          "p99EdgeLengthRatioOver1mm": 1.398327501103311,
+          "edgesOver3xAnd20mmExtension": 15
+        }
+      ]
+    },
+    {
+      "name": "DanceStep",
+      "seconds": 1.2666666507720947,
+      "samples": [
+        {
+          "phase": 0,
+          "seconds": 0.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.3399858670374267,
+            0.0030004826668797377,
+            -0.22179948747416964
+          ],
+          "boundsMaxM": [
+            0.28180120826966715,
+            1.7393780933969725,
+            0.303499104195303
+          ],
+          "minimumSoleYM": 0.0030004826668797377,
+          "maxEdgeExtensionM": 0.017081416806312033,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.17482902109622955,
+            1.2541524767875671,
+            0.048302387818694115
+          ],
+          "p99EdgeExtensionM": 0.0037148688858140624,
+          "maxEdgeLengthRatioOver1mm": 2.344020461755485,
+          "p99EdgeLengthRatioOver1mm": 1.2318415606380047,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.25,
+          "seconds": 0.3166666626930237,
+          "finite": true,
+          "boundsMinM": [
+            -0.35753658403931543,
+            0.005138965038878226,
+            -0.21715362018905351
+          ],
+          "boundsMaxM": [
+            0.2905028728356404,
+            1.703491608104424,
+            0.24428167902434994
+          ],
+          "minimumSoleYM": 0.005138965038878226,
+          "maxEdgeExtensionM": 0.014291267525501274,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.1543111950159073,
+            0.42873719334602356,
+            0.04702002368867397
+          ],
+          "p99EdgeExtensionM": 0.004047368859006372,
+          "maxEdgeLengthRatioOver1mm": 2.189255592957857,
+          "p99EdgeLengthRatioOver1mm": 1.2869519317272056,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.5,
+          "seconds": 0.6333333253860474,
+          "finite": true,
+          "boundsMinM": [
+            -0.2890240027150765,
+            0.011541798686631206,
+            -0.21951983068203565
+          ],
+          "boundsMaxM": [
+            0.345713524267283,
+            1.7389495877844432,
+            0.2951756854801599
+          ],
+          "minimumSoleYM": 0.011541798686631206,
+          "maxEdgeExtensionM": 0.021361488793340308,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.145762100815773,
+            1.0617977380752563,
+            0.06839276477694511
+          ],
+          "p99EdgeExtensionM": 0.004016989376036045,
+          "maxEdgeLengthRatioOver1mm": 2.430144709845637,
+          "p99EdgeLengthRatioOver1mm": 1.248243350725611,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.75,
+          "seconds": 0.949999988079071,
+          "finite": true,
+          "boundsMinM": [
+            -0.3022044039912738,
+            0.004056701619598684,
+            -0.21921548110897954
+          ],
+          "boundsMaxM": [
+            0.34472150880445723,
+            1.7040189161998782,
+            0.24593153078390703
+          ],
+          "minimumSoleYM": 0.004056701619598684,
+          "maxEdgeExtensionM": 0.014082153263730784,
+          "maxExtensionEdgeBindMidpointM": [
+            0.15559355914592743,
+            0.4300195574760437,
+            0.05214949697256088
+          ],
+          "p99EdgeExtensionM": 0.004013335064441133,
+          "maxEdgeLengthRatioOver1mm": 2.229721944365642,
+          "p99EdgeLengthRatioOver1mm": 1.2893113191682715,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 1,
+          "seconds": 1.2666666507720947,
+          "finite": true,
+          "boundsMinM": [
+            -0.3399858670374267,
+            0.0030004826668797377,
+            -0.22179948747416964
+          ],
+          "boundsMaxM": [
+            0.28180120826966715,
+            1.7393780933969725,
+            0.303499104195303
+          ],
+          "minimumSoleYM": 0.0030004826668797377,
+          "maxEdgeExtensionM": 0.017081416806312033,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.17482902109622955,
+            1.2541524767875671,
+            0.048302387818694115
+          ],
+          "p99EdgeExtensionM": 0.0037148688858140624,
+          "maxEdgeLengthRatioOver1mm": 2.344020461755485,
+          "p99EdgeLengthRatioOver1mm": 1.2318415606380047,
+          "edgesOver3xAnd20mmExtension": 0
+        }
+      ]
+    },
+    {
+      "name": "DanceVictory",
+      "seconds": 6.4666666984558105,
+      "samples": [
+        {
+          "phase": 0,
+          "seconds": 0.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.6307777744872115,
+            0.003000176738513119,
+            -0.5053903595673459
+          ],
+          "boundsMaxM": [
+            0.4625737981436448,
+            1.5914313198343966,
+            0.30660941721517543
+          ],
+          "minimumSoleYM": 0.003000176738513119,
+          "maxEdgeExtensionM": 0.038262315840897995,
+          "maxExtensionEdgeBindMidpointM": [
+            0.1611504703760147,
+            1.1678065657615662,
+            -0.029066920280456543
+          ],
+          "p99EdgeExtensionM": 0.006551576958497642,
+          "maxEdgeLengthRatioOver1mm": 5.191511604558641,
+          "p99EdgeLengthRatioOver1mm": 1.410424954271996,
+          "edgesOver3xAnd20mmExtension": 5
+        },
+        {
+          "phase": 0.25,
+          "seconds": 1.6166666746139526,
+          "finite": true,
+          "boundsMinM": [
+            -0.33514611622214696,
+            0.002981324216315802,
+            -0.3922816479404421
+          ],
+          "boundsMaxM": [
+            0.5420086731433462,
+            1.776099034672893,
+            0.1855002344922573
+          ],
+          "minimumSoleYM": 0.002981324216315802,
+          "maxEdgeExtensionM": 0.03785931200277169,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.18637030571699142,
+            1.2802271842956543,
+            -0.0897655189037323
+          ],
+          "p99EdgeExtensionM": 0.005230912546148506,
+          "maxEdgeLengthRatioOver1mm": 4.917501056619936,
+          "p99EdgeLengthRatioOver1mm": 1.3219166342836264,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.5,
+          "seconds": 3.2333333492279053,
+          "finite": true,
+          "boundsMinM": [
+            -0.4000500161445406,
+            0.003001046605543249,
+            -0.28247146180104854
+          ],
+          "boundsMaxM": [
+            0.6075413463428191,
+            1.6799433984377838,
+            0.21563134474787554
+          ],
+          "minimumSoleYM": 0.003001046605543249,
+          "maxEdgeExtensionM": 0.036232803473672484,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.18637030571699142,
+            1.2802271842956543,
+            -0.0897655189037323
+          ],
+          "p99EdgeExtensionM": 0.006456605048315498,
+          "maxEdgeLengthRatioOver1mm": 3.81305376600471,
+          "p99EdgeLengthRatioOver1mm": 1.3963666597946467,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.75,
+          "seconds": 4.850000023841858,
+          "finite": true,
+          "boundsMinM": [
+            -0.47417608546801215,
+            0.0029873851644753044,
+            -0.32950182489623464
+          ],
+          "boundsMaxM": [
+            0.38452998851070697,
+            1.7660790883952882,
+            0.2655530432301671
+          ],
+          "minimumSoleYM": 0.0029873851644753044,
+          "maxEdgeExtensionM": 0.029701394716617584,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.18936248868703842,
+            1.2370542287826538,
+            -0.08762824535369873
+          ],
+          "p99EdgeExtensionM": 0.00469787194027033,
+          "maxEdgeLengthRatioOver1mm": 4.31378834475041,
+          "p99EdgeLengthRatioOver1mm": 1.2698368888296945,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 1,
+          "seconds": 6.4666666984558105,
+          "finite": true,
+          "boundsMinM": [
+            -0.6307777744872115,
+            0.003000176738513119,
+            -0.5053903595673459
+          ],
+          "boundsMaxM": [
+            0.4625737981436448,
+            1.5914313198343966,
+            0.30660941721517543
+          ],
+          "minimumSoleYM": 0.003000176738513119,
+          "maxEdgeExtensionM": 0.038262315840897995,
+          "maxExtensionEdgeBindMidpointM": [
+            0.1611504703760147,
+            1.1678065657615662,
+            -0.029066920280456543
+          ],
+          "p99EdgeExtensionM": 0.006551576958497642,
+          "maxEdgeLengthRatioOver1mm": 5.191511604558641,
+          "p99EdgeLengthRatioOver1mm": 1.410424954271996,
+          "edgesOver3xAnd20mmExtension": 5
+        }
+      ]
+    },
+    {
+      "name": "Evade",
+      "seconds": 0.4333333373069763,
+      "samples": [
+        {
+          "phase": 0,
+          "seconds": 0.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.3750838028635725,
+            0.002999990579822531,
+            -0.2141553353878184
+          ],
+          "boundsMaxM": [
+            0.3808970637835496,
+            1.7788469111469292,
+            0.20619360931696906
+          ],
+          "minimumSoleYM": 0.002999990579822531,
+          "maxEdgeExtensionM": 0.02028038976958018,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.18936248868703842,
+            1.2370542287826538,
+            -0.08762824535369873
+          ],
+          "p99EdgeExtensionM": 0.0028191685903690656,
+          "maxEdgeLengthRatioOver1mm": 2.501865913271646,
+          "p99EdgeLengthRatioOver1mm": 1.2233513430042464,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.25,
+          "seconds": 0.10833333432674408,
+          "finite": true,
+          "boundsMinM": [
+            -0.3782050603814986,
+            0.00309858497043964,
+            -0.3272570082840808
+          ],
+          "boundsMaxM": [
+            0.38584832471592195,
+            1.7731807340212782,
+            0.39093270148901127
+          ],
+          "minimumSoleYM": 0.00309858497043964,
+          "maxEdgeExtensionM": 0.021139695520041427,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.18936248868703842,
+            1.2370542287826538,
+            -0.08762824535369873
+          ],
+          "p99EdgeExtensionM": 0.0030107721053295577,
+          "maxEdgeLengthRatioOver1mm": 2.6081206569357267,
+          "p99EdgeLengthRatioOver1mm": 1.2312122753001549,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.5,
+          "seconds": 0.21666666865348816,
+          "finite": true,
+          "boundsMinM": [
+            -0.38167924721340113,
+            0.0029999779778376355,
+            -0.40211757386113417
+          ],
+          "boundsMaxM": [
+            0.39159409706084325,
+            1.7632032267017754,
+            0.4615027287234186
+          ],
+          "minimumSoleYM": 0.0029999779778376355,
+          "maxEdgeExtensionM": 0.022067117491903654,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.18936248868703842,
+            1.2370542287826538,
+            -0.08762824535369873
+          ],
+          "p99EdgeExtensionM": 0.003294668251515278,
+          "maxEdgeLengthRatioOver1mm": 2.785459185836916,
+          "p99EdgeLengthRatioOver1mm": 1.2411311077268334,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.75,
+          "seconds": 0.32500000298023224,
+          "finite": true,
+          "boundsMinM": [
+            -0.3782050615363681,
+            0.00309858548619247,
+            -0.32725703832642683
+          ],
+          "boundsMaxM": [
+            0.3858483265995759,
+            1.7731807313783459,
+            0.39093273022239067
+          ],
+          "minimumSoleYM": 0.00309858548619247,
+          "maxEdgeExtensionM": 0.021139695831966863,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.18936248868703842,
+            1.2370542287826538,
+            -0.08762824535369873
+          ],
+          "p99EdgeExtensionM": 0.0030107721530758715,
+          "maxEdgeLengthRatioOver1mm": 2.608120715067802,
+          "p99EdgeLengthRatioOver1mm": 1.2312122763332112,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 1,
+          "seconds": 0.4333333373069763,
+          "finite": true,
+          "boundsMinM": [
+            -0.3750838028635725,
+            0.002999990579822531,
+            -0.2141553353878184
+          ],
+          "boundsMaxM": [
+            0.3808970637835496,
+            1.7788469111469292,
+            0.20619360931696906
+          ],
+          "minimumSoleYM": 0.002999990579822531,
+          "maxEdgeExtensionM": 0.02028038976958018,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.18936248868703842,
+            1.2370542287826538,
+            -0.08762824535369873
+          ],
+          "p99EdgeExtensionM": 0.0028191685903690656,
+          "maxEdgeLengthRatioOver1mm": 2.501865913271646,
+          "p99EdgeLengthRatioOver1mm": 1.2233513430042464,
+          "edgesOver3xAnd20mmExtension": 0
+        }
+      ]
+    },
+    {
+      "name": "Greeting",
+      "seconds": 2.200000047683716,
+      "samples": [
+        {
+          "phase": 0,
+          "seconds": 0.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.42313093053598383,
+            0.0029998735710291408,
+            -0.29204908913884176
+          ],
+          "boundsMaxM": [
+            0.3214160515328803,
+            1.7275372149999022,
+            0.3950733396066194
+          ],
+          "minimumSoleYM": 0.0029998735710291408,
+          "maxEdgeExtensionM": 0.0126194596916408,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.18936248868703842,
+            1.2370542287826538,
+            -0.08762824535369873
+          ],
+          "p99EdgeExtensionM": 0.0032044295518227255,
+          "maxEdgeLengthRatioOver1mm": 2.0310419171817675,
+          "p99EdgeLengthRatioOver1mm": 1.195865648668426,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.25,
+          "seconds": 0.550000011920929,
+          "finite": true,
+          "boundsMinM": [
+            -0.42313093053598383,
+            0.0029998735710291408,
+            -0.29204908913884176
+          ],
+          "boundsMaxM": [
+            0.3214160515328803,
+            1.7275372149999022,
+            0.3950733396066194
+          ],
+          "minimumSoleYM": 0.0029998735710291408,
+          "maxEdgeExtensionM": 0.06342248283607335,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.154738649725914,
+            1.1750733256340027,
+            -0.023082568310201168
+          ],
+          "p99EdgeExtensionM": 0.0038470927533473657,
+          "maxEdgeLengthRatioOver1mm": 4.5239234639804335,
+          "p99EdgeLengthRatioOver1mm": 1.2533828987480713,
+          "edgesOver3xAnd20mmExtension": 16
+        },
+        {
+          "phase": 0.5,
+          "seconds": 1.100000023841858,
+          "finite": true,
+          "boundsMinM": [
+            -0.42313093053598383,
+            0.0029998735710291408,
+            -0.29204908913884176
+          ],
+          "boundsMaxM": [
+            0.3214160515328803,
+            1.7275372149999022,
+            0.3950733396066194
+          ],
+          "minimumSoleYM": 0.0029998735710291408,
+          "maxEdgeExtensionM": 0.0739488877581927,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.154738649725914,
+            1.1750733256340027,
+            -0.023082568310201168
+          ],
+          "p99EdgeExtensionM": 0.003925433605035001,
+          "maxEdgeLengthRatioOver1mm": 5.169055369186827,
+          "p99EdgeLengthRatioOver1mm": 1.2575803372464618,
+          "edgesOver3xAnd20mmExtension": 31
+        },
+        {
+          "phase": 0.75,
+          "seconds": 1.6500000357627869,
+          "finite": true,
+          "boundsMinM": [
+            -0.42313093053598383,
+            0.0029998735710291408,
+            -0.29204908913884176
+          ],
+          "boundsMaxM": [
+            0.3214160515328803,
+            1.7275372149999022,
+            0.3950733396066194
+          ],
+          "minimumSoleYM": 0.0029998735710291408,
+          "maxEdgeExtensionM": 0.06765142006568682,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.154738649725914,
+            1.1750733256340027,
+            -0.023082568310201168
+          ],
+          "p99EdgeExtensionM": 0.0038814546207283354,
+          "maxEdgeLengthRatioOver1mm": 4.78132898538619,
+          "p99EdgeLengthRatioOver1mm": 1.2540123931183855,
+          "edgesOver3xAnd20mmExtension": 21
+        },
+        {
+          "phase": 1,
+          "seconds": 2.200000047683716,
+          "finite": true,
+          "boundsMinM": [
+            -0.42313093053598383,
+            0.0029998735710291408,
+            -0.29204908913884176
+          ],
+          "boundsMaxM": [
+            0.3214160515328803,
+            1.7275372149999022,
+            0.3950733396066194
+          ],
+          "minimumSoleYM": 0.0029998735710291408,
+          "maxEdgeExtensionM": 0.0126194596916408,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.18936248868703842,
+            1.2370542287826538,
+            -0.08762824535369873
+          ],
+          "p99EdgeExtensionM": 0.0032044295518227255,
+          "maxEdgeLengthRatioOver1mm": 2.0310419171817675,
+          "p99EdgeLengthRatioOver1mm": 1.195865648668426,
+          "edgesOver3xAnd20mmExtension": 0
+        }
+      ]
+    },
+    {
+      "name": "GyunGyun",
+      "seconds": 4.0,
+      "samples": [
+        {
+          "phase": 0,
+          "seconds": 0.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.42313093053598383,
+            0.0029998735710291408,
+            -0.29204908913884176
+          ],
+          "boundsMaxM": [
+            0.3214160515328803,
+            1.7275372149999022,
+            0.3950733396066194
+          ],
+          "minimumSoleYM": 0.0029998735710291408,
+          "maxEdgeExtensionM": 0.0126194596916408,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.18936248868703842,
+            1.2370542287826538,
+            -0.08762824535369873
+          ],
+          "p99EdgeExtensionM": 0.0032044295518227255,
+          "maxEdgeLengthRatioOver1mm": 2.0310419171817675,
+          "p99EdgeLengthRatioOver1mm": 1.195865648668426,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.25,
+          "seconds": 1.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.4905359027390641,
+            0.0030000158214053413,
+            -0.17392766867045986
+          ],
+          "boundsMaxM": [
+            0.18102399164170718,
+            1.712091380323609,
+            0.32425003392479435
+          ],
+          "minimumSoleYM": 0.0030000158214053413,
+          "maxEdgeExtensionM": 0.07970729794739442,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.154738649725914,
+            1.1750733256340027,
+            -0.023082568310201168
+          ],
+          "p99EdgeExtensionM": 0.0078107318615939555,
+          "maxEdgeLengthRatioOver1mm": 6.019879691717234,
+          "p99EdgeLengthRatioOver1mm": 1.585478397806466,
+          "edgesOver3xAnd20mmExtension": 46
+        },
+        {
+          "phase": 0.5,
+          "seconds": 2.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.4905359027390641,
+            0.0030000158214053413,
+            -0.17392766867045986
+          ],
+          "boundsMaxM": [
+            0.18102399164170718,
+            1.712091380323609,
+            0.32425003392479435
+          ],
+          "minimumSoleYM": 0.0030000158214053413,
+          "maxEdgeExtensionM": 0.07970729794739442,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.154738649725914,
+            1.1750733256340027,
+            -0.023082568310201168
+          ],
+          "p99EdgeExtensionM": 0.0078107318615939555,
+          "maxEdgeLengthRatioOver1mm": 6.019879691717234,
+          "p99EdgeLengthRatioOver1mm": 1.585478397806466,
+          "edgesOver3xAnd20mmExtension": 46
+        },
+        {
+          "phase": 0.75,
+          "seconds": 3.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.48653058380961506,
+            0.002999924363913071,
+            -0.1747875496558943
+          ],
+          "boundsMaxM": [
+            0.18289358052117619,
+            1.713429265595315,
+            0.322463825198787
+          ],
+          "minimumSoleYM": 0.002999924363913071,
+          "maxEdgeExtensionM": 0.07835707004688387,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.154738649725914,
+            1.1750733256340027,
+            -0.023082568310201168
+          ],
+          "p99EdgeExtensionM": 0.0077272558989913784,
+          "maxEdgeLengthRatioOver1mm": 5.9457710800892505,
+          "p99EdgeLengthRatioOver1mm": 1.5787992984876404,
+          "edgesOver3xAnd20mmExtension": 42
+        },
+        {
+          "phase": 1,
+          "seconds": 4.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.42313093053598383,
+            0.0029998735710291408,
+            -0.29204908913884176
+          ],
+          "boundsMaxM": [
+            0.3214160515328803,
+            1.7275372149999022,
+            0.3950733396066194
+          ],
+          "minimumSoleYM": 0.0029998735710291408,
+          "maxEdgeExtensionM": 0.0126194596916408,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.18936248868703842,
+            1.2370542287826538,
+            -0.08762824535369873
+          ],
+          "p99EdgeExtensionM": 0.0032044295518227255,
+          "maxEdgeLengthRatioOver1mm": 2.0310419171817675,
+          "p99EdgeLengthRatioOver1mm": 1.195865648668426,
+          "edgesOver3xAnd20mmExtension": 0
+        }
+      ]
+    },
+    {
+      "name": "GyunGyunPose",
+      "seconds": 1.0,
+      "samples": [
+        {
+          "phase": 0,
+          "seconds": 0.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.49053649675021593,
+            0.0029995262597937514,
+            -0.1739276854605202
+          ],
+          "boundsMaxM": [
+            0.1810240927404297,
+            1.7120918017034548,
+            0.3242499571599925
+          ],
+          "minimumSoleYM": 0.0029995262597937514,
+          "maxEdgeExtensionM": 0.07970734099388463,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.154738649725914,
+            1.1750733256340027,
+            -0.023082568310201168
+          ],
+          "p99EdgeExtensionM": 0.007810747211711845,
+          "maxEdgeLengthRatioOver1mm": 6.019877576985148,
+          "p99EdgeLengthRatioOver1mm": 1.58547903711969,
+          "edgesOver3xAnd20mmExtension": 46
+        },
+        {
+          "phase": 0.25,
+          "seconds": 0.25,
+          "finite": true,
+          "boundsMinM": [
+            -0.49053649675021593,
+            0.0029995262597937514,
+            -0.1739276854605202
+          ],
+          "boundsMaxM": [
+            0.1810240927404297,
+            1.7120918017034548,
+            0.3242499571599925
+          ],
+          "minimumSoleYM": 0.0029995262597937514,
+          "maxEdgeExtensionM": 0.07970734099388463,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.154738649725914,
+            1.1750733256340027,
+            -0.023082568310201168
+          ],
+          "p99EdgeExtensionM": 0.007810747211711845,
+          "maxEdgeLengthRatioOver1mm": 6.019877576985148,
+          "p99EdgeLengthRatioOver1mm": 1.58547903711969,
+          "edgesOver3xAnd20mmExtension": 46
+        },
+        {
+          "phase": 0.5,
+          "seconds": 0.5,
+          "finite": true,
+          "boundsMinM": [
+            -0.49053649675021593,
+            0.0029995262597937514,
+            -0.1739276854605202
+          ],
+          "boundsMaxM": [
+            0.1810240927404297,
+            1.7120918017034548,
+            0.3242499571599925
+          ],
+          "minimumSoleYM": 0.0029995262597937514,
+          "maxEdgeExtensionM": 0.07970734099388463,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.154738649725914,
+            1.1750733256340027,
+            -0.023082568310201168
+          ],
+          "p99EdgeExtensionM": 0.007810747211711845,
+          "maxEdgeLengthRatioOver1mm": 6.019877576985148,
+          "p99EdgeLengthRatioOver1mm": 1.58547903711969,
+          "edgesOver3xAnd20mmExtension": 46
+        },
+        {
+          "phase": 0.75,
+          "seconds": 0.75,
+          "finite": true,
+          "boundsMinM": [
+            -0.49053649675021593,
+            0.0029995262597937514,
+            -0.1739276854605202
+          ],
+          "boundsMaxM": [
+            0.1810240927404297,
+            1.7120918017034548,
+            0.3242499571599925
+          ],
+          "minimumSoleYM": 0.0029995262597937514,
+          "maxEdgeExtensionM": 0.07970734099388463,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.154738649725914,
+            1.1750733256340027,
+            -0.023082568310201168
+          ],
+          "p99EdgeExtensionM": 0.007810747211711845,
+          "maxEdgeLengthRatioOver1mm": 6.019877576985148,
+          "p99EdgeLengthRatioOver1mm": 1.58547903711969,
+          "edgesOver3xAnd20mmExtension": 46
+        },
+        {
+          "phase": 1,
+          "seconds": 1.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.49053649675021593,
+            0.0029995262597937514,
+            -0.1739276854605202
+          ],
+          "boundsMaxM": [
+            0.1810240927404297,
+            1.7120918017034548,
+            0.3242499571599925
+          ],
+          "minimumSoleYM": 0.0029995262597937514,
+          "maxEdgeExtensionM": 0.07970734099388463,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.154738649725914,
+            1.1750733256340027,
+            -0.023082568310201168
+          ],
+          "p99EdgeExtensionM": 0.007810747211711845,
+          "maxEdgeLengthRatioOver1mm": 6.019877576985148,
+          "p99EdgeLengthRatioOver1mm": 1.58547903711969,
+          "edgesOver3xAnd20mmExtension": 46
+        }
+      ]
+    },
+    {
+      "name": "Hit",
+      "seconds": 0.46666666865348816,
+      "samples": [
+        {
+          "phase": 0,
+          "seconds": 0.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.3320255696148879,
+            0.0030001028888130728,
+            -0.21415533882695517
+          ],
+          "boundsMaxM": [
+            0.3314391435583669,
+            1.7690511884295024,
+            0.24083292187441174
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.009393450640262091,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.3624816834926605,
+            0.8403761982917786,
+            0.044455286115407944
+          ],
+          "p99EdgeExtensionM": 0.0015211189424662983,
+          "maxEdgeLengthRatioOver1mm": 1.758249995660637,
+          "p99EdgeLengthRatioOver1mm": 1.1132548783769085,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.25,
+          "seconds": 0.11666666716337204,
+          "finite": true,
+          "boundsMinM": [
+            -0.3320246590272691,
+            0.0030001028888130728,
+            -0.23576302456708004
+          ],
+          "boundsMaxM": [
+            0.3314405698520709,
+            1.7716084063484043,
+            0.24083292187441174
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.00939345296534723,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.3624816834926605,
+            0.8403761982917786,
+            0.044455286115407944
+          ],
+          "p99EdgeExtensionM": 0.001695385206306672,
+          "maxEdgeLengthRatioOver1mm": 1.7582504758731323,
+          "p99EdgeLengthRatioOver1mm": 1.1136889788532764,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.5,
+          "seconds": 0.23333333432674408,
+          "finite": true,
+          "boundsMinM": [
+            -0.3320249721381764,
+            0.0030001028888130728,
+            -0.25538009959302477
+          ],
+          "boundsMaxM": [
+            0.33144077181614506,
+            1.7684047559471094,
+            0.24083292187441174
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.00939345535435937,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.3624816834926605,
+            0.8403761982917786,
+            0.044455286115407944
+          ],
+          "p99EdgeExtensionM": 0.0017695555754947022,
+          "maxEdgeLengthRatioOver1mm": 1.7582504755718085,
+          "p99EdgeLengthRatioOver1mm": 1.1248416769452574,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.75,
+          "seconds": 0.3500000014901161,
+          "finite": true,
+          "boundsMinM": [
+            -0.3320246590271916,
+            0.0030001028888130728,
+            -0.23576302990633824
+          ],
+          "boundsMaxM": [
+            0.3314405698522818,
+            1.7716084060546173,
+            0.24083292187441174
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.009393452965347798,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.3624816834926605,
+            0.8403761982917786,
+            0.044455286115407944
+          ],
+          "p99EdgeExtensionM": 0.001695385206306672,
+          "maxEdgeLengthRatioOver1mm": 1.7582504758734994,
+          "p99EdgeLengthRatioOver1mm": 1.1136889788532613,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 1,
+          "seconds": 0.46666666865348816,
+          "finite": true,
+          "boundsMinM": [
+            -0.3320255696148879,
+            0.0030001028888130728,
+            -0.21415533882695517
+          ],
+          "boundsMaxM": [
+            0.3314391435583669,
+            1.7690511884295024,
+            0.24083292187441174
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.009393450640262091,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.3624816834926605,
+            0.8403761982917786,
+            0.044455286115407944
+          ],
+          "p99EdgeExtensionM": 0.0015211189424662983,
+          "maxEdgeLengthRatioOver1mm": 1.758249995660637,
+          "p99EdgeLengthRatioOver1mm": 1.1132548783769085,
+          "edgesOver3xAnd20mmExtension": 0
+        }
+      ]
+    },
+    {
+      "name": "Idle",
+      "seconds": 3.133333444595337,
+      "samples": [
+        {
+          "phase": 0,
+          "seconds": 0.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.4231309377090936,
+            0.0030000062580760184,
+            -0.2920489133150678
+          ],
+          "boundsMaxM": [
+            0.3214160492523046,
+            1.7275375412712692,
+            0.3950731322699842
+          ],
+          "minimumSoleYM": 0.0030000062580760184,
+          "maxEdgeExtensionM": 0.012619574924034475,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.18936248868703842,
+            1.2370542287826538,
+            -0.08762824535369873
+          ],
+          "p99EdgeExtensionM": 0.0032044280958238103,
+          "maxEdgeLengthRatioOver1mm": 2.0310472050852812,
+          "p99EdgeLengthRatioOver1mm": 1.1958712446532231,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.25,
+          "seconds": 0.7833333611488342,
+          "finite": true,
+          "boundsMinM": [
+            -0.42566619335984407,
+            0.0030001540121722195,
+            -0.29247941096791386
+          ],
+          "boundsMaxM": [
+            0.307947374169839,
+            1.71890506276584,
+            0.394577375281987
+          ],
+          "minimumSoleYM": 0.0030001540121722195,
+          "maxEdgeExtensionM": 0.01185301883784396,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.18295066058635712,
+            0.43728628754615784,
+            0.029066921211779118
+          ],
+          "p99EdgeExtensionM": 0.003385426997720306,
+          "maxEdgeLengthRatioOver1mm": 1.9341895338369097,
+          "p99EdgeLengthRatioOver1mm": 1.2069044872564403,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.5,
+          "seconds": 1.5666667222976685,
+          "finite": true,
+          "boundsMinM": [
+            -0.42306754732735696,
+            0.003000120228920305,
+            -0.29231608468746173
+          ],
+          "boundsMaxM": [
+            0.3153664838589919,
+            1.7279211731431243,
+            0.3950530989990636
+          ],
+          "minimumSoleYM": 0.003000120228920305,
+          "maxEdgeExtensionM": 0.012596287310537808,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.18936248868703842,
+            1.2370542287826538,
+            -0.08762824535369873
+          ],
+          "p99EdgeExtensionM": 0.0031980333620222723,
+          "maxEdgeLengthRatioOver1mm": 2.0289226667257996,
+          "p99EdgeLengthRatioOver1mm": 1.194509579175316,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.75,
+          "seconds": 2.3500000834465027,
+          "finite": true,
+          "boundsMinM": [
+            -0.4253726106466003,
+            0.0029999681890289336,
+            -0.2926324251686929
+          ],
+          "boundsMaxM": [
+            0.3067193646107595,
+            1.7187773606567283,
+            0.3950431530276212
+          ],
+          "minimumSoleYM": 0.0029999681890289336,
+          "maxEdgeExtensionM": 0.011853897354861982,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.18295066058635712,
+            0.43728628754615784,
+            0.029066921211779118
+          ],
+          "p99EdgeExtensionM": 0.003401062847661732,
+          "maxEdgeLengthRatioOver1mm": 1.9341264987612894,
+          "p99EdgeLengthRatioOver1mm": 1.2065640934816524,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 1,
+          "seconds": 3.133333444595337,
+          "finite": true,
+          "boundsMinM": [
+            -0.4231309377090936,
+            0.0030000062580760184,
+            -0.2920489133150678
+          ],
+          "boundsMaxM": [
+            0.3214160492523046,
+            1.7275375412712692,
+            0.3950731322699842
+          ],
+          "minimumSoleYM": 0.0030000062580760184,
+          "maxEdgeExtensionM": 0.012619574924034475,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.18936248868703842,
+            1.2370542287826538,
+            -0.08762824535369873
+          ],
+          "p99EdgeExtensionM": 0.0032044280958238103,
+          "maxEdgeLengthRatioOver1mm": 2.0310472050852812,
+          "p99EdgeLengthRatioOver1mm": 1.1958712446532231,
+          "edgesOver3xAnd20mmExtension": 0
+        }
+      ]
+    },
+    {
+      "name": "Kick",
+      "seconds": 0.800000011920929,
+      "samples": [
+        {
+          "phase": 0,
+          "seconds": 0.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.3784339255270943,
+            0.002999653223772783,
+            -0.21415533904621223
+          ],
+          "boundsMaxM": [
+            0.3574043617937079,
+            1.7741987047534917,
+            0.267257587595523
+          ],
+          "minimumSoleYM": 0.002999653223772783,
+          "maxEdgeExtensionM": 0.02136784860494243,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.18936248868703842,
+            1.2370542287826538,
+            -0.08762824535369873
+          ],
+          "p99EdgeExtensionM": 0.0026888374529713756,
+          "maxEdgeLengthRatioOver1mm": 2.5998488074956474,
+          "p99EdgeLengthRatioOver1mm": 1.2179719930354285,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.25,
+          "seconds": 0.20000000298023224,
+          "finite": true,
+          "boundsMinM": [
+            -0.37589599354369707,
+            0.0030000418805387515,
+            -0.22576454125283552
+          ],
+          "boundsMaxM": [
+            0.3580684825984908,
+            1.7710252214243756,
+            0.6938523634796251
+          ],
+          "minimumSoleYM": 0.0030000418805387515,
+          "maxEdgeExtensionM": 0.020988600315034356,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.18936248868703842,
+            1.2370542287826538,
+            -0.08762824535369873
+          ],
+          "p99EdgeExtensionM": 0.0027700578771984175,
+          "maxEdgeLengthRatioOver1mm": 2.5596076121514324,
+          "p99EdgeLengthRatioOver1mm": 1.2162665806402204,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.5,
+          "seconds": 0.4000000059604645,
+          "finite": true,
+          "boundsMinM": [
+            -0.37359022003225306,
+            0.0030000418805387515,
+            -0.23684684854269994
+          ],
+          "boundsMaxM": [
+            0.35858611462975987,
+            1.7714697207707515,
+            0.805073755117365
+          ],
+          "minimumSoleYM": 0.0030000418805387515,
+          "maxEdgeExtensionM": 0.020640950271682786,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.18936248868703842,
+            1.2370542287826538,
+            -0.08762824535369873
+          ],
+          "p99EdgeExtensionM": 0.0030614542344492256,
+          "maxEdgeLengthRatioOver1mm": 2.5234125417102384,
+          "p99EdgeLengthRatioOver1mm": 1.2243559405484832,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.75,
+          "seconds": 0.6000000089406967,
+          "finite": true,
+          "boundsMinM": [
+            -0.37589599354369707,
+            0.0030000418805387515,
+            -0.22576454125283552
+          ],
+          "boundsMaxM": [
+            0.3580684825984908,
+            1.7710252214243756,
+            0.6938523634796251
+          ],
+          "minimumSoleYM": 0.0030000418805387515,
+          "maxEdgeExtensionM": 0.020988600315034356,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.18936248868703842,
+            1.2370542287826538,
+            -0.08762824535369873
+          ],
+          "p99EdgeExtensionM": 0.0027700578771984175,
+          "maxEdgeLengthRatioOver1mm": 2.5596076121514324,
+          "p99EdgeLengthRatioOver1mm": 1.2162665806402204,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 1,
+          "seconds": 0.800000011920929,
+          "finite": true,
+          "boundsMinM": [
+            -0.3784339255270943,
+            0.002999653223772783,
+            -0.21415533904621223
+          ],
+          "boundsMaxM": [
+            0.3574043617937079,
+            1.7741987047534917,
+            0.267257587595523
+          ],
+          "minimumSoleYM": 0.002999653223772783,
+          "maxEdgeExtensionM": 0.02136784860494243,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.18936248868703842,
+            1.2370542287826538,
+            -0.08762824535369873
+          ],
+          "p99EdgeExtensionM": 0.0026888374529713756,
+          "maxEdgeLengthRatioOver1mm": 2.5998488074956474,
+          "p99EdgeLengthRatioOver1mm": 1.2179719930354285,
+          "edgesOver3xAnd20mmExtension": 0
+        }
+      ]
+    },
+    {
+      "name": "ReloadHandgun",
+      "seconds": 1.2999999523162842,
+      "samples": [
+        {
+          "phase": 0,
+          "seconds": 0.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.3021588541090563,
+            0.0030001028888130728,
+            -0.21415533882695517
+          ],
+          "boundsMaxM": [
+            0.23274259318262547,
+            1.7690511884295024,
+            0.46604264047635385
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.08497353749486752,
+          "maxExtensionEdgeBindMidpointM": [
+            0.15944065153598785,
+            1.1810576915740967,
+            -0.02051782375201583
+          ],
+          "p99EdgeExtensionM": 0.0030349103047618287,
+          "maxEdgeLengthRatioOver1mm": 6.912110556725691,
+          "p99EdgeLengthRatioOver1mm": 1.2253747031634066,
+          "edgesOver3xAnd20mmExtension": 29
+        },
+        {
+          "phase": 0.25,
+          "seconds": 0.32499998807907104,
+          "finite": true,
+          "boundsMinM": [
+            -0.3021588541090563,
+            0.0030001028888130728,
+            -0.21415533882695517
+          ],
+          "boundsMaxM": [
+            0.23744060385314125,
+            1.7690511884295024,
+            0.45176048803197794
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.04361623368356776,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.154738649725914,
+            1.1750733256340027,
+            -0.023082568310201168
+          ],
+          "p99EdgeExtensionM": 0.002647628346910559,
+          "maxEdgeLengthRatioOver1mm": 3.375778420055072,
+          "p99EdgeLengthRatioOver1mm": 1.2072101526873928,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.5,
+          "seconds": 0.6499999761581421,
+          "finite": true,
+          "boundsMinM": [
+            -0.3021588541090563,
+            0.0030001028888130728,
+            -0.21415533882695517
+          ],
+          "boundsMaxM": [
+            0.2830913888175029,
+            1.7690511884295024,
+            0.45498241120031835
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.04361623368356776,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.154738649725914,
+            1.1750733256340027,
+            -0.023082568310201168
+          ],
+          "p99EdgeExtensionM": 0.002276957439820256,
+          "maxEdgeLengthRatioOver1mm": 3.375778420055072,
+          "p99EdgeLengthRatioOver1mm": 1.1816236174321426,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.75,
+          "seconds": 0.9749999642372131,
+          "finite": true,
+          "boundsMinM": [
+            -0.3021588541090563,
+            0.0030001028888130728,
+            -0.21415533882695517
+          ],
+          "boundsMaxM": [
+            0.23744061397388,
+            1.7690511884295024,
+            0.4517604892150195
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.04361623368356776,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.154738649725914,
+            1.1750733256340027,
+            -0.023082568310201168
+          ],
+          "p99EdgeExtensionM": 0.002647628346910314,
+          "maxEdgeLengthRatioOver1mm": 3.375778420055072,
+          "p99EdgeLengthRatioOver1mm": 1.2072101526873928,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 1,
+          "seconds": 1.2999999523162842,
+          "finite": true,
+          "boundsMinM": [
+            -0.3021588541090563,
+            0.0030001028888130728,
+            -0.21415533882695517
+          ],
+          "boundsMaxM": [
+            0.23274259318262547,
+            1.7690511884295024,
+            0.46604264047635385
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.08497353749486752,
+          "maxExtensionEdgeBindMidpointM": [
+            0.15944065153598785,
+            1.1810576915740967,
+            -0.02051782375201583
+          ],
+          "p99EdgeExtensionM": 0.0030349103047618287,
+          "maxEdgeLengthRatioOver1mm": 6.912110556725691,
+          "p99EdgeLengthRatioOver1mm": 1.2253747031634066,
+          "edgesOver3xAnd20mmExtension": 29
+        }
+      ]
+    },
+    {
+      "name": "ReloadShotgun",
+      "seconds": 2.0,
+      "samples": [
+        {
+          "phase": 0,
+          "seconds": 0.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.3021588541090563,
+            0.0030001028888130728,
+            -0.21415533882695517
+          ],
+          "boundsMaxM": [
+            0.23274259318262547,
+            1.7690511884295024,
+            0.5099521802706785
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.08087195518947164,
+          "maxExtensionEdgeBindMidpointM": [
+            0.15944065153598785,
+            1.1810576915740967,
+            -0.02051782375201583
+          ],
+          "p99EdgeExtensionM": 0.003022223372811721,
+          "maxEdgeLengthRatioOver1mm": 6.800212929098131,
+          "p99EdgeLengthRatioOver1mm": 1.2257994430728154,
+          "edgesOver3xAnd20mmExtension": 25
+        },
+        {
+          "phase": 0.25,
+          "seconds": 0.5,
+          "finite": true,
+          "boundsMinM": [
+            -0.3021588541090563,
+            0.0030001028888130728,
+            -0.21415533882695517
+          ],
+          "boundsMaxM": [
+            0.23274259318262547,
+            1.7690511884295024,
+            0.4517612390835478
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.05642827340020318,
+          "maxExtensionEdgeBindMidpointM": [
+            0.15944065153598785,
+            1.1810576915740967,
+            -0.02051782375201583
+          ],
+          "p99EdgeExtensionM": 0.002722410590693357,
+          "maxEdgeLengthRatioOver1mm": 4.6596619506383385,
+          "p99EdgeLengthRatioOver1mm": 1.2122030627433713,
+          "edgesOver3xAnd20mmExtension": 3
+        },
+        {
+          "phase": 0.5,
+          "seconds": 1.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.3021588541090563,
+            0.0030001028888130728,
+            -0.21415533882695517
+          ],
+          "boundsMaxM": [
+            0.2830653004763194,
+            1.7690511884295024,
+            0.4550155189093601
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.04361623368356776,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.154738649725914,
+            1.1750733256340027,
+            -0.023082568310201168
+          ],
+          "p99EdgeExtensionM": 0.0022795745202759963,
+          "maxEdgeLengthRatioOver1mm": 3.375778420055072,
+          "p99EdgeLengthRatioOver1mm": 1.181624337380403,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.75,
+          "seconds": 1.5,
+          "finite": true,
+          "boundsMinM": [
+            -0.3021588541090563,
+            0.0030001028888130728,
+            -0.21415533882695517
+          ],
+          "boundsMaxM": [
+            0.23274259318262547,
+            1.7690511884295024,
+            0.4517612390835478
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.05642827340020318,
+          "maxExtensionEdgeBindMidpointM": [
+            0.15944065153598785,
+            1.1810576915740967,
+            -0.02051782375201583
+          ],
+          "p99EdgeExtensionM": 0.002722410590693357,
+          "maxEdgeLengthRatioOver1mm": 4.6596619506383385,
+          "p99EdgeLengthRatioOver1mm": 1.2122030627433713,
+          "edgesOver3xAnd20mmExtension": 3
+        },
+        {
+          "phase": 1,
+          "seconds": 2.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.3021588541090563,
+            0.0030001028888130728,
+            -0.21415533882695517
+          ],
+          "boundsMaxM": [
+            0.23274259318262547,
+            1.7690511884295024,
+            0.5099521802706785
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.08087195518947164,
+          "maxExtensionEdgeBindMidpointM": [
+            0.15944065153598785,
+            1.1810576915740967,
+            -0.02051782375201583
+          ],
+          "p99EdgeExtensionM": 0.003022223372811721,
+          "maxEdgeLengthRatioOver1mm": 6.800212929098131,
+          "p99EdgeLengthRatioOver1mm": 1.2257994430728154,
+          "edgesOver3xAnd20mmExtension": 25
+        }
+      ]
+    },
+    {
+      "name": "Run",
+      "seconds": 0.8333333134651184,
+      "samples": [
+        {
+          "phase": 0,
+          "seconds": 0.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.3340678117071763,
+            0.0029999547565132782,
+            -0.254515137618239
+          ],
+          "boundsMaxM": [
+            0.29455524025710905,
+            1.6494593141296374,
+            0.3391762465496214
+          ],
+          "minimumSoleYM": 0.0029999547565132782,
+          "maxEdgeExtensionM": 0.020787361478744826,
+          "maxExtensionEdgeBindMidpointM": [
+            0.17140938341617584,
+            1.1870420575141907,
+            0.04060821607708931
+          ],
+          "p99EdgeExtensionM": 0.005342994387607005,
+          "maxEdgeLengthRatioOver1mm": 3.182744428097789,
+          "p99EdgeLengthRatioOver1mm": 1.38185450311852,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.25,
+          "seconds": 0.2083333283662796,
+          "finite": true,
+          "boundsMinM": [
+            -0.34480226707363665,
+            0.0066361912703333595,
+            -0.5062852319034442
+          ],
+          "boundsMaxM": [
+            0.27576757572399485,
+            1.7115099103774647,
+            0.48031684295648597
+          ],
+          "minimumSoleYM": 0.0066361912703333595,
+          "maxEdgeExtensionM": 0.0294584254570905,
+          "maxExtensionEdgeBindMidpointM": [
+            0.17140938341617584,
+            1.1870420575141907,
+            0.04060821607708931
+          ],
+          "p99EdgeExtensionM": 0.004568210674068947,
+          "maxEdgeLengthRatioOver1mm": 4.116681096554667,
+          "p99EdgeLengthRatioOver1mm": 1.3359371744241753,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.5,
+          "seconds": 0.4166666567325592,
+          "finite": true,
+          "boundsMinM": [
+            -0.31270191932145947,
+            0.003706986013126604,
+            -0.23837534245509595
+          ],
+          "boundsMaxM": [
+            0.2930373979869259,
+            1.6615261314009842,
+            0.36464686889130005
+          ],
+          "minimumSoleYM": 0.003706986013126604,
+          "maxEdgeExtensionM": 0.024384822800163145,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.15687592327594757,
+            1.1631045937538147,
+            -0.04402785375714302
+          ],
+          "p99EdgeExtensionM": 0.005620521185536548,
+          "maxEdgeLengthRatioOver1mm": 2.81991292570052,
+          "p99EdgeLengthRatioOver1mm": 1.388056410254062,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.75,
+          "seconds": 0.6249999850988388,
+          "finite": true,
+          "boundsMinM": [
+            -0.3033621750027711,
+            0.01145570264575177,
+            -0.5251324643963309
+          ],
+          "boundsMaxM": [
+            0.30739796239471,
+            1.7137359942410288,
+            0.46732717033146054
+          ],
+          "minimumSoleYM": 0.01145570264575177,
+          "maxEdgeExtensionM": 0.031985578306239854,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.15687592327594757,
+            1.1631045937538147,
+            -0.04402785375714302
+          ],
+          "p99EdgeExtensionM": 0.004829325006242962,
+          "maxEdgeLengthRatioOver1mm": 3.3778335360733682,
+          "p99EdgeLengthRatioOver1mm": 1.3417407683863856,
+          "edgesOver3xAnd20mmExtension": 1
+        },
+        {
+          "phase": 1,
+          "seconds": 0.8333333134651184,
+          "finite": true,
+          "boundsMinM": [
+            -0.3340678117071763,
+            0.0029999547565132782,
+            -0.254515137618239
+          ],
+          "boundsMaxM": [
+            0.29455524025710905,
+            1.6494593141296374,
+            0.3391762465496214
+          ],
+          "minimumSoleYM": 0.0029999547565132782,
+          "maxEdgeExtensionM": 0.020787361478744826,
+          "maxExtensionEdgeBindMidpointM": [
+            0.17140938341617584,
+            1.1870420575141907,
+            0.04060821607708931
+          ],
+          "p99EdgeExtensionM": 0.005342994387607005,
+          "maxEdgeLengthRatioOver1mm": 3.182744428097789,
+          "p99EdgeLengthRatioOver1mm": 1.38185450311852,
+          "edgesOver3xAnd20mmExtension": 0
+        }
+      ]
+    },
+    {
+      "name": "Struggle",
+      "seconds": 1.0,
+      "samples": [
+        {
+          "phase": 0,
+          "seconds": 0.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.3836634455645175,
+            0.0030001028888130728,
+            -0.19455790466260292
+          ],
+          "boundsMaxM": [
+            0.38504759703282987,
+            1.7655026365822437,
+            0.3671119637050101
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.033508569287476864,
+          "maxExtensionEdgeBindMidpointM": [
+            0.15944065153598785,
+            1.1810576915740967,
+            -0.02051782375201583
+          ],
+          "p99EdgeExtensionM": 0.003182978963294548,
+          "maxEdgeLengthRatioOver1mm": 3.5641929713151366,
+          "p99EdgeLengthRatioOver1mm": 1.2479315229603138,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.25,
+          "seconds": 0.25,
+          "finite": true,
+          "boundsMinM": [
+            -0.38712642783836,
+            0.0030001028888130728,
+            -0.19455790466260292
+          ],
+          "boundsMaxM": [
+            0.38277600729686645,
+            1.7655026365822437,
+            0.36712412194470495
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.034618390280403005,
+          "maxExtensionEdgeBindMidpointM": [
+            0.15944065153598785,
+            1.1810576915740967,
+            -0.02051782375201583
+          ],
+          "p99EdgeExtensionM": 0.0032398555624635443,
+          "maxEdgeLengthRatioOver1mm": 3.6340683141132883,
+          "p99EdgeLengthRatioOver1mm": 1.2492029861534306,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.5,
+          "seconds": 0.5,
+          "finite": true,
+          "boundsMinM": [
+            -0.38366344903128424,
+            0.0030001028888130728,
+            -0.19455790466260292
+          ],
+          "boundsMaxM": [
+            0.3850475891774442,
+            1.7655026365822437,
+            0.367111950081382
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.03350856808112544,
+          "maxExtensionEdgeBindMidpointM": [
+            0.15944065153598785,
+            1.1810576915740967,
+            -0.02051782375201583
+          ],
+          "p99EdgeExtensionM": 0.003182978716723545,
+          "maxEdgeLengthRatioOver1mm": 3.564192877346712,
+          "p99EdgeLengthRatioOver1mm": 1.247931430027987,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.75,
+          "seconds": 0.75,
+          "finite": true,
+          "boundsMinM": [
+            -0.38003331583108213,
+            0.0030001028888130728,
+            -0.19455790466260292
+          ],
+          "boundsMaxM": [
+            0.38709522334669133,
+            1.7655026365822437,
+            0.36707121450947783
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.03246985540979276,
+          "maxExtensionEdgeBindMidpointM": [
+            0.15944065153598785,
+            1.1810576915740967,
+            -0.02051782375201583
+          ],
+          "p99EdgeExtensionM": 0.0031891046991005096,
+          "maxEdgeLengthRatioOver1mm": 3.499863750803612,
+          "p99EdgeLengthRatioOver1mm": 1.2472665436694952,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 1,
+          "seconds": 1.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.3836634455645175,
+            0.0030001028888130728,
+            -0.19455790466260292
+          ],
+          "boundsMaxM": [
+            0.38504759703282987,
+            1.7655026365822437,
+            0.3671119637050101
+          ],
+          "minimumSoleYM": 0.0030001028888130728,
+          "maxEdgeExtensionM": 0.033508569287476864,
+          "maxExtensionEdgeBindMidpointM": [
+            0.15944065153598785,
+            1.1810576915740967,
+            -0.02051782375201583
+          ],
+          "p99EdgeExtensionM": 0.003182978963294548,
+          "maxEdgeLengthRatioOver1mm": 3.5641929713151366,
+          "p99EdgeLengthRatioOver1mm": 1.2479315229603138,
+          "edgesOver3xAnd20mmExtension": 0
+        }
+      ]
+    },
+    {
+      "name": "Vault",
+      "seconds": 1.600000023841858,
+      "samples": [
+        {
+          "phase": 0,
+          "seconds": 0.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.4300571885379487,
+            0.029147504244926473,
+            -0.21415532689950342
+          ],
+          "boundsMaxM": [
+            0.3190392889949341,
+            1.7585795433999178,
+            0.2828104865851469
+          ],
+          "minimumSoleYM": 0.029147504244926473,
+          "maxEdgeExtensionM": 0.029093079980158948,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.154738649725914,
+            1.1750733256340027,
+            -0.023082568310201168
+          ],
+          "p99EdgeExtensionM": 0.004551977384625734,
+          "maxEdgeLengthRatioOver1mm": 3.254269203590298,
+          "p99EdgeLengthRatioOver1mm": 1.2997571615019454,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.25,
+          "seconds": 0.4000000059604645,
+          "finite": true,
+          "boundsMinM": [
+            -0.3876236208669234,
+            0.0030004011379561792,
+            -0.27029055761439263
+          ],
+          "boundsMaxM": [
+            0.6725680790405801,
+            1.6903664274643406,
+            0.4676744176831892
+          ],
+          "minimumSoleYM": 0.0030004011379561792,
+          "maxEdgeExtensionM": 0.06821369003990632,
+          "maxExtensionEdgeBindMidpointM": [
+            0.15944065153598785,
+            1.1810576915740967,
+            -0.02051782375201583
+          ],
+          "p99EdgeExtensionM": 0.006664819129616828,
+          "maxEdgeLengthRatioOver1mm": 6.387240627691513,
+          "p99EdgeLengthRatioOver1mm": 1.439243494282703,
+          "edgesOver3xAnd20mmExtension": 45
+        },
+        {
+          "phase": 0.5,
+          "seconds": 0.800000011920929,
+          "finite": true,
+          "boundsMinM": [
+            -0.35084004872718677,
+            0.4342786806923281,
+            -0.44882327763619123
+          ],
+          "boundsMaxM": [
+            0.6769347873635289,
+            1.5170588307022002,
+            0.6633254145709937
+          ],
+          "minimumSoleYM": 0.4342786806923281,
+          "maxEdgeExtensionM": 0.06724187607663992,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.154738649725914,
+            1.1750733256340027,
+            -0.023082568310201168
+          ],
+          "p99EdgeExtensionM": 0.007107054582127096,
+          "maxEdgeLengthRatioOver1mm": 5.092300123845628,
+          "p99EdgeLengthRatioOver1mm": 1.4588780945039577,
+          "edgesOver3xAnd20mmExtension": 25
+        },
+        {
+          "phase": 0.75,
+          "seconds": 1.2000000178813934,
+          "finite": true,
+          "boundsMinM": [
+            -0.3858858883235484,
+            0.3867354085303328,
+            -0.17544009994101506
+          ],
+          "boundsMaxM": [
+            0.36442894184955454,
+            1.6659689350555882,
+            0.564076595323794
+          ],
+          "minimumSoleYM": 0.3867354085303328,
+          "maxEdgeExtensionM": 0.047519263489160524,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.154738649725914,
+            1.1750733256340027,
+            -0.023082568310201168
+          ],
+          "p99EdgeExtensionM": 0.006663495045349202,
+          "maxEdgeLengthRatioOver1mm": 4.295948285374814,
+          "p99EdgeLengthRatioOver1mm": 1.4117622878163398,
+          "edgesOver3xAnd20mmExtension": 16
+        },
+        {
+          "phase": 1,
+          "seconds": 1.600000023841858,
+          "finite": true,
+          "boundsMinM": [
+            -0.4300571885379487,
+            0.029147504244926473,
+            -0.21415532689950342
+          ],
+          "boundsMaxM": [
+            0.3190392889949341,
+            1.7585795433999178,
+            0.2828104865851469
+          ],
+          "minimumSoleYM": 0.029147504244926473,
+          "maxEdgeExtensionM": 0.029093079980158948,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.154738649725914,
+            1.1750733256340027,
+            -0.023082568310201168
+          ],
+          "p99EdgeExtensionM": 0.004551977384625734,
+          "maxEdgeLengthRatioOver1mm": 3.254269203590298,
+          "p99EdgeLengthRatioOver1mm": 1.2997571615019454,
+          "edgesOver3xAnd20mmExtension": 0
+        }
+      ]
+    },
+    {
+      "name": "Walk",
+      "seconds": 1.6666666269302368,
+      "samples": [
+        {
+          "phase": 0,
+          "seconds": 0.0,
+          "finite": true,
+          "boundsMinM": [
+            -0.3161236537972835,
+            0.0029995317744407435,
+            -0.3944164568947989
+          ],
+          "boundsMaxM": [
+            0.2729362534705113,
+            1.738460598749931,
+            0.5048618000456055
+          ],
+          "minimumSoleYM": 0.0029995317744407435,
+          "maxEdgeExtensionM": 0.01230628257767017,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.3282853066921234,
+            0.03505129553377628,
+            0.11071078106760979
+          ],
+          "p99EdgeExtensionM": 0.0026942166451920727,
+          "maxEdgeLengthRatioOver1mm": 1.7560939899043904,
+          "p99EdgeLengthRatioOver1mm": 1.1607201176476836,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.25,
+          "seconds": 0.4166666567325592,
+          "finite": true,
+          "boundsMinM": [
+            -0.2734137631851776,
+            0.003002172736340278,
+            -0.24191489409705128
+          ],
+          "boundsMaxM": [
+            0.3249319118413496,
+            1.7500233973027794,
+            0.2893223182393405
+          ],
+          "minimumSoleYM": 0.003002172736340278,
+          "maxEdgeExtensionM": 0.019158105187560892,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.11242061853408813,
+            0.444553017616272,
+            0.04659257084131241
+          ],
+          "p99EdgeExtensionM": 0.003043790741393828,
+          "maxEdgeLengthRatioOver1mm": 2.608417434322921,
+          "p99EdgeLengthRatioOver1mm": 1.177131516063259,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.5,
+          "seconds": 0.8333333134651184,
+          "finite": true,
+          "boundsMinM": [
+            -0.2525908136300897,
+            0.003000288495920482,
+            -0.38051821194288754
+          ],
+          "boundsMaxM": [
+            0.32805231414842684,
+            1.7532943654742141,
+            0.492632932178747
+          ],
+          "minimumSoleYM": 0.003000288495920482,
+          "maxEdgeExtensionM": 0.016304088854095504,
+          "maxExtensionEdgeBindMidpointM": [
+            0.1919272169470787,
+            1.2609917521476746,
+            -0.07822422683238983
+          ],
+          "p99EdgeExtensionM": 0.0033672330893090383,
+          "maxEdgeLengthRatioOver1mm": 2.4651450776151216,
+          "p99EdgeLengthRatioOver1mm": 1.2112834867410647,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 0.75,
+          "seconds": 1.2499999701976776,
+          "finite": true,
+          "boundsMinM": [
+            -0.30755973803052006,
+            0.0029719388795359913,
+            -0.24075594946728326
+          ],
+          "boundsMaxM": [
+            0.28592811197804974,
+            1.7500136485158673,
+            0.2914722508628179
+          ],
+          "minimumSoleYM": 0.0029719388795359913,
+          "maxEdgeExtensionM": 0.017871979715653064,
+          "maxExtensionEdgeBindMidpointM": [
+            0.15559355914592743,
+            0.4300195574760437,
+            0.05214949697256088
+          ],
+          "p99EdgeExtensionM": 0.003543815140272445,
+          "maxEdgeLengthRatioOver1mm": 2.6918841541835263,
+          "p99EdgeLengthRatioOver1mm": 1.2061640581525648,
+          "edgesOver3xAnd20mmExtension": 0
+        },
+        {
+          "phase": 1,
+          "seconds": 1.6666666269302368,
+          "finite": true,
+          "boundsMinM": [
+            -0.3161236537972835,
+            0.0029995317744407435,
+            -0.3944164568947989
+          ],
+          "boundsMaxM": [
+            0.2729362534705113,
+            1.738460598749931,
+            0.5048618000456055
+          ],
+          "minimumSoleYM": 0.0029995317744407435,
+          "maxEdgeExtensionM": 0.01230628257767017,
+          "maxExtensionEdgeBindMidpointM": [
+            -0.3282853066921234,
+            0.03505129553377628,
+            0.11071078106760979
+          ],
+          "p99EdgeExtensionM": 0.0026942166451920727,
+          "maxEdgeLengthRatioOver1mm": 1.7560939899043904,
+          "p99EdgeLengthRatioOver1mm": 1.1607201176476836,
+          "edgesOver3xAnd20mmExtension": 0
+        }
+      ]
+    }
+  ],
+  "blenderRoundtrip": [
+    {
+      "clip": "Idle",
+      "phase": 0.5,
+      "seconds": 1.5666667222976685,
+      "blendVsReimportMaxVertexDistanceM": 1.462322741451329e-05,
+      "blendVsReimportP99VertexDistanceM": 2.237063965019365e-06,
+      "independentGlTfVsBlenderMaxVertexDistanceM": 4.700707674167552e-07
+    },
+    {
+      "clip": "Walk",
+      "phase": 0.25,
+      "seconds": 0.4166666567325592,
+      "blendVsReimportMaxVertexDistanceM": 2.6510216949157114e-05,
+      "blendVsReimportP99VertexDistanceM": 2.1659063336254744e-06,
+      "independentGlTfVsBlenderMaxVertexDistanceM": 8.541490915296213e-07
+    },
+    {
+      "clip": "GyunGyun",
+      "phase": 0.5,
+      "seconds": 2.0,
+      "blendVsReimportMaxVertexDistanceM": 3.4883838752523305e-05,
+      "blendVsReimportP99VertexDistanceM": 5.566050644276468e-06,
+      "independentGlTfVsBlenderMaxVertexDistanceM": 1.0533291613977596e-06
+    },
+    {
+      "clip": "DanceVictory",
+      "phase": 0.75,
+      "seconds": 4.850000023841858,
+      "blendVsReimportMaxVertexDistanceM": 1.68285048563813e-05,
+      "blendVsReimportP99VertexDistanceM": 3.3466628030059296e-06,
+      "independentGlTfVsBlenderMaxVertexDistanceM": 7.458385620130203e-07
+    }
+  ],
+  "metricNotes": {
+    "edgeRatios": "Edges shorter than 1 mm excluded only from ratio statistics; extension includes every edge.",
+    "floors": "Shoe-sole vertices with bind Y < 0.06 m and Foot/ToeBase influence > 0.6; airborne clearance allowed.",
+    "thresholds": "All sampled coordinates finite and <5 m magnitude; sole above -5 mm. Roundtrip tolerance: 0.1 mm versus authored blend (export interpolation), 0.02 mm versus independent glTF LBS. Edge and normal metrics are diagnostic, not artistic pass criteria."
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "images": {
+    "front": "../../../../../03_SCRIPTS/cto_odatetsu_camera_20261014/camera_front.png",
+    "back": "../../../../../03_SCRIPTS/cto_odatetsu_camera_20261014/camera_back.png"
+  },
+  "generation": {
+    "model": "P2-20260801",
+    "quad": true,
+    "face_limit": 15000,
+    "texture": true,
+    "pbr": true,
+    "texture_quality": "detailed",
+    "model_seed": 1014175,
+    "texture_seed": 1014175
+  }
+}

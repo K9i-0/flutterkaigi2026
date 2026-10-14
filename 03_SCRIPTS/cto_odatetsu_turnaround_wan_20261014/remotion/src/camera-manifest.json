@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "title": "CTOおだてつ・カメラ装備プレビュー",
+  "scope": "flutterkaigi2026 only; PR #20; do not merge into main",
+  "composition": {"id": "CameraEquipmentPreview", "width": 720, "height": 1280, "fps": 30, "durationInFrames": 480},
+  "character": "models/cto_odatetsu_camera.glb",
+  "cameraProp": "models/odatetsu_camera.glb",
+  "attachment": "camera/attachment.json",
+  "expectedBones": 54,
+  "expectedClipCount": 21,
+  "segments": [
+    {"clip": "CameraCarry", "label": "右手で肩持ち・左手は腰", "startFrame": 0, "endFrameExclusive": 180, "view": "full"},
+    {"clip": "CameraCarry", "label": "カメラ＋70–200 mm レンズ", "startFrame": 180, "endFrameExclusive": 300, "view": "detail"},
+    {"clip": "Walk", "label": "Walk · カメラ装備", "startFrame": 300, "endFrameExclusive": 390, "view": "full"},
+    {"clip": "Greeting", "label": "Greeting · カメラ装備", "startFrame": 390, "endFrameExclusive": 480, "view": "full"}
+  ],
+  "views": {
+    "full": {"position": [2.3, 1.4, 5], "target": [0, 0.92, 0], "verticalViewMeters": 2.65},
+    "detail": {"position": [1.3, 1.55, 4], "target": [0, 1.32, 0], "verticalViewMeters": 1.65}
+  },
+  "background": "#e6e6e6",
+  "audio": "silent; no audio stream",
+  "qaFrames": [0, 90, 179, 180, 240, 299, 300, 345, 389, 390, 435, 479],
+  "output": "out/cto-odatetsu-camera-equipment.mp4"
+}

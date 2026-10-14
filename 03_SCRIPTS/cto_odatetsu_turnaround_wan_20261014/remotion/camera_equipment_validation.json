@@ -1,0 +1,564 @@
+{
+  "assetSha256": {
+    "public/models/cto_odatetsu_camera.glb": "2376c9e183d6809291fa2a433876feb89f713644db1cceeda853532ac3f2f5fe",
+    "public/models/odatetsu_camera.glb": "a7a0badde286105db34765758f269e9806de1422705a20e240808d99ed75f42b",
+    "public/camera/attachment.json": "4d72b0803d2d9ed1f86b9f96184932fbde52b20ed20d3a1a1f0e0312ea95a8fb"
+  },
+  "fps": 30,
+  "clipCount": 21,
+  "boneCount": 54,
+  "method": "Shared Three.js equipment sampler: 3 phases of all 21 clips, non-sequential seeks, original-pose comparison after unequip, world-space grip alignment; exact vertex projection of all 480 video frames. Textures omitted only for Node evaluation.",
+  "passed": true,
+  "checks": [
+    {
+      "clip": "Aim",
+      "frame": 0,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 1.3877787807814457e-17,
+      "finite": true
+    },
+    {
+      "clip": "Aim",
+      "frame": 22,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "Aim",
+      "frame": 54,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "AimShotgun",
+      "frame": 0,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 1.3877787807814457e-17,
+      "finite": true
+    },
+    {
+      "clip": "AimShotgun",
+      "frame": 22,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "AimShotgun",
+      "frame": 54,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "BreakFree",
+      "frame": 0,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "BreakFree",
+      "frame": 7,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "BreakFree",
+      "frame": 19,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "Climb",
+      "frame": 0,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "Climb",
+      "frame": 11,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "Climb",
+      "frame": 27,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "DanceDisco",
+      "frame": 0,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "DanceDisco",
+      "frame": 25,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "DanceDisco",
+      "frame": 62,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "DanceStep",
+      "frame": 0,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "DanceStep",
+      "frame": 14,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "DanceStep",
+      "frame": 34,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "DanceVictory",
+      "frame": 0,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "DanceVictory",
+      "frame": 71,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "DanceVictory",
+      "frame": 176,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "Evade",
+      "frame": 0,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "Evade",
+      "frame": 4,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "Evade",
+      "frame": 11,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "Greeting",
+      "frame": 0,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "Greeting",
+      "frame": 24,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 2.7755575615628914e-17,
+      "finite": true
+    },
+    {
+      "clip": "Greeting",
+      "frame": 60,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "GyunGyun",
+      "frame": 0,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "GyunGyun",
+      "frame": 44,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 2.220446049250313e-16,
+      "finite": true
+    },
+    {
+      "clip": "GyunGyun",
+      "frame": 109,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 1.3877787807814457e-17,
+      "finite": true
+    },
+    {
+      "clip": "GyunGyunPose",
+      "frame": 0,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "GyunGyunPose",
+      "frame": 11,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "GyunGyunPose",
+      "frame": 27,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "Hit",
+      "frame": 0,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "Hit",
+      "frame": 5,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "Hit",
+      "frame": 12,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "Idle",
+      "frame": 0,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "Idle",
+      "frame": 34,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "Idle",
+      "frame": 85,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 1.3877787807814457e-17,
+      "finite": true
+    },
+    {
+      "clip": "Kick",
+      "frame": 0,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "Kick",
+      "frame": 8,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "Kick",
+      "frame": 21,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "ReloadHandgun",
+      "frame": 0,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "ReloadHandgun",
+      "frame": 14,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "ReloadHandgun",
+      "frame": 35,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "ReloadShotgun",
+      "frame": 0,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "ReloadShotgun",
+      "frame": 22,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "ReloadShotgun",
+      "frame": 54,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "Run",
+      "frame": 0,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "Run",
+      "frame": 9,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "Run",
+      "frame": 22,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "Struggle",
+      "frame": 0,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "Struggle",
+      "frame": 11,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "Struggle",
+      "frame": 27,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "Vault",
+      "frame": 0,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 1.3877787807814457e-17,
+      "finite": true
+    },
+    {
+      "clip": "Vault",
+      "frame": 17,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "Vault",
+      "frame": 43,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "Walk",
+      "frame": 0,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "Walk",
+      "frame": 18,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 2.7755575615628914e-17,
+      "finite": true
+    },
+    {
+      "clip": "Walk",
+      "frame": 45,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "CameraCarry",
+      "frame": 0,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "CameraCarry",
+      "frame": 11,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    },
+    {
+      "clip": "CameraCarry",
+      "frame": 27,
+      "repeatable": true,
+      "offRestoresOriginalClip": true,
+      "gripError": 0,
+      "finite": true
+    }
+  ],
+  "ranges": [
+    {
+      "clip": "CameraCarry",
+      "view": "full",
+      "startFrame": 0,
+      "endFrameExclusive": 180,
+      "minX": -0.5334246799733235,
+      "maxX": 0.4761383800396626,
+      "minY": -0.7050140558074326,
+      "maxY": 0.6254940805693681,
+      "contained": true
+    },
+    {
+      "clip": "CameraCarry",
+      "view": "detail",
+      "startFrame": 180,
+      "endFrameExclusive": 300,
+      "minX": -0.8767871902051261,
+      "maxX": 0.8003691435420116,
+      "minY": -0.40091336883062206,
+      "maxY": 0.5206325876175144,
+      "contained": true
+    },
+    {
+      "clip": "Walk",
+      "view": "full",
+      "startFrame": 300,
+      "endFrameExclusive": 390,
+      "minX": -0.564334375800597,
+      "maxX": 0.4643873226564508,
+      "minY": -0.7037166270246699,
+      "maxY": 0.6291357475890259,
+      "contained": true
+    },
+    {
+      "clip": "Greeting",
+      "view": "full",
+      "startFrame": 390,
+      "endFrameExclusive": 480,
+      "minX": -0.8074521877535669,
+      "maxX": 0.41564965230459366,
+      "minY": -0.704536476158782,
+      "maxY": 0.6159861209377205,
+      "contained": true
+    }
+  ]
+}

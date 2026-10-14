@@ -1,0 +1,41 @@
+{
+  "glb_sha256": "a7a0badde286105db34765758f269e9806de1422705a20e240808d99ed75f42b",
+  "views": [
+    {
+      "file": "qa/front.png",
+      "sha256": "10ac9873cb76b639ad433f71ae33c68727bb7029fc2256a65a811fef4ed4b473",
+      "width": 900,
+      "height": 900
+    },
+    {
+      "file": "qa/back.png",
+      "sha256": "74c7bcdef0fa4152bb71c7e2491181bea99ce62ce019d3a437bee28a760e3721",
+      "width": 900,
+      "height": 900
+    },
+    {
+      "file": "qa/grip.png",
+      "sha256": "fbe539aa9c1cc0820d1d06e39e1cab53c55218a96f7081ce665c89097cc79edb",
+      "width": 1000,
+      "height": 800
+    },
+    {
+      "file": "qa/switches.png",
+      "sha256": "3d14100628468eda4ed789cfade4f3d011baeaebf6418dee74690a2c82509a82",
+      "width": 1000,
+      "height": 800
+    },
+    {
+      "file": "qa/hero.png",
+      "sha256": "dd0215e8791ea3a396889f47081f36148c5d85ee6a2c3442d265ee89fe602958",
+      "width": 1200,
+      "height": 1000
+    },
+    {
+      "file": "qa/body.png",
+      "sha256": "44906fec937f93e0952757fa965647fc096640bad126a9b9733ee9e947b56e9c",
+      "width": 1000,
+      "height": 1000
+    }
+  ]
+}

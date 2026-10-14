@@ -1,0 +1,128 @@
+{
+  "date": "2026-10-14",
+  "composition": "RigMotionPreview",
+  "output": "../final_remotion_rig_motion.mp4",
+  "modelSha256": "a00e99144f2fba32ae4a777a6084ebe56594828df13ae04fc33ee9cd9962ffd4",
+  "videoSha256": "739d290115d109364e3a78bd1564c8a8016a0523af5893cbdfb8251ffcfb3bc7",
+  "bytes": 3598851,
+  "width": 720,
+  "height": 1280,
+  "fps": "30/1",
+  "frames": 720,
+  "durationSeconds": 24.0,
+  "codec": "h264",
+  "pixelFormat": "yuvj420p",
+  "audioStreams": 0,
+  "renderSettings": {
+    "gl": "angle",
+    "imageFormat": "jpeg",
+    "jpegQuality": 95,
+    "concurrency": 1
+  },
+  "fullDecode": "passed",
+  "captureArtifactCheck": {
+    "method": "Count blue jeans pixels in each decoded 90x160 RGB frame; reject below 20 to catch observed head-only repeated-strip capture failure. This does not certify all deformation details.",
+    "frames": 720,
+    "minimumPixels": 215,
+    "maximumPixels": 333,
+    "rejectedFrames": []
+  },
+  "qaFrames": [
+    {
+      "frame": 0,
+      "image": "out/rig-qa-final/frame-001.png"
+    },
+    {
+      "frame": 60,
+      "image": "out/rig-qa-final/frame-002.png"
+    },
+    {
+      "frame": 119,
+      "image": "out/rig-qa-final/frame-003.png"
+    },
+    {
+      "frame": 120,
+      "image": "out/rig-qa-final/frame-004.png"
+    },
+    {
+      "frame": 180,
+      "image": "out/rig-qa-final/frame-005.png"
+    },
+    {
+      "frame": 239,
+      "image": "out/rig-qa-final/frame-006.png"
+    },
+    {
+      "frame": 240,
+      "image": "out/rig-qa-final/frame-007.png"
+    },
+    {
+      "frame": 300,
+      "image": "out/rig-qa-final/frame-008.png"
+    },
+    {
+      "frame": 359,
+      "image": "out/rig-qa-final/frame-009.png"
+    },
+    {
+      "frame": 360,
+      "image": "out/rig-qa-final/frame-010.png"
+    },
+    {
+      "frame": 390,
+      "image": "out/rig-qa-final/frame-011.png"
+    },
+    {
+      "frame": 420,
+      "image": "out/rig-qa-final/frame-012.png"
+    },
+    {
+      "frame": 479,
+      "image": "out/rig-qa-final/frame-013.png"
+    },
+    {
+      "frame": 480,
+      "image": "out/rig-qa-final/frame-014.png"
+    },
+    {
+      "frame": 515,
+      "image": "out/rig-qa-final/frame-015.png"
+    },
+    {
+      "frame": 540,
+      "image": "out/rig-qa-final/frame-016.png"
+    },
+    {
+      "frame": 599,
+      "image": "out/rig-qa-final/frame-017.png"
+    },
+    {
+      "frame": 600,
+      "image": "out/rig-qa-final/frame-018.png"
+    },
+    {
+      "frame": 645,
+      "image": "out/rig-qa-final/frame-019.png"
+    },
+    {
+      "frame": 660,
+      "image": "out/rig-qa-final/frame-020.png"
+    },
+    {
+      "frame": 719,
+      "image": "out/rig-qa-final/frame-021.png"
+    }
+  ],
+  "visualReview": {
+    "result": "passed",
+    "sampledFrames": 21,
+    "checks": [
+      "all six clip labels and their cut boundaries",
+      "full body and finger tips remain in frame",
+      "hood, hair, chest print and shoe A retained",
+      "Greeting sleeve and GyunGyun arms do not show the initial stretched triangle",
+      "no repeated-head capture corruption in sampled frames"
+    ],
+    "limitations": "Representative pose/frame review; exact full-frame geometry bounds and body-presence checks cover all 720 frames separately."
+  }
+}

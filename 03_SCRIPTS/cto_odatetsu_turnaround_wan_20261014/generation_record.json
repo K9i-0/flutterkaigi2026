@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-14",
+  "task_id": "40b68f14-0d75-479d-9318-d64594de779d",
+  "status": "SUCCEEDED",
+  "model": "wan3.0-video",
+  "resolution": "1080P",
+  "ratio": "9:16",
+  "duration": 8,
+  "seed": 1014030,
+  "estimated_usd": 1.12,
+  "price_source": "https://www.qwencloud.com/models/wan3.0-video",
+  "price_note": "Displayed discounted rate 0.14 USD/s; estimate, not billing receipt.",
+  "inputs_sha256": {
+    "character_cto_odatetsu_basic_sheet.png": "2f902f790fb3c678fdd265fd734d339bcb6dae0b4fde6cea98406abf46845305",
+    "hoodie_print_reference.png": "fe080263a2b7647861ef5ad065b66b7013072eb1a5a36ba7eaaa59340f0365e5",
+    "prompt_wan3.txt": "5553398c4d65dfb34d0ebe3517504b1e8ca6a08d791993a8d40c61e87b19de10",
+    "wan3_config.json": "c0e59b5ccd38b88a17f166ef895be6eb4602e14fadcfd86426811e7b416d2026"
+  },
+  "output": "wan3_cto_odatetsu_turnaround_1080p.mp4",
+  "output_sha256": "cb86ee6ba99a990f891377785d669bbdbf14aa10f30e59fbb85664c457d7fb3c",
+  "actual": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "video_duration": 8,
+    "container_duration": 8.033991
+  },
+  "audit": {
+    "method": "16 frames sampled at 2 fps",
+    "hood": "present in sampled side and rear views",
+    "rotation": "FAIL: approximately 180 degrees only; ends at back, opposite profile missing",
+    "multiview_ready": false,
+    "audio": "not listened; not used for image extraction"
+  },
+  "multiview_completion": {
+    "method": "3 video frames plus imagegen inferred opposite profile",
+    "inputs_dir": "tripo_inputs",
+    "wan_retry": false,
+    "tripo_submitted": true,
+    "limitations": "Not calibrated; hand/fold/hair differences, shoe lettering requires texture cleanup",
+    "tripo_task_id": "cd95bfcc-257e-409b-9f5a-8e031c892c72"
+  }
+}

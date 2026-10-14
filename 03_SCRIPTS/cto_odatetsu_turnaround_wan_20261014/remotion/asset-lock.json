@@ -1,0 +1,9 @@
+[
+  {
+    "source": "04_GAME_ASSETS/3d/characters/cto_odatetsu/finish_20261014/cto_odatetsu_static.glb",
+    "target": "models/cto_odatetsu.glb",
+    "sha256": "0442fa963ce6a1b2aa6fe8afa2227b6d60a5678125650842ca5ce32e2fbb31f2",
+    "bytes": 18584136,
+    "materialization": "existing-hardlink"
+  }
+]

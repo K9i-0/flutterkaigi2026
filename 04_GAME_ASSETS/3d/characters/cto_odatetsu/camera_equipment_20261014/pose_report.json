@@ -1,0 +1,82 @@
+{
+  "source": "04_GAME_ASSETS/3d/characters/cto_odatetsu/rig_v1_20261014/cto_odatetsu_rig.glb",
+  "sourceSha256": "a00e99144f2fba32ae4a777a6084ebe56594828df13ae04fc33ee9cd9962ffd4",
+  "outputSha256": "2376c9e183d6809291fa2a433876feb89f713644db1cceeda853532ac3f2f5fe",
+  "originalAnimationsUnchanged": true,
+  "originalBinaryPrefixUnchanged": true,
+  "geometrySkinMaterialsRestTransformsUnchanged": true,
+  "boneCount": 54,
+  "clipCount": 21,
+  "addedClip": {
+    "name": "CameraCarry",
+    "durationSeconds": 1,
+    "staticPose": true
+  },
+  "landmarksBlenderZUp": {
+    "right": {
+      "shoulder": [
+        -0.17000001668930054,
+        0.010000038892030716,
+        1.3199999332427979
+      ],
+      "elbow": [
+        -0.3754951059818268,
+        -0.04775293916463852,
+        1.160343050956726
+      ],
+      "wrist": [
+        -0.33000001311302185,
+        -0.09000000357627869,
+        1.3200000524520874
+      ],
+      "upperArmLengthM": 0.26655948523575107,
+      "forearmLengthM": 0.17130377792167023,
+      "handLongAxis": [
+        0.0,
+        -0.14834046363830566,
+        0.9889363646507263
+      ],
+      "palm": [
+        1,
+        0,
+        0
+      ]
+    },
+    "left": {
+      "shoulder": [
+        0.17000001668930054,
+        0.010000043548643589,
+        1.3200000524520874
+      ],
+      "elbow": [
+        0.3629770278930664,
+        -0.04521522670984268,
+        1.1446001529693604
+      ],
+      "wrist": [
+        0.25999999046325684,
+        -0.1599999964237213,
+        1.0700000524520874
+      ],
+      "upperArmLengthM": 0.2665595502773983,
+      "forearmLengthM": 0.1713037755431259,
+      "handLongAxis": [
+        -0.800000011920929,
+        0.0,
+        -0.6000000238418579
+      ],
+      "palm": [
+        0,
+        1,
+        0
+      ]
+    }
+  },
+  "cameraGripWorldBlender": [
+    -0.3150000274181366,
+    -0.08367791771888733,
+    1.423189401626587
+  ],
+  "visualReview": "see pose_review.json for the separately reviewed asset hashes",
+  "cameraAlignment": "actual separate camera GLB"
+}

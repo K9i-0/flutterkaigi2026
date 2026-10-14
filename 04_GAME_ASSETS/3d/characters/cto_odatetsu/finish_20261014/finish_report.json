@@ -1,0 +1,35 @@
+{
+  "chest": 40606,
+  "shoe_left": 15924,
+  "shoe_right": 20224,
+  "shoe_inner_left": 77749,
+  "shoe_inner_right": 83163,
+  "clothing_slits": {
+    "patched_loops": 16,
+    "added_faces": 16,
+    "added_vertices": 0,
+    "source_vertex_positions_bitwise_equal": true,
+    "source_loop_vertices_bitwise_equal": true,
+    "source_uv_coordinates_bitwise_equal": true,
+    "source_corner_normals_max_abs_error": 0.0005174875259399414,
+    "new_uv_policy": "copy corner UV from longest adjacent boundary edge face; no cross-island averaging",
+    "normal_policy": "opposite shared-edge winding to all adjacent faces",
+    "before": {
+      "boundary_edges": 648,
+      "multi_face_edges": 30,
+      "wire_edges": 0
+    },
+    "after": {
+      "boundary_edges": 584,
+      "multi_face_edges": 30,
+      "wire_edges": 0
+    }
+  },
+  "source_vertices_preserved": true,
+  "texture_size": [
+    4096,
+    4096
+  ],
+  "changed_texels": 342048,
+  "basecolor_only_in_local_masks": true
+}

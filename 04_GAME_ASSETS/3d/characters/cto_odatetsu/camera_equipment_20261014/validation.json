@@ -1,0 +1,213 @@
+{
+  "passed": true,
+  "sourceSha256": "a00e99144f2fba32ae4a777a6084ebe56594828df13ae04fc33ee9cd9962ffd4",
+  "outputSha256": "2376c9e183d6809291fa2a433876feb89f713644db1cceeda853532ac3f2f5fe",
+  "boneCount": 54,
+  "clipCount": 21,
+  "newClip": "CameraCarry",
+  "originalBinaryPrefixUnchanged": true,
+  "originalAccessorAndBufferViewsUnchanged": true,
+  "originalGeometrySkinMaterialsRestNodesUnchanged": true,
+  "original20AnimationDefinitionsUnchanged": true,
+  "originalMotionComparisons": [
+    {
+      "clip": "Aim",
+      "phases": [
+        0,
+        0.31,
+        0.83
+      ],
+      "maxVertexDifferenceM": 0
+    },
+    {
+      "clip": "AimShotgun",
+      "phases": [
+        0,
+        0.31,
+        0.83
+      ],
+      "maxVertexDifferenceM": 0
+    },
+    {
+      "clip": "BreakFree",
+      "phases": [
+        0,
+        0.31,
+        0.83
+      ],
+      "maxVertexDifferenceM": 0
+    },
+    {
+      "clip": "Climb",
+      "phases": [
+        0,
+        0.31,
+        0.83
+      ],
+      "maxVertexDifferenceM": 0
+    },
+    {
+      "clip": "DanceDisco",
+      "phases": [
+        0,
+        0.31,
+        0.83
+      ],
+      "maxVertexDifferenceM": 0
+    },
+    {
+      "clip": "DanceStep",
+      "phases": [
+        0,
+        0.31,
+        0.83
+      ],
+      "maxVertexDifferenceM": 0
+    },
+    {
+      "clip": "DanceVictory",
+      "phases": [
+        0,
+        0.31,
+        0.83
+      ],
+      "maxVertexDifferenceM": 0
+    },
+    {
+      "clip": "Evade",
+      "phases": [
+        0,
+        0.31,
+        0.83
+      ],
+      "maxVertexDifferenceM": 0
+    },
+    {
+      "clip": "Greeting",
+      "phases": [
+        0,
+        0.31,
+        0.83
+      ],
+      "maxVertexDifferenceM": 0
+    },
+    {
+      "clip": "GyunGyun",
+      "phases": [
+        0,
+        0.31,
+        0.83
+      ],
+      "maxVertexDifferenceM": 0
+    },
+    {
+      "clip": "GyunGyunPose",
+      "phases": [
+        0,
+        0.31,
+        0.83
+      ],
+      "maxVertexDifferenceM": 0
+    },
+    {
+      "clip": "Hit",
+      "phases": [
+        0,
+        0.31,
+        0.83
+      ],
+      "maxVertexDifferenceM": 0
+    },
+    {
+      "clip": "Idle",
+      "phases": [
+        0,
+        0.31,
+        0.83
+      ],
+      "maxVertexDifferenceM": 0
+    },
+    {
+      "clip": "Kick",
+      "phases": [
+        0,
+        0.31,
+        0.83
+      ],
+      "maxVertexDifferenceM": 0
+    },
+    {
+      "clip": "ReloadHandgun",
+      "phases": [
+        0,
+        0.31,
+        0.83
+      ],
+      "maxVertexDifferenceM": 0
+    },
+    {
+      "clip": "ReloadShotgun",
+      "phases": [
+        0,
+        0.31,
+        0.83
+      ],
+      "maxVertexDifferenceM": 0
+    },
+    {
+      "clip": "Run",
+      "phases": [
+        0,
+        0.31,
+        0.83
+      ],
+      "maxVertexDifferenceM": 0
+    },
+    {
+      "clip": "Struggle",
+      "phases": [
+        0,
+        0.31,
+        0.83
+      ],
+      "maxVertexDifferenceM": 0
+    },
+    {
+      "clip": "Vault",
+      "phases": [
+        0,
+        0.31,
+        0.83
+      ],
+      "maxVertexDifferenceM": 0
+    },
+    {
+      "clip": "Walk",
+      "phases": [
+        0,
+        0.31,
+        0.83
+      ],
+      "maxVertexDifferenceM": 0
+    }
+  ],
+  "newPose": {
+    "finite": true,
+    "staticEndpointKeyframesIdentical": true,
+    "sampledStaticPoseMaxDriftM": 9.829326192583854e-08,
+    "boundsMin": [
+      -0.41074877461463,
+      -1.3641964088958636e-07,
+      -0.21415484639869703
+    ],
+    "boundsMax": [
+      0.3942140924441073,
+      1.7500000490500118,
+      0.2141547547455523
+    ],
+    "authoredVsReimportMaxVertexDifferenceM": 1.0516673319693737e-06,
+    "independentGlTfVsBlenderMaxVertexDifferenceM": 7.112605034917794e-07
+  },
+  "rightGripBoneCount": 15,
+  "limits": "Camera clearance and visual hand contact are reviewed separately in contact_review.json and pose_review.json. Numeric skin checks alone do not certify contact or artistic quality."
+}

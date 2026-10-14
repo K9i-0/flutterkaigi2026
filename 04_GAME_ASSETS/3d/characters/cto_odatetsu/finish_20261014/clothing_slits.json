@@ -1,0 +1,24 @@
+{
+  "source": "normalized_base.blend",
+  "source_vertices": 16456,
+  "source_faces": 18150,
+  "coordinate_system": "Z up, front -Y, 1.75 m presentation normalization",
+  "loops": [
+    {"vertices": [1184,1195,5331,1194],"projected_area_m2": 1.7202647672005585e-05},
+    {"vertices": [5154,5151,5149,5150],"projected_area_m2": 5.232232596569627e-06},
+    {"vertices": [9439,13500,13512,13499],"projected_area_m2": 1.6999650224327148e-05},
+    {"vertices": [13492,13495,13552,13496],"projected_area_m2": 2.3979908033839748e-05},
+    {"vertices": [1348,1364,1349,1352],"projected_area_m2": 3.690710043839773e-06},
+    {"vertices": [1422,1426,1448,1425],"projected_area_m2": 2.5310180677602867e-05},
+    {"vertices": [1394,1391,1393,1396],"projected_area_m2": 1.0394045141696237e-05},
+    {"vertices": [1402,1405,1409,1404],"projected_area_m2": 7.708881002495594e-06},
+    {"vertices": [2027,10111,2028,2021],"projected_area_m2": 2.1308211479212705e-06},
+    {"vertices": [5302,5311,5322,5312],"projected_area_m2": 1.6734378038310907e-05},
+    {"vertices": [5352,5355,5357,5354],"projected_area_m2": 1.2081474296200913e-05},
+    {"vertices": [9243,9251,9253,9250],"projected_area_m2": 1.550410091788361e-05},
+    {"vertices": [9401,9403,9404,9402],"projected_area_m2": 2.0112216475534933e-05},
+    {"vertices": [13439,13446,13440,13452],"projected_area_m2": 6.506386944869827e-06},
+    {"vertices": [13653,13657,13662,13656],"projected_area_m2": 2.7811510531835806e-05},
+    {"vertices": [13906,15024,13907,13904],"projected_area_m2": 1.718345148229272e-05}
+  ]
+}
