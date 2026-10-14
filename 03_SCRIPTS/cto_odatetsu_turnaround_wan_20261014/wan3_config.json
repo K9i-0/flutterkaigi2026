@@ -8,7 +8,11 @@
   "media": [
     {
       "type": "reference_image",
-      "path": "character_cto_odatetsu_front.png"
+      "path": "character_cto_odatetsu_basic_sheet.png"
+    },
+    {
+      "type": "reference_image",
+      "path": "hoodie_print_reference.png"
     }
   ],
   "parameters": {
