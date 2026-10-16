@@ -23,6 +23,9 @@ class CatchScene {
   final laneCans = <Node>[];
   late CharacterMotionPlayer motion;
   final cans = <Node>[], rings = <Node>[], dots = <Node>[];
+  final itemCubes = <Node>[], itemMarkers = <Node>[];
+  final itemCubeMats = <PhysicallyBasedMaterial>[];
+  final itemMarkerMats = <PhysicallyBasedMaterial>[];
   double facing = math.pi, clock = 0;
   PhysicallyBasedMaterial mat(
     double r,
@@ -191,8 +194,33 @@ class CatchScene {
         ),
       );
     }
+    for (var slot = 0; slot < 3; slot++) {
+      final cubeMat = mat(.15, .82, .72);
+      final markerMat = mat(.15, .82, .72);
+      itemCubeMats.add(cubeMat);
+      itemMarkerMats.add(markerMat);
+      final cube = Node(
+        mesh: Mesh(CuboidGeometry(vm.Vector3(.42, .42, .42)), cubeMat),
+      );
+      scene.add(cube);
+      itemCubes.add(cube);
+      itemMarkers.add(
+        mesh(
+          CuboidGeometry(vm.Vector3(.55, .02, .55)),
+          markerMat,
+          vm.Vector3.zero(),
+        ),
+      );
+    }
     update(CatchGame(), 0);
   }
+
+  vm.Vector4 itemColor(ItemEffect effect) => switch (effect) {
+    ItemEffect.enlarge => vm.Vector4(.15, .82, .72, 1),
+    ItemEffect.shrink => vm.Vector4(.95, .48, .12, 1),
+    ItemEffect.speedUp => vm.Vector4(.45, .88, .22, 1),
+    ItemEffect.speedDown => vm.Vector4(.20, .42, .95, 1),
+  };
 
   void update(CatchGame g, double dt) {
     clock += dt;
@@ -280,6 +308,30 @@ class CatchScene {
       );
       dots[i].position = vm.Vector3(d.x, .051, d.z);
       dots[i].scale = vm.Vector3.all(1 + (1 - d.height(g.time) / 6) * .9);
+    }
+    final visibleItems = !g.lane || g.phase == Phase.ready
+        ? <ItemDrop>[]
+        : g.items.where((d) => d.visible(g.time)).toList();
+    for (var i = 0; i < itemCubes.length; i++) {
+      final active = i < visibleItems.length;
+      itemCubes[i].visible = active;
+      itemMarkers[i].visible = active;
+      if (!active) continue;
+      final d = visibleItems[i];
+      final color = itemColor(d.effect);
+      itemCubeMats[i].baseColorFactor = color;
+      itemMarkerMats[i].baseColorFactor = color;
+      final age = g.time - d.spawn;
+      itemCubes[i].position = vm.Vector3(d.x, d.height(g.time), d.z);
+      itemCubes[i].rotation = vm.Quaternion.axisAngle(
+        vm.Vector3(0, 1, 0),
+        age * 1.6 + d.id,
+      );
+      itemMarkers[i].position = vm.Vector3(d.x, .04, d.z);
+      itemMarkers[i].rotation = vm.Quaternion.axisAngle(
+        vm.Vector3(0, 1, 0),
+        math.pi / 4,
+      );
     }
   }
 }
