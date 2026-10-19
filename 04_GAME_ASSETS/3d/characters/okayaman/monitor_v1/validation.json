@@ -1,0 +1,14 @@
+{
+  "mesh_count": 37,
+  "triangles": 6584,
+  "embedded_images": 1,
+  "external_dependencies": false,
+  "blender_reimport": "passed",
+  "source_photo_sha256": "fc1491562f7829a8a33c53ba5a0678d9708d86e822ed19e9bd1ec0769d7eb467",
+  "glb_sha256": "7ec7baf2fe009e6bc8be122609cdc59263ca94c2137a8ce791d8533f0f677d99",
+  "visual_review": [
+    "front",
+    "three-quarter",
+    "rear"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "composition": {
+    "width": 1280,
+    "height": 720,
+    "fps": 30,
+    "durationInFrames": 360
+  },
+  "model": "okayaman_monitor.glb",
+  "background": "#252d3a",
+  "rotation": {
+    "startFrame": 0,
+    "endFrameExclusive": 360,
+    "startYawRadians": 0,
+    "turns": 1
+  },
+  "camera": {
+    "position": [
+      0,
+      2.5,
+      5
+    ],
+    "target": [
+      0,
+      1.04,
+      0
+    ],
+    "verticalViewMeters": 2.75,
+    "near": 0.1,
+    "far": 1000
+  }
+}
