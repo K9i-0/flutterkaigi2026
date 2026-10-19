@@ -1,0 +1,9 @@
+[
+  {
+    "source": "04_GAME_ASSETS/3d/characters/okayaman/monitor_v1/okayaman_monitor.glb",
+    "target": "okayaman_monitor.glb",
+    "sha256": "7ec7baf2fe009e6bc8be122609cdc59263ca94c2137a8ce791d8533f0f677d99",
+    "bytes": 1742768,
+    "materialization": "existing-hardlink"
+  }
+]

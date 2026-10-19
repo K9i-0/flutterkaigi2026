@@ -1,0 +1,13 @@
+{
+  "width": 1280,
+  "height": 720,
+  "fps": 30,
+  "frames": 360,
+  "seconds": 12,
+  "audio": false,
+  "codec": "h264",
+  "full_decode": "passed",
+  "typecheck": "passed",
+  "visual_review": "12 samples at 1-second intervals: front, sides, rear; framing and photograph checked",
+  "sha256": "db1a0086fdf81dd4619f342529ecac0509ab7e35135cbc423fb0e82474d4451e"
+}
