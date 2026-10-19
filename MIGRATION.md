@@ -3,7 +3,7 @@
 - 移行元: https://github.com/K9i-0/madogiwa-multimedia-universe/tree/flutterkaigi2026
 - 移行元commit: `1f7061721f8f0f7e505e65c44208f7aa38e285ce`（PR #21・#22のマージを含む）
 - 移行先: https://github.com/K9i-0/flutterkaigi2026 、公開、既定ブランチ `main`
-- GitHubのfork networkとは独立したリポジトリ。元ブランチの履歴と全追跡ファイルを保持。
+- GitHubのfork networkとは独立したリポジトリ。元ブランチの履歴を引き継ぎ、ユーザー指定により動画ファイルを全履歴から除外。動画除外に伴いcommit SHAは変更。
 - 未完了Issue 12件を正式移管。本文・担当者を照合し、親子関係を復元。旧URLはGitHubが転送する。
 - 完了済みIssue #11は元リポジトリに残し、新Issue #5の子Issueとして参照を維持。
 - 過去PRと元リポジトリ・元ブランチは維持。旧PRを新リポジトリへ複製していない。
@@ -24,3 +24,6 @@
 | [#16](https://github.com/K9i-0/madogiwa-multimedia-universe/issues/16) | [#10](https://github.com/K9i-0/flutterkaigi2026/issues/10) | 効果名と残り時間を表示する |
 | [#17](https://github.com/K9i-0/madogiwa-multimedia-universe/issues/17) | [#11](https://github.com/K9i-0/flutterkaigi2026/issues/11) | 一時停止と効果時間を連動させる |
 | [#18](https://github.com/K9i-0/madogiwa-multimedia-universe/issues/18) | [#12](https://github.com/K9i-0/flutterkaigi2026/issues/12) | 効果終了時の表示とパラメータを戻す |
+## 動画の除外
+
+ユーザー指定により `.mp4` / `.mov` / `.webm` / `.mkv` / `.avi` / `.m4v`（大文字小文字不問）を全コミットから除外。元MMUの動画は削除していません。動画カットシーンを使う別ゲーム等では、必要に応じて元MMUからローカルへ取得してください。今回の `26_SOBAYA_BEER_RAIN` のモデル・画像・音声は保持しています。
