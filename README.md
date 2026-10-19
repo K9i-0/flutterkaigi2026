@@ -1,3 +1,16 @@
+# FlutterKaigi 2026 — 窓際族物語
+
+FlutterKaigi 2026向けFlutterゲーム開発用の独立リポジトリです。
+開発先は **https://github.com/K9i-0/flutterkaigi2026**、既定ブランチは **main**。
+主な開発対象は [26_SOBAYA_BEER_RAIN](26_SOBAYA_BEER_RAIN/README.md) です。
+
+2026-10-19に [Madogiwa Multimedia Universe](https://github.com/K9i-0/madogiwa-multimedia-universe) の `flutterkaigi2026` から履歴・共有アセットごと分離しました。相対symlinkを維持するため、当初はモノレポ全体を保持しています。
+[Issue番号対応表・移行記録](MIGRATION.md)を参照してください。
+
+以下は継承したMMUの制作資料です。
+
+---
+
 # Madogiwa Multimedia Universe（MMU）
 
 「窓際族物語」を漫画・動画・ゲーム・Webサイトなど、さまざまなメディアへ展開する制作プロジェクトです。世界観・キャラクター設定から、台本、共有アセット、各作品の実装、制作ワークフローまでを管理するモノレポです。
