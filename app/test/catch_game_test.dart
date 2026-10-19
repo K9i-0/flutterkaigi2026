@@ -99,6 +99,27 @@ void main() {
     expect(g.caught + g.missed, 12);
     expect(g.events.length, g.caught + g.bad);
   });
+  test('plane mode spawns no items', () {
+    final g = CatchGame()..start(seed: 4);
+    expect(g.items, isEmpty);
+    expect(g.inspect()['itemCount'], 0);
+  });
+  test('lane items land without changing the can score', () {
+    final g = CatchGame()..lane = true;
+    g.start(seed: 4);
+    expect(g.items.length, inInclusiveRange(2, 3));
+    expect(g.items.every((d) => d.z == 0), true);
+    g.drops.clear();
+    g.phase = Phase.playing;
+    for (var i = 0; i < 1300; i++) {
+      g.tick(1 / 60);
+    }
+    expect(g.score, 0);
+    expect(g.caught, 0);
+    expect(g.missed, 0);
+    expect(g.bad, 0);
+    expect(g.combo, 0);
+  });
   test('sensor calibrates, rejects bad samples and expires stale data', () {
     var now = DateTime(2026);
     final t = TiltInput(now: () => now);

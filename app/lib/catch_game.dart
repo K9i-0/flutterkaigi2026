@@ -6,6 +6,8 @@ enum Phase { ready, countdown, playing, result }
 
 enum CanKind { superTry, light, happoshu }
 
+enum ItemEffect { enlarge, shrink, speedUp, speedDown }
+
 class Drop {
   Drop(
     this.id,
@@ -31,8 +33,32 @@ class Drop {
   bool visible(double time) => time >= spawn && time < landing + .65 && !caught;
 }
 
+class ItemDrop {
+  ItemDrop(
+    this.id,
+    this.effect,
+    this.x,
+    this.spawn, {
+    this.z = 0,
+    this.fallSeconds = 3.1,
+  });
+  final int id;
+  final ItemEffect effect;
+  final double x, z, spawn, fallSeconds;
+  double get landing => spawn + fallSeconds;
+  double height(double time) {
+    final p = ((time - spawn) / fallSeconds).clamp(0.0, 1.0);
+    return 1.15 + 4.7 * (1 - math.pow(p, 1.25));
+  }
+
+  bool visible(double time) => time >= spawn && time < landing + .65;
+}
+
 class CatchGame {
   static const duration = 20.0, halfX = 3.9, halfZ = 2.8;
+
+  /// Salt for the sobaya lane-item stream. Kept off the can RNG.
+  static int itemSeed(int seed) => (seed & 0x7fffffff) ^ 0x6974656d;
   Balance balance = Balance.defaults();
   int seed = 1;
   double get roundSeconds => balance['roundSeconds'];
@@ -50,6 +76,7 @@ class CatchGame {
   String message = 'ビールだけ、持ってこい。';
   double messageUntil = 0;
   final drops = <Drop>[];
+  final items = <ItemDrop>[];
   final events = <Map<String, Object>>[];
   void start({int seed = 1}) {
     this.seed = seed;
@@ -70,6 +97,7 @@ class CatchGame {
     eventId = 0;
     events.clear();
     drops.clear();
+    items.clear();
     message = 'ビールだけ、持ってこい。';
     messageUntil = 2;
     final r = math.Random(seed);
@@ -101,6 +129,23 @@ class CatchGame {
                     math.pi /
                     180)
               : 0,
+        ),
+      );
+    }
+    if (!lane) return;
+    final itemRandom = math.Random(itemSeed(seed));
+    final count = 2 + itemRandom.nextInt(2);
+    final latestSpawn = math.max(0.0, roundSeconds - balance['fallSeconds']);
+    for (var i = 0; i < count; i++) {
+      final effect =
+          ItemEffect.values[itemRandom.nextInt(ItemEffect.values.length)];
+      items.add(
+        ItemDrop(
+          i,
+          effect,
+          (itemRandom.nextDouble() - .5) * 6.2,
+          itemRandom.nextDouble() * latestSpawn,
+          fallSeconds: balance['fallSeconds'],
         ),
       );
     }
@@ -206,6 +251,19 @@ class CatchGame {
     'balance': balance.values,
     'seed': seed,
     'dropCount': drops.length,
+    'itemCount': items.length,
+    'items': items
+        .map(
+          (d) => {
+            'id': d.id,
+            'effect': d.effect.name,
+            'x': d.x,
+            'z': d.z,
+            'spawn': d.spawn,
+            'landing': d.landing,
+          },
+        )
+        .toList(),
     'mode': lane ? 'lane' : 'plane',
     'phase': phase.name,
     'time': time,
