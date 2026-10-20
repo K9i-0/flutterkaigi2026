@@ -2,10 +2,10 @@ import 'dart:math' as math;
 
 import 'balance.dart';
 import 'character.dart';
+import 'drop_kind.dart';
+export 'drop_kind.dart';
 
 enum Phase { ready, countdown, playing, result }
-
-enum CanKind { superTry, light, happoshu }
 
 enum ItemEffect { enlarge, shrink, speedUp, speedDown }
 
@@ -62,9 +62,9 @@ class CatchGame {
   static int itemSeed(int seed) => (seed & 0x7fffffff) ^ 0x6974656d;
   Balance balance = Balance.defaults();
   int seed = 1;
-  CatchCharacter _selectedCharacter = CatchCharacter.sobaya;
+  CatchCharacter _selectedCharacter = CatchCharacter.ctoOdatetsu;
   CatchCharacter get selectedCharacter => _selectedCharacter;
-  CatchCharacter _roundCharacter = CatchCharacter.sobaya;
+  CatchCharacter _roundCharacter = CatchCharacter.ctoOdatetsu;
   CatchCharacter get roundCharacter => _roundCharacter;
   double _baseMoveSpeed = 2.6, _baseCatchRadius = .72;
   double get baseMoveSpeed => _baseMoveSpeed;
@@ -77,6 +77,18 @@ class CatchGame {
     _selectedCharacter = character;
     return true;
   }
+
+  double get spawnInterval =>
+      (balance['spawnInterval'] * (lane ? roundCharacter.spawnMultiplier : 1))
+          .clamp(.5, 4.5);
+  double get fallSeconds =>
+      (balance['fallSeconds'] * (lane ? roundCharacter.fallMultiplier : 1))
+          .clamp(1, 6);
+  double get badRatio =>
+      (balance['badRatio'] * (lane ? roundCharacter.badMultiplier : 1)).clamp(
+        0,
+        1,
+      );
 
   double get roundSeconds => balance['roundSeconds'];
   bool lane = false;
@@ -120,18 +132,14 @@ class CatchGame {
     events.clear();
     drops.clear();
     items.clear();
-    message = 'ビールだけ、持ってこい。';
+    message = lane ? roundCharacter.hint : 'ビールだけ、持ってこい。';
     messageUntil = 2;
     final r = math.Random(seed);
-    for (
-      var i = 0;
-      i * balance['spawnInterval'] <= roundSeconds - balance['fallSeconds'] - 1;
-      i++
-    ) {
-      final kind =
-          ((i + 1) * balance['badRatio']).floor() >
-              (i * balance['badRatio']).floor()
-          ? CanKind.happoshu
+    for (var i = 0; i * spawnInterval <= roundSeconds - fallSeconds - 1; i++) {
+      final kind = ((i + 1) * badRatio).floor() > (i * badRatio).floor()
+          ? (lane ? roundCharacter.badDrop : CanKind.happoshu)
+          : lane
+          ? roundCharacter.goodDrops[i % roundCharacter.goodDrops.length]
           : i % 3 == 1
           ? CanKind.light
           : CanKind.superTry;
@@ -141,8 +149,8 @@ class CatchGame {
           kind,
           (r.nextDouble() - .5) * 6.2,
           lane ? 0 : (r.nextDouble() - .5) * 4.2,
-          i * balance['spawnInterval'],
-          fallSeconds: balance['fallSeconds'],
+          i * spawnInterval,
+          fallSeconds: fallSeconds,
           facing: lane
               ? ((r.nextDouble() < .5 ? -1 : 1) *
                     (balance['facingMin'] +
@@ -157,7 +165,7 @@ class CatchGame {
     if (!lane) return;
     final itemRandom = math.Random(itemSeed(seed));
     final count = 2 + itemRandom.nextInt(2);
-    final latestSpawn = math.max(0.0, roundSeconds - balance['fallSeconds']);
+    final latestSpawn = math.max(0.0, roundSeconds - fallSeconds);
     for (var i = 0; i < count; i++) {
       final effect =
           ItemEffect.values[itemRandom.nextInt(ItemEffect.values.length)];
@@ -167,7 +175,7 @@ class CatchGame {
           effect,
           (itemRandom.nextDouble() - .5) * 6.2,
           itemRandom.nextDouble() * latestSpawn,
-          fallSeconds: balance['fallSeconds'],
+          fallSeconds: fallSeconds,
         ),
       );
     }
@@ -239,11 +247,11 @@ class CatchGame {
           math.pow(catchRadius, 2);
       if (d.caught) {
         eventId++;
-        if (d.kind == CanKind.happoshu) {
+        if (d.kind.isBad) {
           bad++;
           score -= balance['penalty'].round();
           combo = 0;
-          message = 'これ、発泡酒やないか！  −${balance['penalty'].round()}';
+          message = 'これ、${d.kind.label}やないか！  −${balance['penalty'].round()}';
         } else {
           caught++;
           combo++;
@@ -262,7 +270,7 @@ class CatchGame {
           'x': x,
           'z': z,
         });
-      } else if (d.kind != CanKind.happoshu) {
+      } else if (!d.kind.isBad) {
         missed++;
         combo = 0;
       }
@@ -280,6 +288,11 @@ class CatchGame {
     'seed': seed,
     'selectedCharacter': selectedCharacter.id,
     'roundCharacter': roundCharacter.id,
+    'difficulty': roundCharacter.difficulty,
+    'spawnInterval': spawnInterval,
+    'fallSeconds': fallSeconds,
+    'badRatio': badRatio,
+    'dropKinds': drops.map((d) => d.kind.name).toSet().toList(),
     'baseMoveSpeed': baseMoveSpeed,
     'baseCatchRadius': baseCatchRadius,
     'moveSpeed': moveSpeed,
@@ -336,7 +349,7 @@ class CatchGame {
               (d) =>
                   !d.resolved &&
                   d.spawn <= time &&
-                  (d.kind != CanKind.happoshu || d.id == 3),
+                  (!d.kind.isBad || d.id == 3),
             )
             .toList()
           ..sort((a, b) => a.landing.compareTo(b.landing));

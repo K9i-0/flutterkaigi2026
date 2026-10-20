@@ -3,3 +3,6 @@
 /preview/vendor/
 /preview/node_modules/
 /qa/
+/game_v3/*_baked.png
+/game_v3/shared_normal.png
+/game_v3/skin_roughness.png

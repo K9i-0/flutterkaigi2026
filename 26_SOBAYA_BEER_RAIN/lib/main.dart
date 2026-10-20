@@ -15,7 +15,7 @@ import 'package:audioplayers/audioplayers.dart';
 
 import 'catch_game.dart';
 import 'character.dart';
-import 'character_picker.dart';
+import 'selection_screen.dart';
 import 'catch_scene.dart';
 import 'tilt_input.dart';
 
@@ -71,7 +71,10 @@ class _RainState extends State<RainPage> {
     tilt.start();
     lifecycle = AppLifecycleListener(
       onInactive: () {
-        if (mounted) setState(() => paused = true);
+        if (mounted &&
+            (game.phase == Phase.playing || game.phase == Phase.countdown)) {
+          setState(() => paused = true);
+        }
       },
     );
     load();
@@ -336,10 +339,13 @@ class _RainState extends State<RainPage> {
   Widget legend() => Row(
     mainAxisSize: MainAxisSize.min,
     children: [
-      chip('ビール +${game.balance['beerPoints'].round()}〜', color: gold),
+      chip(
+        '${game.lane ? game.roundCharacter.goodDrops.first.label : 'ビール'} +${game.balance['beerPoints'].round()}〜',
+        color: gold,
+      ),
       const SizedBox(width: 6),
       chip(
-        '紫帯の発泡酒 −${game.balance['penalty'].round()}',
+        '${game.lane ? game.roundCharacter.badDrop.label : '紫帯の発泡酒'} −${game.balance['penalty'].round()}',
         color: const Color(0xffcca8fa),
       ),
     ],
@@ -348,6 +354,29 @@ class _RainState extends State<RainPage> {
   Widget build(BuildContext context) => Scaffold(
     body: LayoutBuilder(
       builder: (context, size) {
+        if (ready &&
+            game.lane &&
+            !paused &&
+            (game.phase == Phase.ready || game.phase == Phase.result)) {
+          return SelectionScreen(
+            game: game,
+            world: world,
+            seed: seed,
+            onSelect: (character) => setState(() {
+              game.selectCharacter(character);
+              world.update(game, 0);
+            }),
+            onStart: () => setState(start),
+            onMode: () => setState(() {
+              game.lane = false;
+              start();
+              game.phase = Phase.ready;
+              world.update(game, 0);
+            }),
+            onSeed: () => setState(() => seed++),
+            onSettings: kDebugMode ? openBalance : null,
+          );
+        }
         final playing =
             game.phase == Phase.playing || game.phase == Phase.countdown;
         return Stack(
@@ -477,7 +506,12 @@ class _RainState extends State<RainPage> {
                               legend(),
                               const SizedBox(width: 10),
                               Text(
-                                game.lane ? '見回して表ラベルを確認' : '影の位置へ先回り',
+                                game.lane
+                                    ? (game.roundCharacter ==
+                                              CatchCharacter.sobaya
+                                          ? '見回して表ラベルを確認'
+                                          : 'あたりの落下地点へ')
+                                    : '影の位置へ先回り',
                                 style: TextStyle(
                                   color: cream.withValues(alpha: .8),
                                   fontSize: 11,
@@ -633,7 +667,7 @@ class _RainState extends State<RainPage> {
                                   const SizedBox(height: 10),
                                   if (game.phase == Phase.result)
                                     Text(
-                                      'ビール ${game.caught}本  ／  発泡酒 ${game.bad}本  ／  取り逃し ${game.missed}本',
+                                      'あたり ${game.caught}  ／  はずれ ${game.bad}  ／  取り逃し ${game.missed}',
                                       style: const TextStyle(color: gold),
                                     )
                                   else if (!paused)
@@ -648,16 +682,6 @@ class _RainState extends State<RainPage> {
                                       ),
                                     ),
                                   const SizedBox(height: 12),
-                                  if (!paused && game.lane) ...[
-                                    CharacterPicker(
-                                      selected: game.selectedCharacter,
-                                      onSelected: (character) => setState(() {
-                                        game.selectCharacter(character);
-                                        world.update(game, 0);
-                                      }),
-                                    ),
-                                    const SizedBox(height: 8),
-                                  ],
                                   if (!paused) legend(),
                                   if (!paused)
                                     TextButton(

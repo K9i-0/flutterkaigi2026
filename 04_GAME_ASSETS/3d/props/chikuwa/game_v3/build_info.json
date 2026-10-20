@@ -1,0 +1,19 @@
+{
+  "version": 3,
+  "vertices": 16362,
+  "triangles": 32320,
+  "deformBones": 8,
+  "totalBones": 9,
+  "animation": "Wiggle",
+  "durationSeconds": 1.6,
+  "textureSize": [
+    1024,
+    1536
+  ],
+  "length": 2.8,
+  "source": "Imagegen target/basecolor/height + Blender displacement and skin",
+  "displacementStrength": 0.1,
+  "normalStrength": 1.0,
+  "microDistance": 0.014,
+  "heightSmoothingPixels": 10
+}

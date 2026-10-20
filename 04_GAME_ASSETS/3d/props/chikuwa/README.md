@@ -54,3 +54,29 @@ python3 tools/validate_chikuwa_v3.py
 v1は `tools/build_chikuwa.py`、v2は `tools/build_chikuwa_v2.py`。Blender 5.1.2で生成。ベイクPNG・中間blendは再生成可能でGLBにも必要データが埋め込まれるため追跡しない。
 
 GLB検証は有限な頂点座標、正規化された法線・ウェイト、頂点／ボーン参照範囲、9骨、材質分離、1.6秒のループ端点を確認。Chromeで静止姿勢・骨の変形・停止中の振幅変更・全版の切り替え・診断表示・390px幅を確認。実機でのゲーム内品質は未確認。
+
+## 2026-10-20: 毒版とゲーム組み込み
+
+採用済みの通常 v3 を基準に毒版を追加。`v3/chikuwa_toxic.glb` は通常 v3 の
+メッシュ・UV・法線・スキン・クリップをそのまま保持し、Imagegen の毒版色と
+紫の内壁色だけを差し替える。採用済み通常 GLB は上書きしない。
+
+`game_v3/chikuwa.glb` / `game_v3/chikuwa_toxic.glb` はゲーム用の 32,320 三角形版。
+80 周分割 × 160 長手分割で同じ高さ画像をサンプリングし、微細法線と焼き色を保持。
+9 ボーン、8 変形ボーン、1.6 秒の `Wiggle`。2 色は同一形状・UV・法線・ウェイト・動作。
+高精細版は 123,520 三角形のまま比較用に保持する。ゲーム用メッシュは高精細版とは
+頂点密度が異なり、輪郭の極小凹凸を省略している。
+
+```sh
+/Applications/Blender.app/Contents/MacOS/Blender -b --factory-startup --python tools/build_chikuwa_v3.py -- --game
+/Applications/Blender.app/Contents/MacOS/Blender -b --factory-startup --python tools/build_chikuwa_v3.py
+python3 tools/validate_chikuwa_variants.py
+```
+
+高精細の毒色移植は `tools/recolor_chikuwa_variant.py` を生成スクリプトから呼び出す。
+通常モデルのバイナリを維持するため、再生成時の数値差によって採用形状を変えない。
+ゲーム用のノイズ seed は 0 に固定。中間テクスチャは GLB に埋め込み、Git 対象外。
+
+`26_SOBAYA_BEER_RAIN/assets/models/` から相対 symlink で参照する。
+ローカルプレビュー http://127.0.0.1:8766 は「ゲーム版」「種類」で通常／毒を比較できる。
+Sites への公開更新は行わない。

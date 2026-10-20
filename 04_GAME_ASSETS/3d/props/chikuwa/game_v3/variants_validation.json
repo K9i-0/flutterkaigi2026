@@ -1,0 +1,13 @@
+{
+  "status": "pass",
+  "triangles": 32320,
+  "bones": 9,
+  "duration": 1.6,
+  "checks": [
+    "identical geometry / UV / normals / weights",
+    "identical bones and animation",
+    "finite positions and valid indices",
+    "normalized weights",
+    "loop endpoints"
+  ]
+}
