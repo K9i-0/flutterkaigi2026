@@ -66,17 +66,19 @@ FACADE=(4,8)
 # The beam and its two support buildings.
 box('steel',0,-.05,0,9.6,.1,.95,(4,1)); box('steel',0,-.36,0,9.6,.52,.12,(4,1)); box('steel',0,-.67,0,9.6,.1,.95,(4,1))
 for s in [-1,1]:
- box('gold',0,.004,s*.44,9.4,.008,.025)
- box('facade0',s*6,-7.6,0,2.7,12.8,4,FACADE,(.25 if s>0 else .5,.125)); box('concrete',s*6,-.6,0,2.74,1.2,4.04)
- box('roof',s*6,-1.22,0,2.8,.06,4.1); box('roof',s*6,-.1,0,2.85,.2,4.1)
- box('concrete',s*7.38,.12,0,.1,.24,4.1)
+ box('gold',0,.006,s*.44,9.4,.008,.025)
+ # No two visible faces share a plane: the roof slab tops out 2cm under the
+ # beam and over the crown band, otherwise they z-fight while the camera moves.
+ box('facade0',s*6,-7.6,0,2.7,12.8,4,FACADE,(.25 if s>0 else .5,.125)); box('concrete',s*6,-.7,0,2.74,1.0,4.04)
+ box('roof',s*6,-1.22,0,2.8,.06,4.1); box('roof',s*6,-.11,0,2.85,.18,4.1)
+ box('concrete',s*7.37,.07,0,.1,.34,4.0)
  box('steel',s*4.4,.16,0,.16,.32,.94)
  # Bearing seat and end plate where the beam meets the building.
  box('steel',s*4.62,-.62,0,.06,1.25,1.3,(1,1)); box('steel',s*4.45,-.82,0,.34,.14,1.1,(1,1))
  for y in [-.25,-1.0]:
   for z in [-.5,.5]: rod('metal',(s*4.58,y,z),(s*4.52,y,z),.04)
  for i in range(7): box('gold' if i%2==0 else 'metal',s*(3.65+i*.1),.01,0,.09,.015,.74)
- box('metal',s*6.1,.4,-1.25,.9,.8,.8)
+ box('metal',s*6.1,.38,-1.25,.9,.84,.8)
  for i in range(6): box('roof',s*6.1,.18+i*.09,-.84,.75,.035,.02)
  for z in [-1.8,1.8]:
   rod('metal',(s*5,-.05,z),(s*7,-.05,z),.06)
@@ -182,7 +184,7 @@ for target in [-62,-34,-12,14,40]:
 print('YUMEMIN',len(used))
 # Lane markings, crosswalks, streetlights and traffic on the avenue.
 for s in [-1,1]:
- box('yellowline',s*.12,G+.02,-30,.1,.02,140)
+ box('yellowline',s*.12,G+.025,-30,.1,.02,140)
  for z in range(-98,38,4): box('marking',s*2.2,G+.02,z,.1,.02,1.8)
  for z in range(-96,36,8):
   if any(r0-1<z<r1+1 for r0,r1 in ZROADS): continue
@@ -220,7 +222,7 @@ for r0,r1 in ZROADS:
  lane_cars('traffic_xpos',r0+1,-90,90,'x',1,(4,11)); lane_cars('traffic_xneg',r1-1,-90,90,'x',-1,(4,11))
 # Elevated expressway over the cross street seen just past the beam.
 EZ,EY=-36,G+5.2
-box('concrete',0,EY,EZ,184,.5,3.8); box('roof',0,EY+.27,EZ,184,.04,3.6)
+box('concrete',0,EY,EZ,184,.5,3.8); box('roof',0,EY+.27,EZ,183.8,.04,3.6)
 for s in [-1,1]: box('concrete',0,EY+.55,EZ+s*1.85,184,.6,.12)
 box('marking',0,EY+.3,EZ,184,.02,.08)
 for x in range(-90,91,9):
