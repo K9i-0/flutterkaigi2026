@@ -6,6 +6,10 @@ ROOT=Path(__file__).resolve().parents[2]
 OUT=ROOT/'04_GAME_ASSETS/3d/stages/akasaka'
 bpy.ops.object.select_all(action='SELECT'); bpy.ops.object.delete(use_global=False)
 materials={}; batches={}
+# Height ratios use 200m = 14 scene units. Horizontal layout is art-directed.
+METERS = 14 / 200
+TOWER_X, TOWER_Z = 15, -46
+PARK_X, PARK_Z = 7.4, 8.2  # half extents: about 211m x 234m
 def material(name,color,texture=None,metal=0,glow=0,rough=.65,emit=None):
  m=bpy.data.materials.new(name); m.use_nodes=True
  m.use_backface_culling=True
@@ -36,6 +40,8 @@ material('gold',(.95,.62,.13)); material('street',(.8,.8,.8),'asphalt.png'); mat
 material('marking',(.85,.84,.80),glow=.12); material('yellowline',(.95,.66,.18),glow=.15)
 material('tower',(.95,.24,.055),metal=.3,glow=.35); material('white',(.95,.78,.57),metal=.2,glow=.15)
 material('glass',(.10,.19,.23),metal=.45,rough=.2); material('light',(1,.62,.24),glow=1.2)
+material('lawn',(.16,.27,.105),rough=1)
+material('foliage',(.095,.20,.07),rough=1)
 for i in range(6): material('facade'+str(i),(.7,.7,.7),f'facade_{i}.png',glow=1,emit=f'facade_{i}_emit.png')
 material('crown',(.9,.86,.78),glow=1)
 SIGNS=['akasaka','izakaya','soba','shika','bengoshi','fudosan']
@@ -49,7 +55,7 @@ material('skyline',(.8,.8,.8),'skyline.png',glow=1,emit='skyline_emit.png')
 def mesh(name,verts,faces,uvs=None,obj=None):
  key=obj or name
  if key not in batches: batches[key]=(name,[],[],[])
- _,v,f,uv=batches[key]; offset=len(v); v.extend((x,-z, -14+(y+14)*.78 if name in ['tower','white','glass','light'] else y) for x,y,z in verts)
+ _,v,f,uv=batches[key]; offset=len(v); v.extend((x,-z,y) for x,y,z in verts)
  for i,face in enumerate(faces):
   f.append(tuple(offset+j for j in face)); uv.append(uvs[i] if uvs else [(0,0),(1,0),(1,1),(0,1)][:len(face)])
 BOX_FACES=[(0,3,2,1),(4,5,6,7),(0,4,7,3),(1,2,6,5),(3,7,6,2),(0,1,5,4)]
@@ -126,7 +132,7 @@ def lots(a,b,size):
 def clear(x,z,w,d):
  # Keep the support buildings, the tower plaza and the expressway corridor open.
  if abs(abs(x)-6)<1.4+w/2 and abs(z)<2+d/2: return False
- if abs(x-12)<4.6+w/2 and abs(z+30)<4.6+d/2: return False
+ if abs(x-TOWER_X)<PARK_X+.8+w/2 and abs(z-TOWER_Z)<PARK_Z+.8+d/2: return False
  return True
 sign_i=0
 roofs=[]  # roofs left free for the Yumemin billboards
@@ -161,7 +167,8 @@ def building(x,z,w,d,h,kind,near):
   box('redlight',x,top+3.05,z,.2,.2,.2)
  if near and h<13 and rng.random()<.45:
   n=SIGNS[sign_i%len(SIGNS)]; sign_i+=1
-  box(n,x+rng.choice([-1,1])*(w/2-.4),G+h-2.2,z+d/2+.1,.6,3.0,.14)
+  sh=min(3.0,h*.65)
+  box(n,x+rng.choice([-1,1])*(w/2-.4),G+h-sh*.55,z+d/2+.1,sh*.2,sh,.14)
 for x0,x1 in XBLOCKS:
  for z0,z1 in ZBLOCKS:
   box('paving',(x0+x1)/2,G+.07,(z0+z1)/2,x1-x0,.14,z1-z0,(4,4))
@@ -171,11 +178,12 @@ for x0,x1 in XBLOCKS:
    for lz0,lz1 in lots(z0,z1,size*1.15):
     w=lx1-lx0-.35; d=lz1-lz0-.35; x=(lx0+lx1)/2; z=(lz0+lz1)/2
     if not clear(x,z,w,d): continue
-    if z>-12: h=rng.uniform(4,9) if abs(x)<16 else rng.uniform(5,11)
-    elif z>-36: h=rng.uniform(6,13)
-    else: h=rng.uniform(8,17)
-    if z<-36 and rng.random()<.22 and abs(x-12)>9: h=rng.uniform(20,30)
-    if z>-36 and abs(x)>20 and rng.random()<.12: h=rng.uniform(15,20)
+    # Mostly 35–70m. The tower precinct steps down to 15–40m.
+    h=rng.uniform(35,70)*METERS
+    if abs(x-TOWER_X)<15 and abs(z-TOWER_Z)<17:
+     h=rng.uniform(15,40)*METERS
+    elif (x < -18 or abs(x)>38) and rng.random()<.16:
+     h=rng.uniform(90,140)*METERS
     kind=rng.choice([3,5]) if h>15 else rng.choice([0,1,2,4,0,1,2,3,4,5])
     building(x,z,w,d,h,kind,z>-40 and abs(x)<46)
 # Five Yumemin billboards spread across the background (never the support
@@ -234,7 +242,7 @@ for lane,sign in [(-3.3,1),(-1.1,1),(1.1,-1),(3.3,-1)]:
 for r0,r1 in ZROADS:
  lane_cars('traffic_xpos',r0+1,-90,90,'x',1,(4,11)); lane_cars('traffic_xneg',r1-1,-90,90,'x',-1,(4,11))
 # Elevated expressway over the cross street seen just past the beam.
-EZ,EY=-36,G+5.2
+EZ,EY=-64,G+5.2
 box('concrete',0,EY,EZ,184,.5,3.8); box('street',0,EY+.27,EZ,183.8,.04,3.6,(4,4))
 for s in [-1,1]: box('concrete',0,EY+.55,EZ+s*1.85,184,.6,.12)
 box('marking',0,EY+.3,EZ,184,.02,.08)
@@ -248,13 +256,46 @@ for i in range(90):
  a=-math.pi+i*math.tau/90+rng.uniform(-.02,.02)
  if math.pi-abs(a)<.7: continue  # behind the camera
  rad=rng.uniform(92,104); x,z=math.sin(a)*rad,-math.cos(a)*rad-20
- h=rng.uniform(10,34) if rng.random()<.3 else rng.uniform(6,16)
+ h=rng.uniform(50,120)*METERS
+ # Keep the skyline behind the landmark below its observation decks.
+ if x>0: h=min(h,70*METERS)
  w=rng.uniform(6,11)
  box('skyline',x,G+h/2,z,w,h,w,(8,8),(rng.random(),0))
  if h>24: box('redlight',x,G+h+.2,z,.5,.4,.5)
-# Tokyo Tower, tapered four-legged lattice with two observation decks.
-cx,cz,base=12,-30,-14
-levels=[(0,3.8),(3,3),(6,2.2),(9,1.45),(12,1),(15,.7),(18,.48),(20,.3)]
+# Open park: solid low-poly trees and shared material batches, no new textures
+# or dynamic lights. Paths lead toward the tower from the beam side.
+cx,cz,base=TOWER_X,TOWER_Z,G
+box('lawn',cx,G+.16,cz,PARK_X*2,.12,PARK_Z*2)
+box('paving',cx,G+.235,cz,8.4,.035,8.4,(4,4))
+box('paving',cx,G+.235,cz,1.5,.035,PARK_Z*2,(4,4))
+box('paving',cx,G+.235,cz,PARK_X*2,.035,1.5,(4,4))
+for sx in [-1,1]:
+ box('paving',cx+sx*(PARK_X-1),G+.235,cz,.7,.035,PARK_Z*2-1.4,(4,4))
+for sz in [-1,1]:
+ box('paving',cx,G+.235,cz+sz*(PARK_Z-.7),PARK_X*2-1.4,.035,.7,(4,4))
+def tree(x,z,h):
+ rod('metal',(x,G+.2,z),(x,G+h*.48,z),.065,5)
+ # Three rings and pointed crown, no alpha cards or individual objects.
+ rings=[(.32,.20),(.48,.34),(.76,.28),(1,0)]
+ verts=[(x+math.cos(i*math.tau/7)*h*r,G+h*y,z+math.sin(i*math.tau/7)*h*r)
+        for y,r in rings for i in range(7)]
+ faces=[(j*7+i,(j+1)*7+i,(j+1)*7+(i+1)%7,j*7+(i+1)%7) for j in range(3) for i in range(7)]
+ faces.append(tuple(range(7)))
+ mesh('foliage',verts,faces)
+park_rng=random.Random(333)
+for sx in [-1,1]:
+ for dz in [-6.6,-4.4,-2.2,2.2,4.4,6.6]:
+  tree(cx+sx*(PARK_X-1.8),cz+dz,park_rng.uniform(.9,1.3))
+for sz in [-1,1]:
+ for dx in [-4,-2,2,4]:
+  tree(cx+dx,cz+sz*(PARK_Z-1.6),park_rng.uniform(.85,1.2))
+for sx in [-1,1]:
+ for dz in [-6,-3,3,6]:
+  box('metal',cx+sx*1.15,G+.42,cz+dz,.12,.42,.12)
+  box('lamp',cx+sx*1.15,G+.65,cz+dz,.15,.06,.15)
+# Tokyo Tower: 333m tip, 150m main deck and 250m upper deck.
+TS=333*METERS/25
+levels=[(y*TS,w) for y,w in [(0,3.8),(3,3),(6,2.2),(9,1.45),(12,1),(15,.7),(18,.48),(20,.3)]]
 for (y0,w0),(y1,w1) in zip(levels,levels[1:]):
  for sx,sz in [(-1,-1),(1,-1),(1,1),(-1,1)]:
   a=(cx+sx*w0,base+y0,cz+sz*w0); b=(cx+sx*w1,base+y1,cz+sz*w1)
@@ -264,12 +305,12 @@ for (y0,w0),(y1,w1) in zip(levels,levels[1:]):
    def p(t,w,y): return (cx+t*w,base+y,cz+s*w) if axis==0 else (cx+s*w,base+y,cz+t*w)
    rod('tower',p(-1,w0,y0),p(1,w1,y1),.045)
    rod('tower',p(1,w0,y0),p(-1,w1,y1),.045)
-   rod('white' if y0 in [6,15] else 'tower',p(-1,w0,y0),p(1,w0,y0),.075)
-for y,w in [(9,3.6),(16,1.9)]:
+   rod('white' if any(abs(y0-y*TS)<.001 for y in [6,15]) else 'tower',p(-1,w0,y0),p(1,w0,y0),.075)
+for y,w in [(150*METERS,3.6),(250*METERS,1.9)]:
  box('white',cx,base+y,cz,w,.22,w)
  box('glass',cx,base+y+.35,cz,w*.92,.48,w*.92)
  box('light',cx,base+y+.64,cz,w,.1,w)
-for i in range(10): rod('white' if i%2 else 'tower',(cx,base+20+i*.5,cz),(cx,base+20+(i+1)*.5,cz),.14-i*.009)
+for i in range(10): rod('white' if i%2 else 'tower',(cx,base+(20+i*.5)*TS,cz),(cx,base+(20+(i+1)*.5)*TS,cz),.14-i*.009)
 for name,(mat,verts,faces,uvs) in batches.items():
  if not verts: continue
  me=bpy.data.meshes.new(name); me.from_pydata(verts,[],faces); me.update()

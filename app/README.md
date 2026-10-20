@@ -194,7 +194,11 @@ Imagegenで外壁3種・鉄骨・アスファルトを制作。512〜1024pxへ�
 
 軽量は影・追加反射・法線・ブルームを無効にし、3Dの解像度を縦横80%（画素数64%）にする。UIの描画解像度とゲームのルールは変えない。テクスチャ自体は共通で読み込むため、軽量設定は主に描画処理を軽くするもので、読込メモリを解放する設定ではない。
 
-形状は39プリミティブ／71,872三角形を維持。配布GLBの画像はiPhone横表示向けに用途別に縮小し、RGBA8ベースレベル換算44.26→13.13MiB（約70%減、mipmap・ドライバ管理分は別）。近い支持ビルの色画像は維持し、遠景外壁・発光・材質データなどを縮小。元PNGとImagegen原画は変更しない。追加の昼夜反射キューブは128px/面。Blender書き出し後に `uv run --with pillow python tool/optimize_stage_textures.py` を実行し、`python3 tool/audit_stage_asset.py` で14MiBの画像上限を検査する。素材の原画・プロンプト・再生成手順は `../04_GAME_ASSETS/3d/stages/akasaka/README.md`。サイズ比較は `qa/texture-resolution.json`。
+解像度最適化時は39プリミティブ／71,872三角形を維持（後述のタワー改修後は68,752三角形）。配布GLBの画像はiPhone横表示向けに用途別に縮小し、RGBA8ベースレベル換算44.26→13.13MiB（約70%減、mipmap・ドライバ管理分は別）。近い支持ビルの色画像は維持し、遠景外壁・発光・材質データなどを縮小。元PNGとImagegen原画は変更しない。追加の昼夜反射キューブは128px/面。Blender書き出し後に `uv run --with pillow python tool/optimize_stage_textures.py` を実行し、`python3 tool/audit_stage_asset.py` で14MiBの画像上限を検査する。素材の原画・プロンプト・再生成手順は `../04_GAME_ASSETS/3d/stages/akasaka/README.md`。サイズ比較は `qa/texture-resolution.json`。
+
+### 東京タワーと公園
+
+鉄骨のビル200mに対してタワー333m、一般ビル35〜70mの高さ比へ整理。右奥のタワーの周りを約211×234m相当の公園にし、広場・芝生・園路・樹木・足元灯を配置した。周辺ビルを低く減らし、高架も奥へ移設。カメラの画角と注視点を調整して正面で先端がHUDから離れる構図にした。昼夜の点灯切替と画質設定は継続。追加テクスチャ・動的ライトはなく、39プリミティブ・68,752三角形。検証画像は `qa/tower-park/`。
 
 ### 負荷の再現測定
 

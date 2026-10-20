@@ -14,8 +14,17 @@ for image in j['images']:
     w, h = struct.unpack_from('>II', d, 16)
     assert max(w, h) <= 1024, (image.get('name'), w, h)
     pixels += w*h
-assert triangles == 71872, triangles
-assert primitives == 39, primitives
+assert triangles <= 71872, triangles
+assert primitives <= 41, primitives
+heights = {
+    m['name']: max(j['accessors'][p['attributes']['POSITION']]['max'][1]
+                   for p in m['primitives'])
+    for m in j['meshes']
+}
+# 200m support roof at y=0, ground y=-14; antenna tip is 333m.
+assert abs(heights['white'] - (-14 + 333 * 14 / 200)) < .01
+assert heights['white'] > max(heights[n] for n in heights if n.startswith('facade') or n == 'skyline')
+assert 'lawn' in heights and 'foliage' in heights
 assert pixels*4 <= 14*1024*1024, 'Run optimize_stage_textures.py after Blender export'
 assert not any(m.get('doubleSided', False) for m in j['materials'])
 assert sum('normalTexture' in m for m in j['materials']) == 2

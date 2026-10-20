@@ -18,7 +18,7 @@ class CatchScene {
   final camera = PerspectiveCamera(
     position: vm.Vector3(0, 9.6, 10.8),
     target: vm.Vector3(0, 1.6, 0),
-    fovRadiansY: .69,
+    fovRadiansY: .78,
     fovNear: .1,
     fovFar: 100,
   );
@@ -283,7 +283,8 @@ class CatchScene {
       (g.lane ? 5.0 : 9.6) * zoom,
       math.cos(g.yaw) * 10.8 * zoom,
     );
-    camera.target = vm.Vector3(0, g.lane ? 2.0 : 1.6, 0);
+    // Leave sky between the 333m landmark tip and the HUD on wide iPhones.
+    camera.target = vm.Vector3(0, g.lane ? 2.9 : 1.6, 0);
     final visible = g.phase == Phase.ready
         ? <Drop>[]
         : g.drops.where((d) => d.visible(g.time)).toList();
