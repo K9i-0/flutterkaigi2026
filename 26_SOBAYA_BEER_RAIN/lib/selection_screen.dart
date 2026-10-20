@@ -115,7 +115,7 @@ class SelectionScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'ゆめみ入社式 ・ 赤坂の鉄骨渡り',
+                              'ゆめみ採用試験',
                               style: TextStyle(
                                 fontSize: 11,
                                 color: muted,
@@ -214,7 +214,7 @@ class SelectionScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          '左右に傾けて移動。',
+                          '傾けて移動、スワイプで見回す。',
                           style: const TextStyle(fontSize: 11, color: muted),
                         ),
                       ),

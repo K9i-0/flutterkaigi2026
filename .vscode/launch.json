@@ -10,7 +10,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "FlutterKaigi / ゆめみ入社式 (debug)",
+      "name": "FlutterKaigi / ゆめみ採用試験 (debug)",
       "type": "dart",
       "request": "launch",
       "cwd": "${workspaceFolder}/26_SOBAYA_BEER_RAIN",

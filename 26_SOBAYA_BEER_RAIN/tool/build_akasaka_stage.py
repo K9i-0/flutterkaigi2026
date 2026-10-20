@@ -27,8 +27,8 @@ for i in range(6): material('facade'+str(i),(.7,.7,.7),f'facade_{i}.png',glow=1,
 material('crown',(.9,.86,.78),glow=1)
 SIGNS=['akasaka','izakaya','soba','shika','bengoshi','fudosan']
 for n in SIGNS: material(n,(1,1,1),f'sign_{n}.png',glow=.4)
-ADS=['welcome','accidenchua','safety']
-for n in ADS: material('ad_'+n,(1,1,1),f'ad_{n}.png',glow=.5)
+ADS=['exam','accidenchua','safety']
+for n in ADS+['yumemin']: material('ad_'+n,(1,1,1),f'ad_{n}.png',glow=.5)
 # Moving traffic: one atlas material, one mesh per direction group (see catch_scene.dart).
 material('car',(1,1,1),'car_atlas.png',metal=.4,glow=1,rough=.35,emit='car_atlas_emit.png')
 material('lamp',(1,.78,.45),glow=1.8); material('redlight',(1,.08,.05),glow=2.2)
@@ -114,6 +114,7 @@ def clear(x,z,w,d):
  if abs(x-12)<4.6+w/2 and abs(z+30)<4.6+d/2: return False
  return True
 sign_i=0
+roofs=[]  # roofs left free for the Yumemin billboards
 def building(x,z,w,d,h,kind,near):
  global sign_i
  off=(rng.randrange(4)*.25,rng.randrange(8)*.125); f='facade'+str(kind)
@@ -125,6 +126,7 @@ def building(x,z,w,d,h,kind,near):
   if top>11 and rng.random()<.6: box('crown',x,base-.62,z,tw+.04,.16,td+.04)
  top=G+h; tw,td,_=tiers[-1]
  p=rng.random()
+ if p<.35: roofs.append((x,z,tw,td,top))
  if p<.35:
   for i in range(rng.randint(2,4)): box('metal',x+rng.uniform(-tw/3,tw/3),top+.28,z+rng.uniform(-td/3,td/3),.7,.45,.6)
  elif p<.6:
@@ -161,6 +163,23 @@ for x0,x1 in XBLOCKS:
     if z>-36 and abs(x)>20 and rng.random()<.12: h=rng.uniform(15,20)
     kind=rng.choice([3,5]) if h>15 else rng.choice([0,1,2,4,0,1,2,3,4,5])
     building(x,z,w,d,h,kind,z>-40 and abs(x)<46)
+# Five Yumemin billboards spread across the background (never the support
+# buildings), facing the camera side so every yaw shows at least one.
+used=set()
+for target in [-62,-34,-12,14,40]:
+ best=None
+ for i,(x,z,tw,td,top) in enumerate(roofs):
+  dist=math.hypot(x,z); az=math.degrees(math.atan2(x,-z))
+  if i in used or not (14<dist<38 and -10<top<-2 and tw>=3.6): continue
+  score=abs(az-target)+abs(dist-22)*.4
+  if best is None or score<best[0]: best=(score,i)
+ if best is None: continue
+ used.add(best[1]); x,z,tw,td,top=roofs[best[1]]
+ bw=min(tw*.95,5.4); bz=z+td/2-.5
+ box('ad_yumemin',x,top+2.0,bz,bw,bw/2.67,.1)
+ box('metal',x,top+2.0,bz-.08,bw+.16,bw/2.67+.16,.05)
+ for sx in [-bw/3,bw/3]: rod('metal',(x+sx,top,bz-.1),(x+sx,top+1.4,bz-.1),.06)
+print('YUMEMIN',len(used))
 # Lane markings, crosswalks, streetlights and traffic on the avenue.
 for s in [-1,1]:
  box('yellowline',s*.12,G+.02,-30,.1,.02,140)
