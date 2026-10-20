@@ -45,7 +45,7 @@ class _Preset {
 }
 
 const _signs = ['akasaka', 'izakaya', 'soba', 'shika', 'bengoshi', 'fudosan'];
-const _ads = ['ad_welcome', 'ad_accidenchua', 'ad_safety'];
+const _ads = ['ad_exam', 'ad_accidenchua', 'ad_safety', 'ad_yumemin'];
 
 Map<String, _Glow> _glow({
   required double windows,
@@ -91,22 +91,6 @@ const _presets = {
     bloom: 0,
     workLight: 0,
   ),
-  StageTime.dusk: _Preset(
-    zenith: (.18, .13, .28),
-    horizon: (.85, .42, .25),
-    ground: (.18, .14, .21),
-    fog: (.40, .28, .32),
-    fogStart: 25,
-    fogEnd: 115,
-    sun: (-.5, -1, -.3),
-    sunColor: (1, 1, 1),
-    sunIntensity: 2.4,
-    shadows: false,
-    environment: 1.1,
-    exposure: 1.15,
-    bloom: 0,
-    workLight: 0,
-  ),
   StageTime.night: _Preset(
     zenith: (.008, .012, .035),
     horizon: (.05, .045, .10),
@@ -137,19 +121,6 @@ Map<String, _Glow> _glowFor(StageTime t) => switch (t) {
     tower: (0, 0, 0, 0),
     towerWhite: (0, 0, 0, 0),
     deck: (1, .62, .24, .1),
-  ),
-  StageTime.dusk => _glow(
-    windows: .75,
-    signs: .4,
-    ads: .45,
-    lamps: 1.8,
-    cars: 1.4,
-    crown: .25,
-    skyline: .6,
-    tower: (.95, .24, .055, .35),
-    towerWhite: (.95, .78, .57, .15),
-    deck: (1, .62, .24, 1.2),
-    markings: .12,
   ),
   // Night light-up: windows, crowns and the tower's orange landmark lighting.
   StageTime.night => _glow(
@@ -202,7 +173,7 @@ class StageLighting {
   final _trafficNodes =
       <Node, ({(double, double) axis, double speed, double period})>{};
   (StageTime, bool)? _applied;
-  StageTime time = StageTime.dusk;
+  StageTime time = StageTime.day;
 
   Map<String, Object?> inspect() => {
     'timeOfDay': time.id,
@@ -290,7 +261,6 @@ class StageLighting {
     final on = math.sin(clock * math.pi * 1.2) > -.2;
     final base = switch (time) {
       StageTime.day => .5,
-      StageTime.dusk => 2.2,
       StageTime.night => 3.2,
     };
     _setGlow('redlight', (1, .08, .05, on ? base : base * .08));
