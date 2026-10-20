@@ -38,7 +38,7 @@ void main() {
         ..clear()
         ..add(Drop(0, CanKind.superTry, .63, 0, -3.1));
       g.tick(1 / 60);
-      expect(g.caught, character == CatchCharacter.sobaya ? 1 : 0);
+      expect(g.caught, character == CatchCharacter.ctoOdatetsu ? 0 : 1);
       for (var i = 0; i < 60; i++) {
         g.tick(1 / 60, inputX: 1, inputY: 1);
       }
@@ -106,24 +106,29 @@ void main() {
         ),
       ),
     );
-    expect(find.text('そば屋\n速度 2.6  /  半径 0.72'), findsOneWidget);
-    expect(find.text('CTOおだてつ\n速度 3.4  /  半径 0.55'), findsOneWidget);
-    await tester.tap(find.byKey(const ValueKey('character_cto_odatetsu')));
-    await tester.pump();
-    expect(selected, CatchCharacter.ctoOdatetsu);
-    expect(
-      tester
-          .widget<ChoiceChip>(
-            find.byKey(const ValueKey('character_cto_odatetsu')),
-          )
-          .selected,
-      true,
-    );
-    expect(
-      tester
-          .widget<ChoiceChip>(find.byKey(const ValueKey('character_sobaya')))
-          .selected,
-      false,
-    );
+    expect(find.byType(Image), findsNWidgets(3));
+    final portraits = tester.widgetList<Image>(find.byType(Image)).toList();
+    expect(portraits.map((image) => (image.image as AssetImage).assetName), [
+      'assets/images/sobaya.jpg',
+      'assets/images/cto_odatetsu.png',
+      'assets/images/fukuchan.jpg',
+    ]);
+    final positions = CatchCharacter.values
+        .map(
+          (character) => tester.getCenter(
+            find.byKey(ValueKey('character_${character.id}')),
+          ),
+        )
+        .toList();
+    expect(positions[0].dx, lessThan(positions[1].dx));
+    expect(positions[1].dx, lessThan(positions[2].dx));
+    expect(positions.map((p) => p.dy).toSet(), hasLength(1));
+    for (final character in CatchCharacter.values) {
+      await tester.tap(find.byKey(ValueKey('character_${character.id}')));
+      await tester.pump();
+      expect(selected, character);
+      expect(find.text('✓ ${character.label}'), findsOneWidget);
+    }
+    expect(tester.takeException(), isNull);
   });
 }
