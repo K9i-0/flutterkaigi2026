@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'balance.dart';
+import 'character.dart';
 
 enum Phase { ready, countdown, playing, result }
 
@@ -61,6 +62,22 @@ class CatchGame {
   static int itemSeed(int seed) => (seed & 0x7fffffff) ^ 0x6974656d;
   Balance balance = Balance.defaults();
   int seed = 1;
+  CatchCharacter _selectedCharacter = CatchCharacter.sobaya;
+  CatchCharacter get selectedCharacter => _selectedCharacter;
+  CatchCharacter _roundCharacter = CatchCharacter.sobaya;
+  CatchCharacter get roundCharacter => _roundCharacter;
+  double _baseMoveSpeed = 2.6, _baseCatchRadius = .72;
+  double get baseMoveSpeed => _baseMoveSpeed;
+  double get baseCatchRadius => _baseCatchRadius;
+  // Future item multipliers apply to these round bases, never to each other.
+  double get moveSpeed => lane ? baseMoveSpeed : 3.5;
+  double get catchRadius => lane ? baseCatchRadius : balance['catchRadius'];
+  bool selectCharacter(CatchCharacter character) {
+    if (phase != Phase.ready && phase != Phase.result) return false;
+    _selectedCharacter = character;
+    return true;
+  }
+
   double get roundSeconds => balance['roundSeconds'];
   bool lane = false;
   Phase phase = Phase.ready;
@@ -80,6 +97,11 @@ class CatchGame {
   final events = <Map<String, Object>>[];
   void start({int seed = 1}) {
     this.seed = seed;
+    _roundCharacter = lane ? selectedCharacter : CatchCharacter.sobaya;
+    _baseMoveSpeed = lane ? roundCharacter.moveSpeed : 3.5;
+    _baseCatchRadius = lane
+        ? roundCharacter.catchRadius
+        : balance['catchRadius'];
     phase = Phase.countdown;
     time = 0;
     countdown = 2;
@@ -199,16 +221,22 @@ class CatchGame {
     }
     final dir = lane ? (x: -ix, z: 0.0) : toWorld(ix, iy, yaw),
         a = 1 - math.exp(-balance['acceleration'] * dt);
-    vx += (dir.x * (lane ? balance['moveSpeed'] : 3.5) - vx) * a;
+    vx += (dir.x * moveSpeed - vx) * a;
     vz += (dir.z * 3.5 - vz) * a;
+    final previousX = x, previousZ = z;
     x = (x + vx * dt).clamp(-halfX, halfX);
     z = (z + vz * dt).clamp(-halfZ, halfZ);
+    // Animation uses actual displacement, including the end stops.
+    if (lane) {
+      vx = (x - previousX) / dt;
+      vz = (z - previousZ) / dt;
+    }
     for (final d in drops) {
       if (d.resolved || time < d.landing) continue;
       d.resolved = true;
       d.caught =
           math.pow(d.x - x, 2) + math.pow(d.z - z, 2) <
-          math.pow(balance['catchRadius'], 2);
+          math.pow(catchRadius, 2);
       if (d.caught) {
         eventId++;
         if (d.kind == CanKind.happoshu) {
@@ -250,6 +278,14 @@ class CatchGame {
   Map<String, Object> inspect() => {
     'balance': balance.values,
     'seed': seed,
+    'selectedCharacter': selectedCharacter.id,
+    'roundCharacter': roundCharacter.id,
+    'baseMoveSpeed': baseMoveSpeed,
+    'baseCatchRadius': baseCatchRadius,
+    'moveSpeed': moveSpeed,
+    'catchRadius': catchRadius,
+    'vx': vx,
+    'vz': vz,
     'dropCount': drops.length,
     'itemCount': items.length,
     'items': items
