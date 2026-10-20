@@ -6,6 +6,9 @@ dist/
 .test-dist/
 .vite/
 .local/
+# Renamed to 26_YUMEMI_RECRUIT_EXAM. Git leaves ignored local build/QA
+# artifacts behind when pulling the rename, along with no project .gitignore.
+/26_SOBAYA_BEER_RAIN/
 15_SOBA_VTUBER_WEB/public/mediapipe/
 
 # Local-only source media and generation outputs
