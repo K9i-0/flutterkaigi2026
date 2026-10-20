@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'app_style.dart';
 import 'catch_game.dart';
 import 'catch_scene.dart';
 import 'character.dart';
@@ -26,9 +27,7 @@ class SelectionScreen extends StatelessWidget {
   final VoidCallback onStart, onMode, onSeed;
   final VoidCallback? onSettings;
   final int seed;
-  static const paper = Color(0xfff4f2ed),
-      text = Color(0xff272b2a),
-      muted = Color(0xff777a74);
+  static const paper = Colors.white, text = brandInk, muted = brandMuted;
 
   Widget item(bool bad) => Expanded(
     child: Column(
@@ -39,7 +38,7 @@ class SelectionScreen extends StatelessWidget {
             Icon(
               bad ? Icons.close : Icons.check,
               size: 15,
-              color: bad ? const Color(0xff996b83) : const Color(0xff456a5b),
+              color: bad ? const Color(0xff996b83) : brandBlue,
             ),
             const SizedBox(width: 6),
             Text(
@@ -84,14 +83,7 @@ class SelectionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Theme(
-    data: ThemeData(
-      brightness: Brightness.light,
-      useMaterial3: true,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: text,
-        brightness: Brightness.light,
-      ),
-    ),
+    data: appTheme(),
     child: ColoredBox(
       color: paper,
       child: SafeArea(
@@ -193,7 +185,7 @@ class SelectionScreen extends StatelessWidget {
                                     const VerticalDivider(
                                       width: 20,
                                       thickness: 1,
-                                      color: Color(0xffdeddd7),
+                                      color: Color(0xffd3eee9),
                                       indent: 15,
                                       endIndent: 20,
                                     ),
@@ -208,7 +200,7 @@ class SelectionScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  const Divider(height: 1, color: Color(0xffd8d8d0)),
+                  const Divider(height: 1, color: Color(0xffd3eee9)),
                   const SizedBox(height: 10),
                   Row(
                     children: [
@@ -265,7 +257,7 @@ class SelectionScreen extends StatelessWidget {
                         key: const ValueKey('start'),
                         onPressed: onStart,
                         style: FilledButton.styleFrom(
-                          backgroundColor: text,
+                          backgroundColor: const Color(0xff0074bd),
                           foregroundColor: paper,
                           padding: const EdgeInsets.symmetric(
                             horizontal: 25,

@@ -1,0 +1,29 @@
+{
+  "tool": "built-in image_gen",
+  "status": "candidates",
+  "references": [
+    "/Users/kotahayashi/Workspace/flutterkaigi2026/03_SCRIPTS/00_TEMPLATES/characters/character_sobaya_basic_sheet.png",
+    "/Users/kotahayashi/Workspace/flutterkaigi2026/02_CHARACTERS/Fukuchan.jpg",
+    "/Users/kotahayashi/Workspace/flutterkaigi2026/26_YUMEMI_RECRUIT_EXAM/assets/images/cto_odatetsu.png",
+    "/Users/kotahayashi/Workspace/flutterkaigi2026/02_CHARACTERS/Yumemin.jpg",
+    "/Users/kotahayashi/Workspace/flutterkaigi2026/03_SCRIPTS/00_TEMPLATES/props/product_super_try.png"
+  ],
+  "jobs": [
+    {
+      "name": "top-a-day",
+      "prompt": "Use case: stylized-concept. Generate one finished landscape 16:9 game title screen illustration. References: 1 Sobaya, preserve his white mask with red stripes black eyeholes, gray skin, muscular frame, white fitted shirt with natural folds but NO nipple bumps, contours or dot shading; 2 Fukugyun, preserve exact photographic face and black center-part hair, black jacket white printed shirt; 3 CTO Odatetsu preserve curly brown hair, large brown anime eyes, youthful face black hoodie, camera may hang at side; 4 Yumemin blue rounded mascot preserve silhouette and face; 5 silver beer can preserve design. Exactly three adult players, no extra people. A spectacular bright daytime Akasaka Tokyo skyline with Tokyo Tower and tiny roads far below. Three characters balancing on a narrow industrial steel I-beam high between skyscrapers, each reaching for their correct falling good item: Sobaya silver beer can, Odatetsu golden brown tubular chikuwa fishcake, Fukugyun small blue Yumemin mascot. Capture the instant before catching, thrilling humorous high quality 3D game key art mixed with faithful character faces. Low diagonal perspective, strong readable silhouettes, blue sky, sunlit steel. Enormous forceful Japanese typography exactly 'ゆめみ採用試験' prominently centered in two lines, gold and white dimensional lettering dark navy outline, must not obscure faces. No other text, no buttons, no device frame. Full bleed."
+    },
+    {
+      "name": "top-b-night",
+      "prompt": "Use case: stylized-concept. Generate one finished landscape 16:9 game title screen illustration. References: 1 Sobaya, preserve his white mask with red stripes black eyeholes, gray skin, muscular frame, white fitted shirt with natural folds but NO nipple bumps, contours or dot shading; 2 Fukugyun, preserve exact photographic face and black center-part hair, black jacket white printed shirt; 3 CTO Odatetsu preserve curly brown hair, large brown anime eyes, youthful face black hoodie, camera may hang at side; 4 Yumemin blue rounded mascot preserve silhouette and face; 5 silver beer can preserve design. Exactly three adult players, no extra people. Night-time Akasaka with illuminated Tokyo Tower, sparkling city far below, steel I-beam stretching dramatically from foreground toward rooftops. All three players clearly visible in dynamic balancing poses while catching their own good item: Sobaya catches silver beer can, Odatetsu catches golden tubular chikuwa, Fukugyun catches small blue Yumemin mascot. Faithful recognizable faces, premium cinematic game artwork, electric teal rim lights, orange city, exciting comic danger. Enormous powerful centered Japanese title exactly 'ゆめみ採用試験' in two lines, white silver dimensional characters with cyan edges and thick dark shadow, faces unobscured. No other text or buttons, no device frame, full bleed."
+    },
+    {
+      "name": "icon-a-chikuwa",
+      "prompt": "Use case: stylized-concept. One square full-bleed mobile game app icon, artwork fills every pixel to all four sharp square corners, NO rounded corners NO border NO exterior margin NO mockup NO transparency. A huge golden toasted chikuwa fishcake with clearly visible hollow circular end floats just above a narrow steel I-beam extending from bottom foreground into vertiginous tiny Akasaka skyline, small red Tokyo Tower in distance. Exaggerated perspective, beautiful polished 3D game render, turquoise mint #64f0d7 to azure #008ce6 sky, warm gold chikuwa contrasting deep navy steel, dynamic catching spark beneath chikuwa. Simple bold readable silhouette at small size, central 75% contains focal subject. No text, no people."
+    },
+    {
+      "name": "icon-b-mascot",
+      "prompt": "Use case: stylized-concept. One square full-bleed mobile game app icon. Reference image 4 is Yumemin, preserve exact blue rounded asymmetric mascot silhouette, two black dot eyes, tiny triangular ears white curved side and small tail. Render as delightful polished 3D mascot, large centered, falling just above a steel I-beam that runs diagonally across lower portion, tiny Tokyo Tower silhouette in distant city below. Strong perspective and sense of playful catching game. Bright mint #64f0d7 to azure #008ce6 background and luminous warm gold accents, clean readable composition at small size. Artwork covers ALL pixels including four sharp square corners. NO rounded outer shape, NO border, NO margin, NO device mockup, NO transparency, NO text. Mascot is the sole character."
+    }
+  ]
+}

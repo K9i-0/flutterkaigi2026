@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'app_style.dart';
 import 'character.dart';
 
 class CharacterPicker extends StatelessWidget {
@@ -34,14 +35,12 @@ class CharacterPicker extends StatelessWidget {
                   vertical: 8,
                 ),
                 decoration: BoxDecoration(
-                  color: selected == character
-                      ? const Color(0xffe8e5df)
-                      : Colors.transparent,
+                  color: selected == character ? brandPale : Colors.transparent,
                   border: Border(
                     left: BorderSide(
                       width: 3,
                       color: selected == character
-                          ? const Color(0xffc6542b)
+                          ? brandBlue
                           : Colors.transparent,
                     ),
                   ),
@@ -81,7 +80,7 @@ class CharacterPicker extends StatelessWidget {
                             character.difficulty,
                             style: const TextStyle(
                               fontSize: 11,
-                              color: Color(0xff72716b),
+                              color: brandMuted,
                             ),
                           ),
                         ],

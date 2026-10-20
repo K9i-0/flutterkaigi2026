@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'app_style.dart';
+import 'entry_screen.dart';
 import 'balance.dart';
 import 'balance_panel.dart';
 
@@ -19,9 +21,7 @@ import 'selection_screen.dart';
 import 'catch_scene.dart';
 import 'tilt_input.dart';
 
-const gold = Color(0xffefbd63),
-    cream = Color(0xfff6edda),
-    ink = Color(0xff102725);
+const gold = brandBlue, cream = brandInk, ink = Colors.white;
 void main() async {
   if (kDebugMode) {
     MarionetteBinding.ensureInitialized();
@@ -35,11 +35,7 @@ void main() async {
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        colorScheme: const ColorScheme.dark(primary: gold, surface: ink),
-        useMaterial3: true,
-      ),
+      theme: appTheme(),
       home: const RainPage(),
     ),
   );
@@ -56,6 +52,7 @@ class _RainState extends State<RainPage> {
     ..lane = true
     ..z = 0;
   final world = CatchScene(), tilt = TiltInput(), sound = AudioPlayer();
+  bool showTitle = true;
   bool ready = false,
       paused = false,
       demo = false,
@@ -84,6 +81,11 @@ class _RainState extends State<RainPage> {
         description: 'Inspect real simulation, sensor and camera.',
         callback: (p) async => MarionetteExtensionResult.success({
           'ready': ready,
+          'screen': showTitle
+              ? 'title'
+              : !ready
+              ? 'loading'
+              : game.phase.name,
           'error': error,
           'sensor': tilt.available,
           'demo': demo,
@@ -99,6 +101,7 @@ class _RainState extends State<RainPage> {
           if (!ready) return MarionetteExtensionResult.error(1, 'Not ready');
           switch (p['action']) {
             case 'select':
+              showTitle = false;
               final character = CatchCharacter.values
                   .where((c) => c.id == p['character'])
                   .firstOrNull;
@@ -239,6 +242,7 @@ class _RainState extends State<RainPage> {
   }
 
   void start() {
+    showTitle = false;
     game.start(seed: seed);
     tilt.maxDegrees = game.balance['tiltDegrees'];
     tilt.calibrate();
@@ -367,7 +371,7 @@ class _RainState extends State<RainPage> {
       const SizedBox(width: 6),
       chip(
         '${game.lane ? game.roundCharacter.badDrop.label : '紫帯の発泡酒'} −${game.balance['penalty'].round()}',
-        color: const Color(0xffcca8fa),
+        color: const Color(0xff8052a0),
       ),
     ],
   );
@@ -375,6 +379,10 @@ class _RainState extends State<RainPage> {
   Widget build(BuildContext context) => Scaffold(
     body: LayoutBuilder(
       builder: (context, size) {
+        if (showTitle) {
+          return TitleScreen(onStart: () => setState(() => showTitle = false));
+        }
+        if (!ready && error == null) return const BrandLoading();
         if (ready &&
             game.lane &&
             !paused &&
@@ -428,8 +436,7 @@ class _RainState extends State<RainPage> {
                 ),
               ),
             if (error != null) Center(child: Text(error!)),
-            if (!ready && error == null)
-              const Center(child: CircularProgressIndicator()),
+            if (!ready && error == null) const BrandLoading(),
             if (ready)
               SafeArea(
                 child: Padding(
@@ -445,7 +452,7 @@ class _RainState extends State<RainPage> {
                             Text(
                               game.lane ? 'ゆめみ採用試験' : 'ゆめみ採用試験 / 面移動版',
                               style: TextStyle(
-                                color: cream,
+                                color: Colors.white,
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
                                 shadows: [Shadow(blurRadius: 8)],
@@ -454,7 +461,10 @@ class _RainState extends State<RainPage> {
                             Text(
                               'プレイヤー：${(game.lane ? (playing ? game.roundCharacter : game.selectedCharacter) : CatchCharacter.sobaya).label}',
                               style: const TextStyle(
-                                color: cream,
+                                color: Colors.white,
+                                shadows: [
+                                  Shadow(blurRadius: 6, color: Colors.black),
+                                ],
                                 fontSize: 12,
                               ),
                             ),
@@ -512,7 +522,7 @@ class _RainState extends State<RainPage> {
                                 ? chip(
                                     game.message,
                                     color: game.message.startsWith('これ')
-                                        ? const Color(0xffff927a)
+                                        ? const Color(0xffb63c32)
                                         : cream,
                                   )
                                 : game.combo > 1
