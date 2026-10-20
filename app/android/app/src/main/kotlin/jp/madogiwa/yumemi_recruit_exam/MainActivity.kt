@@ -1,4 +1,4 @@
-package jp.madogiwa.sobaya_beer_rain
+package jp.madogiwa.yumemi_recruit_exam
 
 import io.flutter.embedding.android.FlutterActivity
 
