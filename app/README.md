@@ -1,6 +1,6 @@
 # ゆめみ採用試験（試作）
 
-横画面固定、20秒のFlutter Scene製3Dキャッチゲーム。ゆめみの採用試験で、受験者が赤坂の高層ビルの間に架かった鉄骨を渡らされるというネタ。鉄骨編ではキャラクターと時間帯（昼・夜）を選び、落ちてくる「あたり」だけを集める。従来の屋上・面移動版も選択できる。表示名は2026-10-20に「蕎麦屋」から改名。ディレクトリ名・パッケージ名は維持。
+横画面固定、20秒のFlutter Scene製3Dキャッチゲーム。ゆめみの採用試験で、受験者が赤坂の高層ビルの間に架かった鉄骨を渡らされるというネタ。鉄骨編ではキャラクターと時間帯（昼・夜）を選び、落ちてくる「あたり」だけを集める。従来の屋上・面移動版も選択できる。表示名は2026-10-20に「蕎麦屋」から改名。同日、ディレクトリを `26_SOBAYA_BEER_RAIN` から `26_YUMEMI_RECRUIT_EXAM` に、Dartパッケージ名を `sobaya_beer_rain` から `yumemi_recruit_exam` に変更。端末上のアプリID（Android `applicationId`、iOS/macOSのバンドル名）は保存設定を引き継ぐため旧名のまま。
 
 ## 遊び方
 
@@ -20,7 +20,7 @@
 ## 開発
 
 ```sh
-cd 26_SOBAYA_BEER_RAIN
+cd 26_YUMEMI_RECRUIT_EXAM
 mise exec -- flutter pub get
 mise exec -- flutter run -d <device-id>
 mise exec -- flutter analyze

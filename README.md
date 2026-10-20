@@ -2,7 +2,7 @@
 
 FlutterKaigi 2026向けFlutterゲーム開発用の独立リポジトリです。
 開発先は **https://github.com/K9i-0/flutterkaigi2026**、既定ブランチは **main**。
-主な開発対象は [26_SOBAYA_BEER_RAIN](26_SOBAYA_BEER_RAIN/README.md) です。
+主な開発対象は [26_YUMEMI_RECRUIT_EXAM](26_YUMEMI_RECRUIT_EXAM/README.md) です。
 
 2026-10-19に [Madogiwa Multimedia Universe](https://github.com/K9i-0/madogiwa-multimedia-universe) の `flutterkaigi2026` から履歴・共有アセットを引き継いで分離しました（動画は全履歴から除外）。相対symlinkを維持するため、当初はモノレポ全体を保持しています。
 [Issue番号対応表・移行記録](MIGRATION.md)を参照してください。
@@ -14,7 +14,7 @@ macOSではXcodeとiOS Simulator、miseが必要です。リポジトリルー�
 ```sh
 mise trust .mise.toml
 mise install
-cd 26_SOBAYA_BEER_RAIN
+cd 26_YUMEMI_RECRUIT_EXAM
 mise exec -- flutter pub get
 open -a Simulator
 mise exec -- flutter devices
@@ -25,7 +25,7 @@ Flutterは `.mise.toml` の3.47.2を使用します。初回起動時はビル�
 
 VS Codeではルートフォルダを開き、「FlutterKaigi / ゆめみ採用試験 (debug)」とiOSシミュレーターを選択してF5で起動できます。シミュレーターでは矢印キーで移動、スワイプでカメラを回します。実端末起動にはXcodeで署名設定が必要です。
 
-検証: `26_SOBAYA_BEER_RAIN` で `mise exec -- flutter test` と `mise exec -- flutter analyze`。2026-10-20、独立クローンからiPhone Duo / iOS 27.1シミュレーターでdebug起動を確認。
+検証: `26_YUMEMI_RECRUIT_EXAM` で `mise exec -- flutter test` と `mise exec -- flutter analyze`。2026-10-20、独立クローンからiPhone Duo / iOS 27.1シミュレーターでdebug起動を確認。
 
 以下は継承したMMUの制作資料です。
 
@@ -119,4 +119,4 @@ VS Codeではルートフォルダを開き、「FlutterKaigi / ゆめみ採用�
 
 ## ゆめみ採用試験（旧：そば屋のビール雨）
 
-[ゆめみ採用試験](26_SOBAYA_BEER_RAIN/README.md) は、ゆめみの採用試験で赤坂の鉄骨を渡らされるネタの、スマホの傾きで移動して落下物をキャッチする20秒のFlutter Scene製3Dミニゲーム（旧名：そば屋のビール雨）。従来の面状ステージも選べる。スワイプでカメラを回転し、酷似した発泡酒を避ける。窓際スーパーつらいは正典デザイン、他の缶は仮デザイン。
+[ゆめみ採用試験](26_YUMEMI_RECRUIT_EXAM/README.md) は、ゆめみの採用試験で赤坂の鉄骨を渡らされるネタの、スマホの傾きで移動して落下物をキャッチする20秒のFlutter Scene製3Dミニゲーム（旧名：そば屋のビール雨）。従来の面状ステージも選べる。スワイプでカメラを回転し、酷似した発泡酒を避ける。窓際スーパーつらいは正典デザイン、他の缶は仮デザイン。

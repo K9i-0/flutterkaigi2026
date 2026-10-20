@@ -77,6 +77,6 @@ python3 tools/validate_chikuwa_variants.py
 通常モデルのバイナリを維持するため、再生成時の数値差によって採用形状を変えない。
 ゲーム用のノイズ seed は 0 に固定。中間テクスチャは GLB に埋め込み、Git 対象外。
 
-`26_SOBAYA_BEER_RAIN/assets/models/` から相対 symlink で参照する。
+`26_YUMEMI_RECRUIT_EXAM/assets/models/` から相対 symlink で参照する。
 ローカルプレビュー http://127.0.0.1:8766 は「ゲーム版」「種類」で通常／毒を比較できる。
 Sites への公開更新は行わない。

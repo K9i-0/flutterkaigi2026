@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sobaya_beer_rain/catch_game.dart';
+import 'package:yumemi_recruit_exam/catch_game.dart';
 
 void main() {
   test('time of day defaults to day and is fixed during a round', () {

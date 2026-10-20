@@ -1,8 +1,8 @@
 import 'dart:math' as math;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sobaya_beer_rain/catch_game.dart';
-import 'package:sobaya_beer_rain/tilt_input.dart';
+import 'package:yumemi_recruit_exam/catch_game.dart';
+import 'package:yumemi_recruit_exam/tilt_input.dart';
 
 void main() {
   test(

@@ -13,8 +13,8 @@
       "name": "FlutterKaigi / ゆめみ採用試験 (debug)",
       "type": "dart",
       "request": "launch",
-      "cwd": "${workspaceFolder}/26_SOBAYA_BEER_RAIN",
-      "program": "${workspaceFolder}/26_SOBAYA_BEER_RAIN/lib/main.dart",
+      "cwd": "${workspaceFolder}/26_YUMEMI_RECRUIT_EXAM",
+      "program": "${workspaceFolder}/26_YUMEMI_RECRUIT_EXAM/lib/main.dart",
       "flutterMode": "debug",
       "presentation": {"group": "00 FlutterKaigi", "order": 0}
     },

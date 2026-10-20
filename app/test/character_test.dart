@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sobaya_beer_rain/balance.dart';
-import 'package:sobaya_beer_rain/catch_game.dart';
-import 'package:sobaya_beer_rain/character.dart';
-import 'package:sobaya_beer_rain/character_picker.dart';
+import 'package:yumemi_recruit_exam/balance.dart';
+import 'package:yumemi_recruit_exam/catch_game.dart';
+import 'package:yumemi_recruit_exam/character.dart';
+import 'package:yumemi_recruit_exam/character_picker.dart';
 
 void main() {
   test('normal default, selection lock and retry snapshot', () {
