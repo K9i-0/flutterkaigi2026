@@ -112,11 +112,18 @@ Marionetteからは `madogiwa.catchAction` に `action=configure`、`json`（bal
 | --- | --- | --- |
 | そば屋 | 2.6 | 0.72 |
 | CTOおだてつ | 3.4 | 0.55 |
+| 福ギュン | 3.0 | 0.64 |
 
 `lib/character.dart`が一覧と固有値の定義。ラウンド開始時にIDと基礎値を保持し、後続のアイテム効果はその基礎値へ倍率をかける。鉄骨編の移動範囲X ±3.9・Z=0、標準の応答12・制限時間20秒は共通。面移動版はそば屋、速度3.5、従来の設定半径を維持し、鉄骨編へ戻ると選択を復元する。
 
 おだてつは `assets/models/cto_odatetsu.glb` から `../04_GAME_ASSETS/3d/characters/cto_odatetsu/rig_v1_20261014/cto_odatetsu_rig.glb` への相対symlinkで参照。既存の顔・形状・リグ・クリップは変更しない。鉄骨編は実移動速度が0.15を超えるとWalkを速度同期し、停止・端への到達でIdleへ戻る。
 
-自動操作: `madogiwa.catchAction` の `action=select, character=sobaya|cto_odatetsu`（開始・結果画面のみ）。`madogiwa.inspectCatch` は選択ID・ラウンドID・基礎値・実効値・速度・表示モデルID・モーション状態も返す。`step`は60Hzの各更新でモーションも進める。
+自動操作: `madogiwa.catchAction` の `action=select, character=sobaya|cto_odatetsu|fukuchan`（開始・結果画面のみ）。`madogiwa.inspectCatch` は選択ID・ラウンドID・基礎値・実効値・速度・表示モデルID・モーション状態も返す。`step`は60Hzの各更新でモーションも進める。
 
 2026-10-20検証: `flutter analyze`、20テストに合格。Dart MCP / MarionetteとiPhone Duo（iOS 27.1）シミュレーターで両モデルの表示・Walk/Idle・選択固定・結果画面での再選択・モード切替を確認。標準設定/seed 1の自動入力で両キャラとも20秒完走（各925点）。記録は `qa/character-selection-20261020.json`。実端末の傾き操作感とAndroid描画は未検証。
+
+福ギュンは `assets/models/fukuchan.glb` から共有の `04_GAME_ASSETS/3d/hazard_rebuild/locomotion_v1/fukuchan.glb` への相対symlinkで参照。承認済みの顔・身体と既存Idle/Walk/Runを使用する。表示名は「福ギュン」、内部IDは `fukuchan`。速度3.0・半径0.64はそば屋とおだてつの中間値。
+
+選択UIは3人の画像アイコンを横一列に並べ、選択中は金色の枠とチェックで示す。そば屋・福ギュンは `02_CHARACTERS/Sobaya.jpg` / `Fukuchan.jpg` への相対symlink、おだてつはユーザー提供画像 `assets/images/cto_odatetsu.png` を使用する。
+
+福ギュン追加の検証: `flutter analyze`、全21テストに合格。アイコンの表示範囲調整後も選択関連7テストを再実行。iOSシミュレーターで3アイコン・選択表示、福ギュンのIdle/Walk、結果画面での再選択、自動入力による20秒完走（seed 1、保存済み設定、925点）を確認。記録は `qa/fukugyun-selection-20261020.json`。実端末とAndroidは未検証。
