@@ -6,6 +6,7 @@ import 'package:vector_math/vector_math.dart' as vm;
 
 import 'catch_game.dart';
 import 'character.dart';
+import 'drop_models.dart';
 import 'studio_lighting.dart';
 import 'okayaman_vision.dart';
 
@@ -28,11 +29,17 @@ class CatchScene {
     'motion': motions[displayedCharacter]?.controller.inspect(),
     'facing': facing,
     'vision': vision.inspect(),
+    'visibleDropModels': [
+      for (final slot in laneDrops)
+        for (final d in slot)
+          if (d.root.visible) d.kind.name,
+    ],
   };
   late Skybox twilight;
   final planeScenery = <Node>[], beamScenery = <Node>[];
   List<Node>? scenery;
-  final laneCans = <Node>[];
+  final dropModels = DropModels();
+  final laneDrops = <List<DropModel>>[];
   final cans = <Node>[], rings = <Node>[], dots = <Node>[];
   final itemCubes = <Node>[], itemMarkers = <Node>[];
   final itemCubeMats = <PhysicallyBasedMaterial>[];
@@ -169,20 +176,22 @@ class CatchScene {
     for (final n in ['super_try', 'light', 'happoshu']) {
       prototypes.add(await loadScene('assets/models/$n.glb'));
     }
-    final lanePrototypes = <Node>[];
-    for (final n in ['super_try', 'light', 'happoshu']) {
-      lanePrototypes.add(await loadScene('assets/models/${n}_lane.glb'));
-    }
+    await dropModels.load();
     // At most ceil((6 + .65) / .5) = 14 simultaneously visible drops.
     for (var slot = 0; slot < 16; slot++) {
       for (var kind = 0; kind < 3; kind++) {
         final n = prototypes[kind].clone();
         scene.add(n);
         cans.add(n);
-        final laneCan = lanePrototypes[kind].clone();
-        scene.add(laneCan);
-        laneCans.add(laneCan);
       }
+      final slotDrops = <DropModel>[];
+      for (final kind in CanKind.values) {
+        final drop = dropModels.create(kind);
+        drop.root.visible = false;
+        scene.add(drop.root);
+        slotDrops.add(drop);
+      }
+      laneDrops.add(slotDrops);
       final ring = mesh(
         TorusGeometry(
           radius: .45,
@@ -300,14 +309,17 @@ class CatchScene {
       for (var kind = 0; kind < 3; kind++) {
         cans[i * 3 + kind].visible =
             active && !g.lane && visible[i].kind.index == kind;
-        laneCans[i * 3 + kind].visible =
-            active && g.lane && visible[i].kind.index == kind;
+      }
+      for (final model in laneDrops[i]) {
+        model.root.visible = active && g.lane && visible[i].kind == model.kind;
       }
       rings[i].visible = active;
       dots[i].visible = active;
       if (!active) continue;
       final d = visible[i], age = g.time - d.spawn;
-      final can = (g.lane ? laneCans : cans)[i * 3 + d.kind.index];
+      final drop = laneDrops[i][d.kind.index];
+      if (g.lane) drop.sample(age);
+      final can = g.lane ? drop.root : cans[i * 3 + d.kind.index];
       can.position = vm.Vector3(
         d.x,
         g.lane && d.resolved && !d.caught
@@ -318,7 +330,10 @@ class CatchScene {
       can.rotation =
           vm.Quaternion.axisAngle(
             vm.Vector3(0, 1, 0),
-            (g.lane ? d.facing : g.yaw) + math.pi + math.sin(age * 2) * .08,
+            (g.lane
+                    ? (d.kind.isCan ? d.facing + math.pi : .25 * math.sin(age))
+                    : g.yaw + math.pi) +
+                math.sin(age * 2) * .08,
           ) *
           vm.Quaternion.axisAngle(
             vm.Vector3(0, 0, 1),

@@ -27,7 +27,7 @@ void main() {
     });
     g.start(seed: 42);
     expect(g.drops.length, 15);
-    expect(g.drops.every((d) => d.kind == CanKind.happoshu), true);
+    expect(g.drops.every((d) => d.kind.isBad), true);
     expect(g.drops.first.landing, 2);
     g.phase = Phase.playing;
     g.x = g.drops.first.x;
@@ -47,7 +47,7 @@ void main() {
       a.drops.map((d) => (d.x, d.facing, d.kind)),
       b.drops.map((d) => (d.x, d.facing, d.kind)),
     );
-    expect(a.drops.any((d) => d.kind == CanKind.happoshu), false);
+    expect(a.drops.any((d) => d.kind.isBad), false);
     expect(
       a.items.map((d) => (d.effect, d.x, d.spawn, d.fallSeconds)),
       b.items.map((d) => (d.effect, d.x, d.spawn, d.fallSeconds)),
@@ -59,8 +59,8 @@ void main() {
     a.start(seed: 987);
     b.start(seed: 987);
     expect(a.drops.length, 16);
-    expect(a.drops.where((d) => d.kind == CanKind.happoshu).length, 4);
-    expect(a.drops.where((d) => d.kind != CanKind.happoshu).length, 12);
+    expect(a.drops.where((d) => d.kind.isBad).length, 4);
+    expect(a.drops.where((d) => !d.kind.isBad).length, 12);
     expect(a.items.length, inInclusiveRange(2, 3));
     expect(a.items.every((d) => d.z == 0), true);
     expect(
@@ -90,7 +90,7 @@ void main() {
       g.start(seed: seed);
       counts.add(g.items.length);
       expect(g.drops.length, 16);
-      expect(g.drops.where((d) => d.kind == CanKind.happoshu).length, 4);
+      expect(g.drops.where((d) => d.kind.isBad).length, 4);
     }
     expect(counts, {2, 3});
   });

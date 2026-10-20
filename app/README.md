@@ -127,3 +127,38 @@ Marionetteからは `madogiwa.catchAction` に `action=configure`、`json`（bal
 選択UIは3人の画像アイコンを横一列に並べ、選択中は金色の枠とチェックで示す。そば屋・福ギュンは `02_CHARACTERS/Sobaya.jpg` / `Fukuchan.jpg` への相対symlink、おだてつはユーザー提供画像 `assets/images/cto_odatetsu.png` を使用する。
 
 福ギュン追加の検証: `flutter analyze`、全21テストに合格。アイコンの表示範囲調整後も選択関連7テストを再実行。iOSシミュレーターで3アイコン・選択表示、福ギュンのIdle/Walk、結果画面での再選択、自動入力による20秒完走（seed 1、保存済み設定、925点）を確認。記録は `qa/fukugyun-selection-20261020.json`。実端末とAndroidは未検証。
+
+## キャラクター別ルール・落下モデル（2026-10-20）
+
+鉄骨編の初期選択は **CTOおだてつ／ノーマル**。
+
+| キャラ | 難易度 | あたり | はずれ | 出現間隔 | 落下時間 | はずれ比率 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 福ギュン | イージー | ゆめみん | やめ太郎 | 基準×1.45 | 基準×1.35 | 基準×0.6 |
+| CTOおだてつ | ノーマル | ちくわ | 毒ちくわ | 基準値 | 基準値 | 基準値 |
+| そば屋 | ハード | つらい・LIGHT のビール2銘柄 | 発泡酒 | 基準×0.8 | 基準×0.8 | 基準×1.6 |
+
+基準は既存のバランス調整値。出現間隔は 0.5〜4.5 秒、落下時間は 1〜6 秒、
+比率は 0〜1 に制限し、最大16枠の描画プールに収める。移動速度とキャッチ半径は
+既存キャラ値を維持。ラウンド開始時のキャラを固定し、プレイ中の選択変更は不可。
+面移動版は従来のそば屋・缶のルールを維持する。
+
+選択画面は明るい紙色の背景、縦並びのキャラ一覧、あたり／はずれの3D表示。
+そば屋のビールは2銘柄を同時表示する。`DropModels` が選択画面とゲーム中の
+共通モデルを作り、ちくわの `Wiggle` とやめ太郎の `Idle` を既存のリグで再生する。
+画像に置き換えたプレビューではない。
+
+- ちくわ: `04_GAME_ASSETS/3d/props/chikuwa/game_v3/`（各32,320三角形、9ボーン）
+- ゆめみん: `04_GAME_ASSETS/3d/characters/yumemin/color_20260919/yumemin.glb`
+- やめ太郎: `04_GAME_ASSETS/3d/characters/yametaro/rig_nose_v3/yametaro.glb`
+
+すべて `assets/models/` の相対 symlink で参照し、build hook で変換。
+`madogiwa.inspectCatch` に `difficulty`、実効 `spawnInterval` / `fallSeconds` /
+`badRatio`、`dropKinds`、`visibleDropModels` を追加。`caught` / `bad` 判定は各モデルの
+`isBad` を使い、ちくわやキャラクターでも従来と同じ加点・減点・コンボ処理を行う。
+
+検証: Flutter 3.47.2 で `flutter analyze`、22 件の `flutter test`。
+Dart MCP で macOS / iPhone 18 Pro シミュレータを起動し、Marionette で
+3キャラの3Dプレビュー、ラウンド終了・再選択、キャラ別落下物と加減点を確認。
+iPhone 横画面で選択画面の全操作がスクロールなしで収まることを確認した。
+端末実機の描画負荷・起動時間の計測は未実施。

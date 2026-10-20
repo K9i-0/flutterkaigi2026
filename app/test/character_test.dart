@@ -6,26 +6,67 @@ import 'package:sobaya_beer_rain/character.dart';
 import 'package:sobaya_beer_rain/character_picker.dart';
 
 void main() {
-  test('default, selection lock and retry snapshot', () {
+  test('normal default, selection lock and retry snapshot', () {
     final g = CatchGame()..lane = true;
-    g.start();
-    expect(g.roundCharacter, CatchCharacter.sobaya);
-    expect(g.baseMoveSpeed, 2.6);
-    expect(g.baseCatchRadius, .72);
-    expect(g.selectCharacter(CatchCharacter.ctoOdatetsu), false);
-    g.phase = Phase.playing;
-    expect(g.selectCharacter(CatchCharacter.ctoOdatetsu), false);
-    g.phase = Phase.result;
-    expect(g.selectCharacter(CatchCharacter.ctoOdatetsu), true);
-    expect(g.roundCharacter, CatchCharacter.sobaya);
     g.start();
     expect(g.roundCharacter, CatchCharacter.ctoOdatetsu);
     expect(g.baseMoveSpeed, 3.4);
     expect(g.baseCatchRadius, .55);
-    // Old debug settings must not overwrite a character's base parameters.
+    expect(g.selectCharacter(CatchCharacter.fukuchan), false);
+    g.phase = Phase.playing;
+    expect(g.selectCharacter(CatchCharacter.fukuchan), false);
+    g.phase = Phase.result;
+    expect(g.selectCharacter(CatchCharacter.fukuchan), true);
+    expect(g.roundCharacter, CatchCharacter.ctoOdatetsu);
+    g.start();
+    expect(g.roundCharacter, CatchCharacter.fukuchan);
+    expect(g.baseMoveSpeed, 3.0);
+    expect(g.baseCatchRadius, .64);
     g.balance = Balance.fromMap({'moveSpeed': 5, 'catchRadius': 1.2});
-    expect(g.moveSpeed, 3.4);
-    expect(g.catchRadius, .55);
+    expect(g.moveSpeed, 3.0);
+    expect(g.catchRadius, .64);
+  });
+
+  test('character drop pools and difficulty, with reproducible layouts', () {
+    final rounds = <CatchCharacter, CatchGame>{};
+    for (final character in CatchCharacter.values) {
+      final g = CatchGame()..lane = true;
+      g.selectCharacter(character);
+      g.start(seed: 42);
+      rounds[character] = g;
+      expect(g.drops.where((d) => d.kind.isBad).map((d) => d.kind).toSet(), {
+        character.badDrop,
+      });
+      expect(
+        g.drops.where((d) => !d.kind.isBad).map((d) => d.kind).toSet(),
+        character.goodDrops.toSet(),
+      );
+      final first = g.drops
+          .map((d) => (d.x, d.spawn, d.kind, d.facing))
+          .toList();
+      g.start(seed: 42);
+      expect(
+        g.drops.map((d) => (d.x, d.spawn, d.kind, d.facing)).toList(),
+        first,
+      );
+      expect(g.drops.every((d) => d.landing <= g.roundSeconds), true);
+      g.phase = Phase.playing;
+      g.drops
+        ..clear()
+        ..add(Drop(0, character.badDrop, 0, 0, -3.1));
+      g.tick(1 / 60);
+      expect(g.bad, 1);
+      expect(g.score, -200);
+    }
+    final easy = rounds[CatchCharacter.fukuchan]!,
+        normal = rounds[CatchCharacter.ctoOdatetsu]!,
+        hard = rounds[CatchCharacter.sobaya]!;
+    expect(easy.fallSeconds, greaterThan(normal.fallSeconds));
+    expect(hard.fallSeconds, lessThan(normal.fallSeconds));
+    expect(easy.spawnInterval, greaterThan(normal.spawnInterval));
+    expect(hard.spawnInterval, lessThan(normal.spawnInterval));
+    expect(easy.badRatio, lessThan(normal.badRatio));
+    expect(hard.badRatio, greaterThan(normal.badRatio));
   });
 
   for (final character in CatchCharacter.values) {
@@ -90,7 +131,7 @@ void main() {
     expect(g.catchRadius, .55);
   });
 
-  testWidgets('picker displays stats and marks the selected character', (
+  testWidgets('picker shows difficulty and selects each character', (
     tester,
   ) async {
     var selected = CatchCharacter.sobaya;
@@ -109,9 +150,9 @@ void main() {
     expect(find.byType(Image), findsNWidgets(3));
     final portraits = tester.widgetList<Image>(find.byType(Image)).toList();
     expect(portraits.map((image) => (image.image as AssetImage).assetName), [
-      'assets/images/sobaya.jpg',
-      'assets/images/cto_odatetsu.png',
       'assets/images/fukuchan.jpg',
+      'assets/images/cto_odatetsu.png',
+      'assets/images/sobaya.jpg',
     ]);
     final positions = CatchCharacter.values
         .map(
@@ -120,14 +161,13 @@ void main() {
           ),
         )
         .toList();
-    expect(positions[0].dx, lessThan(positions[1].dx));
-    expect(positions[1].dx, lessThan(positions[2].dx));
-    expect(positions.map((p) => p.dy).toSet(), hasLength(1));
+    expect(positions[2].dy, lessThan(positions[1].dy));
+    expect(positions[1].dy, lessThan(positions[0].dy));
     for (final character in CatchCharacter.values) {
       await tester.tap(find.byKey(ValueKey('character_${character.id}')));
       await tester.pump();
       expect(selected, character);
-      expect(find.text('✓ ${character.label}'), findsOneWidget);
+      expect(find.text(character.difficulty), findsOneWidget);
     }
     expect(tester.takeException(), isNull);
   });

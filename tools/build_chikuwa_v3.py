@@ -3,17 +3,21 @@ Input images are retained, unmodified. Blender bakes seam-safe surface materials
 Run with Blender --background --factory-startup --python tools/build_chikuwa_v3.py
 """
 from pathlib import Path
-import bpy, math, json
+import bpy, math, json, sys
 from mathutils import Vector, noise
 import numpy as np
+noise.seed_set(0)
 ROOT=Path(__file__).resolve().parents[1]
-OUT=ROOT/'04_GAME_ASSETS/3d/props/chikuwa/v3'
+SOURCE=ROOT/'04_GAME_ASSETS/3d/props/chikuwa/v3'
+GAME='--game' in sys.argv
+OUT=SOURCE.parent/'game_v3' if GAME else SOURCE
 OUT.mkdir(parents=True,exist_ok=True)
-L=2.8;R=.30;B=8;N=160;M=320;MI=48
+L=2.8;R=.30;B=8
+N,M,MI=(80,160,24) if GAME else (160,320,48)
 bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False)
 
 # The generated height is interpreted as DATA, never as sRGB luminance.
-height_image=bpy.data.images.load(str(OUT/'inputs/skin_height.png'))
+height_image=bpy.data.images.load(str(SOURCE/'inputs/skin_height.png'))
 height_image.colorspace_settings.name='Non-Color'
 hw,hh=height_image.size
 pixels=np.array(height_image.pixels[:],dtype=np.float32).reshape(hh,hw,4)
@@ -125,7 +129,7 @@ def bake_color(path,name):
     nt.links.new(p.outputs['BSDF'],output.inputs['Surface']);nt.links.new(target.outputs['Color'],p.inputs['Base Color'])
     p.inputs['Roughness'].default_value=.40
     return mat
-materials=[bake_color(OUT.parent/'v2/inputs/normal_basecolor.png','normal')]
+materials=[bake_color(OUT.parent/'v2/inputs'/f'{variant}_basecolor.png',variant) for variant in ['normal','toxic']]
 # Food paste is softly matte; thin roasted skin is smoother and a little moist.
 base=bpy.data.images.get('normal_baked')
 base_rgb=np.array(base.pixels[:],dtype=np.float32).reshape(1536,1024,4)[:,:,:3]
@@ -201,12 +205,20 @@ for poly in mesh.polygons:
 inner=bpy.data.materials.new('Interior fish paste');inner.use_nodes=True
 inner_p=next(n for n in inner.node_tree.nodes if n.type=='BSDF_PRINCIPLED')
 inner_p.inputs['Base Color'].default_value=(.78,.70,.57,1);inner_p.inputs['Roughness'].default_value=.48
-for mat,name in zip(materials,['chikuwa']):
+for mat,name in zip(materials,['chikuwa','chikuwa_toxic']):
+    toxic=name.endswith('toxic')
+    cut_tex.image=bpy.data.images.get('toxic_baked' if toxic else 'normal_baked')
+    inner_p.inputs['Base Color'].default_value=(.40,.20,.52,1) if toxic else (.78,.70,.57,1)
     mesh.materials.clear();mesh.materials.append(mat);mesh.materials.append(cut);mesh.materials.append(inner)
     for poly in mesh.polygons:
         row=poly.index//N
         poly.material_index=0 if row<M else 2 if M+9<=row<M+9+MI else 1
     bpy.ops.object.select_all(action='DESELECT');obj.select_set(True);rig.select_set(True)
+    if not GAME and name=='chikuwa' and (OUT/(name+'.glb')).exists():
+        continue # Preserve the approved high-resolution normal export byte-for-byte.
     bpy.ops.export_scene.gltf(filepath=str(OUT/(name+'.glb')),export_format='GLB',use_selection=True,export_animations=True,export_skins=True,export_force_sampling=True,export_frame_range=True)
 (OUT/'build_info.json').write_text(json.dumps({'version':3,'vertices':len(verts),'triangles':len(faces)*2,'deformBones':B,'totalBones':B+1,'animation':'Wiggle','durationSeconds':1.6,'textureSize':[1024,1536],'length':L,'source':'Imagegen target/basecolor/height + Blender displacement and skin','displacementStrength':.10,'normalStrength':1.0,'microDistance':.014,'heightSmoothingPixels':10},indent=2)+'\n')
+if not GAME:
+    import runpy
+    runpy.run_path(str(ROOT/'tools/recolor_chikuwa_variant.py'),run_name='__main__')
 print('V3 COMPLETE',OUT)

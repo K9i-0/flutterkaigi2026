@@ -10,74 +10,84 @@ class CharacterPicker extends StatelessWidget {
   });
   final CatchCharacter selected;
   final ValueChanged<CatchCharacter> onSelected;
-
   @override
-  Widget build(BuildContext context) => Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
+  Widget build(BuildContext context) => Column(
+    mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      for (final character in CatchCharacter.values)
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: Semantics(
-              selected: selected == character,
-              button: true,
-              label:
-                  '${character.label}、速度 ${character.moveSpeed}、半径 ${character.catchRadius}',
-              child: InkWell(
-                key: ValueKey('character_${character.id}'),
-                borderRadius: BorderRadius.circular(12),
-                onTap: () => onSelected(character),
-                child: ExcludeSemantics(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        width: 80,
-                        height: 80,
-                        padding: const EdgeInsets.all(3),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: selected == character
-                                ? const Color(0xffffce69)
-                                : Colors.white24,
-                            width: 3,
+      for (final character in [
+        CatchCharacter.fukuchan,
+        CatchCharacter.ctoOdatetsu,
+        CatchCharacter.sobaya,
+      ])
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 3),
+          child: Semantics(
+            selected: selected == character,
+            button: true,
+            label: '${character.label}、${character.difficulty}',
+            child: InkWell(
+              key: ValueKey('character_${character.id}'),
+              onTap: () => onSelected(character),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 8,
+                ),
+                decoration: BoxDecoration(
+                  color: selected == character
+                      ? const Color(0xffe8e5df)
+                      : Colors.transparent,
+                  border: Border(
+                    left: BorderSide(
+                      width: 3,
+                      color: selected == character
+                          ? const Color(0xffc6542b)
+                          : Colors.transparent,
+                    ),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(3),
+                      child: SizedBox(
+                        width: 46,
+                        height: 46,
+                        child: Transform.scale(
+                          scale: character == CatchCharacter.fukuchan ? 1.8 : 1,
+                          alignment: Alignment.topCenter,
+                          child: Image.asset(
+                            character.portraitAsset,
+                            fit: BoxFit.cover,
+                            alignment: Alignment.topCenter,
                           ),
                         ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(6),
-                          child: Transform.scale(
-                            scale: character == CatchCharacter.fukuchan
-                                ? 1.8
-                                : 1,
-                            alignment: Alignment.topCenter,
-                            child: Image.asset(
-                              character.portraitAsset,
-                              fit: BoxFit.cover,
-                              alignment: Alignment.topCenter,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            character.label,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
-                        ),
+                          const SizedBox(height: 3),
+                          Text(
+                            character.difficulty,
+                            style: const TextStyle(
+                              fontSize: 11,
+                              color: Color(0xff72716b),
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 4),
-                      Text(
-                        '${selected == character ? '✓ ' : ''}${character.label}',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: selected == character
-                              ? const Color(0xffffce69)
-                              : null,
-                        ),
-                      ),
-                      Text(
-                        '速度 ${character.moveSpeed} / 半径 ${character.catchRadius}',
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(fontSize: 11),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
