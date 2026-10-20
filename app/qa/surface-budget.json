@@ -1,0 +1,22 @@
+[
+  {
+    "version": "yumemi-stage-before.glb",
+    "glbBytes": 6695804,
+    "meshes": 39,
+    "primitives": 39,
+    "triangles": 71872,
+    "images": 29,
+    "rgba8BaseMiB": 36.51,
+    "doubleSidedMaterials": 34
+  },
+  {
+    "version": "akasaka.glb",
+    "glbBytes": 9911924,
+    "meshes": 39,
+    "primitives": 39,
+    "triangles": 71872,
+    "images": 39,
+    "rgba8BaseMiB": 44.26,
+    "doubleSidedMaterials": 0
+  }
+]

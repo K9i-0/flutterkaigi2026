@@ -185,3 +185,19 @@ iPhone 横画面で選択画面の全操作がスクロールなしで収まる�
 生成プロンプトと採用記録: `design/title_icon_candidates/`。アプリのトップ正本は `assets/images/title-night.png`。
 
 検証: Flutter 3.47.2の静的解析と23件のテストに合格（横長画面の開始UI・標準ローディングのテストを含む）。iPhone 18 ProシミュレーターでDart MCP起動・hot restart、Marionette操作を実施。MarionetteのスクリーンショットAPIが内部エラーを返したため、画面の目視確認にはsimctlのキャプチャを使用。
+
+## ステージの質感・画質設定（2026-10-20）
+
+Imagegenで外壁3種・鉄骨・アスファルトを制作。512〜1024pxへ縮小して採用し、窓と壁の粗さを分離した材質マップ、鉄骨と路面の浅い法線マップを追加した。窓の光沢には昼夜の静的な街／空の環境マップを使い、視点で明暗が変わる。周囲の人物や車を正確に映す鏡面反射ではない。反射用の街の再描画は行わない。屋外の照明は選択画面の商品用スタジオ照明から分離した。夜は手前の照明を補い、タワーの白飛びとブルームを抑えている。
+
+選択画面とプレイ中のモニターアイコンから「画質設定」を開く。標準／軽量と、太陽の影・追加の反射・表面の凹凸・夜景の光のにじみ・高精細描画を個別に変更できる。設定は端末に保存。プレイ中のダイアログ表示はゲームを一時停止し、閉じると元の状態へ戻る。
+
+軽量は影・追加反射・法線・ブルームを無効にし、3Dの解像度を縦横80%（画素数64%）にする。UIの描画解像度とゲームのルールは変えない。テクスチャ自体は共通で読み込むため、軽量設定は主に描画処理を軽くするもので、読込メモリを解放する設定ではない。
+
+形状は39プリミティブ／71,872三角形を維持。テクスチャ展開量の増加はRGBA8ベースレベル換算で7.75MiB（mipmap・ドライバ管理分は別）。全素材は長辺1024px以下、追加の昼夜反射キューブは128px/面。`python3 tool/audit_stage_asset.py` で形状・画像の上限を検査する。素材の原画・プロンプト・再生成手順は `../04_GAME_ASSETS/3d/stages/akasaka/README.md`。
+
+### 負荷の再現測定
+
+デバッグ拡張 `madogiwa.catchAction` に `action=graphics, json={...}`（5つのbool、`persist=true`は保存する場合だけ）、`action=benchmark, label=..., timeOfDay=day|night` を追加。benchmarkはseed 1・CTOおだてつ・正面・8秒進行時点でシミュレーションを固定し、120フレーム準備後に360フレームのFlutter build/raster時間を取得する。結果は `madogiwa.inspectCatch` の `benchmark` と `STAGE_BENCHMARK` ログに出る。測定中は操作せず、終了後は再起動かstart/resumeで通常プレイへ戻る。
+
+実機／macOSのprofile起動では `--profile --dart-define=STAGE_BENCHMARK=true --dart-define=STAGE_QUALITY=light --dart-define=STAGE_TIME=night` で自動測定できる（標準／昼はそれぞれ `standard` / `day`）。これはCPU側のUI・raster時間で、GPU実行時間・表示FPSではない。今回のiPhoneシミュレーターdebug比較は傾向確認用で、実機性能・旧版との実行速度差は未計測。資産上限と比較結果は `qa/surface-budget.json` / `qa/surface-benchmarks.json` を参照。

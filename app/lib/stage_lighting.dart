@@ -4,6 +4,7 @@ import 'package:flutter_scene/scene.dart';
 import 'package:vector_math/vector_math.dart' as vm;
 
 import 'stage_time.dart';
+import 'graphics_settings.dart';
 
 /// Traffic groups exported by `tool/build_akasaka_stage.py`. Each mesh repeats
 /// with [period] along [axis], so scrolling by `(clock * speed) mod period`
@@ -100,12 +101,12 @@ const _presets = {
     fogEnd: 125,
     sun: (-.3, -1, -.45),
     sunColor: (.62, .72, 1),
-    sunIntensity: .45,
+    sunIntensity: .8,
     shadows: false,
-    environment: .32,
+    environment: .5,
     exposure: 1.25,
-    bloom: .32,
-    workLight: 7,
+    bloom: .20,
+    workLight: 10,
   ),
 };
 
@@ -124,16 +125,16 @@ Map<String, _Glow> _glowFor(StageTime t) => switch (t) {
   ),
   // Night light-up: windows, crowns and the tower's orange landmark lighting.
   StageTime.night => _glow(
-    windows: 1.7,
+    windows: 1.25,
     signs: 1.3,
     ads: 1.2,
     lamps: 3,
     cars: 2.6,
     crown: 3.2,
     skyline: 1.6,
-    tower: (1, .42, .12, 2.6),
-    towerWhite: (1, .86, .62, 2.2),
-    deck: (1, .78, .5, 4),
+    tower: (1, .34, .075, 1.7),
+    towerWhite: (1, .80, .52, 1.5),
+    deck: (1, .72, .42, 2.3),
     markings: .05,
   ),
 };
@@ -143,7 +144,12 @@ vm.Vector3 _v((double, double, double) c) => vm.Vector3(c.$1, c.$2, c.$3);
 /// Switches sky, fog, sun, shadows and emissive light-up of the Akasaka GLB,
 /// and scrolls its traffic groups.
 class StageLighting {
-  StageLighting(this.stage, this.workLights) {
+  StageLighting(
+    this.stage,
+    this.workLights,
+    this.studioEnvironment,
+    this.cityMaps,
+  ) {
     void visit(Node node) {
       final mesh = node.mesh;
       if (mesh != null) {
@@ -151,6 +157,12 @@ class StageLighting {
           final m = p.material;
           if (m is PhysicallyBasedMaterial) {
             (_materials[node.name] ??= []).add(m);
+            _surfaces[m] = (
+              normal: m.normalTexture,
+              mr: m.metallicRoughnessTexture,
+              metal: m.metallicFactor,
+              rough: m.roughnessFactor,
+            );
           }
         }
         if (_traffic.containsKey(node.name)) {
@@ -172,11 +184,22 @@ class StageLighting {
   final _materials = <String, List<PhysicallyBasedMaterial>>{};
   final _trafficNodes =
       <Node, ({(double, double) axis, double speed, double period})>{};
-  (StageTime, bool)? _applied;
+  final EnvironmentMap studioEnvironment;
+  final Map<StageTime, EnvironmentMap> cityMaps;
+  final _surfaces =
+      <
+        PhysicallyBasedMaterial,
+        ({TextureSource? normal, TextureSource? mr, double metal, double rough})
+      >{};
+  GraphicsSettings graphics = GraphicsSettings.standard;
+  (StageTime, bool, GraphicsSettings)? _applied;
   StageTime time = StageTime.day;
 
   Map<String, Object?> inspect() => {
     'timeOfDay': time.id,
+    'graphics': graphics.toMap(),
+    'renderScale': graphics.renderScale,
+    'reflectionMode': graphics.reflections ? 'static-city-ibl' : 'matte',
     'stageNodes': _materials.keys.toList()..sort(),
     'traffic': {
       for (final e in _trafficNodes.entries)
@@ -196,9 +219,20 @@ class StageLighting {
 
   /// Applies [time] once per change; [lane] false restores the plane rig.
   void apply(Scene scene, {required bool lane}) {
-    if (_applied == (time, lane)) return;
-    _applied = (time, lane);
+    if (_applied == (time, lane, graphics)) return;
+    _applied = (time, lane, graphics);
+    scene.renderScale = graphics.renderScale;
+    // Sources remain shared/loaded, but the disabled textures are no longer
+    // sampled by the material. No per-frame allocations or reflection pass.
+    for (final e in _surfaces.entries) {
+      final m = e.key, saved = e.value;
+      m.normalTexture = graphics.surfaceDetail ? saved.normal : null;
+      m.metallicRoughnessTexture = graphics.reflections ? saved.mr : null;
+      m.metallicFactor = graphics.reflections ? saved.metal : 0;
+      m.roughnessFactor = graphics.reflections ? saved.rough : .9;
+    }
     if (!lane) {
+      scene.environment = studioEnvironment;
       scene.skybox = null;
       scene.fog.enabled = false;
       scene.directionalLight = DirectionalLight(
@@ -213,6 +247,7 @@ class StageLighting {
       }
       return;
     }
+    scene.environment = cityMaps[time];
     final p = _presets[time]!;
     final sun = _v(p.sun).normalized();
     scene.skybox = Skybox(
@@ -234,7 +269,7 @@ class StageLighting {
       direction: sun,
       color: _v(p.sunColor),
       intensity: p.sunIntensity,
-      castsShadow: p.shadows,
+      castsShadow: p.shadows && graphics.shadows,
       shadowCascadeCount: 3,
       shadowMaxDistance: 85,
       shadowMapResolution: 1024,
@@ -243,7 +278,7 @@ class StageLighting {
     scene.environmentIntensity = p.environment;
     scene.exposure = p.exposure;
     scene.postProcess.bloom
-      ..enabled = p.bloom > 0
+      ..enabled = graphics.bloom && p.bloom > 0
       ..intensity = p.bloom
       ..threshold = .9;
     for (final l in workLights) {

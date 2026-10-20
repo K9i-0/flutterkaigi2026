@@ -19,13 +19,14 @@ class SelectionScreen extends StatelessWidget {
     required this.onSeed,
     required this.seed,
     this.onSettings,
+    this.onGraphics,
   });
   final CatchGame game;
   final CatchScene world;
   final ValueChanged<CatchCharacter> onSelect;
   final ValueChanged<StageTime> onTime;
   final VoidCallback onStart, onMode, onSeed;
-  final VoidCallback? onSettings;
+  final VoidCallback? onSettings, onGraphics;
   final int seed;
   static const paper = Colors.white, text = brandInk, muted = brandMuted;
 
@@ -57,7 +58,7 @@ class SelectionScreen extends StatelessWidget {
         Expanded(
           child: DropPreview(
             models: world.dropModels,
-            environment: world.scene.environment!,
+            environment: world.previewEnvironment,
             character: game.selectedCharacter,
             bad: bad,
           ),
@@ -245,6 +246,17 @@ class SelectionScreen extends StatelessWidget {
                         onPressed: onSeed,
                         icon: const Icon(Icons.shuffle, size: 17, color: muted),
                       ),
+                      if (onGraphics != null)
+                        IconButton(
+                          key: const ValueKey('graphics_settings'),
+                          tooltip: '画質設定',
+                          onPressed: onGraphics,
+                          icon: const Icon(
+                            Icons.display_settings,
+                            size: 17,
+                            color: muted,
+                          ),
+                        ),
                       if (onSettings != null)
                         IconButton(
                           key: const ValueKey('balance_debug'),

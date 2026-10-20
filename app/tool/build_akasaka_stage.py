@@ -8,9 +8,22 @@ bpy.ops.object.select_all(action='SELECT'); bpy.ops.object.delete(use_global=Fal
 materials={}; batches={}
 def material(name,color,texture=None,metal=0,glow=0,rough=.65,emit=None):
  m=bpy.data.materials.new(name); m.use_nodes=True
- p=m.node_tree.nodes.get('Principled BSDF'); p.inputs['Base Color'].default_value=(*color,1); p.inputs['Metallic'].default_value=metal; p.inputs['Roughness'].default_value=rough
+ m.use_backface_culling=True
+ p=next(n for n in m.node_tree.nodes if n.type=='BSDF_PRINCIPLED'); p.inputs['Base Color'].default_value=(*color,1); p.inputs['Metallic'].default_value=metal; p.inputs['Roughness'].default_value=rough
  if texture:
   t=m.node_tree.nodes.new('ShaderNodeTexImage'); t.image=bpy.data.images.load(str(OUT/texture)); m.node_tree.links.new(t.outputs['Color'],p.inputs['Base Color'])
+ if texture:
+  stem=Path(texture).stem
+  mr=OUT/f'{stem}_mr.png'
+  if mr.exists():
+   packed=m.node_tree.nodes.new('ShaderNodeTexImage'); packed.image=bpy.data.images.load(str(mr)); packed.image.colorspace_settings.name='Non-Color'
+   channels=m.node_tree.nodes.new('ShaderNodeSeparateColor'); m.node_tree.links.new(packed.outputs['Color'],channels.inputs['Color'])
+   m.node_tree.links.new(channels.outputs['Green'],p.inputs['Roughness']); m.node_tree.links.new(channels.outputs['Blue'],p.inputs['Metallic'])
+  normal=OUT/f'{stem}_normal.png'
+  if normal.exists():
+   tnormal=m.node_tree.nodes.new('ShaderNodeTexImage'); tnormal.image=bpy.data.images.load(str(normal)); tnormal.image.colorspace_settings.name='Non-Color'
+   bump=m.node_tree.nodes.new('ShaderNodeNormalMap'); bump.inputs['Strength'].default_value=.6
+   m.node_tree.links.new(tnormal.outputs['Color'],bump.inputs['Color']); m.node_tree.links.new(bump.outputs['Normal'],p.inputs['Normal'])
  if glow:
   p.inputs['Emission Color'].default_value=(*color,1); p.inputs['Emission Strength'].default_value=glow
   if emit:
@@ -22,7 +35,7 @@ material('concrete',(.27,.28,.3)); material('roof',(.13,.19,.22)); material('met
 material('gold',(.95,.62,.13)); material('street',(.8,.8,.8),'asphalt.png'); material('paving',(.75,.75,.75),'paving.png')
 material('marking',(.85,.84,.80),glow=.12); material('yellowline',(.95,.66,.18),glow=.15)
 material('tower',(.95,.24,.055),metal=.3,glow=.35); material('white',(.95,.78,.57),metal=.2,glow=.15)
-material('glass',(.10,.19,.23),metal=.5); material('light',(1,.62,.24),glow=1.2)
+material('glass',(.10,.19,.23),metal=.45,rough=.2); material('light',(1,.62,.24),glow=1.2)
 for i in range(6): material('facade'+str(i),(.7,.7,.7),f'facade_{i}.png',glow=1,emit=f'facade_{i}_emit.png')
 material('crown',(.9,.86,.78),glow=1)
 SIGNS=['akasaka','izakaya','soba','shika','bengoshi','fudosan']
@@ -222,7 +235,7 @@ for r0,r1 in ZROADS:
  lane_cars('traffic_xpos',r0+1,-90,90,'x',1,(4,11)); lane_cars('traffic_xneg',r1-1,-90,90,'x',-1,(4,11))
 # Elevated expressway over the cross street seen just past the beam.
 EZ,EY=-36,G+5.2
-box('concrete',0,EY,EZ,184,.5,3.8); box('roof',0,EY+.27,EZ,183.8,.04,3.6)
+box('concrete',0,EY,EZ,184,.5,3.8); box('street',0,EY+.27,EZ,183.8,.04,3.6,(4,4))
 for s in [-1,1]: box('concrete',0,EY+.55,EZ+s*1.85,184,.6,.12)
 box('marking',0,EY+.3,EZ,184,.02,.08)
 for x in range(-90,91,9):

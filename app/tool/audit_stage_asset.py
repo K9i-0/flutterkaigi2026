@@ -1,0 +1,23 @@
+"""Check geometry/texture budgets on the packaged GLB (no Blender required)."""
+import json, struct
+from pathlib import Path
+p = Path(__file__).resolve().parents[2] / '04_GAME_ASSETS/3d/stages/akasaka/akasaka.glb'
+b = p.read_bytes(); n = struct.unpack_from('<I', b, 12)[0]
+j = json.loads(b[20:20+n]); binary = b[28+n:]
+triangles = sum(j['accessors'][p['indices']]['count']//3 for m in j['meshes'] for p in m['primitives'])
+primitives = sum(len(m['primitives']) for m in j['meshes'])
+pixels = 0
+for image in j['images']:
+    v = j['bufferViews'][image['bufferView']]
+    d = binary[v.get('byteOffset', 0):][:v['byteLength']]
+    assert d[:8] == b'\x89PNG\r\n\x1a\n'
+    w, h = struct.unpack_from('>II', d, 16)
+    assert max(w, h) <= 1024, (image.get('name'), w, h)
+    pixels += w*h
+assert triangles == 71872, triangles
+assert primitives == 39, primitives
+assert pixels*4 <= 45*1024*1024, pixels*4
+assert not any(m.get('doubleSided', False) for m in j['materials'])
+assert sum('normalTexture' in m for m in j['materials']) == 2
+assert sum('metallicRoughnessTexture' in m.get('pbrMetallicRoughness', {}) for m in j['materials']) == 8
+print(json.dumps({'triangles':triangles,'primitives':primitives,'rgba8BaseMiB':pixels*4/1024/1024,'glbBytes':len(b)},indent=2))

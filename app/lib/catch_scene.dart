@@ -10,6 +10,7 @@ import 'drop_models.dart';
 import 'studio_lighting.dart';
 import 'okayaman_vision.dart';
 import 'stage_lighting.dart';
+import 'stage_environment.dart';
 
 class CatchScene {
   final scene = Scene();
@@ -38,6 +39,7 @@ class CatchScene {
     ],
   };
   late StageLighting lighting;
+  late EnvironmentMap previewEnvironment;
   final planeScenery = <Node>[], beamScenery = <Node>[];
   List<Node>? scenery;
   final dropModels = DropModels();
@@ -71,7 +73,9 @@ class CatchScene {
   ) => mesh(CuboidGeometry(vm.Vector3(w, h, d)), m, vm.Vector3(x, y, z));
   Future<void> load() async {
     await Scene.initializeStaticResources();
-    scene.environment = await beerStudioEnvironment();
+    previewEnvironment = await beerStudioEnvironment();
+    scene.environment = previewEnvironment;
+    final cityMaps = await cityEnvironments();
     scene.environmentIntensity = 1.1;
     scene.exposure = 1.15;
     scene.directionalLight = DirectionalLight(
@@ -149,7 +153,7 @@ class CatchScene {
       scene.add(node);
     }
     // Flag static shadow casters before mounting so they enter the cache.
-    lighting = StageLighting(akasaka, workLights);
+    lighting = StageLighting(akasaka, workLights, previewEnvironment, cityMaps);
     scene.add(akasaka);
     beamScenery.add(akasaka);
     scenery = null;

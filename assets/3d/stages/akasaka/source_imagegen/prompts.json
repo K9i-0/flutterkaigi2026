@@ -1,0 +1,28 @@
+{
+  "tool": "built-in image_gen",
+  "jobs": [
+    {
+      "name": "facade_0",
+      "ref": "facade_0",
+      "prompt": "Production game UV base-color texture, NOT a beauty render. Flat orthographic straight-on view, full bleed seamless edges, diffuse neutral lighting, no perspective, no strong directional baked shadow, no text or signs or people. Preserve reference grid geometry and exact count and locations of every window and floor, as existing emission map must still align. Only improve surface detail inside existing regions. Output aspect ratio 1:2 portrait. Exactly FOUR columns and EIGHT rows of windows as reference, window rectangle normalized each cell x=.1875 to .8125, y=.3125 to .875, each cell quarter of image width and eighth image height. Japanese Akasaka midrise gray-brown fine tiled concrete facade, realistic small aggregate grain, panel seams, delicate rain streaks below sills, restrained dirt, dark aluminum cross window mullions. Glass subtle blue-gray cloudy reflection and a few muted blinds, NO lit windows. Preserve 4x8 grid precisely, no top roof or bottom ground."
+    },
+    {
+      "name": "facade_3",
+      "ref": "facade_3",
+      "prompt": "Production game UV base-color texture, NOT a beauty render. Flat orthographic straight-on view, full bleed seamless edges, diffuse neutral lighting, no perspective, no strong directional baked shadow, no text or signs or people. Preserve reference grid geometry and exact count and locations of every window and floor, as existing emission map must still align. Only improve surface detail inside existing regions. Output aspect ratio 1:2 portrait. Exactly EIGHT columns and EIGHT rows of tall blue-gray curtain-wall glass panes, entire facade all glass separated by very narrow vertical dark aluminum mullions, horizontal wider floor bands matching reference. Crisp aluminum bevels, subtle variation of blue tinted glazing, soft abstract sky streaks and faint distant building reflection only within glass, a few interior blinds with neutral gray shading, NO lit windows. Exactly 8x8 panes filling image, repeatable continuous facade with no roof no ground."
+    },
+    {
+      "name": "facade_4",
+      "ref": "facade_4",
+      "prompt": "Production game UV base-color texture, NOT a beauty render. Flat orthographic straight-on view, full bleed seamless edges, diffuse neutral lighting, no perspective, no strong directional baked shadow, no text or signs or people. Preserve reference grid geometry and exact count and locations of every window and floor, as existing emission map must still align. Only improve surface detail inside existing regions. Output aspect ratio 1:2 portrait. Exactly FOUR columns and EIGHT floors matching reference. Japanese beige stone apartment facade, realistic warm pale small ceramic tile cladding, narrow vertical concrete separators, sliding dark windows, muted blinds behind subtle blue-gray glazing, shallow balcony slab across bottom of EACH row. Fine tile joints, believable gentle weathering under balconies. Each window starts .08 cell width from left and .16 cell height from top, ends .92 cell width and .75 height. NO lit rooms, no extra objects, no roof or street."
+    },
+    {
+      "name": "steel",
+      "prompt": "Production game UV texture of a flat painted steel surface only. Landscape 4:1 aspect ratio. Seamlessly tileable horizontal and vertical edges. Weathered Japanese construction steel I-beam red oxide primer with restrained orange-brown corrosion islands, worn scuffed gray metal patches and thin longitudinal scratches, fine pitting and roller paint streaks. Rich medium brown-red, not orange all over. Orthographic top-down completely flat diffuse albedo map, no beam silhouette, no rivets, bolts, geometry, text or stripe, no perspective or directional lighting, full-bleed surface. Wear fine to medium scale and natural varied pattern, usable at 1024x256."
+    },
+    {
+      "name": "asphalt",
+      "prompt": "Production game seamless square asphalt road base-color texture, top-down orthographic flat diffuse lighting. Japanese urban dark gray dry asphalt with finely crushed aggregate, subtle compressed tire-wear discoloration and two very faint patched asphalt areas, tiny irregular sealed hairline cracks. Not heavily broken, no potholes, no pebbles larger than fine gravel. Subtle charcoal gray tone with nuanced granularity, avoid excessive high contrast speckle or giant mottled circles. No white/yellow road lines, no markings, text, curbs, vehicles, shadows or perspective. All edges seamless, full bleed surface."
+    }
+  ]
+}

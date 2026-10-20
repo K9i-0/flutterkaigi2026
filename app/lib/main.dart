@@ -5,6 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app_style.dart';
 import 'entry_screen.dart';
+import 'graphics_settings.dart';
+import 'stage_benchmark.dart';
 import 'balance.dart';
 import 'balance_panel.dart';
 
@@ -53,6 +55,8 @@ class _RainState extends State<RainPage> {
     ..z = 0;
   final world = CatchScene(), tilt = TiltInput(), sound = AudioPlayer();
   bool showTitle = true;
+  GraphicsSettings graphics = GraphicsSettings.standard;
+  StageBenchmark? benchmark;
   bool ready = false,
       paused = false,
       demo = false,
@@ -66,6 +70,9 @@ class _RainState extends State<RainPage> {
   void initState() {
     super.initState();
     tilt.start();
+    if (kDebugMode || const bool.fromEnvironment('STAGE_BENCHMARK')) {
+      benchmark = StageBenchmark();
+    }
     lifecycle = AppLifecycleListener(
       onInactive: () {
         if (mounted &&
@@ -87,19 +94,36 @@ class _RainState extends State<RainPage> {
               ? 'loading'
               : game.phase.name,
           'error': error,
+          'graphics': graphics.toMap(),
+          'benchmark': benchmark?.inspect(),
           'sensor': tilt.available,
           'demo': demo,
           'paused': paused,
           ...game.inspect(),
-          ...world.inspect(),
+          if (ready) ...world.inspect(),
         }),
       );
       registerMarionetteExtension(
         name: 'madogiwa.catchAction',
-        description: 'action=select|configure|start|demo|step|rotate|pause|resume. select: character ID and/or timeOfDay=day|night. configure: json settings, seed. step seconds 0..25 x/y -1..1. Demo supplies inputs only.',
+        description: 'action=select|configure|start|demo|step|rotate|pause|resume|graphics|benchmark. graphics: json booleans, persist=true optional. benchmark: label, timeOfDay. select: character ID and/or timeOfDay=day|night. configure: json settings, seed. step seconds 0..25 x/y -1..1. Demo supplies inputs only.',
         callback: (p) async {
           if (!ready) return MarionetteExtensionResult.error(1, 'Not ready');
           switch (p['action']) {
+            case 'graphics':
+              final data =
+                  jsonDecode(p['json'] ?? '{}') as Map<String, dynamic>;
+              graphics = GraphicsSettings.fromMap({
+                ...graphics.toMap(),
+                ...data,
+              });
+              world.lighting.graphics = graphics;
+              world.update(game, 0);
+              if (p['persist'] == 'true') await saveGraphics();
+            case 'benchmark':
+              runBenchmark(
+                p['label'] ?? 'stage',
+                p['timeOfDay'] == 'night' ? StageTime.night : StageTime.day,
+              );
             case 'select':
               showTitle = false;
               final character = CatchCharacter.values
@@ -187,6 +211,14 @@ class _RainState extends State<RainPage> {
   Future<void> load() async {
     try {
       final prefs = await SharedPreferences.getInstance();
+      final visual = prefs.getString('yumemi.graphics.v1');
+      if (visual != null) {
+        try {
+          graphics = GraphicsSettings.fromMap(
+            jsonDecode(visual) as Map<String, dynamic>,
+          );
+        } catch (_) {}
+      }
       final saved = prefs.getString('beerRain.balance.v1');
       if (saved != null) {
         try {
@@ -205,12 +237,75 @@ class _RainState extends State<RainPage> {
       }
       game.seed = seed;
       await world.load();
+      world.lighting.graphics = graphics;
       world.update(game, 0);
-      if (mounted) setState(() => ready = true);
+      if (mounted) {
+        setState(() {
+          ready = true;
+          if (const bool.fromEnvironment('STAGE_BENCHMARK')) {
+            graphics = const String.fromEnvironment('STAGE_QUALITY') == 'light'
+                ? GraphicsSettings.light
+                : GraphicsSettings.standard;
+            world.lighting.graphics = graphics;
+            runBenchmark(
+              'automatic',
+              const String.fromEnvironment('STAGE_TIME') == 'night'
+                  ? StageTime.night
+                  : StageTime.day,
+            );
+          }
+        });
+      }
     } catch (e, st) {
       debugPrint('$e\n$st');
       if (mounted) setState(() => error = '$e');
     }
+  }
+
+  void runBenchmark(String label, StageTime time) {
+    // Fixed snapshot; render loop continues, simulation and camera stay fixed.
+    game.lane = true;
+    game.phase = Phase.ready;
+    game.selectCharacter(CatchCharacter.ctoOdatetsu);
+    game.selectTime(time);
+    seed = 1;
+    game.balance = Balance.defaults();
+    start();
+    world.clock = 0;
+    for (var i = 0; i < 480; i++) {
+      advance(1 / 60, 0, 0);
+      world.update(game, 1 / 60);
+    }
+    frozen = true;
+    benchmark?.start({
+      'label': label,
+      'graphics': graphics.toMap(),
+      'timeOfDay': time.id,
+    });
+  }
+
+  Future<void> saveGraphics() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('yumemi.graphics.v1', jsonEncode(graphics.toMap()));
+  }
+
+  Future<void> openGraphics() async {
+    final wasPaused = paused;
+    setState(() => paused = true);
+    final selected = await showDialog<GraphicsSettings>(
+      context: context,
+      builder: (_) => GraphicsDialog(initial: graphics),
+    );
+    if (!mounted) return;
+    setState(() {
+      paused = wasPaused;
+      if (selected != null) {
+        graphics = selected;
+        world.lighting.graphics = graphics;
+        world.update(game, 0);
+      }
+    });
+    if (selected != null) await saveGraphics();
   }
 
   Future<void> saveBalance() async {
@@ -338,6 +433,7 @@ class _RainState extends State<RainPage> {
 
   @override
   void dispose() {
+    benchmark?.dispose();
     tilt.dispose();
     lifecycle?.dispose();
     sound.dispose();
@@ -408,6 +504,7 @@ class _RainState extends State<RainPage> {
             }),
             onSeed: () => setState(() => seed++),
             onSettings: kDebugMode ? openBalance : null,
+            onGraphics: openGraphics,
           );
         }
         final playing =
@@ -481,6 +578,12 @@ class _RainState extends State<RainPage> {
                             ),
                             const SizedBox(width: 8),
                             chip('${game.score} pt', color: gold),
+                            IconButton(
+                              key: const ValueKey('graphics_settings'),
+                              tooltip: '画質設定',
+                              onPressed: openGraphics,
+                              icon: const Icon(Icons.display_settings),
+                            ),
                             if (kDebugMode)
                               IconButton(
                                 key: const ValueKey('balance_debug'),
