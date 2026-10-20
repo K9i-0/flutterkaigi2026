@@ -98,6 +98,12 @@ Marionetteからは `madogiwa.catchAction` に `action=configure`、`json`（bal
 背景正本と再生成手順: `../04_GAME_ASSETS/3d/stages/akasaka/README.md`。
 動画: `qa/akasaka_playthrough.mp4`（ローカル成果物、シミュレーターの自動入力デモ、音声なし）。デモは冒頭3秒間を正面視点に保ち、その後に缶の向きに応じてカメラを回す。
 
+## おかやまんの街頭ビジョン
+
+鉄骨編の背景ビルには「MADOGIWA VISION」を設置。おかやまんの正典写真 `02_CHARACTERS/Okayaman.jpg` を相対symlinkで参照し、広告下部の文字帯が流れる。写真そのものは静止画。画面はビルに固定され、カメラ回転に応じて見え方が変わる。面移動版では非表示。
+
+実装は `lib/okayaman_vision.dart`。写真と文字のテクスチャはロード時に生成し、毎フレームは文字帯のUVだけを更新する。`madogiwa.inspectCatch` の `vision` で表示状態・広告時間・UVオフセットを確認できる。
+
 ## キャラクター選択（#2・#3・#4）
 
 鉄骨編の開始・結果画面で選択し、「キャッチ開始」「もう一回！」で確定する。既定はそば屋。カウントダウン・プレイ中（一時停止を含む）は変更できない。キャラクター名は上部のゲーム名「蕎麦屋」と別に表示する。
