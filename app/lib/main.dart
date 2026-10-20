@@ -14,6 +14,8 @@ import 'package:marionette_flutter/marionette_flutter.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 import 'catch_game.dart';
+import 'character.dart';
+import 'character_picker.dart';
 import 'catch_scene.dart';
 import 'tilt_input.dart';
 
@@ -84,14 +86,25 @@ class _RainState extends State<RainPage> {
           'demo': demo,
           'paused': paused,
           ...game.inspect(),
+          ...world.inspect(),
         }),
       );
       registerMarionetteExtension(
         name: 'madogiwa.catchAction',
-        description: 'action=configure|start|demo|step|rotate|pause|resume. configure: json settings, seed. step seconds 0..25 x/y -1..1. Demo supplies inputs only.',
+        description: 'action=select|configure|start|demo|step|rotate|pause|resume. select: character ID. configure: json settings, seed. step seconds 0..25 x/y -1..1. Demo supplies inputs only.',
         callback: (p) async {
           if (!ready) return MarionetteExtensionResult.error(1, 'Not ready');
           switch (p['action']) {
+            case 'select':
+              final character = CatchCharacter.values
+                  .where((c) => c.id == p['character'])
+                  .firstOrNull;
+              if (character == null || !game.selectCharacter(character)) {
+                return MarionetteExtensionResult.invalidParams(
+                  'Select a known character on the ready or result screen',
+                );
+              }
+              world.update(game, 0);
             case 'configure':
               try {
                 final data =
@@ -145,8 +158,8 @@ class _RainState extends State<RainPage> {
               frozen = true;
               for (var i = 0; i < (seconds * 60).round(); i++) {
                 advance(1 / 60, x, y);
+                world.update(game, 1 / 60);
               }
-              world.update(game, 1 / 60);
             default:
               return MarionetteExtensionResult.invalidParams('Unknown action');
           }
@@ -178,6 +191,7 @@ class _RainState extends State<RainPage> {
       }
       game.seed = seed;
       await world.load();
+      world.update(game, 0);
       if (mounted) setState(() => ready = true);
     } catch (e, st) {
       debugPrint('$e\n$st');
@@ -362,12 +376,19 @@ class _RainState extends State<RainPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              game.lane ? 'そば屋のビール雨 / 赤坂・鉄骨編' : 'そば屋のビール雨',
+                              game.lane ? '蕎麦屋 / 赤坂・鉄骨編' : '蕎麦屋 / 面移動版',
                               style: TextStyle(
                                 color: cream,
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
                                 shadows: [Shadow(blurRadius: 8)],
+                              ),
+                            ),
+                            Text(
+                              'プレイヤー：${(game.lane ? (playing ? game.roundCharacter : game.selectedCharacter) : CatchCharacter.sobaya).label}',
+                              style: const TextStyle(
+                                color: cream,
+                                fontSize: 12,
                               ),
                             ),
                             const SizedBox(height: 4),
@@ -579,96 +600,113 @@ class _RainState extends State<RainPage> {
                           game.phase == Phase.result ||
                           paused)
                         Center(
-                          child: Container(
-                            width: math.min(570, size.maxWidth - 80),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 24,
-                              vertical: 18,
-                            ),
-                            decoration: BoxDecoration(
-                              color: ink.withValues(alpha: .97),
-                              borderRadius: BorderRadius.circular(22),
-                              border: Border.all(
-                                color: gold.withValues(alpha: .35),
+                          child: SingleChildScrollView(
+                            key: const ValueKey('round_menu'),
+                            child: Container(
+                              width: math.min(570, size.maxWidth - 80),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 24,
+                                vertical: 18,
                               ),
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  paused
-                                      ? 'ひと休み'
-                                      : game.phase == Phase.result
-                                      ? '${game.score} pt'
-                                      : '降ってくるのは、ビールだけ？',
-                                  style: const TextStyle(
-                                    fontSize: 27,
-                                    fontWeight: FontWeight.bold,
-                                    color: cream,
-                                  ),
+                              decoration: BoxDecoration(
+                                color: ink.withValues(alpha: .97),
+                                borderRadius: BorderRadius.circular(22),
+                                border: Border.all(
+                                  color: gold.withValues(alpha: .35),
                                 ),
-                                const SizedBox(height: 10),
-                                if (game.phase == Phase.result)
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
                                   Text(
-                                    'ビール ${game.caught}本  ／  発泡酒 ${game.bad}本  ／  取り逃し ${game.missed}本',
-                                    style: const TextStyle(color: gold),
-                                  )
-                                else if (!paused)
-                                  Text(
-                                    game.lane
-                                        ? '足場は細い鉄骨一本。左右に傾けて歩こう。\n缶の向きはばらばら。カメラで表ラベルを見て、発泡酒を避けろ！'
-                                        : '小さく傾けて、前後左右へ。\n左右のカメラボタンで見回そう。紫帯の発泡酒は避けろ！',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(fontSize: 14, height: 1.6),
+                                    paused
+                                        ? 'ひと休み'
+                                        : game.phase == Phase.result
+                                        ? '${game.score} pt'
+                                        : '降ってくるのは、ビールだけ？',
+                                    style: const TextStyle(
+                                      fontSize: 27,
+                                      fontWeight: FontWeight.bold,
+                                      color: cream,
+                                    ),
                                   ),
-                                const SizedBox(height: 12),
-                                if (!paused) legend(),
-                                if (!paused)
-                                  TextButton(
-                                    key: const ValueKey('mode_toggle'),
-                                    onPressed: () => setState(() {
-                                      game.lane = !game.lane;
-                                      start();
-                                      game.phase = Phase.ready;
-                                      world.update(game, 0);
-                                    }),
-                                    child: Text(
+                                  const SizedBox(height: 10),
+                                  if (game.phase == Phase.result)
+                                    Text(
+                                      'ビール ${game.caught}本  ／  発泡酒 ${game.bad}本  ／  取り逃し ${game.missed}本',
+                                      style: const TextStyle(color: gold),
+                                    )
+                                  else if (!paused)
+                                    Text(
                                       game.lane
-                                          ? '鉄骨編  ↔  面移動版に切替'
-                                          : '面移動版  ↔  鉄骨編に切替',
-                                    ),
-                                  ),
-                                const SizedBox(height: 12),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    button(
-                                      paused
-                                          ? '持ち方を合わせて再開'
-                                          : game.phase == Phase.result
-                                          ? 'もう一回！'
-                                          : 'キャッチ開始',
-                                      () {
-                                        if (paused) {
-                                          paused = false;
-                                          tilt.calibrate();
-                                        } else {
-                                          start();
-                                        }
-                                      },
-                                      paused ? 'resume' : 'start',
-                                    ),
-                                    if (!paused) ...[
-                                      const SizedBox(width: 10),
-                                      TextButton(
-                                        key: const ValueKey('new_seed'),
-                                        onPressed: () => setState(() => seed++),
-                                        child: Text('配置 #$seed'),
+                                          ? '足場は細い鉄骨一本。左右に傾けて歩こう。\n缶の向きはばらばら。カメラで表ラベルを見て、発泡酒を避けろ！'
+                                          : '小さく傾けて、前後左右へ。\n左右のカメラボタンで見回そう。紫帯の発泡酒は避けろ！',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        height: 1.6,
                                       ),
-                                    ],
+                                    ),
+                                  const SizedBox(height: 12),
+                                  if (!paused && game.lane) ...[
+                                    CharacterPicker(
+                                      selected: game.selectedCharacter,
+                                      onSelected: (character) => setState(() {
+                                        game.selectCharacter(character);
+                                        world.update(game, 0);
+                                      }),
+                                    ),
+                                    const SizedBox(height: 8),
                                   ],
-                                ),
-                              ],
+                                  if (!paused) legend(),
+                                  if (!paused)
+                                    TextButton(
+                                      key: const ValueKey('mode_toggle'),
+                                      onPressed: () => setState(() {
+                                        game.lane = !game.lane;
+                                        start();
+                                        game.phase = Phase.ready;
+                                        world.update(game, 0);
+                                      }),
+                                      child: Text(
+                                        game.lane
+                                            ? '鉄骨編  ↔  面移動版に切替'
+                                            : '面移動版  ↔  鉄骨編に切替',
+                                      ),
+                                    ),
+                                  const SizedBox(height: 12),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      button(
+                                        paused
+                                            ? '持ち方を合わせて再開'
+                                            : game.phase == Phase.result
+                                            ? 'もう一回！'
+                                            : 'キャッチ開始',
+                                        () {
+                                          if (paused) {
+                                            paused = false;
+                                            tilt.calibrate();
+                                          } else {
+                                            start();
+                                          }
+                                        },
+                                        paused ? 'resume' : 'start',
+                                      ),
+                                      if (!paused) ...[
+                                        const SizedBox(width: 10),
+                                        TextButton(
+                                          key: const ValueKey('new_seed'),
+                                          onPressed: () =>
+                                              setState(() => seed++),
+                                          child: Text('配置 #$seed'),
+                                        ),
+                                      ],
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),

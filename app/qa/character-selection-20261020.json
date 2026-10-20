@@ -1,0 +1,40 @@
+{
+  "date": "2026-10-20",
+  "device": "iPhone Duo / iOS 27.1 simulator",
+  "input": "demo controller, seed 1, default balance; real scoring and scene updates",
+  "rounds": [
+    {
+      "roundCharacter": "cto_odatetsu",
+      "baseMoveSpeed": 3.4,
+      "baseCatchRadius": 0.55,
+      "phase": "result",
+      "time": 20,
+      "score": 925,
+      "caught": 10,
+      "happoshu": 2,
+      "missed": 2,
+      "displayedCharacter": "cto_odatetsu"
+    },
+    {
+      "roundCharacter": "sobaya",
+      "baseMoveSpeed": 2.6,
+      "baseCatchRadius": 0.72,
+      "phase": "result",
+      "time": 20,
+      "score": 925,
+      "caught": 10,
+      "happoshu": 2,
+      "missed": 2,
+      "displayedCharacter": "sobaya"
+    }
+  ],
+  "checks": [
+    "ready/result picker tapped via Marionette",
+    "both character models visually inspected in Walk",
+    "Odatetsu Idle after stopping",
+    "selection rejected during countdown",
+    "plane retains sobaya, speed 3.5 and radius 0.72",
+    "lane selection restored after mode toggle",
+    "no runtime errors"
+  ]
+}

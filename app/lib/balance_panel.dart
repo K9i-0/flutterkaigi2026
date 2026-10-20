@@ -68,7 +68,7 @@ class _BalancePanelState extends State<BalancePanel> {
               ],
             ),
             const Text(
-              '編集中は一時停止。適用すると保存し、同じseedで最初から開始。転落なし。',
+              '編集中は一時停止。適用すると保存し、同じseedで最初から開始。鉄骨編の速度・半径はキャラクター固有値。転落なし。',
               style: TextStyle(fontSize: 12),
             ),
             Expanded(
@@ -99,7 +99,9 @@ class _BalancePanelState extends State<BalancePanel> {
                       labelText: '配置seed（同じ値で再現）',
                     ),
                   ),
-                  for (final f in Balance.fields)
+                  for (final f in Balance.fields.where(
+                    (f) => f.key != 'moveSpeed',
+                  ))
                     Row(
                       children: [
                         SizedBox(
