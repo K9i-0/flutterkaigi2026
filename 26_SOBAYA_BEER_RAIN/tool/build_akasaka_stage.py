@@ -6,35 +6,41 @@ ROOT=Path(__file__).resolve().parents[2]
 OUT=ROOT/'04_GAME_ASSETS/3d/stages/akasaka'
 bpy.ops.object.select_all(action='SELECT'); bpy.ops.object.delete(use_global=False)
 materials={}; batches={}
-def material(name,color,texture=None,metal=0,glow=0,rough=.65):
+def material(name,color,texture=None,metal=0,glow=0,rough=.65,emit=None):
  m=bpy.data.materials.new(name); m.use_nodes=True
  p=m.node_tree.nodes.get('Principled BSDF'); p.inputs['Base Color'].default_value=(*color,1); p.inputs['Metallic'].default_value=metal; p.inputs['Roughness'].default_value=rough
  if texture:
   t=m.node_tree.nodes.new('ShaderNodeTexImage'); t.image=bpy.data.images.load(str(OUT/texture)); m.node_tree.links.new(t.outputs['Color'],p.inputs['Base Color'])
  if glow:
   p.inputs['Emission Color'].default_value=(*color,1); p.inputs['Emission Strength'].default_value=glow
-  if texture: m.node_tree.links.new(t.outputs['Color'],p.inputs['Emission Color'])
- materials[name]=m; batches[name]=([],[],[])
+  if emit:
+   e=m.node_tree.nodes.new('ShaderNodeTexImage'); e.image=bpy.data.images.load(str(OUT/emit)); m.node_tree.links.new(e.outputs['Color'],p.inputs['Emission Color'])
+  elif texture: m.node_tree.links.new(t.outputs['Color'],p.inputs['Emission Color'])
+ materials[name]=m
 material('steel',(.7,.7,.7),'steel.png',.55,rough=.55)
 material('concrete',(.27,.28,.3)); material('roof',(.13,.19,.22)); material('metal',(.19,.23,.25),metal=.6)
 material('gold',(.95,.62,.13)); material('street',(.8,.8,.8),'asphalt.png'); material('paving',(.75,.75,.75),'paving.png')
 material('marking',(.85,.84,.80),glow=.12); material('yellowline',(.95,.66,.18),glow=.15)
 material('tower',(.95,.24,.055),metal=.3,glow=.35); material('white',(.95,.78,.57),metal=.2,glow=.15)
 material('glass',(.10,.19,.23),metal=.5); material('light',(1,.62,.24),glow=1.2)
-for i in range(6): material('facade'+str(i),(.7,.7,.7),f'facade_{i}.png',glow=.08)
-SIGNS=['akasaka','izakaya','yakitori','soba','karaoke','ramen']
+for i in range(6): material('facade'+str(i),(.7,.7,.7),f'facade_{i}.png',glow=1,emit=f'facade_{i}_emit.png')
+material('crown',(.9,.86,.78),glow=1)
+SIGNS=['akasaka','izakaya','soba','shika','bengoshi','fudosan']
 for n in SIGNS: material(n,(1,1,1),f'sign_{n}.png',glow=.4)
-for n in ['accidenchua','tsurai']: material('ad_'+n,(1,1,1),f'ad_{n}.png',glow=.5)
-material('car',(.10,.11,.14),metal=.5,rough=.35); material('carwhite',(.62,.64,.68),metal=.4,rough=.35)
-material('headlight',(1,.95,.82),glow=2.0); material('taillight',(1,.12,.08),glow=1.6)
+ADS=['welcome','accidenchua','safety']
+for n in ADS: material('ad_'+n,(1,1,1),f'ad_{n}.png',glow=.5)
+# Moving traffic: one atlas material, one mesh per direction group (see catch_scene.dart).
+material('car',(1,1,1),'car_atlas.png',metal=.4,glow=1,rough=.35,emit='car_atlas_emit.png')
 material('lamp',(1,.78,.45),glow=1.8); material('redlight',(1,.08,.05),glow=2.2)
-material('skyline',(.8,.8,.8),'skyline.png',glow=.05)
-def mesh(name,verts,faces,uvs=None):
- v,f,uv=batches[name]; offset=len(v); v.extend((x,-z, -14+(y+14)*.78 if name in ['tower','white','glass','light'] else y) for x,y,z in verts)
+material('skyline',(.8,.8,.8),'skyline.png',glow=1,emit='skyline_emit.png')
+def mesh(name,verts,faces,uvs=None,obj=None):
+ key=obj or name
+ if key not in batches: batches[key]=(name,[],[],[])
+ _,v,f,uv=batches[key]; offset=len(v); v.extend((x,-z, -14+(y+14)*.78 if name in ['tower','white','glass','light'] else y) for x,y,z in verts)
  for i,face in enumerate(faces):
   f.append(tuple(offset+j for j in face)); uv.append(uvs[i] if uvs else [(0,0),(1,0),(1,1),(0,1)][:len(face)])
 BOX_FACES=[(0,3,2,1),(4,5,6,7),(0,4,7,3),(1,2,6,5),(3,7,6,2),(0,1,5,4)]
-def box(name,x,y,z,w,h,d,tile=None,off=(0,0)):
+def box(name,x,y,z,w,h,d,tile=None,off=(0,0),obj=None,cell=None):
  """tile=(tu,tv) repeats the texture every tu units across and tv units up."""
  signs=[(-1,-1,-1),(1,-1,-1),(1,1,-1),(-1,1,-1),(-1,-1,1),(1,-1,1),(1,1,1),(-1,1,1)]
  vs=[(x+a*w/2,y+b*h/2,z+c*d/2) for a,b,c in signs]
@@ -48,7 +54,8 @@ def box(name,x,y,z,w,h,d,tile=None,off=(0,0)):
     u=(lx if axis==2 else lz if axis==0 else lx)*flip; v=ly if axis!=1 else lz
     return (off[0]+u/tu,off[1]+v/tv)
    uvs.append([uv(i) for i in face])
- mesh(name,vs,BOX_FACES,uvs)
+ if cell is not None: uvs=[[((cell+.5)/4,.5)]*4 for _ in BOX_FACES]
+ mesh(name,vs,BOX_FACES,uvs,obj)
 def rod(name,a,b,r=.04,n=6):
  a,b=Vector(a),Vector(b); axis=(b-a).normalized(); u=axis.cross(Vector((0,1,0)))
  if u.length<.01: u=axis.cross(Vector((1,0,0)))
@@ -60,7 +67,8 @@ FACADE=(4,8)
 box('steel',0,-.05,0,9.6,.1,.95,(4,1)); box('steel',0,-.36,0,9.6,.52,.12,(4,1)); box('steel',0,-.67,0,9.6,.1,.95,(4,1))
 for s in [-1,1]:
  box('gold',0,.004,s*.44,9.4,.008,.025)
- box('facade0',s*6,-7,0,2.7,14,4,FACADE,(.25 if s>0 else .5,.125)); box('roof',s*6,-.1,0,2.85,.2,4.1)
+ box('facade0',s*6,-7.6,0,2.7,12.8,4,FACADE,(.25 if s>0 else .5,.125)); box('concrete',s*6,-.6,0,2.74,1.2,4.04)
+ box('roof',s*6,-1.22,0,2.8,.06,4.1); box('roof',s*6,-.1,0,2.85,.2,4.1)
  box('concrete',s*7.38,.12,0,.1,.24,4.1)
  box('steel',s*4.4,.16,0,.16,.32,.94)
  # Bearing seat and end plate where the beam meets the building.
@@ -112,8 +120,9 @@ def building(x,z,w,d,h,kind,near):
  tiers=[(w,d,h)] if h<14 else [(w,d,h*.62),(w*.74,d*.74,h)]
  base=G
  for tw,td,top in tiers:
-  box(f,x,(base+G+top)/2,z,tw,G+top-base,td,FACADE,off); base=G+top
-  box('roof',x,base+.06,z,tw+.12,.12,td+.12)
+  box(f,x,(base+G+top-.4)/2,z,tw,G+top-.4-base,td,FACADE,off); base=G+top
+  box('concrete',x,base-.2,z,tw+.06,.4,td+.06); box('roof',x,base+.06,z,tw+.12,.12,td+.12)
+  if top>11 and rng.random()<.6: box('crown',x,base-.62,z,tw+.04,.16,td+.04)
  top=G+h; tw,td,_=tiers[-1]
  p=rng.random()
  if p<.35:
@@ -124,7 +133,7 @@ def building(x,z,w,d,h,kind,near):
    for sz in [-.35,.35]: rod('metal',(tx+sx,top,tz+sz),(tx+sx,top+.7,tz+sz),.04)
   rod('roof',(tx,top+.7,tz),(tx,top+1.6,tz),.55,10)
  elif p<.75 and near and h<11:
-  name='ad_'+rng.choice(['accidenchua','tsurai'])
+  name='ad_'+rng.choice(ADS)
   bw=min(tw*.9,4.2)
   box(name,x,top+1.15,z+td/2-.4,bw,bw/2.67,.08)
   for sx in [-bw/3,bw/3]: rod('metal',(x+sx,top,z+td/2-.5),(x+sx,top+.6,z+td/2-.5),.05)
@@ -167,24 +176,29 @@ for r0,r1 in ZROADS:
   if abs(x)>AVENUE+1: box('marking',x,G+.02,(r0+r1)/2,1.4,.02,.09)
 for x0,x1 in XROADS[1:]:
  for z in range(-98,38,3): box('marking',(x0+x1)/2,G+.02,z,.09,.02,1.4)
-def car(x,z,dz,y=G):
- body='carwhite' if rng.random()<.35 else 'car'
- box(body,x,y+.3,z,.85,.36,1.8); box(body,x,y+.62,z-dz*.1,.74,.3,1.0)
- box('headlight',x,y+.32,z+dz*.91,.7,.1,.04); box('taillight',x,y+.34,z-dz*.91,.74,.09,.04)
-for lane,dz in [(-3.3,1),(-1.1,1),(1.1,-1),(3.3,-1)]:
- z=-96+rng.uniform(0,4)
- while z<36:
-  if not any(r0-.5<z<r1+.5 for r0,r1 in ZROADS): car(lane,z,dz)
-  z+=rng.uniform(2.6,7)
+# Each group repeats with PERIOD along its axis so the game can scroll the
+# mesh by (time * speed) mod PERIOD without a visible seam.
+PERIOD={'traffic_zpos':24,'traffic_zneg':24,'traffic_xpos':30,'traffic_xneg':30,'traffic_hwy_xpos':27,'traffic_hwy_xneg':27}
+def car(obj,lane,t,axis,sign,y=G,s=1):
+ body=1 if rng.random()<.35 else 0
+ def b(along,up,acr,la,h,wa,cell):
+  if axis=='z': box('car',lane+acr,y+up,t+along,wa,h,la,obj=obj,cell=cell)
+  else: box('car',t+along,y+up,lane+acr,la,h,wa,obj=obj,cell=cell)
+ b(0,.3*s,0,1.8*s,.36*s,.85*s,body); b(-sign*.1,.62*s,0,1.0*s,.3*s,.74*s,body)
+ b(sign*.91*s,.32*s,0,.04,.1*s,.7*s,2); b(-sign*.91*s,.34*s,0,.04,.09*s,.74*s,3)
+def lane_cars(obj,lane,lo,hi,axis,sign,gap,y=G,s=1):
+ P=PERIOD[obj]; pattern=[]; t=rng.uniform(0,2)
+ while t<P-gap[0]: pattern.append(t); t+=rng.uniform(*gap)
+ # Cover one extra period on both ends: the offset scrolls up to P either way.
+ k=math.floor((lo-P)/P)
+ while k*P<hi+P:
+  for t in pattern:
+   if lo-P<=k*P+t<=hi+P: car(obj,lane,k*P+t,axis,sign,y,s)
+  k+=1
+for lane,sign in [(-3.3,1),(-1.1,1),(1.1,-1),(3.3,-1)]:
+ lane_cars('traffic_zpos' if sign>0 else 'traffic_zneg',lane,-96,36,'z',sign,(2.8,7))
 for r0,r1 in ZROADS:
- for lane,dx in [(r0+1,1),(r1-1,-1)]:
-  x=-90+rng.uniform(0,6)
-  while x<90:
-   if abs(x)>AVENUE+1.2:
-    body='carwhite' if rng.random()<.35 else 'car'
-    box(body,x,G+.3,lane,1.8,.36,.85); box(body,x,G+.62,lane,1.0,.3,.74)
-    box('headlight',x+dx*.91,G+.32,lane,.04,.1,.7); box('taillight',x-dx*.91,G+.34,lane,.04,.09,.74)
-   x+=rng.uniform(4,11)
+ lane_cars('traffic_xpos',r0+1,-90,90,'x',1,(4,11)); lane_cars('traffic_xneg',r1-1,-90,90,'x',-1,(4,11))
 # Elevated expressway over the cross street seen just past the beam.
 EZ,EY=-36,G+5.2
 box('concrete',0,EY,EZ,184,.5,3.8); box('roof',0,EY+.27,EZ,184,.04,3.6)
@@ -193,13 +207,8 @@ box('marking',0,EY+.3,EZ,184,.02,.08)
 for x in range(-90,91,9):
  box('concrete',x,(G+EY)/2,EZ,.9,EY-G,.9); box('concrete',x,EY-.45,EZ,1.4,.4,3.2)
  rod('metal',(x,EY+.85,EZ-1.85),(x,EY+2,EZ-1.85),.04); box('lamp',x,EY+2,EZ-1.6,.2,.08,.5)
-for lane,dx in [(EZ-.9,1),(EZ+.9,-1)]:
- x=-90+rng.uniform(0,4)
- while x<90:
-  body='carwhite' if rng.random()<.35 else 'car'
-  box(body,x,EY+.48,lane,1.7,.34,.8); box(body,x,EY+.78,lane,1.0,.28,.7)
-  box('headlight',x+dx*.86,EY+.5,lane,.04,.1,.66); box('taillight',x-dx*.86,EY+.52,lane,.04,.09,.7)
-  x+=rng.uniform(3,9)
+lane_cars('traffic_hwy_xpos',EZ-.9,-90,90,'x',1,(3,9),EY+.3,.95)
+lane_cars('traffic_hwy_xneg',EZ+.9,-90,90,'x',-1,(3,9),EY+.3,.95)
 # Distant skyline ring hides the edge of the modelled city.
 for i in range(90):
  a=-math.pi+i*math.tau/90+rng.uniform(-.02,.02)
@@ -227,10 +236,10 @@ for y,w in [(9,3.6),(16,1.9)]:
  box('glass',cx,base+y+.35,cz,w*.92,.48,w*.92)
  box('light',cx,base+y+.64,cz,w,.1,w)
 for i in range(10): rod('white' if i%2 else 'tower',(cx,base+20+i*.5,cz),(cx,base+20+(i+1)*.5,cz),.14-i*.009)
-for name,(verts,faces,uvs) in batches.items():
+for name,(mat,verts,faces,uvs) in batches.items():
  if not verts: continue
  me=bpy.data.meshes.new(name); me.from_pydata(verts,[],faces); me.update()
- ob=bpy.data.objects.new(name,me); bpy.context.collection.objects.link(ob); me.materials.append(materials[name])
+ ob=bpy.data.objects.new(name,me); bpy.context.collection.objects.link(ob); me.materials.append(materials[mat])
  uv=me.uv_layers.new(name='UVMap')
  for poly,coords in zip(me.polygons,uvs):
   for li,coord in zip(poly.loop_indices,coords): uv.data[li].uv=coord
