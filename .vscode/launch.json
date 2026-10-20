@@ -10,7 +10,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "FlutterKaigi / そば屋のビール雨 (debug)",
+      "name": "FlutterKaigi / ゆめみ入社式 (debug)",
       "type": "dart",
       "request": "launch",
       "cwd": "${workspaceFolder}/26_SOBAYA_BEER_RAIN",
