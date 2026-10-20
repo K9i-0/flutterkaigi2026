@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "vertices": 7930,
+  "triangles": 15616,
+  "deformBones": 8,
+  "totalBones": 9,
+  "animation": "Wiggle",
+  "durationSeconds": 1.6,
+  "textureSize": [
+    1024,
+    1536
+  ],
+  "length": 2.8,
+  "source": "Imagegen target and basecolors + Blender mesh and skin"
+}

@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-20",
+  "model": "chikuwa.glb",
+  "sha256": "ff3d46728c63e1203b862acb212ef700c96f778e94d9b9a8bb74f149041266dd",
+  "geometry": {
+    "triangles": 123520,
+    "bones": 9,
+    "materials": 3,
+    "loopSeconds": 1.6,
+    "result": "pass",
+    "checks": [
+      "finite positions",
+      "unit normals",
+      "valid vertex indices",
+      "normalized skin weights",
+      "valid bone indices",
+      "matching animation endpoints"
+    ]
+  },
+  "browser": {
+    "engine": "Chrome / Three.js 0.180.0",
+    "result": "pass",
+    "pageErrors": 0,
+    "httpErrors": 0,
+    "checks": [
+      "normal-only v3 default",
+      "straight rest pose",
+      "bone animation",
+      "paused amplitude stable",
+      "v1/v2/v3 switching",
+      "geometry-only mode",
+      "raking illumination",
+      "wireframe and bone overlays",
+      "390px layout without horizontal overflow",
+      "render/3D switching and control state"
+    ]
+  },
+  "notVerified": [
+    "Flutter Scene integration",
+    "mobile GPU performance",
+    "gameplay item recognition"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "source": "chikuwa.glb",
+  "sha256": "ff3d46728c63e1203b862acb212ef700c96f778e94d9b9a8bb74f149041266dd",
+  "output": "beauty.png",
+  "renderer": "Blender 5.1.2 Cycles",
+  "samples": 48,
+  "resolution": [
+    1600,
+    700
+  ],
+  "pose": "rest",
+  "camera": "orthographic",
+  "imagegen": false
+}
