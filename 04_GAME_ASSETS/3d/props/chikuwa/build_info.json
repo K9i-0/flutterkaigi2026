@@ -1,0 +1,11 @@
+{
+  "vertices": 7938,
+  "triangles": 15552,
+  "deformBones": 8,
+  "totalBones": 9,
+  "animation": "Wiggle",
+  "durationSeconds": 1.6,
+  "textureSize": 1024,
+  "length": 2.6,
+  "seed": 88
+}

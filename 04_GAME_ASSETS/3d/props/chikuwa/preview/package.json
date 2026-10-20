@@ -1,0 +1,1 @@
+{"name":"madogiwa-chikuwa-preview","private":true,"type":"module","scripts":{"prepare-preview":"node prepare.mjs","dev":"node prepare.mjs && python3 -m http.server 8766 --bind 127.0.0.1"},"dependencies":{"three":"0.180.0"}}

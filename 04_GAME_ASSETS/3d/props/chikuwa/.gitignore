@@ -1,0 +1,5 @@
+# Rebuildable texture intermediates (embedded in the GLBs).
+/*.png
+/preview/vendor/
+/preview/node_modules/
+/qa/
