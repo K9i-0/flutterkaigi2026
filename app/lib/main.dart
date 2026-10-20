@@ -62,7 +62,7 @@ class _RainState extends State<RainPage> {
       mute = false,
       frozen = false;
   String? error;
-  double inputX = 0, inputY = 0, accumulator = 0;
+  double inputX = 0, inputY = 0, accumulator = 0, swipe = 0;
   int lastEvent = 0, turn = 0, seed = 1;
   AppLifecycleListener? lifecycle;
   @override
@@ -94,7 +94,7 @@ class _RainState extends State<RainPage> {
       );
       registerMarionetteExtension(
         name: 'madogiwa.catchAction',
-        description: 'action=select|configure|start|demo|step|rotate|pause|resume. select: character ID. configure: json settings, seed. step seconds 0..25 x/y -1..1. Demo supplies inputs only.',
+        description: 'action=select|configure|start|demo|step|rotate|pause|resume. select: character ID and/or timeOfDay=day|night. configure: json settings, seed. step seconds 0..25 x/y -1..1. Demo supplies inputs only.',
         callback: (p) async {
           if (!ready) return MarionetteExtensionResult.error(1, 'Not ready');
           switch (p['action']) {
@@ -102,9 +102,17 @@ class _RainState extends State<RainPage> {
               final character = CatchCharacter.values
                   .where((c) => c.id == p['character'])
                   .firstOrNull;
-              if (character == null || !game.selectCharacter(character)) {
+              final time = StageTime.values
+                  .where((t) => t.id == p['timeOfDay'])
+                  .firstOrNull;
+              if ((p['character'] != null &&
+                      (character == null ||
+                          !game.selectCharacter(character))) ||
+                  (p['timeOfDay'] != null &&
+                      (time == null || !game.selectTime(time))) ||
+                  (character == null && time == null)) {
                 return MarionetteExtensionResult.invalidParams(
-                  'Select a known character on the ready or result screen',
+                  'Select a known character or timeOfDay=day|night on the ready or result screen',
                 );
               }
               world.update(game, 0);
@@ -299,6 +307,19 @@ class _RainState extends State<RainPage> {
   void tick(Duration elapsed, double dt) {
     if (!ready || paused || frozen) return;
     accumulator += dt.clamp(0, .1);
+    if (!tilt.available) {
+      // Simulator fallback without on-screen controls: arrow keys.
+      final keys = HardwareKeyboard.instance.logicalKeysPressed;
+      double axis(LogicalKeyboardKey neg, LogicalKeyboardKey pos) =>
+          (keys.contains(pos) ? 1.0 : 0.0) - (keys.contains(neg) ? 1.0 : 0.0);
+      inputX = axis(
+        LogicalKeyboardKey.arrowLeft,
+        LogicalKeyboardKey.arrowRight,
+      );
+      inputY = game.lane
+          ? 0
+          : axis(LogicalKeyboardKey.arrowDown, LogicalKeyboardKey.arrowUp);
+    }
     while (accumulator >= 1 / 60) {
       advance(
         1 / 60,
@@ -366,6 +387,10 @@ class _RainState extends State<RainPage> {
               game.selectCharacter(character);
               world.update(game, 0);
             }),
+            onTime: (time) => setState(() {
+              game.selectTime(time);
+              world.update(game, 0);
+            }),
             onStart: () => setState(start),
             onMode: () => setState(() {
               game.lane = false;
@@ -383,10 +408,23 @@ class _RainState extends State<RainPage> {
           children: [
             if (ready)
               Positioned.fill(
-                child: SceneView(
-                  world.scene,
-                  camera: world.camera,
-                  onTick: tick,
+                // Horizontal swipes orbit the camera; movement is tilt only.
+                child: GestureDetector(
+                  key: const ValueKey('camera_swipe'),
+                  behavior: HitTestBehavior.opaque,
+                  onHorizontalDragStart: (_) => swipe = 0,
+                  onHorizontalDragUpdate: (e) {
+                    if (!playing) return;
+                    swipe += e.delta.dx;
+                    if (swipe.abs() < 60) return;
+                    setState(() => game.rotate(swipe < 0 ? 1 : -1));
+                    swipe = 0;
+                  },
+                  child: SceneView(
+                    world.scene,
+                    camera: world.camera,
+                    onTick: tick,
+                  ),
                 ),
               ),
             if (error != null) Center(child: Text(error!)),
@@ -405,7 +443,7 @@ class _RainState extends State<RainPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              game.lane ? '蕎麦屋 / 赤坂・鉄骨編' : '蕎麦屋 / 面移動版',
+                              game.lane ? 'ゆめみ採用試験' : 'ゆめみ採用試験 / 面移動版',
                               style: TextStyle(
                                 color: cream,
                                 fontSize: 22,
@@ -418,19 +456,6 @@ class _RainState extends State<RainPage> {
                               style: const TextStyle(
                                 color: cream,
                                 fontSize: 12,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              demo
-                                  ? 'SIMULATOR / 傾き入力を再生中'
-                                  : tilt.available
-                                  ? 'TILT TO CATCH  /  傾きで移動'
-                                  : 'SIMULATOR / 左下パッドで移動',
-                              style: const TextStyle(
-                                color: gold,
-                                fontSize: 10,
-                                letterSpacing: 1,
                               ),
                             ),
                           ],
@@ -495,141 +520,6 @@ class _RainState extends State<RainPage> {
                                 : const SizedBox(),
                           ),
                         ),
-                      if (playing)
-                        Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              legend(),
-                              const SizedBox(width: 10),
-                              Text(
-                                game.lane
-                                    ? (game.roundCharacter ==
-                                              CatchCharacter.sobaya
-                                          ? '見回して表ラベルを確認'
-                                          : 'あたりの落下地点へ')
-                                    : '影の位置へ先回り',
-                                style: TextStyle(
-                                  color: cream.withValues(alpha: .8),
-                                  fontSize: 11,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      if (playing)
-                        Positioned(
-                          right: 0,
-                          bottom: 45,
-                          child: Row(
-                            children: [
-                              button(
-                                game.lane
-                                    ? '↶ ${game.balance['cameraStep'].round()}°'
-                                    : '↶ 45°',
-                                () => game.rotate(-1),
-                                'camera_left',
-                              ),
-                              const SizedBox(width: 8),
-                              button(
-                                game.lane
-                                    ? '${game.balance['cameraStep'].round()}° ↷'
-                                    : '45° ↷',
-                                () => game.rotate(1),
-                                'camera_right',
-                              ),
-                            ],
-                          ),
-                        ),
-                      if (playing)
-                        Positioned(
-                          left: 4,
-                          bottom: 35,
-                          child: GestureDetector(
-                            key: const ValueKey('move_pad'),
-                            onPanUpdate: (e) {
-                              if (demo || tilt.available) return;
-                              setState(() {
-                                inputX = ((e.localPosition.dx - 48) / 40).clamp(
-                                  -1,
-                                  1,
-                                );
-                                inputY = game.lane
-                                    ? 0
-                                    : ((48 - e.localPosition.dy) / 40).clamp(
-                                        -1,
-                                        1,
-                                      );
-                              });
-                            },
-                            onPanCancel: () => setState(() {
-                              inputX = 0;
-                              inputY = 0;
-                            }),
-                            onPanEnd: (_) => setState(() {
-                              inputX = 0;
-                              inputY = 0;
-                            }),
-                            child: Container(
-                              width: 96,
-                              height: 96,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: ink.withValues(alpha: .75),
-                                border: Border.all(
-                                  color: gold.withValues(alpha: .5),
-                                ),
-                              ),
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Icon(
-                                    tilt.available || demo
-                                        ? Icons.screen_rotation
-                                        : Icons.open_with,
-                                    color: gold.withValues(alpha: .35),
-                                    size: 32,
-                                  ),
-                                  Transform.translate(
-                                    offset: Offset(
-                                      (tilt.available && !demo
-                                              ? tilt.x
-                                              : inputX) *
-                                          28,
-                                      -(game.lane
-                                              ? 0
-                                              : tilt.available && !demo
-                                              ? tilt.y
-                                              : inputY) *
-                                          28,
-                                    ),
-                                    child: Container(
-                                      width: 15,
-                                      height: 15,
-                                      decoration: const BoxDecoration(
-                                        color: gold,
-                                        shape: BoxShape.circle,
-                                      ),
-                                    ),
-                                  ),
-                                  const Positioned(
-                                    bottom: 8,
-                                    child: Text(
-                                      'MOVE',
-                                      style: TextStyle(
-                                        fontSize: 9,
-                                        color: gold,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
                       if (game.phase == Phase.ready ||
                           game.phase == Phase.result ||
                           paused)
@@ -674,7 +564,7 @@ class _RainState extends State<RainPage> {
                                     Text(
                                       game.lane
                                           ? '足場は細い鉄骨一本。左右に傾けて歩こう。\n缶の向きはばらばら。カメラで表ラベルを見て、発泡酒を避けろ！'
-                                          : '小さく傾けて、前後左右へ。\n左右のカメラボタンで見回そう。紫帯の発泡酒は避けろ！',
+                                          : '小さく傾けて、前後左右へ。\n左右にスワイプして見回そう。紫帯の発泡酒は避けろ！',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         fontSize: 14,

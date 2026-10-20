@@ -12,6 +12,7 @@ class SelectionScreen extends StatelessWidget {
     required this.game,
     required this.world,
     required this.onSelect,
+    required this.onTime,
     required this.onStart,
     required this.onMode,
     required this.onSeed,
@@ -21,6 +22,7 @@ class SelectionScreen extends StatelessWidget {
   final CatchGame game;
   final CatchScene world;
   final ValueChanged<CatchCharacter> onSelect;
+  final ValueChanged<StageTime> onTime;
   final VoidCallback onStart, onMode, onSeed;
   final VoidCallback? onSettings;
   final int seed;
@@ -113,7 +115,7 @@ class SelectionScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '赤坂・鉄骨キャッチ',
+                              'ゆめみ採用試験',
                               style: TextStyle(
                                 fontSize: 11,
                                 color: muted,
@@ -212,10 +214,31 @@ class SelectionScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          '左右に傾けて移動。カメラで向きを確認。',
+                          '傾けて移動、スワイプで見回す。',
                           style: const TextStyle(fontSize: 11, color: muted),
                         ),
                       ),
+                      SegmentedButton<StageTime>(
+                        key: const ValueKey('time_of_day'),
+                        showSelectedIcon: false,
+                        style: SegmentedButton.styleFrom(
+                          visualDensity: VisualDensity.compact,
+                          textStyle: const TextStyle(fontSize: 12),
+                        ),
+                        segments: [
+                          for (final t in StageTime.values)
+                            ButtonSegment(
+                              value: t,
+                              label: Text(
+                                t.label,
+                                key: ValueKey('time_${t.id}'),
+                              ),
+                            ),
+                        ],
+                        selected: {game.timeOfDay},
+                        onSelectionChanged: (s) => onTime(s.single),
+                      ),
+                      const SizedBox(width: 8),
                       TextButton(
                         key: const ValueKey('mode_toggle'),
                         onPressed: onMode,

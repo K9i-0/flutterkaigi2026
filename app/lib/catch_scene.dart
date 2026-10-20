@@ -9,6 +9,7 @@ import 'character.dart';
 import 'drop_models.dart';
 import 'studio_lighting.dart';
 import 'okayaman_vision.dart';
+import 'stage_lighting.dart';
 
 class CatchScene {
   final scene = Scene();
@@ -29,21 +30,19 @@ class CatchScene {
     'motion': motions[displayedCharacter]?.controller.inspect(),
     'facing': facing,
     'vision': vision.inspect(),
+    'stage': lighting.inspect(),
     'visibleDropModels': [
       for (final slot in laneDrops)
         for (final d in slot)
           if (d.root.visible) d.kind.name,
     ],
   };
-  late Skybox twilight;
+  late StageLighting lighting;
   final planeScenery = <Node>[], beamScenery = <Node>[];
   List<Node>? scenery;
   final dropModels = DropModels();
   final laneDrops = <List<DropModel>>[];
   final cans = <Node>[], rings = <Node>[], dots = <Node>[];
-  final itemCubes = <Node>[], itemMarkers = <Node>[];
-  final itemCubeMats = <PhysicallyBasedMaterial>[];
-  final itemMarkerMats = <PhysicallyBasedMaterial>[];
   double facing = math.pi, clock = 0;
   PhysicallyBasedMaterial mat(
     double r,
@@ -135,20 +134,24 @@ class CatchScene {
     }
     final akasaka = await loadScene('assets/models/akasaka.glb');
     akasaka.rotation = vm.Quaternion.axisAngle(vm.Vector3(0, 1, 0), math.pi);
+    // Night work lights on the support-building roofs keep the beam readable.
+    final workLights = <PointLight>[];
+    for (final x in [-4.9, 4.9]) {
+      final light = PointLight(
+        color: vm.Vector3(1, .86, .66),
+        intensity: 0,
+        range: 14,
+        falloffExponent: 1.2,
+      );
+      workLights.add(light);
+      final node = Node()..position = vm.Vector3(x, 3.2, 2.4);
+      node.addComponent(PointLightComponent(light));
+      scene.add(node);
+    }
+    // Flag static shadow casters before mounting so they enter the cache.
+    lighting = StageLighting(akasaka, workLights);
     scene.add(akasaka);
     beamScenery.add(akasaka);
-    twilight = Skybox(
-      GradientSkySource(
-        zenithColor: vm.Vector3(.18, .13, .28),
-        horizonColor: vm.Vector3(.85, .42, .25),
-        groundColor: vm.Vector3(.18, .14, .21),
-        sunColor: vm.Vector3.zero(),
-      ),
-    );
-    scene.fog
-      ..color = vm.Vector3(.40, .28, .32)
-      ..start = 25
-      ..end = 115;
     scenery = null;
     for (final character in CatchCharacter.values) {
       final node = await loadScene(character.modelAsset);
@@ -217,40 +220,16 @@ class CatchScene {
         ),
       );
     }
-    for (var slot = 0; slot < 3; slot++) {
-      final cubeMat = mat(.15, .82, .72);
-      final markerMat = mat(.15, .82, .72);
-      itemCubeMats.add(cubeMat);
-      itemMarkerMats.add(markerMat);
-      final cube = Node(
-        mesh: Mesh(CuboidGeometry(vm.Vector3(.42, .42, .42)), cubeMat),
-      );
-      scene.add(cube);
-      itemCubes.add(cube);
-      itemMarkers.add(
-        mesh(
-          CuboidGeometry(vm.Vector3(.55, .02, .55)),
-          markerMat,
-          vm.Vector3.zero(),
-        ),
-      );
-    }
     await vision.load(scene);
     update(CatchGame(), 0);
   }
 
-  vm.Vector4 itemColor(ItemEffect effect) => switch (effect) {
-    ItemEffect.enlarge => vm.Vector4(.15, .82, .72, 1),
-    ItemEffect.shrink => vm.Vector4(.95, .48, .12, 1),
-    ItemEffect.speedUp => vm.Vector4(.45, .88, .22, 1),
-    ItemEffect.speedDown => vm.Vector4(.20, .42, .95, 1),
-  };
-
   void update(CatchGame g, double dt) {
     clock += dt;
     vision.update(dt, enabled: g.lane);
-    scene.skybox = g.lane ? twilight : null;
-    scene.fog.enabled = g.lane;
+    lighting.time = g.timeOfDay;
+    lighting.apply(scene, lane: g.lane);
+    lighting.update(clock);
     for (final n in planeScenery) {
       n.visible = !g.lane;
     }
@@ -313,8 +292,8 @@ class CatchScene {
       for (final model in laneDrops[i]) {
         model.root.visible = active && g.lane && visible[i].kind == model.kind;
       }
-      rings[i].visible = active;
-      dots[i].visible = active;
+      rings[i].visible = active && !g.lane;
+      dots[i].visible = active && !g.lane;
       if (!active) continue;
       final d = visible[i], age = g.time - d.spawn;
       final drop = laneDrops[i][d.kind.index];
@@ -348,30 +327,6 @@ class CatchScene {
       );
       dots[i].position = vm.Vector3(d.x, .051, d.z);
       dots[i].scale = vm.Vector3.all(1 + (1 - d.height(g.time) / 6) * .9);
-    }
-    final visibleItems = !g.lane || g.phase == Phase.ready
-        ? <ItemDrop>[]
-        : g.items.where((d) => d.visible(g.time)).toList();
-    for (var i = 0; i < itemCubes.length; i++) {
-      final active = i < visibleItems.length;
-      itemCubes[i].visible = active;
-      itemMarkers[i].visible = active;
-      if (!active) continue;
-      final d = visibleItems[i];
-      final color = itemColor(d.effect);
-      itemCubeMats[i].baseColorFactor = color;
-      itemMarkerMats[i].baseColorFactor = color;
-      final age = g.time - d.spawn;
-      itemCubes[i].position = vm.Vector3(d.x, d.height(g.time), d.z);
-      itemCubes[i].rotation = vm.Quaternion.axisAngle(
-        vm.Vector3(0, 1, 0),
-        age * 1.6 + d.id,
-      );
-      itemMarkers[i].position = vm.Vector3(d.x, .04, d.z);
-      itemMarkers[i].rotation = vm.Quaternion.axisAngle(
-        vm.Vector3(0, 1, 0),
-        math.pi / 4,
-      );
     }
   }
 }

@@ -48,51 +48,19 @@ void main() {
       b.drops.map((d) => (d.x, d.facing, d.kind)),
     );
     expect(a.drops.any((d) => d.kind.isBad), false);
-    expect(
-      a.items.map((d) => (d.effect, d.x, d.spawn, d.fallSeconds)),
-      b.items.map((d) => (d.effect, d.x, d.spawn, d.fallSeconds)),
-    );
   });
-  test('lane items keep the default can mix and reproduce from the seed', () {
+  test('lane rounds keep the default can mix for every seed', () {
     final a = CatchGame()..lane = true;
-    final b = CatchGame()..lane = true;
     a.start(seed: 987);
-    b.start(seed: 987);
     expect(a.drops.length, 16);
     expect(a.drops.where((d) => d.kind.isBad).length, 4);
     expect(a.drops.where((d) => !d.kind.isBad).length, 12);
-    expect(a.items.length, inInclusiveRange(2, 3));
-    expect(a.items.every((d) => d.z == 0), true);
-    expect(
-      a.items.every((d) => d.fallSeconds == a.balance['fallSeconds']),
-      true,
-    );
-    expect(a.items.every((d) => d.x.abs() <= 3.1), true);
-    expect(a.items.every((d) => d.landing <= a.roundSeconds + 1e-9), true);
-    expect(
-      a.items.map((d) => (d.effect, d.x, d.z, d.spawn)),
-      b.items.map((d) => (d.effect, d.x, d.z, d.spawn)),
-    );
-    final item = a.items.first;
-    expect(item.height(item.landing), closeTo(1.15, 1e-9));
-    expect(item.height(item.landing + .5), closeTo(1.15, 1e-9));
-    expect(item.visible(item.landing + .5), true);
-    expect(item.visible(item.landing + .65), false);
-    final info = a.inspect();
-    expect(info['itemCount'], a.items.length);
-    final listed = info['items'] as List<Object?>;
-    expect(listed.length, a.items.length);
-    expect((listed.first as Map)['effect'], item.effect.name);
-    expect((listed.first as Map)['landing'], item.landing);
-    final counts = <int>{};
     for (var seed = 1; seed <= 40; seed++) {
       final g = CatchGame()..lane = true;
       g.start(seed: seed);
-      counts.add(g.items.length);
       expect(g.drops.length, 16);
       expect(g.drops.where((d) => d.kind.isBad).length, 4);
     }
-    expect(counts, {2, 3});
   });
   test('maximum density fits visual pool and round resolves every drop', () {
     final g = CatchGame()..lane = true;
