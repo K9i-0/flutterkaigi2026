@@ -5,6 +5,7 @@ import 'package:madogiwa_engine/scene.dart';
 import 'package:vector_math/vector_math.dart' as vm;
 
 import 'catch_game.dart';
+import 'cached_skin.dart';
 import 'character.dart';
 import 'drop_models.dart';
 import 'studio_lighting.dart';
@@ -27,6 +28,14 @@ class CatchScene {
   final motions = <CatchCharacter, CharacterMotionPlayer>{};
   CatchCharacter displayedCharacter = CatchCharacter.sobaya;
   Map<String, Object?> inspect() => {
+    'renderer': {
+      'aa': scene.effectiveAntiAliasingMode.name,
+      'scale': scene.renderScale,
+      'shadowCascades': scene.directionalLight?.shadowCascadeCount,
+      'shadowDistance': scene.directionalLight?.shadowMaxDistance,
+      'stageVisible': lighting.stage.visible,
+      'mountedRoots': scene.root.children.length,
+    },
     'displayedCharacter': displayedCharacter.id,
     'motion': motions[displayedCharacter]?.controller.inspect(),
     'facing': facing,
@@ -44,8 +53,39 @@ class CatchScene {
   List<Node>? scenery;
   final dropModels = DropModels();
   final laneDrops = <List<DropModel>>[];
+  final _preparedDropKinds = <CanKind>{};
   final cans = <Node>[], rings = <Node>[], dots = <Node>[];
   double facing = math.pi, clock = 0;
+  // Hidden rigged models still incur a scene-tree walk. Keep reusable models
+  // off the live graph until needed; geometry, textures and animation survive.
+  void _show(Node node, bool visible) {
+    node.visible = visible;
+    if (visible && node.parent == null) {
+      scene.add(node);
+    } else if (!visible && identical(node.parent, scene.root)) {
+      scene.remove(node);
+    }
+  }
+
+  void applyRenderProbe(Map<String, String> p) {
+    lighting.configureRenderer(scene);
+    scene.antiAliasingMode = switch (p['aa']) {
+      'fxaa' => AntiAliasingMode.fxaa,
+      'none' => AntiAliasingMode.none,
+      'msaa' => AntiAliasingMode.auto,
+      _ => scene.antiAliasingMode,
+    };
+    scene.renderScale =
+        double.tryParse(p['scale'] ?? '') ?? lighting.renderScale;
+    scene.directionalLight
+      ?..shadowCascadeCount =
+          int.tryParse(p['cascades'] ?? '') ?? lighting.graphics.shadowCascades
+      ..shadowMaxDistance =
+          double.tryParse(p['shadowDistance'] ?? '') ??
+          lighting.graphics.shadowDistance
+      ..shadowMapResolution = int.tryParse(p['shadowSize'] ?? '') ?? 1024;
+  }
+
   PhysicallyBasedMaterial mat(
     double r,
     double g,
@@ -159,6 +199,7 @@ class CatchScene {
     scenery = null;
     for (final character in CatchCharacter.values) {
       final node = await loadScene(character.modelAsset);
+      cacheSkinUploads(node);
       characters[character] = node;
       scene.add(node);
       motions[character] = CharacterMotionPlayer(
@@ -191,14 +232,9 @@ class CatchScene {
         scene.add(n);
         cans.add(n);
       }
-      final slotDrops = <DropModel>[];
-      for (final kind in CanKind.values) {
-        final drop = dropModels.create(kind);
-        drop.root.visible = false;
-        scene.add(drop.root);
-        slotDrops.add(drop);
-      }
-      laneDrops.add(slotDrops);
+      // Clones are created on first use, then reused. Do not preallocate every
+      // character/item combination for all 16 slots.
+      laneDrops.add(<DropModel>[]);
       final ring = mesh(
         TorusGeometry(
           radius: .45,
@@ -235,10 +271,10 @@ class CatchScene {
     lighting.apply(scene, lane: g.lane);
     lighting.update(clock);
     for (final n in planeScenery) {
-      n.visible = !g.lane;
+      _show(n, !g.lane);
     }
     for (final n in beamScenery) {
-      n.visible = g.lane;
+      _show(n, g.lane);
     }
     displayedCharacter = !g.lane
         ? CatchCharacter.sobaya
@@ -246,9 +282,23 @@ class CatchScene {
         ? g.selectedCharacter
         : g.roundCharacter;
     for (final entry in characters.entries) {
-      entry.value.visible = entry.key == displayedCharacter;
+      _show(entry.value, entry.key == displayedCharacter);
     }
     final character = characters[displayedCharacter]!;
+    if (g.lane) {
+      // Prepare only this player's two/three item types on selection, before
+      // the countdown. Avoid first-spawn cloning during the round.
+      for (final kind in [
+        ...displayedCharacter.goodDrops,
+        displayedCharacter.badDrop,
+      ]) {
+        if (_preparedDropKinds.add(kind)) {
+          for (final slot in laneDrops) {
+            slot.add(dropModels.create(kind));
+          }
+        }
+      }
+    }
     final motion = motions[displayedCharacter]!;
     final speed = math.sqrt(g.vx * g.vx + g.vz * g.vz);
     motion.controller.select(
@@ -291,19 +341,28 @@ class CatchScene {
     for (var i = 0; i < rings.length; i++) {
       final active = i < visible.length;
       for (var kind = 0; kind < 3; kind++) {
-        cans[i * 3 + kind].visible =
-            active && !g.lane && visible[i].kind.index == kind;
+        _show(
+          cans[i * 3 + kind],
+          active && !g.lane && visible[i].kind.index == kind,
+        );
+      }
+      if (active &&
+          g.lane &&
+          !laneDrops[i].any((m) => m.kind == visible[i].kind)) {
+        laneDrops[i].add(dropModels.create(visible[i].kind));
       }
       for (final model in laneDrops[i]) {
-        model.root.visible = active && g.lane && visible[i].kind == model.kind;
+        _show(model.root, active && g.lane && visible[i].kind == model.kind);
       }
-      rings[i].visible = active && !g.lane;
-      dots[i].visible = active && !g.lane;
+      _show(rings[i], active && !g.lane);
+      _show(dots[i], active && !g.lane);
       if (!active) continue;
       final d = visible[i], age = g.time - d.spawn;
-      final drop = laneDrops[i][d.kind.index];
-      if (g.lane) drop.sample(age);
-      final can = g.lane ? drop.root : cans[i * 3 + d.kind.index];
+      final drop = g.lane
+          ? laneDrops[i].firstWhere((m) => m.kind == d.kind)
+          : null;
+      drop?.sample(age);
+      final can = drop?.root ?? cans[i * 3 + d.kind.index];
       can.position = vm.Vector3(
         d.x,
         g.lane && d.resolved && !d.caught

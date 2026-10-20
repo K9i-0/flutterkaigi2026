@@ -1,0 +1,354 @@
+[
+  {
+    "label": "standard-day",
+    "graphics": {
+      "shadows": true,
+      "reflections": true,
+      "surfaceDetail": true,
+      "bloom": true,
+      "fullResolution": true
+    },
+    "timeOfDay": "day",
+    "hide": "",
+    "probe": {},
+    "mode": "debug",
+    "frames": 360,
+    "warmupFrames": 120,
+    "physicalSize": [
+      2622.0,
+      1206.0
+    ],
+    "buildMs": {
+      "p50": 6.694,
+      "p95": 38.659,
+      "max": 67.6
+    },
+    "rasterMs": {
+      "p50": 26.511,
+      "p95": 84.145,
+      "max": 127.92
+    },
+    "submittedFps": 25.79640656775074,
+    "frameIntervalMs": {
+      "p50": 26.38,
+      "p95": 83.334,
+      "over20ms": 180
+    },
+    "renderer": {
+      "aa": "msaa",
+      "scale": 1.0,
+      "shadowCascades": 3,
+      "shadowDistance": 85.0,
+      "stageVisible": true,
+      "mountedRoots": 297
+    }
+  },
+  {
+    "label": "no-stage-day",
+    "graphics": {
+      "shadows": true,
+      "reflections": true,
+      "surfaceDetail": true,
+      "bloom": true,
+      "fullResolution": true
+    },
+    "timeOfDay": "day",
+    "hide": "stage",
+    "probe": {},
+    "mode": "debug",
+    "frames": 360,
+    "warmupFrames": 120,
+    "physicalSize": [
+      2622.0,
+      1206.0
+    ],
+    "buildMs": {
+      "p50": 6.968,
+      "p95": 9.016,
+      "max": 17.094
+    },
+    "rasterMs": {
+      "p50": 9.133,
+      "p95": 32.616,
+      "max": 49.287
+    },
+    "submittedFps": 53.71570536501692,
+    "frameIntervalMs": {
+      "p50": 16.667,
+      "p95": 33.333,
+      "over20ms": 37
+    },
+    "renderer": {
+      "aa": "msaa",
+      "scale": 1.0,
+      "shadowCascades": 3,
+      "shadowDistance": 85.0,
+      "stageVisible": false,
+      "mountedRoots": 297
+    }
+  },
+  {
+    "label": "no-character-day",
+    "graphics": {
+      "shadows": true,
+      "reflections": true,
+      "surfaceDetail": true,
+      "bloom": true,
+      "fullResolution": true
+    },
+    "timeOfDay": "day",
+    "hide": "character",
+    "probe": {},
+    "mode": "debug",
+    "frames": 360,
+    "warmupFrames": 120,
+    "physicalSize": [
+      2622.0,
+      1206.0
+    ],
+    "buildMs": {
+      "p50": 5.994,
+      "p95": 31.949,
+      "max": 64.209
+    },
+    "rasterMs": {
+      "p50": 19.98,
+      "p95": 80.272,
+      "max": 135.845
+    },
+    "submittedFps": 27.79354982160257,
+    "frameIntervalMs": {
+      "p50": 16.667,
+      "p95": 83.334,
+      "over20ms": 167
+    },
+    "renderer": {
+      "aa": "msaa",
+      "scale": 1.0,
+      "shadowCascades": 3,
+      "shadowDistance": 85.0,
+      "stageVisible": true,
+      "mountedRoots": 297
+    }
+  },
+  {
+    "label": "no-items-day",
+    "graphics": {
+      "shadows": true,
+      "reflections": true,
+      "surfaceDetail": true,
+      "bloom": true,
+      "fullResolution": true
+    },
+    "timeOfDay": "day",
+    "hide": "items",
+    "probe": {},
+    "mode": "debug",
+    "frames": 360,
+    "warmupFrames": 120,
+    "physicalSize": [
+      2622.0,
+      1206.0
+    ],
+    "buildMs": {
+      "p50": 5.141,
+      "p95": 7.623,
+      "max": 11.418
+    },
+    "rasterMs": {
+      "p50": 20.482,
+      "p95": 73.881,
+      "max": 125.805
+    },
+    "submittedFps": 29.916666666666668,
+    "frameIntervalMs": {
+      "p50": 16.667,
+      "p95": 66.668,
+      "over20ms": 170
+    },
+    "renderer": {
+      "aa": "msaa",
+      "scale": 1.0,
+      "shadowCascades": 3,
+      "shadowDistance": 85.0,
+      "stageVisible": true,
+      "mountedRoots": 297
+    }
+  },
+  {
+    "label": "no-shadows-day",
+    "graphics": {
+      "shadows": false,
+      "reflections": true,
+      "surfaceDetail": true,
+      "bloom": true,
+      "fullResolution": true
+    },
+    "timeOfDay": "day",
+    "hide": "",
+    "probe": {},
+    "mode": "debug",
+    "frames": 360,
+    "warmupFrames": 120,
+    "physicalSize": [
+      2622.0,
+      1206.0
+    ],
+    "buildMs": {
+      "p50": 5.85,
+      "p95": 18.385,
+      "max": 36.333
+    },
+    "rasterMs": {
+      "p50": 15.189,
+      "p95": 53.727,
+      "max": 92.857
+    },
+    "submittedFps": 37.52613109665049,
+    "frameIntervalMs": {
+      "p50": 16.667,
+      "p95": 50.248,
+      "over20ms": 131
+    },
+    "renderer": {
+      "aa": "msaa",
+      "scale": 1.0,
+      "shadowCascades": 3,
+      "shadowDistance": 85.0,
+      "stageVisible": true,
+      "mountedRoots": 297
+    }
+  },
+  {
+    "label": "standard-night",
+    "graphics": {
+      "shadows": true,
+      "reflections": true,
+      "surfaceDetail": true,
+      "bloom": true,
+      "fullResolution": true
+    },
+    "timeOfDay": "night",
+    "hide": "",
+    "probe": {},
+    "mode": "debug",
+    "frames": 360,
+    "warmupFrames": 120,
+    "physicalSize": [
+      2622.0,
+      1206.0
+    ],
+    "buildMs": {
+      "p50": 9.537,
+      "p95": 40.783,
+      "max": 52.172
+    },
+    "rasterMs": {
+      "p50": 20.116,
+      "p95": 41.966,
+      "max": 66.443
+    },
+    "submittedFps": 35.90782790648361,
+    "frameIntervalMs": {
+      "p50": 17.483,
+      "p95": 57.14,
+      "over20ms": 176
+    },
+    "renderer": {
+      "aa": "msaa",
+      "scale": 1.0,
+      "shadowCascades": 3,
+      "shadowDistance": 85.0,
+      "stageVisible": true,
+      "mountedRoots": 297
+    }
+  },
+  {
+    "label": "no-bloom-night",
+    "graphics": {
+      "shadows": true,
+      "reflections": true,
+      "surfaceDetail": true,
+      "bloom": false,
+      "fullResolution": true
+    },
+    "timeOfDay": "night",
+    "hide": "",
+    "probe": {},
+    "mode": "debug",
+    "frames": 360,
+    "warmupFrames": 120,
+    "physicalSize": [
+      2622.0,
+      1206.0
+    ],
+    "buildMs": {
+      "p50": 5.807,
+      "p95": 17.502,
+      "max": 35.385
+    },
+    "rasterMs": {
+      "p50": 13.338,
+      "p95": 59.193,
+      "max": 86.36
+    },
+    "submittedFps": 37.26643727565527,
+    "frameIntervalMs": {
+      "p50": 16.667,
+      "p95": 66.666,
+      "over20ms": 130
+    },
+    "renderer": {
+      "aa": "msaa",
+      "scale": 1.0,
+      "shadowCascades": 3,
+      "shadowDistance": 85.0,
+      "stageVisible": true,
+      "mountedRoots": 297
+    }
+  },
+  {
+    "label": "light-day",
+    "graphics": {
+      "shadows": false,
+      "reflections": false,
+      "surfaceDetail": false,
+      "bloom": false,
+      "fullResolution": false
+    },
+    "timeOfDay": "day",
+    "hide": "",
+    "probe": {},
+    "mode": "debug",
+    "frames": 360,
+    "warmupFrames": 120,
+    "physicalSize": [
+      2622.0,
+      1206.0
+    ],
+    "buildMs": {
+      "p50": 6.364,
+      "p95": 8.277,
+      "max": 20.618
+    },
+    "rasterMs": {
+      "p50": 11.225,
+      "p95": 41.673,
+      "max": 55.986
+    },
+    "submittedFps": 47.65486936525971,
+    "frameIntervalMs": {
+      "p50": 16.667,
+      "p95": 33.334,
+      "over20ms": 78
+    },
+    "renderer": {
+      "aa": "msaa",
+      "scale": 0.8,
+      "shadowCascades": 3,
+      "shadowDistance": 85.0,
+      "stageVisible": true,
+      "mountedRoots": 297
+    }
+  }
+]

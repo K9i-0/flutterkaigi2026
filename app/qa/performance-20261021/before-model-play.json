@@ -1,0 +1,284 @@
+[
+  {
+    "label": "final-sobaya-day",
+    "graphics": {
+      "shadows": true,
+      "reflections": true,
+      "surfaceDetail": true,
+      "bloom": true,
+      "fullResolution": false
+    },
+    "timeOfDay": "day",
+    "character": "sobaya",
+    "hide": "",
+    "animateTraffic": false,
+    "animateGameplay": true,
+    "probe": {},
+    "mode": "debug",
+    "frames": 360,
+    "warmupFrames": 120,
+    "physicalSize": [
+      2622.0,
+      1206.0
+    ],
+    "buildMs": {
+      "p50": 5.008,
+      "p95": 7.9,
+      "max": 15.994
+    },
+    "rasterMs": {
+      "p50": 0.661,
+      "p95": 10.023,
+      "max": 25.602
+    },
+    "submittedFps": 58.21622250986189,
+    "frameIntervalMs": {
+      "p50": 16.667,
+      "p95": 16.667,
+      "over20ms": 7
+    },
+    "renderer": {
+      "aa": "fxaa",
+      "scale": 0.5491990846681922,
+      "shadowCascades": 1,
+      "shadowDistance": 24.0,
+      "stageVisible": true,
+      "mountedRoots": 11
+    }
+  },
+  {
+    "label": "final-sobaya-night",
+    "graphics": {
+      "shadows": true,
+      "reflections": true,
+      "surfaceDetail": true,
+      "bloom": true,
+      "fullResolution": false
+    },
+    "timeOfDay": "night",
+    "character": "sobaya",
+    "hide": "",
+    "animateTraffic": false,
+    "animateGameplay": true,
+    "probe": {},
+    "mode": "debug",
+    "frames": 360,
+    "warmupFrames": 120,
+    "physicalSize": [
+      2622.0,
+      1206.0
+    ],
+    "buildMs": {
+      "p50": 6.069,
+      "p95": 12.473,
+      "max": 16.162
+    },
+    "rasterMs": {
+      "p50": 1.0,
+      "p95": 13.083,
+      "max": 23.309
+    },
+    "submittedFps": 56.98412698412698,
+    "frameIntervalMs": {
+      "p50": 16.667,
+      "p95": 16.668,
+      "over20ms": 11
+    },
+    "renderer": {
+      "aa": "fxaa",
+      "scale": 0.5491990846681922,
+      "shadowCascades": 1,
+      "shadowDistance": 24.0,
+      "stageVisible": true,
+      "mountedRoots": 11
+    }
+  },
+  {
+    "label": "final-cto_odatetsu-day",
+    "graphics": {
+      "shadows": true,
+      "reflections": true,
+      "surfaceDetail": true,
+      "bloom": true,
+      "fullResolution": false
+    },
+    "timeOfDay": "day",
+    "character": "cto_odatetsu",
+    "hide": "",
+    "animateTraffic": false,
+    "animateGameplay": true,
+    "probe": {},
+    "mode": "debug",
+    "frames": 360,
+    "warmupFrames": 120,
+    "physicalSize": [
+      2622.0,
+      1206.0
+    ],
+    "buildMs": {
+      "p50": 4.832,
+      "p95": 6.932,
+      "max": 16.603
+    },
+    "rasterMs": {
+      "p50": 0.81,
+      "p95": 10.697,
+      "max": 21.411
+    },
+    "submittedFps": 59.33884297520661,
+    "frameIntervalMs": {
+      "p50": 16.667,
+      "p95": 16.667,
+      "over20ms": 3
+    },
+    "renderer": {
+      "aa": "fxaa",
+      "scale": 0.5491990846681922,
+      "shadowCascades": 1,
+      "shadowDistance": 24.0,
+      "stageVisible": true,
+      "mountedRoots": 10
+    }
+  },
+  {
+    "label": "final-cto_odatetsu-night",
+    "graphics": {
+      "shadows": true,
+      "reflections": true,
+      "surfaceDetail": true,
+      "bloom": true,
+      "fullResolution": false
+    },
+    "timeOfDay": "night",
+    "character": "cto_odatetsu",
+    "hide": "",
+    "animateTraffic": false,
+    "animateGameplay": true,
+    "probe": {},
+    "mode": "debug",
+    "frames": 360,
+    "warmupFrames": 120,
+    "physicalSize": [
+      2622.0,
+      1206.0
+    ],
+    "buildMs": {
+      "p50": 6.172,
+      "p95": 11.833,
+      "max": 21.942
+    },
+    "rasterMs": {
+      "p50": 1.038,
+      "p95": 15.767,
+      "max": 21.286
+    },
+    "submittedFps": 57.13528154563828,
+    "frameIntervalMs": {
+      "p50": 16.667,
+      "p95": 16.668,
+      "over20ms": 11
+    },
+    "renderer": {
+      "aa": "fxaa",
+      "scale": 0.5491990846681922,
+      "shadowCascades": 1,
+      "shadowDistance": 24.0,
+      "stageVisible": true,
+      "mountedRoots": 10
+    }
+  },
+  {
+    "label": "final-fukuchan-day",
+    "graphics": {
+      "shadows": true,
+      "reflections": true,
+      "surfaceDetail": true,
+      "bloom": true,
+      "fullResolution": false
+    },
+    "timeOfDay": "day",
+    "character": "fukuchan",
+    "hide": "",
+    "animateTraffic": false,
+    "animateGameplay": true,
+    "probe": {},
+    "mode": "debug",
+    "frames": 360,
+    "warmupFrames": 120,
+    "physicalSize": [
+      2622.0,
+      1206.0
+    ],
+    "buildMs": {
+      "p50": 4.52,
+      "p95": 6.958,
+      "max": 13.789
+    },
+    "rasterMs": {
+      "p50": 0.71,
+      "p95": 13.948,
+      "max": 24.904
+    },
+    "submittedFps": 59.833333333333336,
+    "frameIntervalMs": {
+      "p50": 16.667,
+      "p95": 16.667,
+      "over20ms": 1
+    },
+    "renderer": {
+      "aa": "fxaa",
+      "scale": 0.5491990846681922,
+      "shadowCascades": 1,
+      "shadowDistance": 24.0,
+      "stageVisible": true,
+      "mountedRoots": 10
+    }
+  },
+  {
+    "label": "final-fukuchan-night",
+    "graphics": {
+      "shadows": true,
+      "reflections": true,
+      "surfaceDetail": true,
+      "bloom": true,
+      "fullResolution": false
+    },
+    "timeOfDay": "night",
+    "character": "fukuchan",
+    "hide": "",
+    "animateTraffic": false,
+    "animateGameplay": true,
+    "probe": {},
+    "mode": "debug",
+    "frames": 360,
+    "warmupFrames": 120,
+    "physicalSize": [
+      2622.0,
+      1206.0
+    ],
+    "buildMs": {
+      "p50": 6.142,
+      "p95": 10.943,
+      "max": 20.777
+    },
+    "rasterMs": {
+      "p50": 0.963,
+      "p95": 14.521,
+      "max": 26.844
+    },
+    "submittedFps": 58.85245901639344,
+    "frameIntervalMs": {
+      "p50": 16.667,
+      "p95": 16.667,
+      "over20ms": 4
+    },
+    "renderer": {
+      "aa": "fxaa",
+      "scale": 0.5491990846681922,
+      "shadowCascades": 1,
+      "shadowDistance": 24.0,
+      "stageVisible": true,
+      "mountedRoots": 10
+    }
+  }
+]

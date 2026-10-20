@@ -68,6 +68,9 @@ for (const [mi, mesh] of doc.meshes.entries()) for (const [pi, p] of mesh.primit
     for (let k = 0; k < 4; k++) if (weights[i*4+k] > 0) {
       const j = joints[i*4+k], n = jointNames[j] ?? '';
       if (!selectedJoints.includes(j) || /Hand|Thumb|Index|Middle|Ring|Little/.test(n)) lock[i] = 1;
+      // Recruitment-game derivative: preserve the complete face, hair, neck,
+      // and hands. Only the clothed body/legs may be simplified.
+      if (character === 'cto_odatetsu' && /Head|Neck/.test(n)) lock[i] = 1;
     }
   }
   const texInfo = mat.pbrMetallicRoughness?.baseColorTexture;
@@ -85,8 +88,9 @@ for (const [mi, mesh] of doc.meshes.entries()) for (const [pi, p] of mesh.primit
   const colorWidth = color ? widths[doc.accessors[p.attributes.COLOR_0].type] : 0;
   const painted = color && color.some((v,i) => v !== color[i % colorWidth]);
   if (painted) lock.fill(1);
-  const ratio = character === 'sobaya' ? .45 : .6;
-  const errorLimit = character === 'sobaya' && /Hair/.test(name) ? .0007 : .001;
+  const ratio = character === 'sobaya' ? .45 : character === 'cto_odatetsu' ? .65 : .6;
+  const errorLimit = character === 'cto_odatetsu' ? .0005 :
+    character === 'sobaya' && /Hair/.test(name) ? .0007 : .001;
   const [reduced, error] = preserveMaterial ? [indices, 0] : S.simplifyWithAttributes(indices,pos,3,attrs,width,attrWeights,lock,
     Math.floor(indices.length * ratio / 3)*3,errorLimit,['LockBorder','ErrorAbsolute']);
   const used = [...new Set(reduced)], remap = new Map(used.map((v,i)=>[v,i]));

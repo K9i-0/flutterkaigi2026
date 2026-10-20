@@ -3,6 +3,7 @@
 flutterkaigi2026専用キャラクター。mainへマージしない。作業はPR #20に集約。
 
 - リグ・20動作入りモデル: `rig_v1_20261014/cto_odatetsu_rig.glb`
+- ゆめみ採用試験用の可逆整理版: `game_mobile_20261021/cto_odatetsu.glb`（形状・4K画素を維持、Idle/Walk/Runのみ。元モデルは保持）
 - リグの再生成・検証: `rig_v1_20261014/README.md`
 - カメラ装備用の派生モデル: `camera_equipment_20261014/cto_odatetsu_camera.glb`（元20動作＋固定ポーズ `CameraCarry`）
 - 装備位置・握り・再生成: `camera_equipment_20261014/README.md` と `attachment.json`

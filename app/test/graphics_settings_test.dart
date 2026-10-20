@@ -12,8 +12,16 @@ void main() {
       GraphicsSettings.fromMap({'shadows': 'invalid', 'bloom': false}).shadows,
       true,
     );
-    expect(GraphicsSettings.standard.renderScale, 1);
-    expect(GraphicsSettings.light.renderScale, .8);
+    expect(
+      GraphicsSettings.standard.renderScaleFor(2622),
+      closeTo(1440 / 2622, 1e-9),
+    );
+    expect(GraphicsSettings.standard.renderScaleFor(1280), 1);
+    expect(GraphicsSettings.highQuality.renderScaleFor(2622), 1);
+    expect(
+      GraphicsSettings.fromMap(GraphicsSettings.highQuality.toMap()),
+      GraphicsSettings.highQuality,
+    );
     expect(
       GraphicsSettings.light.withOption('reflections', true).reflections,
       true,

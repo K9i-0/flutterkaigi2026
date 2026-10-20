@@ -7,9 +7,10 @@ class GraphicsSettings {
     this.reflections = true,
     this.surfaceDetail = true,
     this.bloom = true,
-    this.fullResolution = true,
+    this.fullResolution = false,
   });
   static const standard = GraphicsSettings();
+  static const highQuality = GraphicsSettings(fullResolution: true);
   static const light = GraphicsSettings(
     shadows: false,
     reflections: false,
@@ -18,7 +19,11 @@ class GraphicsSettings {
     fullResolution: false,
   );
   final bool shadows, reflections, surfaceDetail, bloom, fullResolution;
-  double get renderScale => fullResolution ? 1 : .8;
+  // Cap the 3D image, not the Flutter UI. Smaller displays stay native.
+  double renderScaleFor(double longestSide) =>
+      fullResolution || longestSide <= 1440 ? 1 : 1440 / longestSide;
+  int get shadowCascades => fullResolution ? 3 : 1;
+  double get shadowDistance => fullResolution ? 85 : 24;
   Map<String, bool> toMap() => {
     'shadows': shadows,
     'reflections': reflections,
@@ -33,7 +38,7 @@ class GraphicsSettings {
       reflections: read('reflections'),
       surfaceDetail: read('surfaceDetail'),
       bloom: read('bloom'),
-      fullResolution: read('fullResolution'),
+      fullResolution: map['fullResolution'] == true,
     );
   }
   GraphicsSettings withOption(String key, bool value) =>
@@ -82,6 +87,15 @@ class _GraphicsDialogState extends State<GraphicsDialog> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: OutlinedButton(
+                    key: const ValueKey('graphics_high'),
+                    onPressed: () =>
+                        setState(() => settings = GraphicsSettings.highQuality),
+                    child: const Text('高画質'),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: OutlinedButton(
                     key: const ValueKey('graphics_light'),
                     onPressed: () =>
                         setState(() => settings = GraphicsSettings.light),
@@ -95,7 +109,7 @@ class _GraphicsDialogState extends State<GraphicsDialog> {
               ('reflections', 'ガラス・金属の反射', '空と街明かりの映り込み'),
               ('surfaceDetail', '表面の凹凸', '鉄骨・路面の細かな質感'),
               ('bloom', '夜景の光のにじみ', '夜の照明を柔らかく'),
-              ('fullResolution', '高精細描画', 'オフで3Dの解像度を80%に。文字は鮮明なまま'),
+              ('fullResolution', '高精細描画', 'オンで細部と遠くの影を優先。オフでなめらかさを優先'),
             ])
               SwitchListTile(
                 key: ValueKey('graphics_${option.$1}'),

@@ -36,6 +36,13 @@ class StageBenchmark {
       }
 
       final view = PlatformDispatcher.instance.views.first;
+      final starts = _frames
+          .map((f) => f.timestampInMicroseconds(FramePhase.vsyncStart))
+          .toList();
+      final intervals = [
+        for (var i = 1; i < starts.length; i++)
+          (starts[i] - starts[i - 1]) / 1000,
+      ]..sort();
       result = {
         ...metadata,
         'mode': kProfileMode
@@ -48,6 +55,13 @@ class StageBenchmark {
         'physicalSize': [view.physicalSize.width, view.physicalSize.height],
         'buildMs': stats((f) => f.buildDuration),
         'rasterMs': stats((f) => f.rasterDuration),
+        'submittedFps':
+            1000000 * (starts.length - 1) / (starts.last - starts.first),
+        'frameIntervalMs': {
+          'p50': intervals[intervals.length ~/ 2],
+          'p95': intervals[(intervals.length * .95).floor()],
+          'over20ms': intervals.where((t) => t > 20).length,
+        },
       };
       active = false;
       debugPrint('STAGE_BENCHMARK ${jsonEncode(result)}');

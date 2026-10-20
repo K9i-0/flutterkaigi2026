@@ -1,0 +1,150 @@
+[
+  {
+    "label": "active-original-day",
+    "graphics": {
+      "shadows": true,
+      "reflections": true,
+      "surfaceDetail": true,
+      "bloom": true,
+      "fullResolution": true
+    },
+    "timeOfDay": "day",
+    "character": "cto_odatetsu",
+    "hide": "",
+    "animateTraffic": false,
+    "animateGameplay": true,
+    "probe": {},
+    "mode": "debug",
+    "frames": 360,
+    "warmupFrames": 120,
+    "physicalSize": [
+      2622.0,
+      1206.0
+    ],
+    "buildMs": {
+      "p50": 3.647,
+      "p95": 8.642,
+      "max": 11.412
+    },
+    "rasterMs": {
+      "p50": 4.851,
+      "p95": 72.096,
+      "max": 100.833
+    },
+    "submittedFps": 29.226595094344507,
+    "frameIntervalMs": {
+      "p50": 16.667,
+      "p95": 66.667,
+      "over20ms": 172
+    },
+    "renderer": {
+      "aa": "msaa",
+      "scale": 1.0,
+      "shadowCascades": 3,
+      "shadowDistance": 85.0,
+      "stageVisible": true,
+      "mountedRoots": 11
+    }
+  },
+  {
+    "label": "active-fxaa-day",
+    "graphics": {
+      "shadows": true,
+      "reflections": true,
+      "surfaceDetail": true,
+      "bloom": true,
+      "fullResolution": true
+    },
+    "timeOfDay": "day",
+    "character": "cto_odatetsu",
+    "hide": "",
+    "animateTraffic": false,
+    "animateGameplay": true,
+    "probe": {
+      "aa": "fxaa"
+    },
+    "mode": "debug",
+    "frames": 360,
+    "warmupFrames": 120,
+    "physicalSize": [
+      2622.0,
+      1206.0
+    ],
+    "buildMs": {
+      "p50": 3.78,
+      "p95": 8.645,
+      "max": 25.548
+    },
+    "rasterMs": {
+      "p50": 10.622,
+      "p95": 62.947,
+      "max": 88.817
+    },
+    "submittedFps": 32.8353668547368,
+    "frameIntervalMs": {
+      "p50": 16.667,
+      "p95": 66.666,
+      "over20ms": 170
+    },
+    "renderer": {
+      "aa": "fxaa",
+      "scale": 1.0,
+      "shadowCascades": 3,
+      "shadowDistance": 85.0,
+      "stageVisible": true,
+      "mountedRoots": 11
+    }
+  },
+  {
+    "label": "active-fxaa-80-day",
+    "graphics": {
+      "shadows": true,
+      "reflections": true,
+      "surfaceDetail": true,
+      "bloom": true,
+      "fullResolution": true
+    },
+    "timeOfDay": "day",
+    "character": "cto_odatetsu",
+    "hide": "",
+    "animateTraffic": false,
+    "animateGameplay": true,
+    "probe": {
+      "aa": "fxaa",
+      "scale": ".8",
+      "cascades": "1",
+      "shadowDistance": "24"
+    },
+    "mode": "debug",
+    "frames": 360,
+    "warmupFrames": 120,
+    "physicalSize": [
+      2622.0,
+      1206.0
+    ],
+    "buildMs": {
+      "p50": 3.721,
+      "p95": 6.542,
+      "max": 12.04
+    },
+    "rasterMs": {
+      "p50": 9.66,
+      "p95": 36.48,
+      "max": 50.067
+    },
+    "submittedFps": 51.110893126552995,
+    "frameIntervalMs": {
+      "p50": 16.667,
+      "p95": 33.334,
+      "over20ms": 58
+    },
+    "renderer": {
+      "aa": "fxaa",
+      "scale": 0.8,
+      "shadowCascades": 1,
+      "shadowDistance": 24.0,
+      "stageVisible": true,
+      "mountedRoots": 11
+    }
+  }
+]

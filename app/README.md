@@ -190,9 +190,9 @@ iPhone 横画面で選択画面の全操作がスクロールなしで収まる�
 
 Imagegenで外壁3種・鉄骨・アスファルトを制作。512〜1024pxへ縮小して採用し、窓と壁の粗さを分離した材質マップ、鉄骨と路面の浅い法線マップを追加した。窓の光沢には昼夜の静的な街／空の環境マップを使い、視点で明暗が変わる。周囲の人物や車を正確に映す鏡面反射ではない。反射用の街の再描画は行わない。屋外の照明は選択画面の商品用スタジオ照明から分離した。夜は手前の照明を補い、タワーの白飛びとブルームを抑えている。
 
-選択画面とプレイ中のモニターアイコンから「画質設定」を開く。標準／軽量と、太陽の影・追加の反射・表面の凹凸・夜景の光のにじみ・高精細描画を個別に変更できる。設定は端末に保存。プレイ中のダイアログ表示はゲームを一時停止し、閉じると元の状態へ戻る。
+選択画面とプレイ中のモニターアイコンから「画質設定」を開く。標準／高画質／軽量と、太陽の影・追加の反射・表面の凹凸・夜景の光のにじみ・高精細描画を個別に変更できる。設定は端末に保存。プレイ中のダイアログ表示はゲームを一時停止し、閉じると元の状態へ戻る。
 
-軽量は影・追加反射・法線・ブルームを無効にし、3Dの解像度を縦横80%（画素数64%）にする。UIの描画解像度とゲームのルールは変えない。テクスチャ自体は共通で読み込むため、軽量設定は主に描画処理を軽くするもので、読込メモリを解放する設定ではない。
+標準は3Dの長辺を最大1440pxにし、FXAAと近景1カスケードの影（距離24）を使用。200m下の車は動きと受ける影を維持し、個別の影の生成を省く。高画質は端末解像度・MSAA・遠景までの3カスケード影（距離85）へ戻す。軽量は標準の解像度で影・追加反射・法線・ブルームも無効にする。UIは端末解像度のまま。元の画像素材、キャラクターと落下物の形状・テクスチャ・動作更新頻度は維持する。素材自体は共通で読み込むため、画質設定で読込メモリを解放するわけではない。
 
 解像度最適化時は39プリミティブ／71,872三角形を維持（後述のタワー改修後は68,752三角形）。配布GLBの画像はiPhone横表示向けに用途別に縮小し、RGBA8ベースレベル換算44.26→13.13MiB（約70%減、mipmap・ドライバ管理分は別）。近い支持ビルの色画像は維持し、遠景外壁・発光・材質データなどを縮小。元PNGとImagegen原画は変更しない。追加の昼夜反射キューブは128px/面。Blender書き出し後に `uv run --with pillow python tool/optimize_stage_textures.py` を実行し、`python3 tool/audit_stage_asset.py` で14MiBの画像上限を検査する。素材の原画・プロンプト・再生成手順は `../04_GAME_ASSETS/3d/stages/akasaka/README.md`。サイズ比較は `qa/texture-resolution.json`。
 
@@ -203,6 +203,14 @@ Imagegenで外壁3種・鉄骨・アスファルトを制作。512〜1024pxへ�
 ### 負荷の再現測定
 
 デバッグ拡張 `madogiwa.catchAction` に `action=graphics, json={...}`（5つのbool、`persist=true`は保存する場合だけ）、`action=benchmark, label=..., timeOfDay=day|night` を追加。benchmarkはseed 1・CTOおだてつ・正面・8秒進行時点でシミュレーションを固定し、120フレーム準備後に360フレームのFlutter build/raster時間を取得する。結果は `madogiwa.inspectCatch` の `benchmark` と `STAGE_BENCHMARK` ログに出る。測定中は操作せず、終了後は再起動かstart/resumeで通常プレイへ戻る。
+
+2026-10-21: `character=sobaya|cto_odatetsu|fukuchan`、`animateGameplay=true`（実際の固定時間刻みで移動・落下・接触・描画を進め、6〜16秒区間を繰り返す）、`orbit=true`（左右60度の範囲でカメラを回す）を追加。`animateTraffic=true`は車だけ動かす比較。`hide=traffic|stage|character|items|all3d`、`aa`・`scale`・`cascades`・`shadowDistance`・`shadowSize`は診断用。`tool/perf_probe.py VM_URI OUTPUT.json final`で3人×昼夜、`orbit`で回転、`traffic`で車の停止／移動／非表示を比較できる。測定データと条件は [qa/performance-20261021/README.md](qa/performance-20261021/README.md)。
+
+vsync時刻から算出する`submittedFps`とフレーム間隔も記録する。これはFlutterが送出したフレームの頻度で、GPU実行時間や実機ディスプレイへの提示FPSではない。iPhoneシミュレーターdebugの結果を実機profile性能として扱わない。
+
+同日の処理整理: HUDは表示内容が変わるときだけ更新し、3DをRepaintBoundaryへ分離。使用していないモデルは保持しながらライブシーングラフから外す。骨のGPU行列がfloat32で完全に同じ場合だけ転送を再利用する。道路の白線を上面だけにし、車体の底面とライトの不要面を省いて、背景65,220→45,254三角形・GLB6,637,600→5,240,224 bytes。車の台数・動きは維持する。
+
+おだてつは [ゲーム専用の可逆整理版](../04_GAME_ASSETS/3d/characters/cto_odatetsu/game_mobile_20261021/README.md) へ切り替えた。形状・4K画素・骨は同じで、使用するIdle/Walk/Runだけを同梱。20.35→14.15MB。元の20動作入り正本は保持。控えめな身体簡略化は約1.3%の削減だったため不採用とした。
 
 実機／macOSのprofile起動では `--profile --dart-define=STAGE_BENCHMARK=true --dart-define=STAGE_QUALITY=light --dart-define=STAGE_TIME=night` で自動測定できる（標準／昼はそれぞれ `standard` / `day`）。これはCPU側のUI・raster時間で、GPU実行時間・表示FPSではない。今回のiPhoneシミュレーターdebug比較は傾向確認用で、実機性能・旧版との実行速度差は未計測。資産上限と比較結果は `qa/surface-budget.json` / `qa/surface-benchmarks.json` を参照。
 

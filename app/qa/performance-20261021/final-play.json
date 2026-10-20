@@ -1,0 +1,290 @@
+[
+  {
+    "label": "final-sobaya-day",
+    "graphics": {
+      "shadows": true,
+      "reflections": true,
+      "surfaceDetail": true,
+      "bloom": true,
+      "fullResolution": false
+    },
+    "timeOfDay": "day",
+    "character": "sobaya",
+    "hide": "",
+    "animateTraffic": false,
+    "animateGameplay": true,
+    "orbit": false,
+    "probe": {},
+    "mode": "debug",
+    "frames": 360,
+    "warmupFrames": 120,
+    "physicalSize": [
+      2622.0,
+      1206.0
+    ],
+    "buildMs": {
+      "p50": 5.6,
+      "p95": 8.579,
+      "max": 22.822
+    },
+    "rasterMs": {
+      "p50": 0.748,
+      "p95": 16.058,
+      "max": 27.818
+    },
+    "submittedFps": 56.53543307086614,
+    "frameIntervalMs": {
+      "p50": 16.667,
+      "p95": 16.668,
+      "over20ms": 13
+    },
+    "renderer": {
+      "aa": "fxaa",
+      "scale": 0.5491990846681922,
+      "shadowCascades": 1,
+      "shadowDistance": 24.0,
+      "stageVisible": true,
+      "mountedRoots": 11
+    }
+  },
+  {
+    "label": "final-sobaya-night",
+    "graphics": {
+      "shadows": true,
+      "reflections": true,
+      "surfaceDetail": true,
+      "bloom": true,
+      "fullResolution": false
+    },
+    "timeOfDay": "night",
+    "character": "sobaya",
+    "hide": "",
+    "animateTraffic": false,
+    "animateGameplay": true,
+    "orbit": false,
+    "probe": {},
+    "mode": "debug",
+    "frames": 360,
+    "warmupFrames": 120,
+    "physicalSize": [
+      2622.0,
+      1206.0
+    ],
+    "buildMs": {
+      "p50": 6.349,
+      "p95": 12.305,
+      "max": 18.725
+    },
+    "rasterMs": {
+      "p50": 0.816,
+      "p95": 14.41,
+      "max": 21.324
+    },
+    "submittedFps": 57.44,
+    "frameIntervalMs": {
+      "p50": 16.667,
+      "p95": 16.668,
+      "over20ms": 10
+    },
+    "renderer": {
+      "aa": "fxaa",
+      "scale": 0.5491990846681922,
+      "shadowCascades": 1,
+      "shadowDistance": 24.0,
+      "stageVisible": true,
+      "mountedRoots": 11
+    }
+  },
+  {
+    "label": "final-cto_odatetsu-day",
+    "graphics": {
+      "shadows": true,
+      "reflections": true,
+      "surfaceDetail": true,
+      "bloom": true,
+      "fullResolution": false
+    },
+    "timeOfDay": "day",
+    "character": "cto_odatetsu",
+    "hide": "",
+    "animateTraffic": false,
+    "animateGameplay": true,
+    "orbit": false,
+    "probe": {},
+    "mode": "debug",
+    "frames": 360,
+    "warmupFrames": 120,
+    "physicalSize": [
+      2622.0,
+      1206.0
+    ],
+    "buildMs": {
+      "p50": 4.729,
+      "p95": 7.589,
+      "max": 15.66
+    },
+    "rasterMs": {
+      "p50": 0.854,
+      "p95": 14.526,
+      "max": 30.914
+    },
+    "submittedFps": 59.50275585604908,
+    "frameIntervalMs": {
+      "p50": 16.667,
+      "p95": 16.668,
+      "over20ms": 2
+    },
+    "renderer": {
+      "aa": "fxaa",
+      "scale": 0.5491990846681922,
+      "shadowCascades": 1,
+      "shadowDistance": 24.0,
+      "stageVisible": true,
+      "mountedRoots": 10
+    }
+  },
+  {
+    "label": "final-cto_odatetsu-night",
+    "graphics": {
+      "shadows": true,
+      "reflections": true,
+      "surfaceDetail": true,
+      "bloom": true,
+      "fullResolution": false
+    },
+    "timeOfDay": "night",
+    "character": "cto_odatetsu",
+    "hide": "",
+    "animateTraffic": false,
+    "animateGameplay": true,
+    "orbit": false,
+    "probe": {},
+    "mode": "debug",
+    "frames": 360,
+    "warmupFrames": 120,
+    "physicalSize": [
+      2622.0,
+      1206.0
+    ],
+    "buildMs": {
+      "p50": 5.971,
+      "p95": 12.329,
+      "max": 17.728
+    },
+    "rasterMs": {
+      "p50": 1.014,
+      "p95": 14.256,
+      "max": 26.927
+    },
+    "submittedFps": 57.59357672795971,
+    "frameIntervalMs": {
+      "p50": 16.667,
+      "p95": 16.668,
+      "over20ms": 12
+    },
+    "renderer": {
+      "aa": "fxaa",
+      "scale": 0.5491990846681922,
+      "shadowCascades": 1,
+      "shadowDistance": 24.0,
+      "stageVisible": true,
+      "mountedRoots": 10
+    }
+  },
+  {
+    "label": "final-fukuchan-day",
+    "graphics": {
+      "shadows": true,
+      "reflections": true,
+      "surfaceDetail": true,
+      "bloom": true,
+      "fullResolution": false
+    },
+    "timeOfDay": "day",
+    "character": "fukuchan",
+    "hide": "",
+    "animateTraffic": false,
+    "animateGameplay": true,
+    "orbit": false,
+    "probe": {},
+    "mode": "debug",
+    "frames": 360,
+    "warmupFrames": 120,
+    "physicalSize": [
+      2622.0,
+      1206.0
+    ],
+    "buildMs": {
+      "p50": 4.486,
+      "p95": 7.088,
+      "max": 11.506
+    },
+    "rasterMs": {
+      "p50": 0.742,
+      "p95": 13.986,
+      "max": 27.815
+    },
+    "submittedFps": 59.99999331476398,
+    "frameIntervalMs": {
+      "p50": 16.667,
+      "p95": 16.667,
+      "over20ms": 0
+    },
+    "renderer": {
+      "aa": "fxaa",
+      "scale": 0.5491990846681922,
+      "shadowCascades": 1,
+      "shadowDistance": 24.0,
+      "stageVisible": true,
+      "mountedRoots": 10
+    }
+  },
+  {
+    "label": "final-fukuchan-night",
+    "graphics": {
+      "shadows": true,
+      "reflections": true,
+      "surfaceDetail": true,
+      "bloom": true,
+      "fullResolution": false
+    },
+    "timeOfDay": "night",
+    "character": "fukuchan",
+    "hide": "",
+    "animateTraffic": false,
+    "animateGameplay": true,
+    "orbit": false,
+    "probe": {},
+    "mode": "debug",
+    "frames": 360,
+    "warmupFrames": 120,
+    "physicalSize": [
+      2622.0,
+      1206.0
+    ],
+    "buildMs": {
+      "p50": 5.785,
+      "p95": 9.759,
+      "max": 19.4
+    },
+    "rasterMs": {
+      "p50": 0.926,
+      "p95": 15.103,
+      "max": 23.326
+    },
+    "submittedFps": 59.17582092440544,
+    "frameIntervalMs": {
+      "p50": 16.667,
+      "p95": 16.667,
+      "over20ms": 4
+    },
+    "renderer": {
+      "aa": "fxaa",
+      "scale": 0.5491990846681922,
+      "shadowCascades": 1,
+      "shadowDistance": 24.0,
+      "stageVisible": true,
+      "mountedRoots": 10
+    }
+  }
+]

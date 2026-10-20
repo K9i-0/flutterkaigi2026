@@ -1,0 +1,137 @@
+[
+  {
+    "label": "standard-day",
+    "graphics": {
+      "shadows": true,
+      "reflections": true,
+      "surfaceDetail": true,
+      "bloom": true,
+      "fullResolution": true
+    },
+    "timeOfDay": "day",
+    "hide": "",
+    "animateTraffic": false,
+    "probe": {},
+    "mode": "debug",
+    "frames": 360,
+    "warmupFrames": 120,
+    "physicalSize": [
+      2622.0,
+      1206.0
+    ],
+    "buildMs": {
+      "p50": 5.841,
+      "p95": 36.416,
+      "max": 59.058
+    },
+    "rasterMs": {
+      "p50": 15.793,
+      "p95": 84.111,
+      "max": 127.387
+    },
+    "submittedFps": 26.397058823529413,
+    "frameIntervalMs": {
+      "p50": 16.667,
+      "p95": 83.334,
+      "over20ms": 169
+    },
+    "renderer": {
+      "aa": "msaa",
+      "scale": 1.0,
+      "shadowCascades": 3,
+      "shadowDistance": 85.0,
+      "stageVisible": true,
+      "mountedRoots": 10
+    }
+  },
+  {
+    "label": "traffic-moving-day",
+    "graphics": {
+      "shadows": true,
+      "reflections": true,
+      "surfaceDetail": true,
+      "bloom": true,
+      "fullResolution": true
+    },
+    "timeOfDay": "day",
+    "hide": "",
+    "animateTraffic": true,
+    "probe": {},
+    "mode": "debug",
+    "frames": 360,
+    "warmupFrames": 120,
+    "physicalSize": [
+      2622.0,
+      1206.0
+    ],
+    "buildMs": {
+      "p50": 5.227,
+      "p95": 31.317,
+      "max": 66.689
+    },
+    "rasterMs": {
+      "p50": 15.075,
+      "p95": 82.038,
+      "max": 112.741
+    },
+    "submittedFps": 26.494464944649447,
+    "frameIntervalMs": {
+      "p50": 16.667,
+      "p95": 83.334,
+      "over20ms": 172
+    },
+    "renderer": {
+      "aa": "msaa",
+      "scale": 1.0,
+      "shadowCascades": 3,
+      "shadowDistance": 85.0,
+      "stageVisible": true,
+      "mountedRoots": 10
+    }
+  },
+  {
+    "label": "traffic-hidden-day",
+    "graphics": {
+      "shadows": true,
+      "reflections": true,
+      "surfaceDetail": true,
+      "bloom": true,
+      "fullResolution": true
+    },
+    "timeOfDay": "day",
+    "hide": "traffic",
+    "animateTraffic": false,
+    "probe": {},
+    "mode": "debug",
+    "frames": 360,
+    "warmupFrames": 120,
+    "physicalSize": [
+      2622.0,
+      1206.0
+    ],
+    "buildMs": {
+      "p50": 4.962,
+      "p95": 35.78,
+      "max": 59.03
+    },
+    "rasterMs": {
+      "p50": 24.774,
+      "p95": 83.505,
+      "max": 113.496
+    },
+    "submittedFps": 27.026347451626226,
+    "frameIntervalMs": {
+      "p50": 16.669,
+      "p95": 83.334,
+      "over20ms": 178
+    },
+    "renderer": {
+      "aa": "msaa",
+      "scale": 1.0,
+      "shadowCascades": 3,
+      "shadowDistance": 85.0,
+      "stageVisible": true,
+      "mountedRoots": 10
+    }
+  }
+]

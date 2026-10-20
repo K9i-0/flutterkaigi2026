@@ -1,0 +1,98 @@
+[
+  {
+    "label": "orbit-day",
+    "graphics": {
+      "shadows": true,
+      "reflections": true,
+      "surfaceDetail": true,
+      "bloom": true,
+      "fullResolution": false
+    },
+    "timeOfDay": "day",
+    "character": "cto_odatetsu",
+    "hide": "",
+    "animateTraffic": false,
+    "animateGameplay": true,
+    "orbit": true,
+    "probe": {},
+    "mode": "debug",
+    "frames": 360,
+    "warmupFrames": 120,
+    "physicalSize": [
+      2622.0,
+      1206.0
+    ],
+    "buildMs": {
+      "p50": 4.33,
+      "p95": 7.115,
+      "max": 21.439
+    },
+    "rasterMs": {
+      "p50": 0.844,
+      "p95": 12.852,
+      "max": 27.076
+    },
+    "submittedFps": 58.85245901639344,
+    "frameIntervalMs": {
+      "p50": 16.667,
+      "p95": 16.668,
+      "over20ms": 4
+    },
+    "renderer": {
+      "aa": "fxaa",
+      "scale": 0.5491990846681922,
+      "shadowCascades": 1,
+      "shadowDistance": 24.0,
+      "stageVisible": true,
+      "mountedRoots": 10
+    }
+  },
+  {
+    "label": "orbit-night",
+    "graphics": {
+      "shadows": true,
+      "reflections": true,
+      "surfaceDetail": true,
+      "bloom": true,
+      "fullResolution": false
+    },
+    "timeOfDay": "night",
+    "character": "cto_odatetsu",
+    "hide": "",
+    "animateTraffic": false,
+    "animateGameplay": true,
+    "orbit": true,
+    "probe": {},
+    "mode": "debug",
+    "frames": 360,
+    "warmupFrames": 120,
+    "physicalSize": [
+      2622.0,
+      1206.0
+    ],
+    "buildMs": {
+      "p50": 6.176,
+      "p95": 12.089,
+      "max": 21.851
+    },
+    "rasterMs": {
+      "p50": 1.04,
+      "p95": 15.202,
+      "max": 23.808
+    },
+    "submittedFps": 57.28722185378258,
+    "frameIntervalMs": {
+      "p50": 16.667,
+      "p95": 16.668,
+      "over20ms": 10
+    },
+    "renderer": {
+      "aa": "fxaa",
+      "scale": 0.5491990846681922,
+      "shadowCascades": 1,
+      "shadowDistance": 24.0,
+      "stageVisible": true,
+      "mountedRoots": 10
+    }
+  }
+]

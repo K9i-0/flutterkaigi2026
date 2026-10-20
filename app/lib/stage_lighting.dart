@@ -194,11 +194,21 @@ class StageLighting {
   GraphicsSettings graphics = GraphicsSettings.standard;
   (StageTime, bool, GraphicsSettings)? _applied;
   StageTime time = StageTime.day;
+  double viewportLongestSide = 1440;
+  double get renderScale => graphics.renderScaleFor(viewportLongestSide);
+
+  void configureRenderer(Scene scene) {
+    scene
+      ..renderScale = renderScale
+      ..antiAliasingMode = graphics.fullResolution
+          ? AntiAliasingMode.auto
+          : AntiAliasingMode.fxaa;
+  }
 
   Map<String, Object?> inspect() => {
     'timeOfDay': time.id,
     'graphics': graphics.toMap(),
-    'renderScale': graphics.renderScale,
+    'renderScale': renderScale,
     'reflectionMode': graphics.reflections ? 'static-city-ibl' : 'matte',
     'stageNodes': _materials.keys.toList()..sort(),
     'traffic': {
@@ -221,7 +231,12 @@ class StageLighting {
   void apply(Scene scene, {required bool lane}) {
     if (_applied == (time, lane, graphics)) return;
     _applied = (time, lane, graphics);
-    scene.renderScale = graphics.renderScale;
+    configureRenderer(scene);
+    // Individual car shadows are subpixel from the 200m-high play area.
+    // Cars still move and receive city shadows; keep their casting in high quality.
+    for (final node in _trafficNodes.keys) {
+      node.castsShadows = graphics.fullResolution;
+    }
     // Sources remain shared/loaded, but the disabled textures are no longer
     // sampled by the material. No per-frame allocations or reflection pass.
     for (final e in _surfaces.entries) {
@@ -270,8 +285,8 @@ class StageLighting {
       color: _v(p.sunColor),
       intensity: p.sunIntensity,
       castsShadow: p.shadows && graphics.shadows,
-      shadowCascadeCount: 3,
-      shadowMaxDistance: 85,
+      shadowCascadeCount: graphics.shadowCascades,
+      shadowMaxDistance: graphics.shadowDistance,
       shadowMapResolution: 1024,
       shadowSoftness: .12,
     );
@@ -288,6 +303,12 @@ class StageLighting {
   }
 
   /// Scrolls traffic and blinks the aviation obstruction lights.
+  void setTrafficVisible(bool visible) {
+    for (final node in _trafficNodes.keys) {
+      node.visible = visible;
+    }
+  }
+
   void update(double clock) {
     for (final e in _trafficNodes.entries) {
       final o = (clock * e.value.speed) % e.value.period;

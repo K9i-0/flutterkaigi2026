@@ -14,7 +14,7 @@ for image in j['images']:
     w, h = struct.unpack_from('>II', d, 16)
     assert max(w, h) <= 1024, (image.get('name'), w, h)
     pixels += w*h
-assert triangles <= 71872, triangles
+assert triangles <= 50000, triangles
 assert primitives <= 41, primitives
 heights = {
     m['name']: max(j['accessors'][p['attributes']['POSITION']]['max'][1]

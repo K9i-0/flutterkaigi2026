@@ -65,6 +65,26 @@ class _RainState extends State<RainPage> {
   String? error;
   double inputX = 0, inputY = 0, accumulator = 0, swipe = 0;
   int lastEvent = 0, turn = 0, seed = 1;
+  Object? _hudState;
+
+  void refreshHud() {
+    final next = (
+      game.phase,
+      (game.roundSeconds - game.time).ceil(),
+      game.countdown.ceil(),
+      game.score,
+      game.combo,
+      game.time < game.messageUntil ? game.message : null,
+      game.caught,
+      game.bad,
+      game.missed,
+    );
+    if (mounted && next != _hudState) {
+      _hudState = next;
+      setState(() {});
+    }
+  }
+
   AppLifecycleListener? lifecycle;
   @override
   void initState() {
@@ -123,7 +143,53 @@ class _RainState extends State<RainPage> {
               runBenchmark(
                 p['label'] ?? 'stage',
                 p['timeOfDay'] == 'night' ? StageTime.night : StageTime.day,
+                character: CatchCharacter.values
+                    .where((c) => c.id == p['character'])
+                    .firstOrNull,
               );
+              // Diagnostic ablations only; normal gameplay restores visibility.
+              if (p['hide'] == 'stage') world.lighting.stage.visible = false;
+              if (p['hide'] == 'character') {
+                for (final n in world.characters.values) {
+                  n.visible = false;
+                }
+              }
+              if (p['hide'] == 'items') {
+                for (final slot in world.laneDrops) {
+                  for (final item in slot) {
+                    item.root.visible = false;
+                  }
+                }
+              }
+              if (p['hide'] == 'all3d') {
+                world.lighting.stage.visible = false;
+                for (final n in world.characters.values) {
+                  n.visible = false;
+                }
+                for (final slot in world.laneDrops) {
+                  for (final item in slot) {
+                    item.root.visible = false;
+                  }
+                }
+              }
+              benchmark?.metadata['hide'] = p['hide'] ?? 'none';
+              world.applyRenderProbe(p);
+              world.lighting.setTrafficVisible(p['hide'] != 'traffic');
+              benchmark?.metadata['animateTraffic'] =
+                  p['animateTraffic'] == 'true';
+              benchmark?.metadata['animateGameplay'] =
+                  p['animateGameplay'] == 'true';
+              benchmark?.metadata['orbit'] = p['orbit'] == 'true';
+              benchmark?.metadata['probe'] = {
+                for (final key in [
+                  'aa',
+                  'scale',
+                  'cascades',
+                  'shadowDistance',
+                  'shadowSize',
+                ])
+                  if (p.containsKey(key)) key: p[key],
+              };
             case 'select':
               showTitle = false;
               final character = CatchCharacter.values
@@ -211,13 +277,21 @@ class _RainState extends State<RainPage> {
   Future<void> load() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final visual = prefs.getString('yumemi.graphics.v1');
+      final currentVisual = prefs.getString('yumemi.graphics.v2');
+      final visual = currentVisual ?? prefs.getString('yumemi.graphics.v1');
       if (visual != null) {
         try {
-          graphics = GraphicsSettings.fromMap(
-            jsonDecode(visual) as Map<String, dynamic>,
-          );
+          final options = jsonDecode(visual) as Map<String, dynamic>;
+          // Adopt the new smooth default once, retaining individual effects.
+          if (currentVisual == null) options['fullResolution'] = false;
+          graphics = GraphicsSettings.fromMap(options);
         } catch (_) {}
+      }
+      if (currentVisual == null) {
+        await prefs.setString(
+          'yumemi.graphics.v2',
+          jsonEncode(graphics.toMap()),
+        );
       }
       final saved = prefs.getString('beerRain.balance.v1');
       if (saved != null) {
@@ -262,16 +336,17 @@ class _RainState extends State<RainPage> {
     }
   }
 
-  void runBenchmark(String label, StageTime time) {
+  void runBenchmark(String label, StageTime time, {CatchCharacter? character}) {
     // Fixed snapshot; render loop continues, simulation and camera stay fixed.
     game.lane = true;
     game.phase = Phase.ready;
-    game.selectCharacter(CatchCharacter.ctoOdatetsu);
+    game.selectCharacter(character ?? CatchCharacter.ctoOdatetsu);
     game.selectTime(time);
     seed = 1;
     game.balance = Balance.defaults();
     start();
     world.clock = 0;
+    world.facing = math.pi;
     for (var i = 0; i < 480; i++) {
       advance(1 / 60, 0, 0);
       world.update(game, 1 / 60);
@@ -281,12 +356,13 @@ class _RainState extends State<RainPage> {
       'label': label,
       'graphics': graphics.toMap(),
       'timeOfDay': time.id,
+      'character': game.roundCharacter.id,
     });
   }
 
   Future<void> saveGraphics() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('yumemi.graphics.v1', jsonEncode(graphics.toMap()));
+    await prefs.setString('yumemi.graphics.v2', jsonEncode(graphics.toMap()));
   }
 
   Future<void> openGraphics() async {
@@ -338,6 +414,8 @@ class _RainState extends State<RainPage> {
 
   void start() {
     showTitle = false;
+    world.lighting.setTrafficVisible(true);
+    world.applyRenderProbe({});
     game.start(seed: seed);
     tilt.maxDegrees = game.balance['tiltDegrees'];
     tilt.calibrate();
@@ -404,6 +482,32 @@ class _RainState extends State<RainPage> {
   }
 
   void tick(Duration elapsed, double dt) {
+    if (frozen &&
+        benchmark?.active == true &&
+        benchmark?.metadata['animateGameplay'] == true) {
+      accumulator += dt.clamp(0, .1);
+      while (accumulator >= 1 / 60) {
+        if (game.time >= 16) {
+          game.start(seed: 1);
+          for (var i = 0; i < 480; i++) {
+            game.tick(1 / 60);
+          }
+        }
+        if (benchmark?.metadata['orbit'] == true) {
+          game.targetYaw = math.sin(game.time * .8) * math.pi / 3;
+        }
+        game.tick(1 / 60, inputX: math.sin(game.time * 1.3) * .65);
+        accumulator -= 1 / 60;
+      }
+      world.update(game, dt.clamp(0, .1));
+      refreshHud();
+    }
+    if (frozen &&
+        benchmark?.active == true &&
+        benchmark?.metadata['animateTraffic'] == true) {
+      world.clock += dt.clamp(0, .1);
+      world.lighting.update(world.clock);
+    }
     if (!ready || paused || frozen) return;
     accumulator += dt.clamp(0, .1);
     if (!tilt.available) {
@@ -428,7 +532,7 @@ class _RainState extends State<RainPage> {
       accumulator -= 1 / 60;
     }
     world.update(game, dt.clamp(0, .1));
-    if (mounted) setState(() {});
+    refreshHud();
   }
 
   @override
@@ -475,6 +579,13 @@ class _RainState extends State<RainPage> {
   Widget build(BuildContext context) => Scaffold(
     body: LayoutBuilder(
       builder: (context, size) {
+        if (ready) {
+          final longestSide = View.of(context).physicalSize.longestSide;
+          if (world.lighting.viewportLongestSide != longestSide) {
+            world.lighting.viewportLongestSide = longestSide;
+            world.lighting.configureRenderer(world.scene);
+          }
+        }
         if (showTitle) {
           return TitleScreen(onStart: () => setState(() => showTitle = false));
         }
@@ -525,10 +636,12 @@ class _RainState extends State<RainPage> {
                     setState(() => game.rotate(swipe < 0 ? 1 : -1));
                     swipe = 0;
                   },
-                  child: SceneView(
-                    world.scene,
-                    camera: world.camera,
-                    onTick: tick,
+                  child: RepaintBoundary(
+                    child: SceneView(
+                      world.scene,
+                      camera: world.camera,
+                      onTick: tick,
+                    ),
                   ),
                 ),
               ),

@@ -68,7 +68,7 @@ def mesh(name,verts,faces,uvs=None,obj=None):
  for i,face in enumerate(faces):
   f.append(tuple(offset+j for j in face)); uv.append(uvs[i] if uvs else [(0,0),(1,0),(1,1),(0,1)][:len(face)])
 BOX_FACES=[(0,3,2,1),(4,5,6,7),(0,4,7,3),(1,2,6,5),(3,7,6,2),(0,1,5,4)]
-def box(name,x,y,z,w,h,d,tile=None,off=(0,0),obj=None,cell=None):
+def box(name,x,y,z,w,h,d,tile=None,off=(0,0),obj=None,cell=None,face_indices=None):
  """tile=(tu,tv) repeats the texture every tu units across and tv units up."""
  signs=[(-1,-1,-1),(1,-1,-1),(1,1,-1),(-1,1,-1),(-1,-1,1),(1,-1,1),(1,1,1),(-1,1,1)]
  vs=[(x+a*w/2,y+b*h/2,z+c*d/2) for a,b,c in signs]
@@ -83,7 +83,12 @@ def box(name,x,y,z,w,h,d,tile=None,off=(0,0),obj=None,cell=None):
     return (off[0]+u/tu,off[1]+v/tv)
    uvs.append([uv(i) for i in face])
  if cell is not None: uvs=[[((cell+.5)/4,.5)]*4 for _ in BOX_FACES]
- mesh(name,vs,BOX_FACES,uvs,obj)
+ # Painted lane markings need only their visible top surface, not six faces.
+ if face_indices is None and name in ['marking','yellowline']:
+  face_indices=[4]
+ faces=BOX_FACES if face_indices is None else [BOX_FACES[i] for i in face_indices]
+ if uvs is not None and face_indices is not None: uvs=[uvs[i] for i in face_indices]
+ mesh(name,vs,faces,uvs,obj)
 def rod(name,a,b,r=.04,n=6):
  a,b=Vector(a),Vector(b); axis=(b-a).normalized(); u=axis.cross(Vector((0,1,0)))
  if u.length<.01: u=axis.cross(Vector((1,0,0)))
@@ -244,8 +249,12 @@ PERIOD={'traffic_zpos':24,'traffic_zneg':24,'traffic_xpos':30,'traffic_xneg':30,
 def car(obj,lane,t,axis,sign,y=G,s=1):
  body=1 if rng.random()<.35 else 0
  def b(along,up,acr,la,h,wa,cell):
-  if axis=='z': box('car',lane+acr,y+up,t+along,wa,h,la,obj=obj,cell=cell)
-  else: box('car',t+along,y+up,lane+acr,la,h,wa,obj=obj,cell=cell)
+  # No camera goes under road cars. Lamps are outward-facing quads instead
+  # of tiny closed boxes; preserve their atlas colors and exact placement.
+  faces=[0,1,2,3,4] if cell<2 else (
+   [1 if along>0 else 0] if axis=='z' else [3 if along>0 else 2])
+  if axis=='z': box('car',lane+acr,y+up,t+along,wa,h,la,obj=obj,cell=cell,face_indices=faces)
+  else: box('car',t+along,y+up,lane+acr,la,h,wa,obj=obj,cell=cell,face_indices=faces)
  b(0,.3*s,0,1.8*s,.36*s,.85*s,body); b(-sign*.1,.62*s,0,1.0*s,.3*s,.74*s,body)
  b(sign*.91*s,.32*s,0,.04,.1*s,.7*s,2); b(-sign*.91*s,.34*s,0,.04,.09*s,.74*s,3)
 def lane_cars(obj,lane,lo,hi,axis,sign,gap,y=G,s=1):

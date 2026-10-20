@@ -4,6 +4,7 @@ import 'package:flutter_scene/scene.dart';
 import 'package:vector_math/vector_math.dart' as vm;
 
 import 'drop_kind.dart';
+import 'cached_skin.dart';
 
 /// The menu and the falling objects clone exactly the same game assets.
 class DropModels {
@@ -19,6 +20,7 @@ class DropModels {
 
 class DropModel {
   DropModel(this.kind, this.model) {
+    cacheSkinUploads(model);
     root.add(model);
     if (kind.isChikuwa) {
       model.scale = vm.Vector3.all(.46);
