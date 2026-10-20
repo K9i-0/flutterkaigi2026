@@ -126,7 +126,7 @@ G=-14
 box('street',0,G-.15,0,320,.3,320,(4,4))
 AVENUE=4.4
 XROADS=[(-AVENUE,AVENUE)]+[(c-2,c+2) for c in [24,-24,48,-48,72,-72]]
-ZROADS=[(c-2,c+2) for c in [16,-14,-36,-58,-80]]
+ZROADS=[(c-2,c+2) for c in [40,16,-14,-36,-58,-80]]
 def edges(roads,lo,hi):
  cuts=sorted(roads); spans=[]; a=lo
  for r0,r1 in cuts:
@@ -134,7 +134,7 @@ def edges(roads,lo,hi):
   a=max(a,r1)
  if hi>a: spans.append((a,hi))
  return spans
-XBLOCKS=edges(XROADS,-80,80); ZBLOCKS=edges(ZROADS,-88,36)
+XBLOCKS=edges(XROADS,-80,80); ZBLOCKS=edges(ZROADS,-88,66)
 rng=random.Random(27)
 def lots(a,b,size):
  out=[]; x=a+.7
@@ -152,9 +152,14 @@ def clear(x,z,w,d):
  return True
 sign_i=0
 roofs=[]  # roofs left free for the Yumemin billboards
-def building(x,z,w,d,h,kind,near):
+def building(x,z,w,d,h,kind,near,low=False):
  global sign_i
  off=(rng.randrange(4)*.25,rng.randrange(8)*.125); f='facade'+str(kind)
+ if low:
+  # Behind the beam, seen only when orbiting: four walls and a roof quad.
+  box(f,x,G+h/2,z,w,h,d,FACADE,off,face_indices=[0,1,2,3])
+  box('roof',x,G+h,z,w,0,d,face_indices=[4])
+  return
  tiers=[(w,d,h)] if h<14 else [(w,d,h*.62),(w*.74,d*.74,h)]
  base=G
  for tw,td,top in tiers:
@@ -203,7 +208,7 @@ for x0,x1 in XBLOCKS:
     elif (x < -18 or abs(x)>38) and rng.random()<.16:
      h=rng.uniform(90,140)*METERS
     kind=rng.choice([3,5]) if h>15 else rng.choice([0,1,2,4,0,1,2,3,4,5])
-    building(x,z,w,d,h,kind,z>-40 and abs(x)<46)
+    building(x,z,w,d,h,kind,z>-40 and abs(x)<46,low=z>36 or (z>14 and abs(x)>26))
 # Five tall but simple office towers: two setbacks, shared facades/materials,
 # no new textures or separate render objects. Roof machinery stays compact.
 for x,z,w,d,meters,kind in HIGHRISES:
@@ -230,9 +235,9 @@ for x,z,w,d,meters,_ in HIGHRISES:
 print('YUMEMIN',len(HIGHRISES))
 # Lane markings, crosswalks, streetlights and traffic on the avenue.
 for s in [-1,1]:
- box('yellowline',s*.12,G+.025,-30,.1,.02,140)
- for z in range(-98,38,4): box('marking',s*2.2,G+.02,z,.1,.02,1.8)
- for z in range(-96,36,8):
+ box('yellowline',s*.12,G+.025,-17,.1,.02,166)
+ for z in range(-98,68,4): box('marking',s*2.2,G+.02,z,.1,.02,1.8)
+ for z in range(-96,66,8):
   if any(r0-1<z<r1+1 for r0,r1 in ZROADS): continue
   rod('metal',(s*4.75,G+.14,z),(s*4.75,G+2.4,z),.05); rod('metal',(s*4.75,G+2.4,z),(s*3.9,G+2.5,z),.04)
   box('lamp',s*3.85,G+2.44,z,.36,.08,.2)
@@ -242,7 +247,7 @@ for r0,r1 in ZROADS:
  for x in range(-90,91,3):
   if abs(x)>AVENUE+1: box('marking',x,G+.02,(r0+r1)/2,1.4,.02,.09)
 for x0,x1 in XROADS[1:]:
- for z in range(-98,38,3): box('marking',(x0+x1)/2,G+.02,z,.09,.02,1.4)
+ for z in range(-98,68,3): box('marking',(x0+x1)/2,G+.02,z,.09,.02,1.4)
 # Each group repeats with PERIOD along its axis so the game can scroll the
 # mesh by (time * speed) mod PERIOD without a visible seam.
 PERIOD={'traffic_zpos':24,'traffic_zneg':24,'traffic_xpos':30,'traffic_xneg':30,'traffic_hwy_xpos':27,'traffic_hwy_xneg':27}
@@ -267,7 +272,7 @@ def lane_cars(obj,lane,lo,hi,axis,sign,gap,y=G,s=1):
    if lo-P<=k*P+t<=hi+P: car(obj,lane,k*P+t,axis,sign,y,s)
   k+=1
 for lane,sign in [(-3.3,1),(-1.1,1),(1.1,-1),(3.3,-1)]:
- lane_cars('traffic_zpos' if sign>0 else 'traffic_zneg',lane,-96,36,'z',sign,(2.8,7))
+ lane_cars('traffic_zpos' if sign>0 else 'traffic_zneg',lane,-96,66,'z',sign,(2.8,7))
 for r0,r1 in ZROADS:
  lane_cars('traffic_xpos',r0+1,-90,90,'x',1,(4,11)); lane_cars('traffic_xneg',r1-1,-90,90,'x',-1,(4,11))
 # Elevated expressway over the cross street seen just past the beam.
@@ -283,7 +288,6 @@ lane_cars('traffic_hwy_xneg',EZ+.9,-90,90,'x',-1,(3,9),EY+.3,.95)
 # Distant skyline ring hides the edge of the modelled city.
 for i in range(90):
  a=-math.pi+i*math.tau/90+rng.uniform(-.02,.02)
- if math.pi-abs(a)<.7: continue  # behind the camera
  rad=rng.uniform(92,104); x,z=math.sin(a)*rad,-math.cos(a)*rad-20
  h=rng.uniform(50,120)*METERS
  # Keep the skyline behind the landmark below its observation decks.
@@ -296,8 +300,9 @@ for i in range(90):
 cx,cz,base=TOWER_X,TOWER_Z,G
 box('lawn',cx,G+.16,cz,PARK_X*2,.12,PARK_Z*2)
 box('paving',cx,G+.235,cz,8.4,.035,8.4,(4,4))
-box('paving',cx,G+.235,cz,1.5,.035,PARK_Z*2,(4,4))
-box('paving',cx,G+.235,cz,PARK_X*2,.035,1.5,(4,4))
+# Paths end 2cm inside the lawn; shared end faces would z-fight.
+box('paving',cx,G+.235,cz,1.5,.035,PARK_Z*2-.04,(4,4))
+box('paving',cx,G+.235,cz,PARK_X*2-.04,.035,1.5,(4,4))
 for sx in [-1,1]:
  box('paving',cx+sx*(PARK_X-1),G+.235,cz,.7,.035,PARK_Z*2-1.4,(4,4))
 for sz in [-1,1]:

@@ -24,7 +24,7 @@ class Balance {
     BalanceField('penalty', 'はずれの減点', 0, 500, 200, 25),
     BalanceField('comboBonus', '連続キャッチ加点（最大4段階）', 0, 100, 25, 5),
     BalanceField('cameraStep', 'カメラ1タップ（度・鉄骨編）', 15, 45, 30, 5),
-    BalanceField('cameraLimit', 'カメラ左右上限（度・鉄骨編）', 30, 75, 60, 5),
+    BalanceField('cameraLimit', '撮影デモの見回し角（度・鉄骨編）', 30, 75, 60, 5),
     BalanceField('facingMin', '缶の向き・最小角（度）', 0, 110, 70, 5),
     BalanceField('facingMax', '缶の向き・最大角（度）', 0, 130, 110, 5),
     BalanceField('tiltDegrees', '最大速度になる傾き（度）', 5, 30, 13.75, .5),

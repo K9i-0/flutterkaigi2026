@@ -77,6 +77,7 @@ class CatchGame {
   double get roundSeconds => balance['roundSeconds'];
   bool lane = false;
   Phase phase = Phase.ready;
+  double screenSign = 1;
   double time = 0,
       countdown = 0,
       x = 0,
@@ -106,6 +107,7 @@ class CatchGame {
     vz = 0;
     yaw = 0;
     targetYaw = 0;
+    screenSign = 1;
     score = 0;
     combo = 0;
     caught = 0;
@@ -150,11 +152,15 @@ class CatchGame {
     targetYaw +=
         direction.sign *
         (lane ? balance['cameraStep'] * math.pi / 180 : math.pi / 4);
-    if (lane) {
-      targetYaw = targetYaw.clamp(
-        -balance['cameraLimit'] * math.pi / 180,
-        balance['cameraLimit'] * math.pi / 180,
-      );
+    // Full orbit: keep angles in (-pi, pi] and shift the eased yaw by the
+    // same turn so the camera keeps gliding instead of spinning back.
+    while (targetYaw > math.pi + 1e-9) {
+      targetYaw -= 2 * math.pi;
+      yaw -= 2 * math.pi;
+    }
+    while (targetYaw <= -math.pi + 1e-9) {
+      targetYaw += 2 * math.pi;
+      yaw += 2 * math.pi;
     }
   }
 
@@ -192,7 +198,11 @@ class CatchGame {
       ix /= len;
       iy /= len;
     }
-    final dir = lane ? (x: -ix, z: 0.0) : toWorld(ix, iy, yaw),
+    // Lane input follows the screen: from behind the beam, right is world +x.
+    // Near side-on views keep the last sign so the controls never flip mid-step.
+    final c = math.cos(yaw);
+    if (c.abs() > .3) screenSign = c.sign;
+    final dir = lane ? (x: -ix * screenSign, z: 0.0) : toWorld(ix, iy, yaw),
         a = 1 - math.exp(-balance['acceleration'] * dt);
     vx += (dir.x * moveSpeed - vx) * a;
     vz += (dir.z * 3.5 - vz) * a;

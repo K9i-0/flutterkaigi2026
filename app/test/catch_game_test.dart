@@ -13,9 +13,8 @@ void main() {
       expect(g.drops.every((d) => d.z == 0), true);
       expect(g.drops.any((d) => d.facing < 0), true);
       expect(g.drops.any((d) => d.facing > 0), true);
-      for (var i = 0; i < 20; i++) {
-        g.rotate(1);
-      }
+      g.rotate(1);
+      g.rotate(1);
       expect(g.targetYaw, closeTo(math.pi / 3, 1e-9));
       g.phase = Phase.playing;
       for (var i = 0; i < 60; i++) {
@@ -25,13 +24,37 @@ void main() {
       expect(g.z, 0);
       expect(g.vz, 0);
       final facings = g.drops.map((d) => d.facing).toList();
-      for (var i = 0; i < 20; i++) {
+      // A full orbit has no stop and wraps back into (-pi, pi].
+      for (var i = 0; i < 4; i++) {
+        g.rotate(1);
+      }
+      expect(g.targetYaw, closeTo(math.pi, 1e-9));
+      g.rotate(1);
+      expect(g.targetYaw, closeTo(-5 * math.pi / 6, 1e-9));
+      for (var i = 0; i < 7; i++) {
+        g.rotate(1);
+      }
+      expect(g.targetYaw, closeTo(math.pi / 3, 1e-9));
+      for (var i = 0; i < 12; i++) {
         g.rotate(-1);
       }
-      expect(g.targetYaw, closeTo(-math.pi / 3, 1e-9));
+      expect(g.targetYaw, closeTo(math.pi / 3, 1e-9));
       expect(g.drops.map((d) => d.facing), facings);
     },
   );
+  test('lane controls follow the screen from behind the beam', () {
+    final g = CatchGame()..lane = true;
+    g.start();
+    for (var i = 0; i < 6; i++) {
+      g.rotate(1);
+    }
+    g.phase = Phase.playing;
+    for (var i = 0; i < 90; i++) {
+      g.tick(1 / 60, inputX: .5);
+    }
+    expect(g.yaw, closeTo(math.pi, .02));
+    expect(g.x, greaterThan(0));
+  });
   test('lane catches only on its track through a complete round', () {
     final g = CatchGame()..lane = true;
     g.start();
