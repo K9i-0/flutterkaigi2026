@@ -5,6 +5,7 @@ import 'package:madogiwa_engine/scene.dart';
 import 'package:vector_math/vector_math.dart' as vm;
 
 import 'catch_game.dart';
+import 'character.dart';
 import 'studio_lighting.dart';
 
 class CatchScene {
@@ -16,12 +17,19 @@ class CatchScene {
     fovNear: .1,
     fovFar: 100,
   );
-  late Node sobaya, halo;
+  late Node halo;
+  final characters = <CatchCharacter, Node>{};
+  final motions = <CatchCharacter, CharacterMotionPlayer>{};
+  CatchCharacter displayedCharacter = CatchCharacter.sobaya;
+  Map<String, Object?> inspect() => {
+    'displayedCharacter': displayedCharacter.id,
+    'motion': motions[displayedCharacter]?.controller.inspect(),
+    'facing': facing,
+  };
   late Skybox twilight;
   final planeScenery = <Node>[], beamScenery = <Node>[];
   List<Node>? scenery;
   final laneCans = <Node>[];
-  late CharacterMotionPlayer motion;
   final cans = <Node>[], rings = <Node>[], dots = <Node>[];
   final itemCubes = <Node>[], itemMarkers = <Node>[];
   final itemCubeMats = <PhysicallyBasedMaterial>[];
@@ -132,14 +140,17 @@ class CatchScene {
       ..start = 25
       ..end = 115;
     scenery = null;
-    sobaya = await loadScene('assets/models/sobaya.glb');
-    scene.add(sobaya);
-    motion = CharacterMotionPlayer(
-      sobaya,
-      sources: const {'Idle': 'Idle', 'Walk': 'Walk', 'Run': 'Run'},
-      groundSpeeds: const {'Walk': 1.5, 'Run': 3.5},
-      syncGroups: const {'Walk': 'move', 'Run': 'move'},
-    );
+    for (final character in CatchCharacter.values) {
+      final node = await loadScene(character.modelAsset);
+      characters[character] = node;
+      scene.add(node);
+      motions[character] = CharacterMotionPlayer(
+        node,
+        sources: const {'Idle': 'Idle', 'Walk': 'Walk', 'Run': 'Run'},
+        groundSpeeds: const {'Walk': 1.5, 'Run': 3.5},
+        syncGroups: const {'Walk': 'move', 'Run': 'move'},
+      );
+    }
     halo = mesh(
       TorusGeometry(
         radius: .7,
@@ -232,6 +243,16 @@ class CatchScene {
     for (final n in beamScenery) {
       n.visible = g.lane;
     }
+    displayedCharacter = !g.lane
+        ? CatchCharacter.sobaya
+        : g.phase == Phase.ready || g.phase == Phase.result
+        ? g.selectedCharacter
+        : g.roundCharacter;
+    for (final entry in characters.entries) {
+      entry.value.visible = entry.key == displayedCharacter;
+    }
+    final character = characters[displayedCharacter]!;
+    final motion = motions[displayedCharacter]!;
     final speed = math.sqrt(g.vx * g.vx + g.vz * g.vz);
     motion.controller.select(
       speed > .15
@@ -252,14 +273,13 @@ class CatchScene {
           );
       facing += diff * (1 - math.exp(-dt * 12));
     }
-    sobaya.position = vm.Vector3(g.x, 0, g.z);
-    sobaya.rotation = vm.Quaternion.axisAngle(vm.Vector3(0, 1, 0), facing);
+    character.position = vm.Vector3(g.x, 0, g.z);
+    character.rotation = vm.Quaternion.axisAngle(vm.Vector3(0, 1, 0), facing);
+    final radius = g.lane && (g.phase == Phase.ready || g.phase == Phase.result)
+        ? displayedCharacter.catchRadius
+        : g.catchRadius;
     halo.position = vm.Vector3(g.x, .04, g.z);
-    halo.scale = vm.Vector3(
-      g.balance['catchRadius'] / .7,
-      1,
-      g.lane ? .52 : g.balance['catchRadius'] / .7,
-    );
+    halo.scale = vm.Vector3(radius / .7, 1, g.lane ? .52 : radius / .7);
     final zoom = 1 + .18 * math.sin(g.yaw * 2).abs();
     camera.position = vm.Vector3(
       math.sin(g.yaw) * 10.8 * zoom,

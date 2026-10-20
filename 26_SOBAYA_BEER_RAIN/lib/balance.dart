@@ -18,7 +18,7 @@ class Balance {
     BalanceField('fallSeconds', '落下時間（秒・長いほど遅い）', 1, 6, 3.1, .1),
     BalanceField('moveSpeed', '移動速度（鉄骨編）', 1, 5, 2.6, .1),
     BalanceField('acceleration', '移動の応答（大きいほど即応）', 3, 24, 12, 1),
-    BalanceField('catchRadius', 'キャッチ半径', .3, 1.2, .72, .02),
+    BalanceField('catchRadius', 'キャッチ半径（面移動版）', .3, 1.2, .72, .02),
     BalanceField('badRatio', '発泡酒の割合', 0, 1, .25, .05),
     BalanceField('beerPoints', 'ビール基本点', 25, 300, 100, 25),
     BalanceField('penalty', '発泡酒の減点', 0, 500, 200, 25),
