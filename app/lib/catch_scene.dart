@@ -9,6 +9,7 @@ import 'character.dart';
 import 'drop_models.dart';
 import 'studio_lighting.dart';
 import 'okayaman_vision.dart';
+import 'stage_lighting.dart';
 
 class CatchScene {
   final scene = Scene();
@@ -29,13 +30,14 @@ class CatchScene {
     'motion': motions[displayedCharacter]?.controller.inspect(),
     'facing': facing,
     'vision': vision.inspect(),
+    'stage': lighting.inspect(),
     'visibleDropModels': [
       for (final slot in laneDrops)
         for (final d in slot)
           if (d.root.visible) d.kind.name,
     ],
   };
-  late Skybox twilight;
+  late StageLighting lighting;
   final planeScenery = <Node>[], beamScenery = <Node>[];
   List<Node>? scenery;
   final dropModels = DropModels();
@@ -135,20 +137,24 @@ class CatchScene {
     }
     final akasaka = await loadScene('assets/models/akasaka.glb');
     akasaka.rotation = vm.Quaternion.axisAngle(vm.Vector3(0, 1, 0), math.pi);
+    // Night work lights on the support-building roofs keep the beam readable.
+    final workLights = <PointLight>[];
+    for (final x in [-4.9, 4.9]) {
+      final light = PointLight(
+        color: vm.Vector3(1, .86, .66),
+        intensity: 0,
+        range: 14,
+        falloffExponent: 1.2,
+      );
+      workLights.add(light);
+      final node = Node()..position = vm.Vector3(x, 3.2, 2.4);
+      node.addComponent(PointLightComponent(light));
+      scene.add(node);
+    }
+    // Flag static shadow casters before mounting so they enter the cache.
+    lighting = StageLighting(akasaka, workLights);
     scene.add(akasaka);
     beamScenery.add(akasaka);
-    twilight = Skybox(
-      GradientSkySource(
-        zenithColor: vm.Vector3(.18, .13, .28),
-        horizonColor: vm.Vector3(.85, .42, .25),
-        groundColor: vm.Vector3(.18, .14, .21),
-        sunColor: vm.Vector3.zero(),
-      ),
-    );
-    scene.fog
-      ..color = vm.Vector3(.40, .28, .32)
-      ..start = 25
-      ..end = 115;
     scenery = null;
     for (final character in CatchCharacter.values) {
       final node = await loadScene(character.modelAsset);
@@ -249,8 +255,9 @@ class CatchScene {
   void update(CatchGame g, double dt) {
     clock += dt;
     vision.update(dt, enabled: g.lane);
-    scene.skybox = g.lane ? twilight : null;
-    scene.fog.enabled = g.lane;
+    lighting.time = g.timeOfDay;
+    lighting.apply(scene, lane: g.lane);
+    lighting.update(clock);
     for (final n in planeScenery) {
       n.visible = !g.lane;
     }

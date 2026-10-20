@@ -94,7 +94,7 @@ class _RainState extends State<RainPage> {
       );
       registerMarionetteExtension(
         name: 'madogiwa.catchAction',
-        description: 'action=select|configure|start|demo|step|rotate|pause|resume. select: character ID. configure: json settings, seed. step seconds 0..25 x/y -1..1. Demo supplies inputs only.',
+        description: 'action=select|configure|start|demo|step|rotate|pause|resume. select: character ID and/or timeOfDay=day|dusk|night. configure: json settings, seed. step seconds 0..25 x/y -1..1. Demo supplies inputs only.',
         callback: (p) async {
           if (!ready) return MarionetteExtensionResult.error(1, 'Not ready');
           switch (p['action']) {
@@ -102,9 +102,17 @@ class _RainState extends State<RainPage> {
               final character = CatchCharacter.values
                   .where((c) => c.id == p['character'])
                   .firstOrNull;
-              if (character == null || !game.selectCharacter(character)) {
+              final time = StageTime.values
+                  .where((t) => t.id == p['timeOfDay'])
+                  .firstOrNull;
+              if ((p['character'] != null &&
+                      (character == null ||
+                          !game.selectCharacter(character))) ||
+                  (p['timeOfDay'] != null &&
+                      (time == null || !game.selectTime(time))) ||
+                  (character == null && time == null)) {
                 return MarionetteExtensionResult.invalidParams(
-                  'Select a known character on the ready or result screen',
+                  'Select a known character or timeOfDay=day|dusk|night on the ready or result screen',
                 );
               }
               world.update(game, 0);
@@ -366,6 +374,10 @@ class _RainState extends State<RainPage> {
               game.selectCharacter(character);
               world.update(game, 0);
             }),
+            onTime: (time) => setState(() {
+              game.selectTime(time);
+              world.update(game, 0);
+            }),
             onStart: () => setState(start),
             onMode: () => setState(() {
               game.lane = false;
@@ -405,7 +417,7 @@ class _RainState extends State<RainPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              game.lane ? '蕎麦屋 / 赤坂・鉄骨編' : '蕎麦屋 / 面移動版',
+                              game.lane ? 'ゆめみ入社式 / 赤坂・鉄骨編' : 'ゆめみ入社式 / 面移動版',
                               style: TextStyle(
                                 color: cream,
                                 fontSize: 22,

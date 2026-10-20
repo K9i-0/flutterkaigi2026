@@ -3,7 +3,9 @@ import 'dart:math' as math;
 import 'balance.dart';
 import 'character.dart';
 import 'drop_kind.dart';
+import 'stage_time.dart';
 export 'drop_kind.dart';
+export 'stage_time.dart';
 
 enum Phase { ready, countdown, playing, result }
 
@@ -75,6 +77,14 @@ class CatchGame {
   bool selectCharacter(CatchCharacter character) {
     if (phase != Phase.ready && phase != Phase.result) return false;
     _selectedCharacter = character;
+    return true;
+  }
+
+  /// Time of day of the beam stage; like the character, fixed during a round.
+  StageTime timeOfDay = StageTime.dusk;
+  bool selectTime(StageTime time) {
+    if (phase != Phase.ready && phase != Phase.result) return false;
+    timeOfDay = time;
     return true;
   }
 
@@ -287,6 +297,7 @@ class CatchGame {
     'balance': balance.values,
     'seed': seed,
     'selectedCharacter': selectedCharacter.id,
+    'timeOfDay': timeOfDay.id,
     'roundCharacter': roundCharacter.id,
     'difficulty': roundCharacter.difficulty,
     'spawnInterval': spawnInterval,
