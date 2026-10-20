@@ -16,7 +16,7 @@ for image in j['images']:
     pixels += w*h
 assert triangles == 71872, triangles
 assert primitives == 39, primitives
-assert pixels*4 <= 45*1024*1024, pixels*4
+assert pixels*4 <= 14*1024*1024, 'Run optimize_stage_textures.py after Blender export'
 assert not any(m.get('doubleSided', False) for m in j['materials'])
 assert sum('normalTexture' in m for m in j['materials']) == 2
 assert sum('metallicRoughnessTexture' in m.get('pbrMetallicRoughness', {}) for m in j['materials']) == 8

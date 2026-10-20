@@ -1,0 +1,437 @@
+{
+  "glbBytesBefore": 9911924,
+  "glbBytesAfter": 7154292,
+  "rgba8BaseMiBBefore": 44.2578125,
+  "rgba8BaseMiBAfter": 13.1328125,
+  "images": [
+    {
+      "name": "steel_normal",
+      "before": [
+        1024,
+        256
+      ],
+      "after": [
+        512,
+        128
+      ]
+    },
+    {
+      "name": "steel",
+      "before": [
+        1024,
+        256
+      ],
+      "after": [
+        512,
+        128
+      ]
+    },
+    {
+      "name": "steel_mr",
+      "before": [
+        1024,
+        256
+      ],
+      "after": [
+        512,
+        128
+      ]
+    },
+    {
+      "name": "facade_0_emit",
+      "before": [
+        512,
+        1024
+      ],
+      "after": [
+        256,
+        512
+      ]
+    },
+    {
+      "name": "facade_0",
+      "before": [
+        512,
+        1024
+      ],
+      "after": [
+        512,
+        1024
+      ]
+    },
+    {
+      "name": "facade_0_mr",
+      "before": [
+        256,
+        512
+      ],
+      "after": [
+        128,
+        256
+      ]
+    },
+    {
+      "name": "asphalt_normal",
+      "before": [
+        512,
+        512
+      ],
+      "after": [
+        256,
+        256
+      ]
+    },
+    {
+      "name": "asphalt",
+      "before": [
+        512,
+        512
+      ],
+      "after": [
+        256,
+        256
+      ]
+    },
+    {
+      "name": "asphalt_mr",
+      "before": [
+        512,
+        512
+      ],
+      "after": [
+        256,
+        256
+      ]
+    },
+    {
+      "name": "paving",
+      "before": [
+        256,
+        256
+      ],
+      "after": [
+        256,
+        256
+      ]
+    },
+    {
+      "name": "facade_5_emit",
+      "before": [
+        512,
+        1024
+      ],
+      "after": [
+        256,
+        512
+      ]
+    },
+    {
+      "name": "facade_5",
+      "before": [
+        512,
+        1024
+      ],
+      "after": [
+        256,
+        512
+      ]
+    },
+    {
+      "name": "facade_5_mr",
+      "before": [
+        256,
+        512
+      ],
+      "after": [
+        128,
+        256
+      ]
+    },
+    {
+      "name": "facade_1_emit",
+      "before": [
+        512,
+        1024
+      ],
+      "after": [
+        256,
+        512
+      ]
+    },
+    {
+      "name": "facade_1",
+      "before": [
+        512,
+        1024
+      ],
+      "after": [
+        256,
+        512
+      ]
+    },
+    {
+      "name": "facade_1_mr",
+      "before": [
+        256,
+        512
+      ],
+      "after": [
+        128,
+        256
+      ]
+    },
+    {
+      "name": "facade_4_emit",
+      "before": [
+        512,
+        1024
+      ],
+      "after": [
+        256,
+        512
+      ]
+    },
+    {
+      "name": "facade_4",
+      "before": [
+        512,
+        1024
+      ],
+      "after": [
+        256,
+        512
+      ]
+    },
+    {
+      "name": "facade_4_mr",
+      "before": [
+        256,
+        512
+      ],
+      "after": [
+        128,
+        256
+      ]
+    },
+    {
+      "name": "facade_2_emit",
+      "before": [
+        512,
+        1024
+      ],
+      "after": [
+        256,
+        512
+      ]
+    },
+    {
+      "name": "facade_2",
+      "before": [
+        512,
+        1024
+      ],
+      "after": [
+        256,
+        512
+      ]
+    },
+    {
+      "name": "facade_2_mr",
+      "before": [
+        256,
+        512
+      ],
+      "after": [
+        128,
+        256
+      ]
+    },
+    {
+      "name": "facade_3_emit",
+      "before": [
+        512,
+        1024
+      ],
+      "after": [
+        256,
+        512
+      ]
+    },
+    {
+      "name": "facade_3",
+      "before": [
+        512,
+        1024
+      ],
+      "after": [
+        256,
+        512
+      ]
+    },
+    {
+      "name": "facade_3_mr",
+      "before": [
+        256,
+        512
+      ],
+      "after": [
+        128,
+        256
+      ]
+    },
+    {
+      "name": "sign_akasaka",
+      "before": [
+        256,
+        768
+      ],
+      "after": [
+        128,
+        384
+      ]
+    },
+    {
+      "name": "sign_izakaya",
+      "before": [
+        256,
+        768
+      ],
+      "after": [
+        128,
+        384
+      ]
+    },
+    {
+      "name": "sign_soba",
+      "before": [
+        256,
+        768
+      ],
+      "after": [
+        128,
+        384
+      ]
+    },
+    {
+      "name": "sign_shika",
+      "before": [
+        256,
+        768
+      ],
+      "after": [
+        128,
+        384
+      ]
+    },
+    {
+      "name": "sign_bengoshi",
+      "before": [
+        256,
+        768
+      ],
+      "after": [
+        128,
+        384
+      ]
+    },
+    {
+      "name": "ad_accidenchua",
+      "before": [
+        1024,
+        384
+      ],
+      "after": [
+        512,
+        192
+      ]
+    },
+    {
+      "name": "sign_fudosan",
+      "before": [
+        256,
+        768
+      ],
+      "after": [
+        128,
+        384
+      ]
+    },
+    {
+      "name": "ad_safety",
+      "before": [
+        1024,
+        384
+      ],
+      "after": [
+        512,
+        192
+      ]
+    },
+    {
+      "name": "ad_exam",
+      "before": [
+        1024,
+        384
+      ],
+      "after": [
+        512,
+        192
+      ]
+    },
+    {
+      "name": "ad_yumemin",
+      "before": [
+        1024,
+        384
+      ],
+      "after": [
+        512,
+        192
+      ]
+    },
+    {
+      "name": "car_atlas_emit",
+      "before": [
+        64,
+        16
+      ],
+      "after": [
+        64,
+        16
+      ]
+    },
+    {
+      "name": "car_atlas",
+      "before": [
+        64,
+        16
+      ],
+      "after": [
+        64,
+        16
+      ]
+    },
+    {
+      "name": "skyline_emit",
+      "before": [
+        256,
+        256
+      ],
+      "after": [
+        256,
+        256
+      ]
+    },
+    {
+      "name": "skyline",
+      "before": [
+        256,
+        256
+      ],
+      "after": [
+        256,
+        256
+      ]
+    }
+  ]
+}

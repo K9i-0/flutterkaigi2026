@@ -5,7 +5,7 @@
 - `akasaka.glb`: 39メッシュ（34マテリアル、車の走行グループ6本を含む）の静的背景、35,936四角面（書き出し時に三角化）。東京タワー、鉄骨と支えビル、道路網（大通り・路地・車線・横断歩道・歩道）、街灯、首都高の高架、区画割りした街並み、笠木・ライトアップ帯、屋上設備・屋上広告・ゆめみんの看板5基・航空障害灯、外周のスカイラインを含む。車は `traffic_zpos` / `traffic_zneg` / `traffic_xpos` / `traffic_xneg` / `traffic_hwy_xpos` / `traffic_hwy_xneg` の6ノードで、各ノードは周期（24・30・27単位）で繰り返す配置。ゲームがノードを動かして走らせる。
 - PNG: 手続き生成と採用したImagegen素材を組み合わせたテクスチャ（`ad_yumemin.png` はリポジトリ内の正典 `02_CHARACTERS/Yumemin.jpg` を合成）。外装6種（`facade_0`〜`5`、4×8単位で反復）は昼の窓の色、`facade_*_emit.png` は点灯した窓だけの発光マップ。ほかに鋼材の錆止め塗装、アスファルト、歩道、遠景（`skyline` / `skyline_emit`）、車のアトラス（車体2色・ヘッドライト・テールランプ）、縦看板6種、屋上広告3種（「採用試験会場」、`ACCIDENCHUA`、「安全第一」）とゆめみんの看板（`ad_yumemin`）。
 - 時間帯（昼・夜）による発光の強さはGLBに焼き込まず、ゲーム側（`26_YUMEMI_RECRUIT_EXAM/lib/stage_lighting.dart`）でマテリアルごとに設定する。
-- 再生成: リポジトリルートで Pillow入りPythonから `26_YUMEMI_RECRUIT_EXAM/tool/build_akasaka_textures.py`、`prepare_stage_surfaces.py`（同じtoolディレクトリ、Pillow/NumPyが必要）、続いて Blender `-b -P 26_YUMEMI_RECRUIT_EXAM/tool/build_akasaka_stage.py`。
+- 再生成: リポジトリルートで Pillow入りPythonから `26_YUMEMI_RECRUIT_EXAM/tool/build_akasaka_textures.py`、`prepare_stage_surfaces.py`（同じtoolディレクトリ、Pillow/NumPyが必要）、続いて Blender `-b -P 26_YUMEMI_RECRUIT_EXAM/tool/build_akasaka_stage.py`。最後に `uv run --with pillow python 26_YUMEMI_RECRUIT_EXAM/tool/optimize_stage_textures.py` と `python3 26_YUMEMI_RECRUIT_EXAM/tool/audit_stage_asset.py` を実行する。
 - ゲームは `assets/models/akasaka.glb` の相対symlinkで参照。GLTF読込時の座標系に合わせ、シーン側でY軸180度回転する。
 - 背景には衝突・転落判定を追加しない。空と霞はFlutter SceneのSkybox / Fogで描画。
 
@@ -18,3 +18,14 @@
 - 39プリミティブ、71,872三角形を維持。GLBは約6.70→9.91MB。画像をRGBA8へ展開したベースレベル概算は36.51→44.26MiB（mipmap・ドライバ管理分を除く）。追加の昼夜環境マップは128px/面の静的キューブ各1MiB程度＋入力画像。画像はすべて長辺1024px以下。`tool/audit_stage_asset.py`で上限を検査。
 - ガラスの映り込みは、生成画像にある静的模様＋昼夜の小さな環境マップによる視点依存の光沢。周囲のゲームオブジェクトや人物を正確に映すリアルタイム反射ではない。追加の反射カメラ・街の再描画・透明ガラスの重ね描きはない。
 - 共通のスタジオ照明はアイテム選択プレビューに保持し、ステージには昼夜の屋外照明を使う。これにより商品プレビューと屋外の材質感を分ける。
+
+## 配布テクスチャ解像度の最適化（2026-10-20）
+
+上記の44.26MiBは高解像度版の記録。現在の配布GLBは13.13MiB（RGBA8ベースレベル、約70%削減）、7.15MB。形状は同一。元PNG、Imagegen原画、プロンプトは変更せず保持し、Blenderで高解像度GLBを再生成できる。最適化ツールはGLB内の画像とバッファ位置のみを書き換える。
+
+- 遠景外壁: 512×1024 → 256×512。近い支持ビルにも使うfacade_0の色画像は512×1024を維持。
+- 外壁発光: 256×512、粗さ・金属度: 128×256。
+- 鉄骨: 1024×256 → 512×128。路面: 512×512 → 256×256。
+- 縦看板: 256×768 → 128×384。広告: 1024×384 → 512×192。小さな車アトラス・遠景・歩道は維持。
+
+基準はiPhone 18 Pro横2622×1206px、縦FOV約39.5度、固定距離約11mのゲームカメラ。外壁は4m×8mの反復で、奥の建物ほど1タイルの画面占有が小さい。最寄りの外壁は単純な一律縮小から除外した。画質設定は従来どおりで、この最適化は標準・軽量の両方に適用。環境キューブ、描画解像度、影のサイズは変更しない。展開量は理論値で、実機のGPUメモリやFPSの測定値ではない。
