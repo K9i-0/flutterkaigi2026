@@ -12,9 +12,19 @@ class BalanceSelection {
 }
 
 class BalancePanel extends StatefulWidget {
-  const BalancePanel({super.key, required this.balance, required this.seed});
+  const BalancePanel({
+    super.key,
+    required this.balance,
+    required this.seed,
+    this.showFps = false,
+    this.onFps,
+  });
   final Balance balance;
   final int seed;
+  final bool showFps;
+
+  /// Applied immediately and kept on cancel: it is a view option, not balance.
+  final ValueChanged<bool>? onFps;
   @override
   State<BalancePanel> createState() => _BalancePanelState();
 }
@@ -24,6 +34,7 @@ class _BalancePanelState extends State<BalancePanel> {
   late final seed = TextEditingController(text: '${widget.seed}');
   final json = TextEditingController();
   String? error;
+  late bool showFps = widget.showFps;
   BalanceSelection selection() {
     final n = int.tryParse(seed.text);
     if (n == null || n < 0 || n > 999999999) {
@@ -61,6 +72,18 @@ class _BalancePanelState extends State<BalancePanel> {
                 const Expanded(
                   child: Text('バランス調整 / DEBUG', style: TextStyle(fontSize: 20)),
                 ),
+                if (widget.onFps != null) ...[
+                  const Text('FPS表示'),
+                  Switch(
+                    key: const ValueKey('fps_toggle'),
+                    value: showFps,
+                    onChanged: (v) {
+                      setState(() => showFps = v);
+                      widget.onFps!(v);
+                    },
+                  ),
+                  const SizedBox(width: 8),
+                ],
                 TextButton(
                   onPressed: () => Navigator.pop(context),
                   child: const Text('キャンセル'),

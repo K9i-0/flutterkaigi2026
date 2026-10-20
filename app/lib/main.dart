@@ -9,6 +9,7 @@ import 'graphics_settings.dart';
 import 'stage_benchmark.dart';
 import 'balance.dart';
 import 'balance_panel.dart';
+import 'fps_overlay.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -64,6 +65,9 @@ class _RainState extends State<RainPage> {
       frozen = false;
   String? error;
   double inputX = 0, inputY = 0, accumulator = 0, swipe = 0;
+  // Debug/profile only: frame-rate HUD toggled from the debug panel.
+  bool showFps = false;
+  Map<String, Object>? fpsStats;
   int lastEvent = 0, turn = 0, seed = 1;
   Object? _hudState;
 
@@ -115,6 +119,8 @@ class _RainState extends State<RainPage> {
               : game.phase.name,
           'error': error,
           'graphics': graphics.toMap(),
+          'showFps': showFps,
+          if (fpsStats != null) 'fpsStats': fpsStats,
           'benchmark': benchmark?.inspect(),
           'sensor': tilt.available,
           'demo': demo,
@@ -125,10 +131,12 @@ class _RainState extends State<RainPage> {
       );
       registerMarionetteExtension(
         name: 'madogiwa.catchAction',
-        description: 'action=select|configure|start|demo|step|rotate|pause|resume|graphics|benchmark. graphics: json booleans, persist=true optional. benchmark: label, timeOfDay. select: character ID and/or timeOfDay=day|night. configure: json settings, seed. step seconds 0..25 x/y -1..1. Demo supplies inputs only.',
+        description: 'action=select|configure|start|demo|step|rotate|pause|resume|graphics|benchmark|fps. fps: value=on|off (debug FPS HUD). graphics: json booleans, persist=true optional. benchmark: label, timeOfDay. select: character ID and/or timeOfDay=day|night. configure: json settings, seed. step seconds 0..25 x/y -1..1. Demo supplies inputs only.',
         callback: (p) async {
           if (!ready) return MarionetteExtensionResult.error(1, 'Not ready');
           switch (p['action']) {
+            case 'fps':
+              await setFps(p['value'] == 'on');
             case 'graphics':
               final data =
                   jsonDecode(p['json'] ?? '{}') as Map<String, dynamic>;
@@ -293,6 +301,7 @@ class _RainState extends State<RainPage> {
           jsonEncode(graphics.toMap()),
         );
       }
+      showFps = !kReleaseMode && (prefs.getBool('yumemi.debug.fps') ?? false);
       final saved = prefs.getString('beerRain.balance.v1');
       if (saved != null) {
         try {
@@ -392,13 +401,27 @@ class _RainState extends State<RainPage> {
     );
   }
 
+  Future<void> setFps(bool value) async {
+    setState(() {
+      showFps = value;
+      if (!value) fpsStats = null;
+    });
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('yumemi.debug.fps', value);
+  }
+
   Future<void> openBalance() async {
     final wasPaused = paused;
     setState(() => paused = true);
     final selected = await showDialog<BalanceSelection>(
       context: context,
       barrierDismissible: false,
-      builder: (_) => BalancePanel(balance: game.balance, seed: seed),
+      builder: (_) => BalancePanel(
+        balance: game.balance,
+        seed: seed,
+        showFps: showFps,
+        onFps: setFps,
+      ),
     );
     if (!mounted) return;
     if (selected == null) {
@@ -614,7 +637,7 @@ class _RainState extends State<RainPage> {
               world.update(game, 0);
             }),
             onSeed: () => setState(() => seed++),
-            onSettings: kDebugMode ? openBalance : null,
+            onSettings: kReleaseMode ? null : openBalance,
             onGraphics: openGraphics,
           );
         }
@@ -681,6 +704,14 @@ class _RainState extends State<RainPage> {
                           ],
                         ),
                       ),
+                      if (showFps)
+                        Positioned(
+                          left: 0,
+                          bottom: 0,
+                          child: FpsOverlay(
+                            onStats: (s) => fpsStats = s.toMap(),
+                          ),
+                        ),
                       Positioned(
                         right: 0,
                         top: 0,
@@ -697,7 +728,7 @@ class _RainState extends State<RainPage> {
                               onPressed: openGraphics,
                               icon: const Icon(Icons.display_settings),
                             ),
-                            if (kDebugMode)
+                            if (!kReleaseMode)
                               IconButton(
                                 key: const ValueKey('balance_debug'),
                                 tooltip: 'バランス調整',
