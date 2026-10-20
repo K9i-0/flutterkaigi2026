@@ -6,19 +6,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_scene/scene.dart';
 import 'package:vector_math/vector_math.dart' as vm;
 
-/// A facade-mounted LED ad. The canonical photograph is drawn unchanged;
-/// only the ticker UVs move, with no per-frame image decoding or GPU uploads.
+/// A small screen mounted on the existing bridge-support building.
 class OkayamanVision {
   final nodes = <Node>[];
-  final ticker = UnlitMaterial()..doubleSided = true;
-  double seconds = 0;
   bool visible = false;
 
   Map<String, Object> inspect() => {
     'visible': visible,
     'source': '02_CHARACTERS/Okayaman.jpg',
-    'seconds': seconds,
-    'tickerOffset': ticker.baseColorTextureTransform.offset.x,
   };
 
   void _box(
@@ -64,32 +59,6 @@ class OkayamanVision {
     nodes.add(node);
   }
 
-  static void _text(
-    ui.Canvas canvas,
-    String text,
-    double x,
-    double y,
-    double size,
-    ui.Color color, {
-    double width = 1000,
-  }) {
-    final painter = TextPainter(
-      text: TextSpan(
-        text: text,
-        style: TextStyle(
-          color: color,
-          fontSize: size,
-          fontWeight: FontWeight.w800,
-          fontFamily: 'Hiragino Sans',
-          height: 1.12,
-        ),
-      ),
-      textDirection: TextDirection.ltr,
-    )..layout(maxWidth: width);
-    painter.paint(canvas, ui.Offset(x, y));
-    painter.dispose();
-  }
-
   static Future<Texture2D> _texture(
     ui.PictureRecorder recorder,
     int w,
@@ -109,58 +78,45 @@ class OkayamanVision {
     final photo = (await codec.getNextFrame()).image;
     final recorder = ui.PictureRecorder();
     final canvas = ui.Canvas(recorder);
-    canvas.drawColor(const ui.Color(0xfff3efdf), ui.BlendMode.src);
-    // Fit the full original photo into the right half, preserving face and ratio.
-    const photoHeight = 512.0;
-    final photoWidth = photoHeight * photo.width / photo.height;
+    canvas.drawColor(const ui.Color(0xffffffff), ui.BlendMode.src);
+    // Keep the canonical face unchanged and centered, with a simple subtitle.
+    const height = 768.0;
+    final width = height * photo.width / photo.height;
     canvas.drawImageRect(
       photo,
       ui.Rect.fromLTWH(0, 0, photo.width.toDouble(), photo.height.toDouble()),
-      ui.Rect.fromLTWH(1024 - photoWidth, 0, photoWidth, photoHeight),
+      ui.Rect.fromLTWH((1024 - width) / 2, 0, width, height),
       ui.Paint(),
     );
-    canvas.drawRect(
-      const ui.Rect.fromLTWH(0, 0, 440, 512),
-      ui.Paint()..color = const ui.Color(0xff072c38),
-    );
-    const gold = ui.Color(0xffffce69), white = ui.Color(0xfffff6e6);
-    _text(canvas, 'MADOGIWA VISION', 30, 26, 27, gold);
-    _text(canvas, '大変\n驚いて\nおります。', 28, 98, 73, white, width: 400);
-    _text(canvas, '窓際王  おかやまん', 30, 410, 34, gold);
-    _text(canvas, 'その一杯に、驚きを。', 30, 465, 23, white);
-    final ad = await _texture(recorder, 1024, 512);
+    final subtitle = TextPainter(
+      text: const TextSpan(
+        text: '大変驚いております。',
+        style: TextStyle(
+          color: ui.Color(0xffffffff),
+          fontSize: 76,
+          fontWeight: FontWeight.w700,
+          shadows: [
+            Shadow(color: ui.Color(0xff000000), blurRadius: 5),
+            Shadow(color: ui.Color(0xff000000), offset: ui.Offset(2, 2)),
+          ],
+        ),
+      ),
+      textDirection: TextDirection.ltr,
+    )..layout(maxWidth: 1000);
+    subtitle.paint(canvas, ui.Offset((1024 - subtitle.width) / 2, 662));
+    subtitle.dispose();
+    final ad = await _texture(recorder, 1024, 768);
     photo.dispose();
     codec.dispose();
 
-    final tapeRecorder = ui.PictureRecorder();
-    final tapeCanvas = ui.Canvas(tapeRecorder);
-    tapeCanvas.drawColor(const ui.Color(0xfff7c55d), ui.BlendMode.src);
-    _text(
-      tapeCanvas,
-      'おかやまん  /  大変驚いております。  /  MADOGIWA VISION  /',
-      12,
-      17,
-      32,
-      const ui.Color(0xff092c35),
-      width: 1280,
-    );
-    ticker.baseColorTexture = await _texture(tapeRecorder, 1280, 80);
     final face = UnlitMaterial(colorTexture: ad)..doubleSided = true;
     final frame = PhysicallyBasedMaterial()
       ..baseColorFactor = vm.Vector4(.025, .035, .045, 1)
       ..metallicFactor = .5;
-    final facade = PhysicallyBasedMaterial()
-      ..baseColorTexture = await Texture2D.fromAsset(
-        'assets/images/vision_facade.png',
-      );
-    final roof = PhysicallyBasedMaterial()
-      ..baseColorFactor = vm.Vector4(.14, .18, .21, 1);
-    // The screen is physically attached to one building, never camera-facing.
-    _box(scene, vm.Vector3(4.4, -4.6, -14), vm.Vector3(8.8, 18.8, 4.4), facade);
-    _box(scene, vm.Vector3(4.4, 4.9, -14), vm.Vector3(9, .2, 4.6), roof);
-    _box(scene, vm.Vector3(4.4, 1.7, -11.65), vm.Vector3(8.5, 4.9, .35), frame);
-    _panel(scene, 8.1, 4.05, vm.Vector3(4.4, 2, -11.46), face);
-    _panel(scene, 8.1, .51, vm.Vector3(4.4, -.33, -11.46), ticker);
+    // Existing support: x=6, y=-7, z=0, size=2.7 x 14 x 4.
+    // Flush against the street-facing wall, clear of rooftop equipment.
+    _box(scene, vm.Vector3(6, -1.5, 2.04), vm.Vector3(2.5, 1.9, .08), frame);
+    _panel(scene, 2.4, 1.8, vm.Vector3(6, -1.5, 2.09), face);
   }
 
   void update(double dt, {required bool enabled}) {
@@ -168,8 +124,5 @@ class OkayamanVision {
     for (final node in nodes) {
       node.visible = enabled;
     }
-    if (!enabled) return;
-    seconds += dt;
-    ticker.baseColorTextureTransform.offset.x = (seconds * .035) % 1;
   }
 }

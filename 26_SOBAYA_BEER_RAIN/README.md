@@ -100,9 +100,9 @@ Marionetteからは `madogiwa.catchAction` に `action=configure`、`json`（bal
 
 ## おかやまんの街頭ビジョン
 
-鉄骨編の背景ビルには「MADOGIWA VISION」を設置。おかやまんの正典写真 `02_CHARACTERS/Okayaman.jpg` を相対symlinkで参照し、広告下部の文字帯が流れる。写真そのものは静止画。画面はビルに固定され、カメラ回転に応じて見え方が変わる。面移動版では非表示。
+鉄骨の端を支える既存ビルの道路側の外壁に、小さな画面を設置。おかやまんの正典写真 `02_CHARACTERS/Okayaman.jpg` を相対symlinkで参照し、「大変驚いております。」の字幕だけを重ねる。静止画で、装飾やスクロール帯は付けない。面移動版では非表示。
 
-実装は `lib/okayaman_vision.dart`。写真と文字のテクスチャはロード時に生成し、毎フレームは文字帯のUVだけを更新する。`madogiwa.inspectCatch` の `vision` で表示状態・広告時間・UVオフセットを確認できる。
+実装は `lib/okayaman_vision.dart`。テクスチャはロード時に一度生成する。`madogiwa.inspectCatch` の `vision` で表示状態・写真の参照元を確認できる。
 
 ## キャラクター選択（#2・#3・#4）
 
