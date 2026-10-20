@@ -10,6 +10,15 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "FlutterKaigi / そば屋のビール雨 (debug)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/26_SOBAYA_BEER_RAIN",
+      "program": "${workspaceFolder}/26_SOBAYA_BEER_RAIN/lib/main.dart",
+      "flutterMode": "debug",
+      "presentation": {"group": "00 FlutterKaigi", "order": 0}
+    },
+    {
       "name": "そば屋ハザード / 本編 (debug)",
       "type": "dart",
       "request": "launch",

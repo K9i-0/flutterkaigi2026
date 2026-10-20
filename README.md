@@ -7,6 +7,26 @@ FlutterKaigi 2026向けFlutterゲーム開発用の独立リポジトリです�
 2026-10-19に [Madogiwa Multimedia Universe](https://github.com/K9i-0/madogiwa-multimedia-universe) の `flutterkaigi2026` から履歴・共有アセットを引き継いで分離しました（動画は全履歴から除外）。相対symlinkを維持するため、当初はモノレポ全体を保持しています。
 [Issue番号対応表・移行記録](MIGRATION.md)を参照してください。
 
+## Flutterアプリの起動
+
+macOSではXcodeとiOS Simulator、miseが必要です。リポジトリルートで初回セットアップを行います。
+
+```sh
+mise trust .mise.toml
+mise install
+cd 26_SOBAYA_BEER_RAIN
+mise exec -- flutter pub get
+open -a Simulator
+mise exec -- flutter devices
+mise exec -- flutter run -d <device-id>
+```
+
+Flutterは `.mise.toml` の3.47.2を使用します。初回起動時はビルドフックがGLBを変換するため時間がかかります。モデル・画像・効果音はリポジトリ内の相対symlinkを使うため、アプリのディレクトリだけを切り出さず、リポジトリ全体をクローンしてください。
+
+VS Codeではルートフォルダを開き、「FlutterKaigi / そば屋のビール雨 (debug)」とiOSシミュレーターを選択してF5で起動できます。シミュレーターでは左下のパッドで操作します。実端末起動にはXcodeで署名設定が必要です。
+
+検証: `26_SOBAYA_BEER_RAIN` で `mise exec -- flutter test` と `mise exec -- flutter analyze`。2026-10-20、独立クローンからiPhone Duo / iOS 27.1シミュレーターでdebug起動を確認。
+
 以下は継承したMMUの制作資料です。
 
 ---
