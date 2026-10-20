@@ -205,3 +205,7 @@ Imagegenで外壁3種・鉄骨・アスファルトを制作。512〜1024pxへ�
 デバッグ拡張 `madogiwa.catchAction` に `action=graphics, json={...}`（5つのbool、`persist=true`は保存する場合だけ）、`action=benchmark, label=..., timeOfDay=day|night` を追加。benchmarkはseed 1・CTOおだてつ・正面・8秒進行時点でシミュレーションを固定し、120フレーム準備後に360フレームのFlutter build/raster時間を取得する。結果は `madogiwa.inspectCatch` の `benchmark` と `STAGE_BENCHMARK` ログに出る。測定中は操作せず、終了後は再起動かstart/resumeで通常プレイへ戻る。
 
 実機／macOSのprofile起動では `--profile --dart-define=STAGE_BENCHMARK=true --dart-define=STAGE_QUALITY=light --dart-define=STAGE_TIME=night` で自動測定できる（標準／昼はそれぞれ `standard` / `day`）。これはCPU側のUI・raster時間で、GPU実行時間・表示FPSではない。今回のiPhoneシミュレーターdebug比較は傾向確認用で、実機性能・旧版との実行速度差は未計測。資産上限と比較結果は `qa/surface-budget.json` / `qa/surface-benchmarks.json` を参照。
+
+### 背景の高層ビル追加
+
+タワー・公園改修後、奥の左右に185〜210mのビルを5棟配置。タワー正面の抜けを確保し、既存の外壁を再利用した。敷地の低層ビルを置き換えた最終状態は39プリミティブ／65,472三角形、テクスチャ13.13MiB。昼夜の確認画像は `qa/highrises/`。

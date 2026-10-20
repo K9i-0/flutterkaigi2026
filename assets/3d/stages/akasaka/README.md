@@ -2,7 +2,7 @@
 
 採用した `26_YUMEMI_RECRUIT_EXAM/design/stage_concepts/D_akasaka_prompt.txt` の方向性を、Flutter Sceneで動く3D背景にしたもの。実在街区の測量再現ではなく、赤坂の飲食店街と東京タワーを組み合わせたゲーム用の構成。
 
-- `akasaka.glb`: 39メッシュ（34マテリアル、車の走行グループ6本を含む）の静的背景、68,752三角形。東京タワーと公園、鉄骨と支えビル、道路網（大通り・路地・車線・横断歩道・歩道）、街灯、首都高の高架、区画割りした街並み、笠木・ライトアップ帯、屋上設備・屋上広告・ゆめみんの看板5基・航空障害灯、外周のスカイラインを含む。車は `traffic_zpos` / `traffic_zneg` / `traffic_xpos` / `traffic_xneg` / `traffic_hwy_xpos` / `traffic_hwy_xneg` の6ノードで、各ノードは周期（24・30・27単位）で繰り返す配置。ゲームがノードを動かして走らせる。
+- `akasaka.glb`: 39メッシュ（34マテリアル、車の走行グループ6本を含む）の静的背景、65,472三角形。東京タワーと公園、鉄骨と支えビル、道路網（大通り・路地・車線・横断歩道・歩道）、街灯、首都高の高架、区画割りした街並み、笠木・ライトアップ帯、屋上設備・屋上広告・ゆめみんの看板5基・航空障害灯、外周のスカイラインを含む。車は `traffic_zpos` / `traffic_zneg` / `traffic_xpos` / `traffic_xneg` / `traffic_hwy_xpos` / `traffic_hwy_xneg` の6ノードで、各ノードは周期（24・30・27単位）で繰り返す配置。ゲームがノードを動かして走らせる。
 - PNG: 手続き生成と採用したImagegen素材を組み合わせたテクスチャ（`ad_yumemin.png` はリポジトリ内の正典 `02_CHARACTERS/Yumemin.jpg` を合成）。外装6種（`facade_0`〜`5`、4×8単位で反復）は昼の窓の色、`facade_*_emit.png` は点灯した窓だけの発光マップ。ほかに鋼材の錆止め塗装、アスファルト、歩道、遠景（`skyline` / `skyline_emit`）、車のアトラス（車体2色・ヘッドライト・テールランプ）、縦看板6種、屋上広告3種（「採用試験会場」、`ACCIDENCHUA`、「安全第一」）とゆめみんの看板（`ad_yumemin`）。
 - 時間帯（昼・夜）による発光の強さはGLBに焼き込まず、ゲーム側（`26_YUMEMI_RECRUIT_EXAM/lib/stage_lighting.dart`）でマテリアルごとに設定する。
 - 再生成: リポジトリルートで Pillow入りPythonから `26_YUMEMI_RECRUIT_EXAM/tool/build_akasaka_textures.py`、`prepare_stage_surfaces.py`（同じtoolディレクトリ、Pillow/NumPyが必要）、続いて Blender `-b -P 26_YUMEMI_RECRUIT_EXAM/tool/build_akasaka_stage.py`。最後に `uv run --with pillow python 26_YUMEMI_RECRUIT_EXAM/tool/optimize_stage_textures.py` と `python3 26_YUMEMI_RECRUIT_EXAM/tool/audit_stage_asset.py` を実行する。
@@ -39,3 +39,9 @@
 カメラは縦FOV 0.78rad（約44.7度）、ゲーム中の注視点y=2.9。正面のiPhone横画面で先端とHUDの間に余白を確保し、足元と公園を見せる。鉄骨の寸法、操作、当たり判定は維持。遠くへ大きく旋回するとタワーが画面端へ移る通常の透視投影で、画面内への固定表示はしない。
 
 最終GLBは6,924,244 bytes、39プリミティブ、68,752三角形（以前71,872から約4.3%減）。テクスチャは13.13MiBを維持。監査は形状の上限・タワー先端の高さ・ビルとの高低差・公園の存在を確認する。
+
+## 背景の200m級ビル（2026-10-20）
+
+奥の左右に185/190/200/205/210mのオフィスビル計5棟を追加。`HIGHRISES`で敷地・高さ・外壁を固定し、通常ビルの生成時に敷地を空ける。タワーの正面シルエットと公園を避け、各棟は2段のセットバックと小さな屋上設備を持つ。外壁3/5・既存の屋根/コンクリート/金属/灯具材を共有し、新規テクスチャや動的ライトは追加しない。
+
+配置は(x,z)=(-30,-48),(-12,-70),(-38,-70),(36,-48),(43,-70)。東京タワー333mが最も高い関係は維持する。敷地内の低層ビルを置き換え、最終版は39プリミティブ、65,472三角形、6,699,944 bytes、画像展開量13.1328MiB。検証画像はゲームの `qa/highrises/`。

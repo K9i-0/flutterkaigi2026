@@ -10,6 +10,13 @@ materials={}; batches={}
 METERS = 14 / 200
 TOWER_X, TOWER_Z = 15, -46
 PARK_X, PARK_Z = 7.4, 8.2  # half extents: about 211m x 234m
+# Fixed skyline accents, outside the park and the front-facing tower silhouette.
+# x, z, width, depth, roof height in meters, facade
+HIGHRISES = [
+ (-30,-48,4.6,5.0,190,3), (-12,-70,4.2,5.2,210,5),
+ (-38,-70,5.0,5.0,200,3), (36,-48,4.4,5.0,185,5),
+ (43,-70,4.2,5.2,205,3),
+]
 def material(name,color,texture=None,metal=0,glow=0,rough=.65,emit=None):
  m=bpy.data.materials.new(name); m.use_nodes=True
  m.use_backface_culling=True
@@ -133,6 +140,8 @@ def clear(x,z,w,d):
  # Keep the support buildings, the tower plaza and the expressway corridor open.
  if abs(abs(x)-6)<1.4+w/2 and abs(z)<2+d/2: return False
  if abs(x-TOWER_X)<PARK_X+.8+w/2 and abs(z-TOWER_Z)<PARK_Z+.8+d/2: return False
+ for hx,hz,hw,hd,_,_ in HIGHRISES:
+  if abs(x-hx)<(w+hw)/2+.5 and abs(z-hz)<(d+hd)/2+.5: return False
  return True
 sign_i=0
 roofs=[]  # roofs left free for the Yumemin billboards
@@ -186,6 +195,20 @@ for x0,x1 in XBLOCKS:
      h=rng.uniform(90,140)*METERS
     kind=rng.choice([3,5]) if h>15 else rng.choice([0,1,2,4,0,1,2,3,4,5])
     building(x,z,w,d,h,kind,z>-40 and abs(x)<46)
+# Five tall but simple office towers: two setbacks, shared facades/materials,
+# no new textures or separate render objects. Roof machinery stays compact.
+for x,z,w,d,meters,kind in HIGHRISES:
+ h=meters*METERS
+ base=G
+ for scale,top in [(1,h*.65),(.82,h)]:
+  tw,td=w*scale,d*scale
+  box('facade'+str(kind),x,(base+G+top-.25)/2,z,tw,G+top-.25-base,td,FACADE)
+  box('concrete',x,G+top-.14,z,tw+.06,.22,td+.06)
+  box('roof',x,G+top,z,tw+.12,.06,td+.12)
+  base=G+top
+ box('metal',x,G+h+.24,z,1.1,.45,.8)
+ for sx in [-1,1]:
+  box('lamp',x+sx*w*.35,G+h+.07,z-d*.35,.10,.08,.10)
 # Five Yumemin billboards spread across the background (never the support
 # buildings), facing the camera side so every yaw shows at least one.
 used=set()
