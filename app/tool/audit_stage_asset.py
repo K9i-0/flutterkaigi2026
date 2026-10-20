@@ -25,6 +25,8 @@ heights = {
 assert abs(heights['white'] - (-14 + 333 * 14 / 200)) < .01
 assert heights['white'] > max(heights[n] for n in heights if n.startswith('facade') or n == 'skyline')
 assert 'lawn' in heights and 'foliage' in heights
+assert not any(m.get('name') == 'ad_exam' for m in j['materials'])
+assert not any(i.get('name') == 'ad_exam' for i in j['images'])
 assert pixels*4 <= 14*1024*1024, 'Run optimize_stage_textures.py after Blender export'
 assert not any(m.get('doubleSided', False) for m in j['materials'])
 assert sum('normalTexture' in m for m in j['materials']) == 2

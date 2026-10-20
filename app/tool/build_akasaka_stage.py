@@ -53,8 +53,10 @@ for i in range(6): material('facade'+str(i),(.7,.7,.7),f'facade_{i}.png',glow=1,
 material('crown',(.9,.86,.78),glow=1)
 SIGNS=['akasaka','izakaya','soba','shika','bengoshi','fudosan']
 for n in SIGNS: material(n,(1,1,1),f'sign_{n}.png',glow=.4)
-ADS=['exam','accidenchua','safety']
-for n in ADS+['yumemin']: material('ad_'+n,(1,1,1),f'ad_{n}.png',glow=.5)
+# Retired ad slot stays empty to preserve the city's seeded layout.
+ADS=[None,'accidenchua','safety']
+for n in ADS+['yumemin']:
+ if n: material('ad_'+n,(1,1,1),f'ad_{n}.png',glow=.5)
 # Moving traffic: one atlas material, one mesh per direction group (see catch_scene.dart).
 material('car',(1,1,1),'car_atlas.png',metal=.4,glow=1,rough=.35,emit='car_atlas_emit.png')
 material('lamp',(1,.78,.45),glow=1.8); material('redlight',(1,.08,.05),glow=2.2)
@@ -165,10 +167,12 @@ def building(x,z,w,d,h,kind,near):
    for sz in [-.35,.35]: rod('metal',(tx+sx,top,tz+sz),(tx+sx,top+.7,tz+sz),.04)
   rod('roof',(tx,top+.7,tz),(tx,top+1.6,tz),.55,10)
  elif p<.75 and near and h<11:
-  name='ad_'+rng.choice(ADS)
-  bw=min(tw*.9,4.2)
-  box(name,x,top+1.15,z+td/2-.4,bw,bw/2.67,.08)
-  for sx in [-bw/3,bw/3]: rod('metal',(x+sx,top,z+td/2-.5),(x+sx,top+.6,z+td/2-.5),.05)
+  ad=rng.choice(ADS)
+  if ad:
+   name='ad_'+ad
+   bw=min(tw*.9,4.2)
+   box(name,x,top+1.15,z+td/2-.4,bw,bw/2.67,.08)
+   for sx in [-bw/3,bw/3]: rod('metal',(x+sx,top,z+td/2-.5),(x+sx,top+.6,z+td/2-.5),.05)
  if h>16:
   rod('metal',(x,top,z),(x,top+3,z),.05)
   for sx in [-1,1]:
@@ -209,23 +213,16 @@ for x,z,w,d,meters,kind in HIGHRISES:
  box('metal',x,G+h+.24,z,1.1,.45,.8)
  for sx in [-1,1]:
   box('lamp',x+sx*w*.35,G+h+.07,z-d*.35,.10,.08,.10)
-# Five Yumemin billboards spread across the background (never the support
-# buildings), facing the camera side so every yaw shows at least one.
-used=set()
-for target in [-62,-34,-12,14,40]:
- best=None
- for i,(x,z,tw,td,top) in enumerate(roofs):
-  dist=math.hypot(x,z); az=math.degrees(math.atan2(x,-z))
-  if i in used or not (14<dist<38 and -10<top<-2 and tw>=3.6): continue
-  score=abs(az-target)+abs(dist-22)*.4
-  if best is None or score<best[0]: best=(score,i)
- if best is None: continue
- used.add(best[1]); x,z,tw,td,top=roofs[best[1]]
- bw=min(tw*.95,5.4); bz=z+td/2-.5
- box('ad_yumemin',x,top+2.0,bz,bw,bw/2.67,.1)
- box('metal',x,top+2.0,bz-.08,bw+.16,bw/2.67+.16,.05)
- for sx in [-bw/3,bw/3]: rod('metal',(x+sx,top,bz-.1),(x+sx,top+1.4,bz-.1),.06)
-print('YUMEMIN',len(used))
+# Move all five Yumemin signs to the fixed high-rise roofs, above foreground
+# occluders. Existing artwork, material and aspect ratio are preserved.
+for x,z,w,d,meters,_ in HIGHRISES:
+ top=G+meters*METERS
+ bw=min(w*1.25,6.3); bz=z+d*.41+.12
+ cy=top+1.45
+ box('ad_yumemin',x,cy,bz,bw,bw/2.67,.1)
+ box('metal',x,cy,bz-.08,bw+.16,bw/2.67+.16,.05)
+ for sx in [-bw/3,bw/3]: rod('metal',(x+sx,top,bz-.1),(x+sx,cy,bz-.1),.06)
+print('YUMEMIN',len(HIGHRISES))
 # Lane markings, crosswalks, streetlights and traffic on the avenue.
 for s in [-1,1]:
  box('yellowline',s*.12,G+.025,-30,.1,.02,140)
