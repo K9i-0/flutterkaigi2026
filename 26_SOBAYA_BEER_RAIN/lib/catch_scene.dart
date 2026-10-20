@@ -7,9 +7,11 @@ import 'package:vector_math/vector_math.dart' as vm;
 import 'catch_game.dart';
 import 'character.dart';
 import 'studio_lighting.dart';
+import 'okayaman_vision.dart';
 
 class CatchScene {
   final scene = Scene();
+  final vision = OkayamanVision();
   final camera = PerspectiveCamera(
     position: vm.Vector3(0, 9.6, 10.8),
     target: vm.Vector3(0, 1.6, 0),
@@ -25,6 +27,7 @@ class CatchScene {
     'displayedCharacter': displayedCharacter.id,
     'motion': motions[displayedCharacter]?.controller.inspect(),
     'facing': facing,
+    'vision': vision.inspect(),
   };
   late Skybox twilight;
   final planeScenery = <Node>[], beamScenery = <Node>[];
@@ -223,6 +226,7 @@ class CatchScene {
         ),
       );
     }
+    await vision.load(scene);
     update(CatchGame(), 0);
   }
 
@@ -235,6 +239,7 @@ class CatchScene {
 
   void update(CatchGame g, double dt) {
     clock += dt;
+    vision.update(dt, enabled: g.lane);
     scene.skybox = g.lane ? twilight : null;
     scene.fog.enabled = g.lane;
     for (final n in planeScenery) {
