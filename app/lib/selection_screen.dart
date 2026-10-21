@@ -15,9 +15,6 @@ class SelectionScreen extends StatelessWidget {
     required this.onSelect,
     required this.onTime,
     required this.onStart,
-    required this.onMode,
-    required this.onSeed,
-    required this.seed,
     this.onSettings,
     this.onGraphics,
   });
@@ -25,9 +22,8 @@ class SelectionScreen extends StatelessWidget {
   final CatchScene world;
   final ValueChanged<CatchCharacter> onSelect;
   final ValueChanged<StageTime> onTime;
-  final VoidCallback onStart, onMode, onSeed;
+  final VoidCallback onStart;
   final VoidCallback? onSettings, onGraphics;
-  final int seed;
   static const paper = Colors.white, text = brandInk, muted = brandMuted;
 
   Widget item(bool bad) => Expanded(
@@ -211,41 +207,12 @@ class SelectionScreen extends StatelessWidget {
                           style: const TextStyle(fontSize: 11, color: muted),
                         ),
                       ),
-                      SegmentedButton<StageTime>(
+                      TimeOfDayToggle(
                         key: const ValueKey('time_of_day'),
-                        showSelectedIcon: false,
-                        style: SegmentedButton.styleFrom(
-                          visualDensity: VisualDensity.compact,
-                          textStyle: const TextStyle(fontSize: 12),
-                        ),
-                        segments: [
-                          for (final t in StageTime.values)
-                            ButtonSegment(
-                              value: t,
-                              label: Text(
-                                t.label,
-                                key: ValueKey('time_${t.id}'),
-                              ),
-                            ),
-                        ],
-                        selected: {game.timeOfDay},
-                        onSelectionChanged: (s) => onTime(s.single),
+                        selected: game.timeOfDay,
+                        onChanged: onTime,
                       ),
                       const SizedBox(width: 8),
-                      TextButton(
-                        key: const ValueKey('mode_toggle'),
-                        onPressed: onMode,
-                        child: const Text(
-                          '面移動版',
-                          style: TextStyle(fontSize: 11, color: muted),
-                        ),
-                      ),
-                      IconButton(
-                        key: const ValueKey('new_seed'),
-                        tooltip: '配置を変える #$seed',
-                        onPressed: onSeed,
-                        icon: const Icon(Icons.shuffle, size: 17, color: muted),
-                      ),
                       if (onGraphics != null)
                         IconButton(
                           key: const ValueKey('graphics_settings'),
@@ -307,6 +274,90 @@ class SelectionScreen extends StatelessWidget {
           },
         ),
       ),
+    ),
+  );
+}
+
+/// Sky-tinted pill switch for the stage time; the selected side shows its sky.
+class TimeOfDayToggle extends StatelessWidget {
+  const TimeOfDayToggle({
+    super.key,
+    required this.selected,
+    required this.onChanged,
+  });
+  final StageTime selected;
+  final ValueChanged<StageTime> onChanged;
+
+  static const _skies = {
+    StageTime.day: [Color(0xffffc85c), Color(0xffff8a3d)],
+    StageTime.night: [Color(0xff2b3f8f), Color(0xff121c45)],
+  };
+  static const _icons = {
+    StageTime.day: Icons.wb_sunny_rounded,
+    StageTime.night: Icons.nightlight_round,
+  };
+
+  @override
+  Widget build(BuildContext context) => Container(
+    padding: const EdgeInsets.all(3),
+    decoration: BoxDecoration(
+      color: brandPale,
+      borderRadius: BorderRadius.circular(20),
+      border: Border.all(color: const Color(0xffd3eee9)),
+    ),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        for (final t in StageTime.values)
+          GestureDetector(
+            key: ValueKey('time_${t.id}'),
+            behavior: HitTestBehavior.opaque,
+            onTap: () => onChanged(t),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.easeOut,
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(17),
+                gradient: t == selected
+                    ? LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: _skies[t]!,
+                      )
+                    : null,
+                boxShadow: t == selected
+                    ? [
+                        BoxShadow(
+                          color: _skies[t]!.last.withValues(alpha: .35),
+                          blurRadius: 6,
+                          offset: const Offset(0, 2),
+                        ),
+                      ]
+                    : null,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    _icons[t],
+                    size: 15,
+                    color: t == selected ? Colors.white : brandMuted,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    t.label,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: t == selected ? Colors.white : brandMuted,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+      ],
     ),
   );
 }

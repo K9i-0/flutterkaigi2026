@@ -613,14 +613,13 @@ class _RainState extends State<RainPage> {
           return TitleScreen(onStart: () => setState(() => showTitle = false));
         }
         if (!ready && error == null) return const BrandLoading();
+        // Dialogs pause the game but keep this screen behind them.
         if (ready &&
             game.lane &&
-            !paused &&
             (game.phase == Phase.ready || game.phase == Phase.result)) {
           return SelectionScreen(
             game: game,
             world: world,
-            seed: seed,
             onSelect: (character) => setState(() {
               game.selectCharacter(character);
               world.update(game, 0);
@@ -630,13 +629,6 @@ class _RainState extends State<RainPage> {
               world.update(game, 0);
             }),
             onStart: () => setState(start),
-            onMode: () => setState(() {
-              game.lane = false;
-              start();
-              game.phase = Phase.ready;
-              world.update(game, 0);
-            }),
-            onSeed: () => setState(() => seed++),
             onSettings: kReleaseMode ? null : openBalance,
             onGraphics: openGraphics,
           );
@@ -830,21 +822,6 @@ class _RainState extends State<RainPage> {
                                     ),
                                   const SizedBox(height: 12),
                                   if (!paused) legend(),
-                                  if (!paused)
-                                    TextButton(
-                                      key: const ValueKey('mode_toggle'),
-                                      onPressed: () => setState(() {
-                                        game.lane = !game.lane;
-                                        start();
-                                        game.phase = Phase.ready;
-                                        world.update(game, 0);
-                                      }),
-                                      child: Text(
-                                        game.lane
-                                            ? '鉄骨編  ↔  面移動版に切替'
-                                            : '面移動版  ↔  鉄骨編に切替',
-                                      ),
-                                    ),
                                   const SizedBox(height: 12),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
