@@ -28,6 +28,9 @@ void main() {
       expect(label.bottom, lessThan(379));
       expect(label.left, greaterThan(62));
       expect(label.right, lessThan(898));
+      final english = tester.getRect(find.text('Tap to start'));
+      expect(english.bottom, lessThan(379));
+      expect(english.right, lessThan(898));
       await tester.tap(find.text('タップして開始'));
       expect(starts, 1);
       expect(tester.takeException(), isNull);

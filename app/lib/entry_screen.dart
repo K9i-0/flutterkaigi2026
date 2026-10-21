@@ -10,9 +10,11 @@ class TitleScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = L10n.of(context);
+    // Visitors see this before the language switch, so both languages show.
+    final other = Strings(t.ja ? AppLang.en : AppLang.ja);
     return Semantics(
       button: true,
-      label: t.tapToStart,
+      label: '${t.tapToStart} / ${other.tapToStart}',
       child: GestureDetector(
         key: const ValueKey('title_start'),
         behavior: HitTestBehavior.opaque,
@@ -43,14 +45,28 @@ class TitleScreen extends StatelessWidget {
                       BoxShadow(color: Colors.black38, blurRadius: 12),
                     ],
                   ),
-                  child: Text(
-                    t.tapToStart,
-                    style: const TextStyle(
-                      color: brandInk,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 2,
-                    ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        t.tapToStart,
+                        style: const TextStyle(
+                          color: brandInk,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 2,
+                        ),
+                      ),
+                      Text(
+                        other.tapToStart,
+                        style: const TextStyle(
+                          color: brandMuted,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
