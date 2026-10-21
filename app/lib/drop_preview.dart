@@ -81,13 +81,14 @@ class _DropPreviewState extends State<DropPreview> {
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, size) {
       final aspect = size.maxWidth / math.max(1, size.maxHeight);
+      // Fit a bounding circle in both axes; the tilted, wiggling chikuwa needs
+      // its own radius or its ends leave the view and look cut off.
+      final chikuwa = widget.character == CatchCharacter.ctoOdatetsu;
+      final radius = chikuwa ? .9 : .745, half = math.tan(.26);
       camera.position = vm.Vector3(
         0,
         .35,
-        math.max(
-          widget.character == CatchCharacter.ctoOdatetsu ? 2.0 : 2.8,
-          .95 / (math.tan(.26) * aspect),
-        ),
+        math.max(radius / half, (chikuwa ? .9 : .95) / (half * aspect)),
       );
       return SceneView(
         scene,

@@ -16,7 +16,7 @@
 
 窓際スーパーつらいは `characters/props/product_super_try.png` を正典として3D缶へ投影。窓際ライトと発泡酒「つらめ」は今回限りの仮デザイン。仮の識別手掛かりとして発泡酒には紫帯を付けている。
 
-モデルは `assets/models/` から共有資産への相対symlink（キャラクター・ちくわ・ゆめみん・やめ太郎は2026-10-21からテクスチャ縮小版 `../assets/3d/recruit_exam_mobile/`）。そば屋は `assets/3d/hazard_rebuild/locomotion_v1/sobaya.glb` のIdle/Walk/Runを再利用し、体型や顔は変更していない。移動速度に歩行・走行モーションを同期する。効果音は既存の `labs/sobaya_ippai/assets/audio/` を参照。
+モデルは `assets/models/` から共有資産への相対symlink（キャラクター・ちくわ・ゆめみん・やめ太郎は2026-10-21からテクスチャ縮小版 `../assets/3d/recruit_exam_mobile/`）。そば屋は `assets/3d/hazard_rebuild/locomotion_v1/sobaya.glb` のIdle/Walk/Runを再利用し、体型や顔は変更していない。移動速度に歩行・走行モーションを同期する。効果音は2026-10-21に削除した（チープに聞こえるため。触覚フィードバックは維持）。
 
 ## 開発
 
@@ -241,3 +241,17 @@ vsync時刻から算出する`submittedFps`とフレーム間隔も記録する�
 Pixel 7a・iPhone 14の実機profileで計測。Pixel 7aは約30fpsに張り付いていた。原因はflutter_sceneが毎フレーム点光源テクスチャを転送し、VulkanでUIスレッドとラスターが同期待ちになっていたこと。フォーク `K9i-0/flutter_scene` の `master` を元リポジトリ（bdero/flutter_scene、492コミット）に同期し、独自の3コミット（空の補間・同フレームの表示切替・回転のクロスフェード）を載せ直した `2606511` に更新した。Pixel 7aは標準画質で約60fps（UI 3〜7ms、GPU 1〜7ms）。`labs/sobaya_hazard`・`labs/sobaya_ippai`・`packages/madogiwa_engine` も同じrefへ更新。非推奨の `castsShadows` は `shadowCastingMode` に置き換えた。
 
 同期版はiPhone 14で読み込み中に強制終了した（Jetsam、1アプリのメモリ上限）。旧版もRSSピーク1.9GBで上限付近だった。キャラクター・落下アイテムは、テクスチャを2048（アイテムは1024）に縮小したゲーム専用の派生 `../assets/3d/recruit_exam_mobile/` へsymlinkを切り替えた。読み込み時RSSピーク1,896→739MB、安定時約1,120→570MB。昼・夜とも60fps。プレイ中の見た目は変わらない。詳細と生データは [qa/device-performance-20261021/README.md](qa/device-performance-20261021/README.md)。
+
+## イベントブース向けの改善（2026-10-21）
+
+- **効果音を削除**: `audioplayers`・`assets/audio/`・ミュートボタンを削除。キャッチ／はずれの触覚フィードバックは残す。
+- **キャラクター選択**: 3人のタイルを縦いっぱいに並べ（列幅は全体の約55%）、写真・名前を大きくした。あたり／はずれの3Dプレビューは右側に小さく。ちくわは傾き・Wiggle・左右の揺れを含む外接円（半径0.9）が縦横とも収まるカメラ距離にし、プレビュー枠の上端で欠けないようにした。
+- **開始ボタン**: 開始・結果画面とも「プレイする →」（英語は「Play →」）。
+- **記録とランキング**: 通常ラウンドの終了時にニックネーム（最大12文字）の入力ダイアログを上寄せで表示（横画面のキーボードと重ならない）。「記録しない」で飛ばせる。保存するとランキングを開き、結果欄に「N人中 M位」を出す。記録は端末内（`shared_preferences` の `yumemi.records.v1`、最大500件）。キャラごとに難易度が違うため、順位はキャラクター別。同点は同順位で、表示は先に出した記録が上。実装は `lib/records.dart`・`lib/ranking.dart`。選択画面のトロフィーからいつでも開ける。
+- **日本語／英語**: 選択画面右上の切替で変更し、端末に保存（`yumemi.lang`、既定は日本語）。文言は `lib/l10n.dart` に集約（タイトル・選択・HUD・記録・画質設定）。英語では海外の人に馴染みのない落下物に説明を添える（例: Chikuwa — Japanese tube-shaped fish cake、Happoshu — Low-malt, beer-like drink）。ゲーム内データ（キャラ・落下物の日本語ラベル、`inspectCatch` の値）は変えず、表示側で翻訳する。HUDのメッセージは `GameMessage` と種類・点数で持ち、文字列判定をやめた。バランス調整（DEBUG）と街頭ビジョンの字幕は日本語のまま。
+- **お試しモード**: 選択画面の「お試し」から開始。時間無制限、落下物は通常と同じ間隔・比率で流れ続ける（解決済みは1秒後に破棄、先30秒分を随時生成）。得点・コンボ・あたり／はずれ／逃した数は数えず、キャッチ時のメッセージと触覚だけ出す。HUDは残り時間・得点の代わりに「お試しモード（得点なし）」と「お試しを終える」ボタン。終了すると記録なしで選択画面へ戻る。
+
+自動操作: `madogiwa.catchAction` に `action=start, practice=true`、`action=endPractice`、`action=lang, value=ja|en`、`action=record, name=...`（開いているニックネーム入力に答える。nameなしで記録しない）、`action=ranking` を追加。`madogiwa.inspectCatch` は `practice`・`lang`・`records`（件数）・`lastRecord`・`lastRank` を返す。
+
+検証: `flutter analyze`、35件の `flutter test`（お試しの90秒連続・得点なし・破棄、お試し後の通常ラウンドの再現性、記録の保存・再読込・キャラ別順位・同点、英語の選択タイル、ニックネーム入力を追加）。iPhone 17 Pro（iOS 26.5）シミュレーターでDart MCP起動、VMサービス経由で `madogiwa.catchAction` を呼び、日英の選択画面・ちくわのプレビュー・お試しHUD（24秒超えても継続）・ラウンド終了時の入力ダイアログ（キーボード表示中）・保存後のランキングを `simctl` の画面キャプチャで確認。この環境ではMarionette MCP（0.5.0）がアプリ側のbinding 0.6.0と版不一致で接続できず、シミュレーターへの文字入力もできなかったため、実キーボードでの入力はウィジェットテストで確認した。実機での確認は未実施。
+

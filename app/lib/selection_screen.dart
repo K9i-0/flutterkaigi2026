@@ -6,6 +6,7 @@ import 'catch_scene.dart';
 import 'character.dart';
 import 'character_picker.dart';
 import 'drop_preview.dart';
+import 'l10n.dart';
 
 class SelectionScreen extends StatelessWidget {
   const SelectionScreen({
@@ -15,6 +16,11 @@ class SelectionScreen extends StatelessWidget {
     required this.onSelect,
     required this.onTime,
     required this.onStart,
+    required this.onPractice,
+    required this.onRanking,
+    required this.lang,
+    required this.onLang,
+    this.rank,
     this.onSettings,
     this.onGraphics,
   });
@@ -22,258 +28,358 @@ class SelectionScreen extends StatelessWidget {
   final CatchScene world;
   final ValueChanged<CatchCharacter> onSelect;
   final ValueChanged<StageTime> onTime;
-  final VoidCallback onStart;
+  final VoidCallback onStart, onPractice, onRanking;
+  final AppLang lang;
+  final ValueChanged<AppLang> onLang;
+
+  /// Saved rank of the round shown in the result header, if recorded.
+  final String? rank;
   final VoidCallback? onSettings, onGraphics;
   static const paper = Colors.white, text = brandInk, muted = brandMuted;
 
-  Widget item(bool bad) => Expanded(
-    child: Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              bad ? Icons.close : Icons.check,
-              size: 15,
-              color: bad ? const Color(0xff996b83) : brandBlue,
-            ),
-            const SizedBox(width: 6),
-            Text(
-              bad ? 'はずれ' : 'あたり',
-              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
-            ),
-            const SizedBox(width: 10),
-            Text(
-              bad
-                  ? '−${game.balance['penalty'].round()}'
-                  : '+${game.balance['beerPoints'].round()}〜',
-              style: const TextStyle(fontSize: 12, color: muted),
-            ),
-          ],
-        ),
-        Expanded(
-          child: DropPreview(
-            models: world.dropModels,
-            environment: world.previewEnvironment,
-            character: game.selectedCharacter,
-            bad: bad,
+  Widget item(Strings t, bool bad) {
+    final character = game.selectedCharacter;
+    final detail = t.dropDetail(
+      bad ? character.badDrop : character.goodDrops.first,
+    );
+    return Expanded(
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                bad ? Icons.close : Icons.check,
+                size: 14,
+                color: bad ? const Color(0xff996b83) : brandBlue,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                bad ? t.bad : t.good,
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                bad
+                    ? '−${game.balance['penalty'].round()}'
+                    : '+${game.balance['beerPoints'].round()}〜',
+                style: const TextStyle(fontSize: 11, color: muted),
+              ),
+            ],
           ),
-        ),
-        Text(
-          bad
-              ? game.selectedCharacter.badDrop.label
-              : game.selectedCharacter.goodDrops.first.label,
-          style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
-        ),
-        const SizedBox(height: 5),
-        Text(
-          !bad && game.selectedCharacter == CatchCharacter.sobaya
-              ? 'つらい・LIGHT'
-              : bad
-              ? '避ける'
-              : 'キャッチする',
-          style: const TextStyle(fontSize: 11, color: muted),
-        ),
-      ],
-    ),
-  );
+          const SizedBox(height: 4),
+          Expanded(
+            child: DropPreview(
+              models: world.dropModels,
+              environment: world.previewEnvironment,
+              character: character,
+              bad: bad,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            detail.name,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+          ),
+          // Two note lines are reserved so both names stay on one baseline.
+          SizedBox(
+            height: 27,
+            child: Text(
+              detail.note ??
+                  (!bad && character == CatchCharacter.sobaya
+                      ? t.sobayaBrands
+                      : bad
+                      ? t.avoidIt
+                      : t.catchIt),
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              style: const TextStyle(fontSize: 10, color: muted, height: 1.3),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
-  Widget build(BuildContext context) => Theme(
-    data: appTheme(),
-    child: ColoredBox(
-      color: paper,
-      child: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, size) {
-            // Landscape phones keep all actions on one screen; narrow windows scroll.
-            final narrow = size.maxWidth < 620;
-            final content = Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: narrow ? 20 : 32,
-                vertical: 16,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'ゆめみ採用試験',
-                              style: TextStyle(
-                                fontSize: 11,
-                                color: muted,
-                                letterSpacing: 1,
-                              ),
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              'だれで挑む？',
-                              style: TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.w800,
-                                height: 1.2,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      if (game.phase == Phase.result)
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              '${game.score} pt',
-                              style: const TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            Text(
-                              'あたり ${game.caught}  /  はずれ ${game.bad}  /  逃した ${game.missed}',
-                              style: const TextStyle(
-                                fontSize: 11,
-                                color: muted,
-                              ),
-                            ),
-                          ],
-                        )
-                      else
-                        Text(
-                          '${game.roundSeconds.round()}秒の一本勝負',
-                          style: const TextStyle(fontSize: 12, color: muted),
-                        ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Expanded(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+  Widget build(BuildContext context) {
+    final t = L10n.of(context);
+    return Theme(
+      data: appTheme(),
+      child: ColoredBox(
+        color: paper,
+        child: SafeArea(
+          child: LayoutBuilder(
+            builder: (context, size) {
+              // Landscape phones keep all actions on one screen; narrow windows scroll.
+              final narrow = size.maxWidth < 620;
+              final content = Padding(
+                padding: EdgeInsets.fromLTRB(
+                  narrow ? 20 : 28,
+                  10,
+                  narrow ? 20 : 28,
+                  10,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        SizedBox(
-                          width: narrow ? 170 : 205,
-                          child: CharacterPicker(
-                            selected: game.selectedCharacter,
-                            onSelected: onSelect,
+                        Text(
+                          t.chooseCharacter,
+                          style: const TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w800,
+                            height: 1.2,
                           ),
                         ),
-                        const SizedBox(width: 24),
+                        const SizedBox(width: 12),
                         Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Text(
+                            t.appTitle,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 11,
+                              color: muted,
+                              letterSpacing: 1,
+                            ),
+                          ),
+                        ),
+                        if (game.phase == Phase.result)
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Text(
-                                game.selectedCharacter.hint,
+                                '${game.score} pt${rank == null ? '' : '  ·  $rank'}',
+                                key: const ValueKey('result_score'),
                                 style: const TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              Text(
+                                t.results(game.caught, game.bad, game.missed),
+                                style: const TextStyle(
+                                  fontSize: 10,
                                   color: muted,
                                 ),
                               ),
-                              const SizedBox(height: 14),
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    item(false),
-                                    const VerticalDivider(
-                                      width: 20,
-                                      thickness: 1,
-                                      color: Color(0xffd3eee9),
-                                      indent: 15,
-                                      endIndent: 20,
-                                    ),
-                                    item(true),
-                                  ],
-                                ),
-                              ),
                             ],
+                          )
+                        else
+                          Text(
+                            t.roundLength(game.roundSeconds.round()),
+                            style: const TextStyle(fontSize: 12, color: muted),
                           ),
+                        const SizedBox(width: 12),
+                        LanguageToggle(selected: lang, onChanged: onLang),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Expanded(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(
+                            flex: 11,
+                            child: CharacterPicker(
+                              selected: game.selectedCharacter,
+                              onSelected: onSelect,
+                            ),
+                          ),
+                          const SizedBox(width: 20),
+                          Expanded(
+                            flex: 9,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Text(
+                                  t.hint(game.selectedCharacter),
+                                  maxLines: 2,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: muted,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      item(t, false),
+                                      const VerticalDivider(
+                                        width: 16,
+                                        thickness: 1,
+                                        color: Color(0xffd3eee9),
+                                        indent: 15,
+                                        endIndent: 20,
+                                      ),
+                                      item(t, true),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    const Divider(height: 1, color: Color(0xffd3eee9)),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            t.controls,
+                            maxLines: 2,
+                            style: const TextStyle(fontSize: 11, color: muted),
+                          ),
+                        ),
+                        TimeOfDayToggle(
+                          key: const ValueKey('time_of_day'),
+                          selected: game.timeOfDay,
+                          label: t.time,
+                          onChanged: onTime,
+                        ),
+                        const SizedBox(width: 4),
+                        if (onGraphics != null)
+                          IconButton(
+                            key: const ValueKey('graphics_settings'),
+                            tooltip: t.graphics,
+                            onPressed: onGraphics,
+                            icon: const Icon(
+                              Icons.display_settings,
+                              size: 17,
+                              color: muted,
+                            ),
+                          ),
+                        if (onSettings != null)
+                          IconButton(
+                            key: const ValueKey('balance_debug'),
+                            tooltip: 'バランス調整',
+                            onPressed: onSettings,
+                            icon: const Icon(
+                              Icons.tune,
+                              size: 17,
+                              color: muted,
+                            ),
+                          ),
+                        IconButton(
+                          key: const ValueKey('ranking_open'),
+                          tooltip: t.ranking,
+                          onPressed: onRanking,
+                          icon: const Icon(
+                            Icons.emoji_events_outlined,
+                            size: 20,
+                            color: brandBlue,
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        OutlinedButton(
+                          key: const ValueKey('practice'),
+                          onPressed: onPractice,
+                          style: OutlinedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 14,
+                              vertical: 14,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                          ),
+                          child: Text(t.practice),
+                        ),
+                        const SizedBox(width: 8),
+                        FilledButton(
+                          key: const ValueKey('start'),
+                          onPressed: onStart,
+                          style: FilledButton.styleFrom(
+                            backgroundColor: const Color(0xff0074bd),
+                            foregroundColor: paper,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 25,
+                              vertical: 16,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                          ),
+                          child: Text('${t.play}  →'),
                         ),
                       ],
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  const Divider(height: 1, color: Color(0xffd3eee9)),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          '傾けて移動、スワイプで見回す。',
-                          style: const TextStyle(fontSize: 11, color: muted),
-                        ),
-                      ),
-                      TimeOfDayToggle(
-                        key: const ValueKey('time_of_day'),
-                        selected: game.timeOfDay,
-                        onChanged: onTime,
-                      ),
-                      const SizedBox(width: 8),
-                      if (onGraphics != null)
-                        IconButton(
-                          key: const ValueKey('graphics_settings'),
-                          tooltip: '画質設定',
-                          onPressed: onGraphics,
-                          icon: const Icon(
-                            Icons.display_settings,
-                            size: 17,
-                            color: muted,
+                  ],
+                ),
+              );
+              return DefaultTextStyle(
+                style: const TextStyle(color: text, fontFamily: null),
+                child: narrow || size.maxHeight < 340
+                    ? SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: SizedBox(
+                          width: 760,
+                          child: SingleChildScrollView(
+                            child: SizedBox(height: 380, child: content),
                           ),
                         ),
-                      if (onSettings != null)
-                        IconButton(
-                          key: const ValueKey('balance_debug'),
-                          tooltip: 'バランス調整',
-                          onPressed: onSettings,
-                          icon: const Icon(Icons.tune, size: 17, color: muted),
-                        ),
-                      const SizedBox(width: 12),
-                      FilledButton(
-                        key: const ValueKey('start'),
-                        onPressed: onStart,
-                        style: FilledButton.styleFrom(
-                          backgroundColor: const Color(0xff0074bd),
-                          foregroundColor: paper,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 25,
-                            vertical: 16,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                        ),
-                        child: Text(
-                          game.phase == Phase.result
-                              ? 'もう一度挑む  →'
-                              : 'このキャラで挑む  →',
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            );
-            return DefaultTextStyle(
-              style: const TextStyle(color: text, fontFamily: null),
-              child: narrow || size.maxHeight < 340
-                  ? SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: SizedBox(
-                        width: 720,
-                        child: SingleChildScrollView(
-                          child: SizedBox(height: 380, child: content),
-                        ),
-                      ),
-                    )
-                  : content,
-            );
-          },
+                      )
+                    : content,
+              );
+            },
+          ),
         ),
       ),
+    );
+  }
+}
+
+/// Two-option pill for the UI language.
+class LanguageToggle extends StatelessWidget {
+  const LanguageToggle({
+    super.key,
+    required this.selected,
+    required this.onChanged,
+  });
+  final AppLang selected;
+  final ValueChanged<AppLang> onChanged;
+  @override
+  Widget build(BuildContext context) => Container(
+    padding: const EdgeInsets.all(2),
+    decoration: BoxDecoration(
+      color: brandPale,
+      borderRadius: BorderRadius.circular(16),
+      border: Border.all(color: const Color(0xffd3eee9)),
+    ),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        for (final l in AppLang.values)
+          GestureDetector(
+            key: ValueKey('lang_${l.id}'),
+            behavior: HitTestBehavior.opaque,
+            onTap: () => onChanged(l),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              decoration: BoxDecoration(
+                color: l == selected ? brandBlue : null,
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: Text(
+                l.label,
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w700,
+                  color: l == selected ? Colors.white : brandMuted,
+                ),
+              ),
+            ),
+          ),
+      ],
     ),
   );
 }
@@ -284,8 +390,10 @@ class TimeOfDayToggle extends StatelessWidget {
     super.key,
     required this.selected,
     required this.onChanged,
+    this.label,
   });
   final StageTime selected;
+  final String Function(StageTime)? label;
   final ValueChanged<StageTime> onChanged;
 
   static const _skies = {
@@ -346,7 +454,7 @@ class TimeOfDayToggle extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    t.label,
+                    label?.call(t) ?? t.label,
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w700,

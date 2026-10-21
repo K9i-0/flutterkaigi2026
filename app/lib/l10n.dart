@@ -1,0 +1,181 @@
+import 'package:flutter/widgets.dart';
+
+import 'character.dart';
+import 'drop_kind.dart';
+import 'stage_time.dart';
+
+/// UI language. Game data keeps Japanese labels and ids; screens translate here.
+enum AppLang {
+  ja('日本語'),
+  en('English');
+
+  const AppLang(this.label);
+  final String label;
+  String get id => name;
+}
+
+class L10n extends InheritedWidget {
+  const L10n({super.key, required this.strings, required super.child});
+  final Strings strings;
+  static Strings of(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<L10n>()?.strings ??
+      const Strings(AppLang.ja);
+  @override
+  bool updateShouldNotify(L10n old) => old.strings.lang != strings.lang;
+}
+
+class Strings {
+  const Strings(this.lang);
+  final AppLang lang;
+  bool get ja => lang == AppLang.ja;
+  String _(String j, String e) => ja ? j : e;
+
+  String get appTitle => _('ゆめみ採用試験', 'Yumemi Recruitment Exam');
+  String get tapToStart => _('タップして開始', 'Tap to start');
+  String get loading => _('読み込み中', 'Loading');
+
+  String get chooseCharacter => _('だれで挑む？', 'Who takes the exam?');
+  String roundLength(int s) => _('$s秒の一本勝負', '$s-second challenge');
+  String get good => _('あたり', 'Catch');
+  String get bad => _('はずれ', 'Avoid');
+  String get catchIt => _('キャッチする', 'Catch these');
+  String get avoidIt => _('避ける', 'Dodge these');
+  String get controls =>
+      _('傾けて移動、スワイプで見回す。', 'Tilt to move. Swipe to look around.');
+  String get play => _('プレイする', 'Play');
+  String get practice => _('お試し', 'Practice');
+  String get practiceHint => _('時間無制限・得点なし', 'No time limit, no score');
+  String get ranking => _('ランキング', 'Ranking');
+  String get graphics => _('画質設定', 'Graphics');
+  String get language => _('言語', 'Language');
+  String results(int caught, int bad, int missed) => _(
+    'あたり $caught  /  はずれ $bad  /  逃した $missed',
+    'Caught $caught  /  Wrong $bad  /  Missed $missed',
+  );
+
+  String character(CatchCharacter c) => ja
+      ? c.label
+      : switch (c) {
+          CatchCharacter.sobaya => 'Soba Shop Owner',
+          CatchCharacter.ctoOdatetsu => 'CTO Odatetsu',
+          CatchCharacter.fukuchan => 'Fukugyun',
+        };
+  String difficulty(CatchCharacter c) => ja
+      ? c.difficulty
+      : switch (c) {
+          CatchCharacter.fukuchan => 'Easy',
+          CatchCharacter.ctoOdatetsu => 'Normal',
+          CatchCharacter.sobaya => 'Hard',
+        };
+  String hint(CatchCharacter c) => ja
+      ? c.hint
+      : switch (c) {
+          CatchCharacter.fukuchan => 'Falls slowly. Catch Yumemin.',
+          CatchCharacter.ctoOdatetsu =>
+            'Catch the golden-toasted chikuwa. Beware of purple ones.',
+          CatchCharacter.sobaya =>
+            'Lots of brands. Read the labels — real beer only.',
+        };
+
+  /// Short name for the HUD and messages.
+  String drop(CanKind k) => ja
+      ? k.label
+      : switch (k) {
+          CanKind.superTry || CanKind.light => 'beer',
+          CanKind.happoshu => 'happoshu',
+          CanKind.chikuwa => 'chikuwa',
+          CanKind.toxicChikuwa => 'toxic chikuwa',
+          CanKind.yumemin => 'Yumemin',
+          CanKind.yametaro => 'Yametaro',
+        };
+
+  /// Selection-screen name; English explains things unfamiliar abroad.
+  ({String name, String? note}) dropDetail(CanKind k) => ja
+      ? (name: k.label, note: null)
+      : switch (k) {
+          CanKind.superTry || CanKind.light => (name: 'Beer', note: null),
+          CanKind.happoshu => (
+            name: 'Happoshu',
+            note: 'Low-malt, beer-like drink',
+          ),
+          CanKind.chikuwa => (
+            name: 'Chikuwa',
+            note: 'Japanese tube-shaped fish cake',
+          ),
+          CanKind.toxicChikuwa => (
+            name: 'Toxic Chikuwa',
+            note: 'A spoiled, purple fish cake',
+          ),
+          CanKind.yumemin => (name: 'Yumemin', note: "YUMEMI's mascot"),
+          CanKind.yametaro => (
+            name: 'Yametaro',
+            note: 'The one who wants to quit',
+          ),
+        };
+  String get sobayaBrands => _('つらい・LIGHT', 'TSURAI and LIGHT brands');
+
+  String time(StageTime t) => ja
+      ? t.label
+      : switch (t) {
+          StageTime.day => 'Day',
+          StageTime.night => 'Night',
+        };
+
+  String player(String name) => _('プレイヤー：$name', 'Player: $name');
+  String secondsLeft(int s) => _('残り $s 秒', '$s s left');
+  String get practiceBadge => _('お試しモード（得点なし）', 'Practice (no score)');
+  String get endPractice => _('お試しを終える', 'End practice');
+  String countdown(int s) => _('準備！ $s', 'Ready! $s');
+  String niceCatch(int? points) => points == null
+      ? _('ナイスキャッチ！', 'Nice catch!')
+      : _('ナイスキャッチ！  +$points', 'Nice catch!  +$points');
+  String wrongCatch(CanKind k, int? penalty) {
+    final p = penalty == null ? '' : '  −$penalty';
+    return _('これ、${drop(k)}やないか！$p', "That's ${drop(k)}!$p");
+  }
+
+  String get paused => _('ひと休み', 'Paused');
+  String get resume => _('持ち方を合わせて再開', 'Hold steady and resume');
+
+  String get recordTitle => _('記録を残す', 'Save your record');
+  String get nickname => _('ニックネーム', 'Nickname');
+  String get save => _('記録する', 'Save');
+  String get skip => _('記録しない', 'Skip');
+  String get close => _('閉じる', 'Close');
+  String rankOf(int rank, int total) =>
+      _('$total人中 $rank位', 'Rank $rank of $total');
+  String get noRecords => _('まだ記録がありません', 'No records yet');
+
+  String get cancel => _('キャンセル', 'Cancel');
+  String get apply => _('適用', 'Apply');
+  String get standard => _('標準', 'Standard');
+  String get highQuality => _('高画質', 'High');
+  String get lightQuality => _('軽量', 'Light');
+  List<(String, String, String)> get graphicsOptions => ja
+      ? const [
+          ('shadows', '太陽の影', '昼の建物・キャラクターの影'),
+          ('reflections', 'ガラス・金属の反射', '空と街明かりの映り込み'),
+          ('surfaceDetail', '表面の凹凸', '鉄骨・路面の細かな質感'),
+          ('bloom', '夜景の光のにじみ', '夜の照明を柔らかく'),
+          ('fullResolution', '高精細描画', 'オンで細部と遠くの影を優先。オフでなめらかさを優先'),
+        ]
+      : const [
+          (
+            'shadows',
+            'Sun shadows',
+            'Shadows of buildings and characters by day',
+          ),
+          ('reflections', 'Glass and metal reflections', 'Sky and city lights'),
+          (
+            'surfaceDetail',
+            'Surface detail',
+            'Fine texture of steel and roads',
+          ),
+          ('bloom', 'Night glow', 'Softer night lighting'),
+          (
+            'fullResolution',
+            'Full resolution',
+            'On favors detail and distant shadows; off favors smoothness',
+          ),
+        ];
+}

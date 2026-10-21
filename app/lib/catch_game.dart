@@ -9,6 +9,9 @@ export 'stage_time.dart';
 
 enum Phase { ready, countdown, playing, result }
 
+/// Message shown in the HUD; screens render the text in the chosen language.
+enum GameMessage { hint, caught, bad }
+
 class Drop {
   Drop(
     this.id,
@@ -76,6 +79,9 @@ class CatchGame {
 
   double get roundSeconds => balance['roundSeconds'];
   bool lane = false;
+
+  /// Practice: no time limit, drops keep coming, score and counters stay 0.
+  bool practice = false;
   Phase phase = Phase.ready;
   double screenSign = 1;
   double time = 0,
@@ -87,10 +93,14 @@ class CatchGame {
       yaw = 0,
       targetYaw = 0;
   int score = 0, combo = 0, caught = 0, bad = 0, missed = 0, eventId = 0;
-  String message = 'ビールだけ、持ってこい。';
+  GameMessage message = GameMessage.hint;
+  CanKind? messageKind;
+  int? messagePoints;
   double messageUntil = 0;
   final drops = <Drop>[];
   final events = <Map<String, Object>>[];
+  late math.Random _random;
+  int _nextId = 0;
   void start({int seed = 1}) {
     this.seed = seed;
     _roundCharacter = lane ? selectedCharacter : CatchCharacter.sobaya;
@@ -116,10 +126,18 @@ class CatchGame {
     eventId = 0;
     events.clear();
     drops.clear();
-    message = lane ? roundCharacter.hint : 'ビールだけ、持ってこい。';
+    message = GameMessage.hint;
     messageUntil = 2;
-    final r = math.Random(seed);
-    for (var i = 0; i * spawnInterval <= roundSeconds - fallSeconds - 1; i++) {
+    _random = math.Random(seed);
+    _nextId = 0;
+    _spawnUntil(practice ? 30 : roundSeconds - fallSeconds - 1);
+  }
+
+  /// Appends drops whose spawn time is at most [until]; practice streams more.
+  void _spawnUntil(double until) {
+    final r = _random;
+    for (; _nextId * spawnInterval <= until; _nextId++) {
+      final i = _nextId;
       final kind = ((i + 1) * badRatio).floor() > (i * badRatio).floor()
           ? (lane ? roundCharacter.badDrop : CanKind.happoshu)
           : lane
@@ -220,13 +238,21 @@ class CatchGame {
       d.caught =
           math.pow(d.x - x, 2) + math.pow(d.z - z, 2) <
           math.pow(catchRadius, 2);
-      if (d.caught) {
+      if (d.caught && practice) {
         eventId++;
+        message = d.kind.isBad ? GameMessage.bad : GameMessage.caught;
+        messageKind = d.kind;
+        messagePoints = null;
+        messageUntil = time + 1.4;
+      } else if (d.caught) {
+        eventId++;
+        messageKind = d.kind;
         if (d.kind.isBad) {
           bad++;
           score -= balance['penalty'].round();
           combo = 0;
-          message = 'これ、${d.kind.label}やないか！  −${balance['penalty'].round()}';
+          message = GameMessage.bad;
+          messagePoints = balance['penalty'].round();
         } else {
           caught++;
           combo++;
@@ -234,7 +260,8 @@ class CatchGame {
               balance['beerPoints'].round() +
               math.min(combo - 1, 4) * balance['comboBonus'].round();
           score += points;
-          message = 'ナイスキャッチ！  +$points';
+          message = GameMessage.caught;
+          messagePoints = points;
         }
         messageUntil = time + 1.4;
         events.add({
@@ -245,10 +272,15 @@ class CatchGame {
           'x': x,
           'z': z,
         });
-      } else if (!d.kind.isBad) {
+      } else if (!d.kind.isBad && !practice) {
         missed++;
         combo = 0;
       }
+    }
+    if (practice) {
+      drops.removeWhere((d) => d.resolved && time > d.landing + 1);
+      if (_nextId * spawnInterval < time + 10) _spawnUntil(time + 30);
+      return;
     }
     if (time >= roundSeconds) {
       time = roundSeconds;
@@ -277,6 +309,7 @@ class CatchGame {
     'vz': vz,
     'dropCount': drops.length,
     'mode': lane ? 'lane' : 'plane',
+    'practice': practice,
     'phase': phase.name,
     'time': time,
     'x': x,

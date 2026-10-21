@@ -10,13 +10,15 @@ import 'stage_benchmark.dart';
 import 'balance.dart';
 import 'balance_panel.dart';
 import 'fps_overlay.dart';
+import 'l10n.dart';
+import 'ranking.dart';
+import 'records.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_scene/scene.dart' show SceneView;
 import 'package:marionette_flutter/marionette_flutter.dart';
-import 'package:audioplayers/audioplayers.dart';
 
 import 'catch_game.dart';
 import 'character.dart';
@@ -25,6 +27,9 @@ import 'catch_scene.dart';
 import 'tilt_input.dart';
 
 const gold = brandBlue, cream = brandInk, ink = Colors.white;
+
+/// UI language, above the Navigator so dialogs translate too.
+final appLang = ValueNotifier(AppLang.ja);
 void main() async {
   if (kDebugMode) {
     MarionetteBinding.ensureInitialized();
@@ -39,6 +44,11 @@ void main() async {
     MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: appTheme(),
+      builder: (context, child) => ValueListenableBuilder(
+        valueListenable: appLang,
+        builder: (context, lang, _) =>
+            L10n(strings: Strings(lang), child: child!),
+      ),
       home: const RainPage(),
     ),
   );
@@ -54,15 +64,19 @@ class _RainState extends State<RainPage> {
   final game = CatchGame()
     ..lane = true
     ..z = 0;
-  final world = CatchScene(), tilt = TiltInput(), sound = AudioPlayer();
+  final world = CatchScene(), tilt = TiltInput(), records = RecordStore();
   bool showTitle = true;
   GraphicsSettings graphics = GraphicsSettings.standard;
   StageBenchmark? benchmark;
   bool ready = false,
       paused = false,
       demo = false,
-      mute = false,
-      frozen = false;
+      frozen = false,
+          // The result of the current round was offered for the ranking.
+          recordPrompted =
+          false,
+      recordOpen = false;
+  GameRecord? lastRecord;
   String? error;
   double inputX = 0, inputY = 0, accumulator = 0, swipe = 0;
   // Debug/profile only: frame-rate HUD toggled from the debug panel.
@@ -82,6 +96,8 @@ class _RainState extends State<RainPage> {
       game.caught,
       game.bad,
       game.missed,
+      game.eventId,
+      game.practice,
     );
     if (mounted && next != _hudState) {
       _hudState = next;
@@ -125,18 +141,42 @@ class _RainState extends State<RainPage> {
           'sensor': tilt.available,
           'demo': demo,
           'paused': paused,
+          'lang': appLang.value.id,
+          'lastRecord': lastRecord?.toMap(),
+          if (lastRecord != null) 'lastRank': records.rankOf(lastRecord!),
+          'records': records.records.length,
           ...game.inspect(),
           if (ready) ...world.inspect(),
         }),
       );
       registerMarionetteExtension(
         name: 'madogiwa.catchAction',
-        description: 'action=select|configure|start|demo|step|rotate|pause|resume|graphics|benchmark|fps. fps: value=on|off (debug FPS HUD). graphics: json booleans, persist=true optional. benchmark: label, timeOfDay. select: character ID and/or timeOfDay=day|night. configure: json settings, seed. step seconds 0..25 x/y -1..1. Demo supplies inputs only.',
+        description: 'action=select|configure|start|demo|step|rotate|pause|resume|endPractice|record|ranking|lang|graphics|benchmark|fps. start: practice=true for the no-score mode. record: name answers the nickname dialog (omit to skip). ranking opens the board. lang: value=ja|en. fps: value=on|off (debug FPS HUD). graphics: json booleans, persist=true optional. benchmark: label, timeOfDay. select: character ID and/or timeOfDay=day|night. configure: json settings, seed. step seconds 0..25 x/y -1..1. Demo supplies inputs only.',
         callback: (p) async {
           if (!ready) return MarionetteExtensionResult.error(1, 'Not ready');
           switch (p['action']) {
             case 'fps':
               await setFps(p['value'] == 'on');
+            case 'lang':
+              final lang = AppLang.values
+                  .where((l) => l.id == p['value'])
+                  .firstOrNull;
+              if (lang == null) {
+                return MarionetteExtensionResult.invalidParams('value=ja|en');
+              }
+              await setLang(lang);
+            case 'endPractice':
+              endPractice();
+            case 'record':
+              // Answers the open nickname dialog; omit name to skip.
+              if (!recordOpen) {
+                return MarionetteExtensionResult.invalidParams(
+                  'No nickname dialog is open',
+                );
+              }
+              Navigator.of(context).pop(p['name']);
+            case 'ranking':
+              openRanking(highlight: lastRecord);
             case 'graphics':
               final data =
                   jsonDecode(p['json'] ?? '{}') as Map<String, dynamic>;
@@ -238,7 +278,7 @@ class _RainState extends State<RainPage> {
               }
             case 'start':
               if (p['mode'] != null) game.lane = p['mode'] == 'lane';
-              start();
+              start(practice: p['practice'] == 'true');
               frozen = true;
             case 'demo':
               if (p['mode'] != null) game.lane = p['mode'] == 'lane';
@@ -272,6 +312,7 @@ class _RainState extends State<RainPage> {
                 advance(1 / 60, x, y);
                 world.update(game, 1 / 60);
               }
+              checkRoundEnd();
             default:
               return MarionetteExtensionResult.invalidParams('Unknown action');
           }
@@ -302,6 +343,12 @@ class _RainState extends State<RainPage> {
         );
       }
       showFps = !kReleaseMode && (prefs.getBool('yumemi.debug.fps') ?? false);
+      appLang.value =
+          AppLang.values
+              .where((l) => l.id == prefs.getString('yumemi.lang'))
+              .firstOrNull ??
+          AppLang.ja;
+      await records.load();
       final saved = prefs.getString('beerRain.balance.v1');
       if (saved != null) {
         try {
@@ -410,6 +457,70 @@ class _RainState extends State<RainPage> {
     await prefs.setBool('yumemi.debug.fps', value);
   }
 
+  Future<void> setLang(AppLang lang) async {
+    appLang.value = lang;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('yumemi.lang', lang.id);
+  }
+
+  /// A finished scored round asks once for a nickname, then shows the board.
+  void checkRoundEnd() {
+    if (recordPrompted ||
+        !game.lane ||
+        game.practice ||
+        game.phase != Phase.result ||
+        benchmark?.active == true) {
+      return;
+    }
+    recordPrompted = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) => promptRecord());
+  }
+
+  Future<void> promptRecord() async {
+    if (!mounted) return;
+    recordOpen = true;
+    final name = await showDialog<String>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) =>
+          RecordDialog(score: game.score, character: game.roundCharacter),
+    );
+    recordOpen = false;
+    if (name == null || !mounted) return;
+    final record = GameRecord(
+      name: name,
+      score: game.score,
+      character: game.roundCharacter,
+      caught: game.caught,
+      bad: game.bad,
+      missed: game.missed,
+      at: DateTime.now(),
+    );
+    await records.add(record);
+    if (!mounted) return;
+    setState(() => lastRecord = record);
+    await openRanking(highlight: record);
+  }
+
+  Future<void> openRanking({GameRecord? highlight}) => showDialog<void>(
+    context: context,
+    builder: (_) => RankingDialog(
+      store: records,
+      initial: highlight?.character ?? game.selectedCharacter,
+      highlight: highlight,
+    ),
+  );
+
+  void endPractice() {
+    game
+      ..practice = false
+      ..phase = Phase.ready
+      ..drops.clear();
+    paused = false;
+    frozen = false;
+    world.update(game, 0);
+  }
+
   Future<void> openBalance() async {
     final wasPaused = paused;
     setState(() => paused = true);
@@ -435,8 +546,11 @@ class _RainState extends State<RainPage> {
     setState(start);
   }
 
-  void start() {
+  void start({bool practice = false}) {
     showTitle = false;
+    game.practice = practice;
+    recordPrompted = false;
+    lastRecord = null;
     world.lighting.setTrafficVisible(true);
     world.applyRenderProbe({});
     game.start(seed: seed);
@@ -487,21 +601,12 @@ class _RainState extends State<RainPage> {
     game.tick(dt, inputX: x, inputY: y);
     if (game.eventId != lastEvent) {
       lastEvent = game.eventId;
-      if (game.message.startsWith('これ')) {
+      if (game.message == GameMessage.bad) {
         HapticFeedback.heavyImpact();
-        play('miss.wav');
       } else {
         HapticFeedback.selectionClick();
-        play('catch.wav');
       }
     }
-  }
-
-  Future<void> play(String file) async {
-    if (mute || frozen) return;
-    try {
-      await sound.play(AssetSource('audio/$file'), volume: .5);
-    } catch (_) {}
   }
 
   void tick(Duration elapsed, double dt) {
@@ -555,6 +660,7 @@ class _RainState extends State<RainPage> {
       accumulator -= 1 / 60;
     }
     world.update(game, dt.clamp(0, .1));
+    checkRoundEnd();
     refreshHud();
   }
 
@@ -563,7 +669,6 @@ class _RainState extends State<RainPage> {
     benchmark?.dispose();
     tilt.dispose();
     lifecycle?.dispose();
-    sound.dispose();
     super.dispose();
   }
 
@@ -584,6 +689,12 @@ class _RainState extends State<RainPage> {
     onPressed: () => setState(f),
     child: Text(text),
   );
+  String messageText(Strings t) => switch (game.message) {
+    GameMessage.hint =>
+      game.lane ? t.hint(game.roundCharacter) : 'ビールだけ、持ってこい。',
+    GameMessage.caught => t.niceCatch(game.messagePoints),
+    GameMessage.bad => t.wrongCatch(game.messageKind!, game.messagePoints),
+  };
   Widget legend() => Row(
     mainAxisSize: MainAxisSize.min,
     children: [
@@ -599,272 +710,305 @@ class _RainState extends State<RainPage> {
     ],
   );
   @override
-  Widget build(BuildContext context) => Scaffold(
-    body: LayoutBuilder(
-      builder: (context, size) {
-        if (ready) {
-          final longestSide = View.of(context).physicalSize.longestSide;
-          if (world.lighting.viewportLongestSide != longestSide) {
-            world.lighting.viewportLongestSide = longestSide;
-            world.lighting.configureRenderer(world.scene);
+  Widget build(BuildContext context) {
+    final t = L10n.of(context);
+    return Scaffold(
+      body: LayoutBuilder(
+        builder: (context, size) {
+          if (ready) {
+            final longestSide = View.of(context).physicalSize.longestSide;
+            if (world.lighting.viewportLongestSide != longestSide) {
+              world.lighting.viewportLongestSide = longestSide;
+              world.lighting.configureRenderer(world.scene);
+            }
           }
-        }
-        if (showTitle) {
-          return TitleScreen(onStart: () => setState(() => showTitle = false));
-        }
-        if (!ready && error == null) return const BrandLoading();
-        // Dialogs pause the game but keep this screen behind them.
-        if (ready &&
-            game.lane &&
-            (game.phase == Phase.ready || game.phase == Phase.result)) {
-          return SelectionScreen(
-            game: game,
-            world: world,
-            onSelect: (character) => setState(() {
-              game.selectCharacter(character);
-              world.update(game, 0);
-            }),
-            onTime: (time) => setState(() {
-              game.selectTime(time);
-              world.update(game, 0);
-            }),
-            onStart: () => setState(start),
-            onSettings: kReleaseMode ? null : openBalance,
-            onGraphics: openGraphics,
-          );
-        }
-        final playing =
-            game.phase == Phase.playing || game.phase == Phase.countdown;
-        return Stack(
-          children: [
-            if (ready)
-              Positioned.fill(
-                // Horizontal swipes orbit the camera; movement is tilt only.
-                child: GestureDetector(
-                  key: const ValueKey('camera_swipe'),
-                  behavior: HitTestBehavior.opaque,
-                  onHorizontalDragStart: (_) => swipe = 0,
-                  onHorizontalDragUpdate: (e) {
-                    if (!playing) return;
-                    swipe += e.delta.dx;
-                    if (swipe.abs() < 60) return;
-                    setState(() => game.rotate(swipe < 0 ? 1 : -1));
-                    swipe = 0;
-                  },
-                  child: RepaintBoundary(
-                    child: SceneView(
-                      world.scene,
-                      camera: world.camera,
-                      onTick: tick,
+          if (showTitle) {
+            return TitleScreen(
+              onStart: () => setState(() => showTitle = false),
+            );
+          }
+          if (!ready && error == null) return const BrandLoading();
+          // Dialogs pause the game but keep this screen behind them.
+          if (ready &&
+              game.lane &&
+              (game.phase == Phase.ready || game.phase == Phase.result)) {
+            return SelectionScreen(
+              game: game,
+              world: world,
+              onSelect: (character) => setState(() {
+                game.selectCharacter(character);
+                world.update(game, 0);
+              }),
+              onTime: (time) => setState(() {
+                game.selectTime(time);
+                world.update(game, 0);
+              }),
+              onStart: () => setState(start),
+              onPractice: () => setState(() => start(practice: true)),
+              onRanking: openRanking,
+              lang: appLang.value,
+              onLang: setLang,
+              rank: lastRecord == null
+                  ? null
+                  : t.rankOf(
+                      records.rankOf(lastRecord!),
+                      records.ranking(lastRecord!.character).length,
+                    ),
+              onSettings: kReleaseMode ? null : openBalance,
+              onGraphics: openGraphics,
+            );
+          }
+          final playing =
+              game.phase == Phase.playing || game.phase == Phase.countdown;
+          return Stack(
+            children: [
+              if (ready)
+                Positioned.fill(
+                  // Horizontal swipes orbit the camera; movement is tilt only.
+                  child: GestureDetector(
+                    key: const ValueKey('camera_swipe'),
+                    behavior: HitTestBehavior.opaque,
+                    onHorizontalDragStart: (_) => swipe = 0,
+                    onHorizontalDragUpdate: (e) {
+                      if (!playing) return;
+                      swipe += e.delta.dx;
+                      if (swipe.abs() < 60) return;
+                      setState(() => game.rotate(swipe < 0 ? 1 : -1));
+                      swipe = 0;
+                    },
+                    child: RepaintBoundary(
+                      child: SceneView(
+                        world.scene,
+                        camera: world.camera,
+                        onTick: tick,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            if (error != null) Center(child: Text(error!)),
-            if (!ready && error == null) const BrandLoading(),
-            if (ready)
-              SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        left: 0,
-                        top: 0,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              game.lane ? 'ゆめみ採用試験' : 'ゆめみ採用試験 / 面移動版',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                                shadows: [Shadow(blurRadius: 8)],
-                              ),
-                            ),
-                            Text(
-                              'プレイヤー：${(game.lane ? (playing ? game.roundCharacter : game.selectedCharacter) : CatchCharacter.sobaya).label}',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                shadows: [
-                                  Shadow(blurRadius: 6, color: Colors.black),
-                                ],
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      if (showFps)
+              if (error != null) Center(child: Text(error!)),
+              if (!ready && error == null) const BrandLoading(),
+              if (ready)
+                SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Stack(
+                      children: [
                         Positioned(
                           left: 0,
-                          bottom: 0,
-                          child: FpsOverlay(
-                            onStats: (s) => fpsStats = s.toMap(),
-                          ),
-                        ),
-                      Positioned(
-                        right: 0,
-                        top: 0,
-                        child: Row(
-                          children: [
-                            chip(
-                              '残り ${(game.roundSeconds - game.time).ceil()} 秒',
-                            ),
-                            const SizedBox(width: 8),
-                            chip('${game.score} pt', color: gold),
-                            IconButton(
-                              key: const ValueKey('graphics_settings'),
-                              tooltip: '画質設定',
-                              onPressed: openGraphics,
-                              icon: const Icon(Icons.display_settings),
-                            ),
-                            if (!kReleaseMode)
-                              IconButton(
-                                key: const ValueKey('balance_debug'),
-                                tooltip: 'バランス調整',
-                                onPressed: openBalance,
-                                icon: const Icon(Icons.tune),
-                              ),
-                            IconButton(
-                              key: const ValueKey('pause'),
-                              onPressed: () => setState(() {
-                                paused = !paused;
-                                if (!paused) tilt.calibrate();
-                              }),
-                              icon: Icon(
-                                paused ? Icons.play_arrow : Icons.pause,
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () => setState(() => mute = !mute),
-                              icon: Icon(
-                                mute ? Icons.volume_off : Icons.volume_up,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      if (playing)
-                        Positioned(
-                          left: 0,
-                          width: 175,
-                          top: 62,
-                          child: Center(
-                            child: game.phase == Phase.countdown
-                                ? chip(
-                                    '準備！ ${game.countdown.ceil()}',
-                                    color: gold,
-                                  )
-                                : game.time < game.messageUntil
-                                ? chip(
-                                    game.message,
-                                    color: game.message.startsWith('これ')
-                                        ? const Color(0xffb63c32)
-                                        : cream,
-                                  )
-                                : game.combo > 1
-                                ? chip('${game.combo} COMBO', color: gold)
-                                : const SizedBox(),
-                          ),
-                        ),
-                      if (game.phase == Phase.ready ||
-                          game.phase == Phase.result ||
-                          paused)
-                        Center(
-                          child: SingleChildScrollView(
-                            key: const ValueKey('round_menu'),
-                            child: Container(
-                              width: math.min(570, size.maxWidth - 80),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 24,
-                                vertical: 18,
-                              ),
-                              decoration: BoxDecoration(
-                                color: ink.withValues(alpha: .97),
-                                borderRadius: BorderRadius.circular(22),
-                                border: Border.all(
-                                  color: gold.withValues(alpha: .35),
+                          top: 0,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                game.lane ? t.appTitle : 'ゆめみ採用試験 / 面移動版',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [Shadow(blurRadius: 8)],
                                 ),
                               ),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    paused
-                                        ? 'ひと休み'
-                                        : game.phase == Phase.result
-                                        ? '${game.score} pt'
-                                        : '降ってくるのは、ビールだけ？',
-                                    style: const TextStyle(
-                                      fontSize: 27,
-                                      fontWeight: FontWeight.bold,
-                                      color: cream,
-                                    ),
+                              Text(
+                                t.player(
+                                  t.character(
+                                    game.lane
+                                        ? (playing
+                                              ? game.roundCharacter
+                                              : game.selectedCharacter)
+                                        : CatchCharacter.sobaya,
                                   ),
-                                  const SizedBox(height: 10),
-                                  if (game.phase == Phase.result)
-                                    Text(
-                                      'あたり ${game.caught}  ／  はずれ ${game.bad}  ／  取り逃し ${game.missed}',
-                                      style: const TextStyle(color: gold),
+                                ),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  shadows: [
+                                    Shadow(blurRadius: 6, color: Colors.black),
+                                  ],
+                                  fontSize: 12,
+                                ),
+                              ),
+                              if (game.practice)
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 6),
+                                  child: chip(t.practiceBadge, color: gold),
+                                ),
+                            ],
+                          ),
+                        ),
+                        if (showFps)
+                          Positioned(
+                            left: 0,
+                            bottom: 0,
+                            child: FpsOverlay(
+                              onStats: (s) => fpsStats = s.toMap(),
+                            ),
+                          ),
+                        Positioned(
+                          right: 0,
+                          top: 0,
+                          child: Row(
+                            children: [
+                              if (game.practice) ...[
+                                FilledButton(
+                                  key: const ValueKey('end_practice'),
+                                  onPressed: () => setState(endPractice),
+                                  child: Text(t.endPractice),
+                                ),
+                              ] else ...[
+                                chip(
+                                  t.secondsLeft(
+                                    (game.roundSeconds - game.time).ceil(),
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                chip('${game.score} pt', color: gold),
+                              ],
+                              IconButton(
+                                key: const ValueKey('graphics_settings'),
+                                tooltip: t.graphics,
+                                onPressed: openGraphics,
+                                icon: const Icon(Icons.display_settings),
+                              ),
+                              if (!kReleaseMode)
+                                IconButton(
+                                  key: const ValueKey('balance_debug'),
+                                  tooltip: 'バランス調整',
+                                  onPressed: openBalance,
+                                  icon: const Icon(Icons.tune),
+                                ),
+                              IconButton(
+                                key: const ValueKey('pause'),
+                                onPressed: () => setState(() {
+                                  paused = !paused;
+                                  if (!paused) tilt.calibrate();
+                                }),
+                                icon: Icon(
+                                  paused ? Icons.play_arrow : Icons.pause,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        if (playing)
+                          Positioned(
+                            left: 0,
+                            width: 175,
+                            top: game.practice ? 100 : 62,
+                            child: Center(
+                              child: game.phase == Phase.countdown
+                                  ? chip(
+                                      t.countdown(game.countdown.ceil()),
+                                      color: gold,
                                     )
-                                  else if (!paused)
+                                  : game.time < game.messageUntil
+                                  ? chip(
+                                      messageText(t),
+                                      color: game.message == GameMessage.bad
+                                          ? const Color(0xffb63c32)
+                                          : cream,
+                                    )
+                                  : game.combo > 1
+                                  ? chip('${game.combo} COMBO', color: gold)
+                                  : const SizedBox(),
+                            ),
+                          ),
+                        if (game.phase == Phase.ready ||
+                            game.phase == Phase.result ||
+                            paused)
+                          Center(
+                            child: SingleChildScrollView(
+                              key: const ValueKey('round_menu'),
+                              child: Container(
+                                width: math.min(570, size.maxWidth - 80),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                  vertical: 18,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: ink.withValues(alpha: .97),
+                                  borderRadius: BorderRadius.circular(22),
+                                  border: Border.all(
+                                    color: gold.withValues(alpha: .35),
+                                  ),
+                                ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
                                     Text(
-                                      game.lane
-                                          ? '足場は細い鉄骨一本。左右に傾けて歩こう。\n缶の向きはばらばら。カメラで表ラベルを見て、発泡酒を避けろ！'
-                                          : '小さく傾けて、前後左右へ。\n左右にスワイプして見回そう。紫帯の発泡酒は避けろ！',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        height: 1.6,
+                                      paused
+                                          ? t.paused
+                                          : game.phase == Phase.result
+                                          ? '${game.score} pt'
+                                          : '降ってくるのは、ビールだけ？',
+                                      style: const TextStyle(
+                                        fontSize: 27,
+                                        fontWeight: FontWeight.bold,
+                                        color: cream,
                                       ),
                                     ),
-                                  const SizedBox(height: 12),
-                                  if (!paused) legend(),
-                                  const SizedBox(height: 12),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      button(
-                                        paused
-                                            ? '持ち方を合わせて再開'
-                                            : game.phase == Phase.result
-                                            ? 'もう一回！'
-                                            : 'キャッチ開始',
-                                        () {
-                                          if (paused) {
-                                            paused = false;
-                                            tilt.calibrate();
-                                          } else {
-                                            start();
-                                          }
-                                        },
-                                        paused ? 'resume' : 'start',
-                                      ),
-                                      if (!paused) ...[
-                                        const SizedBox(width: 10),
-                                        TextButton(
-                                          key: const ValueKey('new_seed'),
-                                          onPressed: () =>
-                                              setState(() => seed++),
-                                          child: Text('配置 #$seed'),
+                                    const SizedBox(height: 10),
+                                    if (game.phase == Phase.result)
+                                      Text(
+                                        'あたり ${game.caught}  ／  はずれ ${game.bad}  ／  取り逃し ${game.missed}',
+                                        style: const TextStyle(color: gold),
+                                      )
+                                    else if (!paused)
+                                      Text(
+                                        game.lane
+                                            ? '足場は細い鉄骨一本。左右に傾けて歩こう。\n缶の向きはばらばら。カメラで表ラベルを見て、発泡酒を避けろ！'
+                                            : '小さく傾けて、前後左右へ。\n左右にスワイプして見回そう。紫帯の発泡酒は避けろ！',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          height: 1.6,
                                         ),
+                                      ),
+                                    const SizedBox(height: 12),
+                                    if (!paused) legend(),
+                                    const SizedBox(height: 12),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        button(
+                                          paused
+                                              ? t.resume
+                                              : game.phase == Phase.result
+                                              ? 'もう一回！'
+                                              : 'キャッチ開始',
+                                          () {
+                                            if (paused) {
+                                              paused = false;
+                                              tilt.calibrate();
+                                            } else {
+                                              start();
+                                            }
+                                          },
+                                          paused ? 'resume' : 'start',
+                                        ),
+                                        if (!paused) ...[
+                                          const SizedBox(width: 10),
+                                          TextButton(
+                                            key: const ValueKey('new_seed'),
+                                            onPressed: () =>
+                                                setState(() => seed++),
+                                            child: Text('配置 #$seed'),
+                                          ),
+                                        ],
                                       ],
-                                    ],
-                                  ),
-                                ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-          ],
-        );
-      },
-    ),
-  );
+            ],
+          );
+        },
+      ),
+    );
+  }
 }

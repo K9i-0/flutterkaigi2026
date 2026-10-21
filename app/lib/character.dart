@@ -1,5 +1,12 @@
 import 'drop_kind.dart';
 
+/// Easy to hard, as listed on the selection and ranking screens.
+const pickerOrder = [
+  CatchCharacter.fukuchan,
+  CatchCharacter.ctoOdatetsu,
+  CatchCharacter.sobaya,
+];
+
 /// Existing shared models; adding a character also requires a build-hook entry.
 enum CatchCharacter {
   sobaya('そば屋', 'sobaya', 2.6, .72),
