@@ -141,4 +141,50 @@ void main() {
     await tester.pumpAndSettle();
     expect(result, 'ゆめみ');
   });
+
+  testWidgets('untouched nickname dialog closes itself as a skip', (
+    tester,
+  ) async {
+    String? result = 'unset';
+    Future<void> open() async {
+      await tester.tap(find.text('open'));
+      await tester.pumpAndSettle();
+    }
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Builder(
+          builder: (context) => TextButton(
+            onPressed: () async => result = await showDialog<String>(
+              context: context,
+              builder: (_) => const RecordDialog(
+                score: 900,
+                character: CatchCharacter.fukuchan,
+              ),
+            ),
+            child: const Text('open'),
+          ),
+        ),
+      ),
+    );
+    await open();
+    expect(find.text('記録しない（10）'), findsOneWidget);
+    await tester.pump(const Duration(seconds: 3));
+    expect(find.text('記録しない（7）'), findsOneWidget);
+    await tester.pump(const Duration(seconds: 7));
+    await tester.pumpAndSettle();
+    expect(find.byType(RecordDialog), findsNothing);
+    expect(result, isNull);
+
+    // Tapping the field stops the countdown for good.
+    result = 'unset';
+    await open();
+    await tester.pump(const Duration(seconds: 4));
+    await tester.tap(find.byKey(const ValueKey('record_name')));
+    await tester.pump();
+    expect(find.text('記録しない'), findsOneWidget);
+    await tester.pump(const Duration(seconds: 30));
+    expect(find.byType(RecordDialog), findsOneWidget);
+    expect(result, 'unset');
+  });
 }

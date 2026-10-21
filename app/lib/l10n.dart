@@ -141,6 +141,7 @@ class Strings {
   String get nickname => _('ニックネーム', 'Nickname');
   String get save => _('記録する', 'Save');
   String get skip => _('記録しない', 'Skip');
+  String skipIn(int s) => _('記録しない（$s）', 'Skip ($s)');
   String get close => _('閉じる', 'Close');
   String rankOf(int rank, int total) =>
       _('$total人中 $rank位', 'Rank $rank of $total');

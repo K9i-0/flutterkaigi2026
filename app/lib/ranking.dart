@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'app_style.dart';
@@ -6,18 +8,53 @@ import 'l10n.dart';
 import 'records.dart';
 
 /// Nickname entry after a round. Top-aligned so the landscape keyboard fits.
+/// Untouched, it closes itself as a skip so the booth's next player can start.
 class RecordDialog extends StatefulWidget {
-  const RecordDialog({super.key, required this.score, required this.character});
+  const RecordDialog({
+    super.key,
+    required this.score,
+    required this.character,
+    this.timeoutSeconds = 10,
+  });
   final int score;
   final CatchCharacter character;
+  final int timeoutSeconds;
   @override
   State<RecordDialog> createState() => _RecordDialogState();
 }
 
 class _RecordDialogState extends State<RecordDialog> {
   final name = TextEditingController();
+  final focus = FocusNode();
+  late int remaining = widget.timeoutSeconds;
+  Timer? timer;
+
+  @override
+  void initState() {
+    super.initState();
+    timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (--remaining <= 0) {
+        timer?.cancel();
+        Navigator.pop(context);
+      } else {
+        setState(() {});
+      }
+    });
+    // Tapping the field or typing means someone is entering a name.
+    focus.addListener(engage);
+    name.addListener(engage);
+  }
+
+  void engage() {
+    if (timer == null || !(focus.hasFocus || name.text.isNotEmpty)) return;
+    timer!.cancel();
+    setState(() => timer = null);
+  }
+
   @override
   void dispose() {
+    timer?.cancel();
+    focus.dispose();
     name.dispose();
     super.dispose();
   }
@@ -44,6 +81,7 @@ class _RecordDialogState extends State<RecordDialog> {
         child: TextField(
           key: const ValueKey('record_name'),
           controller: name,
+          focusNode: focus,
           // The keyboard opens on tap so the score stays visible first.
           maxLength: RecordStore.maxName,
           textInputAction: TextInputAction.done,
@@ -55,7 +93,7 @@ class _RecordDialogState extends State<RecordDialog> {
         TextButton(
           key: const ValueKey('record_skip'),
           onPressed: () => Navigator.pop(context),
-          child: Text(t.skip),
+          child: Text(timer == null ? t.skip : t.skipIn(remaining)),
         ),
         ValueListenableBuilder(
           valueListenable: name,
