@@ -11,11 +11,11 @@
 作中の手配書表記は「YAMETARO」「やめ太郎」のことがある。
 人物同一性（唯一のハード条件）: `Yametaro.jpg`と同じキャラクター。顔、頭部形状、丸メガネ、デフォルメされた体格比率を識別基準にする。衣装、持ち物、表情、性格、口調、能力、役割、手配状況は固定しない。
 画像ファイル：Yametaro.jpg
-動画用通常シート：`03_SCRIPTS/00_TEMPLATES/characters/character_yametaro_basic_sheet.png`。2026-09-09更新の輪郭線なし・発話口形差分付き版を使う。閉じ口とA/I/U/E/Oの6種を含み、口は固定の笑顔模様ではなく、音声に合わせて口内が見える開口・顎の上下を行う。差分は発話の参考であり、表情を6種に制限しない。原画の黒い輪郭線を立体の黒い帯・板として再現せず、頬・耳・顎・うなじは肌色の連続した面として描く。鼻は採用案Cに準じた肌色の低くなだらかな突起とし、顔へ自然につなげる。眼鏡の下の鼻に黒点・黒い輪郭・強い鼻孔を描かず、正面では控えめにする。額の黒い印とは区別する。黒髪と黒い丸眼鏡は維持し、シート以上に可愛さや頭身を誇張しない。過去制作の入力画像は履歴として維持する。
+動画用通常シート：`characters/sheets/character_yametaro_basic_sheet.png`。2026-09-09更新の輪郭線なし・発話口形差分付き版を使う。閉じ口とA/I/U/E/Oの6種を含み、口は固定の笑顔模様ではなく、音声に合わせて口内が見える開口・顎の上下を行う。差分は発話の参考であり、表情を6種に制限しない。原画の黒い輪郭線を立体の黒い帯・板として再現せず、頬・耳・顎・うなじは肌色の連続した面として描く。鼻は採用案Cに準じた肌色の低くなだらかな突起とし、顔へ自然につなげる。眼鏡の下の鼻に黒点・黒い輪郭・強い鼻孔を描かず、正面では控えめにする。額の黒い印とは区別する。黒髪と黒い丸眼鏡は維持し、シート以上に可愛さや頭身を誇張しない。過去制作の入力画像は履歴として維持する。
 声ファイル：Yametaro_voice.wav（Irodori-TTSの正典参照音声。既定seedは`VOICE_CAST.md`を参照）
-参照音源集：`02_CHARACTERS/voice_references/`（`Yametaro_ref_intro_mid.wav`、`Yametaro_ref_intro_short.wav`など）
+参照音源集：`characters/voice_references/`（`Yametaro_ref_intro_mid.wav`、`Yametaro_ref_intro_short.wav`など）
 社内指名手配書：`../01_WORLD/props/yametaro_wanted_poster.png`
-ボクセルモデル：`04_GAME_ASSETS/voxel/models/yametaro.glb`（二足リグ。再生成は`04_GAME_ASSETS/voxel/tools/build_yametaro_voxel_model.py`）
+ボクセルモデル：`assets/voxel/models/yametaro.glb`（二足リグ。再生成は`assets/voxel/tools/build_yametaro_voxel_model.py`）
 
 ## 制作プロンプトの顔固定（初回から必須）
 
@@ -29,6 +29,6 @@
   - 関西弁・語尾：「〜やで」「〜あかん」「〜してたんすけど」「〜やないですか」「〜のとちゃうかい」
   - エンジニア視点のボヤき：「フロントエンドばっかりやってたんで」「〜って言われる可能性が…」
 - **Irodori-TTS生成推奨設定**:
-  - 参照WAV: `02_CHARACTERS/voice_references/Yametaro_ref_intro_mid.wav`（脱力感・関西弁重視）または `Yametaro_ref_intro_short.wav`（明瞭短尺）
+  - 参照WAV: `characters/voice_references/Yametaro_ref_intro_mid.wav`（脱力感・関西弁重視）または `Yametaro_ref_intro_short.wav`（明瞭短尺）
   - 既定seed: 7
   - caption例: `落ち着いた成人男性。やや脱力感のある関西弁交じりで、飄々としたユーモアを含んで話す。`

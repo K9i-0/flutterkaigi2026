@@ -7,7 +7,7 @@ import bpy,bmesh,math,json,hashlib,sys
 from pathlib import Path
 from mathutils import Vector,Matrix,Quaternion
 ROOT=Path(__file__).resolve().parents[1]
-OUT=ROOT/'04_GAME_ASSETS/3d/characters/takosan/rig_sheet_v2';OUT.mkdir(parents=True,exist_ok=True)
+OUT=ROOT/'assets/3d/characters/takosan/rig_sheet_v2';OUT.mkdir(parents=True,exist_ok=True)
 src=OUT.parent/'tripo_sheet_p2_20260906/raw/output_model_url.fbx'
 bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False);bpy.ops.import_scene.fbx(filepath=str(src))
 body=next(o for o in bpy.context.scene.objects if o.type=='MESH');body.name='TakosanBody'

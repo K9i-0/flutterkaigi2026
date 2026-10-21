@@ -5,13 +5,13 @@
   "rigSource": "tools/retarget_sobaya_mocap.py -> tools/sobaya_garment.py:relax_hem_weights",
   "rebuild": "/Applications/Blender.app/Contents/MacOS/Blender --background --factory-startup --python tools/retarget_sobaya_mocap.py",
   "auditCommand": "/Applications/Blender.app/Contents/MacOS/Blender --background --factory-startup --python tools/audit_sobaya_garment.py -- --reference .local/sobaya-before-hem-080d3a1.glb",
-  "referenceRecovery": "git show 080d3a1:04_GAME_ASSETS/3d/characters/sobaya/rig_v3/sobaya_rig.glb > .local/sobaya-before-hem-080d3a1.glb",
+  "referenceRecovery": "git show 080d3a1:assets/3d/characters/sobaya/rig_v3/sobaya_rig.glb > .local/sobaya-before-hem-080d3a1.glb",
   "sampleHz": 60,
   "posesPerModel": 1167,
   "region": "rest z .80..1.22 m, abs(x) < .30 m; edges > .1 mm",
   "stretch": {
     "candidate": {
-      "source": "04_GAME_ASSETS/3d/characters/sobaya/rig_v3/sobaya_rig.glb",
+      "source": "assets/3d/characters/sobaya/rig_v3/sobaya_rig.glb",
       "sha256": "644f7898fad33edb8cbdd4fb1c8dce2a557b6a0147d8beea976feb8316f7ba96",
       "waistEdges": 3313,
       "clips": {
@@ -84,7 +84,7 @@
       }
     },
     "reference": {
-      "source": "git 080d3a1:04_GAME_ASSETS/3d/characters/sobaya/rig_v3/sobaya_rig.glb",
+      "source": "git 080d3a1:assets/3d/characters/sobaya/rig_v3/sobaya_rig.glb",
       "sha256": "5c6ed042c027cc4ca14511dddaef07e8dca618f0f263eb8654fcbca552994ee4",
       "waistEdges": 3313,
       "clips": {
@@ -166,7 +166,7 @@
     "tolerance": 0.02,
     "models": {
       "fukuchan": {
-        "source": "04_GAME_ASSETS/3d/characters/fukuchan/rig_v1/fukuchan.glb",
+        "source": "assets/3d/characters/fukuchan/rig_v1/fukuchan.glb",
         "sha256": "031ddc85939ce56f4562ae1b65f41109a11653a412e948a1db6e82dfe3d15fcc",
         "samples": 97,
         "violatingVertexSamples": 0,
@@ -191,7 +191,7 @@
         ]
       },
       "sobaya": {
-        "source": "04_GAME_ASSETS/3d/characters/sobaya/rig_v3/sobaya_rig.glb",
+        "source": "assets/3d/characters/sobaya/rig_v3/sobaya_rig.glb",
         "sha256": "644f7898fad33edb8cbdd4fb1c8dce2a557b6a0147d8beea976feb8316f7ba96",
         "samples": 97,
         "violatingVertexSamples": 0,

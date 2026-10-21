@@ -1,6 +1,6 @@
 import fs from 'node:fs';import path from 'node:path';import {createRequire} from 'node:module';
 const root=path.resolve(import.meta.dirname,'..');const require=createRequire(root+'/.local/vrm-validation/package.json');
-if(JSON.parse(fs.readFileSync(root+'/04_GAME_ASSETS/3d/hazard_adopted/manifest.json')).sobaya.version>=2){
+if(JSON.parse(fs.readFileSync(root+'/assets/3d/hazard_adopted/manifest.json')).sobaya.version>=2){
  await import('./validate_hazard_v2_models.mjs');
  process.exit(0);
 }
@@ -10,10 +10,10 @@ const {validateBytes}=require('gltf-validator');
 async function load(file){const b=fs.readFileSync(root+'/'+file);const l=new GLTFLoader();l.register(()=>({name:'NoTextures',loadTexture:()=>Promise.resolve(new THREE.Texture())}));return l.parseAsync(b.buffer.slice(b.byteOffset,b.byteOffset+b.byteLength),'');}
 const report=[];
 for(const name of ['sobaya','fukuchan']){
- const file=`04_GAME_ASSETS/3d/hazard_adopted/${name}.glb`;const errors=await validateBytes(fs.readFileSync(root+'/'+file),{maxIssues:100});if(errors.issues.numErrors)throw Error(JSON.stringify(errors.issues));
- const game=await load(file);const old=await load(`04_GAME_ASSETS/3d/motion_library/${name}/${name}.glb`);
+ const file=`assets/3d/hazard_adopted/${name}.glb`;const errors=await validateBytes(fs.readFileSync(root+'/'+file),{maxIssues:100});if(errors.issues.numErrors)throw Error(JSON.stringify(errors.issues));
+ const game=await load(file);const old=await load(`assets/3d/motion_library/${name}/${name}.glb`);
  for(const a of old.animations)if(!game.animations.some(b=>b.name===a.name))throw Error('Lost game action '+a.name);
- const bones=JSON.parse(fs.readFileSync(root+`/04_GAME_ASSETS/vrm/characters/${name}.manifest.json`)).humanoidBones;
+ const bones=JSON.parse(fs.readFileSync(root+`/assets/vrm/characters/${name}.manifest.json`)).humanoidBones;
  let maxPositionError=0,maxRotationError=0,samples=0;
  for(const suffix of ['motions','run_candidates']){
   const source=await load(`.local/vrm-validation/${name}_${suffix}.glb`);
@@ -32,4 +32,4 @@ for(const name of ['sobaya','fukuchan']){
  if(maxPositionError>.001||maxRotationError>.005)throw Error(JSON.stringify({name,maxPositionError,maxRotationError}));
  report.push({name,gltfErrors:0,gameClips:game.animations.length,retainedSourceClips:old.animations.length,samples,maxPositionError,maxRotationError});
 }
-fs.writeFileSync(root+'/04_GAME_ASSETS/3d/hazard_adopted/validation.json',JSON.stringify(report,null,2)+'\n');console.log(report);
+fs.writeFileSync(root+'/assets/3d/hazard_adopted/validation.json',JSON.stringify(report,null,2)+'\n');console.log(report);

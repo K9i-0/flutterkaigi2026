@@ -28,7 +28,7 @@ class ExportVillage extends Village {
 }
 const terrain = new TerrainData(7), colliders = new Colliders();
 const village = new ExportVillage({scene:new Scene(), terrain, colliders});
-const out = path.join(root, '04_GAME_ASSETS/3d/tidewater');
+const out = path.join(root, 'assets/3d/tidewater');
 fs.mkdirSync(out, {recursive:true});
 const gltf = {asset:{version:'2.0',generator:'Sobaya Tidewater CPU port'},scene:0,scenes:[{nodes:[]}],nodes:[],meshes:[],materials:[],buffers:[{byteLength:0}],bufferViews:[],accessors:[]};
 let offset=0; const chunks=[];

@@ -22,7 +22,7 @@ GLB容量の減少はGPUテクスチャメモリやFPSの30.5%改善を意味し
 
 ```sh
 npm install --prefix .local/vrm-validation --no-save --package-lock=false three@0.185.1 gltf-validator
-uv run --with pillow --with numpy python 26_YUMEMI_RECRUIT_EXAM/tool/optimize_odatetsu.py
+uv run --with pillow --with numpy python app/tool/optimize_odatetsu.py
 ```
 
 モデル比較: 今のゲームでそば屋は127,034三角形・8プリミティブ、

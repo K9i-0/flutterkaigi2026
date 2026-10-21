@@ -4,12 +4,12 @@
 
 | 用途 | 場所 |
 | --- | --- |
-| 元モデル・既存動作 | `04_GAME_ASSETS/3d/motion_library/{sobaya,fukuchan}/` |
-| 公開モーション入力 | `04_GAME_ASSETS/3d/motion_library/source/`、取得は `tools/fetch_humanoid_motion.py` |
-| 修正版VRM | `04_GAME_ASSETS/vrm/characters/` |
-| 体格別VRMA | `04_GAME_ASSETS/vrm/motions/` |
+| 元モデル・既存動作 | `assets/3d/motion_library/{sobaya,fukuchan}/` |
+| 公開モーション入力 | `assets/3d/motion_library/source/`、取得は `tools/fetch_humanoid_motion.py` |
+| 修正版VRM | `assets/vrm/characters/` |
+| 体格別VRMA | `assets/vrm/motions/` |
 | 比較中間出力 | `.local/vrm-validation/`、`.local/dance_deformation/` |
-| 本編用派生GLB | `04_GAME_ASSETS/3d/hazard_adopted/` |
+| 本編用派生GLB | `assets/3d/hazard_adopted/` |
 
 元のmotion_libraryを採用済みGLBで上書きすると再生成入力が循環する。ゲームの `assets/models/` はhazard_adoptedへの相対symlinkを使う。新しい派生物を作る際も元クリップID、顔・体格、表情、ジョッキソケットと裾補助骨を保持する。
 
@@ -27,7 +27,7 @@
 
 ## 肩・腕の変形で得た知見
 
-実装は `tools/humanoid_deformation.py`、根拠は `04_GAME_ASSETS/vrm/DEFORMATION_REVIEW.md`。
+実装は `tools/humanoid_deformation.py`、根拠は `assets/vrm/DEFORMATION_REVIEW.md`。
 
 - 採用処置はUV境界の同位置頂点も考慮する肩ウェイト3回平滑化と、ダンスの軸回りねじれの制限。単純な隣接頂点だけの平滑化では継ぎ目が割れた。
 - 鎖骨10°・上腕45°・前腕60°はこの2モデル向け調整値。人間の一般的な可動域ではない。全ねじれを0にする処置や強い平滑化は悪化する場合があった。
@@ -43,7 +43,7 @@
 
 その場プレビューと移動ゲームは別。manifestの足の後退速度から求めた再生基準を、衝突解決後の実移動量へ合わせる。クリップを変えたら再生基準、歩走の位相継承、ジョッキ握りオーバーライドとソケット追従を確認する。
 
-本編は `21_SOBAYA_HAZARD_LAB/lib/game_main.dart`。`lib/main.dart` は検証ラボ。起動・専用extensionは同ディレクトリの `MCP_DEBUGGING.md` を読む。GLB変更はビルドフックの再変換が必要で、hot reloadだけでは反映されない。初回変換の起動タイムアウト時は残ったビルドの進捗を確認し、重複ビルドを乱立させない。
+本編は `labs/sobaya_hazard_lab/lib/game_main.dart`。`lib/main.dart` は検証ラボ。起動・専用extensionは同ディレクトリの `MCP_DEBUGGING.md` を読む。GLB変更はビルドフックの再変換が必要で、hot reloadだけでは反映されない。初回変換の起動タイムアウト時は残ったビルドの進捗を確認し、重複ビルドを乱立させない。
 
 Dart MCP起動後の新しいappURI / DTDURIを使い、Marionetteは別途接続する。extensionのコールバック変更がhot reloadで残った実例があるため、必要ならhot restartし、Marionetteも再接続する。古いURIやPIDを再利用しない。
 
@@ -51,4 +51,4 @@ Dart MCP起動後の新しいappURI / DTDURIを使い、Marionetteは別途接�
 
 未発見ダンスの確認には `madogiwa.openGameScenario` の `ambientDance`。通常そば屋は生成時20%で3種から抽選、ボス除外、発見・被弾・攻撃などで解除し一度警戒した個体は再開しない。連続再生と発見時の中断、チェックポイント復元を確認する。射撃で試す場合は `gameAction` のaim後にfire。
 
-採用変更では対象のFlutterテスト・analyze・ネイティブ描画を確認する。文書だけの変更でゲーム全ビルドは不要。過去の証跡は `21_SOBAYA_HAZARD_LAB/qa/adopted-vrm-and-dance-20260908.json`。新しい作業の検証済み証拠として流用しない。
+採用変更では対象のFlutterテスト・analyze・ネイティブ描画を確認する。文書だけの変更でゲーム全ビルドは不要。過去の証跡は `labs/sobaya_hazard_lab/qa/adopted-vrm-and-dance-20260908.json`。新しい作業の検証済み証拠として流用しない。

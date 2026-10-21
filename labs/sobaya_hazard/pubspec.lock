@@ -204,7 +204,7 @@ packages:
   madogiwa_engine:
     dependency: "direct main"
     description:
-      path: "../packages/madogiwa_engine"
+      path: "../../packages/madogiwa_engine"
       relative: true
     source: path
     version: "0.1.0"

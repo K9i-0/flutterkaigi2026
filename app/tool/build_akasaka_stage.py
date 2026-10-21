@@ -3,7 +3,7 @@ import bpy, math, random
 from pathlib import Path
 from mathutils import Vector
 ROOT=Path(__file__).resolve().parents[2]
-OUT=ROOT/'04_GAME_ASSETS/3d/stages/akasaka'
+OUT=ROOT/'assets/3d/stages/akasaka'
 bpy.ops.object.select_all(action='SELECT'); bpy.ops.object.delete(use_global=False)
 materials={}; batches={}
 # Height ratios use 200m = 14 scene units. Horizontal layout is art-directed.

@@ -8,7 +8,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFilter
 import numpy as np
 
-OUT = Path(__file__).resolve().parents[2] / '04_GAME_ASSETS/3d/stages/akasaka'
+OUT = Path(__file__).resolve().parents[2] / 'assets/3d/stages/akasaka'
 SOURCE = OUT / 'source_imagegen'
 
 def save_data(name, array):

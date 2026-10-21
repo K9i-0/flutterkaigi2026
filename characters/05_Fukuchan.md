@@ -11,10 +11,10 @@
 窓際族の立ち飲み処の常連第一号。店が崩壊した瓦礫の前でも自撮りして楽しむマイペースぶり。
 人物同一性（唯一のハード条件）: `Fukuchan.jpg`の本人と同じ顔・人物として識別できること。衣装、髪型、名札、ストラップ、持ち物、表情、ポーズ、性格、口調、能力、役割は固定しない。
 画像ファイル：Fukuchan.jpg
-肌・年齢感の制作基準：美容キャラとして、`03_SCRIPTS/00_TEMPLATES/characters/character_fukuchan_basic_sheet.png` の顔アップと同程度の綺麗な肌を維持する。シートにないシミ・斑点・肌荒れを増やさず、シートにある自然なシワ・笑いジワ・ほうれい線は残す。過剰な美肌化で若返らせない。生成・補正・監査では[共通の肌基準](references/fukuchan-skin-standard.md)を読む。別の肌・年齢表現を明示された場合はユーザー指定を優先する。
+肌・年齢感の制作基準：美容キャラとして、`characters/sheets/character_fukuchan_basic_sheet.png` の顔アップと同程度の綺麗な肌を維持する。シートにないシミ・斑点・肌荒れを増やさず、シートにある自然なシワ・笑いジワ・ほうれい線は残す。過剰な美肌化で若返らせない。生成・補正・監査では[共通の肌基準](references/fukuchan-skin-standard.md)を読む。別の肌・年齢表現を明示された場合はユーザー指定を優先する。
 声ファイル：Fukuchan_voice.wav（Irodori-TTSの正典参照音声。既定seedは`VOICE_CAST.md`を参照）
-参照音源集：`02_CHARACTERS/voice_references/`（`Fukuchan_ref_intro.wav`など）
-ボクセルモデル：`04_GAME_ASSETS/voxel/models/fukuchan.glb`（二足リグ。再生成は`04_GAME_ASSETS/voxel/tools/build_fukuchan_voxel_model.py`）
+参照音源集：`characters/voice_references/`（`Fukuchan_ref_intro.wav`など）
+ボクセルモデル：`assets/voxel/models/fukuchan.glb`（二足リグ。再生成は`assets/voxel/tools/build_fukuchan_voxel_model.py`）
 
 ## 喋り方・セリフ制作ガイド（Seedance / Irodori-TTS）
 - **声質・トーン**: 明るく高め、人懐っこくエネルギッシュ。常に笑顔が浮かぶようなハキハキとした響き。
@@ -24,6 +24,6 @@
   - 「〜という説が濃厚なんですけれども」「〜と言っても過言ではない」
   - 「〜ですね」「〜なんですよ」「ありがとうございます！」
 - **Irodori-TTS生成推奨設定**:
-  - 参照WAV: `02_CHARACTERS/voice_references/Fukuchan_ref_intro.wav`（自己紹介・ぎゅぎゅんです）
+  - 参照WAV: `characters/voice_references/Fukuchan_ref_intro.wav`（自己紹介・ぎゅぎゅんです）
   - 既定seed: 100（ハキハキとしたスピード感と明瞭な発声のベストシード。サブ候補: 42）
   - caption例: `明るくエネルギッシュな成人男性。人懐っこく、ハキハキとした笑顔のトーンで話す。`

@@ -6,7 +6,7 @@ repeats it by face size so windows keep their scale on every building.
 from PIL import Image,ImageDraw,ImageFilter,ImageFont
 from pathlib import Path
 import random
-out=Path(__file__).resolve().parents[2]/'04_GAME_ASSETS/3d/stages/akasaka'
+out=Path(__file__).resolve().parents[2]/'assets/3d/stages/akasaka'
 out.mkdir(parents=True,exist_ok=True)
 r=random.Random(24)
 def noise(size,base,amp):
@@ -106,9 +106,9 @@ def ad(name,bg,lines,frame=None):
  for word,size,y,fg,x in lines:d.text((x,y),word,font=ImageFont.truetype(font if size>40 else font.replace('W6','W3'),size),fill=fg,anchor='mm')
  return im,d
 im,d=ad('exam',(246,245,240),[('採用試験会場',130,160,(28,44,86),512),('受験者の方は係員の指示に従ってください',38,296,(70,76,90),512)],(28,44,86));im.save(out/'ad_exam.png')
-# Yumemin billboard from the canonical 2D art (02_CHARACTERS/Yumemin.jpg).
+# Yumemin billboard from the canonical 2D art (characters/Yumemin.jpg).
 im,d=ad('yumemin',(255,255,255),[('ゆめみ',150,170,(32,120,196),650),('YUMEMI',40,292,(90,150,200),650)],(84,170,228))
-art=Image.open(out.parents[3]/'02_CHARACTERS/Yumemin.jpg').convert('RGB').resize((330,330),Image.LANCZOS)
+art=Image.open(out.parents[3]/'characters/Yumemin.jpg').convert('RGB').resize((330,330),Image.LANCZOS)
 im.paste(art,(40,27));im.save(out/'ad_yumemin.png')
 im,d=ad('accidenchua',(26,40,72),[('ACCIDENCHUA',112,170,(246,246,250),512),('Consulting  ·  Technology  ·  Operations',36,288,(178,190,214),512)]);im.save(out/'ad_accidenchua.png')
 im,d=ad('safety',(248,248,246),[('安全第一',150,192,(0,128,72),650)],(0,128,72))

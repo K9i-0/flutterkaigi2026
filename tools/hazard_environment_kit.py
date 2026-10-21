@@ -4,7 +4,7 @@ import numpy as np
 from pathlib import Path
 from mathutils import Vector, Matrix
 ROOT=Path(__file__).resolve().parent.parent
-OUT=ROOT/'04_GAME_ASSETS/3d/environments/pueblo';PROPS=ROOT/'04_GAME_ASSETS/3d/props/hazard_kit'
+OUT=ROOT/'assets/3d/environments/pueblo';PROPS=ROOT/'assets/3d/props/hazard_kit'
 OUT.mkdir(parents=True,exist_ok=True);PROPS.mkdir(parents=True,exist_ok=True)
 bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False)
 rng=random.Random(4905);groups={};mats={};solids=[];houses=[];ramps=[];windows=[]

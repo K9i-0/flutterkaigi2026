@@ -1,6 +1,6 @@
 # Madogiwa Engine
 
-Madogiwa作品向けの共有Dart/Flutterパッケージ。初版0.1は `24_SOBAYA_HAZARD` を最初の利用作品とする。pub.dev公開はしていない。
+Madogiwa作品向けの共有Dart/Flutterパッケージ。初版0.1は `labs/sobaya_hazard` を最初の利用作品とする。pub.dev公開はしていない。
 
 - `madogiwa_engine.dart`: 衝突とレイ判定、視認・聴覚の認知記憶、モーション時計、速度制御、ワールド時計。
 - `scene.dart`: Flutter Sceneのクリップを共有時計で再生するCharacterMotionPlayer。

@@ -605,7 +605,7 @@
     {
       "id": "watch",
       "title": "見てるぞ",
-      "source": "03_SCRIPTS/38_miteruzo_horror_poster/poster_miteruzo_variant_c_revised_v3.png",
+      "source": "assets/2d/hazard_posters/poster_miteruzo_variant_c_revised_v3.png",
       "x": 11.2,
       "z": 9.28,
       "y": 0.6000000000000001,
@@ -614,7 +614,7 @@
     {
       "id": "drybeer",
       "title": "極度乾燥ビール",
-      "source": "03_SCRIPTS/32_sobaya_beer_encouragement/prop_kyokudo_kanso_beer_production.png",
+      "source": "assets/2d/hazard_posters/prop_kyokudo_kanso_beer_production.png",
       "x": 14.7,
       "z": 9.28,
       "y": 0.6000000000000001,
@@ -623,7 +623,7 @@
     {
       "id": "chair",
       "title": "アロンチェア制作記録",
-      "source": "03_SCRIPTS/51_aronchia_makers_vlog/prop_aronchia_handwritten_final.png",
+      "source": "assets/2d/hazard_posters/prop_aronchia_handwritten_final.png",
       "x": 11,
       "z": 9.72,
       "y": 0.6000000000000001,

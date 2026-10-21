@@ -2,7 +2,7 @@
 
 [台本・声の生成条件](script.md)、[発話マニフェスト](voice-manifest.json)、[環境音マニフェスト](soundscape-manifest.json)。Flutterは `assets/audio/voice` と `soundscape` から相対symlinkで参照する。未加工・候補・ASRのモデルキャッシュは `.local/hazard_voice/` に置く。
 
-再生成はリポジトリ直下から実行する。台詞を変更したら先に `21_SOBAYA_HAZARD_LAB/tool/export_hazard_voice.dart` をDartで実行して `voice-lines.json` を更新する。
+再生成はリポジトリ直下から実行する。台詞を変更したら先に `labs/sobaya_hazard_lab/tool/export_hazard_voice.dart` をDartで実行して `voice-lines.json` を更新する。
 
 ```sh
 python3 tools/build_hazard_voice.py

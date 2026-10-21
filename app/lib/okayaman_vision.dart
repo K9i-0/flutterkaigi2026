@@ -13,7 +13,7 @@ class OkayamanVision {
 
   Map<String, Object> inspect() => {
     'visible': visible,
-    'source': '02_CHARACTERS/Okayaman.jpg',
+    'source': 'characters/Okayaman.jpg',
   };
 
   void _box(

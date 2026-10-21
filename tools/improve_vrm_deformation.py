@@ -19,7 +19,7 @@ for name in ['sobaya','fukuchan']:export(name)
 vrm_export.OUT=canonical_out
 for name in ['sobaya','fukuchan']:
  bpy.ops.wm.read_factory_settings(use_empty=True)
- bpy.ops.import_scene.gltf(filepath=str(ROOT/f'04_GAME_ASSETS/3d/motion_library/{name}/{name}.glb'))
+ bpy.ops.import_scene.gltf(filepath=str(ROOT/f'assets/3d/motion_library/{name}/{name}.glb'))
  rig=next(o for o in bpy.context.scene.objects if o.type=='ARMATURE')
  for o in bpy.context.scene.objects:
   if o.animation_data:o.animation_data_clear()
@@ -36,4 +36,4 @@ for name in ['sobaya','fukuchan']:
  bpy.ops.export_scene.gltf(filepath=str(output),export_format='GLB',export_animations=False,export_skins=True,export_def_bones=False,export_extras=True)
  export(name,output)
  report.append({'character':name,'changedWeightVertices':changed,'smoothingIterations':3,'jointPositionsChanged':False,'geometryChanged':False,'shapeAndBindSha256':before})
-(ROOT/'04_GAME_ASSETS/vrm/characters/deformation.json').write_text(json.dumps(report,indent=2)+'\n')
+(ROOT/'assets/vrm/characters/deformation.json').write_text(json.dumps(report,indent=2)+'\n')

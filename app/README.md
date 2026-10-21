@@ -1,6 +1,6 @@
 # ゆめみ採用試験（試作）
 
-横画面固定、20秒のFlutter Scene製3Dキャッチゲーム。ゆめみの採用試験で、受験者が赤坂の高層ビルの間に架かった鉄骨を渡らされるというネタ。鉄骨編ではキャラクターと時間帯（昼・夜）を選び、落ちてくる「あたり」だけを集める。従来の屋上・面移動版も選択できる。表示名は2026-10-20に「蕎麦屋」から改名。同日、ディレクトリを `26_SOBAYA_BEER_RAIN` から `26_YUMEMI_RECRUIT_EXAM` に、Dartパッケージ名を `sobaya_beer_rain` から `yumemi_recruit_exam` に変更。アプリIDも変更：Android `jp.madogiwa.yumemi_recruit_exam`、iOS/macOS `jp.madogiwa.yumemiRecruitExam`（製品名 `yumemi_recruit_exam`）。端末上は旧アプリと別扱いになり、旧アプリの保存設定は引き継がない。
+横画面固定、20秒のFlutter Scene製3Dキャッチゲーム。ゆめみの採用試験で、受験者が赤坂の高層ビルの間に架かった鉄骨を渡らされるというネタ。鉄骨編ではキャラクターと時間帯（昼・夜）を選び、落ちてくる「あたり」だけを集める。従来の屋上・面移動版も選択できる。表示名は2026-10-20に「蕎麦屋」から改名。同日、ディレクトリを `26_SOBAYA_BEER_RAIN` から `26_YUMEMI_RECRUIT_EXAM` に（2026-10-21に `app/` へ移動）、Dartパッケージ名を `sobaya_beer_rain` から `yumemi_recruit_exam` に変更。アプリIDも変更：Android `jp.madogiwa.yumemi_recruit_exam`、iOS/macOS `jp.madogiwa.yumemiRecruitExam`（製品名 `yumemi_recruit_exam`）。端末上は旧アプリと別扱いになり、旧アプリの保存設定は引き継がない。
 
 ## 遊び方
 
@@ -13,14 +13,14 @@
 
 ## 素材
 
-窓際スーパーつらいは `03_SCRIPTS/00_TEMPLATES/props/product_super_try.png` を正典として3D缶へ投影。窓際ライトと発泡酒「つらめ」は今回限りの仮デザイン。仮の識別手掛かりとして発泡酒には紫帯を付けている。
+窓際スーパーつらいは `characters/props/product_super_try.png` を正典として3D缶へ投影。窓際ライトと発泡酒「つらめ」は今回限りの仮デザイン。仮の識別手掛かりとして発泡酒には紫帯を付けている。
 
-モデルは `assets/models/` から共有資産への相対symlink。そば屋は `04_GAME_ASSETS/3d/hazard_rebuild/locomotion_v1/sobaya.glb` のIdle/Walk/Runを再利用し、体型や顔は変更していない。移動速度に歩行・走行モーションを同期する。効果音は既存の `25_SOBAYA_IPPAI/assets/audio/` を参照。
+モデルは `assets/models/` から共有資産への相対symlink。そば屋は `assets/3d/hazard_rebuild/locomotion_v1/sobaya.glb` のIdle/Walk/Runを再利用し、体型や顔は変更していない。移動速度に歩行・走行モーションを同期する。効果音は既存の `labs/sobaya_ippai/assets/audio/` を参照。
 
 ## 開発
 
 ```sh
-cd 26_YUMEMI_RECRUIT_EXAM
+cd app
 mise exec -- flutter pub get
 mise exec -- flutter run -d <device-id>
 mise exec -- flutter analyze
@@ -95,7 +95,7 @@ Marionetteからは `madogiwa.catchAction` に `action=configure`、`json`（bal
 
 鉄骨編に採用案Dの「夕暮れの赤坂 × 東京タワー」を実装。格子構造の東京タワー、飲食店の縦看板、窓明かり、錆びた鉄骨と屋上設備を3Dで描き、カメラ移動に追従した奥行きを持たせた。空はグラデーション、遠景は夕霞で整理する。横固定・左右移動・転落なし・バランス調整パネル・面移動版を維持する。
 
-背景正本と再生成手順: `../04_GAME_ASSETS/3d/stages/akasaka/README.md`。
+背景正本と再生成手順: `../assets/3d/stages/akasaka/README.md`。
 動画: `qa/akasaka_playthrough.mp4`（ローカル成果物、シミュレーターの自動入力デモ、音声なし）。デモは冒頭3秒間を正面視点に保ち、その後に缶の向きに応じてカメラを回す。
 
 ### 街のクオリティ向上（2026-10-20、#20）
@@ -105,7 +105,7 @@ Marionetteからは `madogiwa.catchAction` に `action=configure`、`json`（bal
 追加（同日）:
 - 時間帯：開始・結果画面で昼・夜を選べる（既定は昼。ラウンド中は変更不可。夕は曇って見づらいため廃止）。昼は太陽光の影（カスケードシャドウ、街は静的キャッシュ）と青空、窓明かりなし。夜は窓・屋上のライトアップ帯・東京タワーのオレンジの照明、街灯・看板の発光、ブルーム、鉄骨を照らす作業灯。実装は `lib/stage_lighting.dart`。各マテリアルの `emissiveFactor` を時間帯ごとに切り替えるため、外装と遠景は昼の窓（暗いガラス）と点灯窓だけの `*_emit.png` に分けた。
 - 車の移動：大通り・路地・首都高の車を6方向のグループ（`traffic_*`）に分け、各グループを周期ごとにスクロールして走らせる。交差点ではすれ違い判定をしない（重なることがある）。航空障害灯は点滅。
-- 支えビルの最上部を窓のない帯に、一般のビルにも笠木を付けた。屋上広告は「採用試験会場」「ACCIDENCHUA」「安全第一」、縦看板は赤坂・居酒屋・そば・歯科・弁護士・不動産に変更。鉄骨のない背景のビル5棟の屋上に、`02_CHARACTERS/Yumemin.jpg` の2Dの姿を使ったゆめみんの看板を設置。おかやまんの街頭ビジョンは維持。
+- 支えビルの最上部を窓のない帯に、一般のビルにも笠木を付けた。屋上広告は「採用試験会場」「ACCIDENCHUA」「安全第一」、縦看板は赤坂・居酒屋・そば・歯科・弁護士・不動産に変更。鉄骨のない背景のビル5棟の屋上に、`characters/Yumemin.jpg` の2Dの姿を使ったゆめみんの看板を設置。おかやまんの街頭ビジョンは維持。
 - HUDを簡素化：タイトルは「ゆめみ採用試験」のみ（「/ 赤坂・鉄骨編」を削除）。移動パッド、カメラボタン、あたり・はずれの得点表示、操作ヒントを削除。
 - 鉄骨編の落下予想地点の輪・影マーカーを削除（昼は太陽光でちくわ等に自然な影が付く）。面移動版は影の位置へ先回りする遊びのため従来どおり表示。
 - 未実装の効果を持つアイテム（色付きのキューブ、Issue #5〜#12）の落下を削除。
@@ -113,7 +113,7 @@ Marionetteからは `madogiwa.catchAction` に `action=configure`、`json`（bal
 
 ## おかやまんの街頭ビジョン
 
-鉄骨の端を支える既存ビルの道路側の外壁に、小さな画面を設置。おかやまんの正典写真 `02_CHARACTERS/Okayaman.jpg` を相対symlinkで参照し、「大変驚いております。」の字幕だけを重ねる。静止画で、装飾やスクロール帯は付けない。面移動版では非表示。
+鉄骨の端を支える既存ビルの道路側の外壁に、小さな画面を設置。おかやまんの正典写真 `characters/Okayaman.jpg` を相対symlinkで参照し、「大変驚いております。」の字幕だけを重ねる。静止画で、装飾やスクロール帯は付けない。面移動版では非表示。
 
 実装は `lib/okayaman_vision.dart`。テクスチャはロード時に一度生成する。`madogiwa.inspectCatch` の `vision` で表示状態・写真の参照元を確認できる。
 
@@ -129,15 +129,15 @@ Marionetteからは `madogiwa.catchAction` に `action=configure`、`json`（bal
 
 `lib/character.dart`が一覧と固有値の定義。ラウンド開始時にIDと基礎値を保持する。鉄骨編の移動範囲X ±3.9・Z=0、標準の応答12・制限時間20秒は共通。面移動版はそば屋、速度3.5、従来の設定半径を維持し、鉄骨編へ戻ると選択を復元する。
 
-おだてつは `assets/models/cto_odatetsu.glb` から `../04_GAME_ASSETS/3d/characters/cto_odatetsu/rig_v1_20261014/cto_odatetsu_rig.glb` への相対symlinkで参照。既存の顔・形状・リグ・クリップは変更しない。鉄骨編は実移動速度が0.15を超えるとWalkを速度同期し、停止・端への到達でIdleへ戻る。
+おだてつは `assets/models/cto_odatetsu.glb` から `../assets/3d/characters/cto_odatetsu/rig_v1_20261014/cto_odatetsu_rig.glb` への相対symlinkで参照。既存の顔・形状・リグ・クリップは変更しない。鉄骨編は実移動速度が0.15を超えるとWalkを速度同期し、停止・端への到達でIdleへ戻る。
 
 自動操作: `madogiwa.catchAction` の `action=select, character=sobaya|cto_odatetsu|fukuchan`（開始・結果画面のみ）。`madogiwa.inspectCatch` は選択ID・ラウンドID・基礎値・実効値・速度・表示モデルID・モーション状態も返す。`step`は60Hzの各更新でモーションも進める。
 
 2026-10-20検証: `flutter analyze`、20テストに合格。Dart MCP / MarionetteとiPhone Duo（iOS 27.1）シミュレーターで両モデルの表示・Walk/Idle・選択固定・結果画面での再選択・モード切替を確認。標準設定/seed 1の自動入力で両キャラとも20秒完走（各925点）。記録は `qa/character-selection-20261020.json`。実端末の傾き操作感とAndroid描画は未検証。
 
-福ギュンは `assets/models/fukuchan.glb` から共有の `04_GAME_ASSETS/3d/hazard_rebuild/locomotion_v1/fukuchan.glb` への相対symlinkで参照。承認済みの顔・身体と既存Idle/Walk/Runを使用する。表示名は「福ギュン」、内部IDは `fukuchan`。速度3.0・半径0.64はそば屋とおだてつの中間値。
+福ギュンは `assets/models/fukuchan.glb` から共有の `assets/3d/hazard_rebuild/locomotion_v1/fukuchan.glb` への相対symlinkで参照。承認済みの顔・身体と既存Idle/Walk/Runを使用する。表示名は「福ギュン」、内部IDは `fukuchan`。速度3.0・半径0.64はそば屋とおだてつの中間値。
 
-選択UIは3人の画像アイコンを横一列に並べ、選択中は金色の枠とチェックで示す。そば屋・福ギュンは `02_CHARACTERS/Sobaya.jpg` / `Fukuchan.jpg` への相対symlink、おだてつはユーザー提供画像 `assets/images/cto_odatetsu.png` を使用する。
+選択UIは3人の画像アイコンを横一列に並べ、選択中は金色の枠とチェックで示す。そば屋・福ギュンは `characters/Sobaya.jpg` / `Fukuchan.jpg` への相対symlink、おだてつはユーザー提供画像 `assets/images/cto_odatetsu.png` を使用する。
 
 福ギュン追加の検証: `flutter analyze`、全21テストに合格。アイコンの表示範囲調整後も選択関連7テストを再実行。iOSシミュレーターで3アイコン・選択表示、福ギュンのIdle/Walk、結果画面での再選択、自動入力による20秒完走（seed 1、保存済み設定、925点）を確認。記録は `qa/fukugyun-selection-20261020.json`。実端末とAndroidは未検証。
 
@@ -161,9 +161,9 @@ Marionetteからは `madogiwa.catchAction` に `action=configure`、`json`（bal
 共通モデルを作り、ちくわの `Wiggle` とやめ太郎の `Idle` を既存のリグで再生する。
 画像に置き換えたプレビューではない。
 
-- ちくわ: `04_GAME_ASSETS/3d/props/chikuwa/game_v3/`（各32,320三角形、9ボーン）
-- ゆめみん: `04_GAME_ASSETS/3d/characters/yumemin/color_20260919/yumemin.glb`
-- やめ太郎: `04_GAME_ASSETS/3d/characters/yametaro/rig_nose_v3/yametaro.glb`
+- ちくわ: `assets/3d/props/chikuwa/game_v3/`（各32,320三角形、9ボーン）
+- ゆめみん: `assets/3d/characters/yumemin/color_20260919/yumemin.glb`
+- やめ太郎: `assets/3d/characters/yametaro/rig_nose_v3/yametaro.glb`
 
 すべて `assets/models/` の相対 symlink で参照し、build hook で変換。
 `madogiwa.inspectCatch` に `difficulty`、実効 `spawnInterval` / `fallSeconds` /
@@ -194,7 +194,7 @@ Imagegenで外壁3種・鉄骨・アスファルトを制作。512〜1024pxへ�
 
 標準は3Dの長辺を最大1440pxにし、FXAAと近景1カスケードの影（距離24）を使用。200m下の車は動きと受ける影を維持し、個別の影の生成を省く。高画質は端末解像度・MSAA・遠景までの3カスケード影（距離85）へ戻す。軽量は標準の解像度で影・追加反射・法線・ブルームも無効にする。UIは端末解像度のまま。元の画像素材、キャラクターと落下物の形状・テクスチャ・動作更新頻度は維持する。素材自体は共通で読み込むため、画質設定で読込メモリを解放するわけではない。
 
-解像度最適化時は39プリミティブ／71,872三角形を維持（後述のタワー改修後は68,752三角形）。配布GLBの画像はiPhone横表示向けに用途別に縮小し、RGBA8ベースレベル換算44.26→13.13MiB（約70%減、mipmap・ドライバ管理分は別）。近い支持ビルの色画像は維持し、遠景外壁・発光・材質データなどを縮小。元PNGとImagegen原画は変更しない。追加の昼夜反射キューブは128px/面。Blender書き出し後に `uv run --with pillow python tool/optimize_stage_textures.py` を実行し、`python3 tool/audit_stage_asset.py` で14MiBの画像上限を検査する。素材の原画・プロンプト・再生成手順は `../04_GAME_ASSETS/3d/stages/akasaka/README.md`。サイズ比較は `qa/texture-resolution.json`。
+解像度最適化時は39プリミティブ／71,872三角形を維持（後述のタワー改修後は68,752三角形）。配布GLBの画像はiPhone横表示向けに用途別に縮小し、RGBA8ベースレベル換算44.26→13.13MiB（約70%減、mipmap・ドライバ管理分は別）。近い支持ビルの色画像は維持し、遠景外壁・発光・材質データなどを縮小。元PNGとImagegen原画は変更しない。追加の昼夜反射キューブは128px/面。Blender書き出し後に `uv run --with pillow python tool/optimize_stage_textures.py` を実行し、`python3 tool/audit_stage_asset.py` で14MiBの画像上限を検査する。素材の原画・プロンプト・再生成手順は `../assets/3d/stages/akasaka/README.md`。サイズ比較は `qa/texture-resolution.json`。
 
 ### 東京タワーと公園
 
@@ -210,7 +210,7 @@ vsync時刻から算出する`submittedFps`とフレーム間隔も記録する�
 
 同日の処理整理: HUDは表示内容が変わるときだけ更新し、3DをRepaintBoundaryへ分離。使用していないモデルは保持しながらライブシーングラフから外す。骨のGPU行列がfloat32で完全に同じ場合だけ転送を再利用する。道路の白線を上面だけにし、車体の底面とライトの不要面を省いて、背景65,220→45,254三角形・GLB6,637,600→5,240,224 bytes。車の台数・動きは維持する。
 
-おだてつは [ゲーム専用の可逆整理版](../04_GAME_ASSETS/3d/characters/cto_odatetsu/game_mobile_20261021/README.md) へ切り替えた。形状・4K画素・骨は同じで、使用するIdle/Walk/Runだけを同梱。20.35→14.15MB。元の20動作入り正本は保持。控えめな身体簡略化は約1.3%の削減だったため不採用とした。
+おだてつは [ゲーム専用の可逆整理版](../assets/3d/characters/cto_odatetsu/game_mobile_20261021/README.md) へ切り替えた。形状・4K画素・骨は同じで、使用するIdle/Walk/Runだけを同梱。20.35→14.15MB。元の20動作入り正本は保持。控えめな身体簡略化は約1.3%の削減だったため不採用とした。
 
 実機／macOSのprofile起動では `--profile --dart-define=STAGE_BENCHMARK=true --dart-define=STAGE_QUALITY=light --dart-define=STAGE_TIME=night` で自動測定できる（標準／昼はそれぞれ `standard` / `day`）。これはCPU側のUI・raster時間で、GPU実行時間・表示FPSではない。今回のiPhoneシミュレーターdebug比較は傾向確認用で、実機性能・旧版との実行速度差は未計測。資産上限と比較結果は `qa/surface-budget.json` / `qa/surface-benchmarks.json` を参照。
 

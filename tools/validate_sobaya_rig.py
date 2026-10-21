@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-DIR = ROOT / ('04_GAME_ASSETS/3d/characters/sobaya/' + (sys.argv[1] if len(sys.argv)>1 else 'rig_v1'))
+DIR = ROOT / ('assets/3d/characters/sobaya/' + (sys.argv[1] if len(sys.argv)>1 else 'rig_v1'))
 path = DIR / 'sobaya_rig.glb'
 raw = path.read_bytes()
 assert raw[:4] == b'glTF'

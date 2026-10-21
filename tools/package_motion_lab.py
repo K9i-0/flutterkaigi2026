@@ -5,7 +5,7 @@ import shutil
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
-PROJECT = ROOT / '22_HUMANOID_MOTION_LAB'
+PROJECT = ROOT / 'labs/humanoid_motion_lab'
 
 
 def main():

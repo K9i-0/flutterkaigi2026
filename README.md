@@ -1,122 +1,64 @@
-# FlutterKaigi 2026 — 窓際族物語
+# ゆめみ採用試験
 
-FlutterKaigi 2026向けFlutterゲーム開発用の独立リポジトリです。
-開発先は **https://github.com/K9i-0/flutterkaigi2026**、既定ブランチは **main**。
-主な開発対象は [26_YUMEMI_RECRUIT_EXAM](26_YUMEMI_RECRUIT_EXAM/README.md) です。
+FlutterKaigi 2026向けの、Flutter Scene製3Dミニゲームのリポジトリです。ゆめみの採用試験で、受験者が赤坂の高層ビルの間に架かった鉄骨を渡らされる、というネタのゲームです。
 
-2026-10-19に [Madogiwa Multimedia Universe](https://github.com/K9i-0/madogiwa-multimedia-universe) の `flutterkaigi2026` から履歴・共有アセットを引き継いで分離しました（動画は全履歴から除外）。相対symlinkを維持するため、当初はモノレポ全体を保持しています。
-[Issue番号対応表・移行記録](MIGRATION.md)を参照してください。
+- 端末を傾けて鉄骨の上を左右に移動し、落ちてくる「あたり」だけを20秒間キャッチします。
+- 画面を左右にスワイプすると、カメラが30度ずつ回ります（一周できます）。
+- キャラクター（福ギュン・CTOおだてつ・そば屋）と時間帯（昼・夜）を選べます。
 
-## Flutterアプリの起動
+ゲームの詳細・仕様・検証記録は [app/README.md](app/README.md) にあります。
 
-macOSではXcodeとiOS Simulator、miseが必要です。リポジトリルートで初回セットアップを行います。
+## すぐに動かす
+
+macOS、Xcode、iOS Simulator、[mise](https://mise.jdx.dev/) が必要です。
 
 ```sh
-mise trust .mise.toml
-mise install
-cd 26_YUMEMI_RECRUIT_EXAM
+git clone https://github.com/K9i-0/flutterkaigi2026.git
+cd flutterkaigi2026
+mise trust .mise.toml && mise install
+cd app
 mise exec -- flutter pub get
 open -a Simulator
-mise exec -- flutter devices
 mise exec -- flutter run -d <device-id>
 ```
 
-Flutterは `.mise.toml` の3.47.2を使用します。初回起動時はビルドフックがGLBを変換するため時間がかかります。モデル・画像・効果音はリポジトリ内の相対symlinkを使うため、アプリのディレクトリだけを切り出さず、リポジトリ全体をクローンしてください。
+- Flutterは `.mise.toml` の3.47.2を使います。
+- 初回はビルドフックがGLBを変換するので時間がかかります。
+- モデル・画像・効果音はリポジトリ内の相対シンボリックリンクで参照しています。`app/` だけを切り出さず、リポジトリごとcloneしてください。
+- シミュレーターでは傾きセンサーが使えないので、矢印キーで移動します。
+- VS Codeではルートを開き、「ゆめみ採用試験 (debug)」を選んでF5で起動できます。
 
-VS Codeではルートフォルダを開き、「FlutterKaigi / ゆめみ採用試験 (debug)」とiOSシミュレーターを選択してF5で起動できます。シミュレーターでは矢印キーで移動、スワイプでカメラを回します。実端末起動にはXcodeで署名設定が必要です。
+検証は `app/` で `mise exec -- flutter analyze` と `mise exec -- flutter test` を実行します。ステージの描画予算は `python3 tool/audit_stage_asset.py` で確認します。
 
-検証: `26_YUMEMI_RECRUIT_EXAM` で `mise exec -- flutter test` と `mise exec -- flutter analyze`。2026-10-20、独立クローンからiPhone Duo / iOS 27.1シミュレーターでdebug起動を確認。
+## 構成
 
-以下は継承したMMUの制作資料です。
-
----
-
-# Madogiwa Multimedia Universe（MMU）
-
-「窓際族物語」を漫画・動画・ゲーム・Webサイトなど、さまざまなメディアへ展開する制作プロジェクトです。世界観・キャラクター設定から、台本、共有アセット、各作品の実装、制作ワークフローまでを管理するモノレポです。
-
-## メディアと作品への入口
-
-| メディア | 入口 |
+| パス | 内容 |
 |---|---|
-| 漫画 | [原作漫画](https://madogiwa.work/story) |
-| 動画 | [台本・プロンプト・制作素材](03_SCRIPTS/) |
-| ゲーム | [ゲーム一覧](#ゲーム)・[共有エンジン](packages/madogiwa_engine/) |
-| Webサイト | [窓際族物語](https://madogiwa.work/)・[Madogiwa Studio](16_MADOGIWA_STUDIO/README.md) |
+| [app/](app/) | ゆめみ採用試験（Flutterアプリ本体） |
+| [assets/](assets/) | ゲームが参照する3D・音声の共有素材（赤坂ステージ、キャラクターのGLB、ちくわ・缶など） |
+| [characters/](characters/) | キャラクター設定（`*.md`）、正典写真、キャラクターシート（`sheets/`）、小道具の正典（`props/`）、ボイス参照 |
+| [packages/](packages/) | 共有Dartパッケージ（`madogiwa_engine`、`flutter_scene_vrm`） |
+| [labs/](labs/) | 以前に作ったFlutter Scene製のゲーム・検証アプリ |
+| [tools/](tools/) | 素材生成・監査スクリプト（主に `labs/` 向け） |
 
-作品・IPの名前は「窓際族物語」、制作プロジェクト全体の名前は「Madogiwa Multimedia Universe（MMU）」です。
+### labs
 
-## 作成経緯・関連リポジトリ
+| パス | 内容 |
+|---|---|
+| [labs/sobaya_hazard_lab/](labs/sobaya_hazard_lab/) | そば屋ハザード（本編と3D検証室） |
+| [labs/sobaya_hazard/](labs/sobaya_hazard/) | そば屋ハザードの再設計版 |
+| [labs/sobaya_tidewater/](labs/sobaya_tidewater/) | そば屋ハザードのTidewater移植プレビュー |
+| [labs/sobaya_ippai/](labs/sobaya_ippai/) | そば屋の一杯 |
+| [labs/flutter_scene_game/](labs/flutter_scene_game/) | 窓際族・無人島クラフト（ボクセル） |
+| [labs/flutter_scene_vrm_lab/](labs/flutter_scene_vrm_lab/) | VRM・顔トラッキング検証室 |
+| [labs/humanoid_motion_lab/](labs/humanoid_motion_lab/) | そば屋モーションラボ |
 
-このリポジトリは、同僚のそば屋さん（[sobaya-0141](https://github.com/sobaya-0141)）が管理する [Seedance_Madogiwa](https://github.com/sobaya-0141/Seedance_Madogiwa) をforkして始まりました。そこから、漫画・動画・ゲーム・Webサイトなど「窓際族物語」の複数メディアへの展開に合わせて、独自に制作物と制作環境を拡張しています。
+## 素材の原本について
 
-現在はリポジトリ全体の同期は行わず、Madogiwa Studioスキルのみ必要に応じて個別に同期しています。元リポジトリは、作成経緯とそば屋さんの制作・管理する関連プロジェクトとして参照してください。
+このリポジトリには、ゲームが実際に読み込む完成版の素材だけを入れています。3Dモデルの作業ファイル（Blenderの原本、リグの元データ、ボクセルの原本など）、動画の台本・生成物、Webサイトは [Madogiwa Multimedia Universe](https://github.com/K9i-0/madogiwa-multimedia-universe) に残っています。原本から再生成するスクリプトの一部は、それらの素材があるMMU側で実行する前提です。
 
-## Characters
-- そば屋
-- たこさん
-- とーくん
-- よーたん
-- 福ギュン
-- 無職やめたろう
-- 窓際王おかやまん
-- ゆめみん
+## 来歴
 
-## Theme
-窓際族の日常コメディ
+2026-10-19に、Madogiwa Multimedia Universeの `flutterkaigi2026` ブランチから独立しました。2026-10-21に、ゆめみ採用試験とFlutter Scene系のゲームだけを残すようgit履歴ごと整理しています。詳細は [MIGRATION.md](MIGRATION.md) を参照してください。
 
-## スキル（制作ワークフロー）
-
-今後の動画制作は、あらすじからの制作を含め `wan-video` を標準とする。
-制作物ごとのワークフローはスキルに分離している。該当する作業ではスキルを呼び出して従うこと。実体は `.claude/skills/` にあり、Codex CLI向けに `.agents/skills/` からsymlinkで共有している。
-
-- **Wan動画制作** (`wan-video`): 台本・プロンプト・参照素材・生成・監査を管理する。詳細: [.claude/skills/wan-video/SKILL.md](.claude/skills/wan-video/SKILL.md)
-- **ボクセルモデル制作** (`build-voxel-character-from-image`): キャラクターの参照画像から、Blender／Three.jsで使えるリグ付きボクセルGLBを作成・修正する。成果物は `04_GAME_ASSETS/voxel/` に配置。詳細: [.claude/skills/build-voxel-character-from-image/SKILL.md](.claude/skills/build-voxel-character-from-image/SKILL.md)
-- **2Dゲーム制作** (`/2d-game`): 2Dゲームの新規作成と、Seedanceで制作した完成動画（添付mp4）をオープニング/イベントのカットシーンとしてゲームに組み込む作業に使用する。完成動画の正典置き場は [04_GAME_ASSETS/videos/](04_GAME_ASSETS/videos/)。詳細: [.claude/skills/2d-game/SKILL.md](.claude/skills/2d-game/SKILL.md)
-
-## ゲーム
-
-- **[そば屋ハザード · 3D検証室](21_SOBAYA_HAZARD_LAB/README.md)** (`21_SOBAYA_HAZARD_LAB/`): Tripo P2.0製の非ボクセルそば屋で、41ボーン／9モーション・共通ビールジョッキ・三人称移動・壁衝突・1〜12体のスキニング負荷を検証。Flutter 3.47.2 + Flutter Scene 0.23.0。macOSで実描画・profile計測を確認。
-手っ取り早く遊びたい方はこちら: https://sobaya-0141.github.io/Seedance_Madogiwa/
-
-- **[そば屋のオフィスクラッシュ ～無限フロア大整理～](05_OFFICE_CRASH_GAME/README.md)** (`05_OFFICE_CRASH_GAME/`): 大型ビールジョッキを強化し、8つの備品循環フロアを攻略する3Dアクションハクスラ＋ローグライト。ラン履歴、自己ベスト、永続強化、ランキングをSitesのD1へ保存。Three.js + React + vinext製。
-- **[Voxel Character Lab](06_VOXEL_CHARACTER_LAB/README.md)** (`06_VOXEL_CHARACTER_LAB/`): 全8キャラのボクセルモデル・リグ・基本アクション（Idle／Walk／Smash／Power Smash）を確認するThree.jsプロジェクト。
-- **[そば屋の定時ダッシュ 〜バレずに脱出〜](07_SOBA_ESCAPE_GAME/README.md)** (`07_SOBA_ESCAPE_GAME/`): 定時のオフィスを、巡回する仲間（福ギュン・よーたん・とーくん・やめたろう）や監視スクリーン（おかやまん）に見つからず脱出するトップダウン型ステルス。右上の監視レーダーで各キャラの視界を読みながら出口を目指す。Vite + TypeScript + Three.js製。
-- **[そば屋は心のヤバイやつ 〜ドキドキ好感度ADV〜](08_ROMANCE_NOVEL_GAME/README.md)** (`08_ROMANCE_NOVEL_GAME/`): 一般社員の「あなた」が、白い仮面のそば屋さんを攻略する恋愛ノベルゲーム。全7回の選択で好感度ゲージが変化し、ゲージの量でエンディングが分岐する（MAXで両想いTRUE END）。Vite + TypeScript製。
-- **[窓際ボクセル・退勤作戦](08_FLUTTER_VOXEL_GAME/README.md)** (`08_FLUTTER_VOXEL_GAME/`): 正典のそば屋GLBをそのまま使い、発光空間・破壊FX・カメラ演出・自動デモで仕上げたAndroid／iOS向け展示ショーケース。Flutter + Flame + Flame 3D製。
-- **[窓際族バトル 〜立ち飲み処の決闘〜](09_VOXEL_BATTLE_GAME/README.md)** (`09_VOXEL_BATTLE_GAME/`): 部屋コードを交換して離れた相手と対戦する、オンライン1対1のターン制コマンドバトル。8体から1体を選び、固有スキルで決闘。ゲーム本体はGitHub Pages配信のまま、対戦同期にFirebase Realtime Databaseを利用する（同じPCの2タブで遊べるローカル対戦モードも搭載）。Vite + TypeScript + Three.js製。セットアップは[ゲームのREADME](09_VOXEL_BATTLE_GAME/README.md)を参照。
-- **[ギュンギュン・クエスト 〜魔王そば屋と最高の一杯〜](10_GYUN_GYUN_QUEST_GAME/README.md)** (`10_GYUN_GYUN_QUEST_GAME/`): 福ギュン王にもらった500円で最高の一杯を選び、城下町・平原・洞窟を旅して魔王そば屋へ届けるファミコンRPG風2Dアドベンチャー。オープニングムービーと3種類のエンディングを収録。Vite + TypeScript製。
-- **[そば屋のオフィス更地クラッシュ ～全部壊して快適です！～](10_OFFICE_DEMOLITION_GAME/README.md)** (`10_OFFICE_DEMOLITION_GAME/`): オフィスの外壁を破って麻布十番へ進出し、街を壊すほど最大5.2倍まで巨大化。ビールビーム、ジョッキメテオ、残存レーダーを駆使して合計491件を更地にする独立型3Dアクション。旧オフィスクラッシュとは別作品。
-- **[窓際族０](11_MADOGIWA_ICE_PUZZLE_GAME/README.md)** (`11_MADOGIWA_ICE_PUZZLE_GAME/`): やめたろうの冷却プログラムのバグで氷漬けになったオフィスを、上下左右の固定4方向で一直線に滑る2.5Dパズル。重要資料とビールの回収順を考え、全5ステージから脱出する。Vite + TypeScript + Three.js製。
-- **[そば屋のビールダッシュ ～ジョッキtoジョッキで本日開店！～](12_SOBA_BEER_RUN_GAME/README.md)** (`12_SOBA_BEER_RUN_GAME/`): そば屋を左右に動かして3レーンのビールを集め、6杯ごとのフィーバーで提供数を伸ばす45秒ランナー。ゴール後は実写のおかやまんが大型スクリーン越しにランク判定。Vite + TypeScript + Three.js製。
-- **[そば屋の会社ブレイカー ～3D物理解体～](13_COMPANY_BREAKER_GAME/README.md)** (`13_COMPANY_BREAKER_GAME/`): 大型ビールジョッキを投げ、約120〜230個の独立剛体で組まれた無人のモックオフィスを10投以内に連鎖崩壊させる3D物理解体アクション。Vite + TypeScript + Three.js + Rapier製。
-- **[MADOGIWA GRID](14_MADOGIWA_CARD_GAME/README.md)** (`14_MADOGIWA_CARD_GAME/`): 窓際族8人のカードで3×5盤面を奪い合う、短時間の1対1タクティカルカードゲーム。固有能力、3段階AI、Flame製のカード移動・ホログラム・固有エフェクト、決定的シナリオハーネスを収録。Flutter + Flame製。
-- **[窓際族・無人島クラフト](17_FLUTTER_SCENE_GAME/README.md)** (`17_FLUTTER_SCENE_GAME/`): 島流しになったそば屋、やめ太郎、ゆめみん、タコさんが256×256マスの島を探索し、採取・建築で生活拠点を作るMinecraft風3Dクラフト。16×16チャンク、動的メッシュ、自由移動をFlutter 3.47 stable + Flutter Sceneで検証。
-
-## 制作資料
-- 世界観: [01_WORLD/WORLD_BIBLE.md](01_WORLD/WORLD_BIBLE.md)
-- 過去エピソード台帳（ネタ参照用・非正史）: [01_WORLD/STORY_TIMELINE.md](01_WORLD/STORY_TIMELINE.md)
-- キャラクター設定: [02_CHARACTERS/](02_CHARACTERS/)
-- 台本・生成済みプロンプト: [03_SCRIPTS/](03_SCRIPTS/)
-- **共有3Dモデル（非ボクセル・4体の採用パス／完成度／AR）:** [モデル一覧](04_GAME_ASSETS/3d/CHARACTER_MODELS.md)
-- ゲーム用アセット（共用ボクセル）: [04_GAME_ASSETS/voxel/](04_GAME_ASSETS/voxel/)
-
-## 制作エージェント向け
-
-制作方針・参照資料・ワークフローは [CLAUDE.md](CLAUDE.md) を参照。Codex向けの `AGENTS.md` も同じファイルを参照します。
-
-## 原作漫画
-
-[原作漫画（全15話）](https://madogiwa.work/story)は各話1枚で、縦スクロールで通して読めます。世界観と各話の説明は[WORLD BIBLE](01_WORLD/WORLD_BIBLE.md)と[STORY TIMELINE](01_WORLD/STORY_TIMELINE.md)を参照してください。
-
-## 新しい共有エンジンと再設計版
-
-[Madogiwa Engine](packages/madogiwa_engine/) と、最初の利用作品 [そば屋ハザード再設計版](24_SOBAYA_HAZARD/) を開発中。既存版は保持し、まず1区画の探索・隠密・射撃・脱出を仕上げる。
-
-## そば屋の一杯
-
-[そば屋の一杯](25_SOBAYA_IPPAI/) は、スマホの傾きでビールを注ぐFlutter Scene製3Dミニゲーム。18秒でビール7：泡3の満杯を狙う。iOS・Android向け、Macでのタッチ代替操作にも対応。
-
-## ゆめみ採用試験（旧：そば屋のビール雨）
-
-[ゆめみ採用試験](26_YUMEMI_RECRUIT_EXAM/README.md) は、ゆめみの採用試験で赤坂の鉄骨を渡らされるネタの、スマホの傾きで移動して落下物をキャッチする20秒のFlutter Scene製3Dミニゲーム（旧名：そば屋のビール雨）。従来の面状ステージも選べる。スワイプでカメラを回転し、酷似した発泡酒を避ける。窓際スーパーつらいは正典デザイン、他の缶は仮デザイン。
+作品・IPの名前は「窓際族物語」です。元は同僚のそば屋さん（[sobaya-0141](https://github.com/sobaya-0141)）の [Seedance_Madogiwa](https://github.com/sobaya-0141/Seedance_Madogiwa) から始まったプロジェクトです。

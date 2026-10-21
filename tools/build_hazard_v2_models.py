@@ -21,7 +21,7 @@ from build_humanoid_motion import Body, clear_pose, use_action
 from sobaya_v2_motion import adapt_matrices
 from fukuchan_v2_rig import finish_pose
 
-BASE = ROOT / '04_GAME_ASSETS/3d/hazard_adopted'
+BASE = ROOT / 'assets/3d/hazard_adopted'
 OUT = BASE / 'v2_20260913'
 ALIASES = {
     'Adopted_Library_Idle_A': 'Idle',
@@ -95,7 +95,7 @@ def add_socket(rig, name):
 def build(name):
     bpy.ops.wm.read_factory_settings(use_empty=True)
     bpy.context.scene.render.fps = 30
-    source = ROOT / f'04_GAME_ASSETS/3d/characters/{name}/v2_20260913/{name}_v2.glb'
+    source = ROOT / f'assets/3d/characters/{name}/v2_20260913/{name}_v2.glb'
     bpy.ops.import_scene.gltf(filepath=str(source))
     rig = next(o for o in bpy.context.scene.objects if o.type == 'ARMATURE')
     meshes = [o for o in bpy.context.scene.objects if o.type == 'MESH']
@@ -248,10 +248,10 @@ if not old_manifest.exists():
     old_manifest.write_bytes((BASE/'manifest.json').read_bytes())
 (BASE/'manifest.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
 for name in report:
-    link=ROOT/f'21_SOBAYA_HAZARD_LAB/assets/models/{name}.glb'
+    link=ROOT/f'labs/sobaya_hazard_lab/assets/models/{name}.glb'
     link.unlink()
     link.symlink_to(os.path.relpath(OUT/f'{name}.glb',link.parent))
-motion=ROOT/'21_SOBAYA_HAZARD_LAB/lib/game/game_motion_blend.dart'
+motion=ROOT/'labs/sobaya_hazard_lab/lib/game/game_motion_blend.dart'
 code=motion.read_text()
 for name,role,const in [('fukuchan','Walk','fukuchanWalkSpeed'),('fukuchan','Run','fukuchanRunSpeed'),
                         ('sobaya','Walk','sobayaWalkSpeed'),('sobaya','Run','sobayaMugRunSpeed')]:

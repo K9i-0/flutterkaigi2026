@@ -5,7 +5,7 @@ from pathlib import Path
 import hashlib, json, wave
 import numpy as np
 ROOT = Path(__file__).resolve().parent.parent
-OUT = ROOT/'04_GAME_ASSETS/audio/hazard'
+OUT = ROOT/'assets/audio/hazard'
 RATE = 24000
 DURATION = 16
 N = RATE * DURATION

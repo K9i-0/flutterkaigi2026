@@ -2,8 +2,8 @@
 
 - Generator: built-in ImageGen
 - Date: 2026-10-01
-- Canonical face reference: `02_CHARACTERS/Okayaman.jpg`
-- Wardrobe reference: `03_SCRIPTS/00_TEMPLATES/characters/character_okayaman_basic_sheet.png`
+- Canonical face reference: `characters/Okayaman.jpg`
+- Wardrobe reference: `characters/sheets/character_okayaman_basic_sheet.png`
 - User specification: 180cm、細身、よーたんたちより背が高め。既存上半身に黒いパンツを合わせる。黒いフード付きジャケット、黒いチノパン、黒いローカットスニーカー。
 - Physical full-body reference; existing remote appearance sheet remains separate.
 

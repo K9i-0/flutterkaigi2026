@@ -7,7 +7,7 @@
 ビルド済みアプリは `dist/そば屋モーションラボ.app`。ソースからの起動:
 
 ```sh
-cd 22_HUMANOID_MOTION_LAB
+cd labs/humanoid_motion_lab
 mise exec -- flutter pub get
 mise exec -- flutter run -d macos
 ```
@@ -31,7 +31,7 @@ Flutter 3.47.2 / Dart 3.13.2。ゲームと同じFlutter Scene 0.23.0のvendored
 
 ## 共通資産
 
-`assets/models/*.glb` と `assets/catalog.json` は[共通ライブラリ](../04_GAME_ASSETS/3d/motion_library/README.md)への相対symlink。ゲームの正本と同じ出力を使う。ビルド成果物には実行に必要な変換済みモデルが入る。
+`assets/models/*.glb` と `assets/catalog.json` は[共通ライブラリ](../../assets/3d/motion_library/README.md)への相対symlink。ゲームの正本と同じ出力を使う。ビルド成果物には実行に必要な変換済みモデルが入る。
 
 出典、CC0ライセンス、体格補正、再生成、平地IKの適用範囲は共通ライブラリのREADMEを参照。
 
@@ -40,10 +40,10 @@ Flutter 3.47.2 / Dart 3.13.2。ゲームと同じFlutter Scene 0.23.0のvendored
 ```sh
 mise exec -- flutter analyze
 mise exec -- flutter test
-python3 ../tools/package_motion_lab.py
+python3 ../../tools/package_motion_lab.py
 ```
 
-Dart MCPの `roots` にリポジトリを登録し、`launch_app(root=file:///…/22_HUMANOID_MOTION_LAB, device=macos)` でdebug起動。返されたApp URIへMarionetteを接続する。
+Dart MCPの `roots` にリポジトリを登録し、`launch_app(root=file:///…/labs/humanoid_motion_lab, device=macos)` でdebug起動。返されたApp URIへMarionetteを接続する。
 
 | extension | 引数 |
 | --- | --- |

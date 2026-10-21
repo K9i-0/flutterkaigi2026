@@ -101,7 +101,7 @@ AI・HUD・音楽は同じ状態情報を参照する。追跡→捜索→再発
 ## 起動
 
 ```sh
-cd 21_SOBAYA_HAZARD_LAB
+cd labs/sobaya_hazard_lab
 mise exec -- flutter pub get
 mise exec -- flutter run -d macos -t lib/game_main.dart
 ```
@@ -131,9 +131,9 @@ Flutter 3.47.2 / Dart 3.13.2 / flutter_scene 0.23.0。global Flutterに合わせ
 
 農場は3軒の小屋＋二階建て納屋・囲い・井戸・たこさん、山道は曲がる通路・トンネル・廃屋・やめ太郎。各6体、計20体のそば屋。山道の1体は3倍の体格・HP900の巨大そば屋（2026-09-07更新）。専用のジョッキ攻撃・突進・叩きつけを持ち、予備動作を見て通常移動やダッシュで避け、攻撃後の隙を狙う。攻撃中も銃弾は効くが、毎弾ひるませ続けることはできない。画面左上に体力と予備動作の案内を表示。
 
-福ギュンは正典写真→Imagegen正面／背面→Tripo P2→Blender。そば屋は検証済みrig_v3。歩行・走行はMixamo由来、両手の銃構えは武器別のIKポーズ。建物・小道具はBlender生成。石壁と地面はbuilt-in Imagegenの専用テクスチャ。[設計と参照資料](GAME_DESIGN.md)、[福ギュン正本](../04_GAME_ASSETS/3d/characters/fukuchan/README.md)、[村正本](../04_GAME_ASSETS/3d/environments/pueblo/README.md)。
+福ギュンは正典写真→Imagegen正面／背面→Tripo P2→Blender。そば屋は検証済みrig_v3。歩行・走行はMixamo由来、両手の銃構えは武器別のIKポーズ。建物・小道具はBlender生成。石壁と地面はbuilt-in Imagegenの専用テクスチャ。[設計と参照資料](GAME_DESIGN.md)、[福ギュン正本](../../assets/3d/characters/fukuchan/README.md)、[村正本](../../assets/3d/environments/pueblo/README.md)。
 
-福ギュンは装填2種・被弾などの専用クリップを使用する。回避・蹴りの共有素材は残るが、本編の操作や再生対象には使わない。構えに上下の照準と反動を加算。これらの追加動作はBlender制作。敵は方向と遮蔽を含む視界／行動音で気づき、攻撃前に向きを固定する。同時被弾は短い無敵時間で抑える。[やめ太郎の正本](../04_GAME_ASSETS/3d/characters/yametaro/README.md)は会話・手振りで村入口に登場。
+福ギュンは装填2種・被弾などの専用クリップを使用する。回避・蹴りの共有素材は残るが、本編の操作や再生対象には使わない。構えに上下の照準と反動を加算。これらの追加動作はBlender制作。敵は方向と遮蔽を含む視界／行動音で気づき、攻撃前に向きを固定する。同時被弾は短い無敵時間で抑える。[やめ太郎の正本](../../assets/3d/characters/yametaro/README.md)は会話・手振りで村入口に登場。
 
 正面の掴み・抵抗・長押し脱出は追加済み（後述）。福ギュン・やめ太郎は音声の強弱に合わせた口の同期を追加済み。音素別の口形と実時間の足IKは未実装。見張り塔は手付けの登攀モーションと連続した登降に対応。屋内では屋根を非表示にする。スマートフォン実機の操作・性能は未検証。
 
@@ -171,7 +171,7 @@ mise exec -- flutter run -d macos -t lib/game_main.dart --profile --dart-define=
 - `madogiwa.openGameScenario`: `name=combat|stagger|npc|merchant|pickup|collection|gate|stairs|death|farm|farmGate|mountain|mountainGate|introEvent|farmEvent|bossEvent|endingEvent`。その周回をリセットし、収集記録は保持。
 - `madogiwa.gameAction`: `action=interact|reload|fire|fireAtEnemy|step|move|aim|pause|pose`。`step`は`seconds=0..10`、`move`はワールド方向`x,z`と`seconds`で60Hz移動。`pose`は`clip`と`seconds=0..3`で静止ポーズ。`openGameScenario`で解除する。通常プレイには影響しない検証用。
 
-たこさんは[Blenderで直接制作した正本](../04_GAME_ASSETS/3d/characters/takosan/README.md)。腕2本・丸い手・触手6本に専用リグとIdle / Talk / Wave。生成APIの追加消費なし。
+たこさんは[Blenderで直接制作した正本](../../assets/3d/characters/takosan/README.md)。腕2本・丸い手・触手6本に専用リグとIdle / Talk / Wave。生成APIの追加消費なし。
 
 ## 会話シーン・設定・敵の小道具
 
@@ -218,7 +218,7 @@ dart run tool/audit_campaign.dart evidence/campaign-collection.json --complete
 
 室内床を歩行面Y=0へ合わせ、足が22cm埋まっていた表示を修正。床付近の補給品を高さ0.28mへ下げ、既存の小さな浮遊表示を保つ。古いセーブも正本の補給品高さを使うが、拾得済み状態と敵／木箱のドロップ位置は維持する。55テスト・静的解析・修正後の全収集シミュレーションが成功。3区画の実画面でも材質、樹木の透過、室内の接地を確認した。
 
-詳細と再現用の視点は [背景の検証記録](qa/environment-detail-20260906.json)。debug専用 `gameAction viewpoint` は `x,z,yaw` と任意 `y,pitch` で通常のゲームカメラを配置し、敵と保存を無効化して静止画を確認する。実機通しプレイの証拠とは区別する。正本素材と最終プロンプトは [共有テクスチャ](../04_GAME_ASSETS/3d/environments/pueblo/textures/) に保存。
+詳細と再現用の視点は [背景の検証記録](qa/environment-detail-20260906.json)。debug専用 `gameAction viewpoint` は `x,z,yaw` と任意 `y,pitch` で通常のゲームカメラを配置し、敵と保存を無効化して静止画を確認する。実機通しプレイの証拠とは区別する。正本素材と最終プロンプトは [共有テクスチャ](../../assets/3d/environments/pueblo/textures/) に保存。
 
 更新後の[profile計測](benchmarks/game-environment-detail-20260906.json)も7条件で完了。M4、1280×840論理px／DPR2、各240フレーム。標準85%はUI P95 4.696〜5.037ms、Raster P95 0.508〜0.580ms。山道の等倍はUI 8.862ms／Raster 1.863msで今回の最大値となった。単回計測のため原因を樹木だけに帰属せず、GPU時間・実FPS・全端末の性能保証には使わない。標準設定は85%を維持する。
 

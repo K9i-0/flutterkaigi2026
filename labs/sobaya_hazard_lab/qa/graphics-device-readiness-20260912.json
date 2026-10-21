@@ -32,7 +32,7 @@
   },
   "candidatePreparation": {
     "bundleIdentifier": "com.madogiwa.sobayaHazardLab.graphics20260912",
-    "localDirectory": ".local/hazard-graphics-device/21_SOBAYA_HAZARD_LAB",
+    "localDirectory": ".local/hazard-graphics-device/labs/sobaya_hazard_lab",
     "sourceFilesCopied": 645,
     "canonicalAssetSymlinks": 49,
     "generatedScenesReusedWithMatchingInputStamps": 6,

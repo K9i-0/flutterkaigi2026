@@ -1,89 +1,47 @@
-# FlutterKaigi 2026（MMU派生）
+# ゆめみ採用試験（FlutterKaigi 2026）
 
-「窓際族物語」を漫画・動画・ゲーム・Webサイトなど、さまざまなメディアへ展開する制作プロジェクトです。世界観・キャラクター設定から、台本、共有アセット、各作品の実装、制作ワークフローまでを管理するモノレポです。
+FlutterKaigi 2026向けのFlutter Scene製3Dミニゲーム「ゆめみ採用試験」のリポジトリ。主な開発対象は `app/`。構成と起動方法は `README.md`、ゲームの仕様・検証記録は `app/README.md` を参照する。
 
-## 制作時の参照ファイル
-- 福ギュンの表記（2026-10-06改名）: 旧名は福ちゃん。新規の台本・字幕・名札・表示名は「福ギュン」。内部IDと既存素材パスの `fukuchan` / `Fukuchan` は維持。過去生成入力・実発話の書き起こしは改変しない。
-- そば屋の白Tシャツ: `02_CHARACTERS/01_Sobaya.md` の描画基準と2026-10-05更新の `03_SCRIPTS/00_TEMPLATES/characters/character_sobaya_basic_sheet.png` を使う。服越しの乳首の突起・輪郭・点状陰影を描かず、胸筋と自然な布のシワは保つ。新規画像・動画のプロンプトと監査へ反映する。
-- 窓際スーパーつらいの標準缶: `03_SCRIPTS/00_TEMPLATES/props/product_super_try.png`（2026-09-10採用のA案修正版。上部は黒い「労働」。「辛口」「350ml」は表示しない。銀地・赤いひらがな「つらい」・黒い筆記体Madogiwa・小さめの丸ゴシックの「生」。次回以降はこれを使い、エピソード63〜66の旧缶を参照元にしない。詳細: `03_SCRIPTS/00_TEMPLATES/props/README.md`）
-- 固有名詞の表記: `01_WORLD/WORLD_BIBLE.md` の「固有名詞の表記」を正本にする。架空企業は `Accidenchua`（ロゴ `ACCIDENCHUA`、法人 `Accidenchua Inc.`）。椅子は「アーロンチュア」/ `AERON CHUA`。新規制作・該当箇所の改修で使う。
-- 世界観の基本資料: `01_WORLD/WORLD_BIBLE.md`（ユーザー指定がないときの出発点。改変可能）
-- 過去エピソード台帳: `01_WORLD/STORY_TIMELINE.md`（ネタと出来事の参照用。正史の連続性や整合性を要求しない）
-- キャラクター設定: `02_CHARACTERS/*.md`（各ファイルの「人物同一性」だけを維持し、それ以外は通常形の参考とする）
-- たこさんの標準キャラクターシート: `03_SCRIPTS/00_TEMPLATES/characters/character_takosan_basic_sheet.png`（窓際トイジオラマ3D版が通常形。旧写実寄りシートや廃止済みの`character_takosan_toy_diorama_3d_basic_sheet.png`を探したり再利用しない）
-- ボイスキャスト: `02_CHARACTERS/VOICE_CAST.md`（Irodori-TTSのモデル、参照WAV、既定seed、固有後処理が正典。別シナリオでも同じ声を維持する）
-- 台本・生成済みプロンプト: `03_SCRIPTS/`
-- ゲーム用アセット（ボクセル）: `04_GAME_ASSETS/voxel/`（全キャラのリグ付きボクセルモデル`.glb`は`04_GAME_ASSETS/voxel/models/`が正典。`tools/build_*_voxel_model.py`から生成するため手作業で編集しない。新規ゲームはモデルをコピーせず、`public/models/`等からここへの相対symlinkで参照する。リグ仕様は`04_GAME_ASSETS/voxel/VOXEL_CHARACTER_KIT.md`を参照）
-- ゲーム用アセット（完成動画）: `04_GAME_ASSETS/videos/`（Seedance/CapCutで制作したゲーム組み込み用の完成動画が正典。ゲームからはコピーせず`public/videos/`からの相対symlinkで参照する）
+## 構成
 
-## Git管理方針
+- `app/`: ゆめみ採用試験。Dartパッケージ名 `yumemi_recruit_exam`、アプリID Android `jp.madogiwa.yumemi_recruit_exam` / iOS・macOS `jp.madogiwa.yumemiRecruitExam`。
+- `assets/`: ゲームが読み込む完成版の共有素材。アプリからは `app/assets/` 以下の相対symlinkで参照し、コピーしない。
+  - 赤坂ステージ `assets/3d/stages/akasaka/`: `app/tool/build_akasaka_textures.py`・`prepare_stage_surfaces.py`（Pillow/NumPy）→ Blender `-b -P app/tool/build_akasaka_stage.py` → `optimize_stage_textures.py` → `audit_stage_asset.py` の順で再生成。手作業でGLBを編集しない。
+  - `audit_stage_asset.py` の上限（三角形・プリミティブ・テクスチャ量）を超える変更はしない。同じ平面で重なる面（Zファイティング）を作らない。
+- `characters/`: キャラクター設定 `*.md`、正典写真、キャラクターシート `sheets/`、小道具の正典 `props/`、ボイス参照。
+- `packages/`: 共有Dartパッケージ。
+- `labs/`: 以前に作ったFlutter Scene製のゲーム・検証アプリ。各ディレクトリの `README.md` を参照する。
+- `tools/`: 主に `labs/` 向けの素材生成・監査スクリプト。
 
-Gitでは、Seedanceの再生成と同じ声の継続利用に必要な最小限の入力資産を管理する。
+3Dモデルの作業原本、動画の台本・生成物、Webサイトはこのリポジトリにない。元の [Madogiwa Multimedia Universe](https://github.com/K9i-0/madogiwa-multimedia-universe) に残っている。原本から再生成するスクリプトには、MMU側でしか動かないものがある。
 
-- 追跡する：`script.md`、実際に貼り付ける`prompt*.txt`、本番入力画像、`VOICE_CAST.md`が指定する正典参照WAV、採用音声の再生成に使う参照WAV、エピソード直下の採用済みセリフWAV、Remotion編集の`src/`・設定・字幕データ・`package.json`・lockfile、軽量な台帳・README
-- 追跡しない：入手した元動画、正典参照WAVへ採用していない元動画抽出物、候補・未採用・テスト・中間音声、`03_SCRIPTS/`配下の生成動画・previs・監査用動画
-- 追跡しない素材はローカルまたは別ストレージへ保持し、採用した入力だけを正本の場所へ移す
-- 例外：ゲームへ実際に組み込むことを決定した完成動画だけは`04_GAME_ASSETS/videos/`を正典として追跡する。エピソードディレクトリへ同じ動画を複製しない
+## キャラクター
 
-## GitHub運用方針
+- 唯一のハード条件: 登場キャラクターを同一人物・同一キャラクターとして識別できること。実写メンバーは正典写真の顔、非実写キャラクターは `characters/*.md` の「人物同一性」に書かれた顔・身体構造・固有シルエットを基準にする。それ以外（衣装・表情・性格・役割など）はユーザーの指定に従う。
+- 福ギュン（2026-10-06改名、旧名は福ちゃん）: 表示名は「福ギュン」。内部IDと素材パスの `fukuchan` / `Fukuchan` は維持する。
+- そば屋の白Tシャツ: `characters/01_Sobaya.md` と `characters/sheets/character_sobaya_basic_sheet.png` を基準にする。服越しの乳首の突起・輪郭・点状陰影は描かず、胸筋と自然な布のシワは保つ。
+- 窓際スーパーつらいの標準缶: `characters/props/product_super_try.png`。詳細は `characters/props/README.md`。
+- 架空企業の表記は `Accidenchua`（ロゴ `ACCIDENCHUA`）。
 
-- このリポジトリは `K9i-0/flutterkaigi2026`。開発先は https://github.com/K9i-0/flutterkaigi2026 、既定ブランチとPRのbaseは `main`。
-- 2026-10-19に `K9i-0/madogiwa-multimedia-universe` の `flutterkaigi2026` ブランチから独立。作品・IP名は「窓際族物語」。来歴は `MIGRATION.md` に記録。
-- 元のMMUリポジトリへ誤ってpush・Issue作成しない。既存MMUのローカルフォルダ、Codex履歴・メモリDBは移動・書き換えない。
+## Flutterの検証
 
-- 元リポジトリは、同僚のそば屋さんが管理する https://github.com/sobaya-0141/Seedance_Madogiwa 。作成経緯とリンクはREADMEに保持する。リポジトリ全体の同期は行わず、Madogiwa Studioスキルのみ必要に応じてURLから個別に同期する。通常運用で`upstream` remoteを追加する必要はない。
-- このリポジトリは`main`単一ブランチで運用する。通常の変更は検証後に`origin/main`へ直接pushし、PRや作業ブランチは作成しない
-- ユーザーが明示的に依頼した場合のみPRを作成する
+- Flutterは `.mise.toml` の3.47.2。`mise exec -- flutter ...` で実行する。
+- 変更後は該当プロジェクトで `flutter analyze` と `flutter test` を通す。
+- UI操作・スクリーンショットは、Dart MCPでdebug起動し、Marionette MCPで行う。設定は `.mcp.json` と `.codex/config.toml`。
+  - `app/`: `madogiwa.inspectCatch` で状態を取得し、`madogiwa.catchAction`（`select` / `start` / `step` / `rotate` / `fps` など）で決定論的に操作する。引数は `app/README.md`。
+  - `labs/sobaya_hazard_lab/`: `madogiwa.inspectHazard` / `madogiwa.openScenario` など。profile測定は `--dart-define=LAB_BENCHMARK=true`。
+  - `labs/flutter_scene_vrm_lab/`: `madogiwa.inspectVrm` / `madogiwa.injectFace`。
+- 性能はprofileビルドで評価する。debugビルドのfpsは目安にとどめる。
 
-## スキル（制作ワークフロー）
+## Git・GitHub
 
-制作方式未指定の動画は `wan-video` を標準とする。Three.js / Remotionで既存3Dモデルを演技させる舞台動画、背景画像＋モデルの芝居、73型の動画は `threejs-video` を使う。後者は音声方針を含めWanとは独立した制作経路とする。
-制作物ごとのワークフローはスキルに分離している。該当する作業ではスキルを呼び出して従うこと。
+- リポジトリは `K9i-0/flutterkaigi2026`（Public）。`main` 単一ブランチで運用し、検証後に `origin/main` へ直接pushする。PRや作業ブランチは、ユーザーが明示的に依頼したときだけ作る。
+- 元のMMUリポジトリへ誤ってpush・Issue作成しない。
+- 動画ファイルは追跡しない。生成の中間物・候補・QA用の大きな画像はローカルに置き、採用した素材だけを正本の場所へ入れる。
+- 2026-10-21にgit履歴を書き換えて整理した。経緯と旧パスとの対応は `MIGRATION.md`。
 
-- **人型モーション** (`humanoid-motion`): リアル頭身のGLB/VRMへの動作適用、ローカルプレビュー、体格別比較、肩・腕のスキニング診断、そば屋ハザードへの採用時に使用する。詳細: `.claude/skills/humanoid-motion/SKILL.md`
+## スキル
 
-- **Wan動画制作** (`wan-video`): Wan 3.0、Qwen Cloud、Alibaba Cloud Model Studioで動画を新規制作・改修・生成・監査するときに使用する。台本、参照素材、プロンプト、従量課金API設定、生成結果を一体で管理する。詳細: `.claude/skills/wan-video/SKILL.md`
-- **ミーム改変動画** (`meme-video`): 元動画・URLを参照した人物置換、ミームの別キャラ版、元音声版とキャラクター音声版の制作で使用する。元ネタの構図・演技・間と人物同一性を分けて設計し、生成の詳細は`wan-video`、音声編集は`remotion-video`へ委ねる。詳細: `.claude/skills/meme-video/SKILL.md`
-- **Three.js舞台動画制作** (`threejs-video`): 既存GLB、共有演技・犬モーション、画像背景壁、React UIを用いて台本から完成動画まで制作する。詳細: `.claude/skills/threejs-video/SKILL.md`
-- **Remotion動画編集** (`remotion-video`): Wan・Seedance等の生成済み動画へ、正確な字幕、ニューステロップ、局ロゴ、ティッカー、音声差し替え、UI、効果音を再現可能なReactコードで合成し、レンダリング・監査するときに使用する。詳細: `.claude/skills/remotion-video/SKILL.md`
-- **画面差し替え** (`screen-replacement`): ユーザーが明示した場合に、モニター・テレビ・スマホ等の表示面をOpenCVで追跡し、画像・動画を透視合成する。グリーン画面生成、通常画面追跡、揺れ抑制、緑残り除去、Remotion統合を扱う。画面が映るだけでは自動適用しない。詳細: `.claude/skills/screen-replacement/SKILL.md`
-- **映画ポスター制作** (`create-movie-poster`): 映画ポスターの新規制作・改修・シリーズ統一では、独立した初回3案から方向性を選び、縦2:3正本、正確な日本語文字、キャラクター同一性を管理する。実写のよーたん、福ギュン、とーくん、おかやまんは正典写真へ顔を厳密に一致させる。SNS安全域はユーザー指定時だけ調整し、生成画像への反復編集を避ける。詳細: `.claude/skills/create-movie-poster/SKILL.md`
-- **ボクセルモデル制作** (`build-voxel-character-from-image`): キャラクターの参照画像からリグ付きボクセルGLBを作成・修正するときに使用する。成果物は`04_GAME_ASSETS/voxel/`に配置する。詳細: `.claude/skills/build-voxel-character-from-image/SKILL.md`
-- **2Dゲーム制作** (`/2d-game`): 2Dゲームを新規作成するとき、およびSeedanceで制作した完成動画（添付mp4）をオープニング/イベントのカットシーンとしてゲームに組み込むときに使用する。完成動画の正典置き場は`04_GAME_ASSETS/videos/`（ゲームからは`public/videos/`の相対symlinkで参照）。詳細: `.claude/skills/2d-game/SKILL.md`
-- **Madogiwa Studio登録** (`madogiwa-studio`): Remote Web MCP経由でエピソード、生成バージョン、使用モデル、プロンプト、入力画像・参照音声、生成動画をStudioへ登録・確認するときに使用する。詳細: `.claude/skills/madogiwa-studio/SKILL.md`
-- **Antigravity画像生成** (`antigravity-imagegen`): Antigravity専用。Geminiネイティブの`generate_image`を使い、窓際族物語のキャラクター同一性を厳密に維持したシーン・背景・参照画像を生成する。CodexやClaude Codeなど他ハーネスでは対象外。詳細: `.claude/skills/antigravity-imagegen/SKILL.md`
+- **人型モーション** (`humanoid-motion`): リアル頭身のそば屋・福ギュンのGLB/VRMへの動作適用、ローカル確認、スキニング診断、そば屋ハザードへの採用。詳細: `.claude/skills/humanoid-motion/SKILL.md`
 
-スキルの実体は`.claude/skills/`に置き、Codex CLI向けには`.agents/skills/`からsymlinkで同じスキルを参照させている（Claude Code・Codexの両方が同一のSKILL.mdを読む）。スキルを追加したら`.agents/skills/`にもsymlinkを張ること。
-
-## 全制作物に共通する唯一のハード条件
-
-登場キャラクターを同一人物・同一キャラクターとして識別できることだけを維持する。実写メンバーは正典写真の顔、非実写キャラクターは各ファイルの「人物同一性」に記載した顔・身体構造・固有シルエットを基準にする。
-
-衣装、小道具、表情、ポーズ、性格、口調、役割、能力、勝敗、生死、ジャンル、結末、暴力・恐怖・風刺の強度、過去エピソードとの整合性、夢オチ、復活、再登場、パロディ・オマージュの近似度はユーザーに委ねる。過去に退場・死亡・変身したキャラクターも説明なく通常の姿で再登場してよい。`WORLD_BIBLE.md`と`STORY_TIMELINE.md`は発想材料であり、ユーザーの依頼を制限する規則として使わない。
-
-既存作品を参照する場合も、元ネタの認知に必要な構図、演出、意匠、振付、台詞形式、ロゴ階層などを一律に抽象化しない。どの程度近づけるかはユーザー指定を正本とし、権利上の懸念は情報として伝えても、創作意図を推測で弱めたり無個性化したりしない。ただし、利用する生成サービスの規約や適用される法令など、このリポジトリより上位の制約は優先する。
-
-## FlutterゲームのUI検証
-
-`21_SOBAYA_HAZARD_LAB/`は非ボクセル3Dゲームのモデル・移動・衝突・描画負荷検証用。
-Dart MCPでdebug起動し、MarionetteでUI操作・スクリーンショットと
-`madogiwa.inspectHazard` / `madogiwa.openScenario`等の専用extensionを確認する。
-profile測定は`--dart-define=LAB_BENCHMARK=true`で再現できる。
-引数・測定条件は同ディレクトリの`README.md`を参照する。
-
-`14_MADOGIWA_CARD_GAME/`は`ccpocket`と同じくDart MCPでデバッグアプリを起動し、
-Marionette MCPでUI操作・スクリーンショット・カスタムハーネス検証を行う。
-プロジェクト設定は`.mcp.json`と`.codex/config.toml`、専用拡張は
-`14_MADOGIWA_CARD_GAME/lib/automation/`を参照する。Flameキャンバス内の状態確認には
-`madogiwa.inspectGame`、決定論的シナリオへの遷移には`madogiwa.openScenario`を使う。
-
-`19_FLUTTER_SCENE_VRM_LAB/`も同じDart MCP / Marionette MCPを使用する。
-VRM・追跡状態の確認には`madogiwa.inspectVrm`、決定論的な顔角度・目・口の注入には
-`madogiwa.injectFace`を使う。専用extension一覧と引数は同ディレクトリの
-`README.md`を参照する。
-
-## 動画の生成・完成書き出し解像度
-
-2026-10-02ユーザー指定: 動画生成は480p、投稿・納品用の完成書き出しは720pを標準とする。生成APIの480Pと編集出力の720pを区別し、出力720pを理由に生成料金を上げない。横16:9は1280×720、縦9:16は720×1280、正方形は720×720、その他は縦横比を保ち短辺720px以上の偶数寸法にする。既存の高解像度素材は不要に縮小しない。ユーザーの個別指定を優先する。
-
-拡大は元素材から完成出力へ一度だけ行い、標準はLanczos等の通常リサイズ。顔を変え得るAI超解像は自動適用しない。字幕・テロップは完成解像度で描画し、fps・尺・音声を保持する。元の480p動画や過去の生成設定は保持する。詳細は `.claude/skills/remotion-video/references/export-resolution.md`。
+スキルの実体は `.claude/skills/` に置き、Codex CLI向けに `.agents/skills/` からsymlinkで参照する。スキルを追加したら `.agents/skills/` にもsymlinkを張る。

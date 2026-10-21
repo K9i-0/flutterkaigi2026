@@ -6,7 +6,7 @@ ROOT=Path(__file__).resolve().parent.parent;sys.path.insert(0,str(ROOT/'tools'))
 import retarget_sobaya_mocap as mocap
 mocap.MAP['Spine1']='Spine1'
 parser=argparse.ArgumentParser();parser.add_argument('--sheet',action='store_true');args=parser.parse_args(sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else [])
-OUT=ROOT/('04_GAME_ASSETS/3d/characters/yametaro/rig_sheet_v2' if args.sheet else '04_GAME_ASSETS/3d/characters/yametaro/rig_v1');OUT.mkdir(parents=True,exist_ok=True)
+OUT=ROOT/('assets/3d/characters/yametaro/rig_sheet_v2' if args.sheet else 'assets/3d/characters/yametaro/rig_v1');OUT.mkdir(parents=True,exist_ok=True)
 source=OUT.parent/('rig_sheet_source/raw/output_model_url.fbx' if args.sheet else 'rig_source/raw/output_model_url.fbx')
 bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False);bpy.ops.import_scene.fbx(filepath=str(source))
 rig=next(o for o in bpy.context.scene.objects if o.type=='ARMATURE');mesh=next(o for o in bpy.context.scene.objects if o.type=='MESH')

@@ -31,7 +31,7 @@
   ],
   "scope": "GLB structural checks; visual deformation review is separate",
   "gameAsset": "assets/models/yametaro.glb",
-  "canonicalSource": "04_GAME_ASSETS/3d/characters/yametaro/rig_nose_v3/yametaro.glb",
+  "canonicalSource": "assets/3d/characters/yametaro/rig_nose_v3/yametaro.glb",
   "runtimeVerification": {
     "build": "PASS: Dart MCP macOS debug launch",
     "visual": "BLOCKED: startup reports Bad state: Missing speech shapes: 福ちゃん; pre-existing fukuchan asset changes left intact"

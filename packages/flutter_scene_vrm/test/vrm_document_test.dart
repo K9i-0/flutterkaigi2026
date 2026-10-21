@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   test('reads official VRM 1.0 avatar metadata and expression binds', () {
     final bytes = File(
-      '../../04_GAME_ASSETS/vrm/models/'
+      '../../assets/vrm/models/'
       'VRM1_Constraint_Twist_Sample.vrm',
     ).readAsBytesSync();
     final document = VrmDocument.fromGlbBytes(bytes);

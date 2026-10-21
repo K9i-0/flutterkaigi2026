@@ -12,7 +12,7 @@ Tidewaterの島をFlutterへ移す最初の検証アプリ。現在は島・村�
 ## 起動
 
 ```sh
-cd 23_SOBAYA_TIDEWATER
+cd labs/sobaya_tidewater
 mise exec -- flutter pub get
 mise exec -- flutter run -d macos --enable-flutter-gpu
 ```
@@ -30,7 +30,7 @@ WASD／画面の矢印で移動、ドラッグで見回す、Shiftで走る。F�
 - 深さによる吸収色・浅瀬の屈折・岸の泡・複数の波と画素単位の細かな法線、低解像度の平面反射。空・太陽・影と弱いBloom。FFT海洋ではない。
 - メニュー切替、フォーカス喪失時の入力解除、背景化時のticker停止。
 
-元データは [共通アセット正本](../04_GAME_ASSETS/3d/tidewater/README.md) を相対symlinkで参照する。runtime GLB importerのZ反転はインポート境界で相殺し、Tidewaterの座標と衝突データを一致させる。三角形の頂点順序は書き換えない。
+元データは [共通アセット正本](../../assets/3d/tidewater/README.md) を相対symlinkで参照する。runtime GLB importerのZ反転はインポート境界で相殺し、Tidewaterの座標と衝突データを一致させる。三角形の頂点順序は書き換えない。
 
 ## 残る移植
 
@@ -45,8 +45,8 @@ FFT海洋、浅水流体、海中表現、立体的な雲は未実装。GPU本�
 
 ```sh
 # リポジトリルートから。初回は固定版Tidewaterを.localへ取得する。
-node 23_SOBAYA_TIDEWATER/tools/export_tidewater.mjs
-cd 23_SOBAYA_TIDEWATER
+node labs/sobaya_tidewater/tools/export_tidewater.mjs
+cd labs/sobaya_tidewater
 mise exec -- flutter analyze
 mise exec -- flutter test --no-pub
 ```
@@ -105,7 +105,7 @@ forkのwarmUpはバックエンドが非同期コンパイルする場合、開�
 - 右下の音量ボタンでミュート。非アクティブ時は音も停止し、復帰時は背景ループだけを再開する。
 - 更新は10Hz、同時に1回のみ実行。最大3背景ループ＋3波イベント＋1鳥。ピーク正規化された音源を元のLUFSに応じて下げて混合する。
 - `madogiwa.inspectSoundscape`: ready/error、ミュート、海岸距離、各背景音の再生位置と音量、波・鳥のイベント数。
-- 音源と出典は [共通正本](../04_GAME_ASSETS/audio/tidewater/README.md)。追加ダウンロードは不要。
+- 音源と出典は [共通正本](../../assets/audio/tidewater/README.md)。追加ダウンロードは不要。
 - `WATER_BENCHMARK=true` は描画比較用に環境音をロードしない。環境音込みの端末別のCPU・電池負荷は別計測が必要。
 
 
@@ -131,7 +131,7 @@ forkのwarmUpはバックエンドが非同期コンパイルする場合、開�
 - 太陽／月の向き・色・影、空のグラデーションと星、多層ノイズ雲、距離・高さ霧、海の色・反射・波・雨の波紋を連動。空からの環境光は64px面／256px横幅で3秒間隔に再計算し、以降の更新はfork側がフレーム分散する。反映には短い遅れがある。
 - 既存街灯16か所に暖色の点光源と発光部を追加。雨で粗い材質を暗く滑らかにし、止むと徐々に乾く。
 - カメラ周辺の雨粒を1メッシュでGPUアニメーション。地形／屋根上面でクリップする。風の横ずれや樹木下の遮蔽は近似で、物理的な雨滴衝突や水たまりではない。
-- 鳥は夜・雨で抑制。風の強さに風音が連動。雨ループと間隔を空けた稲光／遅れて鳴る遠雷を追加。新規音は[共通正本](../04_GAME_ASSETS/audio/weather/README.md)の自作合成音。追加ネットワーク取得なし。
+- 鳥は夜・雨で抑制。風の強さに風音が連動。雨ループと間隔を空けた稲光／遅れて鳴る遠雷を追加。新規音は[共通正本](../../assets/audio/weather/README.md)の自作合成音。追加ネットワーク取得なし。
 - 高画質: renderScale1、反射0.45、影2048、雨484。軽量: 0.75／0.25／1024／256。旧「海の改善」節の反射0.35は時間天気導入前の値。
 - 設定はApplication Supportの`island-atmosphere.json`へdebounce＋一時ファイルrenameで保存。破損値は初期値／範囲内へ復旧し、保存エラーはパネルへ表示。
 

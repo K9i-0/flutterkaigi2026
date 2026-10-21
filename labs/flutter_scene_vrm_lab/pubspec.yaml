@@ -37,7 +37,7 @@ dependencies:
       ref: 8d340138f80d1fb5d09d163f62ab836be9379e2e
       path: packages/flutter_scene
   flutter_scene_vrm:
-    path: ../packages/flutter_scene_vrm
+    path: ../../packages/flutter_scene_vrm
   hooks: ^2.0.0
   google_mlkit_face_detection: ^0.15.1
   marionette_flutter: ^0.6.0

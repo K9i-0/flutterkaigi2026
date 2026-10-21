@@ -2,7 +2,7 @@
 
 - Generator: built-in ImageGen
 - Use case: stylized-concept
-- References: `02_CHARACTERS/Yumemin.jpg`, `02_CHARACTERS/Yumemin_3D_turnaround_v3.png`
+- References: `characters/Yumemin.jpg`, `characters/Yumemin_3D_turnaround_v3.png`
 
 ## Final prompt
 

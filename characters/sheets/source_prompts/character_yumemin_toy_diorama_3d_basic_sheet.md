@@ -3,9 +3,9 @@
 - Generator: built-in ImageGen
 - Use case: identity-preserve
 - Adopted design: Candidate A — ぷくもち幼体型
-- Previous identity source: `03_SCRIPTS/00_TEMPLATES/characters/character_yumemin_toy_diorama_3d_basic_sheet.png`
+- Previous identity source: `characters/sheets/character_yumemin_toy_diorama_3d_basic_sheet.png`
 - Material reference: `03_SCRIPTS/21_takosan_php_prompt_pun/clip1_start.png`
-- Adoption record: `03_SCRIPTS/00_TEMPLATES/characters/source_prompts/character_yumemin_toy_diorama_3d_cute_candidates.md`
+- Adoption record: `characters/sheets/source_prompts/character_yumemin_toy_diorama_3d_cute_candidates.md`
 
 ## Final prompt
 

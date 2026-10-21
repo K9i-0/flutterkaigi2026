@@ -1,6 +1,6 @@
 """Game-only derivative; original geometry/20-clip master remains untouched.
 
-uv run --with pillow --with numpy python 26_YUMEMI_RECRUIT_EXAM/tool/optimize_odatetsu.py
+uv run --with pillow --with numpy python app/tool/optimize_odatetsu.py
 Uses the pinned Three.js meshoptimizer kit documented in the shared mobile tool.
 """
 import copy
@@ -18,7 +18,7 @@ from build_hazard_mobile_models import write_glb
 from replace_glb_animation import read_glb
 from validate_optimized_hazard_models import accessor
 
-SOURCE = ROOT / '04_GAME_ASSETS/3d/characters/cto_odatetsu/rig_v1_20261014/cto_odatetsu_rig.glb'
+SOURCE = ROOT / 'assets/3d/characters/cto_odatetsu/rig_v1_20261014/cto_odatetsu_rig.glb'
 OUT = SOURCE.parent.parent / 'game_mobile_20261021'
 WORK = ROOT / '.local/recruit-optimization'
 

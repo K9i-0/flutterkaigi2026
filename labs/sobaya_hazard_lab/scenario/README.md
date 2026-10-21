@@ -6,7 +6,7 @@
 
 ## 生成と追従確認
 
-リポジトリの `21_SOBAYA_HAZARD_LAB` で実行します。
+リポジトリの `labs/sobaya_hazard_lab` で実行します。
 
 ```sh
 python3 tool/export_hazard_text.py

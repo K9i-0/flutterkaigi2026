@@ -44,7 +44,7 @@
 ## 台詞・音声・資料の正本
 
 1. `game_events.dart` / `game_dialogue.dart` / `game_tutorial_text.dart`を編集。
-2. `tool/export_hazard_voice.dart`で`04_GAME_ASSETS/audio/hazard/voice-lines.json`へ書き出す。
+2. `tool/export_hazard_voice.dart`で`assets/audio/hazard/voice-lines.json`へ書き出す。
 3. `tools/build_hazard_voice.py`で正典音声を生成。本文と話者が完全一致する既存rawだけ再利用する。
 4. `tools/build_hazard_speech_envelopes.py`で同じWAVから口の強弱を更新する。
 5. manifestの全台詞対応・WAVハッシュ・用途IDを検査し、変更台詞の聞き取りを確認する。自動文字起こしは補助であり、人の聴取や音声同一性の承認とは区別する。

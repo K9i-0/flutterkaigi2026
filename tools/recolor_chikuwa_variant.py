@@ -32,5 +32,5 @@ def recolor(normal, colored, output):
     Path(output).write_bytes(struct.pack('<III',0x46546c67,2,28+len(encoded)+len(binary))+struct.pack('<II',len(encoded),0x4e4f534a)+encoded+struct.pack('<II',len(binary),0x004e4942)+binary)
 
 if __name__=='__main__':
-    root=Path(__file__).resolve().parents[1]/'04_GAME_ASSETS/3d/props/chikuwa/v3'
+    root=Path(__file__).resolve().parents[1]/'assets/3d/props/chikuwa/v3'
     recolor(root/'chikuwa.glb',root/'chikuwa_toxic.glb',root/'chikuwa_toxic.glb')

@@ -10,7 +10,7 @@
   },
   "regions": {
     "village": {
-      "source": "04_GAME_ASSETS/3d/environments/pueblo/village.glb",
+      "source": "assets/3d/environments/pueblo/village.glb",
       "sha256": "4bf0dae3c0626c876029695fdd8547fe287a70c4ad49349f8373f5387e611d68",
       "layoutSha256": "d6e469fc243628e49d4be6240fa53a553369b5177c36d7c75da05724757ca2fb",
       "layoutUnchanged": true,
@@ -93,7 +93,7 @@
       "passed": true
     },
     "farm": {
-      "source": "04_GAME_ASSETS/3d/environments/farm/farm.glb",
+      "source": "assets/3d/environments/farm/farm.glb",
       "sha256": "b96b53c4d4af95255adfd0a5b30f7ab21279eaa65996b59309ee6211dc8d562b",
       "layoutSha256": "884cd3bc01228a4248383485d59ff10da18d135519328e2b4a1f51408bafb875",
       "layoutUnchanged": true,
@@ -170,7 +170,7 @@
       "passed": true
     },
     "mountain": {
-      "source": "04_GAME_ASSETS/3d/environments/mountain/mountain.glb",
+      "source": "assets/3d/environments/mountain/mountain.glb",
       "sha256": "4a3f068211dcaa72022e4f0c505f4c8b287517f3cff67db6b164bdd425826104",
       "layoutSha256": "cc6b8c3e688e14138fbe98f3213090164ea0088e652c4ce8b93b79397bb9567a",
       "layoutUnchanged": true,

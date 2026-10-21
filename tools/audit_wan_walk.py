@@ -7,7 +7,7 @@ from humanoid_action_refinement import forward
 variant='--rig-highlight' in sys.argv
 clip='WanRig_Walk' if variant else 'Wan_Walk'
 slug='wan-rig-walk' if variant else 'wan-walk'
-folder=ROOT/('22_HUMANOID_MOTION_LAB/evidence/'+slug);folder.mkdir(parents=True,exist_ok=True)
+folder=ROOT/('labs/humanoid_motion_lab/evidence/'+slug);folder.mkdir(parents=True,exist_ok=True)
 report={'characters':[]}
 for name in ['sobaya','fukuchan']:
  bpy.ops.wm.read_factory_settings(use_empty=True);sc=bpy.context.scene;sc.render.fps=30
@@ -38,5 +38,5 @@ for name in ['sobaya','fukuchan']:
  camera=bpy.data.objects.new('Camera',bpy.data.cameras.new('Camera'));sc.collection.objects.link(camera);sc.camera=camera;camera.data.type='ORTHO';camera.data.ortho_scale=2.1;camera.location=(-5,-.3,1.5);aim(camera,(0,0,.86))
  for i in range(8):
   sc.frame_set(round(i*frames/8));sc.render.filepath=str(folder/f'{name}_{i}.png');bpy.ops.render.render(write_still=True)
-(ROOT/f'22_HUMANOID_MOTION_LAB/qa/{slug}-20260907.json').write_text(json.dumps(report,indent=2)+'\n')
+(ROOT/f'labs/humanoid_motion_lab/qa/{slug}-20260907.json').write_text(json.dumps(report,indent=2)+'\n')
 print('WAN_DENSE_QA',json.dumps(report))

@@ -1,7 +1,7 @@
 """Validate exported liquid morphs against the physical inner-wall envelope."""
 import hashlib,json,math,struct
 from pathlib import Path
-ROOT=Path(__file__).resolve().parent.parent;DIR=ROOT/'04_GAME_ASSETS/3d/props/beer_mug_v2'
+ROOT=Path(__file__).resolve().parent.parent;DIR=ROOT/'assets/3d/props/beer_mug_v2'
 raw=(DIR/'beer_mug.glb').read_bytes();size=struct.unpack_from('<I',raw,12)[0];g=json.loads(raw[20:20+size]);binary=raw[28+size:]
 def accessor(i):
  a=g['accessors'][i];n={'SCALAR':1,'VEC3':3}[a['type']]

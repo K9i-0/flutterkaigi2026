@@ -6,8 +6,8 @@ import struct
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-source = ROOT / '04_GAME_ASSETS/3d/characters/sobaya/motion_v3_20260917/sobaya_motion.glb'
-manifest = ROOT / '04_GAME_ASSETS/3d/hazard_adopted/manifest.json'
+source = ROOT / 'assets/3d/characters/sobaya/motion_v3_20260917/sobaya_motion.glb'
+manifest = ROOT / 'assets/3d/hazard_adopted/manifest.json'
 data = source.read_bytes()
 digest = hashlib.sha256(data).hexdigest()
 review = json.loads((source.parent / 'qa/review.json').read_text())

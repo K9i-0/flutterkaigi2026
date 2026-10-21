@@ -7,7 +7,7 @@ flutterkaigi2026専用キャラクター。mainへマージしない。作業は
 - リグの再生成・検証: `rig_v1_20261014/README.md`
 - カメラ装備用の派生モデル: `camera_equipment_20261014/cto_odatetsu_camera.glb`（元20動作＋固定ポーズ `CameraCarry`）
 - 装備位置・握り・再生成: `camera_equipment_20261014/README.md` と `attachment.json`
-- 別体カメラ＋望遠レンズ: `04_GAME_ASSETS/3d/props/odatetsu_camera/finish_20261014/odatetsu_camera.glb`
+- 別体カメラ＋望遠レンズ: `assets/3d/props/odatetsu_camera/finish_20261014/odatetsu_camera.glb`
 - 静的モデル正本（リグ入力）: `finish_20261014/cto_odatetsu_static.glb`
 - 仕上げ・再生成・監査: `finish_20261014/README.md`
 - Tripo原型の生成記録: `tripo_multiview_20261014/`

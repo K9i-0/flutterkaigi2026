@@ -17,32 +17,15 @@
     "dart-mcp": {
       "type": "stdio",
       "command": "mise",
-      "args": ["exec", "flutter@3.47.2", "--", "dart", "mcp-server", "--enable=flutter_app_lifecycle"],
+      "args": [
+        "exec",
+        "flutter@3.47.2",
+        "--",
+        "dart",
+        "mcp-server",
+        "--enable=flutter_app_lifecycle"
+      ],
       "env": {}
-    },
-    "cloudflare": {
-      "type": "http",
-      "url": "https://mcp.cloudflare.com/mcp"
-    },
-    "cloudflare-docs": {
-      "type": "http",
-      "url": "https://docs.mcp.cloudflare.com/mcp"
-    },
-    "cloudflare-bindings": {
-      "type": "http",
-      "url": "https://bindings.mcp.cloudflare.com/mcp"
-    },
-    "cloudflare-builds": {
-      "type": "http",
-      "url": "https://builds.mcp.cloudflare.com/mcp"
-    },
-    "cloudflare-observability": {
-      "type": "http",
-      "url": "https://observability.mcp.cloudflare.com/mcp"
-    },
-    "madogiwa-studio": {
-      "type": "http",
-      "url": "https://madogiwa-studio.madogiwa-studio.workers.dev/mcp"
     }
   }
 }

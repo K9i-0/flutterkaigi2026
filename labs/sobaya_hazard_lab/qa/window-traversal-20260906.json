@@ -903,10 +903,10 @@
     "Previously packaged 19a9d86 Mac ZIP predates this change."
   ],
   "assetSha256": {
-    "04_GAME_ASSETS/3d/characters/fukuchan/rig_v1/fukuchan.glb": "02d0314b766ce5a5494d68ee94ca78ed6eeefa8563b6cc0117372cb2b627faaf",
-    "04_GAME_ASSETS/3d/characters/sobaya/rig_v3/sobaya_rig.glb": "88005cc5ccc6d06e08ea039953ae87511aefd956a94f9998c349c92c17b568dd",
-    "21_SOBAYA_HAZARD_LAB/assets/village.json": "ddacb46dcec96139e48a1bf9e035da65dc23637cc819244b18300a13e5e28f58",
-    "21_SOBAYA_HAZARD_LAB/assets/farm.json": "fda27287f41ea2c5dcdb06a3b08ee78864504cd97d085e155f51f7d953732bab",
-    "21_SOBAYA_HAZARD_LAB/assets/mountain.json": "471eacc40f75d9df5ea67f22e34f9b0490b80dfe558a8b96a6f2e40f8a29818b"
+    "assets/3d/characters/fukuchan/rig_v1/fukuchan.glb": "02d0314b766ce5a5494d68ee94ca78ed6eeefa8563b6cc0117372cb2b627faaf",
+    "assets/3d/characters/sobaya/rig_v3/sobaya_rig.glb": "88005cc5ccc6d06e08ea039953ae87511aefd956a94f9998c349c92c17b568dd",
+    "labs/sobaya_hazard_lab/assets/village.json": "ddacb46dcec96139e48a1bf9e035da65dc23637cc819244b18300a13e5e28f58",
+    "labs/sobaya_hazard_lab/assets/farm.json": "fda27287f41ea2c5dcdb06a3b08ee78864504cd97d085e155f51f7d953732bab",
+    "labs/sobaya_hazard_lab/assets/mountain.json": "471eacc40f75d9df5ea67f22e34f9b0490b80dfe558a8b96a6f2e40f8a29818b"
   }
 }

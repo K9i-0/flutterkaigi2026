@@ -3,9 +3,9 @@
 """
 import bpy
 from pathlib import Path
-ROOT=Path(__file__).resolve().parents[2]
-SOURCE=ROOT/'04_GAME_ASSETS/3d/props/beer_mug_v2/beer_mug.blend'
-OUT=ROOT/'04_GAME_ASSETS/3d/props/ippai_mug'
+ROOT=Path(__file__).resolve().parents[3]
+SOURCE=ROOT/'assets/3d/props/beer_mug_v2/beer_mug.blend'
+OUT=ROOT/'assets/3d/props/ippai_mug'
 OUT.mkdir(parents=True,exist_ok=True)
 if SOURCE.exists():
     bpy.ops.wm.open_mainfile(filepath=str(SOURCE))

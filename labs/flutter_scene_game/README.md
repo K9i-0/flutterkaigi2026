@@ -141,10 +141,10 @@ FPS・平均フレーム時間を更新します。P95、チャンク数、画�
 `assets/models`は正典ディレクトリへの相対symlinkです。
 
 ```text
-assets/models -> ../../04_GAME_ASSETS/voxel/models
+assets/models -> ../../../assets/voxel/models
 ```
 
-GLBをこのプロジェクトへコピー・編集せず、変更時は`04_GAME_ASSETS/voxel/tools/`から再生成します。
+GLBをこのプロジェクトへコピー・編集せず、変更時は`assets/voxel/tools/`から再生成します。
 ゲームでは`models/mobile/`の派生GLBを使い、剛体歩行リグのピボット単位でメッシュを
 結合しています。外見、画像・透過・発光材質、歩行リグを維持し、単色材質だけを
 頂点カラー付き共通PBRへ統合してノード巡回とdraw callを削減します。
@@ -162,7 +162,7 @@ flutter run --profile \
 miseのグローバル設定とモノレポの`.mise.toml`はFlutter 3.47.2に揃えています。
 
 ```bash
-cd 17_FLUTTER_SCENE_GAME
+cd labs/flutter_scene_game
 mise exec -- flutter pub get
 mise exec -- flutter run --enable-flutter-gpu
 ```

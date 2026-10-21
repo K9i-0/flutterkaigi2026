@@ -5,8 +5,8 @@ from pathlib import Path
 import struct
 
 ROOT = Path(__file__).resolve().parents[1]
-LIB = ROOT / '04_GAME_ASSETS/3d/motion_library'
-OUT = ROOT / '04_GAME_ASSETS/vrm/characters'
+LIB = ROOT / 'assets/3d/motion_library'
+OUT = ROOT / 'assets/vrm/characters'
 
 
 def read_glb(path):

@@ -13,9 +13,9 @@
     "saveActions": "No new-game confirmation, debug scenario reset or app-data deletion performed. Continue remained available on both platforms."
   },
   "icons": {
-    "directory": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908",
+    "directory": "assets/3d/ui/hazard/icon-concepts-20260908",
     "generator": "built-in image_gen",
-    "reference": "02_CHARACTERS/Sobaya.jpg",
+    "reference": "characters/Sobaya.jpg",
     "variants": ["A-mask.png", "B-beer-fire.png", "C-stalker.png"],
     "dimensions": [1254, 1254],
     "format": "opaque RGB PNG, full-bleed, no baked-in corner mask or app frame",

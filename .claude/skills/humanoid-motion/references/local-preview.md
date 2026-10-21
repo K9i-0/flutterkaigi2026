@@ -2,7 +2,7 @@
 
 ## 起動と比較
 
-依存セットアップは `04_GAME_ASSETS/vrm/characters/README.md` と `04_GAME_ASSETS/vrm/motions/README.md` を参照。Three.js / Three-VRM / VRM Animationは `.local/vrm-validation/node_modules` に置く。既存環境なら再インストール不要。
+依存セットアップは `assets/vrm/characters/README.md` と `assets/vrm/motions/README.md` を参照。Three.js / Three-VRM / VRM Animationは `.local/vrm-validation/node_modules` に置く。既存環境なら再インストール不要。
 
 リポジトリルートを配信する。既存8766番サーバーがあれば応答と配信内容を確認して再利用する。
 

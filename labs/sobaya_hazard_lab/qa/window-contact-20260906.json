@@ -12,7 +12,7 @@
     "tolerance": 0.02,
     "models": {
       "fukuchan": {
-        "source": "04_GAME_ASSETS/3d/characters/fukuchan/rig_v1/fukuchan.glb",
+        "source": "assets/3d/characters/fukuchan/rig_v1/fukuchan.glb",
         "sha256": "031ddc85939ce56f4562ae1b65f41109a11653a412e948a1db6e82dfe3d15fcc",
         "samples": 97,
         "violatingVertexSamples": 0,
@@ -1300,7 +1300,7 @@
         ]
       },
       "sobaya": {
-        "source": "04_GAME_ASSETS/3d/characters/sobaya/rig_v3/sobaya_rig.glb",
+        "source": "assets/3d/characters/sobaya/rig_v3/sobaya_rig.glb",
         "sha256": "5c6ed042c027cc4ca14511dddaef07e8dca618f0f263eb8654fcbca552994ee4",
         "samples": 97,
         "violatingVertexSamples": 0,

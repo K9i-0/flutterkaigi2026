@@ -1021,7 +1021,7 @@
     {
       "id": "work",
       "title": "労働時間のお知らせ",
-      "source": "03_SCRIPTS/19_liveaction_tako_room_escape/prop_notice_work_8_hours_production.png",
+      "source": "assets/2d/hazard_posters/prop_notice_work_8_hours_production.png",
       "x": -16,
       "z": -11.72,
       "y": 0.55,
@@ -1030,7 +1030,7 @@
     {
       "id": "alcohol",
       "title": "禁酒のお知らせ",
-      "source": "03_SCRIPTS/19_liveaction_tako_room_escape/prop_notice_no_alcohol_twitter_production.png",
+      "source": "assets/2d/hazard_posters/prop_notice_no_alcohol_twitter_production.png",
       "x": -11.03,
       "z": 4.78,
       "y": 0.5,
@@ -1039,7 +1039,7 @@
     {
       "id": "recruit",
       "title": "FDE募集",
-      "source": "03_SCRIPTS/15_yumemi_island_manmonth_mystery/prop_fde_recruitment_flyer_production.png",
+      "source": "assets/2d/hazard_posters/prop_fde_recruitment_flyer_production.png",
       "x": 5,
       "z": -13.78,
       "y": 3.45,

@@ -10,13 +10,13 @@ from PIL import Image
 from optimize_hazard_models import ROOT, pack, counts, sha
 from replace_glb_animation import read_glb
 
-OUT = ROOT / '04_GAME_ASSETS/3d/hazard_adopted/mobile_20260919'
+OUT = ROOT / 'assets/3d/hazard_adopted/mobile_20260919'
 WORK = ROOT / '.local/hazard-mobile-20260919'
 SOURCES = {
-    'sobaya': '04_GAME_ASSETS/3d/hazard_adopted/optimized_20260919/sobaya.glb',
-    'fukuchan': '04_GAME_ASSETS/3d/hazard_adopted/optimized_20260919/fukuchan.glb',
-    'yametaro': '04_GAME_ASSETS/3d/characters/yametaro/rig_nose_v3/yametaro.glb',
-    'takosan': '04_GAME_ASSETS/3d/characters/takosan/rig_radial_v6_lined/takosan.glb',
+    'sobaya': 'assets/3d/hazard_adopted/optimized_20260919/sobaya.glb',
+    'fukuchan': 'assets/3d/hazard_adopted/optimized_20260919/fukuchan.glb',
+    'yametaro': 'assets/3d/characters/yametaro/rig_nose_v3/yametaro.glb',
+    'takosan': 'assets/3d/characters/takosan/rig_radial_v6_lined/takosan.glb',
 }
 # Keep the main face atlas of both realistic characters at its original resolution.
 TEXTURE_LIMITS = {'sobaya': [2048, None], 'fukuchan': [2048, 2048, None, None, 2048, 2048],

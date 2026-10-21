@@ -19,7 +19,7 @@
 ## 制作素材
 
 - 外見の唯一の正本: `YumeTeleAnchor.png`
-- 動画入力用基本シート: `03_SCRIPTS/00_TEMPLATES/characters/character_yume_tele_anchor_basic_sheet.png`
+- 動画入力用基本シート: `characters/sheets/character_yume_tele_anchor_basic_sheet.png`
 - 正典参照音声: `YumeTeleAnchor_voice.wav`
 - 音声モデルと既定seed: `VOICE_CAST.md`
 

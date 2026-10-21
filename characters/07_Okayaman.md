@@ -11,4 +11,4 @@
 人物同一性（唯一のハード条件）: `Okayaman.jpg`の本人と同じ顔・人物として識別できること。衣装、髪型、ひげ、表情、口調、性格、能力、役割、現地出演かリモート出演かは固定しない。
 画像ファイル：Okayaman.jpg
 声ファイル：Okayaman_voice.wav（Irodori-TTSの正典参照音声。既定seedは`VOICE_CAST.md`を参照）
-ボクセルモデル：`04_GAME_ASSETS/voxel/models/okayaman.glb`（スタンド＋大型スクリーンのリモート出演スタイル。スクリーンがVoxelRig_ArmPrimary。再生成は`04_GAME_ASSETS/voxel/tools/build_okayaman_voxel_model.py`）
+ボクセルモデル：`assets/voxel/models/okayaman.glb`（スタンド＋大型スクリーンのリモート出演スタイル。スクリーンがVoxelRig_ArmPrimary。再生成は`assets/voxel/tools/build_okayaman_voxel_model.py`）

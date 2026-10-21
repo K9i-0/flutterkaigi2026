@@ -4,9 +4,9 @@
 黒いフード付きローブ、白い顔、黒い丸目、タコの触手、人間の腕2本。腕の先は5本指ではなく、指の分かれていない白く丸いちょこんとした手（ここだけかわいい）。腕や手が触手に変化することはなく、触手は下半身から生える。
 宇宙人のような謎の存在。無表情。
 
-標準媒体表現: 窓際トイジオラマ3D。丸くコンパクトなトイ比率、マットな布製ぬいぐるみ／柔らかい粘土トイ質感、無地寄りの大きな黒いフード、少数の太いローブ模様、裾直下から広がる6本の細い触手を通常形とする。標準シートは`03_SCRIPTS/00_TEMPLATES/characters/character_takosan_basic_sheet.png`。別媒体やエピソード限定形はユーザー指定時だけ別シートにする。
+標準媒体表現: 窓際トイジオラマ3D。丸くコンパクトなトイ比率、マットな布製ぬいぐるみ／柔らかい粘土トイ質感、無地寄りの大きな黒いフード、少数の太いローブ模様、裾直下から広がる6本の細い触手を通常形とする。標準シートは`characters/sheets/character_takosan_basic_sheet.png`。別媒体やエピソード限定形はユーザー指定時だけ別シートにする。
 
-動画用標準シートの触手配置（2026-09-26修正）: 6本は前斜め左右・真横左右・後ろ斜め左右へ約60度間隔で放射状に生える。正面へ6本を並べない。正面では後ろの2本が隠れてよく、各方向で同じ立体構造を保つ。シート右下の下面図を配置の基準にする。配置の参照は3Dモデル`04_GAME_ASSETS/3d/characters/takosan/rig_radial_v6_lined/takosan.blend`の正面・下面レンダリング。
+動画用標準シートの触手配置（2026-09-26修正）: 6本は前斜め左右・真横左右・後ろ斜め左右へ約60度間隔で放射状に生える。正面へ6本を並べない。正面では後ろの2本が隠れてよく、各方向で同じ立体構造を保つ。シート右下の下面図を配置の基準にする。配置の参照は3Dモデル`assets/3d/characters/takosan/rig_radial_v6_lined/takosan.blend`の正面・下面レンダリング。
 
 ## 擬態能力
 
@@ -14,7 +14,7 @@
 
 人物同一性（唯一のハード条件）: `Takosan.png`と同じキャラクター。白い顔、黒い丸目、下半身の触手、人間型の腕2本と白く丸い手からなる固有の身体構造を識別基準にする。衣装、表情、性格、能力、役割は固定しない。
 人物同一性の原典画像：`Takosan.png`
-標準キャラクターシート：`03_SCRIPTS/00_TEMPLATES/characters/character_takosan_basic_sheet.png`
-ボクセルモデル：`04_GAME_ASSETS/voxel/models/takosan.glb`（両腕＋触手6本リグ。再生成は`04_GAME_ASSETS/voxel/tools/build_takosan_voxel_model.py`）
+標準キャラクターシート：`characters/sheets/character_takosan_basic_sheet.png`
+ボクセルモデル：`assets/voxel/models/takosan.glb`（両腕＋触手6本リグ。再生成は`assets/voxel/tools/build_takosan_voxel_model.py`）
 
 声の正典（2026-10-02ユーザー採用）: `Takosan_voice.wav`。第84話完成版のIrodori採用音声。モデル・seed・再生成元は `VOICE_CAST.md` を参照。声質を維持し、84話の片言は固定しない。

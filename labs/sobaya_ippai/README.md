@@ -5,7 +5,7 @@ Flutter Sceneによる縦画面の3Dミニゲーム。18秒でジョッキを満
 ## 起動
 
 ```sh
-cd 25_SOBAYA_IPPAI
+cd labs/sobaya_ippai
 mise exec -- flutter pub get
 mise exec -- flutter run -d macos
 # iOS / Android は flutter devices の端末IDを -d に指定
@@ -50,7 +50,7 @@ Flutter 3.47.2 / Dart 3.13.2。iOS・Android・macOSのネイティブアプリ�
 - `tool/build_audio.py`: 3つの効果音を再生成するPythonスクリプト。
 - `tool/balance.dart`: 実際の入力で泡の比率と採点を確認するスイープ。
 
-人物は共有資産 `04_GAME_ASSETS/3d/hazard_rebuild/locomotion_v1/sobaya.glb` の相対symlink。既存Idleを使用し、結果の首振りだけHead骨へ加える。顔・仮面・体格や元GLBは変更しない。ジョッキは正典から派生させた `04_GAME_ASSETS/3d/props/ippai_mug/beer_mug.glb` への相対symlink。`tool/build_hero_mug.py` で再生成する。ビルドフックが生成する `flutter_scene_generated/` は再生成可能なので追跡しない。
+人物は共有資産 `assets/3d/hazard_rebuild/locomotion_v1/sobaya.glb` の相対symlink。既存Idleを使用し、結果の首振りだけHead骨へ加える。顔・仮面・体格や元GLBは変更しない。ジョッキは正典から派生させた `assets/3d/props/ippai_mug/beer_mug.glb` への相対symlink。`tool/build_hero_mug.py` で再生成する。ビルドフックが生成する `flutter_scene_generated/` は再生成可能なので追跡しない。
 
 ## 検証
 

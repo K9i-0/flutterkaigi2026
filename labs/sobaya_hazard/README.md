@@ -7,7 +7,7 @@
 ## 起動
 
 ```sh
-cd 24_SOBAYA_HAZARD
+cd labs/sobaya_hazard
 mise exec -- flutter run -d macos
 ```
 
@@ -15,7 +15,7 @@ WASD移動、ドラッグまたはQ/E視点、C隠密切替、Spaceまたはク�
 
 ## 構成
 
-- `../packages/madogiwa_engine`: 共有の衝突・認知記憶・再生時計。
+- `../../packages/madogiwa_engine`: 共有の衝突・認知記憶・再生時計。
 - `lib/game.dart`: この作品の巡回・射撃・目的・ダメージ。
 - `lib/rendering.dart`: モデルとカメラ。ベイク済みシーンのZ変換を境界で補正。
 - `assets/yard.json`: 描画生成と衝突で共有する区画定義。

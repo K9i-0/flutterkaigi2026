@@ -41,7 +41,7 @@
         "maxInfluences": 4,
         "maxWeightError": 1.1102230246251565e-16
       },
-      "source": "04_GAME_ASSETS/3d/characters/sobaya/rig_v3/sobaya_rig.glb",
+      "source": "assets/3d/characters/sobaya/rig_v3/sobaya_rig.glb",
       "sourceSha256": "84a7db2a4a3b2f0e3c72500452f149a97a457ccee6f39f4542155a9678816046",
       "asset": "assets/models/sobaya_motion.glb",
       "clips": [
@@ -1644,7 +1644,7 @@
         "maxInfluences": 4,
         "maxWeightError": 1.1102230246251565e-16
       },
-      "source": "04_GAME_ASSETS/3d/characters/fukuchan/rig_v1/fukuchan.glb",
+      "source": "assets/3d/characters/fukuchan/rig_v1/fukuchan.glb",
       "sourceSha256": "d156a86cb6b3148b628a1b1ab24f74a1a5395db936137dedac9ff76172c447c2",
       "asset": "assets/models/fukuchan_motion.glb",
       "clips": [

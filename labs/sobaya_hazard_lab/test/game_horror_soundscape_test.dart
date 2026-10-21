@@ -134,7 +134,7 @@ void main() {
     'search score is adopted stereo PCM with a quiet continuous loop seam',
     () {
       final manifest = jsonDecode(
-        File('../04_GAME_ASSETS/audio/hazard/search-score-manifest.json')
+        File('../../assets/audio/hazard/search-score-manifest.json')
             .readAsStringSync(),
       );
       final row = manifest['files'].first;

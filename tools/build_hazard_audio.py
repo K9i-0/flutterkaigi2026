@@ -1,7 +1,7 @@
 """Deterministic original game sound effects; no borrowed game audio."""
 from pathlib import Path
 import math,random,wave,struct
-out=Path(__file__).resolve().parent.parent/'21_SOBAYA_HAZARD_LAB/assets/audio';out.mkdir(exist_ok=True)
+out=Path(__file__).resolve().parent.parent/'labs/sobaya_hazard_lab/assets/audio';out.mkdir(exist_ok=True)
 rate=22050;rng=random.Random(49)
 def save(name,duration,kind):
  data=[];low=0

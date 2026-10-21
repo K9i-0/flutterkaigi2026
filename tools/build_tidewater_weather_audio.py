@@ -1,7 +1,7 @@
 """Deterministic procedural rain/thunder, original synthesized audio (CC0)."""
 import math, random, wave, struct
 from pathlib import Path
-ROOT = Path(__file__).resolve().parents[1] / '04_GAME_ASSETS/audio/weather'
+ROOT = Path(__file__).resolve().parents[1] / 'assets/audio/weather'
 ROOT.mkdir(parents=True, exist_ok=True)
 RATE=32000
 for name,seconds in [('rain',24),('thunder',9)]:

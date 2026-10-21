@@ -11,12 +11,12 @@ from pathlib import Path
 import bpy
 
 ROOT = Path(__file__).resolve().parent.parent
-OUT = ROOT / '21_SOBAYA_HAZARD_LAB/evidence/window-clearance.json'
+OUT = ROOT / 'labs/sobaya_hazard_lab/evidence/window-clearance.json'
 result = {'sampleHz': 60, 'wallHalfDepth': .175, 'apertureHalfWidth': .78,
           'sill': .82, 'lintel': 2.42, 'tolerance': .02, 'models': {}}
 for name, relative in [('fukuchan', 'fukuchan/rig_v1/fukuchan.glb'),
                        ('sobaya', 'sobaya/rig_v3/sobaya_rig.glb')]:
-    path = ROOT / '04_GAME_ASSETS/3d/characters' / relative
+    path = ROOT / 'assets/3d/characters' / relative
     bpy.ops.object.select_all(action='SELECT')
     bpy.ops.object.delete(use_global=False)
     for action in list(bpy.data.actions):

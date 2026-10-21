@@ -15,11 +15,11 @@ from PIL import Image
 from replace_glb_animation import read_glb
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / '04_GAME_ASSETS/3d/hazard_adopted/optimized_20260919'
+OUT = ROOT / 'assets/3d/hazard_adopted/optimized_20260919'
 WORK = ROOT / '.local/hazard-optimization-20260919'
 SOURCES = {
-    'sobaya': ROOT / '04_GAME_ASSETS/3d/hazard_adopted/v3_20260917/sobaya.glb',
-    'fukuchan': ROOT / '04_GAME_ASSETS/3d/hazard_adopted/v3_preview_20260917/fukuchan.glb',
+    'sobaya': ROOT / 'assets/3d/hazard_adopted/v3_20260917/sobaya.glb',
+    'fukuchan': ROOT / 'assets/3d/hazard_adopted/v3_preview_20260917/fukuchan.glb',
 }
 
 

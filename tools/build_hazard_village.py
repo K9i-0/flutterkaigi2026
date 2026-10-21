@@ -71,12 +71,12 @@ for i in range(200):
 
 # Collectible images stay canonical in the script library.
 posters=[
- ('shark','そばシャーク2','03_SCRIPTS/35_soba_shark/poster_soba_shark_2_production.png',-10, -2.66,1.6),
- ('bug','BUG MAN','03_SCRIPTS/37_bug_man_poster/prop_bug_man_poster_production.png',8,-10.69,1.6),
- ('debug','NO WAY DEBUG','03_SCRIPTS/37_bug_man_poster/prop_bug_man_poster_no_way_debug_production.png',-3,7.31,1.6),
- ('detective','名探偵よーたん','03_SCRIPTS/39_detective_yotan_beer_disappearance/poster_detective_yotan_beer_disappearance_production.png',14,2.31,1.6),
- ('wanted','やめ太郎 指名手配','03_SCRIPTS/59_sobaya_professional_window_side/prop_yametaro_wanted_poster.png',-8,-17.69,1.6),
- ('beer','窓際族物語','03_SCRIPTS/32_sobaya_beer_encouragement/prop_madogiwa_movie_poster_production.png',6,-10.30,4.5),
+ ('shark','そばシャーク2','assets/2d/hazard_posters/poster_soba_shark_2_production.png',-10, -2.66,1.6),
+ ('bug','BUG MAN','assets/2d/hazard_posters/prop_bug_man_poster_production.png',8,-10.69,1.6),
+ ('debug','NO WAY DEBUG','assets/2d/hazard_posters/prop_bug_man_poster_no_way_debug_production.png',-3,7.31,1.6),
+ ('detective','名探偵よーたん','assets/2d/hazard_posters/poster_detective_yotan_beer_disappearance_production.png',14,2.31,1.6),
+ ('wanted','やめ太郎 指名手配','assets/2d/hazard_posters/prop_yametaro_wanted_poster.png',-8,-17.69,1.6),
+ ('beer','窓際族物語','assets/2d/hazard_posters/prop_madogiwa_movie_poster_production.png',6,-10.30,4.5),
 ]
 collection=[]
 for id,title,path,x,z,h in posters:

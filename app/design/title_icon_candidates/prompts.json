@@ -2,11 +2,11 @@
   "tool": "built-in image_gen",
   "status": "candidates",
   "references": [
-    "/Users/kotahayashi/Workspace/flutterkaigi2026/03_SCRIPTS/00_TEMPLATES/characters/character_sobaya_basic_sheet.png",
-    "/Users/kotahayashi/Workspace/flutterkaigi2026/02_CHARACTERS/Fukuchan.jpg",
-    "/Users/kotahayashi/Workspace/flutterkaigi2026/26_YUMEMI_RECRUIT_EXAM/assets/images/cto_odatetsu.png",
-    "/Users/kotahayashi/Workspace/flutterkaigi2026/02_CHARACTERS/Yumemin.jpg",
-    "/Users/kotahayashi/Workspace/flutterkaigi2026/03_SCRIPTS/00_TEMPLATES/props/product_super_try.png"
+    "/Users/kotahayashi/Workspace/flutterkaigi2026/characters/sheets/character_sobaya_basic_sheet.png",
+    "/Users/kotahayashi/Workspace/flutterkaigi2026/characters/Fukuchan.jpg",
+    "/Users/kotahayashi/Workspace/flutterkaigi2026/app/assets/images/cto_odatetsu.png",
+    "/Users/kotahayashi/Workspace/flutterkaigi2026/characters/Yumemin.jpg",
+    "/Users/kotahayashi/Workspace/flutterkaigi2026/characters/props/product_super_try.png"
   ],
   "jobs": [
     {

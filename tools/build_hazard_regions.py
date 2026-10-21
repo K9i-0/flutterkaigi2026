@@ -127,7 +127,7 @@ def weeds(name,x,z,count):
 
 def save(id,label,subtitle,spawn,items,crates,enemies,collection,npcs,exits,gate_data,targets=None):
     if '--mountain-only' in sys.argv and id!='mountain':return
-    out=ROOT/'04_GAME_ASSETS/3d/environments'/id;out.mkdir(parents=True,exist_ok=True)
+    out=ROOT/'assets/3d/environments'/id;out.mkdir(parents=True,exist_ok=True)
     from hazard_yumemi_art import dress_yumemi
     dress_yumemi(id, globals())
     label,subtitle = {'farm': ('CHAPTER 02 / VILLAGE QUARTER', '村の生活圏。たこさんの商店だけが営業中。'), 'mountain': ('CHAPTER 03 / MOUNTAIN SHRINE', '山の神社。祟りの噂と、巨大な影。')}[id]
@@ -194,9 +194,9 @@ targets=[medallion('farm_'+str(i),x,z,h) for i,(x,z,h) in enumerate([
     (-11.8,-16.2,2.6),(-16,-16.72,2.7),(-8,1-.2,2.5),(-10,14.28,2.8),
     (12,5.15,1.8),(6,-14.22,4.6),(11,19,2.1)])]
 collection=[
-    poster('work','労働時間のお知らせ','03_SCRIPTS/19_liveaction_tako_room_escape/prop_notice_work_8_hours_production.png',-16,-11.72,1.55),
-    poster('alcohol','禁酒のお知らせ','03_SCRIPTS/19_liveaction_tako_room_escape/prop_notice_no_alcohol_twitter_production.png',-11.03,4.78,1.5),
-    poster('recruit','FDE募集','03_SCRIPTS/15_yumemi_island_manmonth_mystery/prop_fde_recruitment_flyer_production.png',5,-13.78,4.45,True)]
+    poster('work','労働時間のお知らせ','assets/2d/hazard_posters/prop_notice_work_8_hours_production.png',-16,-11.72,1.55),
+    poster('alcohol','禁酒のお知らせ','assets/2d/hazard_posters/prop_notice_no_alcohol_twitter_production.png',-11.03,4.78,1.5),
+    poster('recruit','FDE募集','assets/2d/hazard_posters/prop_fde_recruitment_flyer_production.png',5,-13.78,4.45,True)]
 items=[{'id':'farm_'+id,'kind':kind,'x':x,'z':z,'y':y,'amount':n} for id,kind,x,z,y,n in [
     ('herb','green',-17,-13,.8,1),('barn_ammo','ammo',6,-7,3.35,15),
     ('barn_shells','shells',8,-6,3.35,5),('field_ammo','ammo',-10,17,.85,15),
@@ -251,9 +251,9 @@ for x,z in [(4,1),(17,2),(4,9)]:
     box('Yard cover',stone,(x,z,.65),(1.6,1.3,1.3));solid(x,z,1.6,1.3,1.3)
 gate(20,15,'z')
 collection=[
-    poster('watch','見てるぞ','03_SCRIPTS/38_miteruzo_horror_poster/poster_miteruzo_variant_c_revised_v3.png',11.2,9.28,1.6),
-    poster('drybeer','極度乾燥ビール','03_SCRIPTS/32_sobaya_beer_encouragement/prop_kyokudo_kanso_beer_production.png',14.7,9.28,1.6),
-    poster('chair','アロンチェア制作記録','03_SCRIPTS/51_aronchia_makers_vlog/prop_aronchia_handwritten_final.png',11,9.72,1.6,True)]
+    poster('watch','見てるぞ','assets/2d/hazard_posters/poster_miteruzo_variant_c_revised_v3.png',11.2,9.28,1.6),
+    poster('drybeer','極度乾燥ビール','assets/2d/hazard_posters/prop_kyokudo_kanso_beer_production.png',14.7,9.28,1.6),
+    poster('chair','アロンチェア制作記録','assets/2d/hazard_posters/prop_aronchia_handwritten_final.png',11,9.72,1.6,True)]
 items=[{'id':'mountain_'+id,'kind':kind,'x':x,'z':z,'y':y,'amount':n} for id,kind,x,z,y,n in [
     ('ammo','ammo',-18,-1,.3,15),('green','green',3,5,.25,1),('shells','shells',16,16,.9,5),('red','red',9,16,.85,1)]]
 crates=[{'id':'mountain_crate_'+str(i),'x':x,'z':z,'kind':'crate'}

@@ -12,7 +12,7 @@ import wave
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-ASSETS = ROOT / '21_SOBAYA_HAZARD_LAB/assets'
+ASSETS = ROOT / 'labs/sobaya_hazard_lab/assets'
 manifest = json.loads((ASSETS / 'audio/voice-manifest.json').read_text())
 clips = []
 for clip in manifest['clips']:

@@ -1,7 +1,7 @@
 """Temporary code-authored brands; canonical Super Try image stays untouched."""
 from PIL import Image,ImageDraw,ImageFont
 from pathlib import Path
-out=Path(__file__).resolve().parents[2]/'04_GAME_ASSETS/3d/props/beer_rain_cans';out.mkdir(parents=True,exist_ok=True)
+out=Path(__file__).resolve().parents[2]/'assets/3d/props/beer_rain_cans';out.mkdir(parents=True,exist_ok=True)
 font='/System/Library/Fonts/ヒラギノ角ゴシック W6.ttc'
 for name,title,band,kind in [('light','窓際ライト','#cc8d27','ビール'),('happoshu','つらめ','#775aa0','発泡酒')]:
  im=Image.new('RGB',(768,1024),'#dedfdc');d=ImageDraw.Draw(im)

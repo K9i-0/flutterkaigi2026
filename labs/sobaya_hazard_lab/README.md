@@ -1,8 +1,8 @@
-**全4人のスマホ軽量モデルを追加（2026-09-19）。** iOS/Androidは軽量版、PCは現行版を自動選択。元モデルは保持。4人合計のゲーム変換後データは約45%減、そば屋の三角形は約51%減。顔・動作を比較済み。実機の発熱低下量は未測定。[モデル仕様・切替方法](../04_GAME_ASSETS/3d/hazard_adopted/mobile_20260919/README.md)／[検証記録](qa/mobile-models-20260919.json)。
+**全4人のスマホ軽量モデルを追加（2026-09-19）。** iOS/Androidは軽量版、PCは現行版を自動選択。元モデルは保持。4人合計のゲーム変換後データは約45%減、そば屋の三角形は約51%減。顔・動作を比較済み。実機の発熱低下量は未測定。[モデル仕様・切替方法](../../assets/3d/hazard_adopted/mobile_20260919/README.md)／[検証記録](qa/mobile-models-20260919.json)。
 
 # そば屋ハザード
 
-**3Dモデルを軽量化（2026-09-19）。** そば屋の顔・手・動作を維持し、頭部の剛体パーツを整理して三角形を約19.9万→12.7万（36.1%減）。福ギュンは形状・画像画素を変えずGLBを可逆圧縮・整理。全127クリップ、口パク、ジョッキ追従を保持した。[モデルと再生成](../04_GAME_ASSETS/3d/hazard_adopted/optimized_20260919/README.md)／[Mac本編・画像比較の検証](qa/model-optimization-20260919.json)。GLB容量削減とゲームの展開データ量は別。FPS・発熱改善率は未測定で、旧配布ZIP・iPhoneインストール済みアプリは未更新。
+**3Dモデルを軽量化（2026-09-19）。** そば屋の顔・手・動作を維持し、頭部の剛体パーツを整理して三角形を約19.9万→12.7万（36.1%減）。福ギュンは形状・画像画素を変えずGLBを可逆圧縮・整理。全127クリップ、口パク、ジョッキ追従を保持した。[モデルと再生成](../../assets/3d/hazard_adopted/optimized_20260919/README.md)／[Mac本編・画像比較の検証](qa/model-optimization-20260919.json)。GLB容量削減とゲームの展開データ量は別。FPS・発熱改善率は未測定で、旧配布ZIP・iPhoneインストール済みアプリは未更新。
 
 **そば屋モデル更新（2026-09-17）。** 承認済みの握り・垂直な立ちポーズ・歩走の手・3攻撃・左手挨拶を採用。待機は胸元にジョッキを構える姿勢。旧モデル用のジョッキ90度補正を外し、位置と角度の両方をソケットへ合わせる。[検証記録](qa/sobaya-motion-adoption-20260917.json)。今回の変更は開発版へ反映し、旧配布ZIPは更新していません。
 
@@ -22,7 +22,7 @@ M4 MacBook Airの村8体・85%・profile各3回では、UI P95の中央値が旧
 
 最新Mac版（ソース `6440155`）: [そば屋ハザード.app](../.local/hazard_releases/sobaya-hazard-macos-graphics-20260912/そば屋ハザード.app) / [ZIP](../.local/hazard_releases/sobaya-hazard-macos-graphics-20260912.zip)。9シーン・126音声の同梱、署名とZIPの整合性を確認。Macの実画面はdebug版、性能はprofile版で確認し、配布コピーのRelease UIはウインドウ取得不可で未確認。[配布版検査](qa/graphics-release-20260912.json)。以下は各更新時点の履歴。
 
-**アプリ名とアイコンを統一（2026-09-08）。** iOS・Android・macOSの表示名は「そば屋ハザード」、アイコンはユーザー指定の[C案「暗闇からの視線」](../04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/README.md)を採用した。Macのビルド成果物も「そば屋ハザード.app」。Androidには背景を広げたAdaptive Iconとテーマ用の単色版を追加。iOSホーム画面、Macのビルド済みアイコン、Androidエミュレーターの円形・単色ランチャー表示を確認した。[アイコン検証](qa/icon-C-adoption-20260908.json)／[名称変更の検証](qa/app-branding-20260908.json)。
+**アプリ名とアイコンを統一（2026-09-08）。** iOS・Android・macOSの表示名は「そば屋ハザード」、アイコンはユーザー指定の[C案「暗闇からの視線」](../../assets/3d/ui/hazard/icon-concepts-20260908/README.md)を採用した。Macのビルド成果物も「そば屋ハザード.app」。Androidには背景を広げたAdaptive Iconとテーマ用の単色版を追加。iOSホーム画面、Macのビルド済みアイコン、Androidエミュレーターの円形・単色ランチャー表示を確認した。[アイコン検証](qa/icon-C-adoption-20260908.json)／[名称変更の検証](qa/app-branding-20260908.json)。
 
 名称・アイコン更新時点のMac版（ソース `091fbbc`）: [そば屋ハザード.app](../.local/hazard_releases/sobaya-hazard-macos-091fbbc/そば屋ハザード.app) / [ZIP](../.local/hazard_releases/sobaya-hazard-macos-091fbbc.zip)。配布ファイルからの起動、Cアイコンの同梱ハッシュ、署名・ZIP検査を確認済み。
 
@@ -58,9 +58,9 @@ M4 MacBook Airの村8体・85%・profile各3回では、UI P95の中央値が旧
 
 操作簡素化前のMacアプリ（ビルド `9492ff0`）: [そば屋ハザード.app](../.local/hazard_releases/sobaya-hazard-macos-9492ff0/そば屋ハザード.app) / [ZIP](../.local/hazard_releases/sobaya-hazard-macos-9492ff0.zip)。全体245テストと追加5件の回帰テスト、Mac debug／iPhoneシミュレーターの縦横UI・操作、11条件のprofileを確認。[Release同梱検査](qa/mobile-world-stealth-release-20260908.json)。スマートフォン実機の操作感・長時間性能は未検証。
 
-**2026-09-08更新：** 確認済みの肩ウェイト・歩行・ダンスを[本編採用GLB](../04_GAME_ASSETS/3d/hazard_adopted/README.md)へ反映。福ギュンのダッシュは既存Mixamo Run、そば屋は逃走・追跡の調整版を採用した。ジョッキ保持・3攻撃など本編専用動作を保持した（回避はその後の操作簡素化で廃止）。未発見の通常そば屋は出現時20%でダンス3種のいずれかを選ぶ。疑い・発見・被弾で中断し、一度発見後は再開しない。ボス対象外。抽選と発見履歴はチェックポイントへ保存する。196テスト・本編の3ダンス／銃声による中断／採用Run／追跡と握り／会話の口パクを確認。[検証記録](qa/adopted-vrm-and-dance-20260908.json)。
+**2026-09-08更新：** 確認済みの肩ウェイト・歩行・ダンスを[本編採用GLB](../../assets/3d/hazard_adopted/README.md)へ反映。福ギュンのダッシュは既存Mixamo Run、そば屋は逃走・追跡の調整版を採用した。ジョッキ保持・3攻撃など本編専用動作を保持した（回避はその後の操作簡素化で廃止）。未発見の通常そば屋は出現時20%でダンス3種のいずれかを選ぶ。疑い・発見・被弾で中断し、一度発見後は再開しない。ボス対象外。抽選と発見履歴はチェックポイントへ保存する。196テスト・本編の3ダンス／銃声による中断／採用Run／追跡と握り／会話の口パクを確認。[検証記録](qa/adopted-vrm-and-dance-20260908.json)。
 
-**人型アニメーション比較アプリを追加。** [そば屋モーションラボ](../22_HUMANOID_MOTION_LAB/README.md)でそば屋72・福ギュン67クリップを4手法で比較できる。ゲームの2モデルも[体格対応モーション正本](../04_GAME_ASSETS/3d/motion_library/README.md)を共有する。ゲーム本編にも新モーションを割り当てた。福ギュンは体格補正済みの待機・歩行・走行とXキーのローリング。そば屋は正典のジョッキ保持、ジョッキを持つ走行、パンチ・フック・叩きつけを使用する。攻撃は既存の命中タイミングに同期し、歩行⇄走行の位相、衝突後の移動量と足運びの同期も維持する。この段落と以下のv1〜v3は以前の採用・モデル制作履歴。
+**人型アニメーション比較アプリを追加。** [そば屋モーションラボ](../../labs/humanoid_motion_lab/README.md)でそば屋72・福ギュン67クリップを4手法で比較できる。ゲームの2モデルも[体格対応モーション正本](../../assets/3d/motion_library/README.md)を共有する。ゲーム本編にも新モーションを割り当てた。福ギュンは体格補正済みの待機・歩行・走行とXキーのローリング。そば屋は正典のジョッキ保持、ジョッキを持つ走行、パンチ・フック・叩きつけを使用する。攻撃は既存の命中タイミングに同期し、歩行⇄走行の位相、衝突後の移動量と足運びの同期も維持する。この段落と以下のv1〜v3は以前の採用・モデル制作履歴。
 
 前版Macアプリ（ビルド `6b2073e`）: [そば屋ハザード.app](../.local/hazard_releases/sobaya-hazard-macos-6b2073e/そば屋ハザード.app) / [ZIP](../.local/hazard_releases/sobaya-hazard-macos-6b2073e.zip)。196テスト、debug本編での採用走行・3ダンス・発見時中断・口パクを確認。Releaseの起動、9シーン／126音声の同梱照合・署名・ZIP検査に合格。[同梱検査](qa/adopted-vrm-release-20260908.json)。
 
@@ -73,7 +73,7 @@ M4 MacBook Airの村8体・85%・profile各3回では、UI P95の中央値が旧
 リポジトリルートから実行する。
 
 ```sh
-cd 21_SOBAYA_HAZARD_LAB
+cd labs/sobaya_hazard_lab
 mise exec -- flutter pub get
 mise exec -- flutter run -d macos
 ```
@@ -104,11 +104,11 @@ mise exec -- flutter run -d macos
 
 肩・顔・握り・ガラス／液体表現と、Tripo複数画像入力の調査は[品質改善方針](ASSET_QUALITY_PLAN.md)を参照。
 
-`assets/models/sobaya.glb`は[本編採用GLB正本](../04_GAME_ASSETS/3d/hazard_adopted/sobaya.glb)への相対symlink。ゲーム側へコピーしない。採用したGLBをGit管理対象にし、Tripo生レスポンス・署名付きURL・APIキーは含めない。
+`assets/models/sobaya.glb`は[本編採用GLB正本](../../assets/3d/hazard_adopted/sobaya.glb)への相対symlink。ゲーム側へコピーしない。採用したGLBをGit管理対象にし、Tripo生レスポンス・署名付きURL・APIキーは含めない。
 
-ベースとなるrig_v3は身長1.8m、28,576三角面、4材質、4K PBRテクスチャ、45ボーン／最大4ウェイト。歩行・走行・ゾンビ歩行・ダンス3種・乾杯・ジョッキ攻撃・待機の9クリップを持つ。[リグ仕様・再生成](../04_GAME_ASSETS/3d/characters/sobaya/rig_v3/README.md)を参照。
+ベースとなるrig_v3は身長1.8m、28,576三角面、4材質、4K PBRテクスチャ、45ボーン／最大4ウェイト。歩行・走行・ゾンビ歩行・ダンス3種・乾杯・ジョッキ攻撃・待機の9クリップを持つ。[リグ仕様・再生成](../../assets/3d/characters/sobaya/rig_v3/README.md)を参照。
 
-`assets/models/beer_mug.glb`も[共通小道具の正本](../04_GAME_ASSETS/3d/props/beer_mug_v2/beer_mug.glb)への相対symlink。8,276三角面・4材質で、右手のソケットに取り付ける。
+`assets/models/beer_mug.glb`も[共通小道具の正本](../../assets/3d/props/beer_mug_v2/beer_mug.glb)への相対symlink。8,276三角面・4材質で、右手のソケットに取り付ける。
 
 モーション画面では0.25〜2倍速、一時停止、スライダーによる姿勢確認、リプレイができる。乾杯・攻撃を選ぶとジョッキを自動装備する。移動画面では速度に応じて待機／歩行／走行を切り替え、ゾンビ歩行も選べる。Cで乾杯、Eで攻撃、1／2／3でダンス。移動中のエモートは1回再生して待機へ戻る（再生中は移動停止）。攻撃のダメージ・敵への命中判定は未実装。
 
@@ -190,11 +190,11 @@ WalkはMixamo「Walking / Male Standard Walk」、Runは「Running / Male Weight
 - 元の周期は歩行1.233秒、走行0.833秒。移動モードでは衝突後の実移動量に再生速度を合わせる。
 - 「モーション」で歩行／走るを選び、側面・0.5倍速で接地を確認できる。1倍速は元クリップの周期。
 - Idle・ゾンビ・ダンス・乾杯・攻撃はv2のまま。開始／停止／旋回の専用モーション、段差への実行時IKは未実装。
-- 元FBXと編集blendはローカル保持。取得条件と再生成手順は[rig_v3 README](../04_GAME_ASSETS/3d/characters/sobaya/rig_v3/README.md)。
+- 元FBXと編集blendはローカル保持。取得条件と再生成手順は[rig_v3 README](../../assets/3d/characters/sobaya/rig_v3/README.md)。
 
 ## ゲーム内の声と環境音（2026-09-06）
 
-本編は「そば屋エンジン」の放棄と、廃村ゆめみ村へ島流しされた三人を中心に再構成し、地の文の読み上げ5本と購入時の声・被弾声を含む91本の発話、探索メモ8枚、ポスター12枚の裏書きを収録。[物語・事故の因果関係・探索仕様](STORY.md)を参照。福ギュン・やめ太郎・そば屋は正典Irodori、たこさんは第21話と同じVOICEVOX:Voidoll（style 89）。[音声台本と生成条件](../04_GAME_ASSETS/audio/hazard/script.md)を正本とし、ゲームから相対symlinkで利用する。
+本編は「そば屋エンジン」の放棄と、廃村ゆめみ村へ島流しされた三人を中心に再構成し、地の文の読み上げ5本と購入時の声・被弾声を含む91本の発話、探索メモ8枚、ポスター12枚の裏書きを収録。[物語・事故の因果関係・探索仕様](STORY.md)を参照。福ギュン・やめ太郎・そば屋は正典Irodori、たこさんは第21話と同じVOICEVOX:Voidoll（style 89）。[音声台本と生成条件](../../assets/audio/hazard/script.md)を正本とし、ゲームから相対symlinkで利用する。
 
 この時点で村・農場・山道の環境音と、敵との距離で変わる音楽を追加した。2026-09-08のステルス拡張では、現在の発見・捜索状態で音楽を変える方式へ移行した。会話中は背景音を下げる。設定で全体・台詞・BGM・効果音・環境音を個別に調整できる。台詞送りとスキップで旧音声を破棄し、一時停止／非アクティブ化で再生を止める。読み込み中はカットの時計を待機し、通常台詞は音声長＋0.5秒以上、地の文は音声長＋1.5秒と文字数÷6＋2秒（最低6秒）の長い方を確保する。音声カタログにない台詞にも文字数に応じた表示時間を設ける。音声が読み込めない場合は8秒で待機を解除して字幕を継続する。
 
@@ -209,7 +209,7 @@ Dartのみのホットリスタートで新しいクリップを読み込める�
 ## 音声を含む本編profileとMacパッケージ
 
 ```sh
-# 21_SOBAYA_HAZARD_LABから実行
+# labs/sobaya_hazard_labから実行
 mise exec -- flutter run -d macos --profile -t lib/game_main.dart --dart-define=LAB_BENCHMARK=true
 mise exec -- flutter build macos --release -t lib/game_main.dart
 # リポジトリルートから、実際にビルドしたコミットを指定
@@ -234,7 +234,7 @@ Macパッケージ作成では3区画、9シーン、各manifestに記載され�
 
 [窓追加後の全編検査](qa/campaign-traversal-20260906.json): 規則検査は0枚から全12枚の収集と20ドロップ回収、実描画は20体撃破・20ドロップ回収からクリア画面まで約7分41秒。実描画側は既収集12枚を引き継いだため、新規全収集の証明は規則検査と区別する。既知経路と自動照準であり、初見の尺・難度の評価ではない。
 
-戦闘音・音楽を更新: [作曲・音色・再生成条件](../04_GAME_ASSETS/audio/hazard/SCORE.md)。探索/追跡は各48秒のオリジナル曲、発射/ジョッキ音と正典の「ビール」声は各3バリエーション。詳細は [本編の音響検証](GAMEPLAY.md) を参照。
+戦闘音・音楽を更新: [作曲・音色・再生成条件](../../assets/audio/hazard/SCORE.md)。探索/追跡は各48秒のオリジナル曲、発射/ジョッキ音と正典の「ビール」声は各3バリエーション。詳細は [本編の音響検証](GAMEPLAY.md) を参照。
 
 ### そば屋エンジン編の検証
 
@@ -246,7 +246,7 @@ Macパッケージ作成では3区画、9シーン、各manifestに記載され�
 
 ## キャラクターシート準拠のNPC（2026-09-06）
 
-[たこさん](../04_GAME_ASSETS/3d/characters/takosan/README.md)と[やめ太郎](../04_GAME_ASSETS/3d/characters/yametaro/README.md)をキャラシート由来のTripo P2モデルへ差し替えた。正本は各 `rig_sheet_v2/`、ゲーム内は相対symlink。たこさんの6本の触手と袖、やめ太郎の頭部ウェイトと口パクをBlenderで調整。[GLB・ネイティブ会話／商店検証](qa/npc-tripo-sheet-20260906.json)を参照。既存140テストは通過、差し替え後のprofile測定は未実施。
+[たこさん](../../assets/3d/characters/takosan/README.md)と[やめ太郎](../../assets/3d/characters/yametaro/README.md)をキャラシート由来のTripo P2モデルへ差し替えた。正本は各 `rig_sheet_v2/`、ゲーム内は相対symlink。たこさんの6本の触手と袖、やめ太郎の頭部ウェイトと口パクをBlenderで調整。[GLB・ネイティブ会話／商店検証](qa/npc-tripo-sheet-20260906.json)を参照。既存140テストは通過、差し替え後のprofile測定は未実施。
 
 ## シナリオ調整（2026-09-06）
 
@@ -282,7 +282,7 @@ Flutter Scene 0.23.0のカラー描画高速経路が、骨格なしモーフの
 
 巨大そば屋は通常の3倍、頭部約5m。胴体・頭部・ジョッキ・移動衝突・接地影・ロケットの狙い高さも同じスケールを参照。振りかぶり1.2秒／叩きつけ1.6秒として回避猶予を確保し、第3章の会話カメラを拡張。HP900とロケット3発撃破は維持。
 
-Imagegenで生成したRGBAロゴは `04_GAME_ASSETS/3d/ui/hazard/` が正本。`assets/cinematics/title_logo.png` へ相対symlinkで共有し、pubspecにも明示してバンドルする。新規開始とタイトルからの再開で2.5秒のロゴ画面と、正典そば屋の低い声によるタイトルコールを再生する。通常の冒頭会話とは音声を重ねない。
+Imagegenで生成したRGBAロゴは `assets/3d/ui/hazard/` が正本。`assets/cinematics/title_logo.png` へ相対symlinkで共有し、pubspecにも明示してバンドルする。新規開始とタイトルからの再開で2.5秒のロゴ画面と、正典そば屋の低い声によるタイトルコールを再生する。通常の冒頭会話とは音声を重ねない。
 
 ポーズの「最初から」を「保存してタイトルへ」に変更。保存成功後にタイトルへ戻り、保存失敗時はポーズを維持。「続きから」で保存位置・所持品を再開する。たこさんは第1章の配置・ムービーから外し、第2章の農場から登場。最高難度の第1章はやめ太郎の25発で通過可能にする。
 
@@ -292,7 +292,7 @@ Imagegenで生成したRGBAロゴは `04_GAME_ASSETS/3d/ui/hazard/` が正本。
 
 追跡曲を160 BPM・32小節・48秒へ作り直し、速い弦の刻みと太鼓、金管の不協和音で緊張感を追加。発見時に短い警告音を1回鳴らし、追跡曲へ速く切り替える。短い脅威の切れ目では曲を維持し、警告音を連発しない。
 
-ロケットの発射と爆発は各3種類。噴射・圧力・低音・残響を分けた合成音に更新し、遠距離の爆発も届く減衰へ変更。発射・着弾直後のBGMと会話中の背景／効果音を下げ、足音の音量も整理。正典の台詞・声質は維持する。[作曲と再生成条件](../04_GAME_ASSETS/audio/hazard/SCORE.md)。
+ロケットの発射と爆発は各3種類。噴射・圧力・低音・残響を分けた合成音に更新し、遠距離の爆発も届く減衰へ変更。発射・着弾直後のBGMと会話中の背景／効果音を下げ、足音の音量も整理。正典の台詞・声質は維持する。[作曲と再生成条件](../../assets/audio/hazard/SCORE.md)。
 
 検証は `qa/audio-polish-assets-20260907.json`（27素材のハッシュ・ループ境界・真のピーク）、`qa/audio-polish-mix-20260907.json`（背景＋発射＋着弾の105組み合わせ）、`qa/audio-polish-native-20260907.json`（ネイティブ切り替え・再生）に記録。音楽の好みや、全ての音が同時に鳴る状況まで保証する検査ではない。
 

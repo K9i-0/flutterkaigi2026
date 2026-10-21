@@ -20,7 +20,7 @@ for(const dir of ['.local/vrm-spec','.local/vrm-specification/specification/VRMC
 const validate=ajv.getSchema('VRMC_vrm.schema.json');
 const results=[];
 for(const name of ['sobaya','fukuchan']){
- const bytes=fs.readFileSync(root+`/04_GAME_ASSETS/vrm/characters/${name}.vrm`);
+ const bytes=fs.readFileSync(root+`/assets/vrm/characters/${name}.vrm`);
  const json=JSON.parse(bytes.subarray(20,20+bytes.readUInt32LE(12)));
  if(!validate(json.extensions.VRMC_vrm))throw Error(JSON.stringify(validate.errors));
  const bones=json.extensions.VRMC_vrm.humanoid.humanBones;
@@ -56,5 +56,5 @@ for(const name of ['sobaya','fukuchan']){
  }
  results.push({name,schema:true,hierarchy:true,positiveScale:true,vrmLoader:true,normalizedHeadRotation:true,expressions:(vrm.expressionManager?.expressions??[]).map(e=>e.expressionName),humanBones:Object.keys(bones).length,gltfErrors:gltfReport.issues.numErrors,gltfWarnings:gltfReport.issues.numWarnings,gltfMessages:gltfReport.issues.messages.filter(x=>x.severity<=1)});
 }
-fs.writeFileSync(root+'/04_GAME_ASSETS/vrm/characters/validation.json',JSON.stringify({passed:true,specCommit:execFileSync('git',['-C',root+'/.local/vrm-specification','rev-parse','HEAD'],{encoding:'utf8'}).trim(),loader:'@pixiv/three-vrm '+JSON.parse(fs.readFileSync(path.join(path.dirname(require.resolve('@pixiv/three-vrm')),'../package.json'))).version,results},null,2)+'\n');
+fs.writeFileSync(root+'/assets/vrm/characters/validation.json',JSON.stringify({passed:true,specCommit:execFileSync('git',['-C',root+'/.local/vrm-specification','rev-parse','HEAD'],{encoding:'utf8'}).trim(),loader:'@pixiv/three-vrm '+JSON.parse(fs.readFileSync(path.join(path.dirname(require.resolve('@pixiv/three-vrm')),'../package.json'))).version,results},null,2)+'\n');
 console.log(JSON.stringify(results,null,2));

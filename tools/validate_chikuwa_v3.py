@@ -1,7 +1,7 @@
 """Validate the high-detail normal chikuwa asset independently of its builder."""
 import json,math,struct
 from pathlib import Path
-path=Path(__file__).resolve().parents[1]/'04_GAME_ASSETS/3d/props/chikuwa/v3/chikuwa.glb'
+path=Path(__file__).resolve().parents[1]/'assets/3d/props/chikuwa/v3/chikuwa.glb'
 data=path.read_bytes();length=struct.unpack_from('<I',data,12)[0];j=json.loads(data[20:20+length]);blob=data[28+length:]
 def values(i):
     a=j['accessors'][i];v=j['bufferViews'][a['bufferView']]

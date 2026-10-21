@@ -7,7 +7,7 @@ import bpy, math, json
 from mathutils import Vector, noise
 import numpy as np
 ROOT=Path(__file__).resolve().parents[1]
-OUT=ROOT/'04_GAME_ASSETS/3d/props/chikuwa/v2'
+OUT=ROOT/'assets/3d/props/chikuwa/v2'
 OUT.mkdir(parents=True,exist_ok=True)
 L=2.8;R=.30;B=8;N=64;M=80;MI=32
 bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False)

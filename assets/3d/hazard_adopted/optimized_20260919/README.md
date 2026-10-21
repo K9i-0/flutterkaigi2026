@@ -29,4 +29,4 @@ node tools/validate_hazard_optimized_format.mjs
 
 比較ページはリポジトリルートをローカル配信し、`tools/preview_hazard_optimization.html`を開く。同じカメラ・照明・クリップ時刻で正面・側面・背面、顔・全身、連続再生を確認できる。画素差は各560×620ピクセル、RGB 8bit。ゲーム固有の照明・影・TAAとは別の比較。
 
-`semantic_validation.json`は数値・画素の保持、`format_validation.json`はglTF形式（エラー0、元モデル由来の非rootスキン警告のみ）、`optimization.json`は入力・出力ハッシュと削減値。Mac本編の巨大そば屋・連続ダンス・会話の検証は [ゲーム側の記録](../../../../21_SOBAYA_HAZARD_LAB/qa/model-optimization-20260919.json)。旧配布ZIPとiPhoneインストール済みアプリは更新していない。
+`semantic_validation.json`は数値・画素の保持、`format_validation.json`はglTF形式（エラー0、元モデル由来の非rootスキン警告のみ）、`optimization.json`は入力・出力ハッシュと削減値。Mac本編の巨大そば屋・連続ダンス・会話の検証は [ゲーム側の記録](../../../../labs/sobaya_hazard_lab/qa/model-optimization-20260919.json)。旧配布ZIPとiPhoneインストール済みアプリは更新していない。

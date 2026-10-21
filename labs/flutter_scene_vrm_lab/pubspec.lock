@@ -207,7 +207,7 @@ packages:
   flutter_scene_vrm:
     dependency: "direct main"
     description:
-      path: "../packages/flutter_scene_vrm"
+      path: "../../packages/flutter_scene_vrm"
       relative: true
     source: path
     version: "0.1.0"

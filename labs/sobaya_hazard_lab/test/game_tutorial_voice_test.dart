@@ -14,7 +14,7 @@ void main() {
   final catalog = VoiceCatalog(manifest);
   final clips = (manifest['clips'] as List).cast<Map<String, dynamic>>();
   final exported = (jsonDecode(
-    File('../04_GAME_ASSETS/audio/hazard/voice-lines.json').readAsStringSync(),
+    File('../../assets/audio/hazard/voice-lines.json').readAsStringSync(),
   ) as List).cast<Map<String, dynamic>>();
 
   void expectSpeech(String speaker, String text, String usage) {

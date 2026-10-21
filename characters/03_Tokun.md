@@ -8,4 +8,4 @@
 店が壊れると頭を抱えて落ち込むが、立ち直りは早い。
 人物同一性（唯一のハード条件）: `Tokun.jpg`の本人と同じ顔・人物として識別できること。衣装、髪型、帽子、眼鏡、持ち物、表情、性格、能力、役割は固定しない。
 画像ファイル：Tokun.jpg
-ボクセルモデル：`04_GAME_ASSETS/voxel/models/tokun.glb`（二足リグ、ウクレレはプライマリアーム固定。再生成は`04_GAME_ASSETS/voxel/tools/build_tokun_voxel_model.py`）
+ボクセルモデル：`assets/voxel/models/tokun.glb`（二足リグ、ウクレレはプライマリアーム固定。再生成は`assets/voxel/tools/build_tokun_voxel_model.py`）

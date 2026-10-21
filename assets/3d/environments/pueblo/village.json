@@ -1031,7 +1031,7 @@
     {
       "id": "shark",
       "title": "そばシャーク2",
-      "source": "03_SCRIPTS/35_soba_shark/poster_soba_shark_2_production.png",
+      "source": "assets/2d/hazard_posters/poster_soba_shark_2_production.png",
       "x": -10,
       "z": -2.66,
       "y": 0.6000000000000001,
@@ -1040,7 +1040,7 @@
     {
       "id": "bug",
       "title": "BUG MAN",
-      "source": "03_SCRIPTS/37_bug_man_poster/prop_bug_man_poster_production.png",
+      "source": "assets/2d/hazard_posters/prop_bug_man_poster_production.png",
       "x": 8,
       "z": -10.69,
       "y": 0.6000000000000001,
@@ -1049,7 +1049,7 @@
     {
       "id": "debug",
       "title": "NO WAY DEBUG",
-      "source": "03_SCRIPTS/37_bug_man_poster/prop_bug_man_poster_no_way_debug_production.png",
+      "source": "assets/2d/hazard_posters/prop_bug_man_poster_no_way_debug_production.png",
       "x": -3,
       "z": 7.31,
       "y": 0.6000000000000001,
@@ -1058,7 +1058,7 @@
     {
       "id": "detective",
       "title": "名探偵よーたん",
-      "source": "03_SCRIPTS/39_detective_yotan_beer_disappearance/poster_detective_yotan_beer_disappearance_production.png",
+      "source": "assets/2d/hazard_posters/poster_detective_yotan_beer_disappearance_production.png",
       "x": 14,
       "z": 2.31,
       "y": 0.6000000000000001,
@@ -1067,7 +1067,7 @@
     {
       "id": "wanted",
       "title": "やめ太郎 指名手配",
-      "source": "03_SCRIPTS/59_sobaya_professional_window_side/prop_yametaro_wanted_poster.png",
+      "source": "assets/2d/hazard_posters/prop_yametaro_wanted_poster.png",
       "x": -8,
       "z": -17.69,
       "y": 0.6000000000000001,
@@ -1076,7 +1076,7 @@
     {
       "id": "beer",
       "title": "窓際族物語",
-      "source": "03_SCRIPTS/32_sobaya_beer_encouragement/prop_madogiwa_movie_poster_production.png",
+      "source": "assets/2d/hazard_posters/prop_madogiwa_movie_poster_production.png",
       "x": 6,
       "z": -10.3,
       "y": 3.5,

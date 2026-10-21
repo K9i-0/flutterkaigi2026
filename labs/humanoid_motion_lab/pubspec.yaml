@@ -8,7 +8,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_scene:
-    path: ../21_SOBAYA_HAZARD_LAB/vendor/flutter_scene
+    path: ../sobaya_hazard_lab/vendor/flutter_scene
   hooks: ^2.0.2
   marionette_flutter: ^0.6.0
   vector_math: ^2.4.2

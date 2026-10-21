@@ -8,7 +8,7 @@ from mathutils import Vector, noise
 import numpy as np
 noise.seed_set(0)
 ROOT=Path(__file__).resolve().parents[1]
-SOURCE=ROOT/'04_GAME_ASSETS/3d/props/chikuwa/v3'
+SOURCE=ROOT/'assets/3d/props/chikuwa/v3'
 GAME='--game' in sys.argv
 OUT=SOURCE.parent/'game_v3' if GAME else SOURCE
 OUT.mkdir(parents=True,exist_ok=True)

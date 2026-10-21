@@ -7,7 +7,7 @@ const source=path.resolve(process.argv[2] ?? '../.local/tidewater');
 const revision='4811ba48d795197de5621985f404e765c0b7c0ef';
 if(execFileSync('git',['-C',source,'rev-parse','HEAD'],{encoding:'utf8'}).trim()!==revision) throw Error('Use pinned Tidewater revision');
 const {BANK}=await import(pathToFileURL(path.join(source,'src/audio/soundBank.js')));
-const out=path.resolve('../04_GAME_ASSETS/audio/tidewater');
+const out=path.resolve('../../assets/audio/tidewater');
 fs.mkdirSync(out,{recursive:true});
 const manifest={source:'https://github.com/dgreenheck/tidewater',revision,format:'PCM s16le, mono, 32000 Hz',bank:{}};
 for(const name of ['surf_far','wind','pier_lap','surf_crash','surf_wash','surf_backwash','gull','bird_forest','step_sand','step_wetsand','step_wood','step_grass','step_rock']) {

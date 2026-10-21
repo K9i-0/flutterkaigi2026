@@ -1,6 +1,6 @@
 # 体格対応の人型モーションライブラリ
 
-そば屋ハザードと[そば屋モーションラボ](../../../22_HUMANOID_MOTION_LAB/README.md)が共有するGLB正本。そば屋の人物同一性、福ギュンの正典頭部、既存ゲームのクリップ名・骨名・発話モーフを維持する。
+そば屋ハザードと[そば屋モーションラボ](../../../labs/humanoid_motion_lab/README.md)が共有するGLB正本。そば屋の人物同一性、福ギュンの正典頭部、既存ゲームのクリップ名・骨名・発話モーフを維持する。
 
 **そば屋74・福ギュン69比較クリップ**。このほか従来ゲーム用の動作もGLB内に保持する。すべてが別々の行動という意味ではなく、同じ歩行などを異なる手法で作ったバリエーションを含む。
 
@@ -21,11 +21,11 @@
 しゃがみ移植時の約67〜69度の俯角を修正。首と頭に補正を分散し、通常動作は俯角10度〜仰角16度を維持する。横を見る演技は保ち、お辞儀・物を拾う・ローリングの意図的な視線は除外する。飲食等は俯角25度まで許容する。旧版の比較検査に加え、数値監査で視線の上下角を検証する。
 
 - `Procedural_RollForward`：両キャラの前方ローリング。脚長に応じた膝の抱え込み、背中の丸め、復帰。頭・背中も含む全身スキン頂点で床を検査する。GLBはインプレースで、台帳の `rootTravelM` を比較アプリが前進に使用する。
-- `Hybrid_MugHold`：`02_CHARACTERS/Sobaya.jpg`の胸前・右手の正典構え。
+- `Hybrid_MugHold`：`characters/Sobaya.jpg`の胸前・右手の正典構え。
 - `Hybrid_MugRun`：右手を保持し、左腕と脚を使って走る。
 - `Hybrid_MugPunch` / `Hybrid_MugHook` / `Hybrid_MugSmash`：正面パンチ、横フック、重い打ち下ろし。予備動作・打点・復帰の位相を `events` に記録。腰・胸の回転と支持脚IKを含む。
 - ジョッキ5本はそば屋用。既存の `PropSocket.R` と指の接触IKを使い、モデルを外付けする。比較アプリはゲームと同じ `props/beer_mug_v2/beer_mug.glb` を相対symlinkで参照する。
-- ゲーム側の旧クリップ名と戦闘の当たり判定タイミングは保持する。新クリップは共通GLB・比較アプリに加え、ゲーム本編にも割り当て済み。ローリングの移動量・攻撃の打点をゲーム側で同期する。詳細は[本編仕様](../../../21_SOBAYA_HAZARD_LAB/GAMEPLAY.md)を参照。
+- ゲーム側の旧クリップ名と戦闘の当たり判定タイミングは保持する。新クリップは共通GLB・比較アプリに加え、ゲーム本編にも割り当て済み。ローリングの移動量・攻撃の打点をゲーム側で同期する。詳細は[本編仕様](../../../labs/sobaya_hazard_lab/GAMEPLAY.md)を参照。
 
 再生成本体が `tools/humanoid_action_refinement.py` を呼び出す。既存の全ライブラリへの差分ベイクは `blender -b --factory-startup --python tools/humanoid_action_refinement.py`。再実行で視線補正を重ねない。姿勢画像の再検査は `blender -b --factory-startup --python tools/review_humanoid_actions.py`。
 

@@ -9,7 +9,7 @@ void main() {
     'game walk uses the measured shared clip and its exact ground speed',
     () {
       final catalog = jsonDecode(
-        File('../04_GAME_ASSETS/3d/hazard_adopted/manifest.json')
+        File('../../assets/3d/hazard_adopted/manifest.json')
             .readAsStringSync(),
       ) as Map<String, dynamic>;
       for (final name in ['sobaya', 'fukuchan']) {

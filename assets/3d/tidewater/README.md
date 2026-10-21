@@ -9,6 +9,6 @@ The source project's MIT license is retained in `LICENSE-Tidewater`. This export
 - `heights.bin`: 2048² little-endian float32 source heights after village foundation flattening. Samples at `origin + (index + 0.5) * texel`.
 - `world.json`: provenance, coordinate convention inputs, collision boxes/cylinders, buildings and explicit omitted features.
 
-Reproduce from repository root with `node 23_SOBAYA_TIDEWATER/tools/export_tidewater.mjs`. Optional first argument is a clean checkout at the pinned revision. The adapter executes upstream CPU generators without a browser or GPU. Outputs are canonical game inputs; games must reference these through relative symlinks rather than copies.
+Reproduce from repository root with `node labs/sobaya_tidewater/tools/export_tidewater.mjs`. Optional first argument is a clean checkout at the pinned revision. The adapter executes upstream CPU generators without a browser or GPU. Outputs are canonical game inputs; games must reference these through relative symlinks rather than copies.
 
 The display terrain samples at 4m; collision height retains 1m. This first export preserves island layout, not the full Tidewater material/vegetation/ocean appearance.

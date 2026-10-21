@@ -5,7 +5,7 @@ from pathlib import Path
 import hashlib,json,os,subprocess,time,wave
 import urllib.request,urllib.parse
 ROOT=Path(__file__).resolve().parent.parent
-OUT=ROOT/'04_GAME_ASSETS/audio/hazard'
+OUT=ROOT/'assets/audio/hazard'
 RAW=ROOT/'.local/hazard_voice/raw';RAW.mkdir(parents=True,exist_ok=True)
 CAST={
  '福ギュン':('Fukuchan_voice.wav',100,'3b597fdb0c6c7e103a1998345f56565652b86b6344127b3d5d52e0a1fd5b9f35'),
@@ -46,7 +46,7 @@ for index,row in enumerate(rows):
   (RAW/'working-manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
   print(f'READY {ident} {seconds:.3f}s VOICEVOX:Voidoll',flush=True)
   continue
- ref_name,seed,expected=CAST[row['speaker']];ref=ROOT/'02_CHARACTERS'/ref_name
+ ref_name,seed,expected=CAST[row['speaker']];ref=ROOT/'characters'/ref_name
  if sha(ref)!=expected:raise RuntimeError(f'Canonical reference mismatch: {ref.name}')
  speech=row['text'].replace('\n',' ').replace('せやな。……ところで、', 'せやな。ところで、')
  # Isolated stamp text needs an explicit reading, without altering subtitles.

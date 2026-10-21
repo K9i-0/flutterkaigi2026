@@ -20,7 +20,7 @@ sys.path.insert(0, str(ROOT / 'tools'))
 from fetch_humanoid_motion import FILES, REVISION
 from sobaya_garment import animate_hem
 
-OUT = ROOT / '04_GAME_ASSETS/3d/motion_library'
+OUT = ROOT / 'assets/3d/motion_library'
 FPS = 30
 # source, display name, category, loop, floor IK variant
 BASE = [
@@ -477,7 +477,7 @@ def optimize_weights(rig, meshes):
 
 def build_character(name,sources,preview,hybrid_only=False):
     relative = 'sobaya/rig_v3/sobaya_rig.glb' if name=='sobaya' else 'fukuchan/rig_v1/fukuchan.glb'
-    canonical=ROOT/'04_GAME_ASSETS/3d/characters'/relative
+    canonical=ROOT/'assets/3d/characters'/relative
     source=OUT/name/f'{name}.glb' if hybrid_only else canonical
     bpy.ops.wm.read_factory_settings(use_empty=True); bpy.context.scene.render.fps=FPS
     bpy.ops.import_scene.gltf(filepath=str(source))

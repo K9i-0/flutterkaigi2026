@@ -2,7 +2,7 @@
 from pathlib import Path
 import bpy,math,hashlib,json
 from mathutils import Vector,Matrix
-ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'04_GAME_ASSETS/3d/props/chikuwa/v3'
+ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'assets/3d/props/chikuwa/v3'
 bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False)
 bpy.ops.import_scene.gltf(filepath=str(OUT/'chikuwa.glb'))
 for o in list(bpy.context.scene.objects):

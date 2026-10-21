@@ -2,7 +2,7 @@
 
 - Generator: built-in ImageGen
 - Use case: photorealistic-natural
-- References: `02_CHARACTERS/Okayaman.jpg`
+- References: `characters/Okayaman.jpg`
 
 ## Final prompt
 

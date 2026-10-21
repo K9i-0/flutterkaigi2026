@@ -1,6 +1,6 @@
 {
   "date": "2026-09-07",
-  "model": "04_GAME_ASSETS/3d/characters/yametaro/rig_sheet_v2/yametaro.glb",
+  "model": "assets/3d/characters/yametaro/rig_sheet_v2/yametaro.glb",
   "beforeSha256": "f2ef555ebc674b940bf200da983c37c9450af0d88a4c923a28ee507d02d2492c",
   "afterSha256": "78189559825840993d3392a59a187438f3589f651d92fd9a6a13f97197704cd0",
   "animationChannelsByteIdentical": true,
@@ -62,7 +62,7 @@
       "face"
     ],
     "native": "Opening shot 1 at progress 0.5; jaw and ear ink absent, likeness retained",
-    "localEvidence": "21_SOBAYA_HAZARD_LAB/evidence/yametaro-no-outline-20260907/"
+    "localEvidence": "labs/sobaya_hazard_lab/evidence/yametaro-no-outline-20260907/"
   },
   "native": {
     "mode": "macOS debug",

@@ -6,7 +6,7 @@ import bpy, math, json
 import numpy as np
 from mathutils import Vector
 ROOT=Path(__file__).resolve().parents[1]
-OUT=ROOT/'04_GAME_ASSETS/3d/props/chikuwa'
+OUT=ROOT/'assets/3d/props/chikuwa'
 OUT.mkdir(parents=True,exist_ok=True)
 L=2.6; R=.34; N=48; M=80; B=8
 

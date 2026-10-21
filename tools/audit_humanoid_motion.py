@@ -13,7 +13,7 @@ sys.path.insert(0,str(ROOT/'tools'))
 from build_humanoid_motion import Body, use_action, clear_pose, FPS
 from humanoid_action_refinement import forward, skin_points, minimum_skin
 
-OUT=ROOT/'04_GAME_ASSETS/3d/motion_library'
+OUT=ROOT/'assets/3d/motion_library'
 report={'roundTrip':True,'fps':FPS,'characters':[],'failures':[]}
 def glb_animation_names(path):
     data=path.read_bytes();size=struct.unpack_from('<I',data,12)[0]

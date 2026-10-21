@@ -2,7 +2,7 @@
 
 ゲーム正本は `rig_radial_v6_lined/takosan.glb`（2026-09-26採用）。前斜め左右・真横左右・後ろ斜め左右への放射状6脚、丸い手、暗い内張りと触手接続の修正を含む。ゲームの相対symlinkを更新し、モバイル版もこのモデルから再生成した。公式サイトのローカル参照先は放射状配置済みの `rig_radial_v5_clean/`。
 
-以下はベースモデル `rig_sheet_v2/takosan.glb` の制作記録。2026-09-06、標準キャラクターシート `03_SCRIPTS/00_TEMPLATES/characters/character_takosan_basic_sheet.png` を基にTripo P2で作り直し、Blenderで修整・リギングした。白い顔と黒い丸目、閉じた黒いフード、刺繍入りローブ、人間型の腕2本と白い丸い手、巻いた触手6本を維持する。
+以下はベースモデル `rig_sheet_v2/takosan.glb` の制作記録。2026-09-06、標準キャラクターシート `characters/sheets/character_takosan_basic_sheet.png` を基にTripo P2で作り直し、Blenderで修整・リギングした。白い顔と黒い丸目、閉じた黒いフード、刺繍入りローブ、人間型の腕2本と白い丸い手、巻いた触手6本を維持する。
 
 - 1.433m、18,325三角面、27骨、2材質、1,535,664 bytes。カラー2K・法線1K、roughness 0.85 / metallic 0のマットな質感。
 - P2が生成した8本の触手から後方の余分な2本を取り除き、前方5本・後方1本のシルエットへ修整。ローブ本体を切断せず、袖の付け根には内側の布を追加。
@@ -21,9 +21,9 @@ Tripo `P2-20260801`、正面・背面2画像、quad、face_limit 10000、detaile
 
 ```sh
 /Applications/Blender.app/Contents/MacOS/Blender --background --factory-startup --python tools/build_takosan_tripo_rig.py
-python3 tools/validate_hazard_npc.py 04_GAME_ASSETS/3d/characters/takosan/rig_sheet_v2/takosan.glb
+python3 tools/validate_hazard_npc.py assets/3d/characters/takosan/rig_sheet_v2/takosan.glb
 ```
 
-GLB構造・ウェイト・ループ端点を検査し、BlenderのTalk/WaveとFlutter Scene実画面を確認。商店の実入力でビール8→6、予備弾40→50、弾在庫3→2と購入音声を確認した。[統合検証記録](../../../../21_SOBAYA_HAZARD_LAB/qa/npc-tripo-sheet-20260906.json)を参照。差し替え後のprofile負荷測定は未実施。
+GLB構造・ウェイト・ループ端点を検査し、BlenderのTalk/WaveとFlutter Scene実画面を確認。商店の実入力でビール8→6、予備弾40→50、弾在庫3→2と購入音声を確認した。[統合検証記録](../../../../labs/sobaya_hazard_lab/qa/npc-tripo-sheet-20260906.json)を参照。差し替え後のprofile負荷測定は未実施。
 
 旧 `rig_v1/takosan.glb` と `tools/build_takosan_game_rig.py` は手続き生成版の退避用として保持する。現行ゲームは使用しない。

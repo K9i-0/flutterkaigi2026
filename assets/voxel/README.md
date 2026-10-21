@@ -27,11 +27,11 @@
 | おかやまん | `models/okayaman.glb` | 二足 | 06 |
 | ゆめみん | `models/yumemin.glb` | 二足 | 06 |
 
-各キャラのデザイン固定事項（NG変更）は `02_CHARACTERS/*.md` を参照。モデルにも同じ制約が適用されます。
+各キャラのデザイン固定事項（NG変更）は `characters/*.md` を参照。モデルにも同じ制約が適用されます。
 
 ## 再生成手順
 
-このディレクトリ（`04_GAME_ASSETS/voxel/`）から実行します:
+このディレクトリ（`assets/voxel/`）から実行します:
 
 ```bash
 blender --background --python tools/build_<キャラ>_voxel_model.py -- \

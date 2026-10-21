@@ -5,7 +5,7 @@ const root=process.cwd(),base=pathToFileURL(root+'/.local/vrm-validation/node_mo
 const T=await import(new URL('build/three.module.js',base));
 const {GLTFLoader}=await import(new URL('examples/jsm/loaders/GLTFLoader.js',base));
 globalThis.ProgressEvent=class {constructor(type,init){Object.assign(this,init);this.type=type;}};
-const b=fs.readFileSync('04_GAME_ASSETS/3d/characters/takosan/rig_radial_v6_lined/takosan.glb'),len=b.readUInt32LE(12),json=JSON.parse(b.subarray(20,20+len));
+const b=fs.readFileSync('assets/3d/characters/takosan/rig_radial_v6_lined/takosan.glb'),len=b.readUInt32LE(12),json=JSON.parse(b.subarray(20,20+len));
 json.buffers[0].uri='data:application/octet-stream;base64,'+b.subarray(28+len).toString('base64');
 delete json.images;delete json.textures;delete json.materials;
 for(const m of json.meshes)for(const p of m.primitives)delete p.material;

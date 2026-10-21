@@ -9,4 +9,4 @@
 人物同一性（唯一のハード条件）: `Yotan.jpg`の本人と同じ顔・人物として識別できること。衣装、髪色、髪型、眼鏡、持ち物、表情、性格、能力、役割は固定しない。
 画像ファイル：Yotan.jpg
 声ファイル：Yotan_voice.wav（Irodori-TTSの正典参照音声。既定seedは`VOICE_CAST.md`を参照）
-ボクセルモデル：`04_GAME_ASSETS/voxel/models/yotan.glb`（二足リグ、ギターはプライマリアーム固定。再生成は`04_GAME_ASSETS/voxel/tools/build_yotan_voxel_model.py`）
+ボクセルモデル：`assets/voxel/models/yotan.glb`（二足リグ、ギターはプライマリアーム固定。再生成は`assets/voxel/tools/build_yotan_voxel_model.py`）

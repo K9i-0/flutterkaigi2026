@@ -2,7 +2,7 @@
   "description": "Exported mesh aperture and cover ray audit",
   "maps": {
     "village": {
-      "glb": "04_GAME_ASSETS/3d/environments/pueblo/village.glb",
+      "glb": "assets/3d/environments/pueblo/village.glb",
       "glbSha256": "209068ee6b2e2d365ee5e6937b85adcf3375f1ecc04edcf68949ed49867b0081",
       "mapSha256": "08f242dc4dc1bf0e5f5d55fafdc04fed6b3ab9f96586e65362f216114be1e6f9",
       "checks": [
@@ -51,7 +51,7 @@
       "diagnosticOverhead": "evidence/stealth-village-overhead.png"
     },
     "farm": {
-      "glb": "04_GAME_ASSETS/3d/environments/farm/farm.glb",
+      "glb": "assets/3d/environments/farm/farm.glb",
       "glbSha256": "46a90d46cde248193276db6f3b9190c4dd3cde8ef92d1985b9df5c2080aca1ff",
       "mapSha256": "4c4c757634acd875d9087168cdd72dde5577c8600fda499c1aaaad1f3ae37678",
       "checks": [

@@ -11,7 +11,7 @@ description: リアル頭身のそば屋・福ギュンのGLB/VRMへモーショ
 
 - 表示・比較・ボーン診断：[references/local-preview.md](references/local-preview.md)。既存確認ページを使い、同じ時刻・視点で比較する。
 - リターゲット・ウェイト修正・本編採用：[references/retarget-and-adopt.md](references/retarget-and-adopt.md)。元入力、比較用VRM、ゲーム用派生GLBを区別する。
-- 個別の変形実験の結果：`04_GAME_ASSETS/vrm/DEFORMATION_REVIEW.md`。過去に効かなかった処置を定番の解決策として繰り返さない。
+- 個別の変形実験の結果：`assets/vrm/DEFORMATION_REVIEW.md`。過去に効かなかった処置を定番の解決策として繰り返さない。
 
 ## 判断の基準
 
@@ -21,10 +21,10 @@ description: リアル頭身のそば屋・福ギュンのGLB/VRMへモーショ
 
 公開素材の条件はクリップごとに保持する。Mesh2Motion / Quaterniusの既存素材はCC0の手付けアニメーションで、モーションキャプチャとは呼ばない。既存Mixamo RunはCC0ではない。キャラクターモデルの利用条件も別。混在素材から書き出す場合は未参照バッファに他クリップを残さない。
 
-2026-09-08時点の採用は福ギュンが既存Run、そば屋が逃走・追跡版。最新の採用状態は `04_GAME_ASSETS/3d/hazard_adopted/manifest.json` と `21_SOBAYA_HAZARD_LAB/lib/game/game_motion_blend.dart` を正本として確認する。
+2026-09-08時点の採用は福ギュンが既存Run、そば屋が逃走・追跡版。最新の採用状態は `assets/3d/hazard_adopted/manifest.json` と `labs/sobaya_hazard_lab/lib/game/game_motion_blend.dart` を正本として確認する。
 
 ## 関連する制作知見
 
-キャラクターシートから回転動画・四面図を作って全身3D化する場合、またはそば屋v3の顔・リグ・手の向きを修正する場合は、[そば屋v3の制作知見](../../../04_GAME_ASSETS/3d/SOBAYA_V3_LESSONS.md)を参照する。8秒動画の実設定、フレーム選定、Imagegenによる投影テクスチャ修復、輪郭固定、ウェイト修正、手の表裏の誤判定と終盤の回転、画像検証の注意を記録している。
+キャラクターシートから回転動画・四面図を作って全身3D化する場合、またはそば屋v3の顔・リグ・手の向きを修正する場合は、[そば屋v3の制作知見](../../../assets/3d/SOBAYA_V3_LESSONS.md)を参照する。8秒動画の実設定、フレーム選定、Imagegenによる投影テクスチャ修復、輪郭固定、ウェイト修正、手の表裏の誤判定と終盤の回転、画像検証の注意を記録している。
 
-実写キャラの本人らしさ・顔の彫り・陰影を修正する場合は、[福ギュンv3の浅い顔形状と陰影調整](../../../04_GAME_ASSETS/3d/FUKUCHAN_V3_LIKENESS_LESSONS.md)を参照する。採用frontを固定し、奥行きと材質を切り分け、承認形状をリグ・口パクへ引き継ぐ。数値はモデル・照明固有の実例であり共通の既定値にしない。
+実写キャラの本人らしさ・顔の彫り・陰影を修正する場合は、[福ギュンv3の浅い顔形状と陰影調整](../../../assets/3d/FUKUCHAN_V3_LIKENESS_LESSONS.md)を参照する。採用frontを固定し、奥行きと材質を切り分け、承認形状をリグ・口パクへ引き継ぐ。数値はモデル・照明固有の実例であり共通の既定値にしない。

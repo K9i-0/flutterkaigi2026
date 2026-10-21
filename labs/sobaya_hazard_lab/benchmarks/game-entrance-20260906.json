@@ -14,7 +14,7 @@
     "devicePixelRatio": 2,
     "otherApps": "iOS Simulator PID 70755 observed running; not an isolated-machine measurement"
   },
-  "log": "21_SOBAYA_HAZARD_LAB/evidence/entrance-profile.log",
+  "log": "labs/sobaya_hazard_lab/evidence/entrance-profile.log",
   "results": [
     {
       "case": "village-four",

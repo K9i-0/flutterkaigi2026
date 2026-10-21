@@ -1,8 +1,8 @@
 # ビール雨用3D缶
 
-`26_YUMEMI_RECRUIT_EXAM/tool/build_labels.py` と `tool/build_cans.py` で再生成する共有GLB。
+`app/tool/build_labels.py` と `tool/build_cans.py` で再生成する共有GLB。
 
-- `super_try.glb`: 正典 `03_SCRIPTS/00_TEMPLATES/props/product_super_try.png`（2026-09-10採用版）を缶の側面へ投影。銀地、労働、赤い「つらい」、Madogiwa、生を元画像から使用。元画像は無加工で保持。写真投影による試作UVで、印刷用の展開図ではない。
+- `super_try.glb`: 正典 `characters/props/product_super_try.png`（2026-09-10採用版）を缶の側面へ投影。銀地、労働、赤い「つらい」、Madogiwa、生を元画像から使用。元画像は無加工で保持。写真投影による試作UVで、印刷用の展開図ではない。
 - `light.glb` / `light.png`: 仮の「窓際ライト」。金色帯のビール。
 - `happoshu.glb` / `happoshu.png`: 仮の「つらめ」。紫色帯の発泡酒。
 

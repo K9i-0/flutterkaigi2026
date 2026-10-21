@@ -63,9 +63,9 @@ def inspect(path):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--model', type=Path, default=ROOT / '04_GAME_ASSETS/3d/characters/sobaya/rig_v3/sobaya_rig.glb')
+    parser.add_argument('--model', type=Path, default=ROOT / 'assets/3d/characters/sobaya/rig_v3/sobaya_rig.glb')
     parser.add_argument('--reference', type=Path)
-    parser.add_argument('--output', type=Path, default=ROOT / '21_SOBAYA_HAZARD_LAB/evidence/sobaya-garment.json')
+    parser.add_argument('--output', type=Path, default=ROOT / 'labs/sobaya_hazard_lab/evidence/sobaya-garment.json')
     args = parser.parse_args(sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else [])
     report = {'sampleHz': 60, 'region': 'rest z .80..1.22 m, abs(x) < .30 m; edges > .1 mm',
               'limit': 'Edge stretch only, not cloth self-collision or subjective quality.',

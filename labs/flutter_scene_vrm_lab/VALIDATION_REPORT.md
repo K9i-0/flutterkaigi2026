@@ -43,7 +43,7 @@ or apply morph weights.
   the VRM Public License 1.0. It remains a validation asset rather than the
   production avatar.
 
-The model is stored once under `04_GAME_ASSETS/vrm/`; the app uses a relative
+The model is stored once under `assets/vrm/`; the app uses a relative
 symlink.
 
 ## Verified now
@@ -209,8 +209,8 @@ Both the package and app pin commit
 
 ```sh
 cd packages/flutter_scene_vrm && flutter analyze && flutter test
-cd 19_FLUTTER_SCENE_VRM_LAB && flutter analyze && flutter test
-cd 19_FLUTTER_SCENE_VRM_LAB && flutter build macos --debug
-cd 19_FLUTTER_SCENE_VRM_LAB && flutter build apk --debug
-cd 19_FLUTTER_SCENE_VRM_LAB && flutter build ios --simulator --debug
+cd labs/flutter_scene_vrm_lab && flutter analyze && flutter test
+cd labs/flutter_scene_vrm_lab && flutter build macos --debug
+cd labs/flutter_scene_vrm_lab && flutter build apk --debug
+cd labs/flutter_scene_vrm_lab && flutter build ios --simulator --debug
 ```

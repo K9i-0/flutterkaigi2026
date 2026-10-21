@@ -14,9 +14,9 @@
 
 歩行用の6つの地形の占有範囲は維持。上部の当たり判定だけは斜面を覆う段階状に後退させ、見た目の空中に旧い箱型壁が残る問題を防ぐ。家・敵・アイテム・遷移先と、地形以外の当たり判定は変更なし。過去の「配置・衝突JSONが同一」という記述は各更新時点の記録であり、この更新では地形の上部を変更している。
 
-山のみ生成: `Blender --background --factory-startup --python tools/build_hazard_regions.py -- --mountain-only`。読み戻し検証: `Blender --background --factory-startup --python tools/audit_hazard_mountain.py`。従来の山の衝突ハッシュを固定した2026-09-12の監査に代わり、この山専用監査で通路・配置・18本の扉窓レイ・描画予算を確認する。[検証結果](../../../../21_SOBAYA_HAZARD_LAB/qa/mountain-forest-20260913.json)。
+山のみ生成: `Blender --background --factory-startup --python tools/build_hazard_regions.py -- --mountain-only`。読み戻し検証: `Blender --background --factory-startup --python tools/audit_hazard_mountain.py`。従来の山の衝突ハッシュを固定した2026-09-12の監査に代わり、この山専用監査で通路・配置・18本の扉窓レイ・描画予算を確認する。[検証結果](../../../../labs/sobaya_hazard_lab/qa/mountain-forest-20260913.json)。
 
-2026-09-12: 村と共通の `tools/hazard_environment_art.py` で漆喰・木材の面分け、窓格子、軒、地際の植生、道・苔・接地陰の頂点色を追加。共有画像は10枚のまま。家の漆喰帯が窓上端12cmを覆っていた表示も、既存の開口外へ移動して修正した。配置・衝突JSONは変更前と同一。[GLB監査](../../../../21_SOBAYA_HAZARD_LAB/qa/environment-art-20260912.json)で山の家の扉・窓18本のレイ、屋根ノード、描画予算を確認した。
+2026-09-12: 村と共通の `tools/hazard_environment_art.py` で漆喰・木材の面分け、窓格子、軒、地際の植生、道・苔・接地陰の頂点色を追加。共有画像は10枚のまま。家の漆喰帯が窓上端12cmを覆っていた表示も、既存の開口外へ移動して修正した。配置・衝突JSONは変更前と同一。[GLB監査](../../../../labs/sobaya_hazard_lab/qa/environment-art-20260912.json)で山の家の扉・窓18本のレイ、屋根ノード、描画予算を確認した。
 
 参照は[Capcomが公開する原作RE4公式ガイド抜粋](https://static.capcom.com/residentevil/files/ResEvil2.pdf)の印刷p59。農場の南西入口・中央小屋・南東二階建て納屋・東出口、山道の曲がり角・トンネル・廃屋の位置関係を新規モデリングした。ガイド画像や原作モデルの取り込みではなく、厳密な寸法・形状の1:1再現は未達。壁の画像は窓際族物語の既存正典素材を使用。
 
@@ -28,4 +28,4 @@
 
 2026-09-12 第2パス: 実ゲーム画面で目立った三角板状の草を、細長い2面の折れ葉と暗い低彩度オリーブへ変更。根元の陰・配置密度・不規則な基礎石も調整し、画像とprimitive数を維持したまま3章全ての三角面数を第1パス以下に収めた。監査JSONに比較値と実画面の参照を記録。
 
-2026-09-12 描画負荷パス: House_本体は各家の頂点色を焼いた後、`tools/hazard_environment_batch.py` で材質ごとに `StaticArchitecture` へ結合する。村は40・農場は30のprimitiveを削減。屋根・門・収集物・標的・炎・樹木patchは独立した表示ノードを保持する。建物ごとのカリングは行わず、最大26,068三角面の小さな村でCPU描画処理を優先した。結合前後の全コーナーの位置・面方向・UV・色・材質の署名が一致し、[独立GLB比較](../../../../21_SOBAYA_HAZARD_LAB/qa/environment-batching-20260912.json)でも結合対象の全三角面の属性と個数、全ての非Houseノード名の保持を確認した。
+2026-09-12 描画負荷パス: House_本体は各家の頂点色を焼いた後、`tools/hazard_environment_batch.py` で材質ごとに `StaticArchitecture` へ結合する。村は40・農場は30のprimitiveを削減。屋根・門・収集物・標的・炎・樹木patchは独立した表示ノードを保持する。建物ごとのカリングは行わず、最大26,068三角面の小さな村でCPU描画処理を優先した。結合前後の全コーナーの位置・面方向・UV・色・材質の署名が一致し、[独立GLB比較](../../../../labs/sobaya_hazard_lab/qa/environment-batching-20260912.json)でも結合対象の全三角面の属性と個数、全ての非Houseノード名の保持を確認した。

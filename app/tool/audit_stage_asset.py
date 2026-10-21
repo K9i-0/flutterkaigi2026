@@ -1,7 +1,7 @@
 """Check geometry/texture budgets on the packaged GLB (no Blender required)."""
 import json, struct
 from pathlib import Path
-p = Path(__file__).resolve().parents[2] / '04_GAME_ASSETS/3d/stages/akasaka/akasaka.glb'
+p = Path(__file__).resolve().parents[2] / 'assets/3d/stages/akasaka/akasaka.glb'
 b = p.read_bytes(); n = struct.unpack_from('<I', b, 12)[0]
 j = json.loads(b[20:20+n]); binary = b[28+n:]
 triangles = sum(j['accessors'][p['indices']]['count']//3 for m in j['meshes'] for p in m['primitives'])

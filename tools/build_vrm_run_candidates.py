@@ -5,7 +5,7 @@ import bpy
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT/'tools'))
 import build_humanoid_motion as motion
 from export_humanoid_vrm import read_glb
-OUT=ROOT/'04_GAME_ASSETS/vrm/motions';OUT.mkdir(parents=True,exist_ok=True)
+OUT=ROOT/'assets/vrm/motions';OUT.mkdir(parents=True,exist_ok=True)
 motion.BASE=[('Jog','Jog（公開ライブラリ）','VRM',True,False)]
 motion.ADDON=[]
 sources=motion.read_sources(False);catalog={'license':'Per-entry; CC0 or existing licensed Mixamo' ,'sourceRevision':motion.REVISION,'characters':{}}
@@ -48,7 +48,7 @@ for name in ['sobaya','fukuchan']:
  temp=ROOT/'.local/vrm-validation'/f'{name}_run_candidates.glb'
  bpy.ops.export_scene.gltf(filepath=str(temp),export_format='GLB',use_selection=True,export_animations=True,export_animation_mode='ACTIONS',export_frame_range=False,export_anim_slide_to_zero=True,export_anim_single_armature=True,export_skins=True,export_def_bones=False,export_force_sampling=True,export_optimize_animation_size=True)
  gltf,binary=read_glb(temp);nodes={n.get('name'):i for i,n in enumerate(gltf['nodes'])}
- manifest=json.loads((ROOT/f'04_GAME_ASSETS/vrm/characters/{name}.manifest.json').read_text())
+ manifest=json.loads((ROOT/f'assets/vrm/characters/{name}.manifest.json').read_text())
  gltf['extensionsUsed']=['VRMC_vrm_animation'];gltf['extensions']={'VRMC_vrm_animation':{'specVersion':'1.0','humanoid':{'humanBones':{role:{'node':nodes[bone]} for role,bone in manifest['humanoidBones'].items()}}}}
  template=copy.deepcopy(gltf);animations=gltf['animations'];folder=OUT/name;folder.mkdir(exist_ok=True)
  for entry in entries:

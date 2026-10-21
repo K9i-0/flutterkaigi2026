@@ -8,10 +8,10 @@ import numpy as np
 import torch
 from transformers import WhisperProcessor, WhisperForConditionalGeneration
 ROOT=Path(__file__).resolve().parent.parent
-FOLDER=ROOT/'04_GAME_ASSETS/audio/hazard'
+FOLDER=ROOT/'assets/audio/hazard'
 parser=argparse.ArgumentParser()
 parser.add_argument('--manifest',type=Path,default=FOLDER/'voice-manifest.json')
-parser.add_argument('--report',type=Path,default=ROOT/'21_SOBAYA_HAZARD_LAB/qa/voice-transcript-20260906.json')
+parser.add_argument('--report',type=Path,default=ROOT/'labs/sobaya_hazard_lab/qa/voice-transcript-20260906.json')
 args=parser.parse_args()
 REPORT=args.report
 cache=ROOT/'.local/hazard_voice/asr-cache'

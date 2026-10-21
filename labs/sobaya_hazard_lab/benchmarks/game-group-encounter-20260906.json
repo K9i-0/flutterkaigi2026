@@ -210,8 +210,8 @@
     "Run validity means active gameplay samples; it does not mean meeting the frame budget."
   ],
   "code_sha256": {
-    "21_SOBAYA_HAZARD_LAB/lib/game/game_state.dart": "1a4627a8691c5acf1118af4c5be972c542824c79b2867086d3a8cdeaedaf26b9",
-    "21_SOBAYA_HAZARD_LAB/lib/game/game_controller.dart": "69fb64f05ec746f7b95d00972862a7f91d3413dfb5ba827bbdba5d3399ced174",
-    "21_SOBAYA_HAZARD_LAB/lib/game/game_benchmark.dart": "e232e924263065d7dc466309297673a58a32ed6467a0f3319c17b4244ec3a3f9"
+    "labs/sobaya_hazard_lab/lib/game/game_state.dart": "1a4627a8691c5acf1118af4c5be972c542824c79b2867086d3a8cdeaedaf26b9",
+    "labs/sobaya_hazard_lab/lib/game/game_controller.dart": "69fb64f05ec746f7b95d00972862a7f91d3413dfb5ba827bbdba5d3399ced174",
+    "labs/sobaya_hazard_lab/lib/game/game_benchmark.dart": "e232e924263065d7dc466309297673a58a32ed6467a0f3319c17b4244ec3a3f9"
   }
 }

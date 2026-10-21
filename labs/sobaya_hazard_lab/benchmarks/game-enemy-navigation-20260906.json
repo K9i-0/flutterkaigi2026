@@ -464,8 +464,8 @@
   ],
   "interpretation": "Final 85% cases show UI P95 4.763–5.546ms, maxima <=10.203ms and no sampled UI/raster frames >16.7ms. Village full resolution still shows UI P95 21.175ms / raster 29.98ms with 23/54 over-budget samples. Full-resolution variability is unresolved; do not claim 60fps or a proven cause for raster changes. Keep default 85%. Pre-optimization runs preserved, not hidden.",
   "code_sha256": {
-    "21_SOBAYA_HAZARD_LAB/lib/game/game_navigation.dart": "768fb765952ea91d0ff3111e4001e342daa9b50bc2365d03867b279037a42842",
-    "21_SOBAYA_HAZARD_LAB/lib/game/game_state.dart": "2a47cbc21ecace1e2e983e5071f17b61e722058992c0d5e0d29cc67c0ed43bd7",
-    "21_SOBAYA_HAZARD_LAB/lib/game/game_controller.dart": "f0c3efff17144919b0216d1c7f9d0035bba30cb9a47fb71743569c42da699849"
+    "labs/sobaya_hazard_lab/lib/game/game_navigation.dart": "768fb765952ea91d0ff3111e4001e342daa9b50bc2365d03867b279037a42842",
+    "labs/sobaya_hazard_lab/lib/game/game_state.dart": "2a47cbc21ecace1e2e983e5071f17b61e722058992c0d5e0d29cc67c0ed43bd7",
+    "labs/sobaya_hazard_lab/lib/game/game_controller.dart": "f0c3efff17144919b0216d1c7f9d0035bba30cb9a47fb71743569c42da699849"
   }
 }

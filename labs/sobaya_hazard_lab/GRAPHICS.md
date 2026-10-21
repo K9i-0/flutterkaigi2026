@@ -28,7 +28,7 @@ Mac版の[実画面と美術方針](design/graphics-20260912/README.md)を保存
 アプリを1個だけ起動し、同じウインドウ寸法・DPR・電源条件で比較する。別のアプリのGPU負荷、シミュレーター、画面収録、ビルドを止め、各条件を最低3回実行する。次は本編の村8体・同じ85%解像度で高画質を測る例。バランスと最高画質は`HAZARD_GRAPHICS`だけを変える。
 
 ```sh
-cd 21_SOBAYA_HAZARD_LAB
+cd labs/sobaya_hazard_lab
 mise exec -- flutter run -d macos --profile -t lib/game_main.dart \
   --dart-define=HAZARD_GAME_BENCHMARK=true \
   --dart-define=HAZARD_BENCHMARK_CASE=village-eight \

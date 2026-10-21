@@ -3,7 +3,7 @@
 - Generator: built-in ImageGen
 - Use case: identity-preserve
 - Identity reference: `03_SCRIPTS/10_giant_takosan_shibuya/character_yametaro_liveaction_sheet.png`
-- Costume reference: `02_CHARACTERS/Yametaro.jpg`
+- Costume reference: `characters/Yametaro.jpg`
 
 ## Final prompt
 

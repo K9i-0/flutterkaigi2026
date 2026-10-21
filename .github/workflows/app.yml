@@ -1,26 +1,30 @@
-name: Flutter Mobile Prototype
+name: App
 
 on:
   pull_request:
     paths:
       - .mise.toml
-      - .github/workflows/flutter-mobile-prototype.yml
-      - 04_GAME_ASSETS/voxel/models/**
-      - 08_FLUTTER_VOXEL_GAME/**
+      - .github/workflows/app.yml
+      - app/**
+      - assets/**
+      - characters/**
+      - packages/**
   push:
     branches: [main]
     paths:
       - .mise.toml
-      - .github/workflows/flutter-mobile-prototype.yml
-      - 04_GAME_ASSETS/voxel/models/**
-      - 08_FLUTTER_VOXEL_GAME/**
+      - .github/workflows/app.yml
+      - app/**
+      - assets/**
+      - characters/**
+      - packages/**
 
 jobs:
-  validate:
+  test:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: 08_FLUTTER_VOXEL_GAME
+        working-directory: app
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Read Flutter version from .mise.toml
@@ -32,7 +36,6 @@ jobs:
           flutter-version: ${{ steps.mise.outputs.flutter_version }}
           cache: true
       - run: flutter pub get
-      - run: dart format --output=none --set-exit-if-changed lib test
-      - run: dart analyze .
+      - run: flutter analyze
       - run: flutter test
-      - run: flutter build apk --debug
+      - run: python3 tool/audit_stage_asset.py

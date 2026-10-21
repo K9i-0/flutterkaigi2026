@@ -2,7 +2,7 @@
 
 - Generator: built-in ImageGen
 - Use case: `identity-preserve`
-- Identity/edit target: `03_SCRIPTS/00_TEMPLATES/characters/character_yumemin_toy_diorama_3d_basic_sheet.png`
+- Identity/edit target: `characters/sheets/character_yumemin_toy_diorama_3d_basic_sheet.png`
 - Material reference: `03_SCRIPTS/21_takosan_php_prompt_pun/clip1_start.png`
 - Status: 比較検討用。選定されるまでテンプレート正本を置き換えない
 

@@ -6,7 +6,7 @@ import sys,math
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from build_humanoid_motion import *
 from humanoid_action_refinement import minimum_skin,skin_points
-folder=ROOT/'22_HUMANOID_MOTION_LAB/evidence/action-refinement';folder.mkdir(parents=True,exist_ok=True)
+folder=ROOT/'labs/humanoid_motion_lab/evidence/action-refinement';folder.mkdir(parents=True,exist_ok=True)
 for name in ['sobaya','fukuchan']:
  bpy.ops.wm.read_factory_settings(use_empty=True);sc=bpy.context.scene;sc.render.fps=30
  bpy.ops.import_scene.gltf(filepath=str(OUT/name/f'{name}.glb'))
@@ -14,7 +14,7 @@ for name in ['sobaya','fukuchan']:
  for t in list(rig.animation_data.nla_tracks):rig.animation_data.nla_tracks.remove(t)
  use_action(rig,None);clear_pose(rig)
  before=set(sc.objects)
- bpy.ops.import_scene.gltf(filepath=str(ROOT/'04_GAME_ASSETS/3d/props/beer_mug_v2/beer_mug.glb'))
+ bpy.ops.import_scene.gltf(filepath=str(ROOT/'assets/3d/props/beer_mug_v2/beer_mug.glb'))
  props=list(set(sc.objects)-before);grip=next(o for o in props if o.name=='Grip')
  matrices={o:grip.matrix_world.inverted()@o.matrix_world for o in props if o.type=='MESH'}
  for o in props:o.parent=None

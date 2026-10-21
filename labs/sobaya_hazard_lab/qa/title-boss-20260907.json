@@ -2,7 +2,7 @@
   "date": "2026-09-07",
   "logo": {
     "tool": "built-in image_gen",
-    "asset": "04_GAME_ASSETS/3d/ui/hazard/sobaya-hazard-logo-v1.png",
+    "asset": "assets/3d/ui/hazard/sobaya-hazard-logo-v1.png",
     "size": [
       2048,
       768

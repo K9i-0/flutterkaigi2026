@@ -4,7 +4,7 @@ from pathlib import Path
 import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / '04_GAME_ASSETS/3d/motion_library/source'
+OUT = ROOT / 'assets/3d/motion_library/source'
 REVISION = '2d3d1ff03247d9e7e830d1ae375653da4e2146e2'
 FILES = {
     'human-base-animations.glb': '406eb0a8dc4ab366e623b79b6e3005a4951392e1bda78ae39c1099d31147733c',

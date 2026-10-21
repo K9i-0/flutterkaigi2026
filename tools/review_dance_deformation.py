@@ -8,7 +8,7 @@ OUT=ROOT/'.local/dance_deformation/final-review';OUT.mkdir(exist_ok=True,parents
 report=[]
 for name in ['sobaya','fukuchan']:
  bpy.ops.wm.read_factory_settings(use_empty=True);sc=bpy.context.scene;sc.render.fps=30
- bpy.ops.import_scene.gltf(filepath=str(ROOT/f'04_GAME_ASSETS/vrm/characters/{name}.vrm'))
+ bpy.ops.import_scene.gltf(filepath=str(ROOT/f'assets/vrm/characters/{name}.vrm'))
  rig=next(o for o in sc.objects if o.type=='ARMATURE');meshes=[o for o in sc.objects if o.type=='MESH']
  bpy.ops.import_scene.gltf(filepath=str(ROOT/f'.local/vrm-validation/{name}_motions.glb'))
  for o in list(sc.objects):

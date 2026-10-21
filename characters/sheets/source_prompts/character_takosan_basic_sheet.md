@@ -3,7 +3,7 @@
 - Generator: built-in ImageGen
 - Use case: identity-preserve
 - Media style: 窓際トイジオラマ3D (`toy_diorama_3d`)。たこさんの標準媒体表現
-- Edit target: `03_SCRIPTS/00_TEMPLATES/characters/character_takosan_basic_sheet.png` の旧版
+- Edit target: `characters/sheets/character_takosan_basic_sheet.png` の旧版
 - Identity references:
   - `03_SCRIPTS/21_takosan_php_prompt_pun/clip1_start.png` — `NEUTRAL`
   - `03_SCRIPTS/21_takosan_php_prompt_pun/clip1_end.png` — `OPEN MOUTH`

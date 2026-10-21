@@ -6,13 +6,13 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT/'tools'))
 from build_humanoid_motion import Body,use_action,clear_pose
 from humanoid_deformation import smooth_shoulders
-OUT=ROOT/'04_GAME_ASSETS/3d/hazard_adopted';OUT.mkdir(parents=True,exist_ok=True)
+OUT=ROOT/'assets/3d/hazard_adopted';OUT.mkdir(parents=True,exist_ok=True)
 if (OUT/'manifest.json').exists() and json.loads((OUT/'manifest.json').read_text()).get('sobaya',{}).get('version')==2:
  raise RuntimeError('The game uses v2. Run tools/build_hazard_v2_models.py; root GLBs are retained v1 motion inputs.')
 report={}
 for name in ['sobaya','fukuchan']:
  bpy.ops.wm.read_factory_settings(use_empty=True);sc=bpy.context.scene;sc.render.fps=30
- source=ROOT/f'04_GAME_ASSETS/3d/motion_library/{name}/{name}.glb'
+ source=ROOT/f'assets/3d/motion_library/{name}/{name}.glb'
  bpy.ops.import_scene.gltf(filepath=str(source));rig=next(o for o in sc.objects if o.type=='ARMATURE');meshes=[o for o in sc.objects if o.type=='MESH']
  for o in sc.objects:
   if o.animation_data:o.animation_data_clear()

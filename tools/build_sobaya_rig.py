@@ -11,8 +11,8 @@ from pathlib import Path
 from mathutils import Vector, Matrix, Euler, Quaternion
 
 ROOT=Path(__file__).resolve().parent.parent
-SOURCE=ROOT/'04_GAME_ASSETS/3d/characters/sobaya/tripo_p2_20260905/sobaya_preview.glb'
-OUT=ROOT/'04_GAME_ASSETS/3d/characters/sobaya/rig_v1'
+SOURCE=ROOT/'assets/3d/characters/sobaya/tripo_p2_20260905/sobaya_preview.glb'
+OUT=ROOT/'assets/3d/characters/sobaya/rig_v1'
 FPS=30
 CLIPS={'Idle':2.4,'Walk':1.0,'Run':.7,'ZombieWalk':1.8,
        'DanceStep':2.0,'DanceDisco':2.4,'DanceVictory':2.0,'Toast':2.6,'MugAttack':1.4}

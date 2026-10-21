@@ -28,7 +28,7 @@
 2026-10-20ユーザー指定により、以後の確認はローカルを使用する。今回のv2/v3をChatGPT Siteへは公開していない。
 
 ```sh
-cd 04_GAME_ASSETS/3d/props/chikuwa/preview
+cd assets/3d/props/chikuwa/preview
 npm ci
 npm run dev
 ```
@@ -77,6 +77,6 @@ python3 tools/validate_chikuwa_variants.py
 通常モデルのバイナリを維持するため、再生成時の数値差によって採用形状を変えない。
 ゲーム用のノイズ seed は 0 に固定。中間テクスチャは GLB に埋め込み、Git 対象外。
 
-`26_YUMEMI_RECRUIT_EXAM/assets/models/` から相対 symlink で参照する。
+`app/assets/models/` から相対 symlink で参照する。
 ローカルプレビュー http://127.0.0.1:8766 は「ゲーム版」「種類」で通常／毒を比較できる。
 Sites への公開更新は行わない。

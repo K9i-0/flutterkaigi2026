@@ -1,4 +1,4 @@
-Built-in Imagegen / 2026-09-06. Reference: `03_SCRIPTS/00_TEMPLATES/characters/character_sobaya_basic_sheet.png` (first two images). Game assets are referenced by relative symlink from LAB/assets/cinematics. The original three outputs were visually reviewed for identity, framing and narrative clarity.
+Built-in Imagegen / 2026-09-06. Reference: `characters/sheets/character_sobaya_basic_sheet.png` (first two images). Game assets are referenced by relative symlink from LAB/assets/cinematics. The original three outputs were visually reviewed for identity, framing and narrative clarity.
 
 ## village-crowd.png
 

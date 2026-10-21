@@ -1,7 +1,7 @@
 """Validate shared topology, skin and animation for both game-ready variants."""
 import json, math, struct
 from pathlib import Path
-ROOT=Path(__file__).resolve().parents[1]/'04_GAME_ASSETS/3d/props/chikuwa'
+ROOT=Path(__file__).resolve().parents[1]/'assets/3d/props/chikuwa'
 def load(path):
     data=path.read_bytes();length=struct.unpack_from('<I',data,12)[0]
     return json.loads(data[20:20+length]),data[28+length:]

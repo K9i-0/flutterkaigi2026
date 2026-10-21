@@ -15,7 +15,7 @@ from mathutils import Vector
 from mathutils.bvhtree import BVHTree
 
 ROOT = Path(__file__).resolve().parent.parent
-REL = '04_GAME_ASSETS/3d/environments/mountain/mountain'
+REL = 'assets/3d/environments/mountain/mountain'
 raw = (ROOT / (REL + '.glb')).read_bytes()
 gltf = json.loads(raw[20:20 + struct.unpack_from('<I', raw, 12)[0]])
 world = json.loads((ROOT / (REL + '.json')).read_text())
@@ -71,6 +71,6 @@ report = {
     'terrainCollision': 'Six footprints, each with a low skirt and four receding upper layers',
     'apertureRaysPassed': rays, 'frameRateMeasured': False,
 }
-output = ROOT / '21_SOBAYA_HAZARD_LAB/qa/mountain-forest-20260913.json'
+output = ROOT / 'labs/sobaya_hazard_lab/qa/mountain-forest-20260913.json'
 output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n')
 print(json.dumps(report, ensure_ascii=False))

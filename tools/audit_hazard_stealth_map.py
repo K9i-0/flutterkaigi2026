@@ -12,7 +12,7 @@ import bpy
 from mathutils import Vector
 
 ROOT = Path(__file__).resolve().parent.parent
-LAB = ROOT / '21_SOBAYA_HAZARD_LAB'
+LAB = ROOT / 'labs/sobaya_hazard_lab'
 report = {'description': 'Exported mesh aperture and cover ray audit', 'maps': {}}
 
 
@@ -26,7 +26,7 @@ def cast(a, b):
 
 
 for name, folder in [('village', 'pueblo'), ('farm', 'farm')]:
-    directory = ROOT / '04_GAME_ASSETS/3d/environments' / folder
+    directory = ROOT / 'assets/3d/environments' / folder
     glb, map_file = directory / f'{name}.glb', directory / f'{name}.json'
     world = json.loads(map_file.read_text())
     bpy.ops.object.select_all(action='SELECT')

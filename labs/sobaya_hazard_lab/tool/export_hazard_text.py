@@ -12,7 +12,7 @@ import subprocess
 import sys
 
 LAB = Path(__file__).resolve().parents[1]
-ROOT = LAB.parent
+ROOT = LAB.parents[1]  # repository root (labs/<lab>/../..)
 OUTPUT = LAB / "scenario/game_text.json"
 EXCLUDED = {
     "game_automation.dart", "game_benchmark.dart", "game_debug_probe.dart",

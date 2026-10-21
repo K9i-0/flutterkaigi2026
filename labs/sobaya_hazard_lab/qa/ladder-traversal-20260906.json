@@ -6,10 +6,10 @@
     "flutter_analyze": "No issues found"
   },
   "assets": {
-    "04_GAME_ASSETS/3d/characters/fukuchan/rig_v1/fukuchan.glb": "4ab25a431b98e5251479dc5600a8676f214aa581e3f44c2004a0426d75344197",
-    "04_GAME_ASSETS/3d/characters/sobaya/rig_v3/sobaya_rig.glb": "96c981a708183179cfcad12839cee2a6bdee2de16b829872b72915cb068dc557",
-    "04_GAME_ASSETS/3d/environments/pueblo/village.glb": "849d48bae42f0a28cc5de433d3bb889d80e61044b2311b3251a90be59e34a4ca",
-    "04_GAME_ASSETS/3d/environments/pueblo/village.json": "a7656fbec5d4a7d984b6df017d21d0f2ed7b32329560b78dc2a97b6ece4930ea"
+    "assets/3d/characters/fukuchan/rig_v1/fukuchan.glb": "4ab25a431b98e5251479dc5600a8676f214aa581e3f44c2004a0426d75344197",
+    "assets/3d/characters/sobaya/rig_v3/sobaya_rig.glb": "96c981a708183179cfcad12839cee2a6bdee2de16b829872b72915cb068dc557",
+    "assets/3d/environments/pueblo/village.glb": "849d48bae42f0a28cc5de433d3bb889d80e61044b2311b3251a90be59e34a4ca",
+    "assets/3d/environments/pueblo/village.json": "a7656fbec5d4a7d984b6df017d21d0f2ed7b32329560b78dc2a97b6ece4930ea"
   },
   "verified": [
     "E starts continuous ascent/descent; Climb clip follows vertical distance",

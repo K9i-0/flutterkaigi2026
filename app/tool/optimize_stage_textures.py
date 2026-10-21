@@ -11,7 +11,7 @@ import sys
 
 from PIL import Image
 
-DEFAULT = Path(__file__).resolve().parents[2] / '04_GAME_ASSETS/3d/stages/akasaka/akasaka.glb'
+DEFAULT = Path(__file__).resolve().parents[2] / 'assets/3d/stages/akasaka/akasaka.glb'
 
 
 def limit(name):

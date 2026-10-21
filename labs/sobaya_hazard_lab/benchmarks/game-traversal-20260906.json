@@ -13,7 +13,7 @@
     ],
     "devicePixelRatio": 2
   },
-  "log": "21_SOBAYA_HAZARD_LAB/evidence/game-traversal-profile.log",
+  "log": "labs/sobaya_hazard_lab/evidence/game-traversal-profile.log",
   "results": [
     {
       "case": "village-four",

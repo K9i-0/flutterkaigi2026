@@ -3,7 +3,7 @@ import bpy, json, hashlib
 from pathlib import Path
 from mathutils import Vector, Matrix
 ROOT=Path(__file__).resolve().parents[1]
-SOURCE=ROOT/'04_GAME_ASSETS/3d/characters/yametaro/rig_sheet_v2/yametaro.blend'
+SOURCE=ROOT/'assets/3d/characters/yametaro/rig_sheet_v2/yametaro.blend'
 assert Path(bpy.data.filepath)==SOURCE
 OUT=SOURCE.parent.parent/'rig_nose_v3';OUT.mkdir(exist_ok=True)
 m=bpy.data.objects['YametaroBody'];rig=bpy.data.objects['YametaroRig']

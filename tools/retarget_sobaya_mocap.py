@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / 'tools'))
 from sobaya_garment import animate_hem, relax_hem_weights
 
-OUT = ROOT / '04_GAME_ASSETS/3d/characters/sobaya/rig_v3'
+OUT = ROOT / 'assets/3d/characters/sobaya/rig_v3'
 INPUT = ROOT / '.local/mixamo_sobaya/source'
 MAP = {'Hips':'Hips', 'Spine':'Spine', 'Chest':'Spine2', 'Neck':'Neck', 'Head':'Head'}
 for side, word in [('L','Left'),('R','Right')]:
@@ -250,7 +250,7 @@ def bake(rig, mesh, name, source):
 def build():
     for file in ['walk_standard.fbx','run_weighted.fbx']:
         if not (INPUT/file).exists():raise FileNotFoundError(INPUT/file)
-    source=ROOT/'04_GAME_ASSETS/3d/characters/sobaya/rig_v2/sobaya_rig.blend'
+    source=ROOT/'assets/3d/characters/sobaya/rig_v2/sobaya_rig.blend'
     if not source.exists():raise RuntimeError('Build rig_v2 first to create the editable baseline')
     bpy.ops.wm.open_mainfile(filepath=str(source))
     rig=bpy.data.objects['SobayaRig'];mesh=bpy.data.objects['SobayaBody']

@@ -36,10 +36,10 @@
 Blender 5.1.2と同梱numpyを使う。Git管理済みの2つのGLBだけを入力にし、新しい生成API呼び出しや原型FBXは不要。
 
 ```sh
-/Applications/Blender.app/Contents/MacOS/Blender -b -t 6 --python 04_GAME_ASSETS/3d/characters/cto_odatetsu/rig_v1_20261014/build.py
-/Applications/Blender.app/Contents/MacOS/Blender -b -t 6 --python 04_GAME_ASSETS/3d/characters/cto_odatetsu/rig_v1_20261014/animate.py
-/Applications/Blender.app/Contents/MacOS/Blender -b -t 6 --python 04_GAME_ASSETS/3d/characters/cto_odatetsu/rig_v1_20261014/review.py
-/Applications/Blender.app/Contents/MacOS/Blender -b -t 6 --python 04_GAME_ASSETS/3d/characters/cto_odatetsu/rig_v1_20261014/validate.py
+/Applications/Blender.app/Contents/MacOS/Blender -b -t 6 --python assets/3d/characters/cto_odatetsu/rig_v1_20261014/build.py
+/Applications/Blender.app/Contents/MacOS/Blender -b -t 6 --python assets/3d/characters/cto_odatetsu/rig_v1_20261014/animate.py
+/Applications/Blender.app/Contents/MacOS/Blender -b -t 6 --python assets/3d/characters/cto_odatetsu/rig_v1_20261014/review.py
+/Applications/Blender.app/Contents/MacOS/Blender -b -t 6 --python assets/3d/characters/cto_odatetsu/rig_v1_20261014/validate.py
 ```
 
 形式・不変性・20動作の数値検証は `validate.py` と `validation.json`、ボーン・ウェイトの構築結果は `bind_report.json` を参照。`review.py -- --catalog` は20動作の代表姿勢、`-- --hands` は挨拶の出入りと指の拡大、`-- --neck` は勝利ポーズの襟を前後から描画する。

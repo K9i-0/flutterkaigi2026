@@ -86,7 +86,7 @@
 
    未発見の敵が近いだけでは音楽を変えない。敵の足音は実移動量から発音し、距離・遮蔽・高さで減衰する。靴底・擦れ・ジョッキの薄い共鳴、ビール投擲の衣擦れ、着地のガラス・液体は新しい非言語DSP音。正典の人物の声は変更しておらず、別人の呼吸・発話は生成していない。
 
-   捜索曲と効果音は `tools/build_hazard_search_score.py`、`tools/build_hazard_stealth_foley.py` から再生成できる。採用正本は `04_GAME_ASSETS/audio/hazard/`。マニフェストにseed・波形仕様・ハッシュを記録し、ゲームの相対symlinkから参照する。既存の探索・追跡曲も無音中から連続再生する。
+   捜索曲と効果音は `tools/build_hazard_search_score.py`、`tools/build_hazard_stealth_foley.py` から再生成できる。採用正本は `assets/audio/hazard/`。マニフェストにseed・波形仕様・ハッシュを記録し、ゲームの相対symlinkから参照する。既存の探索・追跡曲も無音中から連続再生する。
 
    設定の **「緊張感の画面演出」**（`threatEffects`）は0〜100%、初期70%。画面周辺の色・脈動だけの強度で、0%でも発見・捜索HUDとBGMは残る。BGM・効果音・環境音・台詞は個別の音量設定を使う。照準の中央やタッチボタンを揺れ・ぼかしで覆わない。
 

@@ -3,7 +3,7 @@ from pathlib import Path
 import bpy, math, json, hashlib
 from mathutils import Vector, Matrix
 ROOT=Path(__file__).resolve().parents[1]
-SOURCE=ROOT/'04_GAME_ASSETS/3d/characters/takosan/rig_radial_v5_clean/takosan.blend'
+SOURCE=ROOT/'assets/3d/characters/takosan/rig_radial_v5_clean/takosan.blend'
 OUT=SOURCE.parent.parent/'rig_radial_v6_lined';OUT.mkdir(exist_ok=True)
 bpy.ops.wm.open_mainfile(filepath=str(SOURCE))
 body=bpy.data.objects['TakosanBody'];rig=bpy.data.objects['TakosanRig']

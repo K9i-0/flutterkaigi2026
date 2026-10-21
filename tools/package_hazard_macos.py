@@ -12,7 +12,7 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-LAB = ROOT / '21_SOBAYA_HAZARD_LAB'
+LAB = ROOT / 'labs/sobaya_hazard_lab'
 DEFAULT_APP = LAB / 'build/macos/Build/Products/Release/そば屋ハザード.app'
 
 

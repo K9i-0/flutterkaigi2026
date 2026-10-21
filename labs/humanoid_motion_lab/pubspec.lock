@@ -134,7 +134,7 @@ packages:
   flutter_scene:
     dependency: "direct main"
     description:
-      path: "../21_SOBAYA_HAZARD_LAB/vendor/flutter_scene"
+      path: "../sobaya_hazard_lab/vendor/flutter_scene"
       relative: true
     source: path
     version: "0.23.0"

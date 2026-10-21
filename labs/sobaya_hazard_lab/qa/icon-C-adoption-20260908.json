@@ -2,8 +2,8 @@
   "date": "2026-09-08",
   "selection": "C: 暗闇からの視線, explicitly selected by the user",
   "displayName": "そば屋ハザード",
-  "source": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
-  "exports": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/adopted-C-exports.json",
+  "source": "assets/3d/ui/hazard/icon-concepts-20260908/C-stalker.png",
+  "exports": "assets/3d/ui/hazard/icon-concepts-20260908/adopted-C-exports.json",
   "exportValidation": "28 size-only sips exports; PNG dimensions and recorded SHA256 verified; no corner masks or frames baked in.",
   "ios": {
     "device": "iPhone 17 Pro simulator, iOS 26.5",
@@ -54,7 +54,7 @@
   "generation": {
     "tool": "built-in image_gen",
     "adoptedOutput": "C-adaptive.png",
-    "prompt": "04_GAME_ASSETS/3d/ui/hazard/icon-concepts-20260908/prompt-C-adaptive.txt",
+    "prompt": "assets/3d/ui/hazard/icon-concepts-20260908/prompt-C-adaptive.txt",
     "discardedAttempts": "Two transparent extraction attempts returned opaque RGB checkerboard artwork; neither was added to the app or tracked as a production asset."
   },
   "limitations": [

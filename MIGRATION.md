@@ -27,3 +27,30 @@
 ## 動画の除外
 
 ユーザー指定により `.mp4` / `.mov` / `.webm` / `.mkv` / `.avi` / `.m4v`（大文字小文字不問）を全コミットから除外。元MMUの動画は削除していません。動画カットシーンを使う別ゲーム等では、必要に応じて元MMUからローカルへ取得してください。今回の `26_SOBAYA_BEER_RAIN` のモデル・画像・音声は保持しています。
+
+## 2026-10-21 ゆめみ採用試験への特化と履歴の整理
+
+ユーザー指定により、ゆめみ採用試験とFlutter Scene系のゲームだけを残すよう、`git filter-repo` で `main` の履歴を書き換えた。削除したデータは元の [Madogiwa Multimedia Universe](https://github.com/K9i-0/madogiwa-multimedia-universe) に残っている。
+
+- 削除: 動画の台本・プロンプト・生成物（`03_SCRIPTS/`、キャラクターシートと小道具の正典を除く）、Three.js / Web / Flutter Scene以外のゲーム（05〜16番台）、公式サイト・Madogiwa Studio、`GAMES_PORTAL/`、`01_WORLD/`、`docs/`、`output/`、ゲームが参照しない3D素材の作業原本、動画・Web向けのスキルとワークフロー。
+- 残した素材は、残すプロジェクトのsymlinkとコードが参照するものだけ（中継のsymlinkを含む）。残したファイルの履歴は新しいパスで保持している。
+- 書き換え前の `main` の先端は `5d543f51c8564ba7f03590051f66b772ec17e088`。履歴の書き換えでcommit SHAはすべて変わった。`.git` は約2.3GBから約0.6GBになった。過去のPR・Issueからの旧SHAへのリンクは、このリポジトリでは辿れない。
+- `main` 以外のブランチを削除し、dependabotのPRを閉じた。
+
+| 旧パス | 新パス |
+|---|---|
+| `26_YUMEMI_RECRUIT_EXAM/`（旧 `26_SOBAYA_BEER_RAIN/`） | `app/` |
+| `17_FLUTTER_SCENE_GAME/` | `labs/flutter_scene_game/` |
+| `19_FLUTTER_SCENE_VRM_LAB/` | `labs/flutter_scene_vrm_lab/` |
+| `21_SOBAYA_HAZARD_LAB/` | `labs/sobaya_hazard_lab/` |
+| `22_HUMANOID_MOTION_LAB/` | `labs/humanoid_motion_lab/` |
+| `23_SOBAYA_TIDEWATER/` | `labs/sobaya_tidewater/` |
+| `24_SOBAYA_HAZARD/` | `labs/sobaya_hazard/` |
+| `25_SOBAYA_IPPAI/` | `labs/sobaya_ippai/` |
+| `04_GAME_ASSETS/`（参照分のみ） | `assets/` |
+| `02_CHARACTERS/` | `characters/` |
+| `03_SCRIPTS/00_TEMPLATES/characters/` | `characters/sheets/` |
+| `03_SCRIPTS/00_TEMPLATES/props/product_super_try*` | `characters/props/` |
+| そば屋ハザードが参照するエピソードのポスター画像 | `assets/2d/hazard_posters/` |
+| `packages/`、`tools/`（参照分のみ） | 変更なし |
+

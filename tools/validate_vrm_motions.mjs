@@ -8,17 +8,17 @@ const {VRMAnimationLoaderPlugin,createVRMAnimationClip}=await import(path.join(p
 const ajv=new Ajv({strict:false,allErrors:true});for(const dir of ['.local/vrm-spec','.local/vrm-specification/specification/VRMC_vrm_animation-1.0/schema'])for(const f of fs.readdirSync(root+'/'+dir).filter(x=>x.endsWith('.schema.json'))){const s=JSON.parse(fs.readFileSync(root+'/'+dir+'/'+f));delete s.$schema;if(!ajv.getSchema(f))ajv.addSchema(s,f);}
 const schema=ajv.getSchema('VRMC_vrm_animation.schema.json');
 function buffer(file){const b=fs.readFileSync(root+'/'+file);return b.buffer.slice(b.byteOffset,b.byteOffset+b.byteLength)}
-const catalog=JSON.parse(fs.readFileSync(root+'/04_GAME_ASSETS/vrm/motions/catalog.json'));const results=[];
-const candidates=JSON.parse(fs.readFileSync(root+'/04_GAME_ASSETS/vrm/motions/run_candidates.json'));for(const name of ['sobaya','fukuchan'])catalog.characters[name].push(...candidates.characters[name]);
+const catalog=JSON.parse(fs.readFileSync(root+'/assets/vrm/motions/catalog.json'));const results=[];
+const candidates=JSON.parse(fs.readFileSync(root+'/assets/vrm/motions/run_candidates.json'));for(const name of ['sobaya','fukuchan'])catalog.characters[name].push(...candidates.characters[name]);
 for(const name of ['sobaya','fukuchan']){
  const loader=new GLTFLoader();loader.register(p=>new VRMLoaderPlugin(p));loader.register(()=>({name:'TestTextures',loadTexture:()=>Promise.resolve(new THREE.Texture())}));
- const {userData:{vrm}}=await loader.parseAsync(buffer(`04_GAME_ASSETS/vrm/characters/${name}.vrm`),'');
+ const {userData:{vrm}}=await loader.parseAsync(buffer(`assets/vrm/characters/${name}.vrm`),'');
  let source=await new GLTFLoader().parseAsync(buffer(`.local/vrm-validation/${name}_motions.glb`),'');
- const manifest=JSON.parse(fs.readFileSync(root+`/04_GAME_ASSETS/vrm/characters/${name}.manifest.json`));
+ const manifest=JSON.parse(fs.readFileSync(root+`/assets/vrm/characters/${name}.manifest.json`));
  const originalSource=source;const candidateSource=await new GLTFLoader().parseAsync(buffer(`.local/vrm-validation/${name}_run_candidates.glb`),'');
  for(const entry of catalog.characters[name]){
   source=entry.validationSource?candidateSource:originalSource;
-  const b=buffer('04_GAME_ASSETS/vrm/motions/'+entry.file);const json=JSON.parse(Buffer.from(b).subarray(20,20+new DataView(b).getUint32(12,true)));
+  const b=buffer('assets/vrm/motions/'+entry.file);const json=JSON.parse(Buffer.from(b).subarray(20,20+new DataView(b).getUint32(12,true)));
   if(!schema(json.extensions.VRMC_vrm_animation))throw Error(JSON.stringify(schema.errors));
   const report=await validateBytes(new Uint8Array(b),{maxIssues:1000});if(report.issues.numErrors)throw Error(JSON.stringify(report.issues));
   const l=new GLTFLoader();l.register(p=>new VRMAnimationLoaderPlugin(p));const data=await l.parseAsync(b,'');const clip=createVRMAnimationClip(data.userData.vrmAnimations[0],vrm);
@@ -47,5 +47,5 @@ for(const name of ['sobaya','fukuchan']){
  }
 }
 const passed=results.every(r=>r.maxPositionError<.025&&r.maxRotationError<.025);
-fs.writeFileSync(root+'/04_GAME_ASSETS/vrm/motions/validation.json',JSON.stringify({passed,sampleRateHz:30,results},null,2)+'\n');console.log(JSON.stringify(results,null,2));
+fs.writeFileSync(root+'/assets/vrm/motions/validation.json',JSON.stringify({passed,sampleRateHz:30,results},null,2)+'\n');console.log(JSON.stringify(results,null,2));
 if(!passed)throw Error('VRMA differs from baked performance');

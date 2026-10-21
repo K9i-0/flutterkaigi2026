@@ -36,7 +36,7 @@
 `test/game_stealth_routes_test.dart` は20Hzの移動・構え・射撃/投擲・E入力で上記の比較を再現する。通常実行は6mの一体比較と解除後の退出を検査し、下記の明示実行で全配置の突破例と3距離の比較を記録する。重い測定のため、描画負荷のprofile計測とは同時に実行しない。全traceは無視対象の `evidence/` に出力し、軽い採用結果を `qa/` に保存する。
 
 ```sh
-cd 21_SOBAYA_HAZARD_LAB
+cd labs/sobaya_hazard_lab
 HAZARD_WRITE_ROUTE_QA=true mise exec -- flutter test test/game_stealth_routes_test.dart
 # 全配置の村だけを確認する場合:
 HAZARD_ROUTE_ZONE=village HAZARD_WRITE_ROUTE_QA=true mise exec -- flutter test test/game_stealth_routes_test.dart --plain-name 'full authored guards'

@@ -3,9 +3,9 @@ from pathlib import Path
 from array import array
 import argparse,hashlib,json,math,sys,wave
 ROOT=Path(__file__).resolve().parent.parent
-OUT=ROOT/'04_GAME_ASSETS/audio/hazard'
+OUT=ROOT/'assets/audio/hazard'
 parser=argparse.ArgumentParser()
-parser.add_argument('--report',type=Path,default=ROOT/'21_SOBAYA_HAZARD_LAB/qa/voice-assets-20260906.json')
+parser.add_argument('--report',type=Path,default=ROOT/'labs/sobaya_hazard_lab/qa/voice-assets-20260906.json')
 args=parser.parse_args()
 manifest=json.loads((OUT/'voice-manifest.json').read_text())
 lines=json.loads((OUT/'voice-lines.json').read_text())
@@ -13,7 +13,7 @@ assert {(c['speaker'],c['text']) for c in manifest['clips']}=={(c['speaker'],c['
 checks=[]
 for clip in manifest['clips']:
     file=OUT/'voice'/Path(clip['asset']).name
-    link=ROOT/'21_SOBAYA_HAZARD_LAB/assets'/clip['asset']
+    link=ROOT/'labs/sobaya_hazard_lab/assets'/clip['asset']
     assert link.resolve()==file.resolve()
     with wave.open(str(file)) as f:
         assert f.getnchannels()==1 and f.getsampwidth()==2 and f.getframerate()==24000

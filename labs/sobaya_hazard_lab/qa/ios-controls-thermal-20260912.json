@@ -159,7 +159,7 @@
     "launchWithoutDebugger": "success",
     "visualVerification": "User confirmed normal display after standalone Release launch; debug controls screenshots independently verified",
     "existingMainApp": "separate bundle; unchanged",
-    "path": "../../.local/hazard-graphics-device/21_SOBAYA_HAZARD_LAB/build/ios/iphoneos/Runner.app",
+    "path": "../../.local/hazard-graphics-device/labs/sobaya_hazard_lab/build/ios/iphoneos/Runner.app",
     "processAliveAfterLaunch": true
   }
 }

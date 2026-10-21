@@ -6,7 +6,7 @@ Dimensions are in metres; +X handle and Grip are shared with the v1 prop.
 import bpy, json, math, random
 from pathlib import Path
 ROOT=Path(__file__).resolve().parent.parent
-OUT=ROOT/'04_GAME_ASSETS/3d/props/beer_mug_v2'
+OUT=ROOT/'assets/3d/props/beer_mug_v2'
 
 
 def material(name,color,roughness,transmission=0,ior=1.5,thickness=0,distance=1):

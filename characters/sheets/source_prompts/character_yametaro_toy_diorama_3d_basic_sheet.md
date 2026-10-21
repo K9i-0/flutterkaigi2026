@@ -3,7 +3,7 @@
 - Generator: built-in ImageGen
 - Use case: stylized-concept
 - Media style: 窓際トイジオラマ3D (`toy_diorama_3d`)
-- References: `02_CHARACTERS/Yametaro.jpg`, `03_SCRIPTS/00_TEMPLATES/characters/character_yametaro_basic_sheet.png`, `03_SCRIPTS/21_takosan_php_prompt_pun/clip1_start.png`
+- References: `characters/Yametaro.jpg`, `characters/sheets/character_yametaro_basic_sheet.png`, `03_SCRIPTS/21_takosan_php_prompt_pun/clip1_start.png`
 
 ## Final prompt
 

@@ -1,7 +1,7 @@
 """Build the canonical six-tentacle, two-human-arm Takosan as smooth rigged 3D.
 
 Blender --background --factory-startup --python tools/build_takosan_game_rig.py
-Reference: 03_SCRIPTS/00_TEMPLATES/characters/character_takosan_basic_sheet.png
+Reference: characters/sheets/character_takosan_basic_sheet.png
 No generated API geometry or voxel assets are used.
 """
 from pathlib import Path
@@ -12,7 +12,7 @@ import random
 from mathutils import Vector, Matrix, Quaternion
 
 ROOT = Path(__file__).resolve().parent.parent
-OUT = ROOT / '04_GAME_ASSETS/3d/characters/takosan/rig_v1'
+OUT = ROOT / 'assets/3d/characters/takosan/rig_v1'
 OUT.mkdir(parents=True, exist_ok=True)
 bpy.ops.object.select_all(action='SELECT')
 bpy.ops.object.delete(use_global=False)

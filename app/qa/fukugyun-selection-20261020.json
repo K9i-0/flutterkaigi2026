@@ -107,7 +107,7 @@
       "facing": 1.574689941609039,
       "vision": {
         "visible": true,
-        "source": "02_CHARACTERS/Okayaman.jpg"
+        "source": "characters/Okayaman.jpg"
       },
       "type": "_extensionType",
       "method": "ext.flutter.madogiwa.inspectCatch",
@@ -226,7 +226,7 @@
       "facing": 1.5709550391161637,
       "vision": {
         "visible": true,
-        "source": "02_CHARACTERS/Okayaman.jpg"
+        "source": "characters/Okayaman.jpg"
       },
       "type": "_extensionType",
       "method": "ext.flutter.madogiwa.inspectCatch",
@@ -423,7 +423,7 @@
       "facing": 4.712387806601144,
       "vision": {
         "visible": true,
-        "source": "02_CHARACTERS/Okayaman.jpg"
+        "source": "characters/Okayaman.jpg"
       },
       "type": "_extensionType",
       "method": "ext.flutter.madogiwa.inspectCatch",
@@ -620,7 +620,7 @@
       "facing": 4.712387806601144,
       "vision": {
         "visible": true,
-        "source": "02_CHARACTERS/Okayaman.jpg"
+        "source": "characters/Okayaman.jpg"
       },
       "type": "_extensionType",
       "method": "ext.flutter.madogiwa.inspectCatch",

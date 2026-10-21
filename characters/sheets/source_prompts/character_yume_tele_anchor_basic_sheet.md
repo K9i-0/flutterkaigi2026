@@ -1,7 +1,7 @@
 # ゆめテレアナウンサー基本シート
 
 - 生成手段: built-in `image_gen`
-- 外見の唯一の参照画像: `02_CHARACTERS/YumeTeleAnchor.png`
+- 外見の唯一の参照画像: `characters/YumeTeleAnchor.png`
 - 採用画像: `../character_yume_tele_anchor_basic_sheet.png`
 - 採用画像SHA-256: `23568cd82db6c426a5bfef74c411c5812dff3f07edaef030721affb7f59298ae`
 

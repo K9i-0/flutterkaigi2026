@@ -33,8 +33,8 @@
 ### ゆめテレアナウンサー
 
 - 既定caption: `落ち着いた地方局ニュース読み。標準語で、明瞭かつ均一な速度、抑制された抑揚で真面目に話す。`
-- 外見正典: `02_CHARACTERS/YumeTeleAnchor.png`
-- 基本シート: `03_SCRIPTS/00_TEMPLATES/characters/character_yume_tele_anchor_basic_sheet.png`
+- 外見正典: `characters/YumeTeleAnchor.png`
+- 基本シート: `characters/sheets/character_yume_tele_anchor_basic_sheet.png`
 - 用途: 「ゆめテレ」を含むニュース、速報、現場紹介などの日本語アナウンス。ユーザーが別アナウンサーを指定した場合はその指定を優先する。
 
 ## 利用範囲
@@ -43,7 +43,7 @@
 
 ## 話者の喋り方の特徴と台本作成ガイド（Seedance動画向け）
 
-Seedance動画のセリフ（台本）作成やIrodori-TTSプロンプト（caption）設計時に参照する各話者の特徴。詳細な参照音源集は `02_CHARACTERS/voice_references/` を参照。
+Seedance動画のセリフ（台本）作成やIrodori-TTSプロンプト（caption）設計時に参照する各話者の特徴。詳細な参照音源集は `characters/voice_references/` を参照。
 
 ### 福ギュン（福太郎）
 - **声質・トーン**: 明るく高め、人懐っこくエネルギッシュ。常に笑顔が浮かぶハキハキとした口調。
@@ -67,7 +67,7 @@ Seedance動画のセリフ（台本）作成やIrodori-TTSプロンプト（capt
 
 ## たこさん（2026-10-02 正典採用）
 
-ユーザー指定により、第84話完成版で使った `takosan_irodori_line.wav` を `02_CHARACTERS/Takosan_voice.wav` へ無加工コピーして正典声質参照に採用。「なかまなる。ぎゅんされる。えらべ。」の採用音声であり、84話のWan未修正版の声ではない。今回の採用により、過去の「全体正典は変更しない」「試聴確認未実施」という記録とは別に、今後の作品で継続する正典が確定した。片言は84話の演技であり、今後の台詞へ強制しない。
+ユーザー指定により、第84話完成版で使った `takosan_irodori_line.wav` を `characters/Takosan_voice.wav` へ無加工コピーして正典声質参照に採用。「なかまなる。ぎゅんされる。えらべ。」の採用音声であり、84話のWan未修正版の声ではない。今回の採用により、過去の「全体正典は変更しない」「試聴確認未実施」という記録とは別に、今後の作品で継続する正典が確定した。片言は84話の演技であり、今後の台詞へ強制しない。
 
 - 今後の新規音声: `Aratako/Irodori-TTS-v4.1-Small`、正典参照 `Takosan_voice.wav`、既定seed 43、固有後処理なし。captionなし・本文CFG 5・尺倍率1・トリムなしを初期設定とし、今回の台詞の演技に合わせて確認する。
 - Wanでは正典参照を声質だけに使用し、参照元の言葉・片言・文間をコピーさせない。

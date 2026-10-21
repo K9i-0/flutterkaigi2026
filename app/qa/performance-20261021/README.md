@@ -63,9 +63,9 @@ Dart MCPでこのアプリをdebug起動し、得たVM Service WebSocket URIを�
 GLB変更後は完全に再ビルドして、同梱ファイルのSHA256一致を確認する。
 
 ```sh
-uv run --with websockets python 26_YUMEMI_RECRUIT_EXAM/tool/perf_probe.py VM_URI /tmp/play.json final
-uv run --with websockets python 26_YUMEMI_RECRUIT_EXAM/tool/perf_probe.py VM_URI /tmp/orbit.json orbit
-uv run --with websockets python 26_YUMEMI_RECRUIT_EXAM/tool/perf_probe.py VM_URI /tmp/traffic.json traffic
+uv run --with websockets python app/tool/perf_probe.py VM_URI /tmp/play.json final
+uv run --with websockets python app/tool/perf_probe.py VM_URI /tmp/orbit.json orbit
+uv run --with websockets python app/tool/perf_probe.py VM_URI /tmp/traffic.json traffic
 ```
 
 計測ツールは画質設定を永続化しない。完了後はhot restartか通常のstartで戻る。

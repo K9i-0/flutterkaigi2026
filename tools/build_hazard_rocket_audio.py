@@ -13,7 +13,7 @@ import numpy as np
 from scipy.signal import butter, sosfilt
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / '04_GAME_ASSETS/audio/hazard'
+OUT = ROOT / 'assets/audio/hazard'
 TMP = ROOT / '.local/audio-polish-20260907'
 TMP.mkdir(parents=True, exist_ok=True)
 SR = 44100
