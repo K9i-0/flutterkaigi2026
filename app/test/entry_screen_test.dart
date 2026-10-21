@@ -76,7 +76,7 @@ void main() {
     // Licenses slide in inside the dialog rather than pushing a page.
     expect(find.byType(LicensePage), findsNothing);
     expect(find.byKey(const ValueKey('about_license_list')), findsOneWidget);
-    await tester.tap(find.byKey(const ValueKey('about_back')));
+    await tester.tap(find.byKey(const ValueKey('about_tab_about')));
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('about_repository_qr')), findsOneWidget);
   });

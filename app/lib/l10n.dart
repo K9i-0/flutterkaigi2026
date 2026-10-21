@@ -41,9 +41,9 @@ class Strings {
   );
   String get repository => _('リポジトリ', 'Repository');
   String get authors => _('作者', 'Authors');
-  String get licenses => _('OSSライセンス', 'Open source licenses');
-  String licenseCount(int n) =>
-      _('ライセンス $n件', n == 1 ? '1 license' : '$n licenses');
+  String get aboutTab => _('アプリ情報', 'About');
+  String get licenses => _('ライセンス', 'Licenses');
+  String licenseCount(int n) => _('$n件', n == 1 ? '1 license' : '$n licenses');
 
   String get chooseCharacter => _('だれで挑む？', 'Who takes the exam?');
   String roundLength(int s) => _('$s秒の一本勝負', '$s-second challenge');
