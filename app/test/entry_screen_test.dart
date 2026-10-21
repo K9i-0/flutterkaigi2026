@@ -73,6 +73,11 @@ void main() {
     expect(find.text('@karas1910'), findsOneWidget);
     await tester.tap(find.byKey(const ValueKey('about_licenses')));
     await tester.pumpAndSettle();
-    expect(find.byType(LicensePage), findsOneWidget);
+    // Licenses slide in inside the dialog rather than pushing a page.
+    expect(find.byType(LicensePage), findsNothing);
+    expect(find.byKey(const ValueKey('about_license_list')), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('about_back')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('about_repository_qr')), findsOneWidget);
   });
 }
