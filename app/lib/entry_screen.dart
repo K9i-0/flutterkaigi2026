@@ -70,17 +70,21 @@ class BrandLoading extends StatelessWidget {
           ShaderMask(
             shaderCallback: brandGradient.createShader,
             blendMode: BlendMode.srcIn,
-            child: const SizedBox(
-              width: 44,
-              height: 44,
-              child: CircularProgressIndicator(
-                color: Colors.white,
-                strokeWidth: 4,
-                semanticsLabel: '読み込み中',
+            // The mask clips to its child; pad so the centered stroke isn't cut.
+            child: const Padding(
+              padding: EdgeInsets.all(4),
+              child: SizedBox(
+                width: 44,
+                height: 44,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 4,
+                  semanticsLabel: '読み込み中',
+                ),
               ),
             ),
           ),
-          const SizedBox(height: 22),
+          const SizedBox(height: 18),
           const Text(
             '読み込み中',
             style: TextStyle(color: brandMuted, fontSize: 12),

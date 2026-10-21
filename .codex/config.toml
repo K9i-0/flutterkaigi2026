@@ -48,3 +48,8 @@ enabled_tools = [
   "list_devices",
   "get_runtime_errors",
 ]
+
+# Real-device control (Pixel / iPhone) via adb and go-ios/WebDriverAgent.
+[mcp_servers.mobile-mcp]
+command = "npx"
+args = ["-y", "@mobilenext/mobile-mcp@1.0.8"]

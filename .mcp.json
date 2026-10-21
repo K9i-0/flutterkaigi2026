@@ -26,6 +26,15 @@
         "--enable=flutter_app_lifecycle"
       ],
       "env": {}
+    },
+    "mobile-mcp": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@mobilenext/mobile-mcp@1.0.8"
+      ],
+      "env": {}
     }
   }
 }
