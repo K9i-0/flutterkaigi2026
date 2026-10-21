@@ -16,7 +16,7 @@
 
 窓際スーパーつらいは `characters/props/product_super_try.png` を正典として3D缶へ投影。窓際ライトと発泡酒「つらめ」は今回限りの仮デザイン。仮の識別手掛かりとして発泡酒には紫帯を付けている。
 
-モデルは `assets/models/` から共有資産への相対symlink。そば屋は `assets/3d/hazard_rebuild/locomotion_v1/sobaya.glb` のIdle/Walk/Runを再利用し、体型や顔は変更していない。移動速度に歩行・走行モーションを同期する。効果音は既存の `labs/sobaya_ippai/assets/audio/` を参照。
+モデルは `assets/models/` から共有資産への相対symlink（キャラクター・ちくわ・ゆめみん・やめ太郎は2026-10-21からテクスチャ縮小版 `../assets/3d/recruit_exam_mobile/`）。そば屋は `assets/3d/hazard_rebuild/locomotion_v1/sobaya.glb` のIdle/Walk/Runを再利用し、体型や顔は変更していない。移動速度に歩行・走行モーションを同期する。効果音は既存の `labs/sobaya_ippai/assets/audio/` を参照。
 
 ## 開発
 
@@ -235,3 +235,9 @@ vsync時刻から算出する`submittedFps`とフレーム間隔も記録する�
 
 自動操作: `madogiwa.catchAction` の `action=fps, value=on|off`。`madogiwa.inspectCatch` は `showFps` と直近の `fpsStats`（fps・uiMs・gpuMs・worstMs）を返す。
 
+
+## 実機性能とメモリ（2026-10-21）
+
+Pixel 7a・iPhone 14の実機profileで計測。Pixel 7aは約30fpsに張り付いていた。原因はflutter_sceneが毎フレーム点光源テクスチャを転送し、VulkanでUIスレッドとラスターが同期待ちになっていたこと。フォーク `K9i-0/flutter_scene` の `master` を元リポジトリ（bdero/flutter_scene、492コミット）に同期し、独自の3コミット（空の補間・同フレームの表示切替・回転のクロスフェード）を載せ直した `2606511` に更新した。Pixel 7aは標準画質で約60fps（UI 3〜7ms、GPU 1〜7ms）。`labs/sobaya_hazard`・`labs/sobaya_ippai`・`packages/madogiwa_engine` も同じrefへ更新。非推奨の `castsShadows` は `shadowCastingMode` に置き換えた。
+
+同期版はiPhone 14で読み込み中に強制終了した（Jetsam、1アプリのメモリ上限）。旧版もRSSピーク1.9GBで上限付近だった。キャラクター・落下アイテムは、テクスチャを2048（アイテムは1024）に縮小したゲーム専用の派生 `../assets/3d/recruit_exam_mobile/` へsymlinkを切り替えた。読み込み時RSSピーク1,896→739MB、安定時約1,120→570MB。昼・夜とも60fps。プレイ中の見た目は変わらない。詳細と生データは [qa/device-performance-20261021/README.md](qa/device-performance-20261021/README.md)。

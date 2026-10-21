@@ -170,7 +170,9 @@ class StageLighting {
         } else {
           // Lets the shadow cache keep the 30k-face city out of every frame.
           node.shadowStatic = true;
-          if (node.name == 'street') node.castsShadows = false;
+          if (node.name == 'street') {
+            node.shadowCastingMode = ShadowCastingMode.off;
+          }
         }
       }
       node.children.forEach(visit);
@@ -235,7 +237,9 @@ class StageLighting {
     // Individual car shadows are subpixel from the 200m-high play area.
     // Cars still move and receive city shadows; keep their casting in high quality.
     for (final node in _trafficNodes.keys) {
-      node.castsShadows = graphics.fullResolution;
+      node.shadowCastingMode = graphics.fullResolution
+          ? ShadowCastingMode.on
+          : ShadowCastingMode.off;
     }
     // Sources remain shared/loaded, but the disabled textures are no longer
     // sampled by the material. No per-frame allocations or reflection pass.

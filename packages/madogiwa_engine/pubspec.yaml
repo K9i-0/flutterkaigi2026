@@ -10,7 +10,7 @@ dependencies:
   flutter_scene:
     git:
       url: https://github.com/K9i-0/flutter_scene.git
-      ref: 793471301610dd413756b963c52b58d5dea63b68
+      ref: 2606511163ea1144b096f3a7d16b8b85ee0dbc2e
       path: packages/flutter_scene
 dev_dependencies:
   flutter_test:

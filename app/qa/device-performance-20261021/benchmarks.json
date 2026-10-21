@@ -1,0 +1,632 @@
+{
+ "pixel7a/old-fork/run1/light-day": {
+  "label": "automatic",
+  "graphics": {
+   "shadows": false,
+   "reflections": false,
+   "surfaceDetail": false,
+   "bloom": false,
+   "fullResolution": false
+  },
+  "timeOfDay": "day",
+  "character": "cto_odatetsu",
+  "mode": "profile",
+  "frames": 360,
+  "warmupFrames": 120,
+  "physicalSize": [
+   2282.0,
+   1080.0
+  ],
+  "buildMs": {
+   "p50": 21.488,
+   "p95": 33.748,
+   "max": 38.614
+  },
+  "rasterMs": {
+   "p50": 21.675,
+   "p95": 26.911,
+   "max": 29.768
+  },
+  "submittedFps": 29.886799791408453,
+  "frameIntervalMs": {
+   "p50": 33.272,
+   "p95": 49.913,
+   "over20ms": 309
+  }
+ },
+ "pixel7a/old-fork/run1/light-night": {
+  "label": "automatic",
+  "graphics": {
+   "shadows": false,
+   "reflections": false,
+   "surfaceDetail": false,
+   "bloom": false,
+   "fullResolution": false
+  },
+  "timeOfDay": "night",
+  "character": "cto_odatetsu",
+  "mode": "profile",
+  "frames": 360,
+  "warmupFrames": 120,
+  "physicalSize": [
+   2282.0,
+   1080.0
+  ],
+  "buildMs": {
+   "p50": 16.654,
+   "p95": 24.797,
+   "max": 31.32
+  },
+  "rasterMs": {
+   "p50": 17.089,
+   "p95": 20.199,
+   "max": 23.978
+  },
+  "submittedFps": 38.12270626614109,
+  "frameIntervalMs": {
+   "p50": 33.264,
+   "p95": 33.292,
+   "over20ms": 207
+  }
+ },
+ "pixel7a/old-fork/run1/standard-day": {
+  "label": "automatic",
+  "graphics": {
+   "shadows": true,
+   "reflections": true,
+   "surfaceDetail": true,
+   "bloom": true,
+   "fullResolution": false
+  },
+  "timeOfDay": "day",
+  "character": "cto_odatetsu",
+  "mode": "profile",
+  "frames": 360,
+  "warmupFrames": 120,
+  "physicalSize": [
+   2282.0,
+   1080.0
+  ],
+  "buildMs": {
+   "p50": 18.597,
+   "p95": 27.622,
+   "max": 34.288
+  },
+  "rasterMs": {
+   "p50": 17.89,
+   "p95": 21.692,
+   "max": 23.71
+  },
+  "submittedFps": 36.08428968427553,
+  "frameIntervalMs": {
+   "p50": 33.267,
+   "p95": 33.294,
+   "over20ms": 237
+  }
+ },
+ "pixel7a/old-fork/run1/standard-night": {
+  "label": "automatic",
+  "graphics": {
+   "shadows": true,
+   "reflections": true,
+   "surfaceDetail": true,
+   "bloom": true,
+   "fullResolution": false
+  },
+  "timeOfDay": "night",
+  "character": "cto_odatetsu",
+  "mode": "profile",
+  "frames": 360,
+  "warmupFrames": 120,
+  "physicalSize": [
+   2282.0,
+   1080.0
+  ],
+  "buildMs": {
+   "p50": 17.027,
+   "p95": 26.79,
+   "max": 43.017
+  },
+  "rasterMs": {
+   "p50": 16.671,
+   "p95": 20.976,
+   "max": 30.791
+  },
+  "submittedFps": 36.94208068294485,
+  "frameIntervalMs": {
+   "p50": 33.273,
+   "p95": 33.298,
+   "over20ms": 221
+  }
+ },
+ "iphone14/old-fork/light-day": {
+  "label": "automatic",
+  "graphics": {
+   "shadows": false,
+   "reflections": false,
+   "surfaceDetail": false,
+   "bloom": false,
+   "fullResolution": false
+  },
+  "timeOfDay": "day",
+  "character": "cto_odatetsu",
+  "mode": "profile",
+  "frames": 360,
+  "warmupFrames": 120,
+  "physicalSize": [
+   2532.0,
+   1170.0
+  ],
+  "buildMs": {
+   "p50": 4.017,
+   "p95": 5.887,
+   "max": 9.051
+  },
+  "rasterMs": {
+   "p50": 0.589,
+   "p95": 2.094,
+   "max": 9.893
+  },
+  "submittedFps": 60.03539245253107,
+  "frameIntervalMs": {
+   "p50": 16.657,
+   "p95": 16.768,
+   "over20ms": 0
+  }
+ },
+ "iphone14/old-fork/light-night": {
+  "label": "automatic",
+  "graphics": {
+   "shadows": false,
+   "reflections": false,
+   "surfaceDetail": false,
+   "bloom": false,
+   "fullResolution": false
+  },
+  "timeOfDay": "night",
+  "character": "cto_odatetsu",
+  "mode": "profile",
+  "frames": 360,
+  "warmupFrames": 120,
+  "physicalSize": [
+   2532.0,
+   1170.0
+  ],
+  "buildMs": {
+   "p50": 3.867,
+   "p95": 5.108,
+   "max": 6.616
+  },
+  "rasterMs": {
+   "p50": 0.543,
+   "p95": 0.717,
+   "max": 3.087
+  },
+  "submittedFps": 60.03423791050083,
+  "frameIntervalMs": {
+   "p50": 16.656,
+   "p95": 16.72,
+   "over20ms": 0
+  }
+ },
+ "iphone14/old-fork/standard-day": {
+  "label": "automatic",
+  "graphics": {
+   "shadows": true,
+   "reflections": true,
+   "surfaceDetail": true,
+   "bloom": true,
+   "fullResolution": false
+  },
+  "timeOfDay": "day",
+  "character": "cto_odatetsu",
+  "mode": "profile",
+  "frames": 360,
+  "warmupFrames": 120,
+  "physicalSize": [
+   2532.0,
+   1170.0
+  ],
+  "buildMs": {
+   "p50": 4.331,
+   "p95": 4.718,
+   "max": 5.838
+  },
+  "rasterMs": {
+   "p50": 0.515,
+   "p95": 0.63,
+   "max": 2.883
+  },
+  "submittedFps": 59.86073957526888,
+  "frameIntervalMs": {
+   "p50": 16.658,
+   "p95": 16.724,
+   "over20ms": 1
+  }
+ },
+ "iphone14/old-fork/standard-night": {
+  "label": "automatic",
+  "graphics": {
+   "shadows": true,
+   "reflections": true,
+   "surfaceDetail": true,
+   "bloom": true,
+   "fullResolution": false
+  },
+  "timeOfDay": "night",
+  "character": "cto_odatetsu",
+  "mode": "profile",
+  "frames": 360,
+  "warmupFrames": 120,
+  "physicalSize": [
+   2532.0,
+   1170.0
+  ],
+  "buildMs": {
+   "p50": 3.579,
+   "p95": 5.144,
+   "max": 6.626
+  },
+  "rasterMs": {
+   "p50": 0.453,
+   "p95": 1.248,
+   "max": 2.63
+  },
+  "submittedFps": 60.03362551927414,
+  "frameIntervalMs": {
+   "p50": 16.657,
+   "p95": 16.76,
+   "over20ms": 0
+  }
+ },
+ "pixel7a/old-fork/worklight-ab/base-1": {
+  "label": "automatic",
+  "graphics": {
+   "shadows": true,
+   "reflections": true,
+   "surfaceDetail": true,
+   "bloom": true,
+   "fullResolution": false
+  },
+  "timeOfDay": "night",
+  "character": "cto_odatetsu",
+  "mode": "profile",
+  "frames": 360,
+  "warmupFrames": 120,
+  "physicalSize": [
+   2282.0,
+   1080.0
+  ],
+  "buildMs": {
+   "p50": 20.82,
+   "p95": 31.84,
+   "max": 61.982
+  },
+  "rasterMs": {
+   "p50": 18.969,
+   "p95": 24.63,
+   "max": 54.239
+  },
+  "submittedFps": 31.82762653941763,
+  "frameIntervalMs": {
+   "p50": 33.271,
+   "p95": 49.899,
+   "over20ms": 292
+  }
+ },
+ "pixel7a/old-fork/worklight-ab/nolights-1": {
+  "label": "automatic",
+  "graphics": {
+   "shadows": true,
+   "reflections": true,
+   "surfaceDetail": true,
+   "bloom": true,
+   "fullResolution": false
+  },
+  "timeOfDay": "night",
+  "character": "cto_odatetsu",
+  "mode": "profile",
+  "frames": 360,
+  "warmupFrames": 120,
+  "physicalSize": [
+   2282.0,
+   1080.0
+  ],
+  "buildMs": {
+   "p50": 11.368,
+   "p95": 19.858,
+   "max": 31.525
+  },
+  "rasterMs": {
+   "p50": 16.632,
+   "p95": 19.131,
+   "max": 32.66
+  },
+  "submittedFps": 47.63550742762289,
+  "frameIntervalMs": {
+   "p50": 16.638,
+   "p95": 33.283,
+   "over20ms": 93
+  }
+ },
+ "pixel7a/old-fork/worklight-ab/base-2": {
+  "label": "automatic",
+  "graphics": {
+   "shadows": true,
+   "reflections": true,
+   "surfaceDetail": true,
+   "bloom": true,
+   "fullResolution": false
+  },
+  "timeOfDay": "night",
+  "character": "cto_odatetsu",
+  "mode": "profile",
+  "frames": 360,
+  "warmupFrames": 120,
+  "physicalSize": [
+   2282.0,
+   1080.0
+  ],
+  "buildMs": {
+   "p50": 14.388,
+   "p95": 24.531,
+   "max": 34.827
+  },
+  "rasterMs": {
+   "p50": 14.815,
+   "p95": 18.769,
+   "max": 37.551
+  },
+  "submittedFps": 41.18673791628147,
+  "frameIntervalMs": {
+   "p50": 16.639,
+   "p95": 33.282,
+   "over20ms": 162
+  }
+ },
+ "pixel7a/old-fork/worklight-ab/nolights-2": {
+  "label": "automatic",
+  "graphics": {
+   "shadows": true,
+   "reflections": true,
+   "surfaceDetail": true,
+   "bloom": true,
+   "fullResolution": false
+  },
+  "timeOfDay": "night",
+  "character": "cto_odatetsu",
+  "mode": "profile",
+  "frames": 360,
+  "warmupFrames": 120,
+  "physicalSize": [
+   2282.0,
+   1080.0
+  ],
+  "buildMs": {
+   "p50": 20.532,
+   "p95": 29.235,
+   "max": 48.33
+  },
+  "rasterMs": {
+   "p50": 24.867,
+   "p95": 27.132,
+   "max": 51.777
+  },
+  "submittedFps": 33.15334177835449,
+  "frameIntervalMs": {
+   "p50": 33.263,
+   "p95": 33.3,
+   "over20ms": 280
+  }
+ },
+ "pixel7a/fixed-perf-mode/old-fork-a": {
+  "label": "automatic",
+  "graphics": {
+   "shadows": true,
+   "reflections": true,
+   "surfaceDetail": true,
+   "bloom": true,
+   "fullResolution": false
+  },
+  "timeOfDay": "night",
+  "character": "cto_odatetsu",
+  "mode": "profile",
+  "frames": 360,
+  "warmupFrames": 120,
+  "physicalSize": [
+   2282.0,
+   1080.0
+  ],
+  "buildMs": {
+   "p50": 11.171,
+   "p95": 20.578,
+   "max": 25.542
+  },
+  "rasterMs": {
+   "p50": 16.631,
+   "p95": 18.396,
+   "max": 19.943
+  },
+  "submittedFps": 47.21665077433992,
+  "frameIntervalMs": {
+   "p50": 16.639,
+   "p95": 33.289,
+   "over20ms": 98
+  }
+ },
+ "pixel7a/fixed-perf-mode/synced-fork-a": {
+  "label": "automatic",
+  "graphics": {
+   "shadows": true,
+   "reflections": true,
+   "surfaceDetail": true,
+   "bloom": true,
+   "fullResolution": false
+  },
+  "timeOfDay": "night",
+  "character": "cto_odatetsu",
+  "mode": "profile",
+  "frames": 360,
+  "warmupFrames": 120,
+  "physicalSize": [
+   2282.0,
+   1080.0
+  ],
+  "buildMs": {
+   "p50": 3.202,
+   "p95": 9.606,
+   "max": 11.69
+  },
+  "rasterMs": {
+   "p50": 1.355,
+   "p95": 7.642,
+   "max": 11.221
+  },
+  "submittedFps": 60.109456138347525,
+  "frameIntervalMs": {
+   "p50": 16.634,
+   "p95": 16.66,
+   "over20ms": 0
+  }
+ },
+ "pixel7a/fixed-perf-mode/old-fork-b": {
+  "label": "automatic",
+  "graphics": {
+   "shadows": true,
+   "reflections": true,
+   "surfaceDetail": true,
+   "bloom": true,
+   "fullResolution": false
+  },
+  "timeOfDay": "night",
+  "character": "cto_odatetsu",
+  "mode": "profile",
+  "frames": 360,
+  "warmupFrames": 120,
+  "physicalSize": [
+   2282.0,
+   1080.0
+  ],
+  "buildMs": {
+   "p50": 19.241,
+   "p95": 27.538,
+   "max": 51.074
+  },
+  "rasterMs": {
+   "p50": 23.835,
+   "p95": 25.731,
+   "max": 53.036
+  },
+  "submittedFps": 35.14588528324304,
+  "frameIntervalMs": {
+   "p50": 33.268,
+   "p95": 33.288,
+   "over20ms": 247
+  }
+ },
+ "pixel7a/fixed-perf-mode/synced-fork-b": {
+  "label": "automatic",
+  "graphics": {
+   "shadows": true,
+   "reflections": true,
+   "surfaceDetail": true,
+   "bloom": true,
+   "fullResolution": false
+  },
+  "timeOfDay": "night",
+  "character": "cto_odatetsu",
+  "mode": "profile",
+  "frames": 360,
+  "warmupFrames": 120,
+  "physicalSize": [
+   2282.0,
+   1080.0
+  ],
+  "buildMs": {
+   "p50": 4.416,
+   "p95": 9.289,
+   "max": 10.915
+  },
+  "rasterMs": {
+   "p50": 1.351,
+   "p95": 6.499,
+   "max": 9.08
+  },
+  "submittedFps": 60.11607929294113,
+  "frameIntervalMs": {
+   "p50": 16.632,
+   "p95": 16.651,
+   "over20ms": 0
+  }
+ },
+ "iphone14/synced-fork-mobile-models/standard-day": {
+  "label": "automatic",
+  "graphics": {
+   "shadows": true,
+   "reflections": true,
+   "surfaceDetail": true,
+   "bloom": true,
+   "fullResolution": false
+  },
+  "timeOfDay": "day",
+  "character": "cto_odatetsu",
+  "mode": "profile",
+  "frames": 360,
+  "warmupFrames": 120,
+  "physicalSize": [
+   2532.0,
+   1170.0
+  ],
+  "buildMs": {
+   "p50": 4.232,
+   "p95": 4.721,
+   "max": 6.203
+  },
+  "rasterMs": {
+   "p50": 0.53,
+   "p95": 0.634,
+   "max": 2.987
+  },
+  "submittedFps": 60.01113632841838,
+  "frameIntervalMs": {
+   "p50": 16.663,
+   "p95": 16.703,
+   "over20ms": 0
+  }
+ },
+ "iphone14/synced-fork-mobile-models/standard-night": {
+  "label": "automatic",
+  "graphics": {
+   "shadows": true,
+   "reflections": true,
+   "surfaceDetail": true,
+   "bloom": true,
+   "fullResolution": false
+  },
+  "timeOfDay": "night",
+  "character": "cto_odatetsu",
+  "mode": "profile",
+  "frames": 360,
+  "warmupFrames": 120,
+  "physicalSize": [
+   2532.0,
+   1170.0
+  ],
+  "buildMs": {
+   "p50": 4.082,
+   "p95": 4.767,
+   "max": 6.21
+  },
+  "rasterMs": {
+   "p50": 0.436,
+   "p95": 0.515,
+   "max": 2.39
+  },
+  "submittedFps": 60.00708384460539,
+  "frameIntervalMs": {
+   "p50": 16.665,
+   "p95": 16.72,
+   "over20ms": 0
+  }
+ }
+}

@@ -1,0 +1,282 @@
+{
+ "fukuchan": {
+  "source": "assets/3d/hazard_rebuild/locomotion_v1/fukuchan.glb",
+  "cap": 2048,
+  "images": [
+   {
+    "before": [
+     4096,
+     4096
+    ],
+    "after": [
+     2048,
+     2048
+    ]
+   },
+   {
+    "before": [
+     4096,
+     4096
+    ],
+    "after": [
+     2048,
+     2048
+    ]
+   },
+   {
+    "before": [
+     832,
+     1108
+    ],
+    "after": [
+     832,
+     1108
+    ]
+   },
+   {
+    "before": [
+     4096,
+     4096
+    ],
+    "after": [
+     2048,
+     2048
+    ]
+   },
+   {
+    "before": [
+     4096,
+     4096
+    ],
+    "after": [
+     2048,
+     2048
+    ]
+   },
+   {
+    "before": [
+     4096,
+     4096
+    ],
+    "after": [
+     2048,
+     2048
+    ]
+   }
+  ],
+  "bytes": [
+   34120356,
+   16069684
+  ]
+ },
+ "sobaya": {
+  "source": "assets/3d/hazard_rebuild/locomotion_v1/sobaya.glb",
+  "cap": 2048,
+  "images": [
+   {
+    "before": [
+     4096,
+     4096
+    ],
+    "after": [
+     2048,
+     2048
+    ]
+   },
+   {
+    "before": [
+     2048,
+     2304
+    ],
+    "after": [
+     1820,
+     2048
+    ]
+   }
+  ],
+  "bytes": [
+   16168476,
+   11003228
+  ]
+ },
+ "cto_odatetsu": {
+  "source": "assets/3d/characters/cto_odatetsu/game_mobile_20261021/cto_odatetsu.glb",
+  "cap": 2048,
+  "images": [
+   {
+    "before": [
+     4096,
+     4096
+    ],
+    "after": [
+     2048,
+     2048
+    ]
+   }
+  ],
+  "bytes": [
+   14148156,
+   6664728
+  ]
+ },
+ "yametaro": {
+  "source": "assets/3d/characters/yametaro/rig_nose_v3/yametaro.glb",
+  "cap": 1024,
+  "images": [
+   {
+    "before": [
+     1024,
+     1024
+    ],
+    "after": [
+     1024,
+     1024
+    ]
+   },
+   {
+    "before": [
+     2048,
+     2048
+    ],
+    "after": [
+     1024,
+     1024
+    ]
+   },
+   {
+    "before": [
+     1024,
+     1024
+    ],
+    "after": [
+     1024,
+     1024
+    ]
+   },
+   {
+    "before": [
+     1024,
+     1024
+    ],
+    "after": [
+     1024,
+     1024
+    ]
+   },
+   {
+    "before": [
+     2048,
+     2048
+    ],
+    "after": [
+     1024,
+     1024
+    ]
+   }
+  ],
+  "bytes": [
+   3406920,
+   3174632
+  ]
+ },
+ "yumemin": {
+  "source": "assets/3d/characters/yumemin/color_20260919/yumemin.glb",
+  "cap": 1024,
+  "images": [
+   {
+    "before": [
+     2048,
+     2048
+    ],
+    "after": [
+     1024,
+     1024
+    ]
+   }
+  ],
+  "bytes": [
+   941268,
+   1038140
+  ]
+ },
+ "chikuwa": {
+  "source": "assets/3d/props/chikuwa/game_v3/chikuwa.glb",
+  "cap": 1024,
+  "images": [
+   {
+    "before": [
+     1024,
+     1536
+    ],
+    "after": [
+     683,
+     1024
+    ]
+   },
+   {
+    "before": [
+     1024,
+     1536
+    ],
+    "after": [
+     683,
+     1024
+    ]
+   },
+   {
+    "before": [
+     1024,
+     1536
+    ],
+    "after": [
+     683,
+     1024
+    ]
+   }
+  ],
+  "bytes": [
+   7384580,
+   3641848
+  ]
+ },
+ "chikuwa_toxic": {
+  "source": "assets/3d/props/chikuwa/game_v3/chikuwa_toxic.glb",
+  "cap": 1024,
+  "images": [
+   {
+    "before": [
+     1024,
+     1536
+    ],
+    "after": [
+     683,
+     1024
+    ]
+   },
+   {
+    "before": [
+     1024,
+     1536
+    ],
+    "after": [
+     683,
+     1024
+    ]
+   },
+   {
+    "before": [
+     1024,
+     1536
+    ],
+    "after": [
+     683,
+     1024
+    ]
+   }
+  ],
+  "bytes": [
+   7531008,
+   3768396
+  ]
+ }
+}
