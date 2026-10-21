@@ -68,6 +68,7 @@ void main() {
     expect(starts, 0);
     expect(find.byType(AboutAppDialog), findsOneWidget);
     expect(find.text('github.com/K9i-0/flutterkaigi2026'), findsOneWidget);
+    expect(find.byKey(const ValueKey('about_repository_qr')), findsOneWidget);
     expect(find.text('@K9i-0'), findsOneWidget);
     expect(find.text('@karas1910'), findsOneWidget);
     await tester.tap(find.byKey(const ValueKey('about_licenses')));

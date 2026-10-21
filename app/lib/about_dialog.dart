@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'app_style.dart';
@@ -87,6 +88,22 @@ class AboutAppDialog extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         label(t.repository),
+                        // Booth visitors scan it with their own phone.
+                        Container(
+                          key: const ValueKey('about_repository_qr'),
+                          margin: const EdgeInsets.symmetric(vertical: 4),
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: brandPale),
+                          ),
+                          child: QrImageView(
+                            data: repository,
+                            size: 120,
+                            padding: EdgeInsets.zero,
+                          ),
+                        ),
                         link(
                           'about_repository',
                           const Icon(
