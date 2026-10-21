@@ -92,6 +92,8 @@ class CatchGame {
 
   /// Practice: no time limit, drops keep coming, score and counters stay 0.
   bool practice = false;
+
+  /// The app starts in camera mode; the model default keeps tests on fixed.
   ControlMode controlMode = ControlMode.fixed;
   Phase phase = Phase.ready;
   double screenSign = 1;

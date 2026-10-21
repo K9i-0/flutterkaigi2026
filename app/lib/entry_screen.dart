@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'about_dialog.dart';
 import 'app_style.dart';
 import 'l10n.dart';
 
@@ -27,6 +28,33 @@ class TitleScreen extends StatelessWidget {
               'assets/images/title-night.png',
               fit: BoxFit.cover,
               alignment: Alignment.center,
+            ),
+            SafeArea(
+              minimum: const EdgeInsets.all(12),
+              child: Align(
+                alignment: Alignment.topRight,
+                // Inner buttons win the tap over the full-screen start gesture.
+                child: TextButton.icon(
+                  key: const ValueKey('about'),
+                  onPressed: () => showDialog<void>(
+                    context: context,
+                    builder: (_) => const AboutAppDialog(),
+                  ),
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.black.withValues(alpha: .35),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 8,
+                    ),
+                  ),
+                  icon: const Icon(Icons.info_outline, size: 18),
+                  label: Text(
+                    t.about,
+                    style: const TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                ),
+              ),
             ),
             SafeArea(
               minimum: const EdgeInsets.all(12),

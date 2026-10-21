@@ -20,6 +20,7 @@ class SelectionScreen extends StatelessWidget {
     required this.onRanking,
     required this.lang,
     required this.onLang,
+    required this.onTitle,
     this.rank,
     this.onSettings,
     this.onGraphics,
@@ -31,6 +32,7 @@ class SelectionScreen extends StatelessWidget {
   final VoidCallback onStart, onPractice, onRanking;
   final AppLang lang;
   final ValueChanged<AppLang> onLang;
+  final VoidCallback onTitle;
 
   /// Saved rank of the round shown in the result header, if recorded.
   final String? rank;
@@ -130,6 +132,14 @@ class SelectionScreen extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        IconButton(
+                          key: const ValueKey('back_to_title'),
+                          tooltip: t.backToTitle,
+                          onPressed: onTitle,
+                          visualDensity: VisualDensity.compact,
+                          icon: const Icon(Icons.arrow_back_rounded),
+                        ),
+                        const SizedBox(width: 4),
                         Text(
                           t.chooseCharacter,
                           style: const TextStyle(

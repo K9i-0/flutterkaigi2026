@@ -374,17 +374,19 @@ class _RainState extends State<RainPage> {
               .firstOrNull ??
           AppLang.ja;
       await records.load();
-      // Experiments default to the original behavior.
+      // Booth defaults since 2026-10-21; v2 keys drop the earlier trial picks.
       game.controlMode =
           ControlMode.values
-              .where((m) => m.id == prefs.getString('yumemi.debug.control'))
+              .where((m) => m.id == prefs.getString('yumemi.debug.control.v2'))
               .firstOrNull ??
-          ControlMode.fixed;
+          ControlMode.camera;
       world.zoomPivot =
           ZoomPivot.values
-              .where((z) => z.id == prefs.getString('yumemi.debug.zoomPivot'))
+              .where(
+                (z) => z.id == prefs.getString('yumemi.debug.zoomPivot.v2'),
+              )
               .firstOrNull ??
-          ZoomPivot.bridge;
+          ZoomPivot.character;
       final saved = prefs.getString('beerRain.balance.v1');
       if (saved != null) {
         try {
@@ -504,13 +506,13 @@ class _RainState extends State<RainPage> {
   Future<void> setControl(ControlMode mode) async {
     setState(() => game.controlMode = mode);
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('yumemi.debug.control', mode.id);
+    await prefs.setString('yumemi.debug.control.v2', mode.id);
   }
 
   Future<void> setPivot(ZoomPivot pivot) async {
     setState(() => world.zoomPivot = pivot);
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('yumemi.debug.zoomPivot', pivot.id);
+    await prefs.setString('yumemi.debug.zoomPivot.v2', pivot.id);
   }
 
   void setZoom(double value) {
@@ -813,6 +815,7 @@ class _RainState extends State<RainPage> {
               onRanking: openRanking,
               lang: appLang.value,
               onLang: setLang,
+              onTitle: () => setState(() => showTitle = true),
               rank: lastRecord == null
                   ? null
                   : t.rankOf(

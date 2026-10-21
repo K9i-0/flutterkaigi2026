@@ -33,6 +33,15 @@ class Strings {
   String get appTitle => _('ゆめみ採用試験', 'Yumemi Recruitment Exam');
   String get tapToStart => _('タップして開始', 'Tap to start');
   String get loading => _('読み込み中', 'Loading');
+  String get backToTitle => _('タイトルへ戻る', 'Back to title');
+  String get about => _('このアプリについて', 'About');
+  String get aboutBody => _(
+    'FlutterKaigi 2026 のゆめみブースで遊べる、Flutter Scene製の3Dミニゲーム。',
+    'A 3D mini game built with Flutter Scene for the YUMEMI booth at FlutterKaigi 2026.',
+  );
+  String get repository => _('リポジトリ', 'Repository');
+  String get authors => _('作者', 'Authors');
+  String get licenses => _('OSSライセンス', 'Open source licenses');
 
   String get chooseCharacter => _('だれで挑む？', 'Who takes the exam?');
   String roundLength(int s) => _('$s秒の一本勝負', '$s-second challenge');

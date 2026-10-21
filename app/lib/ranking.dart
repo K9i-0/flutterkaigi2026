@@ -7,7 +7,8 @@ import 'character.dart';
 import 'l10n.dart';
 import 'records.dart';
 
-/// Nickname entry after a round. Top-aligned so the landscape keyboard fits.
+/// Nickname entry after a round. Centered; the dialog moves into the space
+/// above the keyboard on its own while typing.
 /// Untouched, it closes itself as a skip so the booth's next player can start.
 class RecordDialog extends StatefulWidget {
   const RecordDialog({
@@ -68,7 +69,6 @@ class _RecordDialogState extends State<RecordDialog> {
   Widget build(BuildContext context) {
     final t = L10n.of(context);
     return AlertDialog(
-      alignment: Alignment.topCenter,
       insetPadding: const EdgeInsets.fromLTRB(40, 12, 40, 12),
       titlePadding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
       contentPadding: const EdgeInsets.fromLTRB(24, 8, 24, 0),
