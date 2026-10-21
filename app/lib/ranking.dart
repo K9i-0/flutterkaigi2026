@@ -44,7 +44,7 @@ class _RecordDialogState extends State<RecordDialog> {
         child: TextField(
           key: const ValueKey('record_name'),
           controller: name,
-          autofocus: true,
+          // The keyboard opens on tap so the score stays visible first.
           maxLength: RecordStore.maxName,
           textInputAction: TextInputAction.done,
           decoration: InputDecoration(labelText: t.nickname),

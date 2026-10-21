@@ -130,6 +130,11 @@ void main() {
     await tester.pumpAndSettle();
     final save = find.byKey(const ValueKey('record_save'));
     expect(tester.widget<FilledButton>(save).onPressed, isNull);
+    // No keyboard until the field is tapped.
+    expect(tester.testTextInput.isVisible, isFalse);
+    await tester.tap(find.byKey(const ValueKey('record_name')));
+    await tester.pump();
+    expect(tester.testTextInput.isVisible, isTrue);
     await tester.enterText(find.byKey(const ValueKey('record_name')), '  ゆめみ ');
     await tester.pump();
     await tester.tap(save);

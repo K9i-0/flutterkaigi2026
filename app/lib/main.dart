@@ -397,6 +397,8 @@ class _RainState extends State<RainPage> {
               ..remove('facingMin')
               ..remove('facingMax');
           }
+          // 2.5x was the first trial's upper bound; 5x shows character detail.
+          if (values['zoomMax'] == 2.5) values.remove('zoomMax');
           final b = Balance.fromMap(values);
           final n = data['seed'];
           if (n is int && n >= 0 && n <= 999999999) {

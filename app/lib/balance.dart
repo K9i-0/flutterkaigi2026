@@ -28,7 +28,7 @@ class Balance {
     BalanceField('facingMin', '落下物の向き・最小角（度）', 0, 180, 0, 5),
     BalanceField('facingMax', '落下物の向き・最大角（度）', 0, 180, 180, 5),
     BalanceField('zoomMin', 'ピンチの最小倍率（引き）', .4, 1, .7, .05),
-    BalanceField('zoomMax', 'ピンチの最大倍率（寄り）', 1, 4, 2.5, .1),
+    BalanceField('zoomMax', 'ピンチの最大倍率（寄り）', 1, 6, 5, .1),
     BalanceField('tiltDegrees', '最大速度になる傾き（度）', 5, 30, 13.75, .5),
   ];
   Balance._(this.values);
