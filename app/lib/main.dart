@@ -174,7 +174,8 @@ class _RainState extends State<RainPage> {
                   'No nickname dialog is open',
                 );
               }
-              Navigator.of(context).pop(p['name']);
+              final name = p['name']?.trim() ?? '';
+              Navigator.of(context).pop(name.isEmpty ? null : name);
             case 'ranking':
               openRanking(highlight: lastRecord);
             case 'graphics':
