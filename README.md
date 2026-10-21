@@ -24,9 +24,10 @@ mise exec -- flutter run -d <device-id>
 
 - Flutterは `.mise.toml` の3.47.2を使います。
 - 初回はビルドフックがGLBを変換するので時間がかかります。
-- モデル・画像・効果音はリポジトリ内の相対シンボリックリンクで参照しています。`app/` だけを切り出さず、リポジトリごとcloneしてください。
+- モデル・画像はリポジトリ内の相対シンボリックリンクで参照しています。`app/` だけを切り出さず、リポジトリごとcloneしてください。
 - シミュレーターでは傾きセンサーが使えないので、矢印キーで移動します。
 - VS Codeではルートを開き、「ゆめみ採用試験 (debug)」を選んでF5で起動できます。
+- Marionette MCP（`.mcp.json`）はグローバルに入れた `marionette_mcp` を使います。アプリ側の `marionette_flutter` と同じ版が必要です（現在0.6.0）: `mise exec -- dart pub global activate marionette_mcp 0.6.0`。版が違うと `connect` が Version mismatch で失敗します。
 
 検証は `app/` で `mise exec -- flutter analyze` と `mise exec -- flutter test` を実行します。ステージの描画予算は `python3 tool/audit_stage_asset.py` で確認します。
 
