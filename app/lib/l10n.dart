@@ -56,7 +56,7 @@ class Strings {
   String character(CatchCharacter c) => ja
       ? c.label
       : switch (c) {
-          CatchCharacter.sobaya => 'Soba Shop Owner',
+          CatchCharacter.sobaya => 'SOBAYA',
           CatchCharacter.ctoOdatetsu => 'CTO Odatetsu',
           CatchCharacter.fukuchan => 'Fukugyun',
         };
