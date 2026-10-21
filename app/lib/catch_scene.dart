@@ -13,6 +13,14 @@ import 'okayaman_vision.dart';
 import 'stage_lighting.dart';
 import 'stage_environment.dart';
 
+/// What a pinch zooms toward on the beam stage.
+enum ZoomPivot {
+  bridge,
+  character;
+
+  String get id => name;
+}
+
 class CatchScene {
   final scene = Scene();
   final vision = OkayamanVision();
@@ -39,6 +47,8 @@ class CatchScene {
     'displayedCharacter': displayedCharacter.id,
     'motion': motions[displayedCharacter]?.controller.inspect(),
     'facing': facing,
+    'zoom': zoom,
+    'zoomPivot': zoomPivot.id,
     'vision': vision.inspect(),
     'stage': lighting.inspect(),
     'visibleDropModels': [
@@ -56,6 +66,11 @@ class CatchScene {
   final _preparedDropKinds = <CanKind>{};
   final cans = <Node>[], rings = <Node>[], dots = <Node>[];
   double facing = math.pi, clock = 0;
+
+  /// Pinch magnification; 1 is the standard view, larger is closer.
+  double zoom = 1;
+  ZoomPivot zoomPivot = ZoomPivot.bridge;
+  double _pivotX = 0;
   // Hidden rigged models still incur a scene-tree walk. Keep reusable models
   // off the live graph until needed; geometry, textures and animation survive.
   void _show(Node node, bool visible) {
@@ -327,14 +342,30 @@ class CatchScene {
         : g.catchRadius;
     halo.position = vm.Vector3(g.x, .04, g.z);
     halo.scale = vm.Vector3(radius / .7, 1, g.lane ? .52 : radius / .7);
-    final zoom = 1 + .18 * math.sin(g.yaw * 2).abs();
-    camera.position = vm.Vector3(
-      math.sin(g.yaw) * 10.8 * zoom,
-      (g.lane ? 5.0 : 9.6) * zoom,
-      math.cos(g.yaw) * 10.8 * zoom,
+    final widen = 1 + .18 * math.sin(g.yaw * 2).abs();
+    final base = vm.Vector3(
+      math.sin(g.yaw) * 10.8 * widen,
+      (g.lane ? 5.0 : 9.6) * widen,
+      math.cos(g.yaw) * 10.8 * widen,
     );
     // Leave sky between the 333m landmark tip and the HUD on wide iPhones.
-    camera.target = vm.Vector3(0, g.lane ? 2.9 : 1.6, 0);
+    final baseTarget = vm.Vector3(0, g.lane ? 2.9 : 1.6, 0);
+    final m = g.lane ? zoom : 1.0;
+    // Smoothed so the end stops and quick reversals don't jolt the view.
+    final followX = zoomPivot == ZoomPivot.character ? g.x : 0.0;
+    _pivotX += (followX - _pivotX) * (dt <= 0 ? 1 : 1 - math.exp(-dt * 6));
+    // Closer views aim lower, toward the beam and the character's body.
+    final close = ((m - 1) / math.max(.01, g.balance['zoomMax'] - 1)).clamp(
+      0.0,
+      1.0,
+    );
+    final target = vm.Vector3(
+      _pivotX,
+      baseTarget.y + (1.0 - baseTarget.y) * close,
+      0,
+    );
+    camera.target = target;
+    camera.position = target + (base - baseTarget) / m;
     final visible = g.phase == Phase.ready
         ? <Drop>[]
         : g.drops.where((d) => d.visible(g.time)).toList();
@@ -373,8 +404,10 @@ class CatchScene {
       can.rotation =
           vm.Quaternion.axisAngle(
             vm.Vector3(0, 1, 0),
+            // Every lane drop keeps its own heading; characters and chikuwa
+            // used to always face the default camera.
             (g.lane
-                    ? (d.kind.isCan ? d.facing + math.pi : .25 * math.sin(age))
+                    ? d.facing + (d.kind.isCan ? math.pi : .25 * math.sin(age))
                     : g.yaw + math.pi) +
                 math.sin(age * 2) * .08,
           ) *

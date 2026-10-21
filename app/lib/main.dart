@@ -78,7 +78,7 @@ class _RainState extends State<RainPage> {
       recordOpen = false;
   GameRecord? lastRecord;
   String? error;
-  double inputX = 0, inputY = 0, accumulator = 0, swipe = 0;
+  double inputX = 0, inputY = 0, accumulator = 0, swipe = 0, pinchFrom = 1;
   // Debug/profile only: frame-rate HUD toggled from the debug panel.
   bool showFps = false;
   Map<String, Object>? fpsStats;
@@ -151,7 +151,7 @@ class _RainState extends State<RainPage> {
       );
       registerMarionetteExtension(
         name: 'madogiwa.catchAction',
-        description: 'action=select|configure|start|demo|step|rotate|pause|resume|endPractice|record|ranking|lang|graphics|benchmark|fps. start: practice=true for the no-score mode. record: name answers the nickname dialog (omit to skip). ranking opens the board. lang: value=ja|en. fps: value=on|off (debug FPS HUD). graphics: json booleans, persist=true optional. benchmark: label, timeOfDay. select: character ID and/or timeOfDay=day|night. configure: json settings, seed. step seconds 0..25 x/y -1..1. Demo supplies inputs only.',
+        description: 'action=select|configure|start|demo|step|rotate|pause|resume|endPractice|control|zoom|record|ranking|lang|graphics|benchmark|fps. start: practice=true for the no-score mode. control: value=fixed|camera. zoom: value=magnification (clamped to zoomMin..zoomMax), pivot=bridge|character. record: name answers the nickname dialog (omit to skip). ranking opens the board. lang: value=ja|en. fps: value=on|off (debug FPS HUD). graphics: json booleans, persist=true optional. benchmark: label, timeOfDay. select: character ID and/or timeOfDay=day|night. configure: json settings, seed. step seconds 0..25 x/y -1..1. Demo supplies inputs only.',
         callback: (p) async {
           if (!ready) return MarionetteExtensionResult.error(1, 'Not ready');
           switch (p['action']) {
@@ -167,6 +167,30 @@ class _RainState extends State<RainPage> {
               await setLang(lang);
             case 'endPractice':
               endPractice();
+            case 'control':
+              final mode = ControlMode.values
+                  .where((m) => m.id == p['value'])
+                  .firstOrNull;
+              if (mode == null) {
+                return MarionetteExtensionResult.invalidParams(
+                  'value=fixed|camera',
+                );
+              }
+              await setControl(mode);
+            case 'zoom':
+              final pivot = ZoomPivot.values
+                  .where((z) => z.id == p['pivot'])
+                  .firstOrNull;
+              final value = double.tryParse(p['value'] ?? '');
+              if ((p['pivot'] != null && pivot == null) ||
+                  (p['value'] != null && (value == null || !value.isFinite))) {
+                return MarionetteExtensionResult.invalidParams(
+                  'value=magnification, pivot=bridge|character',
+                );
+              }
+              if (pivot != null) await setPivot(pivot);
+              if (value != null) setZoom(value);
+              world.update(game, 0);
             case 'record':
               // Answers the open nickname dialog; omit name to skip.
               if (!recordOpen) {
@@ -350,13 +374,30 @@ class _RainState extends State<RainPage> {
               .firstOrNull ??
           AppLang.ja;
       await records.load();
+      // Experiments default to the original behavior.
+      game.controlMode =
+          ControlMode.values
+              .where((m) => m.id == prefs.getString('yumemi.debug.control'))
+              .firstOrNull ??
+          ControlMode.fixed;
+      world.zoomPivot =
+          ZoomPivot.values
+              .where((z) => z.id == prefs.getString('yumemi.debug.zoomPivot'))
+              .firstOrNull ??
+          ZoomPivot.bridge;
       final saved = prefs.getString('beerRain.balance.v1');
       if (saved != null) {
         try {
           final data = jsonDecode(saved) as Map<String, dynamic>;
-          final b = Balance.fromMap(
-            Map<String, dynamic>.from(data['balance'] as Map),
-          );
+          final values = Map<String, dynamic>.from(data['balance'] as Map);
+          // The old 70-110 degree default kept drops facing along the beam;
+          // saves still on it adopt the all-around default.
+          if (values['facingMin'] == 70 && values['facingMax'] == 110) {
+            values
+              ..remove('facingMin')
+              ..remove('facingMax');
+          }
+          final b = Balance.fromMap(values);
           final n = data['seed'];
           if (n is int && n >= 0 && n <= 999999999) {
             game.balance = b;
@@ -458,6 +499,22 @@ class _RainState extends State<RainPage> {
     await prefs.setBool('yumemi.debug.fps', value);
   }
 
+  Future<void> setControl(ControlMode mode) async {
+    setState(() => game.controlMode = mode);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('yumemi.debug.control', mode.id);
+  }
+
+  Future<void> setPivot(ZoomPivot pivot) async {
+    setState(() => world.zoomPivot = pivot);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('yumemi.debug.zoomPivot', pivot.id);
+  }
+
+  void setZoom(double value) {
+    world.zoom = value.clamp(game.balance['zoomMin'], game.balance['zoomMax']);
+  }
+
   Future<void> setLang(AppLang lang) async {
     appLang.value = lang;
     final prefs = await SharedPreferences.getInstance();
@@ -533,6 +590,10 @@ class _RainState extends State<RainPage> {
         seed: seed,
         showFps: showFps,
         onFps: setFps,
+        controlMode: game.controlMode,
+        onControl: setControl,
+        zoomPivot: world.zoomPivot,
+        onPivot: setPivot,
       ),
     );
     if (!mounted) return;
@@ -552,6 +613,7 @@ class _RainState extends State<RainPage> {
     game.practice = practice;
     recordPrompted = false;
     lastRecord = null;
+    world.zoom = 1;
     world.lighting.setTrafficVisible(true);
     world.applyRenderProbe({});
     game.start(seed: seed);
@@ -648,7 +710,7 @@ class _RainState extends State<RainPage> {
         LogicalKeyboardKey.arrowLeft,
         LogicalKeyboardKey.arrowRight,
       );
-      inputY = game.lane
+      inputY = game.lane && game.controlMode == ControlMode.fixed
           ? 0
           : axis(LogicalKeyboardKey.arrowDown, LogicalKeyboardKey.arrowUp);
     }
@@ -769,10 +831,19 @@ class _RainState extends State<RainPage> {
                   child: GestureDetector(
                     key: const ValueKey('camera_swipe'),
                     behavior: HitTestBehavior.opaque,
-                    onHorizontalDragStart: (_) => swipe = 0,
-                    onHorizontalDragUpdate: (e) {
+                    // One finger swipes the camera around; two fingers pinch.
+                    onScaleStart: (_) {
+                      swipe = 0;
+                      pinchFrom = world.zoom;
+                    },
+                    onScaleUpdate: (e) {
                       if (!playing) return;
-                      swipe += e.delta.dx;
+                      if (e.pointerCount >= 2) {
+                        swipe = 0;
+                        setZoom(pinchFrom * e.scale);
+                        return;
+                      }
+                      swipe += e.focalPointDelta.dx;
                       if (swipe.abs() < 60) return;
                       setState(() => game.rotate(swipe < 0 ? 1 : -1));
                       swipe = 0;

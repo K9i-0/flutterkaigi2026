@@ -25,8 +25,10 @@ class Balance {
     BalanceField('comboBonus', '連続キャッチ加点（最大4段階）', 0, 100, 25, 5),
     BalanceField('cameraStep', 'カメラ1タップ（度・鉄骨編）', 15, 45, 30, 5),
     BalanceField('cameraLimit', '撮影デモの見回し角（度・鉄骨編）', 30, 75, 60, 5),
-    BalanceField('facingMin', '缶の向き・最小角（度）', 0, 110, 70, 5),
-    BalanceField('facingMax', '缶の向き・最大角（度）', 0, 130, 110, 5),
+    BalanceField('facingMin', '落下物の向き・最小角（度）', 0, 180, 0, 5),
+    BalanceField('facingMax', '落下物の向き・最大角（度）', 0, 180, 180, 5),
+    BalanceField('zoomMin', 'ピンチの最小倍率（引き）', .4, 1, .7, .05),
+    BalanceField('zoomMax', 'ピンチの最大倍率（寄り）', 1, 4, 2.5, .1),
     BalanceField('tiltDegrees', '最大速度になる傾き（度）', 5, 30, 13.75, .5),
   ];
   Balance._(this.values);
@@ -46,7 +48,7 @@ class Balance {
       values[entry.key] = v;
     }
     if (values['facingMin']! > values['facingMax']!) {
-      throw const FormatException('缶の最小角は最大角以下にしてください');
+      throw const FormatException('向きの最小角は最大角以下にしてください');
     }
     return Balance._(Map.unmodifiable(values));
   }

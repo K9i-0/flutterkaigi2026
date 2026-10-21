@@ -9,6 +9,16 @@ export 'stage_time.dart';
 
 enum Phase { ready, countdown, playing, result }
 
+/// Lane steering. fixed: screen left/right always walks the beam (the sign
+/// flips behind it). camera: the tilt is read in screen space and projected
+/// onto the beam, so after turning the camera you tilt toward that direction.
+enum ControlMode {
+  fixed,
+  camera;
+
+  String get id => name;
+}
+
 /// Message shown in the HUD; screens render the text in the chosen language.
 enum GameMessage { hint, caught, bad }
 
@@ -82,6 +92,7 @@ class CatchGame {
 
   /// Practice: no time limit, drops keep coming, score and counters stay 0.
   bool practice = false;
+  ControlMode controlMode = ControlMode.fixed;
   Phase phase = Phase.ready;
   double screenSign = 1;
   double time = 0,
@@ -210,7 +221,7 @@ class CatchGame {
     }
     if (phase != Phase.playing) return;
     time += dt;
-    if (lane) iy = 0;
+    if (lane && controlMode == ControlMode.fixed) iy = 0;
     final len = math.sqrt(ix * ix + iy * iy);
     if (len > 1) {
       ix /= len;
@@ -220,7 +231,11 @@ class CatchGame {
     // Near side-on views keep the last sign so the controls never flip mid-step.
     final c = math.cos(yaw);
     if (c.abs() > .3) screenSign = c.sign;
-    final dir = lane ? (x: -ix * screenSign, z: 0.0) : toWorld(ix, iy, yaw),
+    final dir = !lane
+            ? toWorld(ix, iy, yaw)
+            : controlMode == ControlMode.camera
+            ? (x: toWorld(ix, iy, yaw).x, z: 0.0)
+            : (x: -ix * screenSign, z: 0.0),
         a = 1 - math.exp(-balance['acceleration'] * dt);
     vx += (dir.x * moveSpeed - vx) * a;
     vz += (dir.z * 3.5 - vz) * a;
@@ -310,6 +325,7 @@ class CatchGame {
     'dropCount': drops.length,
     'mode': lane ? 'lane' : 'plane',
     'practice': practice,
+    'controlMode': controlMode.id,
     'phase': phase.name,
     'time': time,
     'x': x,
@@ -351,7 +367,10 @@ class CatchGame {
           ..sort((a, b) => a.landing.compareTo(b.landing));
     if (candidates.isEmpty) return (x: 0, y: 0);
     final d = candidates.first;
-    if (lane) return (x: -(d.x - x) * 2.6, y: 0);
+    if (lane && controlMode == ControlMode.fixed) {
+      return (x: -(d.x - x) * 2.6, y: 0);
+    }
+    if (lane) return toScreen((d.x - x) * 2.6, 0, yaw);
     return toScreen((d.x - x) * 2.6, (d.z - z) * 2.6, yaw);
   }
 }

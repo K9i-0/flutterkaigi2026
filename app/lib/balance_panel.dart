@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'balance.dart';
+import 'catch_game.dart' show ControlMode;
+import 'catch_scene.dart' show ZoomPivot;
 
 class BalanceSelection {
   const BalanceSelection(this.balance, this.seed);
@@ -18,6 +20,10 @@ class BalancePanel extends StatefulWidget {
     required this.seed,
     this.showFps = false,
     this.onFps,
+    this.controlMode = ControlMode.fixed,
+    this.onControl,
+    this.zoomPivot = ZoomPivot.bridge,
+    this.onPivot,
   });
   final Balance balance;
   final int seed;
@@ -25,6 +31,12 @@ class BalancePanel extends StatefulWidget {
 
   /// Applied immediately and kept on cancel: it is a view option, not balance.
   final ValueChanged<bool>? onFps;
+
+  /// Experiments under evaluation; like the FPS HUD they apply immediately.
+  final ControlMode controlMode;
+  final ValueChanged<ControlMode>? onControl;
+  final ZoomPivot zoomPivot;
+  final ValueChanged<ZoomPivot>? onPivot;
   @override
   State<BalancePanel> createState() => _BalancePanelState();
 }
@@ -35,6 +47,8 @@ class _BalancePanelState extends State<BalancePanel> {
   final json = TextEditingController();
   String? error;
   late bool showFps = widget.showFps;
+  late var controlMode = widget.controlMode;
+  late var zoomPivot = widget.zoomPivot;
   BalanceSelection selection() {
     final n = int.tryParse(seed.text);
     if (n == null || n < 0 || n > 999999999) {
@@ -97,6 +111,61 @@ class _BalancePanelState extends State<BalancePanel> {
             Expanded(
               child: ListView(
                 children: [
+                  if (widget.onControl != null || widget.onPivot != null)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 6),
+                      child: Wrap(
+                        spacing: 16,
+                        runSpacing: 6,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          if (widget.onControl != null) ...[
+                            const Text('操作'),
+                            SegmentedButton<ControlMode>(
+                              key: const ValueKey('control_mode'),
+                              showSelectedIcon: false,
+                              segments: const [
+                                ButtonSegment(
+                                  value: ControlMode.fixed,
+                                  label: Text('左右固定'),
+                                ),
+                                ButtonSegment(
+                                  value: ControlMode.camera,
+                                  label: Text('画面の向き基準'),
+                                ),
+                              ],
+                              selected: {controlMode},
+                              onSelectionChanged: (v) {
+                                setState(() => controlMode = v.first);
+                                widget.onControl!(v.first);
+                              },
+                            ),
+                          ],
+                          if (widget.onPivot != null) ...[
+                            const Text('ピンチの軸'),
+                            SegmentedButton<ZoomPivot>(
+                              key: const ValueKey('zoom_pivot'),
+                              showSelectedIcon: false,
+                              segments: const [
+                                ButtonSegment(
+                                  value: ZoomPivot.bridge,
+                                  label: Text('橋の中心'),
+                                ),
+                                ButtonSegment(
+                                  value: ZoomPivot.character,
+                                  label: Text('キャラクター'),
+                                ),
+                              ],
+                              selected: {zoomPivot},
+                              onSelectionChanged: (v) {
+                                setState(() => zoomPivot = v.first);
+                                widget.onPivot!(v.first);
+                              },
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
                   Wrap(
                     spacing: 8,
                     children: [
