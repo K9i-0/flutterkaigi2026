@@ -5,7 +5,7 @@ repeats it by face size so windows keep their scale on every building.
 """
 from PIL import Image,ImageDraw,ImageFilter,ImageFont
 from pathlib import Path
-import random
+import json,random
 out=Path(__file__).resolve().parents[2]/'assets/3d/stages/akasaka'
 out.mkdir(parents=True,exist_ok=True)
 r=random.Random(24)
@@ -118,14 +118,16 @@ im.save(out/'ad_safety.png')
 # Placeholder for billboard slots whose sponsor is not decided yet.
 im,d=ad('recruit',(252,206,48),[('広告募集中',150,168,(30,30,34),512),('この場所に広告を出しませんか？',40,296,(60,52,30),512)],(30,30,34))
 im.save(out/'ad_recruit.png')
-# Sponsor ads: submitted art (source_ads/) with its caption, stacked into one
-# atlas in the order of SPONSORS in build_akasaka_stage.py.
-def sponsor(art,bg,lines,frame):
- im,d=ad('',bg,lines,frame)
- a=Image.open(out/'source_ads'/art).convert('RGBA').resize((330,330),Image.LANCZOS)
+# Sponsor ads from source_ads/ads.json: the submitted art on the left, its
+# caption on the right. Cells of 1024x384 fill columns of SPONSOR_ROWS, in
+# the order build_akasaka_stage.py reads to pick each billboard's cell.
+SPONSOR_ROWS=8
+sponsors=json.loads((out/'source_ads/ads.json').read_text())
+def sponsor(s):
+ im,d=ad('',tuple(s['background']),[(l['text'],l['size'],l['y'],tuple(l['color']),l['x']) for l in s['lines']],tuple(s['frame']))
+ a=Image.open(out/'source_ads'/s['art']).convert('RGBA').resize((330,330),Image.LANCZOS)
  im.paste(a,(40,27),a);return im
-rows=[sponsor('takahashigumi.png',(255,255,255),[('高橋組',170,192,(24,24,28),660)],(24,24,28)),
- sponsor('mogumogu.png',(244,248,252),[('もぐもぐ先生',96,130,(22,110,214),665),('最強！',150,268,(214,40,40),665)],(22,110,214))]
-atlas=Image.new('RGB',(1024,384*len(rows)))
-for i,row in enumerate(rows):atlas.paste(row,(0,384*i))
+rows=min(len(sponsors),SPONSOR_ROWS);cols=-(-len(sponsors)//SPONSOR_ROWS)
+atlas=Image.new('RGB',(1024*cols,384*rows))
+for i,s in enumerate(sponsors):atlas.paste(sponsor(s),(1024*(i//rows),384*(i%rows)))
 atlas.save(out/'ad_sponsors.png')

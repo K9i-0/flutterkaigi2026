@@ -14,7 +14,7 @@ from PIL import Image
 DEFAULT = Path(__file__).resolve().parents[2] / 'assets/3d/stages/akasaka/akasaka.glb'
 
 
-def limit(name):
+def limit(name, size):
     # The camera zooms toward the beam, its support buildings (facade_0) and
     # the characters; keep those. Everything else stays 15+ units away, so it
     # is sized to about one texel per screen pixel on a 2622x1206 display.
@@ -37,7 +37,8 @@ def limit(name):
         return 64, 192
     # Billboards are at most ~230px wide on screen, even zoomed in.
     if name == 'ad_sponsors':
-        return 256, 192
+        # One 256x96 billboard per 1024x384 atlas cell.
+        return size[0] // 4, size[1] // 4
     if name.startswith('ad_'):
         return 256, 96
     return None
@@ -57,7 +58,7 @@ def optimize(path):
         payload = binary[start:start + view['byteLength']]
         im = Image.open(io.BytesIO(payload))
         before = im.size
-        target = limit(image.get('name', ''))
+        target = limit(image.get('name', ''), before)
         if target:
             target = tuple(min(a, b) for a, b in zip(before, target))
             # BOX averages data masks without ringing; LANCZOS retains artwork.

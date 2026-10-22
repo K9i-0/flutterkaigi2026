@@ -1,5 +1,5 @@
 """Reproducible, material-batched Akasaka dusk stage. Run with Blender -b -P."""
-import bpy, math, random
+import bpy, json, math, random
 from pathlib import Path
 from mathutils import Vector
 ROOT=Path(__file__).resolve().parents[2]
@@ -32,8 +32,10 @@ BILLBOARDS = [
  (OUTER_TOWERS[4],'+x','yumemin'), (OUTER_TOWERS[3],'+x','recruit'), (OUTER_TOWERS[5],'+x','accidenchua'),
  (OUTER_TOWERS[7],'-x','yumemin'), (OUTER_TOWERS[6],'-x','safety'), (OUTER_TOWERS[8],'-x','recruit'),
 ]
-# Sponsor ads share one atlas material, one 1024x384 row each, top to bottom.
-SPONSORS = ['takahashigumi','mogumogu']
+# Sponsor ads (source_ads/ads.json) share one atlas material: cells fill
+# columns of SPONSOR_ROWS, as laid out by build_akasaka_textures.py.
+SPONSORS = [a['name'] for a in json.loads((OUT/'source_ads/ads.json').read_text())]
+SPONSOR_ROWS = 8
 def material(name,color,texture=None,metal=0,glow=0,rough=.65,emit=None):
  m=bpy.data.materials.new(name); m.use_nodes=True
  m.use_backface_culling=True
@@ -251,10 +253,12 @@ def billboard(name,x,z,top,extent,width,facing):
  rx,rz=nz,-nx  # screen right for a viewer looking along -normal
  bw=min(width*1.25,6.3); bh=bw/2.67; cy=top+1.45
  cx,cz=x+nx*(extent*.41+.12),z+nz*(extent*.41+.12)
- v0,v1=0,1
+ u0,u1,v0,v1=0,1,0,1
  if name in SPONSORS:
-  row=SPONSORS.index(name); v0,v1=1-(row+1)/len(SPONSORS),1-row/len(SPONSORS); name='sponsors'
- mesh('ad_'+name,[(cx+sx*rx*bw/2,cy+sy*bh/2,cz+sx*rz*bw/2) for sx,sy in [(-1,-1),(1,-1),(1,1),(-1,1)]],[(0,1,2,3)],[[(0,v0),(1,v0),(1,v1),(0,v1)]])
+  i=SPONSORS.index(name); rows=min(len(SPONSORS),SPONSOR_ROWS); cols=-(-len(SPONSORS)//SPONSOR_ROWS)
+  col,row=divmod(i,rows); u0,u1=col/cols,(col+1)/cols
+  v0,v1=1-(row+1)/rows,1-row/rows; name='sponsors'
+ mesh('ad_'+name,[(cx+sx*rx*bw/2,cy+sy*bh/2,cz+sx*rz*bw/2) for sx,sy in [(-1,-1),(1,-1),(1,1),(-1,1)]],[(0,1,2,3)],[[(u0,v0),(u1,v0),(u1,v1),(u0,v1)]])
  # Backing frame and posts stay 2cm+ behind the artwork: no shared planes.
  fw,fd=(bw+.16,.08) if nz else (.08,bw+.16)
  box('metal',cx-nx*.06,cy,cz-nz*.06,fw,bh+.16,fd)

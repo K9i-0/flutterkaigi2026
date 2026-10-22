@@ -1,0 +1,67 @@
+[
+ {
+  "name": "takahashigumi",
+  "art": "takahashigumi.png",
+  "background": [
+   255,
+   255,
+   255
+  ],
+  "frame": [
+   24,
+   24,
+   28
+  ],
+  "lines": [
+   {
+    "text": "高橋組",
+    "size": 170,
+    "x": 660,
+    "y": 192,
+    "color": [
+     24,
+     24,
+     28
+    ]
+   }
+  ]
+ },
+ {
+  "name": "mogumogu",
+  "art": "mogumogu.png",
+  "background": [
+   244,
+   248,
+   252
+  ],
+  "frame": [
+   22,
+   110,
+   214
+  ],
+  "lines": [
+   {
+    "text": "もぐもぐ先生",
+    "size": 96,
+    "x": 665,
+    "y": 130,
+    "color": [
+     22,
+     110,
+     214
+    ]
+   },
+   {
+    "text": "最強！",
+    "size": 150,
+    "x": 665,
+    "y": 268,
+    "color": [
+     214,
+     40,
+     40
+    ]
+   }
+  ]
+ }
+]
