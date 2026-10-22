@@ -1,6 +1,30 @@
 {
  "fukuchan": {
   "source": "assets/3d/hazard_rebuild/locomotion_v1/fukuchan.glb",
+  "variants": null,
+  "atlases": {
+   "merged": {
+    "fukuchan_finished_albedo": [
+     "texture_10",
+     "neck_atlas_10"
+    ],
+    "texture_2": [
+     "atlas_12"
+    ]
+   },
+   "cropped": {
+    "front": [
+     [
+      832,
+      1108
+     ],
+     [
+      66,
+      30
+     ]
+    ]
+   }
+  },
   "cap": 2048,
   "images": [
    {
@@ -66,7 +90,7 @@
   ],
   "bytes": [
    34120356,
-   16069684
+   8325896
   ]
  },
  "sobaya": {
