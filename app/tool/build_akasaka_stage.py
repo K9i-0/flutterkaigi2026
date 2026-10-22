@@ -27,10 +27,10 @@ OUTER_TOWERS = [
 # Billboard slots, three per orbit direction: tower, facing (outward normal
 # toward the beam), ad texture. Fill a slot by changing its ad name.
 BILLBOARDS = [
- (HIGHRISES[1],'+z','yumemin'), (HIGHRISES[0],'+z','takahashigumi'), (HIGHRISES[3],'+z','accidenchua'),
+ (HIGHRISES[1],'+z','yumemin'), (HIGHRISES[0],'+z','takahashigumi'), (HIGHRISES[3],'+z','nakayaman'),
  (OUTER_TOWERS[1],'-z','yumemin'), (OUTER_TOWERS[0],'-z','safety'), (OUTER_TOWERS[2],'-z','mogumogu'),
- (OUTER_TOWERS[4],'+x','yumemin'), (OUTER_TOWERS[3],'+x','recruit'), (OUTER_TOWERS[5],'+x','accidenchua'),
- (OUTER_TOWERS[7],'-x','yumemin'), (OUTER_TOWERS[6],'-x','safety'), (OUTER_TOWERS[8],'-x','recruit'),
+ (OUTER_TOWERS[4],'+x','yumemin'), (OUTER_TOWERS[3],'+x','kawashima'), (OUTER_TOWERS[5],'+x','fa'),
+ (OUTER_TOWERS[7],'-x','yumemin'), (OUTER_TOWERS[6],'-x','safety'), (OUTER_TOWERS[8],'-x','sakai'),
 ]
 # Sponsor ads (source_ads/ads.json) share one atlas material: cells fill
 # columns of SPONSOR_ROWS, as laid out by build_akasaka_textures.py.

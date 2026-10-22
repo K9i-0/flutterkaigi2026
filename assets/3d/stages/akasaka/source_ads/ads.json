@@ -63,5 +63,113 @@
     ]
    }
   ]
+ },
+ {
+  "name": "kawashima",
+  "art": "kawashima.png",
+  "background": [
+   250,
+   250,
+   250
+  ],
+  "frame": [
+   60,
+   62,
+   68
+  ],
+  "lines": [
+   {
+    "text": "Kawashima",
+    "size": 112,
+    "x": 678,
+    "y": 192,
+    "color": [
+     40,
+     42,
+     48
+    ]
+   }
+  ]
+ },
+ {
+  "name": "sakai",
+  "art": "sakai.png",
+  "background": [
+   255,
+   255,
+   255
+  ],
+  "frame": [
+   214,
+   48,
+   40
+  ],
+  "lines": [
+   {
+    "text": "Sakai",
+    "size": 160,
+    "x": 680,
+    "y": 192,
+    "color": [
+     214,
+     48,
+     40
+    ]
+   }
+  ]
+ },
+ {
+  "name": "nakayaman",
+  "art": "nakayaman.jpeg",
+  "background": [
+   252,
+   246,
+   236
+  ],
+  "frame": [
+   176,
+   72,
+   40
+  ],
+  "lines": [
+   {
+    "text": "なかやまん",
+    "size": 112,
+    "x": 690,
+    "y": 192,
+    "color": [
+     120,
+     48,
+     24
+    ]
+   }
+  ]
+ },
+ {
+  "name": "fa",
+  "art": "fa.jpeg",
+  "background": [
+   255,
+   248,
+   225
+  ],
+  "frame": [
+   232,
+   160,
+   60
+  ],
+  "lines": [
+   {
+    "text": "ふぁ",
+    "size": 190,
+    "x": 680,
+    "y": 192,
+    "color": [
+     214,
+     120,
+     30
+    ]
+   }
+  ]
  }
 ]

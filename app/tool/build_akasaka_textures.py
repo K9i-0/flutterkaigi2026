@@ -123,8 +123,12 @@ im.save(out/'ad_recruit.png')
 # the order build_akasaka_stage.py reads to pick each billboard's cell.
 SPONSOR_ROWS=8
 sponsors=json.loads((out/'source_ads/ads.json').read_text())
+def fit(text,size,width=600):
+ # Long captions shrink to fit beside the art instead of crossing the frame.
+ while ImageFont.truetype(font,size).getlength(text)>width:size-=2
+ return size
 def sponsor(s):
- im,d=ad('',tuple(s['background']),[(l['text'],l['size'],l['y'],tuple(l['color']),l['x']) for l in s['lines']],tuple(s['frame']))
+ im,d=ad('',tuple(s['background']),[(l['text'],fit(l['text'],l['size']),l['y'],tuple(l['color']),l['x']) for l in s['lines']],tuple(s['frame']))
  a=Image.open(out/'source_ads'/s['art']).convert('RGBA').resize((330,330),Image.LANCZOS)
  im.paste(a,(40,27),a);return im
 rows=min(len(sponsors),SPONSOR_ROWS);cols=-(-len(sponsors)//SPONSOR_ROWS)
