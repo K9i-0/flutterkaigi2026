@@ -28,12 +28,12 @@ OUTER_TOWERS = [
 # toward the beam), ad texture. Fill a slot by changing its ad name.
 BILLBOARDS = [
  (HIGHRISES[1],'+z','yumemin'), (HIGHRISES[0],'+z','takahashigumi'), (HIGHRISES[3],'+z','nakayaman'),
- (OUTER_TOWERS[1],'-z','yumemin'), (OUTER_TOWERS[0],'-z','safety'), (OUTER_TOWERS[2],'-z','mogumogu'),
- (OUTER_TOWERS[4],'+x','yumemin'), (OUTER_TOWERS[3],'+x','kawashima'), (OUTER_TOWERS[5],'+x','fa'),
- (OUTER_TOWERS[7],'-x','yumemin'), (OUTER_TOWERS[6],'-x','safety'), (OUTER_TOWERS[8],'-x','sakai'),
+ (OUTER_TOWERS[1],'-z','yumemin'), (OUTER_TOWERS[0],'-z','odatetsu'), (OUTER_TOWERS[2],'-z','mogumogu'),
+ (OUTER_TOWERS[4],'+x','yumemin'), (OUTER_TOWERS[3],'+x','ykws'), (OUTER_TOWERS[5],'+x','fa'),
+ (OUTER_TOWERS[7],'-x','figma_mcp_book'), (OUTER_TOWERS[6],'-x','flutter_book'), (OUTER_TOWERS[8],'-x','sakai'),
 ]
 # Sponsor ads (source_ads/ads.json) share one atlas material: cells fill
-# columns of SPONSOR_ROWS, as laid out by build_akasaka_textures.py.
+# balanced columns of at most SPONSOR_ROWS, as laid out by build_akasaka_textures.py.
 SPONSORS = [a['name'] for a in json.loads((OUT/'source_ads/ads.json').read_text())]
 SPONSOR_ROWS = 8
 def material(name,color,texture=None,metal=0,glow=0,rough=.65,emit=None):
@@ -255,7 +255,7 @@ def billboard(name,x,z,top,extent,width,facing):
  cx,cz=x+nx*(extent*.41+.12),z+nz*(extent*.41+.12)
  u0,u1,v0,v1=0,1,0,1
  if name in SPONSORS:
-  i=SPONSORS.index(name); rows=min(len(SPONSORS),SPONSOR_ROWS); cols=-(-len(SPONSORS)//SPONSOR_ROWS)
+  i=SPONSORS.index(name); cols=-(-len(SPONSORS)//SPONSOR_ROWS); rows=-(-len(SPONSORS)//cols)
   col,row=divmod(i,rows); u0,u1=col/cols,(col+1)/cols
   v0,v1=1-(row+1)/rows,1-row/rows; name='sponsors'
  mesh('ad_'+name,[(cx+sx*rx*bw/2,cy+sy*bh/2,cz+sx*rz*bw/2) for sx,sy in [(-1,-1),(1,-1),(1,1),(-1,1)]],[(0,1,2,3)],[[(u0,v0),(u1,v0),(u1,v1),(u0,v1)]])

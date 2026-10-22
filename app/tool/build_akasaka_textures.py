@@ -119,19 +119,23 @@ im.save(out/'ad_safety.png')
 im,d=ad('recruit',(252,206,48),[('広告募集中',150,168,(30,30,34),512),('この場所に広告を出しませんか？',40,296,(60,52,30),512)],(30,30,34))
 im.save(out/'ad_recruit.png')
 # Sponsor ads from source_ads/ads.json: the submitted art on the left, its
-# caption on the right. Cells of 1024x384 fill columns of SPONSOR_ROWS, in
+# caption on the right. Cells of 1024x384 fill columns of at most SPONSOR_ROWS, in
 # the order build_akasaka_stage.py reads to pick each billboard's cell.
 SPONSOR_ROWS=8
 sponsors=json.loads((out/'source_ads/ads.json').read_text())
-def fit(text,size,width=600):
+def fit(text,size,width):
  # Long captions shrink to fit beside the art instead of crossing the frame.
  while ImageFont.truetype(font,size).getlength(text)>width:size-=2
  return size
 def sponsor(s):
- im,d=ad('',tuple(s['background']),[(l['text'],fit(l['text'],l['size']),l['y'],tuple(l['color']),l['x']) for l in s['lines']],tuple(s['frame']))
- a=Image.open(out/'source_ads'/s['art']).convert('RGBA').resize((330,330),Image.LANCZOS)
- im.paste(a,(40,27),a);return im
-rows=min(len(sponsors),SPONSOR_ROWS);cols=-(-len(sponsors)//SPONSOR_ROWS)
+ # Square art by default; art_size reshapes others, e.g. book covers.
+ w,h=s.get('art_size',[330,330])
+ # Centered captions stay between the art (+20px) and the frame (975px).
+ room=lambda x:2*min(x-(40+w+20),975-x)
+ im,d=ad('',tuple(s['background']),[(l['text'],fit(l['text'],l['size'],room(l['x'])),l['y'],tuple(l['color']),l['x']) for l in s['lines']],tuple(s['frame']))
+ a=Image.open(out/'source_ads'/s['art']).convert('RGBA').resize((w,h),Image.LANCZOS)
+ im.paste(a,(40,(384-h)//2),a);return im
+cols=-(-len(sponsors)//SPONSOR_ROWS);rows=-(-len(sponsors)//cols)
 atlas=Image.new('RGB',(1024*cols,384*rows))
 for i,s in enumerate(sponsors):atlas.paste(sponsor(s),(1024*(i//rows),384*(i%rows)))
 atlas.save(out/'ad_sponsors.png')
