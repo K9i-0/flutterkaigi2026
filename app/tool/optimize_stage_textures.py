@@ -15,22 +15,31 @@ DEFAULT = Path(__file__).resolve().parents[2] / 'assets/3d/stages/akasaka/akasak
 
 
 def limit(name):
-    # Closest support buildings share facade_0 with other buildings: retain its
-    # albedo resolution. Window masks need fewer samples than painted detail.
+    # The camera zooms toward the beam, its support buildings (facade_0) and
+    # the characters; keep those. Everything else stays 15+ units away, so it
+    # is sized to about one texel per screen pixel on a 2622x1206 display.
     if name == 'facade_0':
         return 512, 1024
-    if name.startswith('facade_'):
+    if name.startswith('facade_0'):
         return (128, 256) if name.endswith('_mr') else (256, 512)
+    if name.startswith('facade_'):
+        # Window masks and roughness need fewer samples than painted detail.
+        if name.endswith('_mr'):
+            return 64, 128
+        return (128, 256) if name.endswith('_emit') else (256, 512)
     if name.startswith('steel'):
         return 512, 128
     if name.startswith('asphalt'):
-        return 256, 256
+        return (256, 256) if name == 'asphalt' else (128, 128)
+    if name.startswith('skyline'):
+        return 128, 128
     if name.startswith('sign_'):
-        return 128, 384
+        return 64, 192
+    # Billboards are at most ~230px wide on screen, even zoomed in.
     if name == 'ad_sponsors':
-        return 512, 384
+        return 256, 192
     if name.startswith('ad_'):
-        return 512, 192
+        return 256, 96
     return None
 
 
