@@ -27,14 +27,13 @@ class Drop {
     this.id,
     this.kind,
     this.x,
-    this.z,
     this.spawn, {
     this.facing = 0,
     this.fallSeconds = 3.1,
   });
   final int id;
   final CanKind kind;
-  final double x, z, spawn, facing, fallSeconds;
+  final double x, spawn, facing, fallSeconds;
   bool resolved = false, caught = false;
   double get landing => spawn + fallSeconds;
   double height(double time) {
@@ -48,7 +47,7 @@ class Drop {
 }
 
 class CatchGame {
-  static const duration = 20.0, halfX = 3.9, halfZ = 2.8;
+  static const duration = 20.0, halfX = 3.9;
 
   Balance balance = Balance.defaults();
   int seed = 1;
@@ -59,8 +58,8 @@ class CatchGame {
   double _baseMoveSpeed = 2.6, _baseCatchRadius = .72;
   double get baseMoveSpeed => _baseMoveSpeed;
   double get baseCatchRadius => _baseCatchRadius;
-  double get moveSpeed => lane ? baseMoveSpeed : 3.5;
-  double get catchRadius => lane ? baseCatchRadius : balance['catchRadius'];
+  double get moveSpeed => baseMoveSpeed;
+  double get catchRadius => baseCatchRadius;
   bool selectCharacter(CatchCharacter character) {
     if (phase != Phase.ready && phase != Phase.result) return false;
     _selectedCharacter = character;
@@ -76,19 +75,16 @@ class CatchGame {
   }
 
   double get spawnInterval =>
-      (balance['spawnInterval'] * (lane ? roundCharacter.spawnMultiplier : 1))
-          .clamp(.5, 4.5);
-  double get fallSeconds =>
-      (balance['fallSeconds'] * (lane ? roundCharacter.fallMultiplier : 1))
-          .clamp(1, 6);
-  double get badRatio =>
-      (balance['badRatio'] * (lane ? roundCharacter.badMultiplier : 1)).clamp(
-        0,
-        1,
+      (balance['spawnInterval'] * roundCharacter.spawnMultiplier).clamp(
+        .5,
+        4.5,
       );
+  double get fallSeconds =>
+      (balance['fallSeconds'] * roundCharacter.fallMultiplier).clamp(1, 6);
+  double get badRatio =>
+      (balance['badRatio'] * roundCharacter.badMultiplier).clamp(0, 1);
 
   double get roundSeconds => balance['roundSeconds'];
-  bool lane = false;
 
   /// Practice: no time limit, drops keep coming, score and counters stay 0.
   bool practice = false;
@@ -97,14 +93,7 @@ class CatchGame {
   ControlMode controlMode = ControlMode.fixed;
   Phase phase = Phase.ready;
   double screenSign = 1;
-  double time = 0,
-      countdown = 0,
-      x = 0,
-      z = 1,
-      vx = 0,
-      vz = 0,
-      yaw = 0,
-      targetYaw = 0;
+  double time = 0, countdown = 0, x = 0, vx = 0, yaw = 0, targetYaw = 0;
   int score = 0, combo = 0, caught = 0, bad = 0, missed = 0, eventId = 0;
   GameMessage message = GameMessage.hint;
   CanKind? messageKind;
@@ -116,18 +105,14 @@ class CatchGame {
   int _nextId = 0;
   void start({int seed = 1}) {
     this.seed = seed;
-    _roundCharacter = lane ? selectedCharacter : CatchCharacter.sobaya;
-    _baseMoveSpeed = lane ? roundCharacter.moveSpeed : 3.5;
-    _baseCatchRadius = lane
-        ? roundCharacter.catchRadius
-        : balance['catchRadius'];
+    _roundCharacter = selectedCharacter;
+    _baseMoveSpeed = roundCharacter.moveSpeed;
+    _baseCatchRadius = roundCharacter.catchRadius;
     phase = Phase.countdown;
     time = 0;
     countdown = 2;
     x = 0;
-    z = lane ? 0 : 1;
     vx = 0;
-    vz = 0;
     yaw = 0;
     targetYaw = 0;
     screenSign = 1;
@@ -152,37 +137,29 @@ class CatchGame {
     for (; _nextId * spawnInterval <= until; _nextId++) {
       final i = _nextId;
       final kind = ((i + 1) * badRatio).floor() > (i * badRatio).floor()
-          ? (lane ? roundCharacter.badDrop : CanKind.happoshu)
-          : lane
-          ? roundCharacter.goodDrops[i % roundCharacter.goodDrops.length]
-          : i % 3 == 1
-          ? CanKind.light
-          : CanKind.superTry;
+          ? roundCharacter.badDrop
+          : roundCharacter.goodDrops[i % roundCharacter.goodDrops.length];
       drops.add(
         Drop(
           i,
           kind,
           (r.nextDouble() - .5) * 6.2,
-          lane ? 0 : (r.nextDouble() - .5) * 4.2,
           i * spawnInterval,
           fallSeconds: fallSeconds,
-          facing: lane
-              ? ((r.nextDouble() < .5 ? -1 : 1) *
-                    (balance['facingMin'] +
-                        r.nextDouble() *
-                            (balance['facingMax'] - balance['facingMin'])) *
-                    math.pi /
-                    180)
-              : 0,
+          facing:
+              (r.nextDouble() < .5 ? -1 : 1) *
+              (balance['facingMin'] +
+                  r.nextDouble() *
+                      (balance['facingMax'] - balance['facingMin'])) *
+              math.pi /
+              180,
         ),
       );
     }
   }
 
   void rotate(int direction) {
-    targetYaw +=
-        direction.sign *
-        (lane ? balance['cameraStep'] * math.pi / 180 : math.pi / 4);
+    targetYaw += direction.sign * balance['cameraStep'] * math.pi / 180;
     // Full orbit: keep angles in (-pi, pi] and shift the eased yaw by the
     // same turn so the camera keeps gliding instead of spinning back.
     while (targetYaw > math.pi + 1e-9) {
@@ -223,7 +200,7 @@ class CatchGame {
     }
     if (phase != Phase.playing) return;
     time += dt;
-    if (lane && controlMode == ControlMode.fixed) iy = 0;
+    if (controlMode == ControlMode.fixed) iy = 0;
     final len = math.sqrt(ix * ix + iy * iy);
     if (len > 1) {
       ix /= len;
@@ -233,28 +210,19 @@ class CatchGame {
     // Near side-on views keep the last sign so the controls never flip mid-step.
     final c = math.cos(yaw);
     if (c.abs() > .3) screenSign = c.sign;
-    final dir = !lane
-            ? toWorld(ix, iy, yaw)
-            : controlMode == ControlMode.camera
-            ? (x: toWorld(ix, iy, yaw).x, z: 0.0)
-            : (x: -ix * screenSign, z: 0.0),
+    final dir = controlMode == ControlMode.camera
+            ? toWorld(ix, iy, yaw).x
+            : -ix * screenSign,
         a = 1 - math.exp(-balance['acceleration'] * dt);
-    vx += (dir.x * moveSpeed - vx) * a;
-    vz += (dir.z * 3.5 - vz) * a;
-    final previousX = x, previousZ = z;
+    vx += (dir * moveSpeed - vx) * a;
+    final previousX = x;
     x = (x + vx * dt).clamp(-halfX, halfX);
-    z = (z + vz * dt).clamp(-halfZ, halfZ);
     // Animation uses actual displacement, including the end stops.
-    if (lane) {
-      vx = (x - previousX) / dt;
-      vz = (z - previousZ) / dt;
-    }
+    vx = (x - previousX) / dt;
     for (final d in drops) {
       if (d.resolved || time < d.landing) continue;
       d.resolved = true;
-      d.caught =
-          math.pow(d.x - x, 2) + math.pow(d.z - z, 2) <
-          math.pow(catchRadius, 2);
+      d.caught = (d.x - x).abs() < catchRadius;
       if (d.caught && practice) {
         eventId++;
         message = d.kind.isBad ? GameMessage.bad : GameMessage.caught;
@@ -287,7 +255,6 @@ class CatchGame {
           'kind': d.kind.name,
           'score': score,
           'x': x,
-          'z': z,
         });
       } else if (!d.kind.isBad && !practice) {
         missed++;
@@ -303,7 +270,6 @@ class CatchGame {
       time = roundSeconds;
       phase = Phase.result;
       vx = 0;
-      vz = 0;
     }
   }
 
@@ -323,15 +289,12 @@ class CatchGame {
     'moveSpeed': moveSpeed,
     'catchRadius': catchRadius,
     'vx': vx,
-    'vz': vz,
     'dropCount': drops.length,
-    'mode': lane ? 'lane' : 'plane',
     'practice': practice,
     'controlMode': controlMode.id,
     'phase': phase.name,
     'time': time,
     'x': x,
-    'z': z,
     'yaw': yaw,
     'score': score,
     'combo': combo,
@@ -346,7 +309,6 @@ class CatchGame {
             'kind': d.kind.name,
             'facing': d.facing,
             'x': d.x,
-            'z': d.z,
             'height': d.height(time),
             'landing': d.landing,
           },
@@ -369,10 +331,9 @@ class CatchGame {
           ..sort((a, b) => a.landing.compareTo(b.landing));
     if (candidates.isEmpty) return (x: 0, y: 0);
     final d = candidates.first;
-    if (lane && controlMode == ControlMode.fixed) {
+    if (controlMode == ControlMode.fixed) {
       return (x: -(d.x - x) * 2.6, y: 0);
     }
-    if (lane) return toScreen((d.x - x) * 2.6, 0, yaw);
-    return toScreen((d.x - x) * 2.6, (d.z - z) * 2.6, yaw);
+    return toScreen((d.x - x) * 2.6, 0, yaw);
   }
 }

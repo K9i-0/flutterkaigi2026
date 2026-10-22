@@ -1,4 +1,4 @@
-/// Time of day for the Akasaka beam stage. The plane mode keeps its own rig.
+/// Time of day for the Akasaka beam stage.
 enum StageTime {
   day('昼'),
   night('夜');

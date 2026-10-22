@@ -17,7 +17,7 @@ void main() {
     expect(() => b.values['moveSpeed'] = 99, throwsUnsupportedError);
   });
   test('spawn count, fall time, mixture and scoring follow settings', () {
-    final g = CatchGame()..lane = true;
+    final g = CatchGame();
     g.balance = Balance.fromMap({
       'roundSeconds': 10,
       'spawnInterval': .5,
@@ -38,8 +38,8 @@ void main() {
     expect(g.score, -75);
   });
   test('same seed and settings reproduce layout; all-beer ratio works', () {
-    final a = CatchGame()..lane = true;
-    final b = CatchGame()..lane = true;
+    final a = CatchGame();
+    final b = CatchGame();
     a.balance = b.balance = Balance.fromMap({'badRatio': 0});
     a.start(seed: 987);
     b.start(seed: 987);
@@ -49,21 +49,26 @@ void main() {
     );
     expect(a.drops.any((d) => d.kind.isBad), false);
   });
+  test('retired plane-mode keys in saved JSON are ignored', () {
+    final b = Balance.fromMap({'catchRadius': .9, 'badRatio': .5});
+    expect(b.values.containsKey('catchRadius'), false);
+    expect(b['badRatio'], .5);
+  });
   test('lane rounds keep the default can mix for every seed', () {
-    final a = CatchGame()..lane = true;
+    final a = CatchGame();
     a.start(seed: 987);
     expect(a.drops.length, 16);
     expect(a.drops.where((d) => d.kind.isBad).length, 4);
     expect(a.drops.where((d) => !d.kind.isBad).length, 12);
     for (var seed = 1; seed <= 40; seed++) {
-      final g = CatchGame()..lane = true;
+      final g = CatchGame();
       g.start(seed: seed);
       expect(g.drops.length, 16);
       expect(g.drops.where((d) => d.kind.isBad).length, 4);
     }
   });
   test('maximum density fits visual pool and round resolves every drop', () {
-    final g = CatchGame()..lane = true;
+    final g = CatchGame();
     g.balance = Balance.fromMap({
       'roundSeconds': 60,
       'spawnInterval': .5,

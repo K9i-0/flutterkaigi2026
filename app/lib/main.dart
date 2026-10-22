@@ -61,9 +61,7 @@ class RainPage extends StatefulWidget {
 }
 
 class _RainState extends State<RainPage> {
-  final game = CatchGame()
-    ..lane = true
-    ..z = 0;
+  final game = CatchGame();
   final world = CatchScene(), tilt = TiltInput(), records = RecordStore();
   bool showTitle = true;
   GraphicsSettings graphics = GraphicsSettings.standard;
@@ -82,7 +80,7 @@ class _RainState extends State<RainPage> {
   // Debug/profile only: frame-rate HUD toggled from the debug panel.
   bool showFps = false;
   Map<String, Object>? fpsStats;
-  int lastEvent = 0, turn = 0, seed = 1;
+  int lastEvent = 0, seed = 1;
   Object? _hudState;
 
   void refreshHud() {
@@ -228,7 +226,7 @@ class _RainState extends State<RainPage> {
                 }
               }
               if (p['hide'] == 'items') {
-                for (final slot in world.laneDrops) {
+                for (final slot in world.dropSlots) {
                   for (final item in slot) {
                     item.root.visible = false;
                   }
@@ -239,7 +237,7 @@ class _RainState extends State<RainPage> {
                 for (final n in world.characters.values) {
                   n.visible = false;
                 }
-                for (final slot in world.laneDrops) {
+                for (final slot in world.dropSlots) {
                   for (final item in slot) {
                     item.root.visible = false;
                   }
@@ -302,11 +300,9 @@ class _RainState extends State<RainPage> {
                 return MarionetteExtensionResult.invalidParams('$e');
               }
             case 'start':
-              if (p['mode'] != null) game.lane = p['mode'] == 'lane';
               start(practice: p['practice'] == 'true');
               frozen = true;
             case 'demo':
-              if (p['mode'] != null) game.lane = p['mode'] == 'lane';
               start();
               demo = true;
             case 'rotate':
@@ -440,7 +436,6 @@ class _RainState extends State<RainPage> {
 
   void runBenchmark(String label, StageTime time, {CatchCharacter? character}) {
     // Fixed snapshot; render loop continues, simulation and camera stay fixed.
-    game.lane = true;
     game.phase = Phase.ready;
     game.selectCharacter(character ?? CatchCharacter.ctoOdatetsu);
     game.selectTime(time);
@@ -528,7 +523,6 @@ class _RainState extends State<RainPage> {
   /// A finished scored round asks once for a nickname, then shows the board.
   void checkRoundEnd() {
     if (recordPrompted ||
-        !game.lane ||
         game.practice ||
         game.phase != Phase.result ||
         benchmark?.active == true) {
@@ -627,7 +621,6 @@ class _RainState extends State<RainPage> {
     inputY = 0;
     accumulator = 0;
     lastEvent = 0;
-    turn = 0;
     paused = false;
     frozen = false;
     demo = false;
@@ -641,16 +634,8 @@ class _RainState extends State<RainPage> {
       final length = math.max(1.0, math.sqrt(x * x + y * y));
       inputX = x / length;
       inputY = y / length;
-      if (!game.lane && game.time > 6 && turn == 0) {
-        game.rotate(1);
-        turn++;
-      }
-      if (!game.lane && game.time > 12 && turn == 1) {
-        game.rotate(-1);
-        turn++;
-      }
     }
-    if (demo && game.lane && game.time > 3) {
+    if (demo && game.time > 3) {
       final targets = game.drops
           .where((d) => !d.resolved && d.spawn <= game.time)
           .toList();
@@ -714,7 +699,7 @@ class _RainState extends State<RainPage> {
         LogicalKeyboardKey.arrowLeft,
         LogicalKeyboardKey.arrowRight,
       );
-      inputY = game.lane && game.controlMode == ControlMode.fixed
+      inputY = game.controlMode == ControlMode.fixed
           ? 0
           : axis(LogicalKeyboardKey.arrowDown, LogicalKeyboardKey.arrowUp);
     }
@@ -757,8 +742,7 @@ class _RainState extends State<RainPage> {
     child: Text(text),
   );
   String messageText(Strings t) => switch (game.message) {
-    GameMessage.hint =>
-      game.lane ? t.hint(game.roundCharacter) : 'ビールだけ、持ってこい。',
+    GameMessage.hint => t.hint(game.roundCharacter),
     GameMessage.caught => t.niceCatch(game.messagePoints),
     GameMessage.bad => t.wrongCatch(game.messageKind!, game.messagePoints),
   };
@@ -766,12 +750,12 @@ class _RainState extends State<RainPage> {
     mainAxisSize: MainAxisSize.min,
     children: [
       chip(
-        '${game.lane ? game.roundCharacter.goodDrops.first.label : 'ビール'} +${game.balance['beerPoints'].round()}〜',
+        '${game.roundCharacter.goodDrops.first.label} +${game.balance['beerPoints'].round()}〜',
         color: gold,
       ),
       const SizedBox(width: 6),
       chip(
-        '${game.lane ? game.roundCharacter.badDrop.label : '紫帯の発泡酒'} −${game.balance['penalty'].round()}',
+        '${game.roundCharacter.badDrop.label} −${game.balance['penalty'].round()}',
         color: const Color(0xff8052a0),
       ),
     ],
@@ -799,7 +783,6 @@ class _RainState extends State<RainPage> {
           if (!ready && error == null) return const BrandLoading();
           // Dialogs pause the game but keep this screen behind them.
           if (ready &&
-              game.lane &&
               (game.phase == Phase.ready || game.phase == Phase.result)) {
             return SelectionScreen(
               game: game,
@@ -879,7 +862,7 @@ class _RainState extends State<RainPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                game.lane ? t.appTitle : 'ゆめみ採用試験 / 面移動版',
+                                t.appTitle,
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 22,
@@ -890,11 +873,9 @@ class _RainState extends State<RainPage> {
                               Text(
                                 t.player(
                                   t.character(
-                                    game.lane
-                                        ? (playing
-                                              ? game.roundCharacter
-                                              : game.selectedCharacter)
-                                        : CatchCharacter.sobaya,
+                                    playing
+                                        ? game.roundCharacter
+                                        : game.selectedCharacter,
                                   ),
                                 ),
                                 style: const TextStyle(
@@ -1032,9 +1013,7 @@ class _RainState extends State<RainPage> {
                                       )
                                     else if (!paused)
                                       Text(
-                                        game.lane
-                                            ? '足場は細い鉄骨一本。左右に傾けて歩こう。\n缶の向きはばらばら。カメラで表ラベルを見て、発泡酒を避けろ！'
-                                            : '小さく傾けて、前後左右へ。\n左右にスワイプして見回そう。紫帯の発泡酒は避けろ！',
+                                        '足場は細い鉄骨一本。左右に傾けて歩こう。\n缶の向きはばらばら。カメラで表ラベルを見て、発泡酒を避けろ！',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontSize: 14,

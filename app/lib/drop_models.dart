@@ -10,8 +10,13 @@ import 'cached_skin.dart';
 class DropModels {
   final prototypes = <CanKind, Node>{};
   Future<void> load() async {
+    // Kinds sharing a model (chikuwa and its toxic look) load it once. A clone
+    // keeps the materials selected when it was made, so each look is frozen.
+    final scenes = <String, Node>{};
     for (final kind in CanKind.values) {
-      prototypes[kind] = await loadScene(kind.asset());
+      final source = scenes[kind.asset()] ??= await loadScene(kind.asset());
+      MaterialsVariantsComponent.of(source)?.select(kind.variant);
+      prototypes[kind] = source.clone();
     }
   }
 

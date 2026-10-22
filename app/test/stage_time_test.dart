@@ -3,7 +3,7 @@ import 'package:yumemi_recruit_exam/catch_game.dart';
 
 void main() {
   test('time of day defaults to day and is fixed during a round', () {
-    final g = CatchGame()..lane = true;
+    final g = CatchGame();
     expect(g.timeOfDay, StageTime.day);
     expect(g.selectTime(StageTime.night), true);
     g.start();

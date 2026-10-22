@@ -6,9 +6,7 @@ import 'package:yumemi_recruit_exam/catch_game.dart';
 
 void main() {
   CatchGame turned(ControlMode mode, int steps) {
-    final g = CatchGame()
-      ..lane = true
-      ..controlMode = mode;
+    final g = CatchGame()..controlMode = mode;
     g.start();
     for (var i = 0; i < steps; i++) {
       g.rotate(1);
@@ -28,7 +26,6 @@ void main() {
     expect(camera.yaw, closeTo(math.pi / 2, .02));
     expect(camera.x, lessThan(-1));
     expect(fixed.x, 0);
-    expect(camera.z, 0);
   });
 
   test('camera mode matches the fixed mode in the default view', () {
@@ -53,7 +50,7 @@ void main() {
   });
 
   test('drops face every direction by default', () {
-    final g = CatchGame()..lane = true;
+    final g = CatchGame();
     g.start(seed: 4);
     final degrees = g.drops.map((d) => d.facing * 180 / math.pi).toList();
     expect(degrees.every((d) => d.abs() <= 180), true);

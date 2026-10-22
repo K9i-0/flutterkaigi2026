@@ -117,12 +117,6 @@ class OkayamanVision {
     // Flush against the street-facing wall, clear of rooftop equipment.
     _box(scene, vm.Vector3(6, -1.5, 2.04), vm.Vector3(2.5, 1.9, .08), frame);
     _panel(scene, 2.4, 1.8, vm.Vector3(6, -1.5, 2.09), face);
-  }
-
-  void update(double dt, {required bool enabled}) {
-    visible = enabled;
-    for (final node in nodes) {
-      node.visible = enabled;
-    }
+    visible = true;
   }
 }

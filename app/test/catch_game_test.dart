@@ -8,9 +8,8 @@ void main() {
   test(
     'lane ignores depth input and keeps controls stable while looking around',
     () {
-      final g = CatchGame()..lane = true;
+      final g = CatchGame();
       g.start();
-      expect(g.drops.every((d) => d.z == 0), true);
       expect(g.drops.any((d) => d.facing < 0), true);
       expect(g.drops.any((d) => d.facing > 0), true);
       g.rotate(1);
@@ -21,8 +20,6 @@ void main() {
         g.tick(1 / 60, inputX: .5, inputY: 1);
       }
       expect(g.x, lessThan(0));
-      expect(g.z, 0);
-      expect(g.vz, 0);
       final facings = g.drops.map((d) => d.facing).toList();
       // A full orbit has no stop and wraps back into (-pi, pi].
       for (var i = 0; i < 4; i++) {
@@ -43,7 +40,7 @@ void main() {
     },
   );
   test('lane controls follow the screen from behind the beam', () {
-    final g = CatchGame()..lane = true;
+    final g = CatchGame();
     g.start();
     for (var i = 0; i < 6; i++) {
       g.rotate(1);
@@ -56,12 +53,11 @@ void main() {
     expect(g.x, greaterThan(0));
   });
   test('lane catches only on its track through a complete round', () {
-    final g = CatchGame()..lane = true;
+    final g = CatchGame();
     g.start();
     for (var i = 0; i < 1400; i++) {
       final p = g.demoInput();
       g.tick(1 / 60, inputX: p.x, inputY: p.y);
-      expect(g.z, 0);
     }
     expect(g.phase, Phase.result);
     expect(g.caught, greaterThan(5));
@@ -85,14 +81,14 @@ void main() {
     g.drops
       ..clear()
       ..addAll([
-        Drop(0, CanKind.superTry, 0, 1, -3.1),
-        Drop(1, CanKind.light, 0, 1, -3.1),
+        Drop(0, CanKind.superTry, 0, -3.1),
+        Drop(1, CanKind.light, 0, -3.1),
       ]);
     g.tick(1 / 60);
     expect(g.score, 225);
     g.tick(1 / 60);
     expect(g.score, 225);
-    g.drops.add(Drop(2, CanKind.happoshu, 0, 1, -3.1));
+    g.drops.add(Drop(2, CanKind.happoshu, 0, -3.1));
     g.tick(1 / 60);
     expect(g.score, 25);
     expect(g.combo, 0);
@@ -103,7 +99,6 @@ void main() {
     for (var i = 0; i < 1500; i++) {
       g.tick(1 / 60, inputX: 1, inputY: 1);
       expect(g.x.abs(), lessThanOrEqualTo(CatchGame.halfX));
-      expect(g.z.abs(), lessThanOrEqualTo(CatchGame.halfZ));
     }
     expect(g.phase, Phase.result);
     final x = g.x;

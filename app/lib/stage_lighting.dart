@@ -151,12 +151,7 @@ vm.Vector3 _v((double, double, double) c) => vm.Vector3(c.$1, c.$2, c.$3);
 /// Switches sky, fog, sun, shadows and emissive light-up of the Akasaka GLB,
 /// and scrolls its traffic groups.
 class StageLighting {
-  StageLighting(
-    this.stage,
-    this.workLights,
-    this.studioEnvironment,
-    this.cityMaps,
-  ) {
+  StageLighting(this.stage, this.workLights, this.cityMaps) {
     void visit(Node node) {
       final mesh = node.mesh;
       if (mesh != null) {
@@ -193,7 +188,6 @@ class StageLighting {
   final _materials = <String, List<PhysicallyBasedMaterial>>{};
   final _trafficNodes =
       <Node, ({(double, double) axis, double speed, double period})>{};
-  final EnvironmentMap studioEnvironment;
   final Map<StageTime, EnvironmentMap> cityMaps;
   final _surfaces =
       <
@@ -201,7 +195,7 @@ class StageLighting {
         ({TextureSource? normal, TextureSource? mr, double metal, double rough})
       >{};
   GraphicsSettings graphics = GraphicsSettings.standard;
-  (StageTime, bool, GraphicsSettings)? _applied;
+  (StageTime, GraphicsSettings)? _applied;
   StageTime time = StageTime.day;
   double viewportLongestSide = 1440;
   double get renderScale => graphics.renderScaleFor(viewportLongestSide);
@@ -236,10 +230,10 @@ class StageLighting {
     }
   }
 
-  /// Applies [time] once per change; [lane] false restores the plane rig.
-  void apply(Scene scene, {required bool lane}) {
-    if (_applied == (time, lane, graphics)) return;
-    _applied = (time, lane, graphics);
+  /// Applies [time] and [graphics] once per change.
+  void apply(Scene scene) {
+    if (_applied == (time, graphics)) return;
+    _applied = (time, graphics);
     configureRenderer(scene);
     // Individual car shadows are subpixel from the 200m-high play area.
     // Cars still move and receive city shadows; keep their casting in high quality.
@@ -256,22 +250,6 @@ class StageLighting {
       m.metallicRoughnessTexture = graphics.reflections ? saved.mr : null;
       m.metallicFactor = graphics.reflections ? saved.metal : 0;
       m.roughnessFactor = graphics.reflections ? saved.rough : .9;
-    }
-    if (!lane) {
-      scene.environment = studioEnvironment;
-      scene.skybox = null;
-      scene.fog.enabled = false;
-      scene.directionalLight = DirectionalLight(
-        direction: vm.Vector3(-.5, -1, -.3),
-        intensity: 2.4,
-      );
-      scene.environmentIntensity = 1.1;
-      scene.exposure = 1.15;
-      scene.postProcess.bloom.enabled = false;
-      for (final l in workLights) {
-        l.intensity = 0;
-      }
-      return;
     }
     scene.environment = cityMaps[time];
     final p = _presets[time]!;

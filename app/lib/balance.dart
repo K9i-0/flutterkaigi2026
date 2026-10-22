@@ -18,7 +18,6 @@ class Balance {
     BalanceField('fallSeconds', '落下時間（秒・長いほど遅い）', 1, 6, 3.1, .1),
     BalanceField('moveSpeed', '移動速度（鉄骨編）', 1, 5, 2.6, .1),
     BalanceField('acceleration', '移動の応答（大きいほど即応）', 3, 24, 12, 1),
-    BalanceField('catchRadius', 'キャッチ半径（面移動版）', .3, 1.2, .72, .02),
     BalanceField('badRatio', 'はずれの割合（基準値）', 0, 1, .25, .05),
     BalanceField('beerPoints', 'あたり基本点', 25, 300, 100, 25),
     BalanceField('penalty', 'はずれの減点', 0, 500, 200, 25),
@@ -31,12 +30,16 @@ class Balance {
     BalanceField('zoomMax', 'ピンチの最大倍率（寄り）', 1, 6, 5, .1),
     BalanceField('tiltDegrees', '最大速度になる傾き（度）', 5, 30, 13.75, .5),
   ];
+
+  /// Keys of removed settings that saved or pasted JSON may still contain.
+  static const retired = {'catchRadius'};
   Balance._(this.values);
   factory Balance.defaults() =>
       Balance._(Map.unmodifiable({for (final f in fields) f.key: f.initial}));
   factory Balance.fromMap(Map<String, dynamic> input) {
     final values = Map<String, double>.from(Balance.defaults().values);
     for (final entry in input.entries) {
+      if (retired.contains(entry.key)) continue;
       final spec = fields.where((f) => f.key == entry.key).firstOrNull;
       if (spec == null || entry.value is! num) {
         throw FormatException('Unknown or non-numeric field: ${entry.key}');
@@ -58,7 +61,6 @@ class Balance {
     'easy' => Balance.fromMap({
       'spawnInterval': 1.6,
       'fallSeconds': 4.5,
-      'catchRadius': .95,
       'badRatio': .15,
       'facingMin': 20,
       'facingMax': 70,
@@ -66,7 +68,6 @@ class Balance {
     'hard' => Balance.fromMap({
       'spawnInterval': .8,
       'fallSeconds': 2.4,
-      'catchRadius': .55,
       'badRatio': .4,
       'facingMin': 90,
       'facingMax': 130,

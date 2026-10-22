@@ -10,9 +10,7 @@ import 'package:yumemi_recruit_exam/records.dart';
 
 void main() {
   test('practice has no time limit, keeps dropping and never scores', () {
-    final g = CatchGame()
-      ..lane = true
-      ..practice = true;
+    final g = CatchGame()..practice = true;
     g.start(seed: 3);
     g.phase = Phase.playing;
     var events = 0, last = 0;
@@ -38,7 +36,7 @@ void main() {
   });
 
   test('a normal round after practice is unchanged and ends', () {
-    final g = CatchGame()..lane = true;
+    final g = CatchGame();
     g.start(seed: 1);
     final normal = g.drops.map((d) => (d.kind, d.x, d.spawn)).toList();
     g

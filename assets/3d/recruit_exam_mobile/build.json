@@ -201,6 +201,10 @@
  },
  "chikuwa": {
   "source": "assets/3d/props/chikuwa/game_v3/chikuwa.glb",
+  "variants": {
+   "normal": null,
+   "toxic": "assets/3d/props/chikuwa/game_v3/chikuwa_toxic.glb"
+  },
   "cap": 1024,
   "images": [
    {
@@ -236,47 +240,7 @@
   ],
   "bytes": [
    7384580,
-   3641848
-  ]
- },
- "chikuwa_toxic": {
-  "source": "assets/3d/props/chikuwa/game_v3/chikuwa_toxic.glb",
-  "cap": 1024,
-  "images": [
-   {
-    "before": [
-     1024,
-     1536
-    ],
-    "after": [
-     683,
-     1024
-    ]
-   },
-   {
-    "before": [
-     1024,
-     1536
-    ],
-    "after": [
-     683,
-     1024
-    ]
-   },
-   {
-    "before": [
-     1024,
-     1536
-    ],
-    "after": [
-     683,
-     1024
-    ]
-   }
-  ],
-  "bytes": [
-   7531008,
-   3768396
+   5085596
   ]
  }
 }

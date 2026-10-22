@@ -7,7 +7,7 @@ import 'package:yumemi_recruit_exam/character_picker.dart';
 
 void main() {
   test('normal default, selection lock and retry snapshot', () {
-    final g = CatchGame()..lane = true;
+    final g = CatchGame();
     g.start();
     expect(g.roundCharacter, CatchCharacter.ctoOdatetsu);
     expect(g.baseMoveSpeed, 3.4);
@@ -22,7 +22,7 @@ void main() {
     expect(g.roundCharacter, CatchCharacter.fukuchan);
     expect(g.baseMoveSpeed, 3.0);
     expect(g.baseCatchRadius, .64);
-    g.balance = Balance.fromMap({'moveSpeed': 5, 'catchRadius': 1.2});
+    g.balance = Balance.fromMap({'moveSpeed': 5});
     expect(g.moveSpeed, 3.0);
     expect(g.catchRadius, .64);
   });
@@ -30,7 +30,7 @@ void main() {
   test('character drop pools and difficulty, with reproducible layouts', () {
     final rounds = <CatchCharacter, CatchGame>{};
     for (final character in CatchCharacter.values) {
-      final g = CatchGame()..lane = true;
+      final g = CatchGame();
       g.selectCharacter(character);
       g.start(seed: 42);
       rounds[character] = g;
@@ -53,7 +53,7 @@ void main() {
       g.phase = Phase.playing;
       g.drops
         ..clear()
-        ..add(Drop(0, character.badDrop, 0, 0, -3.1));
+        ..add(Drop(0, character.badDrop, 0, -3.1));
       g.tick(1 / 60);
       expect(g.bad, 1);
       expect(g.score, -200);
@@ -71,20 +71,19 @@ void main() {
 
   for (final character in CatchCharacter.values) {
     test('${character.id}: speed, radius and full 20-second lane round', () {
-      final g = CatchGame()..lane = true;
+      final g = CatchGame();
       g.selectCharacter(character);
       g.start(seed: 7);
       g.phase = Phase.playing;
       g.drops
         ..clear()
-        ..add(Drop(0, CanKind.superTry, .63, 0, -3.1));
+        ..add(Drop(0, CanKind.superTry, .63, -3.1));
       g.tick(1 / 60);
       expect(g.caught, character == CatchCharacter.ctoOdatetsu ? 0 : 1);
       for (var i = 0; i < 60; i++) {
         g.tick(1 / 60, inputX: 1, inputY: 1);
       }
       expect(g.vx.abs(), closeTo(character.moveSpeed, .001));
-      expect(g.z, 0);
       for (var i = 0; i < 1200; i++) {
         g.tick(1 / 60, inputX: 1);
         expect(g.x.abs(), lessThanOrEqualTo(3.9));
@@ -99,7 +98,7 @@ void main() {
   }
 
   test('lane end stops report actual zero speed for Idle', () {
-    final g = CatchGame()..lane = true;
+    final g = CatchGame();
     g.start();
     g.phase = Phase.playing;
     for (var i = 0; i < 180; i++) {
@@ -109,26 +108,6 @@ void main() {
     expect(g.vx, 0);
     g.tick(1 / 60, inputX: -1);
     expect(g.vx, greaterThan(0));
-  });
-
-  test('plane retains sobaya, speed 3.5 and configured catch radius', () {
-    final g = CatchGame();
-    g.selectCharacter(CatchCharacter.ctoOdatetsu);
-    g.balance = Balance.fromMap({'moveSpeed': 5, 'catchRadius': .9});
-    g.start();
-    expect(g.roundCharacter, CatchCharacter.sobaya);
-    expect(g.moveSpeed, 3.5);
-    expect(g.catchRadius, .9);
-    g.phase = Phase.playing;
-    for (var i = 0; i < 60; i++) {
-      g.tick(1 / 60, inputX: 1);
-    }
-    expect(g.vx.abs(), closeTo(3.5, .001));
-    g.phase = Phase.result;
-    g.lane = true;
-    g.start();
-    expect(g.roundCharacter, CatchCharacter.ctoOdatetsu);
-    expect(g.catchRadius, .55);
   });
 
   testWidgets('picker shows difficulty and selects each character', (
