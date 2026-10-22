@@ -17,6 +17,21 @@ HIGHRISES = [
  (-38,-70,5.0,5.0,200,3), (36,-48,4.4,5.0,185,5),
  (43,-70,4.2,5.2,205,3),
 ]
+# Towers behind and beside the beam so every orbit direction has billboards.
+# Their lots are still rolled (and discarded) to keep the seeded city as is.
+OUTER_TOWERS = [
+ (-33,52,4.6,5.0,195,3), (11,58,4.4,5.2,210,5), (34,54,4.6,5.0,185,5),
+ (-38,26,4.6,5.0,190,5), (-60,2,4.4,5.2,205,3), (-40,-24,4.6,5.0,180,3),
+ (38,22,4.6,5.0,200,3), (62,-6,4.4,5.2,195,5), (36,-26,4.6,5.0,185,5),
+]
+# Billboard slots, three per orbit direction: tower, facing (outward normal
+# toward the beam), ad texture. Fill a slot by changing its ad name.
+BILLBOARDS = [
+ (HIGHRISES[1],'+z','yumemin'), (HIGHRISES[0],'+z','recruit'), (HIGHRISES[3],'+z','accidenchua'),
+ (OUTER_TOWERS[1],'-z','yumemin'), (OUTER_TOWERS[0],'-z','safety'), (OUTER_TOWERS[2],'-z','recruit'),
+ (OUTER_TOWERS[4],'+x','yumemin'), (OUTER_TOWERS[3],'+x','recruit'), (OUTER_TOWERS[5],'+x','accidenchua'),
+ (OUTER_TOWERS[7],'-x','yumemin'), (OUTER_TOWERS[6],'-x','safety'), (OUTER_TOWERS[8],'-x','recruit'),
+]
 def material(name,color,texture=None,metal=0,glow=0,rough=.65,emit=None):
  m=bpy.data.materials.new(name); m.use_nodes=True
  m.use_backface_culling=True
@@ -55,13 +70,15 @@ SIGNS=['akasaka','izakaya','soba','shika','bengoshi','fudosan']
 for n in SIGNS: material(n,(1,1,1),f'sign_{n}.png',glow=.4)
 # Retired ad slot stays empty to preserve the city's seeded layout.
 ADS=[None,'accidenchua','safety']
-for n in ADS+['yumemin']:
+for n in sorted(set(ADS[1:]+[ad for _,_,ad in BILLBOARDS])):
  if n: material('ad_'+n,(1,1,1),f'ad_{n}.png',glow=.5)
 # Moving traffic: one atlas material, one mesh per direction group (see catch_scene.dart).
 material('car',(1,1,1),'car_atlas.png',metal=.4,glow=1,rough=.35,emit='car_atlas_emit.png')
 material('lamp',(1,.78,.45),glow=1.8); material('redlight',(1,.08,.05),glow=2.2)
 material('skyline',(.8,.8,.8),'skyline.png',glow=1,emit='skyline_emit.png')
+DRY=False  # roll a lot's random choices without emitting geometry
 def mesh(name,verts,faces,uvs=None,obj=None):
+ if DRY: return
  key=obj or name
  if key not in batches: batches[key]=(name,[],[],[])
  _,v,f,uv=batches[key]; offset=len(v); v.extend((x,-z,y) for x,y,z in verts)
@@ -201,6 +218,7 @@ for x0,x1 in XBLOCKS:
    for lz0,lz1 in lots(z0,z1,size*1.15):
     w=lx1-lx0-.35; d=lz1-lz0-.35; x=(lx0+lx1)/2; z=(lz0+lz1)/2
     if not clear(x,z,w,d): continue
+    DRY=any(abs(x-tx)<(w+tw)/2+.5 and abs(z-tz)<(d+td)/2+.5 for tx,tz,tw,td,_,_ in OUTER_TOWERS)
     # Mostly 35–70m. The tower precinct steps down to 15–40m.
     h=rng.uniform(35,70)*METERS
     if abs(x-TOWER_X)<15 and abs(z-TOWER_Z)<17:
@@ -209,9 +227,10 @@ for x0,x1 in XBLOCKS:
      h=rng.uniform(90,140)*METERS
     kind=rng.choice([3,5]) if h>15 else rng.choice([0,1,2,4,0,1,2,3,4,5])
     building(x,z,w,d,h,kind,z>-40 and abs(x)<46,low=z>36 or (z>14 and abs(x)>26))
+    DRY=False
 # Five tall but simple office towers: two setbacks, shared facades/materials,
 # no new textures or separate render objects. Roof machinery stays compact.
-for x,z,w,d,meters,kind in HIGHRISES:
+for x,z,w,d,meters,kind in HIGHRISES+OUTER_TOWERS:
  h=meters*METERS
  base=G
  for scale,top in [(1,h*.65),(.82,h)]:
@@ -223,16 +242,23 @@ for x,z,w,d,meters,kind in HIGHRISES:
  box('metal',x,G+h+.24,z,1.1,.45,.8)
  for sx in [-1,1]:
   box('lamp',x+sx*w*.35,G+h+.07,z-d*.35,.10,.08,.10)
-# Move all five Yumemin signs to the fixed high-rise roofs, above foreground
-# occluders. Existing artwork, material and aspect ratio are preserved.
-for x,z,w,d,meters,_ in HIGHRISES:
- top=G+meters*METERS
- bw=min(w*1.25,6.3); bz=z+d*.41+.12
- cy=top+1.45
- box('ad_yumemin',x,cy,bz,bw,bw/2.67,.1)
- box('metal',x,cy,bz-.08,bw+.16,bw/2.67+.16,.05)
- for sx in [-bw/3,bw/3]: rod('metal',(x+sx,top,bz-.1),(x+sx,cy,bz-.1),.06)
-print('YUMEMIN',len(HIGHRISES))
+# Roof billboards above foreground occluders, 2.67:1 like the artwork. One
+# quad faces the beam; box() would turn the texture sideways on -z/+x faces.
+def billboard(name,x,z,top,extent,width,facing):
+ nx,nz={'+z':(0,1),'-z':(0,-1),'+x':(1,0),'-x':(-1,0)}[facing]
+ rx,rz=nz,-nx  # screen right for a viewer looking along -normal
+ bw=min(width*1.25,6.3); bh=bw/2.67; cy=top+1.45
+ cx,cz=x+nx*(extent*.41+.12),z+nz*(extent*.41+.12)
+ mesh('ad_'+name,[(cx+sx*rx*bw/2,cy+sy*bh/2,cz+sx*rz*bw/2) for sx,sy in [(-1,-1),(1,-1),(1,1),(-1,1)]],[(0,1,2,3)])
+ # Backing frame and posts stay 2cm+ behind the artwork: no shared planes.
+ fw,fd=(bw+.16,.08) if nz else (.08,bw+.16)
+ box('metal',cx-nx*.06,cy,cz-nz*.06,fw,bh+.16,fd)
+ for s in [-1,1]:
+  px,pz=cx+s*rx*bw/3-nx*.14,cz+s*rz*bw/3-nz*.14
+  rod('metal',(px,top,pz),(px,cy,pz),.06)
+for (x,z,w,d,meters,_),facing,ad in BILLBOARDS:
+ billboard(ad,x,z,G+meters*METERS,d if facing[1]=='z' else w,w if facing[1]=='z' else d,facing)
+print('BILLBOARDS',len(BILLBOARDS))
 # Lane markings, crosswalks, streetlights and traffic on the avenue.
 for s in [-1,1]:
  box('yellowline',s*.12,G+.025,-17,.1,.02,166)

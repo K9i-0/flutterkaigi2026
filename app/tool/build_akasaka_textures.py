@@ -115,3 +115,6 @@ im,d=ad('safety',(248,248,246),[('安全第一',150,192,(0,128,72),650)],(0,128,
 d.rectangle((150,112,250,272),fill=(0,128,72));d.rectangle((120,142,280,242),fill=(0,128,72))
 d.rectangle((182,128,218,256),fill=(255,255,255));d.rectangle((136,174,264,210),fill=(255,255,255))
 im.save(out/'ad_safety.png')
+# Placeholder for billboard slots whose sponsor is not decided yet.
+im,d=ad('recruit',(252,206,48),[('広告募集中',150,168,(30,30,34),512),('この場所に広告を出しませんか？',40,296,(60,52,30),512)],(30,30,34))
+im.save(out/'ad_recruit.png')

@@ -46,7 +46,13 @@ class _Preset {
 }
 
 const _signs = ['akasaka', 'izakaya', 'soba', 'shika', 'bengoshi', 'fudosan'];
-const _ads = ['ad_exam', 'ad_accidenchua', 'ad_safety', 'ad_yumemin'];
+const _ads = [
+  'ad_exam',
+  'ad_accidenchua',
+  'ad_safety',
+  'ad_yumemin',
+  'ad_recruit',
+];
 
 Map<String, _Glow> _glow({
   required double windows,
