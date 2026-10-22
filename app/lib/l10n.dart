@@ -144,6 +144,10 @@ class Strings {
     'ドラッグで回転・ピンチで拡大・2本指で移動・ダブルタップで戻す',
     'Drag to orbit, pinch to zoom, two fingers to pan, double-tap to reset',
   );
+  String get galleryStageHint => _(
+    'ダブルタップした建物へ寄る・2本指で街を移動・ピンチで拡大',
+    'Double-tap a building to fly there, two fingers to move, pinch to zoom',
+  );
   String get resetView => _('視点を戻す', 'Reset view');
   String get autoRotate => _('自動回転', 'Auto-rotate');
   String get darkBackground => _('背景を暗く', 'Dark background');
@@ -171,7 +175,6 @@ class Strings {
   String billboardGroup(BillboardGroup g) => switch (g) {
     BillboardGroup.sponsor => _('協賛広告', 'Sponsors'),
     BillboardGroup.yumemin => _('ゆめみん', 'Yumemin'),
-    BillboardGroup.sign => _('縦看板', 'Street signs'),
     BillboardGroup.vision => _('街頭ビジョン', 'Street screen'),
   };
 
@@ -187,12 +190,6 @@ class Strings {
     'flutter_book' => _('Flutter実践開発', 'Flutter in Practice (book)'),
     'figma_mcp_book' => _('試して学ぶ Figma MCPサーバー', 'Figma MCP Server (book)'),
     'yumemin' => _('ゆめみん', 'Yumemin'),
-    'sign_akasaka' => _('赤坂', 'Akasaka'),
-    'sign_izakaya' => _('居酒屋', 'Izakaya'),
-    'sign_soba' => _('そば', 'Soba'),
-    'sign_shika' => _('歯科', 'Dentist'),
-    'sign_bengoshi' => _('弁護士', 'Lawyer'),
-    'sign_fudosan' => _('不動産', 'Real estate'),
     'okayaman_vision' => _('おかやまん', 'Okayaman'),
     _ => id,
   };

@@ -276,13 +276,13 @@ Pixel 7a・iPhone 14の実機profileで計測。Pixel 7aは約30fpsに張り付�
 
 ## ギャラリー（2026-10-22）
 
-タイトル左上の「ギャラリー」と、キャラクター選択の下段のアイコン（ランキングの左）から開く。閉じると開いた元の画面へ戻る。選択画面から開くと選択中のキャラクターを最初に表示する。releaseビルドでも表示する。実装は `lib/gallery.dart`（状態・軌道カメラ）、`lib/gallery_screen.dart`（画面）、`lib/billboards.dart`（看板一覧）。
+タイトル左上の「ギャラリー」から開き、閉じるとタイトルへ戻る（2026-10-22にキャラクター選択からの入口は削除）。releaseビルドでも表示する。実装は `lib/gallery.dart`（状態・軌道カメラ）、`lib/gallery_screen.dart`（画面）、`lib/billboards.dart`（看板一覧）。
 
 - 3Dモデル: キャラクター3体、落下物7種（缶3銘柄・ちくわ・毒ちくわ・ゆめみん・やめ太郎）、赤坂ステージ。1本指ドラッグで回転（上下は−14〜80度）、ピンチ・マウスホイールで拡大、2本指で平行移動、ダブルタップで初期視点。操作が2.5秒途切れると自動回転。GLBに入っているクリップ（Idle/Walk/Run、ちくわのWiggle、やめ太郎のTalk/Wave）を切り替え・一時停止できる。背景は明暗を切替。
 - キャラクターと落下物は、ロード済みのモデルをcloneして選択画面と同じスタジオ照明の別Sceneに置く。追加のGLB読み込み・形状変更はない。寸法は `GallerySubject` の固定表（スキニングされたモデルは境界を返さないため）。
-- ステージはゲームのSceneを軌道カメラで描く（距離3〜80、霧で遠景が平板になるため上限を設けた）。昼・夜を切り替えられ、選択画面の時間帯と共通。キャッチ半径の輪は隠す。
-- 看板: 協賛広告9枠（`ad_sponsors.png` を `ad_sponsors.json` の矩形で切り出す）、ゆめみん、縦看板6種、おかやまんの街頭ビジョン（テクスチャと同じ構図をFlutterで合成）。採用試験会場・ACCIDENCHUA・安全第一・広告募集中は載せない。タップで全画面表示し、ピンチで最大6倍、矢印で前後へ移る。素材は `assets/billboards/` からステージ素材への相対symlink。
+- ステージはゲームのSceneを軌道カメラで描く。回転の中心は鉄骨に固定せず、街全体（X・Z ±150、高さ−16〜40）を動かせる。2本指のドラッグで地面に沿って地図のように移動し、ダブルタップした建物へ中心と距離（3〜8）を滑らかに寄せる（`Scene.raycast`、空なら何もしない）。距離は1〜80（霧で遠景が平板になるため上限を設けた）。通常プレイでは見えない遠くのビルの看板や街の外れにも寄れる。昼・夜を切り替えられ、選択画面の時間帯と共通。キャッチ半径の輪は隠す。
+- 看板: 協賛広告9枠（`ad_sponsors.png` を `ad_sponsors.json` の矩形で切り出す）、ゆめみん、おかやまんの街頭ビジョン（テクスチャと同じ構図をFlutterで合成）。縦看板・採用試験会場・ACCIDENCHUA・安全第一・広告募集中は載せない。タップで全画面表示し、ピンチで最大6倍、矢印で前後へ移る。素材は `assets/billboards/` からステージ素材への相対symlink。
 
-自動操作: `madogiwa.inspectGallery` と `madogiwa.galleryAction`（`open` / `close` / `tab` / `select` / `orbit`（yaw・pitchを度で絶対指定）/ `zoom`（距離を絶対指定）/ `pan` / `reset` / `clip` / `play` / `autoRotate` / `dark` / `billboard`）。`madogiwa.inspectCatch` の `screen` はギャラリー表示中に `gallery` を返す。
+自動操作: `madogiwa.inspectGallery` と `madogiwa.galleryAction`（`open` / `close` / `tab` / `select` / `orbit`（yaw・pitchを度で絶対指定）/ `zoom`（距離を絶対指定）/ `pan` / `focus`（ステージの中心をワールド座標x・y・zへ寄せる、任意で`distance`）/ `reset` / `clip` / `play` / `autoRotate` / `dark` / `billboard`）。`madogiwa.inspectCatch` の `screen` はギャラリー表示中に `gallery` を返す。
 
-検証: `flutter analyze`、47件の `flutter test`（ギャラリー5件を追加）。iPhone 17 Pro（iOS 26.5）シミュレーターで、タイトル・選択画面からの遷移と戻り先、3キャラ・缶・やめ太郎の表示とクリップ切替、ドラッグ回転、顔の拡大、ステージの昼夜・遠景、看板一覧と全画面表示（おだてつ・街頭ビジョン）を確認。実機の操作感・性能は未検証。
+検証: `flutter analyze`、48件の `flutter test`（ギャラリー6件を追加）。iPhone 17 Pro（iOS 26.5）シミュレーターで、タイトルからの遷移と戻り先、3キャラ・缶・やめ太郎の表示とクリップ切替、ドラッグ回転、顔の拡大、ステージの昼夜・遠景・ダブルタップで奥のビルのゆめみん看板へ寄る動作、看板一覧と全画面表示（おだてつ・街頭ビジョン）を確認。実機の操作感・性能は未検証。

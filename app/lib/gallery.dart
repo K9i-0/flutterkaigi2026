@@ -69,7 +69,8 @@ class GallerySubject {
       SubjectGroup.stage,
       target: vm.Vector3(0, -1, 0),
       distance: 24,
-      minDistance: 3,
+      // Close enough to read a far rooftop sign once focused on it.
+      minDistance: 1,
       // Beyond this the city fog flattens everything.
       maxDistance: 80,
       pitch: .32,
@@ -103,6 +104,14 @@ class GalleryController extends ChangeNotifier {
   /// Seconds since the last touch; auto-rotation waits for the hands to leave.
   double idle = 0;
 
+  /// Where a focus request is gliding the pivot and distance; null when idle.
+  vm.Vector3? _focusPan;
+  double? _focusDistance;
+  bool get focusing => _focusPan != null;
+
+  /// Stage pivots roam the whole city, not only the beam the game shows.
+  static const stageReach = 150.0, stageFloor = -16.0, stageCeiling = 40.0;
+
   void setTab(GalleryTab value) {
     tab = value;
     openBillboard = null;
@@ -127,16 +136,38 @@ class GalleryController extends ChangeNotifier {
     distance = subject.distance;
     pan = vm.Vector3.zero();
     idle = 0;
+    _focusPan = null;
     if (notify) notifyListeners();
   }
 
-  void touch() => idle = 0;
+  /// Any direct input takes over from a focus glide.
+  void touch() {
+    idle = 0;
+    _focusPan = null;
+  }
 
   void orbit(double dYaw, double dPitch) {
     yaw = _wrap(yaw + dYaw);
     pitch = (pitch + dPitch).clamp(minPitch, maxPitch);
+    touch();
+  }
+
+  /// Glides the stage pivot to a world [point] (a tapped facade), coming
+  /// closer but never pulling back.
+  void focus(vm.Vector3 point, {double? distance}) {
+    _focusPan = _clampStage(point - subject.target);
+    _focusDistance = (distance ?? this.distance).clamp(
+      subject.minDistance,
+      this.distance,
+    );
     idle = 0;
   }
+
+  vm.Vector3 _clampStage(vm.Vector3 p) => vm.Vector3(
+    p.x.clamp(-stageReach, stageReach),
+    p.y.clamp(stageFloor - subject.target.y, stageCeiling - subject.target.y),
+    p.z.clamp(-stageReach, stageReach),
+  );
 
   /// [factor] above 1 moves closer.
   void zoom(double factor) {
@@ -145,7 +176,7 @@ class GalleryController extends ChangeNotifier {
       subject.minDistance,
       subject.maxDistance,
     );
-    idle = 0;
+    touch();
   }
 
   /// Screen-space pan in fractions of the view height.
@@ -154,15 +185,33 @@ class GalleryController extends ChangeNotifier {
         right = vm.Vector3(0, 1, 0).cross(eye).normalized(),
         up = eye.cross(right).normalized();
     final scale = distance * math.tan(fovY / 2) * 2;
-    pan += (right * -dx + up * dy) * scale;
-    // Keep the subject on screen; panning is for detail, not wandering off.
-    final limit = subject.isStage ? 60.0 : 1.2;
-    if (pan.length > limit) pan = pan.normalized() * limit;
-    idle = 0;
+    if (subject.isStage) {
+      // The city follows the finger over the ground, like a map.
+      final ahead = vm.Vector3(-eye.x, 0, -eye.z).normalized();
+      pan = _clampStage(pan + (right * -dx + ahead * dy) * scale);
+    } else {
+      pan += (right * -dx + up * dy) * scale;
+      // Keep the model on screen; panning is for detail, not wandering off.
+      if (pan.length > 1.2) pan = pan.normalized() * 1.2;
+    }
+    touch();
   }
 
   void tick(double dt) {
     idle += dt;
+    final goal = _focusPan;
+    if (goal != null) {
+      final k = 1 - math.exp(-dt * 5);
+      pan += (goal - pan) * k;
+      distance += (_focusDistance! - distance) * k;
+      if ((goal - pan).length < .01 &&
+          (_focusDistance! - distance).abs() < .01) {
+        pan = goal;
+        distance = _focusDistance!;
+        _focusPan = null;
+      }
+      return;
+    }
     if (autoRotate && idle > 2.5) yaw = _wrap(yaw + dt * .3);
   }
 
@@ -199,6 +248,7 @@ class GalleryController extends ChangeNotifier {
     'distance': distance,
     'distanceRange': [subject.minDistance, subject.maxDistance],
     'pan': [pan.x, pan.y, pan.z],
+    'focusing': focusing,
     'clip': clip ?? clips.firstOrNull,
     'clips': clips,
     'playing': playing,

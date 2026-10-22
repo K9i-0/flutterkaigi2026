@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-enum BillboardGroup { sponsor, yumemin, sign, vision }
+enum BillboardGroup { sponsor, yumemin, vision }
 
 /// A stage picture as the city shows it, cropped from its atlas when shared.
 class Billboard {
@@ -20,13 +20,12 @@ class Billboard {
 }
 
 const _atlas = 'assets/billboards/ad_sponsors.png';
-const _signs = ['akasaka', 'izakaya', 'soba', 'shika', 'bengoshi', 'fudosan'];
 
 /// The atlas pixel size, read with the rectangles the stage build wrote.
 Size sponsorAtlasSize = const Size(2048, 1920);
 
-/// Only billboards on the current stage; the retired recruitment, exam-hall,
-/// ACCIDENCHUA and safety-first panels are left out.
+/// The ad boards on the current stage. Street signs and the retired
+/// recruitment, exam-hall, ACCIDENCHUA and safety-first panels are left out.
 Future<List<Billboard>> loadBillboards() async {
   final data = jsonDecode(
     await rootBundle.loadString('assets/billboards/ad_sponsors.json'),
@@ -58,13 +57,6 @@ Future<List<Billboard>> loadBillboards() async {
       'assets/billboards/ad_yumemin.png',
       Size(1024, 384),
     ),
-    for (final id in _signs)
-      Billboard(
-        'sign_$id',
-        BillboardGroup.sign,
-        'assets/billboards/sign_$id.png',
-        const Size(256, 768),
-      ),
     const Billboard(
       'okayaman_vision',
       BillboardGroup.vision,

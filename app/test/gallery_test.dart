@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:vector_math/vector_math.dart' as vm;
 import 'package:yumemi_recruit_exam/billboards.dart';
 import 'package:yumemi_recruit_exam/character.dart';
 import 'package:yumemi_recruit_exam/drop_kind.dart';
@@ -57,14 +58,41 @@ void main() {
     expect(c.camera().fovFar, greaterThan(100));
   });
 
+  test('the stage pivot roams the city and glides to a focus', () {
+    final c = GalleryController(GallerySubject.byId('akasaka'));
+    for (var i = 0; i < 400; i++) {
+      c.panBy(-1, 0);
+    }
+    expect(c.pan.x, GalleryController.stageReach);
+    expect(c.pan.y, 0, reason: 'map-style panning stays level');
+    c.reset();
+    c.focus(vm.Vector3(20, 5, -70), distance: 6);
+    for (var i = 0; i < 300; i++) {
+      c.tick(1 / 60);
+    }
+    expect(c.focusing, isFalse);
+    expect((c.subject.target + c.pan - vm.Vector3(20, 5, -70)).length, 0);
+    expect(c.distance, 6);
+    c.focus(vm.Vector3.zero(), distance: 60);
+    expect(c.distance, 6, reason: 'focusing never pulls back');
+    c.orbit(.1, 0);
+    expect(c.focusing, isFalse, reason: 'a touch takes over');
+  });
+
   testWidgets('billboards come from the stage atlas, without retired panels', (
     tester,
   ) async {
     final list = (await tester.runAsync(loadBillboards))!;
     final ids = list.map((b) => b.id).toList();
-    expect(ids, containsAll(['odatetsu', 'yumemin', 'sign_soba']));
+    expect(ids, containsAll(['odatetsu', 'yumemin']));
     expect(ids.last, 'okayaman_vision');
-    for (final retired in ['exam', 'accidenchua', 'safety', 'recruit']) {
+    for (final retired in [
+      'exam',
+      'accidenchua',
+      'safety',
+      'recruit',
+      'sign',
+    ]) {
       expect(ids.where((id) => id.contains(retired)), isEmpty);
     }
     final sponsors = list.where((b) => b.group == BillboardGroup.sponsor);

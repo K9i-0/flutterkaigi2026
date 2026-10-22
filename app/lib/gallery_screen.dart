@@ -305,6 +305,7 @@ class _GalleryViewerState extends State<GalleryViewer> {
   final models = <String, _ViewModel>{};
   _ViewModel? shown;
   double lastScale = 1;
+  Offset? tapAt;
   GalleryController get c => widget.controller;
 
   @override
@@ -380,6 +381,15 @@ class _GalleryViewerState extends State<GalleryViewer> {
     motion.sample();
   }
 
+  /// Flies to the tapped building; the sky or empty air keeps the view.
+  void focusAt(Offset at, Size size) {
+    final ray = c.camera().screenPointToRay(at, size);
+    final hit = widget.world.scene.raycast(ray, maxDistance: 400);
+    if (hit == null) return;
+    // A facade fills the view at about 8 units; nearer hits close in less.
+    c.focus(hit.worldPoint, distance: (hit.distance * .4).clamp(3, 8));
+  }
+
   @override
   Widget build(BuildContext context) {
     final t = L10n.of(context);
@@ -396,7 +406,12 @@ class _GalleryViewerState extends State<GalleryViewer> {
         child: GestureDetector(
           key: const ValueKey('gallery_view'),
           behavior: HitTestBehavior.opaque,
-          onDoubleTap: c.reset,
+          onDoubleTapDown: (d) => tapAt = d.localPosition,
+          onDoubleTap: () {
+            final at = tapAt;
+            if (!s.isStage || at == null) return c.reset();
+            focusAt(at, box.biggest);
+          },
           onScaleStart: (_) {
             lastScale = 1;
             c.touch();
@@ -484,7 +499,7 @@ class _GalleryViewerState extends State<GalleryViewer> {
                   ),
                 ),
                 Text(
-                  t.galleryHint,
+                  s.isStage ? t.galleryStageHint : t.galleryHint,
                   style: TextStyle(
                     fontSize: 10,
                     color: s.isStage ? Colors.white : fg.withValues(alpha: .7),
@@ -621,7 +636,7 @@ class BillboardGallery extends StatelessWidget {
                       _BillboardCard(
                         billboard: b,
                         label: t.billboard(b.id),
-                        height: group == BillboardGroup.sign ? 140 : 84,
+                        height: 84,
                         onTap: () => controller.showBillboard(i),
                       ),
                 ],

@@ -21,6 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_scene/scene.dart' show SceneView;
 import 'package:marionette_flutter/marionette_flutter.dart';
+import 'package:vector_math/vector_math.dart' as vm;
 
 import 'catch_game.dart';
 import 'character.dart';
@@ -67,7 +68,7 @@ class _RainState extends State<RainPage> {
   final world = CatchScene(), tilt = TiltInput(), records = RecordStore();
   bool showTitle = true;
 
-  /// Over the title or the selection screen; closing returns to whichever.
+  /// Opened from the title only, so it never interrupts a round in progress.
   bool showGallery = false;
   final gallery = GalleryController();
   GraphicsSettings graphics = GraphicsSettings.standard;
@@ -354,13 +355,12 @@ class _RainState extends State<RainPage> {
         description: 'Inspect the gallery tab, subject, orbit camera and clip.',
         callback: (p) async => MarionetteExtensionResult.success({
           'open': showGallery,
-          'returnsTo': showTitle ? 'title' : 'selection',
           ...gallery.inspect(),
         }),
       );
       registerMarionetteExtension(
         name: 'madogiwa.galleryAction',
-        description: 'action=open|close|tab|select|orbit|zoom|pan|reset|clip|play|autoRotate|dark|billboard. tab: value=models|billboards. select: subject id (inspectGallery.subjects). orbit: yaw/pitch degrees (absolute). zoom: distance (absolute, clamped). pan: x/y/z offset. clip: value=clip name. play/autoRotate/dark: value=on|off. billboard: index into the list, or close.',
+        description: 'action=open|close|tab|select|orbit|zoom|pan|focus|reset|clip|play|autoRotate|dark|billboard. tab: value=models|billboards. select: subject id (inspectGallery.subjects). orbit: yaw/pitch degrees (absolute). zoom: distance (absolute, clamped). pan: x/y/z offset. focus: world x/y/z (stage glide, optional distance). clip: value=clip name. play/autoRotate/dark: value=on|off. billboard: index into the list, or close.',
         callback: (p) async {
           final on = p['value'] == 'on';
           double? number(String key) {
@@ -416,6 +416,12 @@ class _RainState extends State<RainPage> {
                 ..x = number('x') ?? gallery.pan.x
                 ..y = number('y') ?? gallery.pan.y
                 ..z = number('z') ?? gallery.pan.z;
+            case 'focus':
+              final x = number('x'), y = number('y'), z = number('z');
+              if (x == null || y == null || z == null) {
+                return MarionetteExtensionResult.invalidParams('x, y, z');
+              }
+              gallery.focus(vm.Vector3(x, y, z), distance: number('distance'));
             case 'reset':
               gallery.reset();
             case 'clip':
@@ -447,7 +453,7 @@ class _RainState extends State<RainPage> {
             default:
               return MarionetteExtensionResult.invalidParams('Unknown action');
           }
-          gallery.touch();
+          gallery.idle = 0;
           setState(() {});
           return MarionetteExtensionResult.success(gallery.inspect());
         },
@@ -455,13 +461,8 @@ class _RainState extends State<RainPage> {
     }
   }
 
-  /// From the selection screen the gallery opens on the chosen character.
   void openGallery() {
-    if (!showTitle) {
-      gallery.select(
-        GallerySubject.byId(game.selectedCharacter.id) ?? gallery.subject,
-      );
-    }
+    showTitle = true;
     showGallery = true;
   }
 
@@ -948,7 +949,6 @@ class _RainState extends State<RainPage> {
                     ),
               onSettings: kReleaseMode ? null : openBalance,
               onGraphics: openGraphics,
-              onGallery: () => setState(openGallery),
             );
           }
           final playing =
