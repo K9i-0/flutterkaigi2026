@@ -175,112 +175,25 @@
  {
   "name": "odatetsu",
   "art": "odatetsu.jpeg",
-  "background": [
-   250,
-   245,
-   255
-  ],
-  "frame": [
-   130,
-   40,
-   200
-  ],
-  "lines": [
-   {
-    "text": "おだてつ",
-    "size": 170,
-    "x": 680,
-    "y": 192,
-    "color": [
-     110,
-     30,
-     180
-    ]
-   }
+  "aspect": [
+   1,
+   1
   ]
  },
  {
   "name": "flutter_book",
   "art": "flutter_book.jpg",
-  "art_size": [
-   240,
-   340
-  ],
-  "background": [
-   255,
-   255,
-   255
-  ],
-  "frame": [
-   30,
-   160,
-   215
-  ],
-  "lines": [
-   {
-    "text": "Flutter",
-    "size": 150,
-    "x": 630,
-    "y": 130,
-    "color": [
-     25,
-     25,
-     28
-    ]
-   },
-   {
-    "text": "実践開発",
-    "size": 130,
-    "x": 630,
-    "y": 272,
-    "color": [
-     20,
-     120,
-     180
-    ]
-   }
+  "aspect": [
+   705,
+   1000
   ]
  },
  {
   "name": "figma_mcp_book",
   "art": "figma_mcp_book.jpg",
-  "art_size": [
-   240,
-   340
-  ],
-  "background": [
-   40,
-   40,
-   44
-  ],
-  "frame": [
-   70,
-   200,
-   120
-  ],
-  "lines": [
-   {
-    "text": "試して学ぶ",
-    "size": 90,
-    "x": 630,
-    "y": 118,
-    "color": [
-     235,
-     235,
-     235
-    ]
-   },
-   {
-    "text": "Figma MCPサーバー",
-    "size": 110,
-    "x": 630,
-    "y": 258,
-    "color": [
-     255,
-     255,
-     255
-    ]
-   }
+  "aspect": [
+   705,
+   1000
   ]
  }
 ]

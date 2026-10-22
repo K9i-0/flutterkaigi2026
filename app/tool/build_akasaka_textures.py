@@ -118,24 +118,37 @@ im.save(out/'ad_safety.png')
 # Placeholder for billboard slots whose sponsor is not decided yet.
 im,d=ad('recruit',(252,206,48),[('広告募集中',150,168,(30,30,34),512),('この場所に広告を出しませんか？',40,296,(60,52,30),512)],(30,30,34))
 im.save(out/'ad_recruit.png')
-# Sponsor ads from source_ads/ads.json: the submitted art on the left, its
-# caption on the right. Cells of 1024x384 fill columns of at most SPONSOR_ROWS, in
-# the order build_akasaka_stage.py reads to pick each billboard's cell.
-SPONSOR_ROWS=8
+# Sponsor ads from source_ads/ads.json share one 2048-wide atlas. Captioned
+# ads are 1024x384 cells (art left, caption right), two per row. Posters
+# (an aspect, no caption: book covers, square cards) fill the whole board and
+# sit on 768-high shelves below, so they keep twice the texel height on their
+# taller boards. ad_sponsors.json records each ad's rectangle for the stage.
 sponsors=json.loads((out/'source_ads/ads.json').read_text())
 def fit(text,size,width):
  # Long captions shrink to fit beside the art instead of crossing the frame.
  while ImageFont.truetype(font,size).getlength(text)>width:size-=2
  return size
 def sponsor(s):
- # Square art by default; art_size reshapes others, e.g. book covers.
+ # Square art by default; art_size reshapes others.
  w,h=s.get('art_size',[330,330])
  # Centered captions stay between the art (+20px) and the frame (975px).
  room=lambda x:2*min(x-(40+w+20),975-x)
  im,d=ad('',tuple(s['background']),[(l['text'],fit(l['text'],l['size'],room(l['x'])),l['y'],tuple(l['color']),l['x']) for l in s['lines']],tuple(s['frame']))
  a=Image.open(out/'source_ads'/s['art']).convert('RGBA').resize((w,h),Image.LANCZOS)
  im.paste(a,(40,(384-h)//2),a);return im
-cols=-(-len(sponsors)//SPONSOR_ROWS);rows=-(-len(sponsors)//cols)
-atlas=Image.new('RGB',(1024*cols,384*rows))
-for i,s in enumerate(sponsors):atlas.paste(sponsor(s),(1024*(i//rows),384*(i%rows)))
+AW,SHELF=2048,768
+cells=[s for s in sponsors if 'aspect' not in s];posters=[s for s in sponsors if 'aspect' in s]
+rects={};pieces=[]
+for i,s in enumerate(cells):
+ rects[s['name']]=[1024*(i%2),384*(i//2),1024,384];pieces.append((sponsor(s),s['name']))
+x,y=0,384*(-(-len(cells)//2))
+for s in posters:
+ w=round(SHELF*s['aspect'][0]/s['aspect'][1])
+ if x+w>AW:x,y=0,y+SHELF
+ rects[s['name']]=[x,y,w,SHELF];x+=w
+ pieces.append((Image.open(out/'source_ads'/s['art']).convert('RGB').resize((w,SHELF),Image.LANCZOS),s['name']))
+AH=y+SHELF if posters else y
+atlas=Image.new('RGB',(AW,AH))
+for im,name in pieces:atlas.paste(im,tuple(rects[name][:2]))
 atlas.save(out/'ad_sponsors.png')
+(out/'ad_sponsors.json').write_text(json.dumps({'size':[AW,AH],'rects':rects},indent=1)+'\n')

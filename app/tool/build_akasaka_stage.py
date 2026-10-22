@@ -32,10 +32,10 @@ BILLBOARDS = [
  (OUTER_TOWERS[4],'+x','yumemin'), (OUTER_TOWERS[3],'+x','ykws'), (OUTER_TOWERS[5],'+x','fa'),
  (OUTER_TOWERS[7],'-x','figma_mcp_book'), (OUTER_TOWERS[6],'-x','flutter_book'), (OUTER_TOWERS[8],'-x','sakai'),
 ]
-# Sponsor ads (source_ads/ads.json) share one atlas material: cells fill
-# balanced columns of at most SPONSOR_ROWS, as laid out by build_akasaka_textures.py.
-SPONSORS = [a['name'] for a in json.loads((OUT/'source_ads/ads.json').read_text())]
-SPONSOR_ROWS = 8
+# Sponsor ads (source_ads/ads.json) share one atlas material; their texel
+# rectangles come from ad_sponsors.json, written by build_akasaka_textures.py.
+SPONSORS = {a['name']: a for a in json.loads((OUT/'source_ads/ads.json').read_text())}
+ATLAS = json.loads((OUT/'ad_sponsors.json').read_text())
 def material(name,color,texture=None,metal=0,glow=0,rough=.65,emit=None):
  m=bpy.data.materials.new(name); m.use_nodes=True
  m.use_backface_culling=True
@@ -246,18 +246,22 @@ for x,z,w,d,meters,kind in HIGHRISES+OUTER_TOWERS:
  box('metal',x,G+h+.24,z,1.1,.45,.8)
  for sx in [-1,1]:
   box('lamp',x+sx*w*.35,G+h+.07,z-d*.35,.10,.08,.10)
-# Roof billboards above foreground occluders, 2.67:1 like the artwork. One
-# quad faces the beam; box() would turn the texture sideways on -z/+x faces.
+# Roof billboards above foreground occluders, 2.67:1 like the artwork; poster
+# ads take their own aspect at the same area and bottom edge. One quad faces
+# the beam; box() would turn the texture sideways on -z/+x faces.
 def billboard(name,x,z,top,extent,width,facing):
  nx,nz={'+z':(0,1),'-z':(0,-1),'+x':(1,0),'-x':(-1,0)}[facing]
  rx,rz=nz,-nx  # screen right for a viewer looking along -normal
- bw=min(width*1.25,6.3); bh=bw/2.67; cy=top+1.45
+ bw=min(width*1.25,6.3); bh=bw/2.67
+ aspect=SPONSORS.get(name,{}).get('aspect')
+ if aspect:
+  area=bw*bh; bw=math.sqrt(area*aspect[0]/aspect[1]); bh=area/bw
+ cy=top+1.45-min(width*1.25,6.3)/2.67/2+bh/2
  cx,cz=x+nx*(extent*.41+.12),z+nz*(extent*.41+.12)
  u0,u1,v0,v1=0,1,0,1
  if name in SPONSORS:
-  i=SPONSORS.index(name); cols=-(-len(SPONSORS)//SPONSOR_ROWS); rows=-(-len(SPONSORS)//cols)
-  col,row=divmod(i,rows); u0,u1=col/cols,(col+1)/cols
-  v0,v1=1-(row+1)/rows,1-row/rows; name='sponsors'
+  (aw,ah),(px,py,pw,ph)=ATLAS['size'],ATLAS['rects'][name]
+  u0,u1,v0,v1=px/aw,(px+pw)/aw,1-(py+ph)/ah,1-py/ah; name='sponsors'
  mesh('ad_'+name,[(cx+sx*rx*bw/2,cy+sy*bh/2,cz+sx*rz*bw/2) for sx,sy in [(-1,-1),(1,-1),(1,1),(-1,1)]],[(0,1,2,3)],[[(u0,v0),(u1,v0),(u1,v1),(u0,v1)]])
  # Backing frame and posts stay 2cm+ behind the artwork: no shared planes.
  fw,fd=(bw+.16,.08) if nz else (.08,bw+.16)
