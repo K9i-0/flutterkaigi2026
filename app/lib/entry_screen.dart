@@ -3,10 +3,18 @@ import 'package:flutter/material.dart';
 import 'about_dialog.dart';
 import 'app_style.dart';
 import 'l10n.dart';
+import 'selection_screen.dart';
 
 class TitleScreen extends StatelessWidget {
-  const TitleScreen({super.key, required this.onStart});
+  const TitleScreen({
+    super.key,
+    required this.onStart,
+    required this.lang,
+    required this.onLang,
+  });
   final VoidCallback onStart;
+  final AppLang lang;
+  final ValueChanged<AppLang> onLang;
 
   @override
   Widget build(BuildContext context) {
@@ -32,27 +40,34 @@ class TitleScreen extends StatelessWidget {
             SafeArea(
               minimum: const EdgeInsets.all(12),
               child: Align(
-                alignment: Alignment.topRight,
+                alignment: Alignment.topLeft,
                 // Inner buttons win the tap over the full-screen start gesture.
-                child: TextButton.icon(
-                  key: const ValueKey('about'),
-                  onPressed: () => showDialog<void>(
-                    context: context,
-                    builder: (_) => const AboutAppDialog(),
-                  ),
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.black.withValues(alpha: .35),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 8,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  spacing: 10,
+                  children: [
+                    TextButton.icon(
+                      key: const ValueKey('about'),
+                      onPressed: () => showDialog<void>(
+                        context: context,
+                        builder: (_) => const AboutAppDialog(),
+                      ),
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.black.withValues(alpha: .35),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 8,
+                        ),
+                      ),
+                      icon: const Icon(Icons.info_outline, size: 18),
+                      label: Text(
+                        t.about,
+                        style: const TextStyle(fontWeight: FontWeight.w700),
+                      ),
                     ),
-                  ),
-                  icon: const Icon(Icons.info_outline, size: 18),
-                  label: Text(
-                    t.about,
-                    style: const TextStyle(fontWeight: FontWeight.w700),
-                  ),
+                    LanguageToggle(selected: lang, onChanged: onLang),
+                  ],
                 ),
               ),
             ),

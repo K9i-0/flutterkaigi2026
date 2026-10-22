@@ -792,6 +792,8 @@ class _RainState extends State<RainPage> {
           if (showTitle) {
             return TitleScreen(
               onStart: () => setState(() => showTitle = false),
+              lang: appLang.value,
+              onLang: setLang,
             );
           }
           if (!ready && error == null) return const BrandLoading();

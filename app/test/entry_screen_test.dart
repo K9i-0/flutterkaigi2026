@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:yumemi_recruit_exam/entry_screen.dart';
 import 'package:yumemi_recruit_exam/app_style.dart';
 import 'package:yumemi_recruit_exam/about_dialog.dart';
+import 'package:yumemi_recruit_exam/l10n.dart';
 
 void main() {
   testWidgets(
@@ -21,7 +22,13 @@ void main() {
               size: Size(960, 400),
               padding: EdgeInsets.fromLTRB(62, 0, 62, 21),
             ),
-            child: Scaffold(body: TitleScreen(onStart: () => starts++)),
+            child: Scaffold(
+              body: TitleScreen(
+                onStart: () => starts++,
+                lang: AppLang.ja,
+                onLang: (_) {},
+              ),
+            ),
           ),
         ),
       );
@@ -49,6 +56,33 @@ void main() {
     await tester.pumpWidget(const SizedBox());
     expect(tester.takeException(), isNull);
   });
+  testWidgets('title switches the language without starting', (tester) async {
+    tester.view.physicalSize = const Size(960, 440);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    var starts = 0;
+    final langs = <AppLang>[];
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: appTheme(),
+        home: Scaffold(
+          body: TitleScreen(
+            onStart: () => starts++,
+            lang: AppLang.ja,
+            onLang: langs.add,
+          ),
+        ),
+      ),
+    );
+    final about = tester.getRect(find.byKey(const ValueKey('about')));
+    final toggle = tester.getRect(find.byKey(const ValueKey('lang_en')));
+    expect(about.left, lessThan(480));
+    expect(toggle.top, lessThan(220));
+    await tester.tap(find.byKey(const ValueKey('lang_en')));
+    expect(langs, [AppLang.en]);
+    expect(starts, 0);
+  });
   testWidgets('about opens credits and licenses without starting', (
     tester,
   ) async {
@@ -60,7 +94,13 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         theme: appTheme(),
-        home: Scaffold(body: TitleScreen(onStart: () => starts++)),
+        home: Scaffold(
+          body: TitleScreen(
+            onStart: () => starts++,
+            lang: AppLang.ja,
+            onLang: (_) {},
+          ),
+        ),
       ),
     );
     await tester.tap(find.byKey(const ValueKey('about')));
