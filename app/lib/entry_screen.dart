@@ -11,8 +11,10 @@ class TitleScreen extends StatelessWidget {
     required this.onStart,
     required this.lang,
     required this.onLang,
+    this.onGallery,
   });
   final VoidCallback onStart;
+  final VoidCallback? onGallery;
   final AppLang lang;
   final ValueChanged<AppLang> onLang;
 
@@ -71,6 +73,26 @@ class TitleScreen extends StatelessWidget {
                         ),
                       ),
                     ),
+                    if (onGallery != null)
+                      SizedBox(
+                        height: 40,
+                        child: TextButton.icon(
+                          key: const ValueKey('gallery_open'),
+                          onPressed: onGallery,
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            backgroundColor: Colors.black.withValues(
+                              alpha: .35,
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                          ),
+                          icon: const Icon(Icons.view_in_ar, size: 18),
+                          label: Text(
+                            t.gallery,
+                            style: const TextStyle(fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+import 'billboards.dart';
 import 'character.dart';
 import 'drop_kind.dart';
 import 'stage_time.dart';
@@ -131,6 +132,70 @@ class Strings {
           StageTime.day => 'Day',
           StageTime.night => 'Night',
         };
+
+  String get gallery => _('ギャラリー', 'Gallery');
+  String get galleryModels => _('3Dモデル', '3D models');
+  String get galleryBillboards => _('看板', 'Billboards');
+  String get galleryCharacters => _('キャラクター', 'Characters');
+  String get galleryDrops => _('落下物', 'Falling items');
+  String get galleryStage => _('ステージ', 'Stage');
+  String get stageName => _('赤坂・鉄骨', 'Akasaka steel beam');
+  String get galleryHint => _(
+    'ドラッグで回転・ピンチで拡大・2本指で移動・ダブルタップで戻す',
+    'Drag to orbit, pinch to zoom, two fingers to pan, double-tap to reset',
+  );
+  String get resetView => _('視点を戻す', 'Reset view');
+  String get autoRotate => _('自動回転', 'Auto-rotate');
+  String get darkBackground => _('背景を暗く', 'Dark background');
+  String get playMotion => _('モーションを再生', 'Play motion');
+  String get pauseMotion => _('モーションを止める', 'Pause motion');
+  String get previous => _('前へ', 'Previous');
+  String get next => _('次へ', 'Next');
+  String galleryDrop(CanKind k) => switch (k) {
+    CanKind.superTry => _('窓際スーパーつらい', 'Madogiwa Super Tsurai'),
+    CanKind.light => _('窓際ライト', 'Madogiwa Light'),
+    CanKind.happoshu => _('発泡酒 つらめ', 'Tsurame (happoshu)'),
+    _ => dropDetail(k).name,
+  };
+  String clip(String name) => ja
+      ? switch (name) {
+          'Idle' => '待機',
+          'Walk' => '歩く',
+          'Run' => '走る',
+          'Wiggle' => 'くねくね',
+          'Talk' => '話す',
+          'Wave' => '手を振る',
+          _ => name,
+        }
+      : name;
+  String billboardGroup(BillboardGroup g) => switch (g) {
+    BillboardGroup.sponsor => _('協賛広告', 'Sponsors'),
+    BillboardGroup.yumemin => _('ゆめみん', 'Yumemin'),
+    BillboardGroup.sign => _('縦看板', 'Street signs'),
+    BillboardGroup.vision => _('街頭ビジョン', 'Street screen'),
+  };
+
+  /// Names as printed on the boards; ids without an entry show as is.
+  String billboard(String id) => switch (id) {
+    'takahashigumi' => _('高橋組', 'Takahashi-gumi'),
+    'mogumogu' => _('もぐもぐ先生最強！', 'Mogumogu-sensei'),
+    'ykws' => 'ykws',
+    'sakai' => 'Sakai',
+    'nakayaman' => _('なかやまん', 'Nakayaman'),
+    'fa' => _('ふぁ', 'Fa'),
+    'odatetsu' => _('おだてつ', 'Odatetsu'),
+    'flutter_book' => _('Flutter実践開発', 'Flutter in Practice (book)'),
+    'figma_mcp_book' => _('試して学ぶ Figma MCPサーバー', 'Figma MCP Server (book)'),
+    'yumemin' => _('ゆめみん', 'Yumemin'),
+    'sign_akasaka' => _('赤坂', 'Akasaka'),
+    'sign_izakaya' => _('居酒屋', 'Izakaya'),
+    'sign_soba' => _('そば', 'Soba'),
+    'sign_shika' => _('歯科', 'Dentist'),
+    'sign_bengoshi' => _('弁護士', 'Lawyer'),
+    'sign_fudosan' => _('不動産', 'Real estate'),
+    'okayaman_vision' => _('おかやまん', 'Okayaman'),
+    _ => id,
+  };
 
   String player(String name) => _('プレイヤー：$name', 'Player: $name');
   String secondsLeft(int s) => _('残り $s 秒', '$s s left');

@@ -10,6 +10,8 @@ import 'stage_benchmark.dart';
 import 'balance.dart';
 import 'balance_panel.dart';
 import 'fps_overlay.dart';
+import 'gallery.dart';
+import 'gallery_screen.dart';
 import 'l10n.dart';
 import 'ranking.dart';
 import 'records.dart';
@@ -64,6 +66,10 @@ class _RainState extends State<RainPage> {
   final game = CatchGame();
   final world = CatchScene(), tilt = TiltInput(), records = RecordStore();
   bool showTitle = true;
+
+  /// Over the title or the selection screen; closing returns to whichever.
+  bool showGallery = false;
+  final gallery = GalleryController();
   GraphicsSettings graphics = GraphicsSettings.standard;
   StageBenchmark? benchmark;
   bool ready = false,
@@ -126,7 +132,9 @@ class _RainState extends State<RainPage> {
         description: 'Inspect real simulation, sensor and camera.',
         callback: (p) async => MarionetteExtensionResult.success({
           'ready': ready,
-          'screen': showTitle
+          'screen': showGallery
+              ? 'gallery'
+              : showTitle
               ? 'title'
               : !ready
               ? 'loading'
@@ -341,7 +349,120 @@ class _RainState extends State<RainPage> {
           return MarionetteExtensionResult.success(game.inspect());
         },
       );
+      registerMarionetteExtension(
+        name: 'madogiwa.inspectGallery',
+        description: 'Inspect the gallery tab, subject, orbit camera and clip.',
+        callback: (p) async => MarionetteExtensionResult.success({
+          'open': showGallery,
+          'returnsTo': showTitle ? 'title' : 'selection',
+          ...gallery.inspect(),
+        }),
+      );
+      registerMarionetteExtension(
+        name: 'madogiwa.galleryAction',
+        description: 'action=open|close|tab|select|orbit|zoom|pan|reset|clip|play|autoRotate|dark|billboard. tab: value=models|billboards. select: subject id (inspectGallery.subjects). orbit: yaw/pitch degrees (absolute). zoom: distance (absolute, clamped). pan: x/y/z offset. clip: value=clip name. play/autoRotate/dark: value=on|off. billboard: index into the list, or close.',
+        callback: (p) async {
+          final on = p['value'] == 'on';
+          double? number(String key) {
+            final v = double.tryParse(p[key] ?? '');
+            return v != null && v.isFinite ? v : null;
+          }
+
+          switch (p['action']) {
+            case 'open':
+              openGallery();
+            case 'close':
+              showGallery = false;
+            case 'tab':
+              final tab = GalleryTab.values
+                  .where((g) => g.id == p['value'])
+                  .firstOrNull;
+              if (tab == null) {
+                return MarionetteExtensionResult.invalidParams(
+                  'value=models|billboards',
+                );
+              }
+              gallery.setTab(tab);
+            case 'select':
+              final subject = GallerySubject.byId(p['subject']);
+              if (subject == null) {
+                return MarionetteExtensionResult.invalidParams(
+                  'Unknown subject',
+                );
+              }
+              gallery
+                ..tab = GalleryTab.models
+                ..select(subject);
+            case 'orbit':
+              final yaw = number('yaw'), pitch = number('pitch');
+              if (yaw == null && pitch == null) {
+                return MarionetteExtensionResult.invalidParams(
+                  'yaw and/or pitch in degrees',
+                );
+              }
+              gallery.orbit(
+                yaw == null ? 0 : yaw * math.pi / 180 - gallery.yaw,
+                pitch == null ? 0 : pitch * math.pi / 180 - gallery.pitch,
+              );
+              gallery.autoRotate = false;
+            case 'zoom':
+              final distance = number('distance');
+              if (distance == null || distance <= 0) {
+                return MarionetteExtensionResult.invalidParams('distance > 0');
+              }
+              gallery.zoom(gallery.distance / distance);
+            case 'pan':
+              gallery.pan
+                ..x = number('x') ?? gallery.pan.x
+                ..y = number('y') ?? gallery.pan.y
+                ..z = number('z') ?? gallery.pan.z;
+            case 'reset':
+              gallery.reset();
+            case 'clip':
+              if (!gallery.clips.contains(p['value'])) {
+                return MarionetteExtensionResult.invalidParams(
+                  'value=${gallery.clips.join('|')}',
+                );
+              }
+              gallery
+                ..clip = p['value']
+                ..playing = true;
+            case 'play':
+              gallery.playing = on;
+            case 'autoRotate':
+              gallery.autoRotate = on;
+            case 'dark':
+              gallery.dark = on;
+            case 'billboard':
+              gallery.tab = GalleryTab.billboards;
+              final list = await billboardCatalog;
+              final index = int.tryParse(p['value'] ?? '');
+              if (p['value'] != 'close' &&
+                  (index == null || index < 0 || index >= list.length)) {
+                return MarionetteExtensionResult.invalidParams(
+                  'value=0..${list.length - 1}|close',
+                );
+              }
+              gallery.showBillboard(index);
+            default:
+              return MarionetteExtensionResult.invalidParams('Unknown action');
+          }
+          gallery.touch();
+          setState(() {});
+          return MarionetteExtensionResult.success(gallery.inspect());
+        },
+      );
     }
+  }
+
+  /// From the selection screen the gallery opens on the chosen character.
+  void openGallery() {
+    if (!showTitle) {
+      gallery.select(
+        GallerySubject.byId(game.selectedCharacter.id) ?? gallery.subject,
+      );
+    }
+    showGallery = true;
   }
 
   Future<void> load() async {
@@ -773,9 +894,27 @@ class _RainState extends State<RainPage> {
               world.lighting.configureRenderer(world.scene);
             }
           }
+          if (showGallery) {
+            if (!ready) {
+              return error == null
+                  ? const BrandLoading()
+                  : Center(child: Text(error!));
+            }
+            return GalleryScreen(
+              controller: gallery,
+              world: world,
+              game: game,
+              onTime: (time) => setState(() {
+                game.selectTime(time);
+                world.update(game, 0);
+              }),
+              onBack: () => setState(() => showGallery = false),
+            );
+          }
           if (showTitle) {
             return TitleScreen(
               onStart: () => setState(() => showTitle = false),
+              onGallery: () => setState(openGallery),
               lang: appLang.value,
               onLang: setLang,
             );
@@ -809,6 +948,7 @@ class _RainState extends State<RainPage> {
                     ),
               onSettings: kReleaseMode ? null : openBalance,
               onGraphics: openGraphics,
+              onGallery: () => setState(openGallery),
             );
           }
           final playing =

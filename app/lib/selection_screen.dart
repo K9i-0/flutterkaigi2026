@@ -24,6 +24,7 @@ class SelectionScreen extends StatelessWidget {
     this.rank,
     this.onSettings,
     this.onGraphics,
+    this.onGallery,
   });
   final CatchGame game;
   final CatchScene world;
@@ -36,7 +37,7 @@ class SelectionScreen extends StatelessWidget {
 
   /// Saved rank of the round shown in the result header, if recorded.
   final String? rank;
-  final VoidCallback? onSettings, onGraphics;
+  final VoidCallback? onSettings, onGraphics, onGallery;
   static const paper = Colors.white, text = brandInk, muted = brandMuted;
 
   Widget item(Strings t, bool bad) {
@@ -277,6 +278,17 @@ class SelectionScreen extends StatelessWidget {
                               Icons.tune,
                               size: 17,
                               color: muted,
+                            ),
+                          ),
+                        if (onGallery != null)
+                          IconButton(
+                            key: const ValueKey('gallery_open'),
+                            tooltip: t.gallery,
+                            onPressed: onGallery,
+                            icon: const Icon(
+                              Icons.view_in_ar,
+                              size: 20,
+                              color: brandBlue,
                             ),
                           ),
                         IconButton(

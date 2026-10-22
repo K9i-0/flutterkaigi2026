@@ -27,15 +27,7 @@ class DropModel {
   DropModel(this.kind, this.model) {
     cacheSkinUploads(model);
     root.add(model);
-    if (kind.isChikuwa) {
-      model.scale = vm.Vector3.all(.46);
-      model.rotation = vm.Quaternion.axisAngle(vm.Vector3(0, 0, 1), -1.05);
-    } else if (!kind.isCan) {
-      final scale = kind == CanKind.yumemin ? .85 : .75;
-      model.scale = vm.Vector3.all(scale);
-      model.position = vm.Vector3(0, -.48, 0);
-      model.rotation = vm.Quaternion.axisAngle(vm.Vector3(0, 1, 0), math.pi);
-    }
+    fit(kind, model);
     final animation = model.findAnimationByName(
       kind.isChikuwa ? 'Wiggle' : 'Idle',
     );
@@ -46,6 +38,27 @@ class DropModel {
         ..play();
     }
   }
+
+  /// Centers and sizes the raw model inside its root, as in the game.
+  static void fit(CanKind kind, Node model) {
+    if (kind.isChikuwa) {
+      model.scale = vm.Vector3.all(.46);
+      model.rotation = vm.Quaternion.axisAngle(vm.Vector3(0, 0, 1), -1.05);
+    } else if (!kind.isCan) {
+      final scale = kind == CanKind.yumemin ? .85 : .75;
+      model.scale = vm.Vector3.all(scale);
+      model.position = vm.Vector3(0, -.48, 0);
+      model.rotation = vm.Quaternion.axisAngle(vm.Vector3(0, 1, 0), math.pi);
+    }
+  }
+
+  /// Root heading that shows the label or face to a camera on +Z.
+  static double frontYaw(CanKind kind) => kind.isCan
+      ? math.pi
+      : kind.isChikuwa
+      ? -.35
+      : 0;
+
   final CanKind kind;
   final Node model;
   final root = Node();
@@ -58,12 +71,7 @@ class DropModel {
     sample(seconds * .55);
     root.rotation = vm.Quaternion.axisAngle(
       vm.Vector3(0, 1, 0),
-      math.sin(seconds * .55) * .35 +
-          (kind.isCan
-              ? math.pi
-              : kind.isChikuwa
-              ? -.35
-              : 0),
+      math.sin(seconds * .55) * .35 + frontYaw(kind),
     );
   }
 }

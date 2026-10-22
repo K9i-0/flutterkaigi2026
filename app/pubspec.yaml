@@ -31,4 +31,5 @@ flutter:
     - assets/images/
     - assets/images/authors/
     - assets/models/
+    - assets/billboards/
     - flutter_scene_generated/
