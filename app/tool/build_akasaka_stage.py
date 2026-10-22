@@ -27,11 +27,13 @@ OUTER_TOWERS = [
 # Billboard slots, three per orbit direction: tower, facing (outward normal
 # toward the beam), ad texture. Fill a slot by changing its ad name.
 BILLBOARDS = [
- (HIGHRISES[1],'+z','yumemin'), (HIGHRISES[0],'+z','recruit'), (HIGHRISES[3],'+z','accidenchua'),
- (OUTER_TOWERS[1],'-z','yumemin'), (OUTER_TOWERS[0],'-z','safety'), (OUTER_TOWERS[2],'-z','recruit'),
+ (HIGHRISES[1],'+z','yumemin'), (HIGHRISES[0],'+z','takahashigumi'), (HIGHRISES[3],'+z','accidenchua'),
+ (OUTER_TOWERS[1],'-z','yumemin'), (OUTER_TOWERS[0],'-z','safety'), (OUTER_TOWERS[2],'-z','mogumogu'),
  (OUTER_TOWERS[4],'+x','yumemin'), (OUTER_TOWERS[3],'+x','recruit'), (OUTER_TOWERS[5],'+x','accidenchua'),
  (OUTER_TOWERS[7],'-x','yumemin'), (OUTER_TOWERS[6],'-x','safety'), (OUTER_TOWERS[8],'-x','recruit'),
 ]
+# Sponsor ads share one atlas material, one 1024x384 row each, top to bottom.
+SPONSORS = ['takahashigumi','mogumogu']
 def material(name,color,texture=None,metal=0,glow=0,rough=.65,emit=None):
  m=bpy.data.materials.new(name); m.use_nodes=True
  m.use_backface_culling=True
@@ -70,7 +72,7 @@ SIGNS=['akasaka','izakaya','soba','shika','bengoshi','fudosan']
 for n in SIGNS: material(n,(1,1,1),f'sign_{n}.png',glow=.4)
 # Retired ad slot stays empty to preserve the city's seeded layout.
 ADS=[None,'accidenchua','safety']
-for n in sorted(set(ADS[1:]+[ad for _,_,ad in BILLBOARDS])):
+for n in sorted(set(ADS[1:]+['sponsors' if ad in SPONSORS else ad for _,_,ad in BILLBOARDS])):
  if n: material('ad_'+n,(1,1,1),f'ad_{n}.png',glow=.5)
 # Moving traffic: one atlas material, one mesh per direction group (see catch_scene.dart).
 material('car',(1,1,1),'car_atlas.png',metal=.4,glow=1,rough=.35,emit='car_atlas_emit.png')
@@ -249,7 +251,10 @@ def billboard(name,x,z,top,extent,width,facing):
  rx,rz=nz,-nx  # screen right for a viewer looking along -normal
  bw=min(width*1.25,6.3); bh=bw/2.67; cy=top+1.45
  cx,cz=x+nx*(extent*.41+.12),z+nz*(extent*.41+.12)
- mesh('ad_'+name,[(cx+sx*rx*bw/2,cy+sy*bh/2,cz+sx*rz*bw/2) for sx,sy in [(-1,-1),(1,-1),(1,1),(-1,1)]],[(0,1,2,3)])
+ v0,v1=0,1
+ if name in SPONSORS:
+  row=SPONSORS.index(name); v0,v1=1-(row+1)/len(SPONSORS),1-row/len(SPONSORS); name='sponsors'
+ mesh('ad_'+name,[(cx+sx*rx*bw/2,cy+sy*bh/2,cz+sx*rz*bw/2) for sx,sy in [(-1,-1),(1,-1),(1,1),(-1,1)]],[(0,1,2,3)],[[(0,v0),(1,v0),(1,v1),(0,v1)]])
  # Backing frame and posts stay 2cm+ behind the artwork: no shared planes.
  fw,fd=(bw+.16,.08) if nz else (.08,bw+.16)
  box('metal',cx-nx*.06,cy,cz-nz*.06,fw,bh+.16,fd)

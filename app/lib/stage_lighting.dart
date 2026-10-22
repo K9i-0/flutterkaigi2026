@@ -52,6 +52,7 @@ const _ads = [
   'ad_safety',
   'ad_yumemin',
   'ad_recruit',
+  'ad_sponsors',
 ];
 
 Map<String, _Glow> _glow({

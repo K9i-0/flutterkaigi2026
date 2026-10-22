@@ -27,6 +27,8 @@ def limit(name):
         return 256, 256
     if name.startswith('sign_'):
         return 128, 384
+    if name == 'ad_sponsors':
+        return 512, 384
     if name.startswith('ad_'):
         return 512, 192
     return None

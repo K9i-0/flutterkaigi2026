@@ -3,7 +3,7 @@
 採用した `app/design/stage_concepts/D_akasaka_prompt.txt` の方向性を、Flutter Sceneで動く3D背景にしたもの。実在街区の測量再現ではなく、赤坂の飲食店街と東京タワーを組み合わせたゲーム用の構成。
 
 - `akasaka.glb`: 38メッシュ（33マテリアル、車の走行グループ6本を含む）の静的背景、65,220三角形。東京タワーと公園、鉄骨と支えビル、道路網（大通り・路地・車線・横断歩道・歩道）、街灯、首都高の高架、区画割りした街並み、笠木・ライトアップ帯、屋上設備・屋上広告・高層ビルの大型看板12枠・航空障害灯、外周のスカイラインを含む。車は `traffic_zpos` / `traffic_zneg` / `traffic_xpos` / `traffic_xneg` / `traffic_hwy_xpos` / `traffic_hwy_xneg` の6ノードで、各ノードは周期（24・30・27単位）で繰り返す配置。ゲームがノードを動かして走らせる。
-- PNG: 手続き生成と採用したImagegen素材を組み合わせたテクスチャ（`ad_yumemin.png` はリポジトリ内の正典 `characters/Yumemin.jpg` を合成）。外装6種（`facade_0`〜`5`、4×8単位で反復）は昼の窓の色、`facade_*_emit.png` は点灯した窓だけの発光マップ。ほかに鋼材の錆止め塗装、アスファルト、歩道、遠景（`skyline` / `skyline_emit`）、車のアトラス（車体2色・ヘッドライト・テールランプ）、縦看板6種、屋上広告2種（`ACCIDENCHUA`、「安全第一」）、ゆめみんの看板（`ad_yumemin`）、空き枠用の「広告募集中」（`ad_recruit`）。
+- PNG: 手続き生成と採用したImagegen素材を組み合わせたテクスチャ（`ad_yumemin.png` はリポジトリ内の正典 `characters/Yumemin.jpg` を合成）。外装6種（`facade_0`〜`5`、4×8単位で反復）は昼の窓の色、`facade_*_emit.png` は点灯した窓だけの発光マップ。ほかに鋼材の錆止め塗装、アスファルト、歩道、遠景（`skyline` / `skyline_emit`）、車のアトラス（車体2色・ヘッドライト・テールランプ）、縦看板6種、屋上広告2種（`ACCIDENCHUA`、「安全第一」）、ゆめみんの看板（`ad_yumemin`）、空き枠用の「広告募集中」（`ad_recruit`）、協賛広告のアトラス（`ad_sponsors`）。
 - 時間帯（昼・夜）による発光の強さはGLBに焼き込まず、ゲーム側（`app/lib/stage_lighting.dart`）でマテリアルごとに設定する。
 - 再生成: リポジトリルートで Pillow入りPythonから `app/tool/build_akasaka_textures.py`、`prepare_stage_surfaces.py`（同じtoolディレクトリ、Pillow/NumPyが必要）、続いて Blender `-b -P app/tool/build_akasaka_stage.py`。最後に `uv run --with pillow python app/tool/optimize_stage_textures.py` と `python3 app/tool/audit_stage_asset.py` を実行する。
 - ゲームは `assets/models/akasaka.glb` の相対symlinkで参照。GLTF読込時の座標系に合わせ、シーン側でY軸180度回転する。
@@ -69,3 +69,9 @@
 | 左右（各） | ゆめみん・広告募集中・ACCIDENCHUA／安全第一 |
 
 最終版は39プリミティブ、47,206三角形、5,415,440 bytes、画像展開量13.1328MiB。新しい広告の絵柄はマテリアル1つ（1プリミティブ）を使うため、上限41まで残り2種。増やすならアトラスにまとめる。
+
+## 協賛広告（2026-10-22）
+
+「広告募集中」4枠のうち正面を「高橋組」、背後を「もぐもぐ先生最強！」に差し替えた。原画は `source_ads/`（`takahashigumi.png`・`mogumogu.png`）で、`build_akasaka_textures.py` が文字と合成し、1024×384の行を縦に重ねた `ad_sponsors.png` にする。協賛広告は全行で1マテリアルを共有し、看板の面のUVで行を選ぶ（`SPONSORS` の順）。配布GLBでは512×384。
+
+最終版は40プリミティブ、47,206三角形、5,507,632 bytes、画像展開量13.8828MiB。行を足してもプリミティブは増えないが、1行ごとに展開量が0.375MiB増え、上限14MiBまで残り約0.12MiB。さらに足すなら既存の画像を縮めるか、上限を見直す。

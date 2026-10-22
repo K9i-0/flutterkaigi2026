@@ -118,3 +118,14 @@ im.save(out/'ad_safety.png')
 # Placeholder for billboard slots whose sponsor is not decided yet.
 im,d=ad('recruit',(252,206,48),[('広告募集中',150,168,(30,30,34),512),('この場所に広告を出しませんか？',40,296,(60,52,30),512)],(30,30,34))
 im.save(out/'ad_recruit.png')
+# Sponsor ads: submitted art (source_ads/) with its caption, stacked into one
+# atlas in the order of SPONSORS in build_akasaka_stage.py.
+def sponsor(art,bg,lines,frame):
+ im,d=ad('',bg,lines,frame)
+ a=Image.open(out/'source_ads'/art).convert('RGBA').resize((330,330),Image.LANCZOS)
+ im.paste(a,(40,27),a);return im
+rows=[sponsor('takahashigumi.png',(255,255,255),[('高橋組',170,192,(24,24,28),660)],(24,24,28)),
+ sponsor('mogumogu.png',(244,248,252),[('もぐもぐ先生',96,130,(22,110,214),665),('最強！',150,268,(214,40,40),665)],(22,110,214))]
+atlas=Image.new('RGB',(1024,384*len(rows)))
+for i,row in enumerate(rows):atlas.paste(row,(0,384*i))
+atlas.save(out/'ad_sponsors.png')
