@@ -79,49 +79,38 @@ class TitleScreen extends StatelessWidget {
               minimum: const EdgeInsets.all(12),
               child: Align(
                 alignment: Alignment.bottomRight,
-                // The one bright, moving thing on the art, so it reads as go.
-                child: _Breathing(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 30,
-                      vertical: 9,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(36),
-                      border: Border.all(color: brandMint, width: 3),
-                      boxShadow: [
-                        const BoxShadow(color: Colors.black45, blurRadius: 12),
-                        BoxShadow(
-                          color: brandMint.withValues(alpha: .7),
-                          blurRadius: 22,
-                          spreadRadius: 1,
+                // Only a hint: the whole screen starts, so no button to aim at.
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 7,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withValues(alpha: .55),
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        t.tapToStart,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 2,
                         ),
-                      ],
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          t.tapToStart,
-                          style: const TextStyle(
-                            color: brandInk,
-                            fontSize: 19,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: 2,
-                          ),
+                      ),
+                      Text(
+                        other.tapToStart,
+                        style: const TextStyle(
+                          color: Colors.white70,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 1,
                         ),
-                        Text(
-                          other.tapToStart,
-                          style: const TextStyle(
-                            color: brandMuted,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 1,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -131,47 +120,6 @@ class TitleScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-/// Slow scale pulse; holds still when the system asks for reduced motion.
-class _Breathing extends StatefulWidget {
-  const _Breathing({required this.child});
-  final Widget child;
-  @override
-  State<_Breathing> createState() => _BreathingState();
-}
-
-class _BreathingState extends State<_Breathing>
-    with SingleTickerProviderStateMixin {
-  late final _pulse = AnimationController(
-    vsync: this,
-    duration: const Duration(milliseconds: 1400),
-  );
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (MediaQuery.disableAnimationsOf(context)) {
-      _pulse.value = 0;
-    } else if (!_pulse.isAnimating) {
-      _pulse.repeat(reverse: true);
-    }
-  }
-
-  @override
-  void dispose() {
-    _pulse.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) => ScaleTransition(
-    scale: _pulse.drive(
-      Tween(begin: 1.0, end: 1.06).chain(CurveTween(curve: Curves.easeInOut)),
-    ),
-    alignment: Alignment.bottomRight,
-    child: widget.child,
-  );
 }
 
 class BrandLoading extends StatelessWidget {

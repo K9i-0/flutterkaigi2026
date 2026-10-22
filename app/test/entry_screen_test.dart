@@ -94,11 +94,6 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         theme: appTheme(),
-        // The start pulse never settles; reduced motion holds it still.
-        builder: (context, child) => MediaQuery(
-          data: MediaQuery.of(context).copyWith(disableAnimations: true),
-          child: child!,
-        ),
         home: Scaffold(
           body: TitleScreen(
             onStart: () => starts++,
