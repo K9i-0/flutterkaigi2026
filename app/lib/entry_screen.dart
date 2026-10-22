@@ -46,6 +46,7 @@ class TitleScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   spacing: 10,
                   children: [
+                    LanguageToggle(selected: lang, onChanged: onLang),
                     TextButton.icon(
                       key: const ValueKey('about'),
                       onPressed: () => showDialog<void>(
@@ -66,7 +67,6 @@ class TitleScreen extends StatelessWidget {
                         style: const TextStyle(fontWeight: FontWeight.w700),
                       ),
                     ),
-                    LanguageToggle(selected: lang, onChanged: onLang),
                   ],
                 ),
               ),
