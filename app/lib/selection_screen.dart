@@ -354,19 +354,28 @@ class LanguageToggle extends StatelessWidget {
     super.key,
     required this.selected,
     required this.onChanged,
+    this.overArt = false,
   });
   final AppLang selected;
   final ValueChanged<AppLang> onChanged;
+
+  /// Translucent dark pill for the title art, matching its other buttons.
+  final bool overArt;
   @override
   Widget build(BuildContext context) => Container(
-    padding: const EdgeInsets.all(2),
+    // Same height as the title's about button beside it.
+    height: overArt ? 40 : null,
+    padding: EdgeInsets.all(overArt ? 4 : 2),
     decoration: BoxDecoration(
-      color: brandPale,
-      borderRadius: BorderRadius.circular(16),
-      border: Border.all(color: const Color(0xffd3eee9)),
+      color: overArt ? Colors.black.withValues(alpha: .35) : brandPale,
+      borderRadius: BorderRadius.circular(overArt ? 20 : 16),
+      border: overArt ? null : Border.all(color: const Color(0xffd3eee9)),
     ),
     child: Row(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: overArt
+          ? CrossAxisAlignment.stretch
+          : CrossAxisAlignment.center,
       children: [
         for (final l in AppLang.values)
           GestureDetector(
@@ -374,17 +383,27 @@ class LanguageToggle extends StatelessWidget {
             behavior: HitTestBehavior.opaque,
             onTap: () => onChanged(l),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              alignment: overArt ? Alignment.center : null,
+              padding: overArt
+                  ? const EdgeInsets.symmetric(horizontal: 14)
+                  : const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               decoration: BoxDecoration(
-                color: l == selected ? brandBlue : null,
-                borderRadius: BorderRadius.circular(14),
+                color: l == selected
+                    ? (overArt ? Colors.white : brandBlue)
+                    : null,
+                borderRadius: BorderRadius.circular(overArt ? 16 : 14),
               ),
               child: Text(
                 l.label,
                 style: TextStyle(
-                  fontSize: 11,
+                  fontSize: overArt ? 13 : 11,
                   fontWeight: FontWeight.w700,
-                  color: l == selected ? Colors.white : brandMuted,
+                  color: switch ((l == selected, overArt)) {
+                    (true, true) => brandInk,
+                    (true, false) => Colors.white,
+                    (false, true) => Colors.white70,
+                    (false, false) => brandMuted,
+                  },
                 ),
               ),
             ),
