@@ -25,7 +25,7 @@ FlutterKaigi 2026向けのFlutter Scene製3Dミニゲーム「ゆめみ採用試
 
 ## Flutterの検証
 
-- Flutterは `.mise.toml` の3.47.2。`mise exec -- flutter ...` で実行する。
+- Flutterは `.mise.toml` の3.47.8。`mise exec -- flutter ...` で実行する。
 - 変更後は該当プロジェクトで `flutter analyze` と `flutter test` を通す。
 - UI操作・スクリーンショットは、Dart MCPでdebug起動し、Marionette MCPで行う。設定は `.mcp.json` と `.codex/config.toml`。
   - `app/`: `madogiwa.inspectCatch` で状態を取得し、`madogiwa.catchAction`（`select` / `start` / `step` / `rotate` / `fps` など）で決定論的に操作する。引数は `app/README.md`。

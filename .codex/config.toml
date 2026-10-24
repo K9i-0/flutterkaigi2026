@@ -4,7 +4,7 @@
 command = "mise"
 args = [
   "exec",
-  "flutter@3.47.2",
+  "flutter@3.47.8",
   "--",
   "dart",
   "pub",
@@ -33,7 +33,7 @@ enabled_tools = [
 
 [mcp_servers.dart-mcp]
 command = "mise"
-args = ["exec", "flutter@3.47.2", "--", "dart", "mcp-server", "--enable=flutter_app_lifecycle"]
+args = ["exec", "flutter@3.47.8", "--", "dart", "mcp-server", "--enable=flutter_app_lifecycle"]
 env = {}
 enabled_tools = [
   "launch_app",

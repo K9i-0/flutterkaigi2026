@@ -22,7 +22,7 @@ open -a Simulator
 mise exec -- flutter run -d <device-id>
 ```
 
-- Flutterは `.mise.toml` の3.47.2を使います。
+- Flutterは `.mise.toml` の3.47.8を使います。
 - 初回はビルドフックがGLBを変換するので時間がかかります。
 - モデル・画像はリポジトリ内の相対シンボリックリンクで参照しています。`app/` だけを切り出さず、リポジトリごとcloneしてください。
 - シミュレーターでは傾きセンサーが使えないので、矢印キーで移動します。
