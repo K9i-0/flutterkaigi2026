@@ -22,6 +22,9 @@ enum ControlMode {
 /// Message shown in the HUD; screens render the text in the chosen language.
 enum GameMessage { hint, caught, bad }
 
+/// Height where a drop meets the character's hands.
+const catchHeight = 1.15;
+
 class Drop {
   Drop(
     this.id,
@@ -39,8 +42,8 @@ class Drop {
   double height(double time) {
     final p = ((time - spawn) / fallSeconds).clamp(0.0, 1.0);
     return resolved && !caught
-        ? math.max(.35, 1.15 - (time - landing) * 4)
-        : 1.15 + 4.7 * (1 - math.pow(p, 1.25));
+        ? math.max(.35, catchHeight - (time - landing) * 4)
+        : catchHeight + 4.7 * (1 - math.pow(p, 1.25));
   }
 
   bool visible(double time) => time >= spawn && time < landing + .65 && !caught;
@@ -95,6 +98,13 @@ class CatchGame {
   double screenSign = 1;
   double time = 0, countdown = 0, x = 0, vx = 0, yaw = 0, targetYaw = 0;
   int score = 0, combo = 0, caught = 0, bad = 0, missed = 0, eventId = 0;
+
+  /// World X of the latest catch, good or bad. Null until the first catch after
+  /// start. Only changes together with [eventId].
+  double? fxX;
+
+  /// True when [fxX] is a bad catch (happoshu, toxic chikuwa, yametaro).
+  bool fxBad = false;
   GameMessage message = GameMessage.hint;
   CanKind? messageKind;
   int? messagePoints;
@@ -122,6 +132,8 @@ class CatchGame {
     bad = 0;
     missed = 0;
     eventId = 0;
+    fxX = null;
+    fxBad = false;
     events.clear();
     drops.clear();
     message = GameMessage.hint;
@@ -223,15 +235,17 @@ class CatchGame {
       if (d.resolved || time < d.landing) continue;
       d.resolved = true;
       d.caught = (d.x - x).abs() < catchRadius;
-      if (d.caught && practice) {
+      if (d.caught) {
         eventId++;
-        message = d.kind.isBad ? GameMessage.bad : GameMessage.caught;
+        fxX = d.x;
+        fxBad = d.kind.isBad;
         messageKind = d.kind;
-        messagePoints = null;
         messageUntil = time + 1.4;
+      }
+      if (d.caught && practice) {
+        message = d.kind.isBad ? GameMessage.bad : GameMessage.caught;
+        messagePoints = null;
       } else if (d.caught) {
-        eventId++;
-        messageKind = d.kind;
         if (d.kind.isBad) {
           bad++;
           score -= balance['penalty'].round();
@@ -248,7 +262,6 @@ class CatchGame {
           message = GameMessage.caught;
           messagePoints = points;
         }
-        messageUntil = time + 1.4;
         events.add({
           'time': time,
           'id': d.id,
@@ -301,6 +314,8 @@ class CatchGame {
     'caught': caught,
     'happoshu': bad,
     'missed': missed,
+    'fxBad': fxBad,
+    'fxX': ?fxX,
     'activeCans': drops
         .where((d) => d.visible(time))
         .map(

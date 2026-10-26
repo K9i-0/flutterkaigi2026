@@ -987,6 +987,15 @@ class _RainState extends State<RainPage> {
                     ),
                   ),
                 ),
+              if (ready)
+                Positioned.fill(
+                  child: IgnorePointer(
+                    child: _BadCatchFlash(
+                      eventId: game.eventId,
+                      bad: game.fxBad,
+                    ),
+                  ),
+                ),
               if (error != null) Center(child: Text(error!)),
               if (!ready && error == null) const BrandLoading(),
               if (ready)
@@ -1207,6 +1216,63 @@ class _RainState extends State<RainPage> {
           );
         },
       ),
+    );
+  }
+}
+
+/// Edge flash for a bad catch. Ignores pointers so tilt and swipes still land
+/// on the scene underneath.
+class _BadCatchFlash extends StatefulWidget {
+  const _BadCatchFlash({required this.eventId, required this.bad});
+  final int eventId;
+  final bool bad;
+
+  @override
+  State<_BadCatchFlash> createState() => _BadCatchFlashState();
+}
+
+class _BadCatchFlashState extends State<_BadCatchFlash>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 150),
+  );
+
+  @override
+  void didUpdateWidget(_BadCatchFlash oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.eventId != oldWidget.eventId && widget.bad) {
+      _controller.forward(from: 0);
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, _) {
+        if (_controller.status == AnimationStatus.dismissed) {
+          return const SizedBox.shrink();
+        }
+        final fade = 1 - _controller.value;
+        return DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: RadialGradient(
+              colors: [
+                const Color(0x00b63c32),
+                const Color(0xffb63c32).withValues(alpha: .5 * fade),
+              ],
+              stops: const [.52, 1],
+            ),
+          ),
+        );
+      },
     );
   }
 }
