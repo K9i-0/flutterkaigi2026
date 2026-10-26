@@ -32,6 +32,9 @@ class CatchScene {
     fovFar: 100,
   );
   late Node halo;
+  late Node _goodFx, _badFx;
+  int _fxEvent = 0;
+  double _haloPulse = 0;
   final characters = <CatchCharacter, Node>{};
   final motions = <CatchCharacter, CharacterMotionPlayer>{};
   CatchCharacter displayedCharacter = CatchCharacter.sobaya;
@@ -47,6 +50,7 @@ class CatchScene {
     'displayedCharacter': displayedCharacter.id,
     'motion': motions[displayedCharacter]?.controller.inspect(),
     'facing': facing,
+    'catchFx': {'good': _goodFx.parent != null, 'bad': _badFx.parent != null},
     'zoom': zoom,
     'zoomPivot': zoomPivot.id,
     'vision': vision.inspect(),
@@ -157,6 +161,22 @@ class CatchScene {
       mat(.28, .8, .7),
       vm.Vector3(0, .04, 0),
     );
+    _goodFx = _catchBurst(
+      from: vm.Vector4(.7, 1.8, 1.6, 1),
+      to: vm.Vector4(1.5, 1.6, 1.3, 1),
+      gravity: vm.Vector3(0, -3.2, 0),
+      angle: .9,
+      count: 18,
+    );
+    _badFx = _catchBurst(
+      from: vm.Vector4(1.9, .28, .16, 1),
+      to: vm.Vector4(1.2, .08, .05, .9),
+      gravity: vm.Vector3(0, 2.4, 0),
+      angle: .45,
+      count: 14,
+    );
+    // Local +Y is the cone axis. Flip it so a bad catch falls.
+    _badFx.rotation = vm.Quaternion.axisAngle(vm.Vector3(1, 0, 0), math.pi);
 
     await dropModels.load();
     // At most ceil((6 + .65) / .5) = 14 simultaneously visible drops. Clones
@@ -167,6 +187,85 @@ class CatchScene {
     }
     await vision.load(scene);
     update(CatchGame(), 0);
+  }
+
+  /// One-shot additive burst. Left off the scene graph until a catch.
+  Node _catchBurst({
+    required vm.Vector4 from,
+    required vm.Vector4 to,
+    required vm.Vector3 gravity,
+    required double angle,
+    required int count,
+  }) {
+    final node = Node();
+    node.addComponent(
+      ParticleEmitterComponent(
+        system: ParticleSystem(
+          maxParticles: 24,
+          looping: false,
+          duration: .05,
+          seed: 1,
+          shape: ConeEmitterShape(angle: angle, radius: .12),
+          spawner: Spawner(bursts: [ParticleBurst(time: 0, count: count)]),
+          lifetime: const UniformFloat(.28, .48),
+          startSpeed: const UniformFloat(1.4, 2.6),
+          startSize: const UniformFloat(.12, .26),
+          startColor: UniformColor(from, to),
+          gravity: gravity,
+          modules: [
+            SizeOverLifeModule(
+              CurveFloat(ParticleCurve.linear(from: 1, to: 0)),
+            ),
+            ColorOverLifeModule(
+              GradientColor(
+                ColorGradient([
+                  ColorStop(0, from),
+                  ColorStop(1, vm.Vector4(to.x, to.y, to.z, 0)),
+                ]),
+              ),
+            ),
+          ],
+        ),
+        material: SpriteMaterial()..blendMode = SpriteBlendMode.additive,
+      ),
+    );
+    return node;
+  }
+
+  void _playCatchFx(Node node, double x) {
+    node.getComponent<ParticleEmitterComponent>()!.system.reset();
+    node.position = vm.Vector3(x, 1.15, 0);
+    _show(node, true);
+  }
+
+  void _retireCatchFx(Node node) {
+    final system = node.getComponent<ParticleEmitterComponent>()!.system;
+    if (node.parent != null &&
+        system.time > 0 &&
+        system.storage.aliveCount == 0) {
+      _show(node, false);
+    }
+  }
+
+  void _syncCatchFx(CatchGame g, double dt) {
+    if (g.eventId != _fxEvent) {
+      _fxEvent = g.eventId;
+      final x = g.fxX;
+      if (x == null) {
+        _show(_goodFx, false);
+        _show(_badFx, false);
+        _haloPulse = 0;
+      } else if (g.fxBad) {
+        _playCatchFx(_badFx, x);
+      } else {
+        _playCatchFx(_goodFx, x);
+        _haloPulse = 1;
+      }
+    } else if (dt > 0) {
+      _haloPulse *= math.exp(-8 * dt);
+    }
+    _retireCatchFx(_goodFx);
+    _retireCatchFx(_badFx);
   }
 
   void update(CatchGame g, double dt) {
@@ -211,8 +310,10 @@ class CatchScene {
     final radius = g.phase == Phase.ready || g.phase == Phase.result
         ? displayedCharacter.catchRadius
         : g.catchRadius;
+    _syncCatchFx(g, dt);
     halo.position = vm.Vector3(g.x, .04, 0);
-    halo.scale = vm.Vector3(radius / .7, 1, .52);
+    final pulse = 1 + .28 * _haloPulse;
+    halo.scale = vm.Vector3(radius / .7 * pulse, 1, .52 * pulse);
     final widen = 1 + .18 * math.sin(g.yaw * 2).abs();
     final base = vm.Vector3(
       math.sin(g.yaw) * 10.8 * widen,

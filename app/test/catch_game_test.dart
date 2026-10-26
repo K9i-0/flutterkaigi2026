@@ -117,6 +117,49 @@ void main() {
     expect(g.caught + g.missed, 12);
     expect(g.events.length, g.caught + g.bad);
   });
+  test('a catch records where it landed and a miss or restart clears it', () {
+    final g = CatchGame()..start();
+    expect(g.fxX, isNull);
+    g.phase = Phase.playing;
+    g.drops
+      ..clear()
+      ..add(Drop(0, CanKind.superTry, .2, -3.1));
+    g.tick(1 / 60);
+    expect(g.fxX, .2);
+    expect(g.fxBad, false);
+    expect(g.caught, 1);
+
+    g.drops.add(Drop(1, CanKind.happoshu, -.4, -3.1));
+    g.x = -.4;
+    g.tick(1 / 60);
+    expect(g.fxX, -.4);
+    expect(g.fxBad, true);
+    expect(g.bad, 1);
+    expect(g.score, 100 - g.balance['penalty'].round());
+
+    g.x = 0;
+    g.drops.add(Drop(2, CanKind.light, 3, -3.1));
+    g.tick(1 / 60);
+    expect(g.missed, 1);
+    expect(g.fxX, isNull);
+    expect(g.eventId, 2);
+
+    g.start();
+    expect(g.fxX, isNull);
+    expect(g.fxBad, false);
+
+    final practice = CatchGame()
+      ..practice = true
+      ..start();
+    practice.phase = Phase.playing;
+    practice.drops
+      ..clear()
+      ..add(Drop(0, CanKind.yumemin, .1, -3.1));
+    practice.tick(1 / 60);
+    expect(practice.score, 0);
+    expect(practice.fxX, .1);
+    expect(practice.fxBad, false);
+  });
   test('sensor calibrates, rejects bad samples and expires stale data', () {
     var now = DateTime(2026);
     final t = TiltInput(now: () => now);

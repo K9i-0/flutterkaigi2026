@@ -95,6 +95,12 @@ class CatchGame {
   double screenSign = 1;
   double time = 0, countdown = 0, x = 0, vx = 0, yaw = 0, targetYaw = 0;
   int score = 0, combo = 0, caught = 0, bad = 0, missed = 0, eventId = 0;
+
+  /// World X of the latest successful catch. Null after start and on a miss.
+  double? fxX;
+
+  /// True when [fxX] is a bad catch (happoshu, toxic chikuwa, yametaro).
+  bool fxBad = false;
   GameMessage message = GameMessage.hint;
   CanKind? messageKind;
   int? messagePoints;
@@ -122,6 +128,8 @@ class CatchGame {
     bad = 0;
     missed = 0;
     eventId = 0;
+    fxX = null;
+    fxBad = false;
     events.clear();
     drops.clear();
     message = GameMessage.hint;
@@ -225,12 +233,16 @@ class CatchGame {
       d.caught = (d.x - x).abs() < catchRadius;
       if (d.caught && practice) {
         eventId++;
+        fxX = d.x;
+        fxBad = d.kind.isBad;
         message = d.kind.isBad ? GameMessage.bad : GameMessage.caught;
         messageKind = d.kind;
         messagePoints = null;
         messageUntil = time + 1.4;
       } else if (d.caught) {
         eventId++;
+        fxX = d.x;
+        fxBad = d.kind.isBad;
         messageKind = d.kind;
         if (d.kind.isBad) {
           bad++;
@@ -259,6 +271,8 @@ class CatchGame {
       } else if (!d.kind.isBad && !practice) {
         missed++;
         combo = 0;
+        fxX = null;
+        fxBad = false;
       }
     }
     if (practice) {
@@ -301,6 +315,8 @@ class CatchGame {
     'caught': caught,
     'happoshu': bad,
     'missed': missed,
+    'fxBad': fxBad,
+    'fxX': ?fxX,
     'activeCans': drops
         .where((d) => d.visible(time))
         .map(
