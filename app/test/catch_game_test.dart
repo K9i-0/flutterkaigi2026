@@ -117,7 +117,7 @@ void main() {
     expect(g.caught + g.missed, 12);
     expect(g.events.length, g.caught + g.bad);
   });
-  test('a catch records where it landed and a miss or restart clears it', () {
+  test('a catch records where it landed and only a restart clears it', () {
     final g = CatchGame()..start();
     expect(g.fxX, isNull);
     g.phase = Phase.playing;
@@ -141,7 +141,7 @@ void main() {
     g.drops.add(Drop(2, CanKind.light, 3, -3.1));
     g.tick(1 / 60);
     expect(g.missed, 1);
-    expect(g.fxX, isNull);
+    expect(g.fxX, -.4);
     expect(g.eventId, 2);
 
     g.start();

@@ -175,8 +175,6 @@ class CatchScene {
       angle: .45,
       count: 14,
     );
-    // Local +Y is the cone axis. Flip it so a bad catch falls.
-    _badFx.rotation = vm.Quaternion.axisAngle(vm.Vector3(1, 0, 0), math.pi);
 
     await dropModels.load();
     // At most ceil((6 + .65) / .5) = 14 simultaneously visible drops. Clones
@@ -232,9 +230,16 @@ class CatchScene {
     return node;
   }
 
-  void _playCatchFx(Node node, double x) {
+  void _playCatchFx(Node node, double x, int event, {required bool flip}) {
     node.getComponent<ParticleEmitterComponent>()!.system.reset();
-    node.position = vm.Vector3(x, 1.15, 0);
+    node.position = vm.Vector3(x, catchHeight, 0);
+    // reset() replays the fixed seed, so turn each burst about Y by the golden
+    // angle to keep repeats from looking identical. Local +Y is the cone axis;
+    // flip it so a bad catch falls.
+    final turn = vm.Quaternion.axisAngle(vm.Vector3(0, 1, 0), event * 2.39996);
+    node.rotation = flip
+        ? turn * vm.Quaternion.axisAngle(vm.Vector3(1, 0, 0), math.pi)
+        : turn;
     _show(node, true);
   }
 
@@ -256,9 +261,10 @@ class CatchScene {
         _show(_badFx, false);
         _haloPulse = 0;
       } else if (g.fxBad) {
-        _playCatchFx(_badFx, x);
+        _playCatchFx(_badFx, x, g.eventId, flip: true);
+        _haloPulse = 0;
       } else {
-        _playCatchFx(_goodFx, x);
+        _playCatchFx(_goodFx, x, g.eventId, flip: false);
         _haloPulse = 1;
       }
     } else if (dt > 0) {
@@ -356,7 +362,7 @@ class CatchScene {
       drop.root.position = vm.Vector3(
         d.x,
         d.resolved && !d.caught
-            ? 1.15 - math.pow((g.time - d.landing) * 5, 2).toDouble()
+            ? catchHeight - math.pow((g.time - d.landing) * 5, 2).toDouble()
             : d.height(g.time),
         0,
       );

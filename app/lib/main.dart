@@ -992,7 +992,7 @@ class _RainState extends State<RainPage> {
                   child: IgnorePointer(
                     child: _BadCatchFlash(
                       eventId: game.eventId,
-                      bad: game.message == GameMessage.bad,
+                      bad: game.fxBad,
                     ),
                   ),
                 ),
