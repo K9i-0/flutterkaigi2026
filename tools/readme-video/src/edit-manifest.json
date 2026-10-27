@@ -1,0 +1,159 @@
+{
+  "composition": {
+    "id": "Trailer",
+    "width": 1280,
+    "height": 720,
+    "fps": 30,
+    "durationInFrames": 960
+  },
+  "audio": {
+    "startFrame": 15
+  },
+  "shots": [
+    {
+      "startFrame": 0,
+      "endFrame": 100,
+      "file": "odatetsu-landscape.mp4",
+      "trimFrame": 180,
+      "label": "FLUTTER × 3D",
+      "headline": "ゆめみ採用試験"
+    },
+    {
+      "startFrame": 100,
+      "endFrame": 205,
+      "file": "odatetsu-landscape.mp4",
+      "trimFrame": 270,
+      "label": "STAGE / AKASAKA",
+      "headline": "採用試験の会場は、空の上。"
+    },
+    {
+      "startFrame": 205,
+      "endFrame": 312,
+      "file": "odatetsu-landscape.mp4",
+      "trimFrame": 330,
+      "label": "HOW TO PLAY",
+      "headline": "傾ける。見回す。キャッチする。"
+    },
+    {
+      "startFrame": 312,
+      "endFrame": 355,
+      "file": "fukugyun-landscape.mp4",
+      "trimFrame": 210,
+      "label": "01 / EASY",
+      "headline": "福ギュン｜ゆめみんをキャッチ"
+    },
+    {
+      "startFrame": 355,
+      "endFrame": 398,
+      "file": "odatetsu-landscape.mp4",
+      "trimFrame": 240,
+      "label": "02 / NORMAL",
+      "headline": "CTOおだてつ｜ちくわをキャッチ"
+    },
+    {
+      "startFrame": 398,
+      "endFrame": 452,
+      "file": "sobaya-landscape.mp4",
+      "trimFrame": 210,
+      "label": "03 / HARD",
+      "headline": "そば屋｜ラベルを見て、ビールだけ"
+    },
+    {
+      "startFrame": 452,
+      "endFrame": 600,
+      "file": "odatetsu-landscape.mp4",
+      "trimFrame": 390,
+      "label": "RULE / 100 POINTS",
+      "headline": "80点以上で合格。はずれは−10点。"
+    },
+    {
+      "startFrame": 600,
+      "endFrame": 670,
+      "file": "sobaya-landscape.mp4",
+      "trimFrame": 330,
+      "label": "DAY & NIGHT",
+      "headline": "昼も夜も、試験は開催。"
+    },
+    {
+      "startFrame": 670,
+      "endFrame": 715,
+      "file": "gallery-landscape.mp4",
+      "trimFrame": 30,
+      "label": "GALLERY / CITY",
+      "headline": "試験のあとも、寄り道を。"
+    },
+    {
+      "startFrame": 715,
+      "endFrame": 760,
+      "file": "characters-landscape.mp4",
+      "trimFrame": 30,
+      "label": "GALLERY / CHARACTERS",
+      "headline": "キャラクターを、もっと近くに。"
+    },
+    {
+      "startFrame": 760,
+      "endFrame": 960,
+      "file": "sobaya-landscape.mp4",
+      "trimFrame": 360,
+      "label": "FLUTTERKAIGI 2026",
+      "headline": "あなたは、合格できますか。"
+    }
+  ],
+  "captions": [
+    {
+      "startFrame": 15,
+      "endFrame": 86,
+      "text": "ゆめテレから、採用試験のご案内です。"
+    },
+    {
+      "startFrame": 100,
+      "endFrame": 189,
+      "text": "舞台は、赤坂の高層ビルに架かる鉄骨。"
+    },
+    {
+      "startFrame": 205,
+      "endFrame": 287,
+      "text": "端末を傾けて、あたりだけをキャッチします。"
+    },
+    {
+      "startFrame": 314,
+      "endFrame": 363,
+      "text": "福ギュン、おだてつ、そば屋。"
+    },
+    {
+      "startFrame": 371,
+      "endFrame": 443,
+      "text": "選ぶキャラクターで、難しさも変わります。"
+    },
+    {
+      "startFrame": 456,
+      "endFrame": 521,
+      "text": "100点満点、80点以上で合格。"
+    },
+    {
+      "startFrame": 530,
+      "endFrame": 583,
+      "text": "はずれを取ると、10点減点です。"
+    },
+    {
+      "startFrame": 608,
+      "endFrame": 661,
+      "text": "昼も夜も、試験は開催。"
+    },
+    {
+      "startFrame": 672,
+      "endFrame": 746,
+      "text": "街やキャラクターは、ギャラリーでも楽しめます。"
+    },
+    {
+      "startFrame": 760,
+      "endFrame": 835,
+      "text": "Flutterで動く、3次元の採用試験。"
+    },
+    {
+      "startFrame": 842,
+      "endFrame": 896,
+      "text": "あなたは、合格できますか。"
+    }
+  ]
+}

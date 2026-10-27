@@ -1,0 +1,36 @@
+{
+  "date": "2026-10-27",
+  "appCommit": "abbebe9afdaac6859c659baa661209226c218956",
+  "capture": "iPhone 18 Pro / iOS 27.0 Simulator; debug; standard graphics; demo input",
+  "output": {
+    "file": "yumemi-recruit-exam.mp4",
+    "sha256": "07b4f30e92c1d81de8432e9f4183b2fefa5d95751a884266decfb09d3c5dd84a",
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "30/1",
+        "duration": "32.000000",
+        "nb_read_frames": "960"
+      },
+      {
+        "codec_name": "aac",
+        "sample_rate": "48000",
+        "r_frame_rate": "0/0",
+        "duration": "32.000000",
+        "nb_read_frames": "1500"
+      }
+    ]
+  },
+  "checks": {
+    "flutterAnalyze": "passed",
+    "flutterTests": 59,
+    "typescript": "passed",
+    "timelineAndSourceCoverage": "passed",
+    "visualReview": "98 frames covering shot/caption boundaries and midpoints; no lingering result dialogs in adopted cuts",
+    "fullDecode": "passed",
+    "narrationASR": "complete transcript matched; canonical spelling restored in captions",
+    "auditoryReview": "not performed"
+  }
+}

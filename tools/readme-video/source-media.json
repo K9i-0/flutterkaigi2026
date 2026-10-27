@@ -1,0 +1,26 @@
+{
+  "characters-landscape.mp4": {
+    "sha256": "9dcdff1cd59110f1e0099b734b066f71519d85472525dedda7a32ca0406ae496",
+    "bytes": 154426
+  },
+  "fukugyun-landscape.mp4": {
+    "sha256": "7a90f55570aabf8d6f16aefe520e1f5c8b5d9aaebb0efc9a0bcdc56e64d4b639",
+    "bytes": 7556588
+  },
+  "gallery-landscape.mp4": {
+    "sha256": "d0ac7e1ed488986a2abe0f9d3c7d03fd9912f355d746daba73d357ee5e113519",
+    "bytes": 16938644
+  },
+  "odatetsu-landscape.mp4": {
+    "sha256": "d517fea5f8fc0c05dcd0e543a2d1ec5aa5693666a72f864f59f64a3fe81826f8",
+    "bytes": 8318502
+  },
+  "sobaya-landscape.mp4": {
+    "sha256": "f3f82c7065f48a5630aa1d55cd4660167df6ee63fdddacf5d825c6ba6b72b419",
+    "bytes": 11151993
+  },
+  "narration.wav": {
+    "sha256": "d2648f5c27305d5a1e98861c54f1514c0af7431f14e5221d233be4ec651cfe49",
+    "bytes": 2845794
+  }
+}

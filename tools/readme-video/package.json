@@ -1,0 +1,20 @@
+{
+  "name": "yumemi-readme-video",
+  "private": true,
+  "scripts": {
+    "studio": "remotion studio src/index.tsx",
+    "render": "remotion render src/index.tsx Trailer out/yumemi-recruit-exam.mp4 --codec=h264 --crf=20",
+    "poster": "remotion still src/index.tsx Trailer ../../docs/media/hero.png --frame=45",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.539",
+    "remotion": "4.0.539",
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "@types/react": "19.2.2"
+  }
+}

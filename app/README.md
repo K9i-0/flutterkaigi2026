@@ -1,6 +1,6 @@
-# ゆめみ採用試験（試作）
+# ゆめみ採用試験
 
-横画面固定、20秒のFlutter Scene製3Dキャッチゲーム。ゆめみの採用試験で、受験者が赤坂の高層ビルの間に架かった鉄骨を渡らされるというネタ。鉄骨編ではキャラクターと時間帯（昼・夜）を選び、落ちてくる「あたり」だけを集める。従来の屋上・面移動版は2026-10-21にアプリ内の動線を廃止し、2026-10-22にコード・缶GLB・Marionetteの`mode`引数も削除した。表示名は2026-10-20に「蕎麦屋」から改名。同日、ディレクトリを `26_SOBAYA_BEER_RAIN` から `26_YUMEMI_RECRUIT_EXAM` に（2026-10-21に `app/` へ移動）、Dartパッケージ名を `sobaya_beer_rain` から `yumemi_recruit_exam` に変更。アプリIDも変更：Android `jp.madogiwa.yumemi_recruit_exam`、iOS/macOS `jp.madogiwa.yumemiRecruitExam`（製品名 `yumemi_recruit_exam`）。端末上は旧アプリと別扱いになり、旧アプリの保存設定は引き継がない。
+横画面固定、約18〜20秒（標準設定）のFlutter Scene製3Dキャッチゲーム。100点満点・80点以上で合格。ゆめみの採用試験で、受験者が赤坂の高層ビルの間に架かった鉄骨を渡らされるというネタ。鉄骨編ではキャラクターと時間帯（昼・夜）を選び、落ちてくる「あたり」だけを集める。従来の屋上・面移動版は2026-10-21にアプリ内の動線を廃止し、2026-10-22にコード・缶GLB・Marionetteの`mode`引数も削除した。表示名は2026-10-20に「蕎麦屋」から改名。同日、ディレクトリを `26_SOBAYA_BEER_RAIN` から `26_YUMEMI_RECRUIT_EXAM` に（2026-10-21に `app/` へ移動）、Dartパッケージ名を `sobaya_beer_rain` から `yumemi_recruit_exam` に変更。アプリIDも変更：Android `jp.madogiwa.yumemi_recruit_exam`、iOS/macOS `jp.madogiwa.yumemiRecruitExam`（製品名 `yumemi_recruit_exam`）。端末上は旧アプリと別扱いになり、旧アプリの保存設定は引き継がない。
 
 ## 遊び方
 
@@ -17,7 +17,7 @@
 
 窓際スーパーつらいは `characters/props/product_super_try.png` を正典として3D缶へ投影。窓際ライトと発泡酒「つらめ」は今回限りの仮デザイン。仮の識別手掛かりとして発泡酒には紫帯を付けている。
 
-モデルは `assets/models/` から共有資産への相対symlink（キャラクター・ちくわ・ゆめみん・やめ太郎は2026-10-21からテクスチャ縮小版 `../assets/3d/recruit_exam_mobile/`）。そば屋は `assets/3d/hazard_rebuild/locomotion_v1/sobaya.glb` のIdle/Walk/Runを再利用し、体型や顔は変更していない。移動速度に歩行・走行モーションを同期する。効果音は2026-10-21に削除した（チープに聞こえるため。触覚フィードバックは維持）。
+モデルは `assets/models/` から共有資産への相対symlink（キャラクター・ちくわ・ゆめみん・やめ太郎は2026-10-21からテクスチャ縮小版 `../assets/3d/recruit_exam_mobile/`）。そば屋は `assets/3d/hazard_rebuild/locomotion_v1/sobaya.glb` のIdle/Walk/Runを再利用し、体型や顔は変更していない。移動速度に歩行・走行モーションを同期する。キャッチ時の効果音は2026-10-21に削除した（触覚フィードバックは維持）。2026-10-27にカウントダウン・スタート専用の効果音を追加した。
 
 ## 開発
 
@@ -44,15 +44,19 @@ Dart MCPでdebug起動し、App URIへMarionetteを接続する。
 - `action=step, seconds=0..25, x=-1..1, y=-1..1`: 60Hzで入力を進めて停止。xは画面右、yは画面奥。
 - `action=rotate, direction=1|-1`、`action=pause|resume`。
 - `action=tas, value=on|off`: 次のラウンドからTASモード。`action=settings, tab=graphics|demo|balance`: 設定画面を開く。inspectの `tasMode`・`tasRound`・`tasReady`・`tasFrame` で再生状況を見る。
-- `action=demo`: 撮影用入力コントローラ。移動入力とカメラ操作だけを供給し、通常の衝突・得点計算を通す。実機の傾きセンサー収録ではない。最初の発泡酒にも向かうため減点を確認できる。
+- `action=demo`: 撮影用入力コントローラ。移動入力とカメラ操作だけを供給し、通常の衝突・得点計算を通す。実機の傾きセンサー収録ではない。最後のはずれにも向かうため減点を確認できる。
 
 XcodeBuildMCP `record_sim_video` で開始→ `action=demo` →約25秒後に停止。`qa/playthrough.mp4` がローカルの納品動画。動画はゲーム内組み込み用資産ではないためGit管理しない。
 
-## 検証範囲
+## 現在の検証範囲
 
-iPhone 18 Pro / iOS 27シミュレーターで3D表示、右方向移動、カメラボタン、一時停止、20秒の完走、得点・減点を検証。Dartの5テストで画面座標変換、キャッチの一回性とコンボ、境界と終了、撮影入力の完走、センサー校正・無効値・途絶を検証。
+Dart／Flutterの検証は、採点・固定配置・TAS・ギャラリー・UIなどを対象にしている。2026-10-27のカウントダウン・ラウンド終了の変更時点で59テスト。変更ごとの条件と結果は以下の開発記録を参照する。
 
-実端末での傾きの感触、端末別GPU性能、Android実機の描画は未検証。落下はゲーム用の軌道計算で、缶同士の剛体衝突は扱わない。背景と仮缶は試作用の簡易造形。
+iOSシミュレーターで画面・自動入力によるプレイを確認し、実機の操作フィードバックも反映している。Pixel 7a・iPhone 14のprofile測定は [実機パフォーマンス検証](qa/device-performance-20261021/README.md) を参照。端末・ビルド・設定ごとの結果であり、全端末の性能を保証するものではない。
+
+README紹介映像はiPhone 18 Pro／iOS 27シミュレーターで収録し、Remotionで編集する。[制作手順](../tools/readme-video/README.md)。撮影用自動入力と実機の傾き操作は区別する。
+
+以下は日付ごとの開発記録。過去の点数・操作・制限時間・素材パスには、その後に変更・廃止した仕様も含む。現在の概要は [ルートREADME](../README.md) と本書末尾の最新記録を参照。
 
 ## 左右移動版（2026-10-02追加）
 
