@@ -1,0 +1,16 @@
+{
+  "video_id": "sv6l7ZY-i70",
+  "url": "https://www.youtube.com/watch?v=sv6l7ZY-i70",
+  "sha256": "b9db82b82799809d7173bb8a565467df5db34d3ee15e71f2741d601394808a56",
+  "file": "final_remotion_trailer.mp4",
+  "status": {
+    "uploadStatus": "uploaded",
+    "privacyStatus": "unlisted",
+    "license": "youtube",
+    "embeddable": true,
+    "publicStatsViewable": true,
+    "selfDeclaredMadeForKids": false,
+    "containsSyntheticMedia": true
+  },
+  "notifySubscribers": false
+}

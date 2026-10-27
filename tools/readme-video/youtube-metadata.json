@@ -1,0 +1,15 @@
+{
+  "snippet": {
+    "title": "ゆめみ採用試験｜FlutterKaigi 2026 ゲームトレーラー（60fps）",
+    "description": "ゆめみの採用試験が、ついにゲーム化！\n3人のゆめプロメンバーで変わる難易度と、Flutter Sceneで描く昼夜の赤坂。\nゆめみ採用試験に、あなたも挑戦しよう！\n\nゲーム・ソースコード\nhttps://github.com/K9i-0/flutterkaigi2026\n\n窓際族物語 公式サイト\nhttps://madogiwa.work/\n\nナレーション：ゆめテレアナウンサー（Irodori-TTS）\n映像：iPhone 18 Proシミュレーターのゲーム画面／編集：Remotion",
+    "categoryId": "20",
+    "defaultLanguage": "ja",
+    "defaultAudioLanguage": "ja"
+  },
+  "status": {
+    "privacyStatus": "unlisted",
+    "selfDeclaredMadeForKids": false,
+    "embeddable": true,
+    "containsSyntheticMedia": true
+  }
+}

@@ -6,6 +6,12 @@ iPhone 18 Pro／iOS 27シミュレーターの実プレイを全面表示する3
 
 2622×1206・60fps。端末の横長画面比率を維持し、外枠・ヘッダーなし。字幕は720p換算25px・通常ウェイトの1行で下部に表示する。ゲーム内HUDはそのまま残す。
 
+## YouTube掲載
+
+[採用版トレーラー](https://www.youtube.com/watch?v=sv6l7ZY-i70)を「窓際族物語【AI制作】」チャンネルに限定公開で掲載。READMEのサムネイルからYouTubeへ移動する。
+
+`youtube-metadata.json`に投稿内容、`youtube-upload.json`に動画IDとアップロードしたマスターのSHA-256を記録。Madogiwa Multimedia Universeの`madogiwa-studio`スキルにある`upload-youtube.py`を使用し、採用済みの2622×1206・60fpsマスターを再圧縮せずアップロードした。認証情報はリポジトリに保存しない。
+
 ## 素材と編集
 
 - `src/edit-manifest.json`: カット、字幕、音声開始位置の正本。時刻は整数フレーム（区間の終端を含まない）。
