@@ -14,10 +14,11 @@ class SettingsResult {
     required this.balance,
     required this.tas,
     required this.fps,
+    required this.sound,
   });
   final GraphicsSettings graphics;
   final BalanceSelection balance;
-  final bool tas, fps;
+  final bool tas, fps, sound;
 }
 
 /// Graphics, demo and balance settings on one screen. Nothing applies until
@@ -30,13 +31,14 @@ class SettingsDialog extends StatefulWidget {
     this.seed,
     this.tas = false,
     this.fps = false,
+    this.sound = true,
     this.inRound = false,
     this.tab = SettingsTab.graphics,
   });
   final GraphicsSettings graphics;
   final Balance balance;
   final int? seed;
-  final bool tas, fps;
+  final bool tas, fps, sound;
 
   /// Opened during a round: balance or TAS changes restart it.
   final bool inRound;
@@ -48,7 +50,7 @@ class SettingsDialog extends StatefulWidget {
 class _SettingsDialogState extends State<SettingsDialog> {
   late SettingsTab tab = widget.tab;
   late GraphicsSettings graphics = widget.graphics;
-  late bool tas = widget.tas, fps = widget.fps;
+  late bool tas = widget.tas, fps = widget.fps, sound = widget.sound;
   late final draft = BalanceDraft(widget.balance, widget.seed);
 
   @override
@@ -76,6 +78,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
           balance: draft.selection(),
           tas: tas,
           fps: fps,
+          sound: sound,
         ),
       );
     } catch (e) {
@@ -91,6 +94,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
       case SettingsTab.demo:
         tas = false;
         fps = false;
+        sound = true;
       case SettingsTab.balance:
         draft.reset();
     }
@@ -311,6 +315,14 @@ class _SettingsDialogState extends State<SettingsDialog> {
         ),
       ),
       const SizedBox(height: 8),
+      SwitchListTile(
+        key: const ValueKey('sound_toggle'),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 4),
+        title: Text(t.soundTitle),
+        subtitle: Text(t.soundBody),
+        value: sound,
+        onChanged: (v) => setState(() => sound = v),
+      ),
       SwitchListTile(
         key: const ValueKey('fps_toggle'),
         contentPadding: const EdgeInsets.symmetric(horizontal: 4),

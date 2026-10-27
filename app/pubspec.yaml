@@ -21,6 +21,7 @@ dependencies:
   hooks: ^2.0.2
   url_launcher: ^6.3.3
   qr_flutter: ^4.1.0
+  audioplayers: ^6.8.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -32,4 +33,5 @@ flutter:
     - assets/images/authors/
     - assets/models/
     - assets/billboards/
+    - assets/audio/
     - flutter_scene_generated/

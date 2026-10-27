@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:yumemi_recruit_exam/catch_game.dart';
+import 'package:yumemi_recruit_exam/character.dart';
 import 'package:yumemi_recruit_exam/tilt_input.dart';
 
 void main() {
@@ -109,6 +110,32 @@ void main() {
     ]);
     g.tick(1 / 60);
     expect(g.score, 0);
+  });
+  test('rounds count down from 3 and end right after the last drop', () {
+    for (final c in CatchCharacter.values) {
+      final g = CatchGame()
+        ..selectCharacter(c)
+        ..start();
+      expect(g.countdown, 3);
+      final last = g.drops.map((d) => d.landing).reduce(math.max);
+      expect(
+        g.roundEnd,
+        closeTo(last + g.catchGrace + CatchGame.endBeat, 1e-9),
+      );
+      expect(g.roundEnd, lessThan(g.roundSeconds));
+      while (g.phase != Phase.result) {
+        g.tick(1 / 60);
+      }
+      expect(g.time, g.roundEnd);
+      expect(g.caught + g.missed, g.goodTotal);
+    }
+    final practice = CatchGame()
+      ..practice = true
+      ..start();
+    for (var i = 0; i < 60 * 25; i++) {
+      practice.tick(1 / 60);
+    }
+    expect(practice.phase, Phase.playing);
   });
   test('stage limits and completed rounds stop movement', () {
     final g = CatchGame()..start();

@@ -28,6 +28,7 @@ import 'catch_game.dart';
 import 'character.dart';
 import 'selection_screen.dart';
 import 'catch_scene.dart';
+import 'countdown_audio.dart';
 import 'tilt_input.dart';
 
 const gold = brandBlue, cream = brandInk, ink = Colors.white;
@@ -88,6 +89,7 @@ class _RainState extends State<RainPage> {
   double inputX = 0, inputY = 0, accumulator = 0, swipe = 0, pinchFrom = 1;
   // Frame-rate HUD toggled from the settings.
   bool showFps = false;
+  final audio = CountdownAudio();
 
   /// TAS mode replays a perfect input from the next round; a round in it is
   /// [tasRound], and waits until [tasInputs] are found.
@@ -104,8 +106,9 @@ class _RainState extends State<RainPage> {
   void refreshHud() {
     final next = (
       game.phase,
-      (game.roundSeconds - game.time).ceil(),
+      (game.roundEnd - game.time).ceil(),
       game.countdown.ceil(),
+      showGo,
       game.score,
       game.combo,
       game.time < game.messageUntil ? game.message : null,
@@ -510,6 +513,7 @@ class _RainState extends State<RainPage> {
         );
       }
       showFps = (prefs.getBool('yumemi.debug.fps') ?? false);
+      audio.enabled = prefs.getBool('yumemi.sound') ?? true;
       appLang.value =
           AppLang.values
               .where((l) => l.id == prefs.getString('yumemi.lang'))
@@ -704,6 +708,8 @@ class _RainState extends State<RainPage> {
     ),
   );
 
+  /// Leaves a practice or a round in progress for the selection screen;
+  /// an unfinished round is not recorded.
   void endPractice() {
     game
       ..practice = false
@@ -711,6 +717,8 @@ class _RainState extends State<RainPage> {
       ..drops.clear();
     paused = false;
     frozen = false;
+    tasRound = false;
+    _tasToken++;
     world.update(game, 0);
   }
 
@@ -728,6 +736,7 @@ class _RainState extends State<RainPage> {
         seed: seed,
         tas: tasMode,
         fps: showFps,
+        sound: audio.enabled,
         inRound: inRound,
         tab: tab,
       ),
@@ -738,6 +747,11 @@ class _RainState extends State<RainPage> {
       return;
     }
     if (r.fps != showFps) await setFps(r.fps);
+    if (r.sound != audio.enabled) {
+      audio.enabled = r.sound;
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('yumemi.sound', r.sound);
+    }
     if (r.graphics != graphics) {
       graphics = r.graphics;
       world.lighting.graphics = graphics;
@@ -785,6 +799,7 @@ class _RainState extends State<RainPage> {
     tasInputs = null;
     tasFrame = 0;
     if (tasRound) loadTas();
+    audio.tick();
   }
 
   /// Finds the perfect input for the round that just started.
@@ -840,7 +855,15 @@ class _RainState extends State<RainPage> {
         }
       }
     }
+    final phase = game.phase, count = game.countdown.ceil();
     game.tick(dt, inputX: x, inputY: y);
+    if (phase == Phase.countdown) {
+      if (game.phase == Phase.playing) {
+        audio.go();
+      } else if (game.countdown.ceil() != count) {
+        audio.tick();
+      }
+    }
     if (game.eventId != lastEvent) {
       lastEvent = game.eventId;
       if (game.message == GameMessage.bad) {
@@ -914,9 +937,13 @@ class _RainState extends State<RainPage> {
   void dispose() {
     benchmark?.dispose();
     tilt.dispose();
+    audio.dispose();
     lifecycle?.dispose();
     super.dispose();
   }
+
+  /// "Start!" right after the countdown.
+  bool get showGo => game.phase == Phase.playing && game.time < .8;
 
   Widget chip(String text, {Color color = cream}) => Container(
     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -1126,7 +1153,7 @@ class _RainState extends State<RainPage> {
                                 ],
                                 chip(
                                   t.secondsLeft(
-                                    (game.roundSeconds - game.time).ceil(),
+                                    (game.roundEnd - game.time).ceil(),
                                   ),
                                 ),
                                 const SizedBox(width: 8),
@@ -1158,10 +1185,7 @@ class _RainState extends State<RainPage> {
                             top: game.practice ? 100 : 62,
                             child: Center(
                               child: game.phase == Phase.countdown
-                                  ? chip(
-                                      t.countdown(game.countdown.ceil()),
-                                      color: gold,
-                                    )
+                                  ? const SizedBox()
                                   : game.time < game.messageUntil
                                   ? chip(
                                       messageText(t),
@@ -1172,6 +1196,16 @@ class _RainState extends State<RainPage> {
                                   : game.combo > 1
                                   ? chip('${game.combo} COMBO', color: gold)
                                   : const SizedBox(),
+                            ),
+                          ),
+                        if (playing)
+                          Positioned.fill(
+                            child: CountdownOverlay(
+                              text: game.phase == Phase.countdown
+                                  ? '${game.countdown.ceil()}'
+                                  : showGo
+                                  ? t.go
+                                  : null,
                             ),
                           ),
                         // Ready and result show the selection screen instead.
@@ -1207,6 +1241,19 @@ class _RainState extends State<RainPage> {
                                     paused = false;
                                     tilt.calibrate();
                                   }, 'resume'),
+                                  const SizedBox(height: 12),
+                                  OutlinedButton.icon(
+                                    key: const ValueKey('pause_to_select'),
+                                    style: OutlinedButton.styleFrom(
+                                      foregroundColor: cream,
+                                      side: BorderSide(
+                                        color: cream.withValues(alpha: .4),
+                                      ),
+                                    ),
+                                    icon: const Icon(Icons.people_alt_outlined),
+                                    label: Text(t.backToSelect),
+                                    onPressed: () => setState(endPractice),
+                                  ),
                                 ],
                               ),
                             ),
@@ -1278,4 +1325,61 @@ class _BadCatchFlashState extends State<_BadCatchFlash>
       },
     );
   }
+}
+
+/// The countdown numbers and "Start!", large in the middle of the screen.
+/// Each new text pops in and fades; it ignores pointers.
+class CountdownOverlay extends StatelessWidget {
+  const CountdownOverlay({super.key, this.text});
+  final String? text;
+
+  double get size => (text?.length ?? 1) == 1 ? 168 : 96;
+  TextStyle get style =>
+      TextStyle(fontSize: size, fontWeight: FontWeight.w900, height: 1.1);
+
+  @override
+  Widget build(BuildContext context) => IgnorePointer(
+    child: Center(
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 260),
+        switchInCurve: Curves.easeOutBack,
+        transitionBuilder: (child, animation) => FadeTransition(
+          opacity: animation,
+          child: ScaleTransition(
+            scale: Tween(begin: 1.8, end: 1.0).animate(animation),
+            child: child,
+          ),
+        ),
+        child: text == null
+            ? const SizedBox(key: ValueKey('countdown_none'))
+            : Stack(
+                key: ValueKey('countdown_$text'),
+                children: [
+                  // White outline with a soft shadow, then the brand fill.
+                  Text(
+                    text!,
+                    style: style.copyWith(
+                      foreground: Paint()
+                        ..style = PaintingStyle.stroke
+                        ..strokeWidth = size / 9
+                        ..strokeJoin = StrokeJoin.round
+                        ..color = Colors.white,
+                      shadows: const [
+                        Shadow(blurRadius: 16, color: Color(0x66000000)),
+                      ],
+                    ),
+                  ),
+                  ShaderMask(
+                    blendMode: BlendMode.srcIn,
+                    shaderCallback: brandGradient.createShader,
+                    child: Text(
+                      text!,
+                      style: style.copyWith(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+      ),
+    ),
+  );
 }

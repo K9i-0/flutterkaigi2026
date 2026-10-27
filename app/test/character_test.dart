@@ -70,7 +70,7 @@ void main() {
   });
 
   for (final character in CatchCharacter.values) {
-    test('${character.id}: speed, radius and full 20-second lane round', () {
+    test('${character.id}: speed, radius and a full lane round', () {
       final g = CatchGame();
       g.selectCharacter(character);
       g.balance = Balance.fromMap({'catchMargin': 0, 'catchGrace': 0});
@@ -90,7 +90,8 @@ void main() {
         expect(g.x.abs(), lessThanOrEqualTo(3.9));
       }
       expect(g.phase, Phase.result);
-      expect(g.time, 20);
+      expect(g.time, g.roundEnd);
+      expect(g.roundEnd, inInclusiveRange(17, 20));
       expect(g.vx, 0);
       g.start(seed: 7);
       expect(g.baseMoveSpeed, character.moveSpeed);

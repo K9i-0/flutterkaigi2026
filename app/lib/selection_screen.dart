@@ -39,6 +39,16 @@ class SelectionScreen extends StatelessWidget {
   final bool tas;
   static const paper = Colors.white, text = brandInk, muted = brandMuted;
 
+  /// Whole seconds of the selected character's round, which ends right after
+  /// its last drop.
+  int get roundLength =>
+      (CatchGame()
+            ..balance = game.balance
+            ..selectCharacter(game.selectedCharacter)
+            ..start())
+          .roundEnd
+          .ceil();
+
   Widget item(Strings t, bool bad) {
     final character = game.selectedCharacter;
     final detail = t.dropDetail(
@@ -161,7 +171,7 @@ class SelectionScreen extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          '${t.roundLength(game.roundSeconds.round())}  ·  ${t.passLine(CatchGame.passScore)}',
+                          '${t.roundLength(roundLength)}  ·  ${t.passLine(CatchGame.passScore)}',
                           style: const TextStyle(fontSize: 12, color: muted),
                         ),
                         const SizedBox(width: 12),

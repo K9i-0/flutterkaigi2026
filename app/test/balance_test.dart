@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:yumemi_recruit_exam/balance.dart';
 import 'package:yumemi_recruit_exam/catch_game.dart';
@@ -98,7 +100,11 @@ void main() {
       );
     }
     expect(g.phase, Phase.result);
-    expect(g.time, 60);
+    // The round ends just after its last drop is judged, not on an empty sky.
+    final last = g.drops.map((d) => d.landing).reduce(math.max);
+    expect(g.time, closeTo(last + g.catchGrace + CatchGame.endBeat, 1e-9));
+    expect(g.time, lessThanOrEqualTo(60));
+    expect(g.drops.every((d) => d.resolved), true);
     expect(g.drops.every((d) => d.resolved), true);
   });
 }

@@ -95,6 +95,14 @@ class CatchGame {
 
   double get roundSeconds => balance['roundSeconds'];
 
+  /// Short beat after the last drop is judged, so a round ends right after its
+  /// final catch instead of on an empty sky.
+  static const endBeat = .35;
+
+  /// When the round ends: just after the last drop is judged, at most
+  /// [roundSeconds]. Set by [start]; practice never ends.
+  double roundEnd = duration;
+
   /// Practice: no time limit, drops keep coming, score and counters stay 0.
   bool practice = false;
 
@@ -129,7 +137,7 @@ class CatchGame {
     _baseCatchRadius = roundCharacter.catchRadius;
     phase = Phase.countdown;
     time = 0;
-    countdown = 2;
+    countdown = 3;
     x = 0;
     vx = 0;
     yaw = 0;
@@ -150,6 +158,12 @@ class CatchGame {
     _nextId = 0;
     _spawnUntil(practice ? 30 : roundSeconds - fallSeconds - 1);
     goodTotal = drops.where((d) => !d.kind.isBad).length;
+    roundEnd = practice || drops.isEmpty
+        ? roundSeconds
+        : math.min(
+            roundSeconds,
+            drops.map((d) => d.landing).reduce(math.max) + catchGrace + endBeat,
+          );
   }
 
   int get _score => math.max(
@@ -296,8 +310,8 @@ class CatchGame {
       if (_nextId * spawnInterval < time + 10) _spawnUntil(time + 30);
       return;
     }
-    if (time >= roundSeconds) {
-      time = roundSeconds;
+    if (time >= roundEnd) {
+      time = roundEnd;
       phase = Phase.result;
       vx = 0;
     }
@@ -314,6 +328,7 @@ class CatchGame {
     'spawnInterval': spawnInterval,
     'fallSeconds': fallSeconds,
     'badRatio': badRatio,
+    'roundEnd': roundEnd,
     'dropKinds': drops.map((d) => d.kind.name).toSet().toList(),
     'baseMoveSpeed': baseMoveSpeed,
     'baseCatchRadius': baseCatchRadius,

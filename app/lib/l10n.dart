@@ -206,7 +206,7 @@ class Strings {
   String secondsLeft(int s) => _('残り $s 秒', '$s s left');
   String get practiceBadge => _('お試しモード（得点なし）', 'Practice (no score)');
   String get endPractice => _('お試しを終える', 'End practice');
-  String countdown(int s) => _('準備！ $s', 'Ready! $s');
+  String get go => _('スタート！', 'GO!');
   String niceCatch(int? points) => points == null
       ? _('ナイスキャッチ！', 'Nice catch!')
       : _('ナイスキャッチ！  +$points', 'Nice catch!  +$points');
@@ -217,6 +217,7 @@ class Strings {
 
   String get paused => _('ひと休み', 'Paused');
   String get resume => _('持ち方を合わせて再開', 'Hold steady and resume');
+  String get backToSelect => _('キャラクター選択に戻る', 'Back to characters');
 
   String get recordTitle => _('記録を残す', 'Save your record');
   String get nickname => _('ニックネーム', 'Nickname');
@@ -255,6 +256,9 @@ class Strings {
   );
   String get tasNotRecorded =>
       _('TASのプレイは記録に残りません', 'TAS rounds are not recorded');
+  String get soundTitle => _('効果音', 'Sound effects');
+  String get soundBody =>
+      _('開始前の「3・2・1」とスタートの音', 'Beeps for the 3-2-1 countdown and start');
   String get fpsTitle => _('FPS表示', 'FPS display');
   String get fpsBody => _(
     'プレイ画面の左下にフレームレートと描画時間を出す',
