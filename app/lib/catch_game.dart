@@ -47,6 +47,7 @@ class CatchGame {
   static const passScore = 80;
 
   Balance balance = Balance.defaults();
+
   /// Layout of the current round; set by [start].
   int seed = 0;
   CatchCharacter _selectedCharacter = CatchCharacter.ctoOdatetsu;

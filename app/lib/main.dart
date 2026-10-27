@@ -80,7 +80,8 @@ class _RainState extends State<RainPage> {
           // The result of the current round was offered for the ranking.
           recordPrompted =
           false,
-      recordOpen = false;
+      recordOpen = false,
+      resultOpen = false;
   GameRecord? lastRecord;
   String? error;
   double inputX = 0, inputY = 0, accumulator = 0, swipe = 0, pinchFrom = 1;
@@ -153,7 +154,9 @@ class _RainState extends State<RainPage> {
           'paused': paused,
           'lang': appLang.value.id,
           'lastRecord': lastRecord?.toMap(),
-          if (lastRecord != null) 'lastRank': records.rankOf(lastRecord!),
+          if (lastRecord?.named ?? false)
+            'lastRank': records.rankOf(lastRecord!),
+          'resultOpen': resultOpen,
           'records': records.records.length,
           ...game.inspect(),
           if (ready) ...world.inspect(),
@@ -161,7 +164,7 @@ class _RainState extends State<RainPage> {
       );
       registerMarionetteExtension(
         name: 'madogiwa.catchAction',
-        description: 'action=select|configure|start|demo|step|rotate|pause|resume|endPractice|zoom|record|ranking|lang|graphics|benchmark|fps. start: practice=true for the no-score mode. zoom: value=magnification (clamped to zoomMin..zoomMax). record: name answers the nickname dialog (omit to skip). ranking opens the board. lang: value=ja|en. fps: value=on|off (debug FPS HUD). graphics: json booleans, persist=true optional. benchmark: label, timeOfDay. select: character ID and/or timeOfDay=day|night. configure: json settings, seed (an integer, or fixed for the character layout). step seconds 0..25 x/y -1..1. Demo supplies inputs only.',
+        description: 'action=select|configure|start|demo|step|rotate|pause|resume|endPractice|zoom|record|ranking|lang|graphics|benchmark|fps. start: practice=true for the no-score mode. zoom: value=magnification (clamped to zoomMin..zoomMax). record: name answers the nickname dialog (omit to cancel); the result dialog opens it with its result_record button. ranking opens the records, tab=ranking|history. lang: value=ja|en. fps: value=on|off (debug FPS HUD). graphics: json booleans, persist=true optional. benchmark: label, timeOfDay. select: character ID and/or timeOfDay=day|night. configure: json settings, seed (an integer, or fixed for the character layout). step seconds 0..25 x/y -1..1. Demo supplies inputs only.',
         callback: (p) async {
           if (!ready) return MarionetteExtensionResult.error(1, 'Not ready');
           switch (p['action']) {
@@ -196,7 +199,12 @@ class _RainState extends State<RainPage> {
               final name = p['name']?.trim() ?? '';
               Navigator.of(context).pop(name.isEmpty ? null : name);
             case 'ranking':
-              openRanking(highlight: lastRecord);
+              openRecords(
+                highlight: lastRecord,
+                tab: p['tab'] == 'history'
+                    ? RecordsTab.history
+                    : RecordsTab.ranking,
+              );
             case 'graphics':
               final data =
                   jsonDecode(p['json'] ?? '{}') as Map<String, dynamic>;
@@ -608,7 +616,8 @@ class _RainState extends State<RainPage> {
     await prefs.setString('yumemi.lang', lang.id);
   }
 
-  /// A finished scored round asks once for a nickname, then shows the board.
+  /// A finished scored round is saved to the history once, then its result
+  /// dialog offers to record a nickname for the ranking.
   void checkRoundEnd() {
     if (recordPrompted ||
         game.practice ||
@@ -617,22 +626,13 @@ class _RainState extends State<RainPage> {
       return;
     }
     recordPrompted = true;
-    WidgetsBinding.instance.addPostFrameCallback((_) => promptRecord());
+    WidgetsBinding.instance.addPostFrameCallback((_) => showResult());
   }
 
-  Future<void> promptRecord() async {
+  Future<void> showResult() async {
     if (!mounted) return;
-    recordOpen = true;
-    final name = await showDialog<String>(
-      context: context,
-      barrierDismissible: false,
-      builder: (_) =>
-          RecordDialog(score: game.score, character: game.roundCharacter),
-    );
-    recordOpen = false;
-    if (name == null || !mounted) return;
     final record = GameRecord(
-      name: name,
+      name: '',
       score: game.score,
       character: game.roundCharacter,
       caught: game.caught,
@@ -643,15 +643,43 @@ class _RainState extends State<RainPage> {
     await records.add(record);
     if (!mounted) return;
     setState(() => lastRecord = record);
-    await openRanking(highlight: record);
+    resultOpen = true;
+    final named = await showDialog<GameRecord>(
+      context: context,
+      builder: (_) =>
+          ResultDialog(record: record, onRecord: () => nameRecord(record)),
+    );
+    resultOpen = false;
+    if (named != null && mounted) await openRecords(highlight: named);
   }
 
-  Future<void> openRanking({GameRecord? highlight}) => showDialog<void>(
+  /// Nickname entry for [record]; null when cancelled.
+  Future<GameRecord?> nameRecord(GameRecord record) async {
+    recordOpen = true;
+    final name = await showDialog<String>(
+      context: context,
+      builder: (_) =>
+          RecordDialog(score: record.score, character: record.character),
+    );
+    recordOpen = false;
+    if (name == null || !mounted) return null;
+    final named = await records.rename(record, name);
+    if (identical(lastRecord, record)) lastRecord = named;
+    if (mounted) setState(() {});
+    return named;
+  }
+
+  Future<void> openRecords({
+    GameRecord? highlight,
+    RecordsTab tab = RecordsTab.ranking,
+  }) => showDialog<void>(
     context: context,
-    builder: (_) => RankingDialog(
+    builder: (_) => RecordsDialog(
       store: records,
       initial: highlight?.character ?? game.selectedCharacter,
       highlight: highlight,
+      tab: tab,
+      onName: nameRecord,
     ),
   );
 
@@ -883,16 +911,10 @@ class _RainState extends State<RainPage> {
               }),
               onStart: () => setState(start),
               onPractice: () => setState(() => start(practice: true)),
-              onRanking: openRanking,
+              onRecords: openRecords,
               lang: appLang.value,
               onLang: setLang,
               onTitle: () => setState(() => showTitle = true),
-              rank: lastRecord == null
-                  ? null
-                  : t.rankOf(
-                      records.rankOf(lastRecord!),
-                      records.ranking(lastRecord!.character).length,
-                    ),
               onSettings: kReleaseMode ? null : openBalance,
               onGraphics: openGraphics,
             );

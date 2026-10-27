@@ -5,6 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'character.dart';
 
 /// One finished round. Difficulty differs per character, so ranks are per character.
+/// Every scored round is kept in the history; it joins the ranking once it has
+/// a nickname, which can be added right after the round or later from the history.
 class GameRecord {
   const GameRecord({
     required this.name,
@@ -19,6 +21,18 @@ class GameRecord {
   final int score, caught, bad, missed;
   final CatchCharacter character;
   final DateTime at;
+
+  /// Empty until the player saves a nickname.
+  bool get named => name.isNotEmpty;
+  GameRecord withName(String name) => GameRecord(
+    name: name,
+    score: score,
+    character: character,
+    caught: caught,
+    bad: bad,
+    missed: missed,
+    at: at,
+  );
 
   Map<String, Object> toMap() => {
     'name': name,
@@ -69,11 +83,32 @@ class RecordStore {
 
   Future<void> add(GameRecord record) async {
     records.add(record);
-    // Keep the best scores when the cap is reached.
-    if (records.length > maxRecords) {
-      records.sort(compare);
-      records.removeRange(maxRecords, records.length);
+    // At the cap, unnamed history goes first (oldest), then the lowest scores.
+    while (records.length > maxRecords) {
+      final unnamed = records.where((r) => !r.named);
+      records.remove(
+        unnamed.isNotEmpty
+            ? unnamed.reduce((a, b) => a.at.isBefore(b.at) ? a : b)
+            : (records.toList()..sort(compare)).last,
+      );
     }
+    await _save();
+  }
+
+  /// Gives [record] a nickname in place and returns the named copy.
+  Future<GameRecord> rename(GameRecord record, String name) async {
+    final i = records.indexWhere((r) => identical(r, record));
+    final named = record.withName(name);
+    if (i < 0) {
+      records.add(named);
+    } else {
+      records[i] = named;
+    }
+    await _save();
+    return named;
+  }
+
+  Future<void> _save() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(
       key,
@@ -85,10 +120,16 @@ class RecordStore {
   static int compare(GameRecord a, GameRecord b) =>
       a.score != b.score ? b.score.compareTo(a.score) : a.at.compareTo(b.at);
 
+  /// Named records of [character], best first.
   List<GameRecord> ranking(CatchCharacter character) =>
-      records.where((r) => r.character == character).toList()..sort(compare);
+      records.where((r) => r.named && r.character == character).toList()
+        ..sort(compare);
 
-  /// 1-based rank; equal scores share the best rank.
+  /// Every round, newest first.
+  List<GameRecord> get history =>
+      records.toList()..sort((a, b) => b.at.compareTo(a.at));
+
+  /// 1-based rank among named records; equal scores share the best rank.
   int rankOf(GameRecord record) =>
       ranking(record.character).where((r) => r.score > record.score).length + 1;
 }

@@ -221,8 +221,11 @@ class Strings {
   String get recordTitle => _('記録を残す', 'Save your record');
   String get nickname => _('ニックネーム', 'Nickname');
   String get save => _('記録する', 'Save');
-  String get skip => _('記録しない', 'Skip');
-  String skipIn(int s) => _('記録しない（$s）', 'Skip ($s)');
+  String get records => _('記録', 'Records');
+  String get history => _('スコア履歴', 'Score history');
+  String get addName => _('名前を付ける', 'Add name');
+  String get recordHint =>
+      _('ニックネームを付けるとランキングに載ります', 'Add a nickname to join the ranking');
   String get close => _('閉じる', 'Close');
   String rankOf(int rank, int total) =>
       _('$total人中 $rank位', 'Rank $rank of $total');

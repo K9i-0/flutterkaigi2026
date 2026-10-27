@@ -84,6 +84,62 @@ void main() {
     expect(reloaded.ranking(CatchCharacter.fukuchan).single.name, 'c');
   });
 
+  test(
+    'unnamed rounds stay in the history until they get a nickname',
+    () async {
+      SharedPreferences.setMockInitialValues({});
+      final store = RecordStore();
+      await store.load();
+      GameRecord r(String name, int score, int minute) => GameRecord(
+        name: name,
+        score: score,
+        character: CatchCharacter.ctoOdatetsu,
+        caught: 1,
+        bad: 0,
+        missed: 0,
+        at: DateTime(2026, 10, 27, 10, minute),
+      );
+      final named = r('a', 70, 0), blank = r('', 95, 1);
+      await store.add(named);
+      await store.add(blank);
+      expect(store.ranking(CatchCharacter.ctoOdatetsu), [named]);
+      expect(store.history, [blank, named]);
+      final renamed = await store.rename(blank, 'b');
+      expect(store.ranking(CatchCharacter.ctoOdatetsu).map((e) => e.name), [
+        'b',
+        'a',
+      ]);
+      expect(store.rankOf(renamed), 1);
+      expect(store.records.length, 2);
+      final reloaded = RecordStore();
+      await reloaded.load();
+      expect(reloaded.history.map((e) => e.name), ['b', 'a']);
+    },
+  );
+
+  test('the cap drops the oldest unnamed round before any named one', () async {
+    SharedPreferences.setMockInitialValues({});
+    final store = RecordStore();
+    for (var i = 0; i < RecordStore.maxRecords; i++) {
+      store.records.add(
+        GameRecord(
+          name: i == 0 ? '' : 'n$i',
+          score: 0,
+          character: CatchCharacter.sobaya,
+          caught: 0,
+          bad: 0,
+          missed: 0,
+          at: DateTime(2026, 10, 27).add(Duration(minutes: i)),
+        ),
+      );
+    }
+    final oldestBlank = store.records.first;
+    await store.add(store.records.last.withName('late'));
+    expect(store.records.length, RecordStore.maxRecords);
+    expect(store.records.contains(oldestBlank), false);
+    expect(store.records.every((r) => r.named), true);
+  });
+
   testWidgets('picker translates into English', (tester) async {
     await tester.pumpWidget(
       MaterialApp(
@@ -140,24 +196,32 @@ void main() {
     expect(result, 'ゆめみ');
   });
 
-  testWidgets('untouched nickname dialog closes itself as a skip', (
+  testWidgets('result dialog shows the score and records only on request', (
     tester,
   ) async {
-    String? result = 'unset';
-    Future<void> open() async {
-      await tester.tap(find.text('open'));
-      await tester.pumpAndSettle();
-    }
-
+    final record = GameRecord(
+      name: '',
+      score: 86,
+      character: CatchCharacter.ctoOdatetsu,
+      caught: 11,
+      bad: 0,
+      missed: 1,
+      at: DateTime(2026, 10, 27),
+    );
+    var asked = 0;
+    Object? result = 'unset';
     await tester.pumpWidget(
       MaterialApp(
         home: Builder(
           builder: (context) => TextButton(
-            onPressed: () async => result = await showDialog<String>(
+            onPressed: () async => result = await showDialog<GameRecord>(
               context: context,
-              builder: (_) => const RecordDialog(
-                score: 900,
-                character: CatchCharacter.fukuchan,
+              builder: (_) => ResultDialog(
+                record: record,
+                onRecord: () async {
+                  asked++;
+                  return asked == 1 ? null : record.withName('ゆめみ');
+                },
               ),
             ),
             child: const Text('open'),
@@ -165,24 +229,61 @@ void main() {
         ),
       ),
     );
-    await open();
-    expect(find.text('記録しない（10）'), findsOneWidget);
-    await tester.pump(const Duration(seconds: 3));
-    expect(find.text('記録しない（7）'), findsOneWidget);
-    await tester.pump(const Duration(seconds: 7));
+    await tester.tap(find.text('open'));
     await tester.pumpAndSettle();
+    expect(find.text('86点'), findsOneWidget);
+    expect(find.text('合格'), findsOneWidget);
     expect(find.byType(RecordDialog), findsNothing);
-    expect(result, isNull);
+    // A cancelled nickname keeps the result open.
+    await tester.tap(find.byKey(const ValueKey('result_record')));
+    await tester.pumpAndSettle();
+    expect(find.byType(ResultDialog), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('result_record')));
+    await tester.pumpAndSettle();
+    expect(find.byType(ResultDialog), findsNothing);
+    expect((result as GameRecord).name, 'ゆめみ');
+  });
 
-    // Tapping the field stops the countdown for good.
-    result = 'unset';
-    await open();
-    await tester.pump(const Duration(seconds: 4));
-    await tester.tap(find.byKey(const ValueKey('record_name')));
-    await tester.pump();
-    expect(find.text('記録しない'), findsOneWidget);
-    await tester.pump(const Duration(seconds: 30));
-    expect(find.byType(RecordDialog), findsOneWidget);
-    expect(result, 'unset');
+  testWidgets('records open on the ranking; the history can add a name', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1600, 900);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    SharedPreferences.setMockInitialValues({});
+    final store = RecordStore();
+    GameRecord r(String name, int score, int minute) => GameRecord(
+      name: name,
+      score: score,
+      character: CatchCharacter.fukuchan,
+      caught: 1,
+      bad: 0,
+      missed: 0,
+      at: DateTime(2026, 10, 27, 10, minute),
+    );
+    store.records.addAll([r('a', 60, 0), r('', 100, 1)]);
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: RecordsDialog(
+            store: store,
+            initial: CatchCharacter.fukuchan,
+            onName: (record) => store.rename(record, 'b'),
+          ),
+        ),
+      ),
+    );
+    expect(find.text('a'), findsOneWidget);
+    expect(find.text('100点'), findsNothing);
+    await tester.tap(find.byKey(const ValueKey('records_tab_history')));
+    await tester.pumpAndSettle();
+    expect(find.text('100点'), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('history_name_0')));
+    await tester.pumpAndSettle();
+    expect(find.text('b'), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('records_tab_ranking')));
+    await tester.pumpAndSettle();
+    expect(find.text('b'), findsOneWidget);
+    expect(find.text('100点'), findsOneWidget);
   });
 }

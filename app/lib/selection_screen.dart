@@ -17,11 +17,10 @@ class SelectionScreen extends StatelessWidget {
     required this.onTime,
     required this.onStart,
     required this.onPractice,
-    required this.onRanking,
+    required this.onRecords,
     required this.lang,
     required this.onLang,
     required this.onTitle,
-    this.rank,
     this.onSettings,
     this.onGraphics,
   });
@@ -29,13 +28,11 @@ class SelectionScreen extends StatelessWidget {
   final CatchScene world;
   final ValueChanged<CatchCharacter> onSelect;
   final ValueChanged<StageTime> onTime;
-  final VoidCallback onStart, onPractice, onRanking;
+  final VoidCallback onStart, onPractice, onRecords;
   final AppLang lang;
   final ValueChanged<AppLang> onLang;
   final VoidCallback onTitle;
 
-  /// Saved rank of the round shown in the result header, if recorded.
-  final String? rank;
   final VoidCallback? onSettings, onGraphics;
   static const paper = Colors.white, text = brandInk, muted = brandMuted;
 
@@ -160,42 +157,27 @@ class SelectionScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        if (game.phase == Phase.result)
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  _Verdict(
-                                    passed: game.passed,
-                                    label: game.passed ? t.passed : t.failed,
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    '${t.points(game.score)}${rank == null ? '' : '  ·  $rank'}',
-                                    key: const ValueKey('result_score'),
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                t.results(game.caught, game.bad, game.missed),
-                                style: const TextStyle(
-                                  fontSize: 10,
-                                  color: muted,
-                                ),
-                              ),
-                            ],
-                          )
-                        else
-                          Text(
-                            '${t.roundLength(game.roundSeconds.round())}  ·  ${t.passLine(CatchGame.passScore)}',
-                            style: const TextStyle(fontSize: 12, color: muted),
+                        Text(
+                          '${t.roundLength(game.roundSeconds.round())}  ·  ${t.passLine(CatchGame.passScore)}',
+                          style: const TextStyle(fontSize: 12, color: muted),
+                        ),
+                        const SizedBox(width: 12),
+                        // Ranking and every round's score; the result itself
+                        // is shown in a dialog when the round ends.
+                        OutlinedButton.icon(
+                          key: const ValueKey('records_open'),
+                          onPressed: onRecords,
+                          style: OutlinedButton.styleFrom(
+                            visualDensity: VisualDensity.compact,
+                            foregroundColor: brandBlue,
+                            side: const BorderSide(color: Color(0xffd3eee9)),
                           ),
+                          icon: const Icon(
+                            Icons.emoji_events_outlined,
+                            size: 18,
+                          ),
+                          label: Text(t.records),
+                        ),
                         const SizedBox(width: 12),
                         LanguageToggle(selected: lang, onChanged: onLang),
                       ],
@@ -289,16 +271,6 @@ class SelectionScreen extends StatelessWidget {
                               color: muted,
                             ),
                           ),
-                        IconButton(
-                          key: const ValueKey('ranking_open'),
-                          tooltip: t.ranking,
-                          onPressed: onRanking,
-                          icon: const Icon(
-                            Icons.emoji_events_outlined,
-                            size: 20,
-                            color: brandBlue,
-                          ),
-                        ),
                         const SizedBox(width: 4),
                         OutlinedButton(
                           key: const ValueKey('practice'),
@@ -505,32 +477,6 @@ class TimeOfDayToggle extends StatelessWidget {
             ),
           ),
       ],
-    ),
-  );
-}
-
-/// Pass/fail stamp beside the result score.
-class _Verdict extends StatelessWidget {
-  const _Verdict({required this.passed, required this.label});
-  final bool passed;
-  final String label;
-  @override
-  Widget build(BuildContext context) => Container(
-    key: ValueKey(passed ? 'result_passed' : 'result_failed'),
-    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-    decoration: BoxDecoration(
-      gradient: passed ? brandGradient : null,
-      color: passed ? null : const Color(0xffeef2f4),
-      borderRadius: BorderRadius.circular(999),
-    ),
-    child: Text(
-      label,
-      style: TextStyle(
-        fontSize: 14,
-        fontWeight: FontWeight.w800,
-        letterSpacing: 1,
-        color: passed ? Colors.white : brandMuted,
-      ),
     ),
   );
 }
