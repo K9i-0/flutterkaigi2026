@@ -1,9 +1,6 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:yumemi_recruit_exam/balance.dart';
-import 'package:yumemi_recruit_exam/balance_panel.dart';
 import 'package:yumemi_recruit_exam/fps_overlay.dart';
 
 FrameTiming frame(int startUs, {int buildUs = 4000, int rasterUs = 8000}) =>
@@ -34,26 +31,5 @@ void main() {
     final stats = FpsStats();
     expect(stats.add([for (var i = 0; i < 17; i++) frame(i * 33333)]), true);
     expect(stats.fps, closeTo(30, .1));
-  });
-
-  testWidgets('debug panel toggles the FPS HUD immediately', (tester) async {
-    tester.view.physicalSize = const Size(1600, 900);
-    tester.view.devicePixelRatio = 1;
-    addTearDown(tester.view.reset);
-    final changes = <bool>[];
-    await tester.pumpWidget(
-      MaterialApp(
-        home: BalancePanel(
-          balance: Balance.defaults(),
-          seed: 1,
-          onFps: changes.add,
-        ),
-      ),
-    );
-    await tester.tap(find.byKey(const ValueKey('fps_toggle')));
-    await tester.pump();
-    expect(changes, [true]);
-    await tester.tap(find.byKey(const ValueKey('fps_toggle')));
-    expect(changes, [true, false]);
   });
 }

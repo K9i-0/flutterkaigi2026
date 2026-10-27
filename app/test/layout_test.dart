@@ -1,13 +1,11 @@
+import 'dart:math' as math;
+
 import 'package:flutter_test/flutter_test.dart';
+import 'package:yumemi_recruit_exam/balance.dart';
 import 'package:yumemi_recruit_exam/catch_game.dart';
 import 'package:yumemi_recruit_exam/character.dart';
 
 import '../tool/balance_sim.dart';
-
-/// Sobaya's fixed layout made perfect by `tool/balance_report.dart`.
-const sobayaTas =
-    'L118 R29 N1 R1 L18 R75 N1 R5 L2 R44 N1 R1 N1 L125 R24 L10 N1 R82 N1 R5 '
-    'L37 N1 R57 N1 R3 L78 R8 N1 R12 L39 N1 R108 L43 R3 N1 R2 L80 R105 N1 R12';
 
 void main() {
   test('every round without a seed plays the character layout', () {
@@ -35,12 +33,61 @@ void main() {
     expect(hard.perfect, 0);
   });
 
-  test('Sobaya is perfect only with a frame-exact input', () {
-    final tas = replay(CatchCharacter.sobaya, decodeTas(sobayaTas));
-    expect([tas.caught, tas.bad, tas.score], [tas.goodTotal, 0, 100]);
+  test('every preset TAS is perfect; Sobaya needs one', () {
+    for (final c in CatchCharacter.values) {
+      final tas = replay(c, decodeTas(presetTas[c]!));
+      expect([tas.caught, tas.bad, tas.score], [tas.goodTotal, 0, 100]);
+    }
     // Even an instant, flawless greedy player misses something.
     final greedy = playHuman(CatchCharacter.sobaya, reaction: 0, aimError: 0);
     expect(greedy.score, lessThan(100));
+  });
+
+  test('TAS mode uses the presets and searches for other settings', () async {
+    final balance = Balance.defaults();
+    expect(
+      await tasFor(CatchCharacter.ctoOdatetsu, balance),
+      decodeTas(presetTas[CatchCharacter.ctoOdatetsu]!),
+    );
+    final slow = Balance.fromMap({'fallSeconds': 4});
+    final found = await tasFor(CatchCharacter.fukuchan, slow, seed: 3);
+    expect(found, isNotNull);
+    expect(
+      replay(CatchCharacter.fukuchan, found!, seed: 3, balance: slow).score,
+      100,
+    );
+    // A camera turned to any angle walks the same way as the front view.
+    final g = CatchGame()..start();
+    g.phase = Phase.playing;
+    for (final yaw in [0.0, .5, math.pi / 2, 2.6, -1.2]) {
+      g
+        ..yaw = yaw
+        ..targetYaw = yaw
+        ..vx = 0;
+      final x = g.x, s = tasInput(1, yaw);
+      g.tick(1 / 60, inputX: s.x, inputY: s.y);
+      expect(g.x, lessThan(x));
+    }
+  });
+
+  test('TAS replays to 100 while the camera turns, as in the app', () {
+    for (final c in CatchCharacter.values) {
+      final inputs = decodeTas(presetTas[c]!);
+      final g = CatchGame()
+        ..selectCharacter(c)
+        ..start();
+      var frame = 0, step = 0;
+      while (g.phase != Phase.result) {
+        if (++step % 50 == 0) g.rotate(step % 300 < 150 ? 1 : -1);
+        var u = 0;
+        if (g.phase == Phase.playing && frame < inputs.length) {
+          u = inputs[frame++];
+        }
+        final s = tasInput(u, g.yawAfter(1 / 60));
+        g.tick(1 / 60, inputX: s.x, inputY: s.y);
+      }
+      expect(g.score, 100, reason: c.id);
+    }
   });
 
   test('TAS run-length text round trips', () {

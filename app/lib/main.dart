@@ -8,13 +8,14 @@ import 'entry_screen.dart';
 import 'graphics_settings.dart';
 import 'stage_benchmark.dart';
 import 'balance.dart';
-import 'balance_panel.dart';
 import 'fps_overlay.dart';
 import 'gallery.dart';
 import 'gallery_screen.dart';
 import 'l10n.dart';
 import 'ranking.dart';
 import 'records.dart';
+import 'settings_dialog.dart';
+import 'tas.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -33,10 +34,6 @@ const gold = brandBlue, cream = brandInk, ink = Colors.white;
 
 /// UI language, above the Navigator so dialogs translate too.
 final appLang = ValueNotifier(AppLang.ja);
-
-/// The balance panel also ships in release builds while the defaults are
-/// tuned on real devices. Set to `!kReleaseMode` before the event.
-const showBalancePanel = true;
 void main() async {
   if (kDebugMode) {
     MarionetteBinding.ensureInitialized();
@@ -89,8 +86,14 @@ class _RainState extends State<RainPage> {
   GameRecord? lastRecord;
   String? error;
   double inputX = 0, inputY = 0, accumulator = 0, swipe = 0, pinchFrom = 1;
-  // Debug/profile only: frame-rate HUD toggled from the debug panel.
+  // Frame-rate HUD toggled from the settings.
   bool showFps = false;
+
+  /// TAS mode replays a perfect input from the next round; a round in it is
+  /// [tasRound], and waits until [tasInputs] are found.
+  bool tasMode = false, tasRound = false;
+  List<int>? tasInputs;
+  int tasFrame = 0, _tasToken = 0;
   Map<String, Object>? fpsStats;
   int lastEvent = 0;
 
@@ -155,6 +158,10 @@ class _RainState extends State<RainPage> {
           'benchmark': benchmark?.inspect(),
           'sensor': tilt.available,
           'demo': demo,
+          'tasMode': tasMode,
+          'tasRound': tasRound,
+          'tasReady': tasInputs != null,
+          'tasFrame': tasFrame,
           'paused': paused,
           'lang': appLang.value.id,
           'lastRecord': lastRecord?.toMap(),
@@ -168,12 +175,22 @@ class _RainState extends State<RainPage> {
       );
       registerMarionetteExtension(
         name: 'madogiwa.catchAction',
-        description: 'action=select|configure|start|demo|step|rotate|pause|resume|endPractice|zoom|record|ranking|lang|graphics|benchmark|fps. start: practice=true for the no-score mode. zoom: value=magnification (clamped to zoomMin..zoomMax). record: name answers the nickname dialog (omit to cancel); the result dialog opens it with its result_record button. ranking opens the records, tab=ranking|history. lang: value=ja|en. fps: value=on|off (debug FPS HUD). graphics: json booleans, persist=true optional. benchmark: label, timeOfDay. select: character ID and/or timeOfDay=day|night. configure: json settings, seed (an integer, or fixed for the character layout). step seconds 0..25 x/y -1..1. Demo supplies inputs only.',
+        description: 'action=select|configure|start|demo|step|rotate|pause|resume|endPractice|zoom|record|ranking|lang|graphics|settings|tas|benchmark|fps. settings: tab=graphics|demo|balance opens the settings. tas: value=on|off, TAS mode from the next start. start: practice=true for the no-score mode. zoom: value=magnification (clamped to zoomMin..zoomMax). record: name answers the nickname dialog (omit to cancel); the result dialog opens it with its result_record button. ranking opens the records, tab=ranking|history. lang: value=ja|en. fps: value=on|off (debug FPS HUD). graphics: json booleans, persist=true optional. benchmark: label, timeOfDay. select: character ID and/or timeOfDay=day|night. configure: json settings, seed (an integer, or fixed for the character layout). step seconds 0..25 x/y -1..1. Demo supplies inputs only.',
         callback: (p) async {
           if (!ready) return MarionetteExtensionResult.error(1, 'Not ready');
           switch (p['action']) {
             case 'fps':
               await setFps(p['value'] == 'on');
+            case 'tas':
+              tasMode = p['value'] == 'on';
+            case 'settings':
+              openSettings(
+                tab:
+                    SettingsTab.values
+                        .where((t) => t.name == p['tab'])
+                        .firstOrNull ??
+                    SettingsTab.graphics,
+              );
             case 'lang':
               final lang = AppLang.values
                   .where((l) => l.id == p['value'])
@@ -492,7 +509,7 @@ class _RainState extends State<RainPage> {
           jsonEncode(graphics.toMap()),
         );
       }
-      showFps = showBalancePanel && (prefs.getBool('yumemi.debug.fps') ?? false);
+      showFps = (prefs.getBool('yumemi.debug.fps') ?? false);
       appLang.value =
           AppLang.values
               .where((l) => l.id == prefs.getString('yumemi.lang'))
@@ -571,25 +588,6 @@ class _RainState extends State<RainPage> {
     await prefs.setString('yumemi.graphics.v2', jsonEncode(graphics.toMap()));
   }
 
-  Future<void> openGraphics() async {
-    final wasPaused = paused;
-    setState(() => paused = true);
-    final selected = await showDialog<GraphicsSettings>(
-      context: context,
-      builder: (_) => GraphicsDialog(initial: graphics),
-    );
-    if (!mounted) return;
-    setState(() {
-      paused = wasPaused;
-      if (selected != null) {
-        graphics = selected;
-        world.lighting.graphics = graphics;
-        world.update(game, 0);
-      }
-    });
-    if (selected != null) await saveGraphics();
-  }
-
   /// v2 since the 100-point score; v1 held raw-point settings and seed 1.
   static const balanceKey = 'yumemi.balance.v2';
 
@@ -635,6 +633,25 @@ class _RainState extends State<RainPage> {
 
   Future<void> showResult() async {
     if (!mounted) return;
+    if (tasRound) {
+      resultOpen = true;
+      await showDialog<void>(
+        context: context,
+        builder: (_) => ResultDialog(
+          record: GameRecord(
+            name: '',
+            score: game.score,
+            character: game.roundCharacter,
+            caught: game.caught,
+            bad: game.bad,
+            missed: game.missed,
+            at: DateTime.now(),
+          ),
+        ),
+      );
+      resultOpen = false;
+      return;
+    }
     final record = GameRecord(
       name: '',
       score: game.score,
@@ -697,29 +714,53 @@ class _RainState extends State<RainPage> {
     world.update(game, 0);
   }
 
-  Future<void> openBalance() async {
+  Future<void> openSettings({SettingsTab tab = SettingsTab.graphics}) async {
     final wasPaused = paused;
+    final inRound =
+        game.phase == Phase.playing || game.phase == Phase.countdown;
     setState(() => paused = true);
-    final selected = await showDialog<BalanceSelection>(
+    final r = await showDialog<SettingsResult>(
       context: context,
       barrierDismissible: false,
-      builder: (_) => BalancePanel(
+      builder: (_) => SettingsDialog(
+        graphics: graphics,
         balance: game.balance,
         seed: seed,
-        showFps: showFps,
-        onFps: setFps,
+        tas: tasMode,
+        fps: showFps,
+        inRound: inRound,
+        tab: tab,
       ),
     );
     if (!mounted) return;
-    if (selected == null) {
+    if (r == null) {
       setState(() => paused = wasPaused);
       return;
     }
-    game.balance = selected.balance;
-    seed = selected.seed;
-    await saveBalance();
+    if (r.fps != showFps) await setFps(r.fps);
+    if (r.graphics != graphics) {
+      graphics = r.graphics;
+      world.lighting.graphics = graphics;
+      world.update(game, 0);
+      await saveGraphics();
+    }
+    final balanceChanged = !r.balance.sameAs(game.balance, seed);
+    final tasChanged = r.tas != tasMode;
+    tasMode = r.tas;
+    if (balanceChanged) {
+      game.balance = r.balance.balance;
+      seed = r.balance.seed;
+      await saveBalance();
+    }
     if (!mounted) return;
-    setState(start);
+    setState(() {
+      if (inRound && (balanceChanged || tasChanged)) {
+        start(practice: game.practice);
+      } else {
+        paused = wasPaused;
+        world.update(game, 0);
+      }
+    });
   }
 
   void start({bool practice = false}) {
@@ -740,9 +781,42 @@ class _RainState extends State<RainPage> {
     paused = false;
     frozen = false;
     demo = false;
+    tasRound = tasMode && !practice;
+    tasInputs = null;
+    tasFrame = 0;
+    if (tasRound) loadTas();
+  }
+
+  /// Finds the perfect input for the round that just started.
+  Future<void> loadTas() async {
+    final token = ++_tasToken;
+    final inputs = await tasFor(game.roundCharacter, game.balance, seed: seed);
+    if (!mounted || token != _tasToken || !tasRound) return;
+    setState(() {
+      tasInputs = inputs;
+      if (inputs == null) tasRound = false;
+    });
+    if (inputs == null) {
+      ScaffoldMessenger.maybeOf(context)
+          ?.showSnackBar(SnackBar(content: Text(L10n.of(context).tasNotFound)));
+    }
   }
 
   void advance(double dt, double x, double y) {
+    final inputs = tasInputs;
+    if (tasRound && inputs != null && !demo) {
+      // One TAS frame per 1/60 s step from the first playing step, turned to
+      // where the camera will face during that step.
+      var u = 0;
+      if (game.phase == Phase.playing && tasFrame < inputs.length) {
+        u = inputs[tasFrame++];
+      }
+      final s = tasInput(u, game.yawAfter(dt));
+      x = s.x;
+      y = s.y;
+      inputX = x;
+      inputY = y;
+    }
     if (demo) {
       final input = game.demoInput();
       x = input.x;
@@ -805,6 +879,12 @@ class _RainState extends State<RainPage> {
       world.lighting.update(world.clock);
     }
     if (!ready || paused || frozen) return;
+    if (tasRound && tasInputs == null) {
+      // Hold the countdown until the perfect input is found.
+      world.update(game, dt.clamp(0, .1));
+      refreshHud();
+      return;
+    }
     accumulator += dt.clamp(0, .1);
     if (!tilt.available) {
       // Simulator fallback without on-screen controls: arrow keys.
@@ -919,8 +999,8 @@ class _RainState extends State<RainPage> {
               lang: appLang.value,
               onLang: setLang,
               onTitle: () => setState(() => showTitle = true),
-              onSettings: showBalancePanel ? openBalance : null,
-              onGraphics: openGraphics,
+              onSettings: openSettings,
+              tas: tasMode,
             );
           }
           final playing =
@@ -1035,6 +1115,15 @@ class _RainState extends State<RainPage> {
                                   child: Text(t.endPractice),
                                 ),
                               ] else ...[
+                                if (tasRound) ...[
+                                  chip(
+                                    tasInputs == null
+                                        ? t.tasSearching
+                                        : t.tasBadge,
+                                    color: gold,
+                                  ),
+                                  const SizedBox(width: 8),
+                                ],
                                 chip(
                                   t.secondsLeft(
                                     (game.roundSeconds - game.time).ceil(),
@@ -1044,18 +1133,11 @@ class _RainState extends State<RainPage> {
                                 chip(t.points(game.score), color: gold),
                               ],
                               IconButton(
-                                key: const ValueKey('graphics_settings'),
-                                tooltip: t.graphics,
-                                onPressed: openGraphics,
-                                icon: const Icon(Icons.display_settings),
+                                key: const ValueKey('settings_open'),
+                                tooltip: t.settings,
+                                onPressed: openSettings,
+                                icon: const Icon(Icons.settings),
                               ),
-                              if (showBalancePanel)
-                                IconButton(
-                                  key: const ValueKey('balance_debug'),
-                                  tooltip: 'バランス調整',
-                                  onPressed: openBalance,
-                                  icon: const Icon(Icons.tune),
-                                ),
                               IconButton(
                                 key: const ValueKey('pause'),
                                 onPressed: () => setState(() {

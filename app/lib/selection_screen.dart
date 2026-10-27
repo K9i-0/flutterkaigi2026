@@ -22,7 +22,7 @@ class SelectionScreen extends StatelessWidget {
     required this.onLang,
     required this.onTitle,
     this.onSettings,
-    this.onGraphics,
+    this.tas = false,
   });
   final CatchGame game;
   final CatchScene world;
@@ -33,7 +33,10 @@ class SelectionScreen extends StatelessWidget {
   final ValueChanged<AppLang> onLang;
   final VoidCallback onTitle;
 
-  final VoidCallback? onSettings, onGraphics;
+  final VoidCallback? onSettings;
+
+  /// TAS mode is on: the next round plays itself.
+  final bool tas;
   static const paper = Colors.white, text = brandInk, muted = brandMuted;
 
   Widget item(Strings t, bool bad) {
@@ -249,24 +252,33 @@ class SelectionScreen extends StatelessWidget {
                           onChanged: onTime,
                         ),
                         const SizedBox(width: 4),
-                        if (onGraphics != null)
-                          IconButton(
-                            key: const ValueKey('graphics_settings'),
-                            tooltip: t.graphics,
-                            onPressed: onGraphics,
-                            icon: const Icon(
-                              Icons.display_settings,
-                              size: 17,
-                              color: muted,
+                        if (tas)
+                          Container(
+                            key: const ValueKey('tas_badge'),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 3,
+                            ),
+                            decoration: BoxDecoration(
+                              gradient: brandGradient,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Text(
+                              'TAS',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w800,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         if (onSettings != null)
                           IconButton(
-                            key: const ValueKey('balance_debug'),
-                            tooltip: 'バランス調整',
+                            key: const ValueKey('settings_open'),
+                            tooltip: t.settings,
                             onPressed: onSettings,
                             icon: const Icon(
-                              Icons.tune,
+                              Icons.settings,
                               size: 17,
                               color: muted,
                             ),

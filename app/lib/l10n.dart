@@ -232,6 +232,34 @@ class Strings {
   String get noRecords => _('まだ記録がありません', 'No records yet');
 
   String get cancel => _('キャンセル', 'Cancel');
+  String get settings => _('設定', 'Settings');
+  String get graphicsTab => _('画質', 'Graphics');
+  String get demoTab => _('デモ', 'Demo');
+  String get balanceTab => _('バランス', 'Balance');
+  String get forDevelopers => _('開発者向け', 'For developers');
+  String get resetTab => _('標準に戻す', 'Reset');
+  String get applyRestart => _('適用して最初から', 'Apply and restart');
+  String get tasTitle => _('TASモード（完璧な操作）', 'TAS mode (perfect play)');
+  String get tasBody => _(
+    '次のラウンドから、100点になるフレーム単位の入力で自動プレイする。'
+        'プレイ中もスワイプで見回せる。記録には残らない。',
+    'Plays the next rounds by itself with frame-exact inputs that score 100. '
+        'You can still swipe to look around. Not recorded.',
+  );
+  String get tasBadge => _('TAS：完璧な操作を再生中', 'TAS: perfect play');
+  String get tasSearching =>
+      _('TAS：100点になる入力を計算中…', 'TAS: finding a perfect input…');
+  String get tasNotFound => _(
+    'この設定では100点になる入力が見つからないため、通常の操作で遊びます',
+    'No perfect input for these settings; playing normally',
+  );
+  String get tasNotRecorded =>
+      _('TASのプレイは記録に残りません', 'TAS rounds are not recorded');
+  String get fpsTitle => _('FPS表示', 'FPS display');
+  String get fpsBody => _(
+    'プレイ画面の左下にフレームレートと描画時間を出す',
+    'Frame rate and frame times at the bottom left while playing',
+  );
   String get apply => _('適用', 'Apply');
   String get standard => _('標準', 'Standard');
   String get highQuality => _('高画質', 'High');

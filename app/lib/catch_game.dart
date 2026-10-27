@@ -218,8 +218,13 @@ class CatchGame {
     }
   }
 
+  /// The camera yaw after a step of [dt]; each step turns before it reads
+  /// the tilt, so inputs that follow the camera must use this angle.
+  double yawAfter(double dt) =>
+      yaw + (targetYaw - yaw) * (1 - math.exp(-7 * dt));
+
   void _step(double dt, double ix, double iy) {
-    yaw += (targetYaw - yaw) * (1 - math.exp(-7 * dt));
+    yaw = yawAfter(dt);
     if (phase == Phase.countdown) {
       countdown -= dt;
       if (countdown <= 0) phase = Phase.playing;
@@ -244,8 +249,7 @@ class CatchGame {
     for (final d in drops) {
       if (d.resolved || time < d.landing) continue;
       final good = !d.kind.isBad;
-      final inside =
-          (d.x - x).abs() < (good ? goodCatchRadius : catchRadius);
+      final inside = (d.x - x).abs() < (good ? goodCatchRadius : catchRadius);
       if (good && !inside && time < d.landing + catchGrace) continue;
       d.resolved = true;
       d.resolvedAt = time;

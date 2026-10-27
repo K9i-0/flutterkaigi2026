@@ -42,11 +42,12 @@ class VerdictBadge extends StatelessWidget {
 /// Shown once when a scored round ends. The round is already in the history;
 /// the nickname entry opens only when the player chooses to record it.
 class ResultDialog extends StatelessWidget {
-  const ResultDialog({super.key, required this.record, required this.onRecord});
+  const ResultDialog({super.key, required this.record, this.onRecord});
   final GameRecord record;
 
   /// Asks for a nickname; returns the named record, or null if cancelled.
-  final Future<GameRecord?> Function() onRecord;
+  /// Null for a TAS round, which is not recorded.
+  final Future<GameRecord?> Function()? onRecord;
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +88,7 @@ class ResultDialog extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            t.recordHint,
+            onRecord == null ? t.tasNotRecorded : t.recordHint,
             style: const TextStyle(fontSize: 12, color: brandMuted),
           ),
         ],
@@ -99,17 +100,18 @@ class ResultDialog extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
           child: Text(t.close),
         ),
-        FilledButton.icon(
-          key: const ValueKey('result_record'),
-          icon: const Icon(Icons.edit_outlined, size: 18),
-          label: Text(t.save),
-          onPressed: () async {
-            final named = await onRecord();
-            if (named != null && context.mounted) {
-              Navigator.pop(context, named);
-            }
-          },
-        ),
+        if (onRecord != null)
+          FilledButton.icon(
+            key: const ValueKey('result_record'),
+            icon: const Icon(Icons.edit_outlined, size: 18),
+            label: Text(t.save),
+            onPressed: () async {
+              final named = await onRecord!();
+              if (named != null && context.mounted) {
+                Navigator.pop(context, named);
+              }
+            },
+          ),
       ],
     );
   }
