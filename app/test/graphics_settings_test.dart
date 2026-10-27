@@ -81,7 +81,7 @@ void main() {
     await tester.tap(find.byKey(const ValueKey('settings_apply')));
     await tester.pumpAndSettle();
     expect(result!.graphics, GraphicsSettings.light);
-    expect([result!.tas, result!.fps], [true, true]);
+    expect([result!.tas, result!.fps], [true, false]);
     expect(result!.balance.sameAs(Balance.defaults(), null), true);
 
     // Cancel discards edits.

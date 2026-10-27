@@ -30,7 +30,7 @@ class SettingsDialog extends StatefulWidget {
     required this.balance,
     this.seed,
     this.tas = false,
-    this.fps = false,
+    this.fps = true,
     this.sound = true,
     this.inRound = false,
     this.tab = SettingsTab.graphics,
@@ -93,7 +93,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
         graphics = GraphicsSettings.standard;
       case SettingsTab.demo:
         tas = false;
-        fps = false;
+        fps = true;
         sound = true;
       case SettingsTab.balance:
         draft.reset();

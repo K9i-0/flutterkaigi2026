@@ -88,7 +88,7 @@ class _RainState extends State<RainPage> {
   String? error;
   double inputX = 0, inputY = 0, accumulator = 0, swipe = 0, pinchFrom = 1;
   // Frame-rate HUD toggled from the settings.
-  bool showFps = false;
+  bool showFps = true;
   final audio = CountdownAudio();
 
   /// TAS mode replays a perfect input from the next round; a round in it is
@@ -512,7 +512,7 @@ class _RainState extends State<RainPage> {
           jsonEncode(graphics.toMap()),
         );
       }
-      showFps = (prefs.getBool('yumemi.debug.fps') ?? false);
+      showFps = (prefs.getBool('yumemi.debug.fps') ?? true);
       audio.enabled = prefs.getBool('yumemi.sound') ?? true;
       appLang.value =
           AppLang.values
