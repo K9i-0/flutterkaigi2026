@@ -109,7 +109,8 @@ CatchGame playHuman(
 }
 
 /// Frame-exact search over full-left / none / full-right inputs, merging
-/// states on a position/velocity grid. Returns per-frame screen inputs from the
+/// states on a position/velocity grid. It judges good drops by the plain radius
+/// at landing, stricter than the game, so a found input stays perfect there. Returns per-frame screen inputs from the
 /// first playing frame that make the round perfect, or null if none is found.
 List<int>? searchTas(CatchCharacter c, {int? seed}) {
   final g = newRound(c, seed: seed);

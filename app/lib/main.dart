@@ -33,6 +33,10 @@ const gold = brandBlue, cream = brandInk, ink = Colors.white;
 
 /// UI language, above the Navigator so dialogs translate too.
 final appLang = ValueNotifier(AppLang.ja);
+
+/// The balance panel also ships in release builds while the defaults are
+/// tuned on real devices. Set to `!kReleaseMode` before the event.
+const showBalancePanel = true;
 void main() async {
   if (kDebugMode) {
     MarionetteBinding.ensureInitialized();
@@ -488,7 +492,7 @@ class _RainState extends State<RainPage> {
           jsonEncode(graphics.toMap()),
         );
       }
-      showFps = !kReleaseMode && (prefs.getBool('yumemi.debug.fps') ?? false);
+      showFps = showBalancePanel && (prefs.getBool('yumemi.debug.fps') ?? false);
       appLang.value =
           AppLang.values
               .where((l) => l.id == prefs.getString('yumemi.lang'))
@@ -915,7 +919,7 @@ class _RainState extends State<RainPage> {
               lang: appLang.value,
               onLang: setLang,
               onTitle: () => setState(() => showTitle = true),
-              onSettings: kReleaseMode ? null : openBalance,
+              onSettings: showBalancePanel ? openBalance : null,
               onGraphics: openGraphics,
             );
           }
@@ -1045,7 +1049,7 @@ class _RainState extends State<RainPage> {
                                 onPressed: openGraphics,
                                 icon: const Icon(Icons.display_settings),
                               ),
-                              if (!kReleaseMode)
+                              if (showBalancePanel)
                                 IconButton(
                                   key: const ValueKey('balance_debug'),
                                   tooltip: 'バランス調整',

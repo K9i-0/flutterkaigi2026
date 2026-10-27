@@ -28,15 +28,20 @@ class Drop {
   final CanKind kind;
   final double x, spawn, facing, fallSeconds;
   bool resolved = false, caught = false;
+
+  /// When the catch was judged; a good drop can wait past [landing].
+  double? resolvedAt;
   double get landing => spawn + fallSeconds;
+  double get settled => resolvedAt ?? landing;
   double height(double time) {
     final p = ((time - spawn) / fallSeconds).clamp(0.0, 1.0);
     return resolved && !caught
-        ? math.max(.35, catchHeight - (time - landing) * 4)
+        ? math.max(.35, catchHeight - (time - settled) * 4)
         : catchHeight + 4.7 * (1 - math.pow(p, 1.25));
   }
 
-  bool visible(double time) => time >= spawn && time < landing + .65 && !caught;
+  bool visible(double time) =>
+      time >= spawn && (!resolved || time < settled + .65) && !caught;
 }
 
 class CatchGame {
@@ -59,6 +64,11 @@ class CatchGame {
   double get baseCatchRadius => _baseCatchRadius;
   double get moveSpeed => baseMoveSpeed;
   double get catchRadius => baseCatchRadius;
+
+  /// Good drops are judged a little wider than the halo and for a short time
+  /// after landing; bad drops keep the plain [catchRadius] at the landing.
+  double get goodCatchRadius => catchRadius + balance['catchMargin'];
+  double get catchGrace => balance['catchGrace'];
   bool selectCharacter(CatchCharacter character) {
     if (phase != Phase.ready && phase != Phase.result) return false;
     _selectedCharacter = character;
@@ -233,8 +243,13 @@ class CatchGame {
     vx = (x - previousX) / dt;
     for (final d in drops) {
       if (d.resolved || time < d.landing) continue;
+      final good = !d.kind.isBad;
+      final inside =
+          (d.x - x).abs() < (good ? goodCatchRadius : catchRadius);
+      if (good && !inside && time < d.landing + catchGrace) continue;
       d.resolved = true;
-      d.caught = (d.x - x).abs() < catchRadius;
+      d.resolvedAt = time;
+      d.caught = inside;
       if (d.caught) {
         eventId++;
         fxX = d.x;
@@ -273,7 +288,7 @@ class CatchGame {
       }
     }
     if (practice) {
-      drops.removeWhere((d) => d.resolved && time > d.landing + 1);
+      drops.removeWhere((d) => d.resolved && time > d.settled + 1);
       if (_nextId * spawnInterval < time + 10) _spawnUntil(time + 30);
       return;
     }
@@ -300,6 +315,8 @@ class CatchGame {
     'baseCatchRadius': baseCatchRadius,
     'moveSpeed': moveSpeed,
     'catchRadius': catchRadius,
+    'goodCatchRadius': goodCatchRadius,
+    'catchGrace': catchGrace,
     'vx': vx,
     'dropCount': drops.length,
     'practice': practice,

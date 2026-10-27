@@ -128,7 +128,7 @@ class _BalancePanelState extends State<BalancePanel> {
                     children: [
                       const Text(
                         '編集中は一時停止。保存すると同じ配置で最初から開始する。'
-                        '移動速度とキャッチ半径はキャラクター固有値。',
+                        '移動速度と輪の半径はキャラクター固有値。判定はあたりだけ輪より広い。',
                         style: TextStyle(fontSize: 12, color: brandMuted),
                       ),
                       const SizedBox(height: 10),
@@ -248,7 +248,7 @@ class _BalancePanelState extends State<BalancePanel> {
               'はずれ割合',
               'あたり／はずれ',
               '速度',
-              '半径',
+              '輪／判定',
               '配置',
             ])
               pad(Text(h, style: head)),
@@ -273,7 +273,12 @@ class _BalancePanelState extends State<BalancePanel> {
                 ),
               ),
               pad(Text(g.moveSpeed.toStringAsFixed(1), style: cell)),
-              pad(Text(g.catchRadius.toStringAsFixed(2), style: cell)),
+              pad(
+                Text(
+                  '${g.catchRadius.toStringAsFixed(2)}／${g.goodCatchRadius.toStringAsFixed(2)}',
+                  style: cell,
+                ),
+              ),
               pad(
                 Text(
                   '#${g.seed}${g.seed == g.roundCharacter.layoutSeed ? '（固定）' : ''}',

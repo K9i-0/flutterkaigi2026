@@ -156,7 +156,10 @@ void main() {
 
     g.x = 0;
     g.drops.add(Drop(2, CanKind.light, 3, -3.1));
+    // A good drop out of reach is only a miss after the grace time.
     g.tick(1 / 60);
+    expect(g.missed, 0);
+    g.tick(g.catchGrace);
     expect(g.missed, 1);
     expect(g.fxX, -.4);
     expect(g.eventId, 2);
@@ -176,6 +179,39 @@ void main() {
     expect(practice.score, 0);
     expect(practice.fxX, .1);
     expect(practice.fxBad, false);
+  });
+  test('good drops are forgiving, bad drops are judged as drawn', () {
+    final g = CatchGame()..start();
+    g.phase = Phase.playing;
+    final r = g.catchRadius, margin = g.balance['catchMargin'];
+    expect(margin, greaterThan(0));
+    expect(g.goodCatchRadius, r + margin);
+    // Just outside the halo still catches a good drop, but not a bad one.
+    g.drops
+      ..clear()
+      ..addAll([
+        Drop(0, CanKind.light, r + margin / 2, -3.1),
+        Drop(1, CanKind.happoshu, -(r + margin / 2), -3.1),
+      ]);
+    g.goodTotal = 2;
+    g.tick(1 / 60);
+    expect([g.caught, g.bad], [1, 0]);
+    // Arriving shortly after the landing still catches it.
+    g.drops.add(Drop(2, CanKind.light, 1.5, g.time - 3.1));
+    g.tick(1 / 60);
+    expect(g.drops.last.resolved, false);
+    g.x = 1.5;
+    g.tick(1 / 60);
+    expect([g.caught, g.missed], [2, 0]);
+    expect(g.drops.last.resolvedAt, greaterThan(g.drops.last.landing));
+    // A missed drop falls from where it was judged, without a jump.
+    g.drops.add(Drop(3, CanKind.light, -3, g.time - 3.1));
+    for (var t = 0.0; t < g.catchGrace + .05; t += 1 / 60) {
+      g.tick(1 / 60);
+    }
+    final d = g.drops.last;
+    expect(d.caught, false);
+    expect(d.height(d.resolvedAt!), closeTo(catchHeight, 1e-9));
   });
   test('sensor calibrates, rejects bad samples and expires stale data', () {
     var now = DateTime(2026);

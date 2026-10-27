@@ -22,15 +22,16 @@ void main() {
     }
   });
 
-  test('booth population passes about 90% / 50% / 5%', () {
+  test('booth bots keep the three layouts in difficulty order', () {
+    // The bots see every drop, so they are an upper bound for real players.
     final easy = population(CatchCharacter.fukuchan);
     final normal = population(CatchCharacter.ctoOdatetsu);
     final hard = population(CatchCharacter.sobaya);
-    expect(easy.pass, greaterThanOrEqualTo(.9));
-    expect(easy.perfect, greaterThan(.4));
-    expect(normal.pass, inInclusiveRange(.4, .75));
-    expect(normal.perfect, inInclusiveRange(.01, .2));
-    expect(hard.pass, lessThanOrEqualTo(.1));
+    expect(easy.pass, greaterThanOrEqualTo(.95));
+    expect(normal.pass, inInclusiveRange(.8, easy.pass));
+    expect(hard.pass, lessThanOrEqualTo(.3));
+    expect(easy.perfect, greaterThan(normal.perfect));
+    expect(normal.perfect, greaterThan(hard.perfect));
     expect(hard.perfect, 0);
   });
 

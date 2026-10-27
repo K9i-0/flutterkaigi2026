@@ -73,6 +73,7 @@ void main() {
     test('${character.id}: speed, radius and full 20-second lane round', () {
       final g = CatchGame();
       g.selectCharacter(character);
+      g.balance = Balance.fromMap({'catchMargin': 0, 'catchGrace': 0});
       g.start(seed: 7);
       g.phase = Phase.playing;
       g.drops

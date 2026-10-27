@@ -352,7 +352,7 @@ class CatchScene {
       drop.root.position = vm.Vector3(
         d.x,
         d.resolved && !d.caught
-            ? catchHeight - math.pow((g.time - d.landing) * 5, 2).toDouble()
+            ? catchHeight - math.pow((g.time - d.settled) * 5, 2).toDouble()
             : d.height(g.time),
         0,
       );

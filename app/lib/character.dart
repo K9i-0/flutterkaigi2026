@@ -18,8 +18,8 @@ enum CatchCharacter {
   final double moveSpeed, catchRadius;
 
   /// Fixed drop layout every visitor plays, picked with `tool/balance_report.dart`.
-  /// Its bots see every drop perfectly, so they pass about 100% / 60% / 3%,
-  /// aiming at real players' 90% / 50% / 5%. Sobaya's perfect round needs an
+  /// Its bots see every drop perfectly, so they pass far more often than real
+  /// players, who are aimed at 90% / 50% / 5%. Sobaya's perfect round needs an
   /// exact frame-by-frame input (TAS); see test/layout_test.dart.
   int get layoutSeed => switch (this) {
     fukuchan => 23,
