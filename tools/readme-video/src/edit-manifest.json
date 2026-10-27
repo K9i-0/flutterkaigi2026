@@ -1,159 +1,126 @@
 {
   "composition": {
     "id": "Trailer",
-    "width": 1280,
-    "height": 720,
-    "fps": 30,
-    "durationInFrames": 960
+    "width": 2622,
+    "height": 1206,
+    "fps": 60,
+    "durationInFrames": 1920
   },
   "audio": {
-    "startFrame": 15
+    "startFrame": 30,
+    "file": "narration-v3.wav"
   },
   "shots": [
     {
       "startFrame": 0,
-      "endFrame": 100,
-      "file": "odatetsu-landscape.mp4",
-      "trimFrame": 180,
-      "label": "FLUTTER × 3D",
-      "headline": "ゆめみ採用試験"
+      "endFrame": 220,
+      "file": "play-oda-hq-v4.mp4",
+      "trimFrame": 960
     },
     {
-      "startFrame": 100,
-      "endFrame": 205,
-      "file": "odatetsu-landscape.mp4",
-      "trimFrame": 270,
-      "label": "STAGE / AKASAKA",
-      "headline": "採用試験の会場は、空の上。"
+      "startFrame": 220,
+      "endFrame": 496,
+      "file": "select-fuku-v4.mp4",
+      "trimFrame": 60
     },
     {
-      "startFrame": 205,
-      "endFrame": 312,
-      "file": "odatetsu-landscape.mp4",
-      "trimFrame": 330,
-      "label": "HOW TO PLAY",
-      "headline": "傾ける。見回す。キャッチする。"
+      "startFrame": 496,
+      "endFrame": 622,
+      "file": "select-oda-v4.mp4",
+      "trimFrame": 60
     },
     {
-      "startFrame": 312,
-      "endFrame": 355,
-      "file": "fukugyun-landscape.mp4",
-      "trimFrame": 210,
-      "label": "01 / EASY",
-      "headline": "福ギュン｜ゆめみんをキャッチ"
+      "startFrame": 622,
+      "endFrame": 730,
+      "file": "select-soba-v4.mp4",
+      "trimFrame": 60
     },
     {
-      "startFrame": 355,
-      "endFrame": 398,
-      "file": "odatetsu-landscape.mp4",
-      "trimFrame": 240,
-      "label": "02 / NORMAL",
-      "headline": "CTOおだてつ｜ちくわをキャッチ"
-    },
-    {
-      "startFrame": 398,
-      "endFrame": 452,
-      "file": "sobaya-landscape.mp4",
-      "trimFrame": 210,
-      "label": "03 / HARD",
-      "headline": "そば屋｜ラベルを見て、ビールだけ"
-    },
-    {
-      "startFrame": 452,
-      "endFrame": 600,
-      "file": "odatetsu-landscape.mp4",
-      "trimFrame": 390,
-      "label": "RULE / 100 POINTS",
-      "headline": "80点以上で合格。はずれは−10点。"
-    },
-    {
-      "startFrame": 600,
-      "endFrame": 670,
-      "file": "sobaya-landscape.mp4",
-      "trimFrame": 330,
-      "label": "DAY & NIGHT",
-      "headline": "昼も夜も、試験は開催。"
-    },
-    {
-      "startFrame": 670,
-      "endFrame": 715,
-      "file": "gallery-landscape.mp4",
-      "trimFrame": 30,
-      "label": "GALLERY / CITY",
-      "headline": "試験のあとも、寄り道を。"
-    },
-    {
-      "startFrame": 715,
-      "endFrame": 760,
-      "file": "characters-landscape.mp4",
-      "trimFrame": 30,
-      "label": "GALLERY / CHARACTERS",
-      "headline": "キャラクターを、もっと近くに。"
-    },
-    {
-      "startFrame": 760,
+      "startFrame": 730,
       "endFrame": 960,
-      "file": "sobaya-landscape.mp4",
-      "trimFrame": 360,
-      "label": "FLUTTERKAIGI 2026",
-      "headline": "あなたは、合格できますか。"
+      "file": "play-soba-hq-v4.mp4",
+      "trimFrame": 480
+    },
+    {
+      "startFrame": 960,
+      "endFrame": 1258,
+      "file": "gallery-day-v4.mp4",
+      "trimFrame": 60
+    },
+    {
+      "startFrame": 1258,
+      "endFrame": 1362,
+      "file": "gallery-night-v4.mp4",
+      "trimFrame": 60
+    },
+    {
+      "startFrame": 1362,
+      "endFrame": 1602,
+      "file": "play-oda-hq-v4.mp4",
+      "trimFrame": 1440
+    },
+    {
+      "startFrame": 1602,
+      "endFrame": 1920,
+      "file": "title-v4.mp4",
+      "trimFrame": 60
     }
   ],
   "captions": [
     {
-      "startFrame": 15,
-      "endFrame": 86,
-      "text": "ゆめテレから、採用試験のご案内です。"
+      "startFrame": 30,
+      "endFrame": 194,
+      "text": "ゆめみの採用試験が、ついにゲーム化！"
     },
     {
-      "startFrame": 100,
-      "endFrame": 189,
-      "text": "舞台は、赤坂の高層ビルに架かる鉄骨。"
+      "startFrame": 220,
+      "endFrame": 402,
+      "text": "選べるのは、3人のゆめプロメンバー。"
     },
     {
-      "startFrame": 205,
-      "endFrame": 287,
-      "text": "端末を傾けて、あたりだけをキャッチします。"
+      "startFrame": 402,
+      "endFrame": 496,
+      "text": "福ギュンはイージー。"
     },
     {
-      "startFrame": 314,
-      "endFrame": 363,
-      "text": "福ギュン、おだてつ、そば屋。"
+      "startFrame": 496,
+      "endFrame": 622,
+      "text": "CTOおだてつはノーマル。"
     },
     {
-      "startFrame": 371,
-      "endFrame": 443,
-      "text": "選ぶキャラクターで、難しさも変わります。"
+      "startFrame": 622,
+      "endFrame": 700,
+      "text": "そば屋はハード。"
     },
     {
-      "startFrame": 456,
-      "endFrame": 521,
-      "text": "100点満点、80点以上で合格。"
+      "startFrame": 736,
+      "endFrame": 928,
+      "text": "メンバーによって変わる難易度に、あなたは挑めるか。"
     },
     {
-      "startFrame": 530,
-      "endFrame": 583,
-      "text": "はずれを取ると、10点減点です。"
+      "startFrame": 962,
+      "endFrame": 1108,
+      "text": "Flutter Sceneによる、3Dの世界。"
     },
     {
-      "startFrame": 608,
-      "endFrame": 661,
-      "text": "昼も夜も、試験は開催。"
+      "startFrame": 1148,
+      "endFrame": 1362,
+      "text": "昼と夜で表情を変える、赤坂の街並み。"
     },
     {
-      "startFrame": 672,
-      "endFrame": 746,
-      "text": "街やキャラクターは、ギャラリーでも楽しめます。"
+      "startFrame": 1362,
+      "endFrame": 1498,
+      "text": "端末を傾けて、あたりをキャッチ。"
     },
     {
-      "startFrame": 760,
-      "endFrame": 835,
-      "text": "Flutterで動く、3次元の採用試験。"
+      "startFrame": 1522,
+      "endFrame": 1608,
+      "text": "80点以上で合格。"
     },
     {
-      "startFrame": 842,
-      "endFrame": 896,
-      "text": "あなたは、合格できますか。"
+      "startFrame": 1608,
+      "endFrame": 1784,
+      "text": "ゆめみ採用試験に、あなたも挑戦しよう！"
     }
   ]
 }

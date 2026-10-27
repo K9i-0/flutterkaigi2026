@@ -1,22 +1,21 @@
 {
   "date": "2026-10-27",
   "appCommit": "abbebe9afdaac6859c659baa661209226c218956",
-  "capture": "iPhone 18 Pro / iOS 27.0 Simulator; debug; standard graphics; demo input",
+  "capture": "Apple simctl io recordVideo, iPhone 18 Pro / iOS 27.0 Simulator; debug; fullResolution=true; renderScale=1.0; MSAA; in-app FPS overlay ON; no concurrent TTS/encoding during capture",
   "output": {
-    "file": "yumemi-recruit-exam.mp4",
-    "sha256": "07b4f30e92c1d81de8432e9f4183b2fefa5d95751a884266decfb09d3c5dd84a",
+    "file": "yumemi-recruit-exam-v4.mp4",
+    "sha256": "b9db82b82799809d7173bb8a565467df5db34d3ee15e71f2741d601394808a56",
     "streams": [
       {
         "codec_name": "h264",
-        "width": 1280,
-        "height": 720,
-        "r_frame_rate": "30/1",
+        "width": 2622,
+        "height": 1206,
+        "r_frame_rate": "60/1",
         "duration": "32.000000",
-        "nb_read_frames": "960"
+        "nb_read_frames": "1920"
       },
       {
         "codec_name": "aac",
-        "sample_rate": "48000",
         "r_frame_rate": "0/0",
         "duration": "32.000000",
         "nb_read_frames": "1500"
@@ -24,13 +23,104 @@
     ]
   },
   "checks": {
-    "flutterAnalyze": "passed",
+    "flutterAnalyze": "passed on unchanged app in preceding README update",
     "flutterTests": 59,
     "typescript": "passed",
     "timelineAndSourceCoverage": "passed",
-    "visualReview": "98 frames covering shot/caption boundaries and midpoints; no lingering result dialogs in adopted cuts",
+    "visualReview": "78 final frames covering shot/caption boundaries and midpoints; FPS visible in gameplay; no result dialogs in adopted cuts",
     "fullDecode": "passed",
-    "narrationASR": "complete transcript matched; canonical spelling restored in captions",
-    "auditoryReview": "not performed"
-  }
+    "narrationASR": "3D and final invitation present in full transcription; proper-name spelling restored in captions; accepted by user",
+    "auditoryReview": "not performed by agent; video accepted by user",
+    "browserPlayback": "32-second local video loaded and playback started",
+    "sourceFrameTiming": [
+      {
+        "source": "play-oda-hq-v4.mov",
+        "fromSeconds": 16.0,
+        "toSeconds": 19.666666666666668,
+        "frames": 220,
+        "fps": 60.00000000000002,
+        "maxGapMs": 18.333999999999406,
+        "gapsOver34ms": 0,
+        "consecutiveIdenticalFrames": 0,
+        "decodedFramesChecked": 219
+      },
+      {
+        "source": "select-fuku-v4.mov",
+        "fromSeconds": 1.0,
+        "toSeconds": 5.6,
+        "frames": 276,
+        "fps": 59.999991272728536,
+        "maxGapMs": 20.000000000000018,
+        "gapsOver34ms": 0
+      },
+      {
+        "source": "select-oda-v4.mov",
+        "fromSeconds": 1.0,
+        "toSeconds": 3.1,
+        "frames": 127,
+        "fps": 60.383376935562794,
+        "maxGapMs": 20.000000000000018,
+        "gapsOver34ms": 0
+      },
+      {
+        "source": "select-soba-v4.mov",
+        "fromSeconds": 1.0,
+        "toSeconds": 2.8,
+        "frames": 108,
+        "fps": 60.00001121495536,
+        "maxGapMs": 20.000000000000018,
+        "gapsOver34ms": 0
+      },
+      {
+        "source": "play-soba-hq-v4.mov",
+        "fromSeconds": 8.0,
+        "toSeconds": 11.833333333333334,
+        "frames": 230,
+        "fps": 60.02621231979031,
+        "maxGapMs": 21.66700000000077,
+        "gapsOver34ms": 0,
+        "consecutiveIdenticalFrames": 0,
+        "decodedFramesChecked": 229
+      },
+      {
+        "source": "gallery-day-v4.mov",
+        "fromSeconds": 1.0,
+        "toSeconds": 5.966666666666667,
+        "frames": 298,
+        "fps": 60.00000000000001,
+        "maxGapMs": 21.66700000000077,
+        "gapsOver34ms": 0,
+        "consecutiveIdenticalFrames": 0,
+        "decodedFramesChecked": 298
+      },
+      {
+        "source": "gallery-night-v4.mov",
+        "fromSeconds": 1.0,
+        "toSeconds": 2.7333333333333334,
+        "frames": 104,
+        "fps": 59.99998834951682,
+        "maxGapMs": 20.000000000000018,
+        "gapsOver34ms": 0,
+        "consecutiveIdenticalFrames": 0,
+        "decodedFramesChecked": 103
+      },
+      {
+        "source": "play-oda-hq-v4.mov",
+        "fromSeconds": 24.0,
+        "toSeconds": 28.0,
+        "frames": 241,
+        "fps": 60.251051067033586,
+        "maxGapMs": 19.999999999999574,
+        "gapsOver34ms": 0,
+        "consecutiveIdenticalFrames": 0,
+        "decodedFramesChecked": 240
+      },
+      {
+        "source": "title-v4.mov",
+        "frames": 0,
+        "note": "static view; inspect visually"
+      }
+    ]
+  },
+  "publication": "approved by user 2026-10-27; README publication authorized"
 }

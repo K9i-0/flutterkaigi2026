@@ -1,26 +1,78 @@
 {
-  "characters-landscape.mp4": {
-    "sha256": "9dcdff1cd59110f1e0099b734b066f71519d85472525dedda7a32ca0406ae496",
-    "bytes": 154426
+  "gallery-day-v4.mp4": {
+    "sha256": "d3cc75e5dbd4f9e2f52e4c784574683aea9bd456fb9d0d133f8c42cafc71cf93",
+    "bytes": 12332939
   },
-  "fukugyun-landscape.mp4": {
-    "sha256": "7a90f55570aabf8d6f16aefe520e1f5c8b5d9aaebb0efc9a0bcdc56e64d4b639",
-    "bytes": 7556588
+  "gallery-night-v4.mp4": {
+    "sha256": "092790d417033c2e54f8b677f6ee8ca80383a44c3b6114bd3cb6458b795ca3b5",
+    "bytes": 14193497
   },
-  "gallery-landscape.mp4": {
-    "sha256": "d0ac7e1ed488986a2abe0f9d3c7d03fd9912f355d746daba73d357ee5e113519",
-    "bytes": 16938644
+  "narration-v3.wav": {
+    "sha256": "5389c933521eeba28e2b16dbea2fa9b037d55e7fa8a8bfd2c2fe9d35fc1add37",
+    "bytes": 2830774
   },
-  "odatetsu-landscape.mp4": {
-    "sha256": "d517fea5f8fc0c05dcd0e543a2d1ec5aa5693666a72f864f59f64a3fe81826f8",
-    "bytes": 8318502
+  "play-oda-hq-v4.mp4": {
+    "sha256": "fa855e59494f1b4269f84ff7d5524e06a6a5c855523fb9ac8d307c06ffd13e17",
+    "bytes": 59383171
   },
-  "sobaya-landscape.mp4": {
-    "sha256": "f3f82c7065f48a5630aa1d55cd4660167df6ee63fdddacf5d825c6ba6b72b419",
-    "bytes": 11151993
+  "play-soba-hq-v4.mp4": {
+    "sha256": "14b68cf0e108cda58105b737605fb631078e49c10fd51e594f1c99f47200a0df",
+    "bytes": 71570577
   },
-  "narration.wav": {
-    "sha256": "d2648f5c27305d5a1e98861c54f1514c0af7431f14e5221d233be4ec651cfe49",
-    "bytes": 2845794
+  "select-fuku-v4.mp4": {
+    "sha256": "1e3f5a4dc5dcdbad2527f73a938c004581b26874d9c17bba187a8de61829ce6b",
+    "bytes": 991313
+  },
+  "select-oda-v4.mp4": {
+    "sha256": "37e0b97e1c219666aab1d935a15124292b64977d15b67a237acb425912ad6b19",
+    "bytes": 1588890
+  },
+  "select-soba-v4.mp4": {
+    "sha256": "bea9fe4e498fad358f2960f086ee733a4650e1fdb2ae1c17ed75439596e02c63",
+    "bytes": 1137619
+  },
+  "title-v4.mp4": {
+    "sha256": "0ccbdbd54fde406c5b8b8a6e129c561ca725aacc8730b25b15a39382e5191b93",
+    "bytes": 1869396
+  },
+  "gallery-day-v4.mov": {
+    "sha256": "7fa2bbcdc32a10725d596a918ceeea5e6ec71af6b8d246f9c8cd0354193205e1",
+    "bytes": 21419408,
+    "capture": "Apple simctl recordVideo"
+  },
+  "gallery-night-v4.mov": {
+    "sha256": "3b153104986ded3f64a7dc5330ce450a67cc5e0c6cb1fab688ca66c5e45a8789",
+    "bytes": 21385082,
+    "capture": "Apple simctl recordVideo"
+  },
+  "play-oda-hq-v4.mov": {
+    "sha256": "48f9841d76958063d4f6783eb62b929723c1bb31e8a762bf5372cfd26b4ca709",
+    "bytes": 95765631,
+    "capture": "Apple simctl recordVideo"
+  },
+  "play-soba-hq-v4.mov": {
+    "sha256": "29df52f60b46f0f8555600123b29785ed2b042afa4d8eac26ae934ae25f46176",
+    "bytes": 62339816,
+    "capture": "Apple simctl recordVideo"
+  },
+  "select-fuku-v4.mov": {
+    "sha256": "417d7d7f09a725bb65cfe9a756f97ab8c099756ab4cd48cd5da309b0f683ca0e",
+    "bytes": 5475893,
+    "capture": "Apple simctl recordVideo"
+  },
+  "select-oda-v4.mov": {
+    "sha256": "1043dad83aaf59a34767c1abd0810aa0308a166700500f480ef4ffd5efd1c465",
+    "bytes": 9312034,
+    "capture": "Apple simctl recordVideo"
+  },
+  "select-soba-v4.mov": {
+    "sha256": "4201c371f108ab79064f7433dac6d2f2656472006c07ee532096d02f3dab8bfc",
+    "bytes": 5535699,
+    "capture": "Apple simctl recordVideo"
+  },
+  "title-v4.mov": {
+    "sha256": "1c91408acce87bdbae146c3fac9f4b8874abb9c9a2ef0e7fa08cb5812a790b39",
+    "bytes": 438986,
+    "capture": "Apple simctl recordVideo"
   }
 }

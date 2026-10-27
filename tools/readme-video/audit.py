@@ -20,7 +20,7 @@ previous=0
 for c in m['captions']:
  assert previous<=c['startFrame']<c['endFrame']<=end
  previous=c['endFrame']
-audio=root/'public/narration.wav'
+audio=root/'public'/m['audio']['file']
 probe=json.loads(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','json',str(audio)]))
 assert m['audio']['startFrame']+float(probe['format']['duration'])*fps<=end
 sheet=Image.new('RGB',(960,177*len(rows)))

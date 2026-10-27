@@ -4,11 +4,11 @@
 
 FlutterKaigi 2026向けに制作している、Flutter Scene製の3Dミニゲームです。高層ビルの間に架かった鉄骨を歩き、空から降ってくる「あたり」をキャッチ。端末を傾けて移動し、スワイプで見回して、80点以上の合格を目指します。
 
-[![ゆめみ採用試験 — ゆめテレによるゲーム紹介](https://github.com/K9i-0/flutterkaigi2026/releases/download/readme-media-20261027/preview.gif)](https://github.com/K9i-0/flutterkaigi2026/releases/download/readme-media-20261027/yumemi-recruit-exam.mp4)
+[![ゆめみ採用試験 — 60fpsゲームトレーラー](docs/media/hero.png)](https://github.com/K9i-0/flutterkaigi2026/releases/download/readme-media-20261027/yumemi-recruit-exam-v4.mp4)
 
-**[▶ ゆめテレのゲーム紹介を見る（32秒・音声付き）](https://github.com/K9i-0/flutterkaigi2026/releases/download/readme-media-20261027/yumemi-recruit-exam.mp4)**
+**[▶ ゲームトレーラーを見る（32秒・60fps・音声付き）](https://github.com/K9i-0/flutterkaigi2026/releases/download/readme-media-20261027/yumemi-recruit-exam-v4.mp4)**
 
-iPhone 18 Pro／iOS 27シミュレーターのゲーム画面を収録し、Remotionで編集。プレイ映像は撮影用の自動入力で動かしています。ナレーションはゆめテレアナウンサー（Irodori-TTS）。[映像の制作・再生成手順](tools/readme-video/README.md)
+iPhone 18 Pro／iOS 27シミュレーターの標準録画で収録し、2622×1206・60fpsで編集。3人のキャラクター選択、昼夜の赤坂、実際のプレイを紹介します。プレイ映像は撮影用の自動入力で動かしています。ナレーションはゆめテレアナウンサー（Irodori-TTS）。[映像の制作・再生成手順](tools/readme-video/README.md)
 
 ## 遊び方
 

@@ -3,8 +3,8 @@
   "private": true,
   "scripts": {
     "studio": "remotion studio src/index.tsx",
-    "render": "remotion render src/index.tsx Trailer out/yumemi-recruit-exam.mp4 --codec=h264 --crf=20",
-    "poster": "remotion still src/index.tsx Trailer ../../docs/media/hero.png --frame=45",
+    "render": "remotion render src/index.tsx Trailer out/yumemi-recruit-exam-v4.mp4 --codec=h264 --crf=16 --concurrency=2",
+    "poster": "remotion still src/index.tsx Trailer out/poster-v4.png --frame=100",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
