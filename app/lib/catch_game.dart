@@ -351,13 +351,15 @@ class CatchGame {
 
   /// A recording controller supplies only movement/camera inputs, never scores.
   ({double x, double y}) demoInput() {
+    // Catches the round's last bad drop once, to show the penalty.
+    final shownBad = drops.where((d) => d.kind.isBad).lastOrNull?.id;
     final candidates =
         drops
             .where(
               (d) =>
                   !d.resolved &&
                   d.spawn <= time &&
-                  (!d.kind.isBad || d.id == 3),
+                  (!d.kind.isBad || d.id == shownBad),
             )
             .toList()
           ..sort((a, b) => a.landing.compareTo(b.landing));

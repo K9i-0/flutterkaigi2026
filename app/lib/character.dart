@@ -23,7 +23,7 @@ enum CatchCharacter {
   /// exact frame-by-frame input (TAS); see test/layout_test.dart.
   int get layoutSeed => switch (this) {
     fukuchan => 23,
-    ctoOdatetsu => 60,
+    ctoOdatetsu => 8,
     sobaya => 9,
   };
   String get difficulty => switch (this) {

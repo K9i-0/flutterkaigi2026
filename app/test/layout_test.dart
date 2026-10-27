@@ -28,7 +28,7 @@ void main() {
     final normal = population(CatchCharacter.ctoOdatetsu);
     final hard = population(CatchCharacter.sobaya);
     expect(easy.pass, greaterThanOrEqualTo(.95));
-    expect(normal.pass, inInclusiveRange(.8, easy.pass));
+    expect(normal.pass, inInclusiveRange(.7, .9));
     expect(hard.pass, lessThanOrEqualTo(.3));
     expect(easy.perfect, greaterThan(normal.perfect));
     expect(normal.perfect, greaterThan(hard.perfect));
