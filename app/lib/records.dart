@@ -50,9 +50,10 @@ class GameRecord {
   }
 }
 
-/// Device-local records for the event booth.
+/// Device-local records for the event booth. v2 scores out of 100; the raw
+/// point records of v1 are left behind.
 class RecordStore {
-  static const key = 'yumemi.records.v1', maxRecords = 500, maxName = 12;
+  static const key = 'yumemi.records.v2', maxRecords = 500, maxName = 12;
   final records = <GameRecord>[];
 
   Future<void> load() async {

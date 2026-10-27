@@ -13,14 +13,6 @@ import 'okayaman_vision.dart';
 import 'stage_lighting.dart';
 import 'stage_environment.dart';
 
-/// What a pinch zooms toward on the beam stage.
-enum ZoomPivot {
-  bridge,
-  character;
-
-  String get id => name;
-}
-
 class CatchScene {
   final scene = Scene();
   final vision = OkayamanVision();
@@ -52,7 +44,6 @@ class CatchScene {
     'facing': facing,
     'catchFx': {'good': _goodFx.parent != null, 'bad': _badFx.parent != null},
     'zoom': zoom,
-    'zoomPivot': zoomPivot.id,
     'vision': vision.inspect(),
     'stage': lighting.inspect(),
     'visibleDropModels': [
@@ -70,7 +61,6 @@ class CatchScene {
 
   /// Pinch magnification; 1 is the standard view, larger is closer.
   double zoom = 1;
-  ZoomPivot zoomPivot = ZoomPivot.bridge;
   double _pivotX = 0;
   // Hidden rigged models still incur a scene-tree walk. Keep reusable models
   // off the live graph until needed; geometry, textures and animation survive.
@@ -329,9 +319,9 @@ class CatchScene {
     // Leave sky between the 333m landmark tip and the HUD on wide iPhones.
     final baseTarget = vm.Vector3(0, 2.9, 0);
     final m = zoom;
-    // Smoothed so the end stops and quick reversals don't jolt the view.
-    final followX = zoomPivot == ZoomPivot.character ? g.x : 0.0;
-    _pivotX += (followX - _pivotX) * (dt <= 0 ? 1 : 1 - math.exp(-dt * 6));
+    // Pinch zooms toward the character. Smoothed so the end stops and quick
+    // reversals don't jolt the view.
+    _pivotX += (g.x - _pivotX) * (dt <= 0 ? 1 : 1 - math.exp(-dt * 6));
     // Closer views aim lower, toward the beam and the character's body.
     final close = ((m - 1) / math.max(.01, g.balance['zoomMax'] - 1)).clamp(
       0.0,

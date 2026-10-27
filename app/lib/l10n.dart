@@ -60,6 +60,14 @@ class Strings {
   String get ranking => _('ランキング', 'Ranking');
   String get graphics => _('画質設定', 'Graphics');
   String get language => _('言語', 'Language');
+
+  /// Round score out of 100.
+  String points(int score) => _('$score点', '$score / 100');
+  String get passed => _('合格', 'PASSED');
+  String get failed => _('不合格', 'FAILED');
+  String passLine(int score) => _('$score点以上で合格', 'Pass with $score+');
+  String get allCaught => _('全部で100点', 'All = 100');
+  String penaltyEach(int p) => _('1回 −$p点', '−$p each');
   String results(int caught, int bad, int missed) => _(
     'あたり $caught  /  はずれ $bad  /  逃した $missed',
     'Caught $caught  /  Wrong $bad  /  Missed $missed',

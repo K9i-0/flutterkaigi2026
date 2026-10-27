@@ -9,16 +9,6 @@ export 'stage_time.dart';
 
 enum Phase { ready, countdown, playing, result }
 
-/// Lane steering. fixed: screen left/right always walks the beam (the sign
-/// flips behind it). camera: the tilt is read in screen space and projected
-/// onto the beam, so after turning the camera you tilt toward that direction.
-enum ControlMode {
-  fixed,
-  camera;
-
-  String get id => name;
-}
-
 /// Message shown in the HUD; screens render the text in the chosen language.
 enum GameMessage { hint, caught, bad }
 
@@ -52,8 +42,13 @@ class Drop {
 class CatchGame {
   static const duration = 20.0, halfX = 3.9;
 
+  /// A round scores 0-100: the share of good drops caught, minus a penalty
+  /// per bad catch. Reaching [passScore] passes the exam.
+  static const passScore = 80;
+
   Balance balance = Balance.defaults();
-  int seed = 1;
+  /// Layout of the current round; set by [start].
+  int seed = 0;
   CatchCharacter _selectedCharacter = CatchCharacter.ctoOdatetsu;
   CatchCharacter get selectedCharacter => _selectedCharacter;
   CatchCharacter _roundCharacter = CatchCharacter.ctoOdatetsu;
@@ -92,10 +87,7 @@ class CatchGame {
   /// Practice: no time limit, drops keep coming, score and counters stay 0.
   bool practice = false;
 
-  /// The app starts in camera mode; the model default keeps tests on fixed.
-  ControlMode controlMode = ControlMode.fixed;
   Phase phase = Phase.ready;
-  double screenSign = 1;
   double time = 0, countdown = 0, x = 0, vx = 0, yaw = 0, targetYaw = 0;
   int score = 0, combo = 0, caught = 0, bad = 0, missed = 0, eventId = 0;
 
@@ -110,12 +102,18 @@ class CatchGame {
   int? messagePoints;
   double messageUntil = 0;
   final drops = <Drop>[];
+
+  /// Good drops in this round; catching all of them without a bad one is 100.
+  int goodTotal = 0;
+  bool get passed => score >= passScore;
   final events = <Map<String, Object>>[];
   late math.Random _random;
   int _nextId = 0;
-  void start({int seed = 1}) {
-    this.seed = seed;
+
+  /// Without [seed] the round uses the character's fixed, verified layout.
+  void start({int? seed}) {
     _roundCharacter = selectedCharacter;
+    this.seed = seed ?? roundCharacter.layoutSeed;
     _baseMoveSpeed = roundCharacter.moveSpeed;
     _baseCatchRadius = roundCharacter.catchRadius;
     phase = Phase.countdown;
@@ -125,7 +123,6 @@ class CatchGame {
     vx = 0;
     yaw = 0;
     targetYaw = 0;
-    screenSign = 1;
     score = 0;
     combo = 0;
     caught = 0;
@@ -138,10 +135,17 @@ class CatchGame {
     drops.clear();
     message = GameMessage.hint;
     messageUntil = 2;
-    _random = math.Random(seed);
+    _random = math.Random(this.seed);
     _nextId = 0;
     _spawnUntil(practice ? 30 : roundSeconds - fallSeconds - 1);
+    goodTotal = drops.where((d) => !d.kind.isBad).length;
   }
+
+  int get _score => math.max(
+    0,
+    (100 * caught / math.max(1, goodTotal)).round() -
+        bad * balance['penalty'].round(),
+  );
 
   /// Appends drops whose spawn time is at most [until]; practice streams more.
   void _spawnUntil(double until) {
@@ -212,19 +216,14 @@ class CatchGame {
     }
     if (phase != Phase.playing) return;
     time += dt;
-    if (controlMode == ControlMode.fixed) iy = 0;
     final len = math.sqrt(ix * ix + iy * iy);
     if (len > 1) {
       ix /= len;
       iy /= len;
     }
-    // Lane input follows the screen: from behind the beam, right is world +x.
-    // Near side-on views keep the last sign so the controls never flip mid-step.
-    final c = math.cos(yaw);
-    if (c.abs() > .3) screenSign = c.sign;
-    final dir = controlMode == ControlMode.camera
-            ? toWorld(ix, iy, yaw).x
-            : -ix * screenSign,
+    // The tilt is read in screen space and projected onto the beam, so after
+    // turning the camera you tilt toward where you want to walk.
+    final dir = toWorld(ix, iy, yaw).x,
         a = 1 - math.exp(-balance['acceleration'] * dt);
     vx += (dir * moveSpeed - vx) * a;
     final previousX = x;
@@ -246,22 +245,20 @@ class CatchGame {
         message = d.kind.isBad ? GameMessage.bad : GameMessage.caught;
         messagePoints = null;
       } else if (d.caught) {
+        final before = score;
         if (d.kind.isBad) {
           bad++;
-          score -= balance['penalty'].round();
           combo = 0;
           message = GameMessage.bad;
-          messagePoints = balance['penalty'].round();
         } else {
           caught++;
           combo++;
-          final points =
-              balance['beerPoints'].round() +
-              math.min(combo - 1, 4) * balance['comboBonus'].round();
-          score += points;
           message = GameMessage.caught;
-          messagePoints = points;
         }
+        score = _score;
+        // No "-0" when the score is already at zero or the penalty is off.
+        final change = (score - before).abs();
+        messagePoints = change == 0 ? null : change;
         events.add({
           'time': time,
           'id': d.id,
@@ -289,6 +286,7 @@ class CatchGame {
   Map<String, Object> inspect() => {
     'balance': balance.values,
     'seed': seed,
+    'layoutSeed': roundCharacter.layoutSeed,
     'selectedCharacter': selectedCharacter.id,
     'timeOfDay': timeOfDay.id,
     'roundCharacter': roundCharacter.id,
@@ -304,7 +302,8 @@ class CatchGame {
     'vx': vx,
     'dropCount': drops.length,
     'practice': practice,
-    'controlMode': controlMode.id,
+    'goodTotal': goodTotal,
+    'passed': passed,
     'phase': phase.name,
     'time': time,
     'x': x,
@@ -346,9 +345,6 @@ class CatchGame {
           ..sort((a, b) => a.landing.compareTo(b.landing));
     if (candidates.isEmpty) return (x: 0, y: 0);
     final d = candidates.first;
-    if (controlMode == ControlMode.fixed) {
-      return (x: -(d.x - x) * 2.6, y: 0);
-    }
     return toScreen((d.x - x) * 2.6, 0, yaw);
   }
 }

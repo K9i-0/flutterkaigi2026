@@ -87,7 +87,10 @@ class _RainState extends State<RainPage> {
   // Debug/profile only: frame-rate HUD toggled from the debug panel.
   bool showFps = false;
   Map<String, Object>? fpsStats;
-  int lastEvent = 0, seed = 1;
+  int lastEvent = 0;
+
+  /// Debug override of the character's fixed layout; null plays the fixed one.
+  int? seed;
   Object? _hudState;
 
   void refreshHud() {
@@ -158,7 +161,7 @@ class _RainState extends State<RainPage> {
       );
       registerMarionetteExtension(
         name: 'madogiwa.catchAction',
-        description: 'action=select|configure|start|demo|step|rotate|pause|resume|endPractice|control|zoom|record|ranking|lang|graphics|benchmark|fps. start: practice=true for the no-score mode. control: value=fixed|camera. zoom: value=magnification (clamped to zoomMin..zoomMax), pivot=bridge|character. record: name answers the nickname dialog (omit to skip). ranking opens the board. lang: value=ja|en. fps: value=on|off (debug FPS HUD). graphics: json booleans, persist=true optional. benchmark: label, timeOfDay. select: character ID and/or timeOfDay=day|night. configure: json settings, seed. step seconds 0..25 x/y -1..1. Demo supplies inputs only.',
+        description: 'action=select|configure|start|demo|step|rotate|pause|resume|endPractice|zoom|record|ranking|lang|graphics|benchmark|fps. start: practice=true for the no-score mode. zoom: value=magnification (clamped to zoomMin..zoomMax). record: name answers the nickname dialog (omit to skip). ranking opens the board. lang: value=ja|en. fps: value=on|off (debug FPS HUD). graphics: json booleans, persist=true optional. benchmark: label, timeOfDay. select: character ID and/or timeOfDay=day|night. configure: json settings, seed (an integer, or fixed for the character layout). step seconds 0..25 x/y -1..1. Demo supplies inputs only.',
         callback: (p) async {
           if (!ready) return MarionetteExtensionResult.error(1, 'Not ready');
           switch (p['action']) {
@@ -174,29 +177,14 @@ class _RainState extends State<RainPage> {
               await setLang(lang);
             case 'endPractice':
               endPractice();
-            case 'control':
-              final mode = ControlMode.values
-                  .where((m) => m.id == p['value'])
-                  .firstOrNull;
-              if (mode == null) {
-                return MarionetteExtensionResult.invalidParams(
-                  'value=fixed|camera',
-                );
-              }
-              await setControl(mode);
             case 'zoom':
-              final pivot = ZoomPivot.values
-                  .where((z) => z.id == p['pivot'])
-                  .firstOrNull;
               final value = double.tryParse(p['value'] ?? '');
-              if ((p['pivot'] != null && pivot == null) ||
-                  (p['value'] != null && (value == null || !value.isFinite))) {
+              if (value == null || !value.isFinite) {
                 return MarionetteExtensionResult.invalidParams(
-                  'value=magnification, pivot=bridge|character',
+                  'value=magnification',
                 );
               }
-              if (pivot != null) await setPivot(pivot);
-              if (value != null) setZoom(value);
+              setZoom(value);
               world.update(game, 0);
             case 'record':
               // Answers the open nickname dialog; omit name to skip.
@@ -294,14 +282,21 @@ class _RainState extends State<RainPage> {
                 final data =
                     jsonDecode(p['json'] ?? '{}') as Map<String, dynamic>;
                 final next = Balance.fromMap({...game.balance.values, ...data});
-                final nextSeed = int.tryParse(p['seed'] ?? '$seed');
-                if (nextSeed == null || nextSeed < 0 || nextSeed > 999999999) {
+                final raw = p['seed'];
+                final nextSeed = raw == null || raw == 'fixed'
+                    ? null
+                    : int.tryParse(raw);
+                if (raw != null &&
+                    raw != 'fixed' &&
+                    (nextSeed == null ||
+                        nextSeed < 0 ||
+                        nextSeed > 999999999)) {
                   return MarionetteExtensionResult.invalidParams(
                     'Invalid seed',
                   );
                 }
                 game.balance = next;
-                seed = nextSeed;
+                if (raw != null) seed = nextSeed;
                 await saveBalance();
                 start();
                 frozen = true;
@@ -492,44 +487,21 @@ class _RainState extends State<RainPage> {
               .firstOrNull ??
           AppLang.ja;
       await records.load();
-      // Booth defaults since 2026-10-21; v2 keys drop the earlier trial picks.
-      game.controlMode =
-          ControlMode.values
-              .where((m) => m.id == prefs.getString('yumemi.debug.control.v2'))
-              .firstOrNull ??
-          ControlMode.camera;
-      world.zoomPivot =
-          ZoomPivot.values
-              .where(
-                (z) => z.id == prefs.getString('yumemi.debug.zoomPivot.v2'),
-              )
-              .firstOrNull ??
-          ZoomPivot.character;
-      final saved = prefs.getString('beerRain.balance.v1');
+      final saved = prefs.getString(balanceKey);
       if (saved != null) {
         try {
           final data = jsonDecode(saved) as Map<String, dynamic>;
           final values = Map<String, dynamic>.from(data['balance'] as Map);
-          // The old 70-110 degree default kept drops facing along the beam;
-          // saves still on it adopt the all-around default.
-          if (values['facingMin'] == 70 && values['facingMax'] == 110) {
-            values
-              ..remove('facingMin')
-              ..remove('facingMax');
-          }
-          // 2.5x was the first trial's upper bound; 5x shows character detail.
-          if (values['zoomMax'] == 2.5) values.remove('zoomMax');
           final b = Balance.fromMap(values);
           final n = data['seed'];
-          if (n is int && n >= 0 && n <= 999999999) {
+          if (n == null || (n is int && n >= 0 && n <= 999999999)) {
             game.balance = b;
-            seed = n;
+            seed = n as int?;
           }
         } catch (_) {
           /* Invalid saved settings fall back to defaults. */
         }
       }
-      game.seed = seed;
       await world.load();
       world.lighting.graphics = graphics;
       world.update(game, 0);
@@ -561,9 +533,12 @@ class _RainState extends State<RainPage> {
     game.phase = Phase.ready;
     game.selectCharacter(character ?? CatchCharacter.ctoOdatetsu);
     game.selectTime(time);
+    // Seed 1 keeps measurements comparable; later rounds keep the override.
+    final override = seed;
     seed = 1;
     game.balance = Balance.defaults();
     start();
+    seed = override;
     world.clock = 0;
     world.facing = math.pi;
     for (var i = 0; i < 480; i++) {
@@ -603,11 +578,14 @@ class _RainState extends State<RainPage> {
     if (selected != null) await saveGraphics();
   }
 
+  /// v2 since the 100-point score; v1 held raw-point settings and seed 1.
+  static const balanceKey = 'yumemi.balance.v2';
+
   Future<void> saveBalance() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(
-      'beerRain.balance.v1',
-      jsonEncode({'seed': seed, 'balance': game.balance.values}),
+      balanceKey,
+      jsonEncode({'seed': ?seed, 'balance': game.balance.values}),
     );
   }
 
@@ -618,18 +596,6 @@ class _RainState extends State<RainPage> {
     });
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('yumemi.debug.fps', value);
-  }
-
-  Future<void> setControl(ControlMode mode) async {
-    setState(() => game.controlMode = mode);
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('yumemi.debug.control.v2', mode.id);
-  }
-
-  Future<void> setPivot(ZoomPivot pivot) async {
-    setState(() => world.zoomPivot = pivot);
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('yumemi.debug.zoomPivot.v2', pivot.id);
   }
 
   void setZoom(double value) {
@@ -710,10 +676,6 @@ class _RainState extends State<RainPage> {
         seed: seed,
         showFps: showFps,
         onFps: setFps,
-        controlMode: game.controlMode,
-        onControl: setControl,
-        zoomPivot: world.zoomPivot,
-        onPivot: setPivot,
       ),
     );
     if (!mounted) return;
@@ -821,9 +783,7 @@ class _RainState extends State<RainPage> {
         LogicalKeyboardKey.arrowLeft,
         LogicalKeyboardKey.arrowRight,
       );
-      inputY = game.controlMode == ControlMode.fixed
-          ? 0
-          : axis(LogicalKeyboardKey.arrowDown, LogicalKeyboardKey.arrowUp);
+      inputY = axis(LogicalKeyboardKey.arrowDown, LogicalKeyboardKey.arrowUp);
     }
     while (accumulator >= 1 / 60) {
       advance(
@@ -868,20 +828,6 @@ class _RainState extends State<RainPage> {
     GameMessage.caught => t.niceCatch(game.messagePoints),
     GameMessage.bad => t.wrongCatch(game.messageKind!, game.messagePoints),
   };
-  Widget legend() => Row(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      chip(
-        '${game.roundCharacter.goodDrops.first.label} +${game.balance['beerPoints'].round()}〜',
-        color: gold,
-      ),
-      const SizedBox(width: 6),
-      chip(
-        '${game.roundCharacter.badDrop.label} −${game.balance['penalty'].round()}',
-        color: const Color(0xff8052a0),
-      ),
-    ],
-  );
   @override
   Widget build(BuildContext context) {
     final t = L10n.of(context);
@@ -1069,7 +1015,7 @@ class _RainState extends State<RainPage> {
                                   ),
                                 ),
                                 const SizedBox(width: 8),
-                                chip('${game.score} pt', color: gold),
+                                chip(t.points(game.score), color: gold),
                               ],
                               IconButton(
                                 key: const ValueKey('graphics_settings'),
@@ -1120,91 +1066,40 @@ class _RainState extends State<RainPage> {
                                   : const SizedBox(),
                             ),
                           ),
-                        if (game.phase == Phase.ready ||
-                            game.phase == Phase.result ||
-                            paused)
+                        // Ready and result show the selection screen instead.
+                        if (paused)
                           Center(
-                            child: SingleChildScrollView(
+                            child: Container(
                               key: const ValueKey('round_menu'),
-                              child: Container(
-                                width: math.min(570, size.maxWidth - 80),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 24,
-                                  vertical: 18,
+                              width: math.min(570, size.maxWidth - 80),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 24,
+                                vertical: 18,
+                              ),
+                              decoration: BoxDecoration(
+                                color: ink.withValues(alpha: .97),
+                                borderRadius: BorderRadius.circular(22),
+                                border: Border.all(
+                                  color: gold.withValues(alpha: .35),
                                 ),
-                                decoration: BoxDecoration(
-                                  color: ink.withValues(alpha: .97),
-                                  borderRadius: BorderRadius.circular(22),
-                                  border: Border.all(
-                                    color: gold.withValues(alpha: .35),
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    t.paused,
+                                    style: const TextStyle(
+                                      fontSize: 27,
+                                      fontWeight: FontWeight.bold,
+                                      color: cream,
+                                    ),
                                   ),
-                                ),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      paused
-                                          ? t.paused
-                                          : game.phase == Phase.result
-                                          ? '${game.score} pt'
-                                          : '降ってくるのは、ビールだけ？',
-                                      style: const TextStyle(
-                                        fontSize: 27,
-                                        fontWeight: FontWeight.bold,
-                                        color: cream,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    if (game.phase == Phase.result)
-                                      Text(
-                                        'あたり ${game.caught}  ／  はずれ ${game.bad}  ／  取り逃し ${game.missed}',
-                                        style: const TextStyle(color: gold),
-                                      )
-                                    else if (!paused)
-                                      Text(
-                                        '足場は細い鉄骨一本。左右に傾けて歩こう。\n缶の向きはばらばら。カメラで表ラベルを見て、発泡酒を避けろ！',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          height: 1.6,
-                                        ),
-                                      ),
-                                    const SizedBox(height: 12),
-                                    if (!paused) legend(),
-                                    const SizedBox(height: 12),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        button(
-                                          paused
-                                              ? t.resume
-                                              : game.phase == Phase.result
-                                              ? 'もう一回！'
-                                              : 'キャッチ開始',
-                                          () {
-                                            if (paused) {
-                                              paused = false;
-                                              tilt.calibrate();
-                                            } else {
-                                              start();
-                                            }
-                                          },
-                                          paused ? 'resume' : 'start',
-                                        ),
-                                        if (!paused) ...[
-                                          const SizedBox(width: 10),
-                                          TextButton(
-                                            key: const ValueKey('new_seed'),
-                                            onPressed: () =>
-                                                setState(() => seed++),
-                                            child: Text('配置 #$seed'),
-                                          ),
-                                        ],
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                                  const SizedBox(height: 22),
+                                  button(t.resume, () {
+                                    paused = false;
+                                    tilt.calibrate();
+                                  }, 'resume'),
+                                ],
                               ),
                             ),
                           ),

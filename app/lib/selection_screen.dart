@@ -66,8 +66,8 @@ class SelectionScreen extends StatelessWidget {
               const SizedBox(width: 8),
               Text(
                 bad
-                    ? '−${game.balance['penalty'].round()}'
-                    : '+${game.balance['beerPoints'].round()}〜',
+                    ? t.penaltyEach(game.balance['penalty'].round())
+                    : t.allCaught,
                 style: const TextStyle(fontSize: 11, color: muted),
               ),
             ],
@@ -164,13 +164,23 @@ class SelectionScreen extends StatelessWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Text(
-                                '${game.score} pt${rank == null ? '' : '  ·  $rank'}',
-                                key: const ValueKey('result_score'),
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w700,
-                                ),
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  _Verdict(
+                                    passed: game.passed,
+                                    label: game.passed ? t.passed : t.failed,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    '${t.points(game.score)}${rank == null ? '' : '  ·  $rank'}',
+                                    key: const ValueKey('result_score'),
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ],
                               ),
                               Text(
                                 t.results(game.caught, game.bad, game.missed),
@@ -183,7 +193,7 @@ class SelectionScreen extends StatelessWidget {
                           )
                         else
                           Text(
-                            t.roundLength(game.roundSeconds.round()),
+                            '${t.roundLength(game.roundSeconds.round())}  ·  ${t.passLine(CatchGame.passScore)}',
                             style: const TextStyle(fontSize: 12, color: muted),
                           ),
                         const SizedBox(width: 12),
@@ -495,6 +505,32 @@ class TimeOfDayToggle extends StatelessWidget {
             ),
           ),
       ],
+    ),
+  );
+}
+
+/// Pass/fail stamp beside the result score.
+class _Verdict extends StatelessWidget {
+  const _Verdict({required this.passed, required this.label});
+  final bool passed;
+  final String label;
+  @override
+  Widget build(BuildContext context) => Container(
+    key: ValueKey(passed ? 'result_passed' : 'result_failed'),
+    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+    decoration: BoxDecoration(
+      gradient: passed ? brandGradient : null,
+      color: passed ? null : const Color(0xffeef2f4),
+      borderRadius: BorderRadius.circular(999),
+    ),
+    child: Text(
+      label,
+      style: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w800,
+        letterSpacing: 1,
+        color: passed ? Colors.white : brandMuted,
+      ),
     ),
   );
 }

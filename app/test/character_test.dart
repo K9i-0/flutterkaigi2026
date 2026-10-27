@@ -56,7 +56,7 @@ void main() {
         ..add(Drop(0, character.badDrop, 0, -3.1));
       g.tick(1 / 60);
       expect(g.bad, 1);
-      expect(g.score, -200);
+      expect(g.score, 0);
     }
     final easy = rounds[CatchCharacter.fukuchan]!,
         normal = rounds[CatchCharacter.ctoOdatetsu]!,
@@ -81,7 +81,7 @@ void main() {
       g.tick(1 / 60);
       expect(g.caught, character == CatchCharacter.ctoOdatetsu ? 0 : 1);
       for (var i = 0; i < 60; i++) {
-        g.tick(1 / 60, inputX: 1, inputY: 1);
+        g.tick(1 / 60, inputX: 1);
       }
       expect(g.vx.abs(), closeTo(character.moveSpeed, .001));
       for (var i = 0; i < 1200; i++) {

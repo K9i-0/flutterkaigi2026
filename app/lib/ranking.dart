@@ -73,7 +73,7 @@ class _RecordDialogState extends State<RecordDialog> {
       titlePadding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
       contentPadding: const EdgeInsets.fromLTRB(24, 8, 24, 0),
       title: Text(
-        '${t.recordTitle}  ·  ${widget.score} pt  ·  ${t.character(widget.character)}',
+        '${t.recordTitle}  ·  ${t.points(widget.score)}  ·  ${t.character(widget.character)}',
         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
       ),
       content: SizedBox(
@@ -230,7 +230,7 @@ class _RankingDialogState extends State<RankingDialog> {
                                   ),
                                 ),
                                 Text(
-                                  '${r.score} pt',
+                                  t.points(r.score),
                                   style: const TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w700,

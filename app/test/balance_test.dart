@@ -6,7 +6,7 @@ void main() {
   test('reject invalid and unknown settings atomically', () {
     for (final input in <Map<String, dynamic>>[
       {'fallSeconds': 0},
-      {'moveSpeed': double.nan},
+      {'acceleration': double.nan},
       {'unknown': 1},
       {'badRatio': 'many'},
       {'facingMin': 100, 'facingMax': 20},
@@ -23,7 +23,7 @@ void main() {
       'spawnInterval': .5,
       'fallSeconds': 2,
       'badRatio': 1,
-      'penalty': 75,
+      'penalty': 25,
     });
     g.start(seed: 42);
     expect(g.drops.length, 15);
@@ -35,7 +35,9 @@ void main() {
       g.tick(1 / 60);
     }
     expect(g.bad, 1);
-    expect(g.score, -75);
+    // An all-bad round has nothing to catch; the score floors at zero.
+    expect(g.goodTotal, 0);
+    expect(g.score, 0);
   });
   test('same seed and settings reproduce layout; all-beer ratio works', () {
     final a = CatchGame();
@@ -49,9 +51,22 @@ void main() {
     );
     expect(a.drops.any((d) => d.kind.isBad), false);
   });
-  test('retired plane-mode keys in saved JSON are ignored', () {
-    final b = Balance.fromMap({'catchRadius': .9, 'badRatio': .5});
-    expect(b.values.containsKey('catchRadius'), false);
+  test('retired keys in saved JSON are ignored', () {
+    final b = Balance.fromMap({
+      'catchRadius': .9,
+      'moveSpeed': 2,
+      'beerPoints': 100,
+      'comboBonus': 25,
+      'badRatio': .5,
+    });
+    for (final key in [
+      'catchRadius',
+      'moveSpeed',
+      'beerPoints',
+      'comboBonus',
+    ]) {
+      expect(b.values.containsKey(key), false);
+    }
     expect(b['badRatio'], .5);
   });
   test('lane rounds keep the default can mix for every seed', () {

@@ -5,9 +5,8 @@ import 'package:yumemi_recruit_exam/balance.dart';
 import 'package:yumemi_recruit_exam/catch_game.dart';
 
 void main() {
-  CatchGame turned(ControlMode mode, int steps) {
-    final g = CatchGame()..controlMode = mode;
-    g.start();
+  CatchGame turned(int steps) {
+    final g = CatchGame()..start();
     for (var i = 0; i < steps; i++) {
       g.rotate(1);
     }
@@ -15,31 +14,30 @@ void main() {
     return g;
   }
 
-  test('camera mode: from the side, tilting forward walks the beam', () {
+  test('from the side, tilting forward walks the beam', () {
     // Three 30-degree steps look straight along the beam.
-    final camera = turned(ControlMode.camera, 3);
-    final fixed = turned(ControlMode.fixed, 3);
+    final g = turned(3);
     for (var i = 0; i < 90; i++) {
-      camera.tick(1 / 60, inputY: 1);
-      fixed.tick(1 / 60, inputY: 1);
+      g.tick(1 / 60, inputY: 1);
     }
-    expect(camera.yaw, closeTo(math.pi / 2, .02));
-    expect(camera.x, lessThan(-1));
-    expect(fixed.x, 0);
+    expect(g.yaw, closeTo(math.pi / 2, .02));
+    expect(g.x, lessThan(-1));
   });
 
-  test('camera mode matches the fixed mode in the default view', () {
-    final camera = turned(ControlMode.camera, 0);
-    final fixed = turned(ControlMode.fixed, 0);
+  test('in the default view only left and right tilt moves', () {
+    final g = turned(0);
     for (var i = 0; i < 60; i++) {
-      camera.tick(1 / 60, inputX: .7);
-      fixed.tick(1 / 60, inputX: .7);
+      g.tick(1 / 60, inputY: 1);
     }
-    expect(camera.x, closeTo(fixed.x, 1e-9));
+    expect(g.x, closeTo(0, 1e-9));
+    for (var i = 0; i < 60; i++) {
+      g.tick(1 / 60, inputX: .7);
+    }
+    expect(g.x, lessThan(-1));
   });
 
-  test('camera-mode demo still finishes rounds while looking around', () {
-    final g = turned(ControlMode.camera, 2);
+  test('the demo still finishes rounds while looking around', () {
+    final g = turned(2);
     var steps = 0;
     while (g.phase != Phase.result && steps++ < 30 * 60) {
       final input = g.demoInput();

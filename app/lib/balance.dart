@@ -5,34 +5,160 @@ class BalanceField {
     this.min,
     this.max,
     this.initial,
-    this.step,
-  );
-  final String key, label;
+    this.step, {
+    required this.group,
+    this.unit = '',
+    this.digits = 2,
+  });
+  final String key, label, group, unit;
   final double min, max, initial, step;
+
+  /// Decimal places shown in the debug panel.
+  final int digits;
+  String format(double v) => '${v.toStringAsFixed(digits)}$unit';
 }
 
 class Balance {
+  /// Shared base values; each character scales the drop settings.
   static const fields = <BalanceField>[
-    BalanceField('roundSeconds', '制限時間（秒）', 10, 60, 20, 5),
-    BalanceField('spawnInterval', '出現間隔（秒）', .5, 3, 1.03, .05),
-    BalanceField('fallSeconds', '落下時間（秒・長いほど遅い）', 1, 6, 3.1, .1),
-    BalanceField('moveSpeed', '移動速度（鉄骨編）', 1, 5, 2.6, .1),
-    BalanceField('acceleration', '移動の応答（大きいほど即応）', 3, 24, 12, 1),
-    BalanceField('badRatio', 'はずれの割合（基準値）', 0, 1, .25, .05),
-    BalanceField('beerPoints', 'あたり基本点', 25, 300, 100, 25),
-    BalanceField('penalty', 'はずれの減点', 0, 500, 200, 25),
-    BalanceField('comboBonus', '連続キャッチ加点（最大4段階）', 0, 100, 25, 5),
-    BalanceField('cameraStep', 'カメラ1タップ（度・鉄骨編）', 15, 45, 30, 5),
-    BalanceField('cameraLimit', '撮影デモの見回し角（度・鉄骨編）', 30, 75, 60, 5),
-    BalanceField('facingMin', '落下物の向き・最小角（度）', 0, 180, 0, 5),
-    BalanceField('facingMax', '落下物の向き・最大角（度）', 0, 180, 180, 5),
-    BalanceField('zoomMin', 'ピンチの最小倍率（引き）', .4, 1, .7, .05),
-    BalanceField('zoomMax', 'ピンチの最大倍率（寄り）', 1, 6, 5, .1),
-    BalanceField('tiltDegrees', '最大速度になる傾き（度）', 5, 30, 13.75, .5),
+    BalanceField(
+      'roundSeconds',
+      '制限時間',
+      10,
+      60,
+      20,
+      5,
+      group: 'ラウンド',
+      unit: '秒',
+      digits: 0,
+    ),
+    BalanceField(
+      'spawnInterval',
+      '出現間隔',
+      .5,
+      3,
+      1.03,
+      .05,
+      group: 'ラウンド',
+      unit: '秒',
+    ),
+    BalanceField(
+      'fallSeconds',
+      '落下時間（長いほど遅い）',
+      1,
+      6,
+      3.1,
+      .1,
+      group: 'ラウンド',
+      unit: '秒',
+      digits: 1,
+    ),
+    BalanceField('badRatio', 'はずれの割合', 0, 1, .25, .05, group: 'ラウンド'),
+    BalanceField(
+      'penalty',
+      'はずれ1回の減点',
+      0,
+      50,
+      10,
+      5,
+      group: '採点（100点満点）',
+      unit: '点',
+      digits: 0,
+    ),
+    BalanceField(
+      'acceleration',
+      '移動の応答（大きいほど即応）',
+      3,
+      24,
+      12,
+      1,
+      group: '操作',
+      digits: 0,
+    ),
+    BalanceField(
+      'tiltDegrees',
+      '最大速度になる傾き',
+      5,
+      30,
+      13.75,
+      .5,
+      group: '操作',
+      unit: '°',
+    ),
+    BalanceField(
+      'cameraStep',
+      'スワイプ1回の回転',
+      15,
+      45,
+      30,
+      5,
+      group: 'カメラ',
+      unit: '°',
+      digits: 0,
+    ),
+    BalanceField(
+      'cameraLimit',
+      '撮影デモの見回し角',
+      30,
+      75,
+      60,
+      5,
+      group: 'カメラ',
+      unit: '°',
+      digits: 0,
+    ),
+    BalanceField(
+      'zoomMin',
+      'ピンチの最小倍率（引き）',
+      .4,
+      1,
+      .7,
+      .05,
+      group: 'カメラ',
+      unit: '×',
+    ),
+    BalanceField(
+      'zoomMax',
+      'ピンチの最大倍率（寄り）',
+      1,
+      6,
+      5,
+      .1,
+      group: 'カメラ',
+      unit: '×',
+      digits: 1,
+    ),
+    BalanceField(
+      'facingMin',
+      '最小角',
+      0,
+      180,
+      0,
+      5,
+      group: '落下物の向き',
+      unit: '°',
+      digits: 0,
+    ),
+    BalanceField(
+      'facingMax',
+      '最大角',
+      0,
+      180,
+      180,
+      5,
+      group: '落下物の向き',
+      unit: '°',
+      digits: 0,
+    ),
   ];
 
   /// Keys of removed settings that saved or pasted JSON may still contain.
-  static const retired = {'catchRadius'};
+  static const retired = {
+    'catchRadius',
+    'moveSpeed',
+    'beerPoints',
+    'comboBonus',
+  };
   Balance._(this.values);
   factory Balance.defaults() =>
       Balance._(Map.unmodifiable({for (final f in fields) f.key: f.initial}));
@@ -57,21 +183,4 @@ class Balance {
   }
   final Map<String, double> values;
   double operator [](String key) => values[key]!;
-  static Balance preset(String name) => switch (name) {
-    'easy' => Balance.fromMap({
-      'spawnInterval': 1.6,
-      'fallSeconds': 4.5,
-      'badRatio': .15,
-      'facingMin': 20,
-      'facingMax': 70,
-    }),
-    'hard' => Balance.fromMap({
-      'spawnInterval': .8,
-      'fallSeconds': 2.4,
-      'badRatio': .4,
-      'facingMin': 90,
-      'facingMax': 130,
-    }),
-    _ => Balance.defaults(),
-  };
 }

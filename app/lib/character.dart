@@ -16,6 +16,16 @@ enum CatchCharacter {
   const CatchCharacter(this.label, this.id, this.moveSpeed, this.catchRadius);
   final String label, id;
   final double moveSpeed, catchRadius;
+
+  /// Fixed drop layout every visitor plays, picked with `tool/balance_report.dart`.
+  /// Its bots see every drop perfectly, so they pass about 100% / 60% / 3%,
+  /// aiming at real players' 90% / 50% / 5%. Sobaya's perfect round needs an
+  /// exact frame-by-frame input (TAS); see test/layout_test.dart.
+  int get layoutSeed => switch (this) {
+    fukuchan => 23,
+    ctoOdatetsu => 60,
+    sobaya => 9,
+  };
   String get difficulty => switch (this) {
     fukuchan => 'イージー',
     ctoOdatetsu => 'ノーマル',

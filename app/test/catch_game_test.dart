@@ -5,40 +5,37 @@ import 'package:yumemi_recruit_exam/catch_game.dart';
 import 'package:yumemi_recruit_exam/tilt_input.dart';
 
 void main() {
-  test(
-    'lane ignores depth input and keeps controls stable while looking around',
-    () {
-      final g = CatchGame();
-      g.start();
-      expect(g.drops.any((d) => d.facing < 0), true);
-      expect(g.drops.any((d) => d.facing > 0), true);
+  test('full camera orbit wraps and drops keep their own headings', () {
+    final g = CatchGame();
+    g.start();
+    expect(g.drops.any((d) => d.facing < 0), true);
+    expect(g.drops.any((d) => d.facing > 0), true);
+    g.rotate(1);
+    g.rotate(1);
+    expect(g.targetYaw, closeTo(math.pi / 3, 1e-9));
+    g.phase = Phase.playing;
+    for (var i = 0; i < 60; i++) {
+      g.tick(1 / 60, inputX: .5, inputY: 1);
+    }
+    expect(g.x, lessThan(0));
+    final facings = g.drops.map((d) => d.facing).toList();
+    // A full orbit has no stop and wraps back into (-pi, pi].
+    for (var i = 0; i < 4; i++) {
       g.rotate(1);
+    }
+    expect(g.targetYaw, closeTo(math.pi, 1e-9));
+    g.rotate(1);
+    expect(g.targetYaw, closeTo(-5 * math.pi / 6, 1e-9));
+    for (var i = 0; i < 7; i++) {
       g.rotate(1);
-      expect(g.targetYaw, closeTo(math.pi / 3, 1e-9));
-      g.phase = Phase.playing;
-      for (var i = 0; i < 60; i++) {
-        g.tick(1 / 60, inputX: .5, inputY: 1);
-      }
-      expect(g.x, lessThan(0));
-      final facings = g.drops.map((d) => d.facing).toList();
-      // A full orbit has no stop and wraps back into (-pi, pi].
-      for (var i = 0; i < 4; i++) {
-        g.rotate(1);
-      }
-      expect(g.targetYaw, closeTo(math.pi, 1e-9));
-      g.rotate(1);
-      expect(g.targetYaw, closeTo(-5 * math.pi / 6, 1e-9));
-      for (var i = 0; i < 7; i++) {
-        g.rotate(1);
-      }
-      expect(g.targetYaw, closeTo(math.pi / 3, 1e-9));
-      for (var i = 0; i < 12; i++) {
-        g.rotate(-1);
-      }
-      expect(g.targetYaw, closeTo(math.pi / 3, 1e-9));
-      expect(g.drops.map((d) => d.facing), facings);
-    },
-  );
+    }
+    expect(g.targetYaw, closeTo(math.pi / 3, 1e-9));
+    for (var i = 0; i < 12; i++) {
+      g.rotate(-1);
+    }
+    expect(g.targetYaw, closeTo(math.pi / 3, 1e-9));
+    expect(g.drops.map((d) => d.facing), facings);
+  });
   test('lane controls follow the screen from behind the beam', () {
     final g = CatchGame();
     g.start();
@@ -61,7 +58,7 @@ void main() {
     }
     expect(g.phase, Phase.result);
     expect(g.caught, greaterThan(5));
-    expect(g.caught + g.missed, 12);
+    expect(g.caught + g.missed, g.goodTotal);
   });
   test('camera-relative movement round trips at all camera angles', () {
     for (var i = -8; i <= 8; i++) {
@@ -75,24 +72,43 @@ void main() {
     expect(w.x, closeTo(0, 1e-10));
     expect(w.z, closeTo(1, 1e-10));
   });
-  test('beer combo, happoshu penalty and one-shot catch resolution', () {
+  test('100-point score: share of good drops minus a bad-catch penalty', () {
     final g = CatchGame()..start();
     g.phase = Phase.playing;
-    g.drops
-      ..clear()
-      ..addAll([
+    g
+      ..goodTotal = 4
+      ..drops.clear()
+      ..drops.addAll([
         Drop(0, CanKind.superTry, 0, -3.1),
         Drop(1, CanKind.light, 0, -3.1),
       ]);
     g.tick(1 / 60);
-    expect(g.score, 225);
+    expect(g.score, 50);
+    expect(g.combo, 2);
+    expect(g.messagePoints, 25);
     g.tick(1 / 60);
-    expect(g.score, 225);
+    expect(g.score, 50);
     g.drops.add(Drop(2, CanKind.happoshu, 0, -3.1));
     g.tick(1 / 60);
-    expect(g.score, 25);
+    expect(g.score, 50 - g.balance['penalty'].round());
+    expect(g.messagePoints, g.balance['penalty'].round());
     expect(g.combo, 0);
     expect(g.bad, 1);
+    expect(g.passed, false);
+    g.drops.addAll([
+      Drop(3, CanKind.superTry, 0, -3.1),
+      Drop(4, CanKind.superTry, 0, -3.1),
+    ]);
+    g.tick(1 / 60);
+    // 4 of 4 caught, one bad: 100 - 10 still passes at 80.
+    expect(g.score, 90);
+    expect(g.passed, true);
+    // The score never drops below zero.
+    g.drops.addAll([
+      for (var i = 5; i < 20; i++) Drop(i, CanKind.happoshu, 0, -3.1),
+    ]);
+    g.tick(1 / 60);
+    expect(g.score, 0);
   });
   test('stage limits and completed rounds stop movement', () {
     final g = CatchGame()..start();
@@ -114,16 +130,17 @@ void main() {
     expect(g.phase, Phase.result);
     expect(g.caught, greaterThanOrEqualTo(6));
     expect(g.bad, greaterThanOrEqualTo(1));
-    expect(g.caught + g.missed, 12);
+    expect(g.caught + g.missed, g.goodTotal);
     expect(g.events.length, g.caught + g.bad);
   });
   test('a catch records where it landed and only a restart clears it', () {
     final g = CatchGame()..start();
     expect(g.fxX, isNull);
     g.phase = Phase.playing;
-    g.drops
-      ..clear()
-      ..add(Drop(0, CanKind.superTry, .2, -3.1));
+    g
+      ..goodTotal = 1
+      ..drops.clear()
+      ..drops.add(Drop(0, CanKind.superTry, .2, -3.1));
     g.tick(1 / 60);
     expect(g.fxX, .2);
     expect(g.fxBad, false);
