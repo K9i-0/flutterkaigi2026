@@ -150,29 +150,37 @@ class SelectionScreen extends StatelessWidget {
                           icon: const Icon(Icons.arrow_back_rounded),
                         ),
                         const SizedBox(width: 4),
-                        Text(
-                          t.chooseCharacter,
-                          style: const TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w800,
-                            height: 1.2,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
+                        // The rules sit under the heading, so English text
+                        // never pushes the buttons off the screen.
                         Expanded(
-                          child: Text(
-                            t.appTitle,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontSize: 11,
-                              color: muted,
-                              letterSpacing: 1,
-                            ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                t.chooseCharacter,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w800,
+                                  height: 1.2,
+                                ),
+                              ),
+                              Text(
+                                '${t.appTitle}  ·  '
+                                '${t.roundLength(roundLength)}  ·  '
+                                '${t.passLine(CatchGame.passScore)}',
+                                key: const ValueKey('round_rules'),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: muted,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        Text(
-                          '${t.roundLength(roundLength)}  ·  ${t.passLine(CatchGame.passScore)}',
-                          style: const TextStyle(fontSize: 12, color: muted),
                         ),
                         const SizedBox(width: 12),
                         // Ranking and every round's score; the result itself
