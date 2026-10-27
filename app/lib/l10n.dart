@@ -241,9 +241,9 @@ class Strings {
   String get applyRestart => _('適用して最初から', 'Apply and restart');
   String get tasTitle => _('TASモード（完璧な操作）', 'TAS mode (perfect play)');
   String get tasBody => _(
-    '次のラウンドから、100点になるフレーム単位の入力で自動プレイする。'
+    'オンのあいだ、ラウンドを100点になるフレーム単位の入力で自動プレイする。'
         'プレイ中もスワイプで見回せる。記録には残らない。',
-    'Plays the next rounds by itself with frame-exact inputs that score 100. '
+    'While on, rounds play themselves with frame-exact inputs that score 100. '
         'You can still swipe to look around. Not recorded.',
   );
   String get tasBadge => _('TAS：完璧な操作を再生中', 'TAS: perfect play');
