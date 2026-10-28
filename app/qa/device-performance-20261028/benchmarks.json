@@ -1,0 +1,389 @@
+{
+ "device": "Pixel 7a (Android 14, Impeller Vulkan, 2400x1080, 3D 2282x1080 physical)",
+ "date": "2026-10-28",
+ "build": "profile",
+ "flutter": {
+  "4f3ffba": "3.47.2",
+  "5644173": "3.47.8"
+ },
+ "notes": [
+  "stageBenchmark: STAGE_BENCHMARK=true, seed 1, CTO Odatetsu, front camera, 120 warm-up + 360 frames. CPU-side frame times only.",
+  "animateGameplay: temporary local patch (not committed) enabled the existing animateGameplay mode for the automatic profile benchmark and kept it running after the window.",
+  "sceneRate*: tool/scene_rate_probe.py rate, mean of 1 s timeline windows. frames = Flutter frames/s (what the HUD counts), scene = frames that ran ScenePass (3D actually re-encoded), scenePassMs = median ScenePass duration on the UI thread.",
+  "manual-*: tilt input with the phone lying flat, so the character mostly stood still while drops fell."
+ ],
+ "runs": [
+  {
+   "label": "static-head-fixedperf",
+   "commit": "5644173",
+   "benchmark": "static",
+   "fixedPerformanceMode": true,
+   "timeOfDay": "night",
+   "stageBenchmark": {
+    "buildMs": {
+     "p50": 3.619,
+     "p95": 8.452,
+     "max": 13.54
+    },
+    "rasterMs": {
+     "p50": 1.73,
+     "p95": 7.427,
+     "max": 11.024
+    },
+    "submittedFps": 60.01335338904935,
+    "frameIntervalMs": {
+     "p50": 16.662,
+     "p95": 16.679,
+     "over20ms": 0
+    }
+   },
+   "sceneRateAfterWindow": null
+  },
+  {
+   "label": "static-base",
+   "commit": "4f3ffba",
+   "benchmark": "static",
+   "fixedPerformanceMode": false,
+   "timeOfDay": "night",
+   "stageBenchmark": {
+    "buildMs": {
+     "p50": 8.381,
+     "p95": 16.448,
+     "max": 20.654
+    },
+    "rasterMs": {
+     "p50": 3.217,
+     "p95": 9.838,
+     "max": 14.196
+    },
+    "submittedFps": 55.00073078965423,
+    "frameIntervalMs": {
+     "p50": 16.65,
+     "p95": 33.302,
+     "over20ms": 33
+    }
+   },
+   "sceneRateAfterWindow": {
+    "frames": 57.9,
+    "scene": 30.2,
+    "scenePassMs": 5.8
+   }
+  },
+  {
+   "label": "static-head",
+   "commit": "5644173",
+   "benchmark": "static",
+   "fixedPerformanceMode": false,
+   "timeOfDay": "night",
+   "stageBenchmark": {
+    "buildMs": {
+     "p50": 8.264,
+     "p95": 15.753,
+     "max": 27.632
+    },
+    "rasterMs": {
+     "p50": 3.202,
+     "p95": 9.345,
+     "max": 17.154
+    },
+    "submittedFps": 55.27969601402595,
+    "frameIntervalMs": {
+     "p50": 16.652,
+     "p95": 33.302,
+     "over20ms": 31
+    }
+   },
+   "sceneRateAfterWindow": {
+    "frames": 54.7,
+    "scene": 30.2,
+    "scenePassMs": 5.0
+   }
+  },
+  {
+   "label": "play-base-1",
+   "commit": "4f3ffba",
+   "benchmark": "animateGameplay",
+   "fixedPerformanceMode": false,
+   "timeOfDay": "night",
+   "stageBenchmark": {
+    "buildMs": {
+     "p50": 8.851,
+     "p95": 18.536,
+     "max": 24.673
+    },
+    "rasterMs": {
+     "p50": 3.181,
+     "p95": 10.206,
+     "max": 19.499
+    },
+    "submittedFps": 52.43715173661184,
+    "frameIntervalMs": {
+     "p50": 16.658,
+     "p95": 33.32,
+     "over20ms": 52
+    }
+   },
+   "sceneRateAfterWindow": {
+    "frames": 53.9,
+    "scene": 29.5,
+    "scenePassMs": 5.1
+   }
+  },
+  {
+   "label": "play-head-1",
+   "commit": "5644173",
+   "benchmark": "animateGameplay",
+   "fixedPerformanceMode": false,
+   "timeOfDay": "night",
+   "stageBenchmark": {
+    "buildMs": {
+     "p50": 11.572,
+     "p95": 19.382,
+     "max": 26.849
+    },
+    "rasterMs": {
+     "p50": 3.351,
+     "p95": 13.3,
+     "max": 20.38
+    },
+    "submittedFps": 49.438596505724064,
+    "frameIntervalMs": {
+     "p50": 16.655,
+     "p95": 33.325,
+     "over20ms": 77
+    }
+   },
+   "sceneRateAfterWindow": {
+    "frames": 50.0,
+    "scene": 28.9,
+    "scenePassMs": 6.6
+   }
+  },
+  {
+   "label": "play-head-2",
+   "commit": "5644173",
+   "benchmark": "animateGameplay",
+   "fixedPerformanceMode": false,
+   "timeOfDay": "night",
+   "stageBenchmark": {
+    "buildMs": {
+     "p50": 11.638,
+     "p95": 18.025,
+     "max": 25.238
+    },
+    "rasterMs": {
+     "p50": 3.539,
+     "p95": 12.295,
+     "max": 33.697
+    },
+    "submittedFps": 51.317267073926594,
+    "frameIntervalMs": {
+     "p50": 16.657,
+     "p95": 33.318,
+     "over20ms": 61
+    }
+   },
+   "sceneRateAfterWindow": {
+    "frames": 50.0,
+    "scene": 29.5,
+    "scenePassMs": 6.6
+   }
+  },
+  {
+   "label": "play-base-2",
+   "commit": "4f3ffba",
+   "benchmark": "animateGameplay",
+   "fixedPerformanceMode": false,
+   "timeOfDay": "night",
+   "stageBenchmark": {
+    "buildMs": {
+     "p50": 8.957,
+     "p95": 17.471,
+     "max": 23.496
+    },
+    "rasterMs": {
+     "p50": 3.153,
+     "p95": 10.477,
+     "max": 24.241
+    },
+    "submittedFps": 52.82086209238001,
+    "frameIntervalMs": {
+     "p50": 16.658,
+     "p95": 33.318,
+     "over20ms": 49
+    }
+   },
+   "sceneRateAfterWindow": {
+    "frames": 51.1,
+    "scene": 29.8,
+    "scenePassMs": 4.6
+   }
+  },
+  {
+   "label": "play-head-no-camera-follow",
+   "commit": "5644173+ablation",
+   "benchmark": "animateGameplay",
+   "fixedPerformanceMode": false,
+   "timeOfDay": "night",
+   "stageBenchmark": {
+    "buildMs": {
+     "p50": 9.349,
+     "p95": 16.609,
+     "max": 19.958
+    },
+    "rasterMs": {
+     "p50": 3.291,
+     "p95": 11.678,
+     "max": 84.876
+    },
+    "submittedFps": 52.82550221013661,
+    "frameIntervalMs": {
+     "p50": 16.656,
+     "p95": 33.312,
+     "over20ms": 46
+    }
+   },
+   "sceneRateAfterWindow": {
+    "frames": 50.9,
+    "scene": 30.0,
+    "scenePassMs": 5.0
+   }
+  },
+  {
+   "label": "play-head-clustering-off",
+   "commit": "5644173+punctualLightClustering=false",
+   "benchmark": "animateGameplay",
+   "fixedPerformanceMode": false,
+   "timeOfDay": "night",
+   "stageBenchmark": {
+    "buildMs": {
+     "p50": 9.384,
+     "p95": 17.043,
+     "max": 21.531
+    },
+    "rasterMs": {
+     "p50": 3.202,
+     "p95": 10.665,
+     "max": 41.302
+    },
+    "submittedFps": 51.08135965773497,
+    "frameIntervalMs": {
+     "p50": 16.654,
+     "p95": 33.312,
+     "over20ms": 63
+    }
+   },
+   "sceneRateAfterWindow": {
+    "frames": 53.1,
+    "scene": 29.6,
+    "scenePassMs": 4.3
+   }
+  },
+  {
+   "label": "play-base-day",
+   "commit": "4f3ffba",
+   "benchmark": "animateGameplay",
+   "fixedPerformanceMode": false,
+   "timeOfDay": "day",
+   "stageBenchmark": {
+    "buildMs": {
+     "p50": 6.926,
+     "p95": 15.186,
+     "max": 20.572
+    },
+    "rasterMs": {
+     "p50": 3.863,
+     "p95": 13.201,
+     "max": 18.075
+    },
+    "submittedFps": 57.47786181713619,
+    "frameIntervalMs": {
+     "p50": 16.655,
+     "p95": 16.695,
+     "over20ms": 16
+    }
+   },
+   "sceneRateAfterWindow": {
+    "frames": 56.6,
+    "scene": 28.1,
+    "scenePassMs": 6.4
+   }
+  },
+  {
+   "label": "play-head-clustering-off-day",
+   "commit": "5644173+punctualLightClustering=false",
+   "benchmark": "animateGameplay",
+   "fixedPerformanceMode": false,
+   "timeOfDay": "day",
+   "stageBenchmark": {
+    "buildMs": {
+     "p50": 7.387,
+     "p95": 13.849,
+     "max": 17.566
+    },
+    "rasterMs": {
+     "p50": 3.692,
+     "p95": 11.949,
+     "max": 19.922
+    },
+    "submittedFps": 58.4180965268733,
+    "frameIntervalMs": {
+     "p50": 16.653,
+     "p95": 16.675,
+     "over20ms": 10
+    }
+   },
+   "sceneRateAfterWindow": {
+    "frames": 56.7,
+    "scene": 30.1,
+    "scenePassMs": 5.8
+   }
+  }
+ ],
+ "manual": [
+  {
+   "label": "manual-practice-head-day",
+   "commit": "5644173",
+   "fixedPerformanceMode": false,
+   "timeOfDay": "day",
+   "sceneRate": {
+    "frames": 46.2,
+    "scene": 20.2,
+    "scenePassMs": 7.2
+   }
+  },
+  {
+   "label": "manual-practice-head-day-fixedperf",
+   "commit": "5644173",
+   "fixedPerformanceMode": true,
+   "timeOfDay": "day",
+   "sceneRate": {
+    "frames": 60.2,
+    "scene": 29.6,
+    "scenePassMs": 2.3
+   }
+  },
+  {
+   "label": "manual-practice-head-clustering-off-day",
+   "commit": "5644173+punctualLightClustering=false",
+   "fixedPerformanceMode": false,
+   "timeOfDay": "day",
+   "sceneRate": {
+    "frames": 49.3,
+    "scene": 20.9,
+    "scenePassMs": 6.4
+   }
+  },
+  {
+   "label": "manual-round-base-day",
+   "commit": "4f3ffba",
+   "fixedPerformanceMode": false,
+   "timeOfDay": "day",
+   "sceneRate": {
+    "frames": 47.2,
+    "scene": 19.9,
+    "scenePassMs": 6.7
+   }
+  }
+ ]
+}

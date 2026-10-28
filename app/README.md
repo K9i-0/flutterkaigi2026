@@ -52,7 +52,7 @@ XcodeBuildMCP `record_sim_video` で開始→ `action=demo` →約25秒後に停
 
 Dart／Flutterの検証は、採点・固定配置・TAS・ギャラリー・UIなどを対象にしている。2026-10-27のカウントダウン・ラウンド終了の変更時点で59テスト。変更ごとの条件と結果は以下の開発記録を参照する。
 
-iOSシミュレーターで画面・自動入力によるプレイを確認し、実機の操作フィードバックも反映している。Pixel 7a・iPhone 14のprofile測定は [実機パフォーマンス検証](qa/device-performance-20261021/README.md) を参照。端末・ビルド・設定ごとの結果であり、全端末の性能を保証するものではない。
+iOSシミュレーターで画面・自動入力によるプレイを確認し、実機の操作フィードバックも反映している。性能の測定結果・端末差の考察・改善の履歴は [パフォーマンスの記録](PERFORMANCE.md) にまとめた（Pixel 7a・iPhone 14のprofile測定を含む）。端末・ビルド・設定ごとの結果であり、全端末の性能を保証するものではない。
 
 README紹介映像はiPhone 18 Pro／iOS 27シミュレーターで収録し、Remotionで編集する。[制作手順](../tools/readme-video/README.md)。撮影用自動入力と実機の傾き操作は区別する。
 
@@ -245,7 +245,7 @@ vsync時刻から算出する`submittedFps`とフレーム間隔も記録する�
 
 ## 実機性能とメモリ（2026-10-21）
 
-Pixel 7a・iPhone 14の実機profileで計測。Pixel 7aは約30fpsに張り付いていた。原因はflutter_sceneが毎フレーム点光源テクスチャを転送し、VulkanでUIスレッドとラスターが同期待ちになっていたこと。フォーク `K9i-0/flutter_scene` の `master` を元リポジトリ（bdero/flutter_scene、492コミット）に同期し、独自の3コミット（空の補間・同フレームの表示切替・回転のクロスフェード）を載せ直した `2606511` に更新した。Pixel 7aは標準画質で約60fps（UI 3〜7ms、GPU 1〜7ms）。`labs/sobaya_hazard`・`labs/sobaya_ippai`・`packages/madogiwa_engine` も同じrefへ更新。非推奨の `castsShadows` は `shadowCastingMode` に置き換えた。
+Pixel 7a・iPhone 14の実機profileで計測。Pixel 7aは約30fpsに張り付いていた。原因はflutter_sceneが毎フレーム点光源テクスチャを転送し、VulkanでUIスレッドとラスターが同期待ちになっていたこと。フォーク `K9i-0/flutter_scene` の `master` を元リポジトリ（bdero/flutter_scene、492コミット）に同期し、独自の3コミット（空の補間・同フレームの表示切替・回転のクロスフェード）を載せ直した `2606511` に更新した。Pixel 7aは標準画質で約60fps（UI 3〜7ms、GPU 1〜7ms）。これは固定性能モードでの値で、通常の電力モードの実プレイは60に固定されていない（2026-10-28の[パフォーマンスの記録](PERFORMANCE.md)）。`labs/sobaya_hazard`・`labs/sobaya_ippai`・`packages/madogiwa_engine` も同じrefへ更新。非推奨の `castsShadows` は `shadowCastingMode` に置き換えた。
 
 同期版はiPhone 14で読み込み中に強制終了した（Jetsam、1アプリのメモリ上限）。旧版もRSSピーク1.9GBで上限付近だった。キャラクター・落下アイテムは、テクスチャを2048（アイテムは1024）に縮小したゲーム専用の派生 `../assets/3d/recruit_exam_mobile/` へsymlinkを切り替えた。読み込み時RSSピーク1,896→739MB、安定時約1,120→570MB。昼・夜とも60fps。プレイ中の見た目は変わらない。詳細と生データは [qa/device-performance-20261021/README.md](qa/device-performance-20261021/README.md)。
 

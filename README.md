@@ -32,7 +32,7 @@ iPhone 18 Pro／iOS 27シミュレーターの標準録画で収録し、2622×1
 
 描画は [Flutter Sceneのfork](https://github.com/K9i-0/flutter_scene)、ゲームの進行・判定はDart、画面UIはFlutterで実装しています。GLBのキャラクターと街をビルドフックで変換し、Flutter GPUで描画します。
 
-詳しい仕様・自動操作・開発記録は [app/README.md](app/README.md)、実機profile測定は [パフォーマンス検証記録](app/qa/device-performance-20261021/README.md) を参照してください。紹介映像はdebugビルドの収録で、実機性能のベンチマークではありません。
+詳しい仕様・自動操作・開発記録は [app/README.md](app/README.md)、性能の測定結果・考察・改善の履歴は [パフォーマンスの記録](app/PERFORMANCE.md) を参照してください。紹介映像はdebugビルドの収録で、実機性能のベンチマークではありません。
 
 ## ローカルで動かす
 
