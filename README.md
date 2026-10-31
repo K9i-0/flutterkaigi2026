@@ -5,11 +5,9 @@
 FlutterKaigi 2026向けに制作している、Flutter Scene製の3Dミニゲームです。高層ビルの間に架かった鉄骨を歩き、空から降ってくる「あたり」をキャッチ。端末を傾けて移動し、スワイプで見回して、80点以上の合格を目指します。
 
 <p>
-  <a href="https://www.youtube.com/watch?v=sv6l7ZY-i70"><img src="docs/media/hero.png" width="360" alt="ゆめみ採用試験 — ゲームトレーラー（32秒・60fps・音声付き）"></a>
-  <a href="https://www.youtube.com/watch?v=81XlfHfG8N4"><img src="docs/media/technical-video.jpg" width="360" alt="ゆめみ採用試験 — 技術解説動画"></a>
+  <a href="https://www.youtube.com/watch?v=sv6l7ZY-i70"><img src="docs/media/trailer-card.svg" width="360" alt="ゆめみ採用試験 — ゲームトレーラー（32秒・60fps・音声付き）"></a>
+  <a href="https://www.youtube.com/watch?v=81XlfHfG8N4"><img src="docs/media/technical-video-card.svg" width="360" alt="ゆめみ採用試験 — 技術解説動画"></a>
 </p>
-
-**[▶ ゲームトレーラー](https://www.youtube.com/watch?v=sv6l7ZY-i70) · [▶ 技術解説動画](https://www.youtube.com/watch?v=81XlfHfG8N4)**
 
 <details>
 <summary>トレーラーの収録・制作について</summary>
