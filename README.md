@@ -4,15 +4,19 @@
 
 FlutterKaigi 2026向けに制作している、Flutter Scene製の3Dミニゲームです。高層ビルの間に架かった鉄骨を歩き、空から降ってくる「あたり」をキャッチ。端末を傾けて移動し、スワイプで見回して、80点以上の合格を目指します。
 
-[![ゆめみ採用試験 — 60fpsゲームトレーラー](docs/media/hero.png)](https://www.youtube.com/watch?v=sv6l7ZY-i70)
+<p>
+  <a href="https://www.youtube.com/watch?v=sv6l7ZY-i70"><img src="docs/media/hero.png" width="360" alt="ゆめみ採用試験 — ゲームトレーラー（32秒・60fps・音声付き）"></a>
+  <a href="https://www.youtube.com/watch?v=81XlfHfG8N4"><img src="docs/media/technical-video.jpg" width="360" alt="ゆめみ採用試験 — 技術解説動画"></a>
+</p>
 
-**[▶ YouTubeでゲームトレーラーを見る（32秒・60fps・音声付き）](https://www.youtube.com/watch?v=sv6l7ZY-i70)**
+**[▶ ゲームトレーラー](https://www.youtube.com/watch?v=sv6l7ZY-i70) · [▶ 技術解説動画](https://www.youtube.com/watch?v=81XlfHfG8N4)**
+
+<details>
+<summary>トレーラーの収録・制作について</summary>
 
 iPhone 18 Pro／iOS 27シミュレーターの標準録画で収録し、2622×1206・60fpsで編集。3人のキャラクター選択、昼夜の赤坂、実際のプレイを紹介します。プレイ映像は撮影用の自動入力で動かしています。ナレーションはゆめテレアナウンサー（Irodori-TTS）。[映像の制作・再生成手順](tools/readme-video/README.md)
 
-[![ゆめみ採用試験 — 技術解説動画](docs/media/technical-video.jpg)](https://www.youtube.com/watch?v=81XlfHfG8N4)
-
-**[▶ YouTubeで技術解説動画を見る](https://www.youtube.com/watch?v=81XlfHfG8N4)**
+</details>
 
 ## 遊び方
 
