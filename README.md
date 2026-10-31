@@ -10,6 +10,8 @@ FlutterKaigi 2026向けに制作している、Flutter Scene製の3Dミニゲー
 
 iPhone 18 Pro／iOS 27シミュレーターの標準録画で収録し、2622×1206・60fpsで編集。3人のキャラクター選択、昼夜の赤坂、実際のプレイを紹介します。プレイ映像は撮影用の自動入力で動かしています。ナレーションはゆめテレアナウンサー（Irodori-TTS）。[映像の制作・再生成手順](tools/readme-video/README.md)
 
+[![ゆめみ採用試験 — 技術解説動画](docs/media/technical-video.jpg)](https://www.youtube.com/watch?v=81XlfHfG8N4)
+
 **[▶ YouTubeで技術解説動画を見る](https://www.youtube.com/watch?v=81XlfHfG8N4)**
 
 ## 遊び方
