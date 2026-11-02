@@ -36,7 +36,7 @@ const gold = brandBlue, cream = brandInk, ink = Colors.white;
 /// UI language, above the Navigator so dialogs translate too.
 final appLang = ValueNotifier(AppLang.ja);
 void main() async {
-  if (kDebugMode) {
+  if (!kReleaseMode) {
     MarionetteBinding.ensureInitialized();
   } else {
     WidgetsFlutterBinding.ensureInitialized();
@@ -141,7 +141,7 @@ class _RainState extends State<RainPage> {
       },
     );
     load();
-    if (kDebugMode) {
+    if (!kReleaseMode) {
       registerMarionetteExtension(
         name: 'madogiwa.inspectCatch',
         description: 'Inspect real simulation, sensor and camera.',
