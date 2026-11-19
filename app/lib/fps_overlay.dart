@@ -2,6 +2,9 @@ import 'dart:math' as math;
 import 'dart:ui' show FramePhase, FrameTiming;
 
 import 'package:flutter/foundation.dart';
+// Flutter 3.50でpackage:flutter/material.dartが非推奨になった。material_uiへの移行は
+// 見た目のリグレッション確認が必要なため別タスクで判断し、それまで抑制する。
+// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
