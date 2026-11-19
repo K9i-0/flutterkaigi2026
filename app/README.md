@@ -31,7 +31,7 @@ mise exec -- flutter build apk --debug
 mise exec -- flutter build ios --simulator --debug --no-codesign
 ```
 
-Flutter 3.47.8 / Dart 3.13.7。Flutter Sceneはpubspec記載のfork commitに固定。`hook/build.dart` がGLBから実行用シーンを生成する。iOSはFlutter GPUを有効化し、横向きのみをInfo.plistへ指定。AndroidもDart側で横固定。
+Flutter 3.50.0 / Dart 3.14.0。Flutter Sceneはpubspec記載のfork commitに固定。`hook/build.dart` がGLBから実行用シーンを生成する。iOSはFlutter GPUを有効化し、横向きのみをInfo.plistへ指定。AndroidもDart側で横固定。
 
 `tool/build_labels.py`（Pillow）→ `tool/build_cans.py`（Blender）の順で仮ラベルと缶を再生成する。正典缶の元画像は変更しない。
 
