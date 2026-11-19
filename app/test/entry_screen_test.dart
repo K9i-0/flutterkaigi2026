@@ -1,7 +1,4 @@
-// Flutter 3.50でpackage:flutter/material.dartが非推奨になった。material_uiへの移行は
-// 見た目のリグレッション確認が必要なため別タスクで判断し、それまで抑制する。
-// ignore: deprecated_member_use
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:yumemi_recruit_exam/entry_screen.dart';
 import 'package:yumemi_recruit_exam/app_style.dart';

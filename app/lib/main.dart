@@ -18,16 +18,14 @@ import 'settings_dialog.dart';
 import 'tas.dart';
 
 import 'package:flutter/foundation.dart';
-// Flutter 3.50でpackage:flutter/material.dartが非推奨になった。material_uiへの移行は
-// 見た目のリグレッション確認が必要なため別タスクで判断し、それまで抑制する。
-// ignore: deprecated_member_use
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_scene/scene.dart' show SceneView;
 import 'package:marionette_flutter/marionette_flutter.dart';
 import 'package:vector_math/vector_math.dart' as vm;
 
 import 'catch_game.dart';
+import 'marionette_material_ui.dart';
 import 'character.dart';
 import 'selection_screen.dart';
 import 'catch_scene.dart';
@@ -40,7 +38,7 @@ const gold = brandBlue, cream = brandInk, ink = Colors.white;
 final appLang = ValueNotifier(AppLang.ja);
 void main() async {
   if (!kReleaseMode) {
-    MarionetteBinding.ensureInitialized();
+    MarionetteBinding.ensureInitialized(marionetteMaterialUiConfiguration);
   } else {
     WidgetsFlutterBinding.ensureInitialized();
   }
