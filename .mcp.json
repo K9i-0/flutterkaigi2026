@@ -5,7 +5,7 @@
       "command": "mise",
       "args": [
         "exec",
-        "flutter@3.50.0",
+        "flutter@3.50.1",
         "--",
         "dart",
         "pub",
@@ -19,7 +19,7 @@
       "command": "mise",
       "args": [
         "exec",
-        "flutter@3.50.0",
+        "flutter@3.50.1",
         "--",
         "dart",
         "mcp-server",

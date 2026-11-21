@@ -56,7 +56,7 @@ mise exec -- flutter devices
 mise exec -- flutter run -d <device-id>
 ```
 
-- Flutterは `.mise.toml` に固定した **3.50.0** を使います。
+- Flutterは `.mise.toml` に固定した **3.50.1** を使います。
 - 初回はビルドフックがGLBを変換するため、起動に時間がかかります。
 - 素材は相対シンボリックリンクで共有しています。`app/` だけを切り出さず、リポジトリごとcloneしてください。
 - シミュレーターでは端末の傾きの代わりに矢印キーを使います。
